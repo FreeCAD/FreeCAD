@@ -27,11 +27,6 @@ PyObject* ParaObject::getPyObject()
     }
 }
 
-HParaObject ParaObject::self()
-{
-    return HParaObject(getPyObject(), true);
-}
-
 std::string ParaObject::repr() const
 {
     std::stringstream ss;
@@ -284,7 +279,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
         }
     };
     std::stringstream ss;
-    ss << self().getHandledObject().repr().as_std_string() << " has no attribute "
+    ss << getHandle().getHandledObject().repr().as_std_string() << " has no attribute "
        << attrname;
     throw Py::AttributeError(ss.str());
 }
@@ -320,7 +315,7 @@ void ParaObject::initFromDict(Py::Dict dict)
         Py::Object val = tup[1];
         if (key == "store")
             continue;//process it last
-        FCS::setAttr(self().getHandledObject(), key, val);
+        FCS::setAttr(getHandle().getHandledObject(), key, val);
     }
     if (dict.hasKey("store")){
         HParameterStore store (dict["store"]);

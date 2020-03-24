@@ -72,7 +72,7 @@ HParaObject FCS::G2D::ParaShapeBase::copy() const
 HParaShapeBase G2D::ParaShapeBase::getSubShape(const ParaGeometry& subshape)
 {
     HParaShapeBase ret = new ParaShapeBase();
-    ret->_tshape = const_cast<ParaGeometry&>(subshape).self();
+    ret->_tshape = const_cast<ParaGeometry&>(subshape).getHandle();
     this->placement->lock();
     ret->placement = this->placement;
     ret->placement->lock();

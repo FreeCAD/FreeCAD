@@ -19,7 +19,7 @@ PyObject *ConstraintCurvePosPy::PyMake(struct _typeobject *, PyObject* args, PyO
             PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
             throw Py::Exception();
         }
-        HConstraintCurvePos p = (new ConstraintCurvePos)->self().downcast<ConstraintCurvePos>();
+        HConstraintCurvePos p = (new ConstraintCurvePos)->getHandle<ConstraintCurvePos>();
         if (kwd && kwd != Py_None)
             p->initFromDict(Py::Dict(kwd));
         return p.getHandledObject();

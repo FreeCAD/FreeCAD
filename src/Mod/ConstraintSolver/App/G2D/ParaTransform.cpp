@@ -134,7 +134,7 @@ void ParaTransform::initFromDict(Py::Dict dict)
         Py::Tuple tup(it);
         std::string key = Py::String(tup[0]);
         Py::Object val = tup[1];
-        FCS::setAttr(self().getHandledObject(), key, val);
+        FCS::setAttr(getHandle().getHandledObject(), key, val);
     }
 }
 

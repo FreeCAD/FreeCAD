@@ -88,9 +88,15 @@ public://data members
 
 public: //methods
     virtual PyObject* getPyObject() override;
-    HParaObject self();
+    
     virtual std::string repr() const;
-
+    
+    template <  typename NewTypeT = ParaObject,
+                typename = typename std::enable_if<
+                    std::is_base_of<ParaObject, typename std::decay<NewTypeT>::type>::value
+             >::type
+    >
+    UnsafePyHandle<NewTypeT> getHandle();
     /**
      * @brief update: updates list of parameters. Must call after redirecting prarmeters.
      * It ignores touched state of this object, but calls update on child objects only if the child is touched.
@@ -141,6 +147,15 @@ protected: //methods
 public: //friends
     friend class ParaObjectPy;
 };
+
+template <  typename NewTypeT,
+            typename 
+>
+UnsafePyHandle<NewTypeT> ParaObject::getHandle() 
+{
+    return UnsafePyHandle<NewTypeT>(getPyObject(), true);
+}
+
 
 } //namespace
 

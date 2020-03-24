@@ -53,6 +53,6 @@ PyObject* ParaPlacement::getPyObject()
 
 std::vector<HConstraint> ParaPlacement::makeRuleConstraints()
 {
-    return {(new ConstraintPlacementRules)->self().downcast<Constraint>()};
+    return {(new ConstraintPlacementRules)->getHandle<Constraint>()};
 }
 

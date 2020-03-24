@@ -15,7 +15,7 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
     return pyTryCatch([&]()->Py::Object{
         {
             if (PyArg_ParseTuple(args, "")){
-                HParaShapeBase p = (new ParaShapeBase)->self().downcast<ParaShapeBase>();
+                HParaShapeBase p = (new ParaShapeBase)->getHandle<ParaShapeBase>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
                 return p.getHandledObject();

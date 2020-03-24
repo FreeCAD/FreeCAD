@@ -19,7 +19,7 @@ PyObject *ConstraintDistancePy::PyMake(struct _typeobject *, PyObject* args, PyO
             PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
             throw Py::Exception();
         }
-        HConstraintDistance p = (new ConstraintDistance)->self().downcast<ConstraintDistance>();
+        HConstraintDistance p = (new ConstraintDistance)->getHandle<ConstraintDistance>();
         if (kwd && kwd != Py_None)
             p->initFromDict(Py::Dict(kwd));
         return p.getHandledObject();
