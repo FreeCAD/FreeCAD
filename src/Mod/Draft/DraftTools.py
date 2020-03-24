@@ -4187,7 +4187,6 @@ class Drawing(Modifier):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Drawing',
-                'Accel' : "D, D",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet")}
 

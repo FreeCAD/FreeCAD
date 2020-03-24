@@ -74,7 +74,7 @@ def get_draft_modification_commands():
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
             "Separator",
-            "Draft_Shape2DView", "Draft_Drawing"]
+            "Draft_Shape2DView"]
     return lst
 
 
