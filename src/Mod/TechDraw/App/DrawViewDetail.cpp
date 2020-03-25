@@ -147,13 +147,15 @@ void DrawViewDetail::onChanged(const App::Property* prop)
                                   std::string(Reference.getValue());
             Label.setValue(lblText);
         }
-        if ((prop == &Reference)  ||
-           (prop == &Radius)     ||
-           (prop == &AnchorPoint))  {
-//            BaseView.getValue()->touch();    //hack.  sb "update graphics"
-            enforceRecompute();
+        if ((prop == &Reference) ||
+            (prop == &Radius) ||
+            (prop == &BaseView)) {
+            requestPaint();
         }
-
+        if (prop == &AnchorPoint)  {
+            // to see AnchorPoint changes repainting is not enough, we must recompute
+            recomputeFeature(true);
+        }
     }
     DrawView::onChanged(prop);
 }
