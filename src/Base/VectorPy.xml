@@ -74,6 +74,13 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isOnLine" Const="true">
+			<Documentation>
+				<UserDocu>isOnLine(Vector, Vector)
+					      checks if Vector is on a line
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getAngle" Const="true">
 			<Documentation>
 				<UserDocu>getAngle(Vector)

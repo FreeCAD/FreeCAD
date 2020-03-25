@@ -133,6 +133,9 @@ public:
     bool operator == (const Vector3<_Precision>& rcVct) const;
     //@}
 
+    /// Check if Vector is on a line
+    bool IsOnLine (const Vector3<_Precision>& startVct, const Vector3<_Precision>& endVct) const;
+
     /** @name Modification */
     //@{
     void ScaleX (_Precision f);
