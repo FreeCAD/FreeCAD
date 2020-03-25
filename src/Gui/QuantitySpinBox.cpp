@@ -959,11 +959,17 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
 
 QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
 {
+#if 0
     Q_D(const QuantitySpinBox);
 
     QValidator::State state;
     d->validateAndInterpret(text, pos, state);
     return state;
+#else
+    (void)text;
+    (void)pos;
+    return QValidator::Acceptable;
+#endif
 }
 
 void QuantitySpinBox::fixup(QString &input) const
