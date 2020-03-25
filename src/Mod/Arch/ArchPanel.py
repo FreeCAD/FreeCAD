@@ -26,6 +26,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -180,7 +181,7 @@ class CommandPanel:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-        import DraftTrackers
+
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
