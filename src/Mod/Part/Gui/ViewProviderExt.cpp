@@ -1481,6 +1481,12 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             || strcmp(propName,"Shape")==0
             || strstr(propName,"Touched")!=0)
     {
+        TopoDS_Shape cShape = Part::Feature::getShape(getObject());
+        if(cachedShape.IsPartner(cShape)) {
+            Gui::ViewProviderGeometryObject::updateData(prop);
+            return;
+        }
+
         // calculate the visual only if visible
         if (isUpdateForced()||Visibility.getValue())
             updateVisual();
@@ -1565,6 +1571,7 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     TopoDS_Shape cShape = Part::Feature::getShape(getObject());
+    cachedShape = cShape;
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
         pcoords ->point      .setNum(0);
