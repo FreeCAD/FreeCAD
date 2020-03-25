@@ -3727,7 +3727,7 @@ VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
   sMenuText     = QT_TR_NOOP("Map children (Experimental!)");
   sToolTipText  = QT_TR_NOOP("Map child object into parent's coordinate space when showing on top.\n"
                              "Note that once activated, this option will also activate option ShowOnTop.\n"
-                             "WARNING! This is an experimental option. Please use with caution.\n");
+                             "WARNING! This is an experimental option. Please use with caution.");
   sWhatsThis    = "Std_MapChildrenPlacement";
   sStatusTip    = sToolTipText;
   eType         = NoDefaultAction;
