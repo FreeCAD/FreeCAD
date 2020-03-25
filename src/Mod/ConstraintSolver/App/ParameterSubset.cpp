@@ -18,7 +18,7 @@ FCS::ParameterSubset::ParameterSubset(int prealloc)
 void FCS::ParameterSubset::attach(FCS::HParameterStore store)
 {
     _host = store;
-    _host->onNewSubset(self());
+    _host->onNewSubset(getHandle());
     onStoreExpand();
 }
 
@@ -158,7 +158,7 @@ bool ParameterSubset::has(const HParameterSubset other) const
 
 bool ParameterSubset::in(const HParameterSubset other) const
 {
-    return other->has(self());
+    return other->has(getHandle());
 }
 
 int ParameterSubset::indexOf(const ParameterRef& param) const
@@ -174,12 +174,12 @@ ParameterRef ParameterSubset::operator[](int index) const
     return _params[index];
 }
 
-HParameterSubset ParameterSubset::self() const
+HParameterSubset ParameterSubset::getHandle() const
 {
     return HParameterSubset(_twin, false);
 }
 
 PyObject* ParameterSubset::getPyObject()
 {
-    return Py::new_reference_to(self().getHandledObject());
+    return Py::new_reference_to(getHandle().getHandledObject());
 }

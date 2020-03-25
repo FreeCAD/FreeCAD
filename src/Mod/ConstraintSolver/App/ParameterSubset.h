@@ -88,7 +88,7 @@ public://methods
 
     ParameterRef operator[](int index) const;
 
-    HParameterSubset self() const;
+    HParameterSubset getHandle() const;
     PyObject* getPyObject();
 
 public://friends

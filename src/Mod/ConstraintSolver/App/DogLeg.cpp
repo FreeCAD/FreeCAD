@@ -97,7 +97,7 @@ eSolveResult DogLeg::solve(HSubSystem sys, HValueSet vals)
     double err; // net qsuare error (times 0.5)
     HValueSet x = ValueSet::makeFrom(sys->params(), *vals);
     sys->calcResidual(*vals, fx, err);
-    sys->calcJacobi(*vals, sys->params()->self(), Jx);
+    sys->calcJacobi(*vals, sys->params()->getHandle(), Jx);
 
     g = Jx.transpose()*(-fx); //gradient?
 
@@ -213,7 +213,7 @@ eSolveResult DogLeg::solve(HSubSystem sys, HValueSet vals)
         *x_new = x + h_dl;
         vals->paste(x_new);
         sys->calcResidual(*vals, fx_new, err_new);
-        sys->calcJacobi(*vals, sys->params()->self(), Jx_new);
+        sys->calcJacobi(*vals, sys->params()->getHandle(), Jx_new);
 
         // calculate the linear model and the update ratio
         double dL = err - 0.5*(fx + Jx*h_dl).squaredNorm(); //linear expectation of error reduction

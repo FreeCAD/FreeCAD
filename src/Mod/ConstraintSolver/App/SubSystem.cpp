@@ -180,7 +180,7 @@ double SubSystem::error(const ValueSet& vals)
 
 void SubSystem::checkValuesCoverage(const ValueSet& vals) const
 {
-    if (!_params->in(vals.subset().self()))
+    if (!_params->in(vals.subset().getHandle()))
         throw Py::ValueError("ValueSet doesn't contain all the parameters of the subsystem, can't calculate derivatives");
 }
 

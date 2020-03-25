@@ -198,7 +198,7 @@ Py::Object ValueSetPy::getHost(void) const
 
 Py::Object ValueSetPy::getSubset(void) const
 {
-    return getValueSetPtr()->subset().self().getHandledObject();
+    return getValueSetPtr()->subset().getHandle().getHandledObject();
 }
 
 Py::List ValueSetPy::getValues(void) const
