@@ -130,7 +130,7 @@ public:
     Base::DualNumber get(const ParameterRef& param) const;
 
 
-    HValueSet self() const;
+    HValueSet getHandle() const;
     PyObject* getPyObject();
     bool isPassThrough() const {return _passthru;}
 public://operators
@@ -154,21 +154,21 @@ public://operators
 };
 
 //define further operators between combinations of hanlde, reference, and eigen-vector
-inline HValueSet operator+(const ValueSet& a, const ValueSet& b)        {return a.self() + b.self();}
-inline HValueSet operator+(const HValueSet& a, const ValueSet& b)       {return a        + b.self();}
-inline HValueSet operator+(const ValueSet& a, const HValueSet& b)       {return a.self() + b;}
-inline HValueSet operator+(const ValueSet& a, const Eigen::VectorXd& b) {return a.self() + b;}
-inline HValueSet operator+(const Eigen::VectorXd& a, const ValueSet& b) {return a        + b.self();}
+inline HValueSet operator+(const ValueSet& a, const ValueSet& b)        {return a.getHandle() + b.getHandle();}
+inline HValueSet operator+(const HValueSet& a, const ValueSet& b)       {return a        + b.getHandle();}
+inline HValueSet operator+(const ValueSet& a, const HValueSet& b)       {return a.getHandle() + b;}
+inline HValueSet operator+(const ValueSet& a, const Eigen::VectorXd& b) {return a.getHandle() + b;}
+inline HValueSet operator+(const Eigen::VectorXd& a, const ValueSet& b) {return a        + b.getHandle();}
 
-inline HValueSet operator-(const ValueSet& a, const ValueSet& b)        {return a.self() - b.self();}
-inline HValueSet operator-(const HValueSet& a, const ValueSet& b)       {return a        - b.self();}
-inline HValueSet operator-(const ValueSet& a, const HValueSet& b)       {return a.self() - b;}
-inline HValueSet operator-(const ValueSet& a, const Eigen::VectorXd& b) {return a.self() - b;}
-inline HValueSet operator-(const Eigen::VectorXd& a, const ValueSet& b) {return a        - b.self();}
+inline HValueSet operator-(const ValueSet& a, const ValueSet& b)        {return a.getHandle() - b.getHandle();}
+inline HValueSet operator-(const HValueSet& a, const ValueSet& b)       {return a        - b.getHandle();}
+inline HValueSet operator-(const ValueSet& a, const HValueSet& b)       {return a.getHandle() - b;}
+inline HValueSet operator-(const ValueSet& a, const Eigen::VectorXd& b) {return a.getHandle() - b;}
+inline HValueSet operator-(const Eigen::VectorXd& a, const ValueSet& b) {return a        - b.getHandle();}
 
-inline HValueSet operator*(const ValueSet& a, double b){return a.self() * b;}
-inline HValueSet operator*(double b, const ValueSet& a){return a.self() * b;}
-inline HValueSet operator/(const ValueSet& a, double b){return a.self() / b;}
+inline HValueSet operator*(const ValueSet& a, double b){return a.getHandle() * b;}
+inline HValueSet operator*(double b, const ValueSet& a){return a.getHandle() * b;}
+inline HValueSet operator/(const ValueSet& a, double b){return a.getHandle() / b;}
 
 
 } //namespace

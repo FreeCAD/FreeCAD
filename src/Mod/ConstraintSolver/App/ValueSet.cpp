@@ -270,7 +270,7 @@ Base::DualNumber ValueSet::get(const ParameterRef& param) const
     }
 }
 
-HValueSet ValueSet::self() const
+HValueSet ValueSet::getHandle() const
 {
     return HValueSet(_twin, false);
 }

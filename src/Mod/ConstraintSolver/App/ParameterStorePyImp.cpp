@@ -95,7 +95,7 @@ PyObject* ParameterStorePy::asValueSet(PyObject* args)
 {
     if (! PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParameterStorePtr()->asValueSet().self().getHandledObject());
+    return Py::new_reference_to(getParameterStorePtr()->asValueSet().getHandle().getHandledObject());
 }
 
 PyObject* ParameterStorePy::constrainEqual(PyObject* args)

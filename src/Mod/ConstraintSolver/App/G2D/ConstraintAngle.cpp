@@ -46,7 +46,7 @@ void ConstraintAngle::convertToSupplement(HValueSet vals)
 {
     angle.throwNull();
     if (vals.isNone())
-        vals = angle.host()->asValueSet().self();
+        vals = angle.host()->asValueSet().getHandle();
     //if supplement:
     //    was: trueAngle = _revers * (0.5 * TURN - angle)
     //    new: trueAngle = _revers * (angle)
@@ -65,7 +65,7 @@ void ConstraintAngle::convertToReversed(HValueSet vals)
 {
     angle.throwNull();
     if (vals.isNone())
-        vals = angle.host()->asValueSet().self();
+        vals = angle.host()->asValueSet().getHandle();
 
     if (supplementAngle) {
         //was: trueAngle = _revers * (0.5 * TURN - angle)
