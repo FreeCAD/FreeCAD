@@ -1501,6 +1501,8 @@ def getIfcTypeFromObj(obj):
         ifctype = "Group"
     if ifctype == "Undefined":
         ifctype = "BuildingElementProxy"
+    if ifctype == "Furniture":
+        ifctype = "FurnishingElement"
 
     return "Ifc" + ifctype
 
