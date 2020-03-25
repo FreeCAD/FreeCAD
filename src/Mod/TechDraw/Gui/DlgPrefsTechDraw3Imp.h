@@ -39,6 +39,10 @@ public:
     DlgPrefsTechDraw3Imp( QWidget* parent = 0 );
     ~DlgPrefsTechDraw3Imp();
 
+protected Q_SLOTS:
+    void onGlobalDecimalsChanged(bool);
+    void onAltDecimalsChanged(int);
+
 protected:
     void saveSettings();
     void loadSettings();
@@ -46,7 +50,6 @@ protected:
     
     int prefBalloonArrow(void) const;
     int prefArrowStyle(void) const;
-
 
 };
 

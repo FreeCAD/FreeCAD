@@ -29,6 +29,7 @@
 
 #include <Base/Parameter.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawGuiUtil.h"
 #include "DlgPrefsTechDraw3Imp.h"
@@ -48,6 +49,11 @@ DlgPrefsTechDraw3Imp::DlgPrefsTechDraw3Imp( QWidget* parent )
     plsb_ArrowSize->setMinimum(0);
     pdsbBalloonKink->setUnit(Base::Unit::Length);
     pdsbBalloonKink->setMinimum(0);
+
+    connect(cbGlobalDecimals, SIGNAL(toggled(bool)),
+        this, SLOT(onGlobalDecimalsChanged(bool)));
+    connect(sbAltDecimals, SIGNAL(valueChanged(int)),
+        this, SLOT(onAltDecimalsChanged(int)));
 }
 
 DlgPrefsTechDraw3Imp::~DlgPrefsTechDraw3Imp()
@@ -124,6 +130,44 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
     DrawGuiUtil::loadArrowBox(pcbArrow);
     pcbArrow->setCurrentIndex(prefArrowStyle());
+
+    // check that if the sytem-wide decimals are used, the format uses the same decimals
+    // get at first the setting (default is "%.xf", where x is the number of decimals)
+    Base::Reference<ParameterGrp> hGrpFormatSpec = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->
+        GetGroup("Mod/TechDraw/Dimensions");
+    std::string formatSpec = hGrpFormatSpec->GetASCII("formatSpec", "");
+    // get now if system-wiede is used or alternate
+    Base::Reference<ParameterGrp> hGrpUseGlobalDecimals = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->
+        GetGroup("Mod/TechDraw/Dimensions");
+    bool UseGlobalDecimals = hGrpUseGlobalDecimals->GetBool("UseGlobalDecimals", true);
+    // get if system-wide is used or alternate
+    Base::Reference<ParameterGrp> hGrpUseAltDecimals = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->
+        GetGroup("Mod/TechDraw/Dimensions");
+    int AltDecimals = hGrpUseAltDecimals->GetInt("AltDecimals", 2);
+
+    // if UseGlobalDecimals but the number after the dot is different, replace it
+    size_t dotPosition = formatSpec.find('.');
+    if (dotPosition == std::string::npos)
+        return;
+    std::string localDecimalsString;
+    localDecimalsString = formatSpec.at(dotPosition);
+    std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
+    std::string altDecimalsString = std::to_string(AltDecimals);
+    if (UseGlobalDecimals && (localDecimalsString != systemDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+
+    // if use alternate decimals but the number after the dot is different, replace it
+    if (!UseGlobalDecimals && (localDecimalsString != altDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
 }
 
 /**
@@ -159,6 +203,55 @@ int DlgPrefsTechDraw3Imp::prefArrowStyle(void) const
     return style;
 }
 
+void DlgPrefsTechDraw3Imp::onGlobalDecimalsChanged(bool useGlobal)
+{
+    std::string formatSpec = leformatSpec->text().toStdString();
+    // if UseGlobalDecimals but the number after the dot is different, replace it
+    size_t dotPosition = formatSpec.find('.');
+    if (dotPosition == std::string::npos)
+        return;
+    std::string localDecimalsString;
+    localDecimalsString = formatSpec.at(dotPosition);
+    std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
+    std::string altDecimalsString = std::to_string(sbAltDecimals->value());
+    // if UseGlobalDecimals but the number after the dot is different, replace it
+    if (useGlobal && (localDecimalsString != systemDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+    
+    // if use alternate decimals but the number after the dot is different, replace it
+    if (!useGlobal && (localDecimalsString != altDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+}
 
+void DlgPrefsTechDraw3Imp::onAltDecimalsChanged(int AltDecimals)
+{
+    std::string formatSpec = leformatSpec->text().toStdString();
+    // if UseGlobalDecimals but the number after the dot is different, replace it
+    size_t dotPosition = formatSpec.find('.');
+    if (dotPosition == std::string::npos)
+        return;
+    std::string localDecimalsString;
+    localDecimalsString = formatSpec.at(dotPosition);
+    std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
+    std::string altDecimalsString = std::to_string(AltDecimals);
+    if (cbGlobalDecimals->isChecked() && (localDecimalsString != systemDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+
+    // if use alternate decimals but the number after the dot is different, replace it
+    if (!cbGlobalDecimals->isChecked() && (localDecimalsString != altDecimalsString))
+    {
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+}
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw3Imp.cpp>
