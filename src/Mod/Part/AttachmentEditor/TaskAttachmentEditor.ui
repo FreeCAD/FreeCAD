@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetY">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -186,7 +186,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetZ">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -244,7 +244,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetX">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetX">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -263,7 +263,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetRoll">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -295,7 +295,7 @@ Note: The placement is expressed in local space of object being attached.</strin
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetPitch">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -327,7 +327,7 @@ Note: The placement is expressed in local space of object being attached.</strin
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetYaw">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -372,9 +372,9 @@ Note: The placement is expressed in local space of object being attached.</strin
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
