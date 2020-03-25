@@ -511,6 +511,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           //<< "PartDesign_Hole"
           << "PartDesign_InvoluteGear"
+          << "PartDesign_Sprocket"
           << "Separator"
           << "PartDesign_Migrate";
 
