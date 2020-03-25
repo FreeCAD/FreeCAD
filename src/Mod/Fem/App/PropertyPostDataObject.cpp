@@ -189,8 +189,10 @@ void PropertyPostDataObject::getPaths(std::vector<App::ObjectIdentifier> & /*pat
 void PropertyPostDataObject::Save (Base::Writer &writer) const
 {
     std::string extension;
-    if(!m_dataObject)
+    if(!m_dataObject) {
+        writer.Stream() << writer.ind() << "<Data/>\n";
         return;
+    }
 
     bool forceXML = writer.isForceXML() > 1;
     if(!forceXML)
