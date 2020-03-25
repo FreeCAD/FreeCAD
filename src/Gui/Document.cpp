@@ -2249,13 +2249,17 @@ void Document::undo(int iSteps)
 {
     Base::FlagToggler<> flag(d->_isTransacting);
 
-    if(!checkTransactionID(true,iSteps))
-        return;
-
     Gui::Selection().clearCompleteSelection();
 
-    for (int i=0;i<iSteps;i++) {
-        getDocument()->undo();
+    {
+        App::TransactionGuard guard;
+
+        if(!checkTransactionID(true,iSteps))
+            return;
+
+        for (int i=0;i<iSteps;i++) {
+            getDocument()->undo();
+        }
     }
     App::GetApplication().signalUndo();
 }
@@ -2265,13 +2269,17 @@ void Document::redo(int iSteps)
 {
     Base::FlagToggler<> flag(d->_isTransacting);
 
-    if(!checkTransactionID(false,iSteps))
-        return;
-
     Gui::Selection().clearCompleteSelection();
 
-    for (int i=0;i<iSteps;i++) {
-        getDocument()->redo();
+    {
+        App::TransactionGuard guard;
+
+        if(!checkTransactionID(false,iSteps))
+            return;
+
+        for (int i=0;i<iSteps;i++) {
+            getDocument()->redo();
+        }
     }
     App::GetApplication().signalRedo();
 

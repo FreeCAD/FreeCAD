@@ -33,6 +33,7 @@
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include "Transactions.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include "Application.h"
@@ -60,7 +61,7 @@ Property::Property()
 
 Property::~Property()
 {
-
+    Transaction::removePendingProperty(this);
 }
 
 const char* Property::getName(void) const
@@ -203,8 +204,13 @@ void Property::destroy(Property *p) {
 void Property::touch()
 {
     PropertyCleaner guard(this);
-    if (father)
+    if (father && !Transaction::isApplying(this)) {
         father->onChanged(this);
+        if(!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            signalChanged(*this);
+        }
+    }
     StatusBits.set(Touched);
 }
 
@@ -216,7 +222,7 @@ void Property::setReadOnly(bool readOnly)
 void Property::hasSetValue(void)
 {
     PropertyCleaner guard(this);
-    if (father) {
+    if (father && !Transaction::isApplying(this)) {
         father->onChanged(this);
         if(!testStatus(Busy)) {
             Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);

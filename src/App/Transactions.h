@@ -87,6 +87,11 @@ public:
     void addObjectDel(const TransactionalObject *Obj);
     void addObjectChange(const TransactionalObject *Obj, const Property *Prop);
 
+    /// Check if any transaction is being applied.
+    static bool isApplying(Property *prop = nullptr);
+
+    static void removePendingProperty(Property *prop);
+
 private:
     int transID;
     typedef std::pair<const TransactionalObject*, TransactionObject*> Info;
@@ -189,6 +194,17 @@ public:
     {
         return (new CLASS);
     }
+};
+
+class AppExport TransactionGuard
+{
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+
+public:
+    TransactionGuard();
+    ~TransactionGuard();
 };
 
 } //namespace App

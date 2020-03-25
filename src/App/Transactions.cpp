@@ -36,6 +36,7 @@ using Base::Writer;
 #include <Base/Reader.h>
 using Base::XMLReader;
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include "Transactions.h"
 #include "Property.h"
 #include "Document.h"
@@ -163,9 +164,104 @@ void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
 //**************************************************************************
 // separator for other implementation aspects
 
+static int _TransactionActive;
+static bool _FlushingProps;
+
+// Hold all changed property when transactions are applied. The mapped value is
+// index for remembering the order. Although the property change order within
+// the same object is not kept, but there is some ordering of changes between
+// different objects
+static std::unordered_map<Property*, int> _PendingProps;
+static int _PendingPropIndex;
+
+TransactionGuard::TransactionGuard()
+{
+    if(_FlushingProps) {
+        FC_ERR("Recursive transaction");
+        return;
+    }
+    ++_TransactionActive;
+}
+
+TransactionGuard::~TransactionGuard()
+{
+    if(_FlushingProps)
+        return;
+
+    if(--_TransactionActive)
+        return;
+
+    Base::StateLocker locker(_FlushingProps);
+
+    std::vector<std::pair<Property*,int> > props;
+    props.reserve(_PendingProps.size());
+    props.insert(props.end(),_PendingProps.begin(),_PendingProps.end());
+    std::sort(props.begin(), props.end(),
+        [](const std::pair<Property*,int> &a, const std::pair<Property*,int> &b) {
+            return a.second < b.second;
+        });
+    std::string errMsg;
+    for(auto &v : props) {
+        auto prop = v.first;
+        // double check if the property exists, because it may be removed
+        // while we are looping.
+        if(_PendingProps.count(prop)) {
+            try {
+                FC_LOG("transaction touch " << prop->getFullName());
+                prop->touch();
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                errMsg = e.what();
+            }catch(std::exception &e) {
+                errMsg = e.what();
+            }catch(...) {
+                errMsg = "Unknown exception";
+            }
+            if(errMsg.size()) {
+                FC_ERR("Exception on finishing transaction " << errMsg);
+                errMsg.clear();
+            }
+        }
+    }
+    _PendingProps.clear();
+    _PendingPropIndex = 0;
+}
+
+
+bool Transaction::isApplying(Property *prop)
+{
+    if (_TransactionActive) {
+        if(prop)
+            _PendingProps.insert(std::make_pair(prop, _PendingPropIndex++));
+        return true;
+    }
+
+    // If we are flushing the property changes, then
+    // Document::isPerformingTransaction() shall still report true. That's why
+    // we return true here if prop is not given.
+    if (!prop)
+        return _FlushingProps;
+
+    // Property::hasSetValue/touch() also call us (with a given prop) to see if
+    // it shall notify its container about the change. Now, it is debatable if
+    // we shall allow further propagation of the change notification, because
+    // optimally speaking, no recomputation shall be performed while undo/redo.
+    // We can stop the chain of notification after informing change of the
+    // given property. This, however, may cause problem for those not
+    // 'optimally' coded objects. So we didn't do that, but only remove the
+    // soon to be notified property here.
+    _PendingProps.erase(prop);
+    return false;
+}
+
+void Transaction::removePendingProperty(Property *prop)
+{
+    _PendingProps.erase(prop);
+}
 
 void Transaction::apply(Document &Doc, bool forward)
 {
+    TransactionGuard guard;
     std::string errMsg;
     try {
         auto &index = _Objects.get<0>();
@@ -175,6 +271,7 @@ void Transaction::apply(Document &Doc, bool forward)
             info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
         for(auto &info : index) 
             info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
+
     }catch(Base::Exception &e) {
         e.ReportException();
         errMsg = e.what();
