@@ -132,6 +132,7 @@ private:
     QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=0, bool *found=nullptr);
     void itemSearch(const QString &text, bool select);
     QList<App::SubObjectT> getLinkFromItem(QTreeWidgetItem *, bool needElement=true) const;
+    void setItemLabel(QTreeWidgetItem *item, std::size_t idx=0);
 
 private:
     Ui_DlgPropertyLink* ui;

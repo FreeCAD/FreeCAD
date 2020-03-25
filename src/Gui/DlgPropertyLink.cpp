@@ -208,7 +208,10 @@ static inline bool isLinkSub(QList<App::SubObjectT> links)
     return true;
 }
 
-static inline void setItemLabel(QTreeWidgetItem *item, std::size_t idx=0) {
+void DlgPropertyLink::setItemLabel(QTreeWidgetItem *item, std::size_t idx) {
+    if(singleSelect)
+        return;
+
     QString label = item->data(0, Qt::UserRole+4).toString();
     if(!idx)
         item->setText(0, label);
