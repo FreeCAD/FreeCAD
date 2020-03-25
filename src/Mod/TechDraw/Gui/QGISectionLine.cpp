@@ -275,6 +275,10 @@ void QGISectionLine::setFont(QFont f, double fsize)
     m_symSize = fsize;
 }
 
+void QGISectionLine::setSectionColor(QColor c)
+{
+    setColor(c);
+}
 
 QColor QGISectionLine::getSectionColor()
 {
@@ -354,11 +358,12 @@ void QGISectionLine::setTools()
 //    m_arrow2->setPen(m_pen);
 //    m_arrow1->setBrush(m_brush);
 //    m_arrow2->setBrush(m_brush);
-    m_arrow1->setNormalColor(getSectionColor());
-    m_arrow1->setFillColor(getSectionColor());
+    
+    m_arrow1->setNormalColor(m_colCurrent);
+    m_arrow1->setFillColor(m_colCurrent);
     m_arrow1->setPrettyNormal();
-    m_arrow2->setNormalColor(getSectionColor());
-    m_arrow2->setFillColor(getSectionColor());
+    m_arrow2->setNormalColor(m_colCurrent);
+    m_arrow2->setFillColor(m_colCurrent);
     m_arrow2->setPrettyNormal();
 
     m_symbol1->setDefaultTextColor(m_colCurrent);

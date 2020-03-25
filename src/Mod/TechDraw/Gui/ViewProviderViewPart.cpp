@@ -110,7 +110,10 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
     int defLineStyle = hGrp->GetInt("SectionLine", 2);
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, "Set section line style if applicable");
+    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, 
+                        "Set section line style if applicable");
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
+                        "Set section line color if applicable");
     
     //properties that affect Detail Highlights
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
@@ -139,6 +142,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(CenterScale) ||
         prop == &(ShowSectionLine)  ||
         prop == &(SectionLineStyle) ||
+        prop == &(SectionLineColor) ||
         prop == &(HorizCenterLine)  ||
         prop == &(VertCenterLine) ) {
         // redraw QGIVP
@@ -310,3 +314,13 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     Q_UNUSED(obj)
     return true;
 }
+
+App::Color ViewProviderViewPart::prefSectionColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SectionColor", 0x00FF0000));
+    return fcColor;
+}
+

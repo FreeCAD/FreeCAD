@@ -848,6 +848,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         addToGroup(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
         sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
+        sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
 
         //TODO: handle oblique section lines?
         //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle

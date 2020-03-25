@@ -53,6 +53,7 @@ public:
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
     App::PropertyEnumeration   SectionLineStyle;
+    App::PropertyColor  SectionLineColor;
     App::PropertyFloat  HighlightAdjust;
     App::PropertyBool   ShowAllEdges;
 
@@ -70,6 +71,7 @@ public:
     virtual void onChanged(const App::Property *prop);
     virtual void updateData(const App::Property*);
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    App::Color prefSectionColor(void);
 
 
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
