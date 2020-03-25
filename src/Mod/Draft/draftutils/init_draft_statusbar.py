@@ -1,11 +1,3 @@
-"""Draft Statusbar commands.
-
-This module provide the code for the Draft Statusbar, activated by initGui
-"""
-## @package init_draft_statusbar
-# \ingroup DRAFT
-# \brief This module provides the code for the Draft Statusbar.
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
@@ -29,6 +21,13 @@ This module provide the code for the Draft Statusbar, activated by initGui
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Draft Statusbar commands.
+
+This module provide the code for the Draft Statusbar, activated by initGui
+"""
+## @package init_draft_statusbar
+# \ingroup DRAFT
+# \brief This module provides the code for the Draft Statusbar.
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -158,13 +157,6 @@ def _set_scale(action):
         scale_widget.scaleLabel.setText(text_scale)
         scale = label_to_scale(text_scale)
         param.SetFloat("DraftAnnotationScale", scale)
-
-#----------------------------------------------------------------------------
-# SNAP WIDGET FUNCTIONS
-#----------------------------------------------------------------------------
-
-def toggle_ortho():
-    Gui.runCommand('Draft_Snap_Ortho',0)
 
 #----------------------------------------------------------------------------
 # MAIN DRAFT STATUSBAR FUNCTIONS
@@ -325,6 +317,12 @@ def show_draft_statusbar():
     """
     shows draft statusbar if present or initializes it
     """
+    params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    display_statusbar = params.GetBool("DisplayStatusbar", True)
+
+    if not display_statusbar:
+        return
+
     mw = Gui.getMainWindow()
     if mw:
         sb = mw.statusBar()
@@ -333,13 +331,13 @@ def show_draft_statusbar():
                                     "draft_status_scale_widget")
         if scale_widget:
             scale_widget.show()
-        else:
+        elif params.GetBool("DisplayStatusbarScaleWidget", True):
             init_draft_statusbar(sb)
             
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
             snap_widget.show()
-        else:
+        elif params.GetBool("DisplayStatusbarSnapWidget", True):
             init_draft_statusbar(sb)
 
 
