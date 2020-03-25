@@ -19,8 +19,7 @@ PyObject *ConstraintPointCoincidentPy::PyMake(struct _typeobject *, PyObject* ar
             PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
             throw Py::Exception();
         }
-        /*HConstraintPointCoincident p = (new ConstraintPointCoincident)->self().downcast<ConstraintPointCoincident>();*/
-        HConstraintPointCoincident p = HConstraintPointCoincident(new ConstraintPointCoincident);
+        HConstraintPointCoincident p = (new ConstraintPointCoincident)->getHandle<ConstraintPointCoincident>();
         if (kwd && kwd != Py_None)
             p->initFromDict(Py::Dict(kwd));
         return p.getHandledObject();
