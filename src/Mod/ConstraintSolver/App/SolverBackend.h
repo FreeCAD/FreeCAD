@@ -99,7 +99,14 @@ public: //methods
 
 public://python
     virtual PyObject* getPyObject() override;
-    virtual HSolverBackend self();
+    
+    template <  typename NewTypeT = SolverBackend,
+                typename = typename std::enable_if<
+                    std::is_base_of<SolverBackend, typename std::decay<NewTypeT>::type>::value
+             >::type
+    >
+    UnsafePyHandle<NewTypeT> getHandle();
+    
 
 protected:
     ~SolverBackend() = default;
@@ -114,6 +121,14 @@ protected:
         }
     }
 };
+
+template <  typename NewTypeT,
+            typename 
+>
+UnsafePyHandle<NewTypeT> SolverBackend::getHandle() 
+{
+    return UnsafePyHandle<NewTypeT>(getPyObject(), true);
+}
 
 
 class FCSExport SolverError : public Base::Exception

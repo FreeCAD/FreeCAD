@@ -51,11 +51,6 @@ PyObject* SolverBackend::getPyObject()
     }
 }
 
-HSolverBackend SolverBackend::self()
-{
-    return HSolverBackend(getPyObject(), true);
-}
-
 SolverError::SolverError()
     :Exception()
 {
