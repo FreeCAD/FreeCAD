@@ -3705,6 +3705,19 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 }
 
 //======================================================================
+// Std_PartialHighlightOnFullSelect
+//======================================================================
+VIEW_CMD_DEF(PartialHighlightOnFullSelect, PartialHighlightOnFullSelect)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Partial highlight");
+  sToolTipText  = QT_TR_NOOP("Enable partial highlight on full selection for object that supports it.");
+  sWhatsThis    = "Std_PartialHighlightOnFullSelect";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
 // Std_PreselEdgeOnly
 //======================================================================
 VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
@@ -3755,6 +3768,7 @@ public:
         addCommand(new StdCmdProjectBoundingBox());
         addCommand();
         addCommand(new StdCmdSelOnTop());
+        addCommand(new StdCmdPartialHighlightOnFullSelect());
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand(new StdTreePreSelection());

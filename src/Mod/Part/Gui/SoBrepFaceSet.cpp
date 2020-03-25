@@ -353,7 +353,7 @@ bool SoBrepFaceSet::isHighlightAll(const SelContextPtr &ctx)
 
 bool SoBrepFaceSet::isSelectAll(const SelContextPtr &ctx)
 {
-    return !(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    return !(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
             && (ctx && ctx->isSelectAll());
 }
@@ -412,9 +412,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // But if we have partial rendering (ctx2), then edges and points are
         // not rendered, so we have to proceed as normal
         if(!action->isRenderingDelayedPaths()) {
-            if(!Gui::ViewParams::instance()->getShowHighlightEdgeOnly())
+            if(!Gui::ViewParams::getShowHighlightEdgeOnly())
                 return;
-        } else if(Gui::ViewParams::instance()->getShowHighlightEdgeOnly())
+        } else if(Gui::ViewParams::getShowHighlightEdgeOnly())
             return;
     }
 
@@ -427,7 +427,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             selected = 2;
     } else if ((!ctx2 || ctx2->isSelectAll())
                 && (Gui::Selection().needPickedList() 
-                    || (Gui::ViewParams::instance()->getShowSelectionOnTop()
+                    || (Gui::ViewParams::getShowSelectionOnTop()
                         && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox())))
     {
         // Check the sibling selection state
@@ -446,7 +446,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // If 'ShowSelectionOnTop' is enabled, and this node is selected, and we
     // are NOT rendering on top (!isRenderingDelayedPath), and we are not
     // partial rendering.
-    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    if(Gui::ViewParams::getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2||ctx2->isSelectAll()) 
             && selected == 1
@@ -524,7 +524,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     // If 'ShowSelectionOnTop' is enabled, and we ARE rendering on top
     // (isRenderingDelayedPath), and we are not partial rendering (!ctx2).
-    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    if(Gui::ViewParams::getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
             && (!ctx || (!isHighlightAll(ctx) && (!isSelectAll(ctx)||!ctx->hasSelectionColor())))
@@ -551,7 +551,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderHighlight(action,ctx);
     }
 
-    if(Gui::ViewParams::instance()->getSelectionFaceWire()
+    if(Gui::ViewParams::getSelectionFaceWire()
             && ctx && ctx->isSelected() && !ctx->isSelectAll()) 
     {
         // If SelectionFaceWire is enabled, draw the hidden lines of each face
@@ -713,7 +713,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     if(!diffuse) return false;
     int diffuse_size = element->getNumDiffuse();
 
-    float defaultTrans = Gui::ViewParams::instance()->getSelectionTransparency();
+    float defaultTrans = Gui::ViewParams::getSelectionTransparency();
 
     const float *trans = element->getTransparencyPointer();
     int trans_size = element->getNumTransparencies();
@@ -891,7 +891,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             if(ctx->selectionIndex.begin()->first >= 0) {
                 for(auto &v : ctx->selectionIndex)
                     setColor(v.first, cidx);
-            } else if (Gui::ViewParams::instance()->getShowSelectionOnTop()) {
+            } else if (Gui::ViewParams::highlightIndicesOnFullSelect()) {
                 for(int i=0, count=highlightIndices.getNum(); i<count; ++i)
                     setColor(highlightIndices[i], cidx);
             }
@@ -1388,7 +1388,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         if(RenderIndices.empty())
             return;
     } else if (ctx->hasSelectionColor()) {
-        if(Gui::ViewParams::instance()->getShowSelectionOnTop()) {
+        if(Gui::ViewParams::highlightIndicesOnFullSelect()) {
             for(int i=0, num=highlightIndices.getNum(); i<num; ++i) {
                 int id = highlightIndices[i];
                 if (id<0 || id>=partIndex.getNum())
@@ -2308,7 +2308,7 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
                 this->indexOffset[id], this->indexOffset[id]*4, this->indexOffset[id+1]*4);
     };
 
-    int threshold = Gui::ViewParams::instance()->getSelectionPickThreshold();
+    int threshold = Gui::ViewParams::getSelectionPickThreshold();
     int numparts = partIndex.getNum();
 
     if(threshold && numparts && indexOffset[numparts-1]/numparts > threshold) {

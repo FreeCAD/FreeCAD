@@ -157,7 +157,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
-    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    if(Gui::ViewParams::getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && !action->isRenderingDelayedPaths()
             && !ctx2 
@@ -171,7 +171,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     if(ctx && ctx->selectionIndex.size()) {
-        if(!(Gui::ViewParams::instance()->getShowSelectionOnTop()
+        if(!(Gui::ViewParams::highlightIndicesOnFullSelect()
                     && highlightIndices.getNum())
                 && ctx->isSelectAll()
                 && ctx->hasSelectionColor())
@@ -272,7 +272,7 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     if(!ctx->isSelectAll()) {
         for(auto &v : ctx->selectionIndex)
             RenderIndices.push_back(v.first);
-    } else if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    } else if(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
     {
         auto indices = highlightIndices.getValues(0);

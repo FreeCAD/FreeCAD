@@ -80,6 +80,7 @@ public:
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
     FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
+    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,true) \
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
     FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
     FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \
@@ -101,14 +102,14 @@ public:
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    _ctype get##_name() const { return _name; }\
-    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
+    static _ctype get##_name() { return instance()->_name; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
-    _ctype get##_name() const { return _name; }\
-    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
+    static _ctype get##_name() { return instance()->_name; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(ViewParams *self) { \
         self->_name = self->handle->Get##_type(#_name,_def); \
@@ -116,6 +117,10 @@ public:
     }\
 
     FC_VIEW_PARAMS
+
+    static bool highlightIndicesOnFullSelect() {
+        return getShowSelectionOnTop() && getPartialHighlightOnFullSelect();
+    }
 
 private:
 #undef FC_VIEW_PARAM

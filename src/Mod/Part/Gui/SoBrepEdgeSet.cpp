@@ -169,8 +169,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     int pass = 2;
 
     if((!ctx2 || !ctx2->isSelectAll())
-       && Gui::ViewParams::instance()->getShowSelectionOnTop()
-       && (!ctx || !ctx->isSelectAll() || highlightIndices.getNum())
+       && Gui::ViewParams::getShowSelectionOnTop()
+       && (!ctx || !ctx->isSelectAll()
+                || !Gui::ViewParams::highlightIndicesOnFullSelect()
+                || highlightIndices.getNum())
        && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()) 
     {
         // If we are rendering on top, we shall perform a two pass rendering.
@@ -197,12 +199,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     for(;pass<=2;++pass) {
         if(pass==0) {
-            int pattern = Gui::ViewParams::instance()->getSelectionLinePattern();
+            int pattern = Gui::ViewParams::getSelectionLinePattern();
             if(pattern) {
                 oldPattern = SoLinePatternElement::get(state);
                 SoLinePatternElement::set(state, pattern);
             }
-            float width = Gui::ViewParams::instance()->getSelectionHiddenLineWidth();
+            float width = Gui::ViewParams::getSelectionHiddenLineWidth();
             if(width>0.0) {
                 oldWidth = SoLineWidthElement::get(state);
                 SoLineWidthElement::set(state,width);
@@ -225,7 +227,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         }
 
         if(ctx && ctx->isSelected()) {
-            if(!(Gui::ViewParams::instance()->getShowSelectionOnTop()
+            if(!(Gui::ViewParams::highlightIndicesOnFullSelect()
                         && highlightIndices.getNum())
                     && ctx->isSelectAll()
                     && ctx->hasSelectionColor())
@@ -357,7 +359,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     if(!ctx->isSelectAll()) {
         for(auto &v : ctx->selectionIndex)
             RenderIndices.push_back(v.first);
-    } else if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+    } else if(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
     {
         auto indices = highlightIndices.getValues(0);
