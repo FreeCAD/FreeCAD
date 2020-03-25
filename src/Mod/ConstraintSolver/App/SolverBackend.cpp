@@ -13,7 +13,7 @@ using namespace FCS;
 eSolveResult SolverBackend::solve(HSubSystem sys, HValueSet vals)
 {
     //default implementation redirects the call to solvePair
-    HSubSystem sysaux = (new SubSystem(sys->params()))->self();
+    HSubSystem sysaux = (new SubSystem(sys->params()))->getHandle();
     sysaux->update();
     return solvePair(sys,sysaux,vals);
 }
@@ -21,7 +21,7 @@ eSolveResult SolverBackend::solve(HSubSystem sys, HValueSet vals)
 eSolveResult SolverBackend::solvePair(HSubSystem mainsys, HSubSystem auxsys, HValueSet vals)
 {
     //default implementation hacks its way using single solve
-    HSubSystem merged = (new SubSystem(mainsys->params()))->self();
+    HSubSystem merged = (new SubSystem(mainsys->params()))->getHandle();
     for(const HConstraint& c : mainsys->constraints()){
         merged->addConstraint(c);
     }

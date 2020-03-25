@@ -110,7 +110,7 @@ public: //methods
 
 public://python
     PyObject* getPyObject() override;
-    HSubSystem self();
+    HSubSystem getHandle();
 
 protected://methods
 

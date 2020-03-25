@@ -11,7 +11,7 @@
 PyObject *SubSystemPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of SubSystemPy and the Twin object
-    return Py::new_reference_to((new SubSystem)->self().getHandledObject());
+    return Py::new_reference_to((new SubSystem)->getHandle().getHandledObject());
 }
 
 // constructor method

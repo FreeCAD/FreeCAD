@@ -195,7 +195,7 @@ PyObject* SubSystem::getPyObject()
     }
 }
 
-HSubSystem SubSystem::self()
+HSubSystem SubSystem::getHandle()
 {
     return HSubSystem(getPyObject(), true);
 }
