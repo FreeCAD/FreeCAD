@@ -43,6 +43,13 @@
       </Documentation>
       <Parameter Name="Reversed" Type="Boolean" />
     </Attribute>
+	<Attribute Name="DatumParameters" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns list of datum parameters of this constraint.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="DatumParameters" Type="List" />
+	</Attribute>
+
 
 	<Methode Name="netError">
 	  <Documentation>
@@ -54,6 +61,11 @@
 		<UserDocu>errorVec(vals): returns a list of (signed) error values for each subconstraint.</UserDocu>
 	  </Documentation>
 	</Methode>	
+	<Methode Name="calculateDatum">
+	 <Documentation>
+		<UserDocu>calculateDatum(valueset): returns list (dual numbers) with values for datum parameters that fit current geometry.</UserDocu>
+	  </Documentation>
+	</Methode>    
 
   </PythonExport>
 </GenerateModel>

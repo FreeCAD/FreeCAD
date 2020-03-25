@@ -59,6 +59,14 @@ PyObject* ConstraintPy::errorVec(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* ConstraintPy::calculateDatum(PyObject* args)
+{
+    PyObject* pyvals = Py_None;
+    if (!PyArg_ParseTuple(args, "O!", &(ValueSetPy::Type), &pyvals))
+        return nullptr;
+    std::vector<DualNumber> ret = getConstraintPtr()->caluclateDatum(*HValueSet(pyvals, false));
+    return Py::new_reference_to(asPyList(ret));
+}
 
 Py::Float ConstraintPy::getWeight(void) const
 {
@@ -96,6 +104,12 @@ Py::Float ConstraintPy::getNetError(void) const
 Py::Long ConstraintPy::getRank(void) const
 {
     return Py::Long(getConstraintPtr()->rank());
+}
+
+Py::List ConstraintPy::getDatumParameters(void) const
+{
+    auto params = getConstraintPtr()->datumParameters();
+    return asPyList(params);
 }
 
 PyObject* ConstraintPy::getCustomAttributes(const char* attr) const
