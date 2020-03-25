@@ -6,6 +6,8 @@
 #include <src/Mod/ConstraintSolver/App/G2D/ParaPointPy.h>
 #include <src/Mod/ConstraintSolver/App/G2D/ParaPlacementPy.h>
 
+#include <unordered_set>
+
 using namespace FCS;
 using namespace FCS::G2D;
 
@@ -17,14 +19,14 @@ ConstraintLength::ConstraintLength()
     initAttrs();
 }
 
-ConstraintLength::ConstraintLength(std::vector<HShape_Curve> edges, ParameterRef length)
+ConstraintLength::ConstraintLength(std::vector<HParaCurve> edges, ParameterRef length)
     : ConstraintLength()
 {
     setEdges(edges);
     this->length = length;
 }
 
-void ConstraintLength::setEdges(const std::vector<HShape_Curve> edges)
+void ConstraintLength::setEdges(const std::vector<HParaCurve> edges)
 {
     _edges = edges;
     touch();
@@ -45,15 +47,45 @@ HParaObject ConstraintLength::copy() const
 
 }
 
-void ConstraintLength::forEachShape(std::function<void (const ParaObject::ShapeRef&)> callback) const
+void ConstraintLength::update()
 {
+    throwIfIncomplete();
+    _parameters.clear();
+    std::unordered_set<int> added;
+
+    auto add = [&](const ParameterRef& v){
+        v.throwNull();
+        if (added.find(v.masterIndex()) != added.end())
+            return;
+        _parameters.push_back(v);
+        added.insert(v.masterIndex());
+    };
+    for(auto& v : this->_attrs){
+        if (!v.required && v.value->isNull())
+            continue;
+        add(*(v.value));
+    };
+    for(HParaCurve& crv : _edges){
+        if (crv->isTouched())
+            crv->update();
+        for(const ParameterRef& r : crv->parameters()){
+            add(r);
+        };
+    };
+
+    _touched = false;
+}
+
+void ConstraintLength::throwIfIncomplete() const
+{
+    SimpleConstraint::throwIfIncomplete();
+    if (_edges.size() == 0)
+        throw Py::Exception(PyExc_LookupError, repr() + " has no edges assigned");
     int i = 0;
-    for (const HShape_Curve& crv : _edges){
-        ParaObject::ShapeRef ref;
-        ref.name = "Edges[" + std::to_string(i) + "]";
-        ref.value = reinterpret_cast<HParaObject *>(const_cast<HShape_Curve*>(&crv)); //FIXME: avoid const-cast somehow
-        ref.type = ParaCurve::getClassTypeId();
-        callback(ref);
+    for (const HParaCurve& crv : _edges){
+        if (crv.isNone())
+            throw Py::Exception(PyExc_LookupError,"Edge " + std::to_string(i) + " of " + repr() + " is None");
+        crv->throwIfIncomplete();
         ++i;
     }
 }
@@ -67,8 +99,8 @@ void ConstraintLength::setWeight(double weight)
 DualNumber ConstraintLength::calculateLength(const ValueSet& vals) const
 {
     DualNumber cum = 0;
-    for (const HShape_Curve& crv : _edges){
-        cum = cum + crv->tshape().length(vals);
+    for (const HParaCurve& crv : _edges){
+        cum = cum + crv->length(vals);
     }
     return cum;
 }

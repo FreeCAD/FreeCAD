@@ -39,18 +39,19 @@ class FCSExport ConstraintLength : public FCS::SimpleConstraint
 public: //data
     ParameterRef length;
 protected: //data
-    std::vector<HShape_Curve> _edges;
+    std::vector<HParaCurve> _edges;
 
 public: //methods
     ConstraintLength();
-    ConstraintLength(std::vector<HShape_Curve> edges, ParameterRef length);
+    ConstraintLength(std::vector<HParaCurve> edges, ParameterRef length);
 
-    const std::vector<HShape_Curve>& edges() const{return _edges;}
-    void setEdges(const std::vector<HShape_Curve> edges);
+    const std::vector<HParaCurve>& edges() const{return _edges;}
+    void setEdges(const std::vector<HParaCurve> edges);
 
     void initAttrs() override;
     HParaObject copy() const override;
-    virtual void forEachShape(std::function<void(const ShapeRef&)> callback) const override;
+    virtual void update() override;
+    virtual void throwIfIncomplete() const override;
 
     void setWeight(double weight) override;
     Base::DualNumber error1(const ValueSet& vals) const override;

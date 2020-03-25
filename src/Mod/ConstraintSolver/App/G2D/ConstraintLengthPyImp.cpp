@@ -3,6 +3,8 @@
 #include "G2D/ConstraintLengthPy.h"
 #include "G2D/ConstraintLengthPy.cpp"
 
+#include "G2D/ParaCurvePy.h"
+
 #include "PyUtils.h"
 
 using namespace FCS;
@@ -42,6 +44,22 @@ std::string ConstraintLengthPy::representation(void) const
     return getConstraintLengthPtr()->repr();
 }
 
+
+Py::List ConstraintLengthPy::getEdges() const
+{
+    return asPyObjectList(getConstraintLengthPtr()->edges());
+}
+
+void ConstraintLengthPy::setEdges(Py::List val)
+{
+    std::vector<HParaCurve> edges;
+    for (Py::Object it : val){
+        if (!PyObject_TypeCheck( it.ptr(), &ParaCurvePy::Type))
+            throw Py::TypeError("list items must be of type G2D.ParaCurve, not " + it.type().as_string());
+        edges.push_back(HParaCurve(it));
+    }
+    getConstraintLengthPtr()->setEdges(edges);
+}
 
 
 PyObject *ConstraintLengthPy::getCustomAttributes(const char* attr) const

@@ -18,6 +18,13 @@
 	  <UserDocu>Constrains total length (perimeter) of arbitrary number of edges</UserDocu>
 	</Documentation>
     
+    <Attribute Name="Edges" ReadOnly="false">
+      <Documentation>
+        <UserDocu>List of edges (ParaCurves) to sum lengths of.</UserDocu>
+      </Documentation>
+      <Parameter Name="Edges" Type="List" />
+    </Attribute>
+
     
   </PythonExport>
 </GenerateModel>
