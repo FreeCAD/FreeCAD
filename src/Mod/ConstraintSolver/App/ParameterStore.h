@@ -122,7 +122,7 @@ public:
 
 
     PyObject* getPyObject() override;
-    HParameterStore self() const;
+    HParameterStore getHandle() const;
 
     ///for use in methods that require a valueset objects. Returns a pass-through valueset, that writes directly to parameters.
     const ValueSet& asValueSet();

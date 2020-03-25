@@ -106,7 +106,7 @@ std::vector<ParameterRef> ParameterStore::add(const std::vector<Parameter>& pp)
 
 bool ParameterStore::has(ParameterRef param) const
 {
-    return param.host().is(self());
+    return param.host().is(getHandle());
 }
 
 int ParameterStore::size() const {return _params.size();}
@@ -122,7 +122,7 @@ void ParameterStore::resize(int newSize)
 ParameterRef ParameterStore::operator[](int index) const
 {
     //FIXME: range-check, maybe? watch out the usage in method "end".
-    return ParameterRef(self(), index);
+    return ParameterRef(getHandle(), index);
 }
 
 double& ParameterStore::value(int index){
@@ -287,17 +287,17 @@ int ParameterStore::dofCount() const
 
 PyObject* ParameterStore::getPyObject()
 {
-    return Py::new_reference_to(self()->getPyObject());
+    return Py::new_reference_to(getHandle()->getPyObject());
 }
 
-HParameterStore ParameterStore::self() const {
+HParameterStore ParameterStore::getHandle() const {
     return HParameterStore(_twin, /*new_reference = */false);
 }
 
 const ValueSet& ParameterStore::asValueSet()
 {
     if (_trivialValueSet.isNone())
-        _trivialValueSet = ValueSet::makeTrivial(self());
+        _trivialValueSet = ValueSet::makeTrivial(getHandle());
     return *_trivialValueSet;
 }
 
@@ -311,7 +311,7 @@ ParameterStore::const_iterator ParameterStore::end() const{
 
 
 ParameterStore::const_iterator::const_iterator(const ParameterStore& host, int index)
-    : host(host.self()), index(index)
+    : host(host.getHandle()), index(index)
 {
 }
 
