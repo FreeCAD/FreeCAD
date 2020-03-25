@@ -408,6 +408,22 @@ protected:
 };
 
 
+/// Helper class for providing diagnoistic information in the process if xml parsing
+class BaseExport ReaderContext {
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+    void init(const char *name);
+
+public:
+    ReaderContext(const char *name);
+    ReaderContext(const std::string &name);
+    ~ReaderContext();
+
+private:
+    std::size_t size;
+};
+
 }
 
 

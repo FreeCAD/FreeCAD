@@ -1718,6 +1718,8 @@ void Document::Restore(Base::XMLReader &reader)
     d->touchedObjs.clear();
     addStringHasher(Hasher);
 
+    Base::ReaderContext rctx(getName());
+
     setStatus(Document::PartialDoc,false);
 
     reader.readElement("Document");
@@ -1734,9 +1736,10 @@ void Document::Restore(Base::XMLReader &reader)
         reader.FileVersion = 0;
     }
 
-    if (reader.hasAttribute("StringHasher"))
+    if (reader.hasAttribute("StringHasher")) {
+        Base::ReaderContext rctx("StringHasher");
         Hasher->Restore(reader);
-    else
+    } else
         Hasher->clear();
 
     // When this document was created the FileName and Label properties
@@ -1781,6 +1784,7 @@ void Document::Restore(Base::XMLReader &reader)
         for (i=0 ;i<Cnt ;i++) {
             reader.readElement("Feature");
             string name = reader.getAttribute("name");
+            Base::ReaderContext rctx(name);
             DocumentObject* pObj = getObject(name.c_str());
             if (pObj) { // check if this feature has been registered
                 pObj->setStatus(ObjectStatus::Restore, true);
@@ -2035,6 +2039,7 @@ void Document::RestoreDocFile(Base::Reader &reader) {
 
 void Document::readObject(Base::XMLReader &reader) {
     std::string name = reader.getName(reader.getAttribute("name"));
+    Base::ReaderContext rctx(name);
     DocumentObject* pObj = getObject(name.c_str());
     if (pObj && !pObj->testStatus(App::PartialObject)) { // check if this feature has been registered
         pObj->setStatus(ObjectStatus::Restore, true);
@@ -2159,6 +2164,7 @@ Document::readObjects(Base::XMLReader& reader)
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
+        Base::ReaderContext rctx(name);
         std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
 
         bool partial = false;
@@ -2286,6 +2292,7 @@ Document::importObjects(Base::XMLReader& reader)
         reader.FileVersion = 0;
     }
 
+    Base::ReaderContext rctx(getName());
     std::vector<App::DocumentObject*> objs = readObjects(reader);
     for(auto o : objs) {
         if(o && o->getNameInDocument()) {

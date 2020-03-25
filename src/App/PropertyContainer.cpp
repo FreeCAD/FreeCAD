@@ -338,6 +338,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         int guard;
         reader.readElement("Property",&guard);
         std::string PropName = reader.getAttribute("name");
+        Base::ReaderContext rctx(PropName);
         std::string TypeName = reader.getAttribute("type");
         // NOTE: We must also check the type of the current property because a
         // subclass of PropertyContainer might change the type of a property but

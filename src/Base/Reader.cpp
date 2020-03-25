@@ -59,8 +59,42 @@ FC_LOG_LEVEL_INIT("Base",true,true);
 XERCES_CPP_NAMESPACE_USE
 
 using namespace std;
+using namespace Base;
 
 namespace bio = boost::iostreams;
+
+static std::string _ReaderContext;
+
+#define _FC_READER_THROW(_excp,_msg) \
+    FC_THROWM(_excp, _msg << "\nIn context: " << _ReaderContext);
+
+#define FC_READER_THROW(_msg) _FC_READER_THROW(Base::XMLParseException, _msg)
+
+ReaderContext::ReaderContext(const char *name)
+{
+    init(name);
+}
+
+ReaderContext::ReaderContext(const std::string &name)
+{
+    init(name.c_str());
+}
+
+void ReaderContext::init(const char *name)
+{
+    size = std::string::npos;
+    if(name && name[0]) {
+        size = _ReaderContext.size();
+        _ReaderContext += "|";
+        _ReaderContext += name;
+    }
+}
+
+ReaderContext::~ReaderContext()
+{
+    if(size != std::string::npos)
+        _ReaderContext.resize(size);
+}
 
 // ---------------------------------------------------------------------------
 //  Base::XMLReader: Constructors and Destructor
@@ -174,10 +208,7 @@ const char*  Base::XMLReader::getAttribute (const char* AttrName, const char *de
     else if(def) 
         return def;
     else {
-        // wrong name, use hasAttribute if not sure!
-        std::ostringstream msg;
-        msg << "XML Attribute: \"" << AttrName << "\" not found";
-        throw Base::XMLAttributeError(msg.str());
+        _FC_READER_THROW(Base::XMLAttributeError, "XML Attribute: '" << AttrName << "' not count");
     }
 }
 
@@ -189,7 +220,7 @@ bool Base::XMLReader::hasAttribute (const char* AttrName) const
 void Base::XMLReader::read(void)
 {
     if(ReadType == EndDocument)
-        throw Base::XMLParseException("End of document reached");
+        FC_READER_THROW("End of document reached");
 
     ReadType = None;
 
@@ -207,7 +238,7 @@ void Base::XMLReader::read(void)
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
-        throw Base::XMLBaseException(what);
+        _FC_READER_THROW(Base::XMLBaseException, what);
 #endif
     }
     catch (const SAXParseException& toCatch) {
@@ -221,7 +252,7 @@ void Base::XMLReader::read(void)
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
-        throw Base::XMLParseException(what);
+        FC_READER_THROW(what);
 #endif
     }
     catch (...) {
@@ -229,7 +260,7 @@ void Base::XMLReader::read(void)
         cerr << "Unexpected Exception \n" ;
         return false;
 #else
-        throw Base::XMLBaseException("Unexpected XML exception");
+        _FC_READER_THROW(Base::XMLBaseException, "Unexpected XML exception");
 #endif
     }
 }
@@ -238,6 +269,8 @@ void Base::XMLReader::readElement(const char* ElementName, int *guard)
 {
     endCharStream();
 
+    AttrMap.clear();
+
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -245,17 +278,20 @@ void Base::XMLReader::readElement(const char* ElementName, int *guard)
         if (ReadType == EndElement && currentName == LocalName && currentLevel >= Level) {
             // we have reached the end of the element when calling this method
             // thus we must stop reading on.
-            if(ElementName && currentName!=ElementName)
-                throw Base::XMLParseException("Document XML element not found");
+            if(ElementName && currentName!=ElementName) {
+                // Missing element. Consider this as non-fatal
+                FC_ERR("Document XML element '" << (ElementName?ElementName:"") << "' not found\n"
+                        << "In context: " << _ReaderContext);
+            }
             break;
         }
         else if (ReadType == EndDocument) {
             // the end of the document has been reached but we still try to continue on reading
-            throw Base::XMLParseException("End of document reached");
+            FC_READER_THROW("End of document reached");
         }
 
         if(Guards.size() && Level < *Guards.back())
-            throw Base::XMLParseException("Document parsing error");
+            FC_READER_THROW("Document parsing error");
 
     } while ((ReadType != StartElement && ReadType != StartEndElement) ||
              (ElementName && LocalName != ElementName));
@@ -281,7 +317,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
     if(guard) {
         level = *guard;
         if(Guards.empty() || Guards.back()!=guard || Level < level)
-            throw Base::XMLParseException("Document parsing error");
+            FC_READER_THROW("Document parsing error");
     }
 
     // if we are already at the end of the current element
@@ -296,7 +332,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
     }
     else if (ReadType == EndDocument) {
         // the end of the document has been reached but we still try to continue on reading
-        throw Base::XMLParseException("End of document reached");
+        FC_READER_THROW("End of document reached");
     }
 
     do {
@@ -348,20 +384,20 @@ void Base::XMLReader::endCharStream() {
 
 std::istream &Base::XMLReader::charStream() {
     if(!CharStream) 
-        throw Base::FileException("XMLReader::charStream() no current character stream!");
+        FC_READER_THROW("no current character stream");
     return *CharStream;
 }
 
 std::istream &Base::XMLReader::beginCharStream(bool base64) {
     if(CharStream) 
-        throw Base::FileException("XMLReader::beginCharStream() recursive call!");
+        FC_READER_THROW("recursive character stream");
 
     // TODO: An XML element can actually contain a mix of child elemens and
     // characters. So we should not actually demand 'StartElement' here. But
     // with the current implementation of character stream, we cannot track
     // child elements and character content at the same time.
     if(ReadType != StartElement)
-        throw Base::FileException("XMLReader::beginCharStream() invalid state!");
+        FC_READER_THROW("invalid state while reading character stream");
 
     CharacterOffset = 0;
     Characters.clear();
@@ -380,7 +416,7 @@ void Base::XMLReader::readCharacters(const char* filename, bool base64)
     Base::FileInfo fi(filename);
     Base::ofstream to(fi, std::ios::out | std::ios::binary | std::ios::trunc);
     if (!to)
-        throw Base::FileException("XMLReader::readBinFile() Could not open file!");
+        _FC_READER_THROW(Base::FileException, "failed to open binary file " << filename);
 
     beginCharStream(base64) >> to.rdbuf();
     to.close();
