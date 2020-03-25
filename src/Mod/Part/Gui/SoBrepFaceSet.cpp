@@ -2014,7 +2014,7 @@ void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
         matindices += start;
         if(texindices)
             texindices += start;
-    else if (mbind == PER_FACE_INDEXED)
+    } else if (mbind == PER_FACE_INDEXED) {
         matindices += start/4;
         if(texindices)
             texindices += start/4;
