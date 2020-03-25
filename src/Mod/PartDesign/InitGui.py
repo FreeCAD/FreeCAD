@@ -51,6 +51,7 @@ class PartDesignWorkbench ( Workbench ):
         import PartDesign
         try:
             from PartDesign import InvoluteGearFeature
+            from PartDesign import SprocketFeature
         except ImportError:
             print("Involute gear module cannot be loaded")
             #try:
