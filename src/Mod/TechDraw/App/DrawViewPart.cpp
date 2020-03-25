@@ -934,7 +934,9 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o:inObjs) {
         if (o->getTypeId().isDerivedFrom(DrawViewDetail::getClassTypeId())) {
-            result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
+            if (!o->isRemoving()) {
+                result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
+            }
         }
     }
     return result;
