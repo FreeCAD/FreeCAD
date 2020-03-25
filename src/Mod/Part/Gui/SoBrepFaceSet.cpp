@@ -353,7 +353,9 @@ bool SoBrepFaceSet::isHighlightAll(const SelContextPtr &ctx)
 
 bool SoBrepFaceSet::isSelectAll(const SelContextPtr &ctx)
 {
-    return !highlightIndices.getNum() && (ctx && ctx->isSelectAll());
+    return !(Gui::ViewParams::instance()->getShowSelectionOnTop()
+                && highlightIndices.getNum())
+            && (ctx && ctx->isSelectAll());
 }
 
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
@@ -889,7 +891,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             if(ctx->selectionIndex.begin()->first >= 0) {
                 for(auto &v : ctx->selectionIndex)
                     setColor(v.first, cidx);
-            } else {
+            } else if (Gui::ViewParams::instance()->getShowSelectionOnTop()) {
                 for(int i=0, count=highlightIndices.getNum(); i<count; ++i)
                     setColor(highlightIndices[i], cidx);
             }
@@ -1386,11 +1388,13 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         if(RenderIndices.empty())
             return;
     } else if (ctx->hasSelectionColor()) {
-        for(int i=0, num=highlightIndices.getNum(); i<num; ++i) {
-            int id = highlightIndices[i];
-            if (id<0 || id>=partIndex.getNum())
-                continue;
-            RenderIndices.push_back(id);
+        if(Gui::ViewParams::instance()->getShowSelectionOnTop()) {
+            for(int i=0, num=highlightIndices.getNum(); i<num; ++i) {
+                int id = highlightIndices[i];
+                if (id<0 || id>=partIndex.getNum())
+                    continue;
+                RenderIndices.push_back(id);
+            }
         }
     } else
         push = false;
