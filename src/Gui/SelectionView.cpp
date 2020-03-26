@@ -521,7 +521,7 @@ struct ElementInfo {
 struct SubMenuInfo {
     QMenu *menu = nullptr;
 
-    // Map from sub-object label to map from object path to element info The
+    // Map from sub-object label to map from object path to element info. The
     // reason of the second map is to disambiguate sub-object with the same
     // label, but different object or object path
     std::map<std::string, std::map<std::string, ElementInfo> > items;
@@ -535,8 +535,9 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     std::ostringstream ss;
     std::map<std::string, SubMenuInfo> menus;
 
-    int i=0;
+    int i=-1;
     for(auto &sel : sels) {
+        ++i;
         auto sobj = sel.getSubObject();
         if(!sobj)
             continue;
@@ -549,12 +550,29 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         ss << sel.getObjectName() << '.' << sel.getSubNameNoElement();
         std::string key = ss.str();
 
-        menus[element].items[sobj->Label.getStrValue()][key].indices.push_back(i++);
+        menus[element].items[sobj->Label.getStrValue()][key].indices.push_back(i);
     }
 
     for(auto &v : menus) {
         auto &info = v.second;
         info.menu = addMenu(QLatin1String(v.first.c_str()));
+
+        bool groupMenu = false;
+        if(info.items.size() > 20)
+            groupMenu = true;
+        else {
+            std::size_t objCount;
+            std::size_t count = 0;
+            for(auto &vv : info.items) {
+                objCount += vv.second.size();
+                for(auto &vvv : vv.second) 
+                    count += vvv.second.indices.size();
+                if(count > 20 && objCount>1) {
+                    groupMenu = true;
+                    break;
+                }
+            }
+        }
 
         for(auto &vv : info.items) {
             const std::string &label = vv.first;
@@ -562,12 +580,12 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
             for(auto &vvv : vv.second) {
                 auto &elementInfo = vvv.second;
 
-                if(sels.size() <= 20) {
+                if(!groupMenu) {
                     for(int idx : elementInfo.indices) {
                         ss.str("");
                         ss << label << " (" << sels[idx].getOldElementName() << ")";
                         QAction *action = info.menu->addAction(QString::fromUtf8(ss.str().c_str()));
-                        action->setData(idx);
+                        action->setData(idx+1);
                     }
                     continue;
                 }
@@ -578,7 +596,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
                 for(int idx : elementInfo.indices) {
                     QAction *action = elementInfo.menu->addAction(
                             QString::fromUtf8(sels[idx].getOldElementName().c_str()));
-                    action->setData(idx);
+                    action->setData(idx+1);
                 }
             }
         }
@@ -600,18 +618,20 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 
     if(picked) {
         int idx = picked->data().toInt();
-        auto &sel = sels[idx];
+        if(idx>0 && idx<=(int)sels.size()) {
+            auto &sel = sels[idx-1];
 
-        bool ctrl = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
-        if(!ctrl) {
+            bool ctrl = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
+            if(!ctrl) {
+                if(TreeParams::Instance()->RecordSelection())
+                    Gui::Selection().selStackPush();
+                Gui::Selection().clearSelection();
+            }
+            Gui::Selection().addSelection(sel.getDocumentName().c_str(),
+                    sel.getObjectName().c_str(), sel.getSubName().c_str());
             if(TreeParams::Instance()->RecordSelection())
-                Gui::Selection().selStackPush();
-            Gui::Selection().clearSelection();
+                Gui::Selection().selStackPush(false,ctrl);
         }
-        Gui::Selection().addSelection(sel.getDocumentName().c_str(),
-                sel.getObjectName().c_str(), sel.getSubName().c_str());
-        if(TreeParams::Instance()->RecordSelection())
-            Gui::Selection().selStackPush(false,ctrl);
     }
     pSelList = 0;
     if(toggle)
@@ -619,15 +639,16 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
 }
 
 void SelectionMenu::onHover(QAction *action) {
-    timer.stop();
-    QToolTip::hideText();
-
     if(!pSelList)
         return;
     int idx = action->data().toInt();
-    if(idx<0 || idx>=(int)pSelList->size())
+    if(idx<=0 || idx>(int)pSelList->size())
         return;
-    auto &sel = (*pSelList)[idx];
+
+    timer.stop();
+    QToolTip::hideText();
+
+    auto &sel = (*pSelList)[idx-1];
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
             sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2);
     timer.start(500);
@@ -641,11 +662,14 @@ void SelectionMenu::leaveEvent(QEvent *event) {
 }
 
 void SelectionMenu::onTimer() {
-    bool needElement = tooltipIndex < 0;
-    if(needElement)
-        tooltipIndex = -tooltipIndex - 1;
+    bool needElement = tooltipIndex > 0;
+    if(!needElement)
+        tooltipIndex = -tooltipIndex;
 
-    auto &sel = (*pSelList)[tooltipIndex];
+    if(tooltipIndex <= 0 || tooltipIndex > (int)pSelList->size())
+        return;
+
+    auto &sel = (*pSelList)[tooltipIndex-1];
     auto sobj = sel.getSubObject();
     QString tooltip;
 
@@ -668,9 +692,6 @@ void SelectionMenu::onTimer() {
 }
 
 void SelectionMenu::onSubMenu() {
-    timer.stop();
-    QToolTip::hideText();
-
     auto submenu = qobject_cast<QMenu*>(sender());
     if(!submenu)
         return;
@@ -678,9 +699,13 @@ void SelectionMenu::onSubMenu() {
     if(!actions.size())
         return;
     int idx = actions.front()->data().toInt();
-    if(idx<0 || idx>=(int)pSelList->size())
+    if(idx<=0 || idx>(int)pSelList->size())
         return;
-    auto &sel = (*pSelList)[idx];
+
+    timer.stop();
+    QToolTip::hideText();
+
+    auto &sel = (*pSelList)[idx-1];
 
     const char *element = sel.getElementName();
     std::string subname(sel.getSubName().c_str(),element);
@@ -689,7 +714,7 @@ void SelectionMenu::onSubMenu() {
             sel.getObjectName().c_str(), subname.c_str(),0,0,0,2);
 
     timer.start(500);
-    tooltipIndex = -idx-1;
+    tooltipIndex = -idx;
 }
 
 #include "moc_SelectionView.cpp"
