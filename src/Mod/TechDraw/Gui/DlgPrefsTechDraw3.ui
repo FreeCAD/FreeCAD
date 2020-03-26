@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>891</height>
+    <width>460</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,8 +19,8 @@
   <property name="windowTitle">
    <string>Dimensions</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
     <widget class="QGroupBox" name="gbDim">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -31,7 +31,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>250</height>
+       <height>0</height>
       </size>
      </property>
      <property name="baseSize">
@@ -43,211 +43,19 @@
      <property name="title">
       <string>Dimensions</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
-        <item row="4" column="2">
-         <widget class="Gui::PrefLineEdit" name="leDiameter">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Character used to indicate diameter dimensions</string>
-          </property>
-          <property name="text">
-           <string>⌀</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DiameterSymbol</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Number of decimals if 'Use Global Decimals' is not used</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AltDecimals</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbGlobalDecimals">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Use system setting for number of decimals</string>
-          </property>
-          <property name="text">
-           <string>Use Global Decimals</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseGlobalDecimals</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Font Size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefComboBox" name="pcbArrow">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Arrowhead style</string>
-          </property>
-          <property name="currentIndex">
-           <number>-1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ArrowStyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Alternate Decimals</string>
-          </property>
-         </widget>
-        </item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Standard and Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_12">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Arrow Size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Arrow Style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Dimension text font size</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>4.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FontSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Arrowhead size</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ArrowSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -258,6 +66,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>184</width>
+            <height>22</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Standard to be used for dimensional values</string>
@@ -290,10 +104,109 @@
           </item>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_8">
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbGlobalDecimals">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Use system setting for number of decimals</string>
+          </property>
           <property name="text">
-           <string>Diameter Symbol</string>
+           <string>Use Global Decimals</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseGlobalDecimals</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbShowUnits">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Append unit to dimension values</string>
+          </property>
+          <property name="text">
+           <string>Show Units</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowUnits</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Alternate Decimals</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Number of decimals if 'Use Global Decimals' is not used</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AltDecimals</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Font Size</string>
           </property>
          </widget>
         </item>
@@ -310,25 +223,154 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefCheckBox" name="cbShowUnits">
+        <item row="3" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="toolTip">
-           <string>Append unit to dimension values</string>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
           </property>
-          <property name="text">
-           <string>Show Units</string>
+          <property name="toolTip">
+           <string>Dimension text font size</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ShowUnits</cstring>
+           <cstring>FontSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Diameter Symbol</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefLineEdit" name="leDiameter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Character used to indicate diameter dimensions</string>
+          </property>
+          <property name="text">
+           <string>⌀</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DiameterSymbol</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Arrow Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbArrow">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Arrowhead style</string>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ArrowStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Arrow Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Arrowhead size</string>
+          </property>
+          <property name="value" stdset="0">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ArrowSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -337,7 +379,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="minimumSize">
       <size>
@@ -370,6 +412,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Style for section lines</string>
@@ -465,6 +513,12 @@
         </item>
         <item row="2" column="2">
          <widget class="Gui::PrefComboBox" name="cbCutSurface">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Default appearance of cut surface in section view</string>
           </property>
@@ -507,6 +561,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Forces last leader line segment to be horizontal</string>
           </property>
@@ -525,20 +585,23 @@
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Length of balloon leader line kink</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -556,6 +619,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Type for centerlines</string>
@@ -632,6 +701,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Shape of balloon annotations</string>
@@ -727,6 +802,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>184</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Standard to be used to draw section lines</string>
           </property>
@@ -771,6 +852,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Outline shape for detail views</string>
@@ -821,6 +908,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -847,6 +940,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Default name in LineGroup CSV file</string>
@@ -885,6 +984,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Style for balloon leader line ends</string>
           </property>
@@ -918,6 +1023,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
@@ -968,6 +1079,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Show arc centers in printed output</string>
           </property>
@@ -999,6 +1116,12 @@
         </item>
         <item row="5" column="2">
          <widget class="Gui::PrefComboBox" name="pcbHighlightStyle">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="currentIndex">
            <number>2</number>
           </property>
@@ -1069,7 +1192,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1129,6 +1252,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>184</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Use first- or third-angle mutliview projection convention</string>
           </property>
@@ -1165,6 +1294,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Style for hidden lines</string>
           </property>
@@ -1199,7 +1334,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QLabel" name="label_17">
      <property name="font">
       <font>
@@ -1218,7 +1353,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1226,7 +1361,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
