@@ -117,30 +117,45 @@ def CreateSprocket(w, P, N, Dr):
     A = 1 + m**2
     B = 2*m*yf - 2*W
     C = W**2 + yf**2 - F**2
-    printdiff("m", "-0.1953774", m)
-    printdiff("yf", "-0.1953774", yf)
-    printdiff("A", "-0.1953774", A)
-    printdiff("B", "-0.1953774", B)
-    printdiff("C", "-0.1953774", C)
     x4a = (-B - sqrt(B**2 - 4 * A * C)) / (2*A)
     x4b = (-B + sqrt(B**2 - 4 * A * C)) / (2*A)
-    printdiff("x4a", "-0.1953774", x4a)
-    printdiff("x4b", "-0.1953774", x4b)
     x4 = -x4b
     y4 = m * x4
     printdiff("x4", "-0.1953774", x4)
     printdiff("y4", "3.1054349", y4)
     w.arc([x4,y4], F, 1)
     
+    p0 = [x0,y0]
+    p1 = [x1,y1]
+    p2 = [x2,y2]
+    p3 = [x3,y3]
+    p4 = [x4,y4]
+    p5 = [-x1,y1]
+    p6 = [-x2,y2]
+    p7 = [-x3,y3]
+    p8 = [-x4,y4]
     
     # ---- Mirror -----
-    w.move([x0,y0])
-    w.arc([-x1,y1], R, 1)
-    w.arc([-x2,y2], E, 1)
-    w.line([-x3,y3])
-    w.arc([-x4,y4], F, 0)
-    
+    w.move(p0)
+    w.arc(p5, R, 1)
+    w.arc(p6, E, 1)
+    w.line(p7)
+    w.arc(p8, F, 0)
+
     # ---- Polar Array ----
+    alpha = -radians(360/N)
+    for n in range(1,N):
+        # falling gullet slope
+        w.arc(rotate(p3, alpha*n), F, 0)
+        w.line(rotate(p2, alpha*n))
+        w.arc(rotate(p1, alpha*n), E, 1)
+        w.arc(rotate(p0, alpha*n), R, 1)
+
+        # rising gullet slope
+        w.arc(rotate(p5, alpha*n), F, 1)
+        w.line(rotate(p6, alpha*n))
+        w.arc(rotate(p7, alpha*n), E, 0)
+        w.arc(rotate(p8, alpha*n), R, 0)
 
     w.close()
     return w
@@ -154,6 +169,14 @@ def rotate(pt, rads):
     cosA = cos(rads)
     return (pt[0] * cosA - pt[1] * sinA,
             pt[0] * sinA + pt[1] * cosA)
+
+def mirror(pt, rads):
+    """
+    mirror pt about radians from vertical axis (CW positive)
+    """
+    sinA = sin(rads)
+    cosA = cos(rads)
+    return(-1 * pt[0] * sinA, pt[1] * cosA)
 
 def in_to_mm(inch):
     return inch / 0.03937008
