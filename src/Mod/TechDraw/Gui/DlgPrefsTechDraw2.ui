@@ -317,7 +317,7 @@
           </property>
           <property name="toolTip">
            <string>Selection area around center marks
-Each unit means is approx. 0.1 mm</string>
+Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -358,7 +358,7 @@ Each unit means is approx. 0.1 mm</string>
           </property>
           <property name="toolTip">
            <string>Size of selection area around edges
-Each unit means is approx. 0.1 mm</string>
+Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="statusTip">
            <string/>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>448</width>
-    <height>952</height>
+    <height>856</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -338,7 +338,7 @@
           </property>
          </spacer>
         </item>
-        <item row="2" column="0">
+        <item row="1" column="2">
          <widget class="Gui::PrefCheckBox" name="cbShowUnits">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -498,31 +498,6 @@
              <normaloff>:/icons/rectangle.svg</normaloff>:/icons/rectangle.svg</iconset>
            </property>
           </item>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbAutoHoriz">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Forces last leader line segment to be horizontal</string>
-          </property>
-          <property name="text">
-           <string>Leader Line Auto Horizontal</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AutoHorizontal</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/LeaderLines</cstring>
-          </property>
          </widget>
         </item>
         <item row="5" column="2">
@@ -940,28 +915,6 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Show arc centers in printed output</string>
-          </property>
-          <property name="text">
-           <string>Print Center Marks</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PrintCenterMarks</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_19">
           <property name="font">
@@ -1000,7 +953,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Svg Hatch</string>
+            <string>SVG Hatch</string>
            </property>
           </item>
           <item>
@@ -1008,6 +961,53 @@
             <string>PAT Hatch</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="9" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbAutoHoriz">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Forces last leader line segment to be horizontal</string>
+          </property>
+          <property name="text">
+           <string>Leader Line Auto Horizontal</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AutoHorizontal</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/LeaderLines</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Show arc centers in printed output</string>
+          </property>
+          <property name="text">
+           <string>Print Center Marks</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PrintCenterMarks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
          </widget>
         </item>
        </layout>

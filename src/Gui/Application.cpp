@@ -93,6 +93,7 @@
 #include "DocumentRecovery.h"
 #include "TransactionObject.h"
 #include "FileDialog.h"
+#include "ExpressionBindingPy.h"
 
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
@@ -383,6 +384,10 @@ Application::Application(bool GUIenabled)
         PySideUicModule* pySide = new PySideUicModule();
         Py_INCREF(pySide->module().ptr());
         PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
+
+        ExpressionBindingPy::init_type();
+        Base::Interpreter().addType(ExpressionBindingPy::type_object(),
+            module,"ExpressionBinding");
 
         //insert Selection module
 #if PY_MAJOR_VERSION >= 3

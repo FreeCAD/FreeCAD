@@ -69,6 +69,12 @@ DrawViewClip::~DrawViewClip()
 
 void DrawViewClip::onChanged(const App::Property* prop)
 {
+    if ((prop == &Height) ||
+        (prop == &Width) ||
+        (prop == &ShowFrame) ||
+        (prop == &Views)) {
+        requestPaint();
+    }
     DrawView::onChanged(prop);
 }
 
