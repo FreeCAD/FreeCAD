@@ -91,8 +91,8 @@ class _Sprocket:
         w = fcsprocket.FCWireBuilder()
         sprocket.CreateSprocket(w, obj.Pitch.Value, obj.NumberOfTeeth, obj.RollerDiameter.Value)
 
-        gearw = Part.Wire([o.toShape() for o in w.wire])
-        obj.Shape = gearw
+        sprocketw = Part.Wire([o.toShape() for o in w.wire])
+        obj.Shape = sprocketw
         obj.positionBySupport();
         return
         
@@ -104,7 +104,7 @@ class _ViewProviderSprocket:
         vobj.Proxy = self
        
     def getIcon(self):
-        return ":/icons/PartDesign_InternalExternalGear.svg"
+        return ":/icons/PartDesign_Sprocket.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -135,7 +135,7 @@ class _SprocketTaskPanel:
         self.obj = obj
         
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/PartDesign/SprocketFeature.ui")
-        self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_Sprocket.svg"))
         
         QtCore.QObject.connect(self.form.Quantity_Pitch, QtCore.SIGNAL("valueChanged(double)"), self.pitchChanged)
         QtCore.QObject.connect(self.form.Quantity_RollerDiameter, QtCore.SIGNAL("valueChanged(double)"), self.rollerDiameterChanged)

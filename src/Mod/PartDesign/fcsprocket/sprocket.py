@@ -1,5 +1,5 @@
 import FreeCAD
-from math import cos, sin, tan, sqrt, radians, acos, atan, asin
+from math import cos, sin, tan, sqrt, radians, acos, atan, asin, degrees
 import math
 
 import sys
@@ -40,17 +40,17 @@ def CreateSprocket(w, P, N, Dr):
     R = Ds / 2
     alpha = 35 + 60/N
     beta = 18 - 56 / N
-    ac = 0.8 * Dr
-    M = 0.8 * Dr * cos(radians(35) + radians(60)/N)
-    T = 0.8 * Dr * sin(radians(35) + radians(60)/N)
+    # ac = 0.8 * Dr
+    M = 0.8 * Dr * cos(radians(35) + radians(60/N))
+    T = 0.8 * Dr * sin(radians(35) + radians(60/N))
     E = 1.3025 * Dr + 0.0015
-    yz = Dr * (1.4 * sin(radians(17) - radians(64)/N) - 0.8 * sin(radians(18) - radians(56) / N))
-    ab = 1.4 * Dr
-    W = 1.4 * Dr * cos(radians(180) / N)
-    V = 1.4 * Dr * sin(radians(180)/N)
+    # yz = Dr * (1.4 * sin(radians(17) - radians(64)/N) - 0.8 * sin(radians(18) - radians(56) / N))
+    # ab = 1.4 * Dr
+    W = 1.4 * Dr * cos(radians(180/N))
+    V = 1.4 * Dr * sin(radians(180/N))
     F = Dr * (0.8 * cos(radians(18) - radians(56)/N) + 1.4 * cos(radians(17) - radians(64) / N) - 1.3025) - 0.0015
-    H = sqrt(F**2 - (1.4 * Dr - P/2.) ** 2)
-    S = P/2 * cos(radians(180)/N) + H * sin(radians(180)/N)
+    # H = sqrt(F**2 - (1.4 * Dr - P/2.) ** 2)
+    # S = P/2 * cos(radians(180)/N) + H * sin(radians(180)/N)
     PD = P / (sin(radians(180)/N))
 
     # The sprocket tooth gullet consists of four segments
@@ -58,49 +58,42 @@ def CreateSprocket(w, P, N, Dr):
 
     x0 = 0
     y0 = PD/2 - R
-    w.move([0, y0]) # vectors are lists [x,y]
+
     printdiff("y0", "2.88412", y0)
 
     # ---- Segment 1 -----
+    alpha = 35 + 60/N
     x1 = -R * cos(radians(alpha))
     y1 = PD/2 - R * sin(radians(alpha))
     arc_end = [x1, y1]
-    w.arc(arc_end, R, 0) # first gullet arc
+
 
     printdiff("x1", "-0.0823127", x1)
     printdiff("y1", "2.925882", y1)
 
     # ---- Segment 2 -----
-    # x2 = -0.118145
-    # y2 = 2.9939
+    alpha = 35 + 60/N
+    beta = 18 - 56 / N
     x2 = M - E * cos(radians(alpha-beta))
     y2 = T - E * sin(radians(alpha-beta)) + PD/2
-    w.arc([x2,y2], E, 0)
     printdiff("x2", "-0.118135", x2)
     printdiff("y2", "2.99394", y2)
 
     # # ---- Segment 3 -----
-    m = tan(radians(90 + alpha - beta))
-    # A = 1+m
-    # B = -2*W - 2*m*V
-    # C = W**2 + V**2 - F**2
-    # x3 = (-B - sqrt(B**2 - 4 * A * C)) / (2*A)
-    # y3 = m * x3 + b
-
     y2o = y2 - PD/2
     hyp = sqrt((-W-x2)**2 + (-V-y2o)**2)
     AP = sqrt(hyp**2 - F**2)
     gamma = atan((y2o + V)/(x2 + W))
     alpha = asin(AP / hyp)
-    beta = 180 - (90 - alpha) - (90 - gamma)
-    x3o = AP * sin(beta)
-    y3o = AP * cos(beta)
+    beta = 180 - (90 - degrees(alpha)) - (90 - degrees(gamma))
+    x3o = AP * sin(radians(beta))
+    y3o = AP * cos(radians(beta))
     x3 = x2 - x3o
     y3 = y2 + y3o
 
     # law cosines
     cos_alpha = (AP**2 + hyp**2 - F**2) / (2*AP*hyp)
-    w.line([x3,y3])
+    
     
     printdiff("hyp", ".163302", hyp)
     printdiff("AP", ".030887", AP)
@@ -117,14 +110,13 @@ def CreateSprocket(w, P, N, Dr):
     A = 1 + m**2
     B = 2*m*yf - 2*W
     C = W**2 + yf**2 - F**2
-    x4a = (-B - sqrt(B**2 - 4 * A * C)) / (2*A)
+    # x4a = (-B - sqrt(B**2 - 4 * A * C)) / (2*A)
     x4b = (-B + sqrt(B**2 - 4 * A * C)) / (2*A)
     x4 = -x4b
     y4 = m * x4
     printdiff("x4", "-0.1953774", x4)
     printdiff("y4", "3.1054349", y4)
-    w.arc([x4,y4], F, 1)
-    
+
     p0 = [x0,y0]
     p1 = [x1,y1]
     p2 = [x2,y2]
@@ -135,12 +127,18 @@ def CreateSprocket(w, P, N, Dr):
     p7 = [-x3,y3]
     p8 = [-x4,y4]
     
+    w.move(p4) # vectors are lists [x,y]
+    w.arc(p3, F, 0)
+    w.line(p2)
+    w.arc(p1, E, 1)
+    w.arc(p0, R, 1)
+    
     # ---- Mirror -----
-    w.move(p0)
     w.arc(p5, R, 1)
     w.arc(p6, E, 1)
     w.line(p7)
     w.arc(p8, F, 0)
+
 
     # ---- Polar Array ----
     alpha = -radians(360/N)
