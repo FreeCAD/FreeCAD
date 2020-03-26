@@ -64,6 +64,9 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    // remembers the initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
+
     connect(ui->buttonAdd, SIGNAL(clicked(bool)),
             this, SLOT(onButtonAdd()));
     connect(ui->buttonRemove, SIGNAL(clicked(bool)),
@@ -306,11 +309,18 @@ void TaskBooleanParameters::onButtonAdd()
 }
 
 void TaskBooleanParameters::setupTransaction() {
-    const char *name = App::GetApplication().getActiveTransaction();
+    int tid = 0;
+    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    if(tid && tid == transactionID)
+        return;
+
     std::string n("Edit ");
-    n += BooleanView->getObject()->Label.getValue();
+    n += BooleanView->getObject()->getNameInDocument();
     if(!name || n != name)
         App::GetApplication().setActiveTransaction(n.c_str());
+
+    if(!transactionID)
+        transactionID = tid;
 }
 
 void TaskBooleanParameters::onTypeChanged(int index)
@@ -442,7 +452,10 @@ bool TaskDlgBooleanParameters::accept()
 bool TaskDlgBooleanParameters::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if(editDoc && parameter->getTransactionID())
+        editDoc->getDocument()->undo(parameter->getTransactionID());
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;
 }

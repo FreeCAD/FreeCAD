@@ -61,6 +61,10 @@ public:
     void setupTransaction();
     void populate();
 
+    int getTransactionID() const {
+        return transactionID;
+    }
+
 private Q_SLOTS:
     void onButtonAdd();
     void onButtonRemove();
@@ -83,6 +87,7 @@ private:
     boost::signals2::scoped_connection undoConn;
     boost::signals2::scoped_connection redoConn;
 
+    int transactionID = 0;
 };
 
 /// simulation dialog for the TaskView
