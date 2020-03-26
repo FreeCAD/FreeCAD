@@ -56,6 +56,7 @@ def CreateSprocket(w, P, N, Dr):
     # The sprocket tooth gullet consists of four segments
     FreeCAD.Console.PrintMessage("\n")
 
+    x0 = 0
     y0 = PD/2 - R
     w.move([0, y0]) # vectors are lists [x,y]
     printdiff("y0", "2.88412", y0)
@@ -133,6 +134,12 @@ def CreateSprocket(w, P, N, Dr):
     
     
     # ---- Mirror -----
+    w.move([x0,y0])
+    w.arc([-x1,y1], R, 1)
+    w.arc([-x2,y2], E, 1)
+    w.line([-x3,y3])
+    w.arc([-x4,y4], F, 0)
+    
     # ---- Polar Array ----
 
     w.close()
