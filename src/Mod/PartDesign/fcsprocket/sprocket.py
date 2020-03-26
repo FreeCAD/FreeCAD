@@ -33,8 +33,8 @@ def CreateSprocket(w, P, N, Dr):
 
     Remaining variables can be found in Standard Handbook of Chains
     """
-    P = mm_to_in(P)
-    Dr = mm_to_in(Dr)
+    # P = mm_to_in(P)
+    # Dr = mm_to_in(Dr)
 
     Ds = 1.005 * Dr + 0.003
     R = Ds / 2
@@ -139,9 +139,7 @@ def CreateSprocket(w, P, N, Dr):
     w.line(p7)
     w.arc(p8, F, 0)
 
-    printdiff("F", "1", F)
-
-
+    
     # ---- Polar Array ----
     alpha = -radians(360/N)
     for n in range(1,N):
