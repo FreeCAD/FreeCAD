@@ -25,7 +25,7 @@
 
 """This module provides the object code for Draft Dimension.
 """
-## @package style_dimension
+## @package dimension
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Dimension.
 
@@ -36,9 +36,11 @@ import DraftGeomUtils
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 from draftobjects.draft_annotation import DraftAnnotation
-from draftviewproviders.view_dimension import ViewProviderDimensionBase
-from draftviewproviders.view_dimension import ViewProviderLinearDimension
-from draftviewproviders.view_dimension import ViewProviderAngularDimension
+
+if App.GuiUp:
+    from draftviewproviders.view_dimension import ViewProviderDimensionBase
+    from draftviewproviders.view_dimension import ViewProviderLinearDimension
+    from draftviewproviders.view_dimension import ViewProviderAngularDimension
 
 def make_dimension(p1,p2,p3=None,p4=None):
     """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
