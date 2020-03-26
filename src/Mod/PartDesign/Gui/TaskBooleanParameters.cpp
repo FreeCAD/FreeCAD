@@ -121,6 +121,9 @@ void TaskBooleanParameters::populate() {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
         item->setText(QString::fromUtf8((*it)->Label.getValue()));
         item->setData(Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
+        auto vp = Application::Instance->getViewProvider(*it);
+        if(vp)
+            item->setIcon(vp->getIcon());
     }
     int index = pcBoolean->Type.getValue();
     ui->comboType->setCurrentIndex(index);
