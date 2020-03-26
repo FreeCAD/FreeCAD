@@ -2403,33 +2403,92 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 void CmdPartDesignBoolean::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+
+    std::string bodySub;
+    App::DocumentObject *bodyParent = nullptr;
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true,true,true,&bodyParent,&bodySub);
     if (!pcActiveBody) return;
 
-    Gui::SelectionFilter BodyFilter("SELECT Part::Feature COUNT 1..");
+    auto inList = pcActiveBody->getInListEx(true);
+    inList.insert(pcActiveBody);
+
+    std::string support;
+    std::set<App::DocumentObject*> objSet;
+    std::vector<App::DocumentObject*> objs;
+    std::map<std::pair<App::DocumentObject*,std::string>, std::vector<std::string> > binderLinks;
+
+    for(auto &sel : Gui::Selection().getSelectionT("*",0)) {
+        auto obj = sel.getSubObject();
+        if(!obj || inList.count(obj))
+            continue;
+
+        if(PartDesignGui::getBodyFor(obj, false) == pcActiveBody) {
+            if(objSet.insert(obj).second)
+                objs.push_back(obj);
+            continue;
+        }
+
+        App::DocumentObject *link = sel.getObject();
+        std::string linkSub = sel.getSubName();
+        if(bodyParent && bodyParent != pcActiveBody) {
+            std::string sub = bodySub;
+            bodyParent->resolveRelativeLink(sub,link,linkSub);
+        }
+
+        if(!link || link == pcActiveBody)
+            continue;
+
+        const char *element = Data::ComplexGeoData::findElementName(linkSub.c_str());
+        if(!element || !element[0]) {
+            binderLinks[std::make_pair(link,linkSub)];
+            continue;
+        }
+
+        linkSub.resize(element-linkSub.c_str());
+        auto &elements = binderLinks[std::make_pair(link,linkSub)];
+
+        // Try to convert the current selection to solid selection
+        auto shape = Part::Feature::getTopoShape(link,linkSub.c_str());
+        // If more than one solids, convert the reference to actual solid indexed name
+        if(shape.countSubShapes(TopAbs_SOLID) > 1) {
+            auto subshape = shape.getSubTopoShape(element);
+            for(auto face : subshape.getSubShapes(TopAbs_FACE)) {
+                for(int idx : shape.findAncestors(face, TopAbs_SOLID))
+                    elements.push_back(std::string("Solid") + std::to_string(idx));
+            }
+        }
+    }
 
     openCommand("Create Boolean");
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+
+    for(auto &v : binderLinks) {
+        std::string FeatName = getUniqueObjectName("Reference",pcActiveBody);
+        FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+        auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(
+                        pcActiveBody->getObject(FeatName.c_str()));
+        if(!binder)
+            continue;
+
+        std::map<App::DocumentObject*, std::vector<std::string> > links;
+        auto &subs = links[v.first.first];
+        if(v.second.empty())
+            v.second.push_back("");
+        for(auto &s : v.second)
+            subs.push_back(v.first.second + s);
+        binder->setLinks(std::move(links));
+        objs.push_back(binder);
+    }
     
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid
     bool updateDocument = false;
-    if (BodyFilter.match() && !BodyFilter.Result.empty()) {
-        std::vector<App::DocumentObject*> bodies;
-        std::vector<std::vector<Gui::SelectionObject> >::iterator i = BodyFilter.Result.begin();
-        for (; i != BodyFilter.Result.end(); i++) {
-            for (std::vector<Gui::SelectionObject>::iterator j = i->begin(); j != i->end(); j++) {
-                if(j->getObject() != pcActiveBody)
-                    bodies.push_back(j->getObject());
-            }
-        }
-        if (!bodies.empty()) {
-            updateDocument = true;
-            std::string bodyString = PartDesignGui::buildLinkListPythonStr(bodies);
-            FCMD_OBJ_CMD(Feat,"addObjects("<<bodyString<<")");
-        }
+    if(objs.size()) {
+        updateDocument = true;
+        std::string bodyString = PartDesignGui::buildLinkListPythonStr(objs);
+        FCMD_OBJ_CMD(Feat,"addObjects("<<bodyString<<")");
     }
 
     finishFeature(this, Feat, nullptr, false, updateDocument);
