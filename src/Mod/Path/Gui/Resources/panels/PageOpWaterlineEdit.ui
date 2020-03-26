@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>350</width>
     <height>400</height>
    </rect>
   </property>
@@ -43,37 +43,100 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="2" colspan="2">
-       <widget class="Gui::InputField" name="sampleInterval" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="cutPattern_label">
-        <property name="text">
-         <string>Cut Pattern</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Sample interval</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="boundaryAdjustment"/>
-      </item>
-      <item row="3" column="3">
-       <widget class="QComboBox" name="clearLayers">
+       <widget class="QComboBox" name="boundBoxSelect">
         <property name="font">
          <font>
-          <pointsize>9</pointsize>
+          <pointsize>8</pointsize>
          </font>
         </property>
+        <item>
+         <property name="text">
+          <string>Stock</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BaseBoundBox</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLineEdit" name="boundaryAdjustment">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="layerMode">
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>Single-pass</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Multi-pass</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="algorithmSelect">
+        <item>
+         <property name="text">
+          <string>OCL Dropcutter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Experimental</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="11" column="3">
+       <widget class="QCheckBox" name="optimizeEnabled">
+        <property name="text">
+         <string>Optimize Linear Paths</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="boundaryAdjustment_label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Boundary Adjustment</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QComboBox" name="cutPattern">
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
         <item>
          <property name="text">
           <string>Line</string>
@@ -96,62 +159,14 @@
         </item>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Depth offset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="boundBoxSelect">
-        <property name="font">
-         <font>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <item>
-         <property name="text">
-          <string>Stock</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>BaseBoundBox</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="2" colspan="2">
-       <widget class="Gui::InputField" name="depthOffset" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
       <item row="8" column="3">
-       <widget class="QCheckBox" name="optimizeEnabled">
-        <property name="text">
-         <string>Optimize Linear Paths</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>BoundBox</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="3">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Boundary Adjustment</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
        <widget class="QSpinBox" name="stepOver">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -169,10 +184,58 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_7">
+      <item row="2" column="0">
+       <widget class="QLabel" name="layerMode_label">
+        <property name="text">
+         <string>Layer Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="boundBoxSelect_label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>BoundBox</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="stepOver_label">
         <property name="text">
          <string>Step over</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="3">
+       <widget class="Gui::InputField" name="sampleInterval" native="true">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="cutPattern_label">
+        <property name="text">
+         <string>Cut Pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="sampleInterval_label">
+        <property name="text">
+         <string>Sample interval</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="algorithmSelect_label">
+        <property name="text">
+         <string>Algorithm</string>
         </property>
        </widget>
       </item>
