@@ -81,6 +81,7 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     plsb_FontSize->onSave();
     sbAltDecimals->onSave();
     cbCutSurface->onSave();
+    pcbHighlightStyle->onSave();
 }
 
 void DlgPrefsTechDraw3Imp::loadSettings()
@@ -119,6 +120,7 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     plsb_FontSize->onRestore();
     sbAltDecimals->onRestore();
     cbCutSurface->onRestore();
+    pcbHighlightStyle->onRestore();
 
     DrawGuiUtil::loadArrowBox(pcbBalloonArrow);
     pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
