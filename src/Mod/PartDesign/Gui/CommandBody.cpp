@@ -169,6 +169,7 @@ void CmdPartDesignBody::activated(int iMsg)
         }
         ss << "]";
 
+#if 0
         QString warning;
         if (numSolids > 1 && numShells == 0) {
             warning = QObject::tr("The selected shape consists of multiple solids.\n"
@@ -189,6 +190,7 @@ void CmdPartDesignBody::activated(int iMsg)
         if (!warning.isEmpty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
         }
+#endif
 
         if(!baseFeature || count>1) {
             support = ss.str();
@@ -202,9 +204,11 @@ void CmdPartDesignBody::activated(int iMsg)
                 QObject::tr("You are about to use the following feature as base for the new body. "
                             "Do you want to continue?\n")
                     + QString::fromUtf8(supportNames.c_str()),
-                QMessageBox::Yes,QMessageBox::No);
-        if(res != QMessageBox::Yes)
+                QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort,QMessageBox::No);
+        if(res == QMessageBox::Abort)
             return;
+        if(res == QMessageBox::No)
+            support.clear();
     }
 
     std::string bodyName = getUniqueObjectName("Body");
