@@ -67,7 +67,6 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     cbShowCenterMarks->onSave();
     cbShowUnits->onSave();
     leDiameter->onSave();
-    leformatSpec->onSave();
     leLineGroup->onSave();
     pcbArrow->onSave();
     pcbBalloonArrow->onSave();
@@ -106,7 +105,6 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     cbShowCenterMarks->onRestore();
     cbShowUnits->onRestore();
     leDiameter->onRestore();
-    leformatSpec->onRestore();
     leLineGroup->onRestore();
     pcbArrow->onRestore();
     pcbBalloonArrow->onRestore();
