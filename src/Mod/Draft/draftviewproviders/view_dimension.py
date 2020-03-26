@@ -23,7 +23,7 @@
 # ***************************************************************************
 """This module provides the Draft Dimensions view provider classes
 """
-## @package polararray
+## @package dimension
 # \ingroup DRAFT
 # \brief This module provides the view provider code for Draft Dimensions.
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -35,7 +36,9 @@ import DraftGeomUtils
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 from draftobjects.draft_annotation import DraftAnnotation
-from draftviewproviders.view_label import ViewProviderLabel
+
+if App.GuiUp:
+    from draftviewproviders.view_label import ViewProviderLabel
 
 
 

@@ -22,19 +22,19 @@
 
 """This module provides the object code for Draft DimensionStyle.
 """
-## @package style_dimension
+## @package dimensionstyle
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft DimensionStyle.
 
 import FreeCAD as App
 from draftobjects.draft_annotation import DraftAnnotation
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
-from draftviewproviders.view_dimensionstyle import ViewProviderDimensionStylesContainer
 from draftobjects.draft_annotation import AnnotationStylesContainer
 
 if App.GuiUp:
     import FreeCADGui as Gui
+    from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
+    from draftviewproviders.view_dimensionstyle import ViewProviderDimensionStylesContainer
 
 def make_dimension_style(existing_dimension = None):
     """

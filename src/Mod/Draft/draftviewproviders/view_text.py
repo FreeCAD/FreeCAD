@@ -21,15 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Dimensions view provider classes
+"""This module provides the Draft Text view provider classes
 """
-## @package polararray
+## @package text
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Dimensions.
+# \brief This module provides the view provider code for Draft Text.
 
 
 import FreeCAD as App
-import FreeCADGui as Gui
 import DraftVecUtils, DraftGeomUtils
 import math, sys
 from pivy import coin
@@ -40,7 +39,7 @@ from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
 
 class ViewProviderText(ViewProviderDraftAnnotation):
-    """A View Provider for the Draft Label"""
+    """A View Provider for the Draft Text annotation"""
 
     def __init__(self,vobj):
 
@@ -162,9 +161,3 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
                 self.text3d.spacing = vobj.LineSpacing
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None

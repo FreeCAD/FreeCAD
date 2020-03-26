@@ -21,16 +21,16 @@
 # ***************************************************************************
 """This module provides the Draft Annotations view provider base class
 """
-## @package polararray
+## @package annotation
 # \ingroup DRAFT
 # \brief This module provides the Draft Annotations view provider base class
 
 
 import FreeCAD as App
-import FreeCADGui as Gui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
+if App.GuiUp:
+    import FreeCADGui as Gui
 
 class ViewProviderAnnotationStylesContainer:
     """A View Provider for the Layer Container"""

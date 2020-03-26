@@ -169,6 +169,80 @@ from draftutils.gui_utils import select
 from draftutils.gui_utils import loadTexture
 from draftutils.gui_utils import load_texture
 
+#---------------------------------------------------------------------------
+# Draft objects
+#---------------------------------------------------------------------------
+
+
+
+#---------------------------------------------------------------------------
+# Draft annotation objects
+#---------------------------------------------------------------------------
+
+from draftobjects.dimension import make_dimension, make_angular_dimension
+from draftobjects.dimension import LinearDimension, AngularDimension
+
+makeDimension = make_dimension
+makeAngularDimension = make_angular_dimension
+_Dimension = LinearDimension
+_AngularDimension = AngularDimension
+
+if gui:
+    from draftviewproviders.view_dimension import ViewProviderLinearDimension
+    from draftviewproviders.view_dimension import ViewProviderAngularDimension
+    _ViewProviderDimension = ViewProviderLinearDimension
+    _ViewProviderAngularDimension = ViewProviderAngularDimension
+
+
+from draftobjects.label import make_label
+from draftobjects.label import Label
+
+makeLabel = make_label
+DraftLabel = Label
+
+if gui:
+    from draftviewproviders.view_label import ViewProviderLabel
+    ViewProviderDraftLabel = ViewProviderLabel
+
+
+from draftobjects.text import make_text
+from draftobjects.text import Text
+makeText = make_text
+DraftText = Text
+
+if gui:
+    from draftviewproviders.view_text import ViewProviderText
+    ViewProviderDraftText = ViewProviderText
+
+def convertDraftTexts(textslist=[]):
+    """
+    converts the given Draft texts (or all that is found
+    in the active document) to the new object
+    This function was already present at splitting time during v 0.19
+    """
+    if not isinstance(textslist,list):
+        textslist = [textslist]
+    if not textslist:
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.TypeId == "App::Annotation":
+                textslist.append(o)
+    todelete = []
+    for o in textslist:
+        l = o.Label
+        o.Label = l+".old"
+        obj = makeText(o.LabelText,point=o.Position)
+        obj.Label = l
+        todelete.append(o.Name)
+        for p in o.InList:
+            if p.isDerivedFrom("App::DocumentObjectGroup"):
+                if o in p.Group:
+                    g = p.Group
+                    g.append(obj)
+                    p.Group = g
+    for n in todelete:
+        FreeCAD.ActiveDocument.removeObject(n)
+
+
 
 def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
     """makeCircle(radius,[placement,face,startangle,endangle])
@@ -250,69 +324,6 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
         select(obj)
 
     return obj
-
-# Backward compatibility for dimension objects.
-
-from draftobjects.dimension import make_dimension, make_angular_dimension
-from draftobjects.dimension import LinearDimension, AngularDimension
-from draftviewproviders.view_dimension import ViewProviderLinearDimension
-from draftviewproviders.view_dimension import ViewProviderAngularDimension
-
-makeDimension = make_dimension
-_Dimension = LinearDimension
-_ViewProviderDimension = ViewProviderLinearDimension
-
-makeAngularDimension = make_angular_dimension
-_AngularDimension = AngularDimension
-_ViewProviderAngularDimension = ViewProviderAngularDimension
-
-# Backward compatibility for label object.
-from draftobjects.label import make_label
-from draftobjects.label import Label
-from draftviewproviders.view_label import ViewProviderLabel
-
-makeLabel = make_label
-DraftLabel = Label
-ViewProviderDraftLabel = ViewProviderLabel
-
-# Backward compatibility for text object.
-# introduced when splitted text module from Draft.py in v 0.19
-from draftobjects.text import make_text
-from draftobjects.text import Text
-from draftviewproviders.view_text import ViewProviderText
-
-makeText = make_text
-DraftText = Text
-ViewProviderDraftText = ViewProviderText
-
-# already present at splitting time during v 0.19
-def convertDraftTexts(textslist=[]):
-    """
-    converts the given Draft texts (or all that is found
-    in the active document) to the new object
-    """
-    if not isinstance(textslist,list):
-        textslist = [textslist]
-    if not textslist:
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.TypeId == "App::Annotation":
-                textslist.append(o)
-    todelete = []
-    for o in textslist:
-        l = o.Label
-        o.Label = l+".old"
-        obj = makeText(o.LabelText,point=o.Position)
-        obj.Label = l
-        todelete.append(o.Name)
-        for p in o.InList:
-            if p.isDerivedFrom("App::DocumentObjectGroup"):
-                if o in p.Group:
-                    g = p.Group
-                    g.append(obj)
-                    p.Group = g
-    for n in todelete:
-        FreeCAD.ActiveDocument.removeObject(n)
-
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wire=False):
     """makeWire(pointslist,[closed],[placement]): Creates a Wire object

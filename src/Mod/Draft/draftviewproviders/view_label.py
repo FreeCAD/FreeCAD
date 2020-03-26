@@ -21,15 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Dimensions view provider classes
+"""This module provides the Draft Label view provider classes
 """
-## @package polararray
+## @package label
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Dimensions.
+# \brief This module provides the view provider code for Draft Label.
 
 
 import FreeCAD as App
-import FreeCADGui as Gui
 import DraftVecUtils, DraftGeomUtils
 import math, sys
 from pivy import coin
@@ -37,6 +36,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+if App.GuiUp:
+    import FreeCADGui as Gui
+    
 
 class ViewProviderLabel(ViewProviderDraftAnnotation):
     """A View Provider for the Label annotation object"""
@@ -111,7 +114,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
 
     def getIcon(self):
-        import Draft_rc
         return ":/icons/Draft_Label.svg"
 
     def claimChildren(self):
@@ -212,7 +214,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.onChanged(obj.ViewObject,"TextAlignment")
 
     def getTextSize(self,vobj):
-        from pivy import coin
         if vobj.DisplayMode == "3D text":
             text = self.text3d
         else:
@@ -312,9 +313,3 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         pos = vobj.Object.Placement.Base.add(v)
         self.textpos.translation.setValue(pos)
         self.textpos.rotation.setValue(vobj.Object.Placement.Rotation.Q)
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None

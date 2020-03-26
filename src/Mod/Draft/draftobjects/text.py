@@ -22,11 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""This module provides the object code for Draft Label.
+"""This module provides the object code for Draft Text.
 """
-## @package label
+## @package text
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft Label.
+# \brief This module provides the object code for Draft Text.
 
 import FreeCAD as App
 import math
@@ -35,8 +35,9 @@ import DraftGeomUtils
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 from draftobjects.draft_annotation import DraftAnnotation
-from draftviewproviders.view_text import ViewProviderText
 
+if App.GuiUp:
+    from draftviewproviders.view_text import ViewProviderText
 
 
 

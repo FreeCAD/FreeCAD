@@ -22,7 +22,7 @@
 
 """This module provides the view provider code for Draft DimensionStyle.
 """
-## @package polararray
+## @package dimensionstyle
 # \ingroup DRAFT
 # \brief This module provides the view provider code for Draft DimensionStyle.
 
@@ -31,7 +31,6 @@ from Draft import _ViewProviderDraft
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import draftutils.utils as utils
 from pivy import coin
-from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 from draftviewproviders.view_draft_annotation import ViewProviderAnnotationStylesContainer
 from draftviewproviders.view_dimension import ViewProviderDimensionBase
 

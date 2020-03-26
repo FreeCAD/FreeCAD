@@ -21,11 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""This module provides the object code for Draft DimensionStyle.
+"""This module provides the object code for Draft Annotation.
 """
-## @package style_dimension
+## @package annotation
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft DimensionStyle.
+# \brief This module provides the object code for Draft Annotation.
 
 import FreeCAD as App
 from PySide.QtCore import QT_TRANSLATE_NOOP
