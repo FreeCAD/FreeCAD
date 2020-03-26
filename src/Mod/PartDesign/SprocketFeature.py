@@ -81,7 +81,7 @@ class _Sprocket:
 
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in" 
-        obj.RollerDiameter = ".2 in"
+        obj.RollerDiameter = "0.20 in"
 
         obj.Proxy = self
         

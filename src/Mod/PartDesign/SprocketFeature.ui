@@ -112,13 +112,13 @@
       <number>3</number>
      </property>
      <property name="maximum" stdset="0">
-      <double>5.000000000000000</double>
+      <double>50.000000000000000</double>
      </property>
      <property name="singleStep" stdset="0">
-      <double>.01</double>
+      <double>0.01</double>
      </property>
      <property name="value" stdset="0">
-      <double>.2</double>
+      <double>0.20</double>
      </property>
     </widget>
    </item>

@@ -6,22 +6,7 @@ import sys
 if sys.version_info.major >= 3:
     xrange = range
 
-def breakpoint(*args):
-    # this routine will print an optional parameter on the console and then stop execution by diving by zero
-    # e.g. breakpoint()
-    # e.g. breakpoint("summation module")
-    #
-    import FreeCAD
-    for count, arg in enumerate(args):
-        FreeCAD.Console.PrintMessage(str(count) + ', Breakpoint: '+str(arg)+"\n")
-    hereWeStop = 12/0
-
-
-def printdiff(name, measured_val, calculated_val):
-    FreeCAD.Console.PrintMessage(name + ", meas = " + str(round(float(measured_val),4)) +" \t   calc = "+ str(round(calculated_val,5))+ "\t   diff = " + str(100*round(math.fabs(float(measured_val) - calculated_val)/ math.fabs(float(measured_val)), 4))+ "\n")
-
-
-        
+    
 def CreateSprocket(w, P, N, Dr):
     """
     Create a sprocket
@@ -54,12 +39,8 @@ def CreateSprocket(w, P, N, Dr):
     PD = P / (sin(radians(180)/N))
 
     # The sprocket tooth gullet consists of four segments
-    FreeCAD.Console.PrintMessage("\n")
-
     x0 = 0
     y0 = PD/2 - R
-
-    printdiff("y0", "2.88412", y0)
 
     # ---- Segment 1 -----
     alpha = 35 + 60/N
@@ -67,17 +48,11 @@ def CreateSprocket(w, P, N, Dr):
     y1 = PD/2 - R * sin(radians(alpha))
     arc_end = [x1, y1]
 
-
-    printdiff("x1", "-0.0823127", x1)
-    printdiff("y1", "2.925882", y1)
-
     # ---- Segment 2 -----
     alpha = 35 + 60/N
     beta = 18 - 56 / N
     x2 = M - E * cos(radians(alpha-beta))
     y2 = T - E * sin(radians(alpha-beta)) + PD/2
-    printdiff("x2", "-0.118135", x2)
-    printdiff("y2", "2.99394", y2)
 
     # # ---- Segment 3 -----
     y2o = y2 - PD/2
@@ -91,18 +66,6 @@ def CreateSprocket(w, P, N, Dr):
     x3 = x2 - x3o
     y3 = y2 + y3o
 
-    # law cosines
-    cos_alpha = (AP**2 + hyp**2 - F**2) / (2*AP*hyp)
-    
-    
-    printdiff("hyp", ".163302", hyp)
-    printdiff("AP", ".030887", AP)
-    printdiff("x3o", "0.0102187", x3o)
-    printdiff("y3o", "0.029147", y3o)    
-    printdiff("x3", "-0.127090", x3)
-    printdiff("y3", "3.0194312", y3)
-
-
     # ---- Segment 4 -----
     alpha = 180/N
     m = -1/tan(radians(alpha))
@@ -114,8 +77,6 @@ def CreateSprocket(w, P, N, Dr):
     x4b = (-B + sqrt(B**2 - 4 * A * C)) / (2*A)
     x4 = -x4b
     y4 = m * x4
-    printdiff("x4", "-0.1953774", x4)
-    printdiff("y4", "3.1054349", y4)
 
     p0 = [x0,y0]
     p1 = [x1,y1]
@@ -138,7 +99,6 @@ def CreateSprocket(w, P, N, Dr):
     w.arc(p6, E, 1)
     w.line(p7)
     w.arc(p8, F, 0)
-
     
     # ---- Polar Array ----
     alpha = -radians(360/N)
