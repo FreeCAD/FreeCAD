@@ -14,6 +14,7 @@
    <string>Sprocket parameter</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
+
    <item row="0" column="0">
     <widget class="QLabel" name="label_9">
      <property name="text">
@@ -30,17 +31,18 @@
       <number>9999</number>
      </property>
      <property name="value">
-      <number>26</number>
+      <number>50</number>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_8">
      <property name="text">
-      <string>Module:</string>
+      <string>Chain Pitch:</string>
      </property>
     </widget>
    </item>
+
    <item row="1" column="1">
     <widget class="Gui::InputField" name="Quantity_Pitch">
      <property name="sizePolicy">
@@ -62,7 +64,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="unit" stdset="0">
-      <string notr="true">mm</string>
+      <string notr="true">in</string>
      </property>
      <property name="decimals" stdset="0">
       <number>3</number>
@@ -71,17 +73,18 @@
       <double>2000.000000000000000</double>
      </property>
      <property name="singleStep" stdset="0">
-      <double>2.000000000000000</double>
+      <double>0.001</double>
      </property>
      <property name="value" stdset="0">
-      <double>2.500000000000000</double>
+      <double>0.375</double>
      </property>
     </widget>
    </item>
+
    <item row="2" column="0">
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Pressure angle:</string>
+      <string>Roller Diameter:</string>
      </property>
     </widget>
    </item>
@@ -103,76 +106,24 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="unit" stdset="0">
-      <string notr="true">deg</string>
+      <string notr="true">in</string>
      </property>
      <property name="decimals" stdset="0">
       <number>3</number>
      </property>
      <property name="maximum" stdset="0">
-      <double>90.000000000000000</double>
+      <double>5.000000000000000</double>
      </property>
      <property name="singleStep" stdset="0">
-      <double>2.000000000000000</double>
+      <double>.01</double>
      </property>
      <property name="value" stdset="0">
-      <double>20.000000000000000</double>
+      <double>.2</double>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>High precision:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="comboBox_HighPrecision">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-     <item>
-      <property name="text">
-       <string>True</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>False</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_10">
-     <property name="text">
-      <string>External gear:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="comboBox_ExternalGear">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-     <item>
-      <property name="text">
-       <string>True</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>False</string>
-      </property>
-     </item>
-    </widget>
-   </item>
+
+
   </layout>
  </widget>
  <customwidgets>
