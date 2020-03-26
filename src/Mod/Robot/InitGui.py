@@ -1,12 +1,12 @@
 # Robot gui init module  
-# (c) 2009 Jürgen Riegel
+# (c) 2009 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
 #***************************************************************************
-#*   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+#*   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
