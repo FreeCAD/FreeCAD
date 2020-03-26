@@ -463,50 +463,55 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        print("selection: {}  {}  {}".format(
+        FreeCAD.Console.PrintMessage("Selection: {}  {}  {}\n".format(
             selection[0].Shape.ShapeType,
             selection[0].Name,
             selection[1]
         ))
         if hasattr(selection[0], "Shape") and selection[1]:
-            elt = selection[0].Shape.getElement(selection[1])
+            sobj = selection[0]
+            elt = sobj.Shape.getElement(selection[1])
             ele_ShapeType = elt.ShapeType
             if self.selection_mode_solid and "Solid" in self.sel_elem_types:
                 # in solid selection mode use edges and faces for selection of a solid
                 # adapt selection variable to hold the Solid
                 solid_to_add = None
                 if ele_ShapeType == "Edge":
-                    found_edge = False
-                    for i, s in enumerate(selection[0].Shape.Solids):
+                    found_eltedge_in_other_solid = False
+                    for i, s in enumerate(sobj.Shape.Solids):
                         for e in s.Edges:
                             if elt.isSame(e):
-                                if not found_edge:
+                                if found_eltedge_in_other_solid is False:
                                     solid_to_add = str(i + 1)
                                 else:
+                                    # could be more than two solids, think of polar pattern
                                     FreeCAD.Console.PrintMessage(
-                                        "Edge belongs to more than one solid\n"
+                                        "    Edge belongs to at least two solids: Solid{}, Solid{}\n"
+                                        .format(solid_to_add, str(i + 1))
                                     )
                                     solid_to_add = None
-                                found_edge = True
+                                found_eltedge_in_other_solid = True
                 elif ele_ShapeType == "Face":
-                    found_face = False
-                    for i, s in enumerate(selection[0].Shape.Solids):
+                    found_eltface_in_other_solid = False
+                    for i, s in enumerate(sobj.Shape.Solids):
                         for e in s.Faces:
                             if elt.isSame(e):
-                                if not found_face:
+                                if not found_eltface_in_other_solid:
                                     solid_to_add = str(i + 1)
                                 else:
+                                    # AFAIK (bernd) a face can only belong to two solids
                                     FreeCAD.Console.PrintMessage(
-                                        "Face belongs to more than one solid\n"
+                                        "    Face belongs to two solids: Solid{}, Solid{}\n"
+                                        .format(solid_to_add, str(i + 1))
                                     )
                                     solid_to_add = None
-                                found_face = True
+                                found_eltface_in_other_solid = True
                 if solid_to_add:
-                    selection = (selection[0], "Solid" + solid_to_add)
+                    selection = (sobj, "Solid" + solid_to_add)
                     ele_ShapeType = "Solid"
                     FreeCAD.Console.PrintMessage(
-                        "selection variable adapted to hold the Solid: {}  {}  {}\n"
-                        .format(selection[0].Shape.ShapeType, selection[0].Name, selection[1])
+                        "    Selection variable adapted to hold the Solid: {}  {}  {}\n"
+                        .format(sobj.Shape.ShapeType, sobj.Name, selection[1])
                     )
                 else:
                     return
@@ -533,11 +538,11 @@ class GeometryElementsSelection(QtGui.QWidget):
                         # selected shape will not added to the list
                         FreeCADGui.Selection.clearSelection()
                         message = (
-                            "{} is in reference list already!\n"
+                            "    Selection {} is in reference list already!\n"
                             .format(self.get_item_text(selection))
                         )
                         FreeCAD.Console.PrintMessage(message)
-                        QtGui.QMessageBox.critical(None, "Geometry already in list", message)
+                        QtGui.QMessageBox.critical(None, "Geometry already in list", message.lstrip(" "))
             else:
                 # selected shape will not added to the list
                 FreeCADGui.Selection.clearSelection()
