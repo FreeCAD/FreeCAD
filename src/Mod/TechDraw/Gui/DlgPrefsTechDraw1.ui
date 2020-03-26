@@ -493,7 +493,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Geometric hatch pattern color</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -548,7 +548,7 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
           <property name="font">
            <font>
@@ -569,10 +569,10 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefColorButton" name="pcb_Face">
           <property name="toolTip">
-           <string>Face color</string>
+           <string>Face color (if not transparent)</string>
           </property>
           <property name="color">
            <color>
@@ -586,6 +586,18 @@ for ProjectionGroups</string>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Detail Highlight</string>
           </property>
          </widget>
         </item>
@@ -618,6 +630,23 @@ for ProjectionGroups</string>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/Markups</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="pcbHighlight">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HighlightColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
           </property>
          </widget>
         </item>

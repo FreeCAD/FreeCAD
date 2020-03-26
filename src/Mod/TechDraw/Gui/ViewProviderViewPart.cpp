@@ -116,6 +116,11 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Set section line color if applicable");
     
     //properties that affect Detail Highlights
+    HighlightLineStyle.setEnums(LineStyleEnums);
+    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None, 
+                        "Set highlight line style if applicable");
+    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None, 
+                        "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
@@ -143,6 +148,8 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ShowSectionLine)  ||
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
+        prop == &(HighlightLineStyle) ||
+        prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine)  ||
         prop == &(VertCenterLine) ) {
         // redraw QGIVP
@@ -323,4 +330,21 @@ App::Color ViewProviderViewPart::prefSectionColor(void)
     fcColor.setPackedValue(hGrp->GetUnsigned("SectionColor", 0x00FF0000));
     return fcColor;
 }
+
+App::Color ViewProviderViewPart::prefHighlightColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
+    return fcColor;
+}
+
+int ViewProviderViewPart::prefHighlightStyle(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    return hGrp->GetInt("HighlightStyle", 2);
+}
+
 

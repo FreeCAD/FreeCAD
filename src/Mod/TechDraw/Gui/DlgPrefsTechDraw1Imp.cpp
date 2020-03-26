@@ -77,6 +77,7 @@ void DlgPrefsTechDraw1Imp::saveSettings()
     pcbVertexColor->onSave();
 
     pcbMarkup->onSave();
+    pcbHighlight->onSave();
 }
 
 void DlgPrefsTechDraw1Imp::loadSettings()
@@ -116,6 +117,7 @@ void DlgPrefsTechDraw1Imp::loadSettings()
     pcbVertexColor->onRestore();
 
     pcbMarkup->onRestore();
+    pcbHighlight->onRestore();
 }
 
 /**
