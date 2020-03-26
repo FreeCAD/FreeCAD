@@ -40,6 +40,10 @@ __doc__ = "Waterline operation page controller and command implementation."
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Waterline operation.'''
 
+    def initPage(self, obj):
+        # self.setTitle("Waterline")
+        self.updateVisibility()
+
     def getForm(self):
         '''getForm() ... returns UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpWaterlineEdit.ui")

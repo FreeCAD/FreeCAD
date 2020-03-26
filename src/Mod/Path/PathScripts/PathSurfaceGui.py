@@ -39,6 +39,10 @@ __doc__ = "Surface operation page controller and command implementation."
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Surface operation.'''
 
+    def initPage(self, obj):
+        self.setTitle("3D Surface")
+        self.updateVisibility()
+
     def getForm(self):
         '''getForm() ... returns UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
@@ -109,7 +113,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.optimizeStepOverTransitions.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.optimizeStepOverTransitions.setCheckState(QtCore.Qt.Unchecked)
-
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
