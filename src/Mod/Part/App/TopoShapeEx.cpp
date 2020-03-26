@@ -3444,31 +3444,15 @@ std::vector<std::string> TopoShape::getHigherElements(const char *element, bool 
     if(shape.isNull())
         return {};
     
-    std::ostringstream ss;
     std::vector<std::string> res;
-
-    switch(shape.shapeType()) {
-    case TopAbs_EDGE:
-        for(int idx : findAncestors(shape.getShape(), TopAbs_WIRE)) {
-            ss.str("");
-            ss << "Wire" << idx;
-            res.push_back(ss.str());
+    int type = shape.shapeType();
+    for(;;) {
+        if(--type < 0)
+            break;
+        for(int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type)) {
+            res.push_back(shapeName((TopAbs_ShapeEnum)type));
+            res.back() += std::to_string(idx);
         }
-        break;
-    case TopAbs_FACE:
-        for(int idx : findAncestors(shape.getShape(), TopAbs_SHELL)) {
-            ss.str("");
-            ss << "Shell" << idx;
-            res.push_back(ss.str());
-        }
-        for(int idx : findAncestors(shape.getShape(), TopAbs_SOLID)) {
-            ss.str("");
-            ss << "Solid" << idx;
-            res.push_back(ss.str());
-        }
-        break;
-    default:
-        return {};
     }
     return res;
 }
