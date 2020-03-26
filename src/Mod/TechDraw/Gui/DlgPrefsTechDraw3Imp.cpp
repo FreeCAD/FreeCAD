@@ -132,7 +132,9 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     pcbArrow->setCurrentIndex(prefArrowStyle());
 
     // check that if the sytem-wide decimals are used, the format uses the same decimals
-    // get at first the setting (default is "%.xf", where x is the number of decimals)
+    // the format can be in the form "%.xf", where x is the number of decimals
+    // or in the form "%.g", that will cut decimals for integers, otherwise take the system-wide decimals
+    // get at first the setting (default is "%.xf", where x is the number of system-wide decimals)
     Base::Reference<ParameterGrp> hGrpFormatSpec = App::GetApplication().GetUserParameter().
         GetGroup("BaseApp")->GetGroup("Preferences")->
         GetGroup("Mod/TechDraw/Dimensions");
@@ -154,18 +156,30 @@ void DlgPrefsTechDraw3Imp::loadSettings()
         return;
     std::string localDecimalsString;
     localDecimalsString = formatSpec.at(dotPosition);
+    // check if localDecimalsString is actually a number and not e.g. 'g'
+    bool isDigit = false;
+    if (isdigit(formatSpec.at(dotPosition + 1)))
+        isDigit = true;
     std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
     std::string altDecimalsString = std::to_string(AltDecimals);
-    if (UseGlobalDecimals && (localDecimalsString != systemDecimalsString))
+    if (isDigit && UseGlobalDecimals && (localDecimalsString != systemDecimalsString))
     {
         formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
         leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
     }
 
     // if use alternate decimals but the number after the dot is different, replace it
-    if (!UseGlobalDecimals && (localDecimalsString != altDecimalsString))
+    else if (isDigit && !UseGlobalDecimals && (localDecimalsString != altDecimalsString))
     {
         formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+    // if use alternate decimals but there is no number after the dot, add one
+    else if (!isDigit && !UseGlobalDecimals)
+    {
+        // we must change "%.g" to "%.xf"
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        formatSpec.append("f");
         leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
     }
 }
@@ -212,21 +226,33 @@ void DlgPrefsTechDraw3Imp::onGlobalDecimalsChanged(bool useGlobal)
         return;
     std::string localDecimalsString;
     localDecimalsString = formatSpec.at(dotPosition);
+    // check if localDecimalsString is actually a number and not e.g. 'g'
+    bool isDigit = false;
+    if (isdigit(formatSpec.at(dotPosition + 1)))
+        isDigit = true;
     std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
     std::string altDecimalsString = std::to_string(sbAltDecimals->value());
     // if UseGlobalDecimals but the number after the dot is different, replace it
-    if (useGlobal && (localDecimalsString != systemDecimalsString))
+    if (isDigit && useGlobal && (localDecimalsString != systemDecimalsString))
     {
         formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
         leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
     }
-    
     // if use alternate decimals but the number after the dot is different, replace it
-    if (!useGlobal && (localDecimalsString != altDecimalsString))
+    else if (isDigit && !useGlobal && (localDecimalsString != altDecimalsString))
     {
         formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
         leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
     }
+    // if use alternate decimals but there is no number after the dot, add one
+    else if (!isDigit && !useGlobal)
+    {
+        // we must change "%.g" to "%.xf"
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        formatSpec.append("f");
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+
 }
 
 void DlgPrefsTechDraw3Imp::onAltDecimalsChanged(int AltDecimals)
@@ -238,18 +264,24 @@ void DlgPrefsTechDraw3Imp::onAltDecimalsChanged(int AltDecimals)
         return;
     std::string localDecimalsString;
     localDecimalsString = formatSpec.at(dotPosition);
+    // check if localDecimalsString is actually a number and not e.g. 'g'
+    bool isDigit = false;
+    if (isdigit(formatSpec.at(dotPosition + 1)))
+        isDigit = true;
     std::string systemDecimalsString = std::to_string(Base::UnitsApi::getDecimals());
     std::string altDecimalsString = std::to_string(AltDecimals);
-    if (cbGlobalDecimals->isChecked() && (localDecimalsString != systemDecimalsString))
-    {
-        formatSpec.replace(dotPosition + 1, 1, systemDecimalsString);
-        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
-    }
-
     // if use alternate decimals but the number after the dot is different, replace it
-    if (!cbGlobalDecimals->isChecked() && (localDecimalsString != altDecimalsString))
+    if (isDigit && !cbGlobalDecimals->isChecked() && (localDecimalsString != altDecimalsString))
     {
         formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
+    }
+    // if use alternate decimals but there is no number after the dot, add one
+    else if (!isDigit && !cbGlobalDecimals->isChecked())
+    {
+        // we must change "%.g" to "%.xf"
+        formatSpec.replace(dotPosition + 1, 1, altDecimalsString);
+        formatSpec.append("f");
         leformatSpec->setText(QString::fromLatin1(formatSpec.c_str()));
     }
 }
