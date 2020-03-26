@@ -1635,27 +1635,31 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
                 const char *dot = strchr(subname,'.');
                 if(!dot)
                     break;
+                int i = 0;
                 if (subname[0] == '$') {
                     CharRange name(subname+1,dot);
                     for(auto &info : nodeArray) {
-                        ++idx;
-                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedLabel()))
+                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedLabel())) {
+                            idx = i;
                             break;
+                        }
+                        ++i;
                     }
                 } else if (nodeArray.size() < 10) {
                     CharRange name(subname,dot);
                     for(auto &info : nodeArray) {
-                        ++idx;
-                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedName()))
+                        if(info->isLinked() && boost::equals(name,info->linkInfo->getLinkedName())) {
+                            idx = i;
                             break;
+                        }
+                        ++i;
                     }
                 } else {
                     if(nameMap.size()!=nodeArray.size()) {
-                        int i=-1;
                         for(auto &info : nodeArray) {
-                            ++i;
                             if(info->isLinked())
                                 nameMap[info->linkInfo->getLinkedName()] = i;
+                            ++i;
                         }
                     }
                     auto it = nameMap.find(std::string(subname,dot-subname));
