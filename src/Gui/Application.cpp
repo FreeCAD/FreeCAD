@@ -305,7 +305,7 @@ Application::Application(bool GUIenabled)
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
-        QString lang = QLocale::languageToString(QLocale::system().language());
+        QString lang = QLocale::languageToString(QLocale().language());
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
@@ -319,7 +319,7 @@ Application::Application(bool GUIenabled)
         // Check for the symbols for group separator and decimal point. They must be different otherwise
         // Qt doesn't work properly.
 #if defined(Q_OS_WIN32)
-        if (QLocale::system().groupSeparator() == QLocale::system().decimalPoint()) {
+        if (QLocale().groupSeparator() == QLocale().decimalPoint()) {
             QMessageBox::critical(0, QLatin1String("Invalid system settings"),
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
                               "This causes serious problems and makes the application fail to work properly.\n"
@@ -331,7 +331,7 @@ Application::Application(bool GUIenabled)
         // http://forum.freecadweb.org/viewtopic.php?f=10&t=6910
         // A workaround is to disable the group separator for double-to-string conversion, i.e.
         // setting the flag 'OmitGroupSeparator'.
-        QLocale loc = QLocale::system();
+        QLocale loc;
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
         QLocale::setDefault(loc);
 #endif

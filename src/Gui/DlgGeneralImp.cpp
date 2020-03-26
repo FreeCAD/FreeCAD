@@ -131,7 +131,7 @@ void DlgGeneralImp::saveSettings()
 
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString lang = QLocale::languageToString(QLocale::system().language());
+    QString lang = QLocale::languageToString(QLocale().language());
     QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
     if (current != language) {
@@ -182,7 +182,7 @@ void DlgGeneralImp::loadSettings()
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString langToStr = QLocale::languageToString(QLocale::system().language());
+    QString langToStr = QLocale::languageToString(QLocale().language());
     QByteArray language = hGrp->GetASCII("Language", langToStr.toLatin1()).c_str();
 
     int index = 1;

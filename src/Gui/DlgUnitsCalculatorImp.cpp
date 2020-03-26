@@ -159,9 +159,9 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
             // at first use scientific notation, if there is no "e", we can round it to the user-defined decimals,
             // but the user-defined decimals might be too low for cases like "10 um" in "in",
             // thus only if value > 0.005 because FC's default are 2 decimals
-            QString val = QLocale::system().toString(value, 'g');
+            QString val = QLocale().toString(value, 'g');
             if (!val.contains(QChar::fromLatin1('e')) && (value > 0.005))
-                val = QLocale::system().toString(value, 'f', Base::UnitsApi::getDecimals());
+                val = QLocale().toString(value, 'f', Base::UnitsApi::getDecimals());
             // create the output string
             QString out = QString::fromLatin1("%1 %2").arg(val, ui->UnitInput->text());
             ui->ValueOutput->setText(out);
