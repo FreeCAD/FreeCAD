@@ -203,13 +203,25 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
             shape.setPlacement(Base::Placement());
 
             FeatureAddSub *base = nullptr;
-            if(SupportTransform.getValue())
-                base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
+            if(SupportTransform.getValue()) {
+                // SupportTransform means transform the support together with
+                // the dressing. So we need to find the previous support
+                // feature (which must be of type FeatureAddSub), and skipping
+                // any consequtive DressUp in-between.
+                for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
+                    base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
+                    if(!base)
+                        FC_THROWM(Base::CADKernelError, 
+                                "Cannot find additive or subtractive support for " << getFullName());
+                    if(!base->isDerivedFrom(DressUp::getClassTypeId()))
+                        break;
+                }
+            }
 
             Part::TopoShape baseShape;
             if(base) {
                 baseShape = base->getBaseTopoShape(true);
-                baseShape.setPlacement(Base::Placement());
+                baseShape.move(base->getLocation().Inverted());
                 if (base->getAddSubType() == Additive) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
                         shapes.push_back(shape.cut(baseShape.getShape()));
@@ -228,7 +240,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 }
             } else {
                 baseShape = getBaseTopoShape();
-                baseShape.setPlacement(Base::Placement());
+                baseShape.move(getLocation().Inverted());
                 shapes.push_back(shape.cut(baseShape.getShape()));
                 shapes.push_back(baseShape.cut(shape.getShape()));
             }
