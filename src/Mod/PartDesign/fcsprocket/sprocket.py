@@ -139,6 +139,8 @@ def CreateSprocket(w, P, N, Dr):
     w.line(p7)
     w.arc(p8, F, 0)
 
+    printdiff("F", "1", F)
+
 
     # ---- Polar Array ----
     alpha = -radians(360/N)
@@ -150,10 +152,10 @@ def CreateSprocket(w, P, N, Dr):
         w.arc(rotate(p0, alpha*n), R, 1)
 
         # rising gullet slope
-        w.arc(rotate(p5, alpha*n), F, 1)
+        w.arc(rotate(p5, alpha*n), R, 1)
         w.line(rotate(p6, alpha*n))
         w.arc(rotate(p7, alpha*n), E, 0)
-        w.arc(rotate(p8, alpha*n), R, 0)
+        w.arc(rotate(p8, alpha*n), F, 0)
 
     w.close()
     return w
