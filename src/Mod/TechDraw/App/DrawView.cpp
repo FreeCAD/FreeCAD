@@ -144,6 +144,15 @@ void DrawView::onChanged(const App::Property* prop)
             handleXYLock();
             LockPosition.purgeTouched(); 
         }
+        if ((prop == &Caption) ||
+            (prop == &Label)) {
+            requestPaint();
+        } // rotation and scaling requires recompute
+        else if ((prop == &Rotation) ||
+            (prop == &Scale) ||
+            (prop == &ScaleType)) {
+            recompute();
+        }
     }
     App::DocumentObject::onChanged(prop);
 }
