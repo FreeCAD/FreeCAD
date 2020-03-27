@@ -407,9 +407,10 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
         TopoShape baseShape;
+        Base::Matrix4D baseMat;
         std::string op;
         if(link && link->getElementCountValue()) {
-            linked = link->getTrueLinkedObject(false);
+            linked = link->getTrueLinkedObject(false,&baseMat);
             if(linked && linked!=owner) {
                 baseShape = Feature::getTopoShape(linked,0,false,0,0,false,false);
                 // if(!link->getShowElementValue())
@@ -421,7 +422,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             int visible;
             std::string childName;
             App::DocumentObject *parent=0;
-            Base::Matrix4D mat;
+            Base::Matrix4D mat = baseMat;
             App::DocumentObject *subObj=0;
             if(sub.find('.')==std::string::npos)
                 visible = 1;
