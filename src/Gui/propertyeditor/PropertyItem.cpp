@@ -1932,6 +1932,7 @@ void PlacementEditor::browse()
     }
     task->setPlacement(value().value<Base::Placement>());
     task->setPropertyName(propertyname);
+    task->bindObject();
     Gui::Control().showDialog(task);
 }
 
