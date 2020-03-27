@@ -96,12 +96,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.ScanType, self.form.scanType)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
-        self.form.boundBoxExtraOffsetX.setText(str(obj.DropCutterExtraOffset.x))
-        self.form.boundBoxExtraOffsetY.setText(str(obj.DropCutterExtraOffset.y))
+        self.form.boundBoxExtraOffsetX.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.x, FreeCAD.Units.Length).UserString)
+        self.form.boundBoxExtraOffsetY.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.y, FreeCAD.Units.Length).UserString)
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
         self.form.depthOffset.setText(FreeCAD.Units.Quantity(obj.DepthOffset.Value, FreeCAD.Units.Length).UserString)
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.sampleInterval.setText(str(obj.SampleInterval))
+        self.form.sampleInterval.setText(FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString)
 
         if obj.UseStartPoint:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Checked)

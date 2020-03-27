@@ -83,7 +83,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.form.boundaryAdjustment.setText(FreeCAD.Units.Quantity(obj.BoundaryAdjustment.Value, FreeCAD.Units.Length).UserString)
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.sampleInterval.setText(str(obj.SampleInterval))
+        self.form.sampleInterval.setText(FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString)
 
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
