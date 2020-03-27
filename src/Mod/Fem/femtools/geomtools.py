@@ -27,8 +27,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
-from . import femutils
-
 
 # ************************************************************************************************
 def find_element_in_shape(
@@ -248,5 +246,3 @@ def get_cylindrical_coords(
     B_coords = str(B[0]) + "," + str(B[1]) + "," + str(B[2])
     coords = A_coords + "," + B_coords
     return coords
-
-

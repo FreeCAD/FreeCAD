@@ -486,7 +486,8 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 else:
                                     # could be more than two solids, think of polar pattern
                                     FreeCAD.Console.PrintMessage(
-                                        "    Edge belongs to at least two solids: Solid{}, Solid{}\n"
+                                        "    Edge belongs to at least two solids: "
+                                        " Solid{}, Solid{}\n"
                                         .format(solid_to_add, str(i + 1))
                                     )
                                     solid_to_add = None
@@ -542,7 +543,11 @@ class GeometryElementsSelection(QtGui.QWidget):
                             .format(self.get_item_text(selection))
                         )
                         FreeCAD.Console.PrintMessage(message)
-                        QtGui.QMessageBox.critical(None, "Geometry already in list", message.lstrip(" "))
+                        QtGui.QMessageBox.critical(
+                            None,
+                            "Geometry already in list",
+                            message.lstrip(" ")
+                        )
             else:
                 # selected shape will not added to the list
                 FreeCADGui.Selection.clearSelection()
