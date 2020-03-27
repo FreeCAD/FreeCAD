@@ -309,10 +309,10 @@ def get_refshape_type(fem_doc_object):
     :note:
      Undefined behaviour if constraint contains no references (empty list).
     """
-    import femmesh.meshtools as FemMeshTools
+    from femtools.geomtools import get_element
     if hasattr(fem_doc_object, "References") and fem_doc_object.References:
         first_ref_obj = fem_doc_object.References[0]
-        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        first_ref_shape = get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
         FreeCAD.Console.PrintMessage(
             "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)

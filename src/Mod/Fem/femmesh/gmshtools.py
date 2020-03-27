@@ -414,7 +414,7 @@ class GmshTools():
                                     # Shape to mesh and use the found element as elems
                                     # the method getElement(element)
                                     # does not return Solid elements
-                                    ele_shape = meshtools.get_element(sub[0], elems)
+                                    ele_shape = geomtools.get_element(sub[0], elems)
                                     found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape, ele_shape
                                     )
@@ -451,7 +451,7 @@ class GmshTools():
                     )
             for eleml in self.ele_length_map:
                 # the method getElement(element) does not return Solid elements
-                ele_shape = meshtools.get_element(self.part_obj, eleml)
+                ele_shape = geomtools.get_element(self.part_obj, eleml)
                 ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
             Console.PrintMessage("  {}\n".format(self.ele_length_map))
@@ -502,7 +502,7 @@ class GmshTools():
                                     # we try to find the element it in the Shape to mesh
                                     # and use the found element as elems
                                     # the method getElement(element) does not return Solid elements
-                                    ele_shape = meshtools.get_element(sub[0], elems)
+                                    ele_shape = geomtools.get_element(sub[0], elems)
                                     found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape,
                                         ele_shape

@@ -115,7 +115,7 @@ def get_femnodes_by_refshape(
     nodes = []
     for refelement in ref[1]:
         # the following method getElement(element) does not return Solid elements
-        r = get_element(ref[0], refelement)
+        r = geomtools.get_element(ref[0], refelement)
         FreeCAD.Console.PrintMessage(
             "    "
             "ReferenceShape ... Type: {0}, "
@@ -1936,7 +1936,7 @@ def get_reference_group_elements(
         # FreeCAD.Console.PrintMessage("{}\n".format(childs))
         for child in childs:
             # the method getElement(element) does not return Solid elements
-            ref_shape = get_element(parent, child)
+            ref_shape = geomtools.get_element(parent, child)
             if not stype:
                 stype = ref_shape.ShapeType
             elif stype != ref_shape.ShapeType:
@@ -2056,24 +2056,6 @@ def get_anlysis_empty_references_group_elements(
     group_elements[empty_reference_material] = sorted(missed_material_refshapes)
     # FreeCAD.Console.PrintMessage("{}\n".format(group_elements))
     return group_elements
-
-
-# ************************************************************************************************
-def get_element(
-    part,
-    element
-):
-    if element.startswith("Solid"):
-        index = int(element.lstrip("Solid")) - 1
-        if index >= len(part.Shape.Solids):
-            FreeCAD.Console.PrintError(
-                "Index out of range. This Solid does not exist in the Shape!\n"
-            )
-            return None
-        else:
-            return part.Shape.Solids[index]  # Solid
-    else:
-        return part.Shape.getElement(element)  # Face, Edge, Vertex
 
 
 # ************************************************************************************************

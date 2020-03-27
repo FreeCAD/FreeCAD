@@ -39,7 +39,7 @@ import FreeCAD
 import FreeCADGui
 import FreeCADGui as Gui
 
-from femmesh import meshtools
+from femtools import geomtools
 
 
 class _Selector(QtGui.QWidget):
@@ -375,7 +375,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                         # since only Subelements can be selected
                         # we're going to select all Faces of said Solids
                         # the method getElement(element)doesn't return Solid elements
-                        solid = meshtools.get_element(ref[0], ref[1])
+                        solid = geomtools.get_element(ref[0], ref[1])
                         if not solid:
                             return
                         faces = []
@@ -553,7 +553,7 @@ class GeometryElementsSelection(QtGui.QWidget):
     def has_equal_references_shape_types(self, ref_shty=""):
         for ref in self.references:
             # the method getElement(element) does not return Solid elements
-            r = meshtools.get_element(ref[0], ref[1])
+            r = geomtools.get_element(ref[0], ref[1])
             if not r:
                 FreeCAD.Console.PrintError(
                     "Problem in retrieving element: {} \n".format(ref[1])
