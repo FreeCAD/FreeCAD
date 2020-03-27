@@ -1944,7 +1944,7 @@ def get_reference_group_elements(
                     "Error, two refshapes in References with different ShapeTypes.\n"
                 )
             FreeCAD.Console.PrintLog("\n".format(ref_shape))
-            found_element = find_element_in_shape(aShape, ref_shape)
+            found_element = geomtools.find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
             else:
@@ -1978,7 +1978,7 @@ def get_reference_group_elements(
                 else:
                     FreeCAD.Console.PrintError("This should not happen, please debug!\n")
                     # in this case we would not have needed to use the
-                    # is_same_geometry() inside find_element_in_shape()
+                    # is_same_geometry() inside geomtools.find_element_in_shape()
                     # AFAIK we could have used the Part methods isPartner() or even isSame()
                     # We're going to find out when we need to debug this :-)!
     return (key, sorted(elements))
@@ -2056,100 +2056,6 @@ def get_anlysis_empty_references_group_elements(
     group_elements[empty_reference_material] = sorted(missed_material_refshapes)
     # FreeCAD.Console.PrintMessage("{}\n".format(group_elements))
     return group_elements
-
-
-# ************************************************************************************************
-def find_element_in_shape(
-    aShape,
-    anElement
-):
-    # import Part
-    ele_st = anElement.ShapeType
-    if ele_st == "Solid" or ele_st == "CompSolid":
-        for index, solid in enumerate(aShape.Solids):
-            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(solid, anElement)))
-            if is_same_geometry(solid, anElement):
-                # FreeCAD.Console.PrintMessage("{}\n".format(index))
-                # Part.show(aShape.Solids[index])
-                ele = ele_st + str(index + 1)
-                return ele
-        FreeCAD.Console.PrintError(
-            "Solid " + str(anElement) + " not found in: " + str(aShape) + "\n"
-        )
-        if ele_st == "Solid" and aShape.ShapeType == "Solid":
-            message_part = (
-                "We have been searching for a Solid in a Solid and we have not found it. "
-                "In most cases this should be searching for a Solid inside a CompSolid. "
-                "Check the ShapeType of your Part to mesh."
-            )
-            FreeCAD.Console.PrintMessage(message_part + "\n")
-        # Part.show(anElement)
-        # Part.show(aShape)
-    elif ele_st == "Face" or ele_st == "Shell":
-        for index, face in enumerate(aShape.Faces):
-            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(face, anElement)))
-            if is_same_geometry(face, anElement):
-                # FreeCAD.Console.PrintMessage("{}\n".format(index))
-                # Part.show(aShape.Faces[index])
-                ele = ele_st + str(index + 1)
-                return ele
-    elif ele_st == "Edge" or ele_st == "Wire":
-        for index, edge in enumerate(aShape.Edges):
-            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(edge, anElement)))
-            if is_same_geometry(edge, anElement):
-                # FreeCAD.Console.PrintMessage(index, "\n")
-                # Part.show(aShape.Edges[index])
-                ele = ele_st + str(index + 1)
-                return ele
-    elif ele_st == "Vertex":
-        for index, vertex in enumerate(aShape.Vertexes):
-            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(vertex, anElement)))
-            if is_same_geometry(vertex, anElement):
-                # FreeCAD.Console.PrintMessage("{}\n".format(index))
-                # Part.show(aShape.Vertexes[index])
-                ele = ele_st + str(index + 1)
-                return ele
-    elif ele_st == "Compound":
-        FreeCAD.Console.PrintError("Compound is not supported.\n")
-
-
-# ************************************************************************************************
-def is_same_geometry(
-    shape1,
-    shape2
-):
-    # the vertexes and the CenterOfMass are compared
-    # it is a hack, but I do not know any better !
-    # check of Volume and Area before starting with the vertices could be added
-    # BoundBox is possible too, but is BB calculations robust?!
-    # FreeCAD.Console.PrintMessage("{}\n".format(shape1))
-    # FreeCAD.Console.PrintMessage("{}\n".format(shape2))
-    same_Vertexes = 0
-    if len(shape1.Vertexes) == len(shape2.Vertexes) and len(shape1.Vertexes) > 1:
-        # compare CenterOfMass
-        if shape1.CenterOfMass != shape2.CenterOfMass:
-            return False
-        else:
-            # compare the Vertexes
-            for vs1 in shape1.Vertexes:
-                for vs2 in shape2.Vertexes:
-                    if vs1.X == vs2.X and vs1.Y == vs2.Y and vs1.Z == vs2.Z:
-                        same_Vertexes += 1
-                        continue
-            # FreeCAD.Console.PrintMessage("{}\n".(same_Vertexes))
-            if same_Vertexes == len(shape1.Vertexes):
-                return True
-            else:
-                return False
-    if len(shape1.Vertexes) == len(shape2.Vertexes) and len(shape1.Vertexes) == 1:
-        vs1 = shape1.Vertexes[0]
-        vs2 = shape2.Vertexes[0]
-        if vs1.X == vs2.X and vs1.Y == vs2.Y and vs1.Z == vs2.Z:
-            return True
-        else:
-            return False
-    else:
-        return False
 
 
 # ************************************************************************************************

@@ -415,7 +415,7 @@ class GmshTools():
                                     # the method getElement(element)
                                     # does not return Solid elements
                                     ele_shape = meshtools.get_element(sub[0], elems)
-                                    found_element = meshtools.find_element_in_shape(
+                                    found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape, ele_shape
                                     )
                                     if found_element:
@@ -503,7 +503,7 @@ class GmshTools():
                                     # and use the found element as elems
                                     # the method getElement(element) does not return Solid elements
                                     ele_shape = meshtools.get_element(sub[0], elems)
-                                    found_element = meshtools.find_element_in_shape(
+                                    found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape,
                                         ele_shape
                                     )
