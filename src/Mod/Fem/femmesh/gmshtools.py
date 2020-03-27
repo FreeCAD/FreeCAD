@@ -37,6 +37,7 @@ from FreeCAD import Units
 import Fem
 from . import meshtools
 from femtools import femutils
+from femtools import geomtools
 
 
 class GmshTools():
@@ -451,7 +452,7 @@ class GmshTools():
             for eleml in self.ele_length_map:
                 # the method getElement(element) does not return Solid elements
                 ele_shape = meshtools.get_element(self.part_obj, eleml)
-                ele_vertexes = meshtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+                ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
             Console.PrintMessage("  {}\n".format(self.ele_length_map))
             Console.PrintMessage("  {}\n".format(self.ele_node_map))

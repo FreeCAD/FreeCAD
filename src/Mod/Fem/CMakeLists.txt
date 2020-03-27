@@ -226,6 +226,7 @@ SET(FemTools_SRCS
     femtools/constants.py
     femtools/errors.py
     femtools/femutils.py
+    femtools/geomtools.py
     femtools/membertools.py
     femtools/tokrules.py
 )
