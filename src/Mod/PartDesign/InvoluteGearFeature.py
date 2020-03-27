@@ -31,7 +31,6 @@ if FreeCAD.GuiUp:
 __title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
-a=1 # testing compile
 
           
 
@@ -55,9 +54,9 @@ class _CommandInvoluteGear:
     "the Fem InvoluteGear command definition"
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_InternalExternalGear',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","test Involute gear..."),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Involute gear..."),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","TEST: Creates or edit the involute gear definition.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Creates or edit the involute gear definition.")}
         
     def Activated(self):
 
