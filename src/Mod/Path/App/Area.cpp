@@ -30,6 +30,7 @@
 #   include "boost_fix/intrusive/detail/memory_util.hpp"
 #   include "boost_fix/container/detail/memory_util.hpp"
 # endif
+# include <omp.h>
 # include <boost/geometry.hpp>
 # include <boost/geometry/index/rtree.hpp>
 # include <boost/geometry/geometries/geometries.hpp>
@@ -1290,8 +1291,10 @@ int Area::project(TopoDS_Shape &shape_out,
 
     showShape(joiner.comp,"pre_project");
 
-    Area area(params);
+    auto new_params = params;
+    Area area(new_params);
     area.myParams.SectionCount = 0;
+
     area.myParams.Offset = 0.0;
     area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
@@ -1302,8 +1305,7 @@ int Area::project(TopoDS_Shape &shape_out,
     area.myParams.Coplanar = CoplanarNone;
     area.myProjecting = true;
     area.add(joiner.comp, OperationUnion);
-    const TopoDS_Shape &shape = area.getShape();
-
+    const TopoDS_Shape shape = area.getShape();
     area.myParams.dump("project");
 
     showShape(shape,"projected");
@@ -1478,16 +1480,29 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             area->setPlane(face.Moved(locInverse));
 
             if(project) {
-                for(const auto &s : projectedShapes) {
-                    gp_Trsf t;
-                    t.SetTranslation(gp_Vec(0,0,-d));
-                    TopLoc_Location wloc(t);
-                    area->add(s.shape.Moved(wloc).Moved(locInverse),s.op);
+                #pragma omp parallel
+                {
+                    int thread_count = omp_get_num_threads();
+                    int thread_num   = omp_get_thread_num();
+                    size_t chunk_size= projectedShapes.size() / thread_count;
+                    auto begin = projectedShapes.begin();
+                    std::advance(begin, thread_num * chunk_size);
+                    auto end = begin;
+                    if(thread_num == thread_count - 1) // last thread iterates the remaining sequence
+                        end = projectedShapes.end();
+                    else
+                        std::advance(end, chunk_size);
+                    #pragma omp barrier
+                    for(auto s = begin; s != end; ++s) {
+                        gp_Trsf t;
+                        t.SetTranslation(gp_Vec(0,0,-d));
+                        TopLoc_Location wloc(t);
+                        area->add(s->shape.Moved(wloc).Moved(locInverse),s->op);
+                    }
                 }
                 sections.push_back(area);
                 break;
             }
-
             for(auto it=myShapes.begin();it!=myShapes.end();++it) {
                 const auto &s = *it;
                 BRep_Builder builder;
@@ -1600,18 +1615,32 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
     TopLoc_Location loc(trsf);
     TopLoc_Location locInverse(loc.Inverted());
 
-    mySkippedShapes = 0;
-    for(auto &s : myShapes) {
-        TopoDS_Shape out;
-        int skipped = Area::project(out,s.shape.Moved(loc),&myParams);
-        if(skipped < 0) {
-            ++mySkippedShapes;
-            continue;
-        }else
-            mySkippedShapes += skipped;
-        if(!out.IsNull())
-            ret.emplace_back(s.op,inverse?out.Moved(locInverse):out);
+    #pragma omp parallel
+    {
+        int thread_count = omp_get_num_threads();
+        int thread_num   = omp_get_thread_num();
+        size_t chunk_size= myShapes.size() / thread_count;
+        auto begin = myShapes.begin();
+        std::advance(begin, thread_num * chunk_size);
+        auto end = begin;
+        if(thread_num == thread_count - 1) // last thread iterates the remaining sequence
+            end = myShapes.end();
+        else
+            std::advance(end, chunk_size);
+        #pragma omp barrier
+        for(auto s = begin; s != end; ++s){
+            TopoDS_Shape out;
+            int skipped = Area::project(out,s->shape.Moved(loc),&myParams);
+            if(skipped < 0) {
+                ++mySkippedShapes;
+                continue;
+            }else
+                mySkippedShapes += skipped;
+            if(!out.IsNull())
+                ret.emplace_back(s->op,inverse?out.Moved(locInverse):out);
+        }
     }
+    
     if(mySkippedShapes)
         AREA_WARN("skipped " << mySkippedShapes << " sub shapes during projection");
     return ret;

@@ -118,8 +118,9 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #    SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
 #endif(WIN32)
 
+find_package(OpenMP REQUIRED)
 add_library(Path SHARED ${Path_SRCS})
-target_link_libraries(Path ${Path_LIBS})
+target_link_libraries(Path ${Path_LIBS} OpenMP::OpenMP_CXX)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

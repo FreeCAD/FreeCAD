@@ -365,9 +365,9 @@ class ObjectSurface(PathOp.ObjectOp):
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
-        import cProfile
-        pr = cProfile.Profile()
-        pr.enable()
+        #import cProfile
+        #pr = cProfile.Profile()
+        #pr.enable()
 
         self.modelSTLs = list()
         self.safeSTLs = list()
@@ -606,8 +606,8 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.deflection
 
         execTime = time.time() - startTime
-        pr.disable()
-        pr.dump_stats("/mnt/files/profile.cprof")
+        #pr.disable()
+        #pr.dump_stats("/mnt/files/profile.cprof")
         PathLog.info('Operation time: {} sec.'.format(execTime))
 
         return True
@@ -1492,7 +1492,6 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 PathLog.warning('Path transitions might not avoid the model. Verify paths.')
             #time.sleep(0.3)
-
         else:
             # If boundbox is Job.Stock, add hidden pad under stock as base plate
             toolDiam = self.cutter.getDiameter()
@@ -1511,11 +1510,7 @@ class ObjectSurface(PathOp.ObjectOp):
             voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
             fuseShapes.append(voidEnv)
 
-        f0 = fuseShapes.pop(0)
-        if len(fuseShapes) > 0:
-            fused = f0.fuse(fuseShapes)
-        else:
-            fused = f0
+        fused = Part.makeCompound(fuseShapes)
 
         if self.showDebugObjects is True:
             T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
@@ -2585,44 +2580,14 @@ class ObjectSurface(PathOp.ObjectOp):
         return GCODE
 
     def _planarSinglepassProcess(self, obj, PNTS):
-        output = []
-        optimize = obj.OptimizeLinearPaths
-        lenPNTS = len(PNTS)
-        lstIdx = lenPNTS - 1
-        lop = None
-        onLine = False
-
-        # Initialize first three points
-        nxt = None
-        pnt = PNTS[0]
-        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
-
-        #  Add temp end point
-        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
-
-        # Begin processing ocl points list into gcode
-        for i in range(0, lenPNTS):
-            # Calculate next point for consideration with current point
-            nxt = PNTS[i + 1]
-
-            # Process point
-            if optimize is True:
-                iPOL = prev.isOnLine(nxt, pnt)
-                if iPOL is True:
-                    onLine = True
-                else:
-                    onLine = False
-                    output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-            else:
-                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-
-            # Rotate point data
-            if onLine is False:
-                prev = pnt
-            pnt = nxt
-        # Efor
-        
-        temp = PNTS.pop()  # Remove temp end point
+        if obj.OptimizeLinearPaths:
+            # first item will be compared to the last point, but I think that should work
+            output = [Path.Command('G1', {'X': PNTS[i].x, 'Y': PNTS[i].y, 'Z': PNTS[i].z, 'F': self.horizFeed})
+                     for i in range(0, len(PNTS) - 1)
+                     if not PNTS[i].isOnLine(PNTS[i -1],PNTS[i + 1])]
+            output.append(Path.Command('G1', {'X': PNTS[-1].x, 'Y': PNTS[-1].y, 'Z': PNTS[-1].z, 'F': self.horizFeed}))
+        else:
+            output = [Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}) for pnt in PNTS]
 
         return output
 
