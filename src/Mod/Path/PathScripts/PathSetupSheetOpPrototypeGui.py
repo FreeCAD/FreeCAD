@@ -188,6 +188,18 @@ class _PropertyFloatEditor(_PropertyEditor):
     def setModelData(self, widget):
         self.prop.setValue(widget.value())
 
+class _PropertyFileEditor(_PropertyEditor):
+
+    def widget(self, parent):
+        return QtGui.QLineEdit(parent)
+
+    def setEditorData(self, widget):
+        text = '' if self.prop.getValue() is None else self.prop.getValue()
+        widget.setText(text)
+
+    def setModelData(self, widget):
+        self.prop.setValue(widget.text())
+
 _EditorFactory = {
         PathSetupSheetOpPrototype.Property:             None,
         PathSetupSheetOpPrototype.PropertyAngle:        _PropertyAngleEditor,

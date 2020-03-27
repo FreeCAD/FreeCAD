@@ -51,6 +51,7 @@ public:
     void accept();
     void reject();
 
+    void bindObject();
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -134,6 +135,7 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
+    void bindObject();
     bool accept();
     bool reject();
     void clicked(int id);
