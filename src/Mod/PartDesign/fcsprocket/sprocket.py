@@ -46,7 +46,8 @@ def CreateSprocket(w, P, N, Dr):
     F = Dr * (0.8 * cos(radians(18) - radians(56)/N) + 1.4 *
               cos(radians(17) - radians(64) / N) - 1.3025) - (0.0015 * 25.4)
     PD = P / (sin(radians(180)/N))
-
+    H = sqrt(F**2 - (1.4 * Dr - P/2)**2)
+    OD = P * (0.6 * 1/tan(radians(180/N)))
 
     # The sprocket tooth gullet consists of four segments
     x0 = 0
