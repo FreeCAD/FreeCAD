@@ -67,6 +67,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.LayerMode != str(self.form.layerMode.currentText()):
             obj.LayerMode = str(self.form.layerMode.currentText())
 
+        if obj.CutPattern != str(self.form.cutPattern.currentText()):
+            obj.CutPattern = str(self.form.cutPattern.currentText())
+
         obj.DropCutterExtraOffset.x = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetX.text()).Value
         obj.DropCutterExtraOffset.y = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetY.text()).Value
 
@@ -92,6 +95,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.ScanType, self.form.scanType)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
+        self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.form.boundBoxExtraOffsetX.setText(str(obj.DropCutterExtraOffset.x))
         self.form.boundBoxExtraOffsetY.setText(str(obj.DropCutterExtraOffset.y))
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
@@ -122,6 +126,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.boundBoxSelect.currentIndexChanged)
         signals.append(self.form.scanType.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)
+        signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.boundBoxExtraOffsetX.editingFinished)
         signals.append(self.form.boundBoxExtraOffsetY.editingFinished)
         signals.append(self.form.dropCutterDirSelect.currentIndexChanged)
@@ -136,10 +141,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def updateVisibility(self):
         if self.form.scanType.currentText() == "Planar":
+            self.form.cutPattern.setEnabled(True)
             self.form.boundBoxExtraOffsetX.setEnabled(False)
             self.form.boundBoxExtraOffsetY.setEnabled(False)
             self.form.dropCutterDirSelect.setEnabled(False)
         else:
+            self.form.cutPattern.setEnabled(False)
             self.form.boundBoxExtraOffsetX.setEnabled(True)
             self.form.boundBoxExtraOffsetY.setEnabled(True)
             self.form.dropCutterDirSelect.setEnabled(True)
