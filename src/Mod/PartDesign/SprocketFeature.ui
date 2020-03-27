@@ -36,9 +36,6 @@
     </widget>
    </item>
 
-
-
-
    <item row="1" column="0">
     <widget class="QLabel" name="label_10">
      <property name="text">
@@ -123,13 +120,16 @@
    </item>
 
    <item row="2" column="0">
+
     <widget class="QLabel" name="label_8">
      <property name="text">
       <string>Chain Pitch:</string>
      </property>
     </widget>
    </item>
+
    <item row="2" column="1">
+
     <widget class="Gui::InputField" name="Quantity_Pitch">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -161,6 +161,7 @@
      <property name="minimum" stdset="0">
       <double>0.01</double>
      </property>
+
      <property name="singleStep" stdset="0">
       <double>0.001</double>
      </property>
@@ -171,6 +172,7 @@
    </item>
 
    <item row="3" column="0">
+
     <widget class="QLabel" name="label_6">
      <property name="text">
       <string>Roller Diameter:</string>
@@ -206,6 +208,7 @@
      <property name="minimum" stdset="0">
       <double>0.01</double>
      </property>
+
      <property name="singleStep" stdset="0">
       <double>0.01</double>
      </property>
@@ -214,6 +217,7 @@
      </property>
     </widget>
    </item>
+
   </layout>
  </widget>
  <customwidgets>

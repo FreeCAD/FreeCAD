@@ -19,5 +19,6 @@ to ANSI standards from the methods outlined in:
 This code is based on the work of David Douard and his implementation of the
 gear generator (fcgear) found in FreeCAD.
 
+
 Copyright 2020 Adam Spontarelli <adam@vector-space.org>.
 Distributed under the LGPL licence.

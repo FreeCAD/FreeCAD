@@ -222,12 +222,10 @@ class _SprocketTaskPanel:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         
-                    
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
 
-    
 
 
 if FreeCAD.GuiUp:
