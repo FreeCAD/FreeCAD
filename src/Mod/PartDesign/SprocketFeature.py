@@ -31,7 +31,17 @@ if FreeCAD.GuiUp:
 __title__="PartDesign SprocketObject management"
 __author__ = "Adam Spontarelli"
 __url__ = "http://www.freecadweb.org"
-          
+
+def breakpoint(*args):
+	# this routine will print an optional parameter on the console and then stop execution by diving by zero
+	# e.g. breakpoint()
+	# e.g. breakpoint("summation module")
+	#
+	if len(args)>0:
+            for arg in args:
+                FreeCAD.Console.PrintMessage('Breakpoint: '+str(arg)+"\n")
+	# hereWeStop = 12/0
+        
 
 def makeSprocket(name):
     '''makeSprocket(name): makes a Sprocket'''
@@ -78,10 +88,12 @@ class _Sprocket:
         obj.addProperty("App::PropertyInteger","NumberOfTeeth","Gear","Number of gear teeth")
         obj.addProperty("App::PropertyLength","Pitch","Gear","Chain Pitch")
         obj.addProperty("App::PropertyLength","RollerDiameter","Gear","Roller Diameter")
+        obj.addProperty("App::PropertyString","ANSISize","Gear","ANSI Size")
 
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in" 
         obj.RollerDiameter = "0.20 in"
+        obj.ANSISize = "35"
 
         obj.Proxy = self
         
@@ -140,6 +152,7 @@ class _SprocketTaskPanel:
         QtCore.QObject.connect(self.form.Quantity_Pitch, QtCore.SIGNAL("valueChanged(double)"), self.pitchChanged)
         QtCore.QObject.connect(self.form.Quantity_RollerDiameter, QtCore.SIGNAL("valueChanged(double)"), self.rollerDiameterChanged)
         QtCore.QObject.connect(self.form.spinBox_NumberOfTeeth, QtCore.SIGNAL("valueChanged(int)"), self.numTeethChanged)
+        QtCore.QObject.connect(self.form.comboBox_ANSISize, QtCore.SIGNAL("currentTextChanged(const QString)"), self.ANSISizeChanged)
         
         self.update()
         
@@ -152,17 +165,46 @@ class _SprocketTaskPanel:
         self.obj.NumberOfTeeth  = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Pitch        = self.form.Quantity_Pitch.text()
         self.obj.RollerDiameter  = self.form.Quantity_RollerDiameter.text()
-        
+        self.obj.ANSISize     = self.form.comboBox_ANSISize.currentText()
     
     def transferFrom(self):
         "Transfer from the object to the dialog"
         self.form.spinBox_NumberOfTeeth.setValue(self.obj.NumberOfTeeth)
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
-        
+        self.form.comboBox_ANSISize.setCurrentText(self.obj.ANSISize)
+                                                    
     def pitchChanged(self, value):
         #print value
         self.obj.Pitch = value
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+
+    def ANSISizeChanged(self, size):
+        """
+        ANSI B29.1-2011 standard roller chain sizes in USCS units
+        {size: [Pitch, Roller Diameter]}
+        """
+        ANSIRollerTable = {"25": [0.250, 0.130],
+                           "35": [0.375, 0.200],
+                           "41": [0.500, 0.306],
+                           "40": [0.500, 0.312],
+                           "50": [0.625, 0.400],
+                           "60": [0.750, 0.469],
+                           "80": [1.000, 0.625],
+                           "100":[1.250, 0.750],
+                           "120":[1.500, 0.875],
+                           "140":[1.750, 1.000],
+                           "160":[2.000, 1.125],
+                           "180":[2.250, 1.460],
+                           "200":[2.500, 1.562],
+                           "240":[3.000, 1.875]}
+
+        self.obj.Pitch           = str(ANSIRollerTable[size][0]) + " in"
+        self.obj.RollerDiameter  = str(ANSIRollerTable[size][1]) + " in"
+        self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
+        self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
+            
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
         
@@ -176,7 +218,6 @@ class _SprocketTaskPanel:
         self.obj.NumberOfTeeth = value
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
-        
         
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
@@ -202,6 +243,8 @@ class _SprocketTaskPanel:
         #print 'reject(self)'
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
+
+    
 
 
 if FreeCAD.GuiUp:
