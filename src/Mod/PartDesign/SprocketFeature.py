@@ -32,16 +32,6 @@ __title__="PartDesign SprocketObject management"
 __author__ = "Adam Spontarelli"
 __url__ = "http://www.freecadweb.org"
 
-def breakpoint(*args):
-	# this routine will print an optional parameter on the console and then stop execution by diving by zero
-	# e.g. breakpoint()
-	# e.g. breakpoint("summation module")
-	#
-	if len(args)>0:
-            for arg in args:
-                FreeCAD.Console.PrintMessage('Breakpoint: '+str(arg)+"\n")
-	# hereWeStop = 12/0
-        
 
 def makeSprocket(name):
     '''makeSprocket(name): makes a Sprocket'''
@@ -85,10 +75,10 @@ class _Sprocket:
     "The Sprocket object"
     def __init__(self,obj):
         self.Type = "Sprocket"
-        obj.addProperty("App::PropertyInteger","NumberOfTeeth","Gear","Number of gear teeth")
-        obj.addProperty("App::PropertyLength","Pitch","Gear","Chain Pitch")
-        obj.addProperty("App::PropertyLength","RollerDiameter","Gear","Roller Diameter")
-        obj.addProperty("App::PropertyString","ANSISize","Gear","ANSI Size")
+        obj.addProperty("App::PropertyInteger","NumberOfTeeth","Sprocket","Number of gear teeth")
+        obj.addProperty("App::PropertyLength","Pitch","Sprocket","Chain Pitch")
+        obj.addProperty("App::PropertyLength","RollerDiameter","Sprocket","Roller Diameter")
+        obj.addProperty("App::PropertyString","ANSISize","Sprocket","ANSI Size")
 
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in" 
@@ -99,7 +89,6 @@ class _Sprocket:
         
         
     def execute(self,obj):
-        #print "_Sprocket.execute()"
         w = fcsprocket.FCWireBuilder()
         sprocket.CreateSprocket(w, obj.Pitch.Value, obj.NumberOfTeeth, obj.RollerDiameter.Value)
 
@@ -175,14 +164,13 @@ class _SprocketTaskPanel:
         self.form.comboBox_ANSISize.setCurrentText(self.obj.ANSISize)
                                                     
     def pitchChanged(self, value):
-        #print value
         self.obj.Pitch = value
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
     def ANSISizeChanged(self, size):
         """
-        ANSI B29.1-2011 standard roller chain sizes in USCS units
+        ANSI B29.1-2011 standard roller chain sizes in USCS units (inches)
         {size: [Pitch, Roller Diameter]}
         """
         ANSIRollerTable = {"25": [0.250, 0.130],
@@ -209,12 +197,10 @@ class _SprocketTaskPanel:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
         
     def rollerDiameterChanged(self, value):
-        #print value
         self.obj.RollerDiameter = value
         self.obj.Proxy.execute(self.obj)
 
     def numTeethChanged(self, value):
-        #print value
         self.obj.NumberOfTeeth = value
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
@@ -224,7 +210,6 @@ class _SprocketTaskPanel:
     
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:
-            #print "Apply"
             self.transferTo()
             self.obj.Proxy.execute(self.obj) 
         
@@ -233,14 +218,12 @@ class _SprocketTaskPanel:
         self.transferFrom()
                 
     def accept(self):
-        #print 'accept(self)'
         self.transferTo()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         
                     
     def reject(self):
-        #print 'reject(self)'
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
 
