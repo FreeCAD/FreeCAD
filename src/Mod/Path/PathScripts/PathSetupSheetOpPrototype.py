@@ -149,6 +149,7 @@ class OpPrototype(object):
             'App::PropertyBool':                PropertyBool,
             'App::PropertyDistance':            PropertyDistance,
             'App::PropertyEnumeration':         PropertyEnumeration,
+            'App::PropertyFile':                PropertyString,
             'App::PropertyFloat':               PropertyFloat,
             'App::PropertyFloatConstraint':     Property,
             'App::PropertyFloatList':           Property,
