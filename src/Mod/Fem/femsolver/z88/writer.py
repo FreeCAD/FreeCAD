@@ -32,12 +32,12 @@ import time
 
 import FreeCAD
 
-from .. import writerbase as FemInputWriter
+from .. import writerbase
 from feminout import importZ88Mesh
-from femmesh import meshtools as FemMeshTools
+from femmesh import meshtools
 
 
-class FemInputWriterZ88(FemInputWriter.FemInputWriter):
+class FemInputWriterZ88(writerbase.FemInputWriter):
     def __init__(
         self,
         analysis_obj,
@@ -46,7 +46,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         member,
         dir_name=None
     ):
-        FemInputWriter.FemInputWriter.__init__(
+        writerbase.FemInputWriter.__init__(
             self,
             analysis_obj,
             solver_obj,
@@ -68,7 +68,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
             self.element_count = len(self.femelement_table)
         self.set_z88_elparam()
         self.write_z88_mesh()
@@ -193,7 +193,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
     def write_z88_elements_properties(self):
         element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
-        if FemMeshTools.is_edge_femmesh(self.femmesh):
+        if meshtools.is_edge_femmesh(self.femmesh):
             if len(self.beamsection_objects) == 1:
                 beam_obj = self.beamsection_objects[0]["Object"]
                 width = beam_obj.RectWidth.getValueAs("mm")
@@ -207,7 +207,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                 )
             else:
                 FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
-        elif FemMeshTools.is_face_femmesh(self.femmesh):
+        elif meshtools.is_face_femmesh(self.femmesh):
             if len(self.shellthickness_objects) == 1:
                 thick_obj = self.shellthickness_objects[0]["Object"]
                 thickness = str(thick_obj.Thickness.getValueAs("mm"))
@@ -218,7 +218,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
                 FreeCAD.Console.PrintError(
                     "Multiple thicknesses for Z88 not yet supported!\n"
                 )
-        elif FemMeshTools.is_solid_femmesh(self.femmesh):
+        elif meshtools.is_solid_femmesh(self.femmesh):
             elements_data.append("1 " + str(self.element_count) + " 0 0 0 0 0 0 0")
         else:
             FreeCAD.Console.PrintError("Error!\n")
