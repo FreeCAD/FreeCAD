@@ -15,7 +15,7 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from PyQt4 import QtGui as qt
+from PySide import QtGui as qt
 import fcsprocket
 import FreeCAD, FreeCADGui
 
