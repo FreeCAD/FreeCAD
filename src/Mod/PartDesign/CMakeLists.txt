@@ -16,6 +16,8 @@ if(BUILD_GUI)
           TestPartDesignGui.py
           InvoluteGearFeature.py
           InvoluteGearFeature.ui
+          SprocketFeature.py
+          SprocketFeature.ui
     )
 endif(BUILD_GUI)
 
@@ -60,6 +62,13 @@ set(PartDesign_GearScripts
     fcgear/svggear.py
 )
 
+set(PartDesign_SprocketScripts
+    fcsprocket/__init__.py
+    fcsprocket/fcsprocket.py
+    fcsprocket/fcsprocketdialog.py
+    fcsprocket/sprocket.py
+)
+
 set(PartDesign_WizardShaft
     WizardShaft/__init__.py
     WizardShaft/WizardShaft.svg
@@ -76,6 +85,7 @@ add_custom_target(PartDesignScripts ALL SOURCES
     ${PartDesign_OtherScripts}
     ${PartDesign_TestScripts}
     ${PartDesign_GearScripts}
+    ${PartDesign_SprocketScripts}
 )
 
 fc_target_copy_resource(PartDesignScripts
@@ -85,6 +95,7 @@ fc_target_copy_resource(PartDesignScripts
     ${PartDesign_OtherScripts}
     ${PartDesign_TestScripts}
     ${PartDesign_GearScripts}
+    ${PartDesign_SprocketScripts}
 )
 
 INSTALL(
@@ -113,7 +124,13 @@ INSTALL(
         ${PartDesign_GearScripts}
     DESTINATION
         Mod/PartDesign/fcgear
-        
+)
+
+INSTALL(
+    FILES
+        ${PartDesign_SprocketScripts}
+    DESTINATION
+        Mod/PartDesign/fcsprocket
 )
 
 if(BUILD_FEM)
