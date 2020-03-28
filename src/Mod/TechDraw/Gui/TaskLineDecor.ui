@@ -136,7 +136,7 @@
      </item>
      <item row="4" column="2">
       <widget class="Gui::ColorButton" name="cc_Color">
-       <property name="color" stdset="0">
+       <property name="color">
         <color>
          <red>0</red>
          <green>0</green>
@@ -153,9 +153,12 @@
       </widget>
      </item>
      <item row="5" column="2">
-      <widget class="QDoubleSpinBox" name="dsb_Weight">
+      <widget class="Gui::QuantitySpinBox" name="dsb_Weight">
        <property name="toolTip">
         <string>Thickness of pattern lines.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="value">
         <double>0.500000000000000</double>
@@ -200,6 +203,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>

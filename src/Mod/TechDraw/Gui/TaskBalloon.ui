@@ -42,7 +42,7 @@
        <property name="toolTip">
         <string>Color for 'Text'</string>
        </property>
-       <property name="color" stdset="0">
+       <property name="color">
         <color>
          <red>0</red>
          <green>0</green>
@@ -59,7 +59,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbFontSize" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbFontSize">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -75,7 +75,10 @@
        <property name="toolTip">
         <string>Fontsize for 'Text'</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
         <double>4.000000000000000</double>
        </property>
        <property name="prefEntry" stdset="0">
@@ -171,9 +174,18 @@
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QDoubleSpinBox" name="inputScale">
+      <widget class="Gui::QuantitySpinBox" name="inputScale">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Scale factor for the 'Shape'</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="minimum">
         <double>0.000000000000000</double>
@@ -208,7 +220,7 @@
       </widget>
      </item>
      <item row="6" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbLineWidth" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbLineWidth">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -224,7 +236,10 @@
        <property name="toolTip">
         <string>Leader line width</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
         <double>0.350000000000000</double>
        </property>
        <property name="prefEntry" stdset="0">
@@ -243,7 +258,7 @@
       </widget>
      </item>
      <item row="7" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbBalloonKink" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbBalloonKink">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -259,7 +274,10 @@
        <property name="toolTip">
         <string>Length of balloon leader line kink</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="value">
         <double>5.000000000000000</double>
        </property>
        <property name="prefEntry" stdset="0">
@@ -276,14 +294,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

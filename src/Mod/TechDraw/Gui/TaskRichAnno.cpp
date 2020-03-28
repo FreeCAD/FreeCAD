@@ -417,7 +417,7 @@ void TaskRichAnno::commonFeatureUpdate(void)
 //    Base::Console().Message("TRA::commonFeatureUpdate()\n");
     m_annoFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
     m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8()); 
-    m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value());
+    m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
     m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
 }
 
