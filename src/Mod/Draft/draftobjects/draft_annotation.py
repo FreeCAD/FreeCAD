@@ -54,12 +54,12 @@ class DraftAnnotation:
     def onChanged(self, obj, prop):
         pass
 
-class AnnotationStylesContainer:
-    """The Annotation Container"""
+class StylesContainerBase:
+    """The Base class for Annotation Containers"""
 
-    def __init__(self, obj):
+    def __init__(self, obj, tp = "AnnotationContainer"):
 
-        self.Type = "AnnotationContainer"
+        self.Type = tp
         obj.Proxy = self
 
     def execute(self, obj):
@@ -68,12 +68,20 @@ class AnnotationStylesContainer:
         g.sort(key=lambda o: o.Label)
         obj.Group = g
 
-    def __getstate__(self):
+    def make_unique_visible(self, obj, active_style):
+        "turn non visible all the concurrent styles"
+        if hasattr(active_style, "Visibility"):
+            for o in obj.Group:
+                if o.Name != active_style.Name:
+                    if hasattr(o, "Visibility"):
+                        o.Visibility = False
 
-        if hasattr(self, "Type"):
-            return self.Type
 
-    def __setstate__(self, state):
+class AnnotationStylesContainer(StylesContainerBase):
+    """The Annotation Container"""
 
-        if state:
-            self.Type = state
+    def __init__(self, obj):
+
+        self.Type = "AnnotationContainer"
+        obj.Proxy = self
+

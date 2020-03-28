@@ -27,13 +27,13 @@
 # \brief This module provides the object code for Draft DimensionStyle.
 
 import FreeCAD as App
-from draftobjects.draft_annotation import DraftAnnotation
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from draftobjects.draft_annotation import AnnotationStylesContainer
+from draftobjects.draft_annotation import DraftAnnotation
+from draftobjects.draft_annotation import StylesContainerBase
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
+    from draftviewproviders.view_dimensionstyle import ViewProviderDimensionStyle
     from draftviewproviders.view_dimensionstyle import ViewProviderDimensionStylesContainer
 
 def make_dimension_style(existing_dimension = None):
@@ -46,16 +46,16 @@ def make_dimension_style(existing_dimension = None):
     obj = App.ActiveDocument.addObject("App::FeaturePython","DimensionStyle")
     DimensionStyle(obj)
     if App.GuiUp:
-        ViewProviderDraftDimensionStyle(obj.ViewObject, existing_dimension)
-    get_dimension_style_container().addObject(obj)
+        ViewProviderDimensionStyle(obj.ViewObject, existing_dimension)
+    get_dimension_styles_container().addObject(obj)
     return obj
 
-def get_dimension_style_container():
-    """get_dimension_style_container(): returns a group object to put dimensions in"""
+def get_dimension_styles_container():
+    """get_dimension_styles_container(): returns a group object to put dimensions in"""
     for obj in App.ActiveDocument.Objects:
-        if obj.Name == "DimensionStyleContainer":
+        if obj.Name == "DimensionStyles":
             return obj
-    obj = App.ActiveDocument.addObject("App::DocumentObjectGroupPython", "DimensionStyleContainer")
+    obj = App.ActiveDocument.addObject("App::DocumentObjectGroupPython", "DimensionStyles")
     obj.Label = QT_TRANSLATE_NOOP("draft", "Dimension Styles")
     DimensionStylesContainer(obj)
     if App.GuiUp:
@@ -63,29 +63,61 @@ def get_dimension_style_container():
     return obj
 
 
-class DimensionStylesContainer(AnnotationStylesContainer):
+class DimensionStylesContainer(StylesContainerBase):
     """The Dimension Container"""
 
     def __init__(self, obj):
-        super().__init__(obj)
-        self.Type = "DimensionStyleContainer"
-        obj.Proxy = self
+        super().__init__(obj, tp = "DimensionStyles")
 
-    def execute(self, obj):
+        # init properties
 
-        g = obj.Group
-        g.sort(key=lambda o: o.Label)
-        obj.Group = g
+        obj.addProperty("App::PropertyLink","ActiveDimensionStyle",
+                        "Annotation",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Active dimension style"))
+
+        # sets properties read only
+        obj.setEditorMode("Visibility", 1) 
+        obj.setEditorMode("ActiveDimensionStyle", 1)
+                                        
+
+    def onChanged(self, obj, prop):
+        if prop == "Visibility" and hasattr(obj, "Visibility"):
+            if obj.Visibility == False:
+                obj.Visibility = True
+            if hasattr(obj, "ActiveDimensionStyle"):
+                if obj.ActiveDimensionStyle:
+                    super().make_unique_visible(obj, obj.ActiveDimensionStyle)
+
+        if prop == "ActiveDimensionStyle" and hasattr(obj, "ActiveDimensionStyle"):
+            super().make_unique_visible(obj, obj.ActiveDimensionStyle)
 
 
 class DimensionStyle(DraftAnnotation):
     def __init__(self, obj):
+
         super().__init__(obj, "DimensionStyle")
-    
+
+        obj.setEditorMode("Visibility", 1) # sets visibility read only
+
+
+    def onChanged(self, obj, prop):
+        """ visibility property controls setting the activeDimensionStyle
+        so the only visible style is the current one
+        """
+        if prop == "Visibility" and hasattr(obj, "Visibility"):
+            if obj.Visibility == True:
+                self.set_current(obj)
+            elif obj.Visibility == False:
+                self.remove_from_current(obj)
+
+    def set_visible(self, obj):
+        obj.Visibility = True
+
     def set_current(self, obj):
-        "turn non visible all the concurrent styles"
-        for o in get_dimension_style_container().Group:
-            if hasattr(o, "Visibility"):
-                o.Visibility = False
-        if hasattr(obj, "Visibility"):
-            obj.Visibility = True
+        get_dimension_styles_container().ActiveDimensionStyle = obj
+
+    def remove_from_current(self, obj):
+        if get_dimension_styles_container().ActiveDimensionStyle:
+            if get_dimension_styles_container().ActiveDimensionStyle.Name == obj.Name:
+                get_dimension_styles_container().ActiveDimensionStyle = None
