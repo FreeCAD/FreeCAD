@@ -120,7 +120,7 @@ bool TaskBalloon::accept()
     ac.setValue<QColor>(ui->textColor->color());
     m_balloonVP->Color.setValue(ac);
     m_balloonVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
-    m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->value());
+    m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->value().getValue());
     m_parent->dvBalloon->EndType.setValue(ui->comboEndType->currentIndex());
     m_parent->dvBalloon->Shape.setValue(ui->comboSymbol->currentIndex());
     m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
@@ -170,7 +170,7 @@ void TaskBalloon::onShapeChanged()
 
 void TaskBalloon::onShapeScaleChanged()
 {
-    m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->value());
+    m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->value().getValue());
     recomputeFeature();
 }
 
