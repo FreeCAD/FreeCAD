@@ -221,6 +221,9 @@
        <property name="toolTip">
         <string>Rotate line +CCW or -CW</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="minimum">
         <double>-360.000000000000000</double>
        </property>
@@ -295,7 +298,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="dsbWeight">
+      <widget class="Gui::QuantitySpinBox" name="dsbWeight">
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
