@@ -307,7 +307,7 @@ void TaskCenterLine::onColorChanged()
 
 void TaskCenterLine::onWeightChanged()
 {
-    m_cl->m_format.m_weight = ui->dsbWeight->value();
+    m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_partFeat->recomputeFeature();
 }
 
@@ -357,7 +357,7 @@ void TaskCenterLine::createCenterLine(void)
         App::Color ac;
         ac.setValue<QColor>(ui->cpLineColor->color());
         cl->m_format.m_color = ac;
-        cl->m_format.m_weight = ui->dsbWeight->value();
+        cl->m_format.m_weight = ui->dsbWeight->value().getValue();
         cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
         cl->m_format.m_visible = true;
         m_partFeat->addCenterLine(cl);
@@ -375,7 +375,7 @@ void TaskCenterLine::updateCenterLine(void)
 //    Base::Console().Message("TCL::updateCenterLine()\n");
     Gui::Command::openCommand("Edit CenterLine");
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
-    m_cl->m_format.m_weight = ui->dsbWeight->value();
+    m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
     m_cl->m_format.m_visible = true;
 

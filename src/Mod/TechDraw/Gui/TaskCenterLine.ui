@@ -159,7 +159,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -168,6 +168,9 @@
        </property>
        <property name="toolTip">
         <string>Move line -Left or +Right</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -182,7 +185,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbVertShift" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbVertShift">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -191,6 +194,9 @@
        </property>
        <property name="toolTip">
         <string>Move line +Up or -Down</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -205,7 +211,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbRotate" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbRotate">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -215,10 +221,13 @@
        <property name="toolTip">
         <string>Rotate line +CCW or -CW</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
         <double>-360.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>360.000000000000000</double>
        </property>
       </widget>
@@ -242,7 +251,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbExtend" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbExtend">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -252,10 +261,13 @@
        <property name="toolTip">
         <string>Make the line a little longer.</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="unit" stdset="0">
         <string>mm</string>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>3.000000000000000</double>
        </property>
       </widget>
@@ -269,7 +281,7 @@
      </item>
      <item row="1" column="1">
       <widget class="Gui::ColorButton" name="cpLineColor">
-       <property name="color" stdset="0">
+       <property name="color">
         <color>
          <red>0</red>
          <green>0</green>
@@ -286,7 +298,10 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="dsbWeight">
+      <widget class="Gui::QuantitySpinBox" name="dsbWeight">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="singleStep">
         <double>0.100000000000000</double>
        </property>
