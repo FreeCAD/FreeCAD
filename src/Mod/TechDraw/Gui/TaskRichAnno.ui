@@ -69,9 +69,12 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dsbMaxWidth">
+         <widget class="Gui::QuantitySpinBox" name="dsbMaxWidth">
           <property name="toolTip">
            <string>Maximal width, if -1 then automatic width</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="minimum">
            <double>-1.000000000000000</double>
@@ -144,7 +147,7 @@
           <property name="toolTip">
            <string>Line color</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -161,17 +164,20 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="dsbWidth" native="true">
+         <widget class="Gui::QuantitySpinBox" name="dsbWidth">
           <property name="enabled">
            <bool>false</bool>
           </property>
           <property name="toolTip">
            <string>Line width</string>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>0.500000000000000</double>
           </property>
          </widget>
@@ -235,14 +241,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

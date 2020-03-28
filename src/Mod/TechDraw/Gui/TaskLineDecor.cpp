@@ -171,7 +171,7 @@ void TaskLineDecor::onColorChanged(void)
 
 void TaskLineDecor::onWeightChanged(void)
 {
-    m_weight = ui->dsb_Weight->value();
+    m_weight = ui->dsb_Weight->value().getValue();
     applyDecorations();
     m_partFeat->requestPaint();
 }
