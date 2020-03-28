@@ -224,7 +224,7 @@
          </spacer>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -240,7 +240,10 @@
           <property name="toolTip">
            <string>Dimension text font size</string>
           </property>
-          <property name="value" stdset="0">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -347,7 +350,7 @@
          </widget>
         </item>
         <item row="6" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -363,7 +366,10 @@
           <property name="toolTip">
            <string>Arrowhead size</string>
           </property>
-          <property name="value" stdset="0">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -585,7 +591,7 @@
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -601,7 +607,10 @@
           <property name="toolTip">
            <string>Length of balloon leader line kink</string>
           </property>
-          <property name="value" stdset="0">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -805,7 +814,7 @@
           <property name="minimumSize">
            <size>
             <width>184</width>
-            <height>0</height>
+            <height>22</height>
            </size>
           </property>
           <property name="toolTip">
