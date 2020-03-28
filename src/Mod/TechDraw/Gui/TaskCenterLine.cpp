@@ -173,6 +173,8 @@ void TaskCenterLine::setUiPrimary()
     ui->dsbWeight->setValue(getCenterWidth());
     ui->cboxStyle->setCurrentIndex(getCenterStyle() - 1);
 
+    ui->qsbVertShift->setUnit(Base::Unit::Length);
+    ui->qsbHorizShift->setUnit(Base::Unit::Length);
     Base::Quantity qVal;
     qVal.setUnit(Base::Unit::Length);
     qVal.setValue(getExtendBy());
