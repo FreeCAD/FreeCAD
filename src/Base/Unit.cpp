@@ -456,6 +456,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy");
     if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity");
     if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient");
+    if(*this == Unit::VolumetricThermalExpansionCoefficient )       return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
     if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat");
     if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient");
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
@@ -513,6 +514,7 @@ Unit Unit::Power   (2,1,-3);
 Unit Unit::SpecificEnergy              (2,0,-2);
 Unit Unit::ThermalConductivity         (1,1,-3,0,-1);
 Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
+Unit Unit::VolumetricThermalExpansionCoefficient (0,0,0,0,-1);
 Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
