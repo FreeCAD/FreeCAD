@@ -32,8 +32,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 if App.GuiUp:
     import FreeCADGui as Gui
 
-class ViewProviderAnnotationStylesContainer:
-    """A View Provider for the Layer Container"""
+class ViewProviderStylesContainerBase:
+    """A Base View Provider for Annotation Styles Containers"""
 
     def __init__(self, vobj):
 
@@ -55,6 +55,20 @@ class ViewProviderAnnotationStylesContainer:
 
         return None
 
+
+class ViewProviderAnnotationStylesContainer(ViewProviderStylesContainerBase):
+    """A View Provider for the Annotation Styles Container"""
+
+    def __init__(self, vobj):
+        super().__init__(vobj)
+
+    def getIcon(self):
+
+        return ":/icons/Draft_Annotation_Style.svg"
+
+    def attach(self, vobj):
+
+        self.Object = vobj.Object
 
 
 class ViewProviderDraftAnnotation:

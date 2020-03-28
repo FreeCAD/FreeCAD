@@ -63,6 +63,7 @@ class GuiCommandDimensionStyle(gui_base.GuiCommandSimplest):
         if len(sel) == 1:
             if utils.get_type(sel[0]) == 'Dimension':
                 make_dimension_style(sel[0])
+                return
         
         make_dimension_style()
 

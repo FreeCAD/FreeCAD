@@ -112,8 +112,17 @@ def make_dimension(p1,p2,p3=None,p4=None):
         if vnorm.getAngle(normal) < math.pi/2:
             normal = normal.negative()
     obj.Normal = normal
+
+    # format dimension according to ActiveDimensionStyle or user Preferences
+    _style_applied = False
+    if hasattr(App.ActiveDocument, "DimensionStyles"):
+        active_style = App.ActiveDocument.DimensionStyles.ActiveDimensionStyle
+        if active_style is not None:
+            obj.DimensionStyle = active_style
+            _style_applied = True
     if App.GuiUp:
-        gui_utils.format_object(obj)
+        if not _style_applied:
+            gui_utils.format_object(obj)
         gui_utils.select(obj)
 
     return obj
@@ -129,6 +138,8 @@ def make_angular_dimension(center,angles,p3,normal=None):
         return
     obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
     AngularDimension(obj)
+    if App.GuiUp:
+        ViewProviderAngularDimension(obj.ViewObject)
     obj.Center = center
     for a in range(len(angles)):
         if angles[a] > 2*math.pi:
@@ -146,10 +157,20 @@ def make_angular_dimension(center,angles,p3,normal=None):
         vnorm = gui_utils.get3DView().getViewDirection()
         if vnorm.getAngle(normal) < math.pi/2:
             normal = normal.negative()
+
     obj.Normal = normal
+
+    # format dimension according to ActiveDimensionStyle or user Preferences
+    _style_applied = False
+    if hasattr(App.ActiveDocument, "DimensionStyles"):
+        active_style = App.ActiveDocument.DimensionStyles.ActiveDimensionStyle
+        if active_style is not None:
+            obj.DimensionStyle = active_style
+            _style_applied = True
+            
     if App.GuiUp:
-        ViewProviderAngularDimension(obj.ViewObject)
-        gui_utils.format_object(obj)
+        if not _style_applied:
+            gui_utils.format_object(obj)
         gui_utils.select(obj)
 
     return obj
@@ -365,6 +386,7 @@ class AngularDimension(DimensionBase):
         obj.Normal = App.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
+        super().onChanged(obj, prop)
         if hasattr(obj,"Angle"):
             obj.setEditorMode('Angle',1)
         if hasattr(obj,"Normal"):

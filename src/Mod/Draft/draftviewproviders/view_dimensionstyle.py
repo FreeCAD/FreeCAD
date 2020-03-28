@@ -29,25 +29,25 @@
 import FreeCAD as App
 from Draft import _ViewProviderDraft
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 from pivy import coin
-from draftviewproviders.view_draft_annotation import ViewProviderAnnotationStylesContainer
+from draftviewproviders.view_draft_annotation import ViewProviderStylesContainerBase
 from draftviewproviders.view_dimension import ViewProviderDimensionBase
 
 
-class ViewProviderDimensionStylesContainer(ViewProviderAnnotationStylesContainer):
-    """A View Provider for the Dimension Style Container"""
+class ViewProviderDimensionStylesContainer(ViewProviderStylesContainerBase):
+    """A View Provider for the Dimension Styles Container"""
 
     def __init__(self, vobj):
         super().__init__(vobj)
-        vobj.Proxy = self
 
     def getIcon(self):
 
         return ":/icons/Draft_Annotation_Style.svg"
 
 
-class ViewProviderDraftDimensionStyle(ViewProviderDimensionBase):
+class ViewProviderDimensionStyle(ViewProviderDimensionBase):
     """
     Dimension style dont have a proper object but just a viewprovider.
     It stores inside a document object dimension settings and restore them on demand.
@@ -93,10 +93,11 @@ class ViewProviderDraftDimensionStyle(ViewProviderDimensionBase):
 
         if existing_dimension and hasattr(existing_dimension, "ViewObject"):
             # get the style from given dimension
-            from draftutils import gui_utils
             gui_utils.format_object(target = vobj.Object, origin = existing_dimension)
           
     def onChanged(self, vobj, prop):
+        if prop == "Visibility":
+            return
         if hasattr(vobj, "AutoUpdate"):
             if vobj.AutoUpdate:
                 self.update_related_dimensions(vobj)
@@ -131,18 +132,17 @@ class ViewProviderDraftDimensionStyle(ViewProviderDimensionBase):
         
         App.Console.PrintMessage("Current dimension style set to " + str(vobj.Object.Label) + "\n")
 
-        vobj.Object.Proxy.set_current(vobj.Object)
+        vobj.Object.Proxy.set_visible(vobj.Object)
 
     def update_related_dimensions(self, vobj):
         """
         Apply the style to the related dimensions
         """
-        from draftutils import gui_utils
         for dim in vobj.Object.InList:
             gui_utils.format_object(target = dim, origin = vobj.Object)
 
     def getIcon(self):
-        import Draft_rc
+
         return ":/icons/Draft_Dimension_Tree_Style.svg"
 
     def attach(self, vobj):
