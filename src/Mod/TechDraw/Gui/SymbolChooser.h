@@ -40,8 +40,8 @@ public:
                   QString source = QString());
 
 public Q_SLOTS:
-    void onOKClicked(bool b);
-    void onCancelClicked(bool b);
+    void onOKClicked();
+    void onCancelClicked();
     void onItemClicked(QListWidgetItem* item);
     void onDirectorySelected(const QString& newDir);
 
