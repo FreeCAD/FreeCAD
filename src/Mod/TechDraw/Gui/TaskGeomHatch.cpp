@@ -105,11 +105,11 @@ void TaskGeomHatch::updateValues()
     QString cText = ui->cbName->currentText();
     m_name = cText.toUtf8().constData();
     m_hatch->NamePattern.setValue(m_name);
-    m_scale = ui->sbScale->value();
+    m_scale = ui->sbScale->value().getValue();
     m_hatch->ScalePattern.setValue(m_scale);
     m_color.setValue<QColor>(ui->ccColor->color());
     m_Vp->ColorPattern.setValue(m_color);
-    m_weight = ui->sbWeight->value();
+    m_weight = ui->sbWeight->value().getValue();
     m_Vp->WeightPattern.setValue(m_weight);
 }
 
@@ -152,13 +152,13 @@ void TaskGeomHatch::onNameChanged()
 
 void TaskGeomHatch::onScaleChanged()
 {
-    m_hatch->ScalePattern.setValue(ui->sbScale->value());
+    m_hatch->ScalePattern.setValue(ui->sbScale->value().getValue());
     m_source->getDocument()->recompute();
 }
 
 void TaskGeomHatch::onLineWeightChanged()
 {
-    m_Vp->WeightPattern.setValue(ui->sbWeight->value());
+    m_Vp->WeightPattern.setValue(ui->sbWeight->value().getValue());
     m_source->getDocument()->recompute();
 }
 
