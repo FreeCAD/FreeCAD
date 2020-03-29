@@ -74,7 +74,9 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
 
 void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
 {
-    if (addSubType == Additive)
+    if (Suppress.getValue())
+        return;
+    else if (addSubType == Additive)
         addShape = AddSubShape.getShape();
     else if (addSubType == Subtractive)
         subShape = AddSubShape.getShape();

@@ -142,7 +142,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
     return App::DocumentObject::StdReturn;
 }
 
-bool FeaturePrimitive::isElementGenerated(const char *name) const
+bool FeaturePrimitive::isElementGenerated(const TopoShape &, const char *name) const
 {
     if(!getBaseObject(true))
         return false;

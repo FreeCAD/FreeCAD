@@ -413,6 +413,7 @@ public:
                    Transform,
                    Cutting,
                    Color,
+                   UserEditMode = 100,
     };
 protected:
     /// is called by the document when the provider goes in edit mode

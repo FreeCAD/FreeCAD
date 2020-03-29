@@ -63,7 +63,7 @@ public:
         return PartDesign::FeatureAddSub::execute();
     }
 
-    virtual bool isElementGenerated(const char *name) const override;
+    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const override;
 
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;

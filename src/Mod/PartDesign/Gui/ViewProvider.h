@@ -82,6 +82,8 @@ protected:
     
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const override;
 
+    virtual void updateVisual() override;
+
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
@@ -91,6 +93,8 @@ protected:
     std::string oldWb;
     App::DocumentObject* oldTip;
     bool isSetTipIcon;
+
+    std::unique_ptr<PartGui::ViewProviderPart> pSuppressedView;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;

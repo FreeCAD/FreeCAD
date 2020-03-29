@@ -218,14 +218,17 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if(!obj) 
             continue;
 
-        if (SubTransform.getValue() 
-                && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
+        if (!SubTransform.getValue() 
+                || !obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
         {
+            if(obj->Suppress.getValue())
+                continue;
+        } else {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
             Part::TopoShape fuseShape, cutShape;
             feature->getAddSubShape(fuseShape, cutShape);
             if (fuseShape.isNull() && cutShape.isNull())
-                return new App::DocumentObjectExecReturn("Shape of add/sub feature is empty");
+                continue;
             auto addShape = [&](Part::TopoShape &shape, bool fuse) {
                 if(shape.isNull())
                     return;
@@ -281,8 +284,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    if (transformations.empty())
+    if (transformations.empty() || originalShapes.empty()) {
+        Shape.setValue(support);
         return App::DocumentObject::StdReturn; // No transformations defined, exit silently
+    }
 
     std::ostringstream ss;
 
@@ -587,12 +592,12 @@ void Transformed::setupObject () {
     CopyShape.setValue(false);
 }
 
-bool Transformed::isElementGenerated(const char *name) const
+bool Transformed::isElementGenerated(const TopoShape &shape, const char *name) const
 {
     bool res = false;
     long tag = 0;
     int depth = 2;
-    Shape.getShape().traceElement(name,
+    shape.traceElement(name,
         [&] (const std::string &, size_t, long tag2) {
             if(tag && std::abs(tag2)!=tag) {
                 if(--depth == 0)

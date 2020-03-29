@@ -106,13 +106,14 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
     TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, mapEdgeFace);
 
-    for(auto &ref : Base.getSubValues(true)) {
+    for(auto &v : Base.getShadowSubs()) {
         TopoDS_Shape subshape;
+        auto &ref = v.first.size()?v.first:v.second;
         try {
             subshape = shape.getSubShape(ref.c_str());
         }catch(...){}
         if(subshape.IsNull()) {
-            throw Part::NullShapeException("Invalid edge link");
+            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << v.second);
         }
 
         if (subshape.ShapeType() == TopAbs_EDGE) {
@@ -235,7 +236,8 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     if(!base->isDerivedFrom(DressUp::getClassTypeId()))
                         break;
                 }
-            }
+            } else if (Suppress.getValue())
+                return;
 
             Part::TopoShape baseShape;
             if(base) {

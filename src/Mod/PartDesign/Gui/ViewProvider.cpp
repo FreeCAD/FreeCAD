@@ -39,6 +39,8 @@
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/CommandT.h>
+#include <Gui/Tree.h>
 #include <Base/Exception.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
@@ -99,6 +101,12 @@ bool ViewProvider::doubleClicked(void)
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if(feat) {
+        QAction* act = menu->addAction(QObject::tr(feat->Suppress.getValue()?"Unsuppress":"Suppress"),
+                receiver, member);
+        act->setData(QVariant((int)ViewProvider::UserEditMode+1));
+    }
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
 }
@@ -145,6 +153,24 @@ bool ViewProvider::setEdit(int ModNum)
 
         Gui::Control().showDialog(featureDlg);
         return true;
+    } else if (ModNum == ViewProvider::UserEditMode+1 ) {
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+        if(feat) {
+            std::ostringstream ss;
+            ss << (feat->Suppress.getValue()?"Unsuppress":"Suppress") << " " << feat->getNameInDocument();
+            App::GetApplication().setActiveTransaction(ss.str().c_str());
+            try {
+                if(feat->Suppress.getValue())
+                    Gui::cmdAppObject(feat, "Suppress = False"); 
+                else
+                    Gui::cmdAppObject(feat, "Suppress = True"); 
+                Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+            App::GetApplication().closeActiveTransaction();
+        }
+        return false;
     } else {
         return PartGui::ViewProviderPart::setEdit(ModNum);
     }
@@ -185,31 +211,72 @@ void ViewProvider::unsetEdit(int ModNum)
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
-        if(strcmp(prop->getName(),"Shape") != 0)
-            return;
+    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if(!feature) {
+        inherited::updateData(prop);
+        return;
+    }
 
-        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-        if(feature) {
-            inherited::updateData(prop);
+    if(prop == &feature->SuppressedShape) {
+        if (feature->SuppressedShape.getShape().isNull()) {
+            enableFullSelectionHighlight();
+        } else {
+            auto node = getDisplayMaskMode("Flat Lines");
+            if (!pSuppressedView && node && node->isOfType(SoGroup::getClassTypeId())) {
+                pSuppressedView.reset(new PartGui::ViewProviderPart);
+                pSuppressedView->setShapePropertyName("SuppressedShape");
+                pSuppressedView->forceUpdate();
+                pSuppressedView->MapFaceColor.setValue(false);    
+                pSuppressedView->MapLineColor.setValue(false);    
+                pSuppressedView->MapPointColor.setValue(false);    
+                pSuppressedView->MapTransparency.setValue(false);    
+                pSuppressedView->ForceMapColors.setValue(false);
+                pSuppressedView->ShapeColor.setValue(App::Color(1.0f));
+                pSuppressedView->LineColor.setValue(App::Color(1.0f));
+                pSuppressedView->PointColor.setValue(App::Color(1.0f));
+                pSuppressedView->Selectable.setValue(false);
+                pSuppressedView->enableFullSelectionHighlight(false, false, false);
 
-            std::vector<int> faces;
-            std::vector<int> edges;
-            std::vector<int> vertices;
-            feature->getGeneratedIndices(faces,edges,vertices);
+                auto switchNode = getModeSwitch();
+                if(switchNode->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+                    static_cast<Gui::SoFCSwitch*>(switchNode)->overrideSwitch = Gui::SoFCSwitch::OverrideVisible;
 
-            lineset->highlightIndices.setNum(edges.size());
-            lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
-            nodeset->highlightIndices.setNum(vertices.size());
-            nodeset->highlightIndices.setValues(0,vertices.size(),&vertices[0]);
-            faceset->highlightIndices.setNum(faces.size());
-            faceset->highlightIndices.setValues(0,faces.size(),&faces[0]);
-            return;
+                pSuppressedView->attach(feature);
+
+                static_cast<SoGroup*>(node)->addChild(pSuppressedView->getRoot());
+            }
+
+            if(pSuppressedView)
+                enableFullSelectionHighlight(false, false, false);
         }
+
+        if(pSuppressedView)
+            pSuppressedView->updateData(prop);
+
+    } else if (prop == &feature->Suppress) {
+        signalChangeIcon();
     }
 
     inherited::updateData(prop);
+}
+
+void ViewProvider::updateVisual()
+{
+    inherited::updateVisual();
+    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if (feature && feature->SuppressedShape.getShape().isNull()) {
+        std::vector<int> faces;
+        std::vector<int> edges;
+        std::vector<int> vertices;
+        feature->getGeneratedIndices(faces,edges,vertices);
+
+        lineset->highlightIndices.setNum(edges.size());
+        lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
+        nodeset->highlightIndices.setNum(vertices.size());
+        nodeset->highlightIndices.setValues(0,vertices.size(),&vertices[0]);
+        faceset->highlightIndices.setNum(faces.size());
+        faceset->highlightIndices.setValues(0,faces.size(),&faces[0]);
+    }
 }
 
 void ViewProvider::onChanged(const App::Property* prop) {

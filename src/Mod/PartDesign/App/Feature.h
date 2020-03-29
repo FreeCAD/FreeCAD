@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
 
 class gp_Pnt;
 class gp_Pln;
@@ -53,6 +54,8 @@ public:
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
+    App::PropertyBool Suppress;
+    Part::PropertyPartShape SuppressedShape;
 
     short mustExecute() const;
 
@@ -79,13 +82,15 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
-    virtual bool isElementGenerated(const char *name) const;
+    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
 
     virtual void getGeneratedIndices(std::vector<int> &faces,
                                      std::vector<int> &edges,
                                      std::vector<int> &vertices) const;
 
 protected:
+
+    virtual App::DocumentObjectExecReturn *recompute(void);
 
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
