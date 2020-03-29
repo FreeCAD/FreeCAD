@@ -2227,6 +2227,13 @@ void SoFCSelectionRoot::callback(SoCallbackAction *action) {
 }
 
 void SoFCSelectionRoot::doAction(SoAction *action) {
+    if(selectionStyle.getValue() == Unpickable) {
+        if(action->isOfType(SoSelectionElementAction::getClassTypeId())
+                && !static_cast<SoSelectionElementAction*>(action)->isSecondary())
+            return;
+        if(action->isOfType(SoHighlightElementAction::getClassTypeId()))
+            return;
+    }
     BEGIN_ACTION
     if(doActionPrivate(stack,action))
         inherited::doAction(action);
