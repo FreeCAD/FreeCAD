@@ -80,7 +80,7 @@ public:
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
     FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
-    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,true) \
+    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false) \
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
     FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
     FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \
