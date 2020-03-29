@@ -164,8 +164,11 @@ void TaskSectionView::setUiPrimary()
 
     ui->sbScale->setValue(m_base->getScale());
     Base::Vector3d origin = m_base->getOriginalCentroid();
+    ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
+    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
+    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
     // before the user did not select an orientation,
@@ -191,13 +194,16 @@ void TaskSectionView::setUiEdit()
     ui->leBaseView->setText(qTemp);
 
     temp = m_section->SectionSymbol.getValue();
-    qTemp    = Base::Tools::fromStdString(temp);
+    qTemp = Base::Tools::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
     ui->sbScale->setValue(m_section->getScale());
     
     Base::Vector3d origin = m_section->SectionOrigin.getValue();
+    ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
+    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
+    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
     // connect affter initializing the object values
