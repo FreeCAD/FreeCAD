@@ -154,7 +154,7 @@ TaskSectionView::~TaskSectionView()
 void TaskSectionView::setUiPrimary()
 {
 //    Base::Console().Message("TSV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Create SectionView"));
+    setWindowTitle(QObject::tr("Create Section View"));
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
@@ -184,7 +184,7 @@ void TaskSectionView::setUiPrimary()
 void TaskSectionView::setUiEdit()
 {
 //    Base::Console().Message("TSV::setUiEdit()\n");
-    setWindowTitle(QObject::tr("Edit SectionView"));
+    setWindowTitle(QObject::tr("Edit Section View"));
 
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
