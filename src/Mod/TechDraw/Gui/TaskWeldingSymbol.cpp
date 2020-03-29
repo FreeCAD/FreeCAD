@@ -102,8 +102,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
             this, SLOT(onOtherSymbolCreateClicked()));
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
             this, SLOT(onOtherEraseCreateClicked()));
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(QString)),
-            this, SLOT(onDirectorySelected(const QString)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
+            this, SLOT(onDirectorySelected(const QString&)));
 }
 
 //ctor for edit
@@ -142,8 +142,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
         this, SLOT(onOtherEraseClicked()));
 
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(QString)),
-        this, SLOT(onDirectorySelected(const QString)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
+        this, SLOT(onDirectorySelected(const QString&)));
 
     connect(ui->leArrowTextL, SIGNAL(textEdited(QString)),
         this, SLOT(onArrowTextChanged()));
