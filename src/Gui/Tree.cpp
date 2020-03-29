@@ -1051,6 +1051,14 @@ void TreeWidget::onItemPressed() {
     _LastSelectedTreeWidget = this;
 }
 
+int TreeWidget::iconSize() {
+    auto tree = instance();
+    if(tree)
+        return tree->viewOptions().decorationSize.width();
+    else
+        return QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+}
+
 TreeWidget *TreeWidget::instance() {
     auto res = _LastSelectedTreeWidget;
     if(res && res->isVisible())
@@ -4702,7 +4710,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         // get the original icon set
         QIcon icon_org = object()->getIcon();
 
-        int w = getTree()->viewOptions().decorationSize.width();
+        int w = TreeWidget::iconSize();
 
         QPixmap pxOn,pxOff;
 

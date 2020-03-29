@@ -51,6 +51,7 @@
 
 #include <Base/Console.h>
 #include <App/Application.h>
+#include "Tree.h"
 
 #include "BitmapFactory.h"
 
@@ -733,7 +734,7 @@ QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui:
 {
     QIcon overlayedIcon;
 
-    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+    int w = TreeWidget::iconSize();
 
     overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
                                                        px,position), QIcon::Normal, QIcon::Off);

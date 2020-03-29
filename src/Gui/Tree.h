@@ -87,6 +87,8 @@ public:
     static void selectAllLinks(App::DocumentObject *obj); 
     static void expandSelectedItems(TreeItemMode mode);
 
+    static int iconSize();
+
     bool eventFilter(QObject *, QEvent *ev) override;
 
     struct SelInfo {

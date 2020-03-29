@@ -57,20 +57,18 @@ void ViewProviderAttachExtension::extensionMergeOverlayIcons(QIcon &icon) const
                 QPixmap px;
 
                 static const char * const feature_detached_xpm[]={
-                    "9 10 3 1",
+                    "8 8 3 1",
                     ". c None",
                     "# c #cc00cc",
                     "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    "##aaaaa##",
-                    "##aaaaa##",
-                    "#########",
-                    "#########",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..."};
+                    "...##...",
+                    "..#aa#..",
+                    ".#aaaa#.",
+                    "########",
+                    "########",
+                    ".#aaaa#.",
+                    "..#aa#..",
+                    "...##..."};
 
                     px = QPixmap(feature_detached_xpm);
 

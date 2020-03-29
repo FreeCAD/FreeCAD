@@ -249,23 +249,30 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 {
     QIcon mergedicon = orig;
 
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if(feat && feat->Suppress.getValue()) {
+        int w = Gui::TreeWidget::iconSize();
+        QIcon overlay(Gui::BitmapFactory().pixmap("disabled").scaledToWidth(w));
+        QPixmap pixmap = mergedicon.pixmap(w,w,QIcon::Disabled);
+        QPainter painter(&pixmap);
+        overlay.paint(&painter,0,0,w,w,Qt::AlignCenter);
+        mergedicon = QIcon(pixmap);
+    }
+
     if(isSetTipIcon) {
         QPixmap px;
 
         static const char * const feature_tip_xpm[]={
-            "9 9 3 1",
+            "8 6 3 1",
             ". c None",
             "# c #00cc00",
             "a c #ffffff",
-            "...###...",
-            ".##aaa##.",
-            ".##aaa##.",
-            "###aaa###",
-            "##aaaaa##",
-            "##aaaaa##",
-            ".##aaa##.",
-            ".##aaa##.",
-            "...###..."};
+            "..####..",
+            ".##aa##.",
+            "##aaaa##",
+            "##aaaa##",
+            ".##aa##.",
+            "..####.."};
         px = QPixmap(feature_tip_xpm);
 
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
