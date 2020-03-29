@@ -125,7 +125,7 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
         }
         return ret;
     }
-    const char *newName = geo->getElementName(name,true);
+    const char *newName = geo->getElementName(name,Data::ComplexGeoData::MapToNamed);
     if(newName != name) {
         std::ostringstream ss;
         ss << Data::ComplexGeoData::elementMapPrefix() << newName << '.' << name;

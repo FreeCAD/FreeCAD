@@ -1209,7 +1209,7 @@ std::vector<App::Color> ViewProviderPartExt::getShapeColors(const Part::TopoShap
     if(!count)
         return {};
 
-    const char *mapped = shape.getElementName("Face1",1);
+    const char *mapped = shape.getElementName("Face1",Data::ComplexGeoData::MapToNamed);
 
     ViewProviderPartExt *vp=0;
     auto obj = sourceDoc->getObjectByID(shape.Tag);
@@ -1233,7 +1233,7 @@ std::vector<App::Color> ViewProviderPartExt::getShapeColors(const Part::TopoShap
     for(size_t i=0;i<=count;++i) {
         std::string element("Face");
         element += std::to_string(i+1);
-        auto mapped = shape.getElementName(element.c_str(),1);
+        auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
         if(mapped != element.c_str()) {
             auto color = getElementColor(defColor,shape,sourceDoc,TopAbs_FACE,mapped,cache);
             if(color!=defColor) {
@@ -1290,7 +1290,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         if(prop->getSize()==0)
             return color;
 
-        auto element = shape.getElementName(original.c_str(),2);
+        auto element = shape.getElementName(original.c_str(),Data::ComplexGeoData::MapToIndexedForced);
         auto idx = Part::TopoShape::shapeTypeAndIndex(element);
         if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
             if(idx.first==type) {
@@ -1455,7 +1455,7 @@ void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColor
             }
             std::string element(typeName);
             element += std::to_string(i+1);
-            auto mapped = shape.getElementName(element.c_str(),true);
+            auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
             if(mapped == element.c_str())
                 continue;
             auto color = getElementColor(info.defaultColor, shape, sourceDoc,info.type,mapped,cache);

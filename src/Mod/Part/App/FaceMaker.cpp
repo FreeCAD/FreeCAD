@@ -189,7 +189,7 @@ void Part::FaceMaker::postBuild() {
         for(int i=1;i<=count;++i) {
             std::string element("Edge");
             element += std::to_string(i);
-            const char *name = face.getElementName(element.c_str(),true);
+            const char *name = face.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
             if(name == element)
                 continue;
             edgeNames.emplace(wire.getElementHistory(name),name);

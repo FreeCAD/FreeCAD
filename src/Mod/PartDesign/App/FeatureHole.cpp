@@ -1248,7 +1248,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
             std::string name("Edge");
             name += std::to_string(i);
-            const char *mapped = profileshape.getElementName(name.c_str(),true);
+            const char *mapped = profileshape.getElementName(name.c_str(),Data::ComplexGeoData::MapToNamed);
             if(mapped != name.c_str())
                 name = std::string(mapped);
 

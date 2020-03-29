@@ -252,7 +252,7 @@ Feature::getElementHistory(App::DocumentObject *feature,
 {
     std::list<HistoryItem> ret;
     TopoShape shape = getTopoShape(feature);
-    std::string mapped = shape.getElementName(name,true);
+    std::string mapped = shape.getElementName(name,Data::ComplexGeoData::MapToNamed);
     char element_type=0;
     if(sameType)
         element_type = shape.elementType(name);
@@ -307,7 +307,7 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
 
     auto source = getElementSource(owner,shape,name,element_type);
     for(auto &src : source) {
-        auto element = shape.getElementName(src.second.c_str(),2);
+        auto element = shape.getElementName(src.second.c_str(),Data::ComplexGeoData::MapToIndexedForced);
         if(element!=src.second.c_str() &&
            (!sameType || shape.elementType(element) == element_type))
         {
@@ -325,7 +325,7 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
         ss.str("");
         ss << shapetype << i;
         std::string element(ss.str());
-        auto mapped = shape.getElementName(element.c_str(),true);
+        auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
         if(mapped == element.c_str())
             continue;
         auto src = getElementSource(owner,shape,mapped,sameType?element_type:0);

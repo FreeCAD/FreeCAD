@@ -2941,7 +2941,7 @@ PyObject *TopoShapePy::getElementHistory(PyObject *args) {
     PY_TRY {
         std::string original;
         std::vector<std::string> history;
-        name = getTopoShapePtr()->getElementName(name,true);
+        name = getTopoShapePtr()->getElementName(name,Data::ComplexGeoData::MapToNamed);
         long tag = getTopoShapePtr()->getElementHistory(name,&original,&history);
         if(!tag)
             Py_Return;

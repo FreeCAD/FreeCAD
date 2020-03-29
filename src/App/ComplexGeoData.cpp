@@ -268,7 +268,7 @@ const char *ComplexGeoData::getElementName(const char *name, int direction,
         return name;
     }
 
-    if(direction==1) {
+    if(direction == MapToNamed) {
         auto it = _ElementMap->right.find(name);
         if(it == _ElementMap->right.end())
             return name;
@@ -277,7 +277,7 @@ const char *ComplexGeoData::getElementName(const char *name, int direction,
     }
     const char *txt = isMappedElement(name);
     if(!txt) {
-        if(direction==0)
+        if(direction == MapToIndexed)
             return name;
         txt = name;
     }
@@ -513,7 +513,7 @@ char ComplexGeoData::elementType(const char *name) const {
     }else{
         _name = name;
         if(!isMappedElement(name))
-            element = getElementName(name,2);
+            element = getElementName(name,MapToIndexedForced);
     }
 
     char element_type=0;

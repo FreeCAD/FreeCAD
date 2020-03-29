@@ -2436,7 +2436,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss.str("");
                 ss << info.shapetype << i;
                 std::vector<App::StringIDRef> sids;
-                NameKey key(info.type, other.getElementName(ss.str().c_str(),true,&sids));
+                NameKey key(info.type, other.getElementName(ss.str().c_str(),MapToNamed,&sids));
 
                 int k=0;
                 for(auto &newShape : mapper.modified(otherElement)) {
@@ -2466,7 +2466,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss << newInfo.shapetype << j;
                     std::string element = ss.str();
 
-                    if(getElementName(element.c_str(),true)!=element.c_str())
+                    if(getElementName(element.c_str(),MapToNamed)!=element.c_str())
                         continue;
 
                     key.tag = other.Tag;
@@ -2573,7 +2573,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         ss << newInfo.shapetype << j;
 
                         std::string element = ss.str();
-                        if(getElementName(element.c_str(),true)!=element.c_str())
+                        if(getElementName(element.c_str(),MapToNamed)!=element.c_str())
                             continue;
 
                         key.tag = other.Tag;
@@ -2630,7 +2630,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 // parallel face mapping, which has special fixed index to make
                 // name stable.  These names are not delayed.
                 continue;
-            }else if(!delayed && getElementName(element.c_str(),true)!=element.c_str()) {
+            }else if(!delayed && getElementName(element.c_str(),MapToNamed)!=element.c_str()) {
                 newNames.erase(itName);
                 continue;
             }
@@ -2761,7 +2761,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         continue;
                 }
                 std::vector<App::StringIDRef> sids;
-                const char *mapped = getElementName(element.c_str(),true,&sids);
+                const char *mapped = getElementName(element.c_str(),MapToNamed,&sids);
                 if(mapped == element.c_str()) 
                     continue;
 
@@ -2773,7 +2773,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     assert(k);
                     ss << next.shapetype << k;
                     std::string element = ss.str();
-                    if(getElementName(element.c_str(),true) != element.c_str())
+                    if(getElementName(element.c_str(),MapToNamed) != element.c_str())
                         continue;
                     auto &info = names[element][mapped];
                     info.index = n++;
@@ -2813,7 +2813,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss.str("");
                 ss << info.shapetype << i;
                 std::string element = ss.str();
-                const char *name = getElementName(element.c_str(),true);
+                const char *name = getElementName(element.c_str(),MapToNamed);
                 if(name != element.c_str()) 
                     continue;
 
@@ -2835,7 +2835,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         break;
                     }
                     std::vector<App::StringIDRef> sid;
-                    name = getElementName(element.c_str(),true,&sid);
+                    name = getElementName(element.c_str(),MapToNamed,&sid);
                     if(name == element.c_str()) {
                         // only assign name if all lower elements are named
                         if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -3279,7 +3279,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
         // So just reset to original with middle markers stripped.
         dehashed = original + postfix;
     }
-    auto element = getElementName(dehashed.c_str(),2);
+    auto element = getElementName(dehashed.c_str(),MapToIndexedForced);
     if(element!=dehashed.c_str() && (!sameType || type==element[0])) {
         ret.emplace_back(dehashed,element);
         _Cache->relations[key] = ret;
