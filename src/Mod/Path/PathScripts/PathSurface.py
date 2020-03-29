@@ -2643,6 +2643,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Process each layer in depthparams
         prvLyrFirst = None
         prvLyrLast = None
+        lastPrvStpLast = None
         actvLyrs = 0
         for lyr in range(0, lenDP):
             odd = True  # ZigZag directional switch
@@ -2651,8 +2652,12 @@ class ObjectSurface(PathOp.ObjectOp):
             actvSteps = 0
             LYR = list()
             prvStpFirst = None
+            if lyr > 0:
+                if prvStpLast is not None:
+                    lastPrvStpLast = prvStpLast
             prvStpLast = None
             lyrDep = depthparams[lyr]
+            PathLog.debug('Multi-pass lyrDep: {}'.format(round(lyrDep, 4)))
 
             # Cycle through step-over sections (line segments or arcs)
             for so in range(0, len(SCANDATA)):
@@ -2693,6 +2698,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
                     # Manage step over transition and CircularZigZag direction
                     if so > 0:
+                        # PathLog.debug('  stepover index: {}'.format(so))
                         # Control ZigZag direction
                         if obj.CutPattern == 'CircularZigZag':
                             if odd is True:
@@ -2700,6 +2706,8 @@ class ObjectSurface(PathOp.ObjectOp):
                             else:
                                 odd = True
                         # Control step over transition
+                        if prvStpLast is None:
+                            prvStpLast = lastPrvStpLast
                         minTrnsHght = self._getMinSafeTravelHeight(safePDC, prvStpLast, first, minDep=None)  # Check safe travel height against fullSTL
                         transCmds.append(Path.Command('N (--Step {} transition)'.format(so), {}))
                         transCmds.extend(self._stepTransitionCmds(obj, prvStpLast, first, minTrnsHght, tolrnc))
@@ -2712,6 +2720,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     for i in range(0, lenAdjPrts):
                         prt = ADJPRTS[i]
                         lenPrt = len(prt)
+                        # PathLog.debug('  adj parts index - lenPrt: {} - {}'.format(i, lenPrt))
                         if prt == 'BRK' and prtsHasCmds is True:
                             nxtStart = ADJPRTS[i + 1][0]
                             minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart, minDep=None)  # Check safe travel height against fullSTL
