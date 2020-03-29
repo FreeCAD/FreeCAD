@@ -32,6 +32,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
+import draftutils.utils as utils
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
 from FreeCAD import Units as U
@@ -132,8 +133,8 @@ class TaskPanelCircularArray:
         self.form.input_c_z.setProperty('rawValue', self.center.z)
         self.form.input_c_z.setProperty('unit', length_unit)
 
-        self.fuse = False
-        self.use_link = True
+        self.fuse = utils.get_param("Draft_array_fuse", False)
+        self.use_link = utils.get_param("Draft_array_Link", True)
 
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
@@ -354,6 +355,7 @@ class TaskPanelCircularArray:
         """Execute as a callback when the fuse checkbox changes."""
         self.fuse = self.form.checkbox_fuse.isChecked()
         self.print_fuse_state(self.fuse)
+        utils.set_param("Draft_array_fuse", self.fuse)
 
     def print_link_state(self, use_link):
         """Print the link state translated."""
@@ -367,6 +369,7 @@ class TaskPanelCircularArray:
         """Execute as a callback when the link checkbox changes."""
         self.use_link = self.form.checkbox_link.isChecked()
         self.print_link_state(self.use_link)
+        utils.set_param("Draft_array_Link", self.use_link)
 
     def print_messages(self):
         """Print messages about the operation."""
