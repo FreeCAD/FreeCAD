@@ -48,10 +48,6 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
-    connect(ui->pbOK, SIGNAL(clicked(bool)),
-            this, SLOT(onOKClicked(bool)));
-    connect(ui->pbCancel, SIGNAL(clicked(bool)),
-            this, SLOT(onCancelClicked(bool)));
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
             this, SLOT(onDirectorySelected(const QString&)));
     connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
@@ -85,10 +81,9 @@ void SymbolChooser::setUiPrimary()
     ui->lwSymbols->setAcceptDrops(false);
 }
 
-void SymbolChooser::onOKClicked(bool b)
+void SymbolChooser::onOKClicked()
 {
-    Q_UNUSED(b);
-//    Base::Console().Message("SC::OnOKClicked()\n");
+    QDialog::accept(); 
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     if (!sourceItem)
         return;
@@ -98,15 +93,11 @@ void SymbolChooser::onOKClicked(bool b)
                    QString::fromUtf8(".svg");
 
     Q_EMIT symbolSelected(m_symbolPath, m_source);
-//    Base::Console().Message("SC::onOKClicked - symbol; %s\n", qPrintable(m_symbolPath));
-    accept();
 }
 
-void SymbolChooser::onCancelClicked(bool b)
+void SymbolChooser::onCancelClicked()
 {
-    Q_UNUSED(b);
-//    Base::Console().Message("SC::OnCancelCicked()\n");
-    reject();
+    QDialog::reject();
 }
 
 void SymbolChooser::onItemClicked(QListWidgetItem* item)
