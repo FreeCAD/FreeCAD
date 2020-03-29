@@ -65,6 +65,7 @@ class SoBrepPointSet;
 class PartGuiExport ViewProviderPartExt : public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartExt);
+    typedef Gui::ViewProviderGeometryObject inherited;
 
 public:
     /// constructor
@@ -117,8 +118,7 @@ public:
     //@{
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const override {return true;}
-    /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail*) const override;
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     virtual SoDetail* getDetail(const char*) const override;
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
     /// return the highlight lines for a given element or the whole shape
@@ -167,6 +167,11 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
 
+    virtual void setShapePropertyName(const char *propName);
+    const char *getShapePropertyName() const;
+
+    Part::TopoShape getShape() const;
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -176,7 +181,7 @@ protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop) override;
     bool loadParameter();
-    void updateVisual();
+    virtual void updateVisual();
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
 
@@ -203,6 +208,8 @@ protected:
     bool VisualTouched;
     bool NormalsFromUV;
     bool UpdatingColor;
+
+    std::string shapePropName;
 
 private:
     // settings stuff

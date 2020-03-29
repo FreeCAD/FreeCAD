@@ -102,3 +102,10 @@ void ViewProviderPartExtPy::setElementColors(Py::Dict dict) {
     vp->setElementColors(info);
 }
 
+Py::String ViewProviderPartExtPy::getShapePropertyName() const {
+    return Py::String(getViewProviderPartExtPtr()->getShapePropertyName());
+}
+
+void ViewProviderPartExtPy::setShapePropertyName(Py::String name) {
+    getViewProviderPartExtPtr()->setShapePropertyName(name.as_string().c_str());
+}

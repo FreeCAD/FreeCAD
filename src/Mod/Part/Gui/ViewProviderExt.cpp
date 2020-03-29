@@ -655,41 +655,78 @@ std::vector<std::string> ViewProviderPartExt::getDisplayModes(void) const
     return StrList;
 }
 
-std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
+Part::TopoShape ViewProviderPartExt::getShape() const
 {
-    std::stringstream str;
-    if (detail) {
-        if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
-            const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
-            int face = face_detail->getPartIndex() + 1;
-            str << "Face" << face;
-        }
-        else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex() + 1;
-            str << "Edge" << edge;
-        }
-        else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-            const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
-            int vertex = point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
-            str << "Vertex" << vertex;
-        }
-    }
-    std::string name(str.str());
+    Part::TopoShape shape;
+    if (!getObject())
+        return shape;
 
-    const auto &shape = Part::Feature::getTopoShape(getObject());
-    const char *ret = shape.getElementName(name.c_str(),true);
-    if(ret != name.c_str()) {
-        str.str("");
-        str << Data::ComplexGeoData::elementMapPrefix() << ret << '.' << name;
-        name = str.str();
+    if (shapePropName.empty())
+        return Part::Feature::getTopoShape(getObject());
+
+    auto prop = Base::freecad_dynamic_cast<Part::PropertyPartShape>(
+            getObject()->getPropertyByName(shapePropName.c_str()));
+    if (!prop)
+        return Part::TopoShape();
+    return prop->getShape();
+}
+
+void ViewProviderPartExt::setShapePropertyName(const char *propName)
+{
+    if(propName)
+        shapePropName = propName;
+    else
+        shapePropName.clear();
+    if (isUpdateForced()||Visibility.getValue())
+        updateVisual();
+    else
+        VisualTouched = true;
+}
+
+const char * ViewProviderPartExt::getShapePropertyName() const
+{
+    return shapePropName.empty()?"Shape":shapePropName.c_str();
+}
+
+bool ViewProviderPartExt::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+{
+    const SoDetail *detail = pp->getDetail();
+    if (!detail)
+        return inherited::getElementPicked(pp,subname);
+
+    std::ostringstream ss;
+    auto node = pp->getPath()->getTail();
+    if (node == faceset && detail->isOfType(SoFaceDetail::getClassTypeId())) {
+        const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
+        int face = face_detail->getPartIndex() + 1;
+        ss << "Face" << face;
+    } else if (node == lineset && detail->isOfType(SoLineDetail::getClassTypeId())) {
+        const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
+        int edge = line_detail->getLineIndex() + 1;
+        ss << "Edge" << edge;
+    } else if (node == nodeset && detail->isOfType(SoPointDetail::getClassTypeId())) {
+        const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+        int vertex = point_detail->getCoordinateIndex() - nodeset->startIndex.getValue() + 1;
+        ss << "Vertex" << vertex;
+    } else
+        return inherited::getElementPicked(pp,subname);
+
+    subname = ss.str();
+#if 0
+    const auto &shape = getShape();
+    const char *ret = shape.getElementName(subname.c_str(),Data::ComplexGeoData::MapToNamed);
+    if(ret != subname.c_str()) {
+        ss.str("");
+        ss << Data::ComplexGeoData::elementMapPrefix() << ret << '.' << subname;
+        subname = ss.str();
     }
-    return name;
+#endif
+    return true;
 }
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
-    const auto &shape = Part::Feature::getTopoShape(getObject());
+    const auto &shape = getShape();
     const char *name = shape.getElementName(subelement);
     auto res = shape.shapeTypeAndIndex(name);
     if(!res.second)
@@ -742,7 +779,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     try {
         std::vector<Base::Vector3d> pts;
         std::string element = this->getElement(pp->getDetail());
-        const auto &shape = Part::Feature::getTopoShape(getObject());
+        const auto &shape = getShape();
 
         TopoDS_Shape subShape = shape.getSubShape(element.c_str());
 
@@ -907,7 +944,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
 
     if(Part::TopoShape::isMappedElement(element)) {
         auto mapped = element;
-        element = Part::Feature::getTopoShape(getObject()).getElementName(mapped);
+        element = getShape().getElementName(mapped);
         if(element == mapped) {
             for(auto &names : Part::Feature::getRelatedElements(getObject(),element)) {
                 for(auto &v : getElementColors(names.second.c_str()))
@@ -1376,7 +1413,7 @@ void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColor
         return;
     }
 
-    auto shape = Part::Feature::getTopoShape(pcObject);
+    auto shape = getShape();
     if(shape.isNull())
         return;
 
@@ -1476,12 +1513,13 @@ void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColor
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
+    const char *shapeProp = shapePropName.empty()?"Shape":shapePropName.c_str();
     const char *propName = prop?prop->getName():"";
     if(strcmp(propName,"ColoredElements")==0
-            || strcmp(propName,"Shape")==0
+            || strcmp(propName,shapeProp)==0
             || strstr(propName,"Touched")!=0)
     {
-        TopoDS_Shape cShape = Part::Feature::getShape(getObject());
+        TopoDS_Shape cShape = getShape().getShape();
         if(cachedShape.IsPartner(cShape)) {
             Gui::ViewProviderGeometryObject::updateData(prop);
             return;
@@ -1570,7 +1608,7 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    TopoDS_Shape cShape = Part::Feature::getShape(getObject());
+    TopoDS_Shape cShape = getShape().getShape();
     cachedShape = cShape;
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);

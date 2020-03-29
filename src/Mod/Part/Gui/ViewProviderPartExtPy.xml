@@ -32,6 +32,12 @@ sourceDoc: the document of the source object in case the shape comes from anothe
             </UserDocu>
         </Documentation>
     </Methode>
+    <Attribute Name="ShapePropertyName">
+        <Documentation>
+            <UserDocu>Set/get shape property name</UserDocu>
+        </Documentation>
+		<Parameter Name="ShapePropertyName" Type="String" />
+    </Attribute>
     <Attribute Name="ElementColors">
         <Documentation>
             <UserDocu>Set/get element colors as a dict(name:color)</UserDocu>
