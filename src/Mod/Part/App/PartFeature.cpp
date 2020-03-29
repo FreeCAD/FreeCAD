@@ -114,7 +114,7 @@ App::DocumentObjectExecReturn *Feature::recompute(void)
 
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
-    this->Shape.touch();
+    // this->Shape.touch();
     return GeoFeature::execute();
 }
 
