@@ -673,7 +673,7 @@ bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
 }
 
 bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det, 
-        ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z) 
+        ViewProviderDocumentObject *vpd, const char *subname, float x, float y, float z) 
 {
     Base::FlagToggler<SbBool> flag(setPreSelection);
 
@@ -683,19 +683,33 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
-        std::string subname = Data::ComplexGeoData::oldElementName(element);
 
-        this->preSelection = 1;
         char buf[513];
-        snprintf(buf,512,"Preselected: %s#%s.%s (%g, %g, %g)"
-                ,docname,objname,subname.c_str()
-                ,fabs(x)>1e-7?x:0.0
-                ,fabs(y)>1e-7?y:0.0
-                ,fabs(z)>1e-7?z:0.0);
+        size_t offset = 0;
+        auto sobj = vpd->getObject()->getSubObject(subname);
+        const char *element = nullptr;
+        if (sobj) {
+            element = Data::ComplexGeoData::findElementName(subname);
+            offset = snprintf(buf,sizeof(buf)-1,"%s%s%s%s",
+                    sobj->Label.getValue(),
+                    element[0] ? " (" : "",
+                    element,
+                    element[0] ? ") " : "");
+        }
+        if(offset <= sizeof(buf)) {
+            int len = element ? (element - subname) : (int)std::strlen(subname);
+            snprintf(buf+offset, sizeof(buf)-offset-1, "[%g, %g, %g] %s#%s.%.*s",
+                    fabs(x)>1e-7?x:0.0,
+                    fabs(y)>1e-7?y:0.0,
+                    fabs(z)>1e-7?z:0.0,
+                    docname, objname, len, subname);
+        }
 
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 
-        int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
+        this->preSelection = 1;
+
+        int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z);
         if(ret<0 && currenthighlight)
             return true;
 
