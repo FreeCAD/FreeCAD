@@ -1952,3 +1952,19 @@ PyObject* ViewProviderPartExt::getPyObject()
     pyViewObject->IncRef();
     return pyViewObject;
 }
+
+void ViewProviderPartExt::enableFullSelectionHighlight(bool face, bool line, bool point)
+{
+    if(!face) 
+        faceset->highlightIndices.setValue(-1);
+    else if (faceset->highlightIndices.getNum()==1 && faceset->highlightIndices[0]==-1)
+        faceset->highlightIndices.setNum(0);
+    if(!line) 
+        lineset->highlightIndices.setValue(-1);
+    else if (lineset->highlightIndices.getNum()==1 && lineset->highlightIndices[0]==-1)
+        lineset->highlightIndices.setNum(0);
+    if(!point) 
+        nodeset->highlightIndices.setValue(-1);
+    else if (nodeset->highlightIndices.getNum()==1 && nodeset->highlightIndices[0]==-1)
+        nodeset->highlightIndices.setNum(0);
+}

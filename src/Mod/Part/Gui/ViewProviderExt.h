@@ -136,6 +136,8 @@ public:
     void unsetHighlightedEdges();
     void setHighlightedPoints(const std::vector<App::Color>& colors);
     void unsetHighlightedPoints();
+
+    void enableFullSelectionHighlight(bool face=true, bool line=true, bool point=true);
     //@}
 
     /** @name Color mangement methods 

@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -49,6 +50,7 @@ class PartGuiExport SoBrepPointSet : public SoPointSet {
 
 public:
     SoMFInt32 highlightIndices;
+    SoSFColor highlightColor;
 
     static void initClass();
     SoBrepPointSet();

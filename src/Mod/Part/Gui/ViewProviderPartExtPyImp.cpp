@@ -59,6 +59,18 @@ PyObject *ViewProviderPartExtPy::mapShapeColors(PyObject *args) {
     Py_Return;
 }
 
+PyObject *ViewProviderPartExtPy::enableFullSelectionHighlight(PyObject *args) {
+    PyObject *face = Py_True;
+    PyObject *line = Py_True;
+    PyObject *point = Py_True;
+    if(!PyArg_ParseTuple(args, "|OOO", &face, &line, &point))
+        return 0;
+
+    getViewProviderPartExtPtr()->enableFullSelectionHighlight(
+            PyObject_IsTrue(face), PyObject_IsTrue(line), PyObject_IsTrue(point));
+    Py_Return;
+}
+
 Py::Dict ViewProviderPartExtPy::getElementColors() const {
     auto *vp = getViewProviderPartExtPtr();
     Py::Dict dict;

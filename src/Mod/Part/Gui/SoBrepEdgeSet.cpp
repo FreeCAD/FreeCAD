@@ -86,6 +86,7 @@ SoBrepEdgeSet::SoBrepEdgeSet()
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
     SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    SO_NODE_ADD_FIELD(highlightColor, (0,0,0));
     highlightIndices.setNum(0);
 }
 
@@ -339,22 +340,27 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     if(!ctx || !ctx->isHighlighted())
         return;
 
+    SbColor color = ctx->highlightColor;
+
     RenderIndices.clear();
     if(ctx->isHighlightAll()) {
         if(highlightIndices.getNum()) {
+            if(highlightColor.getValue().getPackedValue(1.0f))
+                color = highlightColor.getValue();
             auto indices = highlightIndices.getValues(0);
             RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
         }
     } else
         RenderIndices.insert(RenderIndices.end(), ctx->highlightIndex.begin(), ctx->highlightIndex.end());
 
-    _renderSelection(action, ctx->highlightColor, 0xFFFF, true);
+    _renderSelection(action, color, 0xFFFF, true);
 }
 
 void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
     if(!ctx || !ctx->isSelected())
         return;
+    SbColor color = ctx->selectionColor;
     RenderIndices.clear();
     if(!ctx->isSelectAll()) {
         for(auto &v : ctx->selectionIndex)
@@ -362,10 +368,12 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     } else if(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
     {
+        if(highlightColor.getValue().getPackedValue(1.0f))
+            color = highlightColor.getValue();
         auto indices = highlightIndices.getValues(0);
         RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
     }
-    _renderSelection(action, ctx->selectionColor, 0, push);
+    _renderSelection(action, color, 0, push);
 }
 
 void SoBrepEdgeSet::_renderSelection(SoGLRenderAction *action, 

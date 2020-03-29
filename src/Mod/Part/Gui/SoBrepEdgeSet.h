@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -51,7 +52,7 @@ class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
 
 public:
     SoMFInt32 highlightIndices;
-
+    SoSFColor highlightColor;
 
     static void initClass();
     SoBrepEdgeSet();

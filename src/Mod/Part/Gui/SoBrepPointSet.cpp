@@ -85,6 +85,7 @@ SoBrepPointSet::SoBrepPointSet()
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
     SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    SO_NODE_ADD_FIELD(highlightColor, (0,0,0));
     highlightIndices.setNum(0);
 }
 
@@ -251,22 +252,27 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
         return;
 
     RenderIndices.clear();
+    SbColor color = ctx->highlightColor;
 
     if(ctx->isHighlightAll()) {
         if(highlightIndices.getNum()) {
+            if(highlightColor.getValue().getPackedValue(1.0f))
+                color = highlightColor.getValue();
             auto indices = highlightIndices.getValues(0);
             RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
         }
     } else
         RenderIndices.insert(RenderIndices.end(), ctx->highlightIndex.begin(), ctx->highlightIndex.end());
 
-    _renderSelection(action, ctx->highlightColor, true);
+    _renderSelection(action, color, true);
 }
 
 void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
     if(!ctx || !ctx->isSelected())
         return;
+
+    SbColor color = ctx->selectionColor;
 
     RenderIndices.clear();
     if(!ctx->isSelectAll()) {
@@ -275,10 +281,12 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     } else if(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
     {
+        if(highlightColor.getValue().getPackedValue(1.0f))
+            color = highlightColor.getValue();
         auto indices = highlightIndices.getValues(0);
         RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
     }
-    _renderSelection(action, ctx->selectionColor, push);
+    _renderSelection(action, color, push);
 }
 
 void SoBrepPointSet::_renderSelection(SoGLRenderAction *action, const SbColor &selectionColor, bool push)

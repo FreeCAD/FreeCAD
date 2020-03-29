@@ -27,6 +27,7 @@
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubField.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -87,6 +88,7 @@ public:
 
     SoMFInt32 partIndex;
     SoMFInt32 highlightIndices;
+    SoSFColor highlightColor;
 
 protected:
     virtual ~SoBrepFaceSet();

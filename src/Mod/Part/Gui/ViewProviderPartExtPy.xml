@@ -13,6 +13,15 @@
       <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
       <UserDocu>This is the father of all Part ViewProvider classes</UserDocu>
     </Documentation>
+    <Methode Name="enableFullSelectionHighlight">
+        <Documentation>
+            <UserDocu>
+enableFullSelectionHighlight(face=True, line=True, point=True)
+
+Enable/disable full selection highlight for faces, lines, and/or points.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="mapShapeColors">
         <Documentation>
             <UserDocu>
