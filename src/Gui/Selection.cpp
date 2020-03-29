@@ -1654,6 +1654,13 @@ const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, con
 {
     if (!obj) return 0;
 
+    std::pair<std::string,std::string> elementName;
+    if(!App::GeoFeature::resolveElement(obj,pSubName,elementName,true))
+        return 0;
+
+    if(elementName.first.size())
+        pSubName = elementName.first.c_str();
+
     for(list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if (It->pObject == obj) {
             auto len = It->SubName.length();
