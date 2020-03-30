@@ -103,7 +103,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
             this, SLOT(onOtherEraseCreateClicked()));
     connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
-        this, SLOT(onFlipSidesCreateClicked()));
+            this, SLOT(onFlipSidesCreateClicked()));
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
             this, SLOT(onDirectorySelected(const QString&)));
 }
@@ -205,6 +205,9 @@ void TaskWeldingSymbol::setUiPrimary()
     m_otherOut.init();
     m_otherPath = QString();
     m_otherSymbol = QString();
+
+    // we must mark the other side dirty to assure it gets created
+    m_otherDirty = true;
 }
 
 void TaskWeldingSymbol::setUiEdit()
