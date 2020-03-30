@@ -2264,8 +2264,12 @@ void PropertyBool::setPathValue(const ObjectIdentifier &path, const App::any &va
         setValue(App::any_cast<bool>(value));
     else if (value.type() == typeid(int))
         setValue(App::any_cast<int>(value) != 0);
+    else if (value.type() == typeid(long))
+        setValue(App::any_cast<long>(value) != 0);
     else if (value.type() == typeid(double))
         setValue(boost::math::round(App::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(boost::math::round(App::any_cast<float>(value)));
     else if (value.type() == typeid(Quantity))
         setValue(App::any_cast<const Quantity&>(value).getValue() != 0);
     else
