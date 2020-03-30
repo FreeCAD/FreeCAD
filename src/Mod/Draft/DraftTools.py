@@ -2105,13 +2105,8 @@ class ShapeString(Creator):
 #---------------------------------------------------------------------------
 # Modifier functions
 #---------------------------------------------------------------------------
+from draftguitools.gui_base_original import Modifier
 
-class Modifier(DraftTool):
-    """A generic Modifier Tool, used by modification tools such as move"""
-
-    def __init__(self):
-        DraftTool.__init__(self)
-        self.copymode = False
 
 class Move(Modifier):
     """The Draft_Move FreeCAD command definition"""
