@@ -272,6 +272,7 @@ class Line(Creator):
 
     def undolast(self):
         """undoes last line segment"""
+        import Part
         if (len(self.node) > 1):
             self.node.pop()
             last = self.node[-1]
@@ -288,6 +289,7 @@ class Line(Creator):
 
     def drawSegment(self,point):
         """draws a new segment"""
+        import Part
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
         if (len(self.node) == 1):
@@ -440,6 +442,7 @@ class BSpline(Line):
 
     def undolast(self):
         """undoes last line segment"""
+        import Part
         if (len(self.node) > 1):
             self.node.pop()
             self.bsplinetrack.update(self.node)
@@ -449,6 +452,7 @@ class BSpline(Line):
             FreeCAD.Console.PrintMessage(translate("draft", "Last point has been removed")+"\n")
 
     def drawUpdate(self,point):
+        import Part
         if (len(self.node) == 1):
             self.bsplinetrack.on()
             if self.planetrack:
@@ -560,6 +564,7 @@ class BezCurve(Line):
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
+        import Part
         edges = []
         if len(pts) >= 2: #allow lower degree segment
             poles=pts[1:]
@@ -714,7 +719,8 @@ class CubicBezCurve(Line):
 
     def updateShape(self, pts):
         '''creates shape for display during creation process.'''
-# not quite right. draws 1 big bez.  sb segmented
+        import Part
+        # not quite right. draws 1 big bez.  sb segmented
         edges = []
 
         if len(pts) >= 2: #allow lower degree segment
@@ -957,6 +963,7 @@ class Arc(Creator):
 
     def action(self,arg):
         """scene event handler"""
+        import DraftGeomUtils
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
@@ -1172,6 +1179,7 @@ class Arc(Creator):
         FreeCAD.Console.PrintMessage(translate("draft", "Pick radius")+"\n")
 
     def numericRadius(self,rad):
+        import DraftGeomUtils
         """this function gets called by the toolbar when valid radius have been entered there"""
         if (self.step == 1):
             self.rad = rad
@@ -1271,6 +1279,7 @@ class Polygon(Creator):
 
     def action(self,arg):
         """scene event handler"""
+        import DraftGeomUtils
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
@@ -1401,6 +1410,7 @@ class Polygon(Creator):
 
     def numericRadius(self,rad):
         """this function gets called by the toolbar when valid radius have been entered there"""
+        import DraftGeomUtils
         self.rad = rad
         if len(self.tangents) == 2:
             cir = DraftGeomUtils.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
@@ -2686,6 +2696,7 @@ class Offset(Modifier):
 
     def action(self,arg):
         """scene event handler"""
+        import DraftGeomUtils
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
@@ -3297,6 +3308,7 @@ class Trimex(Modifier):
         self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
+        import Part
 
         if not "Shape" in self.obj.PropertiesList: return
         if "Placement" in self.obj.PropertiesList:
@@ -3415,6 +3427,7 @@ class Trimex(Modifier):
         if real: newedges = []
 
         import DraftGeomUtils
+        import Part
 
         # finding the active point
         vlist = []
@@ -3529,6 +3542,7 @@ class Trimex(Modifier):
 
     def trimObject(self):
         """trims the actual object"""
+        import Part
         if self.extrudeMode:
             delta = self.extrude(self.shift,real=True)
             #print("delta",delta)
@@ -3591,6 +3605,7 @@ class Trimex(Modifier):
     def trimObjects(self,objectslist):
         """attempts to trim two objects together"""
         import Part
+        import DraftGeomUtils
         wires = []
         for obj in objectslist:
             if not Draft.getType(obj) in ["Wire","Circle"]:
