@@ -83,6 +83,10 @@ SET(Draft_view_providers
     draftviewproviders/README.md
 )
 
+SET(Creator_tools
+    draftguitools/gui_lines.py
+)
+
 SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_base.py
@@ -106,6 +110,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
     draftguitools/gui_arcs.py
+    ${Creator_tools}
     draftguitools/README.md
 )
 
