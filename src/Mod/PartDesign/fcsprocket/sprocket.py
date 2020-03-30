@@ -16,13 +16,8 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 from math import cos, sin, tan, sqrt, radians, acos, atan, asin, degrees
-import math
 
-import sys
-if sys.version_info.major >= 3:
-    xrange = range
 
-    
 def CreateSprocket(w, P, N, Dr):
     """
     Create a sprocket
