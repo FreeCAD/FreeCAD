@@ -86,6 +86,7 @@ SET(Draft_view_providers
 SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_base.py
+    draftguitools/gui_tool_utils.py
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
