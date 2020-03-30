@@ -52,9 +52,11 @@ def makeSprocket(name):
     return obj
 
 class CommandSprocket:
+
     """
     the Fem Sprocket command definition
     """
+
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_Sprocket',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket..."),
@@ -79,6 +81,7 @@ class Sprocket:
     """
     The Sprocket object
     """
+
     def __init__(self,obj):
         self.Type = "Sprocket"
         obj.addProperty("App::PropertyInteger","NumberOfTeeth","Sprocket","Number of gear teeth")
@@ -138,9 +141,13 @@ class ViewProviderSprocket:
 
 
 class SprocketTaskPanel:
+<<<<<<< HEAD
     """
     The editmode TaskPanel for Sprocket objects
     """
+=======
+    '''The editmode TaskPanel for Sprocket objects'''
+>>>>>>> 07b2401c1... Converted class names from private to public, per feedback from pull request
     def __init__(self,obj,mode):
         self.obj = obj
         
