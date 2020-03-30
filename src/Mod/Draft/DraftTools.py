@@ -148,17 +148,8 @@ from draftguitools.gui_base_original import DraftTool
 # ---------------------------------------------------------------------------
 from draftguitools.gui_tool_utils import redraw3DView
 
+from draftguitools.gui_base_original import Creator
 
-class Creator(DraftTool):
-    """A generic Draft Creator Tool used by creation tools such as line or arc"""
-
-    def __init__(self):
-        DraftTool.__init__(self)
-
-    def Activated(self,name="None",noplanesetup=False):
-        DraftTool.Activated(self,name,noplanesetup)
-        if not noplanesetup:
-            self.support = getSupport()
 
 class Line(Creator):
     """The Line FreeCAD command definition"""
