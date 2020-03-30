@@ -365,9 +365,11 @@ class ObjectSurface(PathOp.ObjectOp):
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
-        #import cProfile
-        #pr = cProfile.Profile()
-        #pr.enable()
+        ######## DEBUG
+        import cProfile
+        pr = cProfile.Profile()
+        pr.enable()
+        ########
 
         self.modelSTLs = list()
         self.safeSTLs = list()
@@ -606,8 +608,10 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.deflection
 
         execTime = time.time() - startTime
-        #pr.disable()
-        #pr.dump_stats("/mnt/files/profile.cprof")
+        ####### DEBUG
+        pr.disable()
+        pr.dump_stats("/mnt/files/profile.cprof")
+        #############
         PathLog.info('Operation time: {} sec.'.format(execTime))
 
         return True
@@ -1421,26 +1425,49 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
             if self.modelTypes[m] == 'M':
-                mesh = M.Mesh
+                #TODO: get this to work with new mesher
+                facets = M.Mesh.Facets
             else:
                 # base.Shape.tessellate(0.05) # 0.5 original value
                 # mesh = MeshPart.meshFromShape(base.Shape, Deflection=self.deflection)
-                mesh = MeshPart.meshFromShape(Shape=M.Shape,
-                                              LinearDeflection=obj.LinearDeflection.Value,
-                                              AngularDeflection=obj.AngularDeflection.Value,
-                                              Relative=False)
+                #facets = MeshPart.meshFromShape(Shape=M.Shape,
+                #                              LinearDeflection=obj.LinearDeflection.Value,
+                #                              AngularDeflection=obj.AngularDeflection.Value,
+                #                              Relative=False)
+                facets = Path.getFacets(M.Shape)
+
+                stl = ocl.STLSurf()
+                
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
-                for f in mesh.Facets:
-                    p = f.Points[0]
-                    q = f.Points[1]
-                    r = f.Points[2]
-                    t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                                        ocl.Point(q[0], q[1], q[2]),
-                                        ocl.Point(r[0], r[1], r[2]))
-                    stl.addTriangle(t)
-                self.modelSTLs[m] = stl
+
+                if obj.Algorithm == 'OCL Dropcutter':
+                    for tri in facets:
+                        #p = tri.Points[0]
+                        #q = tri.Points[1]
+                        #r = tri.Points[2]
+                        #t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
+                        #                 ocl.Point(q[0], q[1], q[2]),
+                        #                 ocl.Point(r[0], r[1], r[2]))
+                        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                                    ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                                    ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+                        stl.addTriangle(t)
+                    self.modelSTLs[m] = stl
+                elif obj.Algorithm == 'OCL Waterline':
+                    for tri in facets:
+                        #p = f.Points[0]
+                        #q = f.Points[1]
+                        #r = f.Points[2]
+                        #t = ocl.Triangle(ocl.Point(p[0], p[1], p[2] + obj.DepthOffset.Value),
+                        #                 ocl.Point(q[0], q[1], q[2] + obj.DepthOffset.Value),
+                        #                 ocl.Point(r[0], r[1], r[2] + obj.DepthOffset.Value))
+                        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2] + obj.DepthOffset.Value),
+                                    ocl.Point(tri[1][0], tri[1][1], tri[1][2] + obj.DepthOffset.Value),
+                                    ocl.Point(tri[2][0], tri[2][1], tri[2][2] + obj.DepthOffset.Value))
+                        stl.addTriangle(t)
+                    self.modelSTLs[m] = stl
         return
 
     def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes):
@@ -1518,20 +1545,13 @@ class ObjectSurface(PathOp.ObjectOp):
             T.purgeTouched()
             self.tempGroup.addObject(T)
 
-        # Extract mesh from fusion
-        meshFuse = MeshPart.meshFromShape(Shape=fused,
-                                          LinearDeflection=obj.LinearDeflection.Value,
-                                          AngularDeflection=obj.AngularDeflection.Value,
-                                          Relative=False)
-        #time.sleep(0.2)
+        facets = Path.getFacets(fused)
+
         stl = ocl.STLSurf()
-        for f in meshFuse.Facets:
-            p = f.Points[0]
-            q = f.Points[1]
-            r = f.Points[2]
-            t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                             ocl.Point(q[0], q[1], q[2]),
-                             ocl.Point(r[0], r[1], r[2]))
+        for tri in facets:
+            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
             stl.addTriangle(t)
 
         self.safeSTLs[mdlIdx] = stl

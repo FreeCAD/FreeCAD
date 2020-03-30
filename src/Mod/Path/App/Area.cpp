@@ -84,10 +84,6 @@
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-// TODO: remove omp and console
-#include <Base/Console.h>
-#include <thread>
-#include <mutex>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
@@ -1294,10 +1290,8 @@ int Area::project(TopoDS_Shape &shape_out,
 
     showShape(joiner.comp,"pre_project");
 
-    auto new_params = params;
-    Area area(new_params);
+    Area area(params);
     area.myParams.SectionCount = 0;
-
     area.myParams.Offset = 0.0;
     area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
@@ -1308,7 +1302,8 @@ int Area::project(TopoDS_Shape &shape_out,
     area.myParams.Coplanar = CoplanarNone;
     area.myProjecting = true;
     area.add(joiner.comp, OperationUnion);
-    const TopoDS_Shape shape = area.getShape();
+    const TopoDS_Shape &shape = area.getShape();
+
     area.myParams.dump("project");
 
     showShape(shape,"projected");
@@ -1483,46 +1478,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             area->setPlane(face.Moved(locInverse));
 
             if(project) {
-                typedef std::list<Shape> container;
-                typedef container::iterator iter;
-                std::mutex m;
-
-                unsigned int n = std::thread::hardware_concurrency();
-                Base::Console().Error("makeSections Threads: %d Shapes: %d\n", n, projectedShapes.size());
-                auto worker = [&m, &d, &area, &locInverse] (iter begin, iter end) {
-                    Base::Console().Error("In worker (# items: %d)\n", std::distance(begin, end));
-                    for (auto it = begin; it != end; it++) {
-                        gp_Trsf t;
-                        t.SetTranslation(gp_Vec(0,0,-d));
-                        TopLoc_Location wloc(t);
-                        {
-                            std::lock_guard<std::mutex> lockGuard(m);
-                            area->add(it->shape.Moved(wloc).Moved(locInverse),it->op);
-                        }
-                    }
-                };
-                if(projectedShapes.size() < n) 
-                {
-                    worker(projectedShapes.begin(), projectedShapes.end());
-                } else {
-                    std::vector<std::thread> threads(n);
-                    const size_t chunk_size = projectedShapes.size() / n;
-                    
-                    size_t thread_num = 1;
-                    for(auto it = std::begin(threads); it != std::end(threads) -1; ++it) 
-                    {
-                        auto begin = projectedShapes.begin();
-                        std::advance(begin, thread_num * chunk_size);
-                        auto end = begin;
-                        if(thread_num == n - 1) // last thread iterates the remaining sequence
-                            end = projectedShapes.end();
-                        else
-                            std::advance(end, chunk_size);
-                        *it = std::thread(worker, begin, end);
-                        thread_num++;
-                    }
-                    for (auto&& i : threads)
-                        i.join();
+                for(const auto &s : projectedShapes) {
+                    gp_Trsf t;
+                    t.SetTranslation(gp_Vec(0,0,-d));
+                    TopLoc_Location wloc(t);
+                    area->add(s.shape.Moved(wloc).Moved(locInverse),s.op);
                 }
                 sections.push_back(area);
                 break;
@@ -1640,55 +1600,18 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
     TopLoc_Location loc(trsf);
     TopLoc_Location locInverse(loc.Inverted());
 
-    typedef std::list<Shape> container;
-    typedef container::const_iterator iter;
-    std::mutex m;
-    int mySkippedShapes = 0;
-
-    unsigned int n = std::thread::hardware_concurrency();
-    Base::Console().Error("getProjectedShapes Threads: %d Shapes: %d\n", n, myShapes.size());
-    auto worker = [&m, &inverse, &loc, &ret, &locInverse, &mySkippedShapes] (iter begin,iter end, const AreaParams& myParams) {
-        Base::Console().Error("In worker (# items: %d)\n", std::distance(begin, end));
-        for (auto it = begin; it != end; it++) {
-            TopoDS_Shape out;
-            int skipped = Area::project(out,it->shape.Moved(loc), &myParams);
-            {
-                std::lock_guard<std::mutex> lockGuard(m);
-                if(skipped < 0) {
-                    ++mySkippedShapes;
-                    continue;
-                }else
-                    mySkippedShapes += skipped;
-                if(!out.IsNull())
-                    ret.emplace_back(it->op,inverse?out.Moved(locInverse):out);
-            }
-
-        }
-    };
-    if(myShapes.size() < n) 
-    {
-        worker(myShapes.begin(), myShapes.end(), myParams);
-    } else {
-        std::vector<std::thread> threads(n);
-        const size_t chunk_size = myShapes.size() / n;
-        
-        size_t thread_num = 1;
-        for(auto it = std::begin(threads); it != std::end(threads) -1; ++it) 
-        {
-            auto begin = myShapes.begin();
-            std::advance(begin, thread_num * chunk_size);
-            auto end = begin;
-            if(thread_num == n - 1) // last thread iterates the remaining sequence
-                end = myShapes.end();
-            else
-                std::advance(end, chunk_size);
-            *it = std::thread(worker, begin, end, myParams);
-            thread_num++;
-        }
-        for (auto&& i : threads)
-            i.join();
+    mySkippedShapes = 0;
+    for(auto &s : myShapes) {
+        TopoDS_Shape out;
+        int skipped = Area::project(out,s.shape.Moved(loc),&myParams);
+        if(skipped < 0) {
+            ++mySkippedShapes;
+            continue;
+        }else
+            mySkippedShapes += skipped;
+        if(!out.IsNull())
+            ret.emplace_back(s.op,inverse?out.Moved(locInverse):out);
     }
-
     if(mySkippedShapes)
         AREA_WARN("skipped " << mySkippedShapes << " sub shapes during projection");
     return ret;

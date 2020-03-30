@@ -44,6 +44,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Iterator.hxx>
 #include <TopExp_Explorer.hxx>
@@ -53,6 +54,7 @@
 #include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 
 #include "CommandPy.h"
 #include "PathPy.h"
@@ -103,6 +105,9 @@ public:
 
     Module() : Py::ExtensionModule<Module>("Path")
     {
+        add_varargs_method("getFacets",&Module::getFacets,
+            "getFacets(shape): simplified mesh generation"
+        );
         add_varargs_method("write",&Module::write,
             "write(object,filename): Exports a given path object to a GCode file"
         );
@@ -141,6 +146,49 @@ public:
     virtual ~Module() {}
 
 private:
+
+    Py::Object getFacets(const Py::Tuple& args)
+    {
+        PyObject *shape;
+        PyObject *list = PyList_New(0);
+        if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) 
+            throw Py::Exception();
+        auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        for(TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next())
+        {
+            TopoDS_Face currentFace = TopoDS::Face(ex.Current());
+            TopLoc_Location loc;
+            Handle(Poly_Triangulation) facets = BRep_Tool::Triangulation(currentFace, loc);
+            const TopAbs_Orientation anOrientation = currentFace.Orientation();
+            bool flip = (anOrientation == TopAbs_REVERSED);
+            if(!facets.IsNull()){
+                auto nodes = facets->Nodes();
+                auto triangles = facets->Triangles();
+                for(int i = 1; i <= triangles.Length(); i++){
+                    Standard_Integer n1,n2,n3;
+                    triangles[i].Get(n1, n2, n3);
+                    gp_Pnt p1 = nodes[n1];
+                    gp_Pnt p2 = nodes[n2];
+                    gp_Pnt p3 = nodes[n3];
+                    p1.Transform(loc.Transformation());
+                    p2.Transform(loc.Transformation());
+                    p3.Transform(loc.Transformation());
+                    PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
+                    PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
+                    PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
+                    PyObject *points;
+                    if(flip)
+                    {
+                        points = PyTuple_Pack(3, t2, t1, t3);
+                    } else {
+                        points = PyTuple_Pack(3, t1, t2, t3);
+                    }
+                    PyList_Append(list, points);
+                }
+            }
+        }     
+        return Py::asObject(list);
+    }
 
     Py::Object write(const Py::Tuple& args)
     {
