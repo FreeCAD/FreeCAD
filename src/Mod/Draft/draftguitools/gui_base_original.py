@@ -38,6 +38,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftutils.todo as todo
 import draftguitools.gui_trackers as trackers
+import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg, _log
 
 
@@ -251,3 +252,36 @@ class DraftTool:
             fil = "True"
 
         return qr, sup, points, fil
+
+
+class Creator(DraftTool):
+    """A generic Creator tool, used by creation tools such as line or arc.
+
+    It runs the Activated method from the parent class.
+    If `noplanesetup` is `False`, it sets the appropriate `support` attribute
+    and sets the working plane with `gui_tool_utils.get_support`.
+
+    It inherits `DraftTool`, which sets up the majority of the behavior
+    of this class.
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def Activated(self, name="None", noplanesetup=False):
+        """Execute when the command is called.
+
+        Parameters
+        ----------
+        name: str, optional
+            It defaults to `'None'`.
+            It is the `featureName` of the object, to know what is being run.
+
+        noplanesetup: bool, optional
+            It defaults to `False`.
+            If it is `False` it will set up the working plane
+            by running `App.DraftWorkingPlane.setup()`.
+        """
+        super().Activated(name, noplanesetup)
+        if not noplanesetup:
+            self.support = gui_tool_utils.get_support()
