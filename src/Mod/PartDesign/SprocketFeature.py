@@ -34,11 +34,13 @@ __url__ = "http://www.freecadweb.org"
 
 
 def makeSprocket(name):
-    '''makeSprocket(name): makes a Sprocket'''
+    """
+    makeSprocket(name): makes a Sprocket
+    """
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",name)
-    _Sprocket(obj)
+    Sprocket(obj)
     if FreeCAD.GuiUp:
-        _ViewProviderSprocket(obj.ViewObject)
+        ViewProviderSprocket(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     if FreeCAD.GuiUp:
         body=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("pdbody")
@@ -49,8 +51,10 @@ def makeSprocket(name):
             part.Group=part.Group+[obj]
     return obj
 
-class _CommandSprocket:
-    "the Fem Sprocket command definition"
+class CommandSprocket:
+    """
+    the Fem Sprocket command definition
+    """
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_Sprocket',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket..."),
@@ -71,8 +75,10 @@ class _CommandSprocket:
             return False
 
        
-class _Sprocket:
-    "The Sprocket object"
+class Sprocket:
+    """
+    The Sprocket object
+    """
     def __init__(self,obj):
         self.Type = "Sprocket"
         obj.addProperty("App::PropertyInteger","NumberOfTeeth","Sprocket","Number of gear teeth")
@@ -98,8 +104,10 @@ class _Sprocket:
         return
         
         
-class _ViewProviderSprocket:
-    "A View Provider for the Sprocket object"
+class ViewProviderSprocket:
+    """
+    A View Provider for the Sprocket object
+    """
 
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -111,9 +119,8 @@ class _ViewProviderSprocket:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-  
     def setEdit(self,vobj,mode):
-        taskd = _SprocketTaskPanel(self.Object,mode)
+        taskd = SprocketTaskPanel(self.Object,mode)
         taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
@@ -130,8 +137,10 @@ class _ViewProviderSprocket:
         return None
 
 
-class _SprocketTaskPanel:
-    '''The editmode TaskPanel for Sprocket objects'''
+class SprocketTaskPanel:
+    """
+    The editmode TaskPanel for Sprocket objects
+    """
     def __init__(self,obj,mode):
         self.obj = obj
         
@@ -150,14 +159,18 @@ class _SprocketTaskPanel:
             FreeCAD.Gui.SendMsgToActiveView("ViewFit")
         
     def transferTo(self):
-        "Transfer from the dialog to the object" 
+        """
+        Transfer from the dialog to the object
+        """ 
         self.obj.NumberOfTeeth  = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Pitch        = self.form.Quantity_Pitch.text()
         self.obj.RollerDiameter  = self.form.Quantity_RollerDiameter.text()
         self.obj.ANSISize     = self.form.comboBox_ANSISize.currentText()
     
     def transferFrom(self):
-        "Transfer from the object to the dialog"
+        """
+        Transfer from the object to the dialog
+        """
         self.form.spinBox_NumberOfTeeth.setValue(self.obj.NumberOfTeeth)
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
@@ -214,7 +227,6 @@ class _SprocketTaskPanel:
             self.obj.Proxy.execute(self.obj) 
         
     def update(self):
-        'fills the widgets'
         self.transferFrom()
                 
     def accept(self):
@@ -229,4 +241,4 @@ class _SprocketTaskPanel:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('PartDesign_Sprocket',_CommandSprocket())
+    FreeCADGui.addCommand('PartDesign_Sprocket', CommandSprocket())
