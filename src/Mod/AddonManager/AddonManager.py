@@ -468,7 +468,7 @@ class CommandAddonManager:
                 macro_path = macro_path.replace("\\","/")
 
                 FreeCADGui.open(str(macro_path))
-                self.hide()
+                self.dialog.hide()
                 FreeCADGui.SendMsgToActiveView("Run")
         else:
             self.dialog.buttonExecute.setEnabled(False)
