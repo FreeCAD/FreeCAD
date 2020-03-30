@@ -36,9 +36,9 @@ __url__ = "http://www.freecadweb.org"
 def makeSprocket(name):
     '''makeSprocket(name): makes a Sprocket'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",name)
-    _Sprocket(obj)
+    Sprocket(obj)
     if FreeCAD.GuiUp:
-        _ViewProviderSprocket(obj.ViewObject)
+        ViewProviderSprocket(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     if FreeCAD.GuiUp:
         body=FreeCADGui.ActiveDocument.ActiveView.getActiveObject("pdbody")
@@ -49,7 +49,7 @@ def makeSprocket(name):
             part.Group=part.Group+[obj]
     return obj
 
-class _CommandSprocket:
+class CommandSprocket:
     "the Fem Sprocket command definition"
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_Sprocket',
@@ -71,7 +71,7 @@ class _CommandSprocket:
             return False
 
        
-class _Sprocket:
+class Sprocket:
     "The Sprocket object"
     def __init__(self,obj):
         self.Type = "Sprocket"
@@ -98,7 +98,7 @@ class _Sprocket:
         return
         
         
-class _ViewProviderSprocket:
+class ViewProviderSprocket:
     "A View Provider for the Sprocket object"
 
     def __init__(self,vobj):
@@ -111,9 +111,8 @@ class _ViewProviderSprocket:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-  
     def setEdit(self,vobj,mode):
-        taskd = _SprocketTaskPanel(self.Object,mode)
+        taskd = SprocketTaskPanel(self.Object,mode)
         taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
@@ -130,7 +129,7 @@ class _ViewProviderSprocket:
         return None
 
 
-class _SprocketTaskPanel:
+class SprocketTaskPanel:
     '''The editmode TaskPanel for Sprocket objects'''
     def __init__(self,obj,mode):
         self.obj = obj
@@ -229,4 +228,4 @@ class _SprocketTaskPanel:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('PartDesign_Sprocket',_CommandSprocket())
+    FreeCADGui.addCommand('PartDesign_Sprocket', CommandSprocket())
