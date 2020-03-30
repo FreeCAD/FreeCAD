@@ -100,9 +100,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "If true, the temporary path construction objects will be shown.")),
 
             ("App::PropertyDistance", "AngularDeflection", "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.")),
             ("App::PropertyDistance", "LinearDeflection", "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.")),
 
             ("App::PropertyFloat", "CutterTilt", "Rotational",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Stop index(angle) for rotational scan")),
@@ -333,8 +333,8 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.CutterTilt = 90.0
 
         # Limit sample interval
-        if obj.SampleInterval.Value < 0.001:
-            obj.SampleInterval.Value = 0.001
+        if obj.SampleInterval.Value < 0.0001:
+            obj.SampleInterval.Value = 0.0001
             PathLog.error(translate('PathSurface', 'Sample interval limits are 0.001 to 25.4 millimeters.'))
         if obj.SampleInterval.Value > 25.4:
             obj.SampleInterval.Value = 25.4
@@ -416,12 +416,12 @@ class ObjectSurface(PathOp.ObjectOp):
         # ... and move cutter to clearance height and startpoint
         output = ''
         if obj.Comment != '':
-            output += '(' + str(obj.Comment) + ')\n'
-        output += '(' + obj.Label + ')\n'
-        output += '(Tool type: ' + str(obj.ToolController.Tool.ToolType) + ')\n'
-        output += '(Compensated Tool Path. Diameter: ' + str(obj.ToolController.Tool.Diameter) + ')\n'
-        output += '(Sample interval: ' + str(obj.SampleInterval.Value) + ')\n'
-        output += '(Step over %: ' + str(obj.StepOver) + ')\n'
+            self.commandlist.append(Path.Command('N ({})'.format(str(obj.Comment)), {}))
+        self.commandlist.append(Path.Command('N ({})'.format(obj.Label), {}))
+        self.commandlist.append(Path.Command('N (Tool type: {})'.format(str(obj.ToolController.Tool.ToolType)), {}))
+        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(str(obj.ToolController.Tool.Diameter)), {}))
+        self.commandlist.append(Path.Command('N (Sample interval: {})'.format(str(obj.SampleInterval.Value)), {}))
+        self.commandlist.append(Path.Command('N (Step over %: {})'.format(str(obj.StepOver)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(output), {}))
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if obj.UseStartPoint is True:
@@ -1123,17 +1123,17 @@ class ObjectSurface(PathOp.ObjectOp):
         if isVoid is False:
             if isHole is True:
                 offset = -1 * obj.InternalFeaturesAdjustment.Value
-                offset += self.radius  # (self.radius + (tolrnc / 10.0))
+                offset += self.radius + (tolrnc / 10.0)
             else:
                 offset = -1 * obj.BoundaryAdjustment.Value
                 if obj.BoundaryEnforcement is True:
-                    offset += self.radius  # (self.radius + (tolrnc / 10.0))
+                    offset += self.radius + (tolrnc / 10.0)
                 else:
-                    offset -= self.radius  # (self.radius + (tolrnc / 10.0))
+                    offset -= self.radius + (tolrnc / 10.0)
                 offset = 0.0 - offset
         else:
             offset = -1 * obj.BoundaryAdjustment.Value
-            offset += self.radius  # (self.radius + (tolrnc / 10.0))
+            offset += self.radius + (tolrnc / 10.0)
 
         return offset
 
@@ -2356,7 +2356,11 @@ class ObjectSurface(PathOp.ObjectOp):
                 p1 = FreeCAD.Vector(v1.X, v1.Y, v1.Z)
                 sp = (v1.X, v1.Y, 0.0)
                 rad = p1.sub(COM).Length
-                tolrncAng = math.asin(space/rad)
+                spcRadRatio = space/rad
+                if spcRadRatio < 1.0:
+                    tolrncAng = math.asin(spcRadRatio)
+                else:
+                    tolrncAng = 0.999998 * math.pi
                 X = COM.x + (rad * math.cos(tolrncAng))
                 Y = v1.Y - space  # rad * math.sin(tolrncAng)
 
@@ -2392,8 +2396,12 @@ class ObjectSurface(PathOp.ObjectOp):
                     # Pop connected edge index values from arc segments index list
                     iEi = EI.index(iE)
                     iSi = EI.index(iS)
-                    EI.pop(iEi)
-                    EI.pop(iSi)
+                    if iEi > iSi:
+                        EI.pop(iEi)
+                        EI.pop(iSi)
+                    else:
+                        EI.pop(iSi)
+                        EI.pop(iEi)
                     if len(EI) > 0:
                         PRTS.append('BRK')
                         chkGap = True
