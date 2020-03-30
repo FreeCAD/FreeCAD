@@ -112,13 +112,6 @@
       <layout class="QHBoxLayout" name="hlOtherSideLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="leOtherTextR">
-           <property name="toolTip">
-            <string>Text after other side symbol</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="pbOtherSymbol">
            <property name="toolTip">
@@ -129,17 +122,58 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLineEdit" name="leOtherTextL">
-           <property name="toolTip">
-            <string>Text before other side symbol</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="leOtherTextC">
            <property name="toolTip">
             <string>Text below other side symbol</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="leOtherTextR">
+           <property name="toolTip">
+            <string>Text after other side symbol</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" alignment="Qt::AlignRight">
+          <widget class="QPushButton" name="pbFlipSides">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Flips the sides</string>
+           </property>
+           <property name="text">
+            <string>Flip Sides</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLineEdit" name="leOtherTextL">
+           <property name="toolTip">
+            <string>Text before other side symbol</string>
            </property>
           </widget>
          </item>

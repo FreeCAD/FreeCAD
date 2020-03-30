@@ -108,6 +108,8 @@ public Q_SLOTS:
     void onOtherSymbolClicked();
     void onOtherEraseCreateClicked();
     void onOtherEraseClicked();
+    void onFlipSidesCreateClicked();
+    void onFlipSidesClicked();
     void onArrowTextChanged();
     void onOtherTextChanged();
     void onWeldingChanged();
