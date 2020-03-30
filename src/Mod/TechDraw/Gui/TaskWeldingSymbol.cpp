@@ -102,6 +102,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
             this, SLOT(onOtherSymbolCreateClicked()));
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
             this, SLOT(onOtherEraseCreateClicked()));
+    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
+        this, SLOT(onFlipSidesCreateClicked()));
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
             this, SLOT(onDirectorySelected(const QString&)));
 }
@@ -136,11 +138,12 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
     connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
         this, SLOT(onArrowSymbolClicked()));
-
     connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
         this, SLOT(onOtherSymbolClicked()));
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
         this, SLOT(onOtherEraseClicked()));
+    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
+        this, SLOT(onFlipSidesClicked()));
 
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
         this, SLOT(onDirectorySelected(const QString&)));
@@ -231,7 +234,7 @@ void TaskWeldingSymbol::setUiEdit()
         if (fi.isReadable()) {
             qTemp = QString::fromUtf8(m_arrowFeat->SymbolFile.getValue());
             QIcon targetIcon(qTemp);
-            QSize iconSize(32,32);
+            QSize iconSize(32, 32);
             ui->pbArrowSymbol->setIcon(targetIcon);
             ui->pbArrowSymbol->setIconSize(iconSize);
             ui->pbArrowSymbol->setText(QString());
@@ -331,6 +334,56 @@ void TaskWeldingSymbol::onOtherEraseClicked()
     ui->pbOtherSymbol->setText(tr("Symbol"));
     m_otherOut.init();
     m_otherPath = QString();
+    updateTiles();
+    m_weldFeat->requestPaint();
+}
+
+void TaskWeldingSymbol::onFlipSidesCreateClicked()
+{
+    QString tempText = ui->leOtherTextL->text();
+    ui->leOtherTextL->setText(ui->leArrowTextL->text());
+    ui->leArrowTextL->setText(tempText);
+    tempText = ui->leOtherTextC->text();
+    ui->leOtherTextC->setText(ui->leArrowTextC->text());
+    ui->leArrowTextC->setText(tempText);
+    tempText = ui->leOtherTextR->text();
+    ui->leOtherTextR->setText(ui->leArrowTextR->text());
+    ui->leArrowTextR->setText(tempText);
+
+    QString tempPathArrow = m_otherPath;
+    m_otherPath = m_arrowPath;
+    m_arrowPath = tempPathArrow;
+    tempText = ui->pbOtherSymbol->text();
+    ui->pbOtherSymbol->setText(ui->pbArrowSymbol->text());
+    ui->pbArrowSymbol->setText(tempText);
+    QIcon tempIcon = ui->pbOtherSymbol->icon();
+    ui->pbOtherSymbol->setIcon(ui->pbArrowSymbol->icon());
+    ui->pbArrowSymbol->setIcon(tempIcon);
+}
+
+void TaskWeldingSymbol::onFlipSidesClicked()
+{
+    QString tempText = ui->leOtherTextL->text();
+    ui->leOtherTextL->setText(ui->leArrowTextL->text());
+    ui->leArrowTextL->setText(tempText);
+    tempText = ui->leOtherTextC->text();
+    ui->leOtherTextC->setText(ui->leArrowTextC->text());
+    ui->leArrowTextC->setText(tempText);
+    tempText = ui->leOtherTextR->text();
+    ui->leOtherTextR->setText(ui->leArrowTextR->text());
+    ui->leArrowTextR->setText(tempText);
+
+    // one cannot get the path from the icon therfore read out
+    // the path property
+    auto tempPathArrow = m_arrowFeat->SymbolFile.getValue();
+    auto tempPathOther = m_otherFeat->SymbolFile.getValue();
+    m_otherPath = QString::fromLatin1(tempPathArrow);
+    m_arrowPath = QString::fromLatin1(tempPathOther);
+    QIcon tempIcon = ui->pbOtherSymbol->icon();
+    ui->pbOtherSymbol->setIcon(ui->pbArrowSymbol->icon());
+    ui->pbArrowSymbol->setIcon(tempIcon);
+
+    m_otherDirty = true;
     updateTiles();
     m_weldFeat->requestPaint();
 }
