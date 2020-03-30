@@ -365,11 +365,6 @@ class ObjectSurface(PathOp.ObjectOp):
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
-        ######## DEBUG
-        import cProfile
-        pr = cProfile.Profile()
-        pr.enable()
-        ########
 
         self.modelSTLs = list()
         self.safeSTLs = list()
@@ -608,10 +603,6 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.deflection
 
         execTime = time.time() - startTime
-        ####### DEBUG
-        pr.disable()
-        pr.dump_stats("/mnt/files/profile.cprof")
-        #############
         PathLog.info('Operation time: {} sec.'.format(execTime))
 
         return True
