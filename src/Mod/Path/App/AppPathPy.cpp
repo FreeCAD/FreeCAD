@@ -166,10 +166,10 @@ private:
                 auto triangles = facets->Triangles();
                 for(int i = 1; i <= triangles.Length(); i++){
                     Standard_Integer n1,n2,n3;
-                    triangles[i].Get(n1, n2, n3);
-                    gp_Pnt p1 = nodes[n1];
-                    gp_Pnt p2 = nodes[n2];
-                    gp_Pnt p3 = nodes[n3];
+                    triangles(i).Get(n1, n2, n3);
+                    gp_Pnt p1 = nodes(n1);
+                    gp_Pnt p2 = nodes(n2);
+                    gp_Pnt p3 = nodes(n3);
                     p1.Transform(loc.Transformation());
                     p2.Transform(loc.Transformation());
                     p3.Transform(loc.Transformation());
