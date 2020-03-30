@@ -249,7 +249,7 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
+        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
             self.setFields()
