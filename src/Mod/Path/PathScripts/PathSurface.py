@@ -1416,15 +1416,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
             if self.modelTypes[m] == 'M':
-                #TODO: get this to work with new mesher
-                facets = M.Mesh.Facets
+                #TODO: test if this works
+                facets = M.Mesh.Facets.Points
             else:
-                # base.Shape.tessellate(0.05) # 0.5 original value
-                # mesh = MeshPart.meshFromShape(base.Shape, Deflection=self.deflection)
-                #facets = MeshPart.meshFromShape(Shape=M.Shape,
-                #                              LinearDeflection=obj.LinearDeflection.Value,
-                #                              AngularDeflection=obj.AngularDeflection.Value,
-                #                              Relative=False)
                 facets = Path.getFacets(M.Shape)
 
                 stl = ocl.STLSurf()
@@ -1435,12 +1429,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
                 if obj.Algorithm == 'OCL Dropcutter':
                     for tri in facets:
-                        #p = tri.Points[0]
-                        #q = tri.Points[1]
-                        #r = tri.Points[2]
-                        #t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                        #                 ocl.Point(q[0], q[1], q[2]),
-                        #                 ocl.Point(r[0], r[1], r[2]))
                         t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
                                     ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
                                     ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
@@ -1448,12 +1436,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     self.modelSTLs[m] = stl
                 elif obj.Algorithm == 'OCL Waterline':
                     for tri in facets:
-                        #p = f.Points[0]
-                        #q = f.Points[1]
-                        #r = f.Points[2]
-                        #t = ocl.Triangle(ocl.Point(p[0], p[1], p[2] + obj.DepthOffset.Value),
-                        #                 ocl.Point(q[0], q[1], q[2] + obj.DepthOffset.Value),
-                        #                 ocl.Point(r[0], r[1], r[2] + obj.DepthOffset.Value))
                         t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2] + obj.DepthOffset.Value),
                                     ocl.Point(tri[1][0], tri[1][1], tri[1][2] + obj.DepthOffset.Value),
                                     ocl.Point(tri[2][0], tri[2][1], tri[2][2] + obj.DepthOffset.Value))
@@ -2475,8 +2457,6 @@ class ObjectSurface(PathOp.ObjectOp):
         pdc.run()  # run dropcutter algorithm on path
         CLP = pdc.getCLPoints()
         PNTS = [FreeCAD.Vector(p.x, p.y, p.z) for p in CLP]
-        #for p in CLP:
-        #    PNTS.append(FreeCAD.Vector(p.x, p.y, p.z))
         return PNTS  # pdc.getCLPoints()
 
     def _planarCircularDropCutScan(self, pdc, Arc, cMode):
@@ -3717,10 +3697,6 @@ class ObjectSurface(PathOp.ObjectOp):
         B = (p2.x, p2.y)
         LINE = self._planarDropCutScan(pdc, A, B)
         zMax = max([obj.z for obj in LINE])
-        #zMax = LINE[0].z
-        #for p in LINE:
-        #    if p.z > zMax:
-        #        zMax = p.z
         if minDep is not None:
             if zMax < minDep:
                 zMax = minDep

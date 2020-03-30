@@ -54,7 +54,6 @@
 #include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
 
 #include "CommandPy.h"
 #include "PathPy.h"
