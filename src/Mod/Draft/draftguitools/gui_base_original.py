@@ -285,3 +285,18 @@ class Creator(DraftTool):
         super().Activated(name, noplanesetup)
         if not noplanesetup:
             self.support = gui_tool_utils.get_support()
+
+
+class Modifier(DraftTool):
+    """A generic Modifier tool, used by modification tools such as move.
+
+    After initializing the parent class, it sets the `copymode` attribute
+    to `False`.
+
+    It inherits `DraftTool`, which sets up the majority of the behavior
+    of this class.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.copymode = False
