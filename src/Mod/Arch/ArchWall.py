@@ -50,12 +50,40 @@ __url__ = "http://www.freecadweb.org"
 
 
 
-def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
+def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
+    '''Creates a wall based on a given object, and returns the generated wall.
 
-    '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
-    given object, which can be a sketch, a draft object, a face or a solid, or no object at
-    all, then you must provide length, width and height. Align can be "Center","Left" or "Right",
-    face can be an index number of a face in the base object to base the wall on.'''
+Notes
+-----
+TODO: It is unclear what defines which units this function uses, or what
+defines which units this function uses.
+
+Parameters
+----------
+baseobj: <Part::PartFeature>, optional
+    The base object with which to build the wall. This can be a sketch, a draft
+    object, a face, or a solid. It can also be left as None.
+height: float, optional
+    The height of the wall.
+length: float, optional
+    The length of the wall. Not used if the wall is based off an object.
+    Will use Arch default if left empty.
+width: float, optional
+    The width of the wall. Not used if the base object is a face.  Will
+    use Arch default if left empty.
+align: str, optional
+    Either "Center", "Left", or "Right". Effects the alignment of the wall on
+    it's baseline.
+face: int, optional
+    The index number of a face on the given baseobj, to base the wall on.
+name: str, optional
+    The name to give to the created wall.
+
+Returns
+-------
+<class 'ArchComponent.Component'>
+    Returns the generated wall.
+'''
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -90,9 +118,26 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     return obj
 
 def joinWalls(walls,delete=False):
+    """ Joins the given list of walls into one sketch-based wall.
 
-    """joins the given list of walls into one sketch-based wall. If delete
-    is True, merged wall objects are deleted"""
+Takes the first wall in the list, and adds on the other walls in the list.
+Returns the modified first wall. 
+
+Setting delete to True, will delete the other walls. Will only join walls if
+the walls have the same width, height and alignment.
+
+Parameters
+----------
+walls: list of <class 'ArchComponent.Component'>
+    List containing the walls to add to the first wall in the list. Walls must
+    be based off a base object.
+delete: bool, optional
+    If True, deletes the other walls in the list.
+
+Returns
+-------
+<class 'ArchComponent.Component'>
+"""
 
     import Part
     if not walls:
@@ -129,8 +174,11 @@ def joinWalls(walls,delete=False):
     return base
 
 def mergeShapes(w1,w2):
+    """Not currently implemented. 
 
-    "returns a Shape built on two walls that share same properties and have a coincident endpoint"
+Returns a Shape built on two walls that share same properties and have a
+coincident endpoint.
+"""
 
     if not areSameWallTypes([w1,w2]):
         return None
@@ -155,8 +203,17 @@ def mergeShapes(w1,w2):
     return None
 
 def areSameWallTypes(walls):
+    """Checks if a list of walls have the same height, width and alignment.
 
-    "returns True is all the walls in the given list have same height, width, and alignment"
+Parameters
+----------
+walls: list of <class 'ArchComponent.Component'>
+
+Returns
+-------
+bool
+    True if the walls have the same height, width and alignment, false if otherwise.
+"""
 
     for att in ["Width","Height","Align"]:
         value = None
@@ -177,10 +234,17 @@ def areSameWallTypes(walls):
 
 
 class _CommandWall:
+    """The command definition for the Arch workbench's gui tool, Arch Wall. A tool for creating Arch walls.
 
-    "the Arch Wall command definition"
+Creates a wall from the object selected by the user. If no objects are
+selected, enters interactive mode to create a wall using selected points.
+
+Find documentation on the end user usage of Arch Wall here:
+https://wiki.freecadweb.org/Arch_Wall
+"""
 
     def GetResources(self):
+        """Returns a dictonary with the visual aspects of the Arch Wall tool."""
 
         return {'Pixmap'  : 'Arch_Wall',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
@@ -188,10 +252,20 @@ class _CommandWall:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
 
     def IsActive(self):
+        """Determines whether or not the Arch Wall tool is active. 
+
+        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        """
 
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+        """Executed when Arch Wall is called.
+
+Creates a wall from the object selected by the user. If no objects are
+selected, enters interactive mode to create a wall using selected points
+to create a base.
+"""
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
@@ -238,11 +312,25 @@ class _CommandWall:
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox(),title=translate("Arch","First point of wall")+":")
+            FreeCADGui.Snapper.getPoint(
+                    callback=self.getPoint,
+                    extradlg=self.taskbox(),
+                    title=translate("Arch","First point of wall")+":"
+                    )
 
     def getPoint(self,point=None,obj=None):
+        """Callback for clicks during interactive mode.
 
-        "this function is called by the snapper when it has a 3D point"
+When method _CommandWall.Activated() has entered the interactive mode this
+callback runs when the user clicks.
+
+Parameters
+----------
+point: <class 'Base.Vector'>
+    The point the user has selected.
+obj: <Part::PartFeature>, optional
+    The object the user's cursor snapped to, if any.
+"""
 
         if obj:
             if Draft.getType(obj) == "Wall":
@@ -256,10 +344,20 @@ class _CommandWall:
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox(),title=translate("Arch","Next point")+":",mode="line")
+            FreeCADGui.Snapper.getPoint(
+                    last=self.points[0],
+                    callback=self.getPoint,
+                    movecallback=self.update,
+                    extradlg=self.taskbox(),
+                    title=translate("Arch","Next point")+":",mode="line"
+                    )
+
         elif len(self.points) == 2:
             import Part
-            l = Part.LineSegment(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1]))
+            l = Part.LineSegment(
+                    FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),
+                    FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1])
+                    )
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
@@ -292,7 +390,15 @@ class _CommandWall:
             if self.continueCmd:
                 self.Activated()
 
-    def addDefault(self,l):
+    def addDefault(self):
+        """Creates a wall using a line segment, with all paramters as the default.
+
+Used solely by _CommandWall.getPoint() when the interactive mode has selected
+two points.
+
+Relies on the assumption that FreeCADGui.doCommand() has already created a
+Part.LineSegment assigned as the variable "trace"
+"""
 
         FreeCADGui.addModule("Draft")
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
@@ -308,9 +414,18 @@ class _CommandWall:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
-    def update(self,point,info):
+    def update(self,point):
+        """Callback for the mouse moving during the interactive mode.
 
-        "this function is called by the Snapper when the mouse is moved"
+Updates the active dialog box to show the co-ordinates of the location of the
+cursor. It also shows the length the line would take, if the user selected that
+point.
+
+Parameters
+----------
+point: <class 'Base.Vector'>
+    The point the cursor is currently at, or has snapped to.
+"""
 
         if FreeCADGui.Control.activeDialog():
             b = self.points[0]
