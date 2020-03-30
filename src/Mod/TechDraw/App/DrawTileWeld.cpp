@@ -53,18 +53,17 @@ DrawTileWeld::DrawTileWeld(void)
     static const char *group = "TileWeld";
 
     ADD_PROPERTY_TYPE(LeftText,(""),group,(App::PropertyType)(App::Prop_None),
-                      "Text LHS");
-    ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text RHS");
-    ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above Symbol");
-    ADD_PROPERTY_TYPE(SymbolFile, (prefSymbol()), group, App::Prop_None, "Symbol Symbol File");
-    ADD_PROPERTY_TYPE(SymbolIncluded, (""), group,App::Prop_None,
+                      "Text before symbol");
+    ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text after symbol");
+    ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above/below symbol");
+    ADD_PROPERTY_TYPE(SymbolFile, (prefSymbol()), group, App::Prop_None, "Symbol File");
+    ADD_PROPERTY_TYPE(SymbolIncluded, (""), group, App::Prop_None,
                                             "Embedded Symbol. System use only.");   // n/a to end users
 
 //    SymbolFile.setStatus(App::Property::ReadOnly,true);
 
     std::string svgFilter("Symbol files (*.svg *.SVG);;All files (*)");
     SymbolFile.setFilter(svgFilter);
-
 }
 
 DrawTileWeld::~DrawTileWeld()

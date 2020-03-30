@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SymbolChooser</class>
- <widget class="QDialog" name="SymbolChooser">
+ <class>TechDrawGui::SymbolChooser</class>
+ <widget class="QDialog" name="TechDrawGui::SymbolChooser">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -9,108 +9,59 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>394</height>
+    <width>360</width>
+    <height>280</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SymbolChooser</string>
+   <string>Symbol Chooser</string>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>19</x>
-     <y>19</y>
-     <width>361</width>
-     <height>341</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <property name="lineWidth">
-    <number>2</number>
-   </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>19</y>
-      <width>341</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QListWidget" name="lwSymbols"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>220</y>
-      <width>341</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pbCancel">
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pbOK">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>280</y>
-      <width>341</width>
-      <height>35</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QListWidget" name="lwSymbols">
+     <property name="toolTip">
+      <string>Select a symbol that should be used</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="bbButtons">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Symbol Dir</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="Gui::FileChooser" name="fcSymbolDir">
+       <property name="toolTip">
+        <string>Directory to welding symbols.</string>
+       </property>
        <property name="mode">
         <enum>Gui::FileChooser::Directory</enum>
        </property>
       </widget>
      </item>
     </layout>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
@@ -120,5 +71,38 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>bbButtons</sender>
+   <signal>accepted()</signal>
+   <receiver>TechDrawGui::SymbolChooser</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>179</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bbButtons</sender>
+   <signal>rejected()</signal>
+   <receiver>TechDrawGui::SymbolChooser</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>179</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
