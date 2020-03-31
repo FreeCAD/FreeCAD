@@ -39,6 +39,7 @@ import FreeCAD
 
 from .. import writerbase
 from femmesh import meshtools
+from femtools import geomtools
 
 
 class FemInputWriterCcx(writerbase.FemInputWriter):
@@ -1084,11 +1085,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("** " + trans_obj.Label + "\n")
             if trans_obj.TransformType == "Rectangular":
                 f.write("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
-                coords = meshtools.get_rectangular_coords(trans_obj)
+                coords = geomtools.get_rectangular_coords(trans_obj)
                 f.write(coords + "\n")
             elif trans_obj.TransformType == "Cylindrical":
                 f.write("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
-                coords = meshtools.get_cylindrical_coords(trans_obj)
+                coords = geomtools.get_cylindrical_coords(trans_obj)
                 f.write(coords + "\n")
 
     def write_constraints_selfweight(self, f):

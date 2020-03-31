@@ -59,15 +59,22 @@ def get_draft_array_commands():
 
 def get_draft_modification_commands():
     """Return the modification commands list."""
-    lst = ["Draft_Move", "Draft_Rotate", "Draft_Offset",
-           "Draft_Trimex", "Draft_Join", "Draft_Split",
-           "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-           "Draft_Edit", "Draft_SubelementHighlight",
-           "Draft_WireToBSpline", "Draft_Draft2Sketch",
-           "Draft_Shape2DView"]
+    lst = ["Draft_Move", "Draft_Rotate",
+           "Draft_Scale", "Draft_Mirror",
+           "Draft_Offset", "Draft_Trimex", 
+           "Draft_Stretch",
+           "Separator",
+           "Draft_Clone"]
     lst += get_draft_array_commands()
-    lst += ["Draft_Clone",
-            "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
+    lst += ["Separator",
+            "Draft_Edit", "Draft_SubelementHighlight",
+            "Separator",
+            "Draft_Join", "Draft_Split",
+            "Draft_Upgrade", "Draft_Downgrade",
+            "Separator",
+            "Draft_WireToBSpline", "Draft_Draft2Sketch",
+            "Separator",
+            "Draft_Shape2DView", "Draft_Drawing"]
     return lst
 
 

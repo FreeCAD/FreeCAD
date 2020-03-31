@@ -30,7 +30,7 @@
 
 ## Python
 
-### Code formating
+### Code formatting
 
 - In general, code should follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
   and [PEP 257](https://www.python.org/dev/peps/pep-0257/) (docstrings).
@@ -72,7 +72,7 @@
   and not meant to be part of the public interface should start
   with an underscore like `_MyInternalClass` or `_my_small_variable`.
 
-### Python code formating tools
+### Python code formatting tools
 
 - Using a code editor that automatically checks compliance with PEP 8
   is recommended.

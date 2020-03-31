@@ -94,19 +94,12 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_saveBaseName = m_base->getNameInDocument();
     m_savePageName = m_base->findParentPage()->getNameInDocument();
 
- 
-   ui->setupUi(this);
+    ui->setupUi(this);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)),
-            this, SLOT(onUpClicked(bool)));
-    connect(ui->pbDown, SIGNAL(clicked(bool)),
-            this, SLOT(onDownClicked(bool)));
-    connect(ui->pbRight, SIGNAL(clicked(bool)),
-            this, SLOT(onRightClicked(bool)));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)),
-            this, SLOT(onLeftClicked(bool)));
-    connect(ui->pbApply, SIGNAL(clicked(bool)),
-            this, SLOT(onApplyClicked(bool)));
+    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
+    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
+    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
+    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
 
     setUiPrimary();
 }
@@ -143,16 +136,10 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
     ui->setupUi(this);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)),
-            this, SLOT(onUpClicked(bool)));
-    connect(ui->pbDown, SIGNAL(clicked(bool)),
-            this, SLOT(onDownClicked(bool)));
-    connect(ui->pbRight, SIGNAL(clicked(bool)),
-            this, SLOT(onRightClicked(bool)));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)),
-            this, SLOT(onLeftClicked(bool)));
-    connect(ui->pbApply, SIGNAL(clicked(bool)),
-            this, SLOT(onApplyClicked(bool)));
+    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
+    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
+    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
+    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
 
     m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
@@ -167,7 +154,7 @@ TaskSectionView::~TaskSectionView()
 void TaskSectionView::setUiPrimary()
 {
 //    Base::Console().Message("TSV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Create SectionView"));
+    setWindowTitle(QObject::tr("Create Section View"));
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
@@ -177,29 +164,54 @@ void TaskSectionView::setUiPrimary()
 
     ui->sbScale->setValue(m_base->getScale());
     Base::Vector3d origin = m_base->getOriginalCentroid();
+    ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
+    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
+    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
+
+    // before the user did not select an orientation,
+    // the section properties cannot be changed
+    this->setToolTip(QObject::tr("Select at first an orientation"));
+    enableAll(false);
+
+    // now connect and not earlier to avoid premature apply() calls
+    connect(ui->leSymbol, SIGNAL(textChanged(QString)), this, SLOT(onIdentifierChanged()));
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 void TaskSectionView::setUiEdit()
 {
 //    Base::Console().Message("TSV::setUiEdit()\n");
-    setWindowTitle(QObject::tr("Edit SectionView"));
+    setWindowTitle(QObject::tr("Edit Section View"));
 
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
     temp = m_section->SectionSymbol.getValue();
-    qTemp    = Base::Tools::fromStdString(temp);
+    qTemp = Base::Tools::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
     ui->sbScale->setValue(m_section->getScale());
     
     Base::Vector3d origin = m_section->SectionOrigin.getValue();
+    ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
+    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
+    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
+
+    // connect affter initializing the object values
+    connect(ui->leSymbol, SIGNAL(textChanged(QString)), this, SLOT(onIdentifierChanged()));
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 //save the start conditions
@@ -231,51 +243,64 @@ void TaskSectionView::restoreSectionState()
     }
 }
 
-void TaskSectionView::blockButtons(bool b)
-{
-    Q_UNUSED(b);
-}
-
-void TaskSectionView::onUpClicked(bool b)
+void TaskSectionView::onUpClicked()
 {
 //    Base::Console().Message("TSV::onUpClicked()\n");
-    Q_UNUSED(b);
     checkAll(false);
     ui->pbUp->setChecked(true);
     applyQuick("Up");
 }
 
-void TaskSectionView::onDownClicked(bool b)
+void TaskSectionView::onDownClicked()
 {
 //    Base::Console().Message("TSV::onDownClicked()\n");
-    Q_UNUSED(b);
     checkAll(false);
     ui->pbDown->setChecked(true);
     applyQuick("Down");
 }
 
-void TaskSectionView::onLeftClicked(bool b)
+void TaskSectionView::onLeftClicked()
 {
 //    Base::Console().Message("TSV::onLeftClicked()\n");
     checkAll(false);
     ui->pbLeft->setChecked(true);
-    Q_UNUSED(b);
     applyQuick("Left");
 }
 
-void TaskSectionView::onRightClicked(bool b)
+void TaskSectionView::onRightClicked()
 {
 //    Base::Console().Message("TSV::onRightClicked()\n");
-    Q_UNUSED(b);
     checkAll(false);
     ui->pbRight->setChecked(true);
     applyQuick("Right");
 }
 
-void TaskSectionView::onApplyClicked(bool b)
+void TaskSectionView::onIdentifierChanged()
 {
-//    Base::Console().Message("TSV::onApplyClicked()\n");
-    Q_UNUSED(b);
+    checkAll(false);
+    apply();
+}
+
+void TaskSectionView::onScaleChanged()
+{
+    checkAll(false);
+    apply();
+}
+
+void TaskSectionView::onXChanged()
+{
+    checkAll(false);
+    apply();
+}
+
+void TaskSectionView::onYChanged()
+{
+    checkAll(false);
+    apply();
+}
+
+void TaskSectionView::onZChanged()
+{
     checkAll(false);
     apply();
 }
@@ -288,13 +313,22 @@ void TaskSectionView::checkAll(bool b)
     ui->pbLeft->setChecked(b);
 }
 
+void TaskSectionView::enableAll(bool b)
+{
+    ui->leSymbol->setEnabled(b);
+    ui->sbScale->setEnabled(b);
+    ui->sbOrgX->setEnabled(b);
+    ui->sbOrgY->setEnabled(b);
+    ui->sbOrgZ->setEnabled(b);
+}
+
 //******************************************************************************
 bool TaskSectionView::apply(void)
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
         std::string msg = 
-            Base::Tools::toStdString(tr("TSV::apply - Nothing to apply. No section direction picked yet"));
+            Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
@@ -318,6 +352,11 @@ void TaskSectionView::applyQuick(std::string dir)
     if (isSectionValid()) {
         updateSectionView();
         m_section->recomputeFeature();
+        this->setToolTip(QObject::tr("Select at first an orientation"));
+        // we can in any case enable all objects in the dialog
+        // and remove the dialog-wide tooltip if there was one
+        enableAll(true);
+        this->setToolTip(QString());
     } else {
         failNoObject(m_sectionName);
     }
@@ -420,7 +459,7 @@ void TaskSectionView::updateSectionView(void)
                            lblText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
                            m_sectionName.c_str(),
-                           ui->sbScale->value());
+                           ui->sbScale->value().getValue());
         m_section->setCSFromBase(m_dirName.c_str());
     }
 }

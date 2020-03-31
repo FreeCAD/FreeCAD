@@ -73,10 +73,14 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
 //    Base::Console().Message("TAV::TAV() - create mode\n");
     if  (m_pageFeat == nullptr)  {
         //should be caught in CMD caller
-        Base::Console().Error("TaskActiveView - bad parameters.  Can not proceed.\n");
+        Base::Console().Error("TaskActiveView - bad parameters. Can not proceed.\n");
         return;
     }
     ui->setupUi(this);
+
+    ui->qsbWidth->setUnit(Base::Unit::Length);
+    ui->qsbHeight->setUnit(Base::Unit::Length);
+    ui->qsbBorder->setUnit(Base::Unit::Length);
 
     setUiPrimary();
 }

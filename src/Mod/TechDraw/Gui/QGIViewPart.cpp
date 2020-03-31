@@ -848,6 +848,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         addToGroup(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
         sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
+        sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
 
         //TODO: handle oblique section lines?
         //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle
@@ -1015,6 +1016,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
         highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
+        highlight->setStyle((Qt::PenStyle)vp->HighlightLineStyle.getValue());
+        highlight->setColor(vp->HighlightLineColor.getValue().asValue<QColor>());
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
 

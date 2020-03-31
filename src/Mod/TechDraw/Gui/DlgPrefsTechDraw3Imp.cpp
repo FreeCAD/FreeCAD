@@ -67,7 +67,6 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     cbShowCenterMarks->onSave();
     cbShowUnits->onSave();
     leDiameter->onSave();
-    leformatSpec->onSave();
     leLineGroup->onSave();
     pcbArrow->onSave();
     pcbBalloonArrow->onSave();
@@ -80,6 +79,8 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     plsb_ArrowSize->onSave();
     plsb_FontSize->onSave();
     sbAltDecimals->onSave();
+    cbCutSurface->onSave();
+    pcbHighlightStyle->onSave();
 }
 
 void DlgPrefsTechDraw3Imp::loadSettings()
@@ -104,7 +105,6 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     cbShowCenterMarks->onRestore();
     cbShowUnits->onRestore();
     leDiameter->onRestore();
-    leformatSpec->onRestore();
     leLineGroup->onRestore();
     pcbArrow->onRestore();
     pcbBalloonArrow->onRestore();
@@ -117,6 +117,8 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     plsb_ArrowSize->onRestore();
     plsb_FontSize->onRestore();
     sbAltDecimals->onRestore();
+    cbCutSurface->onRestore();
+    pcbHighlightStyle->onRestore();
 
     DrawGuiUtil::loadArrowBox(pcbBalloonArrow);
     pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());

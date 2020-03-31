@@ -134,21 +134,19 @@ void TaskCosVertex::setUiPrimary()
     ui->pbTracker->setEnabled(true);
     ui->dsbX->setEnabled(true);
     ui->dsbY->setEnabled(true);
-    ui->dsbZ->setEnabled(false);
     int decimals = Base::UnitsApi::getDecimals();
     ui->dsbX->setDecimals(decimals);
     ui->dsbY->setDecimals(decimals);
-    ui->dsbZ->setDecimals(decimals);
+    ui->dsbX->setUnit(Base::Unit::Length);
+    ui->dsbY->setUnit(Base::Unit::Length);
 }
 
 void TaskCosVertex::updateUi(void)
 {
     double x = m_savePoint.x();
     double y = - m_savePoint.y();
-    double z = 0.0;
     ui->dsbX->setValue(x);
     ui->dsbY->setValue(y);
-    ui->dsbZ->setValue(z);
 }
 
 void TaskCosVertex::addCosVertex(QPointF qPos)
@@ -297,8 +295,6 @@ void TaskCosVertex::enableTaskButtons(bool b)
 //******************************************************************************
 bool TaskCosVertex::accept()
 {
-//    Base::Console().Message("TCV::accept()\n");
-
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
@@ -306,9 +302,8 @@ bool TaskCosVertex::accept()
     if (pointFromTracker) {
         addCosVertex(m_savePoint);
     } else {
-        double x = ui->dsbX->value();
-        double y = ui->dsbY->value();
-//        double z = ui->dsbZ->value();
+        double x = ui->dsbX->value().getValue();
+        double y = ui->dsbY->value().getValue();
         QPointF uiPoint(x,-y);
         addCosVertex(uiPoint);
     }

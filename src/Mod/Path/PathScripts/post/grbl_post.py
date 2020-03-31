@@ -261,7 +261,7 @@ def export(objectslist, filename, argstring):
       return
     
     # Skip inactive operations
-    if not PathUtil.opProperty(obj, 'Active'):
+    if PathUtil.opProperty(obj, 'Active') is False:
         continue
 
     # do the pre_op

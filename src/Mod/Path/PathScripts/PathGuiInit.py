@@ -35,6 +35,7 @@ else:
 
 Processed = False
 
+
 def Startup():
     global Processed # pylint: disable=global-statement
     if not Processed:
@@ -51,6 +52,7 @@ def Startup():
         from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupTagGui
         from PathScripts import PathDressupLeadInOut
+        from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
@@ -61,6 +63,7 @@ def Startup():
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
+        from PathScripts import PathProbeGui
         from PathScripts import PathProfileContourGui
         from PathScripts import PathProfileEdgesGui
         from PathScripts import PathProfileFacesGui
@@ -69,12 +72,13 @@ def Startup():
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
         from PathScripts import PathStop
+        # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
+        # from PathScripts import PathWaterlineGui  # Added in initGui.py due to OCL dependency
         Processed = True
     else:
         PathLog.debug('Skipping PathGui initialisation')
-

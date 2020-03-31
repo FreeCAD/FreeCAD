@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>419</height>
+    <width>454</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -152,6 +152,37 @@
           <string>2x Drill Tip</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="8" column="6">
+       <widget class="QComboBox" name="enableRotation">
+        <item>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A(x)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>B(y)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A &amp; B</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Enable Rotation</string>
+        </property>
        </widget>
       </item>
      </layout>

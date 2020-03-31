@@ -128,7 +128,7 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
 
     CutSurfaceDisplay.setEnums(CutSurfaceEnums);
-    ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
+    ADD_PROPERTY_TYPE(CutSurfaceDisplay,(prefCutSurface()),fgroup, App::Prop_None, "Appearance of Cut Surface");
 
 //initialize these to defaults
     ADD_PROPERTY_TYPE(FileHatchPattern ,(DrawHatch::prefSvgHatch()),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
@@ -805,7 +805,7 @@ gp_Ax2 DrawViewSection::getSectionCS(void) const
                            gXDir);
     }
     catch (...) {
-        Base::Console().Warning("DVS::getSectionCS - %s - failed to create section CS\n", getNameInDocument());
+        Base::Console().Log("DVS::getSectionCS - %s - failed to create section CS\n", getNameInDocument());
     }
     return sectionCS;
 }
@@ -893,6 +893,15 @@ bool DrawViewSection::debugSection(void) const
     return result;
 }
 
+int DrawViewSection::prefCutSurface(void) const
+{
+//    Base::Console().Message("DVS::prefCutSurface()\n");
+    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+
+    int result = hGrp->GetInt("CutSurfaceDisplay", 2);   //default to SvgHatch
+    return result;
+}
 
 void DrawViewSection::onDocumentRestored() 
 {

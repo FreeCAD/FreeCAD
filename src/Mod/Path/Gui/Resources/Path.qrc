@@ -1,9 +1,19 @@
 <RCC>
     <qresource>
+        <file>icons/Path-Adaptive.svg</file>
+        <file>icons/Path-ToolDuplicate.svg</file>
         <file>icons/Path-3DPocket.svg</file>
         <file>icons/Path-3DSurface.svg</file>
+        <file>icons/Path-Area-View.svg</file>
+        <file>icons/Path-Area-Workplane.svg</file>
+        <file>icons/Path-Area.svg</file>
         <file>icons/Path-Array.svg</file>
         <file>icons/Path-Axis.svg</file>
+        <file>icons/Path-BFastForward.svg</file>
+        <file>icons/Path-BPause.svg</file>
+        <file>icons/Path-BPlay.svg</file>
+        <file>icons/Path-BStep.svg</file>
+        <file>icons/Path-BStop.svg</file>
         <file>icons/Path-BaseGeometry.svg</file>
         <file>icons/Path-Comment.svg</file>
         <file>icons/Path-Compound.svg</file>
@@ -17,9 +27,9 @@
         <file>icons/Path-Drilling.svg</file>
         <file>icons/Path-Engrave.svg</file>
         <file>icons/Path-ExportTemplate.svg</file>
+        <file>icons/Path-Face.svg</file>
         <file>icons/Path-FacePocket.svg</file>
         <file>icons/Path-FaceProfile.svg</file>
-        <file>icons/Path-Face.svg</file>
         <file>icons/Path-Heights.svg</file>
         <file>icons/Path-Helix.svg</file>
         <file>icons/Path-Hop.svg</file>
@@ -27,16 +37,17 @@
         <file>icons/Path-Job.svg</file>
         <file>icons/Path-Kurve.svg</file>
         <file>icons/Path-LengthOffset.svg</file>
+        <file>icons/Path-Machine.svg</file>
         <file>icons/Path-MachineLathe.svg</file>
         <file>icons/Path-MachineMill.svg</file>
-        <file>icons/Path-Machine.svg</file>
         <file>icons/Path-OpActive.svg</file>
+        <file>icons/Path-OpCopy.svg</file>
         <file>icons/Path-OperationA.svg</file>
         <file>icons/Path-OperationB.svg</file>
-        <file>icons/Path-OpCopy.svg</file>
         <file>icons/Path-Plane.svg</file>
         <file>icons/Path-Pocket.svg</file>
         <file>icons/Path-Post.svg</file>
+        <file>icons/Path-Probe.svg</file>
         <file>icons/Path-Profile-Edges.svg</file>
         <file>icons/Path-Profile-Face.svg</file>
         <file>icons/Path-Profile.svg</file>
@@ -45,49 +56,40 @@
         <file>icons/Path-SetupSheet.svg</file>
         <file>icons/Path-Shape.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
+        <file>icons/Path-Simulator.svg</file>
         <file>icons/Path-Speed.svg</file>
         <file>icons/Path-Stock.svg</file>
         <file>icons/Path-Stop.svg</file>
         <file>icons/Path-ToolBit.svg</file>
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-ToolController.svg</file>
-	      <file>icons/Path-ToolDuplicate.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
-        <file>icons/Path-Area.svg</file>
-        <file>icons/Path-Area-View.svg</file>
-        <file>icons/Path-Area-Workplane.svg</file>
-        <file>icons/Path-Simulator.svg</file>
-        <file>icons/Path-BFastForward.svg</file>
-        <file>icons/Path-BPause.svg</file>
-        <file>icons/Path-BPlay.svg</file>
-        <file>icons/Path-BStep.svg</file>
-        <file>icons/Path-BStop.svg</file>
+        <file>icons/Path-Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
-        <file>icons/arrow-left.svg</file>
         <file>icons/arrow-left-down.svg</file>
         <file>icons/arrow-left-up.svg</file>
-        <file>icons/arrow-right.svg</file>
+        <file>icons/arrow-left.svg</file>
         <file>icons/arrow-right-down.svg</file>
         <file>icons/arrow-right-up.svg</file>
+        <file>icons/arrow-right.svg</file>
         <file>icons/arrow-up.svg</file>
-        <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-miter-not.svg</file>
-        <file>icons/edge-join-round.svg</file>
+        <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-round-not.svg</file>
+        <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
-		<file>icons/Path-Adaptive.svg</file>
         <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
+        <file>panels/DlgTCChooser.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
         <file>panels/DlgToolEdit.ui</file>
-        <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
@@ -102,8 +104,10 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
+        <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/SetupGlobal.ui</file>
@@ -114,19 +118,29 @@
         <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
+        <file>panels/ZCorrectEdit.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>
+        <file>translations/Path_ar.qm</file>
+        <file>translations/Path_ca.qm</file>
         <file>translations/Path_cs.qm</file>
         <file>translations/Path_de.qm</file>
         <file>translations/Path_el.qm</file>
         <file>translations/Path_es-ES.qm</file>
+        <file>translations/Path_eu.qm</file>
         <file>translations/Path_fi.qm</file>
+        <file>translations/Path_fil.qm</file>
         <file>translations/Path_fr.qm</file>
+        <file>translations/Path_gl.qm</file>
         <file>translations/Path_hr.qm</file>
         <file>translations/Path_hu.qm</file>
+        <file>translations/Path_id.qm</file>
         <file>translations/Path_it.qm</file>
         <file>translations/Path_ja.qm</file>
+        <file>translations/Path_kab.qm</file>
+        <file>translations/Path_ko.qm</file>
+        <file>translations/Path_lt.qm</file>
         <file>translations/Path_nl.qm</file>
         <file>translations/Path_no.qm</file>
         <file>translations/Path_pl.qm</file>
@@ -140,18 +154,9 @@
         <file>translations/Path_sv-SE.qm</file>
         <file>translations/Path_tr.qm</file>
         <file>translations/Path_uk.qm</file>
+        <file>translations/Path_val-ES.qm</file>
+        <file>translations/Path_vi.qm</file>
         <file>translations/Path_zh-CN.qm</file>
         <file>translations/Path_zh-TW.qm</file>
-        <file>translations/Path_eu.qm</file>
-        <file>translations/Path_ca.qm</file>
-        <file>translations/Path_gl.qm</file>
-        <file>translations/Path_kab.qm</file>
-        <file>translations/Path_ko.qm</file>
-        <file>translations/Path_fil.qm</file>
-        <file>translations/Path_id.qm</file>
-        <file>translations/Path_lt.qm</file>
-        <file>translations/Path_val-ES.qm</file>
-        <file>translations/Path_ar.qm</file>
-        <file>translations/Path_vi.qm</file>
     </qresource>
 </RCC>

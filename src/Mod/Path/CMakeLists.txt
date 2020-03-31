@@ -25,6 +25,8 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
+    PathScripts/PathAdaptive.py
+    PathScripts/PathAdaptiveGui.py
     PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
@@ -46,6 +48,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDressupTag.py
     PathScripts/PathDressupTagGui.py
     PathScripts/PathDressupTagPreferences.py
+    PathScripts/PathDressupZCorrect.py
     PathScripts/PathDrilling.py
     PathScripts/PathDrillingGui.py
     PathScripts/PathEngrave.py
@@ -82,6 +85,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
+	PathScripts/PathProbe.py
+	PathScripts/PathProbeGui.py
     PathScripts/PathProfileBase.py
     PathScripts/PathProfileBaseGui.py
     PathScripts/PathProfileContour.py
@@ -97,6 +102,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSetupSheetOpPrototype.py
     PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
+    PathScripts/PathSimulatorGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
@@ -110,15 +116,14 @@ SET(PathScripts_SRCS
     PathScripts/PathToolController.py
     PathScripts/PathToolControllerGui.py
     PathScripts/PathToolEdit.py
-    PathScripts/PathToolLibraryManager.py
     PathScripts/PathToolLibraryEditor.py
+    PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
-    PathScripts/PathSimulatorGui.py
+    PathScripts/PathWaterline.py
+    PathScripts/PathWaterlineGui.py
     PathScripts/PostUtils.py
-    PathScripts/PathAdaptiveGui.py
-    PathScripts/PathAdaptive.py
     PathScripts/__init__.py
 )
 
@@ -128,6 +133,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/comparams_post.py
     PathScripts/post/dynapath_post.py
     PathScripts/post/example_pre.py
+    PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
@@ -188,8 +194,8 @@ SET(PathTests_SRCS
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd
-    PathTests/test_linuxcnc_00.ngc
     PathTests/test_holes00.fcstd
+    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(PathImages_Ops

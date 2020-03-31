@@ -99,6 +99,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
+        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
+            obj.EnableRotation = str(self.form.enableRotation.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -122,6 +124,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+        self.selectInComboBox(obj.EnableRotation, self.form.enableRotation)
 
 
     def getSignalsForUpdate(self, obj):
@@ -137,6 +140,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
+        signals.append(self.form.enableRotation.currentIndexChanged)
 
         return signals
     

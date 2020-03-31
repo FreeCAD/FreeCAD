@@ -2,16 +2,19 @@
 <ui version="4.0">
  <class>TechDrawGui::TaskCenterLine</class>
  <widget class="QWidget" name="TechDrawGui::TaskCenterLine">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>393</height>
+    <width>360</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -32,6 +35,13 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Base View</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="leBaseView">
        <property name="enabled">
@@ -48,13 +58,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Base View</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -67,10 +70,16 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>100</height>
+         <height>50</height>
         </size>
        </property>
       </widget>
@@ -78,64 +87,119 @@
     </layout>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbOrientation">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title">
+      <string>Orientation</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QRadioButton" name="rbVertical">
+        <property name="toolTip">
+         <string>Top to Bottom line</string>
+        </property>
+        <property name="text">
+         <string>Vertical</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbHorizontal">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Left to Right line</string>
+        </property>
+        <property name="text">
+         <string>Horizontal</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbAligned">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>centerline between
+- lines: in equal distance to the lines and with
+  half of the angle the lines have to each other
+- points: in equal distance to the points</string>
+        </property>
+        <property name="text">
+         <string>Aligned</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QRadioButton" name="rbVertical">
-       <property name="toolTip">
-        <string>Top to Bottom line</string>
-       </property>
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Vertical</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Shift Horizontal</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QRadioButton" name="rbHorizontal">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
        </property>
        <property name="toolTip">
-        <string>Left to Right line</string>
+        <string>Move line -Left or +Right</string>
        </property>
-       <property name="text">
-        <string>Horizontal</string>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="rbAligned">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>centerline between
-- lines: in equal distance to the lines and with
-  half of the angle the lines have to each other
-- points: in equal distance to the points</string>
-       </property>
-       <property name="text">
-        <string>Aligned</string>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,3,0,3">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Shift Horiz</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="1" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Shift Vert</string>
+        <string>Shift Vertical</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbVertShift">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Move line +Up or -Down</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -147,7 +211,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbRotate" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbRotate">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -157,37 +221,14 @@
        <property name="toolTip">
         <string>Rotate line +CCW or -CW</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="minimum">
         <double>-360.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>360.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="Gui::QuantitySpinBox" name="qsbVertShift" native="true">
-       <property name="toolTip">
-        <string>Move line +Up or -Down</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Move line -Left or +Right</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -201,20 +242,46 @@
     </widget>
    </item>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-     </property>
-     <item row="2" column="0">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Extend By</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbExtend">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Make the line a little longer.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="unit" stdset="0">
+        <string>mm</string>
+       </property>
+       <property name="value">
+        <double>3.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Color</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
       <widget class="Gui::ColorButton" name="cpLineColor">
-       <property name="color" stdset="0">
+       <property name="color">
         <color>
          <red>0</red>
          <green>0</green>
@@ -223,15 +290,18 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Weight</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="dsbWeight">
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="dsbWeight">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="singleStep">
         <double>0.100000000000000</double>
        </property>
@@ -240,14 +310,14 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Style</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="3" column="1">
       <widget class="QComboBox" name="cboxStyle">
        <property name="currentIndex">
         <number>1</number>
@@ -299,32 +369,6 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Extend By</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbExtend" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Make the line a little longer.</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string>mm</string>
-       </property>
-       <property name="value" stdset="0">
-        <double>3.000000000000000</double>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -359,4 +403,11 @@ see the FreeCAD Wiki '2LineCenterLine' for a description</string>
   <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="bgOrientation">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
 </ui>

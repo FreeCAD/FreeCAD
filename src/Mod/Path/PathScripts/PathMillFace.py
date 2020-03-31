@@ -99,7 +99,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         '''areaOpShapes(obj) ... return top face'''
         # Facing is done either against base objects
         holeShape = None
-        
+
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
             faces = []
@@ -147,17 +147,17 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         # Find the correct shape depending on Boundary shape.
         PathLog.debug("Boundary Shape: {}".format(obj.BoundaryShape))
         bb = planeshape.BoundBox
-        
+
         # Apply offset for clearing edges
         offset = 0;
         if obj.ClearEdges == True:
             offset = self.radius + 0.1
-        
+
         bb.XMin = bb.XMin - offset
         bb.YMin = bb.YMin - offset
         bb.XMax = bb.XMax + offset
         bb.YMax = bb.YMax + offset
-        
+
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Vector(0, 0, 1))
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
@@ -170,7 +170,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         elif obj.BoundaryShape == 'Stock':
             stock = PathUtils.findParentJob(obj).Stock.Shape
             env = stock
-            
+
             if obj.ExcludeRaisedAreas is True and oneBase[1] is True:
                 includedFaces = self.getAllIncludedFaces(oneBase[0], stock, faceZ=minHeight)
                 if len(includedFaces) > 0:
@@ -269,7 +269,6 @@ def SetupProperties():
     setup.append("BoundaryShape")
     setup.append("ExcludeRaisedAreas")
     setup.append("ClearEdges")
-    
     return setup
 
 
@@ -278,5 +277,4 @@ def Create(name, obj=None):
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectFace(obj, name)
-    
     return obj

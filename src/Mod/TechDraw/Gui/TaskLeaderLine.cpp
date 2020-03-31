@@ -46,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
@@ -267,7 +268,7 @@ void TaskLeaderLine::setUiPrimary()
     ui->cboxStartSym->setCurrentIndex(aStyle);
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(0);
+    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
@@ -493,7 +494,6 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         if (m_tracker != nullptr) {
             m_tracker->terminateDrawing();
         }
-
         m_pbTrackerState = TRACKERPICK;
         ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
@@ -502,13 +502,12 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         setEditCursor(Qt::ArrowCursor);
         return;
     } else  if ( (m_pbTrackerState == TRACKERSAVE) &&
-                 (!getCreateMode()) ) {
+                 (!getCreateMode()) ) {                //edit mode
         if (m_qgLine != nullptr) {
             m_qgLine->closeEdit();
         }
-
         m_pbTrackerState = TRACKERPICK;
-        ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
+        ui->pbTracker->setText(QString::fromUtf8("Edit Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -609,24 +608,12 @@ void TaskLeaderLine::startTracker(void)
 
 void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
+    //in this case, we already know who the parent is.  We don't need QGTracker to tell us. 
+    (void) qgParent;
 //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n",qgParent);
     if (pts.empty()) {
         Base::Console().Error("TaskLeaderLine - no points available\n");
         return;
-    }
-
-    if (qgParent == nullptr) {
-        //do something;
-        m_qgParent = findParentQGIV();
-    } else {
-        QGIView* qgiv = dynamic_cast<QGIView*>(qgParent);
-        if (qgiv != nullptr) {
-            m_qgParent = qgiv;
-        } else {
-            Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
-            //blow up!?
-            throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
-        }
     }
 
     if (m_qgParent != nullptr) {

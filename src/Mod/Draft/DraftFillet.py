@@ -15,7 +15,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     from PySide import QtCore
     import DraftTools
-    import DraftTrackers
+    import draftguitools.gui_trackers as trackers
     from DraftGui import translate
 else:
     def QT_TRANSLATE_NOOP(context, text):
@@ -221,8 +221,8 @@ class CommandFillet(DraftTools.Creator):
             QtCore.QObject.connect(self.ui.check_chamfer,
                                    QtCore.SIGNAL("stateChanged(int)"),
                                    self.set_chamfer)
-            self.linetrack = DraftTrackers.lineTracker(dotted=True)
-            self.arctrack = DraftTrackers.arcTracker()
+            self.linetrack = trackers.lineTracker(dotted=True)
+            self.arctrack = trackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
             FCC.PrintMessage(translate("draft", "Enter radius") + "\n")
 

@@ -61,16 +61,13 @@ void DlgPrefsTechDraw2Imp::saveSettings()
 {
     pdsbToleranceScale->onSave();
     pdsbTemplateMark->onSave();
-
     pdsbVertexScale->onSave();
     pdsbCenterScale->onSave();
-
     pdsbPageScale->onSave();
     cbViewScaleType->onSave();
     pdsbViewScale->onSave();
     pdsbEdgeFuzz->onSave();
     pdsbMarkFuzz->onSave();
-    pdsbOverlapRadius->onSave();
     pdsbTemplateMark->onSave();
 }
 
@@ -78,20 +75,15 @@ void DlgPrefsTechDraw2Imp::loadSettings()
 {
     double markDefault = 3.0;
     pdsbTemplateMark->setValue(markDefault);
-
     pdsbToleranceScale->onRestore();
-
     pdsbTemplateMark->onRestore();
-
     pdsbVertexScale->onRestore();
     pdsbCenterScale->onRestore();
-
     pdsbPageScale->onRestore();
     cbViewScaleType->onRestore();
     pdsbViewScale->onRestore();
     pdsbEdgeFuzz->onRestore();
     pdsbMarkFuzz->onRestore();
-    pdsbOverlapRadius->onRestore();
     pdsbTemplateMark->onRestore();
 }
 

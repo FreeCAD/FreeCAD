@@ -6,35 +6,53 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>268</height>
+    <width>460</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Advanced</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QGroupBox" name="gbDim">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>141</height>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="title">
       <string>Advanced</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1">
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="Gui::PrefComboBox" name="cbEndCap">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -68,18 +86,41 @@ Only change unless you know what you are doing!</string>
           </item>
          </widget>
         </item>
-        <item row="2" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+        <item row="6" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
+          <property name="minimumSize">
            <size>
-            <width>40</width>
+            <width>0</width>
             <height>20</height>
            </size>
           </property>
-         </spacer>
+          <property name="toolTip">
+           <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings you might get an error about to many SVG tiles.
+Then you need to increase the tile limit.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>1000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>10000</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxSVGTile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
         </item>
         <item row="1" column="2">
          <widget class="Gui::PrefCheckBox" name="cbDebugDetail">
@@ -88,6 +129,12 @@ Only change unless you know what you are doing!</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Dump intermediate results during Detail view processing</string>
@@ -103,62 +150,50 @@ Only change unless you know what you are doing!</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowLoose">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
-           <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
-Then you need to increase the tile limit.</string>
+           <string>Include 2D Objects in projection</string>
           </property>
-          <property name="minimum">
-           <number>1</number>
+          <property name="text">
+           <string>Show Loose 2D Geom</string>
           </property>
-          <property name="maximum">
-           <number>1000000</number>
-          </property>
-          <property name="singleStep">
-           <number>100</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight</set>
-          </property>
-          <property name="value">
-           <number>10000</number>
+          <property name="checked">
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>MaxSVGTile</cstring>
+           <cstring>ShowLoose2d</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
+           <cstring>Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefSpinBox" name="sbMaxPat">
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbDebugSection">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
-           <string>Maximum hatch line segments to use
-when hatching a face with a PAT pattern</string>
+           <string>Dump intermediate results during Section view processing</string>
           </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>1000000</number>
-          </property>
-          <property name="singleStep">
-           <number>100</number>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight</set>
-          </property>
-          <property name="value">
-           <number>10000</number>
+          <property name="text">
+           <string>Debug Section</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>MaxSeg</cstring>
+           <cstring>debugSection</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/PAT</cstring>
+           <cstring>Mod/TechDraw/debug</cstring>
           </property>
          </widget>
         </item>
@@ -169,6 +204,12 @@ when hatching a face with a PAT pattern</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -197,6 +238,12 @@ when hatching a face with a PAT pattern</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Highlights border of section cut in section views</string>
           </property>
@@ -211,25 +258,50 @@ when hatching a face with a PAT pattern</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbDebugSection">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="7" column="2">
+         <widget class="Gui::PrefSpinBox" name="sbMaxPat">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Section view processing</string>
+           <string>Maximum hatch line segments to use
+when hatching a face with a PAT pattern</string>
           </property>
-          <property name="text">
-           <string>Debug Section</string>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>1000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>10000</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>debugSection</cstring>
+           <cstring>MaxSeg</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/debug</cstring>
+           <cstring>Mod/TechDraw/PAT</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Line End Cap Shape</string>
           </property>
          </widget>
         </item>
@@ -261,31 +333,18 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+        <item row="2" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="text">
-           <string>Line End Cap Shape</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Max SVG Hatch Tiles</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Max PAT Hatch Segments</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
         <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="cbCrazyEdges">
@@ -309,22 +368,51 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbShowLoose">
-          <property name="toolTip">
-           <string>Include 2D Objects in projection</string>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Max SVG Hatch Tiles</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Max PAT Hatch Segments</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
           </property>
           <property name="text">
-           <string>Show Loose 2D Geom</string>
+           <string>Dimension Format</string>
           </property>
-          <property name="checked">
-           <bool>false</bool>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefLineEdit" name="leFormatSpec">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Override automatic dimension format</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ShowLoose2d</cstring>
+           <cstring>formatSpec</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
@@ -333,7 +421,7 @@ can be a performance penalty in complex models.</string>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QLabel" name="label_17">
      <property name="font">
       <font>
@@ -352,7 +440,7 @@ can be a performance penalty in complex models.</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -360,7 +448,7 @@ can be a performance penalty in complex models.</string>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -381,6 +469,11 @@ can be a performance penalty in complex models.</string>
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -19,27 +19,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the Image_Scaling GuiCommand."""
 
 __title__ = "ImageTools._CommandImageScaling"
-__author__  = "JAndersM"
-__url__     = "http://www.freecadweb.org/index-fr.html"
+__author__ = "JAndersM"
+__url__ = "http://www.freecadweb.org/index-fr.html"
 __version__ = "00.02"
-__date__    = "03/05/2019" 
- 
- 
-import FreeCAD
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-    from PySide import QtCore
-    import FreeCADGui, FreeCAD, Part
-    import math
-    import pivy.coin as pvy
-    import DraftTrackers, Draft
+__date__ = "03/05/2019"
 
-# translation-related code
-#(see forum thread "A new Part tool is being born... JoinFeatures!"
-#http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+import math
+import FreeCAD
+from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+    import pivy.coin as pvy
+
+    import FreeCADGui
+    import draftguitools.gui_trackers as trackers
+
+# Translation-related code
+# See forum thread "A new Part tool is being born... JoinFeatures!"
+# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except (Exception):
@@ -134,7 +135,7 @@ def cmdCreateImageScaling(name):
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
             QtCore.QMetaObject.connectSlotsByName(Dialog)
-            self.tracker = DraftTrackers.lineTracker(scolor=(1,0,0))
+            self.tracker = trackers.lineTracker(scolor=(1,0,0))
             self.tracker.raiseTracker()
             self.tracker.on()
             self.dialog.show()

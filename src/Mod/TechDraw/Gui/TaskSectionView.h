@@ -51,15 +51,17 @@ public:
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onUpClicked(bool b);
-    void onDownClicked(bool b);
-    void onLeftClicked(bool b);
-    void onRightClicked(bool b);
-    void onApplyClicked(bool b);
+    void onUpClicked();
+    void onDownClicked();
+    void onLeftClicked();
+    void onRightClicked();
+    void onIdentifierChanged();
+    void onScaleChanged();
+    void onXChanged();
+    void onYChanged();
+    void onZChanged();
 
 protected:
-    void blockButtons(bool b);
-
     void changeEvent(QEvent *e);
     void saveSectionState();
     void restoreSectionState();
@@ -75,6 +77,7 @@ protected:
     void setUiEdit();
 
     void checkAll(bool b);
+    void enableAll(bool b);
 
     void failNoObject(std::string objName);
     bool isBaseValid(void);

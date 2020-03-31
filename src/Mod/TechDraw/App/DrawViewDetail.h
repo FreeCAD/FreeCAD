@@ -50,7 +50,7 @@ namespace TechDraw
 
 class TechDrawExport DrawViewDetail : public DrawViewPart
 {
-    PROPERTY_HEADER(Part::DrawViewDetail);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewDetail);
 
 public:
     /// Constructor
@@ -62,12 +62,14 @@ public:
     App::PropertyFloat  Radius;
     App::PropertyString Reference;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
-    virtual const char* getViewProviderName(void) const {
+    virtual short mustExecute() const override;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onChanged(const App::Property* prop) override;
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
+    virtual void unsetupObject() override;
+
 
     void detailExec(TopoDS_Shape s, 
                     DrawViewPart* baseView,

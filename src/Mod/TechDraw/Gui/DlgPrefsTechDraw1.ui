@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>460</width>
-    <height>829</height>
+    <height>760</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>760</height>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,8 +28,8 @@
   <property name="toolTip">
    <string/>
   </property>
-  <layout class="QGridLayout" name="gridLayout_8">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
     <widget class="QGroupBox" name="gbMisc">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -40,7 +40,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>141</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -52,9 +52,9 @@
      <property name="title">
       <string>Drawing Update</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_6">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_Global">
           <property name="sizePolicy">
@@ -80,13 +80,19 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="0" column="1">
          <widget class="Gui::PrefCheckBox" name="cb_Override">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Whether or not a page's 'Keep Update' property
@@ -106,7 +112,7 @@ can override the global 'Update With 3D' parameter</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -137,13 +143,19 @@ This can slow down the response time.</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="cb_AutoDist">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -173,7 +185,7 @@ for ProjectionGroups</string>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="gb_Colors">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -493,7 +505,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Geometric hatch pattern color</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -548,8 +560,14 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -569,10 +587,10 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefColorButton" name="pcb_Face">
           <property name="toolTip">
-           <string>Face color</string>
+           <string>Face color (if not transparent)</string>
           </property>
           <property name="color">
            <color>
@@ -586,6 +604,18 @@ for ProjectionGroups</string>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Detail Highlight</string>
           </property>
          </widget>
         </item>
@@ -621,12 +651,29 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="pcbHighlight">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HighlightColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="gb_Font">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -753,7 +800,7 @@ for ProjectionGroups</string>
            <string>Label size</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight</set>
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>8.000000000000000</double>
@@ -771,7 +818,7 @@ for ProjectionGroups</string>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QGroupBox" name="gb_Templates">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -865,9 +912,6 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Starting directory for menu 'Insert Page using Template'</string>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
@@ -980,9 +1024,6 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Default directory for welding symbols</string>
           </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>WeldingDir</cstring>
           </property>
@@ -1076,7 +1117,7 @@ for ProjectionGroups</string>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
@@ -1095,15 +1136,15 @@ for ProjectionGroups</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <spacer name="verticalSpacer_2">
+   <item>
+    <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>17</width>
-       <height>17</height>
+       <width>20</width>
+       <height>19</height>
       </size>
      </property>
     </spacer>

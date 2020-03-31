@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>500</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>500</height>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,8 +28,8 @@
   <property name="toolTip">
    <string/>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
     <widget class="QGroupBox" name="gbScale">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -226,7 +226,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="gb_Selection">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -237,7 +237,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>113</height>
+       <height>0</height>
       </size>
      </property>
      <property name="baseSize">
@@ -252,25 +252,6 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Edge Fuzz</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
@@ -283,53 +264,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbEdgeFuzz">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>174</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Size of selection area around edges</string>
-          </property>
-          <property name="statusTip">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>10.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>EdgeFuzz</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Mark Fuzz</string>
-          </property>
-         </widget>
         </item>
         <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbMarkFuzz">
@@ -352,7 +286,8 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Selection area around center marks</string>
+           <string>Selection area around center marks
+Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -371,18 +306,8 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Overlap Radius</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbOverlapRadius">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="0" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbEdgeFuzz">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -398,12 +323,12 @@
           <property name="baseSize">
            <size>
             <width>0</width>
-            <height>33</height>
+            <height>0</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>Area to be inspected for overlap object selection.
-(not implemented yet)</string>
+           <string>Size of selection area around edges
+Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -412,13 +337,45 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>20.000000000000000</double>
+           <double>10.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>OverlapRadius</cstring>
+           <cstring>EdgeFuzz</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Mark Fuzz</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Edge Fuzz</string>
           </property>
          </widget>
         </item>
@@ -427,26 +384,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_12">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
-      </font>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="text">
-      <string>Items in italics are default values for new objects.  They have no effect on existing objects.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="gb_SizeAdj">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -655,9 +593,9 @@
            <string>Size of template field click handles</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight</set>
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>3.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -673,7 +611,26 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
+    <widget class="QLabel" name="label_12">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="text">
+      <string>Items in italics are default values for new objects.  They have no effect on existing objects.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

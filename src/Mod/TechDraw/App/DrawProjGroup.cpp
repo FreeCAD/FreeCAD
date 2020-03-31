@@ -424,12 +424,12 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
         if (view != nullptr) {                        //coverity CID 151722
+            // the label must be set before the view is added
+            view->Label.setValue(viewProjType);
             addView(view);                            //from DrawViewCollection
-            view->Source.setValues( Source.getValues() );
-            view->Scale.setValue( getScale() );
-            view->Type.setValue( viewProjType );
-            view->Label.setValue( viewProjType );
-            view->Source.setValues( Source.getValues() );
+            view->Source.setValues(Source.getValues());
+            // the Scale is already set by DrawView
+            view->Type.setValue(viewProjType);
             if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
                 vecs = getDirsFromFront(view);
                 view->Direction.setValue(vecs.first);
