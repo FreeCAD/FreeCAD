@@ -132,17 +132,32 @@ def removeFromComponent(compobject,subobject):
 
 
 class Component(ArchIFC.IfcProduct):
+    """The Arch Component object.
 
-    "The default Arch Component object"
+Acts as a base for all other Arch objects, such as Arch walls and Arch
+structures. It's properties and behaviours are common to all Arch objects.
+
+You can learn more about Arch Components, and the purpose of Arch Components
+here: https://wiki.freecadweb.org/Arch_Component
+
+Parameters
+----------
+obj: <App::FeaturePython>
+    The object to turn into an Arch Component
+""" 
 
     def __init__(self, obj):
+        """Sets the object to have the properties of an Arch component"""
+
         obj.Proxy = self
         Component.setProperties(self, obj)
         self.Type = "Component"
 
     def setProperties(self, obj):
-        
-        "Sets the needed properties of this object"
+        """Gives the wall it's component specific properties, such as it's material.
+
+You can learn more about properties here: https://wiki.freecadweb.org/property
+"""
 
         ArchIFC.IfcProduct.setProperties(self, obj)
 
@@ -192,6 +207,7 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
 
     def onDocumentRestored(self, obj):
+        """Method run when the document is restored. Re-adds the Arch component properties."""
         Component.setProperties(self, obj)
 
     def execute(self,obj):
@@ -214,10 +230,27 @@ class Component(ArchIFC.IfcProduct):
         return None
 
     def onBeforeChange(self,obj,prop):
+        """Method called before the object has a property changed. 
+
+Specifically, this method is called before the value changes.
+
+If "Placement" has changed, it records the old placement, so that .onChanged()
+can compare between the old and new placement, and move it's children
+accordingly.
+"""
         if prop == "Placement":
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self, obj, prop):
+        """Method called when the object has a property changed.
+
+If "Placement" has changed, the component moves any children components that
+have been set to move with their host, such that they stay in the same location
+to this component.
+
+Also calls ArchIFC.IfcProduct.onChanged().
+"""
+
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Placement":
@@ -249,6 +282,17 @@ class Component(ArchIFC.IfcProduct):
                             child.Placement.move(deltap)
 
     def getMovableChildren(self,obj):
+        """Finds the component's children set to move with their host.
+
+In this case, children refer to Additions, Subtractions, and objects linked to
+this object that refer to it as a host in the "Host" or "Hosts" properties.
+Objects are set to move with their host via the MoveWithHost property.
+
+Returns
+-------
+list of <App::FeaturePython>
+    List of child objects set to move with their host.
+"""
 
         ilist = obj.Additions + obj.Subtractions
         for o in obj.InList:
@@ -268,8 +312,16 @@ class Component(ArchIFC.IfcProduct):
         return ilist2
 
     def getParentHeight(self,obj):
-        
-        "gets a height value from a host BuildingPart"
+        """Gets a height value from hosts.
+
+Recursively crawls hosts until it finds a Floor or BuildingPart, then returns
+the value of it's Height property.
+
+Returns
+-------
+<App::PropertyLength>
+    The Height value of the found Floor or BuildingPart.
+"""
         
         for parent in obj.InList:
             if Draft.getType(parent) in ["Floor","BuildingPart"]:
@@ -285,8 +337,20 @@ class Component(ArchIFC.IfcProduct):
         return 0
 
     def clone(self,obj):
+        """If the object is a clone, copies the shape.
 
-        "if this object is a clone, sets the shape. Returns True if this is the case"
+If the object is a clone according to the "CloneOf" property, it copies the object's
+shape and several properties relating to shape, such as "Length" and "Thickness".
+
+Will only perform the copy if this object and the object it's a clone of are of the same
+type, or if the object has the type "Component" or "BuildingPart".
+
+Returns
+-------
+bool
+    True if the copy occurs, False if otherwise.
+"""
+
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
                 if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
@@ -300,8 +364,17 @@ class Component(ArchIFC.IfcProduct):
         return False
 
     def getSiblings(self,obj):
+        """Finds objects that have the same Base object, and type.
 
-        "returns a list of objects with the same type and same base as this object"
+Looks to base object, and finds other objects that are based off this base
+object. If these objects are the same type, returns them.
+
+Returns
+-------
+list of <App::FeaturePython>
+    List of objects that have the same Base and type as this component.
+"""
+
         if not hasattr(obj,"Base"):
             return []
         if not obj.Base:
@@ -317,7 +390,30 @@ class Component(ArchIFC.IfcProduct):
         return siblings
 
     def getExtrusionData(self,obj):
-        """returns (shape,extrusion vector or path,placement) or None"""
+        """Gets the object's extrusion data.
+
+This method recursively scrapes the Bases of the object, until it finds a Base
+that is derived from a <Part::Extrusion>. From there, it copies the extrusion
+to the (0,0,0) origin. 
+
+With this copy, it gets the <Part.Face> the shape was originally extruded from, the
+<Base.Vector> of the extrusion, and the <Base.Placement> needed to move the copy back to it's
+original location/orientation. It will return this data as a tuple.
+
+If it encouters an object derived from a <Part::Multifuse>, it will return this data
+as a tuple containing lists. The lists will contain the same data as above, from each
+of the objects within the multifuse.
+
+Returns
+-------
+tuple
+    Tuple containing:
+
+    1) The <Part.Face> the object was extruded from.
+    2) The <Base.Vector> of the extrusion.
+    3) The <Base.Placement> of the extrusion.
+"""
+
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
                 if hasattr(obj.CloneOf,"Proxy"):
@@ -325,6 +421,7 @@ class Component(ArchIFC.IfcProduct):
                         data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
                         if data:
                             return data
+
         if obj.Base:
             # the base is another arch object which can provide extrusion data
             if hasattr(obj.Base,"Proxy") and hasattr(obj.Base.Proxy,"getExtrusionData") and (not obj.Additions) and (not obj.Subtractions):
@@ -347,6 +444,7 @@ class Component(ArchIFC.IfcProduct):
                                 ndata2 = data[2]
                                 ndata2.move(disp)
                                 return (data[0],data[1],ndata2)
+
             # the base is a Part Extrusion
             elif obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
@@ -362,6 +460,7 @@ class Component(ArchIFC.IfcProduct):
                     if not self.isIdentity(obj.Base.Placement):
                         placement = placement.multiply(obj.Base.Placement)
                     return (base,extrusion,placement)
+
             elif obj.Base.isDerivedFrom("Part::MultiFuse"):
                 rshapes = []
                 revs = []
@@ -396,6 +495,25 @@ class Component(ArchIFC.IfcProduct):
         return None
 
     def rebase(self,shape,hint=None):
+        """Copies a shape to the (0,0,0) origin.
+
+Creates a copy of a shape, such that it's center is in the (0,0,0)
+origin.
+
+TODO Determine the way the shape is rotated by this method.
+
+Returns the copy of the shape, and the <Base.Placement> needed to
+move the copy back to it's original location/orientation.
+
+Parameters
+----------
+shape: <Part.Shape>
+    The shape to copy.
+hint: <Base.Vector>, optional
+    If the angle between the normal vector of the shape, and the hint vector is
+    greater than 90 degrees, the normal will be reversed before being rotated.
+"""
+
 
         """returns a shape that is a copy of the original shape
         but centered on the (0,0) origin, and a placement that is needed to
@@ -403,23 +521,39 @@ class Component(ArchIFC.IfcProduct):
         hint can be a vector that indicates the preferred normal direction"""
 
         import DraftGeomUtils,math
+
+        # Get the object's center.
         if not isinstance(shape,list):
             shape = [shape]
         if hasattr(shape[0],"CenterOfMass"):
             v = shape[0].CenterOfMass
         else:
             v = shape[0].BoundBox.Center
+
+        # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+
+        # Reverse the normal if the hint vector and the normal vector have more
+        # than a 90 degree angle between them.
         if hint and hint.getAngle(n) > 1.58:
             n = n.negative()
-        r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
+
+        r = FreeCAD.Rotation(
+                FreeCAD.Vector(0,0,1),
+                n
+                )
         if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
+
         shapes = []
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(FreeCAD.Vector(0,0,0),r.Axis,math.degrees(-r.Angle))
+            s.rotate(
+                    FreeCAD.Vector(0,0,0),
+                    r.Axis,
+                    math.degrees(-r.Angle)
+                    )
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v

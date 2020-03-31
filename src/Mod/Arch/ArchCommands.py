@@ -1242,9 +1242,37 @@ def rebuildArchShape(objects=None):
 
 
 def getExtrusionData(shape,sortmethod="area"):
-    """getExtrusionData(shape,sortmethod): returns a base face and an extrusion vector
-    if this shape can be described as a perpendicular extrusion, or None if not.
-    sortmethod can be "area" (default) or "z"."""
+    """If a shape has been extruded, returns the base face, and extrusion vector.
+
+Determines if a shape appears to have been extruded from some base face, and
+extruded at the normal from that base face. IE: it looks like a cuboid.
+https://en.wikipedia.org/wiki/Cuboid#Rectangular_cuboid
+
+If this is the case, returns what appears to be the base face, and the vector
+used to make that extrusion.
+
+The base face is determined based on the sortmethod parameter, which can either
+be:
+
+"area" = Of the faces with the smallest area, the one with the lowest z coordinate.
+"z" = The face with the lowest z coordinate.
+
+Parameters
+----------
+shape: <Part.Shape>
+    Shape to examine.
+sortmethod: {"area", "z"}
+    Which sorting algorithm to use to determine the base face.
+
+Returns
+-------
+Extrusion data: list
+    Two item list containing the base face, and the vector used to create the
+    extrusion. In that order.
+Failure: None
+    Returns None if the object does not appear to be an extrusion.
+"""
+
     if shape.isNull():
         return None
     if not shape.Solids:
