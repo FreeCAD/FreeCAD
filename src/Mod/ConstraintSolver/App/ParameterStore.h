@@ -125,7 +125,7 @@ public:
     HParameterStore getHandle() const;
 
     ///for use in methods that require a valueset objects. Returns a pass-through valueset, that writes directly to parameters.
-    const ValueSet& asValueSet();
+    ValueSet& asValueSet();
 
 public: //for range-based for looping.
     class const_iterator

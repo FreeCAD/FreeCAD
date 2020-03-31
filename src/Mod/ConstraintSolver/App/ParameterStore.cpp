@@ -294,7 +294,7 @@ HParameterStore ParameterStore::getHandle() const {
     return HParameterStore(_twin, /*new_reference = */false);
 }
 
-const ValueSet& ParameterStore::asValueSet()
+ValueSet& ParameterStore::asValueSet()
 {
     if (_trivialValueSet.isNone())
         _trivialValueSet = ValueSet::makeTrivial(getHandle());
