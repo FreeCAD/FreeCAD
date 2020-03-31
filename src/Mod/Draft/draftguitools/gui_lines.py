@@ -42,7 +42,7 @@ import draftutils.gui_utils as gui_utils
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
 
@@ -285,3 +285,79 @@ class Line(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Line', Line())
+
+
+class Wire(Line):
+    """Gui command for the Wire or Polyline tool.
+
+    It inherits the `Line` class, and calls essentially the same code,
+    only this time the `wiremode` is set to `True`,
+    so we are allowed to place more than two points.
+    """
+
+    def __init__(self):
+        super().__init__(wiremode=True)
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _tip = ("Creates a multiple-points line (polyline). "
+                "CTRL to snap, SHIFT to constrain.")
+
+        return {'Pixmap': 'Draft_Wire',
+                'Accel': "P, L",
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", _tip)}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        import Part
+
+        # If there is a selection, and this selection contains various
+        # two-point lines, their shapes are extracted, and we attempt
+        # to join them into a single Wire (polyline),
+        # then the old lines are removed.
+        if len(Gui.Selection.getSelection()) > 1:
+            edges = []
+            for o in Gui.Selection.getSelection():
+                if utils.get_type(o) != "Wire":
+                    edges = []
+                    break
+                edges.extend(o.Shape.Edges)
+            if edges:
+                try:
+                    w = Part.Wire(edges)
+                except Exception:
+                    _err(translate("draft",
+                                   "Unable to create a Wire "
+                                   "from selected objects"))
+                else:
+                    # Points of the new fused Wire in string form
+                    # 'FreeCAD.Vector(x,y,z), FreeCAD.Vector(x1,y1,z1), ...'
+                    pts = ", ".join([str(v.Point) for v in w.Vertexes])
+                    pts = pts.replace("Vector ", "FreeCAD.Vector")
+
+                    # List of commands to remove the old objects
+                    rems = list()
+                    for o in Gui.Selection.getSelection():
+                        rems.append('FreeCAD.ActiveDocument.'
+                                    'removeObject("' + o.Name + '")')
+
+                    Gui.addModule("Draft")
+                    # The command to run is built as a series of text strings
+                    # to be commited through the `draftutils.todo.ToDo` class
+                    _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
+                    _cmd_list.extend(rems)
+                    _cmd_list.append('Draft.autogroup(wire)')
+                    _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
+
+                    _op_name = translate("draft", "Convert to Wire")
+                    todo.ToDo.delayCommit([(_op_name, _cmd_list)])
+                    return
+
+        # If there was no selection or the selection was just one object
+        # then we proceed with the normal line creation functions,
+        # only this time we will be able to input more than two points
+        super().Activated(name=translate("draft", "Polyline"))
+
+
+Gui.addCommand('Draft_Wire', Wire())
