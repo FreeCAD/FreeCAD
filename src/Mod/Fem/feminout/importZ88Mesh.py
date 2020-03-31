@@ -91,7 +91,7 @@ def export(
     femnodes_mesh = obj.FemMesh.Nodes
     femelement_table = meshtools.get_femelement_table(obj.FemMesh)
     z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
-    f = pyopen(filename, "wb")
+    f = pyopen(filename, "w")
     write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
     f.close()
 

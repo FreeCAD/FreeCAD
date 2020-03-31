@@ -83,44 +83,29 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_leadFeat(leader),
     m_weldFeat(nullptr),
     m_createMode(true),
-    m_arrowDirty(false),
     m_otherDirty(false)
 {
 //TODO: why does DWS need DLL as parent?
 //    Base::Console().Message("TWS::TWS() - create mode\n");
     if  (m_leadFeat == nullptr)  {
         //should be caught in CMD caller
-        Base::Console().Error("TaskWeldingSymbol - bad parameters.  Can not proceed.\n");
+        Base::Console().Error("TaskWeldingSymbol - bad parameters. Can not proceed.\n");
         return;
     }
     ui->setupUi(this);
 
-    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onArrowSymbolClicked(bool)));
-    connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherSymbolClicked(bool)));
-    connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherEraseClicked(bool)));
+    setUiPrimary();
 
+    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
+            this, SLOT(onArrowSymbolCreateClicked()));
+    connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
+            this, SLOT(onOtherSymbolCreateClicked()));
+    connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
+            this, SLOT(onOtherEraseCreateClicked()));
+    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
+            this, SLOT(onFlipSidesCreateClicked()));
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
             this, SLOT(onDirectorySelected(const QString&)));
-
-    connect(ui->leArrowTextL, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
-    connect(ui->leArrowTextR, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
-    connect(ui->leArrowTextC, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
-
-    connect(ui->leOtherTextL, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
-    connect(ui->leOtherTextR, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
-    connect(ui->leOtherTextC, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
-
-
-    setUiPrimary();
 }
 
 //ctor for edit
@@ -129,7 +114,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     m_leadFeat(nullptr),
     m_weldFeat(weld),
     m_createMode(false),
-    m_arrowDirty(false),
     m_otherDirty(false)
 {
 //    Base::Console().Message("TWS::TWS() - edit mode\n");
@@ -150,33 +134,42 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
     ui->setupUi(this);
 
-    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onArrowSymbolClicked(bool)));
+    setUiEdit();
 
+    connect(ui->pbArrowSymbol, SIGNAL(clicked(bool)),
+        this, SLOT(onArrowSymbolClicked()));
     connect(ui->pbOtherSymbol, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherSymbolClicked(bool)));
+        this, SLOT(onOtherSymbolClicked()));
     connect(ui->pbOtherErase, SIGNAL(clicked(bool)),
-            this, SLOT(onOtherEraseClicked(bool)));
+        this, SLOT(onOtherEraseClicked()));
+    connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
+        this, SLOT(onFlipSidesClicked()));
 
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-            this, SLOT(onDirectorySelected(const QString&)));
+        this, SLOT(onDirectorySelected(const QString&)));
 
-    connect(ui->leArrowTextL, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
-    connect(ui->leArrowTextR, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
-    connect(ui->leArrowTextC, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onArrowTextChanged(const QString&)));
+    connect(ui->leArrowTextL, SIGNAL(textEdited(QString)),
+        this, SLOT(onArrowTextChanged()));
+    connect(ui->leArrowTextR, SIGNAL(textEdited(QString)),
+        this, SLOT(onArrowTextChanged()));
+    connect(ui->leArrowTextC, SIGNAL(textEdited(QString)),
+        this, SLOT(onArrowTextChanged()));
 
-    connect(ui->leOtherTextL, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
-    connect(ui->leOtherTextR, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
-    connect(ui->leOtherTextC, SIGNAL(textEdited(const QString&)),
-            this, SLOT(onOtherTextChanged(const QString&)));
+    connect(ui->leOtherTextL, SIGNAL(textEdited(QString)),
+        this, SLOT(onOtherTextChanged()));
+    connect(ui->leOtherTextR, SIGNAL(textEdited(QString)),
+        this, SLOT(onOtherTextChanged()));
+    connect(ui->leOtherTextC, SIGNAL(textEdited(QString)),
+        this, SLOT(onOtherTextChanged()));
 
-    saveState();
-    setUiEdit();
+    connect(ui->leTailText, SIGNAL(textEdited(QString)),
+        this, SLOT(onWeldingChanged()));
+    connect(ui->cbFieldWeld, SIGNAL(toggled(bool)),
+        this, SLOT(onWeldingChanged()));
+    connect(ui->cbAllAround, SIGNAL(toggled(bool)),
+        this, SLOT(onWeldingChanged()));
+    connect(ui->cbAltWeld, SIGNAL(toggled(bool)),
+        this, SLOT(onWeldingChanged()));
 }
 
 TaskWeldingSymbol::~TaskWeldingSymbol()
@@ -212,6 +205,9 @@ void TaskWeldingSymbol::setUiPrimary()
     m_otherOut.init();
     m_otherPath = QString();
     m_otherSymbol = QString();
+
+    // we must mark the other side dirty to assure it gets created
+    m_otherDirty = true;
 }
 
 void TaskWeldingSymbol::setUiEdit()
@@ -241,12 +237,12 @@ void TaskWeldingSymbol::setUiEdit()
         if (fi.isReadable()) {
             qTemp = QString::fromUtf8(m_arrowFeat->SymbolFile.getValue());
             QIcon targetIcon(qTemp);
-            QSize iconSize(32,32);
+            QSize iconSize(32, 32);
             ui->pbArrowSymbol->setIcon(targetIcon);
             ui->pbArrowSymbol->setIconSize(iconSize);
             ui->pbArrowSymbol->setText(QString());
         } else {
-            ui->pbArrowSymbol->setText(QString::fromUtf8("Symbol"));
+            ui->pbArrowSymbol->setText(tr("Symbol"));
         }
     }
 
@@ -263,78 +259,156 @@ void TaskWeldingSymbol::setUiEdit()
         if (fi.isReadable()) {
             qTemp = QString::fromUtf8(m_otherFeat->SymbolFile.getValue());
             QIcon targetIcon(qTemp);
-            QSize iconSize(32,32);
+            QSize iconSize(32, 32);
             ui->pbOtherSymbol->setIcon(targetIcon);
             ui->pbOtherSymbol->setIconSize(iconSize);
             ui->pbOtherSymbol->setText(QString());
         } else {
-            ui->pbOtherSymbol->setText(QString::fromUtf8("Symbol"));
+            ui->pbOtherSymbol->setText(tr("Symbol"));
         }
     }
 
     ui->pbArrowSymbol->setFocus();
 }
 
-void TaskWeldingSymbol::onArrowSymbolClicked(bool b)
+void TaskWeldingSymbol::onArrowSymbolCreateClicked()
 {
-//    Base::Console().Message("TWS::OnArrowSymbolClicked()\n");
-    Q_UNUSED(b);
+    QString source = tr("arrow");
+    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
+    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
+        this, SLOT(onSymbolSelected(QString, QString)));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->exec();
+}
 
-    QString source = QString::fromUtf8("arrow");
+void TaskWeldingSymbol::onArrowSymbolClicked()
+{
+    QString source = tr("arrow");
     SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
     connect(dlg, SIGNAL(symbolSelected(QString, QString)),
             this, SLOT(onSymbolSelected(QString, QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
-    //int rc = 
+    dlg->exec();
+    updateTiles();
+    m_weldFeat->requestPaint();
+}
+
+void TaskWeldingSymbol::onOtherSymbolCreateClicked()
+{
+    QString source = tr("other");
+    SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
+    connect(dlg, SIGNAL(symbolSelected(QString, QString)),
+        this, SLOT(onSymbolSelected(QString, QString)));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->exec();
 }
 
-void TaskWeldingSymbol::onOtherSymbolClicked(bool b)
+void TaskWeldingSymbol::onOtherSymbolClicked()
 {
-//    Base::Console().Message("TWS::OnOtherSymbolClicked()\n");
-    Q_UNUSED(b);
-
-    QString source = QString::fromUtf8("other");
+    QString source = tr("other");
     SymbolChooser* dlg = new SymbolChooser(this, m_currDir, source);
     connect(dlg, SIGNAL(symbolSelected(QString, QString)),
             this, SLOT(onSymbolSelected(QString, QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-
-//    int rc = 
     dlg->exec();
+    updateTiles();
+    m_weldFeat->requestPaint();
 }
 
-void TaskWeldingSymbol::onOtherEraseClicked(bool b)
+void TaskWeldingSymbol::onOtherEraseCreateClicked()
 {
-//    Base::Console().Message("TWS::onOtherEraseClicked()\n");
-    Q_UNUSED(b);
-    m_otherDirty = true;
-    m_otherOut.init();
-
     ui->leOtherTextL->setText(QString());
     ui->leOtherTextC->setText(QString());
     ui->leOtherTextR->setText(QString());
     ui->pbOtherSymbol->setIcon(QIcon());
-    ui->pbOtherSymbol->setText(QString::fromUtf8("Symbol"));
+    ui->pbOtherSymbol->setText(tr("Symbol"));
     m_otherOut.init();
     m_otherPath = QString();
 }
 
-void TaskWeldingSymbol::onArrowTextChanged(const QString& qs)
+void TaskWeldingSymbol::onOtherEraseClicked()
 {
-//    Base::Console().Message("TWS::onArrowTextChanged(%s)\n", qPrintable(qs));
-    Q_UNUSED(qs);
-    m_arrowDirty = true;
-}
-
-void TaskWeldingSymbol::onOtherTextChanged(const QString& qs)
-{
-//    Base::Console().Message("TWS::onOtherTextChanged(%s)\n", qPrintable(qs));
-    Q_UNUSED(qs);
     m_otherDirty = true;
+    ui->leOtherTextL->setText(QString());
+    ui->leOtherTextC->setText(QString());
+    ui->leOtherTextR->setText(QString());
+    ui->pbOtherSymbol->setIcon(QIcon());
+    ui->pbOtherSymbol->setText(tr("Symbol"));
+    m_otherOut.init();
+    m_otherPath = QString();
+    updateTiles();
+    m_weldFeat->requestPaint();
 }
 
+void TaskWeldingSymbol::onFlipSidesCreateClicked()
+{
+    QString tempText = ui->leOtherTextL->text();
+    ui->leOtherTextL->setText(ui->leArrowTextL->text());
+    ui->leArrowTextL->setText(tempText);
+    tempText = ui->leOtherTextC->text();
+    ui->leOtherTextC->setText(ui->leArrowTextC->text());
+    ui->leArrowTextC->setText(tempText);
+    tempText = ui->leOtherTextR->text();
+    ui->leOtherTextR->setText(ui->leArrowTextR->text());
+    ui->leArrowTextR->setText(tempText);
+
+    QString tempPathArrow = m_otherPath;
+    m_otherPath = m_arrowPath;
+    m_arrowPath = tempPathArrow;
+    tempText = ui->pbOtherSymbol->text();
+    ui->pbOtherSymbol->setText(ui->pbArrowSymbol->text());
+    ui->pbArrowSymbol->setText(tempText);
+    QIcon tempIcon = ui->pbOtherSymbol->icon();
+    ui->pbOtherSymbol->setIcon(ui->pbArrowSymbol->icon());
+    ui->pbArrowSymbol->setIcon(tempIcon);
+}
+
+void TaskWeldingSymbol::onFlipSidesClicked()
+{
+    QString tempText = ui->leOtherTextL->text();
+    ui->leOtherTextL->setText(ui->leArrowTextL->text());
+    ui->leArrowTextL->setText(tempText);
+    tempText = ui->leOtherTextC->text();
+    ui->leOtherTextC->setText(ui->leArrowTextC->text());
+    ui->leArrowTextC->setText(tempText);
+    tempText = ui->leOtherTextR->text();
+    ui->leOtherTextR->setText(ui->leArrowTextR->text());
+    ui->leArrowTextR->setText(tempText);
+
+    // one cannot get the path from the icon therfore read out
+    // the path property
+    auto tempPathArrow = m_arrowFeat->SymbolFile.getValue();
+    auto tempPathOther = m_otherFeat->SymbolFile.getValue();
+    m_otherPath = QString::fromLatin1(tempPathArrow);
+    m_arrowPath = QString::fromLatin1(tempPathOther);
+    QIcon tempIcon = ui->pbOtherSymbol->icon();
+    ui->pbOtherSymbol->setIcon(ui->pbArrowSymbol->icon());
+    ui->pbArrowSymbol->setIcon(tempIcon);
+
+    m_otherDirty = true;
+    updateTiles();
+    m_weldFeat->requestPaint();
+}
+
+void TaskWeldingSymbol::onArrowTextChanged()
+{
+    updateTiles();
+    m_weldFeat->requestPaint();
+}
+
+void TaskWeldingSymbol::onOtherTextChanged()
+{
+    m_otherDirty = true;
+    updateTiles();
+    m_weldFeat->requestPaint();
+}
+
+void TaskWeldingSymbol::onWeldingChanged()
+{
+    updateWeldingSymbol();
+    m_weldFeat->requestPaint();
+}
 
 void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 {
@@ -349,10 +423,9 @@ void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
     QSize iconSize(32,32);
-    QString arrow = QString::fromUtf8("arrow");
-    QString other = QString::fromUtf8("other");
+    QString arrow = tr("arrow");
+    QString other = tr("other");
     if (source == arrow) {
-        m_arrowDirty = true;
         ui->pbArrowSymbol->setIcon(targetIcon);
         ui->pbArrowSymbol->setIconSize(iconSize);
         ui->pbArrowSymbol->setText(QString());
@@ -366,16 +439,6 @@ void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
     }
 }
 
-void TaskWeldingSymbol::blockButtons(bool b)
-{
-    Q_UNUSED(b);
-}
-
-//obsolete.  tiles are only updated on accept.
-void TaskWeldingSymbol::saveState(void)
-{
-}
-
 void TaskWeldingSymbol::collectArrowData(void)
 {
 //    Base::Console().Message("TWS::collectArrowData()\n");
@@ -383,10 +446,10 @@ void TaskWeldingSymbol::collectArrowData(void)
     m_arrowOut.arrowSide = false;
     m_arrowOut.row = 0;
     m_arrowOut.col = 0;
-    m_arrowOut.leftText = Base::Tools::toStdString(ui->leArrowTextL->text());
-    m_arrowOut.centerText = Base::Tools::toStdString(ui->leArrowTextC->text());
-    m_arrowOut.rightText = Base::Tools::toStdString(ui->leArrowTextR->text());
-    m_arrowOut.symbolPath= Base::Tools::toStdString(m_arrowPath);
+    m_arrowOut.leftText = ui->leArrowTextL->text().toStdString();
+    m_arrowOut.centerText = ui->leArrowTextC->text().toStdString();
+    m_arrowOut.rightText = ui->leArrowTextR->text().toStdString();
+    m_arrowOut.symbolPath= m_arrowPath.toStdString();
     m_arrowOut.tileName = "";
 }
 
@@ -397,10 +460,10 @@ void TaskWeldingSymbol::collectOtherData(void)
     m_otherOut.arrowSide = false;
     m_otherOut.row = -1;
     m_otherOut.col = 0;
-    m_otherOut.leftText = Base::Tools::toStdString(ui->leOtherTextL->text());
-    m_otherOut.centerText = Base::Tools::toStdString(ui->leOtherTextC->text());
-    m_otherOut.rightText = Base::Tools::toStdString(ui->leOtherTextR->text());
-    m_otherOut.symbolPath = Base::Tools::toStdString(m_otherPath);
+    m_otherOut.leftText = ui->leOtherTextL->text().toStdString();
+    m_otherOut.centerText = ui->leOtherTextC->text().toStdString();
+    m_otherOut.rightText = ui->leOtherTextR->text().toStdString();
+    m_otherOut.symbolPath = m_otherPath.toStdString();
     m_otherOut.tileName = "";
 }
 
@@ -462,7 +525,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
     Command::doCommand(Command::Doc,"App.activeDocument().%s.AlternatingWeld = %s",
                            symbolName.c_str(), altWeldText.c_str());
 
-    std::string tailText = Base::Tools::toStdString(ui->leTailText->text());
+    std::string tailText = ui->leTailText->text().toStdString();
     tailText = Base::Tools::escapeEncodeString(tailText);
     Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
@@ -497,7 +560,7 @@ void TaskWeldingSymbol::updateWeldingSymbol(void)
     Command::doCommand(Command::Doc,"App.activeDocument().%s.AlternatingWeld = %s",
                            symbolName.c_str(), altWeldText.c_str());
 
-    std::string tailText = Base::Tools::toStdString(ui->leTailText->text());
+    std::string tailText = ui->leTailText->text().toStdString();
     tailText = Base::Tools::escapeEncodeString(tailText);
     Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
