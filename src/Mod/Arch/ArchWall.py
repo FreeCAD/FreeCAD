@@ -39,24 +39,28 @@ else:
 #  \ingroup ARCH
 #  \brief The Wall object and tools
 #
-#  This module provides tools to build Wall objects.
-#  Walls are simple objects, usually vertical, obtained
-#  by giving a thickness to a base line, then extruding it
-#  vertically.
+#  This module provides tools to build Wall objects.  Walls are simple objects,
+#  usually vertical, typically obtained by giving a thickness to a base line,
+#  then extruding it vertically.
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+__doc__="""This module provides tools to build Wall objects.  Walls are simple
+objects, usually vertical, typically obtained by giving a thickness to a base
+line, then extruding it vertically.
 
+Examples
+--------
+TODO put examples here.
+
+"""
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
     '''Creates a wall based on a given object, and returns the generated wall.
 
-Notes
------
-TODO: It is unclear what defines which units this function uses, or what
-defines which units this function uses.
+TODO: It is unclear what defines which units this function uses.
 
 Parameters
 ----------
@@ -81,8 +85,18 @@ name: str, optional
 
 Returns
 -------
-<class 'ArchComponent.Component'>
+<Part::FeaturePython>
     Returns the generated wall.
+
+Notes
+-----
+Creates a new <Part::FeaturePython> object, and turns it into a parametric wall
+object. This <Part::FeaturePython> object does not yet have any shape.
+
+The wall then uses the baseobj.Shape as the basis to extrude out a wall shape,
+giving the new <Part::FeaturePython> object a shape.
+
+It then hides the original baseobj.
 '''
 
     if not FreeCAD.ActiveDocument:
@@ -128,7 +142,7 @@ the walls have the same width, height and alignment.
 
 Parameters
 ----------
-walls: list of <class 'ArchComponent.Component'>
+walls: list of <Part::FeaturePython>
     List containing the walls to add to the first wall in the list. Walls must
     be based off a base object.
 delete: bool, optional
@@ -136,7 +150,7 @@ delete: bool, optional
 
 Returns
 -------
-<class 'ArchComponent.Component'>
+<Part::FeaturePython>
 """
 
     import Part
@@ -237,7 +251,8 @@ class _CommandWall:
     """The command definition for the Arch workbench's gui tool, Arch Wall. A tool for creating Arch walls.
 
 Creates a wall from the object selected by the user. If no objects are
-selected, enters interactive mode to create a wall using selected points.
+selected, enters an interactive mode to create a wall using selected points
+to create a base.
 
 Find documentation on the end user usage of Arch Wall here:
 https://wiki.freecadweb.org/Arch_Wall
@@ -263,7 +278,7 @@ https://wiki.freecadweb.org/Arch_Wall
         """Executed when Arch Wall is called.
 
 Creates a wall from the object selected by the user. If no objects are
-selected, enters interactive mode to create a wall using selected points
+selected, enters an interactive mode to create a wall using selected points
 to create a base.
 """
 
@@ -321,7 +336,7 @@ to create a base.
     def getPoint(self,point=None,obj=None):
         """Callback for clicks during interactive mode.
 
-When method _CommandWall.Activated() has entered the interactive mode this
+When method _CommandWall.Activated() has entered the interactive mode, this
 callback runs when the user clicks.
 
 Parameters
@@ -444,8 +459,7 @@ point: <class 'Base.Vector'>
                 self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
 
     def taskbox(self):
-
-        "sets up a taskbox widget"
+        """Sets up a simple gui widget for the interactive mode."""
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -529,6 +543,7 @@ point: <class 'Base.Vector'>
         return w
 
     def setMat(self,d):
+        """Simple callback for the interactive mode gui widget to set material."""
 
         if d == 0:
             self.MultiMat = None
@@ -538,10 +553,12 @@ point: <class 'Base.Vector'>
             FreeCAD.LastArchMultiMaterial = self.MultiMat.Name
 
     def setLength(self,d):
+        """Simple callback for the interactive mode gui widget to set length."""
 
         self.lengthValue = d
 
     def setWidth(self,d):
+        """Simple callback for the interactive mode gui widget to set width."""
 
         self.Width = d
         self.tracker.width(d)
@@ -549,27 +566,35 @@ point: <class 'Base.Vector'>
 
 
     def setHeight(self,d):
+        """Simple callback for the interactive mode gui widget to set height."""
 
         self.Height = d
         self.tracker.height(d)
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallHeight",d)
 
     def setAlign(self,i):
+        """Simple callback for the interactive mode gui widget to set alignment."""
 
         self.Align = ["Center","Left","Right"][i]
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WallAlignment",i)
 
     def setContinue(self,i):
+        """Simple callback to set if the interactive mode will restart when finished. 
+
+This allows for several walls to be placed one after another.
+"""
 
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.continueMode = bool(i)
 
     def setUseSketch(self,i):
+        """Simple callback to set if walls should join their base sketches when possible."""
 
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetBool("WallSketches",bool(i))
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetBool("joinWallSketches",bool(i))
 
     def createFromGUI(self):
+        """Callback to create wall by using the _CommandWall.taskbox()"""
 
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
@@ -582,23 +607,38 @@ point: <class 'Base.Vector'>
             FreeCADGui.draftToolBar.escape()
 
 
-
 class _CommandMergeWalls:
+    """The command definition for the Arch workbench's gui tool, Arch MergeWalls. A tool for merging walls.
 
-    "the Arch Merge Walls command definition"
+Joins two or more walls by using the ArchWall.joinWalls() function.
+
+Find documentation on the end user usage of Arch Wall here:
+https://wiki.freecadweb.org/Arch_MergeWalls
+"""
 
     def GetResources(self):
+        """Returns a dictonary with the visual aspects of the Arch MergeWalls tool."""
 
         return {'Pixmap'  : 'Arch_MergeWalls',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
+        """Determines whether or not the Arch MergeWalls tool is active. 
+
+        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        """
 
         return bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
+        """Executed when Arch MergeWalls is called.
 
+Calls ArchWall.joinWalls() on walls selected by the user, with the delete
+option enabled. If the user has selected a single wall, check to see if the
+wall has any Additions that are walls. If so, merges these additions to the
+wall, deleting the additions.
+"""
         walls = FreeCADGui.Selection.getSelection()
         if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
@@ -629,19 +669,39 @@ class _CommandMergeWalls:
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
 
-
-
 class _Wall(ArchComponent.Component):
+    """The Wall object. Takes a <App::FeaturePython> and turns it into a wall.
 
-    "The Wall object"
+Walls are simple objects, usually vertical, typically obtained by giving a
+thickness to a base line, then extruding it vertically.
+
+Parameters
+----------
+obj: <App::FeaturePython>
+    The object to turn into a wall. Note that this is not the object that forms
+    the basis for the new wall's shape. That is given later.
+"""
 
     def __init__(self, obj):
+        """Initialises the object's properties.
+
+Sets the object to have the properties of an Arch component, and Arch wall.
+"""
 
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
     def setProperties(self, obj):
+        """Gives the wall it's wall specific properties, such as it's alignment.
+
+You can learn more about properties here: https://wiki.freecadweb.org/property
+
+parameters
+----------
+obj: <part::featurepython>
+    The object to turn into a wall.
+"""
 
         lp = obj.PropertiesList
         if not "Length" in lp:
@@ -698,6 +758,7 @@ class _Wall(ArchComponent.Component):
         self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
+        """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
@@ -938,6 +999,9 @@ class _Wall(ArchComponent.Component):
 
         """returns (shape,extrusion vector,placement) or None"""
         import Part,DraftGeomUtils
+
+        # If ArchComponent.Component.getExtrusionData() can successfully get
+        # extrusion data, just use that.
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
             if not isinstance(data[0],list):
@@ -948,17 +1012,19 @@ class _Wall(ArchComponent.Component):
         # TODO currently layers were not supported when len(basewires) > 0	##( or 1 ? )
         width = 0
 
-        # Get width of each edge segment from Base Objects if they store it (Adding support in SketchFeaturePython, DWire...)
+        # Get width of each edge segment from Base Objects if they store it
+        # (Adding support in SketchFeaturePython, DWire...)
         widths = []  # [] or None are both False
         if obj.Base:
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getWidths'):
-                    widths = obj.Base.Proxy.getWidths(obj.Base)  # return a list of Width corresponds to indexes of sorted edges of Sketch
+                    # Return a list of Width corresponding to indexes of sorted
+                    # edges of Sketch.
+                    widths = obj.Base.Proxy.getWidths(obj.Base)  
 
-        # Get width of each edge/wall segment from ArchWall.OverrideWidth if Base Object does not provide it
-
+        # Get width of each edge/wall segment from ArchWall.OverrideWidth if
+        # Base Object does not provide it
         if not widths:
-
             if obj.OverrideWidth:
                 if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
@@ -972,7 +1038,9 @@ class _Wall(ArchComponent.Component):
                     except:
                         widths = obj.OverrideWidth
                 else:
-                    # If Base Object is not Sketch, but e.g. DWire, the width list in OverrrideWidth just correspond to sequential order of edges
+                    # If Base Object is not Sketch, but e.g. DWire, the width
+                    # list in OverrrideWidth just correspond to sequential
+                    # order of edges
                     widths = obj.OverrideWidth
             elif obj.Width:
                 widths = [obj.Width.Value]
@@ -980,25 +1048,30 @@ class _Wall(ArchComponent.Component):
                 print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
                 return None
 
-        # set 'default' width - for filling in any item in the list == 0 or None
+        # Set 'default' width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
             width = obj.Width.Value
         else:
             width = 200  # 'Default' width value
 
-        # Get align of each edge segment from Base Objects if they store it (Adding support in SketchFeaturePython, DWire...)
+        # Get align of each edge segment from Base Objects if they store it.
+        # (Adding support in SketchFeaturePython, DWire...)
         aligns = []
         if obj.Base:
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getAligns'):
-                    aligns = obj.Base.Proxy.getAligns(obj.Base)  # return a list of Align corresponds to indexes of sorted edges of Sketch
-
-        # Get align of each edge/wall segment from ArchWall.OverrideAlign if Base Object does not provide it
+                    # Return a list of Align corresponds to indexes of sorted
+                    # edges of Sketch.
+                    aligns = obj.Base.Proxy.getAligns(obj.Base)  
+        # Get align of each edge/wall segment from ArchWall.OverrideAlign if
+        # Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
                 if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getAligns() not implemented yet):-
-                    # sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
+                    # If Base Object is ordinary Sketch (or when
+                    # ArchSketch.getAligns() not implemented yet):- sort the
+                    # align list in OverrideAlign to correspond to indexes of
+                    # sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
@@ -1008,7 +1081,9 @@ class _Wall(ArchComponent.Component):
                     except:
                         aligns = obj.OverrideAlign
                 else:
-                    # If Base Object is not Sketch, but e.g. DWire, the align list in OverrideAlign just correspond to sequential order of edges
+                    # If Base Object is not Sketch, but e.g. DWire, the align
+                    # list in OverrideAlign just correspond to sequential order
+                    # of edges
                     aligns = obj.OverrideAlign
             else:
                 aligns = [obj.Align]
@@ -1078,7 +1153,9 @@ class _Wall(ArchComponent.Component):
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 
-                    # Sort Sketch edges consistently with below procedures without using Sketch.Shape.Edges - found the latter order in some corner case != getSortedClusters()
+                    # Sort Sketch edges consistently with below procedures
+                    # without using Sketch.Shape.Edges - found the latter order
+                    # in some corner case != getSortedClusters()
                     elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                         self.basewires = []
                         skGeom = obj.Base.Geometry
@@ -1093,9 +1170,14 @@ class _Wall(ArchComponent.Component):
                             for edge in cluster:
                                 edge.Placement = edge.Placement.multiply(skPlacement)  ## TODO add attribute to skip Transform...
                                 clusterTransformed.append(edge)
-                            self.basewires.append(clusterTransformed)  # Only use cluster of edges rather than turning into wire
-                        # Use Sketch's Normal for all edges/wires generated from sketch for consistency
-                        # Discussion on checking normal of sketch.Placement vs sketch.getGlobalPlacement() - https://forum.freecadweb.org/viewtopic.php?f=22&t=39341&p=334275#p334275
+                            # Only use cluster of edges rather than turning into wire
+                            self.basewires.append(clusterTransformed)
+
+                        # Use Sketch's Normal for all edges/wires generated
+                        # from sketch for consistency Discussion on checking
+                        # normal of sketch.Placement vs
+                        # sketch.getGlobalPlacement() -
+                        # https://forum.freecadweb.org/viewtopic.php?f=22&t=39341&p=334275#p334275
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
@@ -1105,8 +1187,11 @@ class _Wall(ArchComponent.Component):
                         for cluster in Part.getSortedClusters(obj.Base.Shape.Edges):
                             for c in Part.sortEdges(cluster):
                                 self.basewires.append(Part.Wire(c))
-                        # if not sketch, e.g. Dwire, can have wire which is 3d so not on the placement's working plane - below applied to Sketch not applicable here
-                        #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))  #normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        # if not sketch, e.g. Dwire, can have wire which is 3d
+                        # so not on the placement's working plane - below
+                        # applied to Sketch not applicable here
+                        #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))  
+                        #normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     if self.basewires: # and width: # width already tested earlier...
                         if (len(self.basewires) == 1) and layers:
@@ -1125,14 +1210,18 @@ class _Wall(ArchComponent.Component):
 
                             for n in range(0,edgeNum,1):  # why these not work - range(edgeNum), range(0,edgeNum) ...
 
-                                # Fill the aligns list with ArchWall's default align entry and with same number of items as number of edges
+                                # Fill the aligns list with ArchWall's default
+                                # align entry and with same number of items as
+                                # number of edges
                                 try:
                                     if aligns[n] not in ['Left', 'Right', 'Center']:
                                         aligns[n] = align
                                 except:
                                     aligns.append(align)
 
-                                # Fill the widths List with ArchWall's default width entry and with same number of items as number of edges
+                                # Fill the widths List with ArchWall's default
+                                # width entry and with same number of items as
+                                # number of edges
                                 try:
                                     if not widths[n]:
                                         widths[n] = width
@@ -1165,11 +1254,32 @@ class _Wall(ArchComponent.Component):
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                # Get the 'offseted' wire taking into account of Width and Align of each edge, and overall Offset
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal,off)
+                                # Get the 'offseted' wire taking into account
+                                # of Width and Align of each edge, and overall
+                                # Offset
+                                w2 = DraftGeomUtils.offsetWire(
+                                        wire,dvec,
+                                        bind=False,
+                                        occ=False,
+                                        widthList=widths,
+                                        offsetMode=None,
+                                        alignList=aligns,
+                                        normal=normal,
+                                        basewireOffset=off
+                                        )
 
-                                # Get the 'base' wire taking into account of width and align of each edge
-                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal,off)
+                                # Get the 'base' wire taking into account of
+                                # width and align of each edge
+                                w1 = DraftGeomUtils.offsetWire(
+                                        wire, dvec,
+                                        bind=False,
+                                        occ=False,
+                                        widthList=widths,
+                                        offsetMode="BasewireMode",
+                                        alignList=aligns,
+                                        normal=normal,
+                                        basewireOffset=off
+                                        )
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             elif curAligns == "Right":
@@ -1188,9 +1298,23 @@ class _Wall(ArchComponent.Component):
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal,off)
-                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal,off)
+                                w2 = DraftGeomUtils.offsetWire(
+                                        wire, dvec,
+                                        bind=False,
+                                        occ=False,
+                                        widthList=widths,
+                                        offsetMode=None,
+                                        alignList=aligns,
+                                        normal=normal,
+                                        basewireOffset=off
+                                        )
+
+                                w1 = DraftGeomUtils.offsetWire(
+                                        basewireOffset=off
+                                        )
+
                                 sh = DraftGeomUtils.bind(w1,w2)
+
 
                             #elif obj.Align == "Center":
                             elif curAligns == "Center":
@@ -1204,8 +1328,24 @@ class _Wall(ArchComponent.Component):
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
                                 else:
                                     dvec.multiply(width)
-                                    w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal)
-                                    w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal)
+                                    w2 = DraftGeomUtils.offsetWire(wire,
+                                        wire, dvec,
+                                        bind=False,
+                                        occ=False,
+                                        widthList=widths,
+                                        offsetMode=None,
+                                        alignList=aligns,
+                                        normal=normal
+                                        )
+                                    w1 = DraftGeomUtils.offsetWire(wire,
+                                        wire, dvec,
+                                        bind=False,
+                                        occ=False,
+                                        widthList=widths,
+                                        offsetMode="BasewireMode",
+                                        alignList=aligns,
+                                        normal=normal
+                                        )
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             del widths[0:edgeNum]
@@ -1217,8 +1357,13 @@ class _Wall(ArchComponent.Component):
                                 f = Part.Face(sh)
                                 if baseface:
 
-                                    # To allow exportIFC.py to work properly on sketch, which use only 1st face / wire, do not fuse baseface here
-                                    # So for a sketch with multiple wires, each returns individual face (rather than fusing together) for exportIFC.py to work properly
+                                    # To allow exportIFC.py to work properly on
+                                    # sketch, which use only 1st face / wire,
+                                    # do not fuse baseface here So for a sketch
+                                    # with multiple wires, each returns
+                                    # individual face (rather than fusing
+                                    # together) for exportIFC.py to work
+                                    # properly
                                     # "ArchWall - Based on Sketch Issues" - https://forum.freecadweb.org/viewtopic.php?f=39&t=31235
 
                                     # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
