@@ -86,7 +86,7 @@ class ObjectDressup:
         return None
 
     def setup(self, obj):
-        obj.Length = 5.0
+        obj.Length = obj.Base.ToolController.Tool.Diameter * 0.75
         obj.LeadIn = True
         obj.LeadOut = True
         obj.KeepToolDown = False
