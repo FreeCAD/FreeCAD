@@ -338,17 +338,17 @@ void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool mak
     _attrs.push_back(tmp);
 }
 
-void ParaObject::tieAttr_Child(HParaObject& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
-{
-    ChildAttribute tmp;
-    tmp.value = &ref;
-    tmp.name = name;
-    tmp.type = type;
-    tmp.make = make;
-    tmp.required = required;
-    tmp.writeOnce = writeOnce;
-    _children.push_back(tmp);
-}
+//void ParaObject::tieAttr_Child(HParaObject& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
+//{
+//    ChildAttribute tmp;
+//    tmp.value = &ref;
+//    tmp.name = name;
+//    tmp.type = type;
+//    tmp.make = make;
+//    tmp.required = required;
+//    tmp.writeOnce = writeOnce;
+//    _children.push_back(tmp);
+//}
 
 void ParaObject::tieAttr_Shape(HParaObject& ref, std::string name, Base::Type type)
 {

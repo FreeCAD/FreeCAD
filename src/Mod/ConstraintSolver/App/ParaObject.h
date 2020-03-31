@@ -139,7 +139,12 @@ public: //methods
 protected: //methods
     virtual void initAttrs() = 0;
     void tieAttr_Parameter(ParameterRef& ref, std::string name, bool make = true, bool required = true, double defvalue = 0.0);
-    void tieAttr_Child(HParaObject& ref, std::string name, PyTypeObject* type, bool make = false, bool required = true, bool writeOnce = false);
+    template <  typename ChildType,
+                typename = typename std::enable_if<
+                    std::is_base_of<ParaObject, typename std::decay<ChildType>::type>::value
+             >::type
+    >
+    void tieAttr_Child(UnsafePyHandle<ChildType>& ref, std::string name, PyTypeObject* type, bool make = false, bool required = true, bool writeOnce = false);
     void tieAttr_Shape(HParaObject& ref, std::string name, Base::Type type);
     ///we need this to support type-checked shape attributes
     virtual Base::Type shapeType() const {return Base::Type::badType();}
@@ -148,12 +153,31 @@ public: //friends
     friend class ParaObjectPy;
 };
 
+
+//---------------template metods implementation---------------
+
 template <  typename NewTypeT,
             typename 
 >
 UnsafePyHandle<NewTypeT> ParaObject::getHandle() 
 {
     return UnsafePyHandle<NewTypeT>(getPyObject(), true);
+}
+
+
+template <  typename ChildType,
+            typename
+>
+void ParaObject::tieAttr_Child(UnsafePyHandle<ChildType>& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
+{
+    ChildAttribute tmp;
+    tmp.value = &(ref.template upcast<ParaObject>());
+    tmp.name = name;
+    tmp.type = type;
+    tmp.make = make;
+    tmp.required = required;
+    tmp.writeOnce = writeOnce;
+    _children.push_back(tmp);
 }
 
 
