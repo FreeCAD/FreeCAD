@@ -152,109 +152,8 @@ from draftguitools.gui_base_original import Creator
 
 from draftguitools.gui_lines import Line
 from draftguitools.gui_lines import Wire
+from draftguitools.gui_splines import BSpline
 
-
-class BSpline(Line):
-    """a FreeCAD command for creating a B-spline"""
-
-    def __init__(self):
-        Line.__init__(self,wiremode=True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_BSpline',
-                'Accel' : "B, S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "B-spline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BSpline", "Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain")}
-
-    def Activated(self):
-        Line.Activated(self,name=translate("draft","BSpline"))
-        if self.doc:
-            self.bsplinetrack = trackers.bsplineTracker()
-
-    def action(self,arg):
-        """scene event handler"""
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-            self.bsplinetrack.update(self.node + [self.point])
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if (arg["Position"] == self.pos):
-                    self.finish(False,cont=True)
-                else:
-                    if (not self.node) and (not self.support):
-                        getSupport(arg)
-                        self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-                    if self.point:
-                        self.ui.redraw()
-                        self.pos = arg["Position"]
-                        self.node.append(self.point)
-                        self.drawUpdate(self.point)
-                        if (not self.isWire and len(self.node) == 2):
-                            self.finish(False,cont=True)
-                        if (len(self.node) > 2):
-                            # DNC: allows to close the curve
-                            # by placing ends close to each other
-                            # with tol = Draft tolerance
-                            # old code has been to insensitive
-                            if ((self.point-self.node[0]).Length < Draft.tolerance()):
-                                self.undolast()
-                                self.finish(True,cont=True)
-                                FreeCAD.Console.PrintMessage(translate("draft", "Spline has been closed")+"\n")
-
-    def undolast(self):
-        """undoes last line segment"""
-        import Part
-        if (len(self.node) > 1):
-            self.node.pop()
-            self.bsplinetrack.update(self.node)
-            spline = Part.BSplineCurve()
-            spline.interpolate(self.node, False)
-            self.obj.Shape = spline.toShape()
-            FreeCAD.Console.PrintMessage(translate("draft", "Last point has been removed")+"\n")
-
-    def drawUpdate(self,point):
-        import Part
-        if (len(self.node) == 1):
-            self.bsplinetrack.on()
-            if self.planetrack:
-                self.planetrack.set(self.node[0])
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick next point")+"\n")
-        else:
-            spline = Part.BSplineCurve()
-            spline.interpolate(self.node, False)
-            self.obj.Shape = spline.toShape()
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick next point, or Finish (shift-F) or close (o)")+"\n")
-
-    def finish(self,closed=False,cont=False):
-        """terminates the operation and closes the poly if asked"""
-        if self.ui:
-            self.bsplinetrack.finalize()
-        if not Draft.getParam("UiMode",1):
-            FreeCADGui.Control.closeDialog()
-        if self.obj:
-            # remove temporary object, if any
-            old = self.obj.Name
-            ToDo.delay(self.doc.removeObject, old)
-        if (len(self.node) > 1):
-            try:
-                # building command string
-                rot,sup,pts,fil = self.getStrings()
-                FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create B-spline"),
-                            ['points = '+pts,
-                             'spline = Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
-                             'Draft.autogroup(spline)',
-                             'FreeCAD.ActiveDocument.recompute()'])
-            except:
-                print("Draft: error delaying commit")
-        Creator.finish(self)
-        if self.ui:
-            if self.ui.continueMode:
-                self.Activated()
 
 class BezCurve(Line):
     """a FreeCAD command for creating a Bezier Curve"""
@@ -4596,7 +4495,7 @@ FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
-FreeCADGui.addCommand('Draft_BSpline',BSpline())
+
 class CommandBezierGroup:
     def GetCommands(self):
         return tuple(['Draft_CubicBezCurve', 'Draft_BezCurve'])
