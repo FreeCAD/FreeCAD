@@ -22,11 +22,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   by Russell Johnson  <russ4262@gmail.com>  2020-03-30 22:27 CST        *
-# *                                                                         *
-# ***************************************************************************
 
 from __future__ import print_function
 
@@ -83,7 +78,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureCoolant | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
-        '''initPocketOp(obj) ... 
+        '''initPocketOp(obj) ...
         Initialize the operation - property creation and property editor status.'''
         self.initOpProperties(obj)
 
@@ -98,7 +93,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         '''initOpProperties(obj) ... create operation specific properties'''
         PROPS = [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "If true, the temporary path construction objects will be shown.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Show the temporary path construction objects when module is in DEBUG mode.")),
 
             ("App::PropertyDistance", "AngularDeflection", "Mesh Conversion",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.")),
@@ -125,27 +120,27 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyEnumeration", "BoundBox", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation. ")),
             ("App::PropertyVectorDistance", "CircularCenterCustom", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for circular cut patterns.")),
             ("App::PropertyEnumeration", "CircularCenterAt", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose center point to start the ciruclar pattern.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the ciruclar pattern.")),
             ("App::PropertyEnumeration", "ClearLastLayer", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to clear last layer in a `Multi-pass` operation.")),
             ("App::PropertyEnumeration", "CutMode", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)")),
             ("App::PropertyEnumeration", "CutPattern", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the geometric clearing pattern to use.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the geometric clearing pattern to use for the operation.")),
             ("App::PropertyFloat", "CutPatternAngle", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Yaw angle for certain clearing patterns")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "The yaw angle used for certain clearing patterns")),
             ("App::PropertyBool", "CutPatternReversed", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.")),
             ("App::PropertyDistance", "DepthOffset", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the Z-axis depth offset from the target surface.")),
             ("App::PropertyEnumeration", "LayerMode", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The step down mode for the operation.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or mulitiple passes to final depth.")),
             ("App::PropertyEnumeration", "ProfileEdges", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the edges of the selection.")),
             ("App::PropertyDistance", "SampleInterval", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the sampling resolution. Smaller values increase processing time.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the sampling resolution. Smaller values quickly increase processing time.")),
             ("App::PropertyPercent", "StepOver", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the stepover percentage, based on the tool's diameter.")),
 
@@ -159,7 +154,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Feedback: three smallest gaps identified in the path geometry.")),
 
             ("App::PropertyVectorDistance", "StartPoint", "Start Point",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The start point of this path")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "The custom start point for the path of this operation")),
             ("App::PropertyBool", "UseStartPoint", "Start Point",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"))
         ]
@@ -204,6 +199,14 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode('ProfileEdges', hide)
         obj.setEditorMode('InternalFeaturesAdjustment', hide)
         obj.setEditorMode('InternalFeaturesCut', hide)
+        obj.setEditorMode('GapSizes', hide)
+        obj.setEditorMode('GapThreshold', hide)
+        obj.setEditorMode('AvoidLastX_Faces', hide)
+        obj.setEditorMode('AvoidLastX_InternalFeatures', hide)
+        obj.setEditorMode('BoundaryAdjustment', hide)
+        obj.setEditorMode('HandleMultipleFeatures', hide)
+        if hasattr(obj, 'EnableRotation'):
+            obj.setEditorMode('EnableRotation', hide)
         if obj.CutPattern == 'None':
             show = 2
             hide = 2
@@ -265,6 +268,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.ClearLastLayer = 'Off'
         obj.StepOver = 100
         obj.CutPatternAngle = 0.0
+        obj.DepthOffset.Value = 0.0
         obj.SampleInterval.Value = 1.0
         obj.BoundaryAdjustment.Value = 0.0
         obj.InternalFeaturesAdjustment.Value = 0.0
@@ -2793,6 +2797,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         for ca in range(0, caLen):
             area = CUTAREAS[ca]
             csHght = area.BoundBox.ZMin
+            csHght += obj.DepthOffset.Value
             cont = False
             caCnt += 1
             if area.Area > 0.0:
