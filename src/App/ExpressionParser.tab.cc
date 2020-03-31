@@ -4528,13 +4528,13 @@ namespace App { namespace ExpressionParser {
 
   case 227:
 #line 546 "ExpressionParser.y" // lalr1.cc:871
-    { yylhs.value.as< ObjectIdentifier > () = ObjectIdentifier(ctx.obj); yylhs.value.as< ObjectIdentifier > () << ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()); }
+    { yylhs.value.as< ObjectIdentifier > () = ObjectIdentifier(ctx.obj); yylhs.value.as< ObjectIdentifier > () << ObjectIdentifier::SimpleComponent(std::move(yystack_[0].value.as< std::string > ())); }
 #line 4533 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 228:
 #line 547 "ExpressionParser.y" // lalr1.cc:871
-    { yylhs.value.as< ObjectIdentifier > () = std::move(yystack_[0].value.as< ObjectIdentifier > ()); }
+    { yylhs.value.as< ObjectIdentifier > () = std::move(yystack_[0].value.as< ObjectIdentifier > ()); yylhs.value.as< ObjectIdentifier > ().resolveAmbiguity(); }
 #line 4539 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 

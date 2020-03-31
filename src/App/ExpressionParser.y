@@ -542,9 +542,9 @@ unit_exp
     | '(' num '/' unit_exp ')'              { $$ = OperatorExpression::create(ctx.obj, std::move($2), OP_DIV, std::move($4));   }
     ;
 
-identifier 
-    : id_or_cell                            { $$ = ObjectIdentifier(ctx.obj); $$ << ObjectIdentifier::SimpleComponent($1); }
-    | iden                                  { $$ = std::move($1); }
+identifier
+    : id_or_cell                            { $$ = ObjectIdentifier(ctx.obj); $$ << ObjectIdentifier::SimpleComponent(std::move($1)); }
+    | iden                                  { $$ = std::move($1); $$.resolveAmbiguity(); }
     ;
 
 iden
