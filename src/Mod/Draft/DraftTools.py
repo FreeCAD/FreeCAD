@@ -151,49 +151,9 @@ from draftguitools.gui_tool_utils import redraw3DView
 from draftguitools.gui_base_original import Creator
 
 from draftguitools.gui_lines import Line
+from draftguitools.gui_lines import Wire
 
 
-class Wire(Line):
-    """a FreeCAD command for creating a wire"""
-
-    def __init__(self):
-        Line.__init__(self,wiremode=True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Wire',
-                'Accel' : "P, L",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain")}
-
-    def Activated(self):
-
-        # allow to convert several Draft Lines to a Wire
-        if len(FreeCADGui.Selection.getSelection()) > 1:
-            edges = []
-            for o in FreeCADGui.Selection.getSelection():
-                if Draft.getType(o) != "Wire":
-                    edges  = []
-                    break
-                edges.extend(o.Shape.Edges)
-            if edges:
-                try:
-                    import Part
-                    w = Part.Wire(edges)
-                except:
-                    FreeCAD.Console.PrintError(translate("draft", "Unable to create a Wire from selected objects")+"\n")
-                else:
-                    pts = ",".join([str(v.Point) for v in w.Vertexes])
-                    pts = pts.replace("Vector","FreeCAD.Vector")
-                    rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
-                    FreeCADGui.addModule("Draft")
-                    ToDo.delayCommit([(translate("draft", "Convert to Wire"),
-                            ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)',
-                             'FreeCAD.ActiveDocument.recompute()'])])
-                    return
-
-        Line.Activated(self,name=translate("draft","Polyline"))
-
- 
 class BSpline(Line):
     """a FreeCAD command for creating a B-spline"""
 
@@ -4620,7 +4580,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 #---------------------------------------------------------------------------
 
 # drawing commands
-FreeCADGui.addCommand('Draft_Wire',Wire())
 FreeCADGui.addCommand('Draft_Circle',Circle())
 class CommandArcGroup:
     def GetCommands(self):
