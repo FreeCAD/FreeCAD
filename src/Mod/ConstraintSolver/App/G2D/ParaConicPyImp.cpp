@@ -3,49 +3,67 @@
 #include "G2D/ParaConicPy.h"
 #include "G2D/ParaConicPy.cpp"
 
-#include "ParameterStorePy.h"
-#include "ParameterRefPy.h"
+#include "ValueSetPy.h"
+
 #include "PyUtils.h"
-
-
-PyObject *ParaConicPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
-{
-
-    return pyTryCatch([&]()->Py::Object{
-        {
-            if (PyArg_ParseTuple(args, "")){
-                HParaConic p = new ParaConic;
-                if (kwd && kwd != Py_None)
-                    p->initFromDict(Py::Dict(kwd));
-                return p.getHandledObject();
-            }
-            PyErr_Clear();
-        }
-        throw Py::TypeError(
-            "Wrong argument count or type."
-            "\n\nsupported signatures:"
-            "\n() - all references set to None"
-            "\n(**keyword_args) - assigns attributes."
-        );
-    });
-}
-
-// constructor method
-int ParaConicPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
-{
-    return 0;
-}
-
 
 // returns a string which represents the object e.g. when printed in python
 std::string ParaConicPy::representation(void) const
 {
-    return ParaCurvePy::representation();
+    return getParaConicPtr()->repr();
 }
 
 
 
-PyObject *ParaConicPy::getCustomAttributes(const char* attr) const
+PyObject* ParaConicPy::getFocus1(PyObject* args)
+{
+    PyObject* pcvals = nullptr;
+    if (! PyArg_ParseTuple(args, "O!", &ValueSetPy::Type, &pcvals))
+        return nullptr;
+    Position ret = getParaConicPtr()->getFocus1(*HValueSet(pcvals, false));
+    return ret.getPyObject();
+}
+
+PyObject* ParaConicPy::getFocus2(PyObject* args)
+{
+    PyObject* pcvals = nullptr;
+    if (! PyArg_ParseTuple(args, "O!", &ValueSetPy::Type, &pcvals))
+        return nullptr;
+    Position ret = getParaConicPtr()->getFocus2(*HValueSet(pcvals, false));
+    return ret.getPyObject();
+}
+
+PyObject* ParaConicPy::getF(PyObject* args)
+{
+    PyObject* pcvals = nullptr;
+    if (! PyArg_ParseTuple(args, "O!", &ValueSetPy::Type, &pcvals))
+        return nullptr;
+    DualNumber ret = getParaConicPtr()->getF(*HValueSet(pcvals, false));
+    return ret.getPyObject();
+}
+
+PyObject* ParaConicPy::getRMaj(PyObject* args)
+{
+    PyObject* pcvals = nullptr;
+    if (! PyArg_ParseTuple(args, "O!", &ValueSetPy::Type, &pcvals))
+        return nullptr;
+    DualNumber ret = getParaConicPtr()->getRMaj(*HValueSet(pcvals, false));
+    return ret.getPyObject();
+}
+
+PyObject* ParaConicPy::getRMin(PyObject* args)
+{
+    PyObject* pcvals = nullptr;
+    if (! PyArg_ParseTuple(args, "O!", &ValueSetPy::Type, &pcvals))
+        return nullptr;
+    DualNumber ret = getParaConicPtr()->getRMin(*HValueSet(pcvals, false));
+    return ret.getPyObject();
+}
+
+
+
+
+PyObject* ParaConicPy::getCustomAttributes(const char* attr) const
 {
     return ParaCurvePy::getCustomAttributes(attr);
 }

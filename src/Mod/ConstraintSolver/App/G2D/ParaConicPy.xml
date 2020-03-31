@@ -8,7 +8,7 @@
 	  Include="Mod/ConstraintSolver/App/G2D/ParaConic.h" 
 	  FatherInclude="Mod/ConstraintSolver/App/G2D/ParaCurvePy.h" 
 	  Namespace="FCS::G2D" 
-	  Constructor="true"
+	  Constructor="false"
 	  Delete="false"
 	  FatherNamespace="FCS::G2D"
 	  DisableNotify="true">
@@ -18,6 +18,31 @@
 	  <UserDocu>2D line segment</UserDocu>
 	</Documentation>
     
-    
+	<Methode Name="getFocus1">
+	  <Documentation>
+		<UserDocu>getFocus1(valueset): returns first focus position.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="getFocus2">
+	  <Documentation>
+		<UserDocu>getFocus2(valueset): returns second focus position.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="getF">
+	  <Documentation>
+		<UserDocu>getF(valueset): returns focal length (distance from center to focus).</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="getRMaj">
+	  <Documentation>
+		<UserDocu>getRMaj(valueset): returns major radius.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="getRMin">
+	  <Documentation>
+		<UserDocu>getRMin(valueset): returns minor radius.</UserDocu>
+	  </Documentation>
+	</Methode>
+
   </PythonExport>
 </GenerateModel>

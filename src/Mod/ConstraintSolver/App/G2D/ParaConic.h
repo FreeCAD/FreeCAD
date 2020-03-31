@@ -26,6 +26,7 @@
 
 #include "ParaCurve.h"
 #include "ParaPoint.h"
+#include "ParaLine.h"
 
 namespace FCS {
 namespace G2D {
@@ -34,29 +35,35 @@ class ParaConic;
 typedef Base::UnsafePyHandle<ParaConic> HParaConic;
 typedef Base::UnsafePyHandle<ParaShape<ParaConic>> HShape_Conic;
 
+/**
+ * @brief Base class for ellipse and hyperbola. Parabola is implemented
+ * separately, and for being very different, does not benefit from deriving from
+ * this class
+ */
 class FCSExport ParaConic : public FCS::G2D::ParaCurve
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public://data
 
+    HParaPoint center = nullptr;
+    ParameterRef radmin;
+    HParaPoint focus1 = nullptr;
+    HParaPoint focus2 = nullptr;
+    HParaLine minorDiameterLine = nullptr;
+    HParaLine majorDiameterLine = nullptr;
+
 public://methods
-    ParaConic();
-    ParaConic(HParaPoint p1, HParaPoint p2);
-    void initAttrs() override;
-    virtual std::vector<ParameterRef> makeParameters(HParameterStore into) override;
+
     virtual PyObject* getPyObject() override;
 
-    virtual Position value(const ValueSet& vals, DualNumber u) override;
-    virtual Vector tangent(const ValueSet& vals, DualNumber u) override;
-    virtual Vector tangentAtXY(const ValueSet& vals, Position p) override;
-    virtual bool supports_tangentAtXY() override {return true;}
+    ///returns full position of focus1 (focus1 attribute )
+    virtual Position getFocus1(const ValueSet&) const = 0;
+    Position getFocus2(const ValueSet&) const;
+    virtual DualNumber getF(const ValueSet&) const = 0;
+    virtual DualNumber getRMaj(const ValueSet&) const = 0;
+    virtual DualNumber getRMin(const ValueSet&) const = 0;
 
-    virtual DualNumber length(const ValueSet& vals, DualNumber u0, DualNumber u1) override;
-    virtual DualNumber length(const ValueSet& vals) override;
-    virtual bool supports_length() override {return true;}
-
-    virtual DualNumber pointOnCurveErrFunc(const ValueSet& vals, Position p) override;
-    virtual bool supports_pointOnCurveErrFunc() override {return true;}
 
 public: //friends
     friend class ParaConicPy;
