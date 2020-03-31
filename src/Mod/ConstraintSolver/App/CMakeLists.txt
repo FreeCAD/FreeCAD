@@ -46,6 +46,7 @@ generate_from_xml(G2D/ParaCurvePy)
 generate_from_xml(G2D/ParaLinePy)
 generate_from_xml(G2D/ParaCirclePy)
 generate_from_xml(G2D/ParaConicPy)
+generate_from_xml(G2D/ParaEllipsePy)
 generate_from_xml(G2D/ParaParabolaPy)
 generate_from_xml(G2D/ParaBSplineBasePy)
 
@@ -113,6 +114,10 @@ SET(ConstraintSolver_G2D
     G2D/ParaConic.cpp
     G2D/ParaConicPy.xml
     G2D/ParaConicPyImp.cpp
+    G2D/ParaEllipse.h
+    G2D/ParaEllipse.cpp
+    G2D/ParaEllipsePy.xml
+    G2D/ParaEllipsePyImp.cpp
     G2D/ParaParabola.h
     G2D/ParaParabola.cpp
     G2D/ParaParabolaPy.xml

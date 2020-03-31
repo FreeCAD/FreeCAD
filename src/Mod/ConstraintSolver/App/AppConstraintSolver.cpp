@@ -81,6 +81,8 @@
 #include "G2D/ParaCirclePy.h"
 #include "G2D/ParaConic.h"
 #include "G2D/ParaConicPy.h"
+#include "G2D/ParaEllipse.h"
+#include "G2D/ParaEllipsePy.h"
 #include "G2D/ParaParabola.h"
 #include "G2D/ParaParabolaPy.h"
 #include "G2D/ParaBSplineBase.h"
@@ -226,6 +228,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaLinePy                 ::Type.tp_name = "ConstraintSolver.G2D.ParaLine"                 ;
     FCS::G2D::ParaCirclePy               ::Type.tp_name = "ConstraintSolver.G2D.ParaCircle"               ;
     FCS::G2D::ParaConicPy                ::Type.tp_name = "ConstraintSolver.G2D.ParaConic"                ;
+    FCS::G2D::ParaEllipsePy              ::Type.tp_name = "ConstraintSolver.G2D.ParaEllipse"              ;
     FCS::G2D::ParaParabolaPy             ::Type.tp_name = "ConstraintSolver.G2D.ParaParabola"             ;
     FCS::G2D::ParaBSplineBasePy          ::Type.tp_name = "ConstraintSolver.G2D.ParaBSplineBase"          ;
     FCS::G2D::ConstraintCurvePosPy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintCurvePos"       ;
@@ -254,6 +257,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ParaLinePy                 ::Type, submodG2D.ptr(), "ParaLine"                 );
     Base::Interpreter().addType(&FCS::G2D::ParaCirclePy               ::Type, submodG2D.ptr(), "ParaCircle"               );
     Base::Interpreter().addType(&FCS::G2D::ParaConicPy                ::Type, submodG2D.ptr(), "ParaConic"                );
+    Base::Interpreter().addType(&FCS::G2D::ParaEllipsePy              ::Type, submodG2D.ptr(), "ParaEllipse"              );
     Base::Interpreter().addType(&FCS::G2D::ParaParabolaPy             ::Type, submodG2D.ptr(), "ParaParabola"             );
     Base::Interpreter().addType(&FCS::G2D::ParaBSplineBasePy          ::Type, submodG2D.ptr(), "ParaBSplineBase"          );
     Base::Interpreter().addType(&FCS::G2D::ConstraintCurvePosPy       ::Type, submodG2D.ptr(), "ConstraintCurvePos"       );
@@ -296,6 +300,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaLine                 ::init();
     FCS::G2D::ParaCircle               ::init();
     FCS::G2D::ParaConic                ::init();
+    FCS::G2D::ParaEllipse              ::init();
     FCS::G2D::ParaParabola             ::init();
     FCS::G2D::ParaBSplineBase          ::init();
     FCS::G2D::ConstraintCurvePos       ::init();

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="ParaConicPy" 
+	  Name="ParaEllipsePy" 
+	  Twin="ParaEllipse" 
+	  TwinPointer="ParaEllipse" 
+	  Include="Mod/ConstraintSolver/App/G2D/ParaEllipse.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/G2D/ParaConicPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS::G2D"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>2D line segment</DeveloperDocu>
+	  <UserDocu>2D line segment</UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>
