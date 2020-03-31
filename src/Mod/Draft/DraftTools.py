@@ -156,127 +156,7 @@ from draftguitools.gui_splines import BSpline
 from draftguitools.gui_beziers import BezCurve
 from draftguitools.gui_beziers import CubicBezCurve
 from draftguitools.gui_beziers import BezierGroup
-
-
-class Rectangle(Creator):
-    """the Draft_Rectangle FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Rectangle',
-                'Accel' : "R, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap")}
-
-    def Activated(self):
-        name = translate("draft","Rectangle")
-        Creator.Activated(self,name)
-        if self.ui:
-            self.refpoint = None
-            self.ui.pointUi(name)
-            self.ui.extUi()
-            if Draft.getParam("UsePartPrimitives",False):
-                self.fillstate = self.ui.hasFill.isChecked()
-                self.ui.hasFill.setChecked(True)
-            self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rect = trackers.rectangleTracker()
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
-
-    def finish(self,closed=False,cont=False):
-        """terminates the operation and closes the poly if asked"""
-        Creator.finish(self)
-        if self.ui:
-            if hasattr(self,"fillstate"):
-                self.ui.hasFill.setChecked(self.fillstate)
-                del self.fillstate
-            self.rect.off()
-            self.rect.finalize()
-            if self.ui.continueMode:
-                self.Activated()
-
-    def createObject(self):
-        """creates the final object in the current doc"""
-        p1 = self.node[0]
-        p3 = self.node[-1]
-        diagonal = p3.sub(p1)
-        p2 = p1.add(DraftVecUtils.project(diagonal, plane.v))
-        p4 = p1.add(DraftVecUtils.project(diagonal, plane.u))
-        length = p4.sub(p1).Length
-        if abs(DraftVecUtils.angle(p4.sub(p1),plane.u,plane.axis)) > 1: length = -length
-        height = p2.sub(p1).Length
-        if abs(DraftVecUtils.angle(p2.sub(p1),plane.v,plane.axis)) > 1: height = -height
-        try:
-            # building command string
-            rot,sup,pts,fil = self.getStrings()
-            base = p1
-            if length < 0:
-                length = -length
-                base = base.add((p1.sub(p4)).negative())
-            if height < 0:
-                height = -height
-                base = base.add((p1.sub(p2)).negative())
-            FreeCADGui.addModule("Draft")
-            if Draft.getParam("UsePartPrimitives",False):
-                # Use Part Primitive
-                self.commit(translate("draft","Create Plane"),
-                            ['plane = FreeCAD.ActiveDocument.addObject("Part::Plane","Plane")',
-                             'plane.Length = '+str(length),
-                             'plane.Width = '+str(height),
-                             'pl = FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
-                             'pl.Base = '+DraftVecUtils.toString(base),
-                             'plane.Placement = pl',
-                             'Draft.autogroup(plane)',
-                             'FreeCAD.ActiveDocument.recompute()'])
-            else:
-                self.commit(translate("draft","Create Rectangle"),
-                            ['pl = FreeCAD.Placement()',
-                             'pl.Rotation.Q = '+rot,
-                             'pl.Base = '+DraftVecUtils.toString(base),
-                             'rec = Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')',
-                             'Draft.autogroup(rec)',
-                             'FreeCAD.ActiveDocument.recompute()'])
-        except:
-            print("Draft: error delaying commit")
-        self.finish(cont=True)
-
-    def action(self,arg):
-        """scene event handler"""
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
-            self.rect.update(self.point)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if (arg["Position"] == self.pos):
-                    self.finish()
-                else:
-                    if (not self.node) and (not self.support):
-                        getSupport(arg)
-                        self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
-                    if self.point:
-                        self.ui.redraw()
-                        self.appendPoint(self.point)
-
-    def numericInput(self,numx,numy,numz):
-        """this function gets called by the toolbar when valid x, y, and z have been entered there"""
-        self.point = Vector(numx,numy,numz)
-        self.appendPoint(self.point)
-
-    def appendPoint(self,point):
-        self.node.append(point)
-        if (len(self.node) > 1):
-            self.rect.update(point)
-            self.createObject()
-        else:
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick opposite point")+"\n")
-            self.ui.setRelative()
-            self.rect.setorigin(point)
-            self.rect.on()
-            if self.planetrack:
-                self.planetrack.set(point)
+from draftguitools.gui_rectangles import Rectangle
 
 
 class Arc(Creator):
@@ -4209,7 +4089,6 @@ class CommandArcGroup:
 FreeCADGui.addCommand('Draft_Arc',Arc())
 FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
 FreeCADGui.addCommand('Draft_Text',Text())
-FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
 

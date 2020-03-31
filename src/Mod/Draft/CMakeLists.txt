@@ -87,6 +87,7 @@ SET(Creator_tools
     draftguitools/gui_lines.py
     draftguitools/gui_splines.py
     draftguitools/gui_beziers.py
+    draftguitools/gui_rectangles.py
 )
 
 SET(Draft_GUI_tools
