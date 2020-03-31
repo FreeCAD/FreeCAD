@@ -432,7 +432,7 @@ std::string ObjectIdentifier::toPersistentString() const {
     if(result.propertyIndex >= (int)components.size())
         return std::string();
 
-    auto itComp = components.begin();
+    auto itComp = components.begin() + result.propertyIndex;
     
     if(localProperty ||
        (result.resolvedProperty && 
@@ -468,7 +468,6 @@ std::string ObjectIdentifier::toPersistentString() const {
     } else if (documentObjectNameSet && documentObjectName.getString().size()) {
         s << documentObjectName << '.';
     } else if (result.propertyIndex > 0) {
-        ++itComp;
         components[0].toString(s);
         s << '.';
     }
