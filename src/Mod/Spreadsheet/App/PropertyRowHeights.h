@@ -50,6 +50,11 @@ public:
         return *this;
     }
 
+    virtual bool isSame(const Property &other) const {
+        return other.isDerivedFrom(getClassTypeId())
+            && *this == static_cast<const PropertyRowHeights&>(other);
+    }
+
     virtual App::Property *Copy(void) const;
 
     virtual void Paste(const App::Property &from);

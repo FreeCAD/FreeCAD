@@ -29,6 +29,12 @@ import math
 # define the functions to test the FreeCAD Document code
 #---------------------------------------------------------------------------
 
+def optimizeRecompute():
+    # Once OptimizeRecompute is enabled, execute will only be called if there is
+    # actually any property changes, or enforceRecompute() has been called.
+    return FreeCAD.ParamGet(
+            'User parameter:BaseApp/Preferences/Document').GetBool(
+                    'OptimizeRecompute',True)
 
 class DocumentBasicCases(unittest.TestCase):
   def setUp(self):
@@ -84,7 +90,10 @@ class DocumentBasicCases(unittest.TestCase):
     objectcount = self.Doc.recompute()
     self.assertEqual(objectcount, 1)
     self.assertEqual(L1.ExecCount, countChild)
-    self.assertEqual(L2.ExecCount, countParent+1)
+    if optimizeRecompute():
+        self.assertEqual(L2.ExecCount, countParent)
+    else:
+        self.assertEqual(L2.ExecCount, countParent+1)
 
     L1.enforceRecompute()
     countChild = L1.ExecCount
@@ -592,6 +601,7 @@ class DocumentRecomputeCases(unittest.TestCase):
     self.failUnless((3, 3, 2, 1, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
     L5.enforceRecompute()
     self.failUnless(self.Doc.recompute()==4)
+
     self.failUnless((4, 4, 3, 1, 2, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
     L6.enforceRecompute()
     self.failUnless(self.Doc.recompute()==3)
@@ -611,6 +621,38 @@ class DocumentRecomputeCases(unittest.TestCase):
     self.Doc.removeObject(L6.Name)
     self.Doc.removeObject(L7.Name)
     self.Doc.removeObject(L8.Name)
+
+  class Observer():
+    def __init__(self):
+      self.objs = []
+
+    def slotSkipRecompute(self, _doc, objs):
+      self.objs = objs
+
+  def testGroupRecompute(self):
+
+    g1 = self.Doc.addObject("App::Part", "g1");
+    g2 = self.Doc.addObject("App::Part", "g2");
+    g3 = self.Doc.addObject("App::Part", "g3");
+    box = self.Doc.addObject("Part::Box", "box");
+    link = self.Doc.addObject("App::Link","link")
+
+    g3.addObject(box)
+    g2.addObject(g3)
+    g1.addObject(g2)
+    link.setLink(g1,'{}.{}.{}.'.format(g2.Name,g3.Name,box.Name))
+
+    self.Doc.recompute()
+
+    box.Placement.Base = FreeCAD.Vector(10,10,10)
+
+    observer = self.Observer();
+    FreeCAD.addDocumentObserver(observer);
+    res = self.Doc.recompute()
+    FreeCAD.removeDocumentObserver(observer);
+
+    self.failUnless(res == 5)
+    self.failUnless(not observer.objs)
 
   def tearDown(self):
     #closing doc
@@ -1392,8 +1434,8 @@ class DocumentExpressionCases(unittest.TestCase):
     self.Doc.recompute()
     self.assertAlmostEqual(self.Obj1.Placement.Rotation.Angle, self.Obj2.Placement.Rotation.Angle)
     # touch the objects to perform a recompute
-    self.Obj1.Placement = self.Obj1.Placement
-    self.Obj2.Placement = self.Obj2.Placement
+    self.Obj1.enforceRecompute();
+    self.Obj2.enforceRecompute();
     # must not raise a topological error
     self.assertEqual(self.Doc.recompute(), 2)
 

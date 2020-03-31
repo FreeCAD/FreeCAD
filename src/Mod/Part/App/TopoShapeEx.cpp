@@ -3456,3 +3456,16 @@ std::vector<std::string> TopoShape::getHigherElements(const char *element, bool 
     }
     return res;
 }
+
+bool TopoShape::isSame(const Data::ComplexGeoData &_other) const
+{
+    if(!_other.isDerivedFrom(TopoShape::getClassTypeId()))
+        return false;
+
+    const auto &other = static_cast<const TopoShape &>(_other);
+    return Tag == other.Tag
+        && Hasher == other.Hasher
+        && _ElementMap == other._ElementMap
+        && _Shape.IsEqual(other._Shape);
+}
+

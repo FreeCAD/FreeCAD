@@ -54,6 +54,9 @@ public:
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) = 0;
 
+    virtual Property *copyBeforeChange(void) const { return nullptr; }
+    virtual bool isSame(const Property &) const {return false;}
+
 protected:
     virtual void onRelabeledDocument(const App::Document &doc) = 0;
 
@@ -145,6 +148,8 @@ public:
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
     bool depsAreTouched() const;
+
+    virtual bool isTouched() const override;
 
     /* Expression validator */
     void setValidator(ValidatorFunc f) { validator = f; }

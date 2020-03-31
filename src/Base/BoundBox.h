@@ -77,6 +77,8 @@ public:
     /// Assignment operator 
     inline  BoundBox3<_Precision>& operator = (const BoundBox3<_Precision> &rcBound);
 
+    inline bool operator == (const BoundBox3<_Precision> &rcBound) const;
+
     /** Methods for intersection, cuttíng and union of bounding boxes */
     //@{
     /** Checks for intersection. */
@@ -278,6 +280,17 @@ inline  BoundBox3<_Precision>& BoundBox3<_Precision>::operator = (const BoundBox
     MaxY = rcBound.MaxY;
     MaxZ = rcBound.MaxZ;
     return *this;
+}
+
+template <class _Precision>
+inline bool BoundBox3<_Precision>::operator == (const BoundBox3<_Precision> &rcBound) const
+{
+    return MinX == rcBound.MinX
+            && MinY == rcBound.MinY
+            && MinZ == rcBound.MinZ
+            && MaxX == rcBound.MaxX
+            && MaxY == rcBound.MaxY
+            && MaxZ == rcBound.MaxZ;
 }
 
 template <class _Precision>

@@ -104,6 +104,8 @@ public:
         std::vector<Facet> &faces) const;
     //@}
 
+    virtual bool isSame(const Data::ComplexGeoData &other) const;
+
     void setTransform(const Base::Matrix4D& rclTrf);
     Base::Matrix4D getTransform(void) const;
     void transformGeometry(const Base::Matrix4D &rclMat);

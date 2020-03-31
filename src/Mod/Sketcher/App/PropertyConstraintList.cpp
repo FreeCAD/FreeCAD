@@ -591,4 +591,9 @@ void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) cons
     }
 }
 
+bool PropertyConstraintList::isSame(const Property &_other) const
+{
+    return isSameContent(_other);
+}
+
 std::vector<Constraint *> PropertyConstraintList::_emptyValueList(0);

@@ -34,6 +34,7 @@
 #include <memory>
 #include <cinttypes>
 #include <unordered_set>
+#include <unordered_map>
 #include "Property.h"
 
 namespace Base {
@@ -290,21 +291,7 @@ public:
     }
     //@}
 
-    virtual bool isSame(const Property &other) const override {
-        if(getTypeId() != other.getTypeId()
-            || getScope() != static_cast<decltype(this)>(&other)->getScope())
-            return false;
-
-        std::vector<App::DocumentObject*> ret;
-        std::vector<std::string> subs;
-        getLinks(ret,true,&subs,false);
-
-        std::vector<App::DocumentObject*> ret2;
-        std::vector<std::string> subs2;
-        static_cast<decltype(this)>(&other)->getLinks(ret2,true,&subs2,false);
-
-        return ret==ret2 && subs==subs2;
-    }
+    virtual bool isSame(const Property &other) const override;
 
     /** Enable/disable temporary holding external object without throwing exception
      *
@@ -651,8 +638,13 @@ public:
 
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
+
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
+
 protected:
     App::DocumentObject *_pcLink;
+    int _revision = 0;
 };
 
 /** The general Link Property with Child scope
@@ -743,6 +735,9 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
+
     DocumentObject *find(const std::string &, int *pindex=0) const;
     DocumentObject *find(const char *sub, int *pindex=0) const {
         if(!sub) return 0;
@@ -754,6 +749,7 @@ protected:
 
 protected:
     mutable std::map<std::string, int> _nameMap;
+    std::vector<int> _revisions;
 };
 
 /** The general Link Property with Child scope
@@ -881,11 +877,15 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
+
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
+    int _revision = 0;
 };
 
 /** The general Link Property with Child scope
@@ -1023,12 +1023,16 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
+
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
+    std::vector<int> _revisions;
 };
 
 /** The general Link Property with Child scope
@@ -1308,6 +1312,9 @@ public:
 
     virtual void hasSetChildValue(Property &) override;
     virtual void aboutToSetChildValue(Property &) override;
+
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
 
 protected:
     std::list<PropertyXLinkSub> _Links;

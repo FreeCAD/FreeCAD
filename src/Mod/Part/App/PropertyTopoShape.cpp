@@ -912,6 +912,7 @@ void PropertyShapeCache::slotChanged(const App::DocumentObject &, const App::Pro
             strcmp(propName,"Shape")==0 ||
             strstr(propName,"Touched")!=0)
     {
+        FC_LOG("clear shape cache on changed " << prop.getFullName());
         cache.clear();
     }
 }

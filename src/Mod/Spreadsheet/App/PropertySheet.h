@@ -49,6 +49,8 @@ public:
     App::ExpressionPtr eval(const App::Expression* expr) const;
     App::ExpressionPtr parse(const char *txt, std::size_t len=0, bool verbose=false) const;
 
+    virtual bool isTouched() const override;
+
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
     virtual void onRelabeledDocument(const App::Document &doc) override;

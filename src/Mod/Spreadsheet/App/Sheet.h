@@ -87,6 +87,9 @@ public:
         return "SpreadsheetGui::ViewProviderSheet";
     }
 
+    /// Fix the object revision to reduce effect of recomputation time.
+    virtual int getRevision() const {return 0;}
+
     bool importFromFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\');
 
     bool exportToFile(const std::string & filename, char delimiter = '\t', char quoteChar = '\0', char escapeChar = '\\') const;

@@ -66,6 +66,8 @@ public:
     unsigned int getMemSize (void) const;
     //@}
 
+    virtual bool isSame(const App::Property &) const {return false;}
+
 private:
     Toolpath _Path;
 };

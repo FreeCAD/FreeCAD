@@ -230,9 +230,10 @@ public:
     virtual std::ostream &Stream(void){return StrStream;}
     std::string getString(void) const {return StrStream.str();}
     virtual void writeFiles(void);
+    void clear() { StrStream.str(""); }
 
 private:
-    std::stringstream StrStream;
+    std::ostringstream StrStream;
 };
 
 /*! The FileWriter class

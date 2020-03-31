@@ -156,11 +156,7 @@ public:
     /// Test if this document object must be recomputed
     bool mustRecompute(void) const;
     /// reset this document object touched
-    void purgeTouched(void) {
-        StatusBits.reset(ObjectStatus::Touch);
-        StatusBits.reset(ObjectStatus::Enforce);
-        setPropertyStatus(0,false);
-    }
+    void purgeTouched(void);
     /// set this feature to error
     bool isError(void) const {return  StatusBits.test(ObjectStatus::Error);}
     bool isValid(void) const {return !StatusBits.test(ObjectStatus::Error);}
@@ -586,7 +582,14 @@ public:
     /// Check if the subname reference ends with hidden marker.
     static const char *hasHiddenMarker(const char *subname);
 
+    /// Return a revision number that will change if the object changes.
+    virtual int getRevision() const { return _revision; }
+
 protected:
+    /** Called when trying to skip recomputing this object
+     * @return Return false to force recompute
+     */
+    virtual bool skipRecompute();
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
     /** get called by the document to recompute this feature
@@ -663,6 +666,9 @@ private:
     mutable std::vector<App::DocumentObject *> _outList;
     mutable std::unordered_map<const char *, App::DocumentObject*, CStringHasher, CStringHasher> _outListMap;
     mutable bool _outListCached = false;
+
+    bool _enforceRecompute = false;
+    int _revision;
 };
 
 } //namespace App

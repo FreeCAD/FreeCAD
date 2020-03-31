@@ -269,6 +269,15 @@ void PointKernel::getPoints(std::vector<Base::Vector3d> &Points,
     }
 }
 
+bool PointKernel::isSame(const Data::ComplexGeoData &_other) const
+{
+    if(!_other.isDerivedFrom(getClassTypeId()))
+        return false;
+    const auto &other = static_cast<const PointKernel &>(_other);
+    return _Mtrx == other._Mtrx
+        && _Points == other._Points;
+}
+
 // ----------------------------------------------------------------------------
 
 PointKernel::const_point_iterator::const_point_iterator

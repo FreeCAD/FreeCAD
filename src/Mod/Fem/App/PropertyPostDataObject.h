@@ -77,6 +77,8 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    virtual bool isSame(const App::Property &) const {return false;}
+
 protected:
     void save(std::ostream &s, Base::Writer &writer) const;
     void restore(std::istream &s, const std::string &ext);

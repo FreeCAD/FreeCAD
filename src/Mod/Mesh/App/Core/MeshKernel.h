@@ -425,6 +425,13 @@ public:
                     bool bCutInner, std::vector<unsigned long> &raclCutted);
     //@}
 
+    inline bool operator == (const MeshKernel &other) const {
+        return _bValid == other._bValid
+            && _clBoundBox == other._clBoundBox
+            && _aclPointArray == other._aclPointArray
+            && _aclFacetArray == other._aclFacetArray;
+    }
+
 protected:
     /** Rebuilds the neighbour indices for subset of all facets from index \a index on. */
     void RebuildNeighbours (unsigned long);

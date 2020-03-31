@@ -30,6 +30,7 @@
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
+#include "Property.h"
 
 namespace Base {
 class Writer;
@@ -183,7 +184,15 @@ public:
   /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
-  void setPropertyStatus(unsigned char bit,bool value);
+  void setPropertyStatus(Property::Status bit,bool value);
+  /// set the Status bits of all properties at once
+  void setPropertyStatus(const Property::StatusBits &bits, bool value);
+  /// get the first property that has the given status bits but without given mask
+  Property *testPropertyStatus(const Property::StatusBits &bits,
+          const Property::StatusBits &mask = Property::StatusBits()) const;
+  /// get the first property that has the given status bit without given mask
+  Property *testPropertyStatus(Property::Status bit,
+          const Property::StatusBits &mask = Property::StatusBits()) const;
   /// get the Type of a Property
   virtual short getPropertyType(const Property* prop) const;
   /// get the Type of a named Property

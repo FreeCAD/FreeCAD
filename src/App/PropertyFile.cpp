@@ -505,6 +505,17 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
+Property *PropertyFileIncluded::copyBeforeChange(void) const
+{
+    // No support for property compare due to internal file handling.
+    return nullptr;
+}
+
+bool PropertyFileIncluded::isSame(const Property &) const
+{
+    return false;
+}
+
 Property *PropertyFileIncluded::Copy(void) const
 {
     std::unique_ptr<PropertyFileIncluded> prop(new PropertyFileIncluded());

@@ -215,7 +215,7 @@ Property* DynamicProperty::_addDynamicProperty(PropertyContainer &pc, const char
     if(hidden) attr |= Prop_Hidden;
 
     pcProperty->syncType(attr);
-    pcProperty->StatusBits.set((size_t)Property::PropDynamic);
+    pcProperty->_StatusBits.set((size_t)Property::PropDynamic);
 
     GetApplication().signalAppendDynamicProperty(*pcProperty);
 

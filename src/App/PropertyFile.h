@@ -100,15 +100,11 @@ public:
     virtual void RestoreDocFile(Base::Reader &reader);
 
     virtual Property *Copy(void) const;
+    virtual Property *copyBeforeChange(void) const;
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
-    virtual bool isSame(const Property &other) const {
-        return getTypeId() == other.getTypeId()
-            && _BaseFileName == static_cast<decltype(this)>(&other)->_BaseFileName
-            && _OriginalName == static_cast<decltype(this)>(&other)->_OriginalName
-            && _cValue == static_cast<decltype(this)>(&other)->_cValue;
-    }
+    virtual bool isSame(const Property &other) const;
 
     /** get a temp file name in the transient path of the document.
       * Using this file for new Version of the file and set 

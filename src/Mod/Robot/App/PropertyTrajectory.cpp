@@ -141,5 +141,9 @@ void PropertyTrajectory::Restore(Base::XMLReader &reader)
     setValue(temp);
 }
 
+bool PropertyTrajectory::isSame(const App::Property &_other) const
+{
+    return isSameContent(_other);
+}
 
 

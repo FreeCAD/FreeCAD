@@ -379,6 +379,8 @@ public:
     void setPersistenceFileName(const char *name) const;
     //@}
 
+    virtual bool isSame(const ComplexGeoData &other) const = 0;
+
 public:
     /// String hasher for element name shortening
     mutable App::StringHasherRef Hasher;

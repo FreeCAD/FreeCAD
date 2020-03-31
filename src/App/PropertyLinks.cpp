@@ -81,10 +81,31 @@ void PropertyLinkBase::setAllowExternal(bool allow) {
 }
 
 void PropertyLinkBase::hasSetValue() {
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
     if(owner)
         owner->clearOutListCache();
     Property::hasSetValue();
+}
+
+bool PropertyLinkBase::isSame(const Property &other) const
+{
+    if(getTypeId() != other.getTypeId()
+        || getScope() != static_cast<decltype(this)>(&other)->getScope())
+        return false;
+
+    FC_STATIC std::vector<App::DocumentObject*> ret;
+    FC_STATIC std::vector<std::string> subs;
+    FC_STATIC std::vector<App::DocumentObject*> ret2;
+    FC_STATIC std::vector<std::string> subs2;
+
+    ret.clear();
+    subs.clear();
+    ret2.clear();
+    subs2.clear();
+    getLinks(ret,true,&subs,false);
+    static_cast<const PropertyLinkBase *>(&other)->getLinks(ret2,true,&subs2,false);
+
+    return ret==ret2 && subs==subs2;
 }
 
 void PropertyLinkBase::unregisterElementReference() {
@@ -661,6 +682,33 @@ void PropertyLink::setPyObject(PyObject *value)
     }
 }
 
+static inline int linkRevision(DocumentObject *obj)
+{
+    return obj?obj->getRevision():0;
+}
+
+static inline int linkRevision(DocumentObject *obj, const std::string &subname)
+{
+    int rev = 0;
+    if(obj) {
+        for(auto o : obj->getSubObjectList(subname.c_str()))
+            rev += o->getRevision();
+    }
+    return rev;
+}
+
+bool PropertyLink::isTouched() const {
+    if(PropertyLinkBase::isTouched())
+        return true;
+    return _pcScope != LinkScope::Hidden
+        && linkRevision(_pcLink) != _revision;
+}
+
+void PropertyLink::purgeTouched() {
+    PropertyLinkBase::purgeTouched();
+    _revision = linkRevision(_pcLink);
+}
+
 void PropertyLink::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Link value=\"" <<  (_pcLink?_pcLink->getExportName():"") <<"\"/>\n";
@@ -902,6 +950,29 @@ DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const {
         throw Base::TypeError(error);
     }
     return static_cast<DocumentObjectPy*>(item)->getDocumentObjectPtr();
+}
+
+bool PropertyLinkList::isTouched() const {
+    if(_pcScope == LinkScope::Hidden)
+        return false;
+    if(_lValueList.size() != _revisions.size())
+        return true;
+    int i=0;
+    for(auto l : _lValueList) {
+        if(linkRevision(l) != _revisions[i++])
+            return true;
+    }
+    return false;
+}
+
+void PropertyLinkList::purgeTouched() {
+    PropertyLinkBase::purgeTouched();
+    if(_pcScope == LinkScope::Hidden)
+        return;
+    _revisions.resize(_lValueList.size());
+    int i=0;
+    for(auto l : _lValueList)
+        _revisions[i++] = linkRevision(l);
 }
 
 void PropertyLinkList::Save(Base::Writer &writer) const
@@ -1480,6 +1551,19 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
     return std::string();
 }
 
+bool PropertyLinkSub::isTouched() const {
+    if(PropertyLinkBase::isTouched())
+        return true;
+    if(_pcScope == LinkScope::Hidden)
+        return false;
+    return _revision != linkRevision(_pcLinkSub);
+}
+
+void PropertyLinkSub::purgeTouched() {
+    PropertyLinkBase::purgeTouched();
+    _revision = linkRevision(_pcLinkSub);
+}
+
 #define ATTR_SHADOWED "shadowed"
 #define ATTR_SHADOW "shadow"
 #define ATTR_MAPPED "mapped"
@@ -1670,6 +1754,7 @@ Property *PropertyLinkSub::Copy(void) const
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = _cSubList;
+    p->_ShadowSubList = _ShadowSubList;
     return p;
 }
 
@@ -2265,6 +2350,39 @@ bool PropertyLinkSubList::referenceChanged() const{
     return !_mapped.empty();
 }
 
+bool PropertyLinkSubList::isTouched() const {
+    if(PropertyLinkBase::isTouched())
+        return true;
+    if(_pcScope == LinkScope::Hidden)
+        return false;
+    if(_revisions.size() != _lSubList.size()
+            || _revisions.size() != _lValueList.size())
+        return true;
+    int i = 0;
+    for(auto &sub : _lSubList) {
+        if(_revisions[i] != linkRevision(_lValueList[i], sub))
+            return true;
+        ++i;
+    }
+    return false;
+}
+
+void PropertyLinkSubList::purgeTouched() {
+    PropertyLinkBase::purgeTouched();
+    if(_pcScope == LinkScope::Hidden)
+        return;
+    if(_lValueList.size() != _lSubList.size()) {
+        _revisions.clear();
+        return;
+    }
+    _revisions.resize(_lSubList.size());
+    int i = 0;
+    for(auto &sub : _lSubList) {
+        _revisions[i] = linkRevision(_lValueList[i], sub);
+        ++i;
+    }
+}
+
 void PropertyLinkSubList::Save (Base::Writer &writer) const
 {
     assert(_lSubList.size() == _ShadowSubList.size());
@@ -2524,6 +2642,7 @@ Property *PropertyLinkSubList::Copy(void) const
     PropertyLinkSubList *p = new PropertyLinkSubList();
     p->_lValueList = _lValueList;
     p->_lSubList   = _lSubList;
+    p->_ShadowSubList = _ShadowSubList;
     return p;
 }
 
@@ -3574,8 +3693,10 @@ void PropertyXLink::copyTo(PropertyXLink &other,
     }
     if(subs)
         other._SubList = std::move(*subs);
-    else
+    else {
         other._SubList = _SubList;
+        other._ShadowSubList = _ShadowSubList;
+    }
     other._Flags = _Flags;
 }
 
@@ -4153,6 +4274,26 @@ bool PropertyXLinkSubList::referenceChanged() const{
             return true;
     }
     return false;
+}
+
+bool PropertyXLinkSubList::isTouched() const {
+    if(PropertyLinkBase::isTouched())
+        return true;
+    if(_pcScope == LinkScope::Hidden)
+        return false;
+    for(auto &l : _Links) {
+        if(l.isTouched())
+            return true;
+    }
+    return false;
+}
+
+void PropertyXLinkSubList::purgeTouched() {
+    PropertyLinkBase::purgeTouched();
+    if(_pcScope == LinkScope::Hidden)
+        return;
+    for(auto &l : _Links)
+        l.purgeTouched();
 }
 
 void PropertyXLinkSubList::Save (Base::Writer &writer) const

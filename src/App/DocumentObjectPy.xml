@@ -312,5 +312,11 @@ or None if the GUI is not up</UserDocu>
             </Documentation>
 			<Parameter Name="ElementReferences" Type="Dict"/>
         </Attribute>
+        <Attribute Name="Revision" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Internal revision number used to detect object changes </UserDocu>
+            </Documentation>
+			<Parameter Name="Revision" Type="Int"/>
+        </Attribute>
 	</PythonExport>
 </GenerateModel>

@@ -124,6 +124,8 @@ public:
         return _Shape.IsEqual(other._Shape);
     }
 
+    virtual bool isSame (const Data::ComplexGeoData &other) const;
+
     /** @name Placement control */
     //@{
     /// set the transformation of the CasCade Shape

@@ -42,6 +42,10 @@
 #include <bitset>
 #include <boost/signals2.hpp>
 
+// WARNING! define this to static thread_local if FreeCAD ever decides to use
+// multi-threading recomputation.
+#define FC_STATIC static
+
 namespace Py {
 class Object;
 }
@@ -108,6 +112,8 @@ public:
         User3 = 30, // user-defined status
         User4 = 31  // user-defined status
     };
+
+    typedef std::bitset<32> StatusBits;
 
     Property();
     virtual ~Property();
@@ -206,22 +212,20 @@ public:
     /// Set the property touched
     void touch();
     /// Test if this property is touched
-    inline bool isTouched(void) const {
-        return StatusBits.test(Touched);
+    virtual bool isTouched(void) const {
+        return _StatusBits.test(Touched);
     }
     /// Reset this property touched
-    inline void purgeTouched(void) {
-        StatusBits.reset(Touched);
+    virtual void purgeTouched(void) {
+        _StatusBits.reset(Touched);
     }
     /// return the status bits
-    inline unsigned long getStatus() const {
-        return StatusBits.to_ulong();
-    }
-    inline bool testStatus(Status pos) const {
-        return StatusBits.test(static_cast<size_t>(pos));
-    }
+    unsigned long getStatus() const;
+    bool testStatus(const StatusBits &bits, const StatusBits &mask = StatusBits()) const;
+    bool testStatus(Status pos) const;
     void setStatus(Status pos, bool on);
     void setStatusValue(unsigned long status);
+    void setStatus(const StatusBits &bits, bool on);
     ///Sets property editable/grayed out in property editor
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {
@@ -249,7 +253,14 @@ public:
     virtual void aboutToSetChildValue(Property &) {}
 
     /// Compare if this property has the same content as the given one
-    virtual bool isSame(const Property &other) const;
+    virtual bool isSame(const Property &other) const = 0;
+    /// Compare property by comparing their XML content
+    bool isSameContent(const Property &other) const;
+    /** Returns a new copy before change of the property
+     *
+     * This function is used internally by property to detect changes.
+     */
+    virtual Property *copyBeforeChange(void) const;
 
     friend class PropertyContainer;
     friend struct PropertyData;
@@ -265,7 +276,7 @@ private:
      * 2 - object is marked as 'read-only' (for property editor)
      * 3 - object is marked as 'hidden' (for property editor)
      */
-    std::bitset<32> StatusBits;
+    StatusBits _StatusBits;
 
 protected:
     /// Gets called by all setValue() methods after the value has changed
@@ -290,6 +301,7 @@ private:
 private:
     PropertyContainer *father;
     const char *myName;
+    std::unique_ptr<Property> _old;
 
 public:
     boost::signals2::signal<void (const App::Property&)> signalChanged;

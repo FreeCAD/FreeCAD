@@ -37,6 +37,7 @@
 
 #include "Application.h"
 #include "Document.h"
+#include "DocumentParams.h"
 #include "DocumentObject.h"
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
@@ -68,7 +69,7 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = 0;
 //===========================================================================
 
 DocumentObject::DocumentObject(void)
-    : ExpressionEngine(),_pDoc(0),pcNameInDocument(0),_Id(0)
+    : ExpressionEngine(),_pDoc(0),pcNameInDocument(0),_Id(0),_revision(0)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
@@ -156,7 +157,14 @@ void DocumentObject::touch(bool noRecompute)
  */
 bool DocumentObject::isTouched() const
 {
-    return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
+    return StatusBits.test(ObjectStatus::Touch);
+}
+
+void DocumentObject::purgeTouched()
+{
+    StatusBits.reset(ObjectStatus::Touch);
+    StatusBits.reset(ObjectStatus::Enforce);
+    setPropertyStatus(Property::Touched, false);
 }
 
 /**
@@ -164,9 +172,13 @@ bool DocumentObject::isTouched() const
  * This can be useful to recompute the feature without
  * having to change one of its input properties.
  */
-void DocumentObject::enforceRecompute(void)
+void DocumentObject::enforceRecompute()
 {
+    if(++_revision == 0)
+        ++_revision;
+    FC_LOG("enforce recompute " << _revision << " " << getFullName());
     touch(false);
+    _enforceRecompute = true;
 }
 
 /**
@@ -185,11 +197,23 @@ bool DocumentObject::mustRecompute(void) const
 
 short DocumentObject::mustExecute(void) const
 {
-    if (ExpressionEngine.isTouched()
-            || queryExtension(&DocumentObjectExtension::extensionMustExecute))
+    if (queryExtension(&DocumentObjectExtension::extensionMustExecute))
         return 1;
     
     return 0;
+}
+
+bool DocumentObject::skipRecompute()
+{
+    bool res = true;
+    foreachExtension<DocumentObjectExtension>([&res](DocumentObjectExtension *ext) {
+        if(!ext->extensionSkipRecompute()) {
+             res = false;
+             return true;
+        }
+        return false;
+    });
+    return res;
 }
 
 const char* DocumentObject::getStatusString(void) const
@@ -739,13 +763,23 @@ void DocumentObject::onChanged(const Property* prop)
             && !(prop->getType() & Prop_Output) 
             && !prop->testStatus(Property::Output)) 
     {
+        if(getDocument() && !getDocument()->testStatus(Document::Restoring)) {
+            if(++_revision == 0)
+                ++_revision;
+            FC_LOG("revision " << _revision << " " << prop->getFullName());
+        }
+
         if(!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            FC_TRACE("touch '" << prop->getFullName());
             StatusBits.set(ObjectStatus::Touch);
         }
+
         // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute))
+        if(!(prop->getType() & Prop_NoRecompute)
+                && !prop->testStatus(Property::NoRecompute))
+        {
             StatusBits.set(ObjectStatus::Enforce);
+        }
     }
 
     //call the parent for appropriate handling

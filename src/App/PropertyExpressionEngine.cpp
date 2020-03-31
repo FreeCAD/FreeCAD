@@ -686,11 +686,9 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         try {
             // Evaluate expression
             value = expressions[*it].expression->getValueAsAny(Expression::OptionCallFrame);
-            if(isAnyEqual(value, prop->getPathValue(*it)))
-                continue;
-            if(touched)
-                *touched = true;
             prop->setPathValue(*it, value);
+            if(touched && !*touched)
+                *touched = prop->isTouched();
         }catch(Base::Exception &e) {
             std::ostringstream ss;
             ss << e.what() << "\nin property binding '" << prop->getFullName() << "'";
@@ -1060,4 +1058,16 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
     RelabelDocumentExpressionVisitor v(doc);
     for(auto &e : expressions) 
         e.second.expression->visit(v);
+}
+
+bool PropertyExpressionEngine::isTouched() const {
+    // Document recomputation optimization checks for any touched property to
+    // decide whether to call DocumentObject::recompute().
+    // PropertyExpressionEngine is sepecial, as it will always be executed
+    // before DocumentObject::recompute() as long as the object itself is
+    // touched. PropertyExpressionEngine::execute() will touch other property if
+    // the expression evalutes to a difference result. So there is no need for
+    // PropertyExpressionEngine itself to report isTouched().
+    
+    return false;
 }

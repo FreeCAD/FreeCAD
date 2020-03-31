@@ -51,6 +51,7 @@ public:
     const Trajectory &getValue(void) const;
     //@}
 
+    virtual bool isSame(const App::Property &other) const;
  
     /** @name Getting basic geometric entities */
     //@{

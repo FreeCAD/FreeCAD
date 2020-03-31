@@ -62,6 +62,8 @@ public:
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
+    virtual bool isSame(const App::Property &) const {return false;}
+
     /** Sets the property
      */
     void setValue(const CosmeticVertex*);

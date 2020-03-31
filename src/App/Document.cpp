@@ -179,6 +179,7 @@ struct DocumentP
     std::unordered_map<long,DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
+    std::vector<App::DocumentObject*> skippedObjs;
     long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
@@ -1947,7 +1948,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
         << "name=\"" << (*it)->getExportName()       << "\" "
-        << "id=\"" << (*it)->getID()       << "\" ";
+        << "id=\"" << (*it)->getID()       << "\" "
+        << "revision=\"" << (*it)->getRevision() << "\" ";
 
         // Only write out custom view provider types
         std::string viewType = (*it)->getViewProviderNameStored();
@@ -2164,6 +2166,7 @@ Document::readObjects(Base::XMLReader& reader)
         std::string name = reader.getAttribute("name");
         Base::ReaderContext rctx(name);
         std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
+        int rev = reader.getAttributeAsInteger("revision", "");
 
         bool partial = false;
         if(d->partialLoadObjects.size()) {
@@ -2219,6 +2222,8 @@ Document::readObjects(Base::XMLReader& reader)
                     if(obj->isError() && reader.hasAttribute("Error")) 
                         d->addRecomputeLog(reader.getAttribute("Error"),obj);
                 }
+
+                obj->_revision = rev;
             }
 
             const char *file = reader.getAttribute("file","");
@@ -2264,7 +2269,7 @@ Document::readObjects(Base::XMLReader& reader)
 void Document::addRecomputeObject(DocumentObject *obj) {
     if(testStatus(Status::Restoring) && obj) {
         d->touchedObjs.insert(obj);
-        obj->touch();
+        obj->enforceRecompute();
     }
 }
 
@@ -3629,6 +3634,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     // delete recompute log
     d->clearRecomputeLog();
 
+    d->skippedObjs.clear();
+
     FC_TIME_INIT(t);
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
@@ -3699,11 +3706,14 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 if(obj->isTouched() || doRecompute) {
                     signalRecomputedObject(*obj);
                     obj->purgeTouched();
-                    // set all dependent object touched to force recompute
+                    // Mark all dependent object with ObjectStatus::Enforce.
+                    // Note that We don't call enforceRecompute() here in order
+                    // to enable recomputation optimization (see
+                    // _recomputeFeature())
                     for (auto inObjIt : obj->getInList())
-                        inObjIt->enforceRecompute();
+                        inObjIt->touch(false);
 
-                    // give the object a chance to revert the abover touching,
+                    // give the object a chance to revert the above touching,
                     // because for example, new objects are created with
                     // object's execute(), and it will be safe to not touch
                     // those objects.
@@ -3742,6 +3752,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
 
     signalRecomputed(*this,topoSortedObjects);
+
+    if(!d->skippedObjs.empty())
+        signalSkipRecompute(*this,d->skippedObjs);
 
     FC_TIME_LOG(t,"Recompute total");
 
@@ -3936,13 +3949,32 @@ const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 // call the recompute of the Feature and handle the exceptions and errors.
 int Document::_recomputeFeature(DocumentObject* Feat)
 {
-    FC_LOG("Recomputing " << Feat->getFullName());
-
-    DocumentObjectExecReturn  *returnCode = 0;
+    DocumentObjectExecReturn  *returnCode = DocumentObject::StdReturn;
     try {
         returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
-            returnCode = Feat->recompute();
+            bool doRecompute = Feat->isError() || Feat->_enforceRecompute
+                                               || !DocumentParams::OptimizeRecompute();
+            if(!doRecompute) {
+                static unsigned long long mask = (1<<Property::Output)
+                                               | (1<<Property::PropOutput)
+                                               | (1<<Property::NoRecompute)
+                                               | (1<<Property::PropNoRecompute);
+                auto prop = Feat->testPropertyStatus(Property::Touched, mask);
+                if(prop) {
+                    FC_LOG("recompute on touched " << prop->getFullName());
+                    doRecompute = true;
+                }
+            }
+
+            if(!doRecompute && Feat->skipRecompute()) {
+                d->skippedObjs.push_back(Feat);
+                FC_LOG("Skip recomputing " << Feat->getFullName());
+            } else {
+                Feat->_enforceRecompute = false;
+                returnCode = Feat->recompute();
+            }
+
             if(returnCode == DocumentObject::StdReturn)
                 returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOutput);
         }

@@ -108,6 +108,8 @@ public:
     void load(std::istream&);
     //@}
 
+    virtual bool isSame(const Data::ComplexGeoData &other) const;
+
 private:
     Base::Matrix4D _Mtrx;
     std::vector<value_type> _Points;

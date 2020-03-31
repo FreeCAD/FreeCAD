@@ -268,3 +268,8 @@ unsigned int PropertyGeometryList::getMemSize(void) const
         size += _lValueList[i]->getMemSize();
     return size;
 }
+
+bool PropertyGeometryList::isSame(const Property &_other) const
+{
+    return isSameContent(_other);
+}

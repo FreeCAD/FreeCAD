@@ -90,6 +90,17 @@ MeshObject::~MeshObject()
 {
 }
 
+bool MeshObject::isSame(const Data::ComplexGeoData &_other) const
+{
+    if(!_other.isDerivedFrom(getClassTypeId()))
+        return false;
+    const auto &other = static_cast<const MeshObject &>(_other);
+    return other._Mtrx == _Mtrx
+        && other._segments.size() == _segments.size()
+        && other._kernel == _kernel
+        && other._segments == _segments;
+}
+
 std::vector<const char*> MeshObject::getElementTypes(void) const
 {
     std::vector<const char*> temp;

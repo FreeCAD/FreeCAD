@@ -50,6 +50,11 @@ public:
         return i != end() ? i->second : defaultWidth;
     }
 
+    virtual bool isSame(const Property &other) const {
+        return other.isDerivedFrom(getClassTypeId())
+            && *this == static_cast<const PropertyColumnWidths&>(other);
+    }
+
     virtual Property *Copy(void) const;
 
     virtual void Paste(const Property &from);

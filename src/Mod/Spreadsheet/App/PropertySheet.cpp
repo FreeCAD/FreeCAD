@@ -1830,3 +1830,8 @@ App::any PropertySheet::getPathValue(const App::ObjectIdentifier & path) const {
         return App::any();
     return path.getValue();
 }
+
+bool PropertySheet::isTouched() const
+{
+    return isDirty();
+}

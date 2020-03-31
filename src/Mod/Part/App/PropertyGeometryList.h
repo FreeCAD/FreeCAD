@@ -60,6 +60,8 @@ public:
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
+    virtual bool isSame(const App::Property &other) const;
+
     /** Sets the property
      */
     void setValue(const Geometry*);

@@ -72,6 +72,8 @@ public:
     std::string toString() const;
     void fromString(const std::string&);
 
+    bool isSame(const Property &other) const;
+
 private:
     void saveObject(Base::Writer &writer) const;
     void restoreObject(Base::XMLReader &reader);

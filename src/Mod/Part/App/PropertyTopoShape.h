@@ -153,6 +153,8 @@ public:
         return _lValueList;
     }
 
+    virtual bool isSame(const App::Property &) const {return false;}
+
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
 
@@ -240,6 +242,8 @@ public:
     virtual void Save (Base::Writer &writer) const override;
 
     virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual bool isSame(const App::Property &) const {return false;}
 
     static PropertyShapeCache *get(const App::DocumentObject *obj, bool create);
     static bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0);

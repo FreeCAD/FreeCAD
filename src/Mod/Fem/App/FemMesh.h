@@ -66,6 +66,8 @@ public:
     void setStandardHypotheses();
     void compute();
 
+    virtual bool isSame(const Data::ComplexGeoData &) const {return false;}
+
     // from base class
     virtual unsigned int getMemSize (void) const;
     virtual void Save (Base::Writer &/*writer*/) const;

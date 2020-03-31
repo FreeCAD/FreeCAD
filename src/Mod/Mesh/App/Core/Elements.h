@@ -279,6 +279,11 @@ public:
    * The orientation is not of interest in this case.
    */
   inline bool IsEqual (const MeshFacet& rcFace) const;
+
+  inline bool operator == (const MeshFacet &rcFace) const {
+      return IsEqual(rcFace);
+  }
+
   /**
    * Replaces the index of the corner point that is equal to \a ulOrig
    * by \a ulNew. If the facet does not have a corner point with this index

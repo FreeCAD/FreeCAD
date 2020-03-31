@@ -494,6 +494,8 @@ public:
      * else, return the current element map version
      */
     virtual std::string getElementMapVersion(bool restored=false) const;
+
+    virtual bool isSame(const Property &other) const;
 };
 
 } // namespace App

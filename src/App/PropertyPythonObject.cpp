@@ -456,3 +456,22 @@ void PropertyPythonObject::Paste(const Property &from)
         hasSetValue();
     }
 }
+
+bool PropertyPythonObject::isSame(const Property &_other) const
+{
+    if(!_other.isDerivedFrom(PropertyPythonObject::getClassTypeId()))
+        return false;
+
+    const auto &other = static_cast<const PropertyPythonObject &>(_other);
+    if(object.ptr() == other.object.ptr())
+        return true;
+    if(object.isNone() || other.object.isNone())
+        return false;
+    Base::PyGILStateLocker lock;
+    int res = PyObject_RichCompareBool(object.ptr(),other.object.ptr(),Py_EQ);
+    if(res == 0)
+        return true;
+    if(res < 0) 
+        PyErr_Clear();
+    return false;
+}

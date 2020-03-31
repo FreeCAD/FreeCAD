@@ -914,3 +914,9 @@ Py::Dict DocumentObjectPy::getElementReferences() const {
     }
     return dict;
 }
+
+Py::Int DocumentObjectPy::getRevision() const
+{
+    return Py::Int(getDocumentObjectPtr()->getRevision());
+}
+

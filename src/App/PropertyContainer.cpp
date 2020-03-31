@@ -107,12 +107,42 @@ void PropertyContainer::getPropertyNamedList(std::vector<std::pair<const char*, 
     getPropertyData().getPropertyNamedList(this,List);
 }
 
-void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
+FC_STATIC std::vector<Property*> _Props;
+
+void PropertyContainer::setPropertyStatus(Property::Status bit, bool value)
 {
-    std::vector<Property*> List;
-    getPropertyList(List);
-    for(std::vector<Property*>::const_iterator it=List.begin();it!=List.end();++it)
-        (**it).StatusBits.set(bit,value);
+    _Props.clear();
+    getPropertyList(_Props);
+    for(auto prop : _Props)
+        prop->setStatus(bit, value);
+}
+
+void PropertyContainer::setPropertyStatus(const Property::StatusBits &bits, bool value)
+{
+    _Props.clear();
+    getPropertyList(_Props);
+    for(auto prop : _Props)
+        prop->setStatus(bits, value);
+}
+
+Property *PropertyContainer::testPropertyStatus(const Property::StatusBits &bits,
+                                                const Property::StatusBits &mask) const
+{
+    _Props.clear();
+    getPropertyList(_Props);
+    for(auto prop : _Props) {
+        if(prop->testStatus(bits, mask))
+            return prop;
+    }
+    return nullptr;
+}
+
+Property *PropertyContainer::testPropertyStatus(Property::Status bit,
+                                                const Property::StatusBits &mask) const
+{
+    Property::StatusBits bits;
+    bits.set(bit);
+    return testPropertyStatus(bits, mask);
 }
 
 short PropertyContainer::getPropertyType(const Property* prop) const
@@ -349,9 +379,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             if(!prop)
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
 
-            decltype(Property::StatusBits) status;
+            Property::StatusBits status;
             if(reader.hasAttribute("status")) {
-                status = decltype(status)(reader.getAttributeAsUnsigned("status"));
+                status = Property::StatusBits(reader.getAttributeAsUnsigned("status"));
                 if(prop)
                     prop->setStatusValue(status.to_ulong());
             }

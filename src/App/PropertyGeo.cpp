@@ -1095,3 +1095,17 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
     ss << data->getElementMapVersion();
     return ss.str();
 }
+
+bool PropertyComplexGeoData::isSame(const Property &_other) const
+{
+    if(!_other.isDerivedFrom(PropertyComplexGeoData::getClassTypeId()))
+        return false;
+    auto data = getComplexData();
+    auto other = static_cast<const PropertyComplexGeoData&>(_other).getComplexData();
+
+    if(other == data)
+        return true;
+    if(!data || !other)
+        return false;
+    return data->isSame(*other);
+}

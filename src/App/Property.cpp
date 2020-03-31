@@ -37,6 +37,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include "Application.h"
+#include "DocumentParams.h"
 #include "DocumentObject.h"
 
 using namespace App;
@@ -116,7 +117,7 @@ short Property::getType(void) const
 
 void Property::syncType(unsigned type) {
 #define SYNC_PTYPE(_name) do{\
-        if(type & Prop_##_name) StatusBits.set((size_t)Prop##_name);\
+        if(type & Prop_##_name) _StatusBits.set((size_t)Prop##_name);\
     }while(0)
     SYNC_PTYPE(ReadOnly);
     SYNC_PTYPE(Transient);
@@ -204,14 +205,14 @@ void Property::destroy(Property *p) {
 void Property::touch()
 {
     PropertyCleaner guard(this);
+    _StatusBits.set(Touched);
     if (father && !Transaction::isApplying(this)) {
         father->onChanged(this);
         if(!testStatus(Busy)) {
-            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            Base::BitsetLocker<StatusBits> guard(_StatusBits,Busy);
             signalChanged(*this);
         }
     }
-    StatusBits.set(Touched);
 }
 
 void Property::setReadOnly(bool readOnly)
@@ -221,21 +222,26 @@ void Property::setReadOnly(bool readOnly)
 
 void Property::hasSetValue(void)
 {
-    PropertyCleaner guard(this);
-    if (father && !Transaction::isApplying(this)) {
-        father->onChanged(this);
-        if(!testStatus(Busy)) {
-            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
-            signalChanged(*this);
-        }
+    if (father && _old) {
+        if(isSame(*_old))
+            return;
+        _old.reset();
     }
-    StatusBits.set(Touched);
+    touch();
+}
+
+Property *Property::copyBeforeChange() const
+{
+    return Copy();
 }
 
 void Property::aboutToSetValue(void)
 {
-    if (father)
+    if (father) {
+        if(!_old && DocumentParams::OptimizeRecompute())
+            _old.reset(copyBeforeChange());
         father->onBeforeChange(this);
+    }
 }
 
 void Property::verifyPath(const ObjectIdentifier &p) const
@@ -256,6 +262,22 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
+unsigned long Property::getStatus() const
+{
+    StatusBits bits = _StatusBits;
+    if(!bits.test(Touched) && isTouched())
+        bits.set(Touched);
+    return bits.to_ulong();
+}
+
+void Property::setStatus(const StatusBits &bits, bool on)
+{
+    if(on)
+        setStatusValue((_StatusBits | bits).to_ulong());
+    else
+        setStatusValue((_StatusBits & ~bits).to_ulong());
+}
+
 void Property::setStatusValue(unsigned long status) {
     static const unsigned long mask = 
         (1<<PropDynamic)
@@ -267,9 +289,9 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<Busy);
 
     status &= ~mask;
-    status |= StatusBits.to_ulong() & mask;
-    unsigned long oldStatus = StatusBits.to_ulong();
-    StatusBits = decltype(StatusBits)(status);
+    status |= _StatusBits.to_ulong() & mask;
+    auto oldStatus = _StatusBits.to_ulong();
+    _StatusBits = StatusBits(status);
 
     if(father) {
         static unsigned long _signalMask = (1<<ReadOnly) | (1<<Hidden);
@@ -279,17 +301,43 @@ void Property::setStatusValue(unsigned long status) {
 }
 
 void Property::setStatus(Status pos, bool on) {
-    auto bits = StatusBits;
+    if(pos == Touched) {
+        if(on)
+            touch();
+        else
+            purgeTouched();
+        return;
+    }
+    auto bits = _StatusBits;
     bits.set(pos,on);
     setStatusValue(bits.to_ulong());
 }
 
-bool Property::isSame(const Property &other) const {
+bool Property::testStatus(Status pos) const
+{
+    if(pos == Touched)
+        return isTouched();
+    return _StatusBits.test(static_cast<size_t>(pos));
+}
+
+bool Property::testStatus(const StatusBits &bits, const StatusBits &mask) const
+{
+    auto copy = _StatusBits;
+    if(!copy.test(Touched) && (mask.test(Touched) || bits.test(Touched)) && isTouched())
+        copy.set(Touched);
+    if((copy & mask).any())
+        return false;
+    return (copy & bits) == bits;
+}
+
+bool Property::isSameContent(const Property &other) const {
     if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
         return false;
 
-    Base::StringWriter writer,writer2;
+    FC_STATIC Base::StringWriter writer,writer2;
+    writer.clear();
     Save(writer);
+    writer2.clear();
     other.Save(writer2);
     return writer.getString() == writer2.getString();
 }
