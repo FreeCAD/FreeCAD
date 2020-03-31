@@ -123,6 +123,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <zipios++/meta-iostreams.h>
 
 #include "Application.h"
+#include "DocumentParams.h"
 #include "Transactions.h"
 #include "GeoFeatureGroupExtension.h"
 #include "Origin.h"
@@ -1513,12 +1514,9 @@ Document::Document(const char *name)
     Console().Log("+App::Document: %p\n",this);
 #endif
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Document");
-
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
-    std::string Author = hGrp->GetASCII("prefAuthor","");
-    std::string AuthorComp = hGrp->GetASCII("prefCompany","");
+    std::string Author = DocumentParams::prefAuthor();
+    std::string AuthorComp = DocumentParams::prefCompany();
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
     ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
     ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
@@ -1539,7 +1537,7 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // license stuff
-    int licenseId = hGrp->GetInt("prefLicenseType",0);
+    int licenseId = DocumentParams::prefLicenseType();
     std::string license;
     std::string licenseUrl;
     switch (licenseId) {
@@ -1584,7 +1582,8 @@ Document::Document(const char *name)
             break;
     }
 
-    licenseUrl = hGrp->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+    if(DocumentParams::prefLicenseUrl().empty())
+        licenseUrl = DocumentParams::prefLicenseUrl();
 
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
@@ -1592,8 +1591,7 @@ Document::Document(const char *name)
                         "Whether to show hidden object items in the tree view");
     ADD_PROPERTY_TYPE(UseHasher,(true), 0,PropertyType(Prop_None), 
                         "Whether to use hasher on topological naming");
-    if(!App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("UseHasher",true))
+    if(!DocumentParams::UseHasher())
         UseHasher.setValue(false);
 
     // this creates and sets 'TransientDir' in onChanged()
@@ -1609,15 +1607,15 @@ Document::Document(const char *name)
             "Preference of storing data as XML.\n"
             "Higher number means stronger preference.\n"
             "Only effective when saving document in directory.");
-    ForceXML.setValue(hGrp->GetInt("ForceXML",3));
+    ForceXML.setValue(DocumentParams::ForceXML());
     ADD_PROPERTY_TYPE(SplitXML,(true),"Format",Prop_None,
             "Save object data in separate XML file.\n"
             "Only effective when saving document in directory.");
-    SplitXML.setValue(hGrp->GetBool("SplitXML",true));
+    SplitXML.setValue(DocumentParams::SplitXML());
     ADD_PROPERTY_TYPE(PreferBinary,(false),"Format",Prop_None,
             "Prefer binary format when saving object data.\n"
             "This can result in smaller file but bad for version control.");
-    PreferBinary.setValue(hGrp->GetBool("PreferBinary",false));
+    PreferBinary.setValue(DocumentParams::PreferBinary());
 }
 
 Document::~Document()
@@ -2345,8 +2343,7 @@ static std::string checkFileName(const char *file) {
 
     // Append extension if missing. This option is added for security reason, so
     // that the user won't accidentally overwrite other file that may be critical.
-    if(App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("CheckExtension",true))
+    if(DocumentParams::CheckExtension())
     {
         const char *ext = strrchr(file,'.');
         if(!ext || !boost::iequals(ext+1,"fcstd")) {
@@ -2402,12 +2399,9 @@ bool Document::save (void)
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // set author if needed
-        bool saveAuthor = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
+        bool saveAuthor = DocumentParams::prefSetAuthorOnSave();
         if (saveAuthor) {
-            std::string Author = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
-            LastModifiedBy.setValue(Author.c_str());
+            LastModifiedBy.setValue(DocumentParams::prefAuthor().c_str());
         }
 
         return saveToFile(FileName.getValue());
@@ -2711,12 +2705,11 @@ bool Document::saveToFile(const char* filename) const
 {
     signalStartSave(*this, filename);
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
-    int compression = hGrp->GetInt("CompressionLevel",3);
+    int compression = DocumentParams::CompressionLevel();
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     bool archive = !Base::FileInfo(filename).isDir();
-    bool policy = archive?hGrp->GetBool("BackupPolicy",true):false;
+    bool policy = archive?DocumentParams::BackupPolicy():false;
 
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
@@ -2754,17 +2747,13 @@ bool Document::saveToFile(const char* filename) const
 
     if (policy) {
         // if saving the project data succeeded rename to the actual file name
-        int count_bak = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-        bool backup = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
+        int count_bak = DocumentParams::CountBackupFiles();
+        bool backup = DocumentParams::CreateBackupFiles();
         if (!backup) {
             count_bak = -1;
         }
-        bool useFCBakExtension = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("UseFCBakExtension",false);
-        std::string	saveBackupDateFormat = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetASCII("SaveBackupDateFormat","%Y%m%d-%H%M%S");
+        bool useFCBakExtension = DocumentParams::UseFCBakExtension();
+        std::string	saveBackupDateFormat = DocumentParams::SaveBackupDateFormat();
 
         BackupPolicy policy;
         if (useFCBakExtension) {
@@ -2801,7 +2790,7 @@ bool Document::saveToFile(const char* filename) const
 
         GetApplication().signalDocumentFilesSaved(*this, filename, files);
 
-        bool remove = hGrp->GetBool("AutoRemoveFile",true);
+        bool remove = DocumentParams::AutoRemoveFile();
         std::string path(filename);
         path += "/";
         for(auto &v : files) {
@@ -3669,9 +3658,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
 
-    ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Document");
-    bool canAbort = hGrp->GetBool("CanAbortRecompute",true);
+    bool canAbort = DocumentParams::CanAbortRecompute();
 
     std::set<App::DocumentObject *> filter;
     size_t idx = 0;
