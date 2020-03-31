@@ -1419,28 +1419,17 @@ class ObjectSurface(PathOp.ObjectOp):
                 #TODO: test if this works
                 facets = M.Mesh.Facets.Points
             else:
-                facets = Path.getFacets(M.Shape)
-
-                stl = ocl.STLSurf()
-                
+                facets = Path.getFacets(M.Shape)            
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
 
-                if obj.Algorithm == 'OCL Dropcutter':
-                    for tri in facets:
-                        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                                    ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                                    ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-                        stl.addTriangle(t)
-                    self.modelSTLs[m] = stl
-                elif obj.Algorithm == 'OCL Waterline':
-                    for tri in facets:
-                        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2] + obj.DepthOffset.Value),
-                                    ocl.Point(tri[1][0], tri[1][1], tri[1][2] + obj.DepthOffset.Value),
-                                    ocl.Point(tri[2][0], tri[2][1], tri[2][2] + obj.DepthOffset.Value))
-                        stl.addTriangle(t)
-                    self.modelSTLs[m] = stl
+            for tri in facets:
+                t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                            ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                            ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+                stl.addTriangle(t)
+            self.modelSTLs[m] = stl
         return
 
     def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes):
