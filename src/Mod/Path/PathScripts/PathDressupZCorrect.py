@@ -102,6 +102,8 @@ class ObjectDressup:
         try:
             pointlist = []
             for line in f1.readlines():
+                if line == '\n':
+                    continue
                 w = line.split()
                 xval = round(float(w[0]), 2)
                 yval = round(float(w[1]), 2)
