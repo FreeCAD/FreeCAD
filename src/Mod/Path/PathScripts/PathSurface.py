@@ -140,7 +140,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ("App::PropertyVectorDistance", "CircularCenterCustom", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for circular cut patterns.")),
             ("App::PropertyEnumeration", "CircularCenterAt", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the ciruclar pattern.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the circular pattern.")),
             ("App::PropertyEnumeration", "CutMode", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)")),
             ("App::PropertyEnumeration", "CutPattern", "Clearing Options",
