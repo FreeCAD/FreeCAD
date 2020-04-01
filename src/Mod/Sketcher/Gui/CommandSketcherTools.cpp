@@ -736,6 +736,8 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
     auto geos = Obj->getInternalGeometry();
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /*
     // Solver parameter detection algorithm only works for Dense QR with full pivoting. If we are using Sparse QR, we
     // have to re-solve using Dense QR.
     GCS::QRAlgorithm curQRAlg = Obj->getSolvedSketch().getQRAlgorithm();
@@ -801,6 +803,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
     if(curQRAlg == GCS::EigenSparseQR) {
         Obj->getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
     }
+    */
 
 }
 

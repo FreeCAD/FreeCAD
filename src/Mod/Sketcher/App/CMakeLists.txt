@@ -58,8 +58,8 @@ SET(Features_SRCS
     ExternalGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
-    SketchAnalysis.h
     SketchAnalysis.cpp
+    SketchAnalysis.h
     Analyse.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
@@ -69,6 +69,8 @@ SET(Datatypes_SRCS
     Constraint.h
     Sketch.cpp
     Sketch.h
+    SketchSolver.cpp
+    SketchSolver.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 

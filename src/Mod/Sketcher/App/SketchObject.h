@@ -339,7 +339,7 @@ public:
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
-    inline Sketch &getSolvedSketch(void) {return solvedSketch;}
+    inline std::shared_ptr<SketchSolver> getSolvedSketch(void) {return solvedSketch;}
 
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
@@ -444,7 +444,8 @@ private:
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
 
-    Sketch solvedSketch;
+    std::shared_ptr<SketchSolver> solvedSketch;
+    //Sketch solvedSketch;
 
     /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the sketch took place (e.g. toggle construction),
         so if next action is a movement of a point (movePoint), the geometry must be updated first.

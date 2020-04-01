@@ -62,7 +62,7 @@ using namespace Sketcher;
 using namespace Base;
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
+TYPESYSTEM_SOURCE(Sketcher::Sketch, Sketcher::SketchSolver)
 
 Sketch::Sketch()
   : SolveTime(0)

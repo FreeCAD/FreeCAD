@@ -70,6 +70,7 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+//#include <Base/StdStlTools.h>
 
 #include <App/OriginFeature.h>
 
@@ -139,6 +140,8 @@ SketchObject::SketchObject()
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
 
+    solvedSketch = std::make_shared<Sketch>();
+    
     analyser = new SketchAnalysis(this);
 }
 
@@ -210,7 +213,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of
     // the objects that depend on this sketch (like pads)
-    Shape.setValue(solvedSketch.toShape());
+    Shape.setValue(solvedSketch->toShape());
 
     return App::DocumentObject::StdReturn;
 }
@@ -219,7 +222,7 @@ int SketchObject::hasConflicts(void) const
 {
     if (lastDoF < 0) // over-constrained sketch
         return -2;
-    if (solvedSketch.hasConflicts()) // conflicting constraints
+    if (solvedSketch->hasConflicts()) // conflicting constraints
         return -1;
 
     return 0;
@@ -228,7 +231,7 @@ int SketchObject::hasConflicts(void) const
 int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 {
     // Reset the initial movement in case of a dragging operation was ongoing on the solver.
-    solvedSketch.resetInitMove();
+    solvedSketch->resetInitMove();
 
     // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
     // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
@@ -238,7 +241,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // therefore we update our sketch solver geometry with the SketchObject one.
     //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
-    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    lastDoF = solvedSketch->setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
 
     // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
@@ -247,17 +250,17 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     // Conflicting: a 80 degrees angle between a vertical line and another line, then adding a horizontal constraint to that other line
     // OverConstrained: a conflicting constraint when all other DoF are already constraint (it has more constrains than parameters and the extra constraints are not redundant)
 
-    solverNeedsUpdate=false;
+    solverNeedsUpdate = false;
 
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
-    lastSolveTime=0.0;
+    lastHasConflict = solvedSketch->hasConflicts();
+    lastHasRedundancies = solvedSketch->hasRedundancies();
+    lastConflicting = solvedSketch->getConflicting();
+    lastRedundant = solvedSketch->getRedundant();
+    lastSolveTime = 0.0;
 
-    lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
+    lastSolverStatus = GCS::Failed; // Failure is default for notifying the user unless otherwise proven
 
-    int err=0;
+    int err = 0;
 
     // redundancy is a lower priority problem than conflict/over-constraint/solver error
     // we set it here because we are indeed going to solve, as we can. However, we still want to
@@ -274,17 +277,17 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         err = -3;
     }
     else {
-        lastSolverStatus=solvedSketch.solve();
+        lastSolverStatus=solvedSketch->solve();
         if (lastSolverStatus != 0){ // solving
             err = -1;
         }
     }
 
-    lastSolveTime=solvedSketch.SolveTime;
+    lastSolveTime=solvedSketch->getSolveTime();
 
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
-        std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
+        std::vector<Part::Geometry *> geomlist = solvedSketch->extractGeometry();
         Geometry.setValues(geomlist);
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
@@ -607,13 +610,13 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
 
 int SketchObject::setUpSketch()
 {
-    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    lastDoF = solvedSketch->setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                        getExternalGeometryCount());
 
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
+    lastHasConflict = solvedSketch->hasConflicts();
+    lastHasRedundancies = solvedSketch->hasRedundancies();
+    lastConflicting=solvedSketch->getConflicting();
+    lastRedundant=solvedSketch->getRedundant();
 
     if(lastHasRedundancies || lastDoF < 0 || lastHasConflict)
         Constraints.touch();
@@ -633,13 +636,13 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 
 
     if(updateGeoBeforeMoving || solverNeedsUpdate) {
-        lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+        lastDoF = solvedSketch->setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                     getExternalGeometryCount());
 
-        lastHasConflict = solvedSketch.hasConflicts();
-        lastHasRedundancies = solvedSketch.hasRedundancies();
-        lastConflicting=solvedSketch.getConflicting();
-        lastRedundant=solvedSketch.getRedundant();
+        lastHasConflict = solvedSketch->hasConflicts();
+        lastHasRedundancies = solvedSketch->hasRedundancies();
+        lastConflicting=solvedSketch->getConflicting();
+        lastRedundant=solvedSketch->getRedundant();
 
         solverNeedsUpdate=false;
     }
@@ -650,13 +653,13 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         return -1;
 
     // move the point and solve
-    lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
+    lastSolverStatus = solvedSketch->movePoint(GeoId, PosId, toPoint, relative);
 
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
 
     if (lastSolverStatus == 0) {
-        std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
+        std::vector<Part::Geometry *> geomlist = solvedSketch->extractGeometry();
         Geometry.setValues(geomlist);
         //Constraints.acceptGeometry(getCompleteGeometry());
         for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it) {
@@ -664,7 +667,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         }
     }
 
-    solvedSketch.resetInitMove(); // reset solver point moving mechanism
+    solvedSketch->resetInitMove(); // reset solver point moving mechanism
 
     return lastSolverStatus;
 }
@@ -6214,17 +6217,21 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
 
 void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap)
 {
+    (void) geometrymap;
+    
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /*
     auto geos = getInternalGeometry();
 
-    GCS::QRAlgorithm curQRAlg = getSolvedSketch().getQRAlgorithm();
+    GCS::QRAlgorithm curQRAlg = getSolvedSketch()->getQRAlgorithm();
 
     if(curQRAlg == GCS::EigenSparseQR) {
-        getSolvedSketch().setQRAlgorithm(GCS::EigenDenseQR);
+        getSolvedSketch()->setQRAlgorithm(GCS::EigenDenseQR);
         solve(false);
     }
 
     auto addelement = [this,&geometrymap](int geoId, PointPos pos){
-        if(getSolvedSketch().hasDependentParameters(geoId, pos))
+        if(getSolvedSketch()->hasDependentParameters(geoId, pos))
             geometrymap.emplace_back(geoId,pos);
     };
 
@@ -6265,6 +6272,7 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
     if(curQRAlg == GCS::EigenSparseQR) {
         getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
     }
+    */
 }
 
 bool SketchObject::evaluateConstraint(const Constraint *constraint) const
@@ -6603,7 +6611,7 @@ void SketchObject::onDocumentRestored()
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
             if (this->solve(true) == 0)
-                Shape.setValue(solvedSketch.toShape());
+                Shape.setValue(solvedSketch->toShape());
         }
 
         Part::Part2DObject::onDocumentRestored();
@@ -6622,7 +6630,7 @@ void SketchObject::restoreFinished()
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
             if (this->solve(true) == 0)
-                Shape.setValue(solvedSketch.toShape());
+                Shape.setValue(solvedSketch->toShape());
         }
     }
     catch (...) {

@@ -1081,7 +1081,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             }
             return false;
         case STATUS_SELECT_Point:
-            if (!getSketchObject()->getSolvedSketch().hasConflicts() &&
+            if (!getSketchObject()->getSolvedSketch()->hasConflicts() &&
                 edit->PreselectPoint != -1 && edit->DragPoint != edit->PreselectPoint) {
                 Mode = STATUS_SKETCH_DragPoint;
                 edit->DragPoint = edit->PreselectPoint;
@@ -1089,7 +1089,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                    getSketchObject()->getSolvedSketch().initMove(GeoId, PosId, false);
+                    getSketchObject()->getSolvedSketch()->initMove(GeoId, PosId, false);
                     relative = false;
                     xInit = 0;
                     yInit = 0;
@@ -1103,11 +1103,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             edit->PreselectConstraintSet.clear();
             return true;
         case STATUS_SELECT_Edge:
-            if (!getSketchObject()->getSolvedSketch().hasConflicts() &&
+            if (!getSketchObject()->getSolvedSketch()->hasConflicts() &&
                 edit->PreselectCurve != -1 && edit->DragCurve != edit->PreselectCurve) {
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
-                getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
+                getSketchObject()->getSolvedSketch()->initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
@@ -1149,12 +1149,12 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                 Base::Vector3d vec(x,y,0);
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                    if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, false) == 0) {
+                    if (getSketchObject()->getSolvedSketch()->movePoint(GeoId, PosId, vec, false) == 0) {
                         setPositionText(Base::Vector2d(x,y));
                         draw(true,false);
-                        signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
+                        signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch()->getSolveTime()));
                     } else {
-                        signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch().SolveTime));
+                        signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch()->getSolveTime()));
                         //Base::Console().Log("Error solving:%d\n",ret);
                     }
                 }
@@ -1163,12 +1163,12 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_DragCurve:
             if (edit->DragCurve != -1) {
                 Base::Vector3d vec(x-xInit,y-yInit,0);
-                if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
+                if (getSketchObject()->getSolvedSketch()->movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
                     draw(true,false);
-                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
+                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch()->getSolveTime()));
                 } else {
-                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch().SolveTime));
+                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch()->getSolveTime()));
                 }
             }
             return true;
@@ -1229,7 +1229,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 #endif
 
     // with memory allocation
-    const std::vector<Part::Geometry *> geomlist = getSketchObject()->getSolvedSketch().extractGeometry(true, true);
+    const std::vector<Part::Geometry *> geomlist = getSketchObject()->getSolvedSketch()->extractGeometry(true, true);
 
 #ifdef _DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
@@ -1242,10 +1242,10 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
-            p1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            p2 = getSketchObject()->getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+            p1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
+            p2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->Second, Constr->SecondPos);
         } else if (Constr->Second != Constraint::GeoUndef) { // point to line distance
-            p1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+            p1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
             const Part::Geometry *geo = GeoById(geomlist, Constr->Second);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
@@ -1257,7 +1257,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
             } else
                 return;
         } else if (Constr->FirstPos != Sketcher::none) {
-            p2 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+            p2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
         } else if (Constr->First != Constraint::GeoUndef) {
             const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -1366,11 +1366,11 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                     factor = factor * Base::sgn<double>((dir1+dir2) * vec);
                 }
             } else {//angle-via-point
-                Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
+                Base::Vector3d p = getSketchObject()->getSolvedSketch()->getPoint(Constr->Third, Constr->ThirdPos);
                 p0 = Base::Vector3d(p.x, p.y, 0);
-                dir1 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
+                dir1 = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->First, p.x, p.y);
                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
-                dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
+                dir2 = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->Second, p.x, p.y);
                 dir2.RotateZ(-M_PI/2);
 
                 Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
@@ -2772,9 +2772,9 @@ void ViewProviderSketch::updateColor(void)
                 m->diffuseColor = SelectColor;
             } else if (type == Sketcher::Coincident) {
                 int index;
-                index = getSketchObject()->getSolvedSketch().getPointId(constraint->First, constraint->FirstPos) + 1;
+                index = getSketchObject()->getSolvedSketch()->getPointId(constraint->First, constraint->FirstPos) + 1;
                 if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
-                index = getSketchObject()->getSolvedSketch().getPointId(constraint->Second, constraint->SecondPos) + 1;
+                index = getSketchObject()->getSolvedSketch()->getPointId(constraint->Second, constraint->SecondPos) + 1;
                 if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
             } else if (type == Sketcher::InternalAlignment) {
                 switch(constraint->AlignmentType) {
@@ -2796,7 +2796,7 @@ void ViewProviderSketch::updateColor(void)
                     case EllipseFocus1:
                     case EllipseFocus2:
                     {
-                        int index = getSketchObject()->getSolvedSketch().getPointId(constraint->First, constraint->FirstPos) + 1;
+                        int index = getSketchObject()->getSolvedSketch()->getPointId(constraint->First, constraint->FirstPos) + 1;
                         if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
                     }
                     break;
@@ -3511,7 +3511,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     const std::vector<Part::Geometry *> *geomlist;
     std::vector<Part::Geometry *> tempGeo;
     if (temp)
-        tempGeo = getSketchObject()->getSolvedSketch().extractGeometry(true, true); // with memory allocation
+        tempGeo = getSketchObject()->getSolvedSketch()->extractGeometry(true, true); // with memory allocation
     else
         tempGeo = getSketchObject()->getCompleteGeometry(); // without memory allocation
     geomlist = &tempGeo;
@@ -4471,12 +4471,12 @@ Restart:
                             Base::Vector3d midpos2, dir2, norm2;
 
                             if (temp)
-                                midpos1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+                                midpos1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
                             else
                                 midpos1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
 
                             if (temp)
-                                midpos2 = getSketchObject()->getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+                                midpos2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->Second, Constr->SecondPos);
                             else
                                 midpos2 = getSketchObject()->getPoint(Constr->Second, Constr->SecondPos);
 
@@ -4528,11 +4528,11 @@ Restart:
                                 assert(0);//no point found!
                             } while (false);
                             if (temp)
-                                midpos1 = getSketchObject()->getSolvedSketch().getPoint(ptGeoId, ptPosId);
+                                midpos1 = getSketchObject()->getSolvedSketch()->getPoint(ptGeoId, ptPosId);
                             else
                                 midpos1 = getSketchObject()->getPoint(ptGeoId, ptPosId);
 
-                            norm1 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, midpos1.x, midpos1.y);
+                            norm1 = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->Second, midpos1.x, midpos1.y);
                             norm1.Normalize();
                             dir1 = norm1; dir1.RotateZ(-M_PI/2.0);
 
@@ -4796,15 +4796,15 @@ Restart:
                         Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
                         if (Constr->SecondPos != Sketcher::none) { // point to point distance
                             if (temp) {
-                                pnt1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-                                pnt2 = getSketchObject()->getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+                                pnt1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
+                                pnt2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->Second, Constr->SecondPos);
                             } else {
                                 pnt1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
                                 pnt2 = getSketchObject()->getPoint(Constr->Second, Constr->SecondPos);
                             }
                         } else if (Constr->Second != Constraint::GeoUndef) { // point to line distance
                             if (temp) {
-                                pnt1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+                                pnt1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
                             } else {
                                 pnt1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
                             }
@@ -4820,7 +4820,7 @@ Restart:
                                 break;
                         } else if (Constr->FirstPos != Sketcher::none) {
                             if (temp) {
-                                pnt2 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+                                pnt2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
                             } else {
                                 pnt2 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
                             }
@@ -4891,9 +4891,9 @@ Restart:
                                 if (ptPosId != Sketcher::none) break;
                                 assert(0);//no point found!
                             } while (false);
-                            pos = getSketchObject()->getSolvedSketch().getPoint(ptGeoId, ptPosId);
+                            pos = getSketchObject()->getSolvedSketch()->getPoint(ptGeoId, ptPosId);
 
-                            Base::Vector3d norm = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, pos.x, pos.y);
+                            Base::Vector3d norm = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->Second, pos.x, pos.y);
                             norm.Normalize();
                             Base::Vector3d dir = norm; dir.RotateZ(-M_PI/2.0);
 
@@ -5019,8 +5019,8 @@ Restart:
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
-                        Base::Vector3d pnt1 = getSketchObject()->getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-                        Base::Vector3d pnt2 = getSketchObject()->getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+                        Base::Vector3d pnt1 = getSketchObject()->getSolvedSketch()->getPoint(Constr->First, Constr->FirstPos);
+                        Base::Vector3d pnt2 = getSketchObject()->getSolvedSketch()->getPoint(Constr->Second, Constr->SecondPos);
 
                         SbVec3f p1(pnt1.x,pnt1.y,zConstr);
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
@@ -5103,11 +5103,11 @@ Restart:
                                 startangle = atan2(dir1.y,dir1.x);
                             }
                             else {//angle-via-point
-                                Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
+                                Base::Vector3d p = getSketchObject()->getSolvedSketch()->getPoint(Constr->Third, Constr->ThirdPos);
                                 p0 = SbVec3f(p.x, p.y, 0);
-                                dir1 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
+                                dir1 = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->First, p.x, p.y);
                                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
-                                dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
+                                dir2 = getSketchObject()->getSolvedSketch()->calculateNormalAtPoint(Constr->Second, p.x, p.y);
                                 dir2.RotateZ(-M_PI/2);
 
                                 startangle = atan2(dir1.y,dir1.x);
@@ -5558,7 +5558,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
 
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 ==
-            getSketchObject()->getSolvedSketch().getGeometrySize()) {
+            getSketchObject()->getSolvedSketch()->getGeometrySize()) {
             Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
             if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
                 draw(false,true);
@@ -5782,7 +5782,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // Enable solver initial solution update while dragging.
     ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    getSketchObject()->getSolvedSketch().RecalculateInitialSolutionWhileMovingPoint = hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true);
+    getSketchObject()->getSolvedSketch()->setRecalculateInitialSolutionWhileMovingPoint(hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true));
 
 
     // intercept del key press from main app
@@ -5867,7 +5867,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         if (getSketchObject()->getLastSolverStatus() == 0) {
             if (dofs == 0) {
                 // color the sketch as fully constrained if it has geometry (other than the axes)
-                if(getSketchObject()->getSolvedSketch().getGeometrySize()>2)
+                if(getSketchObject()->getSolvedSketch()->getGeometrySize()>2)
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {

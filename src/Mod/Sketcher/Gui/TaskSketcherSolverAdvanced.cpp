@@ -106,6 +106,8 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
     else
         ui->comboBoxDogLegGaussStep->setEnabled(false);
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /*
     switch(currentindex)
     {
         case 0: // BFGS
@@ -158,6 +160,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
@@ -171,7 +174,10 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
         ui->comboBoxDogLegGaussStep->setEnabled(true);
     else
         ui->comboBoxDogLegGaussStep->setEnabled(false);
+    
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
 
+    /*
     switch(redundantcurrentindex)
     {
         case 0: // BFGS
@@ -224,6 +230,7 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
@@ -235,6 +242,9 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam1->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    
+    /*
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -252,6 +262,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinished()
@@ -263,6 +274,8 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam1->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /*
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -279,7 +292,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
             ui->lineEditRedundantSolverParam1->onSave();
             break;
         }
-    }
+    }*/
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
@@ -291,6 +304,8 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam2->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /* 
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -308,6 +323,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinished()
@@ -319,6 +335,9 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam2->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    
+    /*
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -336,6 +355,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
@@ -347,6 +367,9 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam3->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    
+    /*
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -363,7 +386,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
             ui->lineEditSolverParam3->onSave();
             break;
         }
-    }
+    }*/
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinished()
@@ -375,6 +398,9 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam3->setText(sci.toUpper());
 
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    
+    /*
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -392,30 +418,40 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
             break;
         }
     }
+    */
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxDefaultSolver->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) index;
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) index;
+    //sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) index;
     updateDefaultMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxDogLegGaussStep_currentIndexChanged(int index)
 {
     ui->comboBoxDogLegGaussStep->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) index);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) index;
+    //sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) index);
     updateDefaultMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_spinBoxMaxIter_valueChanged(int i)
 {
     ui->spinBoxMaxIter->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIter(i);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) i;
+    //sketchView->getSketchObject()->getSolvedSketch().setMaxIter(i);
 }
 
 void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(int state)
 {
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) state;
+    /*
     if(state==Qt::Checked) {
         ui->checkBoxSketchSizeMultiplier->onSave();
         sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(true);
@@ -423,7 +459,7 @@ void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(in
     else if (state==Qt::Unchecked) {
         ui->checkBoxSketchSizeMultiplier->onSave();
         sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(false);
-    }
+    }*/
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
@@ -437,7 +473,8 @@ void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
 
     ui->lineEditQRPivotThreshold->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(val);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    //sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(val);
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
@@ -451,7 +488,8 @@ void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
 
     ui->lineEditConvergence->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setConvergence(val);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    //sketchView->getSketchObject()->getSolvedSketch().setConvergence(val);
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished()
@@ -465,30 +503,40 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished
 
     ui->lineEditRedundantConvergence->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(val);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    //sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(val);
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxQRMethod_currentIndexChanged(int index)
 {
-    sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) index);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) index;
+    //sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) index);
     ui->comboBoxQRMethod->onSave();
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxRedundantDefaultSolver->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) index;
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) index;
+    //sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) index;
     updateRedundantMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_spinBoxRedundantSolverMaxIterations_valueChanged(int i)
 {
     ui->spinBoxRedundantSolverMaxIterations->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(i);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) i;
+    //sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(i);
 }
 
 void TaskSketcherSolverAdvanced::on_checkBoxRedundantSketchSizeMultiplier_stateChanged(int state)
 {
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) state;
+    /* 
     if(state==Qt::Checked) {
         ui->checkBoxRedundantSketchSizeMultiplier->onSave();
         sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(true);
@@ -496,13 +544,15 @@ void TaskSketcherSolverAdvanced::on_checkBoxRedundantSketchSizeMultiplier_stateC
     else if (state==Qt::Unchecked) {
         ui->checkBoxRedundantSketchSizeMultiplier->onSave();
         sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(true);
-    }
+    }*/
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxDebugMode_currentIndexChanged(int index)
 {
     ui->comboBoxDebugMode->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) index);
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    (void) index;
+    //sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) index);
 }
 
 void TaskSketcherSolverAdvanced::on_pushButtonSolve_clicked(bool checked/* = false*/)
@@ -561,6 +611,8 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
 
 void TaskSketcherSolverAdvanced::updateSketchObject(void)
 {
+    THROWM(Base::NotImplementedError, "This solver interface is not available at this moment")
+    /*
     sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
     sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
     sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
@@ -576,6 +628,7 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
 
     updateDefaultMethodParameters();
     updateRedundantMethodParameters();
+    */
 }
 
 #include "moc_TaskSketcherSolverAdvanced.cpp"
