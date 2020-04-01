@@ -35,6 +35,7 @@
 #include "ExternalGeometryExtension.h"
 #include "Constraint.h"
 #include "Sketch.h"
+#include "FCSSketch.h"
 #include "ConstraintPy.h"
 #include "SketchPy.h"
 #include "SketchGeometryExtensionPy.h"
@@ -77,8 +78,9 @@ PyMOD_INIT_FUNC(Sketcher)
     Sketcher::SketchObjectSF        	::init();
     Sketcher::SketchObject          	::init();
     Sketcher::SketchObjectPython    	::init();
-    Sketcher::SketchSolver		::init();
+    Sketcher::SketchSolver		        ::init();
     Sketcher::Sketch                	::init();
+    Sketcher::FCSSketch			        ::init();
     Sketcher::Constraint            	::init();
     Sketcher::PropertyConstraintList	::init();
 

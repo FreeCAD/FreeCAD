@@ -71,6 +71,8 @@ SET(Datatypes_SRCS
     Sketch.h
     SketchSolver.cpp
     SketchSolver.h
+    FCSSketch.cpp
+    FCSSketch.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 
