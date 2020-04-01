@@ -48,56 +48,56 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 __doc__="""This module provides tools to build Wall objects.  Walls are simple
-objects, usually vertical, typically obtained by giving a thickness to a base
-line, then extruding it vertically.
+        objects, usually vertical, typically obtained by giving a thickness to a base
+        line, then extruding it vertically.
 
-Examples
---------
-TODO put examples here.
+        Examples
+        --------
+        TODO put examples here.
 
-"""
+        """
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
-    '''Creates a wall based on a given object, and returns the generated wall.
+    """Creates a wall based on a given object, and returns the generated wall.
 
-TODO: It is unclear what defines which units this function uses.
+    TODO: It is unclear what defines which units this function uses.
 
-Parameters
-----------
-baseobj: <Part::PartFeature>, optional
-    The base object with which to build the wall. This can be a sketch, a draft
-    object, a face, or a solid. It can also be left as None.
-height: float, optional
-    The height of the wall.
-length: float, optional
-    The length of the wall. Not used if the wall is based off an object.
-    Will use Arch default if left empty.
-width: float, optional
-    The width of the wall. Not used if the base object is a face.  Will
-    use Arch default if left empty.
-align: str, optional
-    Either "Center", "Left", or "Right". Effects the alignment of the wall on
-    it's baseline.
-face: int, optional
-    The index number of a face on the given baseobj, to base the wall on.
-name: str, optional
-    The name to give to the created wall.
+    Parameters
+    ----------
+    baseobj: <Part::PartFeature>, optional
+        The base object with which to build the wall. This can be a sketch, a draft
+        object, a face, or a solid. It can also be left as None.
+    height: float, optional
+        The height of the wall.
+    length: float, optional
+        The length of the wall. Not used if the wall is based off an object.
+        Will use Arch default if left empty.
+    width: float, optional
+        The width of the wall. Not used if the base object is a face.  Will
+        use Arch default if left empty.
+    align: str, optional
+        Either "Center", "Left", or "Right". Effects the alignment of the wall on
+        it's baseline.
+    face: int, optional
+        The index number of a face on the given baseobj, to base the wall on.
+    name: str, optional
+        The name to give to the created wall.
 
-Returns
--------
-<Part::FeaturePython>
-    Returns the generated wall.
+    Returns
+    -------
+    <Part::FeaturePython>
+        Returns the generated wall.
 
-Notes
------
-Creates a new <Part::FeaturePython> object, and turns it into a parametric wall
-object. This <Part::FeaturePython> object does not yet have any shape.
+    Notes
+    -----
+    Creates a new <Part::FeaturePython> object, and turns it into a parametric wall
+    object. This <Part::FeaturePython> object does not yet have any shape.
 
-The wall then uses the baseobj.Shape as the basis to extrude out a wall shape,
-giving the new <Part::FeaturePython> object a shape.
+    The wall then uses the baseobj.Shape as the basis to extrude out a wall shape,
+    giving the new <Part::FeaturePython> object a shape.
 
-It then hides the original baseobj.
-'''
+    It then hides the original baseobj.
+    """
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -134,24 +134,24 @@ It then hides the original baseobj.
 def joinWalls(walls,delete=False):
     """ Joins the given list of walls into one sketch-based wall.
 
-Takes the first wall in the list, and adds on the other walls in the list.
-Returns the modified first wall. 
+    Takes the first wall in the list, and adds on the other walls in the list.
+    Returns the modified first wall. 
 
-Setting delete to True, will delete the other walls. Will only join walls if
-the walls have the same width, height and alignment.
+    Setting delete to True, will delete the other walls. Will only join walls if
+    the walls have the same width, height and alignment.
 
-Parameters
-----------
-walls: list of <Part::FeaturePython>
-    List containing the walls to add to the first wall in the list. Walls must
-    be based off a base object.
-delete: bool, optional
-    If True, deletes the other walls in the list.
+    Parameters
+    ----------
+    walls: list of <Part::FeaturePython>
+        List containing the walls to add to the first wall in the list. Walls must
+        be based off a base object.
+    delete: bool, optional
+        If True, deletes the other walls in the list.
 
-Returns
--------
-<Part::FeaturePython>
-"""
+    Returns
+    -------
+    <Part::FeaturePython>
+    """
 
     import Part
     if not walls:
@@ -190,9 +190,9 @@ Returns
 def mergeShapes(w1,w2):
     """Not currently implemented. 
 
-Returns a Shape built on two walls that share same properties and have a
-coincident endpoint.
-"""
+    Returns a Shape built on two walls that share same properties and have a
+    coincident endpoint.
+    """
 
     if not areSameWallTypes([w1,w2]):
         return None
@@ -219,15 +219,15 @@ coincident endpoint.
 def areSameWallTypes(walls):
     """Checks if a list of walls have the same height, width and alignment.
 
-Parameters
-----------
-walls: list of <class 'ArchComponent.Component'>
+    Parameters
+    ----------
+    walls: list of <class 'ArchComponent.Component'>
 
-Returns
--------
-bool
-    True if the walls have the same height, width and alignment, false if otherwise.
-"""
+    Returns
+    -------
+    bool
+        True if the walls have the same height, width and alignment, false if otherwise.
+    """
 
     for att in ["Width","Height","Align"]:
         value = None
@@ -250,13 +250,13 @@ bool
 class _CommandWall:
     """The command definition for the Arch workbench's gui tool, Arch Wall. A tool for creating Arch walls.
 
-Creates a wall from the object selected by the user. If no objects are
-selected, enters an interactive mode to create a wall using selected points
-to create a base.
+    Creates a wall from the object selected by the user. If no objects are
+    selected, enters an interactive mode to create a wall using selected points
+    to create a base.
 
-Find documentation on the end user usage of Arch Wall here:
-https://wiki.freecadweb.org/Arch_Wall
-"""
+    Find documentation on the end user usage of Arch Wall here:
+    https://wiki.freecadweb.org/Arch_Wall
+    """
 
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
@@ -277,10 +277,10 @@ https://wiki.freecadweb.org/Arch_Wall
     def Activated(self):
         """Executed when Arch Wall is called.
 
-Creates a wall from the object selected by the user. If no objects are
-selected, enters an interactive mode to create a wall using selected points
-to create a base.
-"""
+        Creates a wall from the object selected by the user. If no objects are
+        selected, enters an interactive mode to create a wall using selected points
+        to create a base.
+        """
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Align = ["Center","Left","Right"][p.GetInt("WallAlignment",0)]
@@ -327,25 +327,23 @@ to create a base.
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
-            FreeCADGui.Snapper.getPoint(
-                    callback=self.getPoint,
-                    extradlg=self.taskbox(),
-                    title=translate("Arch","First point of wall")+":"
-                    )
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,
+                                        extradlg=self.taskbox(),
+                                        title=translate("Arch","First point of wall")+":")
 
     def getPoint(self,point=None,obj=None):
         """Callback for clicks during interactive mode.
 
-When method _CommandWall.Activated() has entered the interactive mode, this
-callback runs when the user clicks.
+        When method _CommandWall.Activated() has entered the interactive mode, this
+        callback runs when the user clicks.
 
-Parameters
-----------
-point: <class 'Base.Vector'>
-    The point the user has selected.
-obj: <Part::PartFeature>, optional
-    The object the user's cursor snapped to, if any.
-"""
+        Parameters
+        ----------
+        point: <class 'Base.Vector'>
+            The point the user has selected.
+        obj: <Part::PartFeature>, optional
+            The object the user's cursor snapped to, if any.
+        """
 
         if obj:
             if Draft.getType(obj) == "Wall":
@@ -359,20 +357,16 @@ obj: <Part::PartFeature>, optional
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(
-                    last=self.points[0],
-                    callback=self.getPoint,
-                    movecallback=self.update,
-                    extradlg=self.taskbox(),
-                    title=translate("Arch","Next point")+":",mode="line"
-                    )
+            FreeCADGui.Snapper.getPoint(last=self.points[0],
+                                        callback=self.getPoint,
+                                        movecallback=self.update,
+                                        extradlg=self.taskbox(),
+                                        title=translate("Arch","Next point")+":",mode="line")
 
         elif len(self.points) == 2:
             import Part
-            l = Part.LineSegment(
-                    FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),
-                    FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1])
-                    )
+            l = Part.LineSegment(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),
+                                 FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
@@ -408,12 +402,12 @@ obj: <Part::PartFeature>, optional
     def addDefault(self):
         """Creates a wall using a line segment, with all parameters as the default.
 
-Used solely by _CommandWall.getPoint() when the interactive mode has selected
-two points.
+        Used solely by _CommandWall.getPoint() when the interactive mode has selected
+        two points.
 
-Relies on the assumption that FreeCADGui.doCommand() has already created a
-Part.LineSegment assigned as the variable "trace"
-"""
+        Relies on the assumption that FreeCADGui.doCommand() has already created a
+        Part.LineSegment assigned as the variable "trace"
+        """
 
         FreeCADGui.addModule("Draft")
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
@@ -432,15 +426,15 @@ Part.LineSegment assigned as the variable "trace"
     def update(self,point):
         """Callback for the mouse moving during the interactive mode.
 
-Updates the active dialog box to show the coordinates of the location of the
-cursor. It also shows the length the line would take, if the user selected that
-point.
+        Updates the active dialog box to show the co-ordinates of the location of the
+        cursor. It also shows the length the line would take, if the user selected that
+        point.
 
-Parameters
-----------
-point: <class 'Base.Vector'>
-    The point the cursor is currently at, or has snapped to.
-"""
+        Parameters
+        ----------
+        point: <class 'Base.Vector'>
+            The point the cursor is currently at, or has snapped to.
+        """
 
         if FreeCADGui.Control.activeDialog():
             b = self.points[0]
@@ -581,8 +575,8 @@ point: <class 'Base.Vector'>
     def setContinue(self,i):
         """Simple callback to set if the interactive mode will restart when finished. 
 
-This allows for several walls to be placed one after another.
-"""
+        This allows for several walls to be placed one after another.
+        """
 
         self.continueCmd = bool(i)
         if hasattr(FreeCADGui,"draftToolBar"):
@@ -610,11 +604,11 @@ This allows for several walls to be placed one after another.
 class _CommandMergeWalls:
     """The command definition for the Arch workbench's gui tool, Arch MergeWalls. A tool for merging walls.
 
-Joins two or more walls by using the ArchWall.joinWalls() function.
+    Joins two or more walls by using the ArchWall.joinWalls() function.
 
-Find documentation on the end user usage of Arch Wall here:
-https://wiki.freecadweb.org/Arch_MergeWalls
-"""
+    Find documentation on the end user usage of Arch Wall here:
+    https://wiki.freecadweb.org/Arch_MergeWalls
+    """
 
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch MergeWalls tool."""
@@ -634,11 +628,12 @@ https://wiki.freecadweb.org/Arch_MergeWalls
     def Activated(self):
         """Executed when Arch MergeWalls is called.
 
-Calls ArchWall.joinWalls() on walls selected by the user, with the delete
-option enabled. If the user has selected a single wall, check to see if the
-wall has any Additions that are walls. If so, merges these additions to the
-wall, deleting the additions.
-"""
+        Calls ArchWall.joinWalls() on walls selected by the user, with the delete
+        option enabled. If the user has selected a single wall, check to see if the
+        wall has any Additions that are walls. If so, merges these additions to the
+        wall, deleting the additions.
+        """
+
         walls = FreeCADGui.Selection.getSelection()
         if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
@@ -672,21 +667,21 @@ wall, deleting the additions.
 class _Wall(ArchComponent.Component):
     """The Wall object. Takes a <App::FeaturePython> and turns it into a wall.
 
-Walls are simple objects, usually vertical, typically obtained by giving a
-thickness to a base line, then extruding it vertically.
+    Walls are simple objects, usually vertical, typically obtained by giving a
+    thickness to a base line, then extruding it vertically.
 
-Parameters
-----------
-obj: <App::FeaturePython>
-    The object to turn into a wall. Note that this is not the object that forms
-    the basis for the new wall's shape. That is given later.
-"""
+    Parameters
+    ----------
+    obj: <App::FeaturePython>
+        The object to turn into a wall. Note that this is not the object that forms
+        the basis for the new wall's shape. That is given later.
+    """
 
     def __init__(self, obj):
         """Initialises the object's properties.
 
-Sets the object to have the properties of an Arch component, and Arch wall.
-"""
+        Sets the object to have the properties of an Arch component, and Arch wall.
+        """
 
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
@@ -695,13 +690,13 @@ Sets the object to have the properties of an Arch component, and Arch wall.
     def setProperties(self, obj):
         """Gives the wall it's wall specific properties, such as it's alignment.
 
-You can learn more about properties here: https://wiki.freecadweb.org/property
+        You can learn more about properties here: https://wiki.freecadweb.org/property
 
-parameters
-----------
-obj: <part::featurepython>
-    The object to turn into a wall.
-"""
+        parameters
+        ----------
+        obj: <part::featurepython>
+            The object to turn into a wall.
+        """
 
         lp = obj.PropertiesList
         if not "Length" in lp:
@@ -1257,29 +1252,25 @@ obj: <part::featurepython>
                                 # Get the 'offseted' wire taking into account
                                 # of Width and Align of each edge, and overall
                                 # Offset
-                                w2 = DraftGeomUtils.offsetWire(
-                                        wire,dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode=None,
-                                        alignList=aligns,
-                                        normal=normal,
-                                        basewireOffset=off
-                                        )
+                                w2 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                               bind=False,
+                                                               occ=False,
+                                                               widthList=widths,
+                                                               offsetMode=None,
+                                                               alignList=aligns,
+                                                               normal=normal,
+                                                               basewireOffset=off)
 
                                 # Get the 'base' wire taking into account of
                                 # width and align of each edge
-                                w1 = DraftGeomUtils.offsetWire(
-                                        wire, dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode="BasewireMode",
-                                        alignList=aligns,
-                                        normal=normal,
-                                        basewireOffset=off
-                                        )
+                                w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                               bind=False,
+                                                               occ=False,
+                                                               widthList=widths,
+                                                               offsetMode="BasewireMode",
+                                                               alignList=aligns,
+                                                               normal=normal,
+                                                               basewireOffset=off)
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             elif curAligns == "Right":
@@ -1298,20 +1289,23 @@ obj: <part::featurepython>
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                w2 = DraftGeomUtils.offsetWire(
-                                        wire, dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode=None,
-                                        alignList=aligns,
-                                        normal=normal,
-                                        basewireOffset=off
-                                        )
+                                w2 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                               bind=False,
+                                                               occ=False,
+                                                               widthList=widths,
+                                                               offsetMode=None,
+                                                               alignList=aligns,
+                                                               normal=normal,
+                                                               basewireOffset=off)
 
-                                w1 = DraftGeomUtils.offsetWire(
-                                        basewireOffset=off
-                                        )
+                                w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                               bind=False,
+                                                               occ=False,
+                                                               widthList=widths,
+                                                               offsetMode="BasewireMode",
+                                                               alignList=aligns,
+                                                               normal=normal,
+                                                               basewireOffset=off)
 
                                 sh = DraftGeomUtils.bind(w1,w2)
 
@@ -1328,24 +1322,24 @@ obj: <part::featurepython>
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
                                 else:
                                     dvec.multiply(width)
-                                    w2 = DraftGeomUtils.offsetWire(
-                                        wire, dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode=None,
-                                        alignList=aligns,
-                                        normal=normal
-                                        )
-                                    w1 = DraftGeomUtils.offsetWire(
-                                        wire, dvec,
-                                        bind=False,
-                                        occ=False,
-                                        widthList=widths,
-                                        offsetMode="BasewireMode",
-                                        alignList=aligns,
-                                        normal=normal
-                                        )
+
+                                    w2 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                                   bind=False,
+                                                                   occ=False,
+                                                                   widthList=widths,
+                                                                   offsetMode=None,
+                                                                   alignList=aligns,
+                                                                   normal=normal)
+
+                                    w1 = DraftGeomUtils.offsetWire(wire, dvec,
+                                                                   bind=False,
+                                                                   occ=False,
+                                                                   widthList=widths,
+                                                                   offsetMode="BasewireMode",
+                                                                   alignList=aligns,
+                                                                   normal=normal)
+                                        
+
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             del widths[0:edgeNum]
