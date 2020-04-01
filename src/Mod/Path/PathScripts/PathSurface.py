@@ -1419,7 +1419,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 #TODO: test if this works
                 facets = M.Mesh.Facets.Points
             else:
-                facets = Path.getFacets(M.Shape)            
+                facets = Part.getFacets(M.Shape)            
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
@@ -1507,7 +1507,7 @@ class ObjectSurface(PathOp.ObjectOp):
             T.purgeTouched()
             self.tempGroup.addObject(T)
 
-        facets = Path.getFacets(fused)
+        facets = Part.getFacets(fused)
 
         stl = ocl.STLSurf()
         for tri in facets:
