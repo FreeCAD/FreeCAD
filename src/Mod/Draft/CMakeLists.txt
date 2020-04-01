@@ -88,6 +88,7 @@ SET(Creator_tools
     draftguitools/gui_splines.py
     draftguitools/gui_beziers.py
     draftguitools/gui_rectangles.py
+    draftguitools/gui_arcs.py
 )
 
 SET(Draft_GUI_tools
@@ -112,7 +113,6 @@ SET(Draft_GUI_tools
     draftguitools/gui_heal.py
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
-    draftguitools/gui_arcs.py
     ${Creator_tools}
     draftguitools/README.md
 )
