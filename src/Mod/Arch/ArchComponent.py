@@ -400,7 +400,7 @@ With this copy, it gets the <Part.Face> the shape was originally extruded from, 
 <Base.Vector> of the extrusion, and the <Base.Placement> needed to move the copy back to it's
 original location/orientation. It will return this data as a tuple.
 
-If it encouters an object derived from a <Part::Multifuse>, it will return this data
+If it encounters an object derived from a <Part::Multifuse>, it will return this data
 as a tuple containing lists. The lists will contain the same data as above, from each
 of the objects within the multifuse.
 
