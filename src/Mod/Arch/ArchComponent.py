@@ -139,15 +139,19 @@ structures. It's properties and behaviours are common to all Arch objects.
 
 You can learn more about Arch Components, and the purpose of Arch Components
 here: https://wiki.freecadweb.org/Arch_Component
+""" 
+
+    def __init__(self, obj):
+        """Initialises the Component.
+
+Registers the Proxy as this class object. Sets the object to have the
+properties of an Arch component.
 
 Parameters
 ----------
 obj: <App::FeaturePython>
     The object to turn into an Arch Component
-""" 
-
-    def __init__(self, obj):
-        """Sets the object to have the properties of an Arch component"""
+"""
 
         obj.Proxy = self
         Component.setProperties(self, obj)
@@ -1000,22 +1004,53 @@ bool
 
 
 class ViewProviderComponent:
+    """A default View Provider for Component objects.
 
-    "A default View Provider for Component objects"
+Acts as a base for all other Arch view providers. It’s properties and
+behaviours are common to all Arch view providers.
+""" 
 
     def __init__(self,vobj):
+        """Initialises the Component view provider.
+
+Registers the Proxy as this class object. Registers the Object, as the view
+provider's object. Sets the view provider to have the
+properties of an Arch component.
+
+Parameters
+----------
+vobj: <Gui.ViewProviderDocumentObject>
+    The view provider to turn into an Component view provider.
+"""
 
         vobj.Proxy = self
         self.Object = vobj.Object
         self.setProperties(vobj)
         
     def setProperties(self,vobj):
+        """Gives the component view provider it's component view provider specific properties.
+
+You can learn more about properties here: https://wiki.freecadweb.org/property
+"""
 
         if not "UseMaterialColor" in vobj.PropertiesList:
             vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
             vobj.UseMaterialColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("UseMaterialColor",True)
 
     def updateData(self,obj,prop):
+        """Method called when the host object has a property changed.
+
+If the object has a Material associated with it, matches the view object's
+ShapeColor and Transparency to match the Material.
+
+If the object is now cloned, or is part of a compound, the view object inherits
+the DiffuseColor.
+
+Parameters
+----------
+prop: string
+    The name of the property that has changed.
+"""
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
@@ -1055,6 +1090,16 @@ class ViewProviderComponent:
         return
 
     def getIcon(self):
+        """Returns the path to the appropriate icon.
+
+If a clone, returns the cloned component icon path. Otherwise returns the Arch Component
+icon.
+
+Returns
+-------
+str
+    Path to the appropriate icon .svg file.
+"""
 
         import Arch_rc
         if hasattr(self,"Object"):
@@ -1064,6 +1109,21 @@ class ViewProviderComponent:
         return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
+        """Method called when the view provider has a property changed.
+
+If DiffuseColor changes, change DiffuseColor to copy the host object's clone,
+if it exists.
+
+If ShapeColor changes, overwrite it with DiffuseColor.
+
+If Visibility changes, propagate the change to all view objects that are also
+hosted by this view object's host.
+
+Parameters
+----------
+prop: string
+    The name of the property that has changed.
+"""
 
         #print(vobj.Object.Name, " : changing ",prop)
         #if prop == "Visibility":
