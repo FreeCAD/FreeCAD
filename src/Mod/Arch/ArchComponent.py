@@ -154,7 +154,7 @@ obj: <App::FeaturePython>
         self.Type = "Component"
 
     def setProperties(self, obj):
-        """Gives the wall it's component specific properties, such as it's material.
+        """Gives the component it's component specific properties, such as material.
 
 You can learn more about properties here: https://wiki.freecadweb.org/property
 """
@@ -249,6 +249,11 @@ have been set to move with their host, such that they stay in the same location
 to this component.
 
 Also calls ArchIFC.IfcProduct.onChanged().
+
+Parameters
+----------
+prop: string
+    The name of the property that has changed.
 """
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
@@ -497,13 +502,13 @@ tuple
     def rebase(self,shape,hint=None):
         """Copies a shape to the (0,0,0) origin.
 
-Creates a copy of a shape, such that it's center is in the (0,0,0)
+Creates a copy of a shape, such that it's center of mass is in the (0,0,0)
 origin.
 
 TODO Determine the way the shape is rotated by this method.
 
-Returns the copy of the shape, and the <Base.Placement> needed to
-move the copy back to it's original location/orientation.
+Returns the copy of the shape, and the <Base.Placement> needed to move the copy
+back to it's original location/orientation.
 
 Parameters
 ----------
@@ -513,12 +518,6 @@ hint: <Base.Vector>, optional
     If the angle between the normal vector of the shape, and the hint vector is
     greater than 90 degrees, the normal will be reversed before being rotated.
 """
-
-
-        """returns a shape that is a copy of the original shape
-        but centered on the (0,0) origin, and a placement that is needed to
-        reposition that shape to its original location/orientation.
-        hint can be a vector that indicates the preferred normal direction"""
 
         import DraftGeomUtils,math
 
@@ -564,8 +563,21 @@ hint: <Base.Vector>, optional
             return(shapes,p)
 
     def hideSubobjects(self,obj,prop):
+        """Hides Additions and Subtractions of this Component when that list changes.
 
-        "Hides subobjects when a subobject lists change"
+Intended to be used in conjunction with the .onChanged() method, to access the
+property that has changed.  
+
+When an object loses or gains an Addition, this method hides all Additions.
+When it gains or loses a Subtraction, this method hides all Subtractions.
+
+Does not effect objects of type Window, or clones of Windows.
+
+Parameters
+----------
+prop: string
+    The name of the property that has changed.
+"""
 
         if FreeCAD.GuiUp:
             if prop in ["Additions","Subtractions"]:
@@ -582,9 +594,32 @@ hint: <Base.Vector>, optional
                     if o:
                         o.ViewObject.hide()
 
-    def processSubShapes(self,obj,base,placement=None):
 
-        "Adds additions and subtractions to a base shape"
+    def processSubShapes(self,obj,base,placement=None):
+        """Adds Additions and Subtractions to a base shape.
+
+If Additions exist, fuses then to the base shape. If no base is provided, it
+will just fuse other additions to the first addition.
+
+If Subtractions exist, it will cut them from the base shape. Roofs and Windows
+are treated uniquely, as they define their own Shape to subtract from parent
+shapes using their .getSubVolume() methods.
+
+TODO determine what the purpose of the placement argument is.
+
+Parameters
+----------
+base: <Part.Shape>, optional
+    The base shape to add Additions and Subtractions to.
+placement: <Base.Placement>, optional
+    Prior to adding or subtracting subshapes, the <Base.Placement> of the
+    subshapes are multiplied by the inverse of this parameter. 
+
+Returns
+-------
+<Part.Shape>
+    The base shape, with the additions and subtractions performed.
+"""
 
         import Draft,Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
@@ -685,8 +720,28 @@ hint: <Base.Vector>, optional
         return base
 
     def spread(self,obj,shape,placement=None):
+        """Copies the object to it's Axis's points.
 
-        "spreads this shape along axis positions"
+If the object has the "Axis" property assigned, this method creates a copy of
+the shape for each point on the object assigned as the "Axis". Each of these
+copies are then translated, equal to the displacement of the points from the
+(0,0,0) origin.
+
+If the object's "Axis" is unassigned, returns the original shape unchanged.
+
+Parameters
+----------
+shape: <Part.Shape>
+    The shape to copy.
+placement:
+    Does nothing.
+
+Returns
+-------
+<Part.Shape>
+    The shape, either spread to the axis points, or unchanged.
+
+"""
 
         points = None
         if hasattr(obj,"Axis"):
@@ -708,16 +763,50 @@ hint: <Base.Vector>, optional
         return shape
 
     def isIdentity(self,placement):
+        """Checks if a placement is *almost* zero.
 
-        "checks if a placement is *almost* zero"
+Check if a <Base.Placement>'s displacement from (0,0,0) is almost zero, and if
+the angle of it's rotation about it's axis is almost zero.
+
+Parameters
+----------
+placement: <Base.Placement>
+    The placement to examine.
+
+Returns
+-------
+bool
+    Returns true if angle and displacement are almost zero, false it otherwise.
+"""
 
         if (placement.Base.Length < 0.000001) and (placement.Rotation.Angle < 0.000001):
             return True
         return False
 
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
+        """Checks the given shape, then assigns it to the object.
 
-        "checks and cleans the given shape, and apply it to the object"
+Checks if the shape is valid, isn't null, and if it has volume. Removes
+redundant edges from the shape. Spreads shape to the "Axis" with method
+.spread().
+
+Sets the object's Shape and Placement to the values given, if successful.
+
+Finally, runs .computeAreas() method, to calculate the horizontal and vertical
+area of the shape.
+
+Parameters
+----------
+shape: <Part.Shape>
+    The shape to check and apply to the object.
+placement: <Base.Placement>
+    The placement to apply to the object.
+allowinvalid: bool, optional
+    Whether to allow invalid shapes, or to throw an error.
+allownosolid: bool, optional
+    Whether to allow non-solid shapes, or to throw an error.
+"""
+
         if shape:
             if not shape.isNull():
                 if shape.isValid():
@@ -759,14 +848,29 @@ hint: <Base.Vector>, optional
         self.computeAreas(obj)
 
     def computeAreas(self,obj):
+        """Computes the area properties of the object's shape.
 
-        "computes the area properties"
+Computes the vertical area, horizontal area, and perimeter length of the
+object's shape. 
+
+The vertical area is the surface area of the faces perpendicular to the ground.
+
+The horizontal area is the area of the shape, when projected onto a hyperplane
+across the XY axises, IE: the area when viewed from a bird's eye view.
+
+The perimeter length is the length of the outside edges of this bird's eye view.
+
+These values are assigned to the object's "VerticalArea", "HorizontalArea", and
+"PerimeterLength" properties.
+"""
+
 
         if (not obj.Shape) or obj.Shape.isNull() or (not obj.Shape.isValid()) or (not obj.Shape.Faces):
             obj.VerticalArea = 0
             obj.HorizontalArea = 0
             obj.PerimeterLength = 0
             return
+
         import Drawing,Part
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
@@ -774,6 +878,7 @@ hint: <Base.Vector>, optional
             obj.HorizontalArea = 0
             obj.PerimeterLength = 0
             return
+
         a = 0
         fset = []
         for i,f in enumerate(obj.Shape.Faces):
@@ -790,6 +895,7 @@ hint: <Base.Vector>, optional
                     a += f.Area
                 if ang < 1.5707:
                     fset.append(f)
+
         if a and hasattr(obj,"VerticalArea"):
             if obj.VerticalArea.Value != a:
                 obj.VerticalArea = a
@@ -812,6 +918,7 @@ hint: <Base.Vector>, optional
                                 obj.PerimeterLength = 0
                     else:
                         pset.append(pf)
+
             if pset:
                 self.flatarea = pset.pop()
                 for f in pset:
@@ -824,6 +931,24 @@ hint: <Base.Vector>, optional
                         obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
     def isStandardCase(self,obj):
+        """Determines if the component is a standard case of it's IFC type.
+
+Not all IFC types have a standard case.
+
+If an object is a standard case or not varies between the different types. Each
+type has it's own rules to define what is a standard case.
+
+Rotated objects, or objects with Additions or Subtractions are not standard
+cases.
+
+All objects whose IfcType is suffixed with the string " Sandard Case" is
+automatically a standard case.
+
+Returns
+-------
+bool
+    Whether the object is a standard case or not.
+"""
 
         # Standard Case has been set manually by the user
         if obj.IfcType.endswith("Standard Case"):

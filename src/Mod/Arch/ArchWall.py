@@ -1328,7 +1328,7 @@ obj: <part::featurepython>
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
                                 else:
                                     dvec.multiply(width)
-                                    w2 = DraftGeomUtils.offsetWire(wire,
+                                    w2 = DraftGeomUtils.offsetWire(
                                         wire, dvec,
                                         bind=False,
                                         occ=False,
@@ -1337,7 +1337,7 @@ obj: <part::featurepython>
                                         alignList=aligns,
                                         normal=normal
                                         )
-                                    w1 = DraftGeomUtils.offsetWire(wire,
+                                    w1 = DraftGeomUtils.offsetWire(
                                         wire, dvec,
                                         bind=False,
                                         occ=False,
