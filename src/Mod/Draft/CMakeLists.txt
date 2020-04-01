@@ -91,6 +91,7 @@ SET(Creator_tools
     draftguitools/gui_arcs.py
     draftguitools/gui_circles.py
     draftguitools/gui_polygons.py
+    draftguitools/gui_ellipses.py
 )
 
 SET(Draft_GUI_tools
