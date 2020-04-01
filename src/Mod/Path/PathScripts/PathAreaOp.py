@@ -3,7 +3,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -49,6 +48,7 @@ PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
 if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -66,7 +66,6 @@ class ObjectOp(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
-        # return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureRotation
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureCoolant
 
     def areaOpFeatures(self, obj):
@@ -304,8 +303,6 @@ class ObjectOp(PathOp.ObjectOp):
             pathParams['return_end'] = True
             # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
             pathParams['preamble'] = False
-            #if not self.areaOpRetractTool(obj):
-            #    pathParams['threshold'] = 2.001 * self.radius
 
             if self.endVector is None:
                 V = hWire.Wires[0].Vertexes
@@ -373,12 +370,6 @@ class ObjectOp(PathOp.ObjectOp):
 
             obj.ClearanceHeight.Value = strDep + self.clrOfset
             obj.SafeHeight.Value = strDep + self.safOfst
-
-            #if self.initWithRotation is False:
-            #    if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
-            #        obj.FinalDepth.Value = finDep
-            #    if obj.StartDepth.Value == obj.OpStartDepth.Value:
-            #        obj.StartDepth.Value = strDep
 
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
@@ -467,10 +458,14 @@ class ObjectOp(PathOp.ObjectOp):
                     # Rotate Model to correct angle
                     ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
 
-                    # Raise cutter to safe depth and return index to starting position
-                    ppCmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                    if axis != nextAxis:
-                        ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
+                    # Raise cutter to safe height
+                    ppCmds.insert(0, Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+                    # Return index to starting position if axis of rotation changes.
+                    if numShapes > 1:
+                        if ns != numShapes - 1:
+                            if axis != nextAxis:
+                                ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
                 # Eif
 
                 # Save gcode commands to object command list
@@ -483,9 +478,43 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Raise cutter to safe height and rotate back to original orientation
         if self.rotateFlag is True:
+            resetAxis = False
+            lastJobOp = None
+            nextJobOp = None
+            opIdx = 0
+            JOB = PathUtils.findParentJob(obj)
+            jobOps = JOB.Operations.Group
+            numJobOps = len(jobOps)
+
+            for joi in range(0, numJobOps):
+                jo = jobOps[joi]
+                if jo.Name == obj.Name:
+                    opIdx = joi
+            lastOpIdx = opIdx - 1
+            nextOpIdx = opIdx + 1
+            if lastOpIdx > -1:
+                lastJobOp = jobOps[lastOpIdx]
+            if nextOpIdx < numJobOps:
+                nextJobOp = jobOps[nextOpIdx]
+
+            if lastJobOp is not None:
+                if hasattr(lastJobOp, 'EnableRotation'):
+                    PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
+                    if lastJobOp.EnableRotation != obj.EnableRotation:
+                        resetAxis = True
+            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+                if nextJobOp is not None:
+                    if hasattr(nextJobOp, 'EnableRotation'):
+                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                        if nextJobOp.EnableRotation != obj.EnableRotation:
+                            resetAxis = True
+
+            # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
-            self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
+            # reset rotational axises if necessary
+            if resetAxis is True:
+                self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
+                self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
 
         self.useTempJobClones('Delete')  # Delete temp job clone group and contents
         self.guiMessage('title', None, show=True)  # Process GUI messages to user
@@ -531,10 +560,8 @@ class ObjectOp(PathOp.ObjectOp):
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
-        # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        # zlim = 0.0
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>357</width>
-    <height>427</height>
+    <width>350</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="toolController_label">
         <property name="text">
          <string>ToolController</string>
         </property>
@@ -38,7 +38,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="coolantController_label">
         <property name="text">
          <string>Coolant Mode</string>
         </property>
@@ -57,126 +57,35 @@
    <item row="1" column="0">
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Algorithm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="algorithmSelect">
-        <item>
-         <property name="text">
-          <string>OCL Dropcutter</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>OCL Waterline</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>BoundBox</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1" colspan="2">
-       <widget class="QComboBox" name="boundBoxSelect">
+       <widget class="QComboBox" name="scanType">
         <item>
          <property name="text">
-          <string>Stock</string>
+          <string>Planar</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>BaseBoundBox</string>
+          <string>Rotational</string>
          </property>
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>BoundBox extra offset X, Y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="Gui::InputField" name="boundBoxExtraOffsetX" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="Gui::InputField" name="boundBoxExtraOffsetY" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Drop Cutter Direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="dropCutterDirSelect">
+      <item row="2" column="1" colspan="2">
+       <widget class="QComboBox" name="layerMode">
         <item>
          <property name="text">
-          <string>X</string>
+          <string>Single-pass</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Y</string>
+          <string>Multi-pass</string>
          </property>
         </item>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Depth offset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="Gui::InputField" name="depthOffset" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Sample interval</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="2">
-       <widget class="Gui::InputField" name="sampleInterval" native="true">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Step over</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1" colspan="2">
+      <item row="8" column="1" colspan="2">
        <widget class="QSpinBox" name="stepOver">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -195,18 +104,178 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_7">
+      <item row="8" column="0">
+       <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Optimize output</string>
+         <string>Step over</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="sampleInterval_label">
+        <property name="text">
+         <string>Sample interval</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="layerMode_label">
+        <property name="text">
+         <string>Layer Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QCheckBox" name="optimizeEnabled">
+        <property name="text">
+         <string>Optimize Linear Paths</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="dropCutterDirSelect_label">
+        <property name="text">
+         <string>Drop Cutter Direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="boundBoxExtraOffset_label">
+        <property name="text">
+         <string>BoundBox extra offset X, Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="text">
+         <string>Use Start Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="scanType_label">
+        <property name="text">
+         <string>Scan Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="boundBoxSelect_label">
+        <property name="text">
+         <string>BoundBox</string>
         </property>
        </widget>
       </item>
       <item row="7" column="1" colspan="2">
-       <widget class="QCheckBox" name="optimizeEnabled">
-        <property name="text">
-         <string>Enabled</string>
+       <widget class="Gui::InputField" name="depthOffset" native="true">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
         </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::InputField" name="boundBoxExtraOffsetX" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::InputField" name="boundBoxExtraOffsetY" native="true">
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="10" column="1" colspan="2">
+       <widget class="Gui::InputField" name="sampleInterval" native="true">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="depthOffset_label">
+        <property name="text">
+         <string>Depth offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="2">
+       <widget class="QComboBox" name="dropCutterDirSelect">
+        <item>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="2">
+       <widget class="QComboBox" name="boundBoxSelect">
+        <item>
+         <property name="text">
+          <string>Stock</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BaseBoundBox</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QCheckBox" name="optimizeStepOverTransitions">
+        <property name="text">
+         <string>Optimize StepOver Transitions</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="cutPattern_label">
+        <property name="text">
+         <string>Cut Pattern</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="QComboBox" name="cutPattern">
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZigZag</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circular</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CircularZigZag</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
