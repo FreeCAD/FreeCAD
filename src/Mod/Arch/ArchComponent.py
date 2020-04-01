@@ -134,24 +134,24 @@ def removeFromComponent(compobject,subobject):
 class Component(ArchIFC.IfcProduct):
     """The Arch Component object.
 
-Acts as a base for all other Arch objects, such as Arch walls and Arch
-structures. It's properties and behaviours are common to all Arch objects.
+    Acts as a base for all other Arch objects, such as Arch walls and Arch
+    structures. It's properties and behaviours are common to all Arch objects.
 
-You can learn more about Arch Components, and the purpose of Arch Components
-here: https://wiki.freecadweb.org/Arch_Component
-""" 
+    You can learn more about Arch Components, and the purpose of Arch Components
+    here: https://wiki.freecadweb.org/Arch_Component
+    """ 
 
     def __init__(self, obj):
         """Initialises the Component.
 
-Registers the Proxy as this class object. Sets the object to have the
-properties of an Arch component.
+        Registers the Proxy as this class object. Sets the object to have the
+        properties of an Arch component.
 
-Parameters
-----------
-obj: <App::FeaturePython>
-    The object to turn into an Arch Component
-"""
+        Parameters
+        ----------
+        obj: <App::FeaturePython>
+            The object to turn into an Arch Component
+        """
 
         obj.Proxy = self
         Component.setProperties(self, obj)
@@ -160,8 +160,8 @@ obj: <App::FeaturePython>
     def setProperties(self, obj):
         """Gives the component it's component specific properties, such as material.
 
-You can learn more about properties here: https://wiki.freecadweb.org/property
-"""
+        You can learn more about properties here: https://wiki.freecadweb.org/property
+        """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
 
@@ -236,29 +236,29 @@ You can learn more about properties here: https://wiki.freecadweb.org/property
     def onBeforeChange(self,obj,prop):
         """Method called before the object has a property changed. 
 
-Specifically, this method is called before the value changes.
+        Specifically, this method is called before the value changes.
 
-If "Placement" has changed, it records the old placement, so that .onChanged()
-can compare between the old and new placement, and move it's children
-accordingly.
-"""
+        If "Placement" has changed, it records the old placement, so that .onChanged()
+        can compare between the old and new placement, and move it's children
+        accordingly.
+        """
         if prop == "Placement":
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
-If "Placement" has changed, the component moves any children components that
-have been set to move with their host, such that they stay in the same location
-to this component.
+        If "Placement" has changed, the component moves any children components that
+        have been set to move with their host, such that they stay in the same location
+        to this component.
 
-Also calls ArchIFC.IfcProduct.onChanged().
+        Also calls ArchIFC.IfcProduct.onChanged().
 
-Parameters
-----------
-prop: string
-    The name of the property that has changed.
-"""
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
@@ -293,15 +293,15 @@ prop: string
     def getMovableChildren(self,obj):
         """Finds the component's children set to move with their host.
 
-In this case, children refer to Additions, Subtractions, and objects linked to
-this object that refer to it as a host in the "Host" or "Hosts" properties.
-Objects are set to move with their host via the MoveWithHost property.
+        In this case, children refer to Additions, Subtractions, and objects linked to
+        this object that refer to it as a host in the "Host" or "Hosts" properties.
+        Objects are set to move with their host via the MoveWithHost property.
 
-Returns
--------
-list of <App::FeaturePython>
-    List of child objects set to move with their host.
-"""
+        Returns
+        -------
+        list of <App::FeaturePython>
+            List of child objects set to move with their host.
+        """
 
         ilist = obj.Additions + obj.Subtractions
         for o in obj.InList:
@@ -323,14 +323,14 @@ list of <App::FeaturePython>
     def getParentHeight(self,obj):
         """Gets a height value from hosts.
 
-Recursively crawls hosts until it finds a Floor or BuildingPart, then returns
-the value of it's Height property.
+        Recursively crawls hosts until it finds a Floor or BuildingPart, then returns
+        the value of it's Height property.
 
-Returns
--------
-<App::PropertyLength>
-    The Height value of the found Floor or BuildingPart.
-"""
+        Returns
+        -------
+        <App::PropertyLength>
+            The Height value of the found Floor or BuildingPart.
+        """
         
         for parent in obj.InList:
             if Draft.getType(parent) in ["Floor","BuildingPart"]:
@@ -348,17 +348,17 @@ Returns
     def clone(self,obj):
         """If the object is a clone, copies the shape.
 
-If the object is a clone according to the "CloneOf" property, it copies the object's
-shape and several properties relating to shape, such as "Length" and "Thickness".
+        If the object is a clone according to the "CloneOf" property, it copies the object's
+        shape and several properties relating to shape, such as "Length" and "Thickness".
 
-Will only perform the copy if this object and the object it's a clone of are of the same
-type, or if the object has the type "Component" or "BuildingPart".
+        Will only perform the copy if this object and the object it's a clone of are of the same
+        type, or if the object has the type "Component" or "BuildingPart".
 
-Returns
--------
-bool
-    True if the copy occurs, False if otherwise.
-"""
+        Returns
+        -------
+        bool
+            True if the copy occurs, False if otherwise.
+        """
 
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
@@ -375,14 +375,14 @@ bool
     def getSiblings(self,obj):
         """Finds objects that have the same Base object, and type.
 
-Looks to base object, and finds other objects that are based off this base
-object. If these objects are the same type, returns them.
+        Looks to base object, and finds other objects that are based off this base
+        object. If these objects are the same type, returns them.
 
-Returns
--------
-list of <App::FeaturePython>
-    List of objects that have the same Base and type as this component.
-"""
+        Returns
+        -------
+        list of <App::FeaturePython>
+            List of objects that have the same Base and type as this component.
+        """
 
         if not hasattr(obj,"Base"):
             return []
@@ -401,27 +401,27 @@ list of <App::FeaturePython>
     def getExtrusionData(self,obj):
         """Gets the object's extrusion data.
 
-This method recursively scrapes the Bases of the object, until it finds a Base
-that is derived from a <Part::Extrusion>. From there, it copies the extrusion
-to the (0,0,0) origin. 
+        This method recursively scrapes the Bases of the object, until it finds a Base
+        that is derived from a <Part::Extrusion>. From there, it copies the extrusion
+        to the (0,0,0) origin. 
 
-With this copy, it gets the <Part.Face> the shape was originally extruded from, the
-<Base.Vector> of the extrusion, and the <Base.Placement> needed to move the copy back to it's
-original location/orientation. It will return this data as a tuple.
+        With this copy, it gets the <Part.Face> the shape was originally extruded from, the
+        <Base.Vector> of the extrusion, and the <Base.Placement> needed to move the copy back to it's
+        original location/orientation. It will return this data as a tuple.
 
-If it encounters an object derived from a <Part::Multifuse>, it will return this data
-as a tuple containing lists. The lists will contain the same data as above, from each
-of the objects within the multifuse.
+        If it encouters an object derived from a <Part::Multifuse>, it will return this data
+        as a tuple containing lists. The lists will contain the same data as above, from each
+        of the objects within the multifuse.
 
-Returns
--------
-tuple
-    Tuple containing:
+        Returns
+        -------
+        tuple
+            Tuple containing:
 
-    1) The <Part.Face> the object was extruded from.
-    2) The <Base.Vector> of the extrusion.
-    3) The <Base.Placement> of the extrusion.
-"""
+            1) The <Part.Face> the object was extruded from.
+            2) The <Base.Vector> of the extrusion.
+            3) The <Base.Placement> of the extrusion.
+        """
 
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
@@ -506,22 +506,22 @@ tuple
     def rebase(self,shape,hint=None):
         """Copies a shape to the (0,0,0) origin.
 
-Creates a copy of a shape, such that it's center of mass is in the (0,0,0)
-origin.
+        Creates a copy of a shape, such that it's center of mass is in the (0,0,0)
+        origin.
 
-TODO Determine the way the shape is rotated by this method.
+        TODO Determine the way the shape is rotated by this method.
 
-Returns the copy of the shape, and the <Base.Placement> needed to move the copy
-back to it's original location/orientation.
+        Returns the copy of the shape, and the <Base.Placement> needed to move the copy
+        back to it's original location/orientation.
 
-Parameters
-----------
-shape: <Part.Shape>
-    The shape to copy.
-hint: <Base.Vector>, optional
-    If the angle between the normal vector of the shape, and the hint vector is
-    greater than 90 degrees, the normal will be reversed before being rotated.
-"""
+        Parameters
+        ----------
+        shape: <Part.Shape>
+            The shape to copy.
+        hint: <Base.Vector>, optional
+            If the angle between the normal vector of the shape, and the hint vector is
+            greater than 90 degrees, the normal will be reversed before being rotated.
+        """
 
         import DraftGeomUtils,math
 
@@ -541,10 +541,7 @@ hint: <Base.Vector>, optional
         if hint and hint.getAngle(n) > 1.58:
             n = n.negative()
 
-        r = FreeCAD.Rotation(
-                FreeCAD.Vector(0,0,1),
-                n
-                )
+        r = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), n)
         if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
 
@@ -552,11 +549,9 @@ hint: <Base.Vector>, optional
         for s in shape:
             s = s.copy()
             s.translate(v.negative())
-            s.rotate(
-                    FreeCAD.Vector(0,0,0),
-                    r.Axis,
-                    math.degrees(-r.Angle)
-                    )
+            s.rotate(FreeCAD.Vector(0, 0, 0),
+                     r.Axis,
+                     math.degrees(-r.Angle))
             shapes.append(s)
         p = FreeCAD.Placement()
         p.Base = v
@@ -569,19 +564,19 @@ hint: <Base.Vector>, optional
     def hideSubobjects(self,obj,prop):
         """Hides Additions and Subtractions of this Component when that list changes.
 
-Intended to be used in conjunction with the .onChanged() method, to access the
-property that has changed.  
+        Intended to be used in conjunction with the .onChanged() method, to access the
+        property that has changed.  
 
-When an object loses or gains an Addition, this method hides all Additions.
-When it gains or loses a Subtraction, this method hides all Subtractions.
+        When an object loses or gains an Addition, this method hides all Additions.
+        When it gains or loses a Subtraction, this method hides all Subtractions.
 
-Does not effect objects of type Window, or clones of Windows.
+        Does not effect objects of type Window, or clones of Windows.
 
-Parameters
-----------
-prop: string
-    The name of the property that has changed.
-"""
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
 
         if FreeCAD.GuiUp:
             if prop in ["Additions","Subtractions"]:
@@ -602,28 +597,28 @@ prop: string
     def processSubShapes(self,obj,base,placement=None):
         """Adds Additions and Subtractions to a base shape.
 
-If Additions exist, fuses then to the base shape. If no base is provided, it
-will just fuse other additions to the first addition.
+        If Additions exist, fuses then to the base shape. If no base is provided, it
+        will just fuse other additions to the first addition.
 
-If Subtractions exist, it will cut them from the base shape. Roofs and Windows
-are treated uniquely, as they define their own Shape to subtract from parent
-shapes using their .getSubVolume() methods.
+        If Subtractions exist, it will cut them from the base shape. Roofs and Windows
+        are treated uniquely, as they define their own Shape to subtract from parent
+        shapes using their .getSubVolume() methods.
 
-TODO determine what the purpose of the placement argument is.
+        TODO determine what the purpose of the placement argument is.
 
-Parameters
-----------
-base: <Part.Shape>, optional
-    The base shape to add Additions and Subtractions to.
-placement: <Base.Placement>, optional
-    Prior to adding or subtracting subshapes, the <Base.Placement> of the
-    subshapes are multiplied by the inverse of this parameter. 
+        Parameters
+        ----------
+        base: <Part.Shape>, optional
+            The base shape to add Additions and Subtractions to.
+        placement: <Base.Placement>, optional
+            Prior to adding or subtracting subshapes, the <Base.Placement> of the
+            subshapes are multiplied by the inverse of this parameter. 
 
-Returns
--------
-<Part.Shape>
-    The base shape, with the additions and subtractions performed.
-"""
+        Returns
+        -------
+        <Part.Shape>
+            The base shape, with the additions and subtractions performed.
+        """
 
         import Draft,Part
         #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
@@ -726,26 +721,25 @@ Returns
     def spread(self,obj,shape,placement=None):
         """Copies the object to it's Axis's points.
 
-If the object has the "Axis" property assigned, this method creates a copy of
-the shape for each point on the object assigned as the "Axis". Each of these
-copies are then translated, equal to the displacement of the points from the
-(0,0,0) origin.
+        If the object has the "Axis" property assigned, this method creates a copy of
+        the shape for each point on the object assigned as the "Axis". Each of these
+        copies are then translated, equal to the displacement of the points from the
+        (0,0,0) origin.
 
-If the object's "Axis" is unassigned, returns the original shape unchanged.
+        If the object's "Axis" is unassigned, returns the original shape unchanged.
 
-Parameters
-----------
-shape: <Part.Shape>
-    The shape to copy.
-placement:
-    Does nothing.
+        Parameters
+        ----------
+        shape: <Part.Shape>
+            The shape to copy.
+        placement:
+            Does nothing.
 
-Returns
--------
-<Part.Shape>
-    The shape, either spread to the axis points, or unchanged.
-
-"""
+        Returns
+        -------
+        <Part.Shape>
+            The shape, either spread to the axis points, or unchanged.
+        """
 
         points = None
         if hasattr(obj,"Axis"):
@@ -769,19 +763,19 @@ Returns
     def isIdentity(self,placement):
         """Checks if a placement is *almost* zero.
 
-Check if a <Base.Placement>'s displacement from (0,0,0) is almost zero, and if
-the angle of it's rotation about it's axis is almost zero.
+        Check if a <Base.Placement>'s displacement from (0,0,0) is almost zero, and if
+        the angle of it's rotation about it's axis is almost zero.
 
-Parameters
-----------
-placement: <Base.Placement>
-    The placement to examine.
+        Parameters
+        ----------
+        placement: <Base.Placement>
+            The placement to examine.
 
-Returns
--------
-bool
-    Returns true if angle and displacement are almost zero, false it otherwise.
-"""
+        Returns
+        -------
+        bool
+            Returns true if angle and displacement are almost zero, false it otherwise.
+        """
 
         if (placement.Base.Length < 0.000001) and (placement.Rotation.Angle < 0.000001):
             return True
@@ -790,26 +784,26 @@ bool
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
         """Checks the given shape, then assigns it to the object.
 
-Checks if the shape is valid, isn't null, and if it has volume. Removes
-redundant edges from the shape. Spreads shape to the "Axis" with method
-.spread().
+        Checks if the shape is valid, isn't null, and if it has volume. Removes
+        redundant edges from the shape. Spreads shape to the "Axis" with method
+        .spread().
 
-Sets the object's Shape and Placement to the values given, if successful.
+        Sets the object's Shape and Placement to the values given, if successful.
 
-Finally, runs .computeAreas() method, to calculate the horizontal and vertical
-area of the shape.
+        Finally, runs .computeAreas() method, to calculate the horizontal and vertical
+        area of the shape.
 
-Parameters
-----------
-shape: <Part.Shape>
-    The shape to check and apply to the object.
-placement: <Base.Placement>
-    The placement to apply to the object.
-allowinvalid: bool, optional
-    Whether to allow invalid shapes, or to throw an error.
-allownosolid: bool, optional
-    Whether to allow non-solid shapes, or to throw an error.
-"""
+        Parameters
+        ----------
+        shape: <Part.Shape>
+            The shape to check and apply to the object.
+        placement: <Base.Placement>
+            The placement to apply to the object.
+        allowinvalid: bool, optional
+            Whether to allow invalid shapes, or to throw an error.
+        allownosolid: bool, optional
+            Whether to allow non-solid shapes, or to throw an error.
+        """
 
         if shape:
             if not shape.isNull():
@@ -854,19 +848,19 @@ allownosolid: bool, optional
     def computeAreas(self,obj):
         """Computes the area properties of the object's shape.
 
-Computes the vertical area, horizontal area, and perimeter length of the
-object's shape. 
+        Computes the vertical area, horizontal area, and perimeter length of the
+        object's shape. 
 
-The vertical area is the surface area of the faces perpendicular to the ground.
+        The vertical area is the surface area of the faces perpendicular to the ground.
 
-The horizontal area is the area of the shape, when projected onto a hyperplane
-across the XY axises, IE: the area when viewed from a bird's eye view.
+        The horizontal area is the area of the shape, when projected onto a hyperplane
+        across the XY axises, IE: the area when viewed from a bird's eye view.
 
-The perimeter length is the length of the outside edges of this bird's eye view.
+        The perimeter length is the length of the outside edges of this bird's eye view.
 
-These values are assigned to the object's "VerticalArea", "HorizontalArea", and
-"PerimeterLength" properties.
-"""
+        These values are assigned to the object's "VerticalArea", "HorizontalArea", and
+        "PerimeterLength" properties.
+        """
 
 
         if (not obj.Shape) or obj.Shape.isNull() or (not obj.Shape.isValid()) or (not obj.Shape.Faces):
@@ -937,22 +931,22 @@ These values are assigned to the object's "VerticalArea", "HorizontalArea", and
     def isStandardCase(self,obj):
         """Determines if the component is a standard case of it's IFC type.
 
-Not all IFC types have a standard case.
+        Not all IFC types have a standard case.
 
-If an object is a standard case or not varies between the different types. Each
-type has it's own rules to define what is a standard case.
+        If an object is a standard case or not varies between the different types. Each
+        type has it's own rules to define what is a standard case.
 
-Rotated objects, or objects with Additions or Subtractions are not standard
-cases.
+        Rotated objects, or objects with Additions or Subtractions are not standard
+        cases.
 
-All objects whose IfcType is suffixed with the string " Sandard Case" is
-automatically a standard case.
+        All objects whose IfcType is suffixed with the string " Sandard Case" is
+        automatically a standard case.
 
-Returns
--------
-bool
-    Whether the object is a standard case or not.
-"""
+        Returns
+        -------
+        bool
+            Whether the object is a standard case or not.
+        """
 
         # Standard Case has been set manually by the user
         if obj.IfcType.endswith("Standard Case"):
@@ -1006,22 +1000,22 @@ bool
 class ViewProviderComponent:
     """A default View Provider for Component objects.
 
-Acts as a base for all other Arch view providers. It’s properties and
-behaviours are common to all Arch view providers.
-""" 
+    Acts as a base for all other Arch view providers. It’s properties and
+    behaviours are common to all Arch view providers.
+    """ 
 
     def __init__(self,vobj):
         """Initialises the Component view provider.
 
-Registers the Proxy as this class object. Registers the Object, as the view
-provider's object. Sets the view provider to have the
-properties of an Arch component.
+        Registers the Proxy as this class object. Registers the Object, as the view
+        provider's object. Sets the view provider to have the
+        properties of an Arch component.
 
-Parameters
-----------
-vobj: <Gui.ViewProviderDocumentObject>
-    The view provider to turn into an Component view provider.
-"""
+        Parameters
+        ----------
+        vobj: <Gui.ViewProviderDocumentObject>
+            The view provider to turn into an Component view provider.
+        """
 
         vobj.Proxy = self
         self.Object = vobj.Object
@@ -1030,8 +1024,8 @@ vobj: <Gui.ViewProviderDocumentObject>
     def setProperties(self,vobj):
         """Gives the component view provider it's component view provider specific properties.
 
-You can learn more about properties here: https://wiki.freecadweb.org/property
-"""
+        You can learn more about properties here: https://wiki.freecadweb.org/property
+        """
 
         if not "UseMaterialColor" in vobj.PropertiesList:
             vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
@@ -1040,17 +1034,17 @@ You can learn more about properties here: https://wiki.freecadweb.org/property
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
-If the object has a Material associated with it, matches the view object's
-ShapeColor and Transparency to match the Material.
+        If the object has a Material associated with it, matches the view object's
+        ShapeColor and Transparency to match the Material.
 
-If the object is now cloned, or is part of a compound, the view object inherits
-the DiffuseColor.
+        If the object is now cloned, or is part of a compound, the view object inherits
+        the DiffuseColor.
 
-Parameters
-----------
-prop: string
-    The name of the property that has changed.
-"""
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
@@ -1092,14 +1086,14 @@ prop: string
     def getIcon(self):
         """Returns the path to the appropriate icon.
 
-If a clone, returns the cloned component icon path. Otherwise returns the Arch Component
-icon.
+        If a clone, returns the cloned component icon path. Otherwise returns the Arch Component
+        icon.
 
-Returns
--------
-str
-    Path to the appropriate icon .svg file.
-"""
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """
 
         import Arch_rc
         if hasattr(self,"Object"):
@@ -1111,19 +1105,19 @@ str
     def onChanged(self,vobj,prop):
         """Method called when the view provider has a property changed.
 
-If DiffuseColor changes, change DiffuseColor to copy the host object's clone,
-if it exists.
+        If DiffuseColor changes, change DiffuseColor to copy the host object's clone,
+        if it exists.
 
-If ShapeColor changes, overwrite it with DiffuseColor.
+        If ShapeColor changes, overwrite it with DiffuseColor.
 
-If Visibility changes, propagate the change to all view objects that are also
-hosted by this view object's host.
+        If Visibility changes, propagate the change to all view objects that are also
+        hosted by this view object's host.
 
-Parameters
-----------
-prop: string
-    The name of the property that has changed.
-"""
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
 
         #print(vobj.Object.Name, " : changing ",prop)
         #if prop == "Visibility":
