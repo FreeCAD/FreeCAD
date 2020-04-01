@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
 <!-- https://tamirov.ru edited -->
-<title>Шов при сварке плавлением с проплавлением верхнего элемента соединения (роликовый шов). Seam Weld – tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<title>Шов при сварке плавлением с проплавлением верхнего элемента соединения (роликовый шов). Seam Weld - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
 <g>
  <path d="m5,36 h50" fill="none" stroke="#000" stroke-width="2" />
  <path d="m5,50 h50" fill="none" stroke="#000" stroke-width="2" />
