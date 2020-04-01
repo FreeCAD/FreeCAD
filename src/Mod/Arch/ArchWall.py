@@ -366,7 +366,7 @@ class _CommandWall:
         elif len(self.points) == 2:
             import Part
             l = Part.LineSegment(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),
-                                 FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1])
+                                 FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1]))
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
