@@ -259,7 +259,7 @@ https://wiki.freecadweb.org/Arch_Wall
 """
 
     def GetResources(self):
-        """Returns a dictonary with the visual aspects of the Arch Wall tool."""
+        """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
         return {'Pixmap'  : 'Arch_Wall',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
@@ -406,7 +406,7 @@ obj: <Part::PartFeature>, optional
                 self.Activated()
 
     def addDefault(self):
-        """Creates a wall using a line segment, with all paramters as the default.
+        """Creates a wall using a line segment, with all parameters as the default.
 
 Used solely by _CommandWall.getPoint() when the interactive mode has selected
 two points.
@@ -432,7 +432,7 @@ Part.LineSegment assigned as the variable "trace"
     def update(self,point):
         """Callback for the mouse moving during the interactive mode.
 
-Updates the active dialog box to show the co-ordinates of the location of the
+Updates the active dialog box to show the coordinates of the location of the
 cursor. It also shows the length the line would take, if the user selected that
 point.
 
@@ -617,7 +617,7 @@ https://wiki.freecadweb.org/Arch_MergeWalls
 """
 
     def GetResources(self):
-        """Returns a dictonary with the visual aspects of the Arch MergeWalls tool."""
+        """Returns a dictionary with the visual aspects of the Arch MergeWalls tool."""
 
         return {'Pixmap'  : 'Arch_MergeWalls',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
