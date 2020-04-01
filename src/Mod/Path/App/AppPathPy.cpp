@@ -172,17 +172,20 @@ private:
                     p1.Transform(loc.Transformation());
                     p2.Transform(loc.Transformation());
                     p3.Transform(loc.Transformation());
-                    PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
-                    PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
-                    PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
-                    PyObject *points;
-                    if(flip)
-                    {
-                        points = PyTuple_Pack(3, t2, t1, t3);
-                    } else {
-                        points = PyTuple_Pack(3, t1, t2, t3);
+                    // TODO: verify if tolerence should be hard coded
+                    if (!p1.IsEqual(p2, 0.01) && !p2.IsEqual(p3, 0.01) && !p3.IsEqual(p1, 0.01)) {
+                        PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
+                        PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
+                        PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
+                        PyObject *points;
+                        if(flip)
+                        {
+                            points = PyTuple_Pack(3, t2, t1, t3);
+                        } else {
+                            points = PyTuple_Pack(3, t1, t2, t3);
+                        }
+                        PyList_Append(list, points);
                     }
-                    PyList_Append(list, points);
                 }
             }
         }     
