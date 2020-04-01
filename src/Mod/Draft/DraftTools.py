@@ -158,20 +158,7 @@ from draftguitools.gui_beziers import BezierGroup
 from draftguitools.gui_rectangles import Rectangle
 from draftguitools.gui_arcs import Arc
 from draftguitools.gui_arcs import Draft_Arc_3Points
-
-
-class Circle(Arc):
-    """The Draft_Circle FreeCAD command definition"""
-
-    def __init__(self):
-        self.closedCircle=True
-        self.featureName = "Circle"
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Circle',
-                'Accel' : "C, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle. CTRL to snap, ALT to select tangent objects")}
+from draftguitools.gui_circles import Circle
 
 
 class Polygon(Creator):
@@ -3749,7 +3736,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 #---------------------------------------------------------------------------
 
 # drawing commands
-FreeCADGui.addCommand('Draft_Circle',Circle())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Polygon',Polygon())
