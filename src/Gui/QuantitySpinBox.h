@@ -77,6 +77,8 @@ public:
     /// Get the unit property
     QString unitText(void);
 
+    void setDisplayUnit(const QString &str, double scaler);
+
     /// Get the value of the singleStep property
     double singleStep() const;
     /// Set the value of the singleStep property 

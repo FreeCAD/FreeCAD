@@ -66,7 +66,8 @@ public:
       unitValue(0),
       maximum(DOUBLE_MAX),
       minimum(-DOUBLE_MAX),
-      singleStep(1.0)
+      singleStep(1.0),
+      userScale(1.0)
     {
     }
     ~QuantitySpinBoxPrivate()
@@ -233,6 +234,8 @@ end:
     double minimum;
     double singleStep;
     std::unique_ptr<Base::UnitsSchema> scheme;
+    QString userUnitStr;
+    double userScale;
 };
 }
 
@@ -617,13 +620,25 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
     Q_D(QuantitySpinBox);
 
     d->unit = unit;
-    d->quantity.setUnit(unit);
     updateText(d->quantity);
 }
 
 void QuantitySpinBox::setUnitText(const QString& str)
 {
+    Q_D(QuantitySpinBox);
+
     Base::Quantity quant = Base::Quantity::parse(str);
+    d->userUnitStr.clear();
+    setUnit(quant.getUnit());
+}
+
+void QuantitySpinBox::setDisplayUnit(const QString &str, double scaler)
+{
+    Q_D(QuantitySpinBox);
+
+    Base::Quantity quant = Base::Quantity::parse(str);
+    d->userUnitStr = str;
+    d->userScale = scaler==0.0?1.0:scaler;
     setUnit(quant.getUnit());
 }
 
@@ -711,7 +726,14 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
-    if (d->scheme) {
+
+    if (!d->userUnitStr.isEmpty()) {
+        factor = d->userScale;
+        unitString = d->userUnitStr;
+        return QString::fromLatin1("%1 %2").arg(
+                locale().toString(val.getValue() / factor, 'f', decimals()), unitString);
+    }
+    else if (d->scheme) {
         return val.getUserString(d->scheme.get(), factor, unitString);
     }
     else {
