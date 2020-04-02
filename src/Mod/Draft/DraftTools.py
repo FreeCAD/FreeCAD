@@ -93,7 +93,6 @@ from draftguitools.gui_dimension_ops import Draft_FlipDimension
 from draftguitools.gui_lineslope import Draft_Slope
 import draftguitools.gui_arrays
 # import DraftFillet
-import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
 
 # ---------------------------------------------------------------------------
@@ -163,142 +162,12 @@ from draftguitools.gui_polygons import Polygon
 from draftguitools.gui_ellipses import Ellipse
 from draftguitools.gui_texts import Text
 from draftguitools.gui_dimensions import Dimension
+from draftguitools.gui_shapestrings import ShapeString
 
 
-class ShapeString(Creator):
-    """The Draft_ShapeString FreeCAD command definition."""
-
-    def GetResources(self):
-        """Set icon, menu and tooltip."""
-        _menu = "Shape from text"
-        _tooltip = ("Creates a shape from a text string by choosing "
-                    "a specific font and a placement.\n"
-                    "The closed shapes can be used for extrusions "
-                    "and boolean operations.")
-        d = {'Pixmap': 'Draft_ShapeString',
-             'Accel': "S, S",
-             'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _menu),
-             'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _tooltip)}
-        return d
-
-    def Activated(self):
-        name = translate("draft","ShapeString")
-        Creator.Activated(self,name)
-        self.creator = Creator
-        if self.ui:
-            self.ui.sourceCmd = self
-            self.taskmode = Draft.getParam("UiMode",1)
-            if self.taskmode:
-                try:
-                    del self.task
-                except AttributeError:
-                    pass
-                self.task = task_shapestring.ShapeStringTaskPanel()
-                self.task.sourceCmd = self
-                ToDo.delay(FreeCADGui.Control.showDialog, self.task)
-            else:
-                self.dialog = None
-                self.text = ''
-                self.ui.sourceCmd = self
-                self.ui.pointUi(name)
-                self.active = True
-                self.call = self.view.addEventCallback("SoEvent",self.action)
-                self.ssBase = None
-                self.ui.xValue.setFocus()
-                self.ui.xValue.selectAll()
-                FreeCAD.Console.PrintMessage(translate("draft", "Pick ShapeString location point")+"\n")
-                FreeCADGui.draftToolBar.show()
-
-    def createObject(self):
-        """creates object in the current doc"""
-        #print("debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString)))
-
-        dquote = '"'
-        if sys.version_info.major < 3: # Python3: no more unicode
-            String  = 'u' + dquote + self.SString.encode('unicode_escape') + dquote
-        else:
-            String  = dquote + self.SString + dquote
-        Size = str(self.SSSize)                              # numbers are ascii so this should always work
-        Tracking = str(self.SSTrack)                         # numbers are ascii so this should always work
-        FFile = dquote + self.FFile + dquote
-#        print("debug: D_T ShapeString.createObject type(String): "  str(type(String)))
-#        print("debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile)))
-
-        try:
-            qr,sup,points,fil = self.getStrings()
-            FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Create ShapeString"),
-                        ['ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
-                         'plm=FreeCAD.Placement()',
-                         'plm.Base='+DraftVecUtils.toString(self.ssBase),
-                         'plm.Rotation.Q='+qr,
-                         'ss.Placement=plm',
-                         'ss.Support='+sup,
-                         'Draft.autogroup(ss)',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        except Exception as e:
-            FreeCAD.Console.PrintError("Draft_ShapeString: error delaying commit\n")
-        self.finish()
-
-    def action(self,arg):
-        """scene event handler"""
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            if self.active:
-                self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if not self.ssBase:
-                    self.ssBase = self.point
-                    self.active = False
-                    FreeCADGui.Snapper.off()
-                    self.ui.SSUi()
-
-    def numericInput(self,numx,numy,numz):
-        '''this function gets called by the toolbar when valid
-        x, y, and z have been entered there'''
-        self.ssBase = Vector(numx,numy,numz)
-        self.ui.SSUi()                   #move on to next step in parameter entry
-
-    def numericSSize(self,ssize):
-        '''this function is called by the toolbar when valid size parameter
-        has been entered. '''
-        self.SSSize = ssize
-        self.ui.STrackUi()
-
-    def numericSTrack(self,strack):
-        '''this function is called by the toolbar when valid size parameter
-        has been entered. ?'''
-        self.SSTrack = strack
-        self.ui.SFileUi()
-
-    def validSString(self,sstring):
-        '''this function is called by the toolbar when a ?valid? string parameter
-        has been entered.  '''
-        self.SString = sstring
-        self.ui.SSizeUi()
-
-    def validFFile(self,FFile):
-        '''this function is called by the toolbar when a ?valid? font file parameter
-        has been entered. '''
-        self.FFile = FFile
-        # last step in ShapeString parm capture, create object
-        self.createObject()
-
-    def finish(self, finishbool=False):
-        """terminates the operation"""
-        Creator.finish(self)
-        if self.ui:
-#            del self.dialog                       # what does this do??
-            if self.ui.continueMode:
-                self.Activated()
-
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Modifier functions
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 from draftguitools.gui_base_original import Modifier
 
 
@@ -3001,7 +2870,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 
 # drawing commands
 FreeCADGui.addCommand('Draft_Point',Point())
-FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
 FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
 FreeCADGui.addCommand('Draft_Label',Draft_Label())
 

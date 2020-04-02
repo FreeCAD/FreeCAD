@@ -94,6 +94,7 @@ SET(Creator_tools
     draftguitools/gui_ellipses.py
     draftguitools/gui_texts.py
     draftguitools/gui_dimensions.py
+    draftguitools/gui_shapestrings.py
 )
 
 SET(Draft_GUI_tools
