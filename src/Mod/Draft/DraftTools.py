@@ -164,6 +164,7 @@ from draftguitools.gui_texts import Text
 from draftguitools.gui_dimensions import Dimension
 from draftguitools.gui_shapestrings import ShapeString
 from draftguitools.gui_points import Point
+from draftguitools.gui_facebinders import Draft_Facebinder
 
 # ---------------------------------------------------------------------------
 # Modifier functions
@@ -2471,40 +2472,6 @@ class Draft_Clone(Modifier):
             ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
-class Draft_Facebinder(Creator):
-    """The Draft Facebinder command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Facebinder',
-                'Accel' : "F,F",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected face(s)")}
-
-    def Activated(self):
-        Creator.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select face(s) on existing object(s)")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            FreeCAD.ActiveDocument.openTransaction("Facebinder")
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
-            FreeCADGui.doCommand("f = Draft.makeFacebinder(s)")
-            FreeCADGui.doCommand('Draft.autogroup(f)')
-            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        self.finish()
-
-
 class Mirror(Modifier):
     """The Draft_Mirror FreeCAD command definition"""
 
@@ -2789,7 +2756,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 #---------------------------------------------------------------------------
 
 # drawing commands
-FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
 FreeCADGui.addCommand('Draft_Label',Draft_Label())
 
 # modification commands
