@@ -243,6 +243,7 @@ SoBrepFaceSet::SoBrepFaceSet()
     SO_NODE_CONSTRUCTOR(SoBrepFaceSet);
     SO_NODE_ADD_FIELD(partIndex, (-1));
     SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    SO_NODE_ADD_FIELD(highlightColor, (0,0,0));
     highlightIndices.setNum(0);
 
     selContext = std::make_shared<SelContext>();
