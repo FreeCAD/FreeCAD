@@ -5020,16 +5020,17 @@ Py::Object ListExpression::_getPyValue(int *) const {
     return list;
 }
 
-void ListExpression::setItem(std::size_t index, ExpressionPtr &&expr) {
+void ListExpression::setItem(std::size_t index, ExpressionPtr &&expr, bool flag) {
     if(index >= items.size())
         __EXPR_THROW(IndexError,"Index out of bound",this);
     items[index] = std::move(expr);
+    flags[index] = flag;
 }
 
-void ListExpression::append(ExpressionPtr &&expr) {
+void ListExpression::append(ExpressionPtr &&expr, bool flag) {
     items.push_back(std::move(expr));
+    flags.push_back(flag);
 }
-
 
 // TupleExpression class
 //
@@ -5233,6 +5234,15 @@ void IDictExpression::addItem(const char *key, ExpressionPtr &&value) {
     assert(key && value);
     keys.emplace_back(key);
     values.push_back(std::move(value));
+}
+
+std::map<std::string,ExpressionPtr> IDictExpression::getItems() const
+{
+    std::map<std::string, ExpressionPtr> res;
+    int i = 0;
+    for(auto &value : values)
+        res[keys[i++]] = value->copy();
+    return res;
 }
 
 void IDictExpression::_toString(std::ostream &ss, bool persistent,int) const {

@@ -1466,10 +1466,10 @@ void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdent
     cells.renameObjectIdentifiers(paths);
 }
 
-void Sheet::editCell(App::CellAddress address, const char *data) {
+void Sheet::editCell(App::CellAddress address, const QVariant &data) {
     auto cell = getCell(address);
     if(!cell || cell->getEditMode()==Cell::EditNormal) {
-        setCell(address,data);
+        setCell(address,data.toString().toUtf8().constData());
         return;
     }
 

@@ -718,8 +718,10 @@ public:
         return items.size();
     }
 
-    void setItem(std::size_t index, ExpressionPtr &&expr);
-    void append(ExpressionPtr &&expr);
+    void setItem(std::size_t index, ExpressionPtr &&expr, bool expand=false);
+    void append(ExpressionPtr &&expr, bool expand=false);
+
+    const ExpressionList &getItems() const {return items;}
 
 protected:
     ListExpression(const App::DocumentObject *_owner):Expression(_owner) {}
@@ -809,6 +811,8 @@ public:
     void addItem(std::string &&key, ExpressionPtr &&value);
     void addItem(const char *key, ExpressionPtr &&value);
 
+    std::map<std::string, ExpressionPtr> getItems() const;
+    
 protected:
     IDictExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 

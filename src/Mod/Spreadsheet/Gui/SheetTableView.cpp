@@ -130,19 +130,52 @@ SheetTableView::SheetTableView(QWidget *parent)
     actionEditNormal = new QAction(tr("Normal"),this);
     actionEditNormal->setCheckable(true);
     actionEditNormal->setData(QVariant((int)Cell::EditNormal));
+    actionEditNormal->setToolTip(tr("Clear edit mode"));
     editGroup->addAction(actionEditNormal);
     actionEditButton = new QAction(tr("Button"),this);
     actionEditButton->setCheckable(true);
     actionEditButton->setData(QVariant((int)Cell::EditButton));
+    actionEditButton->setToolTip(tr("Make a button with the current cell. Expects the cell to define a callable.\n"
+                                    "The button label is defined by the doc string of the callable. If empty,\n"
+                                    "then use the alias. If no alias, then use the cell address."));
     editGroup->addAction(actionEditButton);
     actionEditCombo = new QAction(tr("ComboBox"),this);
     actionEditCombo->setCheckable(true);
     actionEditCombo->setData(QVariant((int)Cell::EditCombo));
+    actionEditCombo->setToolTip(tr("Edit the cell using a ComboBox. This mode Expects the cell to contain a \n"
+                                   "list(dict, string), where the keys of dict defines the item list, and the\n"
+                                   "string defines the current item.\n\n"
+                                   "The cell also accepts list(list, int), where the inner list defines the item\n"
+                                   "list, and the int is the index of the current item.\n\n"
+                                   "In both caes, there can be a third optional item that defines a callable with\n"
+                                   "arguments (spreadsheet, cell_address, current_value, old_value). It will be\n"
+                                   "invoked after the user makes a new selection in the ComboBox."));
     editGroup->addAction(actionEditCombo);
     actionEditLabel = new QAction(tr("Label"),this);
     actionEditLabel->setCheckable(true);
     actionEditLabel->setData(QVariant((int)Cell::EditLabel));
+    actionEditLabel->setToolTip(tr("This is a pseudo edit mode with the purpose of hiding expression details\n"
+                                   "in the cell. The cell is expected to contain a list. And only the first\n"
+                                   "item will be shown, with the rest of items hidden"));
     editGroup->addAction(actionEditLabel);
+    actionEditQuantity = new QAction(tr("Quantity"),this);
+    actionEditQuantity->setCheckable(true);
+    actionEditQuantity->setData(QVariant((int)Cell::EditQuantity));
+    actionEditQuantity->setToolTip(tr("Edit the cell using a unit aware SpinBox. This mode expects the cell\n"
+                                      "to contain either a simple number, a 'quantity' (i.e. number with unit)\n"
+                                      "or a list(quantity, dict). The dict contains optional keys ('step','max',\n"
+                                      "'min','unit','scale'). All keys are expects to have 'double' type of value,\n"
+                                      "excepts 'unit' which must be a string.\n\n"
+                                      "If no 'unit' setting is found, the 'display unit' setting of the current cell\n"
+                                      "will be used"));
+    editGroup->addAction(actionEditQuantity);
+    actionEditCheckBox = new QAction(tr("CheckBox"),this);
+    actionEditCheckBox->setCheckable(true);
+    actionEditCheckBox->setData(QVariant((int)Cell::EditCheckBox));
+    actionEditCheckBox->setToolTip(tr("Edit the cell using a CheckBox. The cell is expects to contain a any value\n"
+                                      "that can be converted to boolean. If you want a check box with a title, use\n"
+                                      "a list(boolean, title)."));
+    editGroup->addAction(actionEditCheckBox);
 
     QMenu *subMenu = new QMenu(tr("Edit mode"),contextMenu);
     contextMenu->addMenu(subMenu);
@@ -221,7 +254,7 @@ void SheetTableView::editMode(QAction *action) {
             auto cell = sheet->getCell(CellAddress(index.row(), index.column()));
             if(cell) {
                 cell->setEditMode((Cell::EditMode)mode);
-                if(mode == Cell::EditButton)
+                if(mode == Cell::EditButton || mode == Cell::EditCheckBox)
                     openPersistentEditor(index);
                 else
                     closePersistentEditor(index);
@@ -817,6 +850,12 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
             case Cell::EditLabel:
                 action = actionEditLabel;
                 break;
+            case Cell::EditQuantity:
+                action = actionEditQuantity;
+                break;
+            case Cell::EditCheckBox:
+                action = actionEditCheckBox;
+                break;
             default:
                 action = actionEditNormal;
                 break;
@@ -864,7 +903,7 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
         auto address = *range;
         auto cell = sheet->getCell(address);
         closePersistentEditor(model()->index(address.row(),address.col()));
-        if(cell && cell->getEditMode()==Cell::EditButton)
+        if(cell && (cell->getEditMode()==Cell::EditButton || cell->getEditMode()==Cell::EditCheckBox))
             openPersistentEditor(model()->index(address.row(),address.col()));
     }while(range.next());
 

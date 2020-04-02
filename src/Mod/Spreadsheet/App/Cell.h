@@ -25,6 +25,7 @@
 
 #include <string>
 #include <set>
+#include <QVariant>
 #include <App/Material.h>
 #include <App/Range.h>
 #include <App/Expression.h>
@@ -126,11 +127,14 @@ public:
         EditButton,
         EditCombo,
         EditLabel,
+        EditQuantity,
+        EditCheckBox,
     };
     void setEditMode(EditMode mode);
     EditMode getEditMode() const;
-    void setEditData(const char *data);
-    std::vector<std::string> getEditData(bool silent=false) const;
+    void setEditData(const QVariant &data);
+    QVariant getEditData(bool silent=false) const;
+    QVariant getDisplayData(bool silent=false) const;
 
     std::string getFormattedQuantity(void);
 

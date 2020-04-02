@@ -24,21 +24,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QItemDelegate>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QComboBox>
+# include <QItemDelegate>
+# include <QLineEdit>
+# include <QPushButton>
+# include <QComboBox>
 # include <QPainter>
+# include <QCheckBox>
+# include <QHBoxLayout>
 #endif
 
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include "../App/Cell.h"
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/ExpressionCompleter.h>
+#include <Gui/QuantitySpinBox.h>
 #include "DlgBindSheet.h"
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
@@ -74,6 +81,22 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
             connect(combo, SIGNAL(activated(const QString &)), this, SLOT(commitAndCloseEditor()));
             return combo;
         }
+        case Cell::EditQuantity: {
+            auto spinbox = new Gui::QuantitySpinBox(parent);
+            connect(spinbox, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
+            return spinbox;
+        }
+        case Cell::EditCheckBox: {
+            QWidget *widget = new QWidget(parent);
+            QCheckBox *checkbox = new QCheckBox();
+            checkbox->setObjectName(QLatin1String("checkbox"));
+            QHBoxLayout *layout = new QHBoxLayout(widget);
+            layout->addWidget(checkbox);
+            layout->setAlignment(Qt::AlignCenter);
+            layout->setContentsMargins(0,0,0,0);
+            connect(checkbox, SIGNAL(clicked()), this, SLOT(commitAndCloseEditor()));
+            return widget;
+        } 
         default:
             break;
         }
@@ -104,7 +127,17 @@ void SpreadsheetDelegate::commitAndCloseEditor()
     QComboBox *combo = qobject_cast<QComboBox*>(sender());
     if(button) {
         Q_EMIT commitData(combo);
-        // Q_EMIT closeEditor(combo);
+        Q_EMIT closeEditor(combo);
+        return;
+    }
+    Gui::QuantitySpinBox *spinbox = qobject_cast<Gui::QuantitySpinBox*>(sender());
+    if(spinbox) {
+        Q_EMIT commitData(spinbox);
+        return;
+    }
+    QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
+    if(checkbox) {
+        Q_EMIT commitData(checkbox->parentWidget());
         return;
     }
 }
@@ -124,15 +157,80 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
         return;
     }
     QComboBox *combo = qobject_cast<QComboBox*>(editor);
-    if(combo && (QMetaType::Type)data.type()==QMetaType::QStringList) {
-        QStringList list = data.toStringList();
-        QString txt = list.front();
-        list.pop_front();
+    if(combo) {
         combo->clear();
-        combo->addItems(list);
-        int index = combo->findText(txt);
-        if(index>=0)
-            combo->setCurrentIndex(index);
+        QList<QVariant> list = data.toList();
+        if(list.size()>1) {
+            QString txt = list.front().toString();
+            int index = list.front().toInt();
+            QStringList items;
+            for(int i=1; i<list.size(); ++i)
+                items.append(list[i].toString());
+            combo->addItems(items);
+            if(index <= 0)
+                index = combo->findText(txt);
+            else
+                --index;
+            if(index>=0)
+                combo->setCurrentIndex(index);
+        }
+        return;
+    }
+    Gui::QuantitySpinBox *spinbox = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    if(spinbox) {
+        try {
+            Base::Quantity q;
+            auto map = data.toHash();
+            auto iter = map.find(QString::fromLatin1("value"));
+            if(iter == map.end())
+                q = qvariant_cast<Base::Quantity>(data);
+            else
+                q = qvariant_cast<Base::Quantity>(iter.value());
+            spinbox->setValue(q);
+
+            iter = map.find(QString::fromLatin1("step"));
+            if(iter != map.end())
+                spinbox->setSingleStep(iter.value().toDouble());
+
+            iter = map.find(QString::fromLatin1("max"));
+            if(iter != map.end())
+                spinbox->setMaximum(iter.value().toDouble());
+
+            iter = map.find(QString::fromLatin1("min"));
+            if(iter != map.end())
+                spinbox->setMinimum(iter.value().toDouble());
+
+            iter = map.find(QString::fromLatin1("unit"));
+            if(iter != map.end()) {
+                double scale = 1;
+                auto iter2 = map.find(QString::fromLatin1("scale"));
+                if(iter2 != map.end()) {
+                    scale = iter2.value().toDouble();
+                    if(scale == 0.0)
+                        scale = 1;
+                }
+                spinbox->setDisplayUnit(iter.value().toString(), scale);
+            }
+
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to setup quantity edit: " << e.what());
+        }
+        return;
+    }
+
+    auto checkbox = editor->findChild<QCheckBox*>(QLatin1String("checkbox"));
+    if(checkbox) {
+        auto list = data.toList();
+        if(list.isEmpty())
+            checkbox->setChecked(data.toBool());
+        else {
+            if(list.size()>0)
+                checkbox->setChecked(list[0].toBool());
+            if(list.size()>1)
+                checkbox->setText(list[1].toString());
+        }
+        return;
     }
 }
 
@@ -149,12 +247,27 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
         // For button widget, make sure we are triggered by user clicking not
         // something else, like lost of focus.
         if(commiting)
-            model->setData(index, QString());
+            model->setData(index, QVariant());
         return;
     }
     QComboBox *combo = qobject_cast<QComboBox*>(editor);
     if(combo) {
-        model->setData(index, combo->currentText());
+        QList<QVariant> data;
+        data.append(combo->currentText());
+        data.append(combo->currentIndex()+1);
+        model->setData(index, data);
+        return;
+    }
+    Gui::QuantitySpinBox *spinbox = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    if(spinbox) {
+        model->setData(index, QVariant::fromValue(spinbox->value()));
+        return;
+    }
+    QCheckBox *checkbox = qobject_cast<QCheckBox*>(editor);
+    if(!checkbox)
+        checkbox = editor->findChild<QCheckBox*>(QLatin1String("checkbox"));
+    if(checkbox) {
+        model->setData(index, checkbox->isChecked());
         return;
     }
 }

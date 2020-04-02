@@ -1027,6 +1027,12 @@ PyObject* SheetPy::getEditMode(PyObject *args)
         case Cell::EditCombo:
             mode = "combo";
             break;
+        case Cell::EditQuantity:
+            mode = "quantity";
+            break;
+        case Cell::EditCheckBox:
+            mode = "checkbox";
+            break;
         default:
             PyErr_SetString(PyExc_ValueError, "unknown edit mode");
             return 0;
@@ -1067,6 +1073,10 @@ PyObject* SheetPy::setEditMode(PyObject *args)
             m = Cell::EditButton;
         else if(strcmp(mode,"combo")==0)
             m = Cell::EditCombo;
+        else if(strcmp(mode,"quantity")==0)
+            m = Cell::EditQuantity;
+        else if(strcmp(mode,"checkbox")==0)
+            m = Cell::EditCheckBox;
         else {
             PyErr_SetString(PyExc_ValueError, "unknown edit mode");
             return 0;

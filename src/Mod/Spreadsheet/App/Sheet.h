@@ -28,6 +28,8 @@
 #define signals signals
 #endif
 
+#include <QVariant>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/PropertyFile.h>
@@ -170,7 +172,7 @@ public:
 
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
-    void editCell(App::CellAddress address, const char *data);
+    void editCell(App::CellAddress address, const QVariant &data);
 
     bool hasCell(const std::vector<App::Range> &ranges) const;
 

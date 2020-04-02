@@ -119,6 +119,8 @@ protected:
     QAction *actionEditButton;
     QAction *actionEditCombo;
     QAction *actionEditLabel;
+    QAction *actionEditQuantity;
+    QAction *actionEditCheckBox;
 
     QAction *actionShowRows;
     QAction *actionShowColumns;

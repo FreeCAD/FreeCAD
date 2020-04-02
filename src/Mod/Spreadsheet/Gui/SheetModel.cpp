@@ -218,19 +218,9 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     }
 
     // Get edit value by querying the sheet
-    if (role == Qt::EditRole) {
-        auto contents = cell->getEditData(true);
-        if(contents.empty())
-            return QVariant();
-        else if(contents.size()==1)
-            return QVariant(QString::fromUtf8(contents[0].c_str()));
-        else {
-            QStringList list;
-            for(auto &content : contents)
-                list << QString::fromUtf8(content.c_str());
-            return QVariant(list);
-        }
-    }
+    if (role == Qt::EditRole)
+        return cell->getEditData(true);
+
     if(cell == emptyCell)
         return QVariant();
 
@@ -477,15 +467,14 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole: {
-            if(cell->getEditMode()) {
-                auto res = cell->getEditData(true);
-                if(res.size())
-                    return QVariant(QString::fromUtf8(res.front().c_str()));
-            }
+            if(cell->getEditMode())
+                return cell->getDisplayData(true);
             Base::PyGILStateLocker lock;
             std::string value;
             try {
-                value = pyProp->getValue().as_string();
+                PropertyString tmp;
+                tmp.setPyObject(pyProp->getValue().ptr());
+                value = tmp.getValue();
             } catch (Py::Exception &) {
                 Base::PyException e;
                 value = "#ERR: ";
@@ -545,20 +534,8 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
         CellAddress address(index.row(), index.column());
 
         try {
-            QString str = value.toString();
             Gui::Command::openCommand("Edit cell");
-            // Because of possible complication of recursively escaped
-            // characters, let's take a shortcut and bypass the command
-            // interface for now.
-#if 0
-            std::string strAddress = address.toString();
-            str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
-            str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
-                    str.toUtf8().constData() << "')");
-#else
-            sheet->editCell(address, str.toUtf8().constData());
-#endif
+            sheet->editCell(address, value);
             Gui::Command::commitCommand();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
