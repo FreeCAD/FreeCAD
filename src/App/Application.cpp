@@ -435,6 +435,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
     _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
     _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalSkipRecompute.connect(boost::bind(&App::Application::slotSkipRecompute, this, _1, _2));
     _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, _1));
     _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
     _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
@@ -1403,6 +1404,11 @@ void Application::slotRecomputedObject(const DocumentObject& obj)
 void Application::slotRecomputed(const Document& doc)
 {
     this->signalRecomputed(doc);
+}
+
+void Application::slotSkipRecompute(const Document& doc, const std::vector<DocumentObject*> &objs)
+{
+    this->signalSkipRecompute(doc, objs);
 }
 
 void Application::slotBeforeRecompute(const Document& doc)

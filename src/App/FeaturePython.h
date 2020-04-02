@@ -53,6 +53,7 @@ public:
 
     bool execute();
     bool mustExecute() const;
+    bool skipRecompute();
     void onBeforeChange(const Property* prop);
     bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
@@ -97,6 +98,7 @@ private:
 #define FC_PY_FEATURE_PYTHON \
     FC_PY_ELEMENT(execute)\
     FC_PY_ELEMENT(mustExecute)\
+    FC_PY_ELEMENT(skipRecompute)\
     FC_PY_ELEMENT(onBeforeChange)\
     FC_PY_ELEMENT(onBeforeChangeLabel)\
     FC_PY_ELEMENT(onChanged)\
@@ -206,6 +208,10 @@ public:
         }
         return DocumentObject::StdReturn;
     }
+    virtual bool skipRecompute() override {
+        return imp->skipRecompute() && FeatureT::skipRecompute();
+    }
+    /// recalculate the Feature
     virtual const char* getViewProviderNameOverride(void) const override {
         viewProviderName = imp->getViewProviderName();
         if(viewProviderName.size())

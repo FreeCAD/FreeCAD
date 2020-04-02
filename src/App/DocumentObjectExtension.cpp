@@ -55,6 +55,10 @@ App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute(void) {
     return App::DocumentObject::StdReturn;
 }
 
+bool DocumentObjectExtension::extensionSkipRecompute(void) {
+    return true;
+}
+
 void DocumentObjectExtension::onExtendedSettingDocument() {
 
 }

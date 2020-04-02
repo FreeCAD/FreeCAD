@@ -117,6 +117,34 @@ bool FeaturePythonImp::mustExecute() const
     return false;
 }
 
+bool FeaturePythonImp::skipRecompute()
+{
+    _FC_PY_CALL_CHECK(skipRecompute,return(true));
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Py::Object res = Base::pyCall(py_skipRecompute.ptr());
+            return res.isTrue();
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Py::Object res = Base::pyCall(py_skipRecompute.ptr(),args.ptr());
+            return res.isTrue();
+        }
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return true;
+        }
+        Base::PyException::ThrowException(); // extract the Python error text
+    }
+
+    return true;
+}
+
+
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
     if(py_onBeforeChange.isNone())

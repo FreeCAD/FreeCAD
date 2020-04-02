@@ -51,7 +51,8 @@ public:
     //override if execution is necessary
     virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
-    
+
+    virtual bool extensionSkipRecompute();
     
     /// get called after setting the document
     virtual void onExtendedSettingDocument();

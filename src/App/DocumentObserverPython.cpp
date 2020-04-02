@@ -97,6 +97,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(BeforeChangeObject, BeforeChangeObject)
     FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
     FC_PY_ELEMENT_ARG1(RecomputedObject, ObjectRecomputed)
+    FC_PY_ELEMENT_ARG2(SkipRecompute, SkipRecompute)
     FC_PY_ELEMENT_ARG1(BeforeRecomputeDocument, BeforeRecomputeDocument)
     FC_PY_ELEMENT_ARG1(RecomputedDocument, Recomputed)
     FC_PY_ELEMENT_ARG2(OpenTransaction, OpenTransaction)
@@ -373,6 +374,23 @@ void DocumentObserverPython::slotRecomputedObject(const App::DocumentObject& Obj
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
         Base::pyCall(pyRecomputedObject.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotSkipRecompute(const App::Document &Doc, const std::vector<App::DocumentObject*> &objs)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::List list(objs.size());
+        int i=0;
+        for(auto obj : objs)
+            list.setItem(i++,Py::asObject(obj->getPyObject()));
+        Py::TupleN args(Py::asObject(const_cast<App::Document&>(Doc).getPyObject()), list);
+        Base::pyCall(pySkipRecompute.ptr(),args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text

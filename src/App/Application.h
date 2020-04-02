@@ -252,6 +252,8 @@ public:
     boost::signals2::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
     boost::signals2::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
+    /// signal of skipped objects when recomputing document
+    boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*> &)> signalSkipRecompute;
     // signal on opened transaction
     boost::signals2::signal<void (const App::Document&, std::string)> signalOpenTransaction;
     // signal a committed transaction
@@ -439,6 +441,7 @@ protected:
     void slotRedoDocument(const App::Document&);
     void slotRecomputedObject(const App::DocumentObject&);
     void slotRecomputed(const App::Document&);
+    void slotSkipRecompute(const App::Document&, const std::vector<App::DocumentObject*> &);
     void slotBeforeRecompute(const App::Document&);
     void slotOpenTransaction(const App::Document&, std::string);
     void slotCommitTransaction(const App::Document&);
