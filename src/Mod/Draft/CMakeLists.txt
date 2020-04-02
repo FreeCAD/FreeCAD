@@ -93,6 +93,7 @@ SET(Creator_tools
     draftguitools/gui_polygons.py
     draftguitools/gui_ellipses.py
     draftguitools/gui_texts.py
+    draftguitools/gui_dimensions.py
 )
 
 SET(Draft_GUI_tools
