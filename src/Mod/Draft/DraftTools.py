@@ -163,7 +163,7 @@ from draftguitools.gui_ellipses import Ellipse
 from draftguitools.gui_texts import Text
 from draftguitools.gui_dimensions import Dimension
 from draftguitools.gui_shapestrings import ShapeString
-
+from draftguitools.gui_points import Point
 
 # ---------------------------------------------------------------------------
 # Modifier functions
@@ -2422,86 +2422,6 @@ class PointArray(Modifier):
             FreeCAD.ActiveDocument.recompute()
         self.finish()
 
-class Point(Creator):
-    """this class will create a vertex after the user clicks a point on the screen"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Point',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        Creator.Activated(self)
-        self.view = Draft.get3DView()
-        self.stack = []
-        rot = self.view.getCameraNode().getField("orientation").getValue()
-        upv = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
-        plane.setup(self.view.getViewDirection().negative(), Vector(0,0,0), upv)
-        self.point = None
-        if self.ui:
-            self.ui.pointUi()
-            self.ui.continueCmd.show()
-        # adding 2 callback functions
-        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.click)
-        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.move)
-
-    def move(self,event_cb):
-        event = event_cb.getEvent()
-        mousepos = event.getPosition().getValue()
-        ctrl = event.wasCtrlDown()
-        self.point = FreeCADGui.Snapper.snap(mousepos,active=ctrl)
-        if self.ui:
-            self.ui.displayPoint(self.point)
-
-    def numericInput(self,numx,numy,numz):
-        """called when a numeric value is entered on the toolbar"""
-        self.point = FreeCAD.Vector(numx,numy,numz)
-        self.click()
-
-    def click(self,event_cb=None):
-        if event_cb:
-            event = event_cb.getEvent()
-            if event.getState() != coin.SoMouseButtonEvent.DOWN:
-                return
-        if self.point:
-            self.stack.append(self.point)
-            if len(self.stack) == 1:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
-                commitlist = []
-                if Draft.getParam("UsePartPrimitives",False):
-                    # using
-                    commitlist.append((translate("draft","Create Point"),
-                                        ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
-                                         'point.X = '+str(self.stack[0][0]),
-                                         'point.Y = '+str(self.stack[0][1]),
-                                         'point.Z = '+str(self.stack[0][2]),
-                                         'Draft.autogroup(point)',
-                                         'FreeCAD.ActiveDocument.recompute()']))
-                else:
-                    # building command string
-                    FreeCADGui.addModule("Draft")
-                    commitlist.append((translate("draft","Create Point"),
-                                        ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
-                                         'Draft.autogroup(point)',
-                                         'FreeCAD.ActiveDocument.recompute()']))
-                ToDo.delayCommit(commitlist)
-                FreeCADGui.Snapper.off()
-            self.finish()
-
-    def finish(self,cont=False):
-        """terminates the operation and restarts if needed"""
-        Creator.finish(self)
-        if self.ui:
-            if self.ui.continueMode:
-                self.Activated()
-
 
 class Draft_Clone(Modifier):
     """The Draft Clone command definition"""
@@ -2869,7 +2789,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 #---------------------------------------------------------------------------
 
 # drawing commands
-FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
 FreeCADGui.addCommand('Draft_Label',Draft_Label())
 
