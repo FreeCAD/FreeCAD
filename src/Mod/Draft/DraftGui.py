@@ -1619,7 +1619,7 @@ class DraftToolBar:
         """this function sends the entered text to the active draft command
         if enter has been pressed twice. Otherwise it blanks the line.
         """
-        self.sourceCmd.text = self.textValue.toPlainText().split()
+        self.sourceCmd.text = self.textValue.toPlainText().splitlines()
         self.sourceCmd.createObject()
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
