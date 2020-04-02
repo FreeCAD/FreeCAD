@@ -161,86 +161,7 @@ from draftguitools.gui_arcs import Draft_Arc_3Points
 from draftguitools.gui_circles import Circle
 from draftguitools.gui_polygons import Polygon
 from draftguitools.gui_ellipses import Ellipse
-
-
-class Text(Creator):
-    """This class creates an annotation feature."""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Text',
-                'Accel' : "T, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Text"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Text", "Creates an annotation. CTRL to snap")}
-
-    def Activated(self):
-        name = translate("draft","Text")
-        Creator.Activated(self,name)
-        if self.ui:
-            self.dialog = None
-            self.text = ''
-            self.ui.sourceCmd = self
-            self.ui.pointUi(name)
-            self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.active = True
-            self.ui.xValue.setFocus()
-            self.ui.xValue.selectAll()
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick location point")+"\n")
-            FreeCADGui.draftToolBar.show()
-
-    def finish(self,closed=False,cont=False):
-        """terminates the operation"""
-        Creator.finish(self)
-        if self.ui:
-            del self.dialog
-            if self.ui.continueMode:
-                self.Activated()
-
-    def createObject(self):
-        """creates an object in the current doc"""
-        tx = '['
-        for l in self.text:
-            if len(tx) > 1:
-                tx += ','
-            if sys.version_info.major < 3:
-                l = unicode(l)
-                tx += '"'+str(l.encode("utf8"))+'"'
-            else:
-                tx += '"'+l+'"' #Python3 no more unicode
-        tx += ']'
-        FreeCADGui.addModule("Draft")
-        self.commit(translate("draft","Create Text"),
-                    ['text = Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')',
-                    'Draft.autogroup(text)',
-                    'FreeCAD.ActiveDocument.recompute()'])
-        FreeCAD.ActiveDocument.recompute()
-
-        self.finish(cont=True)
-
-    def action(self,arg):
-        """scene event handler"""
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            if self.active:
-                self.point,ctrlPoint,info = getPoint(self,arg)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if self.point:
-                    self.active = False
-                    FreeCADGui.Snapper.off()
-                    self.node.append(self.point)
-                    self.ui.textUi()
-                    self.ui.textValue.setFocus()
-
-    def numericInput(self,numx,numy,numz):
-        '''this function gets called by the toolbar when valid
-        x, y, and z have been entered there'''
-        self.point = Vector(numx,numy,numz)
-        self.node.append(self.point)
-        self.ui.textUi()
-        self.ui.textValue.setFocus()
+from draftguitools.gui_texts import Text
 
 
 class Dimension(Creator):
@@ -3432,7 +3353,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 #---------------------------------------------------------------------------
 
 # drawing commands
-FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Dimension',Dimension())
 FreeCADGui.addCommand('Draft_Point',Point())
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
