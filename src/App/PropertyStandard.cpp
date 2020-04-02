@@ -1598,9 +1598,11 @@ void PropertyString::setPyObject(PyObject *value)
 #endif
     }
     else {
-        std::string error = std::string("type must be str or unicode, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        try {
+            string = Py::Object(value).as_string();
+        } catch (Py::Exception &) {
+            Base::PyException::ThrowException();
+        }
     }
 
     // assign the string
