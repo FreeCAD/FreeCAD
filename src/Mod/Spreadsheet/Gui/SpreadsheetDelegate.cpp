@@ -166,18 +166,14 @@ QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
     return QSize();
 }
 
-void SpreadsheetDelegate::paint(QPainter *painter,
-        const QStyleOptionViewItem &option, const QModelIndex &index ) const
+static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &option,
+        unsigned flags, QColor color, Qt::PenStyle style)
 {
-    QStyledItemDelegate::paint(painter, option, index);
-    if(!sheet)
-        return;
-    unsigned flags = sheet->getCellBindingBorder(App::CellAddress(index.row(),index.column()));
     if(!flags)
         return;
-    QPen pen(Qt::blue);
+    QPen pen(color);
     pen.setWidth(1);
-    pen.setStyle(Qt::SolidLine);
+    pen.setStyle(style);
     painter->setPen(pen);
     if(flags == Sheet::BorderAll) {
         painter->drawRect(option.rect);
@@ -191,6 +187,18 @@ void SpreadsheetDelegate::paint(QPainter *painter,
         painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
     if(flags & Sheet::BorderBottom) 
         painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+}
+
+void SpreadsheetDelegate::paint(QPainter *painter,
+        const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+    if(!sheet)
+        return;
+    App::CellAddress addr(index.row(), index.column());
+    drawBorder(painter, option, sheet->getCellBindingBorder(addr), Qt::blue, Qt::SolidLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,true), Qt::green, Qt::DashLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,false), Qt::red, Qt::DashLine);
 }
 
 #include "moc_SpreadsheetDelegate.cpp"

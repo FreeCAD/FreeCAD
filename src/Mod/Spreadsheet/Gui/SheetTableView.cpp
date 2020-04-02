@@ -654,8 +654,8 @@ void SheetTableView::deleteSelection()
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
                                     i->rangeString().c_str());
         }
-        Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::commitCommand();
     }
 }
 
@@ -663,18 +663,20 @@ static const QLatin1String _SheetMime("application/x-fc-spreadsheet");
 
 void SheetTableView::copySelection()
 {
-    QModelIndexList selection = selectionModel()->selectedIndexes();
+    _copySelection(selectedRanges(), true);
+}
+
+void SheetTableView::_copySelection(const std::vector<App::Range> &ranges, bool copy)
+{
     int minRow = INT_MAX;
     int maxRow = 0;
     int minCol = INT_MAX;
     int maxCol = 0;
-    for (auto it : selection) {
-        int row = it.row();
-        int col = it.column();
-        minRow = std::min(minRow, row);
-        maxRow = std::max(maxRow, row);
-        minCol = std::min(minCol, col);
-        maxCol = std::max(maxCol, col);
+    for (auto &range : ranges) {
+        minRow = std::min(minRow, range.from().row());
+        maxRow = std::max(maxRow, range.to().row());
+        minCol = std::min(minCol, range.from().col());
+        maxCol = std::max(maxCol, range.to().col());
     }
 
     QString selectedText;
@@ -691,33 +693,51 @@ void SheetTableView::copySelection()
     }
 
     Base::StringWriter writer;
-    sheet->getCells()->copyCells(writer,selectedRanges());
+    sheet->getCells()->copyCells(writer,ranges);
     QMimeData *mime = new QMimeData();
     mime->setText(selectedText);
     mime->setData(_SheetMime,QByteArray(writer.getString().c_str()));
     QApplication::clipboard()->setMimeData(mime);
+
+    sheet->setCopyOrCutRanges(std::move(ranges), copy);
 }
 
 void SheetTableView::cutSelection()
 {
-    copySelection();
-    deleteSelection();
+    _copySelection(selectedRanges(), false);
 }
 
 void SheetTableView::pasteClipboard()
 {
-    const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-    if(!mimeData || !mimeData->hasText())
-        return;
-
-    auto ranges = selectedRanges();
-    if(ranges.empty())
-        return;
-
-    Range range = ranges.back();
-
     App::AutoTransaction committer("Paste cell");
     try {
+        bool copy = true;
+        auto ranges = sheet->getCopyOrCutRange(copy);
+        if(ranges.empty()) {
+            copy = false;
+            ranges = sheet->getCopyOrCutRange(copy);
+        }
+
+        if(ranges.size())
+            _copySelection(ranges, copy);
+
+        const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+        if(!mimeData || !mimeData->hasText())
+            return;
+
+        if(!copy) {
+            for(auto range : ranges) {
+                do {
+                    sheet->clear(*range);
+                } while (range.next());
+            }
+        }
+
+        ranges = selectedRanges();
+        if(ranges.empty())
+            return;
+
+        Range range = ranges.back();
         if (!mimeData->hasFormat(_SheetMime)) {
             CellAddress current = range.from();
             QStringList cells;

@@ -804,9 +804,11 @@ PropertySheet::BindingType Sheet::getCellBinding(Range &range,
     return PropertySheet::BindingNone;
 }
 
-unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+static inline unsigned _getBorder(
+        const std::vector<App::Range> &ranges, const App::CellAddress &address)
+{
     unsigned flags = 0;
-    for(auto &range : boundRanges) {
+    for(auto &range : ranges) {
         auto from = range.from();
         auto to = range.to();
         if(address.row() < from.row()
@@ -815,17 +817,21 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
                 || address.col() > to.col())
             continue;
         if(address.row() == from.row())
-            flags |= BorderTop;
+            flags |= Sheet::BorderTop;
         if(address.row() == to.row())
-            flags |= BorderBottom;
+            flags |= Sheet::BorderBottom;
         if(address.col() == from.col())
-            flags |= BorderLeft;
+            flags |= Sheet::BorderLeft;
         if(address.col() == to.col())
-            flags |= BorderRight;
-        if(flags == BorderAll)
+            flags |= Sheet::BorderRight;
+        if(flags == Sheet::BorderAll)
             break;
     }
     return flags;
+}
+
+unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+    return _getBorder(boundRanges, address);
 }
 
 /**
@@ -835,13 +841,17 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
+    std::set<Range> rangeMap(boundRanges.begin(), boundRanges.end());
     boundRanges.clear();
     for(auto &v : ExpressionEngine.getExpressions()) {
         CellAddress from,to;
         if(!cells.isBindingPath(v.first,&from,&to))
             continue;
         boundRanges.emplace_back(from,to);
+        rangeMap.insert(boundRanges.back());
     }
+    for(auto &range : boundRanges)
+        rangeUpdated(range);
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();
@@ -1516,7 +1526,40 @@ void Sheet::onChanged(const App::Property *prop) {
         if(prop == &PythonMode) 
             cells.setDirty();
     }
+
+    if(prop == &cells) {
+        decltype(copyCutRanges) tmp;
+        tmp.swap(copyCutRanges);
+        for(auto &range : tmp)
+            rangeUpdated(range);
+    }
+    
     App::DocumentObject::onChanged(prop);
+}
+
+void Sheet::setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy)
+{
+    std::set<Range> rangeSet(copyCutRanges.begin(), copyCutRanges.end());
+    copyCutRanges = ranges;
+    rangeSet.insert(copyCutRanges.begin(), copyCutRanges.end());
+    for(auto range : rangeSet)
+        rangeUpdated(range);
+    hasCopyRange = copy;
+}
+
+const std::vector<Range> &Sheet::getCopyOrCutRange(bool copy) const
+{
+    static const std::vector<Range> nullRange;
+    if(hasCopyRange != copy)
+        return nullRange;
+    return copyCutRanges;
+}
+
+unsigned Sheet::getCopyOrCutBorder(CellAddress address, bool copy) const
+{
+    if(hasCopyRange != copy)
+        return 0;
+    return _getBorder(copyCutRanges, address);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
