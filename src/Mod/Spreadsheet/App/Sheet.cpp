@@ -89,6 +89,9 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
+    ExpressionEngine.expressionChanged.connect([this](const App::ObjectIdentifier &) {
+        this->updateBindings();
+    });
 }
 
 /**
@@ -841,9 +844,11 @@ PropertySheet::BindingType Sheet::getCellBinding(Range &range,
     return PropertySheet::BindingNone;
 }
 
-unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+static inline unsigned _getBorder(
+        const std::vector<App::Range> &ranges, const App::CellAddress &address)
+{
     unsigned flags = 0;
-    for(auto &range : boundRanges) {
+    for(auto &range : ranges) {
         auto from = range.from();
         auto to = range.to();
         if(address.row() < from.row()
@@ -852,17 +857,44 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
                 || address.col() > to.col())
             continue;
         if(address.row() == from.row())
-            flags |= BorderTop;
+            flags |= Sheet::BorderTop;
         if(address.row() == to.row())
-            flags |= BorderBottom;
+            flags |= Sheet::BorderBottom;
         if(address.col() == from.col())
-            flags |= BorderLeft;
+            flags |= Sheet::BorderLeft;
         if(address.col() == to.col())
-            flags |= BorderRight;
-        if(flags == BorderAll)
+            flags |= Sheet::BorderRight;
+        if(flags == Sheet::BorderAll)
             break;
     }
     return flags;
+}
+
+unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+    return _getBorder(boundRanges, address);
+}
+
+void Sheet::updateBindings()
+{
+    std::set<Range> oldRangeSet(boundRanges.begin(), boundRanges.end());
+    std::set<Range> newRangeSet;
+    std::set<Range> rangeSet;
+    boundRanges.clear();
+    for(auto &v : ExpressionEngine.getExpressions()) {
+        CellAddress from,to;
+        if(!cells.isBindingPath(v.first,&from,&to))
+            continue;
+        App::Range range(from,to);
+        if(!oldRangeSet.erase(range))
+            newRangeSet.insert(range);
+        rangeSet.insert(range);
+    }
+    boundRanges.reserve(rangeSet.size());
+    boundRanges.insert(boundRanges.end(),rangeSet.begin(),rangeSet.end());
+    for(auto &range : oldRangeSet)
+        rangeUpdated(range);
+    for(auto &range : newRangeSet)
+        rangeUpdated(range);
 }
 
 /**
@@ -872,13 +904,7 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
-    boundRanges.clear();
-    for(auto &v : ExpressionEngine.getExpressions()) {
-        CellAddress from,to;
-        if(!cells.isBindingPath(v.first,&from,&to))
-            continue;
-        boundRanges.emplace_back(from,to);
-    }
+    updateBindings();
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();
@@ -1533,6 +1559,42 @@ std::string Sheet::getColumn(int offset) const {
     txt[1] = (char)('A' + (col % 26));
     txt[2] = 0;
     return txt;
+}
+
+void Sheet::onChanged(const App::Property *prop) {
+    if(prop == &cells) {
+        decltype(copyCutRanges) tmp;
+        tmp.swap(copyCutRanges);
+        for(auto &range : tmp)
+            rangeUpdated(range);
+    }
+    
+    App::DocumentObject::onChanged(prop);
+}
+
+void Sheet::setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy)
+{
+    std::set<Range> rangeSet(copyCutRanges.begin(), copyCutRanges.end());
+    copyCutRanges = ranges;
+    rangeSet.insert(copyCutRanges.begin(), copyCutRanges.end());
+    for(auto range : rangeSet)
+        rangeUpdated(range);
+    hasCopyRange = copy;
+}
+
+const std::vector<Range> &Sheet::getCopyOrCutRange(bool copy) const
+{
+    static const std::vector<Range> nullRange;
+    if(hasCopyRange != copy)
+        return nullRange;
+    return copyCutRanges;
+}
+
+unsigned Sheet::getCopyOrCutBorder(CellAddress address, bool copy) const
+{
+    if(hasCopyRange != copy)
+        return 0;
+    return _getBorder(copyCutRanges, address);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

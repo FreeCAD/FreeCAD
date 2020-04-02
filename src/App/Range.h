@@ -64,6 +64,8 @@ struct AppExport CellAddress {
 
     inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
 
+    inline bool operator>(const CellAddress & other) const { return asInt() > other.asInt(); }
+
     inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
 
     inline bool operator!=(const CellAddress & other) const { return asInt() != other.asInt(); }
@@ -147,6 +149,14 @@ public:
     }
 
     CellAddress operator*() const { return CellAddress(row_curr, col_curr); }
+
+    inline bool operator<(const Range & other) const { 
+        if(from() < other.from())
+            return true;
+        if(from() > other.from())
+            return false;
+        return to() < other.to();
+    }
 
     /** Number of elements in range */
     inline int size() const { return (row_end - row_begin + 1) * (col_end - col_begin + 1); }

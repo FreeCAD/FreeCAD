@@ -217,7 +217,13 @@ public:
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
+    void setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy=true);
+    const std::vector<App::Range> &getCopyOrCutRange(bool copy=true) const;
+    unsigned getCopyOrCutBorder(App::CellAddress address, bool copy=true) const;
+
 protected:
+
+    virtual void onChanged(const App::Property *prop);
 
     void updateColumnsOrRows(bool horizontal, int section, int count) ;
 
@@ -244,6 +250,8 @@ protected:
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
     virtual void onSettingDocument();
+
+    void updateBindings();
 
     /* Properties for used cells */
     App::DynamicProperty &props;
@@ -273,6 +281,9 @@ protected:
     int currentCol = -1;
 
     std::vector<App::Range> boundRanges;
+
+    std::vector<App::Range> copyCutRanges;
+    bool hasCopyRange = false;
 
     friend class SheetObserver;
 
