@@ -461,6 +461,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             _enum.setValue(val, true);
             hasSetValue();
         }
+        return;
     }
 #if PY_MAJOR_VERSION < 3
     else if (PyString_Check(value)) {
@@ -475,6 +476,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
                     << "' is not part of the enumeration in "
                     << getFullName());
         }
+        return;
     }
 #endif
     else if (PyUnicode_Check(value)) {
@@ -495,58 +497,64 @@ void PropertyEnumeration::setPyObject(PyObject *value)
                     << "' is not part of the enumeration in "
                     << getFullName());
         }
+        return;
     }
     else if (PySequence_Check(value)) {
-        std::vector<std::string> values;
 
-        int idx = -1;
-        Py::Sequence seq(value);
+        try {
+            std::vector<std::string> values;
 
-        if(seq.size() == 2) {
-            Py::Object v(seq[0].ptr());
-            if(!v.isString() && v.isSequence()) {
-                seq = v;
-                idx = Py::Int(seq[1].ptr());
+            int idx = -1;
+            Py::Sequence seq(value);
+
+            if(seq.size() == 2) {
+                Py::Object v(seq[0].ptr());
+                if(!v.isString() && v.isSequence()) {
+                    idx = Py::Int(seq[1].ptr());
+                    seq = v;
+                }
             }
-        }
 
-        values.resize(seq.size());
+            values.resize(seq.size());
 
-        for (std::size_t i = 0; i < seq.size(); ++i) {
-            PyObject *item = seq[i].ptr();
+            for (std::size_t i = 0; i < seq.size(); ++i) {
+                PyObject *item = seq[i].ptr();
 
-            if (PyUnicode_Check(item)) {
+                if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
-                values[i] = PyUnicode_AsUTF8(item);
+                    values[i] = PyUnicode_AsUTF8(item);
 #else
-                PyObject* unicode = PyUnicode_AsUTF8String(item);
-                values[i] = PyString_AsString(unicode);
-                Py_DECREF(unicode);
+                    PyObject* unicode = PyUnicode_AsUTF8String(item);
+                    values[i] = PyString_AsString(unicode);
+                    Py_DECREF(unicode);
 #endif
-            }
+                }
 #if PY_MAJOR_VERSION < 3
-            else if (PyString_Check(item)) {
-                values[i] = PyString_AsString(item);
-            }
+                else if (PyString_Check(item)) {
+                    values[i] = PyString_AsString(item);
+                }
 #endif
-            else {
-                FC_THROWM(Base::TypeError, "PropertyEnumeration "
-                        << getFullName() << " expects type in list to be string, not "
-                        << item->ob_type->tp_name);
+                else {
+                    FC_THROWM(Base::TypeError, "PropertyEnumeration "
+                            << getFullName() << " expects type in list to be string, not "
+                            << item->ob_type->tp_name);
+                }
             }
-        }
 
-        aboutToSetValue();
-        _enum.setEnums(values);
-        if (idx>=0)
-            _enum.setValue(idx,true);
-        hasSetValue();
+            aboutToSetValue();
+            _enum.setEnums(values);
+            if (idx>=0)
+                _enum.setValue(idx,true);
+            hasSetValue();
+            return;
+        } catch (Py::Exception &) {
+            Base::PyException e;
+            e.ReportException();
+        }
     }
-    else {
-        FC_THROWM(Base::TypeError, "PropertyEnumeration " << getFullName()
-                << "expects type to be int, string, or sequence of string, not "
-                << value->ob_type->tp_name);
-    }
+
+    FC_THROWM(Base::TypeError, "PropertyEnumeration " << getFullName()
+            << " expects type to be int, string, or list(string), or list(list, int)");
 }
 
 Property * PropertyEnumeration::Copy(void) const
@@ -560,7 +568,7 @@ void PropertyEnumeration::Paste(const Property &from)
     setValue(prop._enum);
 }
 
-void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const App::any &value)
+void PropertyEnumeration::setPathValue(const ObjectIdentifier &, const App::any &value)
 {
     if (value.type() == typeid(int))
         setValue(App::any_cast<int>(value));
@@ -578,33 +586,19 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const App::
         setValue(App::any_cast<char*>(value));
     else if (value.type() == typeid(const char*))
         setValue(App::any_cast<const char*>(value));
-    else if (path.getSubPathStr() == ".Enum") {
+    else {
         Base::PyGILStateLocker lock;
-        Py::Object pyValue = pyObjectFromAny(value);
-        if(!pyValue.isString() && pyValue.isSequence()) {
-            Py::Sequence seq(pyValue);
-            if(seq.size() && Py::Object(seq[0].ptr()).isString()) {
-                setPyObject(pyValue.ptr());
-                return;
-            }
-        }
-        throw bad_cast();
-    } else {
-        Base::PyGILStateLocker lock;
-        Py::Object pyValue = pyObjectFromAny(value);
-        setPyObject(pyValue.ptr());
+        setPyObject(pyObjectFromAny(value).ptr());
     }
 }
 
 App::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
-    if (p == ".Enum") {
+    if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        Py::Tuple res(_enum.maxValue()+1);
-        const char **enums = _enum.getEnums();
-        for(int i=0;i<=_enum.maxValue();++i)
-            res.setItem(i,Py::String(enums[i]));
+        Py::Object res;
+        getPyPathValue(path, res);
         return pyObjectToAny(res,false);
     }
     else if (p == ".String") {
@@ -617,15 +611,24 @@ App::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
 bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const
 {
     std::string p = path.getSubPathStr();
-    if (p == ".Enum") {
+    if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
         Py::Tuple res(_enum.maxValue()+1);
         const char **enums = _enum.getEnums();
-        for(int i=0;i<=_enum.maxValue();++i)
-            res.setItem(i,Py::String(enums[i]));
-        r = res;
-    }
-    else if (p == ".String") {
+        PropertyString tmp;
+        for(int i=0;i<=_enum.maxValue();++i) {
+            tmp.setValue(enums[i]);
+            res.setItem(i,Py::asObject(tmp.getPyObject()));
+        }
+        if(p == ".Enum")
+            r = res;
+        else {
+            Py::Tuple tuple(2);
+            tuple.setItem(0, res);
+            tuple.setItem(1, Py::Int(getValue()));
+            r = tuple;
+        }
+    } else if (p == ".String") {
         auto v = getValueAsString();
         r = Py::String(v?v:"");
     } else 
