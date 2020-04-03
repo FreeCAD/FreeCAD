@@ -475,33 +475,38 @@ void PropertyItem::setPropertyValue(const QString& value)
     // invalidate the current property array.
     std::ostringstream ss;
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) 
-    {
+        it != propertyItems.end(); ++it) {
         auto prop = *it;
         App::PropertyContainer* parent = prop->getContainer();
         if (!parent || parent->isReadOnly(prop) || prop->testStatus(App::Property::ReadOnly))
             continue;
+
         if (parent->isDerivedFrom(App::Document::getClassTypeId())) {
             App::Document* doc = static_cast<App::Document*>(parent);
             ss << "FreeCAD.getDocument('" << doc->getName() << "').";
-        } else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        }
+        else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
             App::Document* doc = obj->getDocument();
             ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('" 
                << obj->getNameInDocument() << "').";
-        } else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        }
+        else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<ViewProviderDocumentObject*>(parent)->getObject();
             App::Document* doc = obj->getDocument();
             ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('" 
                << obj->getNameInDocument() << "').";
-        } else
+        }
+        else {
             continue;
+        }
+
         ss << parent->getPropertyPrefix() << prop->getName()
            << " = " << value.toLatin1().constData() << '\n';
     }
 
     std::string cmd = ss.str();
-    if(cmd.empty())
+    if (cmd.empty())
         return;
 
     try {
