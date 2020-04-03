@@ -97,6 +97,7 @@ SET(Creator_tools
     draftguitools/gui_shapestrings.py
     draftguitools/gui_points.py
     draftguitools/gui_facebinders.py
+    draftguitools/gui_labels.py
 )
 
 SET(Draft_GUI_tools
