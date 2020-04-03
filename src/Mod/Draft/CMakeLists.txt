@@ -102,6 +102,7 @@ SET(Creator_tools
 
 SET(Modifier_tools
     draftguitools/gui_subelements.py
+    draftguitools/gui_move.py
 )
 
 SET(Draft_GUI_tools
