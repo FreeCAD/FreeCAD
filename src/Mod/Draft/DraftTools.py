@@ -153,127 +153,8 @@ from draftguitools.gui_base_original import Creator
 from draftguitools.gui_lines import Line
 from draftguitools.gui_lines import Wire
 from draftguitools.gui_splines import BSpline
+from draftguitools.gui_beziers import BezCurve
 
-
-class BezCurve(Line):
-    """a FreeCAD command for creating a Bezier Curve"""
-
-    def __init__(self):
-        Line.__init__(self,wiremode=True)
-        self.degree = None
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_BezCurve',
-                'Accel' : "B, Z",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "BezCurve"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
-
-    def Activated(self):
-        Line.Activated(self,name=translate("draft","BezCurve"))
-        if self.doc:
-            self.bezcurvetrack = trackers.bezcurveTracker()
-
-    def action(self,arg):
-        """scene event handler"""
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-            self.bezcurvetrack.update(self.node + [self.point],degree=self.degree)                 #existing points + this pointer position
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):       #left click
-                if (arg["Position"] == self.pos):                               #double click?
-                    self.finish(False,cont=True)
-                else:
-                    if (not self.node) and (not self.support):                  #first point
-                        getSupport(arg)
-                        self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
-                    if self.point:
-                        self.ui.redraw()
-                        self.pos = arg["Position"]
-                        self.node.append(self.point)                            #add point to "clicked list"
-                        # sb add a control point, if mod(len(cpoints),2) == 0) then create 2 handle points?
-                        self.drawUpdate(self.point)                             #???
-                        if (not self.isWire and len(self.node) == 2):
-                            self.finish(False,cont=True)
-                        if (len(self.node) > 2):                                #does this make sense for a BCurve?
-                            # DNC: allows to close the curve
-                            # by placing ends close to each other
-                            # with tol = Draft tolerance
-                            # old code has been to insensitive
-                            if ((self.point-self.node[0]).Length < Draft.tolerance()):
-                                self.undolast()
-                                self.finish(True,cont=True)
-                                FreeCAD.Console.PrintMessage(translate("draft", "Bezier curve has been closed")+"\n")
-
-    def undolast(self):
-        """undoes last line segment"""
-        if (len(self.node) > 1):
-            self.node.pop()
-            self.bezcurvetrack.update(self.node,degree=self.degree)
-            self.obj.Shape = self.updateShape(self.node)
-            FreeCAD.Console.PrintMessage(translate("draft", "Last point has been removed")+"\n")
-
-    def drawUpdate(self,point):
-        if (len(self.node) == 1):
-            self.bezcurvetrack.on()
-            if self.planetrack:
-                self.planetrack.set(self.node[0])
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick next point")+"\n")
-        else:
-            self.obj.Shape = self.updateShape(self.node)
-            FreeCAD.Console.PrintMessage(translate("draft", "Pick next point, or Finish (shift-F) or close (o)")+"\n")
-
-    def updateShape(self, pts):
-        '''creates shape for display during creation process.'''
-        import Part
-        edges = []
-        if len(pts) >= 2: #allow lower degree segment
-            poles=pts[1:]
-        else:
-            poles=[]
-        if self.degree:
-            segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
-        else:
-            segpoleslst = [pts]
-        startpoint=pts[0]
-        for segpoles in segpoleslst:
-            c = Part.BezierCurve() #last segment may have lower degree
-            c.increase(len(segpoles))
-            c.setPoles([startpoint]+segpoles)
-            edges.append(Part.Edge(c))
-            startpoint = segpoles[-1]
-        w = Part.Wire(edges)
-        return(w)
-
-    def finish(self,closed=False,cont=False):
-        """terminates the operation and closes the poly if asked"""
-        if self.ui:
-            if hasattr(self,"bezcurvetrack"):
-                self.bezcurvetrack.finalize()
-        if not Draft.getParam("UiMode",1):
-            FreeCADGui.Control.closeDialog()
-        if self.obj:
-            # remove temporary object, if any
-            old = self.obj.Name
-            ToDo.delay(self.doc.removeObject, old)
-        if (len(self.node) > 1):
-            try:
-                # building command string
-                rot,sup,pts,fil = self.getStrings()
-                FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create BezCurve"),
-                            ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',degree='+str(self.degree)+')',
-                             'Draft.autogroup(bez)'])
-            except:
-                print("Draft: error delaying commit")
-        Creator.finish(self)
-        if self.ui:
-            if self.ui.continueMode:
-                self.Activated()
 
 class CubicBezCurve(Line):
     """a FreeCAD command for creating a 3rd degree Bezier Curve"""
@@ -4505,7 +4386,7 @@ class CommandBezierGroup:
                }
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-FreeCADGui.addCommand('Draft_BezCurve',BezCurve())
+
 FreeCADGui.addCommand('Draft_CubicBezCurve',CubicBezCurve())
 FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
 FreeCADGui.addCommand('Draft_Point',Point())
