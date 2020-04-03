@@ -100,6 +100,10 @@ SET(Creator_tools
     draftguitools/gui_labels.py
 )
 
+SET(Modifier_tools
+    draftguitools/gui_subelements.py
+)
+
 SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_annotationstyleeditor.py
@@ -124,6 +128,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
     ${Creator_tools}
+    ${Modifier_tools}
     draftguitools/README.md
 )
 
