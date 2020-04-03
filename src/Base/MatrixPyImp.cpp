@@ -178,10 +178,10 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
     long b = Py::Int(other);
-    if(!b)
+    if (!b)
         return new MatrixPy(Matrix4D());
 
-    if(b < 0) {
+    if (b < 0) {
         if (fabs(a.determinant()) > DBL_EPSILON)
             a.inverseGauss();
         else {
@@ -192,7 +192,7 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
     }
 
     auto res = a;
-    for(--b;b;--b)
+    for (--b;b;--b)
         res *= a;
     return new MatrixPy(res);
 }
@@ -303,7 +303,7 @@ PyObject* MatrixPy::scale(PyObject * args)
 PyObject* MatrixPy::hasScale(PyObject * args)
 {
     double tol=0;
-    if(!PyArg_ParseTuple(args, "|d", &tol))
+    if (!PyArg_ParseTuple(args, "|d", &tol))
         return 0;
     return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
 }
