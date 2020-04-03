@@ -78,11 +78,16 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
         } 
         case Cell::EditCombo: {
             auto combo = new QComboBox(parent);
-            connect(combo, SIGNAL(activated(const QString &)), this, SLOT(commitAndCloseEditor()));
+            if(cell->isPersistentEditMode())
+                combo->setObjectName(QLatin1String("persistent"));
+            combo->setContextMenuPolicy(Qt::NoContextMenu);
+            connect(combo, SIGNAL(currentIndexChanged(int)), this, SLOT(commitAndCloseEditor()));
             return combo;
         }
         case Cell::EditQuantity: {
             auto spinbox = new Gui::QuantitySpinBox(parent);
+            if(cell->isPersistentEditMode())
+                spinbox->setContextMenuPolicy(Qt::NoContextMenu);
             connect(spinbox, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
             return spinbox;
         }
@@ -125,9 +130,10 @@ void SpreadsheetDelegate::commitAndCloseEditor()
         return;
     }
     QComboBox *combo = qobject_cast<QComboBox*>(sender());
-    if(button) {
+    if(combo) {
         Q_EMIT commitData(combo);
-        Q_EMIT closeEditor(combo);
+        if(combo->objectName().isEmpty())
+            Q_EMIT closeEditor(combo);
         return;
     }
     Gui::QuantitySpinBox *spinbox = qobject_cast<Gui::QuantitySpinBox*>(sender());

@@ -67,6 +67,8 @@ public:
     void updateHiddenRows();
     void updateHiddenColumns();
 
+    bool eventFilter(QObject *o, QEvent *ev);
+
 public Q_SLOTS:
     void mergeCells();
     void splitCell();
@@ -91,6 +93,7 @@ protected Q_SLOTS:
     void onRecompute();
     void onBind();
     void onConfSetup();
+    void onEditPersistent(bool);
 
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
@@ -115,12 +118,10 @@ protected:
 
     QMenu *contextMenu;
 
-    QAction *actionEditNormal;
-    QAction *actionEditButton;
-    QAction *actionEditCombo;
-    QAction *actionEditLabel;
-    QAction *actionEditQuantity;
-    QAction *actionEditCheckBox;
+#define SHEET_CELL_MODE(_name,_doc) QAction *actionEdit##_name;
+    SHEET_CELL_MODES
+#undef SHEET_CELL_MODE
+    QAction *actionEditPersistent;
 
     QAction *actionShowRows;
     QAction *actionShowColumns;

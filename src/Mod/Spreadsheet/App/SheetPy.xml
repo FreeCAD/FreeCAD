@@ -167,16 +167,23 @@
     </Methode>
     <Methode Name="getEditMode">
       <Documentation>
-        <UserDocu>Get given spreadsheet cell edit mode</UserDocu>
+        <UserDocu>getEditMode(cell) -- Get given spreadsheet cell edit mode</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setEditMode">
       <Documentation>
-          <UserDocu>
-Set given spreadsheet cell edit mode.
-
-Supported modes are, 'normal', 'button', 'combo'.
-          </UserDocu>
+          <UserDocu>setEditMode(cell, mode) -- Set given spreadsheet cell edit mode.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setPersistentEdit">
+      <Documentation>
+          <UserDocu>setPersistentEdit(cell, enable=True)
+Enable/Disable given spreadsheet cell persistent edit mode.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPersistentEdit">
+      <Documentation>
+          <UserDocu>getPersistentEdit(cell) -- Check if a given spreadsheet cell has persistent edit mode.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="row">

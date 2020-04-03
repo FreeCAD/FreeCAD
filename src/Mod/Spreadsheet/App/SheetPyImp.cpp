@@ -1014,29 +1014,9 @@ PyObject* SheetPy::getEditMode(PyObject *args)
 
     std::string contents;
     const Cell * cell = this->getSheetPtr()->getCell(address);
-
-    const char *mode;
+    std::string mode;
     if (cell) {
-        switch(cell->getEditMode()) {
-        case Cell::EditNormal:
-            mode = "normal";
-            break;
-        case Cell::EditButton:
-            mode = "button";
-            break;
-        case Cell::EditCombo:
-            mode = "combo";
-            break;
-        case Cell::EditQuantity:
-            mode = "quantity";
-            break;
-        case Cell::EditCheckBox:
-            mode = "checkbox";
-            break;
-        default:
-            PyErr_SetString(PyExc_ValueError, "unknown edit mode");
-            return 0;
-        }
+        mode = Cell::editModeName(cell->getEditMode());
     }else{
         PyErr_SetString(PyExc_ValueError, "invalid cell");
         return 0;
@@ -1066,27 +1046,70 @@ PyObject* SheetPy::setEditMode(PyObject *args)
     Cell * cell = this->getSheetPtr()->getCell(address);
 
     if (cell) {
-        Cell::EditMode m;
-        if(strcmp(mode,"normal")==0)
-            m = Cell::EditNormal;
-        else if(strcmp(mode,"button")==0)
-            m = Cell::EditButton;
-        else if(strcmp(mode,"combo")==0)
-            m = Cell::EditCombo;
-        else if(strcmp(mode,"quantity")==0)
-            m = Cell::EditQuantity;
-        else if(strcmp(mode,"checkbox")==0)
-            m = Cell::EditCheckBox;
-        else {
-            PyErr_SetString(PyExc_ValueError, "unknown edit mode");
-            return 0;
-        }
         PY_TRY {
-            cell->setEditMode(m);
+            cell->setEditMode(mode);
         }PY_CATCH
     }
 
     Py_Return;
+}
+
+PyObject* SheetPy::setPersistentEdit(PyObject *args)
+{
+    PyObject *enable = Py_True;
+    char *strAddress;
+    CellAddress address;
+
+    if (!PyArg_ParseTuple(args, "s|O", &strAddress,&enable))
+        return 0;
+
+    try {        
+        address = stringToAddress(strAddress);
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+
+    std::string contents;
+    Cell * cell = this->getSheetPtr()->getCell(address);
+
+    if (cell) {
+        PY_TRY {
+            cell->setPersistentEditMode(PyObject_IsTrue(enable));
+        }PY_CATCH
+    }
+
+    Py_Return;
+}
+
+PyObject* SheetPy::isPersistentEdit(PyObject *args)
+{
+    char *strAddress;
+    CellAddress address;
+
+    if (!PyArg_ParseTuple(args, "s", &strAddress))
+        return 0;
+
+    try {        
+        address = stringToAddress(strAddress);
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+
+    std::string contents;
+    Cell * cell = this->getSheetPtr()->getCell(address);
+
+    bool res = false;
+    if (cell) {
+        PY_TRY {
+            res = cell->isPersistentEditMode();
+        }PY_CATCH
+    }
+
+    return Py::new_reference_to(Py::Boolean(res));
 }
 
 PyObject* SheetPy::row(PyObject *args) {

@@ -108,6 +108,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , colSpan(1)
     , anchor()
     , editMode(EditNormal)
+    , editPersistent(false)
 {
     assert(address.isValid());
 }
@@ -126,6 +127,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
     , editMode(other.editMode)
+    , editPersistent(other.editPersistent)
 {
     setUsed(MARK_SET, false);
     setAlias(other.alias);
@@ -148,6 +150,7 @@ Cell &Cell::operator =(const Cell &rhs)
     setAlias(rhs.alias);
     setSpans(rhs.rowSpan, rhs.colSpan);
     editMode = rhs.editMode;
+    editPersistent = rhs.editPersistent;
 
     setUsed(MARK_SET, false);
     setDirty();
@@ -688,8 +691,6 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
     const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : 0;
     const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
     const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
-    int mode = reader.hasAttribute("editMode")?reader.getAttributeAsInteger("editMode"):(int)EditNormal;
-
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -741,7 +742,13 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
         setSpans(rs, cs);
     }
 
-    editMode = (EditMode)mode;
+    editMode = EditNormal;
+    if(reader.hasAttribute("editModeName"))
+        setEditMode(reader.getAttribute("editModeName"), true);
+    else if (reader.hasAttribute("editMode"))
+        editMode = (EditMode)reader.getAttributeAsInteger("editMode");
+
+    editPersistent = reader.getAttributeAsInteger("editPersistent","")?true:false;
 
     std::string _content;
     if (!content) {
@@ -815,8 +822,12 @@ void Cell::saveStyle(std::ostream &os, bool endTag) const {
         os << "colSpan=\"" << colSpan << "\" ";
     }
 
-    if(editMode) 
+    if(editMode) {
         os << "editMode=\"" << editMode << "\" ";
+        os << "editModeName=\"" << editModeName(editMode) << "\" ";
+        if(editPersistent)
+            os << "editPersistent=\"1\" ";
+    }
 
     if (endTag) 
         os << "/>";
@@ -1012,8 +1023,45 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
         return defaultColor;
 }
 
+#define SHEET_CELL_MODE(_name, _doc) #_name,
+static const char *_EditModeNames[] = {
+    SHEET_CELL_MODES
+};
+#undef SHEET_CELL_MODE
+
+const char *Cell::editModeName(EditMode mode)
+{
+    if(mode < 0 || mode >= sizeof(_EditModeNames)/sizeof(_EditModeNames[0]))
+        return "Unknown";
+    else
+        return _EditModeNames[mode];
+}
+
 Cell::EditMode Cell::getEditMode() const {
     return hasException()?EditNormal:editMode;
+}
+
+bool Cell::setEditMode(const char *name, bool silent) {
+#define SHEET_CELL_MODE(_name, _doc) {#_name, Edit##_name},
+    static std::unordered_map<const char *, EditMode, App::CStringHasher, App::CStringHasher> _Map = {
+        SHEET_CELL_MODES
+    };
+    auto iter = _Map.find(name);
+    if(iter == _Map.end())
+    if(_Map.empty()) {
+        if(silent)
+            FC_THROWM(Base::ValueError, "Unknown edit mode: " << (name?name:"?"));
+        FC_WARN("Unknown edit mode " << (name?name:"?"));
+        return false;
+    }
+    if(silent) {
+        if(editMode != iter->second) {
+            PropertySheet::AtomicPropertyChange signaler(*owner);
+            editMode = iter->second;
+        }
+    } else
+        setEditMode(iter->second);
+    return true;
 }
 
 void Cell::setEditData(const QVariant &d) {
@@ -1412,12 +1460,15 @@ void Cell::setEditMode(EditMode mode) {
         if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId()))
             obj = Py::asObject(static_cast<App::PropertyPythonObject*>(prop)->getPyObject());
 
-        if(mode == Cell::EditButton) {
+        switch(mode) {
+        case EditButton: {
             if(!obj.isCallable()) {
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                         "' evaluates to a Python callable");
             }
-        }else if(mode == Cell::EditCombo){
+            break;
+        }
+        case EditCombo: {
             bool valid = false;
             auto expr = SimpleStatement::cast<ListExpression>(expression.get());
             if(expr && expr->getSize()>=2) {
@@ -1432,7 +1483,9 @@ void Cell::setEditMode(EditMode mode) {
             if(!valid)
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                         "' to be either list(dict, string) or list(list, int)");
-        }else if(mode == Cell::EditLabel){
+            break;
+        }
+        case EditLabel: {
             bool valid = false;
             auto expr = SimpleStatement::cast<ListExpression>(expression.get());
             if(expr && expr->getSize()>=1) {
@@ -1442,7 +1495,9 @@ void Cell::setEditMode(EditMode mode) {
             if(!valid)
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                         "' contains a list expression [string...]");
-        }else if(mode == Cell::EditQuantity) {
+            break;
+        }
+        case EditQuantity: {
             bool valid = false;
             auto expr = SimpleStatement::cast<ListExpression>(expression.get());
             if(expr) {
@@ -1456,15 +1511,32 @@ void Cell::setEditMode(EditMode mode) {
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                         "' contains a constant quantity or  list(quantity, dict)\n"
                         "with keys (value,step,max,min,unit)");
-        }else if(mode == Cell::EditCheckBox) {
+            break;
+        }
+        case EditCheckBox: {
             // Always allow?
-        }else{
+            break;
+        }
+        default:
             FC_THROWM(Base::ValueError,"Unknown edit mode");
         }
     }
 
     PropertySheet::AtomicPropertyChange signaler(*owner);
     editMode = mode;
+    signaler.tryInvoke();
+}
+
+void Cell::setPersistentEditMode(bool enable) {
+    if(editMode == EditButton
+            || editMode == EditCheckBox
+            || editMode == EditNormal
+            || enable == editPersistent)
+    {
+        return;
+    }
+    PropertySheet::AtomicPropertyChange signaler(*owner);
+    editPersistent = enable;
     signaler.tryInvoke();
 }
 
@@ -1520,4 +1592,13 @@ std::string Cell::getFormattedQuantity(void)
     }
     result = Base::Tools::toStdString(qFormatted);
     return result;
+}
+
+bool Cell::isPersistentEditMode() const
+{
+    if(!editMode)
+        return false;
+    return editPersistent
+        || editMode == EditButton
+        || editMode == EditCheckBox;
 }

@@ -30,6 +30,7 @@
 # include <QClipboard>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QToolTip>
 #endif
 
 #include <App/Application.h>
@@ -127,60 +128,32 @@ SheetTableView::SheetTableView(QWidget *parent)
 
     QActionGroup *editGroup = new QActionGroup(this);
     editGroup->setExclusive(true);
-    actionEditNormal = new QAction(tr("Normal"),this);
-    actionEditNormal->setCheckable(true);
-    actionEditNormal->setData(QVariant((int)Cell::EditNormal));
-    actionEditNormal->setToolTip(tr("Clear edit mode"));
-    editGroup->addAction(actionEditNormal);
-    actionEditButton = new QAction(tr("Button"),this);
-    actionEditButton->setCheckable(true);
-    actionEditButton->setData(QVariant((int)Cell::EditButton));
-    actionEditButton->setToolTip(tr("Make a button with the current cell. Expects the cell to define a callable.\n"
-                                    "The button label is defined by the doc string of the callable. If empty,\n"
-                                    "then use the alias. If no alias, then use the cell address."));
-    editGroup->addAction(actionEditButton);
-    actionEditCombo = new QAction(tr("ComboBox"),this);
-    actionEditCombo->setCheckable(true);
-    actionEditCombo->setData(QVariant((int)Cell::EditCombo));
-    actionEditCombo->setToolTip(tr("Edit the cell using a ComboBox. This mode Expects the cell to contain a \n"
-                                   "list(dict, string), where the keys of dict defines the item list, and the\n"
-                                   "string defines the current item.\n\n"
-                                   "The cell also accepts list(list, int), where the inner list defines the item\n"
-                                   "list, and the int is the index of the current item.\n\n"
-                                   "In both caes, there can be a third optional item that defines a callable with\n"
-                                   "arguments (spreadsheet, cell_address, current_value, old_value). It will be\n"
-                                   "invoked after the user makes a new selection in the ComboBox."));
-    editGroup->addAction(actionEditCombo);
-    actionEditLabel = new QAction(tr("Label"),this);
-    actionEditLabel->setCheckable(true);
-    actionEditLabel->setData(QVariant((int)Cell::EditLabel));
-    actionEditLabel->setToolTip(tr("This is a pseudo edit mode with the purpose of hiding expression details\n"
-                                   "in the cell. The cell is expected to contain a list. And only the first\n"
-                                   "item will be shown, with the rest of items hidden"));
-    editGroup->addAction(actionEditLabel);
-    actionEditQuantity = new QAction(tr("Quantity"),this);
-    actionEditQuantity->setCheckable(true);
-    actionEditQuantity->setData(QVariant((int)Cell::EditQuantity));
-    actionEditQuantity->setToolTip(tr("Edit the cell using a unit aware SpinBox. This mode expects the cell\n"
-                                      "to contain either a simple number, a 'quantity' (i.e. number with unit)\n"
-                                      "or a list(quantity, dict). The dict contains optional keys ('step','max',\n"
-                                      "'min','unit','scale'). All keys are expects to have 'double' type of value,\n"
-                                      "excepts 'unit' which must be a string.\n\n"
-                                      "If no 'unit' setting is found, the 'display unit' setting of the current cell\n"
-                                      "will be used"));
-    editGroup->addAction(actionEditQuantity);
-    actionEditCheckBox = new QAction(tr("CheckBox"),this);
-    actionEditCheckBox->setCheckable(true);
-    actionEditCheckBox->setData(QVariant((int)Cell::EditCheckBox));
-    actionEditCheckBox->setToolTip(tr("Edit the cell using a CheckBox. The cell is expects to contain a any value\n"
-                                      "that can be converted to boolean. If you want a check box with a title, use\n"
-                                      "a list(boolean, title)."));
-    editGroup->addAction(actionEditCheckBox);
+
+#define SHEET_CELL_MODE(_name, _doc) \
+    actionEdit##_name = new QAction(tr(#_name), this);\
+    actionEdit##_name->setCheckable(true);\
+    actionEdit##_name->setData(QVariant((int)Cell::Edit##_name));\
+    actionEdit##_name->setToolTip(tr(_doc));\
+    editGroup->addAction(actionEdit##_name);
+
+    SHEET_CELL_MODES
+#undef SHEET_CELL_MODE
 
     QMenu *subMenu = new QMenu(tr("Edit mode"),contextMenu);
+#if QT_VERSION >= 0x050100
+    subMenu->setToolTipsVisible(true);
+#else
+    subMenu->installEventFilter(this);
+#endif
     contextMenu->addMenu(subMenu);
     subMenu->addActions(editGroup->actions());
     connect(editGroup, SIGNAL(triggered(QAction*)), this, SLOT(editMode(QAction*)));
+
+    actionEditPersistent = new QAction(tr("Persistent"),this);
+    actionEditPersistent->setCheckable(true);
+    connect(actionEditPersistent, SIGNAL(toggled(bool)), this, SLOT(onEditPersistent(bool)));
+    subMenu->addSeparator();
+    subMenu->addAction(actionEditPersistent);
 
     contextMenu->addSeparator();
     QAction *recompute = new QAction(tr("Recompute"),this);
@@ -251,15 +224,42 @@ void SheetTableView::editMode(QAction *action) {
     Gui::Command::openCommand("Cell edit mode");
     try {
         for(auto &index : selectionModel()->selectedIndexes()) {
-            auto cell = sheet->getCell(CellAddress(index.row(), index.column()));
+            CellAddress addr(index.row(), index.column());
+            auto cell = sheet->getCell(addr);
             if(cell) {
-                cell->setEditMode((Cell::EditMode)mode);
-                if(mode == Cell::EditButton || mode == Cell::EditCheckBox)
+                Gui::cmdAppObject(sheet, std::ostringstream() << "setEditMode('"
+                        << addr.toString() << "', '"
+                        << Cell::editModeName((Cell::EditMode)mode) << "')");
+                if(cell->isPersistentEditMode())
                     openPersistentEditor(index);
                 else
                     closePersistentEditor(index);
             }
         }
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        Gui::Command::abortCommand();
+    }
+    Gui::Command::commitCommand();
+}
+
+void SheetTableView::onEditPersistent(bool checked) {
+    Gui::Command::openCommand("Cell persistent edit");
+    try {
+        for(auto &index : selectionModel()->selectedIndexes()) {
+            CellAddress addr(index.row(), index.column());
+            auto cell = sheet->getCell(addr);
+            if(cell) {
+                Gui::cmdAppObject(sheet, std::ostringstream() << "setPersistentEdit('"
+                        << addr.toString() << "', " << (checked?"True":"False") << ")");
+                if(cell->getEditMode() && cell->isPersistentEditMode())
+                    openPersistentEditor(index);
+                else
+                    closePersistentEditor(index);
+            }
+        }
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }catch(Base::Exception &e) {
         e.ReportException();
         Gui::Command::abortCommand();
@@ -543,7 +543,7 @@ void SheetTableView::setSheet(Sheet * _sheet)
     for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
         CellAddress address(*i);
         auto cell = sheet->getCell(address);
-        if(cell && cell->getEditMode()==Cell::EditButton)
+        if(cell && cell->isPersistentEditMode())
             openPersistentEditor(model()->index(address.row(),address.col()));
 
         if (sheet->isMergedCell(address))
@@ -836,26 +836,19 @@ void SheetTableView::edit ( const QModelIndex & index )
 
 void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     QAction *action = 0;
+    bool persistent = false;
     for(auto &range : selectedRanges()) {
         do {
             auto cell = sheet->getCell(range.address());
             if(!cell) continue;
+            persistent = persistent || cell->isPersistentEditMode();
             switch(cell->getEditMode()) {
-            case Cell::EditButton:
-                action = actionEditButton;
+#define SHEET_CELL_MODE(_name, _doc) \
+            case Cell::Edit##_name:\
+                action = actionEdit##_name;\
                 break;
-            case Cell::EditCombo:
-                action = actionEditCombo;
-                break;
-            case Cell::EditLabel:
-                action = actionEditLabel;
-                break;
-            case Cell::EditQuantity:
-                action = actionEditQuantity;
-                break;
-            case Cell::EditCheckBox:
-                action = actionEditCheckBox;
-                break;
+            SHEET_CELL_MODES
+#undef SHEET_CELL_MODE
             default:
                 action = actionEditNormal;
                 break;
@@ -868,6 +861,8 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     if(!action)
         action = actionEditNormal;
     action->setChecked(true);
+
+    actionEditPersistent->setChecked(persistent);
 
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
     if(!selectionModel()->hasSelection()) {
@@ -892,6 +887,33 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     contextMenu->exec(QCursor::pos());
 }
 
+bool SheetTableView::eventFilter(QObject *o, QEvent *ev) {
+    (void)o;
+    switch (ev->type()) {
+#if QT_VERSION < 0x050100
+    case QEvent::ToolTip: {
+        auto menu = qobject_cast<QMenu*>(o);
+        if(!menu)
+            break;
+        QHelpEvent* he = static_cast<QHelpEvent*>(ev);
+        QAction* act = menu->actionAt(he->pos());
+        if (act) {
+            QString tooltip = act->toolTip();
+            if (tooltip.size()) {
+                QToolTip::showText(he->globalPos(), act->toolTip(), menu);
+                return false;
+            }
+        }
+        QToolTip::hideText();
+        break;
+    }
+#endif
+    default:
+        break;
+    }
+    return false;
+}
+
 void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 #if QT_VERSION >= 0x050000
         , const QVector<int> &roles
@@ -903,7 +925,7 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
         auto address = *range;
         auto cell = sheet->getCell(address);
         closePersistentEditor(model()->index(address.row(),address.col()));
-        if(cell && (cell->getEditMode()==Cell::EditButton || cell->getEditMode()==Cell::EditCheckBox))
+        if(cell && cell->isPersistentEditMode())
             openPersistentEditor(model()->index(address.row(),address.col()));
     }while(range.next());
 

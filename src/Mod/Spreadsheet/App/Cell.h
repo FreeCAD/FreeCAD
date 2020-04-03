@@ -122,19 +122,55 @@ public:
 
     App::CellAddress getAddress() const { return address; }
 
+#define SHEET_CELL_MODES \
+    SHEET_CELL_MODE(Normal, "Reset edit mode") \
+    SHEET_CELL_MODE(Button, "Make a button with the current cell. Expects the cell to define a callable.\n"\
+                            "The button label is defined by the doc string of the callable. If empty,\n"\
+                            "then use the alias. If no alias, then use the cell address.") \
+    \
+    SHEET_CELL_MODE(Combo,  "Edit the cell using a ComboBox. This mode Expects the cell to contain a \n"\
+                            "list(dict, string), where the keys of dict defines the item list, and the\n"\
+                            "string defines the current item.\n\n"\
+                            "The cell also accepts list(list, int), where the inner list defines the item\n"\
+                            "list, and the int is the index of the current item.\n\n"\
+                            "In both caes, there can be a third optional item that defines a callable with\n"\
+                            "arguments (spreadsheet, cell_address, current_value, old_value). It will be\n"\
+                            "invoked after the user makes a new selection in the ComboBox.") \
+    \
+    SHEET_CELL_MODE(Label,  "This is a pseudo edit mode with the purpose of hiding expression details\n"\
+                            "in the cell. The cell is expected to contain a list. And only the first\n"\
+                            "item will be shown, with the rest of items hidden") \
+    \
+    SHEET_CELL_MODE(Quantity, "Edit the cell using a unit aware SpinBox. This mode expects the cell\n"\
+                              "to contain either a simple number, a 'quantity' (i.e. number with unit)\n"\
+                              "or a list(quantity, dict). The dict contains optional keys ('step','max',\n"\
+                              "'min','unit','scale'). All keys are expects to have 'double' type of value,\n"\
+                              "excepts 'unit' which must be a string.\n\n"\
+                              "If no 'unit' setting is found, the 'display unit' setting of the current cell\n"\
+                              "will be used") \
+    \
+    SHEET_CELL_MODE(CheckBox, "Edit the cell using a CheckBox. The cell is expects to contain a any value\n"\
+                              "that can be converted to boolean. If you want a check box with a title, use\n"\
+                              "a list(boolean, title).") \
+
+#define SHEET_CELL_MODE(_name,_doc) Edit##_name,
     enum EditMode {
-        EditNormal,
-        EditButton,
-        EditCombo,
-        EditLabel,
-        EditQuantity,
-        EditCheckBox,
+        SHEET_CELL_MODES
     };
+#undef SHEET_CELL_MODE
+
+    static const char *editModeName(EditMode mode);
+
     void setEditMode(EditMode mode);
+    bool setEditMode(const char *mode, bool silent=false);
+    void setPersistentEditMode(bool enable);
+
     EditMode getEditMode() const;
     void setEditData(const QVariant &data);
     QVariant getEditData(bool silent=false) const;
     QVariant getDisplayData(bool silent=false) const;
+
+    bool isPersistentEditMode() const;
 
     std::string getFormattedQuantity(void);
 
@@ -209,6 +245,7 @@ private:
     App::CellAddress anchor;
 
     EditMode editMode;
+    bool editPersistent;
 
     friend class PropertySheet;
 };
