@@ -523,21 +523,23 @@ void Application::open(const char* FileName, const char* Module)
 
     if (Module != 0) {
         try {
-            if(File.hasExtension("FCStd")) {
+            if (File.hasExtension("FCStd")) {
                 bool handled = false;
                 std::string filepath = File.filePath();
-                for(auto &v : d->documents) {
+                for (auto &v : d->documents) {
                     auto doc = v.second->getDocument();
                     std::string fi = Base::FileInfo(doc->FileName.getValue()).filePath();
-                    if(filepath == fi) {
+                    if (filepath == fi) {
                         handled = true;
                         Command::doCommand(Command::App, "FreeCADGui.reload('%s')", doc->getName());
                         break;
                     }
                 }
-                if(!handled)
-                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", FileName);
-            } else {
+
+                if (!handled)
+                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", unicodepath.c_str());
+            }
+            else {
                 // issue module loading
                 Command::doCommand(Command::App, "import %s", Module);
 

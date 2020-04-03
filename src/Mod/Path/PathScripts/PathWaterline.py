@@ -122,7 +122,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyVectorDistance", "CircularCenterCustom", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for circular cut patterns.")),
             ("App::PropertyEnumeration", "CircularCenterAt", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the ciruclar pattern.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the circular pattern.")),
             ("App::PropertyEnumeration", "ClearLastLayer", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to clear last layer in a `Multi-pass` operation.")),
             ("App::PropertyEnumeration", "CutMode", "Clearing Options",
@@ -505,7 +505,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
                 else:
                     if m > 0:
-                        # Raise to clearance between moddels
+                        # Raise to clearance between models
                         CMDS.append(Path.Command('N (Transition to base: {}.)'.format(Mdl.Label)))
                         CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
@@ -1168,7 +1168,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def _isPocket(self, b, f, w):
         '''_isPocket(b, f, w)... 
-        Attempts to determing if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
+        Attempts to determine if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
         Returns True if pocket, False if raised protrusion.'''
         e = w.Edges[0]
         for fi in range(0, len(b.Shape.Faces)):
@@ -2199,7 +2199,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def _getExperimentalWaterlinePaths(self, obj, PNTSET, csHght):
         '''_getExperimentalWaterlinePaths(obj, PNTSET, csHght)...
-        Switching fuction for calling the appropriate path-geometry to OCL points conversion fucntion
+        Switching function for calling the appropriate path-geometry to OCL points conversion function
         for the various cut patterns.'''
         PathLog.debug('_getExperimentalWaterlinePaths()')
         SCANS = list()

@@ -972,7 +972,7 @@ SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 {
     SoSearchAction sa;
     sa.setNode(vp->getRoot());
-    sa.setSearchingAll(true);
+    sa.setSearchingAll(false);
     sa.apply(getSoRenderManager()->getSceneGraph());
     return sa.getPath() != nullptr;
 }

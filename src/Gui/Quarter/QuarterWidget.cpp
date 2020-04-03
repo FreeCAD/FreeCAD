@@ -999,7 +999,13 @@ bool QuarterWidget::viewportEvent(QEvent* event)
         QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
         QGraphicsItem *item = itemAt(mouse->pos());
         if (!item) {
-            QGraphicsView::viewportEvent(event);
+            bool ok = QGraphicsView::viewportEvent(event);
+            // Avoid that wheel events are handled twice
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=44822
+            if (event->type() == QEvent::Wheel) {
+                event->setAccepted(ok);
+                return ok;
+            }
             return false;
         }
     }

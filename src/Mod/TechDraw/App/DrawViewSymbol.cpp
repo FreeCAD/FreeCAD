@@ -63,7 +63,7 @@ DrawViewSymbol::DrawViewSymbol(void)
 {
     static const char *vgroup = "Drawing view";
 
-    ADD_PROPERTY_TYPE(Symbol,(""),vgroup,App::Prop_Hidden,"The SVG code defining this symbol");
+    ADD_PROPERTY_TYPE(Symbol,(""),vgroup,App::Prop_None,"The SVG code defining this symbol");
     ADD_PROPERTY_TYPE(EditableTexts,(""),vgroup,App::Prop_None,"Substitution values for the editable strings in this symbol");
     ScaleType.setValue("Custom");
 }
@@ -83,7 +83,14 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
             std::vector<string> editables;
             QDomDocument symbolDocument;
 
-            if (symbolDocument.setContent(QString::fromUtf8(Symbol.getValue()))) {
+            const char* symbol = Symbol.getValue();
+            QByteArray qba(symbol);
+            QString errorMsg;
+            int errorLine;
+            int errorCol;
+            bool nsProcess = false;
+            bool rc = symbolDocument.setContent(qba, nsProcess, &errorMsg, &errorLine, &errorCol);
+            if (rc) {
                 QDomElement symbolDocElem = symbolDocument.documentElement();
 
                 QXmlQuery query(QXmlQuery::XQuery10);
@@ -107,7 +114,13 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
                 }
             }
             else {
-                Base::Console().Warning("DrawViewSymbol:onChanged - SVG for Symbol is not a valid document\n");
+                Base::Console().Warning("DVS::onChanged - %s - SVG for Symbol is not valid. See log.\n");
+                Base::Console().Log(
+                    "Warning: DVS::onChanged(Symbol) for %s - len: %d rc: %d error: %s line: %d col: %d\n",
+                                        getNameInDocument(), strlen(symbol), rc, 
+                                        qPrintable(errorMsg), errorLine, errorCol);
+
+
             }
 
             EditableTexts.setValues(editables);
@@ -127,12 +140,22 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 //    }
 
     std::string svg = Symbol.getValue();
+    if (svg.empty()) {
+        return App::DocumentObject::StdReturn;
+    }
+
     const std::vector<std::string>& editText = EditableTexts.getValues();
 
     if (!editText.empty()) {
         QDomDocument symbolDocument;
-
-        if (symbolDocument.setContent(QString::fromUtf8(Symbol.getValue()))) {
+        const char* symbol = Symbol.getValue();
+        QByteArray qba(symbol);
+        QString errorMsg;
+        int errorLine;
+        int errorCol;
+        bool nsProcess = false;
+        bool rc = symbolDocument.setContent(qba, nsProcess, &errorMsg, &errorLine, &errorCol);
+        if (rc) {
             QDomElement symbolDocElem = symbolDocument.documentElement();
 
             QXmlQuery query(QXmlQuery::XQuery10);
@@ -171,8 +194,12 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
             Symbol.setValue(symbolDocument.toString(1).toStdString());
         }
         else {
-            Base::Console().Warning("DrawViewSymbol:execute - SVG for Symbol is not a valid document\n");
-        }
+            Base::Console().Warning("DVS::execute - %s - SVG for Symbol is not valid. See log.\n");
+            Base::Console().Log(
+                    "Warning: DVS::execute() - %s - len: %d rc: %d error: %s line: %d col: %d\n",
+                                        getNameInDocument(), strlen(symbol), rc, 
+                                        qPrintable(errorMsg), errorLine, errorCol);
+       }
     }
 
 //    requestPaint();
