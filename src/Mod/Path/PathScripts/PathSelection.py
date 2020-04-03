@@ -179,9 +179,11 @@ class CONTOURGate(PathBaseGate):
     def allow(self, doc, obj, sub): # pylint: disable=unused-argument
         pass
 
+
 class PROBEGate:
     def allow(self, doc, obj, sub):
         pass
+
 
 def contourselect():
     FreeCADGui.Selection.addSelectionGate(CONTOURGate())
@@ -232,9 +234,11 @@ def surfaceselect():
     # FreeCADGui.Selection.addSelectionGate(PROFILEGate())  # Added for face selection
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
+
 def probeselect():
     FreeCADGui.Selection.addSelectionGate(PROBEGate())
     FreeCAD.Console.PrintWarning("Probe Select Mode\n")
+
 
 def select(op):
     opsel = {}

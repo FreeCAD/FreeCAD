@@ -52,9 +52,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        PathGui.updateInputField(obj, 'DepthOffset', self.form.depthOffset)
-        PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
-
         if obj.BoundBox != str(self.form.boundBoxSelect.currentText()):
             obj.BoundBox = str(self.form.boundBoxSelect.currentText())
 

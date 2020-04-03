@@ -213,7 +213,6 @@ class ObjectOp(PathOp.ObjectOp):
             return False
 
         if obj.EnableRotation == 'Off':
-            strDep = obj.StartDepth.Value
             finDep = obj.FinalDepth.Value
         else:
             # Calculate operation heights based upon rotation radii
@@ -437,7 +436,6 @@ class ObjectOp(PathOp.ObjectOp):
         # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        zlim = 0.0
         xRotRad = 0.01
         yRotRad = 0.01
         zRotRad = 0.01
@@ -551,9 +549,8 @@ class ObjectOp(PathOp.ObjectOp):
                     if saX < 0.0:
                         angle = angle + 180.0
         elif saZ == 0.0:
-            if saY != 0.0:
-                angle = math.degrees(math.atan(saX / saY))
-                orientation = "Y"
+            angle = math.degrees(math.atan(saX / saY))
+            orientation = "Y"
 
         if saX + nX == 0.0:
             angle = -1 * angle

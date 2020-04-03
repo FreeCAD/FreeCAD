@@ -32,7 +32,6 @@ import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 import TechDraw
 import math
-import Draft
 
 from PySide import QtCore
 
@@ -576,7 +575,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 subsList = o[1]
                 angle = o[2]
                 axis = o[3]
-                stock = o[4]
+                # stock = o[4]
 
                 for sub in subsList:
                     if 'Face' in sub:

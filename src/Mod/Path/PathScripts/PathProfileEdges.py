@@ -195,7 +195,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         bbBfr = (self.ofstRadius * 2) * 1.25
         if bbBfr < minBfr:
             bbBfr = minBfr
-        fwBB = flatWireObj.Shape.BoundBox
         wBB = origWire.Shape.BoundBox
         minArea = (self.ofstRadius - tolerance)**2 * math.pi
 
@@ -220,8 +219,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         # Identify endpoints connecting circle center and diameter
         vectDist = pe.sub(pb)
         diam = vectDist.Length
-        cntr = vectDist.multiply(0.5).add(pb)
-        R = diam / 2
 
         pl = FreeCAD.Placement()
         pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
@@ -486,7 +483,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             N = NEAR0[n]
             if N[4] < min0:
                 min0 = N[4]
-                min0i = n
+                # min0i = n
         (w0, vi0, pnt0, vrt0, d0) = NEAR0[0]  # min0i
         near0 = Draft.makeWire([cent0, pnt0], placement=pl, closed=False, face=False, support=None)
         near0.recompute()
@@ -500,7 +497,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             N = NEAR1[n]
             if N[4] < min1:
                 min1 = N[4]
-                min1i = n
+                # min1i = n
         (w1, vi1, pnt1, vrt1, d1) = NEAR1[0]  # min1i
         near1 = Draft.makeWire([cent1, pnt1], placement=pl, closed=False, face=False, support=None)
         near1.recompute()
@@ -581,7 +578,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         areaParams = {}
         JOB = PathUtils.findParentJob(obj)
-        tolrnc = JOB.GeometryTolerance.Value
+        # tolrnc = JOB.GeometryTolerance.Value
         if self.useComp is True:
             offset = self.ofstRadius  # + tolrnc
         else:
@@ -709,7 +706,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         if chk4 is True:
             # find beginning 1 edge
             begIdx = None
-            begFlg = False
             for e in range(0, lenFULL):
                 f = PRE[e]
                 i = IDXS[e]
@@ -719,7 +715,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     wireIdxs[0].append(i)
                     break
             # find first 3 edge
-            endIdx = None
             for e in range(begIdx + 1, lenE + begIdx):
                 f = PRE[e]
                 i = IDXS[e]
@@ -855,7 +850,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         tagCnt += nt
                         intTags.append(intTObj)
                         extTags.append(extTObj)
-        tagArea = math.pi * tagRad**2 * tagCnt
+        # tagArea = math.pi * tagRad**2 * tagCnt
         # FreeCAD object required for Part::MultiCommon usage
         intTagsComp = Part.makeCompound([T.Shape for T in intTags])
         iTAG = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpInteriorTags')
@@ -914,7 +909,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         return E
 
     def _makeStop(self, sType, pA, pB, lbl):
-        rad = self.radius
         ofstRad = self.ofstRadius
         extra = self.radius / 10
 
@@ -924,7 +918,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
-        lenEC = E.sub(C).Length
 
         if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
             # 'L' stop shape and edge legend

@@ -288,7 +288,6 @@ class ObjectOp(PathOp.ObjectOp):
         paths = []
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
-        lstIdx = len(heights) - 1
         for i in range(0, len(heights)):
             hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
             hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
@@ -323,11 +322,11 @@ class ObjectOp(PathOp.ObjectOp):
         self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
 
         simobj = None
-        if getsim and False:
-            areaParams['ToolRadius'] = self.radius - self.radius * .005
-            area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+        # if getsim:
+        #    areaParams['ToolRadius'] = self.radius - self.radius * .005
+        #    area.setParams(**areaParams)
+        #    sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
+        #    simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
         return paths, simobj
 
@@ -353,6 +352,9 @@ class ObjectOp(PathOp.ObjectOp):
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
         self.profileEdgesIsOpen = False
 
+        strDep = obj.StartDepth.Value
+        finDep = obj.FinalDepth.Value
+
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
@@ -374,9 +376,6 @@ class ObjectOp(PathOp.ObjectOp):
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
-        else:
-            strDep = obj.StartDepth.Value
-            finDep = obj.FinalDepth.Value
 
         # Set axial feed rates based upon horizontal feed rates
         safeCircum = 2 * math.pi * obj.SafeHeight.Value
