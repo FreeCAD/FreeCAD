@@ -86,6 +86,7 @@ SET(Draft_view_providers
 SET(Creator_tools
     draftguitools/gui_lines.py
     draftguitools/gui_splines.py
+    draftguitools/gui_beziers.py
 )
 
 SET(Draft_GUI_tools
