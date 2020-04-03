@@ -175,44 +175,8 @@ from draftguitools.gui_base_original import Modifier
 
 from draftguitools.gui_subelements import SubelementHighlight
 from draftguitools.gui_move import Move
+from draftguitools.gui_styles import ApplyStyle
 
-
-class ApplyStyle(Modifier):
-    """The Draft_ApplyStyle FreeCA command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Apply',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Apply Current Style"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies current line width and color to selected objects")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if self.ui:
-            self.sel = FreeCADGui.Selection.getSelection()
-            if (len(self.sel)>0):
-                FreeCADGui.addModule("Draft")
-                c = []
-                for ob in self.sel:
-                    if (ob.Type == "App::DocumentObjectGroup"):
-                        c.extend(self.formatGroup(ob))
-                    else:
-                        c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')')
-                self.commit(translate("draft","Change Style"),c)
-
-    def formatGroup(self,grpob):
-        FreeCADGui.addModule("Draft")
-        c=[]
-        for ob in grpob.Group:
-            if (ob.Type == "App::DocumentObjectGroup"):
-                c.extend(self.formatGroup(ob))
-            else:
-                c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')')
 
 class Rotate(Modifier):
     """The Draft_Rotate FreeCAD command definition"""
@@ -2373,7 +2337,6 @@ FreeCADGui.addCommand('Draft_Mirror',Mirror())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
-FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 
 # a global place to look for active draft Command
