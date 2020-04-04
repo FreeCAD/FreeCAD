@@ -1146,6 +1146,18 @@ class ViewProviderComponent:
         return
 
     def attach(self,vobj):
+        """Adds display modes' data to the coin scenegraph.
+
+        Adds each display mode as a coin node, whose parent is this view
+        provider. 
+
+        Each display mode's node includes the data needed to display the object
+        in that mode. This might include colors of faces, or the draw style of
+        lines. This data is stored as additional coin nodes which are children
+        of the display mode node.
+
+        Adds the HiRes display mode.
+        """
 
         from pivy import coin
         self.Object = vobj.Object
@@ -1157,11 +1169,43 @@ class ViewProviderComponent:
         return
 
     def getDisplayModes(self,vobj):
+        """Defines the display modes unique to the Arch Component.
+
+        Defines mode HiRes, which displays the component as a mesh, intended as
+        a more visually appealing version of the component.
+
+        Returns
+        -------
+        list of str
+            List containing the names of the new display modes.
+        """
 
         modes=["HiRes"]
         return modes
 
     def setDisplayMode(self,mode):
+        """Method called when the display mode changes.
+
+        Called when the display mode changes, this method can be used to set
+        data that wasn't available when .attach() was called.
+
+        When HiRes is set as display mode, displays the component as a copy of
+        the mesh associated as the HiRes property of the host object. See
+        ArchComponent.Component's properties. 
+
+        If no shape is set in the HiRes propery, just displays the object as
+        the Flat Lines display mode.
+
+        Parameters
+        ----------
+        mode: str
+            The name of the display mode the view provider has switched to.
+
+        Returns
+        -------
+        str:
+            The name of the display mode the view provider has switched to.
+        """
 
         if hasattr(self,"meshnode"):
             if self.meshnode:
@@ -1212,6 +1256,16 @@ class ViewProviderComponent:
         return None
 
     def claimChildren(self):
+        """Defines which objects will appear as children in the tree view.
+
+        Sets the host object's Base object as a child, and sets any additions
+        or subtractions as children.
+
+        Returns
+        -------
+        list of <App::DocumentObject>s:
+            The objects claimed as children.
+        """
 
         if hasattr(self,"Object"):
             c = []
@@ -1230,6 +1284,7 @@ class ViewProviderComponent:
                         if Draft.getType(s) == "Roof":
                             continue
                     c.append(s)
+
             for link in ["Armatures","Group"]:
                 if hasattr(self.Object,link):
                     objlink = getattr(self.Object,link)
@@ -1246,6 +1301,22 @@ class ViewProviderComponent:
         return []
 
     def setEdit(self,vobj,mode):
+        """Method called when the document requests the object to enter edit mode.
+
+        Edit mode is entered when a user double clicks on an object in the tree
+        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+
+        Parameters
+        ----------
+        mode: int or str
+            The edit mode the document has requested. Set to 0 when requested via
+            a double click or [Edit -> Toggle Edit Mode].
+
+        Returns
+        -------
+        bool
+            If edit mode was entered.
+        """
 
         if mode == 0:
             taskd = ComponentTaskPanel()
@@ -1256,11 +1327,31 @@ class ViewProviderComponent:
         return False
 
     def unsetEdit(self,vobj,mode):
+        """Method called when the document requests the object exit edit mode.
+
+        Returns
+        -------
+        False
+        """
 
         FreeCADGui.Control.closeDialog()
         return False
 
     def setupContextMenu(self,vobj,menu):
+        """Adds the component specific options to the context menu.
+
+        The context menu is the drop down menu that opens when the user right
+        clicks on the component in the tree view.
+
+        Adds a menu choice to call the Arch_ToggleSubs Gui command. See
+        ArchCommands._ToggleSubs
+
+        Parameters
+        ----------
+        menu: <PySide2.QtWidgets.QMenu>
+            The context menu already assembled prior to this method being
+            called.
+        """
 
         from PySide import QtCore,QtGui
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
@@ -1268,10 +1359,26 @@ class ViewProviderComponent:
         menu.addAction(action1)
 
     def toggleSubcomponents(self):
+        """Simple wrapper to call Arch_ToggleSubs when the relevant context
+        menu choice is selected."""
 
         FreeCADGui.runCommand("Arch_ToggleSubs")
 
     def areDifferentColors(self,a,b):
+        """Checks if two diffuse colors are almost the same.
+
+        Parameters
+        ----------
+        a: tuple
+            The first DiffuseColor value to compare.
+        a: tuple
+            The second DiffuseColor value to compare.
+
+        Returns
+        -------
+        bool:
+            True if colors are different, false if they are similar.
+        """
 
         if len(a) != len(b):
             return True
@@ -1281,12 +1388,40 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
+        """If an object is a clone, sets it it to copy the color of it's parent.
+
+        Will only change the color of the clone if the clone and it's parent
+        have colors that are distinguishably different from each other.
+
+        Parameters
+        ----------
+        obj: <Part::Feature>
+            The object to change the color of.
+        force: bool
+            If true, forces the colorisation even if the two objects have very
+            similar colors.
+        """
 
         if obj.CloneOf:
-            if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
+            if (self.areDifferentColors(obj.ViewObject.DiffuseColor, 
+                                        obj.CloneOf.ViewObject.DiffuseColor) 
+                    or force):
+
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
     
     def getHosts(self):
+        """Returns the hosts of the view provider's host object.
+
+        Note that in this case, the hosts are the objects referenced by Arch
+        Rebar's "Host" and/or "Hosts" properties specifically. Only Arch Rebar
+        has these properies.
+
+        Returns
+        -------
+        list of <Arch._Structure>
+            The Arch Structures hosting this component.
+        """
+
         hosts = []
 
         if hasattr(self,"Object"):
@@ -1304,15 +1439,36 @@ class ViewProviderComponent:
 
 
 class ArchSelectionObserver:
+    """Selection observer used throughout the Arch module.
 
-    """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver
-    object can be added as a selection observer to the FreeCAD Gui. If watched is given (a
-    document object), the observer will be triggered only when that object is selected/unselected.
-    If hide is True, the watched object will be hidden. If origin is given (a document
-    object), that object will have its visibility/selectability restored. If nextCommand
-    is given (a FreeCAD command), it will be executed on leave."""
+    When a nextCommand is specified, the observer fires a Gui command when
+    anything is selected.
+
+    When a watched object is specified, the observer will only fire when this
+    watched object is selected.
+    """
 
     def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
+        """Initalises the ArchSelectionObserver object.
+
+        Parameters
+        ----------
+        watched: <App::DocumentObject>, optional
+            If no watched value is provided, functionality relating to origin
+            and hide parameters will not occur. Only the nextCommand will fire.
+
+            When a watched value is provided, the selection observer will only
+            fire when the watched object has been selected.
+        hide: bool
+            Sets if the watched object should be hidden.
+        origin: <App::DocumentObject, optional
+            If provided, and hide is True, will make the origin object
+            selectable, and opaque (set transparency to 0).
+        nextCommand: str
+            Name of Gui command to run when the watched object is selected, (if
+            one is specified), or when anything is selected (if no watched
+            object is specified).
+        """
 
         self.origin = origin
         self.watched = watched
@@ -1320,6 +1476,26 @@ class ArchSelectionObserver:
         self.nextCommand = nextCommand
 
     def addSelection(self,document, object, element, position):
+        """Method called when a selection is made on the Gui.
+
+        When a nextCommand is specified, the observer fires a Gui command when
+        anything is selected.
+
+        When a watched object is specified, the observer will only fire when this
+        watched object is selected.
+
+        Parameters
+        ----------
+        document: str
+            The document's Name.
+        object: str
+            The selected object's Name.
+        element: str
+            The element on the object that was selected, such as an edge or
+            face.
+        position:
+            The location in XYZ space the selection was made.
+        """
 
         if not self.watched:
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
@@ -1343,13 +1519,14 @@ class ArchSelectionObserver:
                     FreeCADGui.Selection.addSelection(self.watched)
                     FreeCADGui.runCommand(self.nextCommand)
 
-
-
 class SelectionTaskPanel:
+    """A simple TaskPanel to wait for a selection.
 
-    """A temporary TaskPanel to wait for a selection"""
+    Typically used in conjunction with ArchComponent.ArchSelectionObserver.
+    """
 
     def __init__(self):
+        """Initialises"""
         self.baseform = QtGui.QLabel()
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))
 
