@@ -214,6 +214,7 @@ public:
     virtual void Paste(const Property &from);
 
     virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
+    virtual bool setPyPathValue(const App::ObjectIdentifier & path, const Py::Object &value);
     virtual App::any getPathValue(const App::ObjectIdentifier &path) const;
     virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const;
 

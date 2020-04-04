@@ -737,8 +737,8 @@ void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value
                                     step!=1?Py::Int(step).ptr():0),true);
         if(PyObject_SetItem(pyobj.ptr(),slice.ptr(),value.ptr())<0)
             Base::PyException::ThrowException();
-    }
-    FC_THROWM(Base::RuntimeError, "Invalid component: " << getName());
+    } else
+        FC_THROWM(Base::RuntimeError, "Invalid component: " << getName());
 }
 
 void ObjectIdentifier::Component::del(Py::Object &pyobj) const {
@@ -2140,12 +2140,19 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
     for(;idx<count;++idx)  {
         if(PyObject_TypeCheck(*pyobj, &DocumentObjectPy::Type))
             lastObj = static_cast<DocumentObjectPy*>(*pyobj)->getDocumentObjectPtr();
-        else if(lastObj) {
+
+        if(lastObj) {
             const char *attr = components[idx].getName().c_str();
             auto prop = lastObj->getPropertyByName(attr);
             if(!prop && pyobj.hasAttr(attr))
                 attr = 0;
             setPropDep(lastObj,prop,attr);
+            if(value && prop && idx+1 < components.size()) {
+                ObjectIdentifier path(*prop);
+                path.components.insert(path.components.end(), components.begin()+idx+1, components.end());
+                if(prop->setPyPathValue(path, *value))
+                    return Py::Object();
+            }
             lastObj = 0;
         }
         pyobj = components[idx].get(pyobj);

@@ -169,6 +169,11 @@ public:
         return false;
     }
 
+    /// Set python value of property
+    virtual bool setPyPathValue(const App::ObjectIdentifier &, const Py::Object &) {
+        return false;
+    }
+
     /// Convert p to a canonical representation of it
     virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
 

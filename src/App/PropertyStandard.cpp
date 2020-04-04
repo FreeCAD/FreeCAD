@@ -592,6 +592,12 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &, const App::any 
     }
 }
 
+bool PropertyEnumeration::setPyPathValue(const ObjectIdentifier &, const Py::Object &value)
+{
+    setPyObject(value.ptr());
+    return true;
+}
+
 App::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
