@@ -763,7 +763,7 @@ void DocumentObject::onChanged(const Property* prop)
             && !(prop->getType() & Prop_Output) 
             && !prop->testStatus(Property::Output)) 
     {
-        if(getDocument() && !getDocument()->testStatus(Document::Restoring)) {
+        if(getDocument() && !getDocument()->testStatus(Document::Restoring) && prop->isTouched()) {
             if(++_revision == 0)
                 ++_revision;
             FC_LOG("revision " << _revision << " " << prop->getFullName());

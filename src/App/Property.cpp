@@ -323,8 +323,8 @@ bool Property::testStatus(Status pos) const
 bool Property::testStatus(const StatusBits &bits, const StatusBits &mask) const
 {
     auto copy = _StatusBits;
-    if(!copy.test(Touched) && (mask.test(Touched) || bits.test(Touched)) && isTouched())
-        copy.set(Touched);
+    if(mask.test(Touched) || bits.test(Touched))
+        copy.set(Touched, isTouched());
     if((copy & mask).any())
         return false;
     return (copy & bits) == bits;
