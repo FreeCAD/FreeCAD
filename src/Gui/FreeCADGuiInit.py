@@ -50,10 +50,16 @@ class Workbench:
         self.__Workbench__.appendToolbar(name, cmds)
     def removeToolbar(self,name):
         self.__Workbench__.removeToolbar(name)
+    def listToolbars(self):
+        return self.__Workbench__.listToolbars()
+    def getToolbarItems(self):
+        return self.__Workbench__.getToolbarItems()
     def appendCommandbar(self,name,cmds):
         self.__Workbench__.appendCommandbar(name, cmds)
     def removeCommandbar(self,name):
         self.__Workbench__.removeCommandbar(name)
+    def listCommandbars(self):
+        return self.__Workbench__.listCommandbars()
     def appendMenu(self,name,cmds):
         self.__Workbench__.appendMenu(name, cmds)
     def removeMenu(self,name):
