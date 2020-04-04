@@ -224,6 +224,7 @@ def setLastPathToolBit(path):
 
 def lastPathToolLibrary():
     return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
+
 def setLastPathToolLibrary(path):
     return preferences().SetString(LastPathToolLibrary, path)
 
