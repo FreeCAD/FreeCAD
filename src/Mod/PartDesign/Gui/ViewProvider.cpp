@@ -236,6 +236,7 @@ void ViewProvider::updateData(const App::Property* prop)
                 pSuppressedView->PointColor.setValue(App::Color(1.0f));
                 pSuppressedView->Selectable.setValue(false);
                 pSuppressedView->enableFullSelectionHighlight(false, false, false);
+                pSuppressedView->setStatus(Gui::SecondaryView,true);
 
                 auto switchNode = getModeSwitch();
                 if(switchNode->isOfType(Gui::SoFCSwitch::getClassTypeId()))

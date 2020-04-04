@@ -189,6 +189,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.setStatus(App::Property::User2, false);
         }
         if (!Visibility.testStatus(App::Property::User1)
+                && !testStatus(SecondaryView)
                 && getObject() 
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
@@ -292,9 +293,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 
     pcObj->setStatus(App::ObjectStatus::ViewProviderAttached,true);
 
-    if(pcObj && pcObj->getNameInDocument() &&
-       Visibility.getValue()!=pcObj->Visibility.getValue())
+    if(pcObj && pcObj->getNameInDocument()
+             && !testStatus(SecondaryView)
+             && Visibility.getValue()!=pcObj->Visibility.getValue())
+    {
         pcObj->Visibility.setValue(Visibility.getValue());
+    }
 
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();

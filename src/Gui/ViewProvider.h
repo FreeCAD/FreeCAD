@@ -81,6 +81,7 @@ enum ViewStatus {
     isRestoring = 2,
     UpdatingView = 3,
     TouchDocument = 4,
+    SecondaryView = 5,
 };
 
 
