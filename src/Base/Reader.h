@@ -273,10 +273,10 @@ public:
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
 
-protected:
-
     /// read the next element
     void read(void);
+
+protected:
 
     void init(std::size_t bufsize);
 
