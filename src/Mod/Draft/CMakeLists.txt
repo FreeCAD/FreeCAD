@@ -104,6 +104,7 @@ SET(Modifier_tools
     draftguitools/gui_subelements.py
     draftguitools/gui_move.py
     draftguitools/gui_styles.py
+    draftguitools/gui_rotate.py
 )
 
 SET(Draft_GUI_tools
