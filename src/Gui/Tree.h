@@ -181,6 +181,7 @@ protected Q_SLOTS:
     void onPreSelectTimer();
     void onSelectTimer();
     void onShowHidden();
+    void onShowTempDoc();
     void onHideInTree();
     void onSearchObjects();
 
@@ -223,6 +224,7 @@ private:
     QAction* markRecomputeAction;
     QAction* recomputeObjectAction;
     QAction* showHiddenAction;
+    QAction* showTempDocAction;
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
     QAction* closeDocAction;
@@ -239,8 +241,9 @@ private:
     QTimer* selectTimer;
     QTimer* preselectTimer;
     QTime preselectTime;
-    static std::unique_ptr<QPixmap> documentPixmap;
-    static std::unique_ptr<QPixmap> documentPartialPixmap;
+    QPixmap documentPixmap;
+    QPixmap documentPartialPixmap;
+    QPixmap documentTempPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
 

@@ -82,8 +82,6 @@ using namespace Gui;
 
 /////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
-std::unique_ptr<QPixmap>  TreeWidget::documentPartialPixmap;
 std::set<TreeWidget *> TreeWidget::Instances;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
@@ -383,12 +381,17 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
-    connect(this->showHiddenAction, SIGNAL(triggered()),
+    connect(this->showHiddenAction, SIGNAL(toggled(bool)),
             this, SLOT(onShowHidden()));
+
+    this->showTempDocAction = new QAction(this);
+    this->showTempDocAction->setCheckable(true);
+    connect(this->showTempDocAction, SIGNAL(toggled(bool)),
+            this, SLOT(onShowTempDoc()));
 
     this->hideInTreeAction = new QAction(this);
     this->hideInTreeAction->setCheckable(true);
-    connect(this->hideInTreeAction, SIGNAL(triggered()),
+    connect(this->hideInTreeAction, SIGNAL(toggled(bool)),
             this, SLOT(onHideInTree()));
 
     this->createGroupAction = new QAction(this);
@@ -494,10 +497,31 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     preselectTime.start();
 
     setupText();
-    if(!documentPixmap) {
-        documentPixmap.reset(new QPixmap(Gui::BitmapFactory().pixmap("Document")));
-        QIcon icon(*documentPixmap);
-        documentPartialPixmap.reset(new QPixmap(icon.pixmap(documentPixmap->size(),QIcon::Disabled)));
+
+    if(instance() != this) {
+        documentPixmap = instance()->documentPixmap;
+        documentPartialPixmap = instance()->documentPartialPixmap;
+        documentTempPixmap = instance()->documentTempPixmap;
+    } else {
+        documentPixmap = Gui::BitmapFactory().pixmap("Document");
+        QIcon icon(documentPixmap);
+        documentPartialPixmap = icon.pixmap(documentPixmap.size(),QIcon::Disabled);
+
+        const char * const hidden_xpm[]={
+            "9 7 3 1",
+            ". c None",
+            "# c #000000",
+            "a c #ffffff",
+            "...###...",
+            "..#aaa#..",
+            ".#a###a#.",
+            "#aa###aa#",
+            ".#a###a#.",
+            "..#aaa#..",
+            "...###..."};
+        int w = iconSize();
+        documentTempPixmap = BitmapFactory().merge(
+                documentPixmap.scaled(w,w), QPixmap(hidden_xpm), BitmapFactoryInst::TopLeft);
     }
 }
 
@@ -840,6 +864,10 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         if (active)
             active->setChecked(true);
         subMenu.addActions(subMenuGroup.actions());
+        contextMenu.addAction(this->showTempDocAction);
+    } else {
+        contextMenu.addSeparator();
+        contextMenu.addAction(this->showTempDocAction);
     }
 
     if (contextMenu.actions().count() > 0) {
@@ -2308,12 +2336,16 @@ void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options,
 
 void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
 {
-    if(Doc.getDocument()->testStatus(App::Document::TempDoc))
+    if(!showTempDocAction->isChecked()
+            && Doc.getDocument()->testStatus(App::Document::TempDoc))
         return;
     DocumentItem* item = new DocumentItem(&Doc, this->rootItem);
     if(isMainDoc)
         this->expandItem(item);
-    item->setIcon(0, *documentPixmap);
+    if(Doc.getDocument()->testStatus(App::Document::TempDoc))
+        item->setIcon(0, documentTempPixmap);
+    else
+        item->setIcon(0, documentPixmap);
     item->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
     DocumentMap[ &Doc ] = item;
 }
@@ -2572,7 +2604,7 @@ void TreeWidget::onUpdateStatus(void)
         }
 
         if(doc->testStatus(App::Document::PartialDoc))
-            docItem->setIcon(0, *documentPartialPixmap);
+            docItem->setIcon(0, documentPartialPixmap);
         else if(docItem->_ExpandInfo) {
             for(auto &entry : *docItem->_ExpandInfo) {
                 const char *name = entry.first.c_str();
@@ -2813,6 +2845,9 @@ void TreeWidget::setupText()
     this->showHiddenAction->setText(tr("Show hidden items"));
     this->showHiddenAction->setStatusTip(tr("Show hidden tree view items"));
 
+    this->showTempDocAction->setText(tr("Show temporary document"));
+    this->showTempDocAction->setStatusTip(tr("Show hidden temporary document items"));
+
     this->hideInTreeAction->setText(tr("Hide item"));
     this->hideInTreeAction->setStatusTip(tr("Hide the item in tree"));
 
@@ -2869,6 +2904,31 @@ void TreeWidget::onShowHidden()
         docItem = static_cast<DocumentObjectItem*>(contextItem)->getOwnerDocument();
     if(docItem)
         docItem->setShowHidden(showHiddenAction->isChecked());
+}
+
+void TreeWidget::onShowTempDoc()
+{
+    bool show = showTempDocAction->isChecked();
+    for(auto doc : App::GetApplication().getDocuments()) {
+        if(!doc->testStatus(App::Document::TempDoc))
+            continue;
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(!gdoc)
+            continue;
+        auto iter = DocumentMap.find(gdoc);
+        if(iter != DocumentMap.end()) {
+            iter->second->setHidden(!show);
+            continue;
+        }
+        if(show) {
+            slotNewDocument(*gdoc, false);
+            auto &ids = NewObjects[doc->getName()];
+            for(auto obj : doc->getObjects())
+                ids.push_back(obj->getID());
+        }
+    }
+    if(NewObjects.size())
+        _updateStatus();
 }
 
 void TreeWidget::onHideInTree()
