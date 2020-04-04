@@ -303,7 +303,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
 
     bool res = false;
 
-    std::unordered_set<Property*> newProps;
+    std::unordered_map<Property*, Property*> newProps;
     std::vector<Property*> props;
     linked->getPropertyList(props);
     for(auto prop : props) {
@@ -314,7 +314,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
         res = true;
 
         const char* linkedGroupName = prop->getGroup();
-        if(!linkedGroupName)
+        if(!linkedGroupName || !linkedGroupName[0])
             linkedGroupName = "Base";
 
         std::string groupName;
@@ -353,7 +353,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
             }
             p->setStatusValue(prop->getStatus());
         }
-        newProps.insert(p);
+        newProps[p] = prop;
     }
 
     if(checkExisting) {
@@ -373,9 +373,9 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
     if(!copyOnChangeConns)
         return res;
 
-    for(auto prop : newProps) {
+    for(auto &v : newProps) {
         // sync configuration properties
-        copyOnChangeConns->push_back(prop->signalChanged.connect([parent](const Property &prop) {
+        copyOnChangeConns->push_back(v.second->signalChanged.connect([parent](const Property &prop) {
             if(!prop.testStatus(Property::CopyOnChange))
                 return;
             auto p = parent->getPropertyByName(prop.getName());
