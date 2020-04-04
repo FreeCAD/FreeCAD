@@ -183,6 +183,8 @@ public:
     void hideViewProvider(const App::DocumentObject*);
     /// Get the view provider of the given object
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
+    /// Auto pick a new active document
+    void switchActiveDocument();
     //@}
 
     /// true when the application shutting down

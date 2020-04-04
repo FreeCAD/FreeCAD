@@ -736,6 +736,11 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
+    // If the active window does not belong to the active view, then the
+    // MainWindow will not receive active view change signal, and there will be
+    // no auto switching new active document. We need to do it manually.
+    bool tryNewActiveDocument = (doc->second->getActiveView() != getMainWindow()->activeWindow());
+
     // Inside beforeDelete() a view provider may finish editing mode
     // and therefore can alter the selection.
     doc->second->beforeDelete();
@@ -747,14 +752,15 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 
-    // If the active document gets destructed we must set it to 0. If there are further existing documents then the
-    // view that becomes active sets the active document again. So, we needn't worry about this.
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
+
+    if(tryNewActiveDocument)
+        switchActiveDocument();
 }
 
 void Application::slotRelabelDocument(const App::Document& Doc)
@@ -855,31 +861,36 @@ void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
     this->signalResetEdit(vp);
 }
 
+void Application::switchActiveDocument()
+{
+    if (App::GetApplication().isClosingAll() || d->activeDocument || d->documents.empty())
+        return;
+    Document *gdoc = 0;
+    for(auto &v : d->documents) {
+        if(v.second->getDocument()->testStatus(App::Document::TempDoc))
+            continue;
+        else if (!gdoc)
+            gdoc = v.second;
+        Gui::MDIView* view = v.second->getActiveView();
+        if(view) {
+            setActiveDocument(v.second);
+            getMainWindow()->setActiveWindow(view);
+            return;
+        }
+    }
+    if(gdoc) {
+        setActiveDocument(gdoc);
+        activateView(View3DInventor::getClassTypeId(),true);
+    }
+}
+
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
 {
     if (!d->isClosing && pcDoc) {
         try {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
-            if (!d->activeDocument && d->documents.size()) {
-                Document *gdoc = 0;
-                for(auto &v : d->documents) {
-                    if(v.second->getDocument()->testStatus(App::Document::TempDoc))
-                        continue;
-                    else if (!gdoc)
-                        gdoc = v.second;
-                    Gui::MDIView* view = v.second->getActiveView();
-                    if(view) {
-                        setActiveDocument(v.second);
-                        getMainWindow()->setActiveWindow(view);
-                        return;
-                    }
-                }
-                if(gdoc) {
-                    setActiveDocument(gdoc);
-                    activateView(View3DInventor::getClassTypeId(),true);
-                }
-            }
+            switchActiveDocument();
         }
         catch (const Base::Exception& e) {
             e.ReportException();
