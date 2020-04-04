@@ -258,6 +258,8 @@ protected:
 
     virtual void onSettingDocument();
 
+    void updateBindings();
+
     /* Properties for used cells */
     App::DynamicProperty &props;
 

@@ -230,10 +230,6 @@ void SheetTableView::editMode(QAction *action) {
                 Gui::cmdAppObject(sheet, std::ostringstream() << "setEditMode('"
                         << addr.toString() << "', '"
                         << Cell::editModeName((Cell::EditMode)mode) << "')");
-                if(cell->isPersistentEditMode())
-                    openPersistentEditor(index);
-                else
-                    closePersistentEditor(index);
             }
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -253,10 +249,6 @@ void SheetTableView::onEditPersistent(bool checked) {
             if(cell) {
                 Gui::cmdAppObject(sheet, std::ostringstream() << "setPersistentEdit('"
                         << addr.toString() << "', " << (checked?"True":"False") << ")");
-                if(cell->getEditMode() && cell->isPersistentEditMode())
-                    openPersistentEditor(index);
-                else
-                    closePersistentEditor(index);
             }
         }
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

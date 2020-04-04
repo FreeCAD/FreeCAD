@@ -92,6 +92,10 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(hiddenRows, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden rows");
     ADD_PROPERTY_TYPE(hiddenColumns, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden columns");
     ADD_PROPERTY_TYPE(PythonMode, (false), "Spreadsheet", Prop_None, "Set default expression syntax mode");
+
+    ExpressionEngine.expressionChanged.connect([this](const App::ObjectIdentifier &) {
+        this->updateBindings();
+    });
 }
 
 /**
@@ -834,6 +838,38 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
     return _getBorder(boundRanges, address);
 }
 
+void Sheet::updateBindings()
+{
+    std::set<Range> oldRangeSet(boundRanges.begin(), boundRanges.end());
+    std::set<Range> newRangeSet;
+    std::set<Range> rangeSet;
+    boundRanges.clear();
+    for(auto &v : ExpressionEngine.getExpressions()) {
+        CellAddress from,to;
+        if(!cells.isBindingPath(v.first,&from,&to))
+            continue;
+        App::Range range(from,to);
+        if(!oldRangeSet.erase(range))
+            newRangeSet.insert(range);
+        rangeSet.insert(range);
+    }
+    boundRanges.reserve(rangeSet.size());
+    boundRanges.insert(boundRanges.end(),rangeSet.begin(),rangeSet.end());
+    for(auto range : boundRanges) {
+        do {
+            auto cell = getCell(*range);
+            if(cell && cell->getEditMode()) {
+                newRangeSet.insert(range);
+                cell->setEditMode(Cell::EditNormal);
+            }
+        } while (range.next());
+    }
+    for(auto &range : oldRangeSet)
+        rangeUpdated(range);
+    for(auto &range : newRangeSet)
+        rangeUpdated(range);
+}
+
 /**
   * Update the document properties.
   *
@@ -841,17 +877,7 @@ unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
-    std::set<Range> rangeMap(boundRanges.begin(), boundRanges.end());
-    boundRanges.clear();
-    for(auto &v : ExpressionEngine.getExpressions()) {
-        CellAddress from,to;
-        if(!cells.isBindingPath(v.first,&from,&to))
-            continue;
-        boundRanges.emplace_back(from,to);
-        rangeMap.insert(boundRanges.back());
-    }
-    for(auto &range : boundRanges)
-        rangeUpdated(range);
+    updateBindings();
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();
