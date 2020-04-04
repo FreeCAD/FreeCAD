@@ -532,6 +532,10 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     for(auto it=objs.rbegin(); it!=objs.rend(); ++it)
                         _CopiedObjs.emplace_back(*it);
                     copied = objs.back();
+                    // IMPORTANT! must make a recomputation first before any
+                    // further change so that we can generate the correct
+                    // geometry element map.
+                    copied->recomputeFeature(true);
                 }
             }
 
