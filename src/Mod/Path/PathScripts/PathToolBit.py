@@ -41,8 +41,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule()
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
@@ -304,6 +304,7 @@ class ToolBit(object):
         return None
 
     def saveToFile(self, obj, path, setFile=True):
+        print('were saving now')
         try:
             with open(path, 'w') as fp:
                 json.dump(self.shapeAttrs(obj), fp, indent='  ')
@@ -329,7 +330,11 @@ class ToolBit(object):
         params = {}
         for name in self.propertyNamesAttribute(obj):
             print(f"shapeattr {name}")
-            params[name] = PathUtil.getPropertyValueString(obj, name)
+            if name == "UserAttributes":
+                for key, value in obj.UserAttributes.items():
+                    params[key] = value
+            else:
+                params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['attribute'] = params
         return attrs
 
@@ -346,7 +351,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
         self.addProperty('App::PropertyDistance', 'LengthOffset', PropertyGroupAttribute, translate('PathToolBit', 'Length offset in Z direction'))
         self.addProperty('App::PropertyInteger',  'Flutes', PropertyGroupAttribute, translate('PathToolBit', 'The number of flutes'))
         self.addProperty('App::PropertyDistance', 'ChipLoad', PropertyGroupAttribute, translate('PathToolBit', 'Chipload as per manufacturer'))
-      #  self.addProperty('App::PropertyMap', 'UserAttributes', PropertyGroupAttribute, translate('PathTooolBit', 'User Defined Values'))
+        self.addProperty('App::PropertyMap', 'UserAttributes', PropertyGroupAttribute, translate('PathTooolBit', 'User Defined Values'))
 
 
 class ToolBitFactory(object):
@@ -364,18 +369,22 @@ class ToolBitFactory(object):
         proto = AttributePrototype()
         uservals = {}
         for pname in params:
+            print(f"pname: {pname}")
             try:
                 prop = proto.getProperty(pname)
                 val =  prop.valueFromString(params[pname])
                 prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
             except:
-                prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
-                setattr(obj, pname, params[pname])
-                #prop = proto.getProperty("UserAttributes")
-                #uservals.update({pname: params[pname]})
-                #prop = .setupPropertyobj, pname, "UserAttributes", prop.valueFromString(params[pname]))
+                # prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
+                # setattr(obj, pname, params[pname])
+                prop = proto.getProperty("UserAttributes")
+                uservals.update({pname: params[pname]})
+                #prop.setupProperty(obj, pname, "UserAttributes", prop.valueFromString(params[pname]))
 
-            print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
+        if len(uservals.items()) > 0:
+            prop.setupProperty(obj, "UserAttributes", PropertyGroupAttribute, uservals)
+
+            # print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
             #prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 

@@ -269,6 +269,7 @@ class ToolBitLibrary(object):
         self.model.clear()
         self.model.setHorizontalHeaderLabels(self.columnNames())
         if path:
+            print(f"Path: {path}")
             with open(path) as fp:
                 library = json.load(fp)
             for toolBit in library['tools']:

@@ -143,7 +143,7 @@ class PropertyString(Property):
         return "String"
 
 class PropertyMap(Property):
-    def typeString(self)
+    def typeString(self):
         return "Map"
 
     def displayString(self, value):

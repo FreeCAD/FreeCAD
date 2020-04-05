@@ -84,33 +84,59 @@ class ToolBitEditor(object):
         self.proto = PathToolBit.AttributePrototype()
         self.props = sorted(self.proto.properties)
         self.delegate = PathSetupSheetGui.Delegate(self.form)
-        self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
+        self.model = QtGui.QStandardItemModel(len(self.props)-1, 3, self.form)
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
+
 
         for i, name in enumerate(self.props):
             print(f"propname: {name}")
+
             prop = self.proto.getProperty(name)
             isset = hasattr(tool, name)
+
             if isset:
                 prop.setValue(getattr(tool, name))
 
-            self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, 2), prop,  PathSetupSheetGui.Delegate.PropertyRole)
-            self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
+            if name == "UserAttributes":
+                continue
 
-            self.model.item(i, 0).setCheckable(True)
-            self.model.item(i, 0).setText('')
-            self.model.item(i, 1).setEditable(False)
-            self.model.item(i, 1).setToolTip(prop.info)
-            self.model.item(i, 2).setToolTip(prop.info)
-
-            if isset:
-                self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
             else:
-                self.model.item(i, 0).setCheckState(QtCore.Qt.Unchecked)
-                self.model.item(i, 1).setEnabled(False)
-                self.model.item(i, 2).setEnabled(False)
+
+                self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
+                self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
+                self.model.setData(self.model.index(i, 2), prop,  PathSetupSheetGui.Delegate.PropertyRole)
+                self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
+
+                self.model.item(i, 0).setCheckable(True)
+                self.model.item(i, 0).setText('')
+                self.model.item(i, 1).setEditable(False)
+                self.model.item(i, 1).setToolTip(prop.info)
+                self.model.item(i, 2).setToolTip(prop.info)
+
+                if isset:
+                    self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
+                else:
+                    self.model.item(i, 0).setCheckState(QtCore.Qt.Unchecked)
+                    self.model.item(i, 1).setEnabled(False)
+                    self.model.item(i, 2).setEnabled(False)
+
+        if hasattr(tool, "UserAttributes"):
+            for key, value in tool.UserAttributes.items():
+                print(key, value)
+                c1 = QtGui.QStandardItem()
+                c1.setCheckable(False)
+                c1.setEditable(False)
+                c1.setCheckState(QtCore.Qt.CheckState.Checked)
+
+                c1.setText('')
+                c2 = QtGui.QStandardItem(key)
+                c2.setEditable(False)
+                c3 = QtGui.QStandardItem(value)
+                c3.setEditable(False)
+
+                self.model.appendRow([c1, c2, c3])
+                #QtGui.QStandardItem([True, key, value]))
+
 
         self.form.attrTable.setModel(self.model)
         self.form.attrTable.setItemDelegateForColumn(2, self.delegate)
