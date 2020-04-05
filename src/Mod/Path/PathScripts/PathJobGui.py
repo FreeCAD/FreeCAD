@@ -1123,8 +1123,6 @@ class TaskPanel:
 
         sel = FreeCADGui.Selection.getSelectionEx()
 
-        self.form.linkStockAndModel.setDown(True)
-
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             if 'Vertex' == sel[0].SubObjects[0].ShapeType:
                 self.form.modelSetXAxis.setEnabled(False)
