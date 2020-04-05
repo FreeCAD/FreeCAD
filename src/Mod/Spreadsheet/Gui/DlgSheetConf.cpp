@@ -29,6 +29,7 @@
 #include <App/Document.h>
 #include <App/Application.h>
 #include <App/ExpressionParser.h>
+#include <App/AutoTransaction.h>
 #include <Gui/CommandT.h>
 #include "ui_DlgSheetConf.h"
 
@@ -122,23 +123,19 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
     }
 
     Cell *cell = sheet->getCell(from);
-    if(cell && cell->getExpression()) {
-        auto expr = cell->getExpression();
-        auto fexpr = SimpleStatement::cast<FunctionExpression>(expr);
-        if(fexpr && fexpr->type()==FunctionExpression::HREF && fexpr->getArgs().size()==1)
-            expr = fexpr->getArgs().front().get();
-        auto vexpr = SimpleStatement::cast<VariableExpression>(expr);
-        if(vexpr) {
-            auto prop = Base::freecad_dynamic_cast<PropertyEnumeration>(
-                                vexpr->getPath().getProperty());
-            if(prop) {
-                auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
-                if(obj) {
-                    path = ObjectIdentifier(sheet);
-                    path.setDocumentObjectName(obj,true);
-                    path << ObjectIdentifier::SimpleComponent(prop->getName());
-                    return prop;
-                }
+    if(!cell)
+        return nullptr;
+    auto vexpr = VariableExpression::isDoubleBinding(cell->getExpression());
+    if(vexpr) {
+        auto prop = Base::freecad_dynamic_cast<PropertyEnumeration>(
+                            vexpr->getPath().getProperty());
+        if(prop) {
+            auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+            if(obj) {
+                path = ObjectIdentifier(sheet);
+                path.setDocumentObjectName(obj,true);
+                path << ObjectIdentifier::SimpleComponent(prop->getName());
+                return prop;
             }
         }
     }
@@ -175,7 +172,7 @@ void DlgSheetConf::accept()
         if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) 
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
 
-        Gui::Command::openCommand("Setup conf table");
+        AutoTransaction guard("Setup conf table");
         commandActive = true;
 
         // unbind any previous binding
@@ -205,14 +202,8 @@ void DlgSheetConf::accept()
         // Bind the enumeration items to the column of configuration names
         Gui::cmdAppObjectArgs(obj, "setExpression('%s.Enum', '%s.cells[<<%s>>]')",
                 propName, sheet->getFullName(), rangeConf);
-        obj->recomputeFeature();
 
-        // Bind the first cell to string value of the PropertyEnumeration. We
-        // could have just bind the entire row as below, but binding the first
-        // cell separately using a simpler expression can make it easy for us
-        // to extract the name of the PropertyEnumeration for editing or unsetup.
-        Gui::cmdAppObjectArgs(sheet, "set('%s', '=href(%s.String)')",
-                from.toString(true), prop->getFullName());
+        Gui::cmdAppObjectArgs(obj, "recompute()");
 
         // Adjust the range to skip the first cell
         range = Range(from.row(),from.col()+1,to.row(),to.col());
@@ -224,6 +215,15 @@ void DlgSheetConf::accept()
             range.from().toString(true), range.to().toString(true),
             range.from().toString(true,false,true), prop->getFullName(), from.row()+2,
             range.to().toString(true,false,true), prop->getFullName(), from.row()+2);
+
+        // Double bind the first cell to the enumeration property, so that we
+        // can select the configuration both inside the spreadsheet and at the
+        // object's property view.
+        std::string cellAddr = from.toString(true);
+        Gui::cmdAppObjectArgs(sheet, "set('%s', '=dbind(%s.All)')", cellAddr, prop->getFullName());
+        Gui::cmdAppObjectArgs(sheet, "recompute()");
+        Gui::cmdAppObjectArgs(sheet, "setEditMode('%s', 'Combo', False)", cellAddr);
+        Gui::cmdAppObjectArgs(sheet, "setPersistentEdit('%s')", cellAddr);
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
@@ -246,7 +246,7 @@ void DlgSheetConf::onDiscard() {
 
         Range range(from,to);
 
-        Gui::Command::openCommand("Unsetup conf table");
+        AutoTransaction guard("Unsetup conf table");
         commandActive = true;
 
         // unbind any previous binding
@@ -261,11 +261,15 @@ void DlgSheetConf::onDiscard() {
                     r.from().toString(), r.to().toString());
         }
 
+        Gui::cmdAppObjectArgs(sheet, "clear('%s')", from.toString(true));
+
         if(prop) {
             auto obj = path.getDocumentObject();
             if(!obj)
                 FC_THROWM(Base::RuntimeError, "Object not found");
             Gui::cmdAppObjectArgs(obj, "setExpression('%s.Enum', None)", prop->getName());
+            if(prop->testStatus(Property::PropDynamic))
+                Gui::cmdAppObjectArgs(obj, "removeProperty('%s')", prop->getName());
         }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
