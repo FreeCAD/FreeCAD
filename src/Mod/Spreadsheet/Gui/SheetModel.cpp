@@ -535,9 +535,9 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             Gui::Command::openCommand("Edit cell");
-            sheet->editCell(address, value);
+            if(sheet->editCell(address, value))
+                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             Gui::Command::commitCommand();
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         catch (const Base::Exception& e) {
             e.ReportException();

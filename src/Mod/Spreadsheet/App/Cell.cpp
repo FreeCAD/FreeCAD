@@ -1067,24 +1067,16 @@ bool Cell::setEditMode(const char *name, bool silent) {
         SHEET_CELL_MODES
     };
     auto iter = _Map.find(name);
-    if(iter == _Map.end())
-    if(_Map.empty()) {
+    if(iter == _Map.end()) {
         if(silent)
             FC_THROWM(Base::ValueError, "Unknown edit mode: " << (name?name:"?"));
         FC_WARN("Unknown edit mode " << (name?name:"?"));
         return false;
     }
-    if(silent) {
-        if(editMode != iter->second) {
-            PropertySheet::AtomicPropertyChange signaler(*owner);
-            editMode = iter->second;
-        }
-    } else
-        setEditMode(iter->second);
-    return true;
+    return setEditMode(iter->second, silent);
 }
 
-void Cell::setEditData(const QVariant &d) {
+bool Cell::setEditData(const QVariant &d) {
     if(hasException() && editMode!=EditNormal)
         FC_THROWM(Base::ExpressionError,exceptionStr);
 
@@ -1099,11 +1091,13 @@ void Cell::setEditData(const QVariant &d) {
             Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
             if(obj.isCallable()) {
                 try {
-                    Py::Callable(obj).apply();
+                    Py::Object res = Py::Callable(obj).apply();
+                    if(res.isBoolean())
+                        return res.isTrue();
                 }catch(Py::Exception &) {
                     Base::PyException::ThrowException();
                 }
-                return;
+                return true;
             }
         }
         FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
@@ -1119,21 +1113,43 @@ void Cell::setEditData(const QVariant &d) {
             index = list[1].toInt()-1;
         }
         if(data.empty() || index<0)
-            FC_THROWM(Base::ValueError,"invalid value");
+            return false;
+
+        auto oldData = getEditData(true).toList();
+        if(oldData.size()>1) {
+            int oldIndex = oldData[0].toInt();
+            if(oldIndex > 0 && oldIndex == index+1)
+                return false;
+            if(oldData[0].toString() == list[0].toString())
+                return false;
+        }
+
         auto expr = SimpleStatement::cast<ListExpression>(expression.get());
         if(expr && expr->getSize()>=2) {
-            App::ExpressionPtr e(expr->copy());
             auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(owner->getContainer());
-
-            bool isString = false;
-            if(expr->getItems()[1]->eval()->isDerivedFrom(StringExpression::getClassTypeId())) {
-                isString = true;
-                static_cast<App::ListExpression&>(*e).setItem(1,
-                        App::StringExpression::create(parent, std::move(data)));
-            } else
+            auto vexpr = VariableExpression::isDoubleBinding(expr->getItems()[0].get());
+            bool isString = expr->getItems()[1]->eval()->isDerivedFrom(StringExpression::getClassTypeId());
+            if (isString) {
+                if(vexpr) {
+                    Base::PyGILStateLocker lock;
+                    PropertyString tmp;
+                    tmp.setValue(data.c_str());
+                    vexpr->assign(Py::asObject(tmp.getPyObject()));
+                } else {
+                    App::ExpressionPtr e(expr->copy());
+                    static_cast<App::ListExpression&>(*e).setItem(1,
+                            App::StringExpression::create(parent, std::move(data)));
+                    setExpression(std::move(e));
+                }
+            } else if (vexpr) {
+                Base::PyGILStateLocker lock;
+                vexpr->assign(Py::Int(index));
+            } else {
+                App::ExpressionPtr e(expr->copy());
                 static_cast<App::ListExpression&>(*e).setItem(1,
                         App::NumberExpression::create(parent, index));
-            setExpression(std::move(e));
+                setExpression(std::move(e));
+            }
             if(expr->getSize()>=3) {
                 Base::PyGILStateLocker lock;
                 try {
@@ -1153,38 +1169,41 @@ void Cell::setEditData(const QVariant &d) {
                     Base::PyException::ThrowException();
                 }
             }
-            return;
-        } else {
-            int value = -1;
-            if (boost::equals(data, "True"))
-                value = 1;
-            else if(boost::equals(data, "False"))
-                value = 0;
-            auto expr = SimpleStatement::cast<ConstantExpression>(expression.get());
-            if(value >= 0 && expr && (boost::equals(expr->getName(),"True")
-                                     || boost::equals(expr->getName(),"False")))
-            {
-                setExpression(Expression::parse(
-                            Base::freecad_dynamic_cast<App::DocumentObject>(
-                                owner->getContainer()), data));
-                return;
-            }
+            return true;
+        }
+        auto vexpr = VariableExpression::isDoubleBinding(expression.get());
+        if(vexpr) {
+            Base::PyGILStateLocker lock;
+            vexpr->assign(Py::Int(index));
+            return true;
         }
         FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                 "' contains a list expression of [dict|list, string]");
         break;
     }
     case EditLabel: {
-        std::string data = d.toString().toUtf8().constData();
+        QString dtext  = d.toString();
+        if(dtext == getEditData(true).toString())
+            return false;
+
+        std::string data = dtext.toUtf8().constData();
         auto expr = SimpleStatement::cast<App::ListExpression>(expression.get());
         if(expr && expr->getSize()>=1) {
-            App::ExpressionPtr e(expr->copy());
-            static_cast<App::ListExpression&>(*e).setItem(0,
-                    App::StringExpression::create(
-                        Base::freecad_dynamic_cast<App::DocumentObject>(
-                            owner->getContainer()),data.c_str()));
-            setExpression(std::move(e));
-            return;
+            auto vexpr = VariableExpression::isDoubleBinding(expr->getItems()[0].get());
+            if(vexpr) {
+                Base::PyGILStateLocker lock;
+                PropertyString tmp;
+                tmp.setValue(data.c_str());
+                vexpr->assign(Py::asObject(tmp.getPyObject()));
+            } else {
+                App::ExpressionPtr e(expr->copy());
+                static_cast<App::ListExpression&>(*e).setItem(0,
+                        App::StringExpression::create(
+                            Base::freecad_dynamic_cast<App::DocumentObject>(
+                                owner->getContainer()),data.c_str()));
+                setExpression(std::move(e));
+            }
+            return true;
         }
         FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                 "' to be a list expression of [string...]");
@@ -1192,44 +1211,80 @@ void Cell::setEditData(const QVariant &d) {
     }
     case EditQuantity: {
         auto q = qvariant_cast<Base::Quantity>(d);
+        auto oldData = getEditData(true);
+        auto oldHash = oldData.toHash();
+        if(oldHash.isEmpty()) {
+            if(q == qvariant_cast<Base::Quantity>(oldData))
+                return false;
+        } else if (q == qvariant_cast<Base::Quantity>(oldHash[QLatin1String("value")]))
+            return false;
+        
         auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(owner->getContainer());
         std::ostringstream ss;
         ss << std::setprecision(std::numeric_limits<double>::digits10 + 2)
            << q.getValue() << " " << q.getUnit().getStdString();
         auto res = Expression::parse(parent,ss.str());
         auto expr = SimpleStatement::cast<App::ListExpression>(expression.get());
-        if(!expr)
-            setExpression(std::move(res));
-        else {
-            auto newexpr = ListExpression::create(parent);
-            static_cast<ListExpression&>(*newexpr).append(std::move(res));
+        if(!expr) {
+            auto vexpr = VariableExpression::isDoubleBinding(expression.get());
+            if(vexpr) {
+                Base::PyGILStateLocker lock;
+                vexpr->assign(pyFromQuantity(q));
+            } else 
+                setExpression(std::move(res));
+        } else {
             const auto &items = expr->getItems();
-            for(size_t i=1; i<items.size(); ++i)
-                static_cast<ListExpression&>(*newexpr).append(items[i]->copy());
-            setExpression(std::move(newexpr));
+            auto vexpr = VariableExpression::isDoubleBinding(items[0].get());
+            if(vexpr) {
+                Base::PyGILStateLocker lock;
+                vexpr->assign(pyFromQuantity(q));
+            } else {
+                auto newexpr = ListExpression::create(parent);
+                static_cast<ListExpression&>(*newexpr).append(std::move(res));
+                for(size_t i=1; i<items.size(); ++i)
+                    static_cast<ListExpression&>(*newexpr).append(items[i]->copy());
+                setExpression(std::move(newexpr));
+            }
         }
         break;
     }
     case EditCheckBox: {
+        bool checked = d.toBool();
+        if(getEditData(true).toBool() == checked)
+            return false;
         auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(owner->getContainer());
-        auto res = Expression::parse(parent, d.toBool()?"True":"False");
         auto expr = SimpleStatement::cast<App::ListExpression>(expression.get());
-        if(!expr)
-            setExpression(std::move(res));
-        else {
-            auto newexpr = ListExpression::create(parent);
-            static_cast<ListExpression&>(*newexpr).append(std::move(res));
+        if(!expr) {
+            auto vexpr = VariableExpression::isDoubleBinding(expression.get());
+            if(vexpr) {
+                Base::PyGILStateLocker lock;
+                vexpr->assign(Py::Boolean(checked));
+            } else {
+                auto res = Expression::parse(parent, checked?"True":"False");
+                setExpression(std::move(res));
+            }
+        } else {
             const auto &items = expr->getItems();
-            for(size_t i=1; i<items.size(); ++i)
-                static_cast<ListExpression&>(*newexpr).append(items[i]->copy());
-            setExpression(std::move(newexpr));
+            auto vexpr = VariableExpression::isDoubleBinding(items[0].get());
+            if(vexpr) {
+                Base::PyGILStateLocker lock;
+                vexpr->assign(Py::Boolean(checked));
+            } else {
+                auto res = Expression::parse(parent, checked?"True":"False");
+                auto newexpr = ListExpression::create(parent);
+                static_cast<ListExpression&>(*newexpr).append(std::move(res));
+                for(size_t i=1; i<items.size(); ++i)
+                    static_cast<ListExpression&>(*newexpr).append(items[i]->copy());
+                setExpression(std::move(newexpr));
+            }
         }
         break;
     }
     default:
         setContent(d.toString().toUtf8().constData());
-        break;
+        return owner->isTouched();
     }
+    return true;
 }
 
 QVariant Cell::getEditData(bool silent) const {
@@ -1261,17 +1316,7 @@ QVariant Cell::getEditData(bool silent) const {
                     "' evaluates to a Python callable");
         break;
     }
-    case EditCombo: {
-        auto expr = SimpleStatement::cast<ConstantExpression>(expression.get());
-        if(expr && (boost::equals(expr->getName(),"True") || boost::equals(expr->getName(),"False"))) {
-            QList<QVariant> list;
-            list.append(QString::fromLatin1(expr->getName()));
-            list.append(QString::fromLatin1("False"));
-            list.append(QString::fromLatin1("True"));
-            return list;
-        }
-        // fall through
-    }
+    case EditCombo:
     case EditLabel: {
         if(!owner || !owner->getContainer()) {
             if(silent) break;
@@ -1466,9 +1511,61 @@ QVariant Cell::getDisplayData(bool silent) const {
     return getEditData(silent);
 }
 
-void Cell::setEditMode(EditMode mode) {
-    if(editMode == mode) 
-        return;
+Py::Object Cell::getPyValue() const {
+    switch(getEditMode()) {
+    case EditCombo: {
+        auto list = getEditData(true).toList();
+        if(list.isEmpty())
+            return Py::Object();
+
+        int index = list[0].toInt();
+        if(index > 0)
+            return Py::Int(index-1);
+
+        PropertyString tmp;
+        tmp.setValue(list[0].toString().toUtf8().constData());
+        return Py::asObject(tmp.getPyObject());
+    }
+    case EditLabel: {
+        PropertyString tmp;
+        tmp.setValue(getEditData(true).toString().toUtf8().constData());
+        return Py::asObject(tmp.getPyObject());
+    }
+    case EditQuantity: {
+        auto res = getEditData(true);
+        auto hash = res.toHash();
+        Base::Quantity q;
+        auto iter = hash.find(QString::fromLatin1("value"));
+        if(iter == hash.end())
+            q = qvariant_cast<Base::Quantity>(res);
+        else
+            q = qvariant_cast<Base::Quantity>(iter.value());
+        return pyFromQuantity(q);
+    }
+    case EditButton:
+        return Py::Object();
+    case EditCheckBox: 
+        return Py::Boolean(getEditData(true).toBool());
+    case EditNormal:
+        if(expression)
+            return expression->getPyValue();
+        break;
+    default:
+        break;
+    }
+    return Py::Object();
+}
+
+bool Cell::setEditMode(EditMode mode, bool silent) {
+    if(editMode == mode || mode < 0 
+                        || mode >= sizeof(_EditModeNames)/sizeof(_EditModeNames[0]))
+        return false;
+
+    if(silent) {
+        PropertySheet::AtomicPropertyChange signaler(*owner);
+        editMode = mode;
+        return true;
+    }
 
     if(mode!=Cell::EditNormal) {
         if(!owner || !owner->getContainer()) 
@@ -1490,15 +1587,15 @@ void Cell::setEditMode(EditMode mode) {
         }
         case EditCombo: {
             bool valid = false;
-            auto expr = SimpleStatement::cast<ListExpression>(expression.get());
-            if(expr && expr->getSize()>=2) {
-                Py::Sequence seq(obj);
-                if(seq.size() >= 2)
-                    valid = (seq[0].isMapping() && seq[1].isString())
-                            || (seq[0].isSequence() && seq[1].isNumeric());
-            } else {
-                auto expr = SimpleStatement::cast<ConstantExpression>(expression.get());
-                valid = expr && (boost::equals(expr->getName(),"True") || boost::equals(expr->getName(),"False"));
+            if(SimpleStatement::cast<ListExpression>(expression.get())
+                    || VariableExpression::isDoubleBinding(expression.get()))
+            {
+                if(obj.isSequence()) {
+                    Py::Sequence seq(obj);
+                    if(seq.size() >= 2)
+                        valid = (seq[0].isMapping() && seq[1].isString())
+                                || (seq[0].isSequence() && seq[1].isNumeric());
+                }
             }
             if(!valid)
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
@@ -1545,19 +1642,21 @@ void Cell::setEditMode(EditMode mode) {
     PropertySheet::AtomicPropertyChange signaler(*owner);
     editMode = mode;
     signaler.tryInvoke();
+    return true;
 }
 
-void Cell::setPersistentEditMode(bool enable) {
+bool Cell::setPersistentEditMode(bool enable) {
     if(editMode == EditButton
             || editMode == EditCheckBox
             || editMode == EditNormal
             || enable == editPersistent)
     {
-        return;
+        return false;
     }
     PropertySheet::AtomicPropertyChange signaler(*owner);
     editPersistent = enable;
     signaler.tryInvoke();
+    return true;
 }
 
 //roughly based on Spreadsheet/Gui/SheetModel.cpp

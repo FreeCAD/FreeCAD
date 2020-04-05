@@ -63,11 +63,9 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
     App::CellAddress addr(index.row(),index.column());
     App::Range range(addr,addr);
     if(sheet && sheet->getCellBinding(range)) {
-        DlgBindSheet dlg(sheet,{range},parent);
-        dlg.exec();
+        FC_ERR("Bound cell " << addr.toString() << " cannot be edited");
         return 0;
     }
-
     auto cell = sheet->getCell(App::CellAddress(index.row(),index.column()));
     if(cell && !cell->hasException()) {
         switch(cell->getEditMode()) {
@@ -76,6 +74,17 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
             connect(button, SIGNAL(clicked()), this, SLOT(commitAndCloseEditor()));
             return button;
         } 
+        case Cell::EditLabel: {
+            auto editor = new SpreadsheetGui::TextEdit(parent);
+            if(cell->isPersistentEditMode())
+                editor->setObjectName(QLatin1String("persistent"));
+            else
+                editor->setObjectName(QLatin1String("label"));
+            editor->setContextMenuPolicy(Qt::NoContextMenu);
+            editor->setIndex(index);
+            connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+            return editor;
+        }
         case Cell::EditCombo: {
             auto combo = new QComboBox(parent);
             if(cell->isPersistentEditMode())
@@ -121,7 +130,8 @@ void SpreadsheetDelegate::commitAndCloseEditor()
     Gui::ExpressionTextEdit *editor = qobject_cast<Gui::ExpressionTextEdit *>(sender());
     if(editor) {
         Q_EMIT commitData(editor);
-        Q_EMIT closeEditor(editor);
+        if(editor->objectName().isEmpty())
+            Q_EMIT closeEditor(editor);
         return;
     }
     QPushButton *button = qobject_cast<QPushButton*>(sender());

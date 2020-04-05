@@ -145,9 +145,11 @@ public:
                             "arguments (spreadsheet, cell_address, current_value, old_value). It will be\n"\
                             "invoked after the user makes a new selection in the ComboBox.") \
     \
-    SHEET_CELL_MODE(Label,  "This is a pseudo edit mode with the purpose of hiding expression details\n"\
-                            "in the cell. The cell is expected to contain a list. And only the first\n"\
-                            "item will be shown, with the rest of items hidden") \
+    SHEET_CELL_MODE(Label,  "Edit the cell using a plain text box.This edit mode is used to hide expression\n"\
+                            "details in the cell. The cell is expected to contain a list. And only the first\n"\
+                            "item will be shown, and the rest of items hidden\n\n"\
+                            "It can also be used to edit string property from other object using the double\n"\
+                            "binding function, e.g. dbind(Box.Label2).")\
     \
     SHEET_CELL_MODE(Quantity, "Edit the cell using a unit aware SpinBox. This mode expects the cell\n"\
                               "to contain either a simple number, a 'quantity' (i.e. number with unit)\n"\
@@ -169,12 +171,12 @@ public:
 
     static const char *editModeName(EditMode mode);
 
-    void setEditMode(EditMode mode);
+    bool setEditMode(EditMode mode, bool silent=false);
     bool setEditMode(const char *mode, bool silent=false);
-    void setPersistentEditMode(bool enable);
+    bool setPersistentEditMode(bool enable);
 
     EditMode getEditMode() const;
-    void setEditData(const QVariant &data);
+    bool setEditData(const QVariant &data);
     QVariant getEditData(bool silent=false) const;
     QVariant getDisplayData(bool silent=false) const;
 

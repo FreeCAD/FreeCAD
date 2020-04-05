@@ -172,12 +172,12 @@
     </Methode>
     <Methode Name="setEditMode">
       <Documentation>
-          <UserDocu>setEditMode(cell, mode) -- Set given spreadsheet cell edit mode.</UserDocu>
+          <UserDocu>setEditMode(cell, mode, notify=True) -- Set given spreadsheet cell edit mode.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setPersistentEdit">
       <Documentation>
-          <UserDocu>setPersistentEdit(cell, enable=True)
+          <UserDocu>setPersistentEdit(cell, enable=True, notify=True)
 Enable/Disable given spreadsheet cell persistent edit mode.</UserDocu>
       </Documentation>
     </Methode>

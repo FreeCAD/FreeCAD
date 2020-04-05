@@ -1776,7 +1776,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const App::any &v
                 Cell *dst = other->getValue(target);
                 Cell *src = getValue(source);
                 if(!dst) {
-                    if(src) {
+                    if(src && !VariableExpression::isDoubleBinding(src->getExpression())) {
                         signaller.aboutToChange();
                         owner->clear(source);
                         owner->cellUpdated(source);
@@ -1807,11 +1807,17 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const App::any &v
                 expr += rangeTarget.address();
                 if(href)
                     expr += ")";
-                auto e = App::ExpressionPtr(App::Expression::parse(owner,expr));
                 auto e2 = src->getExpression();
-                if(!e2 || !e->isSame(*e2,false)) {
-                    signaller.aboutToChange();
-                    src->setExpression(std::move(e));
+                auto vexpr = VariableExpression::isDoubleBinding(e2);
+                if(vexpr) {
+                    vexpr->assign(dst->getPyValue());
+                } else {
+                    auto e = ExpressionPtr(App::Expression::parse(owner,expr));
+                    if(!e2 || !e->isSame(*e2,false)) {
+                        signaller.aboutToChange();
+                        src->setEditMode(Cell::EditNormal);
+                        src->setExpression(std::move(e));
+                    }
                 }
 
             } while(range.next() && rangeTarget.next());

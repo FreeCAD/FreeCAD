@@ -172,7 +172,7 @@ public:
 
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
-    void editCell(App::CellAddress address, const QVariant &data);
+    bool editCell(App::CellAddress address, const QVariant &data);
 
     bool hasCell(const std::vector<App::Range> &ranges) const;
 

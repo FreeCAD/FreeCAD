@@ -1029,9 +1029,10 @@ PyObject* SheetPy::setEditMode(PyObject *args)
 {
     char *mode;
     char *strAddress;
+    PyObject *notify = Py_True;
     CellAddress address;
 
-    if (!PyArg_ParseTuple(args, "ss:setEditMode", &strAddress,&mode))
+    if (!PyArg_ParseTuple(args, "ss|O", &strAddress,&mode,&notify))
         return 0;
 
     try {        
@@ -1047,7 +1048,8 @@ PyObject* SheetPy::setEditMode(PyObject *args)
 
     if (cell) {
         PY_TRY {
-            cell->setEditMode(mode);
+            if(cell->setEditMode(mode) && PyObject_IsTrue(notify))
+                getSheetPtr()->cellUpdated(address);
         }PY_CATCH
     }
 
@@ -1057,10 +1059,11 @@ PyObject* SheetPy::setEditMode(PyObject *args)
 PyObject* SheetPy::setPersistentEdit(PyObject *args)
 {
     PyObject *enable = Py_True;
+    PyObject *notify = Py_True;
     char *strAddress;
     CellAddress address;
 
-    if (!PyArg_ParseTuple(args, "s|O", &strAddress,&enable))
+    if (!PyArg_ParseTuple(args, "s|OO", &strAddress,&enable,&notify))
         return 0;
 
     try {        
@@ -1076,7 +1079,8 @@ PyObject* SheetPy::setPersistentEdit(PyObject *args)
 
     if (cell) {
         PY_TRY {
-            cell->setPersistentEditMode(PyObject_IsTrue(enable));
+            if(cell->setPersistentEditMode(PyObject_IsTrue(enable)) && PyObject_IsTrue(notify))
+                getSheetPtr()->cellUpdated(address);
         }PY_CATCH
     }
 

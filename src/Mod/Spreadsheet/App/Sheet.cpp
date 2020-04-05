@@ -1492,19 +1492,13 @@ void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdent
     cells.renameObjectIdentifiers(paths);
 }
 
-void Sheet::editCell(App::CellAddress address, const QVariant &data) {
+bool Sheet::editCell(App::CellAddress address, const QVariant &data) {
     auto cell = getCell(address);
-    if(!cell || cell->getEditMode()==Cell::EditNormal) {
+    if(!cell) {
         setCell(address,data.toString().toUtf8().constData());
-        return;
+        return isTouched();
     }
-
-    if(cell->hasException()) {
-        FC_THROWM(Base::ExpressionError,cell->getException());
-        return;
-    }
-
-    cell->setEditData(data);
+    return cell->setEditData(data);
 }
 
 bool Sheet::hasCell(const std::vector<App::Range> &ranges) const {
