@@ -22,6 +22,13 @@
 __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+__doc__ = """This module provides the base Arch component class, that is shared
+by all of the Arch BIM objects.
+
+Examples
+--------
+TODO put examples here.
+"""
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
@@ -46,12 +53,22 @@ else:
 #  is shared by all of the Arch BIM objects
 
 def addToComponent(compobject,addobject,mod=None):
+    """Adds an object to a component's properties.
 
-    '''addToComponent(compobject,addobject,mod): adds addobject
-    to the given component. Default is in "Additions", "Objects" or
-    "Components", the first one that exists in the component. Mod
-    can be set to one of those attributes ("Objects", Base", etc...)
-    to override the default.'''
+    Does not run if the addobject already exists in the component's properties. Adds
+    the object to the first property found of Base, Group, or Hosts.
+
+    If mod is provided, adds the object to that property instead.
+
+    Parameters
+    ----------
+    compobject: <ArchComponent.Component>
+        The component object to add the object to.
+    addobject: <App::DocumentObject>
+        The object to add to the component.
+    mod: str, optional
+        The property to add the object to.
+    """
 
     import Draft
     if compobject == addobject: return
@@ -96,11 +113,20 @@ def addToComponent(compobject,addobject,mod=None):
 
 
 def removeFromComponent(compobject,subobject):
+    """Removes the object from the given component.
 
-    '''removeFromComponent(compobject,subobject): subtracts subobject
-    from the given component. If the subobject is already part of the
-    component (as addition, subtraction, etc... it is removed. Otherwise,
-    it is added as a subtraction.'''
+    Tries to find the object in the component's properties. If it finds it,
+    removes the object.
+
+    If the object is not found, adds the object in the component's Subtractions property.
+
+    Parameters
+    ----------
+    compobject: <ArchComponent.Component>
+        The component to remove the object from.
+    subobject: <App::DocumentObject>
+        The object to remove from the component.
+    """
 
     if compobject == subobject: return
     found = False
@@ -1446,6 +1472,10 @@ class ArchSelectionObserver:
 
     When a watched object is specified, the observer will only fire when this
     watched object is selected.
+
+    TODO: This could probably use a rework. Most of the functionality isn't
+    used. It does not work correctly to reset the appearance of parent object
+    in ComponentTaskPanel.editObject(), for example.
     """
 
     def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
@@ -1526,14 +1556,23 @@ class SelectionTaskPanel:
     """
 
     def __init__(self):
-        """Initialises"""
+        """Initialises the task panel.
+
+        Adds a label.
+
+        TODO: Label does not seem to appear?
+        """
+
         self.baseform = QtGui.QLabel()
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))
 
     def getStandardButtons(self):
+        """Adds the cancel button."""
         return int(QtGui.QDialogButtonBox.Cancel)
 
     def reject(self):
+        """The method run when the user selects the cancel button."""
+        
         if hasattr(FreeCAD,"ArchObserver"):
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
@@ -1541,10 +1580,18 @@ class SelectionTaskPanel:
 
 
 class ComponentTaskPanel:
+    """The default TaskPanel for all Arch components.
 
-    '''The default TaskPanel for all Arch components'''
+    TODO: outline the purpose of this taskpanel.
+
+    """
 
     def __init__(self):
+        """Initialises the task panel.
+
+        Defines the layout of the task panel, and setups callbacks for when
+        buttons and menu items are clicked.
+        """
 
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
@@ -1605,18 +1652,54 @@ class ComponentTaskPanel:
         self.update()
 
     def isAllowedAlterSelection(self):
+        """This method indicates whether this task dialog allows other commands to
+        modify the selection while it is open.
+
+        Returns
+        -------
+        bool
+            If alteration of the selection should be allowed.
+        """
 
         return True
 
     def isAllowedAlterView(self):
+        """This method indicates whether this task dialog allows other commands
+        to modify the 3D view while it is open.
+
+        Returns
+        -------
+        bool
+            If alteration of the 3D view should be allowed.
+        """
 
         return True
 
     def getStandardButtons(self):
+        """Adds the standard ok button."""
 
         return int(QtGui.QDialogButtonBox.Ok)
 
     def check(self,wid,col):
+        """This method is run as the callback when the user selects an item in the tree.
+
+        This method enables and disables the add and remove buttons depending on what
+        the user has selected.
+
+        If they have selected one of the root attribute folders, it disables
+        the remove button. If they have seperately selected an object in the 3D
+        view, the add button is enabled, allowing the user to add that object
+        to the root attribute folder.
+
+        If they have selected one of the items inside a root attribute folder,
+        it enables the remove button, allowing the user to remove the object
+        from that attribute.
+
+        Parameters
+        ----------
+        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+            Qt object the user has selected in the tree widget.
+        """
 
         if not wid.parent():
             self.delButton.setEnabled(False)
@@ -1630,6 +1713,8 @@ class ComponentTaskPanel:
             self.addButton.setEnabled(False)
 
     def getIcon(self,obj):
+        """Gets the path to the icons, of the items that fill the tree widget.
+        """
 
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
@@ -1641,8 +1726,17 @@ class ComponentTaskPanel:
         return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
+        """Populates the treewidget with it's various items.
 
-        'fills the treewidget'
+        Checks if the object being edited has attributes relevant to
+        subobjects. IE: Additions, Subtractions, etc.
+
+        Populates the tree with these subobjects, under folders named after the
+        attributes they are listed in.
+
+        Finally, runs method .retranslateUi().
+        """
+
         self.tree.clear()
         dirIcon = QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         for a in self.attribs:
@@ -1676,6 +1770,14 @@ class ComponentTaskPanel:
         self.retranslateUi(self.baseform)
 
     def addElement(self):
+        """This method is run as a callback when the user selects the add button.
+
+        Gets the object selected in the 3D view, and gets the attribute folder
+        selected in the tree widget.
+
+        Adds the object selected in the 3D view to the attribute associated
+        with the selected folder, by using function addToComponent().
+        """
 
         it = self.tree.currentItem()
         if it:
@@ -1688,6 +1790,13 @@ class ComponentTaskPanel:
         self.update()
 
     def removeElement(self):
+        """This method is run as a callback when the user selects the remove button.
+
+        Gets the object selected in the tree widget. If there is an object in
+        the document with the same Name as the selected item in the tree, it is
+        removed from the object being edited, with the removeFromComponent()
+        function.
+        """
 
         it = self.tree.currentItem()
         if it:
@@ -1696,12 +1805,29 @@ class ComponentTaskPanel:
         self.update()
 
     def accept(self):
+        """This method runs as a callback when the user selects the ok button.
+
+        It recomputes the document, and leaves edit mode.
+        """
 
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def editObject(self,wid,col):
+        """This method is run when the user double clicks on an item in the tree widget.
+
+        If the item in the tree has a corresponding object in the document,
+        it enters edit mode for that associated object.
+
+        At the same time, it makes the object this task panel was opened for
+        transparent and unselectable.
+
+        Parameters
+        ----------
+        wid: <PySide2.QtWidgets.QTreeWidgetItem>
+            Qt object the user has selected in the tree widget.
+        """
 
         if wid.parent():
             obj = FreeCAD.ActiveDocument.getObject(str(wid.toolTip(0)))
@@ -1717,6 +1843,8 @@ class ComponentTaskPanel:
                 FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
 
     def retranslateUi(self, TaskPanel):
+        """Adds the text of the task panel, in translated form.
+        """
 
         self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Component", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
@@ -1735,6 +1863,14 @@ class ComponentTaskPanel:
         self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit standard code", None))
 
     def editIfcProperties(self):
+        """Opens the IFC editor dialog box.
+
+        This is the method that runs as a callback when the Edit IFC properties
+        button is selected by the user.
+
+        It defines the editor's structure, fills it with data, adds callback
+        for the buttons and other interactions, and shows it.
+        """
 
         if hasattr(self,"ifcEditor"):
             if self.ifcEditor:
@@ -1761,6 +1897,7 @@ class ComponentTaskPanel:
         self.psetkeys = [''.join(map(lambda x: x if x.islower() else " "+x, t[5:]))[1:] for t in self.psetdefs.keys()]
         self.psetkeys.sort()
         self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/DialogIfcProperties.ui")
+
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.ifcEditor.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.ifcEditor.rect().center())
@@ -1772,13 +1909,16 @@ class ComponentTaskPanel:
         self.ifcModel.setHorizontalHeaderLabels([QtGui.QApplication.translate("Arch", "Property", None),
                                                  QtGui.QApplication.translate("Arch", "Type", None),
                                                  QtGui.QApplication.translate("Arch", "Value", None)])
+
         # set combos
         self.ifcEditor.comboProperty.addItems([QtGui.QApplication.translate("Arch", "Add property...", None)]+self.plabels)
         self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set...", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
+
         # set UUID
         if "IfcUID" in self.obj.IfcData:
             self.ifcEditor.labelUUID.setText(self.obj.IfcData["IfcUID"])
+
         # fill the tree
         psets = {}
         for pname,value in self.obj.IfcProperties.items():
@@ -1812,17 +1952,21 @@ class ComponentTaskPanel:
                 it3.setDropEnabled(False)
                 top.appendRow([it1,it2,it3])
             top.sortChildren(0)
+
         # span top levels
         idx = self.ifcModel.invisibleRootItem().index()
         for i in range(self.ifcModel.rowCount()):
             if self.ifcModel.item(i,0).hasChildren():
                 self.ifcEditor.treeProperties.setFirstColumnSpanned(i, idx, True)
         self.ifcEditor.treeProperties.expandAll()
+
+        # Add callbacks
         QtCore.QObject.connect(self.ifcEditor.buttonBox, QtCore.SIGNAL("accepted()"), self.acceptIfcProperties)
         QtCore.QObject.connect(self.ifcEditor.comboProperty, QtCore.SIGNAL("currentIndexChanged(int)"), self.addIfcProperty)
         QtCore.QObject.connect(self.ifcEditor.comboPset, QtCore.SIGNAL("currentIndexChanged(int)"), self.addIfcPset)
         QtCore.QObject.connect(self.ifcEditor.buttonDelete, QtCore.SIGNAL("clicked()"), self.removeIfcProperty)
         self.ifcEditor.treeProperties.setSortingEnabled(True)
+
         # set checkboxes
         if "FlagForceBrep" in self.obj.IfcData:
             self.ifcEditor.checkBrep.setChecked(self.obj.IfcData["FlagForceBrep"] == "True")
@@ -1831,6 +1975,13 @@ class ComponentTaskPanel:
         self.ifcEditor.show()
 
     def acceptIfcProperties(self):
+        """This method runs as a callback when the user selects the ok button in the IFC editor.
+        
+        This method scrapes through the rows of the IFC editor's items, and
+        compares them to the object being edited's .IfcData. If the two are
+        different, it changes the object's .IfcData to match the editor's
+        items.
+        """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
             self.ifcEditor.hide()
@@ -1863,6 +2014,36 @@ class ComponentTaskPanel:
             del self.ifcEditor
 
     def addIfcProperty(self,idx=0,pset=None,prop=None,ptype=None):
+        """Adds an IFC property to the object, within the IFC editor.
+
+        This method runs as a callback when the user selects an option in the
+        Add Property dropdown box in the IFC editor. When used via the
+        dropdown, it adds a property with the property type selected in the
+        dropdown.
+
+        This method can also be run standalone, outside it's function as a
+        callback.
+
+        Unless otherwise specified, the property will be called "New property".
+        The property will have no value assigned.
+
+        Parameters
+        ----------
+        idx: int, optional
+            The index number of the property type selected in the dropdown. If
+            idx is not specified, the property's type must be specified in the
+            ptype parameter.
+        pset: str, optional
+            The name of the property set this property will be assigned to. If
+            not provided, the pset will be determined by which property set has
+            been selected within the IFC editor widget.
+        prop: str, optional
+            The name of the property to be created. If left blank, will be set to
+            "New Property".
+        ptype: str, optional
+            The name of the property type the new property will be set as. If not
+            specified, the the property's type will be determined using the idx parameter.
+        """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
             if not pset:
@@ -1891,6 +2072,21 @@ class ComponentTaskPanel:
                 self.ifcEditor.comboProperty.setCurrentIndex(0)
 
     def addIfcPset(self,idx=0):
+        """Adds a IFC property set to the object, within the IFC editor.
+        
+        This method runs as a callback when the user selects a property set
+        within the Add property set dropdown.
+
+        Adds the property set selected in the dropdown, then checks the
+        property set definitions for the property set's standard properties,
+        and adds them with blank values to the new property set.
+
+        Parameters
+        ----------
+        idx: int
+            The index of the options selected from the Add property set
+            dropdown.
+        """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
             if idx == 1:
@@ -1918,6 +2114,14 @@ class ComponentTaskPanel:
                 self.ifcEditor.comboPset.setCurrentIndex(0)
 
     def removeIfcProperty(self):
+        """Removes an IFC property or property set from the object, within the IFC editor.
+
+        This method runs as a callback when the user selects the Delete
+        selected property/set button within the IFC editor.
+
+        It finds the selected property, and deletes it. If it's a property set,
+        it deletes the children properties as well.
+        """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
             sel = self.ifcEditor.treeProperties.selectedIndexes()
@@ -1929,6 +2133,11 @@ class ComponentTaskPanel:
                     pset.takeRow(sel[0].row())
 
     def editClass(self):
+        """Simple wrapper for BIM_Classification Gui command.
+
+        This method is called when the Edit class button is selected
+        in the IFC editor. It relies on the presence of the BIM module.
+        """
 
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(self.obj)
@@ -1937,9 +2146,24 @@ class ComponentTaskPanel:
 if FreeCAD.GuiUp:
 
     class IfcEditorDelegate(QtGui.QStyledItemDelegate):
+        """This class manages the editing of the individual table cells in the IFC editor.
+        """
 
 
         def __init__(self, parent=None, dialog=None, ptypes=[], plabels=[], *args):
+            """This method initalises the class.
+
+            Parameters
+            ----------
+            parent: <PySide2.QtWidgets.QWidget>
+                Unclear.
+            dialog: <ArchComponent.ComponentTaskPanel>
+                The dialog box this delegate was created in.
+            ptypes: list of str
+                A list of the names of IFC property types.
+            plables: list of str
+                A list of the human readable names of IFC property types.
+            """
 
             self.dialog = dialog
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
@@ -1947,6 +2171,27 @@ if FreeCAD.GuiUp:
             self.plabels = plabels
 
         def createEditor(self,parent,option,index):
+            """Returns the widget used to change data.
+
+            Returns a text line editor if editing the property name.  Returns a
+            dropdown to change property type if editing property type.  If
+            editing the property's value, returns an appropriate widget
+            depending on the datatype of the value.
+
+            Parameters
+            ----------
+            parent: <pyside2.qtwidgets.qwidget>
+                The table cell that is being edited.
+            option: 
+                Unused?
+            index: <PySide2.QtCore.QModelIndex>
+                The index object of the table of the IFC editor.
+
+            Returns
+            -------
+            <pyside2.qtwidgets.qwidget>
+                The editor widget this method has created.
+            """
 
             if index.column() == 0: # property name
                 editor = QtGui.QLineEdit(parent)
@@ -1971,6 +2216,19 @@ if FreeCAD.GuiUp:
             return editor
 
         def setEditorData(self, editor, index):
+            """Gives data to the edit widget.
+
+            This method extracts the data already present in the table, and
+            writes it to the editor. This means the user starts the editor with
+            their previous data already present, instead of a blank slate.
+
+            Parameters
+            ----------
+            editor: <pyside2.qtwidgets.qwidget>
+                The editor widget.
+            index: <PySide2.QtCore.QModelIndex>
+                The index object of the table, of the IFC editor
+            """
 
             if index.column() == 0:
                 editor.setText(index.data())
@@ -2004,6 +2262,17 @@ if FreeCAD.GuiUp:
                     editor.setText(index.data())
 
         def setModelData(self, editor, model, index):
+            """Writes the data in the editor to the IFC editor's table.
+
+            Parameters
+            ----------
+            editor: <pyside2.qtwidgets.qwidget>
+                The editor widget.
+            model:
+                The table object of the IFC editor.
+            index: <PySide2.QtCore.QModelIndex>
+                The index object of the table, of the IFC editor
+            """
 
             if index.column() == 0:
                 model.setData(index,editor.text())
