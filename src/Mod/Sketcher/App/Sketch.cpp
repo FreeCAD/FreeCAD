@@ -65,13 +65,13 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Sketcher::SketchSolver)
 
 Sketch::Sketch()
-  : SolveTime(0)
-  , RecalculateInitialSolutionWhileMovingPoint(false)
-  , GCSsys(), ConstraintsCounter(0)
+  : GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
   , defaultSolver(GCS::DogLeg)
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
+  , SolveTime(0)
+  , RecalculateInitialSolutionWhileMovingPoint(false)
 {
 }
 
@@ -126,17 +126,13 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     clear();
 
-    std::vector<Part::Geometry *> intGeoList, extGeoList;
-    for (int i=0; i < int(GeoList.size())-extGeoCount; i++)
-        intGeoList.push_back(GeoList[i]);
-    for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
-        extGeoList.push_back(GeoList[i]);
+    std::vector<Part::Geometry *> intGeoList;
+    std::vector<Part::Geometry *> extGeoList;
+    
+    std::vector<bool> blockedGeometry; // these geometries are blocked, frozen and sent as fixed parameters to the solver
+    std::vector<bool> unenforceableConstraints; // these constraints are unenforceable due to a Blocked constraint
 
-    std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
-    std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
-
-    if(!intGeoList.empty())
-        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);
+    getSolvableGeometryContraints(GeoList, ConstraintList, extGeoCount, intGeoList, extGeoList, blockedGeometry, unenforceableConstraints);
 
     addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
@@ -1519,102 +1515,6 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
     }
 
     return rtn;
-}
-
-void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
-                                std::vector<bool> & unenforceableConstraints,
-                                const std::vector<Constraint *> &ConstraintList) const
-{
-    std::vector<int> internalAlignmentConstraintIndex;
-    std::vector<int> internalAlignmentgeo;
-
-    std::vector<int> geo2blockingconstraintindex(blockedGeometry.size(),-1);
-
-    // Detect Blocked and internal constraints
-    int i = 0;
-    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
-        switch((*it)->Type) {
-            case Block:
-            {
-                int geoid = (*it)->First;
-
-                if(geoid>=0 && geoid<int(blockedGeometry.size())) {
-                    blockedGeometry[geoid]=true;
-                    geo2blockingconstraintindex[geoid]=i;
-                }
-            }
-            break;
-            case InternalAlignment:
-                internalAlignmentConstraintIndex.push_back(i);
-            break;
-            default:
-            break;
-        }
-    }
-
-    // if a GeoId is blocked and it is linked to Internal Alignment, then GeoIds linked via Internal Alignment are also to be blocked
-    for(std::vector<int>::iterator it = internalAlignmentConstraintIndex.begin(); it != internalAlignmentConstraintIndex.end() ; it++) {
-        if (blockedGeometry[ConstraintList[(*it)]->Second]) {
-            blockedGeometry[ConstraintList[(*it)]->First] = true;
-            // associated geometry gets the same blocking constraint index as the blocked element
-            geo2blockingconstraintindex[ConstraintList[(*it)]->First]= geo2blockingconstraintindex[ConstraintList[(*it)]->Second];
-            internalAlignmentgeo.push_back(ConstraintList[(*it)]->First);
-            unenforceableConstraints[(*it)]= true;
-        }
-    }
-
-    i = 0;
-    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++i) {
-        if((*it)->isDriving) {
-            // additionally any further constraint on auxiliary elements linked via Internal Alignment are also unenforceable.
-            for(std::vector<int>::iterator itg = internalAlignmentgeo.begin(); itg != internalAlignmentgeo.end() ; itg++) {
-                if( (*it)->First==*itg || (*it)->Second==*itg || (*it)->Third==*itg ) {
-                    unenforceableConstraints[i]= true;
-                }
-            }
-            // IMPORTANT NOTE:
-            // The rest of the ignoring of redundant/conflicting applies to constraints introduced before the blocking constraint only
-            // Constraints introduced after the block will not be ignored and will lead to redundancy/conflicting status as per normal
-            // solver behaviour
-
-            // further, any constraint taking only one element, which is blocked is also unenforceable
-            if((*it)->Second==Constraint::GeoUndef && (*it)->Third==Constraint::GeoUndef && (*it)->First>=0 ) {
-                if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
-                    unenforceableConstraints[i]= true;
-                }
-            }
-            // further any constraint on only two elements where both elements are blocked or one is blocked and the other is an axis or external
-            // provided that the constraints precede the last block constraint.
-            else if((*it)->Third==Constraint::GeoUndef) {
-                if ( ((*it)->First>=0 && (*it)->Second>=0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] &&
-                    (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second])) ||
-                    ((*it)->First<0 && (*it)->Second>=0 && blockedGeometry[(*it)->Second] && i < geo2blockingconstraintindex[(*it)->Second]) ||
-                    ((*it)->First>=0 && (*it)->Second<0 && blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) ){
-                    unenforceableConstraints[i]= true;
-                }
-            }
-            // further any constraint on three elements where the three of them are blocked, or two are blocked and the other is an axis or external geo
-            // or any constraint on three elements where one is blocked and the other two are axis or external geo, provided that the constraints precede
-            // the last block constraint.
-            else {
-                if( ((*it)->First>=0 && (*it)->Second>=0 && (*it)->Third>=0 &&
-                    blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third] &&
-                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second] || i < geo2blockingconstraintindex[(*it)->Third])) ||
-                  ((*it)->First<0 && (*it)->Second>=0 && (*it)->Third>=0 && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third] &&
-                  (i < geo2blockingconstraintindex[(*it)->Second] || i < geo2blockingconstraintindex[(*it)->Third])) ||
-                  ((*it)->First>=0 && (*it)->Second<0 && (*it)->Third>=0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Third] &&
-                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Third])) ||
-                  ((*it)->First>=0 && (*it)->Second>=0 && (*it)->Third<0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] &&
-                  (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second])) ||
-                  ((*it)->First>=0 && (*it)->Second<0 && (*it)->Third<0 && blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) ||
-                  ((*it)->First<0 && (*it)->Second>=0 && (*it)->Third<0 && blockedGeometry[(*it)->Second] && i < geo2blockingconstraintindex[(*it)->Second]) ||
-                  ((*it)->First<0 && (*it)->Second<0 && (*it)->Third>=0 && blockedGeometry[(*it)->Third] && i < geo2blockingconstraintindex[(*it)->Third]) ) {
-
-                    unenforceableConstraints[i]= true;
-                }
-            }
-        }
-    }
 }
 
 int Sketch::addCoordinateXConstraint(int geoId, PointPos pos, double * value, bool driving)

@@ -100,6 +100,10 @@ public:
     virtual float getSolveTime() override;
     virtual void setRecalculateInitialSolutionWhileMovingPoint(bool on) override;
     
+    
+private:
+    
+    
 };
 
 } //namespace Part

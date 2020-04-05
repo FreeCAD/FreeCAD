@@ -70,23 +70,20 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                         const std::vector<Constraint *> &ConstraintList,
                         int extGeoCount)
 {
-    /*
+    
     Base::TimeInfo start_time;
 
-    clear();
+    //clear();
 
-    std::vector<Part::Geometry *> intGeoList, extGeoList;
-    for (int i=0; i < int(GeoList.size())-extGeoCount; i++)
-        intGeoList.push_back(GeoList[i]);
-    for (int i=int(GeoList.size())-extGeoCount; i < int(GeoList.size()); i++)
-        extGeoList.push_back(GeoList[i]);
+    std::vector<Part::Geometry *> intGeoList;
+    std::vector<Part::Geometry *> extGeoList;
+    
+    std::vector<bool> blockedGeometry; // these geometries are blocked, frozen and sent as fixed parameters to the solver
+    std::vector<bool> unenforceableConstraints; // these constraints are unenforceable due to a Blocked constraint
 
-    std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
-    std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
-
-    if(!intGeoList.empty())
-        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);
-
+    getSolvableGeometryContraints(GeoList, ConstraintList, extGeoCount, intGeoList, extGeoList, blockedGeometry, unenforceableConstraints);
+                                  
+    /*
     addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);

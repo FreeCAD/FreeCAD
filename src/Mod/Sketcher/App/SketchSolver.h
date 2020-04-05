@@ -468,6 +468,19 @@ private:
     int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
     */
+protected:
+    /// get boolean list indicating whether the geometry is to be blocked or not
+    void getBlockedGeometry(std::vector<bool> & blockedGeometry,
+                            std::vector<bool> & unenforceableConstraints,
+                            const std::vector<Constraint *> &ConstraintList) const;
+                            
+    void getSolvableGeometryContraints(const std::vector<Part::Geometry *> & GeoList,
+                        const std::vector<Constraint *> & ConstraintList,
+                        int extGeoCount,
+                        std::vector<Part::Geometry *> & intGeoList, 
+                        std::vector<Part::Geometry *> & extGeoList,
+                        std::vector<bool> & blockedGeometry,
+                        std::vector<bool> & unenforceableConstraints) const;
 };
 
 } //namespace Sketcher
