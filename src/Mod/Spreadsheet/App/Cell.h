@@ -105,11 +105,12 @@ public:
     void moveAbsolute(App::CellAddress newAddress);
 
     enum PasteType {
-        PasteAll,
-        PasteValue,
-        PasteFormat,
+        PasteValue = 1,
+        PasteFormat = 2,
+        PasteFormula = 4,
+        PasteAll = PasteFormat | PasteFormula,
     };
-    void restore(Base::XMLReader &reader, bool checkAlias=false, PasteType type=PasteAll);
+    void restore(Base::XMLReader &reader, bool checkAlias=false, int type=PasteAll);
 
     void restoreFormat(Base::XMLReader &reader, bool checkAlias);
 
@@ -210,7 +211,7 @@ private:
 
     void setParseException(const std::string & e);
 
-    void setExpression(App::ExpressionPtr &&expr, PasteType type=PasteAll);
+    void setExpression(App::ExpressionPtr &&expr, int type=PasteAll);
 
     void setUsed(int mask, bool state = true);
 

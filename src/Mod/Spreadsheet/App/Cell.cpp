@@ -172,7 +172,7 @@ Cell::~Cell()
   * Set the expression tree to \a expr.
   *
   */
-void Cell::setExpression(App::ExpressionPtr &&expr, PasteType type)
+void Cell::setExpression(App::ExpressionPtr &&expr, int type)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
@@ -185,7 +185,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr, PasteType type)
     if(func)
         setAlias(func->getName());
 
-    if(type!=PasteValue && expr && expr->comment.size()) {
+    if((type & PasteFormat) && expr && expr->comment.size()) {
         if(!boost::starts_with(expr->comment,"<Cell "))
             FC_WARN("Unknown style of cell "
                 << owner->sheet()->getFullName() << '.' << address.toString());
@@ -207,7 +207,10 @@ void Cell::setExpression(App::ExpressionPtr &&expr, PasteType type)
         expr->comment.clear();
     }
 
-    if(type == PasteValue)
+    if(!(type & (PasteValue | PasteFormula)))
+        return;
+
+    if(type & PasteValue)
         expr = expr->eval();
 
     auto simple = Base::freecad_dynamic_cast<SimpleStatement>(expr.get());
@@ -686,14 +689,14 @@ void Cell::moveAbsolute(CellAddress newAddress)
   *
   */
 
-void Cell::restore(Base::XMLReader &reader, bool checkAlias, PasteType restoreType)
+void Cell::restore(Base::XMLReader &reader, bool checkAlias, int restoreType)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
-    if(restoreType != PasteValue)
+    if(restoreType & PasteFormat)
         restoreFormat(reader, checkAlias);
 
-    if(restoreType == PasteFormat)
+    if(!(restoreType & (PasteFormula|PasteValue)))
         return;
 
     std::string _content;
@@ -708,7 +711,7 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias, PasteType restoreTy
             reader.endCharStream();
         }
     }
-    setContent(content, restoreType == PasteValue);
+    setContent(content, (restoreType & PasteValue)?true:false);
 }
 
 void Cell::restoreFormat(Base::XMLReader &reader, bool checkAlias)

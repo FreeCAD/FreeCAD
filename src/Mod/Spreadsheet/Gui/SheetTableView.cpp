@@ -176,7 +176,6 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionMerge,SIGNAL(triggered()), this, SLOT(mergeCells()));
     actionSplit = contextMenu->addAction(tr("Split cells"));
     connect(actionSplit,SIGNAL(triggered()), this, SLOT(splitCell()));
-
     contextMenu->addSeparator();
     actionCut = contextMenu->addAction(tr("Cut"));
     connect(actionCut,SIGNAL(triggered()), this, SLOT(cutSelection()));
@@ -186,10 +185,17 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionCopy,SIGNAL(triggered()), this, SLOT(copySelection()));
     actionPaste = contextMenu->addAction(tr("Paste"));
     connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
-    actionPasteValue = contextMenu->addAction(tr("Paste value"));
+
+    pasteMenu = new QMenu(tr("Paste special..."));
+    contextMenu->addMenu(pasteMenu);
+    actionPasteValue = pasteMenu->addAction(tr("Paste value"));
     connect(actionPasteValue,SIGNAL(triggered()), this, SLOT(pasteValue()));
-    actionPasteFormat = contextMenu->addAction(tr("Paste format"));
+    actionPasteFormat = pasteMenu->addAction(tr("Paste format"));
     connect(actionPasteFormat,SIGNAL(triggered()), this, SLOT(pasteFormat()));
+    actionPasteValueFormat = pasteMenu->addAction(tr("Paste value && format"));
+    connect(actionPasteValueFormat,SIGNAL(triggered()), this, SLOT(pasteValueFormat()));
+    actionPasteFormula = pasteMenu->addAction(tr("Paste formula"));
+    connect(actionPasteFormula,SIGNAL(triggered()), this, SLOT(pasteFormula()));
 
     setTabKeyNavigation(false);
 }
@@ -742,26 +748,31 @@ void SheetTableView::cutSelection()
 
 void SheetTableView::pasteClipboard()
 {
-    _pasteClipboard();
+    _pasteClipboard("Paste cell");
 }
 
 void SheetTableView::pasteValue()
 {
-    _pasteClipboard(Cell::PasteValue);
+    _pasteClipboard("Paste cell value", Cell::PasteValue);
 }
 
 void SheetTableView::pasteFormat()
 {
-    _pasteClipboard(Cell::PasteFormat);
+    _pasteClipboard("Paste cell format", Cell::PasteFormat);
 }
 
-void SheetTableView::_pasteClipboard(int type)
+void SheetTableView::pasteValueFormat()
 {
-    const char *name = "Paste cell";
-    if(type == Cell::PasteValue)
-        name = "Paste value";
-    else if(type == Cell::PasteFormat)
-        name = "Paste format";
+    _pasteClipboard("Paste value format", Cell::PasteValue|Cell::PasteFormat);
+}
+
+void SheetTableView::pasteFormula()
+{
+    _pasteClipboard("Paste cell formula", Cell::PasteFormula);
+}
+
+void SheetTableView::_pasteClipboard(const char *name, int type)
+{
     App::AutoTransaction committer(name);
     try {
         bool copy = true;
@@ -890,15 +901,13 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
         actionCopy->setEnabled(false);
         actionDel->setEnabled(false);
         actionPaste->setEnabled(false);
-        actionPasteValue->setEnabled(false);
-        actionPasteFormat->setEnabled(false);
         actionSplit->setEnabled(false);
         actionMerge->setEnabled(false);
+        pasteMenu->setEnabled(false);
     }else{
-        bool canPaste = mimeData && (mimeData->hasText() || mimeData->hasText());
+        bool canPaste = mimeData && (mimeData->hasText() || mimeData->hasFormat(_SheetMime));
         actionPaste->setEnabled(canPaste);
-        actionPasteValue->setEnabled(canPaste);
-        actionPasteFormat->setEnabled(canPaste);
+        pasteMenu->setEnabled(canPaste && mimeData->hasFormat(_SheetMime));
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);

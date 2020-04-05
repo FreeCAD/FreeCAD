@@ -79,7 +79,7 @@ public:
 
     void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
 
-    void pasteCells(Base::XMLReader &reader, App::Range dstRange, Cell::PasteType type);
+    void pasteCells(Base::XMLReader &reader, App::Range dstRange, int type);
 
     Cell *createCell(App::CellAddress address);
 

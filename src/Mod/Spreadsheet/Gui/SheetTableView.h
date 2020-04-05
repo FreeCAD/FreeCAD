@@ -78,6 +78,8 @@ public Q_SLOTS:
     void pasteClipboard();
     void pasteValue();
     void pasteFormat();
+    void pasteFormula();
+    void pasteValueFormat();
 
 protected Q_SLOTS:
     void commitData(QWidget *editor);
@@ -112,7 +114,7 @@ protected:
 
     void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 
-    void _pasteClipboard(int type=0);
+    void _pasteClipboard(const char *name, int type=0);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
@@ -121,6 +123,7 @@ protected:
     std::set<long> hiddenColumns;
 
     QMenu *contextMenu;
+    QMenu *pasteMenu;
 
 #define SHEET_CELL_MODE(_name,_doc) QAction *actionEdit##_name;
     SHEET_CELL_MODES
@@ -136,6 +139,8 @@ protected:
     QAction *actionPaste;
     QAction *actionPasteValue;
     QAction *actionPasteFormat;
+    QAction *actionPasteFormula;
+    QAction *actionPasteValueFormat;
     QAction *actionCut;
     QAction *actionDel;
     QAction *actionBind;

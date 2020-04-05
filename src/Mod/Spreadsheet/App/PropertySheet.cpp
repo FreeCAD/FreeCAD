@@ -403,7 +403,7 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
     writer.Stream() << "</Cells>\n";
 }
 
-void PropertySheet::pasteCells(XMLReader &reader, Range dstRange, Cell::PasteType type) {
+void PropertySheet::pasteCells(XMLReader &reader, Range dstRange, int type) {
     reader.readElement("Cells");
     int rangeCount = reader.getAttributeAsInteger("count");
     if(rangeCount<=0)
