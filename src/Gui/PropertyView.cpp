@@ -142,6 +142,11 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectDelObject = 
         App::GetApplication().signalDeletedObject.connect(
                 boost::bind(&PropertyView::slotDeletedObject, this, _1));
+    this->connectBeforeRecompute =
+        App::GetApplication().signalBeforeRecomputeDocument.connect([this](const App::Document &) {
+            if(this->timer->isActive())
+                this->onTimer();
+        });
 }
 
 PropertyView::~PropertyView()
@@ -157,6 +162,7 @@ PropertyView::~PropertyView()
     this->connectDelDocument.disconnect();
     this->connectDelObject.disconnect();
     this->connectDelViewObject.disconnect();
+    this->connectBeforeRecompute.disconnect();
 }
 
 static bool _ShowAll;
@@ -335,10 +341,10 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 
 void PropertyView::onTimer() {
 
+    timer->stop();
     propertyEditorData->buildUp();
     propertyEditorView->buildUp();
     clearPropertyItemSelection();
-    timer->stop();
 
     if(!this->isConnectionAttached())
         return;

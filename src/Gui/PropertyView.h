@@ -109,6 +109,7 @@ private:
     Connection connectDelDocument;
     Connection connectDelObject;
     Connection connectDelViewObject;
+    Connection connectBeforeRecompute;
     QTabWidget* tabs;
     QTimer* timer;
 };
