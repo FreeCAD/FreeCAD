@@ -613,6 +613,10 @@ bool SheetTableView::event(QEvent *event)
             deleteSelection();
             return true;
         }
+        else if (kevent->key() == Qt::Key_Escape) {
+            sheet->setCopyOrCutRanges({});
+            return true;
+        }
         else if (kevent->matches(QKeySequence::Cut)) {
             cutSelection();
             return true;
