@@ -60,7 +60,7 @@ public:
 
     bool getStringContent(std::string & s, bool persistent=false) const;
 
-    void setContent(const char * value);
+    void setContent(const char * value, bool eval=false);
 
     void setAlignment(int _alignment);
     bool getAlignment(int & _alignment) const;
@@ -104,7 +104,14 @@ public:
 
     void moveAbsolute(App::CellAddress newAddress);
 
-    void restore(Base::XMLReader &reader, bool checkAlias=false);
+    enum PasteType {
+        PasteAll,
+        PasteValue,
+        PasteFormat,
+    };
+    void restore(Base::XMLReader &reader, bool checkAlias=false, PasteType type=PasteAll);
+
+    void restoreFormat(Base::XMLReader &reader, bool checkAlias);
 
     void afterRestore();
 
@@ -170,6 +177,8 @@ public:
     QVariant getEditData(bool silent=false) const;
     QVariant getDisplayData(bool silent=false) const;
 
+    Py::Object getPyValue() const;
+
     bool isPersistentEditMode() const;
 
     std::string getFormattedQuantity(void);
@@ -201,7 +210,7 @@ private:
 
     void setParseException(const std::string & e);
 
-    void setExpression(App::ExpressionPtr &&expr);
+    void setExpression(App::ExpressionPtr &&expr, PasteType type=PasteAll);
 
     void setUsed(int mask, bool state = true);
 

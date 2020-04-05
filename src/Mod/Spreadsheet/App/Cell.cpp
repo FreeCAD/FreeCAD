@@ -172,8 +172,7 @@ Cell::~Cell()
   * Set the expression tree to \a expr.
   *
   */
-
-void Cell::setExpression(App::ExpressionPtr &&expr)
+void Cell::setExpression(App::ExpressionPtr &&expr, PasteType type)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
@@ -186,7 +185,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     if(func)
         setAlias(func->getName());
 
-    if(expr && expr->comment.size()) {
+    if(type!=PasteValue && expr && expr->comment.size()) {
         if(!boost::starts_with(expr->comment,"<Cell "))
             FC_WARN("Unknown style of cell "
                 << owner->sheet()->getFullName() << '.' << address.toString());
@@ -195,16 +194,21 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
             try {
                 std::istringstream in(content);
                 XMLReader reader("<memory>", in);
-                reader.readElement("Cell");
-                restore(reader,true);
+                // reader.readElement("Cell");
+                reader.read();
+                restoreFormat(reader,true);
             }catch(Base::Exception &e) {
                 e.ReportException();
                 FC_ERR("Failed to restore style of cell "
-                    << owner->sheet()->getFullName() << '.' << address.toString());
+                    << owner->sheet()->getFullName() << '.' << address.toString()
+                    <<"\n" << content);
             }
         }
         expr->comment.clear();
     }
+
+    if(type == PasteValue)
+        expr = expr->eval();
 
     auto simple = Base::freecad_dynamic_cast<SimpleStatement>(expr.get());
     if(simple)
@@ -293,7 +297,7 @@ void Cell::afterRestore() {
         setContent(expr->getText().c_str());
 }
 
-void Cell::setContent(const char * value)
+void Cell::setContent(const char * value, bool eval)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
     ExpressionPtr expr;
@@ -344,6 +348,8 @@ void Cell::setContent(const char * value)
     }
 
     try {
+        if(eval && expr)
+            expr = expr->eval();
         setExpression(std::move(expr));
         signaller.tryInvoke();
     } catch (Base::Exception &e) {
@@ -680,11 +686,35 @@ void Cell::moveAbsolute(CellAddress newAddress)
   *
   */
 
-void Cell::restore(Base::XMLReader &reader, bool checkAlias)
+void Cell::restore(Base::XMLReader &reader, bool checkAlias, PasteType restoreType)
+{
+    PropertySheet::AtomicPropertyChange signaller(*owner);
+
+    if(restoreType != PasteValue)
+        restoreFormat(reader, checkAlias);
+
+    if(restoreType == PasteFormat)
+        return;
+
+    std::string _content;
+    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
+    if (!content) {
+        if(!reader.getAttributeAsInteger("cdata",""))
+            content = "";
+        else {
+            Base::InputStream s(reader.beginCharStream(false),false);
+            s >> _content;
+            content = _content.c_str();
+            reader.endCharStream();
+        }
+    }
+    setContent(content, restoreType == PasteValue);
+}
+
+void Cell::restoreFormat(Base::XMLReader &reader, bool checkAlias)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
     const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
     const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
     const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
@@ -749,19 +779,6 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
         editMode = (EditMode)reader.getAttributeAsInteger("editMode");
 
     editPersistent = reader.getAttributeAsInteger("editPersistent","")?true:false;
-
-    std::string _content;
-    if (!content) {
-        if(!reader.getAttributeAsInteger("cdata",""))
-            content = "";
-        else {
-            Base::InputStream s(reader.beginCharStream(false),false);
-            s >> _content;
-            content = _content.c_str();
-            reader.endCharStream();
-        }
-    }
-    setContent(content);
 }
 
 /**

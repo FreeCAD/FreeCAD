@@ -76,6 +76,8 @@ public Q_SLOTS:
     void copySelection();
     void cutSelection();
     void pasteClipboard();
+    void pasteValue();
+    void pasteFormat();
 
 protected Q_SLOTS:
     void commitData(QWidget *editor);
@@ -110,6 +112,8 @@ protected:
 
     void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 
+    void _pasteClipboard(int type=0);
+
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
 
@@ -130,6 +134,8 @@ protected:
     QAction *actionSplit;
     QAction *actionCopy;
     QAction *actionPaste;
+    QAction *actionPasteValue;
+    QAction *actionPasteFormat;
     QAction *actionCut;
     QAction *actionDel;
     QAction *actionBind;

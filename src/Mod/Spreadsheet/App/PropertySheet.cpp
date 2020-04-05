@@ -403,7 +403,7 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
     writer.Stream() << "</Cells>\n";
 }
 
-void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
+void PropertySheet::pasteCells(XMLReader &reader, Range dstRange, Cell::PasteType type) {
     reader.readElement("Cells");
     int rangeCount = reader.getAttributeAsInteger("count");
     if(rangeCount<=0)
@@ -479,7 +479,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                         roffset_cur = roffset;
                         coffset_cur = coffset;
                         newCellAddr = dst;
-                        cell->restore(reader,true);
+                        cell->restore(reader,true, type);
                     } else {
                         roffset_cur = r*range.rowCount();
                         coffset_cur = c*range.colCount();
@@ -490,7 +490,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                                     << getFullName() << '.' << dst.toString()
                                     << " from " << newCellAddr.toString());
                         }
-                        cell->setExpression(ExpressionPtr(expr->copy()));
+                        cell->setExpression(ExpressionPtr(expr->copy()), type);
                     }
 
                     int rows, cols;
