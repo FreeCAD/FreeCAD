@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>958</width>
-    <height>520</height>
+    <width>941</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,6 +31,12 @@
       </property>
       <item>
        <widget class="QToolButton" name="libraryOpen">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open an existing Tool Bit library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -45,6 +51,12 @@
       </item>
       <item>
        <widget class="QToolButton" name="librarySave">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save Tool Bit library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -59,6 +71,12 @@
       </item>
       <item>
        <widget class="QToolButton" name="librarySaveAs">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save Tool Bit library under new name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -86,6 +104,12 @@
       </item>
       <item>
        <widget class="QToolButton" name="libraryPref">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit Tool Bit library editor settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -113,16 +137,16 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="leftMargin">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>6</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>6</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QWidget" name="verticalWidget" native="true">
@@ -312,9 +336,37 @@
             <number>0</number>
            </property>
            <item>
+            <widget class="QPushButton" name="ButtonNewTool">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a new Tool&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>New Tool</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/Path-ToolController.svg</normaloff>../icons/Path-ToolController.svg</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ButtonEditTool">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit a Tool in Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Edit</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../../../../../Gui/Icons/resource.qrc">
+               <normaloff>:/icons/edit-edit.svg</normaloff>:/icons/edit-edit.svg</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="toolAdd">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Add ...</string>

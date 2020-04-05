@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -203,8 +204,6 @@ class ToolBitLibrary(object):
     
     def libraryDelete(self):
         PathLog.track()
-        #name = self.form.TableList.currentItem().text()
-        #print("Del: {}".format(self.path))
         os.remove(self.path)
         self.libraryOpen(False)
 
@@ -220,13 +219,11 @@ class ToolBitLibrary(object):
     def tableSelected(self, index):
         ''' loads the tools for the selected tool table '''
         name = self.form.TableList.itemWidget(self.form.TableList.itemFromIndex(index)).getTableName()
-        #print("path: {}".format(PathPreferences.lastPathToolLibrary() + '/' + name))
         self.libraryLoad(PathPreferences.lastPathToolLibrary() + '/' + name)
 
     def open(self, path=None, dialog=False):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
         Returns 1 if user pressed OK, 0 otherwise.'''
-        print("P {}, D {}".format(path, dialog))
         if path:
             fullPath = PathToolBit.findLibrary(path)
             if fullPath:
@@ -245,10 +242,12 @@ class ToolBitLibrary(object):
 
     def libraryOpen(self, filedialog=True):
         PathLog.track()
-        print("LibOpen: {}".format(filedialog))
         if filedialog:
             path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary(), 1)
-            PathPreferences.setLastPathToolLibrary(path)
+            if len(path) > 0:
+                PathPreferences.setLastPathToolLibrary(path)
+            else:
+                return
         else:
             path = PathPreferences.lastPathToolLibrary()
 
@@ -260,8 +259,6 @@ class ToolBitLibrary(object):
             self.LibFiles.append(file)
 	    
         self.LibFiles.sort()
-        #for f in self.LibFiles:
-            #self.form.TableList.addItem(os.path.basename(f))
         
         for table in self.LibFiles:
             listWidgetItem = QtGui.QListWidgetItem()
@@ -284,6 +281,7 @@ class ToolBitLibrary(object):
         if path:
             with open(path) as fp:
                 library = json.load(fp)
+
             for toolBit in library['tools']:
                 nr  = toolBit['nr']
                 bit = PathToolBit.findBit(toolBit['path'])
@@ -293,7 +291,9 @@ class ToolBitLibrary(object):
                     self._toolAdd(nr, tool, bit)
                 else:
                     PathLog.error("Could not find tool #{}: {}".format(nr, library['tools'][nr]))
+                
             self.toolTableView.resizeColumnsToContents()
+
         self.toolTableView.setUpdatesEnabled(True)
 
         self.form.setWindowTitle("{} - {}".format(self.title, os.path.basename(path) if path else ''))
@@ -305,11 +305,9 @@ class ToolBitLibrary(object):
         self.librarySaveAs()
     
     def renameLibrary(self):
-        #name = self.form.TableList.currentItem().text()
         name = self.form.TableList.itemWidget(self.form.TableList.currentItem()).getTableName()
         newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
         if ok and newName:
-            #print("Rename {} to {}".format(PathPreferences.lastPathToolLibrary() + '/' + name, PathPreferences.lastPathToolLibrary() + '/' + newName))
             os.rename(PathPreferences.lastPathToolLibrary() + '/' + name, PathPreferences.lastPathToolLibrary() + '/' + newName)
             self.libraryOpen(False)
 
