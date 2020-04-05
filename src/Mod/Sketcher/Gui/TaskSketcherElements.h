@@ -88,16 +88,20 @@ protected Q_SLOTS:
 
 };
 
-struct multIcon {
-    QIcon norm;
-    QIcon ref;
-    QIcon ext;
-};
-
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
+    class MultIcon {
+        
+    public:
+        MultIcon(const char*);
+        
+        QIcon Normal;
+        QIcon Construction;
+        QIcon External;
+    };
+    
 public:
     TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements();
@@ -139,8 +143,6 @@ private:
     bool isautoSwitchBoxChecked;
 
     bool inhibitSelectionUpdate;
-    
-    multIcon tamperIcons(const char*);
 };
 
 } //namespace SketcherGui
