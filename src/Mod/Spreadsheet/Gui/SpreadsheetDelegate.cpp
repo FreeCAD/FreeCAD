@@ -291,21 +291,23 @@ static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
     if(!flags)
         return;
     QPen pen(color);
-    pen.setWidth(1);
+    pen.setWidth(2);
     pen.setStyle(style);
     painter->setPen(pen);
+
+    QRect rect = option.rect.adjusted(1,1,0,0);
     if(flags == Sheet::BorderAll) {
-        painter->drawRect(option.rect);
+        painter->drawRect(rect);
         return;
     }
     if(flags & Sheet::BorderLeft) 
-        painter->drawLine(option.rect.topLeft(), option.rect.bottomLeft());
+        painter->drawLine(rect.topLeft(), rect.bottomLeft());
     if(flags & Sheet::BorderTop) 
-        painter->drawLine(option.rect.topLeft(), option.rect.topRight());
+        painter->drawLine(rect.topLeft(), rect.topRight());
     if(flags & Sheet::BorderRight) 
-        painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+        painter->drawLine(rect.topRight(), rect.bottomRight());
     if(flags & Sheet::BorderBottom) 
-        painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 }
 
 void SpreadsheetDelegate::paint(QPainter *painter,
