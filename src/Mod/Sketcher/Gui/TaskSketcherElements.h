@@ -100,6 +100,8 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
         QIcon Normal;
         QIcon Construction;
         QIcon External;
+        
+        QIcon getIcon(bool construction, bool external) const;
     };
     
 public:

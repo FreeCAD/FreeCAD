@@ -709,34 +709,34 @@ void TaskSketcherElements::slotElementsChanged(void)
       bool construction = (*it)->Construction;
 
       ui->listWidgetElements->addItem(new ElementItem(
-        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? construction ? Sketcher_Element_Point_StartingPoint.Construction : Sketcher_Element_Point_StartingPoint.Normal :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_Line_Edge.Construction : Sketcher_Element_Line_Edge.Normal :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_Line_StartingPoint.Construction : Sketcher_Element_Line_StartingPoint.Normal :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_Line_EndPoint.Construction : Sketcher_Element_Line_EndPoint.Normal :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_Arc_Edge.Construction : Sketcher_Element_Arc_Edge.Normal :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_Arc_StartingPoint.Construction : Sketcher_Element_Arc_StartingPoint.Normal :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_Arc_EndPoint.Construction : Sketcher_Element_Arc_EndPoint.Normal :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? construction ? Sketcher_Element_Arc_MidPoint.Construction : Sketcher_Element_Arc_MidPoint.Normal :
-        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? construction ? Sketcher_Element_Circle_Edge.Construction : Sketcher_Element_Circle_Edge.Normal :
-        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? construction ? Sketcher_Element_Circle_MidPoint.Construction : Sketcher_Element_Circle_MidPoint.Normal :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? construction ? Sketcher_Element_Ellipse_Edge.Construction : Sketcher_Element_Ellipse_Edge.Normal :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? construction ? Sketcher_Element_Ellipse_MidPoint.Construction : Sketcher_Element_Ellipse_MidPoint.Normal :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_ArcOfEllipse_Edge.Construction : Sketcher_Element_ArcOfEllipse_Edge.Normal :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_ArcOfEllipse_StartingPoint.Construction : Sketcher_Element_ArcOfEllipse_StartingPoint.Normal :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_ArcOfEllipse_EndPoint.Construction : Sketcher_Element_ArcOfEllipse_EndPoint.Normal :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? construction ? Sketcher_Element_ArcOfEllipse_MidPoint.Construction : Sketcher_Element_ArcOfEllipse_MidPoint.Normal :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_ArcOfHyperbola_Edge.Construction : Sketcher_Element_ArcOfHyperbola_Edge.Normal :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_ArcOfHyperbola_StartingPoint.Construction : Sketcher_Element_ArcOfHyperbola_StartingPoint.Normal :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_ArcOfHyperbola_EndPoint.Construction : Sketcher_Element_ArcOfHyperbola_EndPoint.Normal :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? construction ? Sketcher_Element_ArcOfHyperbola_MidPoint.Construction : Sketcher_Element_ArcOfHyperbola_MidPoint.Normal :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_ArcOfParabola_Edge.Construction : Sketcher_Element_ArcOfParabola_Edge.Normal :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_ArcOfParabola_StartingPoint.Construction : Sketcher_Element_ArcOfParabola_StartingPoint.Normal :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_ArcOfParabola_EndPoint.Construction : Sketcher_Element_ArcOfParabola_EndPoint.Normal :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? construction ? Sketcher_Element_ArcOfParabola_MidPoint.Construction : Sketcher_Element_ArcOfParabola_MidPoint.Normal :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? construction ? Sketcher_Element_BSpline_Edge.Construction : Sketcher_Element_BSpline_Edge.Normal :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? construction ? Sketcher_Element_BSpline_StartingPoint.Construction : Sketcher_Element_BSpline_StartingPoint.Normal :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? construction ? Sketcher_Element_BSpline_EndPoint.Construction : Sketcher_Element_BSpline_EndPoint.Normal :
-        construction ? none.Construction : none.Normal,
+        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, false) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge.getIcon(construction, false) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge.getIcon(construction, false) :
+        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge.getIcon(construction, false) :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge.getIcon(construction, false) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge.getIcon(construction, false) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge.getIcon(construction, false) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint.getIcon(construction, false) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint.getIcon(construction, false) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? Sketcher_Element_BSpline_Edge.getIcon(construction, false) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? Sketcher_Element_BSpline_StartingPoint.getIcon(construction, false) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, false) :
+        none.getIcon(construction, false),
         type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
                                                                 (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
@@ -1069,40 +1069,36 @@ void TaskSketcherElements::updateIcons(int element)
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
       bool construction = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isConstruction;
       bool external = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isExternal;
-
-      auto getElementIcon = [construction, external](MultIcon icon) {
-            return external ? icon.External : ( construction ? icon.Construction : icon.Normal );
-      };
       
       ui->listWidgetElements->item(i)->setIcon(
-        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? getElementIcon(Sketcher_Element_Point_StartingPoint) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_Line_Edge) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_Line_StartingPoint) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_Line_EndPoint) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_Arc_Edge) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_Arc_StartingPoint) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_Arc_EndPoint) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? getElementIcon(Sketcher_Element_Arc_MidPoint) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? getElementIcon(Sketcher_Element_Circle_Edge) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? getElementIcon(Sketcher_Element_Circle_MidPoint) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? getElementIcon(Sketcher_Element_Ellipse_Edge) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? getElementIcon(Sketcher_Element_Ellipse_MidPoint) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_ArcOfEllipse_Edge) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_ArcOfEllipse_StartingPoint) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_ArcOfEllipse_EndPoint) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? getElementIcon(Sketcher_Element_ArcOfEllipse_MidPoint) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_ArcOfHyperbola_Edge) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_ArcOfHyperbola_StartingPoint) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_ArcOfHyperbola_EndPoint) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? getElementIcon(Sketcher_Element_ArcOfHyperbola_MidPoint) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_ArcOfParabola_Edge) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_ArcOfParabola_StartingPoint) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_ArcOfParabola_EndPoint) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? getElementIcon(Sketcher_Element_ArcOfParabola_MidPoint) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? getElementIcon(Sketcher_Element_BSpline_Edge) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? getElementIcon(Sketcher_Element_BSpline_StartingPoint) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? getElementIcon(Sketcher_Element_BSpline_EndPoint) :
-        getElementIcon(none));
+        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, external) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge.getIcon(construction, external) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge.getIcon(construction, external) :
+        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge.getIcon(construction, external) :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge.getIcon(construction, external) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge.getIcon(construction, external) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge.getIcon(construction, external) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint.getIcon(construction, external) :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint.getIcon(construction, external) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? Sketcher_Element_BSpline_Edge.getIcon(construction, external) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? Sketcher_Element_BSpline_StartingPoint.getIcon(construction, external) :
+        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, external) :
+        none.getIcon(construction, external));
     }
 }
 
@@ -1122,15 +1118,15 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
-            QColor clr(imgConstr.pixelColor(ix,iy));
+            QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
             int hue = clr.hue();
             if(hue >= 0) {
                 if(hue > 330 || hue < 30) {
                     clr.setHsl((hue + 240) % 360, clr.saturation(), clr.lightness(), clr.alpha());
-                    imgConstr.setPixelColor(ix, iy, clr);
+                    imgConstr.setPixel(ix, iy, clr.rgba());
                     
                     clr.setHsl(300, clr.saturation(), clr.lightness(), clr.alpha());
-                    imgExt.setPixelColor(ix, iy, clr);
+                    imgExt.setPixel(ix, iy, clr.rgba());
                 }
             }
         }
@@ -1140,5 +1136,12 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
 
 }
     
+QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
+{
+    if (construction && external) return QIcon();
+    if (construction) return Construction;
+    if (external) return External;
+    return Normal;
+}
 
 #include "moc_TaskSketcherElements.cpp"
