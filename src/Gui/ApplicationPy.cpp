@@ -144,6 +144,9 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"getShortcut",               (PyCFunction) Application::sGetShortcut, METH_VARARGS,
+   "getShortcut(string) -> string\n\n"
+   "Returns shortcut string representing shortcut key accelerator for command."},
   {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
    "updateCommands\n\n"
    "Update all command active status"},
@@ -1271,6 +1274,28 @@ PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
 
     getMainWindow()->updateActions();
     Py_Return;
+}
+
+PyObject* Application::sGetShortcut(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (cmd) {
+
+#if PY_MAJOR_VERSION >= 3
+        PyObject* str = PyUnicode_FromString(cmd->getAccel());
+#else
+        PyObject* str = PyString_FromString(cmd->getAccel());
+#endif
+        return str;
+    }
+    else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
 }
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
