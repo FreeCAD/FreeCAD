@@ -411,7 +411,6 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                 Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
                 reader.clearPartialRestoreProperty();
             }
-            reader.readEndElement("Property",&guard);
         }
         catch (Base::XMLParseException &e) {
             FC_ERR(e.what() << " while parsing " << getFullName() << '.' << PropName);
@@ -437,6 +436,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
+        reader.readEndElement("Property",&guard);
     }
     reader.readEndElement("Properties");
 }
