@@ -132,7 +132,7 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
     return obj
 
 def joinWalls(walls,delete=False):
-    """ Joins the given list of walls into one sketch-based wall.
+    """Joins the given list of walls into one sketch-based wall.
 
     Takes the first wall in the list, and adds on the other walls in the list.
     Returns the modified first wall. 
@@ -221,12 +221,12 @@ def areSameWallTypes(walls):
 
     Parameters
     ----------
-    walls: list of <class 'ArchComponent.Component'>
+    walls: list of <ArchComponent.Component>
 
     Returns
     -------
     bool
-        True if the walls have the same height, width and alignment, false if otherwise.
+        True if the walls have the same height, width and alignment, False if otherwise.
     """
 
     for att in ["Width","Height","Align"]:
@@ -665,7 +665,8 @@ class _CommandMergeWalls:
         FreeCAD.ActiveDocument.commitTransaction()
 
 class _Wall(ArchComponent.Component):
-    """The Wall object. Takes a <App::FeaturePython> and turns it into a wall.
+    """The Wall object. Takes a <App::FeaturePython> and turns it into a wall,
+    then uses a <Part::Feature> to create the wall's shape.
 
     Walls are simple objects, usually vertical, typically obtained by giving a
     thickness to a base line, then extruding it vertically.
@@ -673,8 +674,8 @@ class _Wall(ArchComponent.Component):
     Parameters
     ----------
     obj: <App::FeaturePython>
-        The object to turn into a wall. Note that this is not the object that forms
-        the basis for the new wall's shape. That is given later.
+        The object to turn into a wall. Note that this is not the object that
+        forms the basis for the new wall's shape. That is given later.
     """
 
     def __init__(self, obj):
@@ -759,8 +760,14 @@ class _Wall(ArchComponent.Component):
         self.setProperties(obj)
 
     def execute(self,obj):
+        """Method run when the object is recomputed.
 
-        "builds the wall shape"
+        Extrudes the wall from the Base shape if possible. Processes additions
+        and subtractions. Assigns the resulting shape as the shape of the wall.
+
+        Adds blocks if the MakeBlocks property is assigned. If the Base shape
+        is a mesh, just copies the mesh.
+        """
 
         if self.clone(obj):
             return
@@ -951,12 +958,43 @@ class _Wall(ArchComponent.Component):
         obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
+        """Method called before the object has a property changed. 
+
+        Specifically, this method is called before the value changes.
+
+        If "Length" has changed, it records the old length so that .onChanged()
+        can be sure that the base needs to be changed.
+
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
+
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
     def onChanged(self, obj, prop):
+        """Method called when the object has a property changed.
+
+        If length has changed, will extend the length of the Base object, if
+        the Base object only has a single edge to extend.
+
+        Also hides subobjects.
+
+        Also calls ArchComponent.Component.onChanged().
+
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
+
         if prop == "Length":
-            if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
+            if (obj.Base and obj.Length.Value 
+                    and hasattr(self,"oldLength") and (self.oldLength != None) 
+                    and (self.oldLength != obj.Length.Value)):
+
                 if hasattr(obj.Base,'Shape'):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
@@ -977,10 +1015,18 @@ class _Wall(ArchComponent.Component):
                                         print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
+
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
     def getFootprint(self,obj):
+        """Gets the faces that make up the base/foot of the wall.
+        
+        Returns
+        -------
+        list of <Part.Face>
+            The faces that make up the foot of the wall.
+        """
 
         faces = []
         if obj.Shape:
@@ -991,8 +1037,24 @@ class _Wall(ArchComponent.Component):
         return faces
 
     def getExtrusionData(self,obj):
+        """Gets data needed to extrude the wall from a base object.
+        
+        This method takes the Base object, and finds a base face to extrude
+        out, a vector to define the extrusion direction and distance.
 
-        """returns (shape,extrusion vector,placement) or None"""
+        The base face is rebased to the (0,0,0) origin.
+
+        The base face is returned, rebased, with the extrusion vector, and the
+        <Base.Placement> needed to return the face back to its original
+        position.
+
+        Returns
+        -------
+        tuple of (<Part.Face>, <Base.Vector>, <Base.Placement>)
+            Tuple containing the base face, the vector for extrusion, and the
+            placement needed to move the face back from the (0,0,0) origin.
+        """
+
         import Part,DraftGeomUtils
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
@@ -1098,6 +1160,7 @@ class _Wall(ArchComponent.Component):
         base = None
         placement = None
         self.basewires = None
+
         # build wall layers
         layers = []
         if hasattr(obj,"Material"):
@@ -1116,15 +1179,21 @@ class _Wall(ArchComponent.Component):
                             layers.append(t)
                         elif varwidth:
                             layers.append(varwidth)
+
         if obj.Base:
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
+
+                    # If the user has defined a specific face of the Base
+                    # object to build the wall from, extrude from that face,
+                    # and return the extrusion moved to (0,0,0), normal of the
+                    # face, and placement to move the extrusion back to it's
+                    # original position.
                     elif obj.Face > 0:
                         if len(obj.Base.Shape.Faces) >= obj.Face:
                             face = obj.Base.Shape.Faces[obj.Face-1]
-                            # this wall is based on a specific face of its base object
                             if obj.Normal != Vector(0,0,0):
                                 normal = face.normalAt(0,0)
                             if normal.getAngle(Vector(0,0,1)) > math.pi/4:
@@ -1137,14 +1206,19 @@ class _Wall(ArchComponent.Component):
                             else:
                                 normal.multiply(height)
                                 base = face.extrude(normal)
-                            base,placement = self.rebase(base)
+                            base, placement = self.rebase(base)
                             return (base,normal,placement)
+
+                    # If the Base has faces, but no specific one has been
+                    # selected, rebase the faces and continue.
                     elif obj.Base.Shape.Faces:
                         if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
+                    # If the object is a single edge, use that as the
+                    # basewires.
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 
@@ -1169,7 +1243,7 @@ class _Wall(ArchComponent.Component):
                             self.basewires.append(clusterTransformed)
 
                         # Use Sketch's Normal for all edges/wires generated
-                        # from sketch for consistency Discussion on checking
+                        # from sketch for consistency. Discussion on checking
                         # normal of sketch.Placement vs
                         # sketch.getGlobalPlacement() -
                         # https://forum.freecadweb.org/viewtopic.php?f=22&t=39341&p=334275#p334275
@@ -1188,7 +1262,7 @@ class _Wall(ArchComponent.Component):
                         #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))  
                         #normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
-                    if self.basewires: # and width: # width already tested earlier...
+                    if self.basewires:
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0
@@ -1223,10 +1297,13 @@ class _Wall(ArchComponent.Component):
                                 except:
                                     widths.append(width)
 
+                            # Get a direction vector orthogonal to both the
+                            # normal of the face/sketch and the direction the
+                            # wire was drawn in. IE: along the width direction
+                            # of the wall.
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
                             else:
-                                #dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
                                 dvec = DraftGeomUtils.vec(e).cross(normal)
 
                             if not DraftVecUtils.isNull(dvec):
@@ -1243,7 +1320,8 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     dvec.multiply(width)
 
-                                # Now DraftGeomUtils.offsetWire() support similar effect as ArchWall Offset
+                                # Now DraftGeomUtils.offsetWire() support
+                                # similar effect as ArchWall Offset
                                 #
                                 #if off:
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
@@ -1413,15 +1491,34 @@ class _Wall(ArchComponent.Component):
         return None
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
-
-    "A View Provider for the Wall object"
+    """The view provider for the wall object."""
 
     def __init__(self,vobj):
+        """Initialises the wall view provider.
+
+        Runs the Arch Component view provider initalisation, and sets the color
+        to the default for walls.
+
+        Parameters
+        ----------
+        vobj: <Gui.ViewProviderDocumentObject>
+            The view provider to turn into a wall view provider.
+        """
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
     def getIcon(self):
+        """Returns the path to the appropriate icon.
+
+        If a clone, returns the cloned wall icon path. Otherwise returns the
+        Arch wall icon.
+
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """
 
         import Arch_rc
         if hasattr(self,"Object"):
@@ -1432,6 +1529,18 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Wall_Tree.svg"
 
     def attach(self,vobj):
+        """Adds display modes' data to the coin scenegraph.
+
+        Adds each display mode as a coin node, whose parent is this view
+        provider. 
+
+        Each display mode's node includes the data needed to display the object
+        in that mode. This might include colors of faces, or the draw style of
+        lines. This data is stored as additional coin nodes which are children
+        of the display mode node.
+
+        Adds the textures used in the Footprint display mode.
+        """
 
         self.Object = vobj.Object
         from pivy import coin
@@ -1454,6 +1563,19 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         ArchComponent.ViewProviderComponent.attach(self,vobj)
 
     def updateData(self,obj,prop):
+        """Method called when the host object has a property changed.
+
+        If the host object's Placement, Shape, or Material has changed, and the
+        host object has a Material assigned, gives the shape the color and
+        transparency of the Material.
+
+        Parameters
+        ----------
+        obj: <App::FeaturePython>
+            The host object that has changed.
+        prop: string
+            The name of the property that has changed.
+        """
 
         if prop in ["Placement","Shape","Material"]:
             if obj.ViewObject.DisplayMode == "Footprint":
@@ -1480,11 +1602,42 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
     def getDisplayModes(self,vobj):
+        """Defines the display modes unique to the Arch Wall.
+
+        Defines mode Footprint, which only displays the footprint of the wall.
+        Also adds the display modes of the Arch Component.
+
+        Returns
+        -------
+        list of str
+            List containing the names of the new display modes.
+        """
 
         modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
         return modes
 
     def setDisplayMode(self,mode):
+        """Method called when the display mode changes.
+
+        Called when the display mode changes, this method can be used to set
+        data that wasn't available when .attach() was called.
+
+        When Footprint is set as display mode, finds the faces that make up
+        the footprint of the wall, and gives them a lined texture. Then displays
+        the wall as a wireframe.
+
+        Then passes the displaymode onto Arch Component's .setDisplayMode().
+
+        Parameters
+        ----------
+        mode: str
+            The name of the display mode the view provider has switched to.
+
+        Returns
+        -------
+        str:
+            The name of the display mode the view provider has switched to.
+        """
 
         self.fset.coordIndex.deleteValues(0)
         self.fcoords.point.deleteValues(0)
