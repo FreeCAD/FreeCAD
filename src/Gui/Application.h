@@ -259,6 +259,7 @@ public:
     static PyObject* sRunCommand               (PyObject *self,PyObject *args);
     static PyObject* sAddCommand               (PyObject *self,PyObject *args);
     static PyObject* sListCommands             (PyObject *self,PyObject *args);
+    static PyObject* sGetShortcut              (PyObject *self,PyObject *args);
     static PyObject* sIsCommandActive          (PyObject *self,PyObject *args);
     static PyObject* sUpdateCommands           (PyObject *self,PyObject *args);
 
