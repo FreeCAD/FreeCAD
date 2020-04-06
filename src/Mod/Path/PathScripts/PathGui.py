@@ -57,7 +57,30 @@ Returns True if a new value was assigned, False otherwise (new value is the same
     value = FreeCAD.Units.Quantity(widget.text()).Value
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, 'Value') else attr
+
+    isDiff = False
     if not PathGeom.isRoughly(attrValue, value):
+        isDiff = True
+    else:
+        if hasattr(obj, 'ExpressionEngine'):
+            noExpr = True
+            for (prp, expr) in obj.ExpressionEngine:
+                if prp == prop:
+                    noExpr = False
+                    PathLog.debug('prop = "expression": {} = "{}"'.format(prp, expr))
+                    value = FreeCAD.Units.Quantity(obj.evalExpression(expr)).Value
+                    if not PathGeom.isRoughly(attrValue, value):
+                        isDiff = True
+                    break
+            if noExpr:
+                widget.setReadOnly(False)
+                widget.setStyleSheet("color: black")
+            else:
+                widget.setReadOnly(True)
+                widget.setStyleSheet("color: gray")
+            widget.update()
+
+    if isDiff:
         PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value))
         if onBeforeChange:
             onBeforeChange(obj)
@@ -80,6 +103,7 @@ The spin box gets bound to a given property and supports update in both directio
         self.widget = widget
         self.prop = prop
         self.onBeforeChange = onBeforeChange
+
         attr = PathUtil.getProperty(self.obj, self.prop)
         if attr is not None:
             if hasattr(attr, 'Value'):
