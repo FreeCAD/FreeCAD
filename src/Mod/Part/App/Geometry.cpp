@@ -1721,9 +1721,13 @@ bool GeomConic::isSame(const Geometry &_other, double tol, double atol) const
         return false;
 
     auto &other = static_cast<const GeomConic &>(_other);
-    return fabs(getAngleXU() - other.getAngleXU()) <= atol
-        && Base::DistanceP2(getLocation(),other.getLocation()) <= tol*tol
-        && isReversed() == other.isReversed();
+
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
+    Handle(Geom_Conic) conic2 =  Handle(Geom_Conic)::DownCast(other.handle());
+
+    return conic->Position().XDirection().Angle(conic2->Position().XDirection()) <= atol
+        && conic->Position().YDirection().Angle(conic2->Position().YDirection()) <= atol
+        && Base::DistanceP2(getLocation(),other.getLocation()) <= tol*tol;
 }
 // -------------------------------------------------
 
