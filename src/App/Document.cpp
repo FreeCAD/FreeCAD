@@ -1933,7 +1933,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                 writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
             writer.Stream() << "\">\n";
             writer.incInd();
-            for(auto dep : outList) {
+            std::set<App::DocumentObject*> outSet(outList.begin(),outList.end());
+            for(auto dep : outSet) {
                 auto name = dep?dep->getNameInDocument():"";
                 writer.Stream() << writer.ind() << "<" FC_ELEMENT_OBJECT_DEP " "
                     FC_ATTR_DEP_OBJ_NAME "=\"" << (name?name:"") << "\"/>\n";
