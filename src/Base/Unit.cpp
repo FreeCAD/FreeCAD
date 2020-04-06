@@ -355,7 +355,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.Mass < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "kg";
@@ -364,7 +364,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.Time < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "s";
@@ -373,7 +373,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.ElectricCurrent < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "A";

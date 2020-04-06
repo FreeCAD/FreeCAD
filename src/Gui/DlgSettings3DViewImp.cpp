@@ -83,6 +83,8 @@ void DlgSettings3DViewImp::saveSettings()
     index = ui->renderCache->currentIndex();
     hGrp->SetInt("RenderCache", index);
 
+    ui->comboTransparentRender->onSave();
+
     QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
@@ -123,6 +125,8 @@ void DlgSettings3DViewImp::loadSettings()
 
     index = hGrp->GetInt("RenderCache", 0);
     ui->renderCache->setCurrentIndex(index);
+
+    ui->comboTransparentRender->onRestore();
 
     int const current = hGrp->GetInt("MarkerSize", 9L);
     ui->boxMarkerSize->addItem(tr("5px"), QVariant(5));

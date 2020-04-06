@@ -36,7 +36,7 @@ __url__ = "https://www.freecadweb.org"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
+import sys, FreeCAD, FreeCADGui, WorkingPlane, math, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from PySide import QtCore,QtGui
 import DraftGui
@@ -56,9 +56,9 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 # Commands that have been migrated to their own modules
 #---------------------------------------------------------------------------
 
-import DraftEdit
-# import DraftFillet
+import draftguitools.gui_edit
 import draftguitools.gui_selectplane
+# import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
 

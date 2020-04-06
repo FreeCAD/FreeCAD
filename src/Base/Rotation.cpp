@@ -121,7 +121,7 @@ void Rotation::evaluateVector()
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
     // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3])
-    if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
+    if ((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
         double rfAngle = acos(this->quat[3]) * 2.0;
         double scale = sin(rfAngle / 2.0);
         // Get a normalized vector 
@@ -287,7 +287,7 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
         else {
             // We can use any axis perpendicular to u (and v)
             Vector3d t = u % Vector3d(1.0, 0.0, 0.0);
-            if(t.Length() < Base::Vector3d::epsilon())
+            if (t.Length() < Base::Vector3d::epsilon())
                 t = u % Vector3d(0.0, 1.0, 0.0);
             this->setValue(t.x, t.y, t.z, 0.0);
         }
@@ -455,7 +455,7 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
     double scale1 = t;
     double dot = q0.quat[0]*q1.quat[0]+q0.quat[1]*q1.quat[1]+q0.quat[2]*q1.quat[2]+q0.quat[3]*q1.quat[3];
     bool neg=false;
-    if(dot < 0.0) {
+    if (dot < 0.0) {
         dot = -dot;
         neg = true;
     }
@@ -495,10 +495,10 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
     };
 
     //convert priorityOrder string into a sequence of ints.
-    if(strlen(priorityOrder)!=3)
+    if (strlen(priorityOrder)!=3)
         THROWM(ValueError, "makeRotationByAxes: length of priorityOrder is not 3");
     int order[3];
-    for(int i = 0; i < 3; ++i){
+    for (int i = 0; i < 3; ++i){
         order[i] = priorityOrder[i] - 'X';
         if (order[i] < 0 || order[i] > 2)
             THROWM(ValueError, "makeRotationByAxes: characters in priorityOrder must be uppercase X, Y, or Z. Some other character encountered.")
@@ -531,7 +531,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
     //pick up the strict direction
     Vector3d mainDir;
-    for(int i = 0; i < 3; ++i){
+    for (int i = 0; i < 3; ++i){
         mainDir = *(dirs[order[0]]);
         if (mainDir.Length() > tol)
             break;
@@ -544,7 +544,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
     //pick up the 2nd priority direction, "hint" direction.
     Vector3d hintDir;
-    for(int i = 0; i < 2; ++i){
+    for (int i = 0; i < 2; ++i){
         hintDir = *(dirs[order[1]]);
         if ((hintDir.Cross(mainDir)).Length() > tol)
             break;
@@ -619,7 +619,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
     //build the rotation, by constructing a matrix first.
     Matrix4D m;
     m.setToUnity();
-    for(int i = 0; i < 3; ++i){
+    for (int i = 0; i < 3; ++i){
         //matrix indexing: [row][col]
         m[0][i] = finaldirs[i].x;
         m[1][i] = finaldirs[i].y;
