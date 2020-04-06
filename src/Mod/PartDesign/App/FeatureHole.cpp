@@ -1215,12 +1215,12 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         TopoShape result(0,getDocument()->getStringHasher());
 
-        TopTools_IndexedMapOfShape edgeMap;
-        TopExp::MapShapes(profileshape.getShape(), TopAbs_EDGE, edgeMap);
-        for ( int i=1 ; i<=edgeMap.Extent() ; i++ ) {
+        int i = 0;
+        for(auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+            ++i;
             Standard_Real c_start;
             Standard_Real c_end;
-            TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
+            TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
             Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
             // Circle?
@@ -1246,29 +1246,27 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                       gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
-            std::string name("Edge");
-            name += std::to_string(i);
-            const char *mapped = profileshape.getElementName(name.c_str(),Data::ComplexGeoData::MapToNamed);
-            if(mapped != name.c_str())
-                name = std::string(mapped);
+            Part::ShapeMapper mapper;
+            mapper.populate(true, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
-            TopoShape hole(profile->getID());
-            hole.setShape(protoHole);
+            TopoShape hole(profile->getID(), getDocument()->getStringHasher());
+            hole.makESHAPE(protoHole, mapper, {profileEdge});
+
             // transform and generate element map.
-            hole = hole.makETransform(localSketchTransformation,mapped);
+            hole = hole.makETransform(localSketchTransformation);
             holes.push_back(hole);
 
             try {
                 result.makECut({base,hole});
             }catch(Standard_Failure &) {
-                std::string msg("Hole: Cut failed on profile edge ");
-                msg += name;
+                std::string msg("Hole: Cut failed on profile Edge");
+                msg += std::to_string(i);
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
             base = getSolid(result);
             if (base.isNull()) {
-                std::string msg("Hole: Cut produced non-solid on profile edge ");
-                msg += name;
+                std::string msg("Hole: Cut produced non-solid on profile Edge");
+                msg += std::to_string(i);
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }
