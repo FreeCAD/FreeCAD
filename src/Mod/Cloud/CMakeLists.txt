@@ -1,8 +1,10 @@
+#----------------------------- Control certificate validation ------------
+option(ALLOW_SELF_SIGNED_CERTIFICATE "Allow self signed certificate" OFF)
+if (ALLOW_SELF_SIGNED_CERTIFICATE)
+add_compile_options("-DALLOW_SELF_SIGNED_CERTIFICATE")
+endif ()
 #------------------------------ OpenSSL and CURL -------------------------
-if (APPLE)
-    set(OPENSSL_ROOT_DIR ${HOMEBREW_PREFIX}/Cellar/openssl/*)
-endif(APPLE)
-if (UNIX AND NOT APPLE)
+if (UNIX AND APPLE)
     find_package(PkgConfig REQUIRED)
     pkg_search_module(OPENSSL REQUIRED openssl)
 elseif(WIN32 AND LIBPACK_FOUND)
