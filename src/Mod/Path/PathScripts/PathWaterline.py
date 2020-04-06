@@ -1783,7 +1783,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
-            iC = sp.isOnLine(ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -1889,7 +1889,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-            iC = sp.isOnLine(ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2696,7 +2696,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             else:
                 optimize = False
 
-            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLine(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                 output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
 
             # Rotate point data

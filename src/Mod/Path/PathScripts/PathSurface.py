@@ -1985,7 +1985,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for v in range(1, lenOS):
                 nxt = OS[v + 1]
                 if optimize is True:
-                    iPOL = prev.isOnLine(nxt, pnt)
+                    iPOL = prev.isOnLineSegment(nxt, pnt)
                     if iPOL is True:
                         pnt = nxt
                     else:
@@ -2039,7 +2039,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
-            iC = sp.isOnLine(ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2145,7 +2145,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-            iC = sp.isOnLine(ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2564,7 +2564,7 @@ class ObjectSurface(PathOp.ObjectOp):
             # first item will be compared to the last point, but I think that should work
             output = [Path.Command('G1', {'X': PNTS[i].x, 'Y': PNTS[i].y, 'Z': PNTS[i].z, 'F': self.horizFeed})
                      for i in range(0, len(PNTS) - 1)
-                     if not PNTS[i].isOnLine(PNTS[i -1],PNTS[i + 1])]
+                     if not PNTS[i].isOnLineSegment(PNTS[i -1],PNTS[i + 1])]
             output.append(Path.Command('G1', {'X': PNTS[-1].x, 'Y': PNTS[-1].y, 'Z': PNTS[-1].z, 'F': self.horizFeed}))
         else:
             output = [Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}) for pnt in PNTS]
@@ -2844,7 +2844,7 @@ class ObjectSurface(PathOp.ObjectOp):
             # Process point
             if prcs is True:
                 if optimize is True:
-                    iPOL = prev.isOnLine(nxt, pnt)
+                    iPOL = prev.isOnLineSegment(nxt, pnt)
                     if iPOL is True:
                         onLine = True
                     else:
@@ -3418,7 +3418,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
 
             if self.onHold is False:
-                if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLine(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+                if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
                 # elif i == lastCLP:
                 #     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
@@ -3539,7 +3539,7 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 optimize = False
 
-            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLine(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                 output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
 
             # Rotate point data

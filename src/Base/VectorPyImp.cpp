@@ -435,7 +435,7 @@ PyObject*  VectorPy::cross(PyObject *args)
     return new VectorPy(v);
 }
 
-PyObject*  VectorPy::isOnLine(PyObject *args)
+PyObject*  VectorPy::isOnLineSegment(PyObject *args)
 {
     PyObject *start, *end;
     if (!PyArg_ParseTuple(args, "OO",&start, &end))
@@ -456,7 +456,7 @@ PyObject*  VectorPy::isOnLine(PyObject *args)
     VectorPy::PointerType start_ptr = reinterpret_cast<VectorPy::PointerType>(start_vec->_pcTwinPointer);
     VectorPy::PointerType end_ptr = reinterpret_cast<VectorPy::PointerType>(end_vec->_pcTwinPointer);
 
-    Py::Boolean result = this_ptr->IsOnLine(*start_ptr, *end_ptr);
+    Py::Boolean result = this_ptr->IsOnLineSegment(*start_ptr, *end_ptr);
 
     return Py::new_reference_to(result);
 }

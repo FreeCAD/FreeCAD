@@ -74,10 +74,10 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isOnLine" Const="true">
+		<Methode Name="isOnLineSegment" Const="true">
 			<Documentation>
-				<UserDocu>isOnLine(Vector, Vector)
-					      checks if Vector is on a line
+				<UserDocu>isOnLineSegment(Vector, Vector)
+					      checks if Vector is on a line segment
 				</UserDocu>
 			</Documentation>
 		</Methode>
