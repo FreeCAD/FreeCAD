@@ -241,6 +241,13 @@ class Component(ArchIFC.IfcProduct):
         Component.setProperties(self, obj)
 
     def execute(self,obj):
+        """Method run when the object is recomputed.
+
+        If the object is a clone, just copies the shape it's cloned from.
+
+        Processes subshapes of the object to add additions, and subtract
+        subtractions from the object's shape.
+        """
 
         if self.clone(obj):
             return
@@ -267,6 +274,11 @@ class Component(ArchIFC.IfcProduct):
         If "Placement" has changed, it records the old placement, so that .onChanged()
         can compare between the old and new placement, and move it's children
         accordingly.
+
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
         """
         if prop == "Placement":
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
@@ -1068,6 +1080,8 @@ class ViewProviderComponent:
 
         Parameters
         ----------
+        obj: <App::FeaturePython>
+            The host object that has changed.
         prop: string
             The name of the property that has changed.
         """
