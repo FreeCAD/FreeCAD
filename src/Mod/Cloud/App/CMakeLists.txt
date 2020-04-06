@@ -11,7 +11,7 @@ include_directories(
 
 set(Cloud_LIBS
     FreeCADApp
-    ${OPENSSL_LINK_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
     ${CURL_LIBRARIES}
     ${XercesC_LIBRARIES}
     ${Boost_LIBRARIES}
