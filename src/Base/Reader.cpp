@@ -317,7 +317,8 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
     if(guard) {
         level = *guard;
         if(Guards.empty() || Guards.back()!=guard || Level < level)
-            FC_READER_THROW("Document parsing error");
+            FC_READER_THROW("Parsing error while reading end element '"
+                    << (ElementName?ElementName:"?") << "'");
     }
 
     // if we are already at the end of the current element
@@ -332,7 +333,8 @@ void Base::XMLReader::readEndElement(const char* ElementName, int *guard)
     }
     else if (ReadType == EndDocument) {
         // the end of the document has been reached but we still try to continue on reading
-        FC_READER_THROW("End of document reached");
+        FC_READER_THROW("End of document reached while reading end element '"
+                    << (ElementName?ElementName:"?") << "'");
     }
 
     do {

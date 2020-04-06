@@ -2256,10 +2256,8 @@ Document::readObjects(Base::XMLReader& reader)
             reader.readEndElement("Object",&guard);
         }
     } catch (Base::XMLParseException &e) {
-        if(!e.getReported()) {
-            FC_ERR(e.what() << " while parsing " << getName() << '.' << objName);
-            e.setReported(true);
-        }
+        e.ReportException();
+        FC_ERR("Exception while restroing " << getName() << '.' << objName);
         throw;
     }
     reader.readEndElement("ObjectData");
