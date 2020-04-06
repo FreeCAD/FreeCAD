@@ -251,6 +251,9 @@
           <property name="text">
            <string>Two-side rendering</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>TwoSideRendering</cstring>
           </property>
