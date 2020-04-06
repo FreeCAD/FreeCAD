@@ -340,6 +340,9 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
     }
 
     Base::PyGILStateLocker lock;
+
+    aboutToSetValue();
+
     try {
         static boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
         boost::match_results<std::string::const_iterator> what;
@@ -397,8 +400,6 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         e.ReportException();
         this->object = Py::None();
     }
-
-    aboutToSetValue();
 
     restoreObject(reader);
 
@@ -469,7 +470,7 @@ bool PropertyPythonObject::isSame(const Property &_other) const
         return false;
     Base::PyGILStateLocker lock;
     int res = PyObject_RichCompareBool(object.ptr(),other.object.ptr(),Py_EQ);
-    if(res == 0)
+    if(res == 1)
         return true;
     if(res < 0) 
         PyErr_Clear();
