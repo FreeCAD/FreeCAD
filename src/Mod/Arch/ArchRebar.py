@@ -301,15 +301,35 @@ class _Rebar(ArchComponent.Component):
         if self.clone(obj):
             return
         if not obj.Base:
+            FreeCAD.Console.PrintError(
+                "No Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Base.Shape:
+            FreeCAD.Console.PrintError(
+                "No Shape in Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Base.Shape.Wires:
+            FreeCAD.Console.PrintError(
+                "No Wires in Shape of Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Diameter.Value:
+            FreeCAD.Console.PrintError(
+                "No Diameter Value, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Amount:
             return
+            FreeCAD.Console.PrintError(
+                "No Amount, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
         father = obj.Host
         fathershape = None
         if not father:
