@@ -353,19 +353,20 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             _Shape.Restore(reader);
             auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
             if(ver!=_Ver) {
-                // version mismatch, signal for regenerating.
-                if(owner && owner->getNameInDocument()) {
+                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize())
+                    _Ver = ver;
+                else {
+                    // version mismatch, signal for regenerating.
                     static const char *warnedDoc=0;
                     if(warnedDoc != owner->getDocument()->getName()) {
                         warnedDoc = owner->getDocument()->getName();
                         FC_WARN("Recomputation required for document '" << warnedDoc 
-                                << "' on geo element version change: " 
-                                << _Ver << " -> " << ver);
+                                << "' on geo element version change in " << getFullName()
+                                << ": " << _Ver << " -> " << ver);
                     }
                     owner->getDocument()->addRecomputeObject(owner);
                 }
-            }else
-                _Ver = ver;
+            }
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
         static int buildElementMap = -1;
