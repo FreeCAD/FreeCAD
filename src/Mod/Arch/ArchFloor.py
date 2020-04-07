@@ -60,13 +60,19 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
     Parameters
     ----------
-    objectslist: list of <App::DocumentObject>
+    objectslist: list of <App::DocumentObject>, optional
         The objects to add to the new floor.
     baseobj:
         Unused.
-    name: str
+    name: str, optional
         The Label for the new floor.
+
+    Returns
+    -------
+    <App::DocumentObjectGroupPython>
+        The created floor.
     """
+
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -86,18 +92,18 @@ class _CommandFloor:
 
     A tool for creating Arch floors.
 
-    Creates a floor from the objects selected by the user. Excludes objects
-    that appear higher in the object heirarchy, such as sites or buildings. If
-    free linking is enabled in the Arch preferenecs, allows higher heirarchy
-    objects to be part of floors.
+    Creates a floor from the objects selected by the user, if any. Excludes
+    objects that appear higher in the object heirarchy, such as sites or
+    buildings. If free linking is enabled in the Arch preferenecs, allows
+    higher heirarchy objects to be part of floors.
 
-    Find documentation on the end user usage of Arch Wall here:
+    Find documentation on the end user usage of Arch Floor here:
     https://wiki.freecadweb.org/Arch_Floor
     """
 
 
     def GetResources(self):
-        """Returns a dictionary with the visual aspects of the Arch Wall tool."""
+        """Returns a dictionary with the visual aspects of the Arch Floor tool."""
 
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
@@ -105,7 +111,7 @@ class _CommandFloor:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
-        """Determines whether or not the Arch Wall tool is active. 
+        """Determines whether or not the Arch Floor tool is active. 
 
         Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
         """
@@ -115,7 +121,7 @@ class _CommandFloor:
     def Activated(self):
         """Executed when Arch Floor is called.
 
-        Creates a floor from the objects selected by the user. Excludes
+        Creates a floor from the objects selected by the user, if any. Excludes
         objects that appear higher in the object heirarchy, such as sites or
         buildings. If free linking is enabled in the Arch preferenecs, allows
         higher heirarchy objects to be part of floors.
@@ -159,7 +165,11 @@ Floor creation aborted.") + "\n"
 
 
 class _Floor(ArchIFC.IfcProduct):
-    """The Floor object."""
+    """The Floor object.
+
+    Turns a <App::DocumentObjectGroupPython> into a floor object, then
+    takes a list of objects to own as it's children.
+    """
 
     def __init__(self,obj):
         """Initalises the floor.
@@ -167,7 +177,7 @@ class _Floor(ArchIFC.IfcProduct):
         The floor can be based off either a group, or a python feature. Learn more
         about groups here: https://wiki.freecadweb.org/Std_Group
 
-        Adds the parameters of a floor, and sets it's IFC type.
+        Adds the properties of a floor, and sets it's IFC type.
 
         Parameters
         ----------
@@ -297,17 +307,17 @@ class _Floor(ArchIFC.IfcProduct):
 
 
 class _ViewProviderFloor:
-    """A View Provider for the Floor object"""
+    """A View Provider for the Floor object."""
 
     def __init__(self,vobj):
-        """Initialises the Component view provider.
+        """Initialises the floor view provider.
 
         Registers the Proxy as this class object.
 
         Parameters
         ----------
         vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into an Component view provider.
+            The view provider to turn into a floor view provider.
         """
 
         vobj.Proxy = self
@@ -366,10 +376,10 @@ class _ViewProviderFloor:
         return None
 
     def setupContextMenu(self,vobj,menu):
-        """Adds the component specific options to the context menu.
+        """Adds the floor specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
-        clicks on the component in the tree view.
+        clicks on the floor in the tree view.
 
         Adds a menu choice to convert the floor to an Arch Building Part with
         the ArchBuildingPart.convertFloors function.
