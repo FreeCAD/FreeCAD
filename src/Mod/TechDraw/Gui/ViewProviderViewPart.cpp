@@ -37,19 +37,29 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include<Mod/TechDraw/App/DrawPage.h>
+#include "QGIView.h"
+#include "TaskDetail.h"
 #include "ViewProviderViewPart.h"
 
 using namespace TechDrawGui;
@@ -166,8 +176,11 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
+    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm != nullptr) {
         sPixmap = "TechDraw_Tree_Multi";
+    } else if (dvd != nullptr) {
+        sPixmap = "actions/techdraw-DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -231,6 +244,57 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
         std::vector<App::DocumentObject*> tmp;
         return tmp;
     }
+}
+bool ViewProviderViewPart::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+            return false;
+        }
+        TechDraw::DrawViewPart* dvp = getViewObject();
+        TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
+        if (dvd != nullptr) { 
+            // clear the selection (convenience)
+            Gui::Selection().clearSelection();
+            Gui::Control().showDialog(new TaskDlgDetail(dvd));
+//            Gui::Selection().clearSelection();
+// flush any lingering gui objects
+            Gui::Selection().addSelection(dvd->getDocument()->getName(),
+                                          dvd->getNameInDocument());
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(dvd->getDocument()->getName(),
+                                          dvd->getNameInDocument());
+
+//Gui.ActiveDocument.resetEdit()
+//>>> # Gui.Selection.addSelection('aaStart121','Detail')
+//>>> # Gui.Selection.clearSelection()
+//>>> # Gui.Selection.addSelection('aaStart121','Detail')
+//>>> # Gui.Selection.addSelection('aaStart121','Detail')
+//>>> # Gui.Selection.clearSelection()
+//>>> # Gui.Selection.addSelection('aaStart121','Detail')            
+            return true;
+        }
+    } else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderViewPart::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderViewPart::doubleClicked(void)
+{
+    setEdit(ViewProvider::Default);
+    return true;
 }
 
 TechDraw::DrawViewPart* ViewProviderViewPart::getViewObject() const
