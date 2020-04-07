@@ -67,6 +67,11 @@ Base::Vector2d Rez::guiX(Base::Vector3d v, bool planar)
     return Base::Vector2d(guiX(v.x), guiX(v.y));
 }
 
+QPointF Rez::guiX(QPointF p)
+{
+    return Rez::guiPt(p);
+}
+
 //turn Gui side value to App side value
 double Rez::appX(double x)
 {
@@ -83,6 +88,7 @@ QPointF Rez::appX(QPointF p)
 {
     return appPt(p);
 }
+
 
 
 //Misc conversions

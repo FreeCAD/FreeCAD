@@ -110,6 +110,7 @@ class TechDrawExport DrawUtil {
         static std::string shapeToString(TopoDS_Shape s);
         static TopoDS_Shape shapeFromString(std::string s);
         static Base::Vector3d invertY(Base::Vector3d v);
+        static QPointF invertY(QPointF p);
         static std::vector<std::string> split(std::string csvLine);
         static std::vector<std::string> tokenize(std::string csvLine, std::string delimiter = ",$$$,");
         static App::Color pyTupleToColor(PyObject* pColor);

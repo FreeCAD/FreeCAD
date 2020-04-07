@@ -100,8 +100,6 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewDetail, TechDraw::DrawViewPart)
 
 DrawViewDetail::DrawViewDetail()
-// :
-//    m_mattingStyle(0)
 {
     static const char *dgroup = "Detail";
 

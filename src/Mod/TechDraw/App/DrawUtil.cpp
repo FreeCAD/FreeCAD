@@ -570,6 +570,13 @@ Base::Vector3d DrawUtil::invertY(Base::Vector3d v)
     return result;
 }
 
+QPointF DrawUtil::invertY(QPointF v)
+{
+    QPointF result(v.x(), -v.y());
+    return result;
+}
+
+
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
