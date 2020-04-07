@@ -46,7 +46,8 @@ else:
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
-
+__doc__ = """This module provides tools to build Site objects. Sites are
+containers for Arch objects, and also define a terrain surface."""
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):
@@ -520,16 +521,42 @@ Site creation aborted.") + "\n"
 
 
 class _Site(ArchIFC.IfcProduct):
+    """The Site object.
 
-    "The Site object"
+    Turns a <Part::FeaturePython> into a site object. 
+
+    If an object is assigned to the Terrain property, gains a shape, and deals
+    with additions and subtractions as earthmoving, calculating volumes of
+    terrain that have been moved by the additions and subtractions. Unlike most
+    Arch objects, the Terrain object works well as a mesh.
+    """
 
     def __init__(self,obj):
+        """Initalises the site.
+
+        The site must be based off a <Part::FeaturePython> object.
+
+        Adds the properties of a site, and sets it's IFC type.
+
+        Parameters
+        ----------
+        obj: <Part::FeaturePython>
+            The object to turn into a site.
+        """
 
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
 
     def setProperties(self,obj):
+        """Gives the object properties unique to sites.
+
+        Adds the IFC product properties, and sites' unique properties like
+        Terrain.
+
+        You can learn more about properties here:
+        https://wiki.freecadweb.org/property
+        """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
 
@@ -589,10 +616,18 @@ class _Site(ArchIFC.IfcProduct):
         self.Type = "Site"
 
     def onDocumentRestored(self,obj):
+        """Method run when the document is restored. Re-adds the properties."""
 
         self.setProperties(obj)
 
     def execute(self,obj):
+        """Method run when the object is recomputed.
+        
+        If the site has no Shape or Terrain property assigned, does nothing.
+
+        Performs additions and subtractions on terrain, and assigns to the
+        site's Shape.
+        """
 
         if not hasattr(obj,'Shape'): # old-style Site
             return
@@ -604,6 +639,7 @@ class _Site(ArchIFC.IfcProduct):
                 if obj.Terrain.Shape:
                     if not obj.Terrain.Shape.isNull():
                         shape = obj.Terrain.Shape.copy()
+
         if shape:
             shells = []
             for sub in obj.Subtractions:
@@ -634,6 +670,18 @@ class _Site(ArchIFC.IfcProduct):
                     self.computeAreas(obj)
 
     def onChanged(self,obj,prop):
+        """Method called when the object has a property changed.
+
+        If Terrain has changed, hides the base object terrain, then runs
+        .execute().
+
+        Also calls ArchIFC.IfcProduct.onChanged().
+
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
         if prop == "Terrain":
@@ -643,6 +691,18 @@ class _Site(ArchIFC.IfcProduct):
                 self.execute(obj)
 
     def computeAreas(self,obj):
+        """Computes the area, perimeter length, and volume of the terrain shape.
+
+        Computes the area of the terrain projected onto an XY hyperplane, IE:
+        the area of the terrain if viewed from a birds eye view.
+
+        Computes the length of the perimeter of this birds eye view area.
+
+        Computes the volume of the terrain that needs to be subtracted and
+        added on account of the Additions and Subtractions to the site.
+
+        These values are assigned to their respective site properties.
+        """
 
         if not obj.Shape:
             return
@@ -656,6 +716,7 @@ class _Site(ArchIFC.IfcProduct):
             return
         if not obj.Terrain:
             return
+
         # compute area
         fset = []
         for f in obj.Shape.Faces:
@@ -681,6 +742,7 @@ class _Site(ArchIFC.IfcProduct):
                 self.flatarea = self.flatarea.removeSplitter()
                 if obj.ProjectedArea.Value != self.flatarea.Area:
                     obj.ProjectedArea = self.flatarea.Area
+
         # compute perimeter
         lut = {}
         for e in obj.Shape.Edges:
@@ -692,6 +754,7 @@ class _Site(ArchIFC.IfcProduct):
         if l:
                 if obj.Perimeter.Value != l:
                     obj.Perimeter = l
+
         # compute volumes
         if obj.Terrain.Shape.Solids:
             shapesolid = obj.Terrain.Shape.copy()
@@ -708,20 +771,33 @@ class _Site(ArchIFC.IfcProduct):
         if obj.AdditionVolume.Value != addvol:
             obj.AdditionVolume = addvol
 
-
-
-
 class _ViewProviderSite:
-
-    "A View Provider for the Site object"
+    """A View Provider for the Site object"""
 
     def __init__(self,vobj):
+        """Initialises the site view provider.
+
+        Registers the Proxy as this class object. Sets the view provider to have the
+        properties of a site view provider.
+
+        Parameters
+        ----------
+        vobj: <Gui.ViewProviderDocumentObject>
+            The view provider to turn into a site view provider.
+        """
 
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
+        """Gives the site view provider it's site view provider specific properties.
+
+        These include solar diagram and compass data, dealing the orientation
+        of the site, and it's orientation to the sun.
+
+        You can learn more about properties here: https://wiki.freecadweb.org/property
+        """
 
         pl = vobj.PropertiesList
         if not "SolarDiagram" in pl:
@@ -749,15 +825,34 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
 
     def onDocumentRestored(self,vobj):
-
+        """Method run when the document is restored. Re-adds the Arch component properties."""
         self.setProperties(vobj)
 
     def getIcon(self):
+        """Returns the path to the appropriate icon.
+
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """
 
         import Arch_rc
         return ":/icons/Arch_Site_Tree.svg"
 
     def claimChildren(self):
+        """Defines which objects will appear as children in the tree view.
+
+        Sets objects within the site group, and the terrain object as children.
+
+        If the Arch preference swallowSubtractions is true, the additions and
+        subtractions to the terrain are set as children.
+
+        Returns
+        -------
+        list of <App::DocumentObject>s:
+            The objects claimed as children.
+        """
 
         objs = []
         if hasattr(self,"Object"):
@@ -770,6 +865,24 @@ class _ViewProviderSite:
         return objs
 
     def setEdit(self,vobj,mode):
+        """Method called when the document requests the object to enter edit mode.
+
+        Edit mode is entered when a user double clicks on an object in the tree
+        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+
+        Just dispays the standard Arch component task panel.
+
+        Parameters
+        ----------
+        mode: int or str
+            The edit mode the document has requested. Set to 0 when requested via
+            a double click or [Edit -> Toggle Edit Mode].
+
+        Returns
+        -------
+        bool
+            If edit mode was entered.
+        """
 
         if (mode == 0) and hasattr(self,"Object"):
             import ArchComponent
@@ -781,11 +894,32 @@ class _ViewProviderSite:
         return False
 
     def unsetEdit(self,vobj,mode):
+        """Method called when the document requests the object exit edit mode.
+
+        Closes the Arch component edit task panel.
+
+        Returns
+        -------
+        False
+        """
 
         FreeCADGui.Control.closeDialog()
         return False
 
     def attach(self,vobj):
+        """Adds display modes' data to the coin scenegraph.
+
+        Adds each display mode as a coin node, whose parent is this view
+        provider. 
+
+        Each display mode's node includes the data needed to display the object
+        in that mode. This might include colors of faces, or the draw style of
+        lines. This data is stored as additional coin nodes which are children
+        of the display mode node.
+
+        Does not add display modes, but does add the solar diagram and compass
+        to the scenegraph.
+        """
 
         self.Object = vobj.Object
         from pivy import coin
@@ -805,6 +939,20 @@ class _ViewProviderSite:
         vobj.Annotation.addChild(self.compass.rootNode)
 
     def updateData(self,obj,prop):
+        """Method called when the host object has a property changed.
+
+        If the Longitude or Lattitude has changed, the SolarDiagram is
+        set to update.
+
+        If Terrain or Placement has changed, the compass is moved to follow it.
+
+        Parameters
+        ----------
+        obj: <App::FeaturePython>
+            The host object that has changed.
+        prop: string
+            The name of the property that has changed.
+        """
 
         if prop in ["Longitude","Latitude"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
@@ -870,6 +1018,11 @@ class _ViewProviderSite:
             self.updateCompassLocation(vobj)
 
     def updateDeclination(self,vobj):
+        """Updates the declination of the compass 
+
+        Updates the declination by adding together how the
+        site has been rotated within the document, and the rotation of the site compass.
+        """
 
         if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:
             return

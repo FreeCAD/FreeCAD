@@ -1047,12 +1047,12 @@ class ViewProviderComponent:
 
         Registers the Proxy as this class object. Registers the Object, as the view
         provider's object. Sets the view provider to have the
-        properties of an Arch component.
+        properties of a component view provider.
 
         Parameters
         ----------
         vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into an Component view provider.
+            The view provider to turn into a component view provider.
         """
 
         vobj.Proxy = self
@@ -1062,7 +1062,8 @@ class ViewProviderComponent:
     def setProperties(self,vobj):
         """Gives the component view provider it's component view provider specific properties.
 
-        You can learn more about properties here: https://wiki.freecadweb.org/property
+        You can learn more about properties here:
+        https://wiki.freecadweb.org/property
         """
 
         if not "UseMaterialColor" in vobj.PropertiesList:
