@@ -55,14 +55,20 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Setup UI
     ui->setupUi(this);
 
-    if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
-        textChanged(Base::Tools::fromStdString(expression->toString()));
-    }
-
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+    
+    if (expression) {
+        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+    }
+    else
+    {
+        QAbstractSpinBox *sb = dynamic_cast<QAbstractSpinBox*>(parent);
+        if (sb) {
+            ui->expression->setText(sb->text());
+        }
+    }
 
     // Set document object on line edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
