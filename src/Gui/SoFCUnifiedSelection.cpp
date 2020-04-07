@@ -929,7 +929,22 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
         getMainWindow()->showMessage(QString::fromLatin1(buf));
     }
 
-    if (pPath) {
+    // Apply action only if ShowSelectionTop is off. If it is on,
+    // View3DInventorView::onSelectionChange() will apply the action to its on
+    // top group. If ShowSelectionTop is on and we still apply the action here,
+    // there will be wrong selection highlight in the following case,
+    //
+    // * Make sure ShowSelectionOnTop is active,
+    // * Create an App::Part, add two children, say a Box and a Cylinder.
+    // * Select the whole Cylinder in tree view.
+    // * Select Cylinder.Edge3 in 3D view, this will clear the whole Cylinder
+    //   selection
+    // * CTRL select any face of the Box, this will bring the box on top, and
+    //   reveal that its Edge3 is also highlighted.
+    //
+    // TODO: find out why!
+    //
+    if (pPath && !ViewParams::instance()->getShowSelectionOnTop()) {
         FC_TRACE("applying action");
         SoSelectionElementAction action(type);
         action.setColor(this->colorSelection.getValue());
