@@ -2815,6 +2815,8 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
+            Gui::Selection().clearSelection();
+            //fall through
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
             return inherited::processSoEvent(ev);
         default:
