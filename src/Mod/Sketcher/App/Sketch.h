@@ -44,7 +44,7 @@ class SketcherExport Sketch : public SketchSolver
 
 public:
     Sketch();
-    ~Sketch();
+    virtual ~Sketch() override;
 
     // from base class
     virtual unsigned int getMemSize(void) const override;

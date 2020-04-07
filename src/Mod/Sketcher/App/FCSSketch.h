@@ -25,6 +25,9 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
+
+#include <Mod/ConstraintSolver/App/ParameterStore.h>
+
 #include "Constraint.h"
 
 #include "SketchSolver.h"
@@ -37,8 +40,8 @@ class SketcherExport FCSSketch : public SketchSolver
     TYPESYSTEM_HEADER();
 
 public:
-    FCSSketch() = default;
-    ~FCSSketch() = default;
+    FCSSketch();
+    virtual ~FCSSketch() override = default;
 
     // from base class
     virtual unsigned int getMemSize(void) const override;
@@ -102,11 +105,18 @@ public:
     
     
 private:
+    /// add unspecified geometry, where each element's "fixed" status is given by the blockedGeometry array
+    int addGeometry(const std::vector<Part::Geometry *> &geo,
+                    const std::vector<bool> &blockedGeometry);
+    
+    /// add unspecified geometry
+    int addGeometry(const Part::Geometry *geo, bool fixed=false);
     
     
+private:
+    FCS::HParameterStore parameterStore;
 };
 
-} //namespace Part
-
+} //namespace Sketcher
 
 #endif // SKETCHER_FCSSKETCH_H

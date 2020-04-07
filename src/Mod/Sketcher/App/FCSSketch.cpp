@@ -61,9 +61,15 @@
 using namespace Sketcher;
 using namespace Base;
 using namespace Part;
+using namespace FCS;
 
 TYPESYSTEM_SOURCE(Sketcher::FCSSketch, Sketcher::SketchSolver)
 
+
+FCSSketch::FCSSketch() : parameterStore(Py::None())
+{
+    parameterStore = FCS::ParameterStore::make();
+}
 
 
 int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
@@ -115,6 +121,74 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     */
     return 0;
 }
+
+int FCSSketch::addGeometry(const std::vector<Part::Geometry *> &geo,
+                        const std::vector<bool> &blockedGeometry)
+{
+    assert(geo.size() == blockedGeometry.size());
+
+    int ret = -1;
+    std::vector<Part::Geometry *>::const_iterator it;
+    std::vector<bool>::const_iterator bit;
+
+    for ( it = geo.begin(), bit = blockedGeometry.begin(); it != geo.end() && bit !=blockedGeometry.end(); ++it, ++bit)
+        ret = addGeometry(*it, *bit);
+    return ret;
+}
+
+int FCSSketch::addGeometry(const Part::Geometry *geo, bool fixed)
+{
+    /*
+    if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
+        const GeomPoint *point = static_cast<const GeomPoint*>(geo);
+        // create the definition struct for that geom
+        if( point->Construction == false ) {
+            return addPoint(*point, fixed);
+        }
+        else {
+            return addPoint(*point, true);
+        }
+    } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
+        const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
+        // create the definition struct for that geom
+        return addLineSegment(*lineSeg, fixed);
+    } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
+        const GeomCircle *circle = static_cast<const GeomCircle*>(geo);
+        // create the definition struct for that geom
+        return addCircle(*circle, fixed);
+    } else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) { // add a ellipse
+        const GeomEllipse *ellipse = static_cast<const GeomEllipse*>(geo);
+        // create the definition struct for that geom
+        return addEllipse(*ellipse, fixed);
+    } else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
+        const GeomArcOfCircle *aoc = static_cast<const GeomArcOfCircle*>(geo);
+        // create the definition struct for that geom
+        return addArc(*aoc, fixed);
+    } else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) { // add an arc
+        const GeomArcOfEllipse *aoe = static_cast<const GeomArcOfEllipse*>(geo);
+        // create the definition struct for that geom
+        return addArcOfEllipse(*aoe, fixed);
+    } else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) { // add an arc of hyperbola
+        const GeomArcOfHyperbola *aoh = static_cast<const GeomArcOfHyperbola*>(geo);
+        // create the definition struct for that geom
+        return addArcOfHyperbola(*aoh, fixed);
+    } else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
+        const GeomArcOfParabola *aop = static_cast<const GeomArcOfParabola*>(geo);
+        // create the definition struct for that geom
+        return addArcOfParabola(*aop, fixed);
+    } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
+        const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
+        // create the definition struct for that geom
+        return addBSpline(*bsp, fixed);
+    }
+    else {
+        throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
+    }
+    */
+    return 0;
+}
+
+
 
 std::vector<Part::Geometry *> FCSSketch::extractGeometry(bool withConstructionElements,
                                                       bool withExternalElements) const
