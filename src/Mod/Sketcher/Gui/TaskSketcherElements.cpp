@@ -1112,6 +1112,7 @@ void TaskSketcherElements::changeEvent(QEvent *e)
 
 TaskSketcherElements::MultIcon::MultIcon(const char* name)
 {
+    int hue, sat, val, alp;
     Normal = Gui::BitmapFactory().iconFromTheme(name);
     QImage imgConstr(Normal.pixmap(Normal.availableSizes()[0]).toImage());
     QImage imgExt(imgConstr);
@@ -1119,13 +1120,19 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
             QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
-            int hue = clr.hue();
-            if(hue >= 0) {
-                if(hue > 330 || hue < 30) {
-                    clr.setHsl((hue + 240) % 360, clr.saturation(), clr.lightness(), clr.alpha());
+            clr.getHsv(&hue, &sat, &val, &alp);
+            if (alp > 127 && hue >= 0) {
+                if (sat > 127 && (hue > 330 || hue < 30)) {
+                    clr.setHsv((hue + 240) % 360, sat, val, alp);
                     imgConstr.setPixel(ix, iy, clr.rgba());
-                    
-                    clr.setHsl(300, clr.saturation(), clr.lightness(), clr.alpha());
+                    clr.setHsv((hue + 300) % 360, sat, val, alp);
+                    imgExt.setPixel(ix, iy, clr.rgba());
+                }
+                else if (sat < 64 && val > 192)
+                {
+                    clr.setHsv(240, (255-sat), val, alp);
+                    imgConstr.setPixel(ix, iy, clr.rgba());
+                    clr.setHsv(300, (255-sat), val, alp);
                     imgExt.setPixel(ix, iy, clr.rgba());
                 }
             }
