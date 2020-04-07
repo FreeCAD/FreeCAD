@@ -248,7 +248,9 @@ def areSameWallTypes(walls):
 
 
 class _CommandWall:
-    """The command definition for the Arch workbench's gui tool, Arch Wall. A tool for creating Arch walls.
+    """The command definition for the Arch workbench's gui tool, Arch Wall.
+
+    A tool for creating Arch walls.
 
     Creates a wall from the object selected by the user. If no objects are
     selected, enters an interactive mode to create a wall using selected points

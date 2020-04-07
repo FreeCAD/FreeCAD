@@ -47,11 +47,26 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+__doc__ = """This module provides tools to build Floor objects. Floors are used
+to group different Arch objects situated at a same level.
+"""
+
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
+    """Creates a _Floor from a list of objects.
 
-    '''makeFloor(objectslist): creates a floor including the
-    objects from the given list.'''
+    Creates a new floor based on a group, and then adds the objects in
+    objectslist to the new floor.
+
+    Parameters
+    ----------
+    objectslist: list of <App::DocumentObject>
+        The objects to add to the new floor.
+    baseobj:
+        Unused.
+    name: str
+        The Label for the new floor.
+    """
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -67,10 +82,22 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
 
 class _CommandFloor:
+    """The command definition for the Arch workbench's gui tool, Arch Floor. 
 
-    "the Arch Cell command definition"
+    A tool for creating Arch floors.
+
+    Creates a floor from the objects selected by the user. Excludes objects
+    that appear higher in the object heirarchy, such as sites or buildings. If
+    free linking is enabled in the Arch preferenecs, allows higher heirarchy
+    objects to be part of floors.
+
+    Find documentation on the end user usage of Arch Wall here:
+    https://wiki.freecadweb.org/Arch_Floor
+    """
+
 
     def GetResources(self):
+        """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
@@ -78,10 +105,21 @@ class _CommandFloor:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
+        """Determines whether or not the Arch Wall tool is active. 
+
+        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        """
 
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+        """Executed when Arch Floor is called.
+
+        Creates a floor from the objects selected by the user. Excludes
+        objects that appear higher in the object heirarchy, such as sites or
+        buildings. If free linking is enabled in the Arch preferenecs, allows
+        higher heirarchy objects to be part of floors.
+        """
 
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -121,10 +159,21 @@ Floor creation aborted.") + "\n"
 
 
 class _Floor(ArchIFC.IfcProduct):
-
-    "The Floor object"
+    """The Floor object."""
 
     def __init__(self,obj):
+        """Initalises the floor.
+
+        The floor can be based off either a group, or a python feature. Learn more
+        about groups here: https://wiki.freecadweb.org/Std_Group
+
+        Adds the parameters of a floor, and sets it's IFC type.
+
+        Parameters
+        ----------
+        obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
+            The object to turn into a Floor.
+        """
 
         obj.Proxy = self
         self.Object = obj
@@ -132,6 +181,10 @@ class _Floor(ArchIFC.IfcProduct):
         self.IfcType = "Building Storey"
 
     def setProperties(self,obj):
+        """Gives the object properties unique to floors.
+
+        Adds the IFC product properties, and the floor's height and area.
+        """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
         pl = obj.PropertiesList
@@ -145,6 +198,7 @@ class _Floor(ArchIFC.IfcProduct):
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):
+        """Method run when the document is restored. Re-adds the properties."""
 
         _Floor.setProperties(self,obj)
 
@@ -157,6 +211,18 @@ class _Floor(ArchIFC.IfcProduct):
         return None
 
     def onChanged(self,obj,prop):
+        """Method called when the object has a property changed.
+
+        If the objects grouped under the floor object changes, it recomputes
+        the Area property.
+
+        Also calls ArchIFC.IfcProduct.onChanged().
+
+        Parameters
+        ----------
+        prop: string
+            The name of the property that has changed.
+        """
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if not hasattr(self,"Object"):
@@ -172,6 +238,12 @@ class _Floor(ArchIFC.IfcProduct):
                             obj.Area = a
 
     def execute(self,obj):
+        """Method run when the object is recomputed.
+        
+        Moves it's children if it's placement has changed since the previous
+        recompute. Sets any child Walls and Structures to have the height of
+        the floor if they have not Height value set.
+        """
 
         # move children with this floor
         if hasattr(obj,"Placement"):
@@ -194,6 +266,13 @@ class _Floor(ArchIFC.IfcProduct):
                         o.Proxy.execute(o)
 
     def addObject(self,child):
+        """Adds the object to the floor's group.
+
+        Parameters
+        ----------
+        child: <App::DocumentObject>
+            The object to add to the floor's group.
+        """
 
         if hasattr(self,"Object"):
             g = self.Object.Group
@@ -202,6 +281,13 @@ class _Floor(ArchIFC.IfcProduct):
                 self.Object.Group = g
 
     def removeObject(self,child):
+        """Removes the object from the floor's group, if it's present.
+
+        Parameters
+        ----------
+        child: <App::DocumentObject>
+            The object to remove from the floor's group.
+        """
 
         if hasattr(self,"Object"):
             g = self.Object.Group
@@ -211,24 +297,60 @@ class _Floor(ArchIFC.IfcProduct):
 
 
 class _ViewProviderFloor:
-
-    "A View Provider for the Floor object"
+    """A View Provider for the Floor object"""
 
     def __init__(self,vobj):
+        """Initialises the Component view provider.
+
+        Registers the Proxy as this class object.
+
+        Parameters
+        ----------
+        vobj: <Gui.ViewProviderDocumentObject>
+            The view provider to turn into an Component view provider.
+        """
 
         vobj.Proxy = self
 
     def getIcon(self):
+        """Returns the path to the appropriate icon.
+
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """
 
         import Arch_rc
         return ":/icons/Arch_Floor_Tree.svg"
 
     def attach(self,vobj):
+        """Adds display modes' data to the coin scenegraph.
+
+        Adds each display mode as a coin node, whose parent is this view
+        provider. 
+
+        Each display mode's node includes the data needed to display the object
+        in that mode. This might include colors of faces, or the draw style of
+        lines. This data is stored as additional coin nodes which are children
+        of the display mode node.
+
+        Does not add any new display modes.
+        """
 
         self.Object = vobj.Object
         return
 
     def claimChildren(self):
+        """Defines which objects will appear as children in the tree view.
+
+        Claims all the objects that appear in the floor's group.
+
+        Returns
+        -------
+        list of <App::DocumentObject>s:
+            The objects claimed as children.
+        """
 
         if hasattr(self,"Object"):
             if self.Object:
@@ -244,6 +366,21 @@ class _ViewProviderFloor:
         return None
 
     def setupContextMenu(self,vobj,menu):
+        """Adds the component specific options to the context menu.
+
+        The context menu is the drop down menu that opens when the user right
+        clicks on the component in the tree view.
+
+        Adds a menu choice to convert the floor to an Arch Building Part with
+        the ArchBuildingPart.convertFloors function.
+
+        Parameters
+        ----------
+        menu: <PySide2.QtWidgets.QMenu>
+            The context menu already assembled prior to this method being
+            called.
+        """
+
         from PySide import QtCore,QtGui
         import Arch_rc
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
@@ -251,6 +388,11 @@ class _ViewProviderFloor:
         menu.addAction(action1)
 
     def convertToBuildingPart(self):
+        """Converts the floor into an Arch Building Part.
+
+        TODO: May be depreciated?
+        """
+
         if hasattr(self,"Object"):
             import ArchBuildingPart
             from DraftGui import todo
