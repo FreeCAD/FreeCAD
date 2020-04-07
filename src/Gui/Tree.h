@@ -68,6 +68,9 @@ enum class TreeItemMode {
 };
 
 
+GuiExport int treeViewIconSize();
+
+
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
  */

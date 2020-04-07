@@ -319,7 +319,7 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if(feat && feat->Suppress.getValue()) {
-        int w = Gui::TreeWidget::iconSize();
+        int w = Gui::treeViewIconSize();
         QIcon overlay(Gui::BitmapFactory().pixmap("disabled").scaledToWidth(w));
         QPixmap pixmap = mergedicon.pixmap(w,w,QIcon::Disabled);
         QPainter painter(&pixmap);

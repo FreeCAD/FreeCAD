@@ -80,6 +80,12 @@ FC_LOG_LEVEL_INIT("Tree",false,true,true)
 
 using namespace Gui;
 
+namespace Gui {
+int treeViewIconSize() {
+    return TreeWidget::iconSize();
+}
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 
 std::set<TreeWidget *> TreeWidget::Instances;
