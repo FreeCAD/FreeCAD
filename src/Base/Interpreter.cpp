@@ -82,7 +82,7 @@ PyException::PyException(void)
 
     _exceptionType = PP_last_exception_type;
 
-    if(PP_last_exception_type) {
+    if (PP_last_exception_type) {
         // WARNING: we are assuming that python type object will never be
         // destroyed, so we don't keep reference here to save book-keeping in
         // our copy constructor and destructor
@@ -123,7 +123,7 @@ void PyException::raiseException() {
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
             edict.setItem("sclassname", 
                     Py::String(typeid(Base::AbortException).name()));
-        if(_isReported)
+        if (_isReported)
             edict.setItem("breported", Py::True());
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }

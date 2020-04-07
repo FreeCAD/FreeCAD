@@ -604,7 +604,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	double	atn360(double dx, double dy);									// angle 0 to 2pi
 
 	// distance functions
-	//double Dist(double px, double py, double p1x, double p1y);				// diatance between 2 points (2d)
+	//double Dist(double px, double py, double p1x, double p1y);				// distance between 2 points (2d)
 	//double Dist(Point& p0, Point& p1);										// distance between 2 points (3d)
 	//double Dist(CLine& s, Point& p1);											// distance between cline & point
 

@@ -13,7 +13,6 @@ SET(Draft_SRCS_base
     DraftVecUtils.py
     DraftGeomUtils.py
     DraftLayer.py
-    DraftEdit.py
     DraftFillet.py
     WorkingPlane.py
     getSVG.py
@@ -85,6 +84,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
+    draftguitools/gui_edit.py
     draftguitools/README.md
 )
 
@@ -93,6 +93,7 @@ SET(Draft_task_panels
     drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
+    drafttaskpanels/task_scale.py
     drafttaskpanels/task_shapestring.py
     drafttaskpanels/README.md
 )

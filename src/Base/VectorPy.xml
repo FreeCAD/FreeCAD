@@ -74,6 +74,13 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="isOnLineSegment" Const="true">
+			<Documentation>
+				<UserDocu>isOnLineSegment(Vector, Vector)
+					      checks if Vector is on a line segment
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getAngle" Const="true">
 			<Documentation>
 				<UserDocu>getAngle(Vector)

@@ -511,7 +511,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            # reset rotational axises if necessary
+            # reset rotational axes if necessary
             if resetAxis is True:
                 self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
                 self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))

@@ -246,7 +246,7 @@ ViewProviderPartExt::ViewProviderPartExt()
         ("User parameter:BaseApp/Preferences/Mod/Part");
     NormalsFromUV = hPart->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
-    long twoside = hPart->GetBool("TwoSideRendering", false) ? 1 : 0;
+    long twoside = hPart->GetBool("TwoSideRendering", true) ? 1 : 0;
 
     // Let the user define a custom lower limit but a value less than
     // OCCT's epsilon is not allowed

@@ -122,7 +122,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyVectorDistance", "CircularCenterCustom", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for circular cut patterns.")),
             ("App::PropertyEnumeration", "CircularCenterAt", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the ciruclar pattern.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose location of the center point for starting the circular pattern.")),
             ("App::PropertyEnumeration", "ClearLastLayer", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to clear last layer in a `Multi-pass` operation.")),
             ("App::PropertyEnumeration", "CutMode", "Clearing Options",
@@ -505,7 +505,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
                 else:
                     if m > 0:
-                        # Raise to clearance between moddels
+                        # Raise to clearance between models
                         CMDS.append(Path.Command('N (Transition to base: {}.)'.format(Mdl.Label)))
                         CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
@@ -1168,7 +1168,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def _isPocket(self, b, f, w):
         '''_isPocket(b, f, w)... 
-        Attempts to determing if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
+        Attempts to determine if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
         Returns True if pocket, False if raised protrusion.'''
         e = w.Edges[0]
         for fi in range(0, len(b.Shape.Faces)):
@@ -1404,24 +1404,18 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
             if self.modelTypes[m] == 'M':
-                mesh = M.Mesh
+                #TODO: test if this works
+                facets = M.Mesh.Facets.Points
             else:
-                # base.Shape.tessellate(0.05) # 0.5 original value
-                mesh = MeshPart.meshFromShape(Shape=M.Shape,
-                                              LinearDeflection=obj.LinearDeflection.Value,
-                                              AngularDeflection=obj.AngularDeflection.Value,
-                                              Relative=False)
+                facets = Path.getFacets(M.Shape)
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
 
-                for f in mesh.Facets:
-                    p = f.Points[0]
-                    q = f.Points[1]
-                    r = f.Points[2]
-                    t = ocl.Triangle(ocl.Point(p[0], p[1], p[2] + obj.DepthOffset.Value),
-                                        ocl.Point(q[0], q[1], q[2] + obj.DepthOffset.Value),
-                                        ocl.Point(r[0], r[1], r[2] + obj.DepthOffset.Value))
+                for tri in facets:
+                    t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2] + obj.DepthOffset.Value),
+                            ocl.Point(tri[1][0], tri[1][1], tri[1][2] + obj.DepthOffset.Value),
+                            ocl.Point(tri[2][0], tri[2][1], tri[2][2] + obj.DepthOffset.Value))
                     stl.addTriangle(t)
                 self.modelSTLs[m] = stl
         return
@@ -1494,11 +1488,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
             fuseShapes.append(voidEnv)
 
-        f0 = fuseShapes.pop(0)
-        if len(fuseShapes) > 0:
-            fused = f0.fuse(fuseShapes)
-        else:
-            fused = f0
+        fused = Part.makeCompound(fuseShapes)
 
         if self.showDebugObjects is True:
             T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
@@ -1506,20 +1496,13 @@ class ObjectWaterline(PathOp.ObjectOp):
             T.purgeTouched()
             self.tempGroup.addObject(T)
 
-        # Extract mesh from fusion
-        meshFuse = MeshPart.meshFromShape(Shape=fused,
-                                          LinearDeflection=obj.LinearDeflection.Value,
-                                          AngularDeflection=obj.AngularDeflection.Value,
-                                          Relative=False)
-        # time.sleep(0.2)
+        facets = Path.getFacets(fused)
+
         stl = ocl.STLSurf()
-        for f in meshFuse.Facets:
-            p = f.Points[0]
-            q = f.Points[1]
-            r = f.Points[2]
-            t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                             ocl.Point(q[0], q[1], q[2]),
-                             ocl.Point(r[0], r[1], r[2]))
+        for tri in facets:
+            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
             stl.addTriangle(t)
 
         self.safeSTLs[mdlIdx] = stl
@@ -1800,7 +1783,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
-            iC = self.isPointOnLine(sp, ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -1906,7 +1889,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-            iC = self.isPointOnLine(sp, ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2199,7 +2182,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def _getExperimentalWaterlinePaths(self, obj, PNTSET, csHght):
         '''_getExperimentalWaterlinePaths(obj, PNTSET, csHght)...
-        Switching fuction for calling the appropriate path-geometry to OCL points conversion fucntion
+        Switching function for calling the appropriate path-geometry to OCL points conversion function
         for the various cut patterns.'''
         PathLog.debug('_getExperimentalWaterlinePaths()')
         SCANS = list()
@@ -2713,7 +2696,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             else:
                 optimize = False
 
-            if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                 output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
 
             # Rotate point data
@@ -3340,26 +3323,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                 clearLastLayer = False
 
         return (useOfst, usePat, clearLastLayer)
-
-    # Support functions for both dropcutter and waterline operations
-    def isPointOnLine(self, strtPnt, endPnt, pointP):
-        '''isPointOnLine(strtPnt, endPnt, pointP) ... Determine if a given point is on the line defined by start and end points.'''
-        tolerance = 1e-6
-        vectorAB = endPnt - strtPnt
-        vectorAC = pointP - strtPnt
-        crossproduct = vectorAB.cross(vectorAC)
-        dotproduct = vectorAB.dot(vectorAC)
-
-        if crossproduct.Length > tolerance:
-            return False
-
-        if dotproduct < 0:
-            return False
-
-        if dotproduct > vectorAB.Length * vectorAB.Length:
-            return False
-
-        return True
 
     def resetOpVariables(self, all=True):
         '''resetOpVariables() ... Reset class variables used for instance of operation.'''

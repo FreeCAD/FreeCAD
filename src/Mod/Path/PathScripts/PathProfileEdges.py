@@ -139,7 +139,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 if FreeCAD.GuiUp:
                     import FreeCADGui
                     FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
-
+        
         return shapes
 
     def _flattenWire(self, obj, wire, trgtDep):

@@ -1,4 +1,3 @@
-"""Initialization of the Draft workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -19,7 +18,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Initialization of the Draft workbench (graphical interface)."""
+
 import os
+
 import FreeCAD
 import FreeCADGui
 

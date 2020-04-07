@@ -976,7 +976,7 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     }
 
     QTextStream stream( &outFile );
-    stream.setGenerateByteOrderMark(true);
+    stream.setGenerateByteOrderMark(false);
     stream.setCodec("UTF-8");
 
     stream << exportDoc.toByteArray();
