@@ -179,37 +179,8 @@ from draftguitools.gui_styles import ApplyStyle
 from draftguitools.gui_rotate import Rotate
 from draftguitools.gui_offset import Offset
 from draftguitools.gui_stretch import Stretch
+from draftguitools.gui_join import Join
 
-
-class Join(Modifier):
-    '''The Draft_Join FreeCAD command definition.'''
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Join',
-                'Accel' : "J, O",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Join"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Joins two wires together")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Join")
-        if not self.ui:
-            return
-        if not FreeCADGui.Selection.getSelection():
-            self.ui.selectUi()
-            FreeCAD.Console.PrintMessage(translate("draft", "Select an object to join")+"\n")
-            self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            print(FreeCADGui.Selection.getSelection())
-            FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Join"),
-                ['Draft.joinWires(FreeCADGui.Selection.getSelection())', 'FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
 
 class Split(Modifier):
     '''The Draft_Split FreeCAD command definition.'''
@@ -1521,7 +1492,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_Join',Join())
 FreeCADGui.addCommand('Draft_Split',Split())
 FreeCADGui.addCommand('Draft_Upgrade',Upgrade())
 FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
