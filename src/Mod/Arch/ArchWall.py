@@ -65,19 +65,19 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
     Parameters
     ----------
     baseobj: <Part::PartFeature>, optional
-        The base object with which to build the wall. This can be a sketch, a draft
-        object, a face, or a solid. It can also be left as None.
+        The base object with which to build the wall. This can be a sketch, a
+        draft object, a face, or a solid. It can also be left as None.
     height: float, optional
         The height of the wall.
     length: float, optional
         The length of the wall. Not used if the wall is based off an object.
         Will use Arch default if left empty.
     width: float, optional
-        The width of the wall. Not used if the base object is a face.  Will
-        use Arch default if left empty.
+        The width of the wall. Not used if the base object is a face.  Will use
+        Arch default if left empty.
     align: str, optional
-        Either "Center", "Left", or "Right". Effects the alignment of the wall on
-        it's baseline.
+        Either "Center", "Left", or "Right". Effects the alignment of the wall
+        on it's baseline.
     face: int, optional
         The index number of a face on the given baseobj, to base the wall on.
     name: str, optional
@@ -137,8 +137,8 @@ def joinWalls(walls,delete=False):
     Takes the first wall in the list, and adds on the other walls in the list.
     Returns the modified first wall. 
 
-    Setting delete to True, will delete the other walls. Will only join walls if
-    the walls have the same width, height and alignment.
+    Setting delete to True, will delete the other walls. Will only join walls
+    if the walls have the same width, height and alignment.
 
     Parameters
     ----------
@@ -226,7 +226,8 @@ def areSameWallTypes(walls):
     Returns
     -------
     bool
-        True if the walls have the same height, width and alignment, False if otherwise.
+        True if the walls have the same height, width and alignment, False if
+        otherwise.
     """
 
     for att in ["Width","Height","Align"]:
@@ -271,7 +272,8 @@ class _CommandWall:
     def IsActive(self):
         """Determines whether or not the Arch Wall tool is active. 
 
-        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        Inactive commands are indicated by a greyed-out icon in the menus and
+        toolbars.
         """
 
         return not FreeCAD.ActiveDocument is None
@@ -280,8 +282,8 @@ class _CommandWall:
         """Executed when Arch Wall is called.
 
         Creates a wall from the object selected by the user. If no objects are
-        selected, enters an interactive mode to create a wall using selected points
-        to create a base.
+        selected, enters an interactive mode to create a wall using selected
+        points to create a base.
         """
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -336,8 +338,8 @@ class _CommandWall:
     def getPoint(self,point=None,obj=None):
         """Callback for clicks during interactive mode.
 
-        When method _CommandWall.Activated() has entered the interactive mode, this
-        callback runs when the user clicks.
+        When method _CommandWall.Activated() has entered the interactive mode,
+        this callback runs when the user clicks.
 
         Parameters
         ----------
@@ -402,13 +404,14 @@ class _CommandWall:
                 self.Activated()
 
     def addDefault(self):
-        """Creates a wall using a line segment, with all parameters as the default.
+        """Creates a wall using a line segment, with all parameters as the
+        default.
 
-        Used solely by _CommandWall.getPoint() when the interactive mode has selected
-        two points.
+        Used solely by _CommandWall.getPoint() when the interactive mode has
+        selected two points.
 
-        Relies on the assumption that FreeCADGui.doCommand() has already created a
-        Part.LineSegment assigned as the variable "trace"
+        Relies on the assumption that FreeCADGui.doCommand() has already
+        created a Part.LineSegment assigned as the variable "trace"
         """
 
         FreeCADGui.addModule("Draft")
@@ -428,9 +431,9 @@ class _CommandWall:
     def update(self,point):
         """Callback for the mouse moving during the interactive mode.
 
-        Updates the active dialog box to show the co-ordinates of the location of the
-        cursor. It also shows the length the line would take, if the user selected that
-        point.
+        Updates the active dialog box to show the coordinates of the location
+        of the cursor. It also shows the length the line would take, if the
+        user selected that point.
 
         Parameters
         ----------
@@ -604,7 +607,9 @@ class _CommandWall:
 
 
 class _CommandMergeWalls:
-    """The command definition for the Arch workbench's gui tool, Arch MergeWalls. A tool for merging walls.
+    """The command definition for the Arch workbench's gui tool, Arch MergeWalls. 
+
+    A tool for merging walls.
 
     Joins two or more walls by using the ArchWall.joinWalls() function.
 
@@ -622,7 +627,8 @@ class _CommandMergeWalls:
     def IsActive(self):
         """Determines whether or not the Arch MergeWalls tool is active. 
 
-        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        Inactive commands are indicated by a greyed-out icon in the menus and
+        toolbars.
         """
 
         return bool(FreeCADGui.Selection.getSelection())
@@ -630,10 +636,10 @@ class _CommandMergeWalls:
     def Activated(self):
         """Executed when Arch MergeWalls is called.
 
-        Calls ArchWall.joinWalls() on walls selected by the user, with the delete
-        option enabled. If the user has selected a single wall, check to see if the
-        wall has any Additions that are walls. If so, merges these additions to the
-        wall, deleting the additions.
+        Calls ArchWall.joinWalls() on walls selected by the user, with the
+        delete option enabled. If the user has selected a single wall, check to
+        see if the wall has any Additions that are walls. If so, merges these
+        additions to the wall, deleting the additions.
         """
 
         walls = FreeCADGui.Selection.getSelection()
@@ -669,8 +675,8 @@ class _CommandMergeWalls:
 class _Wall(ArchComponent.Component):
     """The Wall object. 
 
-    Turns a <App::FeaturePython> into a wall object, then uses a <Part::Feature> to
-    create the wall's shape.
+    Turns a <App::FeaturePython> into a wall object, then uses a
+    <Part::Feature> to create the wall's shape.
 
     Walls are simple objects, usually vertical, typically obtained by giving a
     thickness to a base line, then extruding it vertically.
@@ -685,7 +691,8 @@ class _Wall(ArchComponent.Component):
     def __init__(self, obj):
         """Initialises the object's properties.
 
-        Sets the object to have the properties of an Arch component, and Arch wall.
+        Sets the object to have the properties of an Arch component, and Arch
+        wall.
         """
 
         ArchComponent.Component.__init__(self, obj)
@@ -695,7 +702,8 @@ class _Wall(ArchComponent.Component):
     def setProperties(self, obj):
         """Gives the wall it's wall specific properties, such as it's alignment.
 
-        You can learn more about properties here: https://wiki.freecadweb.org/property
+        You can learn more about properties here:
+        https://wiki.freecadweb.org/property
 
         parameters
         ----------
@@ -1626,8 +1634,8 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         Called when the display mode changes, this method can be used to set
         data that wasn't available when .attach() was called.
 
-        When Footprint is set as display mode, finds the faces that make up
-        the footprint of the wall, and gives them a lined texture. Then displays
+        When Footprint is set as display mode, finds the faces that make up the
+        footprint of the wall, and gives them a lined texture. Then displays
         the wall as a wireframe.
 
         Then passes the displaymode onto Arch Component's .setDisplayMode().
