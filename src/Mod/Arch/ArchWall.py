@@ -667,8 +667,10 @@ class _CommandMergeWalls:
         FreeCAD.ActiveDocument.commitTransaction()
 
 class _Wall(ArchComponent.Component):
-    """The Wall object. Takes a <App::FeaturePython> and turns it into a wall,
-    then uses a <Part::Feature> to create the wall's shape.
+    """The Wall object. 
+
+    Turns a <App::FeaturePython> into a wall object, then uses a <Part::Feature> to
+    create the wall's shape.
 
     Walls are simple objects, usually vertical, typically obtained by giving a
     thickness to a base line, then extruding it vertically.
