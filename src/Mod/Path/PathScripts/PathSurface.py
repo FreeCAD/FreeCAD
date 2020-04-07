@@ -530,7 +530,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
                     self._makeSafeSTL(JOB, obj, m, FACES[m], VOIDS[m])
-                    time.sleep(0.2)
+                    #time.sleep(0.2)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processCutAreas(JOB, obj, m, FACES[m], VOIDS[m]))
 
@@ -1008,7 +1008,7 @@ class ObjectSurface(PathOp.ObjectOp):
             except Exception as eee:
                 PathLog.error(str(eee))
                 cont = False
-        time.sleep(0.2)
+        #time.sleep(0.2)
 
         if cont:
             csFaceShape = self._getShapeSlice(baseEnv)
@@ -1416,26 +1416,20 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
             if self.modelTypes[m] == 'M':
-                mesh = M.Mesh
+                #TODO: test if this works
+                facets = M.Mesh.Facets.Points
             else:
-                # base.Shape.tessellate(0.05) # 0.5 original value
-                # mesh = MeshPart.meshFromShape(base.Shape, Deflection=self.deflection)
-                mesh = MeshPart.meshFromShape(Shape=M.Shape,
-                                              LinearDeflection=obj.LinearDeflection.Value,
-                                              AngularDeflection=obj.AngularDeflection.Value,
-                                              Relative=False)
+                facets = Part.getFacets(M.Shape)            
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
-                for f in mesh.Facets:
-                    p = f.Points[0]
-                    q = f.Points[1]
-                    r = f.Points[2]
-                    t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                                        ocl.Point(q[0], q[1], q[2]),
-                                        ocl.Point(r[0], r[1], r[2]))
-                    stl.addTriangle(t)
-                self.modelSTLs[m] = stl
+
+            for tri in facets:
+                t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                            ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                            ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+                stl.addTriangle(t)
+            self.modelSTLs[m] = stl
         return
 
     def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes):
@@ -1486,8 +1480,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 fuseShapes.append(adjStckWst)
             else:
                 PathLog.warning('Path transitions might not avoid the model. Verify paths.')
-            time.sleep(0.3)
-
+            #time.sleep(0.3)
         else:
             # If boundbox is Job.Stock, add hidden pad under stock as base plate
             toolDiam = self.cutter.getDiameter()
@@ -1506,11 +1499,7 @@ class ObjectSurface(PathOp.ObjectOp):
             voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
             fuseShapes.append(voidEnv)
 
-        f0 = fuseShapes.pop(0)
-        if len(fuseShapes) > 0:
-            fused = f0.fuse(fuseShapes)
-        else:
-            fused = f0
+        fused = Part.makeCompound(fuseShapes)
 
         if self.showDebugObjects is True:
             T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
@@ -1518,20 +1507,13 @@ class ObjectSurface(PathOp.ObjectOp):
             T.purgeTouched()
             self.tempGroup.addObject(T)
 
-        # Extract mesh from fusion
-        meshFuse = MeshPart.meshFromShape(Shape=fused,
-                                          LinearDeflection=obj.LinearDeflection.Value,
-                                          AngularDeflection=obj.AngularDeflection.Value,
-                                          Relative=False)
-        time.sleep(0.2)
+        facets = Part.getFacets(fused)
+
         stl = ocl.STLSurf()
-        for f in meshFuse.Facets:
-            p = f.Points[0]
-            q = f.Points[1]
-            r = f.Points[2]
-            t = ocl.Triangle(ocl.Point(p[0], p[1], p[2]),
-                             ocl.Point(q[0], q[1], q[2]),
-                             ocl.Point(r[0], r[1], r[2]))
+        for tri in facets:
+            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
             stl.addTriangle(t)
 
         self.safeSTLs[mdlIdx] = stl
@@ -2003,7 +1985,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for v in range(1, lenOS):
                 nxt = OS[v + 1]
                 if optimize is True:
-                    iPOL = self.isPointOnLine(prev, nxt, pnt)
+                    iPOL = prev.isOnLineSegment(nxt, pnt)
                     if iPOL is True:
                         pnt = nxt
                     else:
@@ -2057,7 +2039,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
-            iC = self.isPointOnLine(sp, ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2163,7 +2145,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-            iC = self.isPointOnLine(sp, ep, cp)
+            iC = sp.isOnLineSegment(ep, cp)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2452,7 +2434,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return ARCS
 
     def _planarDropCutScan(self, pdc, A, B):
-        PNTS = list()
+        #PNTS = list()
         (x1, y1) = A
         (x2, y2) = B
         path = ocl.Path()                   # create an empty path object
@@ -2463,8 +2445,7 @@ class ObjectSurface(PathOp.ObjectOp):
         pdc.setPath(path)
         pdc.run()  # run dropcutter algorithm on path
         CLP = pdc.getCLPoints()
-        for p in CLP:
-            PNTS.append(FreeCAD.Vector(p.x, p.y, p.z))
+        PNTS = [FreeCAD.Vector(p.x, p.y, p.z) for p in CLP]
         return PNTS  # pdc.getCLPoints()
 
     def _planarCircularDropCutScan(self, pdc, Arc, cMode):
@@ -2579,44 +2560,14 @@ class ObjectSurface(PathOp.ObjectOp):
         return GCODE
 
     def _planarSinglepassProcess(self, obj, PNTS):
-        output = []
-        optimize = obj.OptimizeLinearPaths
-        lenPNTS = len(PNTS)
-        lstIdx = lenPNTS - 1
-        lop = None
-        onLine = False
-
-        # Initialize first three points
-        nxt = None
-        pnt = PNTS[0]
-        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
-
-        #  Add temp end point
-        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
-
-        # Begin processing ocl points list into gcode
-        for i in range(0, lenPNTS):
-            # Calculate next point for consideration with current point
-            nxt = PNTS[i + 1]
-
-            # Process point
-            if optimize is True:
-                iPOL = self.isPointOnLine(prev, nxt, pnt)
-                if iPOL is True:
-                    onLine = True
-                else:
-                    onLine = False
-                    output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-            else:
-                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-
-            # Rotate point data
-            if onLine is False:
-                prev = pnt
-            pnt = nxt
-        # Efor
-        
-        temp = PNTS.pop()  # Remove temp end point
+        if obj.OptimizeLinearPaths:
+            # first item will be compared to the last point, but I think that should work
+            output = [Path.Command('G1', {'X': PNTS[i].x, 'Y': PNTS[i].y, 'Z': PNTS[i].z, 'F': self.horizFeed})
+                     for i in range(0, len(PNTS) - 1)
+                     if not PNTS[i].isOnLineSegment(PNTS[i -1],PNTS[i + 1])]
+            output.append(Path.Command('G1', {'X': PNTS[-1].x, 'Y': PNTS[-1].y, 'Z': PNTS[-1].z, 'F': self.horizFeed}))
+        else:
+            output = [Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}) for pnt in PNTS]
 
         return output
 
@@ -2893,7 +2844,7 @@ class ObjectSurface(PathOp.ObjectOp):
             # Process point
             if prcs is True:
                 if optimize is True:
-                    iPOL = self.isPointOnLine(prev, nxt, pnt)
+                    iPOL = prev.isOnLineSegment(nxt, pnt)
                     if iPOL is True:
                         onLine = True
                     else:
@@ -3308,7 +3259,7 @@ class ObjectSurface(PathOp.ObjectOp):
             prevDepth = layDep
             lCnt += 1  # increment layer count
             PathLog.debug("--Layer " + str(lCnt) + ": " + str(len(advances)) + " OCL scans and gcode in " + str(time.time() - t_before) + " s")
-            time.sleep(0.2)
+            #time.sleep(0.2)
         # Eol
         return commands
 
@@ -3467,7 +3418,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
 
             if self.onHold is False:
-                if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+                if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
                 # elif i == lastCLP:
                 #     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
@@ -3588,7 +3539,7 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 optimize = False
 
-            if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                 output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
 
             # Rotate point data
@@ -3605,26 +3556,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.layerEndPnt.z = pnt.z
 
         return output
-
-    # Support functions for both dropcutter and waterline operations
-    def isPointOnLine(self, strtPnt, endPnt, pointP):
-        '''isPointOnLine(strtPnt, endPnt, pointP) ... Determine if a given point is on the line defined by start and end points.'''
-        tolerance = 1e-6
-        vectorAB = endPnt - strtPnt
-        vectorAC = pointP - strtPnt
-        crossproduct = vectorAB.cross(vectorAC)
-        dotproduct = vectorAB.dot(vectorAC)
-
-        if crossproduct.Length > tolerance:
-            return False
-
-        if dotproduct < 0:
-            return False
-
-        if dotproduct > vectorAB.Length * vectorAB.Length:
-            return False
-
-        return True
 
     def holdStopCmds(self, obj, zMax, pd, p2, txt):
         '''holdStopCmds(obj, zMax, pd, p2, txt) ... Gcode commands to be executed at beginning of hold.'''
@@ -3754,10 +3685,7 @@ class ObjectSurface(PathOp.ObjectOp):
         A = (p1.x, p1.y)
         B = (p2.x, p2.y)
         LINE = self._planarDropCutScan(pdc, A, B)
-        zMax = LINE[0].z
-        for p in LINE:
-            if p.z > zMax:
-                zMax = p.z
+        zMax = max([obj.z for obj in LINE])
         if minDep is not None:
             if zMax < minDep:
                 zMax = minDep

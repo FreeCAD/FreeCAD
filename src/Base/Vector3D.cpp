@@ -193,6 +193,26 @@ Vector3<_Precision> Vector3<_Precision>::Cross(const Vector3<_Precision>& rcVct)
 }
 
 template <class _Precision>
+bool Vector3<_Precision>::IsOnLineSegment (const Vector3<_Precision>& startVct, const Vector3<_Precision>& endVct) const 
+{
+    Vector3<_Precision> vectorAB = endVct - startVct;
+    Vector3<_Precision> vectorAC = *this - startVct;
+    Vector3<_Precision> crossproduct = vectorAB.Cross(vectorAC);
+    _Precision dotproduct = vectorAB.Dot(vectorAC);
+
+    if (crossproduct.Length() > traits_type::epsilon())
+        return false;
+
+    if (dotproduct < 0)
+        return false;
+
+    if (dotproduct > vectorAB.Sqr())
+        return false;
+
+    return true;
+}
+
+template <class _Precision>
 bool Vector3<_Precision>::operator != (const Vector3<_Precision>& rcVct) const
 {
     return !((*this) == rcVct);
