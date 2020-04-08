@@ -596,4 +596,12 @@ bool PropertyConstraintList::isSame(const Property &_other) const
     return isSameContent(_other);
 }
 
+App::Property *PropertyConstraintList::copyBeforeChange() const
+{
+    // This effectively disabled change detection in hasSetValue(). To enable
+    // it (i.e. trigger onChange() only if the value actually changed), simply
+    // return Copy().
+    return nullptr;
+}
+
 std::vector<Constraint *> PropertyConstraintList::_emptyValueList(0);

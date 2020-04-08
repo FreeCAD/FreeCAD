@@ -52,6 +52,7 @@ public:
     //@}
 
     virtual bool isSame(const App::Property &other) const;
+    virtual App::Property *copyBeforeChange() const;
  
     /** @name Getting basic geometric entities */
     //@{

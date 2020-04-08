@@ -61,6 +61,7 @@ public:
     virtual int getSize(void) const;
 
     virtual bool isSame(const App::Property &other) const;
+    virtual App::Property *copyBeforeChange() const;
 
     /** Sets the property
      */

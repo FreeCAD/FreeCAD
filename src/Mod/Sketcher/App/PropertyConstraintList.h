@@ -121,6 +121,7 @@ public:
     virtual unsigned int getMemSize(void) const override;
 
     virtual bool isSame(const App::Property &other) const;
+    virtual App::Property *copyBeforeChange() const;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
