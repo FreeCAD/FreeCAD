@@ -331,11 +331,11 @@ class _Rebar(ArchComponent.Component):
             )
             return
         if not obj.Amount:
-            return
             FreeCAD.Console.PrintError(
                 "No Amount, return without a rebar shape for {}.\n"
                 .format(obj.Name)
             )
+            return
         father = obj.Host
         fathershape = None
         if not father:
