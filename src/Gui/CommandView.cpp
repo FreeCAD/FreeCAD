@@ -3701,6 +3701,7 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
   sWhatsThis    = "Std_SelOnTop";
   sStatusTip    = QT_TR_NOOP("Show selection always on top");
   sPixmap       = "sel-on-top";
+  sAccel        = "V, T";
   eType         = Alter3DView;
 }
 
