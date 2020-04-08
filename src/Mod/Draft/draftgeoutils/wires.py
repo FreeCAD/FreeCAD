@@ -435,4 +435,93 @@ def tessellateProjection(shape, seglen):
 
     return Part.makeCompound(newedges)
 
+def get_placement_perpendicular_to_wire(wire):
+    """ Returns the placement whose base is the wire's first vertex and it's z axis aligned to the wire's tangent. """
+    pl = FreeCAD.Placement()
+    if wire.Length > 0.0:
+        pl.Base = wire.OrderedVertexes[0].Point
+        first_edge = wire.OrderedEdges[0]
+        if first_edge.Orientation == "Forward":
+            zaxis = -first_edge.tangentAt(first_edge.FirstParameter)
+        else:
+            zaxis = first_edge.tangentAt(first_edge.LastParameter)
+        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), FreeCAD.Vector(0, 0, 1), zaxis, "ZYX")
+    else:
+        FreeCAD.Console.PrintError("debug: get_placement_perpendicular_to_wire called with a zero-length wire.\n")
+    return pl
+
+
+def get_extended_wire(wire, offset_start, offset_end):
+    """ Returns a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends. 
+            get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
+            get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex """
+    if min(offset_start, offset_end, offset_start + offset_end) <= -wire.Length:
+        FreeCAD.Console.PrintError("debug: get_extended_wire error, wire's length insufficient for trimming.\n")
+        return wire
+    if offset_start < 0: # Trim the wire from the first vertex
+        offset_start = -offset_start
+        out_edges = []
+        for edge in wire.OrderedEdges:
+            if offset_start >= edge.Length: # Remove entire edge
+                offset_start -= edge.Length
+            elif round(offset_start, precision()) > 0: # Split edge, to remove the required length
+                if edge.Orientation == "Forward":
+                    new_edge = edge.split(edge.getParameterByLength(offset_start)).OrderedEdges[1]
+                else:
+                    new_edge = edge.split(edge.getParameterByLength(edge.Length - offset_start)).OrderedEdges[0]
+                new_edge.Placement = edge.Placement # Strangely, edge.split discards the placement and orientation
+                new_edge.Orientation = edge.Orientation
+                out_edges.append(new_edge)
+                offset_start = 0
+            else: # Keep the remaining entire edges
+                out_edges.append(edge)
+        wire = Part.Wire(out_edges)
+    elif offset_start > 0: # Extend the first edge along its normal
+        first_edge = wire.OrderedEdges[0]
+        if first_edge.Orientation == "Forward":
+            start, end = first_edge.FirstParameter, first_edge.LastParameter
+            vec = first_edge.tangentAt(start).multiply(offset_start)
+        else:
+            start, end = first_edge.LastParameter, first_edge.FirstParameter
+            vec = -first_edge.tangentAt(start).multiply(offset_start)
+        if geomType(first_edge) == "Line": # Replace first edge with the extended new edge
+            new_edge = Part.LineSegment(first_edge.valueAt(start).sub(vec), first_edge.valueAt(end)).toShape()
+            wire = Part.Wire([new_edge] + wire.OrderedEdges[1:])
+        else: # Add a straight edge before the first vertex
+            new_edge = Part.LineSegment(first_edge.valueAt(start).sub(vec), first_edge.valueAt(start)).toShape()
+            wire = Part.Wire([new_edge] + wire.OrderedEdges)
+    if offset_end < 0: # Trim the wire from the last vertex
+        offset_end = -offset_end
+        out_edges = []
+        for edge in reversed(wire.OrderedEdges):
+            if offset_end >= edge.Length: # Remove entire edge
+                offset_end -= edge.Length
+            elif round(offset_end, precision()) > 0: # Split edge, to remove the required length
+                if edge.Orientation == "Forward":
+                    new_edge = edge.split(edge.getParameterByLength(edge.Length - offset_end)).OrderedEdges[0]
+                else:
+                    new_edge = edge.split(edge.getParameterByLength(offset_end)).OrderedEdges[1]
+                new_edge.Placement = edge.Placement # Strangely, edge.split discards the placement and orientation
+                new_edge.Orientation = edge.Orientation
+                out_edges.insert(0, new_edge)
+                offset_end = 0
+            else: # Keep the remaining entire edges
+                out_edges.insert(0, edge)
+        wire = Part.Wire(out_edges)
+    elif offset_end > 0: # Extend the last edge along its normal
+        last_edge = wire.OrderedEdges[-1]
+        if last_edge.Orientation == "Forward":
+            start, end = last_edge.FirstParameter, last_edge.LastParameter
+            vec = last_edge.tangentAt(end).multiply(offset_end)
+        else:
+            start, end = last_edge.LastParameter, last_edge.FirstParameter
+            vec = -last_edge.tangentAt(end).multiply(offset_end)
+        if geomType(last_edge) == "Line": # Replace last edge with the extended new edge
+            new_edge = Part.LineSegment(last_edge.valueAt(start), last_edge.valueAt(end).add(vec)).toShape()
+            wire = Part.Wire(wire.OrderedEdges[:-1] + [new_edge])
+        else: # Add a straight edge after the last vertex
+            new_edge = Part.LineSegment(last_edge.valueAt(end), last_edge.valueAt(end).add(vec)).toShape()
+            wire = Part.Wire(wire.OrderedEdges + [new_edge])
+    return wire
+
 ## @}

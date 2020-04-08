@@ -86,7 +86,8 @@ from draftgeoutils.edges import (findEdge,
                                  is_line,
                                  invert,
                                  findMidpoint,
-                                 getTangent)
+                                 getTangent,
+                                 get_referenced_edges)
 
 from draftgeoutils.faces import (concatenate,
                                  getBoundary,
@@ -128,7 +129,9 @@ from draftgeoutils.wires import (findWires,
                                  rebaseWire,
                                  removeInterVertices,
                                  cleanProjection,
-                                 tessellateProjection)
+                                 tessellateProjection,
+                                 get_placement_perpendicular_to_wire,
+                                 get_extended_wire)
 
 # Needs wires functions
 from draftgeoutils.fillets import (fillet,

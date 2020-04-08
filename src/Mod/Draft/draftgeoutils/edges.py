@@ -221,6 +221,29 @@ def getTangent(edge, from_point=None):
 
     return None
 
+
+def get_referenced_edges(property_value):
+    """ Returns the Edges referenced by the value of a App:PropertyLink, App::PropertyLinkList,
+        App::PropertyLinkSub or App::PropertyLinkSubList property. """
+    edges = []
+    if not isinstance(property_value, list):
+        property_value = [property_value]
+    for element in property_value:
+        if hasattr(element, "Shape") and element.Shape:
+            edges += shape.Edges
+        elif isinstance(element, tuple) and len(element) == 2:
+            object, subelement_names = element
+            if hasattr(object, "Shape") and object.Shape:
+                if len(subelement_names) == 1 and subelement_names[0] == "":
+                    edges += object.Shape.Edges
+                else:
+                    for subelement_name in subelement_names:
+                        if subelement_name.startswith("Edge"):
+                            edge_number = int(subelement_name.lstrip("Edge")) - 1
+                            if edge_number < len(object.Shape.Edges):
+                                edges.append(object.Shape.Edges[edge_number])
+    return edges
+
 # compatibility layer
 
 isLine = is_line

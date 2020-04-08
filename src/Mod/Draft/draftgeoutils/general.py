@@ -59,12 +59,16 @@ def precision():
     return precisionInt  # return PARAMGRP.GetInt("precision", 6)
 
 
-def vec(edge):
-    """Return a vector from an edge or a Part.LineSegment."""
-    # if edge is not straight, you'll get strange results!
-    if isinstance(edge, Part.Shape):
-        return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
-    elif isinstance(edge, Part.LineSegment):
+def vec(edge, use_orientation = False):
+    """ vec(edge[, use_orientation]) or vec(line): returns a vector from an edge or a Part.LineSegment.
+        If use_orientation is True, it takes into account the edges orientation.
+        If edge is not straight, you'll get strange results! """
+    if isinstance(edge, Part.Edge):
+        if edge.Orientation == "Forward" or not use_orientation:
+            return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
+        else:
+            return edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point)
+    elif isinstance(edge,Part.LineSegment):
         return edge.EndPoint.sub(edge.StartPoint)
     else:
         return None
