@@ -24,7 +24,6 @@
 """Unit test for the Draft Workbench, GUI import tests."""
 
 import unittest
-import FreeCAD as App
 import drafttests.auxiliary as aux
 
 
@@ -39,39 +38,23 @@ class DraftGuiImport(unittest.TestCase):
     def test_import_gui_draftgui(self):
         """Import Draft TaskView GUI tools."""
         module = "DraftGui"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_snap(self):
         """Import Draft snapping."""
         module = "draftguitools.gui_snapper"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_tools(self):
         """Import Draft graphical commands."""
         module = "DraftTools"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_trackers(self):
         """Import Draft tracker utilities."""
         module = "draftguitools.gui_trackers"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))

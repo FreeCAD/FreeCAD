@@ -58,14 +58,8 @@ class DraftPivy(unittest.TestCase):
 
     def test_pivy_draw(self):
         """Use Coin (pivy.coin) to draw a cube on the active view."""
-        module = "pivy.coin"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
-
-        import pivy.coin
-        cube = pivy.coin.SoCube()
+        import pivy.coin as coin
+        cube = coin.SoCube()
         _msg("  Draw cube")
         Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(cube)
         _msg("  Adding cube to the active view scene")
