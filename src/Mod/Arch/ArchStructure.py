@@ -185,6 +185,77 @@ def placeAlongEdge(p1,p2,horizontal=False):
     return pl
 
 
+class CommandStructuresFromSelection:
+    """ The Arch Structures from selection command definition. """
+
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        return {'Pixmap': 'Arch_MultipleStructures',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Structure", "Multiple Structures"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure", "Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        selex = FreeCADGui.Selection.getSelectionEx()
+        if len(selex) >= 2:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Structures From Selection"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.addModule("Draft")
+            base = selex[0].Object # The first selected object is the base for the Structure objects
+            for selexi in selex[1:]: # All the edges from the other objects are used as a Tool (extrusion paths)
+                if len(selexi.SubElementNames) == 0:
+                    subelement_names = ["Edge" + str(i) for i in range(1, len(selexi.Object.Shape.Edges) + 1)]
+                else:
+                    subelement_names = [sub for sub in selexi.SubElementNames if sub.startswith("Edge")]
+                for sub in subelement_names:
+                    FreeCADGui.doCommand("structure = Arch.makeStructure(FreeCAD.ActiveDocument." + base.Name + ")")
+                    FreeCADGui.doCommand("structure.Tool = (FreeCAD.ActiveDocument." + selexi.Object.Name + ", '" + sub + "')")
+                    FreeCADGui.doCommand("structure.BasePerpendicularToTool = True")
+                    FreeCADGui.doCommand("Draft.autogroup(structure)")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+        else:
+            FreeCAD.Console.PrintError(translate("Arch", "Please select the base object first and then the edges to use as extrusion paths") + "\n")
+
+
+class CommandStructuralSystem:
+    """ The Arch Structural System command definition. """
+
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        return {'Pixmap': 'Arch_StructuralSystem',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Structure", "Structural System"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure", "Create a structural system object from a selected structure and axis")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            st = Draft.getObjectsOfType(sel, "Structure")
+            ax = Draft.getObjectsOfType(sel, "Axis")
+            if ax:
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Structural System"))
+                FreeCADGui.addModule("Arch")
+                if st:
+                    FreeCADGui.doCommand("obj = Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + ", " + ArchCommands.getStringList(ax) + ")")
+                else:
+                    FreeCADGui.doCommand("obj = Arch.makeStructuralSystem(axes = " + ArchCommands.getStringList(ax) + ")")
+                FreeCADGui.addModule("Draft")
+                FreeCADGui.doCommand("Draft.autogroup(obj)")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
+            else:
+                FreeCAD.Console.PrintError(translate("Arch", "Please select at least an axis object") + "\n")
+
+
 class _CommandStructure:
 
     "the Arch Structure command definition"
@@ -224,16 +295,7 @@ class _CommandStructure:
             st = Draft.getObjectsOfType(sel,"Structure")
             ax = Draft.getObjectsOfType(sel,"Axis")
             if ax:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structural System"))
-                FreeCADGui.addModule("Arch")
-                if st:
-                    FreeCADGui.doCommand("obj = Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
-                else:
-                    FreeCADGui.doCommand("obj = Arch.makeStructuralSystem(axes=" + ArchCommands.getStringList(ax) + ")")
-                FreeCADGui.addModule("Draft")
-                FreeCADGui.doCommand("Draft.autogroup(obj)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+                FreeCADGui.runCommand("Arch_StructuralSystem")
                 return
             elif not(ax) and not(st):
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
@@ -1395,4 +1457,19 @@ class _ViewProviderStructuralSystem(ArchComponent.ViewProviderComponent):
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Structure',_CommandStructure())
+    FreeCADGui.addCommand("Arch_Structure", _CommandStructure())
+    FreeCADGui.addCommand("Arch_StructuralSystem", CommandStructuralSystem())
+    FreeCADGui.addCommand("Arch_StructuresFromSelection", CommandStructuresFromSelection())
+
+    class _ArchStructureGroupCommand:
+
+        def GetCommands(self):
+            return ("Arch_Structure", "Arch_StructuralSystem", "Arch_StructuresFromSelection")
+        def GetResources(self):
+            return { "MenuText": QT_TRANSLATE_NOOP("Arch_Structure", "Structure tools"),
+                     "ToolTip": QT_TRANSLATE_NOOP("Arch_Structure", "Structure tools")
+                   }
+        def IsActive(self):
+            return not FreeCAD.ActiveDocument is None
+
+    FreeCADGui.addCommand("Arch_StructureTools", _ArchStructureGroupCommand())

@@ -57,7 +57,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import Arch
 
         # Set up command lists
-        self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
+        self.archtools = ["Arch_Wall", "Arch_StructureTools", "Arch_Rebar",
                           "Arch_CurtainWall","Arch_BuildingPart",
                           "Arch_Project", "Arch_Site", "Arch_Building",
                           "Arch_Floor", "Arch_Reference",
