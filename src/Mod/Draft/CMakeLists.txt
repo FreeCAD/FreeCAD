@@ -110,6 +110,7 @@ SET(Modifier_tools
     draftguitools/gui_join.py
     draftguitools/gui_split.py
     draftguitools/gui_upgrade.py
+    draftguitools/gui_downgrade.py
 )
 
 SET(Draft_GUI_tools

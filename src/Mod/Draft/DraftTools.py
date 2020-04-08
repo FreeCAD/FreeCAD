@@ -182,36 +182,8 @@ from draftguitools.gui_stretch import Stretch
 from draftguitools.gui_join import Join
 from draftguitools.gui_split import Split
 from draftguitools.gui_upgrade import Upgrade
+from draftguitools.gui_downgrade import Downgrade
 
-
-class Downgrade(Modifier):
-    '''The Draft_Downgrade FreeCAD command definition.'''
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Downgrade',
-                'Accel' : "D, N",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Explodes the selected objects into simpler objects, or subtracts faces")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Downgrade")
-        if self.ui:
-            if not FreeCADGui.Selection.getSelection():
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to upgrade")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-            else:
-                self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Downgrade"),
-                        ['Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
 
 class Trimex(Modifier):
     """The Draft_Trimex FreeCAD command definition.
@@ -1428,7 +1400,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
