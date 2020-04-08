@@ -180,43 +180,8 @@ from draftguitools.gui_rotate import Rotate
 from draftguitools.gui_offset import Offset
 from draftguitools.gui_stretch import Stretch
 from draftguitools.gui_join import Join
+from draftguitools.gui_split import Split
 
-
-class Split(Modifier):
-    '''The Draft_Split FreeCAD command definition.'''
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Split',
-                'Accel' : "S, P",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Splits a wire into two wires")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Split")
-        if not self.ui:
-            return
-        FreeCAD.Console.PrintMessage(translate("draft", "Select an object to split")+"\n")
-        self.call = self.view.addEventCallback("SoEvent", self.action)
-
-    def action(self, arg):
-        "scene event handler"
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event":
-            getPoint(self, arg)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
-            self.point, ctrlPoint, info = getPoint(self, arg)
-            if "Edge" in info["Component"]:
-                return self.proceed(info)
-
-    def proceed(self, info):
-        Draft.split(FreeCAD.ActiveDocument.getObject(info["Object"]),
-            self.point, int(info["Component"][4:]))
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-        self.finish()
 
 class Upgrade(Modifier):
     '''The Draft_Upgrade FreeCAD command definition.'''
@@ -1492,7 +1457,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_Split',Split())
 FreeCADGui.addCommand('Draft_Upgrade',Upgrade())
 FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
