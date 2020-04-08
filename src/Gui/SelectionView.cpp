@@ -561,7 +561,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         if(info.items.size() > 20)
             groupMenu = true;
         else {
-            std::size_t objCount;
+            std::size_t objCount = 0;
             std::size_t count = 0;
             for(auto &vv : info.items) {
                 objCount += vv.second.size();
