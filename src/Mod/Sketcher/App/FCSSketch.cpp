@@ -41,6 +41,7 @@
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
+#include <Base/StdStlTools.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/GeometryCurvePy.h>
@@ -89,14 +90,16 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     getSolvableGeometryContraints(GeoList, ConstraintList, extGeoCount, intGeoList, extGeoList, blockedGeometry, unenforceableConstraints);
                                   
-    /*
     addGeometry(intGeoList,blockedGeometry);
+    
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);
+    
     int extEnd=Geoms.size()-1;
     for (int i=extStart; i <= extEnd; i++)
         Geoms[i].external = true;
-
+    
+    /*
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
         addConstraints(ConstraintList,unenforceableConstraints);
@@ -136,9 +139,17 @@ int FCSSketch::addGeometry(const std::vector<Part::Geometry *> &geo,
     return ret;
 }
 
+int FCSSketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
+{
+    int ret = -1;
+    for (std::vector<Part::Geometry *>::const_iterator it=geo.begin(); it != geo.end(); ++it)
+        ret = addGeometry(*it, fixed);
+    return ret;
+}
+
 int FCSSketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
-    /*
+    
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
@@ -152,7 +163,7 @@ int FCSSketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
-    } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
+    }/*else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
         const GeomCircle *circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
@@ -180,30 +191,104 @@ int FCSSketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
         // create the definition struct for that geom
         return addBSpline(*bsp, fixed);
-    }
+    }*/
     else {
-        throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
+        throw Base::TypeError("FCSSketch::addGeometry(): Unknown or unsupported type added to a sketch");
     }
-    */
-    return 0;
 }
 
+int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
+{
+    // create our own copy
+    GeomPoint *p = static_cast<GeomPoint*>(point.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo  = std::unique_ptr<Geometry>(static_cast<Geometry *>(p));
+    def.type = GeoType::Point;
 
+    FCS::G2D::HParaPoint hp = new FCS::G2D::ParaPoint();
+    
+    hp->makeParameters(parameterStore);
+    
+    hp->x.savedValue() = p->getPoint().x;
+    hp->y.savedValue() = p->getPoint().y;
+    
+    if(fixed) {
+        hp->x.fix();
+        hp->y.fix();
+    }
+    
+    def.startPointId = Points.size();
+    def.endPointId = Points.size();
+    def.midPointId = Points.size();
+    
+    Points.push_back(hp);
+
+    // store complete set
+    Geoms.push_back(std::move(def));
+
+    // return the position of the newly added geometry
+    return Geoms.size()-1;
+
+}
+
+int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
+{
+    // create our own copy
+    GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(lineSegment.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo  = std::unique_ptr<Geometry>(static_cast<Geometry *>(lineSeg));
+    def.type = GeoType::Line;
+
+    // get the points from the line
+    Base::Vector3d start = lineSeg->getStartPoint();
+    Base::Vector3d end   = lineSeg->getEndPoint();
+
+    FCS::G2D::HParaLine hl = new FCS::G2D::ParaLine();
+    
+    hl->makeParameters(parameterStore);
+    
+    hl->p0->x.savedValue() = start.x;
+    hl->p0->y.savedValue() = start.y;
+    hl->p1->x.savedValue() = end.x;
+    hl->p1->y.savedValue() = end.y;
+    
+    if(fixed) {
+       hl->p0->x.fix();
+       hl->p0->y.fix();
+       hl->p1->x.fix();
+       hl->p1->y.fix();
+    }
+
+    // add the points
+    def.startPointId = Points.size();
+    def.endPointId = Points.size()+1;
+    Points.push_back(hl->p0);
+    Points.push_back(hl->p1);
+
+    // set the line for later constraints
+    LineSegments.push_back(hl);
+
+    // store complete set
+    Geoms.push_back(std::move(def));
+
+    // return the position of the newly added geometry
+    return Geoms.size()-1;
+}
 
 std::vector<Part::Geometry *> FCSSketch::extractGeometry(bool withConstructionElements,
                                                       bool withExternalElements) const
 {
-    /*
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
+    
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
         if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
     }
 
     return temp;
-    */
-    return std::vector<Part::Geometry *>(0);
 }
 
 
@@ -775,7 +860,7 @@ int FCSSketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool r
 
 int FCSSketch::getPointId(int geoId, PointPos pos) const
 {
-    /*
+
     // do a range check first
     if (geoId < 0 || geoId >= (int)Geoms.size())
         return -1;
@@ -790,26 +875,30 @@ int FCSSketch::getPointId(int geoId, PointPos pos) const
         break;
     }
     return -1;
-    */
-    return 0;
+}
+
+int FCSSketch::checkGeoId(int geoId) const
+{
+    if (geoId < 0)
+        geoId += Geoms.size();//convert negative external-geometry index to index into Geoms
+    if(!(   geoId >= 0   &&   geoId < int(Geoms.size())   ))
+        throw Base::IndexError("FCSSketch::checkGeoId. GeoId index out range.");
+    return geoId;
 }
 
 Base::Vector3d FCSSketch::getPoint(int geoId, PointPos pos) const
 {
-    /*
     geoId = checkGeoId(geoId);
     int pointId = getPointId(geoId, pos);
     if (pointId != -1)
-        return Base::Vector3d(*Points[pointId].x, *Points[pointId].y, 0);
+        return Base::Vector3d(Points[pointId]->x.savedValue(), Points[pointId]->y.savedValue(), 0);
 
-    return Base::Vector3d();
-    */
     return Base::Vector3d();
 }
 
 TopoShape FCSSketch::toShape(void) const
 {
-    /*
+    
     TopoShape result;
     std::vector<GeoDef>::const_iterator it=Geoms.begin();
 
@@ -834,7 +923,7 @@ TopoShape FCSSketch::toShape(void) const
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        if (!it->external && !it->geo->Construction && (it->type != Point)) {
+        if (!it->external && !it->geo->Construction && (it->type != GeoType::Point)) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }
@@ -899,29 +988,6 @@ TopoShape FCSSketch::toShape(void) const
 #endif
 
     return result;
-    */
-    return TopoShape();
-}
-
-
-bool FCSSketch::hasConflicts(void) const
-{
-    return false;
-}
-
-const std::vector<int> &FCSSketch::getConflicting(void) const
-{
-    return std::vector<int>(0);
-}
-
-bool FCSSketch::hasRedundancies(void) const
-{
-    return false;
-}
-
-const std::vector<int> &FCSSketch::getRedundant(void) const
-{
-    return std::vector<int>(0);
 }
 
 int FCSSketch::getGeometrySize(void) const

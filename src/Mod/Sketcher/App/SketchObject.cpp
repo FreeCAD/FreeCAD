@@ -80,6 +80,7 @@
 
 #include "SketchObject.h"
 #include "Sketch.h"
+#include "FCSSketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 #include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
@@ -140,7 +141,7 @@ SketchObject::SketchObject()
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
 
-    solvedSketch = std::make_shared<Sketch>();
+    solvedSketch = std::make_shared<FCSSketch>();
     
     analyser = new SketchAnalysis(this);
 }
