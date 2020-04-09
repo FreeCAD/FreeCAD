@@ -62,7 +62,6 @@
 using namespace Sketcher;
 using namespace Base;
 using namespace Part;
-using namespace FCS;
 
 TYPESYSTEM_SOURCE(Sketcher::FCSSketch, Sketcher::SketchSolver)
 
