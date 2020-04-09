@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -35,6 +34,10 @@ import json
 import math
 import os
 import zipfile
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette)"

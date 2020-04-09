@@ -23,20 +23,23 @@
 # ***************************************************************************
 '''PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data '''
 import FreeCAD
-import Part
 import Path
 import PathScripts
 import PathScripts.PathGeom as PathGeom
-import TechDraw
 import math
 import numpy
 
-from DraftGeomUtils import geomType
 from FreeCAD import Vector
 from PathScripts import PathJob
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+geomType = LazyLoader('DraftDraftGeomUtils', globals(), 'DraftDraftGeomUtils.geomType')
+Part = LazyLoader('Part', globals(), 'Part')
+TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
