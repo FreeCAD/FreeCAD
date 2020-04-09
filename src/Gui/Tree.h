@@ -496,7 +496,7 @@ public:
     ~TreeDockWidget();
 
 private:
-    QTreeWidget* treeWidget;
+    QWidget* treeWidget;
 };
 
 
