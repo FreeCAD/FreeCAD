@@ -225,7 +225,7 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     Points.push_back(hp);
 
     // store complete set
-    Geoms.push_back(std::move(def));
+    Geoms.push_back(def);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
