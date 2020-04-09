@@ -1,8 +1,3 @@
-"""Provides the object code for Draft Arc_3Points."""
-## @package arc_3points
-# \ingroup DRAFT
-# \brief Provides the object code for Draft Arc_3Points.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -25,14 +20,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the object code for Draft Arc_3Points."""
+## @package arc_3points
+# \ingroup DRAFT
+# \brief Provides the object code for Draft Arc_3Points.
+
 import math
+
 import FreeCAD as App
 import Part
 import Draft
-from draftutils.messages import _msg, _err, _log
+import draftutils.utils as utils
+from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
-if App.GuiUp:
-    import draftutils.gui_utils as gui_utils
+
+import draftutils.gui_utils as gui_utils
 
 
 def make_arc_3points(points, placement=None, face=False,
@@ -109,40 +111,62 @@ def make_arc_3points(points, placement=None, face=False,
         Normally it returns a parametric Draft object (`Part::Part2DObject`).
         If `primitive` is `True`, it returns a basic `Part::Feature`.
     """
-    _log("make_arc_3points")
-    _msg(16 * "-")
-    _msg(_tr("Arc by 3 points"))
+    _name = "make_arc_3points"
+    utils.print_header(_name, "Arc by 3 points")
 
-    if not isinstance(points, (list, tuple)):
-        _err(_tr("Wrong input: must be list or tuple of three points."))
+    try:
+        utils.type_check([(points, (list, tuple))], name=_name)
+    except TypeError:
+        _err(_tr("Points: ") + "{}".format(points))
+        _err(_tr("Wrong input: "
+                 "must be list or tuple of three points exactly."))
         return None
 
     if len(points) != 3:
-        _err(_tr("Wrong input: must be three points."))
+        _err(_tr("Points: ") + "{}".format(points))
+        _err(_tr("Wrong input: "
+                 "must be list or tuple of three points exactly."))
         return None
 
     if placement is not None:
-        if not isinstance(placement, App.Placement):
-            _err(_tr("Wrong input: incorrect placement"))
+        try:
+            utils.type_check([(placement, App.Placement)], name=_name)
+        except TypeError:
+            _err(_tr("Placement: ") + "{}".format(placement))
+            _err(_tr("Wrong input: incorrect type of placement."))
             return None
 
     p1, p2, p3 = points
 
-    _edge = Part.Arc(p1, p2, p3)
+    _msg("p1: {}".format(p1))
+    _msg("p2: {}".format(p2))
+    _msg("p3: {}".format(p3))
+
+    try:
+        utils.type_check([(p1, App.Vector),
+                          (p2, App.Vector),
+                          (p3, App.Vector)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: incorrect type of points."))
+        return None
+
+    try:
+        _edge = Part.Arc(p1, p2, p3)
+    except Part.OCCError as error:
+        _err(_tr("Cannot generate shape: ") + "{}".format(error))
+        return None
+
     edge = _edge.toShape()
     radius = edge.Curve.Radius
     center = edge.Curve.Center
 
-    _msg("p1: {}".format(p1))
-    _msg("p2: {}".format(p2))
-    _msg("p3: {}".format(p3))
     _msg(_tr("Radius: ") + "{}".format(radius))
     _msg(_tr("Center: ") + "{}".format(center))
 
     if primitive:
+        _msg(_tr("Create primitive object"))
         obj = App.ActiveDocument.addObject("Part::Feature", "Arc")
         obj.Shape = edge
-        _msg(_tr("Primitive object"))
         return obj
 
     rot = App.Rotation(edge.Curve.XAxis,
@@ -168,8 +192,8 @@ def make_arc_3points(points, placement=None, face=False,
         _msg(_tr("Face: True"))
     if support:
         _msg(_tr("Support: ") + "{}".format(support))
-        obj.MapMode = map_mode
         _msg(_tr("Map mode: " + "{}".format(map_mode)))
+        obj.MapMode = map_mode
         if placement:
             obj.AttachmentOffset.Base = placement.Base
             obj.AttachmentOffset.Rotation = original_placement.Rotation

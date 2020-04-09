@@ -1,9 +1,3 @@
-"""Provide the Draft_Snap commands used by the snapping mechanism in Draft."""
-## @package gui_snaps
-# \ingroup DRAFT
-# \brief Provide the Draft_Snap commands used by the snapping mechanism
-# in Draft.
-
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -28,8 +22,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import FreeCADGui
+"""Provide the Draft_Snap commands used by the snapping mechanism in Draft."""
+## @package gui_snaps
+# \ingroup DRAFT
+# \brief Provide the Draft_Snap commands used by the snapping mechanism
+# in Draft.
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCADGui as Gui
 
 
 class Draft_Snap_Lock:
@@ -47,12 +48,12 @@ class Draft_Snap_Lock:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "masterbutton"):
-                FreeCADGui.Snapper.masterbutton.toggle()
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "masterbutton"):
+                Gui.Snapper.masterbutton.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
+Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
 
 
 class Draft_Snap_Midpoint:
@@ -68,14 +69,14 @@ class Draft_Snap_Midpoint:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonmidpoint":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
+Gui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
 
 
 class Draft_Snap_Perpendicular:
@@ -93,14 +94,14 @@ class Draft_Snap_Perpendicular:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonperpendicular":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
+Gui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
 
 
 class Draft_Snap_Grid:
@@ -115,14 +116,14 @@ class Draft_Snap_Grid:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtongrid":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
+Gui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
 
 
 class Draft_Snap_Intersection:
@@ -140,14 +141,14 @@ class Draft_Snap_Intersection:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonintersection":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
+Gui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
 
 
 class Draft_Snap_Parallel:
@@ -163,14 +164,14 @@ class Draft_Snap_Parallel:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonparallel":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
+Gui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
 
 
 class Draft_Snap_Endpoint:
@@ -186,14 +187,14 @@ class Draft_Snap_Endpoint:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonendpoint":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
+Gui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
 
 
 class Draft_Snap_Angle:
@@ -208,14 +209,14 @@ class Draft_Snap_Angle:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonangle":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
+Gui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
 
 
 class Draft_Snap_Center:
@@ -230,14 +231,14 @@ class Draft_Snap_Center:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtoncenter":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
+Gui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
 
 
 class Draft_Snap_Extension:
@@ -253,14 +254,14 @@ class Draft_Snap_Extension:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonextension":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
+Gui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
 
 
 class Draft_Snap_Near:
@@ -275,14 +276,14 @@ class Draft_Snap_Near:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonpassive":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
+Gui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
 
 
 class Draft_Snap_Ortho:
@@ -297,14 +298,14 @@ class Draft_Snap_Ortho:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonortho":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
+Gui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
 
 
 class Draft_Snap_Special:
@@ -320,14 +321,14 @@ class Draft_Snap_Special:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonspecial":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
+Gui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
 
 
 class Draft_Snap_Dimensions:
@@ -343,14 +344,14 @@ class Draft_Snap_Dimensions:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonDimensions":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
+Gui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
 
 
 class Draft_Snap_WorkingPlane:
@@ -368,11 +369,11 @@ class Draft_Snap_WorkingPlane:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "toolbarButtons"):
+                for b in Gui.Snapper.toolbarButtons:
                     if b.objectName() == "SnapButtonWorkingPlane":
                         b.toggle()
 
 
-FreeCADGui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
+Gui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())

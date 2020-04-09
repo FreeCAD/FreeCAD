@@ -1,12 +1,3 @@
-"""This module provides the ToDo class for the Draft Workbench.
-
-This module provides the ToDo class to delay the commit of commands,
-which depends on QtCore.QTimer.
-"""
-## @package todo
-# \ingroup DRAFT
-# \brief This module provides the ToDo class for the Draft Workbench.
-
 # ***************************************************************************
 # *   (c) 2009, Yorik van Havre <yorik@uncreated.net>                       *
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -30,20 +21,33 @@ which depends on QtCore.QTimer.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the ToDo class for the Draft Workbench.
 
-import sys
+The ToDo class is used to delay the commit of commands for later execution.
+This is necessary when a GUI command needs to manipulate the 3D view
+in such a way that a callback would crash Coin.
+The ToDo class essentially calls `QtCore.QTimer.singleShot`
+to execute the instructions stored in internal lists.
+"""
+## @package todo
+# \ingroup DRAFT
+# \brief This module provides the ToDo class for the Draft Workbench.
+
 import six
+import sys
 import traceback
-import FreeCAD
-import FreeCADGui
 from PySide import QtCore
 
+import FreeCAD
+import FreeCADGui
+from draftutils.messages import _msg, _wrn, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
 _DEBUG = 0
+_DEBUG_inner = 0
 
 
 class ToDo:
@@ -114,29 +118,31 @@ class ToDo:
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
         if _DEBUG:
-            print("Debug: doing delayed tasks.\n"
-                  "itinerary: {0}\n"
-                  "commitlist: {1}\n"
-                  "afteritinerary: {2}\n".format(todo.itinerary,
-                                                 todo.commitlist,
-                                                 todo.afteritinerary))
+            _msg("Debug: doing delayed tasks.\n"
+                 "itinerary: {0}\n"
+                 "commitlist: {1}\n"
+                 "afteritinerary: {2}\n".format(todo.itinerary,
+                                                todo.commitlist,
+                                                todo.afteritinerary))
         try:
             for f, arg in todo.itinerary:
                 try:
-                    # print("debug: executing", f)
+                    if _DEBUG_inner:
+                        _msg("Debug: executing.\n"
+                             "function: {}\n".format(f))
                     if arg or (arg is False):
                         f(arg)
                     else:
                         f()
                 except Exception:
-                    FreeCAD.Console.PrintLog(traceback.format_exc())
+                    _log(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
                            "in {1}({2})".format(sys.exc_info()[0], f, arg))
-                    FreeCAD.Console.PrintWarning(wrn)
+                    _wrn(wrn)
         except ReferenceError:
-            print("Debug: ToDo.doTasks: "
-                  "queue contains a deleted object, skipping")
+            _wrn("Debug: ToDo.doTasks: "
+                 "queue contains a deleted object, skipping")
         todo.itinerary = []
 
         if todo.commitlist:
@@ -144,7 +150,9 @@ class ToDo:
                 if six.PY2:
                     if isinstance(name, six.text_type):
                         name = name.encode("utf8")
-                # print("debug: committing " + str(name))
+                if _DEBUG_inner:
+                    _msg("Debug: committing.\n"
+                         "name: {}\n".format(name))
                 try:
                     name = str(name)
                     FreeCAD.ActiveDocument.openTransaction(name)
@@ -155,11 +163,11 @@ class ToDo:
                         func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except Exception:
-                    FreeCAD.Console.PrintLog(traceback.format_exc())
+                    _log(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
-                           "in {1}".format(sys.exec_info()[0], func))
-                    FreeCAD.Console.PrintWarning(wrn)
+                           "in {1}".format(sys.exc_info()[0], func))
+                    _wrn(wrn)
             # Restack Draft screen widgets after creation
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.restack()
@@ -167,17 +175,19 @@ class ToDo:
 
         for f, arg in todo.afteritinerary:
             try:
-                # print("debug: executing", f)
+                if _DEBUG_inner:
+                    _msg("Debug: executing after.\n"
+                         "function: {}\n".format(f))
                 if arg:
                     f(arg)
                 else:
                     f()
             except Exception:
-                FreeCAD.Console.PrintLog(traceback.format_exc())
+                _log(traceback.format_exc())
                 wrn = ("ToDo.doTasks, Unexpected error:\n"
                        "{0}\n"
                        "in {1}({2})".format(sys.exc_info()[0], f, arg))
-                FreeCAD.Console.PrintWarning(wrn)
+                _wrn(wrn)
         todo.afteritinerary = []
 
     @staticmethod
@@ -207,7 +217,9 @@ class ToDo:
             ::
                 f(arg)
         """
-        # print("debug: delaying", f)
+        if _DEBUG:
+            _msg("Debug: delaying.\n"
+                 "function: {}\n".format(f))
         if todo.itinerary == []:
             QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.itinerary.append((f, arg))
@@ -235,7 +247,9 @@ class ToDo:
 
             See the attributes of the `ToDo` class for more information.
         """
-        # print("debug: delaying commit", cl)
+        if _DEBUG:
+            _msg("Debug: delaying commit.\n"
+                 "commitlist: {}\n".format(cl))
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
 
@@ -255,7 +269,9 @@ class ToDo:
         Finally, it will build the tuple `(f, arg)`
         and append it to the `afteritinerary` list.
         """
-        # print("debug: delaying", f)
+        if _DEBUG:
+            _msg("Debug: delaying after.\n"
+                 "function: {}\n".format(f))
         if todo.afteritinerary == []:
             QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.afteritinerary.append((f, arg))

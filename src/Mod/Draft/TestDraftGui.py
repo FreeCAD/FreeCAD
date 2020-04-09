@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,16 +21,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit tests for the Draft workbench, non-GUI only.
+"""Unit tests for the Draft workbench, GUI only.
 
 From the terminal, run the following:
-FreeCAD -t TestDraft
+FreeCAD -t TestDraftGui
 
 From within FreeCAD, run the following:
-import Test, TestDraft
-Test.runTestsFromModule(TestDraft)
+import Test, TestDraftGui
+Test.runTestsFromModule(TestDraftGui)
 
-For the GUI-only tests see TestDraftGui.
+For the non-GUI tests see TestDraft.
 """
 
 # ===========================================================================
@@ -95,25 +95,11 @@ For the GUI-only tests see TestDraftGui.
 # that follows a defined alphanumeric sequence.
 
 # Import tests
-from drafttests.test_import import DraftImport as DraftTest01
-
-# Objects tests
-from drafttests.test_creation import DraftCreation as DraftTest02
-from drafttests.test_modification import DraftModification as DraftTest03
-
-# Handling of file formats tests
-from drafttests.test_svg import DraftSVG as DraftTest04
-from drafttests.test_dxf import DraftDXF as DraftTest05
-from drafttests.test_dwg import DraftDWG as DraftTest06
-from drafttests.test_oca import DraftOCA as DraftTest07
-from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest08
+from drafttests.test_import_gui import DraftGuiImport as DraftTestGui01
+from drafttests.test_import_tools import DraftImportTools as DraftTestGui02
+from drafttests.test_pivy import DraftPivy as DraftTestGui03
 
 # Use the modules so that code checkers don't complain (flake8)
-True if DraftTest01 else False
-True if DraftTest02 else False
-True if DraftTest03 else False
-True if DraftTest04 else False
-True if DraftTest05 else False
-True if DraftTest06 else False
-True if DraftTest07 else False
-True if DraftTest08 else False
+True if DraftTestGui01 else False
+True if DraftTestGui02 else False
+True if DraftTestGui03 else False

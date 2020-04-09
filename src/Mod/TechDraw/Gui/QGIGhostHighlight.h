@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,74 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
-#define TECHDRAWGUI_QGIHIGHLIGHT_H
+#ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
+#define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
-#include <QFont>
-#include <QPointF>
 #include <QObject>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsEllipseItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
-#include <QPainterPath>
-#include <QColor>
+#include <QPointF>
 
-#include <Base/Vector3D.h>
+#include "QGIHighlight.h"
 
-#include "QGIArrow.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
-#include "QGIDecoration.h"
+//a movable, selectable surrogate for detail highlights in QGIVPart
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIHighlight : public QGIDecoration
+class TechDrawGuiExport QGIGhostHighlight : public QObject, public QGIHighlight
 {
+    Q_OBJECT
 public:
-    explicit QGIHighlight();
-    ~QGIHighlight();
+    explicit QGIGhostHighlight();
+    ~QGIGhostHighlight();
 
-   enum {Type = QGraphicsItem::UserType + 176};
+   enum {Type = QGraphicsItem::UserType + 177};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option, 
-                       QWidget * widget = 0 ) override;
-
-    void setBounds(double x1,double y1,double x2,double y2);
-    void setReference(char* sym);
-    void setFont(QFont f, double fsize);
-    virtual void draw();
     void setInteractive(bool state);
+    void setRadius(double r);
+
+Q_SIGNALS:
+    void positionChange(QPointF p);
 
 protected:
-/*    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;*/
-/*    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;*/
-/*    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;*/
-    QColor getHighlightColor();
-    Qt::PenStyle getHighlightStyle();
-    void makeHighlight();
-    void makeReference();
-    void setTools();
-    int getHoleStyle(void);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-/*    bool m_dragging;*/
+    bool m_dragging;
 
 private:
-    char* m_refText;
-    QGraphicsEllipseItem* m_circle;
-    QGCustomRect*      m_rect;
-    QGCustomText*      m_reference;
-    std::string        m_refFontName;
-    QFont              m_refFont;
-    double             m_refSize;
-    QPointF            m_start;
-    QPointF            m_end;
 };
 
 }
 
-#endif // TECHDRAWGUI_QGIHIGHLIGHT_H
+#endif // TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H

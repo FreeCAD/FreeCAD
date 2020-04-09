@@ -301,6 +301,7 @@ public:
         int numUControlPoints, int numVControlPoints,
         const std::vector<float>& uKnots, const std::vector<float>& vKnots);
     void addCylinder(float radius, float height);
+    void addSphere(float radius);
     //@}
 
     /** @name Bounding Box handling */

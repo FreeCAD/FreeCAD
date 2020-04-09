@@ -79,6 +79,7 @@
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
 #include "TaskActiveView.h"
+#include "TaskDetail.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -512,7 +513,8 @@ void CmdTechDrawDetailView::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> baseObj = getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    std::vector<App::DocumentObject*> baseObj =  getSelection().
+                            getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select at least 1 DrawViewPart object as Base."));
@@ -520,27 +522,7 @@ void CmdTechDrawDetailView::activated(int iMsg)
     }
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*(baseObj.begin()));
 
-    std::string PageName = page->getNameInDocument();
-
-    Gui::WaitCursor wc;
-    openCommand("Create view");
-
-    std::string FeatName = getUniqueObjectName("Detail");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDetail','%s')",FeatName.c_str());
-    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
-    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
-    if (!dvd) {
-        throw Base::TypeError("CmdTechDrawDetailView DVD not found\n");
-    }
-    dvd->Source.setValues(dvp->Source.getValues());
-
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),dvp->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.XDirection = App.activeDocument().%s.XDirection",FeatName.c_str(),dvp->getNameInDocument());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-
-    updateActive();            //ok here, no preceding recompute
-    commitCommand();
+    Gui::Control().showDialog(new TaskDlgDetail(dvp));
 }
 
 bool CmdTechDrawDetailView::isActive(void)
@@ -1043,8 +1025,12 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null,
-        QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), 
+        QObject::tr("Choose an SVG file to open"), QString::null,
+        QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)").
+        arg(QObject::tr("Scalable Vector Graphic")).
+        arg(QObject::tr("All Files")));
+
     if (!filename.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Symbol");

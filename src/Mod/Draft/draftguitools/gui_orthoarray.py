@@ -1,8 +1,3 @@
-"""Provide the Draft OrthoArray tool."""
-## @package gui_orthoarray
-# \ingroup DRAFT
-# \brief Provide the Draft OrthoArray tool.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -25,36 +20,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the Draft OrthoArray GuiCommand."""
+## @package gui_orthoarray
+# \ingroup DRAFT
+# \brief Provides the Draft OrthoArray GuiCommand.
+
+from pivy import coin
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import DraftGui
 import Draft_rc
-from . import gui_base
+from draftguitools import gui_base
 from drafttaskpanels import task_orthoarray
+import draftutils.todo as todo
 
-
-if App.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    # import DraftTools
-    from draftutils.translate import translate
-    # from DraftGui import displayExternal
-    from pivy import coin
-else:
-    def QT_TRANSLATE_NOOP(context, text):
-        return text
-
-    def translate(context, text):
-        return text
-
-
-def _tr(text):
-    """Translate the text with the context set."""
-    return translate("Draft", text)
-
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
+# The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
 
 
@@ -85,7 +67,7 @@ class GuiCommandOrthoArray(gui_base.GuiCommandBase):
         return d
 
     def Activated(self):
-        """Execute this when the command is called.
+        """Execute when the command is called.
 
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
@@ -103,10 +85,10 @@ class GuiCommandOrthoArray(gui_base.GuiCommandBase):
         # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
         # Gui.Control.showDialog(self.ui)
-        DraftGui.todo.delay(Gui.Control.showDialog, self.ui)
+        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
 
     def click(self, event_cb=None):
-        """Run callback for when the mouse pointer clicks on the 3D view.
+        """Execute as a callback when the pointer clicks on the 3D view.
 
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
@@ -123,7 +105,7 @@ class GuiCommandOrthoArray(gui_base.GuiCommandBase):
             self.ui.accept()
 
     def completed(self):
-        """Run when the command is terminated.
+        """Execute when the command is terminated.
 
         We should remove the callbacks that were added to the 3D view
         and then close the task panel.
@@ -133,10 +115,8 @@ class GuiCommandOrthoArray(gui_base.GuiCommandBase):
         self.view.removeEventCallbackPivy(self.mouse_event,
                                           self.callback_click)
         if Gui.Control.activeDialog():
-            Gui.Snapper.off()
             Gui.Control.closeDialog()
             super().finish()
 
 
-if App.GuiUp:
-    Gui.addCommand('Draft_OrthoArray', GuiCommandOrthoArray())
+Gui.addCommand('Draft_OrthoArray', GuiCommandOrthoArray())

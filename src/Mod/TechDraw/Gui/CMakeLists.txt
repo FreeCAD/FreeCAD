@@ -70,6 +70,8 @@ set(TechDrawGui_MOC_HDRS
     QGIWeldSymbol.h
     SymbolChooser.h
     TaskActiveView.h
+    TaskDetail.h
+    QGIGhostHighlight.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -103,6 +105,7 @@ set(TechDrawGui_UIC_SRCS
     TaskWeldingSymbol.ui
     SymbolChooser.ui
     TaskActiveView.ui
+    TaskDetail.ui
 )
 
 if(BUILD_QT5)
@@ -203,6 +206,9 @@ SET(TechDrawGui_SRCS
     TaskActiveView.h
     Grabber3d.cpp
     Grabber3d.h
+    TaskDetail.ui
+    TaskDetail.cpp
+    TaskDetail.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -299,6 +305,8 @@ SET(TechDrawGuiView_SRCS
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
+    QGIGhostHighlight.cpp
+    QGIGhostHighlight.h
 )
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
@@ -366,6 +374,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskWeldingSymbol.ui
     SymbolChooser.ui
     TaskActiveView.ui
+    TaskDetail.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

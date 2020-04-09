@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,40 +20,31 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, GUI import tests."""
+"""Provides the task panel for the Draft SelectPlane tool."""
+## @package task_selectplane
+# \ingroup DRAFT
+# \brief This module provides the task panel code for the SelectPlane tool.
 
-import unittest
-import drafttests.auxiliary as aux
+import FreeCADGui as Gui
+
+# As it is right now this code only loads the task panel .ui file.
+# All logic on how to use the widgets is located in the GuiCommand class
+# itself.
+# On the other hand, the newer tools introduced in v0.19 like OrthoArray,
+# PolarArray, and CircularArray include the logic and manipulation
+# of the widgets in this task panel class.
+# In addition, the task panel code launches the actual function
+# using the delayed mechanism defined by the `todo.ToDo` class.
+# Therefore, at some point this class should be refactored
+# to be more similar to OrthoArray and the new tools.
 
 
-class DraftGuiImport(unittest.TestCase):
-    """Import the Draft graphical modules."""
+class SelectPlaneTaskPanel:
+    """The task panel definition of the Draft_SelectPlane command."""
 
-    # No document is needed to test 'import DraftGui' or other modules
-    # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
-    def setUp(self):
-        aux._draw_header()
+    def __init__(self):
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskSelectPlane.ui")
 
-    def test_import_gui_draftgui(self):
-        """Import Draft TaskView GUI tools."""
-        module = "DraftGui"
-        imported = aux._import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
-
-    def test_import_gui_draft_snap(self):
-        """Import Draft snapping."""
-        module = "draftguitools.gui_snapper"
-        imported = aux._import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
-
-    def test_import_gui_draft_tools(self):
-        """Import Draft graphical commands."""
-        module = "DraftTools"
-        imported = aux._import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
-
-    def test_import_gui_draft_trackers(self):
-        """Import Draft tracker utilities."""
-        module = "draftguitools.gui_trackers"
-        imported = aux._import_test(module)
-        self.assertTrue(imported, "Problem importing '{}'".format(module))
+    def getStandardButtons(self):
+        """Execute to set the standard buttons."""
+        return 2097152  # int(QtGui.QDialogButtonBox.Close)

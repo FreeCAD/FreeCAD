@@ -17,6 +17,7 @@ SET(Draft_SRCS_base
     WorkingPlane.py
     getSVG.py
     TestDraft.py
+    TestDraftGui.py
 )
 
 SET(Draft_import
@@ -79,6 +80,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
+    draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
     draftguitools/gui_arrays.py
     draftguitools/gui_snaps.py
@@ -94,6 +96,7 @@ SET(Draft_task_panels
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
     drafttaskpanels/task_scale.py
+    drafttaskpanels/task_selectplane.py
     drafttaskpanels/task_shapestring.py
     drafttaskpanels/README.md
 )
