@@ -148,7 +148,8 @@ void DlgGeneralImp::saveSettings()
     bool treeView=false, propertyView=false, comboView=true;
     switch(ui->treeMode->currentIndex()) {
     case 1:
-        treeView = propertyView = true;
+        treeView = true;
+        propertyView = false;
         comboView = false;
         break;
     case 2:

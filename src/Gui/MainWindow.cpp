@@ -381,7 +381,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 #endif
 
-    bool treeView = false, propertyView = false;
+    bool treeView = false;
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -414,7 +414,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
-            propertyView = true;
             PropertyDockView* pcPropView = new PropertyDockView(0, this);
             pcPropView->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
@@ -434,7 +433,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Combo view
     if (hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
-        bool enable = !treeView || !propertyView;
+        bool enable = !treeView;
         if (!enable) {
             ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");

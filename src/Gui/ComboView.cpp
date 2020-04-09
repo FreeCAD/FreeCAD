@@ -74,6 +74,9 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
         prop = new PropertyView(this);
         splitter->addWidget(prop);
         modelIndex = tabs->addTab(splitter,trUtf8("Model"));
+    } else {
+        prop = new PropertyView(this);
+        modelIndex = tabs->addTab(prop,trUtf8("Properties"));
     }
 
     // task panel
