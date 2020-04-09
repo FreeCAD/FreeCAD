@@ -25,7 +25,7 @@
 
 #include "Vector.h"
 #include "Position.h"
-#include "DualMath.h"
+#include "../DualMath.h"
 
 namespace FCS{ namespace G2D {
 

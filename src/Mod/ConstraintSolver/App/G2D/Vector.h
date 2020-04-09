@@ -23,7 +23,7 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_G2D_VECTOR_H
 #define FREECAD_CONSTRAINTSOLVER_G2D_VECTOR_H
 
-#include "Utils.h" //temporary
+#include "../Utils.h" //temporary
 #include <Base/DualNumber.h>
 
 namespace FCS {
