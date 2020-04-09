@@ -141,7 +141,7 @@ SketchObject::SketchObject()
     constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
 
-    solvedSketch = std::make_shared<FCSSketch>();
+    solvedSketch = std::make_shared<Sketch>();
     
     analyser = new SketchAnalysis(this);
 }
@@ -153,6 +153,19 @@ SketchObject::~SketchObject()
     ExternalGeo.clear();
 
     delete analyser;
+}
+
+
+void SketchObject::switchSolver()
+{
+    if(solvedSketch->getTypeId() == FCSSketch::getClassTypeId()) {
+        solvedSketch = std::make_shared<Sketch>();
+        Base::Console().Log("%s\nGCS Solver Active!\n");
+    }
+    else {
+        solvedSketch = std::make_shared<FCSSketch>();
+        Base::Console().Log("%s\nFCS Solver Active!\n");
+    }
 }
 
 short SketchObject::mustExecute() const

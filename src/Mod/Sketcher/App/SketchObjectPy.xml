@@ -377,7 +377,13 @@ If there is no such constraint an exception is raised.
             </UserDocu>
         </Documentation>
     </Methode>
-
+    <Methode Name="switchSolver">
+        <Documentation>
+            <UserDocu>
+                Switches between FCS and GCS solvers
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>

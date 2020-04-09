@@ -407,6 +407,10 @@ public:
 
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
+    
+    
+    //Temporary Solver Switch facility
+    void switchSolver();
 
 protected:
     /// get called by the container when a property has changed
