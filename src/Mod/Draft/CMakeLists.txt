@@ -111,6 +111,7 @@ SET(Modifier_tools
     draftguitools/gui_split.py
     draftguitools/gui_upgrade.py
     draftguitools/gui_downgrade.py
+    draftguitools/gui_trimex.py
 )
 
 SET(Draft_GUI_tools
