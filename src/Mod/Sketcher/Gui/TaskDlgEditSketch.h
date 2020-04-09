@@ -76,7 +76,7 @@ protected:
     TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
-    TaskSketcherSolverAdvanced *SolverAdvanced;
+    //TaskSketcherSolverAdvanced *SolverAdvanced;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
 };

@@ -88,9 +88,9 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
 
     // to make sure to delete the advanced solver panel
     // it must be part to the 'Content' array
-    std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
+    /*std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
-        Content.push_back(SolverAdvanced);
+        Content.push_back(SolverAdvanced);*/
 }
 
 void TaskDlgEditSketch::slotUndoDocument(const App::Document& doc)
