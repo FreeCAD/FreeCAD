@@ -317,7 +317,7 @@ def write_fenics_mesh_xdmf(
     fem_mesh = fem_mesh_obj.FemMesh
     gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
-    if gmshgroups is not ():
+    if gmshgroups != ():
         Console.PrintMessage("found mesh groups\n")
 
     for g in gmshgroups:
