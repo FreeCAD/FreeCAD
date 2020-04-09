@@ -69,6 +69,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     pdsbEdgeFuzz->onSave();
     pdsbMarkFuzz->onSave();
     pdsbTemplateMark->onSave();
+    pdsbSymbolScale->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -85,6 +86,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     pdsbEdgeFuzz->onRestore();
     pdsbMarkFuzz->onRestore();
     pdsbTemplateMark->onRestore();
+    pdsbSymbolScale->onRestore();
 }
 
 /**
