@@ -9,6 +9,8 @@
 #include "ParaGeometryPy.h"
 #include "PyUtils.h"
 
+#include <Base/Interpreter.h>
+
 #include "unordered_set"
 
 using namespace FCS;
@@ -123,6 +125,7 @@ std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
 {
     throwIfLocked(); touch();
     std::vector<ParameterRef> ret;
+    Base::PyGILStateLocker lock;
     for(auto& v : this->_attrs){
         if (! v.make)
             continue;
