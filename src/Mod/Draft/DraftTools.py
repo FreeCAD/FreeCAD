@@ -188,48 +188,7 @@ from draftguitools.gui_drawing import Drawing
 from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
-
-
-class Array(Modifier):
-    """GuiCommand for the Draft_Array tool.
-
-    Parameters
-    ----------
-    use_link: bool, optional
-        It defaults to `False`. If it is `True`, the created object
-        will be a `Link array`.
-    """
-
-    def __init__(self, use_link=False):
-        Modifier.__init__(self)
-        self.use_link = use_link
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Array',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Array"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Creates a polar or rectangular array from a selected object")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to array")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            obj = FreeCADGui.Selection.getSelection()[0]
-            FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Array"),
-                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.{},FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2,use_link={})'.format(obj.Name,self.use_link),
-                         'Draft.autogroup(obj)',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
+from draftguitools.gui_array_simple import Array
 
 
 class LinkArray(Array):
@@ -525,7 +484,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_Array',Array())
 FreeCADGui.addCommand('Draft_LinkArray',LinkArray())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
