@@ -62,6 +62,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
+    drafttests/test_draftgeomutils.py
     drafttests/draft_test_objects.py
     drafttests/README.md
 )
