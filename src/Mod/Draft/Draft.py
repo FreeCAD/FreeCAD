@@ -696,9 +696,9 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
     Creates an array of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, same for y direction with yvector and ynum,
-    same for z direction with zvector and znum. In case of polar array, center is a vector, 
-    totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
-    including the original. In case of a circular array, rdistance is the distance of the 
+    same for z direction with zvector and znum. In case of polar array, center is a vector,
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects,
+    including the original. In case of a circular array, rdistance is the distance of the
     circles, tdistance is the distance within circles, axis the rotation-axes, center the
     center of rotation, ncircles the number of circles and symmetry the number
     of symmetry-axis of the distribution. The result is a parametric Draft Array.
@@ -2244,7 +2244,7 @@ def mirror(objlist, p1, p2):
         norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
     else:
         norm = FreeCAD.Vector(0,0,1)
-    
+
     pnorm = p2.sub(p1).cross(norm).normalize()
 
     result = []
@@ -4921,7 +4921,7 @@ class _BezCurve(_DraftObject):
             if hasattr(fp,"Area") and hasattr(w,"Area"):
                 fp.Area = w.Area
             if hasattr(fp,"Length") and hasattr(w,"Length"):
-                fp.Length = w.Length            
+                fp.Length = w.Length
         fp.Placement = plm
 
     @classmethod
@@ -5320,6 +5320,7 @@ class _Array(_DraftLink):
     def attach(self, obj):
         obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
         obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",QT_TRANSLATE_NOOP("App::Property","The type of array to create"))
+        obj.addProperty("App::PropertyLinkGlobal","Edge","Draft",QT_TRANSLATE_NOOP("App::Property","The edge (e.g. DatumLine) overriding Axis/Center"))
         obj.addProperty("App::PropertyVector","Axis","Draft",QT_TRANSLATE_NOOP("App::Property","The axis direction"))
         obj.addProperty("App::PropertyInteger","NumberX","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in X direction"))
         obj.addProperty("App::PropertyInteger","NumberY","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Y direction"))
@@ -5365,18 +5366,33 @@ class _Array(_DraftLink):
         obj.configLinkProperty(ElementCount='Count')
         obj.setPropertyStatus('Count','Hidden')
 
+    def onChanged(self,obj,prop):
+        _DraftLink.onChanged(self,obj,prop)
+        if prop == "Edge":
+            if obj.Edge:
+                obj.setEditorMode("Center", 1)
+                obj.setEditorMode("Axis", 1)
+            else:
+                obj.setEditorMode("Center", 0)
+                obj.setEditorMode("Axis", 0)
+
     def execute(self,obj):
         if obj.Base:
             pl = obj.Placement
+            axis = obj.Axis
+            center = obj.Center
+            if hasattr(obj,"Edge") and obj.Edge:
+                axis = obj.Edge.Placement.Rotation.Axis
+                center = obj.Edge.Placement.Base
             if obj.ArrayType == "ortho":
                 pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
-            elif obj.ArrayType == "circular":
+            elif  obj.ArrayType == "circular":
                 pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,
-                                     obj.Axis,obj.Center,obj.NumberCircles,obj.Symmetry)
+                                     axis,center,obj.NumberCircles,obj.Symmetry)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
-                pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
+                pls = self.polarArray(obj.Base.Placement,center,obj.Angle.Value,obj.NumberPolar,axis,av)
 
             return _DraftLink.buildShape(self,obj,pl,pls)
 
