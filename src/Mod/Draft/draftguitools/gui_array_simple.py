@@ -108,3 +108,27 @@ class Array(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Array', Array())
+
+
+class LinkArray(Array):
+    """Gui Command for the LinkArray tool based on the simple Array tool."""
+
+    def __init__(self):
+        super().__init__(use_link=True)
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _tip = ("Like the Array tool, but creates a 'Link array' instead.\n"
+                "A 'Link array' is more efficient when handling many copies "
+                "but the 'Fuse' option cannot be used.")
+
+        return {'Pixmap': 'Draft_LinkArray',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_LinkArray", "LinkArray"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_LinkArray", _tip)}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated(name=_tr("Link array"))
+
+
+Gui.addCommand('Draft_LinkArray', LinkArray())
