@@ -190,47 +190,8 @@ from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
 from draftguitools.gui_array_simple import Array
 from draftguitools.gui_array_simple import LinkArray
+from draftguitools.gui_patharray import PathArray
 
-
-class PathArray(Modifier):
-    """The PathArray FreeCAD command definition"""
-
-    def __init__(self,use_link=False):
-        Modifier.__init__(self)
-        self.use_link = use_link
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_PathArray',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "PathArray"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PathArray", "Creates copies of a selected object along a selected path.")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelectionEx():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Please select base and path objects")+"\n")
-#                print("Please select base and path objects")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if sel:
-            base = sel[0].Object
-            path = sel[1].Object
-            pathsubs = list(sel[1].SubElementNames)
-            defXlate = FreeCAD.Vector(0,0,0)
-            defCount = 4
-            defAlign = False
-            FreeCAD.ActiveDocument.openTransaction("PathArray")
-            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs,use_link=self.use_link)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()                                  # feature won't appear until recompute.
-        self.finish()
 
 class PathLinkArray(PathArray):
     "The PathLinkArray FreeCAD command definition"
@@ -475,7 +436,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 
 # modification commands
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
-FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PathLinkArray',PathLinkArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
