@@ -30,28 +30,30 @@
 
 #include <vector>
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/PyObjectBase.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyLinks.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/PyObjectBase.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
@@ -304,6 +306,7 @@ void CmdTechDrawView::activated(int iMsg)
     //set projection direction from selected Face
     //use first object with a face selected
     std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
     int resolve = 1;                                //mystery
@@ -317,22 +320,33 @@ void CmdTechDrawView::activated(int iMsg)
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
         }
+        if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+             obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
+             obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            xShapes.push_back(obj);
+            continue;
+        }
+        //not a Link and not null.  assume to be drawable.  Undrawables will be 
+        // skipped later.
         if (obj != nullptr) {
             shapes.push_back(obj);
         }
         if(partObj != nullptr) {
             continue;
         }
+        //don't know if this works for an XLink
         for(auto& sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
                 faceName = sub;
+                //
                 partObj = obj;
                 break;
             }
         }
     }
 
-    if ((shapes.empty())) {
+    if ( shapes.empty() &&
+         xShapes.empty() ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No Shapes, Groups or Links in this selection"));
         return;
@@ -350,6 +364,7 @@ void CmdTechDrawView::activated(int iMsg)
         throw Base::TypeError("CmdTechDrawView DVP not found\n");
     }
     dvp->Source.setValues(shapes);
+    dvp->XSource.setValues(xShapes);
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     if (faceName.size()) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
@@ -450,26 +465,6 @@ void CmdTechDrawSectionView::activated(int iMsg)
         return;
     }
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
-//    std::string BaseName = dvp->getNameInDocument();
-//    std::string PageName = page->getNameInDocument();
-//    double baseScale = dvp->getScale();
-
-//    Gui::WaitCursor wc;
-//    openCommand("Create view");
-//    std::string FeatName = getUniqueObjectName("Section");
-
-//    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
-
-//    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
-//    TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
-//    if (!dsv) {
-//        throw Base::TypeError("CmdTechDrawSectionView DVS not found\n");
-//    }
-//    dsv->Source.setValues(dvp->Source.getValues());
-//    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-//    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
-//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-//    doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
     Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
     updateActive();             //ok here since dialog doesn't call doc.recompute()
@@ -568,6 +563,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     //set projection direction from selected Face
     //use first object with a face selected
     std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
     int resolve = 1;                                //mystery
@@ -577,14 +573,19 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
-//    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
         auto obj = sel.getObject();
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
         }
-//        if(!obj || inlist.count(obj))             //??????
-//            continue;
-        if (obj != nullptr) {                       //can this happen?
+        if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+             obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
+             obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            xShapes.push_back(obj);
+            continue;
+        }
+        //not a Link and not null.  assume to be drawable.  Undrawables will be 
+        // skipped later.
+        if (obj != nullptr) {
             shapes.push_back(obj);
         }
         if(partObj != nullptr) {
@@ -598,9 +599,10 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
             }
         }
     }
-    if (shapes.empty()) {
+    if ( shapes.empty() &&
+         xShapes.empty() ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Shapes or Groups in this selection"));
+            QObject::tr("No Shapes, Groups or Links in this selection"));
         return;
     }
 
@@ -618,6 +620,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
     multiView->Source.setValues(shapes);
+    multiView->XSource.setValues(xShapes);
     doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
     if (faceName.size()) {
