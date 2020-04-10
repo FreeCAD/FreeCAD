@@ -189,18 +189,8 @@ from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
 from draftguitools.gui_array_simple import Array
+from draftguitools.gui_array_simple import LinkArray
 
-
-class LinkArray(Array):
-    """GuiCommand for the Draft_LinkArray tool."""
-
-    def __init__(self):
-        Array.__init__(self, use_link=True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_LinkArray',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_LinkArray", "LinkArray"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_LinkArray", "Creates a polar or rectangular link array from a selected object")}
 
 class PathArray(Modifier):
     """The PathArray FreeCAD command definition"""
@@ -484,7 +474,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_LinkArray',LinkArray())
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PathLinkArray',PathLinkArray())
