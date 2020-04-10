@@ -32,7 +32,7 @@
 import FreeCAD as App
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils
+import DraftGeomUtils, DraftVecUtils
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 from draftobjects.draft_annotation import DraftAnnotation
@@ -113,20 +113,11 @@ def make_dimension(p1,p2,p3=None,p4=None):
             normal = normal.negative()
     obj.Normal = normal
 
-    # format dimension according to ActiveDimensionStyle or user Preferences
-    _style_applied = False
-    if hasattr(App.ActiveDocument, "DimensionStyles"):
-        active_style = App.ActiveDocument.DimensionStyles.ActiveDimensionStyle
-        if active_style is not None:
-            obj.DimensionStyle = active_style
-            _style_applied = True
     if App.GuiUp:
-        if not _style_applied:
-            gui_utils.format_object(obj)
+        gui_utils.format_object(obj)
         gui_utils.select(obj)
 
     return obj
-
 
 
 def make_angular_dimension(center,angles,p3,normal=None):
@@ -159,18 +150,9 @@ def make_angular_dimension(center,angles,p3,normal=None):
             normal = normal.negative()
 
     obj.Normal = normal
-
-    # format dimension according to ActiveDimensionStyle or user Preferences
-    _style_applied = False
-    if hasattr(App.ActiveDocument, "DimensionStyles"):
-        active_style = App.ActiveDocument.DimensionStyles.ActiveDimensionStyle
-        if active_style is not None:
-            obj.DimensionStyle = active_style
-            _style_applied = True
             
     if App.GuiUp:
-        if not _style_applied:
-            gui_utils.format_object(obj)
+        gui_utils.format_object(obj)
         gui_utils.select(obj)
 
     return obj
@@ -188,12 +170,6 @@ class DimensionBase(DraftAnnotation):
         "Initialize common properties for dimension objects"
         DraftAnnotation.__init__(self,obj, tp)
         
-        # Annotation
-        obj.addProperty("App::PropertyLink","DimensionStyle",
-                        "Annotation",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Link dimension style"))
-
         # Draft
         obj.addProperty("App::PropertyVector",
                         "Normal",
@@ -222,9 +198,7 @@ class DimensionBase(DraftAnnotation):
 
     def onChanged(self,obj,prop):
         
-        if prop == "DimensionStyle":
-            if hasattr(obj, "DimensionStyle"):
-                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
+        return
 
 
     def execute(self, obj):
@@ -284,9 +258,6 @@ class LinearDimension(DimensionBase):
         #    obj.setEditorMode('Normal', 2)
         if hasattr(obj, "Support"):
             obj.setEditorMode('Support', 2)
-        if prop == "DimensionStyle":
-            if hasattr(obj, "DimensionStyle"):
-                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
 
 
     def execute(self, obj):
