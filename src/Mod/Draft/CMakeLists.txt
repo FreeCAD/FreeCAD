@@ -119,6 +119,7 @@ SET(Modifier_tools
     draftguitools/gui_draft2sketch.py
     draftguitools/gui_array_simple.py
     draftguitools/gui_patharray.py
+    draftguitools/gui_pointarray.py
 )
 
 SET(Draft_GUI_tools
