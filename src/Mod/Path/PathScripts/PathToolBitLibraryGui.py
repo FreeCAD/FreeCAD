@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,11 +33,13 @@ import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolBitEdit as PathToolBitEdit
 import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
+from PySide import QtCore, QtGui
 import PySide
 import json
 import os
 import traceback
 import uuid as UUID
+import glob
 
 #PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
@@ -141,8 +144,11 @@ class ToolBitLibrary(object):
         self.form.toolTable.hide()
         self.setupUI()
         self.title = self.form.windowTitle()
+        self.LibFiles = []
         if path:
             self.libraryLoad(path)
+        
+        self.form.addToolController.setEnabled(False)
 
     def _toolAdd(self, nr, tool, path):
         toolNr = PySide.QtGui.QStandardItem()
@@ -210,6 +216,12 @@ class ToolBitLibrary(object):
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
         for row in sorted(list(selectedRows), key = lambda r: -r):
             self.model.removeRows(row, 1)
+    
+    def libraryDelete(self):
+        PathLog.track()
+        if len(self.path) > 0:
+            os.remove(self.path)
+            self.libraryOpen(False)
 
     def toolEnumerate(self):
         PathLog.track()
@@ -225,10 +237,14 @@ class ToolBitLibrary(object):
         addTCAllText        = translate("PathToolLibraryManager", "Add ALL as Tool Controllers in the Job")
 
         if sel:
-            self.form.addToolController.setText(addTCSelectedText)
+            self.form.addToolController.setEnabled(True)
         else:
-            self.form.addToolController.setText(addTCAllText)
+            self.form.addToolController.setEnabled(False)
 
+    def tableSelected(self, index):
+        ''' loads the tools for the selected tool table '''
+        name = self.form.TableList.itemWidget(self.form.TableList.itemFromIndex(index)).getTableName()
+        self.libraryLoad(PathPreferences.lastPathToolLibrary() + '/' + name)
 
     def open(self, path=None, dialog=False):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
@@ -249,29 +265,50 @@ class ToolBitLibrary(object):
         else:
             self.form.librarySave.setEnabled(False)
 
-    def libraryOpen(self):
+    def libraryOpen(self, filedialog=True):
         PathLog.track()
-        filename = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
-        if filename and filename[0]:
-            print(filename)
-            print(filename[0])
-            path = filename[0]
-            PathPreferences.setLastPathToolLibrary(filename[0])
+        if filedialog:
+            path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary(), 1)
+            if len(path) > 0:
+                PathPreferences.setLastPathToolLibrary(path)
+            else:
+                return
+        else:
+            path = PathPreferences.lastPathToolLibrary()
 
-            if not PathPreferences.toolsOpenLastLibrary():
-                PathPreferences.setLastPathToolLibrary(os.path.dirname(filename[0]))
-                #path = os.path.dirname(path)
+        self.form.TableList.clear()
+        self.LibFiles.clear()
 
-            self.libraryLoad(path)
+        # Find all tool tables in directory
+        for file in glob.glob(path + '/*.fctl'):
+            self.LibFiles.append(file)
+	    
+        self.LibFiles.sort()
+        
+        for table in self.LibFiles:
+            listWidgetItem = QtGui.QListWidgetItem()
+            listItem = ToolTableListWidgetItem()
+            listItem.setTableName(os.path.basename(table))
+            listItem.setIcon(QtGui.QPixmap(':/icons/Path-ToolTable.svg'))
+            #listItem.toolMoved.connect(self.reloadReset)
+            listWidgetItem.setSizeHint(QtCore.QSize(0,40))
+            self.form.TableList.addItem(listWidgetItem)
+            self.form.TableList.setItemWidget(listWidgetItem, listItem)
+        
+        if len(self.LibFiles) > 0:
+            self.libraryLoad(self.LibFiles[0])
+            self.form.TableList.setCurrentRow(0)
 
     def libraryLoad(self, path):
         self.toolTableView.setUpdatesEnabled(False)
         self.model.clear()
         self.model.setHorizontalHeaderLabels(self.columnNames())
+
         if path:
-            print(f"Path: {path}")
+            #print(f"Path: {path}")
             with open(path) as fp:
                 library = json.load(fp)
+
             for toolBit in library['tools']:
                 nr  = toolBit['nr']
                 bit = PathToolBit.findBit(toolBit['path'])
@@ -281,7 +318,9 @@ class ToolBitLibrary(object):
                     self._toolAdd(nr, tool, bit)
                 else:
                     PathLog.error("Could not find tool #{}: {}".format(nr, library['tools'][nr]))
+
             self.toolTableView.resizeColumnsToContents()
+
         self.toolTableView.setUpdatesEnabled(True)
 
         self.form.setWindowTitle("{} - {}".format(self.title, os.path.basename(path) if path else ''))
@@ -290,6 +329,14 @@ class ToolBitLibrary(object):
 
     def libraryNew(self):
         self.libraryLoad(None)
+        self.librarySaveAs()
+    
+    def renameLibrary(self):
+        name = self.form.TableList.itemWidget(self.form.TableList.currentItem()).getTableName()
+        newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
+        if ok and newName:
+            os.rename(PathPreferences.lastPathToolLibrary() + '/' + name, PathPreferences.lastPathToolLibrary() + '/' + newName)
+            self.libraryOpen(False)
 
     #def createToolBit(self):
     #    tool = PathToolBit.ToolBitFactory().Create()
@@ -393,8 +440,7 @@ class ToolBitLibrary(object):
                 self.path = path
                 self.librarySave()
                 self.updateToolbar()
-
-
+                self.libraryOpen(False)
 
     def libraryCancel(self):
         self.form.close()
@@ -425,6 +471,10 @@ class ToolBitLibrary(object):
         self.form.toolEnumerate.clicked.connect(self.toolEnumerate)
         # self.form.createToolBit.clicked.connect(self.createToolBit)
 
+        self.form.ButtonAddToolTable.clicked.connect(self.libraryNew)
+        self.form.ButtonRemoveToolTable.clicked.connect(self.libraryDelete)
+        self.form.ButtonRenameToolTable.clicked.connect(self.renameLibrary)
+
         #self.form.libraryNew.clicked.connect(self.libraryNew)
         self.form.libraryOpen.clicked.connect(self.libraryOpen)
         self.form.librarySave.clicked.connect(self.librarySave)
@@ -433,6 +483,54 @@ class ToolBitLibrary(object):
 
         self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
 
+        self.form.TableList.clicked.connect(self.tableSelected)
+
         self.toolSelect([], [])
         self.updateToolbar()
         PathLog.track('-')
+
+
+class ToolTableListWidgetItem(QtGui.QWidget):
+    
+    toolMoved = QtCore.Signal()
+  
+    def __init__(self):
+        super(ToolTableListWidgetItem, self).__init__()
+        
+        #self.tlm = TLM   
+        self.setAcceptDrops(True)
+
+        self.mainLayout = QtGui.QHBoxLayout()
+        self.iconQLabel = QtGui.QLabel()
+        self.tableNameLabel = QtGui.QLabel()
+        self.mainLayout.addWidget(self.iconQLabel, 0)
+        self.mainLayout.addWidget(self.tableNameLabel, 1)
+        self.setLayout(self.mainLayout)
+
+    def setTableName (self, text):
+        self.tableNameLabel.setText(text)
+
+    def getTableName(self):
+        return self.tableNameLabel.text()
+
+    def setIcon (self, icon):
+        icon = icon.scaled(22, 22)
+        self.iconQLabel.setPixmap(icon)
+
+    def dragEnterEvent(self, e):
+        #currentToolTable = self.tlm.getCurrentTableName()
+        thisToolTable = self.getTableName()
+      
+        #if not currentToolTable == thisToolTable:
+        #    e.accept()
+        #else:
+        #    e.ignore() 
+
+    def dropEvent(self, e):
+        selectedTools = e.source().selectedIndexes()
+        if selectedTools:
+            toolData = selectedTools[1].data()
+        
+            if toolData:
+                #self.tlm.moveToTable(int(toolData), self.getTableName())
+                self.toolMoved.emit()

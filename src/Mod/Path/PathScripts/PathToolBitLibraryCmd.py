@@ -49,7 +49,7 @@ class CommandToolBitLibraryOpen:
 
         lastlib = PathPreferences.lastPathToolLibrary()
 
-        if PathPreferences.toolsOpenLastLibrary() and lastlib.endswith('.fctl'):
+        if PathPreferences.toolsOpenLastLibrary():
             library.open(lastlib)
         else:
             library.open()

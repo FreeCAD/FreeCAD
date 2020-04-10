@@ -84,7 +84,6 @@ def allEnabledPostProcessors(include = None):
         return l
     return enabled
 
-
 def defaultPostProcessor():
     pref = preferences()
     return pref.GetString(PostProcessorDefault, "")
@@ -195,7 +194,6 @@ def setPostProcessorDefaults(processor, args, blacklist):
     pref.SetString(PostProcessorDefaultArgs, args)
     pref.SetString(PostProcessorBlacklist, "%s" % (blacklist))
 
-
 def setOutputFileDefaults(fileName, policy):
     pref = preferences()
     pref.SetString(PostProcessorOutputFile, fileName)
@@ -216,6 +214,7 @@ def setDefaultStockTemplate(template):
 
 def defaultTaskPanelLayout():
     return preferences().GetInt(DefaultTaskPanelLayout, 0)
+
 def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
