@@ -192,38 +192,7 @@ from draftguitools.gui_array_simple import Array
 from draftguitools.gui_array_simple import LinkArray
 from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
-
-
-class PointArray(Modifier):
-    """The PointArray FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_PointArray',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PointArray", "PointArray"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of a selected object on the position of points.")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelectionEx():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Please select base and pointlist objects\n"))
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if sel:
-            base  = sel[0].Object
-            ptlst = sel[1].Object
-            FreeCAD.ActiveDocument.openTransaction("PointArray")
-            Draft.makePointArray(base, ptlst)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        self.finish()
+from draftguitools.gui_pointarray import PointArray
 
 
 class Draft_Clone(Modifier):
@@ -426,7 +395,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 
 # modification commands
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
-FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 
 # context commands
