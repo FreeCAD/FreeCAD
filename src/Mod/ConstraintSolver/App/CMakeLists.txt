@@ -182,6 +182,8 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintLength.h
     G2D/ConstraintLengthPy.xml
     G2D/ConstraintLengthPyImp.cpp
+    G2D/ConstraintEllipseRules.h
+    G2D/ConstraintEllipseRules.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS

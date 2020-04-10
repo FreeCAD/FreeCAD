@@ -2,6 +2,8 @@
 
 #include "ParaEllipse.h"
 #include "G2D/ParaEllipsePy.h"
+
+#include "G2D/ConstraintEllipseRules.h"
 #include "PyUtils.h"
 #include "G2D/ParaPointPy.h"
 
@@ -93,7 +95,9 @@ DualNumber ParaEllipse::pointOnCurveErrFunc(const ValueSet& vals, Position p)
 
 std::vector<HConstraint> ParaEllipse::makeRuleConstraints()
 {
-    throw Py::NotImplementedError("ParaEllipse::makeRuleConstraints");
+    std::vector<HConstraint> ret = ParaConic::makeRuleConstraints();
+    ret.push_back(new ConstraintEllipseRules(getHandle<ParaEllipse>()));
+    return ret;
 }
 
 Position ParaEllipse::getFocus1(const ValueSet& vals) const
