@@ -850,7 +850,7 @@ class _Structure(ArchComponent.Component):
                 inverse_placement = placement.inverse()
             if extrusion:
                 if len(extrusion.Edges) == 1 and DraftGeomUtils.geomType(extrusion.Edges[0]) == "Line":
-                    extrusion = DraftGeomUtils.vec(extrusion.Edges[0])
+                    extrusion = DraftGeomUtils.vec(extrusion.Edges[0], True)
                 if isinstance(extrusion, FreeCAD.Vector):
                     extrusion = inverse_placement.Rotation.multVec(extrusion)
             elif normal:
