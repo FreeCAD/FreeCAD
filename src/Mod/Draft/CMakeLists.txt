@@ -117,6 +117,7 @@ SET(Modifier_tools
     draftguitools/gui_wire2spline.py
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
+    draftguitools/gui_array_simple.py
 )
 
 SET(Draft_GUI_tools
