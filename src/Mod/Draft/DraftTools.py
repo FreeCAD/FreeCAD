@@ -194,54 +194,7 @@ from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
 from draftguitools.gui_pointarray import PointArray
 import draftguitools.gui_arrays
-
-
-class Draft_Clone(Modifier):
-    """The Draft Clone command definition"""
-
-    def __init__(self):
-        Modifier.__init__(self)
-        self.moveAfterCloning = False
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Clone',
-                'Accel' : "C,L",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Clone", "Clones the selected object(s)")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to clone")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            l = len(FreeCADGui.Selection.getSelection())
-            FreeCADGui.addModule("Draft")
-            FreeCAD.ActiveDocument.openTransaction("Clone")
-            nonRepeatList = []
-            for obj in FreeCADGui.Selection.getSelection():
-                if obj not in nonRepeatList:
-                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\"))")
-                    nonRepeatList.append(obj)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-            FreeCADGui.Selection.clearSelection()
-            for i in range(l):
-                FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.Objects[-(1+i)])
-        self.finish()
-
-    def finish(self,close=False):
-        Modifier.finish(self,close=False)
-        if self.moveAfterCloning:
-            ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
+from draftguitools.gui_clone import Draft_Clone
 
 
 class Mirror(Modifier):
@@ -395,7 +348,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 # drawing commands
 
 # modification commands
-FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 
 # context commands
