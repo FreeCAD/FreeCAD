@@ -125,6 +125,7 @@ SET(Modifier_tools
     draftguitools/gui_pointarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_clone.py
+    draftguitools/gui_mirror.py
 )
 
 SET(Draft_GUI_tools
