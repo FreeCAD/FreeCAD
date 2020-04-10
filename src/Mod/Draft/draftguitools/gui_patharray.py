@@ -109,3 +109,29 @@ class PathArray(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_PathArray', PathArray())
+
+
+class PathLinkArray(PathArray):
+    """Gui Command for the PathLinkArray tool based on the PathArray tool."""
+
+    def __init__(self):
+        super().__init__(use_link=True)
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _menu = "Path Link array"
+        _tip = ("Like the PathArray tool, but creates a 'Link array' "
+                "instead.\n"
+                "A 'Link array' is more efficient when handling many copies "
+                "but the 'Fuse' option cannot be used.")
+
+        return {'Pixmap': 'Draft_PathLinkArray',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathLinkArray", _menu),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PathLinkArray", _tip)}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated(name=_tr("Link path array"))
+
+
+Gui.addCommand('Draft_PathLinkArray', PathLinkArray())

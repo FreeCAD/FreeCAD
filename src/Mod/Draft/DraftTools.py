@@ -191,18 +191,8 @@ from draftguitools.gui_draft2sketch import Draft2Sketch
 from draftguitools.gui_array_simple import Array
 from draftguitools.gui_array_simple import LinkArray
 from draftguitools.gui_patharray import PathArray
+from draftguitools.gui_patharray import PathLinkArray
 
-
-class PathLinkArray(PathArray):
-    "The PathLinkArray FreeCAD command definition"
-
-    def __init__(self):
-        PathArray.__init__(self,True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_PathLinkArray',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_PathLinkArray", "PathLinkArray"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_PathLinkArray", "Creates links of a selected object along a selected path.")}
 
 class PointArray(Modifier):
     """The PointArray FreeCAD command definition"""
@@ -436,7 +426,6 @@ from draftguitools.gui_snaps import ShowSnapBar
 
 # modification commands
 FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
-FreeCADGui.addCommand('Draft_PathLinkArray',PathLinkArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 
