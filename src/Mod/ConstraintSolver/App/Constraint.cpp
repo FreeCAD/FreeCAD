@@ -1,10 +1,23 @@
+#include "PreCompiled.h"
+
 #include "Constraint.h"
+#include "ConstraintPy.h"
 #include "DualMath.h"
 
 using namespace FCS;
 using DualNumber = Base::DualNumber;
 
 TYPESYSTEM_SOURCE_ABSTRACT(FCS::Constraint, FCS::ParaObject);
+
+PyObject* Constraint::getPyObject()
+{
+    if (!_twin){
+        _twin = new ConstraintPy(this);
+        return _twin;
+    } else  {
+        return Py::new_reference_to(_twin);
+    }
+}
 
 double Constraint::maxStep(const ValueSet& /*vals*/, const ValueSet& /*dir*/) const
 {
