@@ -24,10 +24,10 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTPOINTCOINCIDENT_H
 #define FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTPOINTCOINCIDENT_H
 
-#include "ParaGeometry.h"
+#include "../ParaGeometry.h"
 #include "ParaPoint.h"
 #include "ParaCurve.h"
-#include "Constraint.h"
+#include "../Constraint.h"
 
 namespace FCS {
 namespace G2D {

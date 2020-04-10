@@ -46,7 +46,7 @@ public: //methods
 
     Base::DualNumber error1(const ValueSet& vals) const override;
     virtual std::vector<ParameterRef> datumParameters() const override {return {angle};};
-    virtual std::vector<Base::DualNumber> caluclateDatum(const ValueSet& vals) override;
+    virtual std::vector<Base::DualNumber> calculateDatum(const ValueSet& vals) override;
 
     ///change supplementAngle and update angle value
     void convertToSupplement(HValueSet vals = nullptr);

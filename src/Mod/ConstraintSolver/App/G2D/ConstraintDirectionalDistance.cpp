@@ -52,7 +52,7 @@ Base::DualNumber ConstraintDirectionalDistance::error1(const ValueSet& vals) con
     return Vector::dot(p2v-p1v, _direction) * _revers - vals[dist];
 }
 
-std::vector<Base::DualNumber> ConstraintDirectionalDistance::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintDirectionalDistance::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     Position p1v = p1->placement->value(vals) * p1->tshape()(vals);

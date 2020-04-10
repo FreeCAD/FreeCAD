@@ -46,7 +46,7 @@ std::vector<ParameterRef> Constraint::datumParameters() const
     return std::vector<ParameterRef>();
 }
 
-std::vector<Base::DualNumber> Constraint::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> Constraint::calculateDatum(const ValueSet& vals)
 {
     (void)vals;
     throw Py::NotImplementedError("Constraint " + repr() + " doesn't support calculating datums");

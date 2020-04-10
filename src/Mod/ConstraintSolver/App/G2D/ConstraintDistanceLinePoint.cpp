@@ -33,7 +33,7 @@ Base::DualNumber ConstraintDistanceLinePoint::error1(const ValueSet& vals) const
     return truedist - vals[dist] * _revers;
 }
 
-std::vector<Base::DualNumber> ConstraintDistanceLinePoint::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintDistanceLinePoint::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     return {calculateDistance(vals) * _revers};

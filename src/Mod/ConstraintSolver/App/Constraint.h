@@ -100,7 +100,7 @@ public://main interface for overriding
     ///datum parameters are usually numerals entered by user, such as the distance of distance constraint. The parameters are typically fixed.
     virtual std::vector<ParameterRef> datumParameters() const;
     ///returns calculated values for datum parameters for current state of geometry. Same order as returned by datumParameters.
-    virtual std::vector<Base::DualNumber> caluclateDatum(const ValueSet& vals);
+    virtual std::vector<Base::DualNumber> calculateDatum(const ValueSet& vals);
 
 public://methods
     const std::vector<ParameterRef>& parameters() const {return _parameters;}

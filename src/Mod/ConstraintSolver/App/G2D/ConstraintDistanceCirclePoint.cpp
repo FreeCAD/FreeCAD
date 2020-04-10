@@ -34,7 +34,7 @@ Base::DualNumber ConstraintDistanceCirclePoint::error1(const ValueSet& vals) con
     return vals[circle->tshape().radius] + vals[dist] * _revers - dist_pc;
 }
 
-std::vector<Base::DualNumber> ConstraintDistanceCirclePoint::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintDistanceCirclePoint::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     Placement plmc = circle->placement->value(vals);

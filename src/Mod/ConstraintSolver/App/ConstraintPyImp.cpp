@@ -64,7 +64,7 @@ PyObject* ConstraintPy::calculateDatum(PyObject* args)
     PyObject* pyvals = Py_None;
     if (!PyArg_ParseTuple(args, "O!", &(ValueSetPy::Type), &pyvals))
         return nullptr;
-    std::vector<DualNumber> ret = getConstraintPtr()->caluclateDatum(*HValueSet(pyvals, false));
+    std::vector<DualNumber> ret = getConstraintPtr()->calculateDatum(*HValueSet(pyvals, false));
     return Py::new_reference_to(asPyList(ret));
 }
 

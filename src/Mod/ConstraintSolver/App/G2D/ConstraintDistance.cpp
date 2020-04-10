@@ -56,7 +56,7 @@ Base::DualNumber ConstraintDistance::error1(const ValueSet& vals) const
     return vals[dist] - (pp1 - pp2).length();
 }
 
-std::vector<Base::DualNumber> ConstraintDistance::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintDistance::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     Position pp1 = p1->placement->value(vals) * p1->tshape()(vals);

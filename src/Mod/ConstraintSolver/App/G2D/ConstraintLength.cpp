@@ -110,7 +110,7 @@ Base::DualNumber ConstraintLength::error1(const ValueSet& vals) const
     return calculateLength(vals) - vals[length];
 }
 
-std::vector<Base::DualNumber> ConstraintLength::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintLength::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     return {calculateLength(vals)};

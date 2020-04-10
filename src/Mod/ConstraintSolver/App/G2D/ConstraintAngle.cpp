@@ -32,7 +32,7 @@ Base::DualNumber ConstraintAngle::error1(const ValueSet& vals) const
     return signedAngle(calculateAngle(vals) - ang);
 }
 
-std::vector<Base::DualNumber> ConstraintAngle::caluclateDatum(const ValueSet& vals)
+std::vector<Base::DualNumber> ConstraintAngle::calculateDatum(const ValueSet& vals)
 {
     throwIfIncomplete();
     DualNumber trueangle = signedAngle(calculateAngle(vals));
