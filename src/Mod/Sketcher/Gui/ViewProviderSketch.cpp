@@ -500,7 +500,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
 
 void ViewProviderSketch::snapToGrid(double &x, double &y)
 {
-    if (GridSnap.getValue() != false) {
+    if (GridSnap.getValue() && ShowGrid.getValue()) {
         // Snap Tolerance in pixels
         const double snapTol = GridSize.getValue() / 5;
 
