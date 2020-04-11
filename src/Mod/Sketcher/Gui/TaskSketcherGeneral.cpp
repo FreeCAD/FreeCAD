@@ -60,6 +60,8 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SIGNAL(emitSetGridSize(double)));
     connect(ui->checkBoxAutoconstraints, SIGNAL(toggled(bool)),
             this, SIGNAL(emitToggleAutoconstraints(bool)));
+    connect(ui->checkBoxRedundantAutoconstraints, SIGNAL(toggled(bool)),
+        this, SIGNAL(emitToggleAvoidRedundant(bool)));
     ui->renderingOrder->installEventFilter(this);
 }
 
@@ -103,6 +105,7 @@ void SketcherGeneralWidget::loadSettings()
 {
     ui->checkBoxShowGrid->onRestore();
     ui->gridSize->onRestore();
+    if (ui->gridSize->rawValue() == 0) { ui->gridSize->setValue(10.0); }
     ui->checkBoxGridSnap->onRestore();
     ui->checkBoxAutoconstraints->onRestore();
     ui->checkBoxRedundantAutoconstraints->onRestore();
@@ -160,6 +163,11 @@ void SketcherGeneralWidget::checkAutoconstraints(bool on)
     ui->checkBoxAutoconstraints->setChecked(on);
 }
 
+void SketcherGeneralWidget::checkAvoidRedundant(bool on)
+{
+    ui->checkBoxRedundantAutoconstraints->setChecked(on);
+}
+
 void SketcherGeneralWidget::enableGridSettings(bool on)
 {
     ui->label->setEnabled(on);
@@ -189,6 +197,22 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     // we need a separate container widget to add all controls to
     widget = new SketcherGeneralWidget(this);
     this->groupLayout()->addWidget(widget);
+    
+    {
+        //Blocker probably not needed as signals aren't connected yet
+        QSignalBlocker block(widget);
+        //Load default settings to get ordering order & avoid redundant values
+        widget->loadSettings();
+        widget->checkGridView(sketchView->ShowGrid.getValue());
+        if (sketchView->GridSize.getValue() > 0) {
+            widget->setGridSize(sketchView->GridSize.getValue());
+        }
+        widget->checkGridSnap(sketchView->GridSnap.getValue());
+        widget->enableGridSettings(sketchView->ShowGrid.getValue());
+        widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
+        widget->checkAvoidRedundant(sketchView->AvoidRedundant.getValue());
+        widget->enableAvoidRedundant(sketchView->Autoconstraints.getValue());
+    }
 
     // connecting the needed signals
     QObject::connect(
@@ -210,6 +234,11 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
         widget, SIGNAL(emitToggleAutoconstraints(bool)),
         this  , SLOT  (onToggleAutoconstraints(bool))
     );
+    
+    QObject::connect(
+        widget, SIGNAL(emitToggleAvoidRedundant(bool)),
+        this  , SLOT  (onToggleAvoidRedundant(bool))
+    );
 
     QObject::connect(
         widget, SIGNAL(emitRenderOrderChanged()),
@@ -217,7 +246,6 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     );
 
     Gui::Selection().Attach(this);
-    widget->loadSettings();
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(boost::bind
@@ -239,6 +267,7 @@ void TaskSketcherGeneral::onChangedSketchView(const Gui::ViewProvider& vp,
             widget->enableGridSettings(sketchView->ShowGrid.getValue());
             if (sketchView->ShowGrid.getValue()) {
                 sketchView->createGrid();
+            }
         }
         else if (&sketchView->GridSize == &prop) {
             QSignalBlocker block(widget);
@@ -252,6 +281,10 @@ void TaskSketcherGeneral::onChangedSketchView(const Gui::ViewProvider& vp,
             QSignalBlocker block(widget);
             widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
             widget->enableAvoidRedundant(sketchView->Autoconstraints.getValue());
+        }
+        else if (&sketchView->AvoidRedundant == &prop) {
+            QSignalBlocker block(widget);
+            widget->checkAvoidRedundant(sketchView->AvoidRedundant.getValue());
         }
     }
 }
@@ -281,6 +314,12 @@ void TaskSketcherGeneral::onToggleAutoconstraints(bool on)
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->Autoconstraints.setValue(on);
     widget->enableAvoidRedundant(on);
+}
+
+void TaskSketcherGeneral::onToggleAvoidRedundant(bool on)
+{
+    Base::ConnectionBlocker block(changedSketchView);
+    sketchView->AvoidRedundant.setValue(on);
 }
 
 /// @cond DOXERR

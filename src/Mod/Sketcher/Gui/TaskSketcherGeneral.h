@@ -60,6 +60,7 @@ public:
     void checkGridView(bool);
     void checkGridSnap(bool);
     void checkAutoconstraints(bool);
+    void checkAvoidRedundant(bool);
     void enableGridSettings(bool);
     void enableAvoidRedundant(bool);
 
@@ -68,6 +69,7 @@ Q_SIGNALS:
     void emitToggleGridSnap(bool);
     void emitSetGridSize(double);
     void emitToggleAutoconstraints(bool);
+    void emitToggleAvoidRedundant(bool);
     void emitRenderOrderChanged();
 
 protected:
@@ -94,6 +96,7 @@ public Q_SLOTS:
     void onSetGridSize(double val);
     void onToggleGridSnap(bool on);
     void onToggleAutoconstraints(bool on);
+    void onToggleAvoidRedundant(bool);
     void onRenderOrderChanged();
 
 private:
