@@ -69,27 +69,22 @@ SketcherGeneralWidget::~SketcherGeneralWidget()
 
 void SketcherGeneralWidget::saveSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
-    hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
-
-    ui->gridSize->pushToHistory();
-
-    hGrp->SetBool("GridSnap", ui->checkBoxGridSnap->isChecked());
-    hGrp->SetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked());
+    ui->checkBoxShowGrid->onSave();
+    ui->gridSize->onSave();
+    ui->checkBoxGridSnap->onSave();
+    ui->checkBoxAutoconstraints->onSave();
+    ui->checkBoxRedundantAutoconstraints->onSave();
 
     //not necessary to save renderOrder, as it is already stored in renderOrderChanged on every change.
 }
 
 void SketcherGeneralWidget::loadSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
-    ui->checkBoxShowGrid->setChecked(hGrp->GetBool("ShowGrid", true));
-    ui->gridSize->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketchGridSize"));
-    ui->gridSize->setToLastUsedValue();
-    ui->checkBoxGridSnap->setChecked(hGrp->GetBool("GridSnap", ui->checkBoxGridSnap->isChecked()));
-    ui->checkBoxAutoconstraints->setChecked(hGrp->GetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked()));
+    ui->checkBoxShowGrid->onRestore();
+    ui->gridSize->onRestore();
+    ui->checkBoxGridSnap->onRestore();
+    ui->checkBoxAutoconstraints->onRestore();
+    ui->checkBoxRedundantAutoconstraints->onRestore();
 
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
@@ -112,8 +107,6 @@ void SketcherGeneralWidget::loadSettings()
     newItem->setData(Qt::UserRole, QVariant(lowid));
     newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
     ui->renderingOrder->insertItem(2,newItem);
-
-    ui->checkBoxRedundantAutoconstraints->onRestore();
 }
 
 void SketcherGeneralWidget::setGridSize(double val)
