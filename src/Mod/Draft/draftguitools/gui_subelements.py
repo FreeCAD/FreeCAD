@@ -69,7 +69,7 @@ class SubelementHighlight(gui_base_original.Modifier):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super().Activated(name=_tr("Subelement highlight"))
+        super(SubelementHighlight, self).Activated(name=_tr("Subelement highlight"))
         self.get_selection()
 
     def proceed(self):
@@ -86,7 +86,7 @@ class SubelementHighlight(gui_base_original.Modifier):
 
         Re-initialize by running __init__ again at the end.
         """
-        super().finish()
+        super(SubelementHighlight, self).finish()
         self.remove_view_callback()
         self.restore_editable_objects_graphics()
         self.__init__()

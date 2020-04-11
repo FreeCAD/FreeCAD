@@ -67,7 +67,7 @@ class Arc(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr(self.featureName))
+        super(Arc, self).Activated(name=_tr(self.featureName))
         if self.ui:
             self.step = 0
             self.center = None
@@ -94,7 +94,7 @@ class Arc(gui_base_original.Creator):
         closed: bool, optional
             Close the line if `True`.
         """
-        super().finish(self)
+        super(Arc, self).finish()
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
@@ -477,7 +477,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Arc_3Points tool."""
 
     def __init__(self):
-        super().__init__(name=_tr("Arc by 3 points"))
+        super(Arc_3Points, self).__init__(name=_tr("Arc by 3 points"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -493,7 +493,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(Arc_3Points, self).Activated()
 
         # Reset the values
         self.points = []

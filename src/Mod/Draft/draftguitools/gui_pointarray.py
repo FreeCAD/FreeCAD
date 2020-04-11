@@ -71,7 +71,7 @@ class PointArray(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Point array"))
+        super(PointArray, self).Activated(name=_tr("Point array"))
         if not Gui.Selection.getSelectionEx():
             if self.ui:
                 self.ui.selectUi()

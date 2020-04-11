@@ -53,7 +53,7 @@ class ApplyStyle(gui_base_original.Modifier):
 
         Activate the specific BSpline tracker.
         """
-        super().Activated(name=_tr("Apply style"))
+        super(ApplyStyle, self).Activated(name=_tr("Apply style"))
         if self.ui:
             self.sel = Gui.Selection.getSelection()
             if len(self.sel) > 0:
@@ -75,7 +75,7 @@ class ApplyStyle(gui_base_original.Modifier):
                         _cmd_list.append(_cmd)
                 self.commit(translate("draft", "Change Style"),
                             _cmd_list)
-            super().finish()
+            super(ApplyStyle, self).finish()
 
     def formatGroup(self, group):
         """Format a group instead of simple object."""

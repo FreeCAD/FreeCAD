@@ -50,7 +50,7 @@ class BezCurve(gui_lines.Line):
     """Gui command for the Bezier Curve tool."""
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super(BezCurve, self).__init__(wiremode=True)
         self.degree = None
 
     def GetResources(self):
@@ -70,7 +70,7 @@ class BezCurve(gui_lines.Line):
 
         Activate the specific bezier curve tracker.
         """
-        super().Activated(name=translate("draft", "BezCurve"))
+        super(BezCurve, self).Activated(name=translate("draft", "BezCurve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -231,7 +231,7 @@ class CubicBezCurve(gui_lines.Line):
     """Gui command for the 3rd degree Bezier Curve tool."""
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super(CubicBezCurve, self).__init__(wiremode=True)
         self.degree = 3
 
     def GetResources(self):
@@ -254,7 +254,7 @@ class CubicBezCurve(gui_lines.Line):
 
         Activate the specific BezCurve tracker.
         """
-        super().Activated(name=translate("draft", "CubicBezCurve"))
+        super(CubicBezCurve, self).Activated(name=translate("draft", "CubicBezCurve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 

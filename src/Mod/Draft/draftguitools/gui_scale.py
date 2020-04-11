@@ -72,7 +72,7 @@ class Scale(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         self.name = translate("draft", "Scale")
-        super().Activated(name=self.name)
+        super(Scale, self).Activated(name=self.name)
         if not self.ui:
             return
         self.ghosts = []
@@ -399,7 +399,7 @@ class Scale(gui_base_original.Modifier):
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation."""
-        super().finish()
+        super(Scale, self).finish()
         for ghost in self.ghosts:
             ghost.finalize()
 

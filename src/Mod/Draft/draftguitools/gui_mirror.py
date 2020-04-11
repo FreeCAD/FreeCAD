@@ -65,7 +65,7 @@ class Mirror(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         self.name = translate("draft", "Mirror")
-        super().Activated(name=self.name)
+        super(Mirror, self).Activated(name=self.name)
         self.ghost = None
         if self.ui:
             if not Gui.Selection.getSelection():
@@ -97,7 +97,7 @@ class Mirror(gui_base_original.Modifier):
         """Terminate the operation of the tool."""
         if self.ghost:
             self.ghost.finalize()
-        super().finish()
+        super(Mirror, self).finish()
         if cont and self.ui:
             if self.ui.continueMode:
                 Gui.Selection.clearSelection()

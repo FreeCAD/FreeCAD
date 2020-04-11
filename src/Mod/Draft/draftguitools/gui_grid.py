@@ -45,7 +45,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Toggle grid"))
+        super(ToggleGrid, self).__init__(name=_tr("Toggle grid"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -63,7 +63,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(ToggleGrid, self).Activated()
 
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()

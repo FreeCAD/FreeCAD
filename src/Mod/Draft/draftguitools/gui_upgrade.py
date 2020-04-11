@@ -65,7 +65,7 @@ class Upgrade(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Upgrade"))
+        super(Upgrade, self).Activated(name=_tr("Upgrade"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()

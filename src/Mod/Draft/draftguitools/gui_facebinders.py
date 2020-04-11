@@ -61,7 +61,7 @@ class Facebinder(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Facebinder"))
+        super(Facebinder, self).Activated(name=_tr("Facebinder"))
 
         if not Gui.Selection.getSelection():
             if self.ui:

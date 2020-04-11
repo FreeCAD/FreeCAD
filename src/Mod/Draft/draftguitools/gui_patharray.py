@@ -57,7 +57,7 @@ class PathArray(gui_base_original.Modifier):
     """
 
     def __init__(self, use_link=False):
-        super().__init__()
+        super(PathArray, self).__init__()
         self.use_link = use_link
 
     def GetResources(self):
@@ -73,7 +73,7 @@ class PathArray(gui_base_original.Modifier):
 
     def Activated(self, name=_tr("Path array")):
         """Execute when the command is called."""
-        super().Activated(name=name)
+        super(PathArray, self).Activated(name=name)
         if not Gui.Selection.getSelectionEx():
             if self.ui:
                 self.ui.selectUi()
@@ -115,7 +115,7 @@ class PathLinkArray(PathArray):
     """Gui Command for the PathLinkArray tool based on the PathArray tool."""
 
     def __init__(self):
-        super().__init__(use_link=True)
+        super(PathLinkArray, self).__init__(use_link=True)
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -131,7 +131,7 @@ class PathLinkArray(PathArray):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Link path array"))
+        super(PathLinkArray, self).Activated(name=_tr("Link path array"))
 
 
 Gui.addCommand('Draft_PathLinkArray', PathLinkArray())

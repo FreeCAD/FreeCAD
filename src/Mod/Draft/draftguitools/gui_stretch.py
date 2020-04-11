@@ -68,7 +68,7 @@ class Stretch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Stretch"))
+        super(Stretch, self).Activated(name=_tr("Stretch"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
@@ -258,7 +258,7 @@ class Stretch(gui_base_original.Modifier):
         if hasattr(self, "nodetracker") and self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
-        super().finish()
+        super(Stretch, self).finish()
 
     def doStretch(self):
         """Do the actual stretching once the points are selected."""

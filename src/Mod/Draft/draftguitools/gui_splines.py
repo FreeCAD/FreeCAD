@@ -47,7 +47,7 @@ class BSpline(gui_lines.Line):
     """Gui command for the BSpline tool."""
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super(BSpline, self).__init__(wiremode=True)
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -64,7 +64,7 @@ class BSpline(gui_lines.Line):
 
         Activate the specific BSpline tracker.
         """
-        super().Activated(name=translate("draft", "BSpline"))
+        super(BSpline, self).Activated(name=translate("draft", "BSpline"))
         if self.doc:
             self.bsplinetrack = trackers.bsplineTracker()
 

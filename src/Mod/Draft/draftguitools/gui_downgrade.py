@@ -64,7 +64,7 @@ class Downgrade(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Downgrade"))
+        super(Downgrade, self).Activated(name=_tr("Downgrade"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
