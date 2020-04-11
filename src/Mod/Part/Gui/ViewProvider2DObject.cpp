@@ -258,8 +258,8 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
     // call father
     ViewProviderPart::onChanged(prop);
 
-    if (prop == &ShowGrid) {
-        if (ShowGrid.getValue())
+    if (prop == &ShowGrid || prop == &Visibility) {
+        if (ShowGrid.getValue() && Visibility.getValue())
             createGrid();
         else
             Gui::coinRemoveAllChildren(GridRoot);

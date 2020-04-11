@@ -5696,8 +5696,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Base::Console().Warning("ViewProviderSketch::setEdit: could not import Show module. Visibility automation will not work.\n");
     }
 
-
-    ShowGrid.setValue(true);
     TightGrid.setValue(false);
 
     float transparency;
@@ -6075,7 +6073,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
-    ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
     if(listener) {
