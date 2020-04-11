@@ -49,6 +49,8 @@ class SketcherGeneralWidget : public QWidget
 public:
     SketcherGeneralWidget(QWidget *parent=0);
     ~SketcherGeneralWidget();
+    
+    bool eventFilter(QObject *object, QEvent *event);
 
     void saveSettings();
     void saveOrderingOrder();
