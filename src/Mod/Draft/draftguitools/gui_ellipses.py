@@ -60,7 +60,7 @@ class Ellipse(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         name = translate("draft", "Ellipse")
-        super().Activated(name)
+        super(Ellipse, self).Activated(name)
         if self.ui:
             self.refpoint = None
             self.ui.pointUi(name)
@@ -71,7 +71,7 @@ class Ellipse(gui_base_original.Creator):
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation."""
-        super().finish(self)
+        super(Ellipse, self).finish(self)
         if self.ui:
             self.rect.off()
             self.rect.finalize()

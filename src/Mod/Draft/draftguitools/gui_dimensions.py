@@ -91,13 +91,13 @@ class Dimension(gui_base_original.Creator):
         if self.cont:
             self.finish()
         elif self.hasMeasures():
-            super().Activated(name)
+            super(Dimension, self).Activated(name)
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.createOnMeasures()
             self.finish()
         else:
-            super().Activated(name)
+            super(Dimension, self).Activated(name)
             if self.ui:
                 self.ui.pointUi(name)
                 self.ui.continueCmd.show()
@@ -165,7 +165,7 @@ class Dimension(gui_base_original.Creator):
         """Terminate the operation."""
         self.cont = None
         self.dir = None
-        super().finish()
+        super(Dimension, self).finish()
         if self.ui:
             self.dimtrack.finalize()
             self.arctrack.finalize()

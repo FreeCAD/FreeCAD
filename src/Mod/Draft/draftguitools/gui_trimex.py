@@ -79,7 +79,7 @@ class Trimex(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Trimex"))
+        super(Trimex, self).Activated(name=_tr("Trimex"))
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -541,7 +541,7 @@ class Trimex(gui_base_original.Modifier):
 
     def finish(self, closed=False):
         """Terminate the operation of the Trimex tool."""
-        super().finish()
+        super(Trimex, self).finish()
         self.force = None
         if self.ui:
             if self.linetrack:

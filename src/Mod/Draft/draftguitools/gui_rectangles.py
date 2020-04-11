@@ -55,7 +55,7 @@ class Rectangle(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         name = translate("draft", "Rectangle")
-        super().Activated(name)
+        super(Rectangle, self).Activated(name)
         if self.ui:
             self.refpoint = None
             self.ui.pointUi(name)
@@ -72,7 +72,7 @@ class Rectangle(gui_base_original.Creator):
 
         The arguments of this function are not used and should be removed.
         """
-        super().finish()
+        super(Rectangle, self).finish()
         if self.ui:
             if hasattr(self, "fillstate"):
                 self.ui.hasFill.setChecked(self.fillstate)

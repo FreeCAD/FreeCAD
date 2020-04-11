@@ -46,7 +46,7 @@ class CircularArray(gui_base.GuiCommandBase):
     """Gui command for the CircularArray tool."""
 
     def __init__(self):
-        super().__init__()
+        super(CircularArray, self).__init__()
         self.command_name = "Circular array"
         self.location = None
         self.mouse_event = None
@@ -136,7 +136,7 @@ class CircularArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super().finish()
+            super(CircularArray, self).finish()
 
 
 Gui.addCommand('Draft_CircularArray', CircularArray())

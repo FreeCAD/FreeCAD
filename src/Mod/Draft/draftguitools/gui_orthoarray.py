@@ -46,7 +46,7 @@ class OrthoArray(gui_base.GuiCommandBase):
     """Gui command for the OrthoArray tool."""
 
     def __init__(self):
-        super().__init__()
+        super(OrthoArray, self).__init__()
         self.command_name = "Orthogonal array"
         # self.location = None
         self.mouse_event = None
@@ -123,7 +123,7 @@ class OrthoArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super().finish()
+            super(OrthoArray, self).finish()
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())

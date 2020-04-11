@@ -69,7 +69,7 @@ class Join(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Join"))
+        super(Join, self).Activated(name=_tr("Join"))
         if not self.ui:
             return
         if not Gui.Selection.getSelection():

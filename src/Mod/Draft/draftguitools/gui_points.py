@@ -62,7 +62,7 @@ class Point(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Point"))
+        super(Point, self).Activated(name=_tr("Point"))
         self.view = gui_utils.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()
@@ -150,7 +150,7 @@ class Point(gui_base_original.Creator):
 
     def finish(self, cont=False):
         """Terminate the operation and restart if needed."""
-        super().finish()
+        super(Point, self).finish()
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()

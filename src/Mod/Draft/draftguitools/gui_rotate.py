@@ -67,7 +67,7 @@ class Rotate(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Rotate"))
+        super(Rotate, self).Activated(name=_tr("Rotate"))
         if not self.ui:
             return
         self.ghosts = []
@@ -264,7 +264,7 @@ class Rotate(gui_base_original.Modifier):
         if cont and self.ui:
             if self.ui.continueMode:
                 todo.ToDo.delayAfter(self.Activated, [])
-        super().finish()
+        super(Rotate, self).finish()
         if self.doc:
             self.doc.recompute()
 

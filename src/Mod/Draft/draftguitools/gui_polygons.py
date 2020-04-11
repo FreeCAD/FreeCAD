@@ -61,7 +61,7 @@ class Polygon(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         name = translate("draft", "Polygon")
-        super().Activated(name)
+        super(Polygon, self).Activated(name)
         if self.ui:
             self.step = 0
             self.center = None
@@ -80,7 +80,7 @@ class Polygon(gui_base_original.Creator):
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation."""
-        super().finish(self)
+        super(Polygon, self).finish(self)
         if self.ui:
             self.arctrack.finalize()
             self.doc.recompute()

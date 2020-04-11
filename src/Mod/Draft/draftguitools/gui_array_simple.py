@@ -56,7 +56,7 @@ class Array(gui_base_original.Modifier):
     """
 
     def __init__(self, use_link=False):
-        super().__init__()
+        super(Array, self).__init__()
         self.use_link = use_link
 
     def GetResources(self):
@@ -72,7 +72,7 @@ class Array(gui_base_original.Modifier):
 
     def Activated(self, name=_tr("Array")):
         """Execute when the command is called."""
-        super().Activated(name=name)
+        super(Array, self).Activated(name=name)
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
@@ -114,7 +114,7 @@ class LinkArray(Array):
     """Gui Command for the LinkArray tool based on the simple Array tool."""
 
     def __init__(self):
-        super().__init__(use_link=True)
+        super(LinkArray, self).__init__(use_link=True)
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -128,7 +128,7 @@ class LinkArray(Array):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Link array"))
+        super(LinkArray, self).Activated(name=_tr("Link array"))
 
 
 Gui.addCommand('Draft_LinkArray', LinkArray())

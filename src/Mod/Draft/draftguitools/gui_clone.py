@@ -57,7 +57,7 @@ class Clone(gui_base_original.Modifier):
     """Gui Command for the Clone tool."""
 
     def __init__(self):
-        super().__init__()
+        super(Clone, self).__init__()
         self.moveAfterCloning = False
 
     def GetResources(self):
@@ -73,7 +73,7 @@ class Clone(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Clone"))
+        super(Clone, self).Activated(name=_tr("Clone"))
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
@@ -116,7 +116,7 @@ class Clone(gui_base_original.Modifier):
 
     def finish(self, close=False):
         """Terminate the operation of the tool."""
-        super().finish(close=False)
+        super(Clone, self).finish(close=False)
         if self.moveAfterCloning:
             todo.ToDo.delay(Gui.runCommand, "Draft_Move")
 

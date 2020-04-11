@@ -67,7 +67,7 @@ class Shape2DView(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Project 2D view"))
+        super(Shape2DView, self).Activated(name=_tr("Project 2D view"))
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()

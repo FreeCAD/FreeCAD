@@ -85,7 +85,7 @@ class FinishLine(LineAction):
     """GuiCommand to finish any running line drawing operation."""
 
     def __init__(self):
-        super().__init__(name=_tr("Finish line"))
+        super(FinishLine, self).__init__(name=_tr("Finish line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -102,7 +102,7 @@ class FinishLine(LineAction):
 
         It calls the `finish(False)` method of the active Draft command.
         """
-        super().Activated(action="finish")
+        super(FinishLine, self).Activated(action="finish")
 
 
 Gui.addCommand('Draft_FinishLine', FinishLine())
@@ -112,7 +112,7 @@ class CloseLine(LineAction):
     """GuiCommand to close the line being drawn and finish the operation."""
 
     def __init__(self):
-        super().__init__(name=_tr("Close line"))
+        super(CloseLine, self).__init__(name=_tr("Close line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -129,7 +129,7 @@ class CloseLine(LineAction):
 
         It calls the `finish(True)` method of the active Draft command.
         """
-        super().Activated(action="close")
+        super(CloseLine, self).Activated(action="close")
 
 
 Gui.addCommand('Draft_CloseLine', CloseLine())
@@ -139,7 +139,7 @@ class UndoLine(LineAction):
     """GuiCommand to undo the last drawn segment of a line."""
 
     def __init__(self):
-        super().__init__(name=_tr("Undo line"))
+        super(UndoLine, self).__init__(name=_tr("Undo line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -157,7 +157,7 @@ class UndoLine(LineAction):
 
         It calls the `undolast` method of the active Draft command.
         """
-        super().Activated(action="undo")
+        super(UndoLine, self).Activated(action="undo")
 
 
 Gui.addCommand('Draft_UndoLine', UndoLine())

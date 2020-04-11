@@ -41,6 +41,8 @@ import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg, _log
 
+__metaclass__ = type  # to support Python 2 use of `super()`
+
 
 class DraftTool:
     """The base class of all Draft Tools.
@@ -266,7 +268,7 @@ class Creator(DraftTool):
     """
 
     def __init__(self):
-        super().__init__()
+        super(Creator, self).__init__()
 
     def Activated(self, name="None", noplanesetup=False):
         """Execute when the command is called.
@@ -282,7 +284,7 @@ class Creator(DraftTool):
             If it is `False` it will set up the working plane
             by running `App.DraftWorkingPlane.setup()`.
         """
-        super().Activated(name, noplanesetup)
+        super(Creator, self).Activated(name, noplanesetup)
         if not noplanesetup:
             self.support = gui_tool_utils.get_support()
 
@@ -298,5 +300,5 @@ class Modifier(DraftTool):
     """
 
     def __init__(self):
-        super().__init__()
+        super(Modifier, self).__init__()
         self.copymode = False

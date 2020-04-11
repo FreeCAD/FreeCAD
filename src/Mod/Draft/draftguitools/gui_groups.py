@@ -57,7 +57,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Add to group"))
+        super(AddToGroup, self).__init__(name=_tr("Add to group"))
         self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup",
                                          "Ungroup")
 
@@ -76,7 +76,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(AddToGroup, self).Activated()
 
         self.groups = [self.ungroup]
         self.groups.extend(utils.get_group_names())
@@ -157,7 +157,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Select group"))
+        super(SelectGroup, self).__init__(name=_tr("Select group"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -188,7 +188,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
         in the InList of this object.
         For all parents, it also selects the children of these.
         """
-        super().Activated()
+        super(SelectGroup, self).Activated()
 
         sel = Gui.Selection.getSelection()
         if len(sel) == 1:
@@ -240,7 +240,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_AutoGroup tool."""
 
     def __init__(self):
-        super().__init__(name=_tr("Autogroup"))
+        super(SetAutoGroup, self).__init__(name=_tr("Autogroup"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -256,7 +256,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         It calls the `setAutogroup` method of the `DraftToolBar` class
         installed inside the global `Gui` namespace.
         """
-        super().Activated()
+        super(SetAutoGroup, self).Activated()
 
         if not hasattr(Gui, "draftToolBar"):
             return
@@ -345,7 +345,7 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Add to construction group"))
+        super(AddToConstruction, self).__init__(name=_tr("Add to construction group"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -361,7 +361,7 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(AddToConstruction, self).Activated()
 
         if not hasattr(Gui, "draftToolBar"):
             return

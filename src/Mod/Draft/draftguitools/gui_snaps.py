@@ -121,7 +121,7 @@ class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
     def Activated(self):
         """Execute when the command is called."""
         super(Draft_Snap_Lock, self).Activated()
-        
+
         if hasattr(Gui, "Snapper"):
             status = Gui.Snapper.toggle_snap('Lock')
             # change interface consistently
