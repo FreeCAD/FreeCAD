@@ -36,6 +36,8 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
+#include <QEvent>
+
 #include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
@@ -58,13 +60,20 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SLOT(onSetGridSize(double)));
     connect(ui->checkBoxAutoconstraints, SIGNAL(stateChanged(int)),
             this, SIGNAL(emitToggleAutoconstraints(int)));
-    connect(ui->renderingOrder->model(), SIGNAL(layoutChanged()),
-            this, SLOT(onRenderOrderChanged()));
+    ui->renderingOrder->installEventFilter(this);
 }
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
 {
     delete ui;
+}
+
+bool SketcherGeneralWidget::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == ui->renderingOrder && event->type() == QEvent::ChildRemoved) {
+        onRenderOrderChanged();
+    }
+    return false;
 }
 
 void SketcherGeneralWidget::saveSettings()
