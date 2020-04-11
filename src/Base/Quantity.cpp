@@ -396,11 +396,11 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     double ret_val;
     char temp[40];
     int i = 0;
-    for(char* c=yytext;*c!='\0';c++){ 
+    for (char* c=yytext;*c!='\0';c++){ 
         // skip group delimiter
-        if(*c==grp_delim) continue;
+        if (*c==grp_delim) continue;
         // check for a dez delimiter other then dot
-        if(*c==dez_delim && dez_delim !='.')
+        if (*c==dez_delim && dez_delim !='.')
              temp[i++] = '.';
         else
             temp[i++] = *c; 

@@ -43,6 +43,8 @@ public:
     static double guiX(double x);
     static Base::Vector3d guiX(Base::Vector3d v);
     static Base::Vector2d guiX(Base::Vector3d v, bool planar);
+    static QPointF guiX(QPointF p);
+
 //turn Gui side value to App side value
     static double appX(double x);
     static Base::Vector3d appX(Base::Vector3d v);

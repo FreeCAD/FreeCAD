@@ -1,174 +1,173 @@
 # -*- coding: utf-8 -*-
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provide the Draft Workbench public programming interface.
 
-#from __future__ import division
-
-__title__="FreeCAD Draft Workbench"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
-__url__ = "https://www.freecadweb.org"
-
+The Draft module offers tools to create and manipulate 2D objects.
+The functions in this file must be usable without requiring the
+graphical user interface.
+These functions can be used as the backend for the graphical commands
+defined in `DraftTools.py`.
+"""
 ## \addtogroup DRAFT
 #  \brief Create and manipulate basic 2D objects
 #
-#  This module offers a range of tools to create and manipulate basic 2D objects
+#  This module offers tools to create and manipulate basic 2D objects
 #
-#  The module allows to create 2D geometric objects such as line, rectangle, circle,
-#  etc, modify these objects by moving, scaling or rotating them, and offers a couple of
-#  other utilities to manipulate further these objects, such as decompose them (downgrade)
-#  into smaller elements.
+#  The module allows to create 2D geometric objects such as line, rectangle,
+#  circle, etc., modify these objects by moving, scaling or rotating them,
+#  and offers a couple of other utilities to manipulate further these objects,
+#  such as decompose them (downgrade) into smaller elements.
 #
 #  The functionality of the module is divided into GUI tools, usable from the
-#  FreeCAD interface, and corresponding python functions, that can perform the same
-#  operation programmatically.
+#  visual interface, and corresponding python functions, that can perform
+#  the same operation programmatically.
 #
 #  @{
 
-"""The Draft module offers a range of tools to create and manipulate basic 2D objects"""
-
-import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
-import DraftGeomUtils
-import draftutils.translate
-from FreeCAD import Vector
+import math
+import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD
+from FreeCAD import Vector
+
+import DraftVecUtils
+import WorkingPlane
+from draftutils.translate import translate
 
 if FreeCAD.GuiUp:
-    import FreeCADGui, Draft_rc
-    from PySide import QtCore
+    import FreeCADGui
+    import Draft_rc
     gui = True
-    #from DraftGui import translate
+    # To prevent complaints from code checkers (flake8)
+    True if Draft_rc.__name__ else False
 else:
-    # def QT_TRANSLATE_NOOP(ctxt,txt):
-    #     return txt
-    #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
 
-translate = draftutils.translate.translate
+__title__ = "FreeCAD Draft Workbench"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin, Daniel Falck")
+__url__ = "https://www.freecadweb.org"
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Backwards compatibility
-#---------------------------------------------------------------------------
-
-import DraftLayer
-_VisGroup = DraftLayer.Layer
-_ViewProviderVisGroup = DraftLayer.ViewProviderLayer
-makeLayer = DraftLayer.makeLayer
+# ---------------------------------------------------------------------------
+from DraftLayer import Layer as _VisGroup
+from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
+from DraftLayer import makeLayer
 
 # import DraftFillet
 # Fillet = DraftFillet.Fillet
 # makeFillet = DraftFillet.makeFillet
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # General functions
-#---------------------------------------------------------------------------
-import draftutils.utils
-import draftutils.gui_utils
+# ---------------------------------------------------------------------------
+from draftutils.utils import ARROW_TYPES as arrowtypes
 
-arrowtypes = draftutils.utils.ARROW_TYPES
+from draftutils.utils import stringencodecoin
+from draftutils.utils import string_encode_coin
 
-stringencodecoin = draftutils.utils.string_encode_coin
-string_encode_coin = draftutils.utils.string_encode_coin
+from draftutils.utils import typecheck
+from draftutils.utils import type_check
 
-typecheck = draftutils.utils.type_check
-type_check = draftutils.utils.type_check
+from draftutils.utils import getParamType
+from draftutils.utils import get_param_type
 
-getParamType = draftutils.utils.get_param_type
-get_param_type = draftutils.utils.get_param_type
+from draftutils.utils import getParam
+from draftutils.utils import get_param
 
-getParam = draftutils.utils.get_param
-get_param = draftutils.utils.get_param
+from draftutils.utils import setParam
+from draftutils.utils import set_param
 
-setParam = draftutils.utils.set_param
-set_param = draftutils.utils.set_param
+from draftutils.utils import precision
+from draftutils.utils import tolerance
+from draftutils.utils import epsilon
 
-precision = draftutils.utils.precision
-tolerance = draftutils.utils.tolerance
-epsilon = draftutils.utils.epsilon
+from draftutils.utils import getRealName
+from draftutils.utils import get_real_name
 
-getRealName = draftutils.utils.get_real_name
-get_real_name = draftutils.utils.get_real_name
+from draftutils.utils import getType
+from draftutils.utils import get_type
 
-getType = draftutils.utils.get_type
-get_type = draftutils.utils.get_type
+from draftutils.utils import getObjectsOfType
+from draftutils.utils import get_objects_of_type
 
-getObjectsOfType = draftutils.utils.get_objects_of_type
-get_objects_of_type = draftutils.utils.get_objects_of_type
+from draftutils.utils import isClone
+from draftutils.utils import is_clone
 
-get3DView = draftutils.gui_utils.get_3d_view
-get_3d_view = draftutils.gui_utils.get_3d_view
+from draftutils.utils import getGroupNames
+from draftutils.utils import get_group_names
 
-isClone = draftutils.utils.is_clone
-is_clone = draftutils.utils.is_clone
+from draftutils.utils import ungroup
 
-getGroupNames = draftutils.utils.get_group_names
-get_group_names = draftutils.utils.get_group_names
+from draftutils.utils import getGroupContents
+from draftutils.utils import get_group_contents
 
-ungroup = draftutils.utils.ungroup
+from draftutils.utils import printShape
+from draftutils.utils import print_shape
 
-autogroup = draftutils.gui_utils.autogroup
+from draftutils.utils import compareObjects
+from draftutils.utils import compare_objects
 
-dimSymbol = draftutils.gui_utils.dim_symbol
-dim_symbol = draftutils.gui_utils.dim_symbol
+from draftutils.utils import shapify
 
-dimDash = draftutils.gui_utils.dim_dash
-dim_dash = draftutils.gui_utils.dim_dash
+from draftutils.utils import loadSvgPatterns
+from draftutils.utils import load_svg_patterns
 
-shapify = draftutils.utils.shapify
+from draftutils.utils import svgpatterns
+from draftutils.utils import svg_patterns
 
-getGroupContents = draftutils.utils.get_group_contents
-get_group_contents = draftutils.utils.get_group_contents
+from draftutils.utils import getMovableChildren
+from draftutils.utils import get_movable_children
 
-removeHidden = draftutils.gui_utils.remove_hidden
-remove_hidden = draftutils.gui_utils.remove_hidden
+from draftutils.gui_utils import get3DView
+from draftutils.gui_utils import get_3d_view
 
-printShape = draftutils.utils.print_shape
-print_shape = draftutils.utils.print_shape
+from draftutils.gui_utils import autogroup
 
-compareObjects = draftutils.utils.compare_objects
-compare_objects = draftutils.utils.compare_objects
+from draftutils.gui_utils import dimSymbol
+from draftutils.gui_utils import dim_symbol
 
-formatObject = draftutils.gui_utils.format_object
-format_object = draftutils.gui_utils.format_object
+from draftutils.gui_utils import dimDash
+from draftutils.gui_utils import dim_dash
 
-getSelection = draftutils.gui_utils.get_selection
-get_selection = draftutils.gui_utils.get_selection
+from draftutils.gui_utils import removeHidden
+from draftutils.gui_utils import remove_hidden
 
-getSelectionEx = draftutils.gui_utils.get_selection_ex
-get_selection_ex = draftutils.gui_utils.get_selection_ex
+from draftutils.gui_utils import formatObject
+from draftutils.gui_utils import format_object
 
-select = draftutils.gui_utils.select
+from draftutils.gui_utils import getSelection
+from draftutils.gui_utils import get_selection
 
-loadSvgPatterns = draftutils.utils.load_svg_patterns
-load_svg_patterns = draftutils.utils.load_svg_patterns
+from draftutils.gui_utils import getSelectionEx
+from draftutils.gui_utils import get_selection_ex
 
-svgpatterns = draftutils.utils.svg_patterns
-svg_patterns = draftutils.utils.svg_patterns
+from draftutils.gui_utils import select
 
-loadTexture = draftutils.gui_utils.load_texture
-load_texture = draftutils.gui_utils.load_texture
-
-getMovableChildren = draftutils.utils.get_movable_children
-get_movable_children = draftutils.utils.get_movable_children
+from draftutils.gui_utils import loadTexture
+from draftutils.gui_utils import load_texture
 
 
 def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
@@ -715,7 +714,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         _Array(obj)
     obj.Base = baseobject
     if arg6:
-        if isinstance(arg1, (int, float)):
+        if isinstance(arg1, (int, float, FreeCAD.Units.Quantity)):
             obj.ArrayType = "circular"
             obj.RadialDistance = arg1
             obj.TangentialDistance = arg2
@@ -2222,38 +2221,47 @@ def getCloneBase(obj,strict=False):
     return obj
 
 
-def mirror(objlist,p1,p2):
-    """mirror(objlist,p1,p2,[clone]): creates a mirrored version of the given object(s)
-    along an axis that passes through the two vectors p1 and p2."""
+def mirror(objlist, p1, p2):
+    """mirror(objlist, p1, p2)
+    creates a Part::Mirror of the given object(s), along a plane defined
+    by the 2 given points and the draft working plane normal.
+    """
 
     if not objlist:
-        FreeCAD.Console.PrintError(translate("draft","No object given")+"\n")
+        _err = "No object given"
+        FreeCAD.Console.PrintError(translate("draft", _err) + "\n")
         return
     if p1 == p2:
-        FreeCAD.Console.PrintError(translate("draft","The two points are coincident")+"\n")
+        _err = "The two points are coincident"
+        FreeCAD.Console.PrintError(translate("draft", _err) + "\n")
         return
     if not isinstance(objlist,list):
         objlist = [objlist]
+
+    if hasattr(FreeCAD, "DraftWorkingPlane"):
+        norm = FreeCAD.DraftWorkingPlane.getNormal()
+    elif gui:
+        norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
+    else:
+        norm = FreeCAD.Vector(0,0,1)
+    
+    pnorm = p2.sub(p1).cross(norm).normalize()
 
     result = []
 
     for obj in objlist:
         mir = FreeCAD.ActiveDocument.addObject("Part::Mirroring","mirror")
-        mir.Label = "Mirror of "+obj.Label
+        mir.Label = "Mirror of " + obj.Label
         mir.Source = obj
-        if gui:
-            norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
-        else:
-            norm = FreeCAD.Vector(0,0,1)
-        pnorm = p2.sub(p1).cross(norm).normalize()
         mir.Base = p1
         mir.Normal = pnorm
-        formatObject(mir,obj)
+        formatObject(mir, obj)
         result.append(mir)
 
     if len(result) == 1:
         result = result[0]
         select(result)
+
     return result
 
 
@@ -3866,6 +3874,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         return mode
 
     def is_linked_to_circle(self):
+        import DraftGeomUtils
         _obj = self.Object
         if _obj.LinkedGeometry and len(_obj.LinkedGeometry) == 1:
             lobj = _obj.LinkedGeometry[0][0]

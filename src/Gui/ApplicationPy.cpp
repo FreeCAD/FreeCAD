@@ -144,6 +144,12 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"getCommandInfo",               (PyCFunction) Application::sGetCommandInfo, METH_VARARGS,
+  "getCommandInfo(string) -> list of strings\n\n"
+  "Usage: menuText,tooltipText,whatsThisText,statustipText,pixmapText,shortcutText = getCommandInfo(string)"},
+  {"getCommandShortcut",               (PyCFunction) Application::sGetCommandShortcut, METH_VARARGS,
+   "getCommandShortcut(string) -> string\n\n"
+   "Returns string representing shortcut key accelerator for command."},
   {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
    "updateCommands\n\n"
    "Update all command active status"},
@@ -1271,6 +1277,73 @@ PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
 
     getMainWindow()->updateActions();
     Py_Return;
+}
+
+PyObject* Application::sGetCommandShortcut(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (cmd) {
+
+#if PY_MAJOR_VERSION >= 3
+        PyObject* str = PyUnicode_FromString(cmd->getAccel() ? cmd->getAccel() : "");
+#else
+        PyObject* str = PyString_FromString(cmd->getAccel() ? cmd->getAccel() : "");
+#endif
+        return str;
+    }
+    else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
+}
+
+PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (cmd) {
+        PyObject* pyList = PyList_New(6);
+        const char* menuTxt = cmd->getMenuText();
+        const char* tooltipTxt = cmd->getToolTipText();
+        const char* whatsThisTxt = cmd->getWhatsThis();
+        const char* statustipTxt = cmd->getStatusTip();
+        const char* pixMapTxt = cmd->getPixmap();
+        const char* shortcutTxt = cmd->getAccel();
+
+#if PY_MAJOR_VERSION >= 3
+        PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
+        PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
+        PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
+        PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
+        PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
+        PyObject* strShortcutTxt = PyUnicode_FromString(shortcutTxt ? shortcutTxt : "");
+#else
+        PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
+        PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
+        PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
+        PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
+        PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
+        PyObject* strShortcutTxt = PyString_FromString(shortcutTxt ? shortcutTxt : "");
+#endif
+        PyList_SetItem(pyList, 0, strMenuTxt);
+        PyList_SetItem(pyList, 1, strTooltipTxt);
+        PyList_SetItem(pyList, 2, strWhatsThisTxt);
+        PyList_SetItem(pyList, 3, strStatustipTxt);
+        PyList_SetItem(pyList, 4, strPixMapTxt);
+        PyList_SetItem(pyList, 5, strShortcutTxt);
+        return pyList;
+    }
+    else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
 }
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)

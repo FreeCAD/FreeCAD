@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg866" version="1.2" viewBox="0 0 12.122808 45" height="45pt" width="12.122808pt">
+  <metadata id="metadata870">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs855">
+    <clipPath id="clip1">
+      <path id="path852" d="M 0 0 L 12.121094 0 L 12.121094 13 L 0 13 Z M 0 0 " />
+    </clipPath>
+  </defs>
+  <g id="surface162545">
+    <path id="path857" d="M 0.289063 0.289063 L 11.832031 0.289063 L 11.832031 11.832031 L 0.289063 11.832031 Z M 0.289063 0.289063 " style="stroke:none;fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1" />
+    <g id="g861" clip-rule="nonzero" clip-path="url(#clip1)">
+      <path id="path859" d="M 0.289063 0.289063 L 11.832031 0.289063 L 11.832031 11.832031 L 0.289063 11.832031 Z M 0.289063 0.289063 " style="fill:none;stroke-width:0.57786;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <path id="path863" d="M 5.910156 11.746094 L 5.910156 41.082031 L 3.8125 44.710938 L 8.070313 44.710938 L 5.910156 41.082031 " style="fill-rule:nonzero;fill:rgb(0%, 0%, 0%);fill-opacity:1;stroke-width:0.578429;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+  </g>
+</svg>

@@ -190,15 +190,17 @@ class _ArchPipe(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength", "Diameter",    "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength", "Length",      "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink",   "Profile",     "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetStart", "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetEnd",   "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+        if not "WallThickness" in pl:
+            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"))
         self.Type = "Pipe"
 
     def onDocumentRestored(self,obj):
@@ -231,7 +233,11 @@ class _ArchPipe(ArchComponent.Component):
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the profile")+"\n")
             return
         # move and rotate the profile to the first point
-        delta = w.Vertexes[0].Point-p.CenterOfMass
+        if hasattr(p,"CenterOfMass"):
+            c = p.CenterOfMass
+        else:
+            c = p.BoundBox.Center
+        delta = w.Vertexes[0].Point-c
         p.translate(delta)
         import Draft
         if Draft.getType(obj.Base) == "BezCurve":
@@ -240,12 +246,30 @@ class _ArchPipe(ArchComponent.Component):
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
-        p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
+        p.rotate(c,rot.Axis,math.degrees(rot.Angle))
+        shapes = []
         try:
-            sh = w.makePipeShell([p],True,False,2)
+            if p.Faces:
+                for f in p.Faces:
+                    sh = w.makePipeShell([f.OuterWire],True,False,2)
+                    for shw in f.Wires:
+                        if shw.hashCode() != f.OuterWire.hashCode():
+                            sh2 = w.makePipeShell([shw],True,False,2)
+                            sh = sh.cut(sh2)
+                    shapes.append(sh)
+            elif p.Wires:
+                for pw in p.Wires:
+                    sh = w.makePipeShell([pw],True,False,2)
+                    shapes.append(sh)
         except:
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
+            if len(shapes) == 0:
+                return
+            elif len(shapes) == 1:
+                sh = shapes[0]
+            else:
+                sh = Part.makeCompound(shapes)
             obj.Shape = sh
             if obj.Base:
                 obj.Length = w.Length
@@ -279,17 +303,19 @@ class _ArchPipe(ArchComponent.Component):
             if not obj.Profile.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not a 2D Part")+"\n")
                 return
-            if len(obj.Profile.Shape.Wires) != 1:
-                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the profile")+"\n")
-                return
             if not obj.Profile.Shape.Wires[0].isClosed():
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not closed")+"\n")
                 return
-            p = obj.Profile.Shape.Wires[0]
+            p = obj.Profile.Shape
         else:
             if obj.Diameter.Value == 0:
                 return
             p = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),obj.Diameter.Value/2).toShape()])
+            if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Diameter.Value/2):
+                p2 = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),(obj.Diameter.Value/2-obj.WallThickness.Value)).toShape()])
+                p = Part.Face(p)
+                p2 = Part.Face(p2)
+                p = p.cut(p2)
         return p
 
 

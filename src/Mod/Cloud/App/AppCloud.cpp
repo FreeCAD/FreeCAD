@@ -212,6 +212,11 @@ void Cloud::CloudWriter::createBucket()
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+#endif
+
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;
@@ -390,6 +395,10 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+#endif
         if ( curl )
         {
                 // Let's build our own header
@@ -577,6 +586,10 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
         	std::string s;
 	        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey, NULL, 0);
 	        curl = curl_easy_init();
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+     		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+#endif
 	        if ( curl )
 	        {
 			// Let's build our own header
@@ -661,6 +674,10 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+#endif
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;
@@ -771,6 +788,10 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+#endif
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;

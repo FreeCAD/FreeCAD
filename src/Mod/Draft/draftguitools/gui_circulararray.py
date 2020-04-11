@@ -1,9 +1,3 @@
-"""This module provides the Draft CircularArray tool.
-"""
-## @package gui_circulararray
-# \ingroup DRAFT
-# \brief This module provides the Draft CircularArray tool.
-
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -26,45 +20,34 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the Draft CircularArray GuiCommand."""
+## @package gui_circulararray
+# \ingroup DRAFT
+# \brief This module provides the Draft CircularArray tool.
+
+from pivy import coin
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import DraftGui
-import Draft_rc
-from . import gui_base
+import Draft_rc  # include resources, icons, ui files
+from draftutils.messages import _msg, _log
+from draftutils.translate import _tr
+from draftguitools import gui_base
 from drafttaskpanels import task_circulararray
+import draftutils.todo as todo
 
-
-if App.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    # import DraftTools
-    from DraftGui import translate
-    # from DraftGui import displayExternal
-    from pivy import coin
-else:
-    def QT_TRANSLATE_NOOP(context, text):
-        return text
-
-    def translate(context, text):
-        return text
-
-
-def _tr(text):
-    """Function to translate with the context set"""
-    return translate("Draft", text)
-
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc.__name__ else False
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Draft_rc.__name__)
 
 
 class GuiCommandCircularArray(gui_base.GuiCommandBase):
-    """Gui command for the CircularArray tool"""
+    """Gui command for the CircularArray tool."""
 
     def __init__(self):
         super().__init__()
-        self.command_name = "CircularArray"
+        self.command_name = "Circular array"
         self.location = None
         self.mouse_event = None
         self.view = None
@@ -74,22 +57,28 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
         self.point = App.Vector()
 
     def GetResources(self):
-        _msg = ("Creates copies of a selected object, "
+        """Set icon, menu and tooltip."""
+        _tip = ("Creates copies of a selected object, "
                 "and places the copies in a circular pattern.\n"
                 "The properties of the array can be further modified after "
                 "the new object is created, including turning it into "
                 "a different type of array.")
+
         d = {'Pixmap': 'Draft_CircularArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Circular array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", _msg)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft", _tip)}
         return d
 
     def Activated(self):
-        """This is called when the command is executed.
+        """Execute when the command is called.
 
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
+        _log("GuiCommand: {}".format(_tr(self.command_name)))
+        _msg("{}".format(16*"-"))
+        _msg("GuiCommand: {}".format(_tr(self.command_name)))
+
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
         self.view = Draft.get3DView()
@@ -103,10 +92,10 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
         # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
         # Gui.Control.showDialog(self.ui)
-        DraftGui.todo.delay(Gui.Control.showDialog, self.ui)
+        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
 
     def move(self, event_cb):
-        """This is a callback for when the mouse pointer moves in the 3D view.
+        """Execute as a callback when the pointer moves in the 3D view.
 
         It should automatically update the coordinates in the widgets
         of the task panel.
@@ -119,7 +108,7 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
             self.ui.display_point(self.point)
 
     def click(self, event_cb=None):
-        """This is a callback for when the mouse pointer clicks on the 3D view.
+        """Execute as a callback when the pointer clicks on the 3D view.
 
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
@@ -136,7 +125,7 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
             self.ui.accept()
 
     def completed(self):
-        """This is called when the command is terminated.
+        """Execute when the command is terminated.
 
         We should remove the callbacks that were added to the 3D view
         and then close the task panel.
@@ -146,10 +135,8 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
         self.view.removeEventCallbackPivy(self.mouse_event,
                                           self.callback_click)
         if Gui.Control.activeDialog():
-            Gui.Snapper.off()
             Gui.Control.closeDialog()
             super().finish()
 
 
-if App.GuiUp:
-    Gui.addCommand('Draft_CircularArray', GuiCommandCircularArray())
+Gui.addCommand('Draft_CircularArray', GuiCommandCircularArray())

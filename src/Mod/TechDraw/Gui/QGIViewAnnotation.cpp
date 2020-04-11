@@ -37,6 +37,9 @@
 #include <sstream>
 #endif
 
+#include <string>
+#include <regex>
+
 #include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
@@ -155,7 +158,10 @@ void QGIViewAnnotation::drawAnnotation()
         if (it != annoText.begin()) {
             ss << "<br>";
         }
-        ss << Base::Tools::escapedUnicodeToUtf8(*it);
+        std::string u8String = Base::Tools::escapedUnicodeToUtf8(*it);
+//                                                                   what madness turns \' into \\\\\'?
+        std::string apos = std::regex_replace((u8String), std::regex("\\\\\'"), "'");
+        ss << apos;
     }
     ss << "<br></p>\n</body>\n</html> ";
 

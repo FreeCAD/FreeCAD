@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <boost/signals2.hpp>
 #include <QListWidget>
+#include <QIcon>
 
 namespace App {
 class Property;
@@ -91,6 +92,18 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
 {
     Q_OBJECT
 
+    class MultIcon {
+        
+    public:
+        MultIcon(const char*);
+        
+        QIcon Normal;
+        QIcon Construction;
+        QIcon External;
+        
+        QIcon getIcon(bool construction, bool external) const;
+    };
+    
 public:
     TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements();

@@ -62,6 +62,7 @@ DrawWeldSymbol::DrawWeldSymbol(void)
     Caption.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden, true);
 }
 
 DrawWeldSymbol::~DrawWeldSymbol()

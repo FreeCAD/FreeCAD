@@ -376,7 +376,7 @@ void TaskWeldingSymbol::onFlipSidesClicked()
     ui->leOtherTextR->setText(ui->leArrowTextR->text());
     ui->leArrowTextR->setText(tempText);
 
-    // one cannot get the path from the icon therfore read out
+    // one cannot get the path from the icon therefore read out
     // the path property
     auto tempPathArrow = m_arrowFeat->SymbolFile.getValue();
     auto tempPathOther = m_otherFeat->SymbolFile.getValue();

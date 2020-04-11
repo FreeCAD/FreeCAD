@@ -36,7 +36,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Probing operation page controller and command implementation."
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 

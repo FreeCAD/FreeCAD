@@ -24,7 +24,6 @@
 """Unit test for the Draft Workbench, tools import tests."""
 
 import unittest
-import FreeCAD as App
 import drafttests.auxiliary as aux
 
 
@@ -38,50 +37,30 @@ class DraftImportTools(unittest.TestCase):
 
     def test_import_gui_draftedit(self):
         """Import Draft Edit."""
-        module = "DraftEdit"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
+        module = "draftguitools.gui_edit"
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draftfillet(self):
         """Import Draft Fillet."""
         module = "DraftFillet"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draftlayer(self):
         """Import Draft Layer."""
         module = "DraftLayer"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draftplane(self):
         """Import Draft SelectPlane."""
-        module = "DraftSelectPlane"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
+        module = "draftguitools.gui_selectplane"
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_workingplane(self):
         """Import Draft WorkingPlane."""
         module = "WorkingPlane"
-        if not App.GuiUp:
-            aux._no_gui(module)
-            self.assertTrue(True)
-            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))

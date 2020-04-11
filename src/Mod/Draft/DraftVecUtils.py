@@ -1,19 +1,3 @@
-## \defgroup DRAFTVECUTILS DraftVecUtils
-#  \ingroup UTILITIES
-#  \brief Vector math utilities used in Draft workbench
-#
-# Vector math utilities used primarily in the Draft workbench
-# but which can also be used in other workbenches and in macros.
-"""\defgroup DRAFTVECUTILS DraftVecUtils
-\ingroup UTILITIES
-\brief Vector math utilities used in Draft workbench
-
-Vector math utilities used primarily in the Draft workbench
-but which can also be used in other workbenches and in macros.
-"""
-# Check code with
-# flake8 --ignore=E226,E266,E401,W503
-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -35,18 +19,31 @@ but which can also be used in other workbenches and in macros.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide vector math utilities used in the Draft workbench.
+
+Vector math utilities used primarily in the Draft workbench
+but which can also be used in other workbenches and in macros.
+"""
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup UTILITIES
+#  \brief Vector math utilities used in Draft workbench
+#
+# Vector math utilities used primarily in the Draft workbench
+# but which can also be used in other workbenches and in macros.
+
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
+import math
+import sys
+
+import FreeCAD
+from FreeCAD import Vector
+import draftutils.messages as messages
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = "https://www.freecadweb.org"
-
-## \addtogroup DRAFTVECUTILS
-#  @{
-
-import sys
-import math, FreeCAD
-from FreeCAD import Vector, Matrix
-from FreeCAD import Console as FCC
 
 # Python 2 has two integer types, int and long.
 # In Python 3 there is no 'long' anymore, so make it 'int'.
@@ -56,6 +53,9 @@ except NameError:
     long = int
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+## \addtogroup DRAFTVECUTILS
+#  @{
 
 
 def precision():
@@ -97,16 +97,15 @@ def typecheck(args_and_types, name="?"):
         Defaults to `'?'`. The name of the check.
 
     Raises
-    -------
+    ------
     TypeError
         If the first element in the tuple is not an instance of the second
         element.
     """
     for v, t in args_and_types:
         if not isinstance(v, t):
-            _msg = ("typecheck[" + str(name) + "]: "
-                    + str(v) + " is not " + str(t) + "\n")
-            FCC.PrintWarning(_msg)
+            _msg = "typecheck[{0}]: {1} is not {2}".format(name, v, t)
+            messages._wrn(_msg)
             raise TypeError("fcvec." + str(name))
 
 
@@ -208,7 +207,7 @@ def equals(u, v):
         The second vector.
 
     Returns
-    ------
+    -------
     bool
         `True` if the vectors are within the precision, `False` otherwise.
     """
@@ -497,9 +496,9 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     ys = y * s
     zs = z * s
 
-    m = Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
-               xyt + zs,    c + y*y*t,  yzt - xs,   0,
-               xzt - ys,    yzt + xs,   c + z*z*t,  0)
+    m = FreeCAD.Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
+                       xyt + zs,    c + y*y*t,  yzt - xs,   0,
+                       xzt - ys,    yzt + xs,   c + z*z*t,  0)
 
     return m.multiply(u)
 
@@ -547,7 +546,7 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
 
 
 def isNull(vector):
-    """Returns `False` if each of the components of the vector is zero.
+    """Return False if each of the components of the vector is zero.
 
     Due to rounding errors, an element is probably never going to be
     exactly zero. Therefore, it rounds the element by the number

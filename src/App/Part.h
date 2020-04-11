@@ -70,7 +70,7 @@ public:
     //@{
     /** Base color of the Item
     If the transparency value is 1.0
-    the color or the next hirachy is used
+    the color or the next hierarchy is used
     */
     App::PropertyColor Color;
     //@}

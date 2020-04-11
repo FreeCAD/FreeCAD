@@ -27,6 +27,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -653,7 +654,7 @@ class _CommandWindow:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-        import DraftTrackers
+
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
@@ -783,6 +784,15 @@ class _CommandWindow:
                                         self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
             else:
                 librarypath = None
+        # check for existing presets
+        presetdir = os.path.join(FreeCAD.getUserAppDataDir(),"Arch")
+        for tp in ["Windows","Doors"]:
+            wdir = os.path.join(presetdir,tp)
+            if os.path.exists(wdir):
+                for wfile in os.listdir(wdir):
+                    if wfile.lower().endswith(".fcstd"):
+                        self.librarypresets.append([tp[:-1]+" - "+wfile[:-6],wfile])
+
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))

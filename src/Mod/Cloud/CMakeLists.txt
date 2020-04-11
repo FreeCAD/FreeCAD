@@ -1,10 +1,13 @@
+#----------------------------- Control certificate validation ------------
+option(ALLOW_SELF_SIGNED_CERTIFICATE "Allow self signed certificate" OFF)
+if (ALLOW_SELF_SIGNED_CERTIFICATE)
+add_compile_options("-DALLOW_SELF_SIGNED_CERTIFICATE")
+endif ()
 #------------------------------ OpenSSL and CURL -------------------------
 if (APPLE)
-    set(OPENSSL_ROOT_DIR ${HOMEBREW_PREFIX}/Cellar/openssl/*)
-endif(APPLE)
-if (UNIX AND NOT APPLE)
     find_package(PkgConfig REQUIRED)
     pkg_search_module(OPENSSL REQUIRED openssl)
+    set (OPENSSL_LIBRARIES ${OPENSSL_LINK_LIBRARIES})
 elseif(WIN32 AND LIBPACK_FOUND)
     SET( OPENSSL_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include)
     SET( OPENSSL_LIBRARIES 
@@ -27,8 +30,9 @@ elseif(WIN32 AND LIBPACK_FOUND)
       set(OPENSSL_VERSION ${openssl_version_str})
   endif ()   
 else()
-    find_package(OPENSSL REQUIRED)
-endif(UNIX AND NOT APPLE)
+    find_package(OpenSSL REQUIRED)
+endif(APPLE)
+
 if(OPENSSL_FOUND)
     message(STATUS "openssl-${OPENSSL_VERSION} has been found\n")
 else()

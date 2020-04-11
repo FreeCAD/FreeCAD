@@ -97,6 +97,15 @@ public:
 
     static void createLinkMenu(MenuItem *);
 
+    //// Shows a list of all toolbars
+    std::list<std::string> listToolbars() const;
+    /// Shows a list of all toolbars and their commands
+    std::list<std::pair<std::string, std::list<std::string>>> getToolbarItems() const;
+    //// Shows a list of all menus
+    std::list<std::string> listMenus() const;
+    //// Shows a list of all command bars
+    std::list<std::string> listCommandbars() const;
+
 protected:
     /** Returns a MenuItem tree structure of menus for this workbench. */
     virtual MenuItem* setupMenuBar() const=0;
@@ -245,8 +254,6 @@ public:
     void appendMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const;
     /// Removes a menu
     void removeMenu(const std::string& menu ) const;
-    //// Shows a list of all menus
-    std::list<std::string> listMenus() const;
 
     /// Appends new context menu items
     void appendContextMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const;
@@ -259,15 +266,11 @@ public:
     void appendToolbar(const std::string& bar, const std::list<std::string>& items) const;
     /// Removes a toolbar
     void removeToolbar(const std::string& bar) const;
-    //// Shows a list of all toolbars
-    std::list<std::string> listToolbars() const;
 
     /// Appends a new command bar
     void appendCommandbar(const std::string& bar, const std::list<std::string>& items) const;
     /// Removes a command bar
     void removeCommandbar(const std::string& bar) const;
-    //// Shows a list of all command bars
-    std::list<std::string> listCommandbars() const;
     //@}
 
 protected:

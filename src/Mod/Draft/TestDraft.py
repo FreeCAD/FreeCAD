@@ -1,12 +1,3 @@
-"""Unit tests for the Draft workbench.
-
-From the terminal, run the following:
-FreeCAD -t TestDraft
-
-From within FreeCAD, run the following:
-import Test, TestDraft
-Test.runTestsFromModule(TestDraft)
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -30,6 +21,17 @@ Test.runTestsFromModule(TestDraft)
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit tests for the Draft workbench, non-GUI only.
+
+From the terminal, run the following:
+FreeCAD -t TestDraft
+
+From within FreeCAD, run the following:
+import Test, TestDraft
+Test.runTestsFromModule(TestDraft)
+
+For the GUI-only tests see TestDraftGui.
+"""
 
 # ===========================================================================
 # The unit tests can be run from the operating system terminal, or from
@@ -94,20 +96,17 @@ Test.runTestsFromModule(TestDraft)
 
 # Import tests
 from drafttests.test_import import DraftImport as DraftTest01
-from drafttests.test_import_gui import DraftGuiImport as DraftTest02
-from drafttests.test_import_tools import DraftImportTools as DraftTest03
-from drafttests.test_pivy import DraftPivy as DraftTest04
 
 # Objects tests
-from drafttests.test_creation import DraftCreation as DraftTest05
-from drafttests.test_modification import DraftModification as DraftTest06
+from drafttests.test_creation import DraftCreation as DraftTest02
+from drafttests.test_modification import DraftModification as DraftTest03
 
 # Handling of file formats tests
-from drafttests.test_svg import DraftSVG as DraftTest07
-from drafttests.test_dxf import DraftDXF as DraftTest08
-from drafttests.test_dwg import DraftDWG as DraftTest09
-from drafttests.test_oca import DraftOCA as DraftTest10
-from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest11
+from drafttests.test_svg import DraftSVG as DraftTest04
+from drafttests.test_dxf import DraftDXF as DraftTest05
+from drafttests.test_dwg import DraftDWG as DraftTest06
+from drafttests.test_oca import DraftOCA as DraftTest07
+from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest08
 
 # Use the modules so that code checkers don't complain (flake8)
 True if DraftTest01 else False
@@ -118,6 +117,3 @@ True if DraftTest05 else False
 True if DraftTest06 else False
 True if DraftTest07 else False
 True if DraftTest08 else False
-True if DraftTest09 else False
-True if DraftTest10 else False
-True if DraftTest11 else False

@@ -77,12 +77,12 @@ void AssemblyExport initAssembly()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    // Item hirachy
+    // Item hierarchy
     Assembly::Item          ::init();
     Assembly::Product       ::init();
     Assembly::ProductRef    ::init();
 
-    // constraint hirachy
+    // constraint hierarchy
     Assembly::Constraint        ::init();
     Assembly::ConstraintGroup   ::init();
 }

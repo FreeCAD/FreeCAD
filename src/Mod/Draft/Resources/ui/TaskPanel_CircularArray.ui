@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>488</height>
+    <height>511</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -54,7 +54,8 @@
       <item row="5" column="0">
        <widget class="QGroupBox" name="group_center">
         <property name="toolTip">
-         <string>The coordinates of the point through which the axis of rotation passes.</string>
+         <string>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</string>
         </property>
         <property name="title">
          <string>Center of rotation</string>
@@ -127,7 +128,7 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset">
            <property name="toolTip">
-            <string>Reset the coordinates of the center of rotation</string>
+            <string>Reset the coordinates of the center of rotation.</string>
            </property>
            <property name="text">
             <string>Reset point</string>
@@ -142,7 +143,8 @@
         <item>
          <widget class="QCheckBox" name="checkbox_fuse">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be fused if they touch each other</string>
+           <string>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if &quot;Link array&quot; is off.</string>
           </property>
           <property name="text">
            <string>Fuse</string>
@@ -152,10 +154,14 @@
         <item>
          <widget class="QCheckBox" name="checkbox_link">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be Links instead of simple copies</string>
+           <string>If checked, the resulting object will be a &quot;Link array&quot; instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
           </property>
           <property name="text">
-           <string>Use Links</string>
+           <string>Link array</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -166,7 +172,8 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_tan_distance">
           <property name="toolTip">
-           <string>Distance from one element in the array to the next element in the same layer. It cannot be zero.</string>
+           <string>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</string>
           </property>
           <property name="text">
            <string>Tangential distance</string>
@@ -176,7 +183,8 @@
         <item row="1" column="1">
          <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance">
           <property name="toolTip">
-           <string>Distance from one element in the array to the next element in the same layer. It cannot be zero.</string>
+           <string>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
@@ -189,7 +197,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_r_distance">
           <property name="toolTip">
-           <string>Distance from the center of the array to the outer layers</string>
+           <string>Distance from one layer of objects to the next layer of objects.</string>
           </property>
           <property name="text">
            <string>Radial distance</string>
@@ -199,7 +207,7 @@
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance">
           <property name="toolTip">
-           <string>Distance from the center of the array to the outer layers</string>
+           <string>Distance from one layer of objects to the next layer of objects.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
@@ -212,7 +220,10 @@
         <item row="3" column="1">
          <widget class="QSpinBox" name="spinbox_symmetry">
           <property name="toolTip">
-           <string>Number that controls how the objects will be distributed</string>
+           <string>The number of symmetry lines in the circular array.</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
           </property>
           <property name="value">
            <number>1</number>
@@ -222,7 +233,11 @@
         <item row="2" column="1">
          <widget class="QSpinBox" name="spinbox_number">
           <property name="toolTip">
-           <string>Number of circular arrays to create, including a copy of the original object. It must be at least 2.</string>
+           <string>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</string>
+          </property>
+          <property name="minimum">
+           <number>2</number>
           </property>
           <property name="value">
            <number>3</number>
@@ -232,7 +247,8 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_number">
           <property name="toolTip">
-           <string>Number of circular arrays to create, including a copy of the original object. It must be at least 2.</string>
+           <string>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</string>
           </property>
           <property name="text">
            <string>Number of circular layers</string>
@@ -242,7 +258,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_symmetry">
           <property name="toolTip">
-           <string>Number that controls how the objects will be distributed</string>
+           <string>The number of symmetry lines in the circular array.</string>
           </property>
           <property name="text">
            <string>Symmetry</string>

@@ -112,18 +112,23 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         else:
                             PathLog.error(translate('PathProfileEdges', 'The selected edge(s) are inaccessible.'))
                     else:
-                        cutWireObjs = False
-                        (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                        cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
-                        if cutShp is not False:
-                            cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
-
-                        if cutWireObjs is not False:
-                            for cW in cutWireObjs:
-                                shapes.append((cW, False))
-                                self.profileEdgesIsOpen = True
+                        if self.JOB.GeometryTolerance.Value == 0.0:
+                            msg = self.JOB.Label + '.GeometryTolerance = 0.0.'
+                            msg += translate('PathProfileEdges', 'Please set to an acceptable value greater than zero.')
+                            PathLog.error(msg)
                         else:
-                            PathLog.error(translate('PathProfileEdges', 'The selected edge(s) are inaccessible.'))
+                            cutWireObjs = False
+                            (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+                            cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
+                            if cutShp is not False:
+                                cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
+
+                            if cutWireObjs is not False:
+                                for cW in cutWireObjs:
+                                    shapes.append((cW, False))
+                                    self.profileEdgesIsOpen = True
+                            else:
+                                PathLog.error(translate('PathProfileEdges', 'The selected edge(s) are inaccessible.'))
 
             # Delete the temporary objects
             if PathLog.getLevel(PathLog.thisModule()) != 4:
@@ -134,7 +139,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 if FreeCAD.GuiUp:
                     import FreeCADGui
                     FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
-
+        
         return shapes
 
     def _flattenWire(self, obj, wire, trgtDep):
@@ -179,13 +184,13 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         return (OW, FW)
 
+    # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWireObj):
         PathLog.debug('_getCutAreaCrossSection()')
         tmpGrp = self.tmpGrp
         FCAD = FreeCAD.ActiveDocument
         tolerance = self.JOB.GeometryTolerance.Value
-        # toolDiam = float(obj.ToolController.Tool.Diameter)
-        toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathprofileBase modules
+        toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
         if bbBfr < minBfr:
@@ -243,34 +248,33 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         # Cut model(selected edges) from extended edges boundbox
         cutArea = extBndboxEXT.Shape.cut(base.Shape)
-        CA = FCAD.addObject('Part::Feature', 'tmpBndboxCutByBase')
-        CA.Shape = cutArea
-        CA.purgeTouched()
-        tmpGrp.addObject(CA)
 
         # Get top and bottom faces of cut area (CA), and combine faces when necessary
         topFc = list()
         botFc = list()
-        bbZMax = CA.Shape.BoundBox.ZMax
-        bbZMin = CA.Shape.BoundBox.ZMin
-        for f in range(0, len(CA.Shape.Faces)):
-            Fc = CA.Shape.Faces[f]
-            if abs(Fc.BoundBox.ZMax - bbZMax) < tolerance and abs(Fc.BoundBox.ZMin - bbZMax) < tolerance:
+        bbZMax = cutArea.BoundBox.ZMax
+        bbZMin = cutArea.BoundBox.ZMin
+        for f in range(0, len(cutArea.Faces)):
+            FcBB = cutArea.Faces[f].BoundBox
+            if abs(FcBB.ZMax - bbZMax) < tolerance and abs(FcBB.ZMin - bbZMax) < tolerance:
                 topFc.append(f)
-            if abs(Fc.BoundBox.ZMax - bbZMin) < tolerance and abs(Fc.BoundBox.ZMin - bbZMin) < tolerance:
+            if abs(FcBB.ZMax - bbZMin) < tolerance and abs(FcBB.ZMin - bbZMin) < tolerance:
                 botFc.append(f)
-        topComp = Part.makeCompound([CA.Shape.Faces[f] for f in topFc])
+        if len(topFc) == 0:
+            PathLog.error('Failed to identify top faces of cut area.')
+            return False
+        topComp = Part.makeCompound([cutArea.Faces[f] for f in topFc])
         topComp.translate(FreeCAD.Vector(0, 0, fdv - topComp.BoundBox.ZMin))  # Translate face to final depth
         if len(botFc) > 1:
             PathLog.debug('len(botFc) > 1')
             bndboxFace = Part.Face(extBndbox.Shape.Wires[0])
             tmpFace = Part.Face(extBndbox.Shape.Wires[0])
             for f in botFc:
-                Q = tmpFace.cut(CA.Shape.Faces[f])
+                Q = tmpFace.cut(cutArea.Faces[f])
                 tmpFace = Q
             botComp = bndboxFace.cut(tmpFace)
         else:
-            botComp = Part.makeCompound([CA.Shape.Faces[f] for f in botFc])
+            botComp = Part.makeCompound([cutArea.Faces[f] for f in botFc])  # Part.makeCompound([CA.Shape.Faces[f] for f in botFc])
         botComp.translate(FreeCAD.Vector(0, 0, fdv - botComp.BoundBox.ZMin))  # Translate face to final depth
 
         # Convert compound shapes to FC objects for use in multicommon operation

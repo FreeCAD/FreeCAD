@@ -1,23 +1,3 @@
-## @package importSVG
-#  \ingroup DRAFT
-#  \brief SVG file importer & exporter
-'''@package importSVG
-\ingroup DRAFT
-\brief SVG file importer & exporter
-
-This module provides support for importing and exporting SVG files. It
-enables importing/exporting objects directly to/from the 3D document, but
-doesn't handle the SVG output from the Drawing and TechDraw modules.
-
-Currently it only reads the following entities:
-* paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
-
-Currently unsupported:
-* use, image.
-'''
-# Check code with
-# flake8 --ignore=E226,E266,E401,W503
-
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -38,12 +18,29 @@ Currently unsupported:
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides support for importing and exporting SVG files.
+
+It enables importing/exporting objects directly to/from the 3D document
+but doesn't handle the SVG output from the Drawing and TechDraw modules.
+
+Currently it only reads the following entities:
+* paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
+
+Currently unsupported:
+* use, image.
+"""
+## @package importSVG
+#  \ingroup DRAFT
+#  \brief SVG file importer and exporter
+
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
 
 __title__ = "FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
 __url__ = "https://www.freecadweb.org"
 
-# ToDo:
+# TODO:
 # ignoring CDATA
 # handle image element (external references and inline base64)
 # debug Problem with 'Sans' font from Inkscape
@@ -51,27 +48,28 @@ __url__ = "https://www.freecadweb.org"
 # implement inheriting fill style from group
 # handle relative units
 
-import xml.sax, FreeCAD, os, math, re, Draft, DraftVecUtils
+import math
+import os
+import re
+import xml.sax
+
+import FreeCAD
+import Draft
+import DraftVecUtils
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from draftutils.translate import translate
 
 if FreeCAD.GuiUp:
-    from DraftTools import translate
     from PySide import QtGui
-else:
-    def translate(context, txt):
-        return txt
-
-try:
     import FreeCADGui
-except ImportError:
-    gui = False
-else:
     gui = True
-
-try:
-    draftui = FreeCADGui.draftToolBar
-except AttributeError:
+    try:
+        draftui = FreeCADGui.draftToolBar
+    except AttributeError:
+        draftui = None
+else:
+    gui = False
     draftui = None
 
 # Save the native open function to avoid collisions

@@ -23,6 +23,7 @@
 
 import os
 import sys
+import codecs
 import FreeCAD
 import shutil
 import re
@@ -173,13 +174,8 @@ def install_macro(macro, macro_repo_dir):
         except OSError:
             return False
     macro_path = os.path.join(macro_dir, macro.filename)
-    if sys.version_info.major < 3:
-        # In python2 the code is a bytes object.
-        mode = 'wb'
-    else:
-        mode = 'w'
     try:
-        with open(macro_path, mode) as macrofile:
+        with codecs.open(macro_path, 'w', 'utf-8') as macrofile:
             macrofile.write(macro.code)
     except IOError:
         return False

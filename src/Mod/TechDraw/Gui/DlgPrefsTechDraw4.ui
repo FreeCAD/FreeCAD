@@ -251,10 +251,10 @@ Then you need to increase the tile limit.</string>
            <string>Show Section Edges</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ShowUnits</cstring>
+           <cstring>ShowSectionEdges</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>

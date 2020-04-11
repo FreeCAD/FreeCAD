@@ -1,4 +1,3 @@
-"""Initialization of the Draft workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -19,7 +18,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Initialization of the Draft workbench (graphical interface)."""
+
 import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -173,4 +175,4 @@ FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui", QT_TRANSLATE_NOOP("Draft
 FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 
-FreeCAD.__unit_test__ += ["TestDraft"]
+FreeCAD.__unit_test__ += ["TestDraftGui"]
