@@ -2599,7 +2599,7 @@ void ViewProviderSketch::updateColor(void)
   //int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
-    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
     // 1->Normal Geometry, 2->Construction, 3->External
     int topid = hGrpp->GetInt("TopRenderGeometryId",1);

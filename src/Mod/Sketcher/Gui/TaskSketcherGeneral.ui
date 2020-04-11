@@ -142,7 +142,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Rendering order:</string>
+      <string>Rendering order (global) :</string>
      </property>
     </widget>
    </item>
