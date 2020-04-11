@@ -362,7 +362,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetGroup("General")->GetBool("AvoidRedundantAutoconstraints",true) && sketchgui->Autoconstraints.getValue();
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if(avoidredundant)
                 removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstr1,sugConstr2);
@@ -1167,7 +1167,7 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool avoidredundant = hGrp->GetGroup("General")->GetBool("AvoidRedundantAutoconstraints",true) && sketchgui->Autoconstraints.getValue();
+            bool avoidredundant = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 
             if (Mode == STATUS_Close) {
 

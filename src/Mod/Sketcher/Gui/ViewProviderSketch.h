@@ -100,6 +100,7 @@ public:
     virtual ~ViewProviderSketch();
 
     App::PropertyBool Autoconstraints;
+    App::PropertyBool AvoidRedundant;
     App::PropertyPythonObject TempoVis;
     App::PropertyBool HideDependent;
     App::PropertyBool ShowLinks;
