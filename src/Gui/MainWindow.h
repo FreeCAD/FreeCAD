@@ -183,6 +183,7 @@ public:
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp};
     void showStatus(int type, const QString & message);
 
+    void initDockWindows(bool show);
 
 public Q_SLOTS:
     /**

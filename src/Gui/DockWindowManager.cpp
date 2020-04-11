@@ -127,9 +127,15 @@ DockWindowManager::~DockWindowManager()
  */
 QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget, Qt::DockWidgetArea pos)
 {
+    if(!widget)
+        return nullptr;
+    QDockWidget *dw = qobject_cast<QDockWidget*>(widget->parentWidget());
+    if(dw)
+        return dw;
+
     // creates the dock widget as container to embed this widget
     MainWindow* mw = getMainWindow();
-    QDockWidget* dw = new QDockWidget(mw);
+    dw = new QDockWidget(mw);
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets
     // MainWindow::loadLayoutSettings() is called to restore the layout.
@@ -219,6 +225,8 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
  */
 void DockWindowManager::removeDockWindow(QWidget* widget)
 {
+    if (!widget)
+        return;
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
         if ((*it)->widget() == widget) {
             QDockWidget* dw = *it;
@@ -285,6 +293,14 @@ QWidget* DockWindowManager::unregisterDockWindow(const char* name)
     }
 
     return widget;
+}
+
+QWidget* DockWindowManager::findRegisteredDockWindow(const char* name)
+{
+    QMap<QString, QPointer<QWidget> >::Iterator it = d->_dockWindows.find(QLatin1String(name));
+    if (it != d->_dockWindows.end())
+        return it.value();
+    return nullptr;
 }
 
 /** Sets up the dock windows of the activated workbench. */

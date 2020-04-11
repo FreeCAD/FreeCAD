@@ -72,6 +72,8 @@ public:
      */
     ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=0);
 
+    void setShowModel(bool);
+
     /**
      * A destructor.
      * A more elaborate description of the destructor.
@@ -95,12 +97,12 @@ protected:
 
 private:
     int oldTabIndex;
-    int modelIndex;
+    int modelIndex = -1;
     int taskIndex;
-    QTabWidget                         * tabs;
-    Gui::PropertyView                  * prop;
-    Gui::TreePanel                     * tree;
-    Gui::TaskView::TaskView            * taskPanel;
+    QTabWidget                         * tabs = nullptr;
+    Gui::PropertyView                  * prop = nullptr;
+    Gui::TreePanel                     * tree = nullptr;
+    Gui::TaskView::TaskView            * taskPanel = nullptr;
   //Gui::ProjectWidget                 * projectView;
 };
 

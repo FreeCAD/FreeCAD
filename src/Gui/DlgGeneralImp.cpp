@@ -149,17 +149,31 @@ void DlgGeneralImp::saveSettings()
     switch(ui->treeMode->currentIndex()) {
     case 1:
         treeView = true;
-        propertyView = false;
         comboView = false;
         break;
     case 2:
+        treeView = true;
         comboView = true;
-        treeView = propertyView = true;
+        propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled",false);
         break;
     }
-    hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
-    hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
-    hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+
+    if(propertyView != hGrp->GetGroup("PropertyView")->GetBool("Enabled",false)
+            || treeView != hGrp->GetGroup("TreeView")->GetBool("Enabled",false)
+            || comboView != hGrp->GetGroup("ComboView")->GetBool("Enabled",true))
+    {
+        hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
+        hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
+        hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/MainWindow/MainWindow");
+        hGrp->SetBool("Std_ComboView",true);
+        if(treeView)
+            hGrp->SetBool("Std_TreeView", true);
+        if(!comboView)
+            hGrp->SetBool("Std_PropertyView",false);
+        getMainWindow()->initDockWindows(true);
+    }
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -281,13 +295,11 @@ void DlgGeneralImp::loadSettings()
     ui->treeMode->addItem(tr("Both"));
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled",false);
     bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled",false);
     bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled",true);
     index = 0;
-    if(propertyView || treeView) {
+    if(treeView)
         index = comboView?2:1;
-    }
     ui->treeMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");

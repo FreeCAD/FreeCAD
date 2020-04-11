@@ -62,22 +62,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
 
-    if (showModel) {
-        // splitter between tree and property view
-        QSplitter *splitter = new QSplitter();
-        splitter->setOrientation(Qt::Vertical);
-
-        tree =  new TreePanel("ComboView", this);
-        splitter->addWidget(tree);
-
-        // property view
-        prop = new PropertyView(this);
-        splitter->addWidget(prop);
-        modelIndex = tabs->addTab(splitter,trUtf8("Model"));
-    } else {
-        prop = new PropertyView(this);
-        modelIndex = tabs->addTab(prop,trUtf8("Properties"));
-    }
+    setShowModel(showModel);
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);
@@ -90,6 +75,54 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
 
 ComboView::~ComboView()
 {
+}
+
+void ComboView::setShowModel(bool showModel)
+{
+    if (showModel) {
+        if(tree)
+            return;
+
+        // splitter between tree and property view
+        QSplitter *splitter = new QSplitter();
+        splitter->setOrientation(Qt::Vertical);
+
+        tree =  new TreePanel("ComboView", this);
+        splitter->addWidget(tree);
+
+        // property view
+        if(!prop)
+            prop = new PropertyView(this);
+
+        if(modelIndex < 0)
+            modelIndex = tabs->addTab(splitter,trUtf8("Model"));
+        else {
+            tabs->removeTab(modelIndex);
+            tabs->insertTab(modelIndex, splitter,trUtf8("Model"));
+            tabs->setCurrentIndex(modelIndex);
+        }
+
+        splitter->addWidget(prop);
+        prop->show();
+
+    } else {
+        if(!prop)
+            prop = new PropertyView(this);
+        else if(!tree)
+            return;
+
+        if(modelIndex < 0)
+            modelIndex = tabs->addTab(prop,trUtf8("Properties"));
+        else {
+            QWidget *w = tabs->widget(modelIndex);
+            tabs->removeTab(modelIndex);
+            tabs->insertTab(modelIndex, prop, trUtf8("Propertyies"));
+            delete w;
+            tabs->setCurrentIndex(modelIndex);
+        }
+
+        tree = nullptr;
+    }
 }
 
 void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
@@ -140,7 +173,7 @@ void ComboView::showTaskView()
 void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(modelIndex, trUtf8("Model"));
+        tabs->setTabText(modelIndex, tree?trUtf8("Model"):trUtf8("Properties"));
         tabs->setTabText(taskIndex, trUtf8("Tasks"));
         //tabs->setTabText(2, trUtf8("Project"));
     }
