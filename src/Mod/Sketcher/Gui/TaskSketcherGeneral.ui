@@ -15,7 +15,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QCheckBox" name="checkBoxShowGrid">
+    <widget class="Gui::PrefCheckBox" name="checkBoxShowGrid">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="toolTip">
       <string>A grid will be shown</string>
      </property>
@@ -23,7 +26,13 @@
       <string>Show grid</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>ShowGrid</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
@@ -59,12 +68,18 @@
        <property name="value" stdset="0">
         <double>10.000000000000000</double>
        </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>GridSize</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/General/GridSize</cstring>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxGridSnap">
+    <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -75,10 +90,16 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="text">
       <string>Grid snap</string>
      </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>GridSnap</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxAutoconstraints">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoconstraints">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -90,6 +111,12 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      </property>
      <property name="checked">
       <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>AutoConstraints</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
@@ -108,7 +135,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <cstring>AvoidRedundantAutoconstraints</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher</cstring>
+      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
