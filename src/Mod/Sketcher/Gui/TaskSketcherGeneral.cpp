@@ -75,7 +75,19 @@ void SketcherGeneralWidget::saveSettings()
     ui->checkBoxAutoconstraints->onSave();
     ui->checkBoxRedundantAutoconstraints->onSave();
 
-    //not necessary to save renderOrder, as it is already stored in renderOrderChanged on every change.
+    saveOrderingOrder();
+}
+
+void SketcherGeneralWidget::saveOrderingOrder()
+{
+    int topid = ui->renderingOrder->item(0)->data(Qt::UserRole).toInt();
+    int midid = ui->renderingOrder->item(1)->data(Qt::UserRole).toInt();
+    int lowid = ui->renderingOrder->item(2)->data(Qt::UserRole).toInt();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetInt("TopRenderGeometryId",topid);
+    hGrp->SetInt("MidRenderGeometryId",midid);
+    hGrp->SetInt("LowRenderGeometryId",lowid);
 }
 
 void SketcherGeneralWidget::loadSettings()
@@ -86,27 +98,37 @@ void SketcherGeneralWidget::loadSettings()
     ui->checkBoxAutoconstraints->onRestore();
     ui->checkBoxRedundantAutoconstraints->onRestore();
 
-    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    loadOrderingOrder();
+}
+
+void SketcherGeneralWidget::loadOrderingOrder()
+{
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
     // 1->Normal Geometry, 2->Construction, 3->External
     int topid = hGrpp->GetInt("TopRenderGeometryId",1);
     int midid = hGrpp->GetInt("MidRenderGeometryId",2);
     int lowid = hGrpp->GetInt("LowRenderGeometryId",3);
 
-    QListWidgetItem *newItem = new QListWidgetItem;
-    newItem->setData(Qt::UserRole, QVariant(topid));
-    newItem->setText( topid==1?tr("Normal Geometry"):topid==2?tr("Construction Geometry"):tr("External Geometry"));
-    ui->renderingOrder->insertItem(0,newItem);
+    {
+        QSignalBlocker block(ui->renderingOrder);
+        ui->renderingOrder->clear();
 
-    newItem = new QListWidgetItem;
-    newItem->setData(Qt::UserRole, QVariant(midid));
-    newItem->setText(midid==1?tr("Normal Geometry"):midid==2?tr("Construction Geometry"):tr("External Geometry"));
-    ui->renderingOrder->insertItem(1,newItem);
+        QListWidgetItem *newItem = new QListWidgetItem;
+        newItem->setData(Qt::UserRole, QVariant(topid));
+        newItem->setText( topid==1?tr("Normal Geometry"):topid==2?tr("Construction Geometry"):tr("External Geometry"));
+        ui->renderingOrder->insertItem(0,newItem);
 
-    newItem = new QListWidgetItem;
-    newItem->setData(Qt::UserRole, QVariant(lowid));
-    newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
-    ui->renderingOrder->insertItem(2,newItem);
+        newItem = new QListWidgetItem;
+        newItem->setData(Qt::UserRole, QVariant(midid));
+        newItem->setText(midid==1?tr("Normal Geometry"):midid==2?tr("Construction Geometry"):tr("External Geometry"));
+        ui->renderingOrder->insertItem(1,newItem);
+
+        newItem = new QListWidgetItem;
+        newItem->setData(Qt::UserRole, QVariant(lowid));
+        newItem->setText(lowid==1?tr("Normal Geometry"):lowid==2?tr("Construction Geometry"):tr("External Geometry"));
+        ui->renderingOrder->insertItem(2,newItem);
+    }
 }
 
 void SketcherGeneralWidget::setGridSize(double val)
@@ -171,15 +193,6 @@ void SketcherGeneralWidget::changeEvent(QEvent *e)
 
 void SketcherGeneralWidget::onRenderOrderChanged()
 {
-    int topid = ui->renderingOrder->item(0)->data(Qt::UserRole).toInt();
-    int midid = ui->renderingOrder->item(1)->data(Qt::UserRole).toInt();
-    int lowid = ui->renderingOrder->item(2)->data(Qt::UserRole).toInt();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp->SetInt("TopRenderGeometryId",topid);
-    hGrp->SetInt("MidRenderGeometryId",midid);
-    hGrp->SetInt("LowRenderGeometryId",lowid);
-
     emitRenderOrderChanged();
 }
 

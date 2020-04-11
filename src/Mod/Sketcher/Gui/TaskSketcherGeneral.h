@@ -51,7 +51,9 @@ public:
     ~SketcherGeneralWidget();
 
     void saveSettings();
+    void saveOrderingOrder();
     void loadSettings();
+    void loadOrderingOrder();
     void setGridSize(double val);
     void checkGridView(bool);
     void checkGridSnap(bool);
