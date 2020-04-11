@@ -39,7 +39,7 @@ import json
 import os
 import traceback
 import uuid as UUID
-import glob
+from functools import partial
 
 #PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
@@ -149,6 +149,7 @@ class ToolBitLibrary(object):
             self.libraryLoad(path)
         
         self.form.addToolController.setEnabled(False)
+        self.form.ButtonRemoveToolTable.setEnabled(False)
 
     def _toolAdd(self, nr, tool, path):
         toolNr = PySide.QtGui.QStandardItem()
@@ -233,8 +234,8 @@ class ToolBitLibrary(object):
         sel = len(self.toolTableView.selectedIndexes()) > 0
         self.form.toolDelete.setEnabled(sel)
 
-        addTCSelectedText   = translate("PathToolLibraryManager", "Add SELECTED as Tool Controllers in the Job")
-        addTCAllText        = translate("PathToolLibraryManager", "Add ALL as Tool Controllers in the Job")
+        #addTCSelectedText   = translate("PathToolLibraryManager", "Add SELECTED as Tool Controllers in the Job")
+        #addTCAllText        = translate("PathToolLibraryManager", "Add ALL as Tool Controllers in the Job")
 
         if sel:
             self.form.addToolController.setEnabled(True)
@@ -245,16 +246,13 @@ class ToolBitLibrary(object):
         ''' loads the tools for the selected tool table '''
         name = self.form.TableList.itemWidget(self.form.TableList.itemFromIndex(index)).getTableName()
         self.libraryLoad(PathPreferences.lastPathToolLibrary() + '/' + name)
+        self.form.ButtonRemoveToolTable.setEnabled(True)
 
     def open(self, path=None, dialog=False):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
         Returns 1 if user pressed OK, 0 otherwise.'''
         if path:
-            fullPath = PathToolBit.findLibrary(path)
-            if fullPath:
-                self.libraryLoad(fullPath)
-            else:
-                self.libraryOpen()
+            self.libraryOpen(False)
         elif dialog:
             self.libraryOpen()
         return self.form.exec_()
@@ -266,7 +264,9 @@ class ToolBitLibrary(object):
             self.form.librarySave.setEnabled(False)
 
     def libraryOpen(self, filedialog=True):
+        import glob
         PathLog.track()
+        
         if filedialog:
             path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary(), 1)
             if len(path) > 0:
@@ -295,9 +295,19 @@ class ToolBitLibrary(object):
             self.form.TableList.addItem(listWidgetItem)
             self.form.TableList.setItemWidget(listWidgetItem, listItem)
         
+        self.path = []
+        self.form.ButtonRemoveToolTable.setEnabled(False)
+
+        self.toolTableView.setUpdatesEnabled(False)
+        self.model.clear()
+        self.model.setHorizontalHeaderLabels(self.columnNames())
+        self.toolTableView.resizeColumnsToContents()
+        self.toolTableView.setUpdatesEnabled(True)
+
         if len(self.LibFiles) > 0:
             self.libraryLoad(self.LibFiles[0])
             self.form.TableList.setCurrentRow(0)
+            self.form.ButtonRemoveToolTable.setEnabled(True)
 
     def libraryLoad(self, path):
         self.toolTableView.setUpdatesEnabled(False)
@@ -305,7 +315,6 @@ class ToolBitLibrary(object):
         self.model.setHorizontalHeaderLabels(self.columnNames())
 
         if path:
-            #print(f"Path: {path}")
             with open(path) as fp:
                 library = json.load(fp)
 
@@ -476,7 +485,7 @@ class ToolBitLibrary(object):
         self.form.ButtonRenameToolTable.clicked.connect(self.renameLibrary)
 
         #self.form.libraryNew.clicked.connect(self.libraryNew)
-        self.form.libraryOpen.clicked.connect(self.libraryOpen)
+        self.form.libraryOpen.clicked.connect(partial(self.libraryOpen, True))
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
         self.form.libraryCancel.clicked.connect(self.libraryCancel)
