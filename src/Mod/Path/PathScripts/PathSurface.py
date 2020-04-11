@@ -23,21 +23,39 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Additional modifications and contributions beginning 2019             *
-# *   by Russell Johnson  <russ4262@gmail.com>  2020-03-18 12:29 CST        *
+# *   by Russell Johnson  <russ4262@gmail.com>  2020-04-10 11:46 CST        *
 # *                                                                         *
 # ***************************************************************************
 
 from __future__ import print_function
 
+__title__ = "Path Surface Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Class and implementation of Mill Facing operation."
+__contributors__ = "russ4262 (Russell Johnson)"
+
 import FreeCAD
+from PySide import QtCore
+
+# OCL must be installed
+try:
+    import ocl
+except ImportError:
+    msg = QtCore.QCoreApplication.translate("PathSurface", "This operation requires OpenCamLib to be installed.")
+    FreeCAD.Console.PrintError(msg + "\n")
+    raise
+    # import sys
+    # sys.exit(msg)
+
+import MeshPart
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
-
-from PySide import QtCore
 import time
 import math
+import Part
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -48,11 +66,6 @@ Part = LazyLoader('Part', globals(), 'Part')
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-__title__ = "Path Surface Operation"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Class and implementation of Mill Facing operation."
-
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
@@ -60,16 +73,6 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-# OCL must be installed
-try:
-    import ocl
-except ImportError:
-    FreeCAD.Console.PrintError(
-        translate("Path_Surface", "This operation requires OpenCamLib to be installed.") + "\n")
-    import sys
-    sys.exit(translate("Path_Surface", "This operation requires OpenCamLib to be installed."))
 
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -81,7 +84,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return super(self.__class__, self)
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features and edges based geomtries'''
+        '''opFeatures(obj) ... return all standard features and edges based geometries'''
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureCoolant | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
@@ -97,8 +100,27 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def initOpProperties(self, obj):
         '''initOpProperties(obj) ... create operation specific properties'''
+        missing = list()
 
-        PROPS = [
+        for (prtyp, nm, grp, tt) in self.opProperties():
+            if not hasattr(obj, nm):
+                obj.addProperty(prtyp, nm, grp, tt)
+                missing.append(nm)
+
+        # Set enumeration lists for enumeration properties
+        if len(missing) > 0:
+            ENUMS = self.propertyEnumerations()
+            for n in ENUMS:
+                if n in missing:
+                    cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
+                    exec(cmdStr)
+
+        self.addedAllProperties = True
+
+    def opProperties(self):
+        '''opProperties(obj) ... Store operation specific properties'''
+
+        return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Show the temporary path construction objects when module is in DEBUG mode.")),
 
@@ -107,17 +129,17 @@ class ObjectSurface(PathOp.ObjectOp):
             ("App::PropertyDistance", "LinearDeflection", "Mesh Conversion",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.")),
 
-            ("App::PropertyFloat", "CutterTilt", "Rotational",
+            ("App::PropertyFloat", "CutterTilt", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Stop index(angle) for rotational scan")),
-            ("App::PropertyEnumeration", "DropCutterDir", "Rotational",
+            ("App::PropertyEnumeration", "DropCutterDir", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction along which dropcutter lines are created")),
-            ("App::PropertyVectorDistance", "DropCutterExtraOffset", "Rotational",
+            ("App::PropertyVectorDistance", "DropCutterExtraOffset", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Additional offset to the selected bounding box")),
-            ("App::PropertyEnumeration", "RotationAxis", "Rotational",
+            ("App::PropertyEnumeration", "RotationAxis", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "The model will be rotated around this axis.")),
-            ("App::PropertyFloat", "StartIndex", "Rotational",
+            ("App::PropertyFloat", "StartIndex", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Start index(angle) for rotational scan")),
-            ("App::PropertyFloat", "StopIndex", "Rotational",
+            ("App::PropertyFloat", "StopIndex", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Stop index(angle) for rotational scan")),
 
             ("App::PropertyEnumeration", "ScanType", "Surface",
@@ -180,23 +202,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"))
         ]
 
-        missing = list()
-        for (prtyp, nm, grp, tt) in PROPS:
-            if not hasattr(obj, nm):
-                obj.addProperty(prtyp, nm, grp, tt)
-                missing.append(nm)
-
-        # Set enumeration lists for enumeration properties
-        if len(missing) > 0:
-            ENUMS = self._propertyEnumerations()
-            for n in ENUMS:
-                if n in missing:
-                    cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
-                    exec(cmdStr)
-
-        self.addedAllProperties = True
-
-    def _propertyEnumerations(self):
+    def propertyEnumerations(self):
         # Enumeration lists for App::PropertyEnumeration properties
         return {
             'BoundBox': ['BaseBoundBox', 'Stock'],
@@ -214,25 +220,27 @@ class ObjectSurface(PathOp.ObjectOp):
     def setEditorProperties(self, obj):
         # Used to hide inputs in properties list
 
-        mode = 2  # 2=hidden
+        P0 = R2 = 0  # 0 = show
+        P2 = R0 = 2  # 2 = hide
         if obj.ScanType == 'Planar':
-            show = 0
-            hide = 2
             # if obj.CutPattern in ['Line', 'ZigZag']:
             if obj.CutPattern in ['Circular', 'CircularZigZag']:
-                show = 2  # hide
-                hide = 0  # show
-            obj.setEditorMode('CutPatternAngle', show)
-            obj.setEditorMode('CircularCenterAt', hide)
-            obj.setEditorMode('CircularCenterCustom', hide)
+                P0 = 2
+                P2 = 0
+            R0 = 0
         elif obj.ScanType == 'Rotational':
-            mode = 0  # show and editable
-        obj.setEditorMode('DropCutterDir', mode)
-        obj.setEditorMode('DropCutterExtraOffset', mode)
-        obj.setEditorMode('RotationAxis', mode)
-        obj.setEditorMode('StartIndex', mode)
-        obj.setEditorMode('StopIndex', mode)
-        obj.setEditorMode('CutterTilt', mode)
+            R2 = P0 = P2 = 2
+            R0 = 0
+        obj.setEditorMode('DropCutterDir', R0)
+        obj.setEditorMode('DropCutterExtraOffset', R0)
+        obj.setEditorMode('RotationAxis', R0)
+        obj.setEditorMode('StartIndex', R0)
+        obj.setEditorMode('StopIndex', R0)
+        obj.setEditorMode('CutterTilt', R0)
+        obj.setEditorMode('CutPattern', R2)
+        obj.setEditorMode('CutPatternAngle', P0)
+        obj.setEditorMode('CircularCenterAt', P2)
+        obj.setEditorMode('CircularCenterCustom', P2)
 
     def onChanged(self, obj, prop):
         if hasattr(self, 'addedAllProperties'):
@@ -290,9 +298,13 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.CircularCenterCustom.z = 0.0
         obj.GapThreshold.Value = 0.005
         obj.AngularDeflection.Value = 0.25
-        obj.LinearDeflection.Value = job.GeometryTolerance
+        obj.LinearDeflection.Value = job.GeometryTolerance.Value
         # For debugging
         obj.ShowTempObjects = False
+
+        if job.GeometryTolerance.Value == 0.0:
+            PathLog.warning(translate('PathSurface', 'The GeometryTolerance for this Job is 0.0.  Initializing LinearDeflection to 0.0001 mm.'))
+            obj.LinearDeflection.Value = 0.0001
 
         # need to overwrite the default depth calculations for facing
         d = None
@@ -437,7 +449,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.opApplyPropertyLimits(obj)
 
         # Create temporary group for temporary objects, removing existing
-        # if self.showDebugObjects is True:
         tempGroupName = 'tempPathSurfaceGroup'
         if FCAD.getObject(tempGroupName):
             for to in FCAD.getObject(tempGroupName).Group:
@@ -533,7 +544,6 @@ class ObjectSurface(PathOp.ObjectOp):
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
                     self._makeSafeSTL(JOB, obj, m, FACES[m], VOIDS[m])
-                    #time.sleep(0.2)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processCutAreas(JOB, obj, m, FACES[m], VOIDS[m]))
 
@@ -618,8 +628,6 @@ class ObjectSurface(PathOp.ObjectOp):
         VOIDS = list()
         fShapes = list()
         vShapes = list()
-        preProcEr = translate('PathSurface', 'Error pre-processing Face')
-        warnFinDep = translate('PathSurface', 'Final Depth might need to be lower. Internal features detected in Face')
         GRP = JOB.Model.Group
         lenGRP = len(GRP)
 
@@ -630,8 +638,17 @@ class ObjectSurface(PathOp.ObjectOp):
             fShapes.append(False)
             vShapes.append(False)
 
+        checkBase = False
+        if obj.Base:
+            if len(obj.Base) > 0:
+                checkBase = True
+                if obj.ScanType == 'Rotational':
+                    checkBase = False
+                    PathLog.warning(translate('PathSurface',
+                                              'Face selection is unavailable for Rotational scans.  Ignoring selected faces.'))
+
         # The user has selected subobjects from the base.  Pre-Process each.
-        if obj.Base and len(obj.Base) > 0:
+        if checkBase:
             PathLog.debug(' -obj.Base exists. Pre-processing for selected faces.')
 
             (FACES, VOIDS) = self._identifyFacesAndVoids(JOB, obj, FACES, VOIDS)
@@ -727,7 +744,6 @@ class ObjectSurface(PathOp.ObjectOp):
         mVS = False
         mPS = False
         mIFS = list()
-        BB = base.Shape.BoundBox
 
         if FACES[m] is not False:
             isHole = False
@@ -813,7 +829,6 @@ class ObjectSurface(PathOp.ObjectOp):
             elif obj.HandleMultipleFeatures == 'Individually':
                 for (fcshp, fcIdx) in FACES[m]:
                     cont = True
-                    fsL = list()  # face shape list
                     ifL = list()  # avoid shape list
                     fNum = fcIdx + 1
                     outerFace = False
@@ -917,7 +932,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     PathLog.debug('*** tmpAvoidArea')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpVoidEnvelope')
                     P.Shape = avoid
-                    # P.recompute()
                     P.purgeTouched()
                     self.tempGroup.addObject(P)
 
@@ -926,7 +940,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     PathLog.debug('*** tmpVoidCompound')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpVoidCompound')
                     P.Shape = avoid
-                    # P.recompute()
                     P.purgeTouched()
                     self.tempGroup.addObject(P)
                 ofstVal = self._calculateOffsetValue(obj, isHole, isVoid=True)
@@ -961,7 +974,6 @@ class ObjectSurface(PathOp.ObjectOp):
         outFace = False
         INTFCS = list()
         fNum = fcIdx + 1
-        # preProcEr = translate('PathSurface', 'Error pre-processing Face')
         warnFinDep = translate('PathSurface', 'Final Depth might need to be lower. Internal features detected in Face')
 
         PathLog.debug('_getFaceWires() from Face{}'.format(fNum))
@@ -1011,7 +1023,6 @@ class ObjectSurface(PathOp.ObjectOp):
             except Exception as eee:
                 PathLog.error(str(eee))
                 cont = False
-        #time.sleep(0.2)
 
         if cont:
             csFaceShape = self._getShapeSlice(baseEnv)
@@ -1311,7 +1322,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     PathLog.debug('*** tmpSliceCompound')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpSliceCompound')
                     P.Shape = comp
-                    # P.recompute()
                     P.purgeTouched()
                     self.tempGroup.addObject(P)
                 return comp
@@ -1321,6 +1331,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return False
 
     def _getProjectedFace(self, wire):
+        import Draft
         PathLog.debug('_getProjectedFace()')
         F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpProjectionWire')
         F.Shape = wire
@@ -1342,7 +1353,6 @@ class ObjectSurface(PathOp.ObjectOp):
             slc = Part.Face(pWire)
             slc.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slc.BoundBox.ZMin))
             return slc
-        return False
 
     def _getCrossSection(self, shape, withExtrude=False):
         PathLog.debug('_getCrossSection()')
@@ -1392,15 +1402,12 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             return env
 
-        return False
-
     def _getSliceFromEnvelope(self, env):
         PathLog.debug('_getSliceFromEnvelope()')
         eBB = env.BoundBox
         extFwd = eBB.ZLength + 10.0
         maxz = eBB.ZMin + extFwd
 
-        maxMax = env.Edges[0].BoundBox.ZMin
         emax = math.floor(maxz - 1.0)
         E = list()
         for e in range(0, len(env.Edges)):
@@ -1444,7 +1451,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
         fuseShapes = list()
         Mdl = JOB.Model.Group[mdlIdx]
-        FCAD = FreeCAD.ActiveDocument
         mBB = Mdl.Shape.BoundBox
         sBB = JOB.Stock.Shape.BoundBox
 
@@ -1483,7 +1489,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 fuseShapes.append(adjStckWst)
             else:
                 PathLog.warning('Path transitions might not avoid the model. Verify paths.')
-            #time.sleep(0.3)
         else:
             # If boundbox is Job.Stock, add hidden pad under stock as base plate
             toolDiam = self.cutter.getDiameter()
@@ -1528,7 +1533,6 @@ class ObjectSurface(PathOp.ObjectOp):
         PathLog.debug('_processCutAreas()')
 
         final = list()
-        base = JOB.Model.Group[mdlIdx]
 
         # Process faces Collectively or Individually
         if obj.HandleMultipleFeatures == 'Collectively':
@@ -1545,7 +1549,7 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.ScanType == 'Planar':
                 final.extend(self._processPlanarOp(JOB, obj, mdlIdx, COMP, 0))
             elif obj.ScanType == 'Rotational':
-                final.extend(self._processRotationalOp(obj, base, COMP))
+                final.extend(self._processRotationalOp(JOB, obj, mdlIdx, COMP))
 
         elif obj.HandleMultipleFeatures == 'Individually':
             for fsi in range(0, len(FCS)):
@@ -1583,7 +1587,12 @@ class ObjectSurface(PathOp.ObjectOp):
         PathLog.debug('_processPlanarOp()')
         final = list()
         SCANDATA = list()
-        # base = JOB.Model.Group[mdlIdx]
+
+        def getTransition(two):
+            first = two[0][0][0]  # [step][item][point]
+            safe = obj.SafeHeight.Value + 0.1
+            trans = [[FreeCAD.Vector(first.x, first.y, safe)]]
+            return trans
 
         # Compute number and size of stepdowns, and final depth
         if obj.LayerMode == 'Single-pass':
@@ -1606,7 +1615,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if self.showDebugObjects is True:
                 P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpNewProfileShape')
                 P.Shape = prflShp
-                # P.recompute()
                 P.purgeTouched()
                 self.tempGroup.addObject(P)
             # get offset path geometry and perform OCL scan with that geometry
@@ -1621,7 +1629,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if self.showDebugObjects is True:
                 F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCutArea')
                 F.Shape = cmpdShp
-                # F.recompute()
                 F.purgeTouched()
                 self.tempGroup.addObject(F)
             # get internal path geometry and perform OCL scan with that geometry
@@ -1636,19 +1643,20 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.ProfileEdges == 'None':
             SCANDATA.extend(geoScan)
         if obj.ProfileEdges == 'First':
+            profScan.append(getTransition(geoScan))
             SCANDATA.extend(profScan)
             SCANDATA.extend(geoScan)
         if obj.ProfileEdges == 'Last':
             SCANDATA.extend(geoScan)
             SCANDATA.extend(profScan)
 
-        # Apply depth offset
-        if obj.DepthOffset.Value != 0.0:
-            self._planarApplyDepthOffset(SCANDATA, obj.DepthOffset.Value)
-
         if len(SCANDATA) == 0:
             PathLog.error('No scan data to convert to Gcode.')
             return list()
+
+        # Apply depth offset
+        if obj.DepthOffset.Value != 0.0:
+            self._planarApplyDepthOffset(SCANDATA, obj.DepthOffset.Value)
 
         # If cut pattern is `Circular`, there are zero(almost zero) straight lines to optimize
         # Store initial `OptimizeLinearPaths` value for later restoration
@@ -1709,7 +1717,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # get X, Y, Z spans; Compute center of rotation
         deltaX = abs(xmax-xmin)
         deltaY = abs(ymax-ymin)
-        deltaZ = abs(zmax-zmin)
         deltaC = math.sqrt(deltaX**2 + deltaY**2)
         lineLen = deltaC + (2.0 * self.cutter.getDiameter())  # Line length to span boundbox diag with 2x cutter diameter extra on each end
         halfLL = math.ceil(lineLen / 2.0)
@@ -1717,9 +1724,8 @@ class ObjectSurface(PathOp.ObjectOp):
         halfPasses = math.ceil(cutPasses / 2.0)
         bbC = faceShp.BoundBox.Center
 
-        # Generate the Draft line/circle sets to be intersected with the cut-face-area
+        # Generate the line/circle sets to be intersected with the cut-face-area
         if obj.CutPattern in ['ZigZag', 'Line']:
-            MaxLC = -1
             centRot = FreeCAD.Vector(0.0, 0.0, 0.0)  # Bottom left corner of face/selection/model
             cAng = math.atan(deltaX / deltaY)  # BoundaryBox angle
 
@@ -1728,33 +1734,18 @@ class ObjectSurface(PathOp.ObjectOp):
             x2 = centRot.x + halfLL
             diag = None
             if obj.CutPatternAngle == 0 or obj.CutPatternAngle == 180:
-                MaxLC = math.floor(deltaY / self.cutOut)
                 diag = deltaY
             elif obj.CutPatternAngle == 90 or obj.CutPatternAngle == 270:
-                MaxLC = math.floor(deltaX / self.cutOut)
                 diag = deltaX
             else:
                 perpDist = math.cos(cAng - math.radians(obj.CutPatternAngle)) * deltaC
-                MaxLC = math.floor(perpDist / self.cutOut)
                 diag = perpDist
             y1 = centRot.y + diag
             # y2 = y1
 
-            p1 = FreeCAD.Vector(x1, y1, 0.0)
-            p2 = FreeCAD.Vector(x2, y1, 0.0)
-            topLineTuple = (p1, p2)
-            ny1 = centRot.y - diag
-            n1 = FreeCAD.Vector(x1, ny1, 0.0)
-            n2 = FreeCAD.Vector(x2, ny1, 0.0)
-            negTopLineTuple = (n1, n2)
-
             # Create end points for set of lines to intersect with cross-section face
             pntTuples = list()
             for lc in range((-1 * (halfPasses - 1)), halfPasses + 1):
-                # if lc == (cutPasses - MaxLC - 1):
-                #    pntTuples.append(negTopLineTuple)
-                # if lc == (MaxLC + 1):
-                #    pntTuples.append(topLineTuple)
                 x1 = centRot.x - halfLL
                 x2 = centRot.x + halfLL
                 y1 = centRot.y + (lc * self.cutOut)
@@ -1865,7 +1856,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         offsetLists = list()
         dist = obj.SampleInterval.Value / 5.0
-        defl = obj.SampleInterval.Value / 5.0
+        # defl = obj.SampleInterval.Value / 5.0
 
         # Reference https://forum.freecadweb.org/viewtopic.php?t=28861#p234939
         for fc in subShp.Faces:
@@ -1988,7 +1979,8 @@ class ObjectSurface(PathOp.ObjectOp):
             for v in range(1, lenOS):
                 nxt = OS[v + 1]
                 if optimize is True:
-                    iPOL = prev.isOnLineSegment(nxt, pnt)
+                    # iPOL = prev.isOnLineSegment(nxt, pnt)
+                    iPOL = pnt.isOnLineSegment(prev, nxt)
                     if iPOL is True:
                         pnt = nxt
                     else:
@@ -2042,7 +2034,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
-            iC = sp.isOnLineSegment(ep, cp)
+            # iC = sp.isOnLineSegment(ep, cp)
+            iC = cp.isOnLineSegment(sp, ep)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2139,7 +2132,6 @@ class ObjectSurface(PathOp.ObjectOp):
             lst = FreeCAD.Vector(p1[0], p1[1], 0.0)
             sp = FreeCAD.Vector(p2[0], p2[1], 0.0)  # start point
         inLine.append(tup)
-        otr = lst
 
         for ei in range(1, ec):
             edg = compGeoShp.Edges[ei]
@@ -2148,7 +2140,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-            iC = sp.isOnLineSegment(ep, cp)
+            # iC = sp.isOnLineSegment(ep, cp)
+            iC = cp.isOnLineSegment(sp, ep)
             if iC is True:
                 inLine.append('BRK')
                 chkGap = True
@@ -2162,7 +2155,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 dirFlg = -1 * dirFlg  # Change zig to zag
                 inLine = list()  # reset collinear container
                 sp = cp  # FreeCAD.Vector(v1[0], v1[1], 0.0)
-                otr = ep
 
             lst = ep
             if dirFlg == 1:
@@ -2251,7 +2243,7 @@ class ObjectSurface(PathOp.ObjectOp):
         def gapDist(sp, ep):
             X = (ep[0] - sp[0])**2
             Y = (ep[1] - sp[1])**2
-            Z = (ep[2] - sp[2])**2
+            # Z = (ep[2] - sp[2])**2
             # return math.sqrt(X + Y + Z)
             return math.sqrt(X + Y)  # the 'z' value is zero in both points
 
@@ -2307,8 +2299,6 @@ class ObjectSurface(PathOp.ObjectOp):
                 lenSOA = len(startOnAxis)
                 lenEOA = len(endOnAxis)
                 if lenSOA > 0 and lenEOA > 0:
-                    delIdxs = list()
-                    lstFindIdx = 0
                     for soa in range(0, lenSOA):
                         (iS, eiS, vS) = startOnAxis[soa]
                         for eoa in range(0, len(endOnAxis)):
@@ -2412,7 +2402,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         lst = sp
                     if chkGap is True:
                         if gap < obj.GapThreshold.Value:
-                            b = PRTS.pop()  # pop off 'BRK' marker
+                            PRTS.pop()  # pop off 'BRK' marker
                             (vA, vB, vC) = PRTS.pop()  # pop off previous arc segment for combining with current
                             arc = (vA, arc[1], vC)
                             self.closedGap = True
@@ -2457,7 +2447,6 @@ class ObjectSurface(PathOp.ObjectOp):
         (sp, ep, cp) = Arc
 
         # process list of segment tuples (vect, vect)
-        path = ocl.Path()  # create an empty path object
         p1 = ocl.Point(sp[0], sp[1], 0)   # start point of arc
         p2 = ocl.Point(ep[0], ep[1], 0)   # end point of arc
         C = ocl.Point(cp[0], cp[1], 0)   # center point of arc
@@ -2479,8 +2468,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
         GCODE = [Path.Command('N (Beginning of Single-pass layer.)', {})]
         tolrnc = JOB.GeometryTolerance.Value
-        prevDepth = obj.SafeHeight.Value
-        lenDP = len(depthparams)
         lenSCANDATA = len(SCANDATA)
         gDIR = ['G3', 'G2']
 
@@ -2503,7 +2490,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Cycle through step-over sections (line segments or arcs)
         odd = True
         lstStpEnd = None
-        prevDepth = obj.SafeHeight.Value  # Not used for Single-pass
         for so in range(0, lenSCANDATA):
             cmds = list()
             PRTS = SCANDATA[so]
@@ -2563,14 +2549,42 @@ class ObjectSurface(PathOp.ObjectOp):
         return GCODE
 
     def _planarSinglepassProcess(self, obj, PNTS):
-        if obj.OptimizeLinearPaths:
-            # first item will be compared to the last point, but I think that should work
-            output = [Path.Command('G1', {'X': PNTS[i].x, 'Y': PNTS[i].y, 'Z': PNTS[i].z, 'F': self.horizFeed})
-                     for i in range(0, len(PNTS) - 1)
-                     if not PNTS[i].isOnLineSegment(PNTS[i -1],PNTS[i + 1])]
-            output.append(Path.Command('G1', {'X': PNTS[-1].x, 'Y': PNTS[-1].y, 'Z': PNTS[-1].z, 'F': self.horizFeed}))
-        else:
-            output = [Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}) for pnt in PNTS]
+        output = []
+        optimize = obj.OptimizeLinearPaths
+        lenPNTS = len(PNTS)
+        lop = None
+        onLine = False
+
+        # Initialize first three points
+        nxt = None
+        pnt = PNTS[0]
+        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
+
+        #  Add temp end point
+        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
+
+        # Begin processing ocl points list into gcode
+        for i in range(0, lenPNTS):
+            # Calculate next point for consideration with current point
+            nxt = PNTS[i + 1]
+
+            # Process point
+            if optimize:
+                if pnt.isOnLineSegment(prev, nxt):
+                    onLine = True
+                else:
+                    onLine = False
+                    output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
+            else:
+                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
+
+            # Rotate point data
+            if onLine is False:
+                prev = pnt
+            pnt = nxt
+        # Efor
+        
+        PNTS.pop()  # Remove temp end point
 
         return output
 
@@ -2598,11 +2612,9 @@ class ObjectSurface(PathOp.ObjectOp):
         prvLyrFirst = None
         prvLyrLast = None
         lastPrvStpLast = None
-        actvLyrs = 0
         for lyr in range(0, lenDP):
             odd = True  # ZigZag directional switch
             lyrHasCmds = False
-            lstStpEnd = None
             actvSteps = 0
             LYR = list()
             prvStpFirst = None
@@ -2750,7 +2762,6 @@ class ObjectSurface(PathOp.ObjectOp):
     def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):
         ALL = list()
         PTS = list()
-        brkFlg = False
         optLinTrans = obj.OptimizeStepOverTransitions
         safe = math.ceil(obj.SafeHeight.Value)
 
@@ -2813,7 +2824,6 @@ class ObjectSurface(PathOp.ObjectOp):
         optimize = obj.OptimizeLinearPaths
         safe = math.ceil(obj.SafeHeight.Value)
         lenPNTS = len(PNTS)
-        lastPNTS = lenPNTS - 1
         prcs = True
         onHold = False
         onLine = False
@@ -2847,7 +2857,8 @@ class ObjectSurface(PathOp.ObjectOp):
             # Process point
             if prcs is True:
                 if optimize is True:
-                    iPOL = prev.isOnLineSegment(nxt, pnt)
+                    # iPOL = prev.isOnLineSegment(nxt, pnt)
+                    iPOL = pnt.isOnLineSegment(prev, nxt)
                     if iPOL is True:
                         onLine = True
                     else:
@@ -2862,7 +2873,7 @@ class ObjectSurface(PathOp.ObjectOp):
             pnt = nxt
         # Efor
 
-        temp = PNTS.pop()  # Remove temp end point
+        PNTS.pop()  # Remove temp end point
 
         return output
 
@@ -2940,7 +2951,6 @@ class ObjectSurface(PathOp.ObjectOp):
         strtHght = strtPnt.z
         coPlanar = True
         isCircle = False
-        inrPnt = None
         gdi = 0
         if odd is True:
             gdi = 1
@@ -3015,11 +3025,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
     # Main rotational scan functions
     def _processRotationalOp(self, JOB, obj, mdlIdx, compoundFaces=None):
-        PathLog.debug('_processRotationalOp(self, obj, mdlIdx, compoundFaces=None)')
-        initIdx = 0.0
-        final = list()
+        PathLog.debug('_processRotationalOp(self, JOB, obj, mdlIdx, compoundFaces=None)')
 
-        JOB = PathUtils.findParentJob(obj)
         base = JOB.Model.Group[mdlIdx]
         bb = self.boundBoxes[mdlIdx]
         stl = self.modelSTLs[mdlIdx]
@@ -3035,15 +3042,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Prepare global holdpoint container
         if self.holdPoint is None:
-            self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
+            self.holdPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
         if self.layerEndPnt is None:
-            self.layerEndPnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+            self.layerEndPnt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         # Avoid division by zero in rotational scan calculations
-        if obj.FinalDepth.Value <= 0.0:
+        if obj.FinalDepth.Value == 0.0:
             zero = obj.SampleInterval.Value  # 0.00001
             self.FinalDepth = zero
-            obj.FinalDepth.Value = 0.0
+            # obj.FinalDepth.Value = 0.0
         else:
             self.FinalDepth = obj.FinalDepth.Value
 
@@ -3070,9 +3077,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.clearHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
         self.safeHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
 
-        final = self._rotationalDropCutterOp(obj, stl, bb)
-
-        return final
+        return self._rotationalDropCutterOp(obj, stl, bb)
 
     def _rotationalDropCutterOp(self, obj, stl, bb):
         self.resetTolerance = 0.0000001  # degrees
@@ -3085,12 +3090,6 @@ class ObjectSurface(PathOp.ObjectOp):
         rings = []
         lCnt = 0
         rNum = 0
-        # stepDeg = 1.1
-        # layCircum = 1.1
-        # begIdx = 0.0
-        # endIdx = 0.0
-        # arc = 0.0
-        # sumAdv = 0.0
         bbRad = self.bbRadius
 
         def invertAdvances(advances):
@@ -3210,22 +3209,14 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # Translate OCL scans into gcode
             if obj.RotationAxis == obj.DropCutterDir:  # Same == indexed (cutter runs parallel to axis)
-                # Invert advances if RotationAxis == Y
-                if obj.RotationAxis == 'Y':
-                    advances = invertAdvances(advances)
 
                 # Translate scan to gcode
-                # sumAdv = 0.0
                 sumAdv = begIdx
                 for sl in range(0, len(scanLines)):
                     sumAdv += advances[sl]
                     # Translate scan to gcode
                     iSTG = self._indexedScanToGcode(obj, sl, scanLines[sl], sumAdv, prevDepth, layDep, lenDP)
                     commands.extend(iSTG)
-
-                    # Add rise to clear height before beginning next index in CutPattern: Line
-                    # if obj.CutPattern == 'Line':
-                    #    commands.append(Path.Command('G0', {'Z': self.clearHeight, 'F': self.vertRapid}))
 
                     # Raise cutter to safe height after each index cut
                     commands.append(Path.Command('G0', {'Z': self.clearHeight, 'F': self.vertRapid}))
@@ -3235,10 +3226,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     advances = invertAdvances(advances)
                     advances.reverse()
                     scanLines.reverse()
-
-                # Invert advances if RotationAxis == Y
-                if obj.RotationAxis == 'Y':
-                    advances = invertAdvances(advances)
 
                 # Begin gcode operation with raising cutter to safe height
                 commands.append(Path.Command('G0', {'Z': self.clearHeight, 'F': self.vertRapid}))
@@ -3255,21 +3242,15 @@ class ObjectSurface(PathOp.ObjectOp):
                     rNum += 1
                 # Eol
 
-                # Add rise to clear height before beginning next index in CutPattern: Line
-                # if obj.CutPattern == 'Line':
-                #    commands.append(Path.Command('G0', {'Z': self.clearHeight, 'F': self.vertRapid}))
-
             prevDepth = layDep
             lCnt += 1  # increment layer count
             PathLog.debug("--Layer " + str(lCnt) + ": " + str(len(advances)) + " OCL scans and gcode in " + str(time.time() - t_before) + " s")
-            #time.sleep(0.2)
         # Eol
+
         return commands
 
     def _indexedDropCutScan(self, obj, stl, advances, xmin, ymin, xmax, ymax, layDep, sample):
         cutterOfst = 0.0
-        # radsRot = 0.0
-        # reset = 0.0
         iCnt = 0
         Lines = []
         result = None
@@ -3325,11 +3306,17 @@ class ObjectSurface(PathOp.ObjectOp):
             path.append(lo)         # add the line to the path
             pdc.setPath(path)       # set path
             pdc.run()               # run drop-cutter on the path
-            result = pdc.getCLPoints()
-            Lines.append(result)  # request the list of points
+            result = pdc.getCLPoints()  # request the list of points
+
+            # Convert list of OCL objects to list of Vectors for faster access and Apply depth offset
+            if obj.DepthOffset.Value != 0.0:
+                Lines.append([FreeCAD.Vector(p.x, p.y, p.z + obj.DepthOffset.Value) for p in result])
+            else:
+                Lines.append([FreeCAD.Vector(p.x, p.y, p.z) for p in result])
 
             iCnt += 1
         # End loop
+
         # Rotate STL object back to original position using OCL method
         reset = -1 * math.radians(sumAdv - self.resetTolerance)
         if obj.RotationAxis == 'X':
@@ -3350,14 +3337,11 @@ class ObjectSurface(PathOp.ObjectOp):
         zMax = prvDep
         lenCLP = len(CLP)
         lastCLP = lenCLP - 1
-        prev = ocl.Point(float("inf"), float("inf"), float("inf"))
-        nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
-        pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+        prev = FreeCAD.Vector(0.0, 0.0, 0.0)
+        nxt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         # Create first point
-        pnt.x = CLP[0].x
-        pnt.y = CLP[0].y
-        pnt.z = CLP[0].z + float(obj.DepthOffset.Value)
+        pnt = CLP[0]
 
         # Rotate to correct index location
         if obj.RotationAxis == 'X':
@@ -3377,9 +3361,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         for i in range(0, lenCLP):
             if i < lastCLP:
-                nxt.x = CLP[i + 1].x
-                nxt.y = CLP[i + 1].y
-                nxt.z = CLP[i + 1].z + float(obj.DepthOffset.Value)
+                nxt = CLP[i + 1]
             else:
                 optimize = False
 
@@ -3399,9 +3381,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         # go to current coordinate
                         output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
                         # Save holdStart coordinate and prvDep values
-                        self.holdPoint.x = pnt.x
-                        self.holdPoint.y = pnt.y
-                        self.holdPoint.z = pnt.z
+                        self.holdPoint = pnt
                         holdCount += 1  # Increment hold count
                         holdStart = False  # cancel holdStart
 
@@ -3418,27 +3398,19 @@ class ObjectSurface(PathOp.ObjectOp):
                     zMax = prvDep
                     holdStop = False
                     self.onHold = False
-                    self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
+                    self.holdPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
 
             if self.onHold is False:
-                if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+                if not optimize or not pnt.isOnLineSegment(prev, nxt):
                     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-                # elif i == lastCLP:
-                #     output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
 
             # Rotate point data
-            prev.x = pnt.x
-            prev.y = pnt.y
-            prev.z = pnt.z
-            pnt.x = nxt.x
-            pnt.y = nxt.y
-            pnt.z = nxt.z
+            prev = pnt
+            pnt = nxt
         output.append(Path.Command('N (End index angle ' + str(round(idxAng, 4)) + ')', {}))
 
         # Save layer end point for use in transitioning to next layer
-        self.layerEndPnt.x = pnt.x
-        self.layerEndPnt.y = pnt.y
-        self.layerEndPnt.z = pnt.z
+        self.layerEndPnt = pnt
 
         return output
 
@@ -3448,9 +3420,7 @@ class ObjectSurface(PathOp.ObjectOp):
         output = []
         nxtAng = 0
         zMax = 0.0
-        # prev = ocl.Point(float("inf"), float("inf"), float("inf"))
-        nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
-        pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
+        nxt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
         begIdx = obj.StartIndex
         endIdx = obj.StopIndex
@@ -3464,14 +3434,11 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Create first point
         ang = 0.0 + obj.CutterTilt
-        pnt.x = RNG[0].x
-        pnt.y = RNG[0].y
-        pnt.z = RNG[0].z + float(obj.DepthOffset.Value)
+        pnt = RNG[0]
 
         # Adjust feed rate based on radius/circumference of cutter.
         # Original feed rate based on travel at circumference.
         if rN > 0:
-            # if pnt.z > self.layerEndPnt.z:
             if pnt.z >= self.layerEndzMax:
                 clrZ = pnt.z + 5.0
                 output.append(Path.Command('G1', {'Z': clrZ, 'F': self.vertRapid}))
@@ -3487,76 +3454,18 @@ class ObjectSurface(PathOp.ObjectOp):
         for i in range(0, lenRNG):
             if i < lastIdx:
                 nxtAng = ang + advances[i + 1]
-                nxt.x = RNG[i + 1].x
-                nxt.y = RNG[i + 1].y
-                nxt.z = RNG[i + 1].z + float(obj.DepthOffset.Value)
+                nxt = RNG[i + 1]
 
             if pnt.z > zMax:
                 zMax = pnt.z
 
             output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, axisOfRot: ang, 'F': self.axialFeed}))
-            pnt.x = nxt.x
-            pnt.y = nxt.y
-            pnt.z = nxt.z
+            pnt = nxt
             ang = nxtAng
 
         # Save layer end point for use in transitioning to next layer
-        self.layerEndPnt.x = RNG[0].x
-        self.layerEndPnt.y = RNG[0].y
-        self.layerEndPnt.z = RNG[0].z
+        self.layerEndPnt = RNG[0]
         self.layerEndzMax = zMax
-
-        # Move cutter to final point
-        # output.append(Path.Command('G1', {'X': self.layerEndPnt.x, 'Y': self.layerEndPnt.y, 'Z': self.layerEndPnt.z, axisOfRot: endang, 'F': self.axialFeed}))
-
-        return output
-
-
-        '''_loopToGcode(obj, layDep, loop) ... Convert set of loop points to Gcode.'''
-        # generate the path commands
-        output = []
-        optimize = obj.OptimizeLinearPaths
-
-        prev = ocl.Point(float("inf"), float("inf"), float("inf"))
-        nxt = ocl.Point(float("inf"), float("inf"), float("inf"))
-        pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
-
-        # Create first point
-        pnt.x = loop[0].x
-        pnt.y = loop[0].y
-        pnt.z = layDep
-
-        # Position cutter to begin loop
-        output.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        output.append(Path.Command('G0', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizRapid}))
-        output.append(Path.Command('G1', {'Z': pnt.z, 'F': self.vertFeed}))
-
-        lenCLP = len(loop)
-        lastIdx = lenCLP - 1
-        # Cycle through each point on loop
-        for i in range(0, lenCLP):
-            if i < lastIdx:
-                nxt.x = loop[i + 1].x
-                nxt.y = loop[i + 1].y
-                nxt.z = layDep
-            else:
-                optimize = False
-
-            if not optimize or not FreeCAD.Vector(prev.x, prev.y, prev.z).isOnLineSegment(FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
-                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'F': self.horizFeed}))
-
-            # Rotate point data
-            prev.x = pnt.x
-            prev.y = pnt.y
-            prev.z = pnt.z
-            pnt.x = nxt.x
-            pnt.y = nxt.y
-            pnt.z = nxt.z
-
-        # Save layer end point for use in transitioning to next layer
-        self.layerEndPnt.x = pnt.x
-        self.layerEndPnt.y = pnt.y
-        self.layerEndPnt.z = pnt.z
 
         return output
 
@@ -3572,6 +3481,7 @@ class ObjectSurface(PathOp.ObjectOp):
             cmds.append(Path.Command('G0', {'Z': p2.z, 'F': self.vertFeed}))  # drop cutter down to current Z depth, returning to normal cut path and speed
         return cmds
 
+    # Additional support methods
     def resetOpVariables(self, all=True):
         '''resetOpVariables() ... Reset class variables used for instance of operation.'''
         self.holdPoint = None
@@ -3673,17 +3583,6 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
-        # http://www.carbidecutter.net/products/carbide-burr-cone-shape-sm.html
-        '''
-        # Available FreeCAD cutter types - some still need translation to available OCL cutter classes.
-        Drill,  CenterDrill,  CounterSink,  CounterBore,  FlyCutter,   Reamer,  Tap,
-        EndMill,  SlotCutter,  BallEndMill,  ChamferMill,  CornerRound,  Engraver
-        '''
-        # Adittional problem is with new ToolBit user-defined cutter shapes.
-        # Some sort of translation/conversion will have to be defined to make compatible with OCL.
-        PathLog.error('Unable to set OCL cutter.')
-        return False
-
     def _getMinSafeTravelHeight(self, pdc, p1, p2, minDep=None):
         A = (p1.x, p1.y)
         B = (p2.x, p2.y)
@@ -3697,42 +3596,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = []
-    setup.append('AvoidLastX_Faces')
-    setup.append('AvoidLastX_InternalFeatures')
-    setup.append('BoundBox')
-    setup.append('BoundaryAdjustment')
-    setup.append('CircularCenterAt')
-    setup.append('CircularCenterCustom')
-    setup.append('CircularUseG2G3')
-    setup.append('InternalFeaturesCut')
-    setup.append('InternalFeaturesAdjustment')
-    setup.append('CutMode')
-    setup.append('CutPattern')
-    setup.append('CutPatternAngle')
-    setup.append('CutPatternReversed')
-    setup.append('CutterTilt')
-    setup.append('DepthOffset')
-    setup.append('DropCutterDir')
-    setup.append('GapSizes')
-    setup.append('GapThreshold')
-    setup.append('HandleMultipleFeatures')
-    setup.append('LayerMode')
-    setup.append('OptimizeStepOverTransitions')
-    setup.append('ProfileEdges')
-    setup.append('BoundaryEnforcement')
-    setup.append('RotationAxis')
-    setup.append('SampleInterval')
-    setup.append('ScanType')
-    setup.append('StartIndex')
-    setup.append('StartPoint')
-    setup.append('StepOver')
-    setup.append('StopIndex')
-    setup.append('UseStartPoint')
-    setup.append('AngularDeflection')
-    setup.append('LinearDeflection')
-    # For debugging
-    setup.append('ShowTempObjects')
+    setup = ['AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
+    setup.extend(['BoundaryAdjustment', 'CircularCenterAt', 'CircularCenterCustom'])
+    setup.extend(['CircularUseG2G3', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
+    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
+    setup.extend(['CutterTilt', 'DepthOffset', 'DropCutterDir', 'GapSizes', 'GapThreshold'])
+    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
+    setup.extend(['ProfileEdges', 'BoundaryEnforcement', 'RotationAxis', 'SampleInterval'])
+    setup.extend(['ScanType', 'StartIndex', 'StartPoint', 'StepOver', 'StopIndex'])
+    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
     return setup
 
 
