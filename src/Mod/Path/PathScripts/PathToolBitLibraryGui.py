@@ -150,6 +150,7 @@ class ToolBitLibrary(object):
         
         self.form.addToolController.setEnabled(False)
         self.form.ButtonRemoveToolTable.setEnabled(False)
+        self.form.ButtonRenameToolTable.setEnabled(False)
 
     def _toolAdd(self, nr, tool, path):
         toolNr = PySide.QtGui.QStandardItem()
@@ -220,7 +221,8 @@ class ToolBitLibrary(object):
     
     def libraryDelete(self):
         PathLog.track()
-        if len(self.path) > 0:
+        reply = QtGui.QMessageBox.question(self.form, 'Warning', "Delete " + os.path.basename(self.path) + "?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
+        if reply == QtGui.QMessageBox.Yes and len(self.path) > 0:
             os.remove(self.path)
             self.libraryOpen(False)
 
@@ -234,9 +236,6 @@ class ToolBitLibrary(object):
         sel = len(self.toolTableView.selectedIndexes()) > 0
         self.form.toolDelete.setEnabled(sel)
 
-        #addTCSelectedText   = translate("PathToolLibraryManager", "Add SELECTED as Tool Controllers in the Job")
-        #addTCAllText        = translate("PathToolLibraryManager", "Add ALL as Tool Controllers in the Job")
-
         if sel:
             self.form.addToolController.setEnabled(True)
         else:
@@ -247,6 +246,7 @@ class ToolBitLibrary(object):
         name = self.form.TableList.itemWidget(self.form.TableList.itemFromIndex(index)).getTableName()
         self.libraryLoad(PathPreferences.lastPathToolLibrary() + '/' + name)
         self.form.ButtonRemoveToolTable.setEnabled(True)
+        self.form.ButtonRenameToolTable.setEnabled(True)
 
     def open(self, path=None, dialog=False):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
@@ -297,6 +297,7 @@ class ToolBitLibrary(object):
         
         self.path = []
         self.form.ButtonRemoveToolTable.setEnabled(False)
+        self.form.ButtonRenameToolTable.setEnabled(False)
 
         self.toolTableView.setUpdatesEnabled(False)
         self.model.clear()
@@ -308,6 +309,7 @@ class ToolBitLibrary(object):
             self.libraryLoad(self.LibFiles[0])
             self.form.TableList.setCurrentRow(0)
             self.form.ButtonRemoveToolTable.setEnabled(True)
+            self.form.ButtonRenameToolTable.setEnabled(True)
 
     def libraryLoad(self, path):
         self.toolTableView.setUpdatesEnabled(False)
