@@ -3853,6 +3853,29 @@ void StdCmdDockOverlayToggle::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_DockOverlayIncrease
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayIncrease)
+
+StdCmdDockOverlayIncrease::StdCmdDockOverlayIncrease()
+  :Command("Std_DockOverlayIncrease")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Increase overlay size");
+  sToolTipText  = QT_TR_NOOP("Increase the overlayed widget size under cursor");
+  sWhatsThis    = "Std_DockOverlayIncrease";
+  sStatusTip    = sToolTipText;
+  sAccel        = "CTRL+F3";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayIncrease::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->changeOverlaySize(5);
+}
+//===========================================================================
 // Std_DockOverlayFocus
 //===========================================================================
 
@@ -3864,6 +3887,30 @@ VIEW_CMD_DEF(DockOverlayOnEnter, DockOverlayOnEnter)
     sWhatsThis    = "Std_DockOverlayOnEnter";
     sStatusTip    = sToolTipText;
     eType         = Alter3DView;
+}
+
+//===========================================================================
+// Std_DockOverlayDecrease
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayDecrease)
+
+StdCmdDockOverlayDecrease::StdCmdDockOverlayDecrease()
+  :Command("Std_DockOverlayDecrease")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Decrease overlay size");
+  sToolTipText  = QT_TR_NOOP("Decrease the overlayed widget size under cursor");
+  sWhatsThis    = "Std_DockOverlayDecrease";
+  sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F3";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayDecrease::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->changeOverlaySize(-5);
 }
 
 //===========================================================================
@@ -3897,6 +3944,8 @@ public:
         addCommand(new StdCmdDockOverlayAll());
         addCommand(new StdCmdDockOverlayNone());
         addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayIncrease());
+        addCommand(new StdCmdDockOverlayDecrease());
         addCommand(new StdCmdDockOverlayOnEnter());
         addCommand(new StdCmdDockOverlayOnLeave());
     };

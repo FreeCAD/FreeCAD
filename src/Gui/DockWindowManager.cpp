@@ -438,6 +438,28 @@ struct OverlayInfo {
         if(index >= 0)
             tabWidget->setCurrentIndex(index);
     }
+
+    void changeSize(int changes)
+    {
+        QRect rect = tabWidget->geometry();
+        switch(dockArea) {
+        case Qt::LeftDockWidgetArea:
+            rect.setRight(rect.right() + changes);
+            break;
+        case Qt::RightDockWidgetArea:
+            rect.setLeft(rect.left() - changes);
+            break;
+        case Qt::TopDockWidgetArea:
+            rect.setBottom(rect.bottom() + changes);
+            break;
+        case Qt::BottomDockWidgetArea:
+            rect.setTop(rect.top() - changes);
+            break;
+        default:
+            break;
+        }
+        tabWidget->setGeometry(rect);
+    }
 };
 
 #endif // FC_HAS_DOCK_OVERLAY
@@ -463,7 +485,6 @@ struct DockWindowManagerP
     OverlayInfo _right;
     OverlayInfo _top;
     OverlayInfo _bottom;
-    bool busy = false;
 
     DockWindowManagerP(QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlays)
@@ -478,8 +499,6 @@ struct DockWindowManagerP
     {
         if(!dock)
             return false;
-
-        Base::StateLocker guard(busy);
 
         auto it = _overlays.find(dock);
         if(it != _overlays.end()) {
@@ -544,8 +563,6 @@ struct DockWindowManagerP
 
     void restoreOverlay()
     {
-        Base::StateLocker guard(busy);
-
         _left.restore();
         _right.restore();
         _top.restore();
@@ -592,8 +609,6 @@ struct DockWindowManagerP
 
     void setOverlayMode(DockWindowManager::OverlayMode mode)
     {
-        Base::StateLocker guard(busy);
-
         if(mode == DockWindowManager::DisableAll
                 || mode == DockWindowManager::EnableAll)
         {
@@ -621,10 +636,8 @@ struct DockWindowManagerP
 
     void onToggleDockWidget(QDockWidget *dock, bool checked)
     {
-        if(!dock || busy)
+        if(!dock)
             return;
-
-        Base::StateLocker guard(busy);
 
         auto it = _overlays.find(dock);
         if(it == _overlays.end()) {
@@ -641,6 +654,30 @@ struct DockWindowManagerP
         }
     }
 
+    void changeOverlaySize(int changes)
+    {
+        QDockWidget *dock = nullptr;
+        for(auto w=qApp->widgetAt(QCursor::pos()); w; w=w->parentWidget()) {
+            dock = qobject_cast<QDockWidget*>(w);
+            if(dock)
+                break;
+        }
+        if(!dock) {
+            for(auto w=qApp->focusWidget(); w; w=w->parentWidget()) {
+                dock = qobject_cast<QDockWidget*>(w);
+                if(dock)
+                    break;
+            }
+        }
+        if(!dock)
+            return;
+        auto iter = _overlays.find(dock);
+        if(iter == _overlays.end())
+            return;
+        iter.value()->changeSize(changes);
+    }
+
+
 #else // FC_HAS_DOCK_OVERLAY
 
     DockWindowManagerP(QWidget *) {}
@@ -650,6 +687,7 @@ struct DockWindowManagerP
     void resizeOverlay() {}
     void setOverlayMode(DockWindowManager::OverlayMode) {}
     void onToggleDockWidget(QDockWidget *, bool) {}
+    void changeOverlaySize(int) {}
 
     bool toggleOverlay(QDockWidget *, OverlayToggleMode,
             Qt::DockWidgetArea dockPos=Qt::NoDockWidgetArea)
@@ -1017,6 +1055,11 @@ void DockWindowManager::saveOverlay()
 void DockWindowManager::restoreOverlay()
 {
     d->restoreOverlay();
+}
+
+void DockWindowManager::changeOverlaySize(int changes)
+{
+    d->changeOverlaySize(changes);
 }
 
 #include "moc_DockWindowManager.cpp"

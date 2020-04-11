@@ -111,6 +111,8 @@ public:
     };
     void setOverlayMode(OverlayMode mode);
 
+    void changeOverlaySize(int changes);
+
 protected:
     bool eventFilter(QObject *, QEvent *ev);
 
