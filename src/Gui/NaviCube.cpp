@@ -99,6 +99,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "Command.h"
+#include "ViewParams.h"
 
 #include "NaviCube.h"
 
@@ -313,8 +314,7 @@ NaviCubeImplementation::NaviCubeImplementation(
 	m_ButtonColor = QColor(226,233,239,128);
 	m_PickingFramebuffer = NULL;
 
-    m_CubeWidgetSize = (App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View")->GetInt("NaviWidgetSize", 132));
+    m_CubeWidgetSize = ViewParams::getNaviWidgetSize();
 
 	m_Menu = createNaviCubeMenu();
 }

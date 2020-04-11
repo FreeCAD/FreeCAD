@@ -486,6 +486,7 @@ static inline void _checkDockWidget(const char *name,
         if(dock) {
             if(!dock->toggleViewAction()->isChecked())
                 dock->toggleViewAction()->activate(QAction::Trigger);
+            DockWindowManager::instance()->refreshOverlay(dock);
         }
     }
 }
@@ -1433,6 +1434,8 @@ void MainWindow::loadWindowSettings()
 
     ToolBarManager::getInstance()->restoreState();
     std::clog << "Toolbars restored" << std::endl;
+
+    DockWindowManager::instance()->restoreOverlay();
 }
 
 void MainWindow::saveWindowSettings()
@@ -1453,6 +1456,7 @@ void MainWindow::saveWindowSettings()
     config.endGroup();
 
     DockWindowManager::instance()->saveState();
+    DockWindowManager::instance()->saveOverlay();
     ToolBarManager::getInstance()->saveState();
 }
 

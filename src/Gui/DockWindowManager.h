@@ -25,6 +25,12 @@
 #define GUI_DOCKWINDOWMANAGER_H
 
 #include <QStringList>
+#include <QTabWidget>
+#include <QTimer>
+
+#if QT_VERSION  >= 0x050000
+#   define FC_HAS_DOCK_OVERLAY
+#endif
 
 class QDockWidget;
 
@@ -88,8 +94,25 @@ public:
     /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
 
+    void restoreOverlay();
+    void saveOverlay();
+
     void saveState();
     void retranslate();
+
+    void refreshOverlay(QWidget *widget);
+
+    enum OverlayMode {
+        ToggleActive,
+        EnableActive,
+        DisableActive,
+        EnableAll,
+        DisableAll,
+    };
+    void setOverlayMode(OverlayMode mode);
+
+protected:
+    bool eventFilter(QObject *, QEvent *ev);
 
 private Q_SLOTS:
    /**
@@ -101,6 +124,10 @@ private Q_SLOTS:
     */
     void onWidgetDestroyed(QObject*);
 
+    void onToggleDockWidget(bool checked);
+
+    void onResize();
+
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
     
@@ -109,6 +136,42 @@ private:
     static DockWindowManager* _instance;
     struct DockWindowManagerP* d;
 };
+
+#ifdef FC_HAS_DOCK_OVERLAY
+
+class OverlayTabWidget: public QTabWidget
+{
+    Q_OBJECT
+public:
+    OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
+
+    static void setOverlayMode(QWidget *widget, bool enable);
+    void setOverlayMode(bool enable);
+    void addWidget(QDockWidget *widget, const QString &title);
+    void removeWidget(QDockWidget *widget);
+    void setCurrent(QWidget *widget);
+
+protected:
+    void leaveEvent(QEvent*);
+    void enterEvent(QEvent*);
+
+    static void _setOverlayMode(QWidget *widget, bool enable);
+
+protected Q_SLOTS:
+    void onCurrentChanged(int index);
+    void onTimer();
+    void onFocusChanged(QWidget *, QWidget *);
+
+public:
+    QRect rectActive;
+    QRect rectOverlay;
+
+private:
+    QTimer timer;
+    bool overlayed = false;
+};
+
+#endif // FC_HAS_DOCK_OVERLAY
 
 } // namespace Gui
 

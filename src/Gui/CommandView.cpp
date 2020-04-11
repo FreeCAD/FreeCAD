@@ -72,6 +72,7 @@
 #include "TextureMapping.h"
 #include "Utilities.h"
 #include "NavigationStyle.h"
+#include "DockWindowManager.h"
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -3779,6 +3780,130 @@ public:
     virtual const char* className() const {return "StdCmdSelOptions";}
 };
 
+#ifdef FC_HAS_DOCK_OVERLAY
+
+//===========================================================================
+// Std_DockOverlayAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAll)
+
+StdCmdDockOverlayAll::StdCmdDockOverlayAll()
+  :Command("Std_DockOverlayAll")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Enable overlay for all");
+  sToolTipText  = QT_TR_NOOP("Activate overlay mode for all docked windows");
+  sWhatsThis    = "Std_DockOverlayAll";
+  sStatusTip    = sToolTipText;
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::EnableAll);
+}
+
+//===========================================================================
+// Std_DockOverlayNone
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayNone)
+
+StdCmdDockOverlayNone::StdCmdDockOverlayNone()
+  :Command("Std_DockOverlayNone")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Disable overlay for all");
+  sToolTipText  = QT_TR_NOOP("De-activate overlay mode for all docking windows");
+  sWhatsThis    = "Std_DockOverlayNone";
+  sStatusTip    = sToolTipText;
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayNone::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::DisableAll);
+}
+
+//===========================================================================
+// Std_DockOverlayNone
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggle)
+
+StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
+  :Command("Std_DockOverlayToggle")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Toggle overlay");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode of the docked window under cursor");
+  sWhatsThis    = "Std_DockOverlayToggle";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F3";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayToggle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleActive);
+}
+
+//===========================================================================
+// Std_DockOverlayFocus
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayOnEnter, DockOverlayOnEnter)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Overlay on enter");
+    sToolTipText  = QT_TR_NOOP("Turn off overlay on mouse entering the widget");
+    sWhatsThis    = "Std_DockOverlayOnEnter";
+    sStatusTip    = sToolTipText;
+    eType         = Alter3DView;
+}
+
+//===========================================================================
+// Std_DockOverlayOnLeave
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayOnLeave, DockOverlayOnLeave)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Overlay on leave");
+    sToolTipText  = QT_TR_NOOP("Turn on overlay when mouse leave the widget");
+    sWhatsThis    = "Std_DockOverlayOnLeave";
+    sStatusTip    = sToolTipText;
+    eType         = Alter3DView;
+}
+
+class StdCmdDockOverlay : public GroupCommand
+{
+public:
+    StdCmdDockOverlay()
+        :GroupCommand("Std_DockOverlay")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Dock window overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sWhatsThis    = "Std_DockOverlay";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdDockOverlayAll());
+        addCommand(new StdCmdDockOverlayNone());
+        addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayOnEnter());
+        addCommand(new StdCmdDockOverlayOnLeave());
+    };
+    virtual const char* className() const {return "StdCmdDockOverlay";}
+};
+#endif // FC_HAS_DOCK_OVERLAY
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -3858,6 +3983,10 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+
+#ifdef FC_HAS_DOCK_OVERLAY
+    rcCmdMgr.addCommand(new StdCmdDockOverlay());
+#endif
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())

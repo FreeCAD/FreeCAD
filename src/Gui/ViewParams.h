@@ -99,6 +99,9 @@ public:
     FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0) \
     FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20) \
     FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
+    FC_VIEW_PARAM(NaviWidgetSize,int,Int,132) \
+    FC_VIEW_PARAM(DockOverlayOnEnter,bool,Bool,true) \
+    FC_VIEW_PARAM(DockOverlayOnLeave,bool,Bool,true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

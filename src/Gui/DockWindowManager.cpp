@@ -25,13 +25,23 @@
 #ifndef _PreComp_
 # include <QPointer>
 # include <QDockWidget>
+# include <QMdiArea>
+# include <QTabBar>
+# include <QTreeView>
+# include <QHeaderView>
+# include <QToolTip>
 # include <QAction>
+# include <QKeyEvent>
+# include <QTimer>
 # include <QMap>
 #endif
 
+#include <Base/Tools.h>
 #include "DockWindowManager.h"
 #include "MainWindow.h"
+#include "ViewParams.h"
 #include <App/Application.h>
+#include "propertyeditor/PropertyEditor.h"
 
 using namespace Gui;
 
@@ -87,12 +97,568 @@ const QList<DockWindowItem>& DockWindowItems::dockWidgets() const
 
 // -----------------------------------------------------------
 
+#ifdef FC_HAS_DOCK_OVERLAY
+
+OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
+    :QTabWidget(parent)
+{
+    switch(pos) {
+    case Qt::LeftDockWidgetArea:
+        setTabPosition(QTabWidget::West);
+        break;
+    case Qt::RightDockWidgetArea:
+        setTabPosition(QTabWidget::East);
+        break;
+    case Qt::TopDockWidgetArea:
+        setTabPosition(QTabWidget::North);
+        break;
+    case Qt::BottomDockWidgetArea:
+        setTabPosition(QTabWidget::South);
+        break;
+    default:
+        break;
+    }
+    setOverlayMode(true);
+    connect(this, SIGNAL(currentChanged(int)), this, SLOT(onCurrentChanged(int)));
+
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+
+    connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)), this, SLOT(onFocusChanged(QWidget*,QWidget*)));
+
+    hide();
+}
+
+void OverlayTabWidget::onFocusChanged(QWidget *, QWidget *widget)
+{
+    if(ViewParams::getDockOverlayOnEnter() || !count())
+        return;
+    timer.stop();
+    for(auto w=widget; w; w=w->parentWidget()) {
+        auto parent = qobject_cast<OverlayTabWidget*>(w);
+        if(parent) {
+            if(parent == this) {
+                if(overlayed) {
+                    setOverlayMode(false);
+                    raise();
+                }
+                return;
+            }
+            break;
+        }
+    }
+    if(!overlayed)
+        setOverlayMode(true);
+}
+
+void OverlayTabWidget::leaveEvent(QEvent*)
+{
+    if(!ViewParams::getDockOverlayOnLeave()) {
+        auto focus = focusWidget();
+        if(focus && qApp->focusWidget() == focus)
+            return;
+    }
+    timer.stop();
+    if(!overlayed)
+        setOverlayMode(true);
+}
+
+void OverlayTabWidget::enterEvent(QEvent*)
+{
+    if(!ViewParams::getDockOverlayOnEnter()) {
+        auto focus = focusWidget();
+        if(!focus || qApp->focusWidget() != focus)
+            return;
+    }
+    timer.start(300);
+}
+
+void OverlayTabWidget::onTimer()
+{
+    if(overlayed)
+        setOverlayMode(false);
+    raise();
+}
+
+void OverlayTabWidget::_setOverlayMode(QWidget *widget, bool enable)
+{
+    if(!widget)
+        return;
+    auto tabbar = qobject_cast<QTabBar*>(widget);
+    if(tabbar) {
+        tabbar->setDrawBase(!enable);
+        tabbar->setDocumentMode(enable);
+        tabbar->setVisible(!enable);
+        return;
+    }
+    if(enable) {
+        widget->setWindowFlags(Qt::FramelessWindowHint);
+    } else {
+        widget->setWindowFlags(widget->windowFlags() & ~Qt::FramelessWindowHint);
+    }
+    widget->setAttribute(Qt::WA_NoSystemBackground, enable);
+    widget->setAttribute(Qt::WA_TranslucentBackground, enable);
+
+    auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
+    if(scrollarea) {
+        if(enable) {
+            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        } else {
+            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        }
+        auto treeview = qobject_cast<QTreeView*>(widget);
+        if(treeview) {
+            if(treeview->header()) 
+                treeview->header()->setVisible(!enable);
+            // auto propertyEditor = qobject_cast<Gui::PropertyEditor::PropertyEditor*>(widget);
+            // if(propertyEditor)
+            //     propertyEditor->setAlternatingRowColors(!enable);
+        }
+        return;
+    }
+}
+
+void OverlayTabWidget::setOverlayMode(QWidget *widget, bool enable)
+{
+    _setOverlayMode(widget, enable);
+    for(auto child : widget->findChildren<QObject*>())
+        _setOverlayMode(qobject_cast<QWidget*>(child), enable);
+}
+
+void OverlayTabWidget::setOverlayMode(bool enable)
+{
+    overlayed = enable;
+    if(enable)
+        setStyleSheet(QLatin1String(
+                    "background:transparent;"
+                    "border:1px solid black;"
+                    "alternate-background-color:transparent;"
+                    "QToolTip {background-color:lightgray;}"));
+    else
+        setStyleSheet(QLatin1String());
+    setOverlayMode(this, enable);
+    if(!enable && count() == 1)
+        tabBar()->hide();
+
+    if(enable) {
+        if(!rectOverlay.isNull())
+            setGeometry(rectOverlay);
+    } else if(!rectActive.isNull())
+        setGeometry(rectActive);
+}
+
+void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
+{
+    if(!dock->titleBarWidget()) {
+        auto w = new QWidget();
+        w->setObjectName(QLatin1String("OverlayTitle"));
+        dock->setTitleBarWidget(w);
+        w->hide();
+    }
+
+    setOverlayMode(dock, true);
+    addTab(dock, title);
+
+    if(count() == 1) 
+        show();
+}
+
+void OverlayTabWidget::removeWidget(QDockWidget *dock)
+{
+    int index = indexOf(dock);
+    if(index < 0)
+        return;
+
+    QWidget *w = dock->titleBarWidget();
+    if(w && w->objectName() == QLatin1String("OverlayTitle")) {
+        delete w;
+        dock->setTitleBarWidget(nullptr);
+    }
+
+    setOverlayMode(dock, false);
+    removeTab(index);
+
+    if(!count())
+        hide();
+}
+
+void OverlayTabWidget::onCurrentChanged(int index)
+{
+    (void)index;
+    // for(int i=0,c=count(); i<c; ++i)
+    //     widget(i)->setVisible(i==index);
+}
+
+void OverlayTabWidget::setCurrent(QWidget *widget)
+{
+    int index = indexOf(widget);
+    if(index >= 0) {
+        setCurrentIndex(index);
+        onCurrentChanged(index);
+    }
+}
+
+// -----------------------------------------------------------
+
+struct OverlayInfo {
+    const char *name;
+    OverlayTabWidget *tabWidget;
+    Qt::DockWidgetArea dockArea;
+    QMap<QDockWidget*, OverlayInfo*> &overlayMap;
+    ParameterGrp::handle hGrp;
+
+    OverlayInfo(QWidget *parent, const char *name, Qt::DockWidgetArea pos, QMap<QDockWidget*, OverlayInfo*> &map)
+        : name(name), dockArea(pos), overlayMap(map)
+    {
+        tabWidget = new OverlayTabWidget(parent, dockArea);
+
+        hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
+    }
+
+    bool addWidget(QDockWidget *dock, bool forced=true) {
+        if(!dock)
+            return false;
+        if(tabWidget->indexOf(dock) >= 0)
+            return false;
+        overlayMap[dock] = this;
+        bool visible = dock->isVisible();
+
+        auto focus = qApp->focusWidget();
+        if(focus && focus != dock->focusWidget())
+            focus = nullptr;
+
+        tabWidget->addWidget(dock, dock->windowTitle());
+
+        if(focus) {
+            tabWidget->setCurrent(dock);
+            focus = qApp->focusWidget();
+            if(focus)
+                focus->clearFocus();
+        }
+
+        if(forced) {
+            auto mw = getMainWindow();
+            for(auto d : mw->findChildren<QDockWidget*>()) {
+                if(mw->dockWidgetArea(d) == dockArea)
+                    addWidget(d, false);
+            }
+            if(visible) {
+                dock->show();
+                tabWidget->setCurrent(dock);
+            }
+        }
+        return true;
+    }
+
+    void removeWidget() {
+        if(!tabWidget->count())
+            return;
+
+        tabWidget->hide();
+
+        QPointer<QWidget> focus = qApp->focusWidget();
+
+        MainWindow *mw = getMainWindow();
+        QDockWidget *lastDock = nullptr;
+        QDockWidget *activeDock = qobject_cast<QDockWidget*>(tabWidget->currentWidget());
+        for(auto dock : tabWidget->findChildren<QDockWidget*>()) {
+            overlayMap.remove(dock);
+            tabWidget->removeWidget(dock);
+            dock->show();
+            if(dock == activeDock)
+                continue;
+            if(lastDock)
+                mw->tabifyDockWidget(lastDock, dock);
+            else
+                mw->addDockWidget(dockArea,dock);
+            lastDock = dock;
+        }
+
+        if(activeDock) {
+            if(lastDock)
+                mw->tabifyDockWidget(lastDock, activeDock);
+            else
+                mw->addDockWidget(dockArea, activeDock);
+        }
+
+        if(focus)
+            focus->setFocus();
+    }
+
+    bool geometry(QRect &rect) {
+        if(!tabWidget->count())
+            return false;
+        rect = tabWidget->geometry();
+        return true;
+    }
+
+    void setGeometry(int x, int y, int w, int h,
+            int activeX, int activeY, int activeW, int activeH)
+    {
+        if(!tabWidget->count())
+            return;
+        tabWidget->rectOverlay = QRect(x,y,w,h);
+        tabWidget->rectActive = QRect(activeX,activeY,activeW,activeH);
+        tabWidget->setGeometry(tabWidget->rectOverlay);
+    }
+
+    void save()
+    {
+        QRect rect = tabWidget->geometry();
+        hGrp->SetInt("Width", rect.width());
+        hGrp->SetInt("Height", rect.height());
+        hGrp->SetInt("Active", tabWidget->currentIndex());
+
+        std::ostringstream os;
+        for(int i=0,c=tabWidget->count(); i<c; ++i)
+            os << tabWidget->widget(i)->objectName().toLatin1().constData() << ",";
+        hGrp->SetASCII("Widgets", os.str().c_str());
+    }
+
+    void restore()
+    {
+        std::string widgets = hGrp->GetASCII("Widgets","");
+        for(auto &name : QString::fromLatin1(widgets.c_str()).split(QLatin1Char(','))) {
+            if(name.isEmpty())
+                continue;
+            auto dock = getMainWindow()->findChild<QDockWidget*>(name);
+            if(dock)
+                addWidget(dock);
+        }
+        int width = hGrp->GetInt("Width", 0);
+        int height = hGrp->GetInt("Height", 0);
+        if(width && height) {
+            QRect rect = tabWidget->geometry();
+            tabWidget->setGeometry(rect.left(),rect.top(),width,height);
+        }
+        int index = hGrp->GetInt("Active", -1);
+        if(index >= 0)
+            tabWidget->setCurrentIndex(index);
+    }
+};
+
+#endif // FC_HAS_DOCK_OVERLAY
+
+enum OverlayToggleMode {
+    OverlayUnset,
+    OverlaySet,
+    OverlayToggle,
+    OverlayCheck,
+};
+
 namespace Gui {
 struct DockWindowManagerP
 {
     QList<QDockWidget*> _dockedWindows;
     QMap<QString, QPointer<QWidget> > _dockWindows;
     DockWindowItems _dockWindowItems;
+    QTimer _timer;
+
+#ifdef FC_HAS_DOCK_OVERLAY
+    QMap<QDockWidget*, OverlayInfo*> _overlays;
+    OverlayInfo _left;
+    OverlayInfo _right;
+    OverlayInfo _top;
+    OverlayInfo _bottom;
+    bool busy = false;
+
+    DockWindowManagerP(QWidget *parent)
+        :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlays)
+        ,_right(parent,"OverlayRight", Qt::RightDockWidgetArea,_overlays)
+        ,_top(parent,"OverlayTop", Qt::TopDockWidgetArea,_overlays)
+        ,_bottom(parent,"OverlayBottom",Qt::BottomDockWidgetArea,_overlays)
+    {
+    }
+
+    bool toggleOverlay(QDockWidget *dock, OverlayToggleMode toggle,
+            Qt::DockWidgetArea dockPos=Qt::NoDockWidgetArea)
+    {
+        if(!dock)
+            return false;
+
+        Base::StateLocker guard(busy);
+
+        auto it = _overlays.find(dock);
+        if(it != _overlays.end()) {
+            if(toggle == OverlaySet || toggle == OverlayCheck)
+                return true;
+            auto overlay = it.value();
+            _overlays.erase(it);
+            overlay->removeWidget();
+            return false;
+        }
+        if(toggle == OverlayUnset)
+            return false;
+        if(dockPos == Qt::NoDockWidgetArea)
+            dockPos = getMainWindow()->dockWidgetArea(dock);
+        OverlayInfo *overlay;
+        switch(dockPos) {
+        case Qt::LeftDockWidgetArea:
+            overlay = &_left;
+            break;
+        case Qt::RightDockWidgetArea:
+            overlay = &_right;
+            break;
+        case Qt::TopDockWidgetArea:
+            overlay = &_top;
+            break;
+        case Qt::BottomDockWidgetArea:
+            overlay = &_bottom;
+            break;
+        default:
+            return false;
+        }
+        if(toggle == OverlayCheck && !overlay->tabWidget->count())
+            return false;
+        QRect rect = dock->geometry();
+        if(overlay->addWidget(dock) && overlay->tabWidget->count()==1) {
+            overlay->tabWidget->setGeometry(rect);
+            _timer.start(50);
+        }
+        return true;
+    }
+
+    void refreshOverlay(QWidget *widget)
+    {
+        for(auto w=widget;w;w=w->parentWidget()) {
+            auto dock = qobject_cast<QDockWidget*>(widget);
+            if(dock) {
+                auto it = _overlays.find(dock);
+                if(it != _overlays.end())
+                    OverlayTabWidget::setOverlayMode(widget,true);
+                return;
+            }
+        }
+    }
+
+    void saveOverlay()
+    {
+        _left.save();
+        _right.save();
+        _top.save();
+        _bottom.save();
+    }
+
+    void restoreOverlay()
+    {
+        Base::StateLocker guard(busy);
+
+        _left.restore();
+        _right.restore();
+        _top.restore();
+        _bottom.restore();
+        _timer.start(100);
+    }
+
+    void resizeOverlay()
+    {
+        QMdiArea *mdi = getMainWindow()->findChild<QMdiArea*>();
+        if(!mdi)
+            return;
+
+        int w = mdi->geometry().width();
+        int h = mdi->geometry().height();
+        auto tabbar = mdi->findChild<QTabBar*>();
+        if(tabbar)
+            h -= tabbar->height();
+
+        QRect rectBottom(0,0,0,0);
+        if(_bottom.geometry(rectBottom)) {
+            _bottom.setGeometry(0,h-rectBottom.height(),w-ViewParams::getNaviWidgetSize()-10,rectBottom.height(),
+                                0,h-rectBottom.height(),w,rectBottom.height());
+        }
+        QRect rectLeft(0,0,0,0);
+        if(_left.geometry(rectLeft)) {
+            _left.setGeometry(0,0,rectLeft.width(),h-rectBottom.height(),
+                                0,0,rectLeft.width(),h);
+        }
+        QRect rectRight(0,0,0,0);
+        if(_right.geometry(rectRight)) {
+            int bh = rectBottom.height();
+            if(!bh)
+                bh = ViewParams::getNaviWidgetSize()+10;
+            _right.setGeometry(w-rectRight.width(),0,rectRight.width(),h-bh,
+                                w-rectRight.width(),0,rectRight.width(),h);
+        }
+        QRect rectTop(0,0,0,0);
+        if(_top.geometry(rectTop)) {
+            _top.setGeometry(rectLeft.width(),0,w-rectLeft.width()-rectRight.width(),rectTop.height(),
+                                0,0,w,rectTop.height());
+        }
+    }
+
+    void setOverlayMode(DockWindowManager::OverlayMode mode)
+    {
+        Base::StateLocker guard(busy);
+
+        if(mode == DockWindowManager::DisableAll
+                || mode == DockWindowManager::EnableAll)
+        {
+            for(auto dock : getMainWindow()->findChildren<QDockWidget*>())
+                toggleOverlay(dock, mode==DockWindowManager::DisableAll ? OverlayUnset : OverlaySet);
+            return;
+        }
+
+        QDockWidget *dock = nullptr;
+        for(auto w=qApp->widgetAt(QCursor::pos()); w; w=w->parentWidget()) {
+            dock = qobject_cast<QDockWidget*>(w);
+            if(dock)
+                break;
+        }
+        if(!dock) {
+            for(auto w=qApp->focusWidget(); w; w=w->parentWidget()) {
+                dock = qobject_cast<QDockWidget*>(w);
+                if(dock)
+                    break;
+            }
+        }
+        toggleOverlay(dock, mode==DockWindowManager::ToggleActive
+                ? OverlayToggle : (mode==DockWindowManager::EnableActive ? OverlaySet : OverlayUnset));
+    }
+
+    void onToggleDockWidget(QDockWidget *dock, bool checked)
+    {
+        if(!dock || busy)
+            return;
+
+        Base::StateLocker guard(busy);
+
+        auto it = _overlays.find(dock);
+        if(it == _overlays.end()) {
+            if(checked)
+                toggleOverlay(dock, OverlayCheck);
+            return;
+        }
+        if(checked)
+            it.value()->tabWidget->setCurrent(dock);
+        else {
+            it.value()->tabWidget->removeWidget(dock);
+            getMainWindow()->addDockWidget(it.value()->dockArea, dock);
+            _overlays.erase(it);
+        }
+    }
+
+#else // FC_HAS_DOCK_OVERLAY
+
+    DockWindowManagerP(QWidget *) {}
+    void refreshOverlay(QWidget *) {}
+    void saveOverlay() {}
+    void restoreOverlay() {}
+    void resizeOverlay() {}
+    void setOverlayMode(DockWindowManager::OverlayMode) {}
+    void onToggleDockWidget(QDockWidget *, bool) {}
+
+    bool toggleOverlay(QDockWidget *, OverlayToggleMode,
+            Qt::DockWidgetArea dockPos=Qt::NoDockWidgetArea)
+    {
+        (void)dockPos;
+        return false;
+    }
+
+#endif // FC_HAS_DOCK_OVERLAY
 };
 } // namespace Gui
 
@@ -113,13 +679,23 @@ void DockWindowManager::destruct()
 
 DockWindowManager::DockWindowManager()
 {
-    d = new DockWindowManagerP;
+    auto mdi = getMainWindow()->findChild<QMdiArea*>();
+    assert(mdi);
+    mdi->installEventFilter(this);
+    d = new DockWindowManagerP(mdi);
+    connect(&d->_timer, SIGNAL(timeout()), this, SLOT(onResize()));
+    d->_timer.setSingleShot(true);
 }
 
 DockWindowManager::~DockWindowManager()
 {
     d->_dockedWindows.clear();
     delete d;
+}
+
+void DockWindowManager::setOverlayMode(OverlayMode mode)
+{
+    d->setOverlayMode(mode);
 }
 
 /**
@@ -164,7 +740,17 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
 
     d->_dockedWindows.push_back(dw);
+
+    connect(dw->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onToggleDockWidget(bool)));
     return dw;
+}
+
+void DockWindowManager::onToggleDockWidget(bool checked)
+{
+    auto action = qobject_cast<QAction*>(sender());
+    if(!action)
+        return;
+    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked);
 }
 
 /**
@@ -202,6 +788,7 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
         if ((*it)->objectName() == QLatin1String(name)) {
             QDockWidget* dw = *it;
             d->_dockedWindows.erase(it);
+            d->toggleOverlay(dw, OverlayUnset);
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
             widget = dw->widget();
@@ -231,6 +818,7 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
         if ((*it)->widget() == widget) {
             QDockWidget* dw = *it;
             d->_dockedWindows.erase(it);
+            d->toggleOverlay(dw, OverlayUnset);
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
             widget->setParent(0);
@@ -314,7 +902,7 @@ void DockWindowManager::setup(DockWindowItems* items)
                                ->GetGroup("MainWindow")->GetGroup("DockWindows");
     QList<QDockWidget*> docked = d->_dockedWindows;
     const QList<DockWindowItem>& dws = items->dockWidgets();
-    QList<QDockWidget*> areas[4];
+
     for (QList<DockWindowItem>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
         QDockWidget* dw = findDockWidget(docked, it->name);
         QByteArray dockName = it->name.toLatin1();
@@ -327,6 +915,8 @@ void DockWindowManager::setup(DockWindowItems* items)
                 jt.value()->show();
                 dw->toggleViewAction()->setData(it->name);
                 dw->setVisible(visible);
+                if(!visible)
+                    continue;
             }
         }
         else {
@@ -336,48 +926,9 @@ void DockWindowManager::setup(DockWindowItems* items)
             docked.removeAt(index);
         }
 
-        if (it->tabbed && dw) {
-            Qt::DockWidgetArea pos = getMainWindow()->dockWidgetArea(dw);
-            switch (pos) {
-                case Qt::LeftDockWidgetArea:
-                    areas[0] << dw;
-                    break;
-                case Qt::RightDockWidgetArea:
-                    areas[1] << dw;
-                    break;
-                case Qt::TopDockWidgetArea:
-                    areas[2] << dw;
-                    break;
-                case Qt::BottomDockWidgetArea:
-                    areas[3] << dw;
-                    break;
-                default:
-                    break;
-            }
-        }
+        if(dw)
+            d->toggleOverlay(dw, OverlayCheck);
     }
-
-#if 0 // FIXME: don't tabify always after switching the workbench
-    // tabify dock widgets for which "tabbed" is true and which have the same position
-    for (int i=0; i<4; i++) {
-        const QList<QDockWidget*>& dws = areas[i];
-        for (QList<QDockWidget*>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
-            if (*it != dws.front()) {
-                getMainWindow()->tabifyDockWidget(dws.front(), *it);
-            }
-        }
-    }
-#endif
-
-#if 0
-    // hide all dock windows which we don't need for the moment
-    for (QList<QDockWidget*>::Iterator it = docked.begin(); it != docked.end(); ++it) {
-        QByteArray dockName = (*it)->toggleViewAction()->data().toByteArray();
-        hPref->SetBool(dockName.constData(), (*it)->isVisible());
-        (*it)->hide();
-        (*it)->toggleViewAction()->setVisible(false);
-    }
-#endif
 }
 
 void DockWindowManager::saveState()
@@ -433,6 +984,39 @@ void DockWindowManager::onWidgetDestroyed(QObject* widget)
             break;
         }
     }
+}
+
+void DockWindowManager::onResize()
+{
+    d->resizeOverlay();
+}
+
+bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
+{
+    switch(ev->type()) {
+    case QEvent::Resize:
+        if(qobject_cast<QMdiArea*>(o))
+            d->_timer.start(50);
+        return false;
+    default:
+        break;
+    }
+    return false;
+}
+
+void DockWindowManager::refreshOverlay(QWidget *widget)
+{
+    d->refreshOverlay(widget);
+}
+
+void DockWindowManager::saveOverlay()
+{
+    d->saveOverlay();
+}
+
+void DockWindowManager::restoreOverlay()
+{
+    d->restoreOverlay();
 }
 
 #include "moc_DockWindowManager.cpp"

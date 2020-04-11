@@ -124,9 +124,8 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         pcComboView->showDialog(dlg);
         // make sure that the combo view is shown
         QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
-        if (dw) {
-            dw->setVisible(true);
-            dw->toggleViewAction()->setVisible(true);
+        if (dw && !dw->toggleViewAction()->isChecked()) {
+            dw->toggleViewAction()->activate(QAction::Trigger);
             dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
         }
 
@@ -134,6 +133,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
             return; // dialog is already defined
         ActiveDialog = dlg;
         connect(dlg, SIGNAL(aboutToBeDestroyed()), this, SLOT(closedDialog()));
+        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
     }
     // not all workbenches have the combo view enabled
     else if (!_taskPanel) {
