@@ -294,6 +294,7 @@ void TaskSketcherGeneral::onToggleGridView(bool on)
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->ShowGrid.setValue(on);
     widget->enableGridSettings(on);
+    if (on) sketchView->createGrid();
 }
 
 void TaskSketcherGeneral::onSetGridSize(double val)
