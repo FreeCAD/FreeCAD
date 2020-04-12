@@ -3944,8 +3944,10 @@ public:
         addCommand(new StdCmdDockOverlayAll());
         addCommand(new StdCmdDockOverlayNone());
         addCommand(new StdCmdDockOverlayToggle());
+        addCommand();
         addCommand(new StdCmdDockOverlayIncrease());
         addCommand(new StdCmdDockOverlayDecrease());
+        addCommand();
         addCommand(new StdCmdDockOverlayOnEnter());
         addCommand(new StdCmdDockOverlayOnLeave());
     };
