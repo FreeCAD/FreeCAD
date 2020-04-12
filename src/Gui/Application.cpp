@@ -51,6 +51,10 @@
 #include <QWindow>
 #endif
 
+#if QT_VERSION >= 0x050600 && defined(Q_OS_WIN32)
+# include <QtPlatformHeaders/QWindowsWindowFunctions>
+#endif
+
 // FreeCAD Base header
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -2147,6 +2151,12 @@ void Application::runApplication(void)
         qApp->setStyleSheet(qss);
 #endif
     }
+
+#if QT_VERSION >= 0x050600 && defined(Q_OS_WIN32)
+    // Fix menu not shown when in full screen on windows.
+    // See https://doc.qt.io/qt-5/windows-issues.html#fullscreen-opengl-based-windows
+    QWindowsWindowFunctions::setHasBorderInFullScreen(getMainWindow()->windowHandle(),true);
+#endif
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
