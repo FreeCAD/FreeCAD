@@ -193,6 +193,7 @@ from draftguitools.gui_array_simple import LinkArray
 from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
 from draftguitools.gui_pointarray import PointArray
+import draftguitools.gui_arrays
 
 
 class Draft_Clone(Modifier):
