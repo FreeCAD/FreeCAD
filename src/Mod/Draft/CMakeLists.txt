@@ -117,9 +117,13 @@ SET(Modifier_tools
     draftguitools/gui_wire2spline.py
     draftguitools/gui_shape2dview.py
     draftguitools/gui_draft2sketch.py
+    draftguitools/gui_arrays.py
     draftguitools/gui_array_simple.py
+    draftguitools/gui_circulararray.py
+    draftguitools/gui_orthoarray.py
     draftguitools/gui_patharray.py
     draftguitools/gui_pointarray.py
+    draftguitools/gui_polararray.py
 )
 
 SET(Draft_GUI_tools
@@ -128,12 +132,8 @@ SET(Draft_GUI_tools
     draftguitools/gui_base.py
     draftguitools/gui_base_original.py
     draftguitools/gui_tool_utils.py
-    draftguitools/gui_circulararray.py
-    draftguitools/gui_orthoarray.py
-    draftguitools/gui_polararray.py
     draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
-    draftguitools/gui_arrays.py
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py

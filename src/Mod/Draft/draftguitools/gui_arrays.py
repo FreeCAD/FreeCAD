@@ -24,23 +24,27 @@
 ## @package gui_arrays
 # \ingroup DRAFT
 # \brief Provide the Draft ArrayTools command to group the other array tools.
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_circulararray
-import draftguitools.gui_polararray
 import draftguitools.gui_orthoarray
+import draftguitools.gui_patharray
+import draftguitools.gui_pointarray
+import draftguitools.gui_polararray
 
 # The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
-True if draftguitools.gui_circulararray.__name__ else False
-True if draftguitools.gui_polararray.__name__ else False
-True if draftguitools.gui_orthoarray.__name__ else False
+bool(Draft_rc.__name__)
+bool(draftguitools.gui_circulararray.__name__)
+bool(draftguitools.gui_orthoarray.__name__)
+bool(draftguitools.gui_patharray.__name__)
+bool(draftguitools.gui_pointarray.__name__)
+bool(draftguitools.gui_polararray.__name__)
 
 
-class ArrayGroupCommand:
+class ArrayGroup:
     """Gui command for the group of array tools."""
 
     def GetCommands(self):
@@ -62,10 +66,10 @@ class ArrayGroupCommand:
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if App.activeDocument():
+        if Gui.activeDocument():
             return True
         else:
             return False
 
 
-Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
+Gui.addCommand('Draft_ArrayTools', ArrayGroup())
