@@ -675,6 +675,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             _objCount = -1;
         }
         catch (const Base::Exception &e) {
+            e.ReportException();
             if (!errs && isMainDoc)
                 throw;
             if (errs && isMainDoc)
@@ -847,7 +848,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
     // if the project file itself is corrupt then
     // close the document
-    catch (const Base::FileException&) {
+    catch (const Base::FileException &) {
         closeDocument(newDoc->getName());
         throw;
     }

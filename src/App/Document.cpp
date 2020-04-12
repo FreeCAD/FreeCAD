@@ -1921,10 +1921,11 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         for(auto o : obj) {
             const auto &outList = o->getOutList(DocumentObject::OutListNoHidden
                                                 | DocumentObject::OutListNoXLinked);
+            std::set<App::DocumentObject*> outSet(outList.begin(),outList.end());
             writer.Stream() << writer.ind() 
                 << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
-                << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();
-            if(outList.empty()) {
+                << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outSet.size();
+            if(outSet.empty()) {
                 writer.Stream() << "\"/>\n";
                 continue;
             }
@@ -1933,7 +1934,6 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                 writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
             writer.Stream() << "\">\n";
             writer.incInd();
-            std::set<App::DocumentObject*> outSet(outList.begin(),outList.end());
             for(auto dep : outSet) {
                 auto name = dep?dep->getNameInDocument():"";
                 writer.Stream() << writer.ind() << "<" FC_ELEMENT_OBJECT_DEP " "
