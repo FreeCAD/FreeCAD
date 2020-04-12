@@ -249,6 +249,21 @@ void OverlayTabWidget::setOverlayMode(bool enable)
         setGeometry(rectActive);
 }
 
+const QRect &OverlayTabWidget::getRect(bool overlay)
+{
+    return overlay?rectOverlay:rectActive;
+}
+
+void OverlayTabWidget::setRect(const QRect &rect, bool overlay)
+{
+    if(overlay)
+        rectOverlay = rect;
+    else
+        rectActive = rect;
+    if(overlay == overlayed)
+        setGeometry(rect);
+}
+
 void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 {
     if(!dock->titleBarWidget()) {
@@ -400,9 +415,8 @@ struct OverlayInfo {
     {
         if(!tabWidget->count())
             return;
-        tabWidget->rectOverlay = QRect(x,y,w,h);
-        tabWidget->rectActive = QRect(activeX,activeY,activeW,activeH);
-        tabWidget->setGeometry(tabWidget->rectOverlay);
+        tabWidget->setRect(QRect(x,y,w,h),true);
+        tabWidget->setRect(QRect(activeX,activeY,activeW,activeH),false);
     }
 
     void save()
@@ -432,7 +446,7 @@ struct OverlayInfo {
         int height = hGrp->GetInt("Height", 0);
         if(width && height) {
             QRect rect = tabWidget->geometry();
-            tabWidget->setGeometry(rect.left(),rect.top(),width,height);
+            tabWidget->setRect(QRect(rect.left(),rect.top(),width,height), true);
         }
         int index = hGrp->GetInt("Active", -1);
         if(index >= 0)
@@ -441,7 +455,7 @@ struct OverlayInfo {
 
     void changeSize(int changes)
     {
-        QRect rect = tabWidget->geometry();
+        QRect rect = tabWidget->getRect(tabWidget->isOverlayed());
         switch(dockArea) {
         case Qt::LeftDockWidgetArea:
             rect.setRight(rect.right() + changes);
@@ -458,7 +472,7 @@ struct OverlayInfo {
         default:
             break;
         }
-        tabWidget->setGeometry(rect);
+        tabWidget->setRect(rect, tabWidget->isOverlayed());
     }
 };
 
@@ -534,7 +548,7 @@ struct DockWindowManagerP
             return false;
         QRect rect = dock->geometry();
         if(overlay->addWidget(dock) && overlay->tabWidget->count()==1) {
-            overlay->tabWidget->setGeometry(rect);
+            overlay->tabWidget->setRect(rect, overlay->tabWidget->isOverlayed());
             _timer.start(50);
         }
         return true;
@@ -675,6 +689,7 @@ struct DockWindowManagerP
         if(iter == _overlays.end())
             return;
         iter.value()->changeSize(changes);
+        _timer.start(500);
     }
 
 

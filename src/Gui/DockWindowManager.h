@@ -153,6 +153,10 @@ public:
     void removeWidget(QDockWidget *widget);
     void setCurrent(QWidget *widget);
 
+    void setRect(const QRect &rect, bool overlay);
+    const QRect &getRect(bool overlay);
+    bool isOverlayed() const {return overlayed;}
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -164,11 +168,9 @@ protected Q_SLOTS:
     void onTimer();
     void onFocusChanged(QWidget *, QWidget *);
 
-public:
+private:
     QRect rectActive;
     QRect rectOverlay;
-
-private:
     QTimer timer;
     bool overlayed = false;
 };
