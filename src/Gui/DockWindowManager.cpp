@@ -34,6 +34,7 @@
 # include <QKeyEvent>
 # include <QTimer>
 # include <QMap>
+# include <QTextStream>
 #endif
 
 #include <Base/Tools.h>
@@ -180,16 +181,82 @@ void OverlayTabWidget::onTimer()
     raise();
 }
 
+class OverlayStyleSheet: public ParameterGrp::ObserverType {
+public:
+
+    OverlayStyleSheet() {
+        handle = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow");
+        handle->Attach(this);
+        update();
+    }
+
+    static OverlayStyleSheet *instance() {
+        static OverlayStyleSheet *inst;
+        if(!inst)
+            inst = new OverlayStyleSheet;
+        return inst;
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(sReason && strcmp(sReason, "StyleSheet")==0) {
+            update();
+            DockWindowManager::instance()->refreshOverlay(nullptr);
+        }
+    }
+
+    void update() {
+        QString name = QString::fromLatin1(handle->GetASCII("StyleSheet").c_str());
+
+        QFile f(QString::fromLatin1("%1.overlay").arg(name));
+        onStyleSheet.clear();
+        if (f.open(QFile::ReadOnly)) {
+            QTextStream str(&f);
+            onStyleSheet = str.readAll();
+        }
+        if(onStyleSheet.isEmpty()) {
+            onStyleSheet = QLatin1String(
+                "* { background-color: transparent; border: 1px solid darkgray; alternate-background-color: transparent; }"
+                // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
+                // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
+                // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
+                "QToolTip { background-color: lightgray; }");
+        }
+
+        QFile f2(QString::fromLatin1("%1.overlay2").arg(name));
+        offStyleSheet.clear();
+        if (f.open(QFile::ReadOnly)) {
+            QTextStream str(&f);
+            offStyleSheet = str.readAll();
+        }
+        // if(offStyleSheet.isEmpty())
+        //     offStyleSheet = QLatin1String("QTabBar {qproperty-drawBase: 1; qproperty-documentMode: 0;}");
+
+        hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
+        hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
+        hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
+    }
+
+    ParameterGrp::handle handle;
+    QString onStyleSheet;
+    QString offStyleSheet;
+    bool hideTab = true;
+    bool hideHeader = false;
+    bool hideScrollBar = false;
+};
+
 void OverlayTabWidget::_setOverlayMode(QWidget *widget, bool enable)
 {
     if(!widget)
         return;
-    auto tabbar = qobject_cast<QTabBar*>(widget);
-    if(tabbar) {
-        tabbar->setDrawBase(!enable);
-        tabbar->setDocumentMode(enable);
-        tabbar->setVisible(!enable);
-        return;
+    if(OverlayStyleSheet::instance()->hideTab) {
+        auto tabbar = qobject_cast<QTabBar*>(widget);
+        if(tabbar) {
+            tabbar->setDrawBase(!enable);
+            tabbar->setDocumentMode(enable);
+            tabbar->setVisible(!enable);
+            return;
+        }
     }
     if(enable) {
         widget->setWindowFlags(Qt::FramelessWindowHint);
@@ -199,24 +266,25 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, bool enable)
     widget->setAttribute(Qt::WA_NoSystemBackground, enable);
     widget->setAttribute(Qt::WA_TranslucentBackground, enable);
 
-    auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
-    if(scrollarea) {
-        if(enable) {
-            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        } else {
-            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    if(OverlayStyleSheet::instance()->hideScrollBar) {
+        auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
+        if(scrollarea) {
+            if(enable) {
+                scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+                scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            } else {
+                scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+                scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            }
         }
+    }
+
+    if(OverlayStyleSheet::instance()->hideHeader) {
         auto treeview = qobject_cast<QTreeView*>(widget);
         if(treeview) {
             if(treeview->header()) 
                 treeview->header()->setVisible(!enable);
-            // auto propertyEditor = qobject_cast<Gui::PropertyEditor::PropertyEditor*>(widget);
-            // if(propertyEditor)
-            //     propertyEditor->setAlternatingRowColors(!enable);
         }
-        return;
     }
 }
 
@@ -231,17 +299,14 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 {
     overlayed = enable;
     if(enable)
-        setStyleSheet(QLatin1String(
-                    "background:transparent;"
-                    "border:1px solid black;"
-                    "alternate-background-color:transparent;"
-                    "QToolTip {background-color:lightgray;}"));
+        setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
     else
-        setStyleSheet(QLatin1String());
+        setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
     setOverlayMode(this, enable);
-    if(!enable && count() == 1)
+    if(!enable)
+        tabBar()->setVisible(count()>1);
+    else
         tabBar()->hide();
-
     if(enable) {
         if(!rectOverlay.isNull())
             setGeometry(rectOverlay);
@@ -555,6 +620,14 @@ struct DockWindowManagerP
 
     void refreshOverlay(QWidget *widget)
     {
+        if(!widget) {
+            _left.tabWidget->setOverlayMode(true);
+            _right.tabWidget->setOverlayMode(true);
+            _top.tabWidget->setOverlayMode(true);
+            _bottom.tabWidget->setOverlayMode(true);
+            return;
+        }
+
         for(auto w=widget;w;w=w->parentWidget()) {
             auto dock = qobject_cast<QDockWidget*>(widget);
             if(dock) {
