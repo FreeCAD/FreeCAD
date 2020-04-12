@@ -415,16 +415,18 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 //    if (isDraftPoint(obj) {
 //        //Draft Points are not necc. Part::PartFeature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
-//        Base::Vector3d featPos = features[i]->(Placement.getValue()).Position();
 
     Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
     if (pf != nullptr) {
-        TopoDS_Shape ts = pf->Shape.getValue();
+        Part::TopoShape pts = pf->Shape.getShape();
+        pts.setPlacement(pf->globalPlacement());
+        TopoDS_Shape ts = pts.getShape();
         if (ts.ShapeType() == TopAbs_VERTEX)  {
             TopoDS_Vertex v = TopoDS::Vertex(ts);
             result = DrawUtil::vertex2Vector(v);
         }
     }
+
 //    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
 //                            DrawUtil::formatVector(result).c_str());
     return result;
