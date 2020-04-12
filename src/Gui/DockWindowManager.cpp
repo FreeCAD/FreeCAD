@@ -377,26 +377,25 @@ struct OverlayInfo {
         QPointer<QWidget> focus = qApp->focusWidget();
 
         MainWindow *mw = getMainWindow();
-        QDockWidget *lastDock = nullptr;
-        QDockWidget *activeDock = qobject_cast<QDockWidget*>(tabWidget->currentWidget());
-        for(auto dock : tabWidget->findChildren<QDockWidget*>()) {
-            overlayMap.remove(dock);
+        QDockWidget *lastDock = qobject_cast<QDockWidget*>(tabWidget->currentWidget());
+        if(lastDock) {
+            tabWidget->removeWidget(lastDock);
+            lastDock->show();
+            mw->addDockWidget(dockArea, lastDock);
+        }
+        while(tabWidget->count()) {
+            QDockWidget *dock = qobject_cast<QDockWidget*>(tabWidget->widget(0));
+            if(!dock) {
+                tabWidget->removeTab(0);
+                continue;
+            }
             tabWidget->removeWidget(dock);
             dock->show();
-            if(dock == activeDock)
-                continue;
             if(lastDock)
                 mw->tabifyDockWidget(lastDock, dock);
             else
-                mw->addDockWidget(dockArea,dock);
+                mw->addDockWidget(dockArea, dock);
             lastDock = dock;
-        }
-
-        if(activeDock) {
-            if(lastDock)
-                mw->tabifyDockWidget(lastDock, activeDock);
-            else
-                mw->addDockWidget(dockArea, activeDock);
         }
 
         if(focus)
