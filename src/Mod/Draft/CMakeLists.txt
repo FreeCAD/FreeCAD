@@ -112,6 +112,7 @@ SET(Modifier_tools
     draftguitools/gui_upgrade.py
     draftguitools/gui_downgrade.py
     draftguitools/gui_trimex.py
+    draftguitools/gui_scale.py
 )
 
 SET(Draft_GUI_tools
