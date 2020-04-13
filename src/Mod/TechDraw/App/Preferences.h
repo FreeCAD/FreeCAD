@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,71 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QStyleOptionGraphicsItem>
-#include <QPainterPathStroker>
-#include <QPainter>
+#ifndef _Preferences_h_
+#define _Preferences_h_
+
+#include <string>
+
+//#include <QString>
+//#include <QFont>
+
+//class QFont;
+class QString;
+//class QColor;
+
+namespace App
+{
+class Color;
+}
+
+namespace TechDraw
+{
+
+//getters for parameters used in multiple places.
+class TechDrawExport Preferences {
+
+public:
+static std::string labelFont();
+static QString     labelFontQString();
+static double      labelFontSizeMM();
+static double      dimFontSizeMM();
+
+static App::Color  normalColor();
+static App::Color  selectColor();
+static App::Color  preselectColor();
+static App::Color  vertexColor();
+
+static bool        useGlobalDecimals();
+static bool        keepPagesUpToDate();
+
+static int         projectionAngle();
+static std::string lineGroup();
+
+static int         balloonArrow();
+
+static QString     defaultTemplate();
+static QString     defaultTemplateDir();
+static std::string lineGroupFile();
+
+
+
+static const double DefaultFontSizeInMM;
+};
+
+} //end namespace TechDraw
 #endif
-
-#include <App/Application.h>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-
-#include "PreferencesGui.h"
-#include "QGIDimLines.h"
-
-using namespace TechDrawGui;
-using namespace TechDraw;
-
-QGIDimLines::QGIDimLines()
-{
-    setCacheMode(QGraphicsItem::NoCache);
-    setAcceptHoverEvents(false);
-    setFlag(QGraphicsItem::ItemIsSelectable, false);
-    setFlag(QGraphicsItem::ItemIsMovable, false);
-
-    m_width = 0.5;
-}
-
-void QGIDimLines::draw()
-{
-}
-
-QPainterPath QGIDimLines::shape() const
-{
-    QPainterPath outline;
-    QPainterPathStroker stroker;
-    stroker.setWidth(getEdgeFuzz());
-    outline = stroker.createStroke(path());
-    return outline;
-}
-
-double QGIDimLines::getEdgeFuzz(void) const
-{
-    return PreferencesGui::edgeFuzz();
-}
-
-
-QRectF QGIDimLines::boundingRect() const
-{
-    return shape().controlPointRect().adjusted(-3, -3, 3, 3);
-}
-
-void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->drawRect(boundingRect());   //good for debugging
-//    painter->drawPath(shape());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
-}
-
-

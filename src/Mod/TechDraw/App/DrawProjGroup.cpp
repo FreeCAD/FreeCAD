@@ -46,6 +46,7 @@
 #include <Base/Parameter.h>
 
 #include "DrawUtil.h"
+#include "Preferences.h"
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
@@ -1250,10 +1251,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
 
 int DrawProjGroup::getDefProjConv(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    int defProjConv = hGrp->GetInt("ProjectionAngle",0);
-    return defProjConv;
+    return Preferences::projectionAngle();
 }
 
 /*!

@@ -37,10 +37,12 @@
 #include <qmath.h>
 #include "Rez.h"
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGIHighlight.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIHighlight::QGIHighlight()
 {
@@ -175,26 +177,17 @@ void QGIHighlight::setFont(QFont f, double fsize)
 
 QColor QGIHighlight::getHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x08080800));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::sectionLineQColor();
 }
 
 Qt::PenStyle QGIHighlight::getHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine",2));
-    return sectStyle;
+    return PreferencesGui::sectionLineStyle();
 }
 
 int QGIHighlight::getHoleStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 0);
-    return style;
+    return PreferencesGui::mattingStyle();
 }
 
 void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

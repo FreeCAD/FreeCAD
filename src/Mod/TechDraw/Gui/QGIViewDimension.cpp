@@ -58,9 +58,11 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 
 #include "QGCustomLabel.h"
 #include "QGCustomBorder.h"
@@ -360,12 +362,13 @@ int QGIDatumLabel::getPrecision(void)
 {
     int precision;
     bool global = false;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    global = hGrp->GetBool("UseGlobalDecimals", true);
+    global = Preferences::useGlobalDecimals();
     if (global) {
         precision = Base::UnitsApi::getDecimals();
     } else {
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                             GetGroup("BaseApp")->GetGroup("Preferences")->
+                                             GetGroup("Mod/TechDraw/Dimensions");
         precision = hGrp->GetInt("AltDecimals", 2);
     }
     return precision;
@@ -2079,12 +2082,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
 
 QColor QGIViewDimension::prefNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Dimensions");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00110000));
-    m_colNormal = fcColor.asValue<QColor>();
+    m_colNormal = PreferencesGui::dimQColor();
 
 //    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
     TechDraw::DrawViewDimension* dim = nullptr;
@@ -2109,7 +2107,7 @@ QColor QGIViewDimension::prefNormalColor()
         return m_colNormal;
     }
 
-    fcColor = vpDim->Color.getValue();
+    App::Color fcColor = vpDim->Color.getValue();
     m_colNormal = fcColor.asValue<QColor>();
     return m_colNormal;
 }

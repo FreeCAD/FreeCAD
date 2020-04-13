@@ -92,6 +92,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 
+#include "Preferences.h"
 #include "Cosmetic.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"

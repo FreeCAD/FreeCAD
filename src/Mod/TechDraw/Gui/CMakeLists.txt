@@ -219,6 +219,8 @@ SET(TechDrawGui_SRCS
     TaskDetail.ui
     TaskDetail.cpp
     TaskDetail.h
+    PreferencesGui.cpp
+    PreferencesGui.h
 )
 
 SET(TechDrawGuiView_SRCS

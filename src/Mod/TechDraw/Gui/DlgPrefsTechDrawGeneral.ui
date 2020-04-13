@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>510</height>
+    <width>496</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -277,7 +277,10 @@ for ProjectionGroups</string>
            <string>Font for labels</string>
           </property>
           <property name="currentFont">
-           <font/>
+           <font>
+            <family>osifont</family>
+            <pointsize>10</pointsize>
+           </font>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelFont</cstring>
@@ -615,6 +618,12 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Name of the default PAT pattern</string>
+          </property>
+          <property name="text">
+           <string>Diamond</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>NamePattern</cstring>

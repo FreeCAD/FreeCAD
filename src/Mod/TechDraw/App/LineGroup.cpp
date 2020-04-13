@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Preferences.h"
 #include "LineGroup.h"
 
 using namespace TechDraw;
@@ -173,16 +174,7 @@ LineGroup* LineGroup::lineGroupFactory(std::string groupName)
 {
     LineGroup* lg = new LineGroup(groupName);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
-    std::string defaultFileName = defaultDir + "LineGroup.csv";
-    
-    std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
-    if (lgFileName.empty()) {
-        lgFileName = defaultFileName;
-    }
+    std::string lgFileName = Preferences::lineGroupFile();
 
     std::string lgRecord = LineGroup::getRecordFromFile(lgFileName, groupName);
 
@@ -202,11 +194,9 @@ LineGroup* LineGroup::lineGroupFactory(std::string groupName)
 double LineGroup::getDefaultWidth(std::string weightName, std::string groupName)
 {
     //default line weights
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = groupName;
     if (groupName.empty()) {
-        lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+        lgName = Preferences::lineGroup();
     }
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
 

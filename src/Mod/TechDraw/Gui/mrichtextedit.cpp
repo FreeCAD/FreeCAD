@@ -54,13 +54,18 @@
 
 #include <App/Application.h>
 
+#include "PreferencesGui.h"
 #include "mrichtextedit.h"
+
+using namespace TechDrawGui;
+using namespace TechDraw;
 
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
     m_lastBlockList = 0;
     f_textedit->setTabStopWidth(40);
-    setDefFontSize(getDefFontSizeNum());
+//    setDefFontSize(getDefFontSizeNum());
+    setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
 
@@ -750,9 +755,7 @@ void MRichTextEdit::setDefFontSize(int fs)
 int MRichTextEdit::getDefFontSizeNum(void)
 {
 //    Base::Console().Message("MRTE::getDefFontSizeNum()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
+    double fontSize = TechDraw::Preferences::dimFontSizeMM();
 
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
@@ -777,10 +780,7 @@ void MRichTextEdit::setDefFont(QString f)
 
 QFont MRichTextEdit::getDefFont(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    QString family = Base::Tools::fromStdString(fontName);
+    QString family = Base::Tools::fromStdString(Preferences::labelFont());
     m_defFont = family;
     QFont result;
     result.setFamily(family);

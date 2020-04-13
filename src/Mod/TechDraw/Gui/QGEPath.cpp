@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
@@ -419,10 +420,7 @@ QPainterPath QGEPath::shape() const
 
  double QGEPath::getEdgeFuzz(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("EdgeFuzz",10.0);
-    return result;
+    return PreferencesGui::edgeFuzz();
 }
 
 void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

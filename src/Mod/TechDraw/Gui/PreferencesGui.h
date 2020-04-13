@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,55 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
+#ifndef _PreferencesGui_h_
+#define _PreferencesGui_h_
+
+class QFont;
+class QString;
+class QColor;
+
+#include <Mod/TechDraw/App/Preferences.h>
+
+namespace TechDrawGui
+{
+
+//getters for parameters used in multiple places.
+class TechDrawGuiExport PreferencesGui {
+
+public:
+static QFont       labelFontQFont();
+static int         labelFontSizePX();
+static int         dimFontSizePX();
+
+static QColor      normalQColor();
+static QColor      selectQColor();
+static QColor      preselectQColor();
+static App::Color  sectionLineColor();
+static QColor      sectionLineQColor();
+static App::Color  centerColor();
+static QColor      centerQColor();
+static QColor      vertexQColor();
+static App::Color  leaderColor();
+static QColor      leaderQColor();
+static App::Color  dimColor();
+static QColor      dimQColor();
+
+static int         dimArrowStyle();
+static double      dimArrowSize();
+
+static double      edgeFuzz();
+
+static Qt::PenStyle  sectionLineStyle();
+static int         mattingStyle();
+
+static QString     weldingDirectory();
+
+};
+
+} //end namespace TechDrawGui
 #endif
-
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include "PreferencesGui.h"
-#include "QGIPrimPath.h"
-#include "QGIVertex.h"
-
-using namespace TechDrawGui;
-
-QGIVertex::QGIVertex(int index) :
-    projIndex(index),
-    m_radius(2)
-{
-    QColor vertexColor = PreferencesGui::vertexQColor();
-    setFill(vertexColor, Qt::SolidPattern);
-
-    setRadius(m_radius);
-}
-
-void QGIVertex::setRadius(float r)
-{
-    m_radius = r;
-    QPainterPath p;
-    p.addEllipse(-r/2.0, -r/2.0, r, r);
-    setPath(p);
-}
-
-void QGIVertex::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::blue);
-//    painter->drawRect(boundingRect());          //good for debugging
-
-//    m_brush.setColor(m_colCurrent);
-//    m_brush.setStyle(m_fill);
-//    setBrush(m_brush);
-    QGIPrimPath::paint (painter, &myOption, widget);
-}

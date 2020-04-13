@@ -39,6 +39,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
+#include "Preferences.h"
 #include "DrawViewSpreadsheet.h"
 
 #include <Mod/Spreadsheet/App/Cell.h>
@@ -58,15 +59,12 @@ DrawViewSpreadsheet::DrawViewSpreadsheet(void)
 {
     static const char *vgroup = "Spreadsheet";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-
     ADD_PROPERTY_TYPE(Source ,(0),vgroup,App::Prop_None,"Spreadsheet to view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(CellStart ,("A1"),vgroup,App::Prop_None,"The top left cell of the range to display");
     ADD_PROPERTY_TYPE(CellEnd ,("B2"),vgroup,App::Prop_None,"The bottom right cell of the range to display");
-    ADD_PROPERTY_TYPE(Font ,((fontName.c_str())),vgroup,App::Prop_None,"The name of the font to use");
+    ADD_PROPERTY_TYPE(Font ,(Preferences::labelFont().c_str()),
+                                                         vgroup,App::Prop_None,"The name of the font to use");
     ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The default color of the text and lines");
     ADD_PROPERTY_TYPE(TextSize,(12.0),vgroup,App::Prop_None,"The size of the text");
     ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the cell lines");

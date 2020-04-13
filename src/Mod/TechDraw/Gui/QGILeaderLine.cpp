@@ -57,6 +57,7 @@
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "ViewProviderLeader.h"
 #include "MDIViewPage.h"
@@ -67,9 +68,8 @@
 
 #include "QGILeaderLine.h"
 
-using namespace TechDraw;
 using namespace TechDrawGui;
-
+using namespace TechDraw;
 
 //**************************************************************
 QGILeaderLine::QGILeaderLine() :
@@ -577,21 +577,13 @@ TechDraw::DrawLeaderLine* QGILeaderLine::getFeature(void)
 
 double QGILeaderLine::getEdgeFuzz(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("EdgeFuzz",10.0);
-    return result;
+    return PreferencesGui::edgeFuzz();
 }
 
 QColor QGILeaderLine::getNormalColor()
 {
 //    Base::Console().Message("QGILL::getNormalColor()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/LeaderLines");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
+    m_colNormal = PreferencesGui::leaderQColor();
 
     auto lead( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
     if( lead == nullptr ) {

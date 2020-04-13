@@ -57,10 +57,12 @@
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -195,7 +197,7 @@ void TaskWeldingSymbol::setUiPrimary()
 {
 //    Base::Console().Message("TWS::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Welding Symbol"));
-    m_currDir = QString::fromUtf8(prefSymbolDir().c_str());
+    m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
     ui->pbArrowSymbol->setFocus();
@@ -215,7 +217,7 @@ void TaskWeldingSymbol::setUiEdit()
 //    Base::Console().Message("TWS::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Welding Symbol"));
 
-    m_currDir = QString::fromUtf8(prefSymbolDir().c_str());  //sb path part of 1st symbol file??
+    m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
     ui->cbAllAround->setChecked(m_weldFeat->AllAround.getValue());
@@ -632,16 +634,6 @@ void TaskWeldingSymbol::enableTaskButtons(bool b)
 {
     m_btnOK->setEnabled(b);
     m_btnCancel->setEnabled(b);
-}
-
-std::string TaskWeldingSymbol::prefSymbolDir()
-{
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-                                    
-    std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
-    return symbolDir;
 }
 
 //******************************************************************************

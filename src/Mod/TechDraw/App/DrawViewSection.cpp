@@ -78,6 +78,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Preferences.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "Cosmetic.h"
