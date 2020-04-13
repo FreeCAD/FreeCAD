@@ -1107,10 +1107,24 @@ class ObjectWaterline(PathOp.ObjectOp):
             PathLog.debug(' -number of wires found is {}'.format(nf))
             if nf == 1:
                 (area, W, raised) = WIRES[0]
-                return [(W, raised)]
+                owLen = fc.OuterWire.Length
+                wLen = W.Length
+                if abs(owLen - wLen) > 0.0000001:
+                    OW = Part.Wire(Part.__sortEdges__(fc.OuterWire.Edges))
+                    return [(OW, False), (W, raised)]
+                else:
+                    return [(W, raised)]
             else:
                 sortedWIRES = sorted(WIRES, key=index0, reverse=True)
-                return [(W, raised) for (area, W, raised) in sortedWIRES]  # outer, then inner by area size
+                WRS = [(W, raised) for (area, W, raised) in sortedWIRES]  # outer, then inner by area size
+                # Check if OuterWire is larger than largest in WRS list
+                (W, raised) = WRS[0]
+                owLen = fc.OuterWire.Length
+                wLen = W.Length
+                if abs(owLen - wLen) > 0.0000001:
+                    OW = Part.Wire(Part.__sortEdges__(fc.OuterWire.Edges))
+                    WRS.insert(0, (OW, False))
+                return WRS
         
         return False
 
