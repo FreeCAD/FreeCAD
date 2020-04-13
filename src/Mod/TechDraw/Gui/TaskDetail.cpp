@@ -97,7 +97,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     m_baseName = m_baseFeat->getNameInDocument();
     m_doc      = m_baseFeat->getDocument();
-    m_pageName  = m_basePage->getNameInDocument();
+    m_pageName = m_basePage->getNameInDocument();
 
     ui->setupUi(this);
 
@@ -114,12 +114,14 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
+    connect(ui->aeReference, SIGNAL(textChanged(QString)),
+        this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
     m_scene->addItem(m_ghost);
@@ -182,13 +184,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
-    connect(ui->aeReference, SIGNAL(editingFinished()),
+    connect(ui->aeReference, SIGNAL(textChanged(QString)),
             this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
