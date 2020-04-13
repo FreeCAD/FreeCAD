@@ -25,23 +25,23 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw4Imp.h"
+#include "DlgPrefsTechDrawAdvancedImp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw4Imp::DlgPrefsTechDraw4Imp( QWidget* parent )
+DlgPrefsTechDrawAdvancedImp::DlgPrefsTechDrawAdvancedImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
 }
 
-DlgPrefsTechDraw4Imp::~DlgPrefsTechDraw4Imp()
+DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw4Imp::saveSettings()
+void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
     cbEndCap->onSave();
     cbCrazyEdges->onSave();
@@ -56,7 +56,7 @@ void DlgPrefsTechDraw4Imp::saveSettings()
     leFormatSpec->onSave();
 }
 
-void DlgPrefsTechDraw4Imp::loadSettings()
+void DlgPrefsTechDrawAdvancedImp::loadSettings()
 {
     cbEndCap->onRestore();
     cbCrazyEdges->onRestore();
@@ -74,7 +74,7 @@ void DlgPrefsTechDraw4Imp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw4Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -86,4 +86,4 @@ void DlgPrefsTechDraw4Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw4Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAdvancedImp.cpp>

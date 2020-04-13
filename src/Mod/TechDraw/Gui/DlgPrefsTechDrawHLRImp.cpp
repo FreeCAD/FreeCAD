@@ -1,7 +1,7 @@
- /**************************************************************************
+/***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw4Imp.cpp                     *
+ *   Based on src/Mod/FEM/Gui/DlgSettingsFEMImp.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,28 +23,65 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP4_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP4_H
+#include "PreCompiled.h"
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw4.h>
-#include <Gui/PropertyPage.h>
+#include "DlgPrefsTechDrawHLRImp.h"
+#include <Gui/PrefWidgets.h>
 
-namespace TechDrawGui {
+using namespace TechDrawGui;
 
-class DlgPrefsTechDraw4Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw4Imp
+DlgPrefsTechDrawHLRImp::DlgPrefsTechDrawHLRImp( QWidget* parent )
+  : PreferencePage( parent )
 {
-    Q_OBJECT
+    this->setupUi(this);
+}
 
-public:
-    DlgPrefsTechDraw4Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw4Imp();
+DlgPrefsTechDrawHLRImp::~DlgPrefsTechDrawHLRImp()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
 
-protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
-};
+void DlgPrefsTechDrawHLRImp::saveSettings()
+{
+    pcbSeamViz->onSave();
+    pcbSmoothViz->onSave();
+    pcbHardViz->onSave();
+    pcbPolygon->onSave();
+    pcbIsoViz->onSave();
+    pcbSmoothHid->onSave();
+    pcbSeamHid->onSave();
+    pcbIsoHid->onSave();
+    psbIsoCount->onSave();
+    pcbHardHid->onSave();
+}
 
-} // namespace TechDrawGui
+void DlgPrefsTechDrawHLRImp::loadSettings()
+{
+    pcbSeamViz->onRestore();
+    pcbSmoothViz->onRestore();
+    pcbHardViz->onRestore();
+    pcbPolygon->onRestore();
+    pcbIsoViz->onRestore();
+    pcbSmoothHid->onRestore();
+    pcbSeamHid->onRestore();
+    pcbIsoHid->onRestore();
+    psbIsoCount->onRestore();
+    pcbHardHid->onRestore();
+}
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP4_H
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgPrefsTechDrawHLRImp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        saveSettings();
+        retranslateUi(this);
+        loadSettings();
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawHLRImp.cpp>

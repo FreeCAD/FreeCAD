@@ -1,7 +1,6 @@
  /**************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw5Imp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,21 +22,21 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw5.h>
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
 #include <Gui/PropertyPage.h>
 
 namespace TechDrawGui {
 
-class DlgPrefsTechDraw5Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw5Imp
+class DlgPrefsTechDrawAdvancedImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawAdvancedImp
 {
     Q_OBJECT
 
 public:
-    DlgPrefsTechDraw5Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw5Imp();
+    DlgPrefsTechDrawAdvancedImp( QWidget* parent = 0 );
+    ~DlgPrefsTechDrawAdvancedImp();
 
 protected:
     void saveSettings();
@@ -47,4 +46,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
