@@ -2113,8 +2113,10 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
         // inserting a null name in the propset indicates the dependency is
         // on all properties of the corresponding object.
         if(propset.size()!=1 || propset.begin()->size()) {
-            if(!propName)
+            if(!propName) {
                 propset.clear();
+                propName = "";
+            }
             propset.insert(propName);
         }
         return;
