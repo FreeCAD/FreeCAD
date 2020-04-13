@@ -2308,8 +2308,8 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
         // When we are deleting this view provider, do not call
         // claimChildren3D(), but fetch the last claimed result from cache.
         auto it = d->_ChildrenMap.find(viewProvider);
+        childCache = &children;
         if(it != d->_ChildrenMap.end()) {
-            childCache = &children;
             children = std::move(it->second);
             d->_ChildrenMap.erase(it);
         }
