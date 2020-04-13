@@ -2218,3 +2218,8 @@ QPushButton#NavigationIndicator::menu-indicator {
     image: none;
     width: 0px;
 }
+
+QPushButton#NavigationIndicator {
+    padding: 0px 5px;
+    margin: 0px;
+}

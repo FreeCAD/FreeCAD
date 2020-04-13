@@ -2240,6 +2240,11 @@ QPushButton#NavigationIndicator::menu-indicator {
     width: 0px;
 }
 
+QPushButton#NavigationIndicator {
+    padding: 0px 5px;
+    margin: 0px;
+}
+
 QToolBar QToolButton[popupMode="1"] {
     width: 100px;
     background: red;
