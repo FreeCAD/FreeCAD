@@ -57,6 +57,13 @@ def get_draft_array_commands():
     return ["Draft_ArrayTools"]
 
 
+def get_draft_small_commands():
+    """Return a list with only some utilities."""
+    return ["Draft_Layer",
+            "Draft_WorkingPlaneProxy",
+            "Draft_ToggleDisplayMode"]
+
+
 def get_draft_modification_commands():
     """Return the modification commands list."""
     lst = ["Draft_Move", "Draft_Rotate",
@@ -74,8 +81,7 @@ def get_draft_modification_commands():
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
             "Separator",
-            "Draft_Shape2DView", "Draft_Drawing",
-            "Draft_WorkingPlaneProxy"]
+            "Draft_Shape2DView", "Draft_Drawing"]
     return lst
 
 
