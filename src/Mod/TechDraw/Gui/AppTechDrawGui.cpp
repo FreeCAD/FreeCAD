@@ -41,7 +41,8 @@
 
 #include "DlgPrefsTechDraw1Imp.h"
 #include "DlgPrefsTechDraw2Imp.h"
-#include "DlgPrefsTechDraw3Imp.h"
+#include "DlgPrefsTechDrawAnnotationImp.h"
+#include "DlgPrefsTechDrawDimensionsImp.h"
 #include "DlgPrefsTechDraw4Imp.h"
 #include "DlgPrefsTechDraw5Imp.h"
 #include "ViewProviderPage.h"
@@ -151,7 +152,8 @@ PyMOD_INIT_FUNC(TechDrawGui)
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw1Imp> ("TechDraw");  //General
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");  //Scale
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw3Imp> ("TechDraw");  //Dimensions
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");  //Dimensions
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw5Imp> ("TechDraw");  //HLR
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw4Imp> ("TechDraw");  //Advanced
 

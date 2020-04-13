@@ -46,7 +46,8 @@ set(TechDrawGui_MOC_HDRS
     TaskProjGroup.h
     DlgPrefsTechDraw1Imp.h
     DlgPrefsTechDraw2Imp.h
-    DlgPrefsTechDraw3Imp.h
+    DlgPrefsTechDrawAnnotationImp.h
+    DlgPrefsTechDrawDimensionsImp.h
     DlgPrefsTechDraw4Imp.h
     DlgPrefsTechDraw5Imp.h
     TaskLinkDim.h
@@ -86,7 +87,8 @@ endif()
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDraw1.ui
     DlgPrefsTechDraw2.ui
-    DlgPrefsTechDraw3.ui
+    DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDraw4.ui
     DlgPrefsTechDraw5.ui
     TaskProjGroup.ui
@@ -151,9 +153,12 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDraw2.ui
     DlgPrefsTechDraw2Imp.cpp
     DlgPrefsTechDraw2Imp.h
-    DlgPrefsTechDraw3.ui
-    DlgPrefsTechDraw3Imp.cpp
-    DlgPrefsTechDraw3Imp.h
+    DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawAnnotationImp.cpp
+    DlgPrefsTechDrawAnnotationImp.h
+    DlgPrefsTechDrawDimensions.ui
+    DlgPrefsTechDrawDimensionsImp.cpp
+    DlgPrefsTechDrawDimensionsImp.h
     DlgPrefsTechDraw4.ui
     DlgPrefsTechDraw4Imp.cpp
     DlgPrefsTechDraw4Imp.h
