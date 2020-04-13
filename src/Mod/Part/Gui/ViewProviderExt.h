@@ -118,7 +118,7 @@ public:
     //@{
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const override {return true;}
-    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
     virtual SoDetail* getDetail(const char*) const override;
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
     /// return the highlight lines for a given element or the whole shape

@@ -110,11 +110,6 @@ static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor 
     return true;
 }
 
-static inline SbColor makeDistinctColor(const SbColor &color, const SbColor &other) {
-    SbColor c;
-    return makeDistinctColor(c,color,other)?c:color;
-}
-
 static inline bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
     SbColor r, c, o;
     float t;

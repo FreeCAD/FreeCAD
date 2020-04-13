@@ -120,7 +120,7 @@ private:
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
 
-    class PickedInfo;
+    struct PickedInfo;
     bool setHighlight(const PickedInfo &);
     bool setHighlight(SoFullPath *path, const SoDetail *det, 
             ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
