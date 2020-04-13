@@ -100,7 +100,7 @@ public:
     void saveState();
     void retranslate();
 
-    void refreshOverlay(QWidget *widget=nullptr);
+    void refreshOverlay(QWidget *widget=nullptr, bool resizeOnly=false);
 
     enum OverlayMode {
         ToggleActive,
@@ -135,6 +135,8 @@ private Q_SLOTS:
 
     void onResize();
 
+    void onFocusChanged(QWidget *, QWidget *);
+
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
     
@@ -163,6 +165,9 @@ public:
     void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
     bool isOverlayed() const {return overlayed;}
+    bool checkAutoHide() const;
+    bool getAutoHideRect(QRect &rect) const;
+    void changeSize(int changes);
 
 protected:
     void leaveEvent(QEvent*);
@@ -170,14 +175,11 @@ protected:
 
     bool eventFilter(QObject *, QEvent *ev);
 
-    bool checkAutoHide() const;
-
     static void _setOverlayMode(QWidget *widget, int enable);
 
 protected Q_SLOTS:
     void onCurrentChanged(int index);
     void onTimer();
-    void onFocusChanged(QWidget *, QWidget *);
 
 private:
     QRect rectActive;
