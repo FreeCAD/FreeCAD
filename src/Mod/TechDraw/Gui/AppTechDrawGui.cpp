@@ -39,10 +39,11 @@
 #include "Workbench.h"
 #include "MDIViewPage.h"
 
-#include "DlgPrefsTechDraw1Imp.h"
+#include "DlgPrefsTechDrawGeneralImp.h"
 #include "DlgPrefsTechDraw2Imp.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "DlgPrefsTechDrawDimensionsImp.h"
+#include "DlgPrefsTechDrawColorsImp.h"
 #include "DlgPrefsTechDraw4Imp.h"
 #include "DlgPrefsTechDraw5Imp.h"
 #include "ViewProviderPage.h"
@@ -150,10 +151,11 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderCosmeticExtension::init();
 
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw1Imp> ("TechDraw");  //General
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp> ("TechDraw");  //General
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");  //Scale
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");  //Dimensions
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");  //Colors
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw5Imp> ("TechDraw");  //HLR
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw4Imp> ("TechDraw");  //Advanced
 
