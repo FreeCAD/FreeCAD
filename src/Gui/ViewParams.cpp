@@ -25,6 +25,7 @@
 #include "ViewProvider.h"
 #include "ViewParams.h"
 #include "Selection.h"
+#include "DockWindowManager.h"
 
 using namespace Gui;
 
@@ -71,4 +72,8 @@ void ViewParams::onMapChildrenPlacementChanged() {
     ViewProvider::clearBoundingBoxCache();
     if(!getShowSelectionOnTop())
         setShowSelectionOnTop(true);
+}
+
+void ViewParams::onDockOverlayAutoViewChanged() {
+    DockWindowManager::instance()->refreshOverlay();
 }

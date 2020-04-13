@@ -3796,6 +3796,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
   sToolTipText  = QT_TR_NOOP("Activate overlay mode for all docked windows");
   sWhatsThis    = "Std_DockOverlayAll";
   sStatusTip    = sToolTipText;
+  sAccel        = "F4";
   eType         = Alter3DView;
 }
 
@@ -3803,6 +3804,54 @@ void StdCmdDockOverlayAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     DockWindowManager::instance()->setOverlayMode(DockWindowManager::EnableAll);
+}
+
+//===========================================================================
+// Std_DockOverlayAutoHideAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAutoHideAll)
+
+StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
+  :Command("Std_DockOverlayAutoHideAll")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Auto hide overlay");
+  sToolTipText  = QT_TR_NOOP("Turn on auto-hide for all overlay docked window");
+  sWhatsThis    = "Std_DockOverlayAutoHideAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "CTRL+F4";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::AutoHideAll);
+}
+
+//===========================================================================
+// Std_DockOverlayAutoHideNone
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAutoHideNone)
+
+StdCmdDockOverlayAutoHideNone::StdCmdDockOverlayAutoHideNone()
+  :Command("Std_DockOverlayAutoHideNone")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("No auto hide");
+  sToolTipText  = QT_TR_NOOP("Turn off auto-hide for all overlay docked window");
+  sWhatsThis    = "Std_DockOverlayAutoHideNone";
+  sStatusTip    = sToolTipText;
+  sAccel        = "CTRL+SHIFT+F4";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayAutoHideNone::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::AutoHideNone);
 }
 
 //===========================================================================
@@ -3819,6 +3868,7 @@ StdCmdDockOverlayNone::StdCmdDockOverlayNone()
   sToolTipText  = QT_TR_NOOP("De-activate overlay mode for all docking windows");
   sWhatsThis    = "Std_DockOverlayNone";
   sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F4";
   eType         = Alter3DView;
 }
 
@@ -3850,6 +3900,30 @@ void StdCmdDockOverlayToggle::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleActive);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleAutoHide
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleAutoHide)
+
+StdCmdDockOverlayToggleAutoHide::StdCmdDockOverlayToggleAutoHide()
+  :Command("Std_DockOverlayToggleAutoHide")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle auto hide");
+    sToolTipText  = QT_TR_NOOP("Toggle auto hide mode for the docked widget under cursor");
+    sWhatsThis    = "Std_DockOverlayToggleAutoHide";
+    sStatusTip    = sToolTipText;
+    sAccel        = "ALT+F3";
+    eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayToggleAutoHide::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAutoHide);
 }
 
 //===========================================================================
@@ -3927,6 +4001,20 @@ VIEW_CMD_DEF(DockOverlayOnLeave, DockOverlayOnLeave)
     eType         = Alter3DView;
 }
 
+//===========================================================================
+// Std_DockOverlayAutoView
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayAutoView, DockOverlayAutoView)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Auto hide non 3D view");
+    sToolTipText  = QT_TR_NOOP("Activate auto hide for non 3D view");
+    sWhatsThis    = "Std_DockOverlayAutoView";
+    sStatusTip    = sToolTipText;
+    eType         = Alter3DView;
+}
+
 class StdCmdDockOverlay : public GroupCommand
 {
 public:
@@ -3943,13 +4031,18 @@ public:
 
         addCommand(new StdCmdDockOverlayAll());
         addCommand(new StdCmdDockOverlayNone());
+        addCommand(new StdCmdDockOverlayAutoHideAll());
+        addCommand(new StdCmdDockOverlayAutoHideNone());
+        addCommand();
         addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayToggleAutoHide());
         addCommand();
         addCommand(new StdCmdDockOverlayIncrease());
         addCommand(new StdCmdDockOverlayDecrease());
         addCommand();
         addCommand(new StdCmdDockOverlayOnEnter());
         addCommand(new StdCmdDockOverlayOnLeave());
+        addCommand(new StdCmdDockOverlayAutoView());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };

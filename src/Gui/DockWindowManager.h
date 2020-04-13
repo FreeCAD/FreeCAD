@@ -100,14 +100,17 @@ public:
     void saveState();
     void retranslate();
 
-    void refreshOverlay(QWidget *widget);
+    void refreshOverlay(QWidget *widget=nullptr);
 
     enum OverlayMode {
         ToggleActive,
+        ToggleAutoHide,
         EnableActive,
         DisableActive,
         EnableAll,
         DisableAll,
+        AutoHideAll,
+        AutoHideNone,
     };
     void setOverlayMode(OverlayMode mode);
 
@@ -147,13 +150,15 @@ class OverlayTabWidget: public QTabWidget
 public:
     OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
 
-    static void setOverlayMode(QWidget *widget, bool enable);
+    static void setOverlayMode(QWidget *widget, int enable);
     void setOverlayMode(bool enable);
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget);
     void setCurrent(QWidget *widget);
+    void setAutoHide(bool enable);
+    bool isAutoHide() const {return autoHide;}
 
-    void setRect(const QRect &rect, bool overlay);
+    void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
     bool isOverlayed() const {return overlayed;}
 
@@ -161,7 +166,11 @@ protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
 
-    static void _setOverlayMode(QWidget *widget, bool enable);
+    bool eventFilter(QObject *, QEvent *ev);
+
+    bool checkAutoHide() const;
+
+    static void _setOverlayMode(QWidget *widget, int enable);
 
 protected Q_SLOTS:
     void onCurrentChanged(int index);
@@ -172,7 +181,9 @@ private:
     QRect rectActive;
     QRect rectOverlay;
     QTimer timer;
+    QWidget *proxyWidget;
     bool overlayed = false;
+    bool autoHide = false;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY
