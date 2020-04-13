@@ -45,12 +45,12 @@ set(TechDrawGui_MOC_HDRS
     QGIViewBalloon.h
     TaskProjGroup.h
     DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDraw2Imp.h
+    DlgPrefsTechDrawscaleImp.h
     DlgPrefsTechDrawAnnotationImp.h
     DlgPrefsTechDrawDimensionsImp.h
     DlgPrefsTechDrawColorsImp.h
-    DlgPrefsTechDraw4Imp.h
-    DlgPrefsTechDraw5Imp.h
+    DlgPrefsTechDrawAdvancedImp.h
+    DlgPrefsTechDrawHLRImp.h
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
@@ -87,12 +87,12 @@ endif()
 
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDrawGeneral.ui
-    DlgPrefsTechDraw2.ui
+    DlgPrefsTechDrawscale.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDrawColors.ui
-    DlgPrefsTechDraw4.ui
-    DlgPrefsTechDraw5.ui
+    DlgPrefsTechDrawAdvanced.ui
+    DlgPrefsTechDrawHLR.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
@@ -152,9 +152,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDraw2.ui
-    DlgPrefsTechDraw2Imp.cpp
-    DlgPrefsTechDraw2Imp.h
+    DlgPrefsTechDrawscale.ui
+    DlgPrefsTechDrawscaleImp.cpp
+    DlgPrefsTechDrawscaleImp.h
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawAnnotationImp.cpp
     DlgPrefsTechDrawAnnotationImp.h
@@ -164,12 +164,12 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawColors.ui
     DlgPrefsTechDrawColorsImp.cpp
     DlgPrefsTechDrawColorsImp.h
-    DlgPrefsTechDraw4.ui
-    DlgPrefsTechDraw4Imp.cpp
-    DlgPrefsTechDraw4Imp.h
-    DlgPrefsTechDraw5.ui
-    DlgPrefsTechDraw5Imp.cpp
-    DlgPrefsTechDraw5Imp.h
+    DlgPrefsTechDrawAdvanced.ui
+    DlgPrefsTechDrawAdvancedImp.cpp
+    DlgPrefsTechDrawAdvancedImp.h
+    DlgPrefsTechDrawHLR.ui
+    DlgPrefsTechDrawHLRImp.cpp
+    DlgPrefsTechDrawHLRImp.h
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h

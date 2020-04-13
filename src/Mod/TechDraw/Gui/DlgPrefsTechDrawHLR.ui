@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TechDrawGui::DlgPrefsTechDraw5Imp</class>
- <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDraw5Imp">
+ <class>TechDrawGui::DlgPrefsTechDrawHLRImp</class>
+ <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDrawHLRImp">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>HLR Parameters</string>
+   <string>HLR</string>
   </property>
   <property name="toolTip">
    <string/>
