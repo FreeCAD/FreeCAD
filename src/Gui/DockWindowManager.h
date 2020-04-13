@@ -109,8 +109,10 @@ public:
         DisableActive,
         EnableAll,
         DisableAll,
+        ToggleAll,
         AutoHideAll,
         AutoHideNone,
+        ToggleAutoHideAll,
     };
     void setOverlayMode(OverlayMode mode);
 

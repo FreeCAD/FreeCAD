@@ -424,8 +424,8 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
             show();
             proxyWidget->hide();
         }
-        if(ViewParams::getDockOverlayOnEnter()
-                || ViewParams::getDockOverlayOnLeave())
+        if(!overlay && (ViewParams::getDockOverlayOnEnter()
+                        || ViewParams::getDockOverlayOnLeave()))
         {
             setGeometry(rectActive);
         } else
@@ -830,18 +830,44 @@ struct DockWindowManagerP
     {
         switch(mode) {
         case DockWindowManager::DisableAll:
-            for(auto dock : getMainWindow()->findChildren<QDockWidget*>())
-                toggleOverlay(dock, OverlayUnset);
+        case DockWindowManager::EnableAll: {
+            auto docks = getMainWindow()->findChildren<QDockWidget*>();
+            // put visible dock widget first
+            std::sort(docks.begin(),docks.end(),
+                [](const QDockWidget *a, const QDockWidget *) {
+                    return !a->visibleRegion().isEmpty();
+                });
+            for(auto dock : docks) {
+                if(mode == DockWindowManager::DisableAll)
+                    toggleOverlay(dock, OverlayUnset);
+                else
+                    toggleOverlay(dock, OverlaySet);
+            }
             return;
-        case DockWindowManager::EnableAll:
-            for(auto dock : getMainWindow()->findChildren<QDockWidget*>())
-                toggleOverlay(dock, OverlaySet);
+        }
+        case DockWindowManager::ToggleAll:
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count()) {
+                    setOverlayMode(DockWindowManager::DisableAll);
+                    return;
+                }
+            }
+            setOverlayMode(DockWindowManager::EnableAll);
             return;
         case DockWindowManager::AutoHideAll:
         case DockWindowManager::AutoHideNone:
             for(auto o : _overlayInfos)
                 o->tabWidget->setAutoHide(mode == DockWindowManager::AutoHideAll);
             _timer.start(500);
+            return;
+        case DockWindowManager::ToggleAutoHideAll:
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->isAutoHide()) {
+                    setOverlayMode(DockWindowManager::AutoHideNone);
+                    return;
+                }
+            }
+            setOverlayMode(DockWindowManager::AutoHideAll);
             return;
         default:
             break;

@@ -3792,8 +3792,8 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
   :Command("Std_DockOverlayAll")
 {
   sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Enable overlay for all");
-  sToolTipText  = QT_TR_NOOP("Activate overlay mode for all docked windows");
+  sMenuText     = QT_TR_NOOP("Toggle overlay for all");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode for all docked windows");
   sWhatsThis    = "Std_DockOverlayAll";
   sStatusTip    = sToolTipText;
   sAccel        = "F4";
@@ -3803,7 +3803,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 void StdCmdDockOverlayAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::EnableAll);
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAll);
 }
 
 //===========================================================================
@@ -3816,8 +3816,8 @@ StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
   :Command("Std_DockOverlayAutoHideAll")
 {
   sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Auto hide overlay");
-  sToolTipText  = QT_TR_NOOP("Turn on auto-hide for all overlay docked window");
+  sMenuText     = QT_TR_NOOP("Toggle Auto hide for all");
+  sToolTipText  = QT_TR_NOOP("Toggle auto-hide for all overlay docked window");
   sWhatsThis    = "Std_DockOverlayAutoHideAll";
   sStatusTip    = sToolTipText;
   sAccel        = "CTRL+F4";
@@ -3827,59 +3827,11 @@ StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
 void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::AutoHideAll);
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAutoHideAll);
 }
 
 //===========================================================================
-// Std_DockOverlayAutoHideNone
-//===========================================================================
-
-DEF_STD_CMD(StdCmdDockOverlayAutoHideNone)
-
-StdCmdDockOverlayAutoHideNone::StdCmdDockOverlayAutoHideNone()
-  :Command("Std_DockOverlayAutoHideNone")
-{
-  sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("No auto hide");
-  sToolTipText  = QT_TR_NOOP("Turn off auto-hide for all overlay docked window");
-  sWhatsThis    = "Std_DockOverlayAutoHideNone";
-  sStatusTip    = sToolTipText;
-  sAccel        = "CTRL+SHIFT+F4";
-  eType         = Alter3DView;
-}
-
-void StdCmdDockOverlayAutoHideNone::activated(int iMsg)
-{
-    Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::AutoHideNone);
-}
-
-//===========================================================================
-// Std_DockOverlayNone
-//===========================================================================
-
-DEF_STD_CMD(StdCmdDockOverlayNone)
-
-StdCmdDockOverlayNone::StdCmdDockOverlayNone()
-  :Command("Std_DockOverlayNone")
-{
-  sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Disable overlay for all");
-  sToolTipText  = QT_TR_NOOP("De-activate overlay mode for all docking windows");
-  sWhatsThis    = "Std_DockOverlayNone";
-  sStatusTip    = sToolTipText;
-  sAccel        = "SHIFT+F4";
-  eType         = Alter3DView;
-}
-
-void StdCmdDockOverlayNone::activated(int iMsg)
-{
-    Q_UNUSED(iMsg); 
-    DockWindowManager::instance()->setOverlayMode(DockWindowManager::DisableAll);
-}
-
-//===========================================================================
-// Std_DockOverlayNone
+// Std_DockOverlayToggle
 //===========================================================================
 
 DEF_STD_CMD(StdCmdDockOverlayToggle)
@@ -4030,9 +3982,7 @@ public:
         bCanLog       = false;
 
         addCommand(new StdCmdDockOverlayAll());
-        addCommand(new StdCmdDockOverlayNone());
         addCommand(new StdCmdDockOverlayAutoHideAll());
-        addCommand(new StdCmdDockOverlayAutoHideNone());
         addCommand();
         addCommand(new StdCmdDockOverlayToggle());
         addCommand(new StdCmdDockOverlayToggleAutoHide());
