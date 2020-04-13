@@ -25,12 +25,12 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw1Imp.h"
+#include "DlgPrefsTechDrawGeneralImp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw1Imp::DlgPrefsTechDraw1Imp( QWidget* parent )
+DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
@@ -38,12 +38,12 @@ DlgPrefsTechDraw1Imp::DlgPrefsTechDraw1Imp( QWidget* parent )
     plsb_LabelSize->setMinimum(0);
 }
 
-DlgPrefsTechDraw1Imp::~DlgPrefsTechDraw1Imp()
+DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw1Imp::saveSettings()
+void DlgPrefsTechDrawGeneralImp::saveSettings()
 {
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
@@ -60,27 +60,9 @@ void DlgPrefsTechDraw1Imp::saveSettings()
     cb_Override->onSave();
     cb_PageUpdate->onSave();
     cb_AutoDist->onSave();
-
-    pcbDimColor->onSave();
-    pcb_Hatch->onSave();
-    pcb_Background->onSave();
-    pcb_PreSelect->onSave();
-    pcb_Hidden->onSave();
-    pcb_Select->onSave();
-    pcb_Normal->onSave();
-    pcb_Surface->onSave();
-    pcb_GeomHatch->onSave();
-    pcb_Face->onSave();
-    pcb_PaintFaces->onSave();
-    pcbSectionLine->onSave();
-    pcbCenterColor->onSave();
-    pcbVertexColor->onSave();
-
-    pcbMarkup->onSave();
-    pcbHighlight->onSave();
 }
 
-void DlgPrefsTechDraw1Imp::loadSettings()
+void DlgPrefsTechDrawGeneralImp::loadSettings()
 {
     double labelDefault = 8.0;
     plsb_LabelSize->setValue(labelDefault);
@@ -100,30 +82,12 @@ void DlgPrefsTechDraw1Imp::loadSettings()
     cb_Override->onRestore();
     cb_PageUpdate->onRestore();
     cb_AutoDist->onRestore();
-
-    pcbDimColor->onRestore();
-    pcb_Hatch->onRestore();
-    pcb_Background->onRestore();
-    pcb_PreSelect->onRestore();
-    pcb_Hidden->onRestore();
-    pcb_Select->onRestore();
-    pcb_Normal->onRestore();
-    pcb_Surface->onRestore();
-    pcb_GeomHatch->onRestore();
-    pcb_Face->onRestore();
-    pcb_PaintFaces->onRestore();
-    pcbSectionLine->onRestore();
-    pcbCenterColor->onRestore();
-    pcbVertexColor->onRestore();
-
-    pcbMarkup->onRestore();
-    pcbHighlight->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw1Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -135,4 +99,4 @@ void DlgPrefsTechDraw1Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw1Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawGeneralImp.cpp>

@@ -44,10 +44,11 @@ set(TechDrawGui_MOC_HDRS
     QGIViewDimension.h
     QGIViewBalloon.h
     TaskProjGroup.h
-    DlgPrefsTechDraw1Imp.h
+    DlgPrefsTechDrawGeneralImp.h
     DlgPrefsTechDraw2Imp.h
     DlgPrefsTechDrawAnnotationImp.h
     DlgPrefsTechDrawDimensionsImp.h
+    DlgPrefsTechDrawColorsImp.h
     DlgPrefsTechDraw4Imp.h
     DlgPrefsTechDraw5Imp.h
     TaskLinkDim.h
@@ -85,10 +86,11 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDraw1.ui
+    DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDraw2.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawDimensions.ui
+    DlgPrefsTechDrawColors.ui
     DlgPrefsTechDraw4.ui
     DlgPrefsTechDraw5.ui
     TaskProjGroup.ui
@@ -147,9 +149,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgPrefsTechDraw1.ui
-    DlgPrefsTechDraw1Imp.cpp
-    DlgPrefsTechDraw1Imp.h
+    DlgPrefsTechDrawGeneral.ui
+    DlgPrefsTechDrawGeneralImp.cpp
+    DlgPrefsTechDrawGeneralImp.h
     DlgPrefsTechDraw2.ui
     DlgPrefsTechDraw2Imp.cpp
     DlgPrefsTechDraw2Imp.h
@@ -159,6 +161,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDrawDimensionsImp.cpp
     DlgPrefsTechDrawDimensionsImp.h
+    DlgPrefsTechDrawColors.ui
+    DlgPrefsTechDrawColorsImp.cpp
+    DlgPrefsTechDrawColorsImp.h
     DlgPrefsTechDraw4.ui
     DlgPrefsTechDraw4Imp.cpp
     DlgPrefsTechDraw4Imp.h
