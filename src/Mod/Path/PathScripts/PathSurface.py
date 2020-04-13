@@ -21,11 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   by Russell Johnson  <russ4262@gmail.com>  2020-04-10 11:46 CST        *
-# *                                                                         *
-# ***************************************************************************
+
 
 from __future__ import print_function
 
@@ -44,7 +40,7 @@ try:
 except ImportError:
     msg = QtCore.QCoreApplication.translate("PathSurface", "This operation requires OpenCamLib to be installed.")
     FreeCAD.Console.PrintError(msg + "\n")
-    raise
+    raise ImportError
     # import sys
     # sys.exit(msg)
 
@@ -132,7 +128,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ("App::PropertyFloat", "CutterTilt", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Stop index(angle) for rotational scan")),
             ("App::PropertyEnumeration", "DropCutterDir", "Rotation",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction along which dropcutter lines are created")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Dropcutter lines are created parallel to this axis.")),
             ("App::PropertyVectorDistance", "DropCutterExtraOffset", "Rotation",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Additional offset to the selected bounding box")),
             ("App::PropertyEnumeration", "RotationAxis", "Rotation",
@@ -161,7 +157,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore internal feature areas within a larger selected face.")),
 
             ("App::PropertyEnumeration", "BoundBox", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation. ")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation.")),
             ("App::PropertyVectorDistance", "CircularCenterCustom", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for circular cut patterns.")),
             ("App::PropertyEnumeration", "CircularCenterAt", "Clearing Options",
@@ -208,7 +204,7 @@ class ObjectSurface(PathOp.ObjectOp):
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'CircularCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
             'DropCutterDir': ['X', 'Y'],
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
@@ -227,7 +223,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.CutPattern in ['Circular', 'CircularZigZag']:
                 P0 = 2
                 P2 = 0
-            R0 = 0
         elif obj.ScanType == 'Rotational':
             R2 = P0 = P2 = 2
             R0 = 0
@@ -1687,6 +1682,16 @@ class ObjectSurface(PathOp.ObjectOp):
         PathLog.debug('_planarMakePathGeom()')
         GeoSet = list()
 
+        def getSpiralPoint(move, b, radAng):
+            x = b * radAng * math.cos(radAng)
+            y = b * radAng * math.sin(radAng)
+            return FreeCAD.Vector(x, y, 0.0).add(move)
+
+        def getOppositeSpiralPoint(move, b, radAng):
+            x = b * radAng * math.cos(radAng)
+            y = b * radAng * math.sin(radAng)
+            return FreeCAD.Vector(-1 * x, y, 0.0).add(move)
+
         # Apply drop cutter extra offset and set the max and min XY area of the operation
         xmin = faceShp.BoundBox.XMin
         xmax = faceShp.BoundBox.XMax
@@ -1816,6 +1821,107 @@ class ObjectSurface(PathOp.ObjectOp):
                     GeoSet.append(circle)
             # Efor
             COM = cntr.Base
+        elif obj.CutPattern in ['Spiral']:
+            SEGS = list()
+            loopRadians = 0.0  # Used to keep track of complete loops/cycles
+            sumRadians = 0.0
+            loopCnt = 0
+            segCnt = 0
+            twoPi = 2.0 * math.pi
+            maxDist = halfLL
+            move = COM  # FreeCAD.Vector(0.0, 0.0, 0.0)  # Use to translate the center of the spiral
+
+            # Set tool properties and calculate cutout
+            effectiveCut = self.cutter.getDiameter() * float(obj.StepOver) / 100.0
+            cutOut = effectiveCut / twoPi
+
+            segLen = obj.SampleInterval.Value  # CutterDiameter / 10.0  # SampleInterval.Value
+            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # math.pi / 18.0  # 10 degrees
+            stopRadians = maxDist / cutOut
+
+            draw = True
+            lastPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
+            if obj.CutPatternReversed:
+                if obj.CutMode == 'Conventional':
+                    while draw:
+                        radAng = sumRadians + stepAng
+                        p1 = lastPoint
+                        p2 = getOppositeSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
+                        sumRadians += stepAng  # Increment sumRadians
+                        loopRadians += stepAng  # Increment loopRadians
+                        if loopRadians > twoPi:
+                            loopCnt += 1
+                            loopRadians -= twoPi
+                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
+                        segCnt += 1
+                        lastPoint = p2
+                        if sumRadians > stopRadians:
+                            draw = False
+                        # Create line and show in Object tree
+                        lineSeg = Part.makeLine(p2, p1)
+                        SEGS.append(lineSeg)
+                else:
+                    while draw:
+                        radAng = sumRadians + stepAng
+                        p1 = lastPoint
+                        p2 = getSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
+                        sumRadians += stepAng  # Increment sumRadians
+                        loopRadians += stepAng  # Increment loopRadians
+                        if loopRadians > twoPi:
+                            loopCnt += 1
+                            loopRadians -= twoPi
+                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
+                        segCnt += 1
+                        lastPoint = p2
+                        if sumRadians > stopRadians:
+                            draw = False
+                        # Create line and show in Object tree
+                        lineSeg = Part.makeLine(p2, p1)
+                        SEGS.append(lineSeg)
+                # Eif
+                SEGS.reverse()
+            else:
+                if obj.CutMode == 'Climb':
+                    while draw:
+                        radAng = sumRadians + stepAng
+                        p1 = lastPoint
+                        p2 = getOppositeSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
+                        sumRadians += stepAng  # Increment sumRadians
+                        loopRadians += stepAng  # Increment loopRadians
+                        if loopRadians > twoPi:
+                            loopCnt += 1
+                            loopRadians -= twoPi
+                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
+                        segCnt += 1
+                        lastPoint = p2
+                        if sumRadians > stopRadians:
+                            draw = False
+                        # Create line and show in Object tree
+                        lineSeg = Part.makeLine(p1, p2)
+                        SEGS.append(lineSeg)
+                else:
+                    while draw:
+                        radAng = sumRadians + stepAng
+                        p1 = lastPoint
+                        p2 = getSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
+                        sumRadians += stepAng  # Increment sumRadians
+                        loopRadians += stepAng  # Increment loopRadians
+                        if loopRadians > twoPi:
+                            loopCnt += 1
+                            loopRadians -= twoPi
+                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
+                        segCnt += 1
+                        lastPoint = p2
+                        if sumRadians > stopRadians:
+                            draw = False
+                        # Create line and show in Object tree
+                        lineSeg = Part.makeLine(p1, p2)
+                        SEGS.append(lineSeg)
+                # Eif
+            spiral = Part.Wire([ls.Edges[0] for ls in SEGS])
+            GeoSet.append(spiral)
+        elif obj.CutPattern in ['Offset']:
+            pass
         # Eif
 
         if obj.CutPatternReversed is True:
@@ -1950,6 +2056,20 @@ class ObjectSurface(PathOp.ObjectOp):
                             stpOvr.append(scan)
                 if erFlg is False:
                     SCANS.append(stpOvr)
+        elif obj.CutPattern == 'Spiral':
+            stpOvr = list()
+            PNTSET = self._pathGeomToSpiralPointSet(obj, pathGeom)
+            for D in PNTSET:
+                for I in D:
+                    if I == 'BRK':
+                        stpOvr.append(I)
+                    else:
+                        # D format is ((p1, p2), (p3, p4))
+                        (A, B) = I
+                        stpOvr.append(self._planarDropCutScan(pdc, A, B))
+                SCANS.append(stpOvr)
+                stpOvr = list()
+        # Eif
 
         return SCANS
 
@@ -2425,6 +2545,51 @@ class ObjectSurface(PathOp.ObjectOp):
         # Efor
 
         return ARCS
+
+    def _pathGeomToSpiralPointSet(self, obj, compGeoShp):
+        '''_pathGeomToSpiralPointSet(obj, compGeoShp)...
+        Convert a compound set of sequential line segments to directional, connected groupings.'''
+        PathLog.debug('_pathGeomToSpiralPointSet()')
+        # Extract intersection line segments for return value as list()
+        LINES = list()
+        inLine = list()
+        lnCnt = 0
+        ec = len(compGeoShp.Edges)
+        start = 2
+
+        if obj.CutPatternReversed:
+            edg1 = compGeoShp.Edges[0]  # Skip first edge, as it is the closing edge: center to outer tail
+            ec -= 1
+            start = 1
+        else:
+            edg1 = compGeoShp.Edges[1]  # Skip first edge, as it is the closing edge: center to outer tail
+        p1 = FreeCAD.Vector(edg1.Vertexes[0].X, edg1.Vertexes[0].Y, 0.0)
+        p2 = FreeCAD.Vector(edg1.Vertexes[1].X, edg1.Vertexes[1].Y, 0.0)
+        tup = ((p1.x, p1.y), (p2.x, p2.y))
+        inLine.append(tup)
+        lst = p2
+
+        for ei in range(start, ec):  # Skipped first edge, started with second edge above as edg1
+            edg = compGeoShp.Edges[ei]  # Get edge for vertexes
+            sp = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)  # check point (first / middle point)
+            ep = FreeCAD.Vector(edg.Vertexes[1].X, edg.Vertexes[1].Y, 0.0)  # end point
+            tup = ((sp.x, sp.y), (ep.x, ep.y))
+
+            if sp.sub(p2).Length < 0.000001:
+                inLine.append(tup)
+            else:
+                LINES.append(inLine)  # Save inLine segments
+                lnCnt += 1
+                inLine = list()  # reset container
+                inLine.append(tup)
+            p1 = sp
+            p2 = ep
+        # Efor
+
+        lnCnt += 1
+        LINES.append(inLine)  # Save inLine segments
+
+        return LINES
 
     def _planarDropCutScan(self, pdc, A, B):
         #PNTS = list()
