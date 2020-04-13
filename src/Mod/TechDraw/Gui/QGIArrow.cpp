@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "Rez.h"
+#include "PreferencesGui.h"
 #include "QGIArrow.h"
 
 using namespace TechDrawGui;
@@ -310,19 +311,12 @@ QPainterPath QGIArrow::makePyramid(Base::Vector3d dir, double length)
 
 int QGIArrow::getPrefArrowStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Dimensions");
-    int style = hGrp->GetInt("ArrowStyle", 0);
-    return style;
+    return PreferencesGui::dimArrowStyle();
 }
 
 double QGIArrow::getPrefArrowSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double style = hGrp->GetFloat("ArrowSize", 3.5);
-    return style;
+    return PreferencesGui::dimArrowSize();
 }
 
 double QGIArrow::getOverlapAdjust(int style, double size)

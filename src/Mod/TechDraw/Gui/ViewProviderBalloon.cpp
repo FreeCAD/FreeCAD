@@ -47,11 +47,14 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
+#include "PreferencesGui.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderBalloon, TechDrawGui::ViewProviderDrawingView)
 
@@ -64,28 +67,17 @@ ViewProviderBalloon::ViewProviderBalloon()
 
     static const char *group = "Balloon Format";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-
-    hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
-    ADD_PROPERTY_TYPE(Font,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(fontSize),group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
-    
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    ADD_PROPERTY_TYPE(Font,(Preferences::labelFont().c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize,(Preferences::dimFontSizeMM()),
+                                group,(App::PropertyType)(App::Prop_None),"Balloon text size in units");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
 
-    hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"Color of the text");
+    ADD_PROPERTY_TYPE(Color,(PreferencesGui::dimColor()),
+                                              group,App::Prop_None,"Color of the balloon");
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()

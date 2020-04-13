@@ -34,6 +34,7 @@
 
 #include <qmath.h>
 #include <QRectF>
+#include "PreferencesGui.h"
 #include "QGCustomRect.h"
 #include "ZVALUE.h"
 #include "QGIMatting.h"
@@ -103,10 +104,7 @@ void QGIMatting::draw()
 
 int QGIMatting::getHoleStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 0l);
-    return style;
+    return PreferencesGui::mattingStyle();
 }
 
 //need this because QQGIG only updates BR when items added/deleted.

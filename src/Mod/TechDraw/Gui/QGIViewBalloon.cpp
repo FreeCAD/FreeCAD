@@ -57,9 +57,11 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIViewBalloon.h"
@@ -399,6 +401,11 @@ void QGIViewBalloon::updateView(bool update)
         QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
         balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
         balloonLabel->setColor(getNormalColor());
+        balloonLines->setNormalColor(getNormalColor());
+        balloonShape->setNormalColor(getNormalColor());
+        arrow->setNormalColor(getNormalColor());
+        arrow->setFillColor(getNormalColor());
+
     }
 
     updateBalloon();
@@ -836,11 +843,7 @@ void QGIViewBalloon::setPens(void)
 
 QColor QGIViewBalloon::getNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
+    m_colNormal = PreferencesGui::dimQColor();
 
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
     if( balloon == nullptr )
@@ -857,10 +860,7 @@ QColor QGIViewBalloon::getNormalColor()
 
 int QGIViewBalloon::prefDefaultArrow() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    int arrow = hGrp->GetInt("BalloonArrow", QGIArrow::getPrefArrowStyle());
-    return arrow;
+    return Preferences::balloonArrow();
 }
 
 

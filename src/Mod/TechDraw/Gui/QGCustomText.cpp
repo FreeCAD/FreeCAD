@@ -45,6 +45,7 @@
 #include "DrawGuiUtil.h"
 #include "QGICMark.h"
 #include "QGIView.h"
+#include "PreferencesGui.h"
 #include "QGCustomText.h"
 
 using namespace TechDrawGui;
@@ -186,29 +187,17 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 QColor QGCustomText::getNormalColor()    //preference!
 {
-//    Base::Console().Message("QGCT::getNormalColor() - pref\n");
-    QColor result;
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    result = fcColor.asValue<QColor>();
-    return result;
+    return PreferencesGui::normalQColor();
 }
 
 QColor QGCustomText::getPreColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::preselectQColor();
 }
 
 QColor QGCustomText::getSelectColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::selectQColor();
 }
 
 Base::Reference<ParameterGrp> QGCustomText::getParmGroup()

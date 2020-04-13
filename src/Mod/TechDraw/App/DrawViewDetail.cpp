@@ -79,6 +79,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
+#include "Preferences.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "Cosmetic.h"
@@ -446,14 +447,6 @@ void DrawViewDetail::unsetupObject()
 
 void DrawViewDetail::getParameters()
 {
-// what parameters are useful?
-// handleFaces
-// radiusFudge?
-
-//    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-//        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-//    m_mattingStyle = hGrp->GetInt("MattingStyle", 0);
-
 }
 
 // Python Drawing feature ---------------------------------------------------------

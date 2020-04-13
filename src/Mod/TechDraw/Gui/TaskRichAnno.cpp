@@ -48,10 +48,12 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -314,10 +316,7 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                        GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
     delete lg;                                   //Coverity CID 174670
@@ -326,11 +325,7 @@ double TaskRichAnno::prefWeight() const
 
 App::Color TaskRichAnno::prefLineColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
-    App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    return result;
+    return PreferencesGui::leaderColor();
 }
 
 
