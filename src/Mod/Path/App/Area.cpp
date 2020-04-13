@@ -1189,10 +1189,8 @@ static int foreachSubshape(const TopoDS_Shape &shape,
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
-    for(auto &s : openShapes) {
-        for(TopExp_Explorer it(s,TopAbs_EDGE); it.More(); it.Next())
-            builder.Add(comp,s);
-    }
+    for(auto &s : openShapes)
+        builder.Add(comp,s);
     func(comp, TopAbs_COMPOUND);
     return TopAbs_COMPOUND;
 }
