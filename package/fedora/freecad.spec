@@ -71,19 +71,15 @@ BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  python3-pivy
 BuildRequires:  mesa-libEGL-devel
 BuildRequires:  pcl-devel
-%if 0%{?fedora} > 29
 BuildRequires:  pyside2-tools
-%endif
 BuildRequires:  python3
 BuildRequires:  python3-devel
 BuildRequires:  python3-matplotlib
 %if ! %{bundled_pycxx}
 BuildRequires:  python3-pycxx-devel
 %endif
-%if 0%{?fedora} > 29
 BuildRequires:  python3-pyside2-devel
 BuildRequires:  python3-shiboken2-devel
-%endif
 BuildRequires:  qt5-devel
 BuildRequires:  qt5-qtwebkit-devel
 %if ! %{bundled_smesh}
