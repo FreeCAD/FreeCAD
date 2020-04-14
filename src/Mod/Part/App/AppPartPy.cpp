@@ -62,6 +62,7 @@
 # include <Geom_Plane.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <Interface_Static.hxx>
+# include <Poly_Triangulation.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
