@@ -147,43 +147,55 @@ class DebianGitHub(VersionControl):
         owner = "FreeCAD"
         repo = "FreeCAD"
         sha = commit[commit.rfind(':') + 1 : -1]
-        request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(base_url, owner, repo, sha)
-
-        commit_req = requests.get(request_url)
-        if not commit_req.ok:
-            return False
-
-        commit_date = commit_req.headers.get('last-modified')
         self.hash = sha
+
+        try:
+            request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(base_url, owner, repo, sha)
+            commit_req = requests.get(request_url)
+            if not commit_req.ok:
+                return False
+
+            commit_date = commit_req.headers.get('last-modified')
+
+        except:
+            # if connection fails then use the date of the file git-build-recipe.manifest
+            commit_date = recipe[recipe.rfind('~') + 1 : -1]
+
 
         try:
             # Try to convert into the same format as GitControl
             t = time.strptime(commit_date, "%a, %d %b %Y %H:%M:%S GMT")
-            self.date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
         except:
-            self.date = commit_date
+            t = time.strptime(commit_date, "%Y%m%d%H%M")
+            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
 
-        self.branch = "master"
+        self.date = commit_date
+        self.branch = "unknown"
 
-        # Try to determine the branch of the sha
-        # There is no function of the rest API of GH but with the url below we get HTML code
-        branch_url = "https://github.com/{}/{}/branch_commits/{}".format(owner, repo, sha)
-        branch_req = requests.get(branch_url)
-        if branch_req.ok:
-            html = branch_req.text
-            pattern = "<li class=\"branch\"><a href="
-            start = html.find(pattern) + len(pattern)
-            end = html.find("\n", start)
-            link = html[start:end]
-            start = link.find(">") + 1
-            end = link.find("<", start)
-            self.branch = link[start:end]
+        try:
+            # Try to determine the branch of the sha
+            # There is no function of the rest API of GH but with the url below we get HTML code
+            branch_url = "https://github.com/{}/{}/branch_commits/{}".format(owner, repo, sha)
+            branch_req = requests.get(branch_url)
+            if branch_req.ok:
+                html = branch_req.text
+                pattern = "<li class=\"branch\"><a href="
+                start = html.find(pattern) + len(pattern)
+                end = html.find("\n", start)
+                link = html[start:end]
+                start = link.find(">") + 1
+                end = link.find("<", start)
+                self.branch = link[start:end]
+
+            link = commit_req.headers.get("link")
+            beg = link.rfind("&page=") + 6
+            end = link.rfind(">")
+            self.rev = link[beg:end] + " (GitHub)"
+        except:
+            pass
 
         self.url = "git://github.com/{}/{}.git {}".format(owner, repo, self.branch)
-        link = commit_req.headers.get("link")
-        beg = link.rfind("&page=") + 6
-        end = link.rfind(">")
-        self.rev = link[beg:end] + " (GitHub)"
         return True
 
     def writeVersion(self, lines):
