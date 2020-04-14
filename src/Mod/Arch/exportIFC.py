@@ -113,7 +113,7 @@ def getPreferences():
 
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
-        FreeCADGui.showPreferences("Import-Export",0)
+        FreeCADGui.showPreferences("Import-Export",1)
     ifcunit = p.GetInt("ifcUnit",0)
     f = 0.001
     u = "metre"

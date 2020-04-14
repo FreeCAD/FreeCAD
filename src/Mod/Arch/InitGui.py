@@ -180,6 +180,7 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 import Arch_rc
 from PySide.QtCore import QT_TRANSLATE_NOOP
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 
 FreeCAD.__unit_test__ += ["TestArch"]
