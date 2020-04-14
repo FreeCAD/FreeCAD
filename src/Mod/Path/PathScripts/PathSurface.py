@@ -102,6 +102,9 @@ class ObjectSurface(PathOp.ObjectOp):
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
                 missing.append(nm)
+                newPropMsg = translate('PathSurface', 'New property added: ') + nm + '. '
+                newPropMsg += translate('PathSurface', 'Check its default value.')
+                PathLog.warning(newPropMsg)
 
         # Set enumeration lists for enumeration properties
         if len(missing) > 0:
@@ -252,6 +255,20 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.setEditorMode('ShowTempObjects', 2)  # hide
         else:
             obj.setEditorMode('ShowTempObjects', 0)  # show
+
+        # Repopulate enumerations in case of changes
+        ENUMS = self.propertyEnumerations()
+        for n in ENUMS:
+            restore = False
+            if hasattr(obj, n):
+                val = obj.getPropertyByName(n)
+                restore = True
+            cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
+            exec(cmdStr)
+            if restore:
+                cmdStr = 'obj.{}={}'.format(n, "'" + val + "'")
+                exec(cmdStr)
+                
 
         self.setEditorProperties(obj)
 
