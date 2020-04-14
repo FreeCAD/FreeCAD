@@ -169,6 +169,11 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
     zoomer->set_modifiers(Qt::NoModifier);
     view->show();
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+    bool on = hGrp->GetBool("InvertZoom", true);
+    zoomer->set_zoom_inverted(on);
+
     // Set central widget to view
     setCentralWidget(view);
 
@@ -236,9 +241,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
                                            QString::fromLatin1("<html><head/><body>%1 "
                                                                "<a href=\"https://www.freecadweb.org/wiki/Std_DependencyGraph\">%2"
                                                                "</a><p>%3</p></body></html>")
-                                           .arg(tr("Graphviz couldn't be found on your system."))
-                                           .arg(tr("Read more about it here."))
-                                           .arg(tr("Do you want to specify its installation path if it's already installed?")),
+                                           .arg(tr("Graphviz couldn't be found on your system."),
+                                                tr("Read more about it here."),
+                                                tr("Do you want to specify its installation path if it's already installed?")),
                                            QMessageBox::Yes, QMessageBox::No);
             if (ret == QMessageBox::No) {
                 disconnectSignals();

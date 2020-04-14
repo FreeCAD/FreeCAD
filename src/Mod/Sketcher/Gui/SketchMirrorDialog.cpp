@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
+ *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +49,7 @@ SketchMirrorDialog::SketchMirrorDialog(void)
 
 SketchMirrorDialog::~SketchMirrorDialog()
 {
-
+    delete ui;
 }
 
 void SketchMirrorDialog::accept()

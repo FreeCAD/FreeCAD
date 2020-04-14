@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <QTextStream>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -46,11 +48,14 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+
 #include "QGITemplate.h"
+#include "QGISVGTemplate.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
-#include "ViewProviderTemplate.h"
+#include "TemplateTextField.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderTemplate.h"
 
 using namespace TechDrawGui;
 
@@ -62,7 +67,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 ViewProviderTemplate::ViewProviderTemplate()
 {
     sPixmap = "TechDraw_Tree_PageTemplate";
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+
+    DisplayMode.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderTemplate::~ViewProviderTemplate()
@@ -160,7 +166,50 @@ QGITemplate* ViewProviderTemplate::getQTemplate(void)
     return result;
 }
 
-MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
+void ViewProviderTemplate::setMarkers(bool state)
+{
+//    Base::Console().Message("VPT::setMarkers(%d)\n",state);
+    QGITemplate* qTemplate = getQTemplate();
+    QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*> (qTemplate);
+    if (qSvgTemplate != nullptr) {
+        std::vector<TemplateTextField *> textFields = qSvgTemplate->getTextFields();
+        for (auto& t:textFields) {
+            if (state) {
+                t->show();
+            } else {
+                t->hide();
+            }
+        }
+        qSvgTemplate->updateView(true);
+    }
+}
+
+bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
+{
+    // deleting the template will break the page view, thus warn the user
+
+    // get the page
+    auto page = getTemplate()->getParentPage();
+
+    // generate dialog
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+    bodyMessageStream << qApp->translate("Std_Delete",
+        "The following referencing objects might break.\n\n"
+        "Are you sure you want to continue?\n");
+    bodyMessageStream << '\n' << QString::fromUtf8(page->Label.getValue());
+
+    // show and evaluate dialog
+    int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+        QMessageBox::Yes, QMessageBox::No);
+    if (DialogResult == QMessageBox::Yes)
+        return true;
+    else
+        return false;
+}
+
+MDIViewPage* ViewProviderTemplate::getMDIViewPage(void) const
 {
     MDIViewPage* myMdi = nullptr;
     auto t = getTemplate();
@@ -171,6 +220,11 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
         myMdi = dvp->getMDIViewPage();
     }
     return myMdi;
+}
+
+Gui::MDIView *ViewProviderTemplate::getMDIView() const
+{
+    return getMDIViewPage();
 }
 
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const

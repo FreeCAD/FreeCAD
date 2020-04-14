@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +49,7 @@ public:
     /*! Constructs a SelectionObject from the SelectionChanges structure.
      */
     SelectionObject(const SelectionChanges& msg);
-    SelectionObject(App::DocumentObject*);
+    explicit SelectionObject(App::DocumentObject*);
     virtual ~SelectionObject();
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.
@@ -89,6 +89,9 @@ protected:
     std::string                 TypeName;
     std::vector<Base::Vector3d> SelPoses;
 
+private:
+    /// to make sure no duplicates of subnames
+    std::set<std::string>       _SubNameSet;
 };
 
 

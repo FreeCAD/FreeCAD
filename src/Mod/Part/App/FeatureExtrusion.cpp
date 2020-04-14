@@ -44,7 +44,6 @@
 # include <BRepLib_FindSurface.hxx>
 #endif
 
-
 #include "FeatureExtrusion.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
@@ -103,16 +102,13 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     if (!axisLink.getValue())
         return false;
 
-    if (!axisLink.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("AxisLink has no OCC shape");
-
-    Part::Feature* linked = static_cast<Part::Feature*>(axisLink.getValue());
+    auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
     if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = linked->Shape.getShape().getSubShape(axisLink.getSubValues()[0].c_str());
+        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
     } else {
-        axEdge = linked->Shape.getValue();
+        axEdge = Feature::getShape(linked);
     }
 
     if (axEdge.IsNull())
@@ -197,25 +193,21 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
 Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
 {
-    if (!shapeLink.getValue())
+    App::DocumentObject* docobj = 0;
+    Base::Matrix4D mat;
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(),0,false, &mat,&docobj);
+
+    if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");
-    const App::DocumentObject* docobj = shapeLink.getValue();
 
     //special case for sketches and the like: no matter what shape they have, use their local Z axis.
     if (docobj->isDerivedFrom(Part::Part2DObject::getClassTypeId())){
-        const Part::Part2DObject* p2do = static_cast<const Part::Part2DObject*>(docobj);
         Base::Vector3d OZ (0.0, 0.0, 1.0);
         Base::Vector3d result;
-        p2do->Placement.getValue().getRotation().multVec(OZ, result);
+        Base::Rotation(mat).multVec(OZ, result);
         return result;
     }
 
-    //extract the shape
-    if (! docobj->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("Linked object doesn't have shape.");
-
-    const TopoShape &tsh = static_cast<const Part::Feature*>(docobj)->Shape.getShape();
-    TopoDS_Shape sh = tsh.getShape();
     if (sh.IsNull())
         throw NullShapeException("calculateShapeNormal: link points to a valid object, but its shape is null.");
 
@@ -328,13 +320,10 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     App::DocumentObject* link = Base.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
 
     try {
         Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(base->Shape.getShape(),params);
+        TopoShape result = extrudeShape(Feature::getShape(link),params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
@@ -383,11 +372,20 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
     if (!sourceWire.IsNull()) {
         std::list<TopoDS_Wire> list_of_sections;
 
-        //first. add wire for reversed part of extrusion
-        if (bRev){
-            gp_Vec translation = vecRev;
-            double offset = distanceRev;
+        // if the wire consists of a single edge which has applied a placement
+        // then this placement must be reset because otherwise the
+        // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
+        // twice on the output shape
+        //
+        // count all edges of the wire
+        int numEdges = 0;
+        TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
+        while (xp.More()) {
+            numEdges++;
+            xp.Next();
+        }
 
+        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -401,16 +399,41 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
             TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
 
             TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()){
+            if (fabs(offset)>Precision::Confusion()) {
+                TopLoc_Location wireLocation;
+                TopLoc_Location edgeLocation;
+                if (numEdges == 1) {
+                    wireLocation = movedSourceWire.Location();
+
+                    BRepBuilderAPI_MakeWire mkWire;
+                    TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
+                    while (xp.More()) {
+                        TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                        edgeLocation = edge.Location();
+                        edge.Location(TopLoc_Location());
+                        mkWire.Add(edge);
+                        xp.Next();
+                    }
+                    movedSourceWire = mkWire.Wire();
+                }
                 mkOffset.AddWire(movedSourceWire);
                 mkOffset.Perform(offset);
 
                 offsetShape = mkOffset.Shape();
-            } else {
+                offsetShape.Move(edgeLocation);
+                offsetShape.Move(wireLocation);
+            }
+            else {
                 //stupid OCC doesn't understand, what to do when offset value is zero =/
                 offsetShape = movedSourceWire;
             }
 
+            return offsetShape;
+        };
+
+        //first. add wire for reversed part of extrusion
+        if (bRev){
+            TopoDS_Shape offsetShape = makeOffset(vecRev, distanceRev);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.ShapeType();
@@ -433,32 +456,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
         //finally. Forward extrusion offset wire.
         if (bFwd){
-            gp_Vec translation = vecFwd;
-            double offset = distanceFwd;
-
-            BRepOffsetAPI_MakeOffset mkOffset;
-#if OCC_VERSION_HEX >= 0x060800
-            mkOffset.Init(GeomAbs_Arc);
-#endif
-#if OCC_VERSION_HEX >= 0x070000
-            mkOffset.Init(GeomAbs_Intersection);
-#endif
-            gp_Trsf mat;
-            mat.SetTranslation(translation);
-            TopLoc_Location loc(mat);
-            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
-
-            TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()){
-                mkOffset.AddWire(movedSourceWire);
-                mkOffset.Perform(offset);
-
-                offsetShape = mkOffset.Shape();
-            } else {
-                //stupid OCC doesn't understand, what to do when offset value is zero =/
-                offsetShape = movedSourceWire;
-            }
-
+            TopoDS_Shape offsetShape = makeOffset(vecFwd, distanceFwd);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.ShapeType();

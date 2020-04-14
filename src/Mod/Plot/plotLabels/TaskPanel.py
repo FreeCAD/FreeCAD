@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import six
+
 import FreeCAD as App
 import FreeCADGui as Gui
 
@@ -221,9 +223,9 @@ class TaskPanel:
         form.xLabel = self.widget(QtGui.QLineEdit, "titleX")
         form.yLabel = self.widget(QtGui.QLineEdit, "titleY")
 
-        Plot.title(unicode(form.title.text()))
-        Plot.xlabel(unicode(form.xLabel.text()))
-        Plot.ylabel(unicode(form.yLabel.text()))
+        Plot.title(six.text_type(form.title.text()))
+        Plot.xlabel(six.text_type(form.xLabel.text()))
+        Plot.ylabel(six.text_type(form.yLabel.text()))
         plt.update()
 
     def onFontSizes(self, value):

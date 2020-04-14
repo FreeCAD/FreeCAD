@@ -5,14 +5,10 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="svg3448"
-   version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   width="64"
    height="64"
-   sodipodi:docname="line.svg">
+   width="64"
+   version="1.1"
+   id="svg3448">
   <metadata
      id="metadata3457">
     <rdf:RDF>
@@ -21,75 +17,42 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     id="namedview3455"
-     showgrid="true"
-     inkscape:zoom="3.5881183"
-     inkscape:cx="50.919261"
-     inkscape:cy="32.393148"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg3448">
-    <inkscape:grid
-       type="xygrid"
-       id="grid3459"
-       empspacing="5"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="8px"
-       spacingy="8px" />
-  </sodipodi:namedview>
   <defs
      id="defs3450">
     <pattern
-       id="line"
-       patternUnits="userSpaceOnUse"
-       x="0"
-       y="0"
+       height=".1"
        width=".1"
-       height=".1">
+       y="0"
+       x="0"
+       patternUnits="userSpaceOnUse"
+       id="line">
       <g
-         style="fill:none; stroke:#000000; stroke-width:.005"
-         id="g3389">
+         id="g3389"
+         style="fill:none; stroke:#000000; stroke-width:.005">
         <path
-           d="M0,0.05 l.12,0"
-           id="path3391" />
+           id="path3391"
+           d="M0,0.05 l.12,0" />
       </g>
     </pattern>
   </defs>
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 0,56 64,0"
      id="path3461"
-     inkscape:connector-curvature="0" />
+     d="m 0,56 64,0"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 0,40 64,0"
      id="path3463"
-     inkscape:connector-curvature="0" />
+     d="m 0,40 64,0"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 0,24 64,0"
      id="path3465"
-     inkscape:connector-curvature="0" />
+     d="m 0,24 64,0"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 0,8 64,8"
      id="path3467"
-     inkscape:connector-curvature="0" />
+     d="M 0,8 64,8"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
 </svg>

@@ -103,10 +103,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     ADD_PROPERTY(BoundingBox,(false));
     ADD_PROPERTY(Selectable,(true));
 
-    ADD_PROPERTY(SelectionStyle,((long)0));
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
-    SelectionStyle.setEnums(SelectionStyleEnum);
-
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     Selectable.setValue(enableSel);
 
@@ -185,15 +181,23 @@ void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-        // Note: When the placement of non-parametric objects changes there is currently no update
-        // of the bounding box information.
         Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
-    else {
-        ViewProviderDragger::updateData(prop);
+    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+        App::GeoFeature* geometry = dynamic_cast<App::GeoFeature*>(getObject());
+        if (geometry && prop == &geometry->Placement) {
+            const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
+            if (data) {
+                Base::BoundBox3d box = data->getBoundingBox();
+                pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
+                pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
+            }
+        }
     }
+
+    ViewProviderDragger::updateData(prop);
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
@@ -286,13 +290,17 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
     for (int i=0;i<pathList.getLength();i++) {
         SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
         if (selectable) {
-            selNode->selectionMode = SoFCSelection::SEL_ON;
-            selNode->highlightMode = SoFCSelection::AUTO;
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_ON;
+                selNode->highlightMode = SoFCSelection::AUTO;
+            }
         }
         else {
-            selNode->selectionMode = SoFCSelection::SEL_OFF;
-            selNode->highlightMode = SoFCSelection::OFF;
-            selNode->selected = SoFCSelection::NOTSELECTED;
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_OFF;
+                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->selected = SoFCSelection::NOTSELECTED;
+            }
         }
     }
 }

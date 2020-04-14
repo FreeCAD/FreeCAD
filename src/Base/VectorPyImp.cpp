@@ -32,6 +32,8 @@
 // inclusion of the generated files (generated out of VectorPy.xml)
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
+#include "MatrixPy.h"
+#include "RotationPy.h"
 #include "VectorPy.cpp"
 
 using namespace Base;
@@ -142,11 +144,13 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
             Base::Vector3d b = static_cast<VectorPy*>(other)->value();
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
+
         else if (PyFloat_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
@@ -162,7 +166,7 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             return new VectorPy(a * (double)b);
         }
         else {
-            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+            PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
             return 0;
         }
     }
@@ -429,6 +433,32 @@ PyObject*  VectorPy::cross(PyObject *args)
 
     Base::Vector3d v = (*this_ptr) % (*vect_ptr);
     return new VectorPy(v);
+}
+
+PyObject*  VectorPy::isOnLineSegment(PyObject *args)
+{
+    PyObject *start, *end;
+    if (!PyArg_ParseTuple(args, "OO",&start, &end))
+        return 0;
+    if (!PyObject_TypeCheck(start, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Vector");
+        return 0;
+    }
+    if (!PyObject_TypeCheck(end, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Second arg must be Vector");
+        return 0;
+    }
+
+    VectorPy* start_vec = static_cast<VectorPy*>(start);
+    VectorPy* end_vec = static_cast<VectorPy*>(end);
+
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType start_ptr = reinterpret_cast<VectorPy::PointerType>(start_vec->_pcTwinPointer);
+    VectorPy::PointerType end_ptr = reinterpret_cast<VectorPy::PointerType>(end_vec->_pcTwinPointer);
+
+    Py::Boolean result = this_ptr->IsOnLineSegment(*start_ptr, *end_ptr);
+
+    return Py::new_reference_to(result);
 }
 
 PyObject*  VectorPy::getAngle(PyObject *args)
@@ -704,6 +734,14 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {
+    if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
+        PyObject_TypeCheck(other, &(VectorPy::Type)))
+    {
+        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+        Base::Vector3d b = static_cast<VectorPy*>(other) ->value();
+        return new VectorPy(a % b);
+    }
+
     PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for %%: '%s' and '%s'",
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;

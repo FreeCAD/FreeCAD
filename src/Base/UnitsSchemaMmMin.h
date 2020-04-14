@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>       *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@ namespace Base {
 
 
 /*  Metric units schema intended for design of small parts and for CNC
- *  Lengths are alwais in mm.
+ *  Lengths are always in mm.
  *  Angles in degrees (use degree symbol)
  *  Velocities in mm/min (as used in g-code).
  */

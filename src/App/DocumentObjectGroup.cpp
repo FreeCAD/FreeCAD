@@ -38,6 +38,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject)
 DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 
     GroupExtension::initExtension(this);
+    _GroupTouched.setStatus(App::Property::Output,true);
 }
 
 DocumentObjectGroup::~DocumentObjectGroup() {

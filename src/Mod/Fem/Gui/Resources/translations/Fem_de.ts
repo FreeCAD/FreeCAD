@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de" sourcelanguage="en">
+<TS version="2.1" language="de" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,6 +12,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Um Referenzen hinzuzufügen, wähle diese in der 3D-Ansicht aus und klicke dann auf "Hinzufügen".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -70,11 +75,6 @@
       <translation>Analysebehälter</translation>
     </message>
     <message>
-      <location filename="_CommandFemAnalysis.py" line="43"/>
-      <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Erstellt einen Analysecontainer mit Standardsolver CalculiX</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
       <translation>Erstellt einen Analysecontainer mit Standardsolver CalculiX</translation>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation>Randbedingung elektrostatisches Potential</translation>
+      <translation>Elektrostatisches Potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>FEM-Bedingung für elektrostatisches Potential erstellen</translation>
+      <translation>Elektrostatisches Potential erstellen</translation>
     </message>
   </context>
   <context>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation>Randbedingung Fluss Geschwindigkeit</translation>
+      <translation>Fließgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -145,7 +145,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Randbedingung Anfangs Fluss Geschwindigkeit</translation>
+      <translation>Anfangsfließgeschwindigkeit</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation>Anfangsfließgeschwindigkeit festlegen</translation>
     </message>
   </context>
   <context>
@@ -153,12 +158,25 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation>Einschränkung Eigengewicht</translation>
+      <translation>Eigengewicht</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Erstellt ein FEM-Einschränkungsgewicht</translation>
+      <translation>Eigengewicht hinzufügen</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
     </message>
   </context>
   <context>
@@ -166,12 +184,17 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>Flüssigkeitsteil für 1D-Druchfluss</translation>
+      <translation>Fluid-Abschnitt für 1D-Fluß</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>Erzeugt einen FEM-Flüssigkeitsabschnitt für 1D-Durchfluss</translation>
+      <translation>Erzeugt einen Fluidbereich für 1D-Durchfluß</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -196,16 +219,6 @@
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Erstellt eine FEM-Blechplattenstärke</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="259"/>
-      <source>Shell plate thickness</source>
-      <translation>Blechplattenstärke</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
       <translation>Erstellt eine FEM-Blechplattenstärke</translation>
     </message>
@@ -276,6 +289,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation>Wärmefluß-Solver</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
@@ -287,15 +313,28 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Wandelt die Oberfläche eines FEM-Netzes in ein Netz um</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="470"/>
-      <source>FEM mesh to mesh</source>
-      <translation>FEM-Netz zu Netz</translation>
+      <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>Material für Flüssigkeit</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Wandelt die Oberfläche eines FEM-Netzes in ein Netz um</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>FEM Material für Flüssigkeiten</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>Erzeugt ein FEM-Material für Flüssigkeiten</translation>
     </message>
   </context>
   <context>
@@ -310,18 +349,31 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Erzeugt ein nichtlineares mechanisches Material</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="415"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Nichtlineares mechanisches Material</translation>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation>Verstärktes Material (Beton)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="44"/>
+      <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>Material für Festkörper</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="616"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Erzeugt ein FEM-Material für Festkörper</translation>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -354,16 +406,6 @@
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation>Lösche das Netz eines FEM-Mesh-Objekts</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="518"/>
-      <source>Clear FEM mesh</source>
-      <translation>Lösche FEM-Netz</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Lösche das Netz eines FEM-Mesh-Objekts</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
@@ -371,6 +413,29 @@
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
       <translation>Informationen zum FEM-Netz anzeigen</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="556"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation>FEM-Netz erstellen (Gmsh)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="557"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation>FEM-Netz mit Gmsh-Vernetzer erstellen</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>FEM-Netz von Form von GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Erstellen von FEM-Netz aus einer Form von GMSH-Mesher</translation>
     </message>
   </context>
   <context>
@@ -385,15 +450,18 @@
       <source>Creates a FEM mesh group</source>
       <translation>Erstellt eine FEM-Netz-Gruppe</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="584"/>
-      <source>FEM mesh group</source>
-      <translation>FEM-Netz-Gruppe</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>FEM-Netz von Form von Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Erstellt eine FEM-Netz-Gruppe</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Erstelle ein FEM Volumen Mesh aus einem Festkörper oder Flächenform von Netgen internen Meshers</translation>
     </message>
   </context>
   <context>
@@ -434,16 +502,6 @@
       <source>Purges all results from active analysis</source>
       <translation>Löscht alle Ergebnisse aus der aktiven Analyse</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="664"/>
-      <source>Purge results</source>
-      <translation>Ergebnisse löschen</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Löscht alle Ergebnisse aus der aktiven Analyse</translation>
-    </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
@@ -459,6 +517,29 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>CalculiX-Solver erstellen</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Erstellt einen FEM-Solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
@@ -470,15 +551,18 @@
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Ändert Solver-Attribute und führt die Berechnungen für den ausgewählten Solver aus</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation>Solver-Auftragssteuerung</translation>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation>Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Ändert Solver-Attribute und führt die Berechnungen für den ausgewählten Solver aus</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -516,16 +600,6 @@
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation>Standard-FEM-QuickInfo</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="41"/>
-      <source>Default Fem Command MenuText</source>
-      <translation>Standard-FEM-Menü-Text</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
       <translation>Standard-FEM-QuickInfo</translation>
     </message>
@@ -583,6 +657,11 @@
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation>Wählen Sie den Elementteil des Körpers, der zur Liste hinzugefügt werden soll. Um den Volumenkörper hinzuzufügen, klicken Sie auf "Hinzufügen".</translation>
     </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+    </message>
   </context>
   <context>
     <name>_Selector</name>
@@ -595,19 +674,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
-    <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>FEM Material für Flüssigkeiten</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>Erzeugt ein FEM-Material für Flüssigkeiten</translation>
     </message>
   </context>
   <context>
@@ -624,37 +690,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM-Netz von Form von GMSH</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Erstellen von FEM-Netz aus einer Form von GMSH-Mesher</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshPrintInfo</name>
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
       <translation>Drucke FEM-Netz-Info</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>Solver CalculiX</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Erstellt einen FEM-Solver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -675,12 +715,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation>Flüssigkeitsteil für 1D-Druchfluss</translation>
+      <translation>Fluid-Abschnitt für 1D-Fluß</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation>Erzeugt einen FEM-Flüssigkeitsabschnitt für 1D-Durchfluss</translation>
+      <translation>Erzeugt einen Fluidbereich für 1D-Durchfluß</translation>
     </message>
   </context>
   <context>
@@ -716,7 +756,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation>Erstellen einer neuen mechanischen Analyse</translation>
+      <translation>Neue mechanischen Analyse erstellen</translation>
     </message>
   </context>
   <context>
@@ -760,12 +800,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation>Einschränkung Eigengewicht</translation>
+      <translation>Eigengewicht</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation>Erstellt ein FEM-Einschränkungsgewicht</translation>
+      <translation>Eigengewicht hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -817,12 +857,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Mechanisches Material...</translation>
+      <translation>Festkörpermaterial...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation>Erstellt ein mechanisches Material</translation>
+      <translation>Festkörpermaterial erstellen</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -1008,7 +1048,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation>Erstellen einer neuen mechanischen Analyse</translation>
+      <translation>Neue mechanischen Analyse erstellen</translation>
     </message>
   </context>
   <context>
@@ -1016,12 +1056,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation>CalculiX Ccx ausführen</translation>
+      <translation>CalculiX ausführen</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation>.inp-Datei erstellen und CalculiX ccx starten</translation>
+      <translation>.inp-Datei erstellen und CalculiX starten</translation>
     </message>
   </context>
   <context>
@@ -1055,7 +1095,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Mechanisches Material...</translation>
+      <translation>Festkörpermaterial...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -1118,7 +1158,7 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>FEM-Verschiebungsrandbedingung erstellen</translation>
+      <translation>Verschiebung erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
@@ -1228,21 +1268,6 @@
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
       <translation>Eine FEM-Analyse erstellen</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>FEM-Netz erzeugen</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>FEM-Netz aus Form erstellen</translation>
     </message>
   </context>
   <context>
@@ -1368,12 +1393,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation>Hochfrequenz-Limit</translation>
+      <translation>Höchste Frequenz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Niederfrequenz-Limit</translation>
+      <translation>Niedrigste Frequenz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -1405,29 +1430,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Benutzerverzeichnis</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Annahme</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Kubischen</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Maximale Länge</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Lokale Länge</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Maximale Elementgröße</translation>
     </message>
   </context>
   <context>
@@ -1546,7 +1548,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>FEM-Randbedingungsparameter</translation>
+      <translation>FEM-Randbedingungen</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1707,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Es können nur Flächen und Kanten ausgewählt werden</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation>Punktlast [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation>Linienlast [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation>Flächenlast [N/mm²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1828,7 +1818,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation>FreeCAD-Eigenschaften-Editor verwenden</translation>
+      <translation>FreeCAD-Eigenschaftseditor verwenden</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
@@ -1923,14 +1913,6 @@
       <translation>Zeit:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation>CalculiX Eingabedatei schreiben</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation>CalculiX Eingabedatei bearbeiten</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Mechanisches Material</translation>
@@ -2000,14 +1982,6 @@
       <source>MatWeb database...</source>
       <translation>MatWeb-Datenbank...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2043,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Randbedingung bearbeiten</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Combo-Ansicht</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>Mehrfach-Reiter</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation>Wellen-Assistent</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation>Wellen-Assistent-Layout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2160,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Schieber maximal:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Farben</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

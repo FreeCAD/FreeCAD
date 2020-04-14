@@ -26,8 +26,10 @@
 #include <Base/VectorPy.h>
 #include <Base/Handle.h>
 #include <Base/Builder3D.h>
+#include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/Tools.h>
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -142,8 +144,7 @@ PyObject* MeshPy::copy(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    return new MeshPy(new MeshObject(kernel));
+    return new MeshPy(new MeshObject(*getMeshObjectPtr()));
 }
 
 PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
@@ -247,7 +248,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat.diffuseColor.push_back(App::Color(r,g,b));
+                mat.diffuseColor.emplace_back(r,g,b);
             }
 
             if (mat.diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -287,7 +288,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat->diffuseColor.push_back(App::Color(r,g,b));
+                mat->diffuseColor.emplace_back(r,g,b);
             }
 
             if (mat->diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -323,7 +324,7 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
     std::vector<Base::Vector3f> coords;
     coords.reserve(mesh->countPoints());
     for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it)
-        coords.push_back(Base::Vector3f((float)it->x,(float)it->y,(float)it->z));
+        coords.emplace_back((float)it->x,(float)it->y,(float)it->z);
     indices.reserve(4*faces.size());
     for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
         indices.push_back(it->_aulPoints[0]);
@@ -424,7 +425,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
         for (MeshObject::TPolylines::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
             Py::List polyline;
             for (std::vector<Base::Vector3f>::const_iterator kt = jt->begin(); kt != jt->end(); ++kt) {
-                polyline.append(Py::Object(new Base::VectorPy(*kt)));
+                polyline.append(Py::asObject(new Base::VectorPy(*kt)));
             }
             section.append(polyline);
         }
@@ -709,7 +710,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         for (Py::List::iterator it = list_v.begin(); it != list_v.end(); ++it) {
             if ((*it).isType(vType)) {
                 Base::Vector3d v = static_cast<Base::VectorPy*>((*it).ptr())->value();
-                vertices.push_back(Base::Vector3f((float)v.x,(float)v.y,(float)v.z));
+                vertices.emplace_back((float)v.x,(float)v.y,(float)v.z);
             }
         }
 
@@ -1191,6 +1192,20 @@ PyObject*  MeshPy::fixIndices(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::fixCaps(PyObject *args)
+{
+    float fMaxAngle = Base::toRadians<float>(150.0f);
+    float fSplitFactor = 0.25f;
+    if (!PyArg_ParseTuple(args, "|ff", &fMaxAngle, &fSplitFactor))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->validateCaps(fMaxAngle, fSplitFactor);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
 PyObject*  MeshPy::fixDeformations(PyObject *args)
 {
     float fMaxAngle;
@@ -1249,6 +1264,43 @@ PyObject*  MeshPy::refine(PyObject *args)
 
     PY_TRY {
         getMeshObjectPtr()->refine();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::removeNeedles(PyObject *args)
+{
+    float length;
+    if (!PyArg_ParseTuple(args, "f", &length))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->removeNeedles(length);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::removeFullBoundaryFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->removeFullBoundaryFacets();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::mergeFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->mergeFacets();
     } PY_CATCH;
 
     Py_Return;
@@ -1835,7 +1887,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
     meshCurv.ComputePerVertex();
 
     Py::Sequence func(l);
-    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     for (Py::Sequence::iterator it = func.begin(); it != func.end(); ++it) {
         Py::Tuple t(*it);
         float c1 = (float)Py::Float(t[0]);
@@ -1847,13 +1899,13 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.emplace_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);
 
     Py::List list;
-    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
+    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
         const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
             Py::List ary;
@@ -1866,7 +1918,38 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
             }
             list.append(ary);
         }
-        delete (*segmIt);
+    }
+
+    return Py::new_reference_to(list);
+}
+
+PyObject* MeshPy::getCurvaturePerVertex(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshSegmentAlgorithm finder(kernel);
+    MeshCore::MeshCurvature meshCurv(kernel);
+    meshCurv.ComputePerVertex();
+
+    const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
+    Py::List list;
+    for (const auto& it : curv) {
+        Py::Tuple tuple(4);
+        tuple.setItem(0, Py::Float(it.fMaxCurvature));
+        tuple.setItem(1, Py::Float(it.fMinCurvature));
+        Py::Tuple maxDir(3);
+        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
+        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
+        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
+        tuple.setItem(2, maxDir);
+        Py::Tuple minDir(3);
+        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
+        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
+        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
+        tuple.setItem(3, minDir);
+        list.append(tuple);
     }
 
     return Py::new_reference_to(list);
@@ -1937,7 +2020,7 @@ Py::Tuple MeshPy::getTopology(void) const
     Py::List vertex;
     for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
         it != Points.end(); ++it)
-        vertex.append(Py::Object(new Base::VectorPy(*it)));
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
     tuple.setItem(0, vertex);
     Py::List facet;
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator

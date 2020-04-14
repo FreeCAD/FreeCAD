@@ -34,8 +34,12 @@ DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-    plsb_FontSize->setUnit(Base::Unit::Length);
-    plsb_ArrowSize->setUnit(Base::Unit::Length);
+
+    this->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    this->pdsbTemplateMark->setMinimum(0);
+
+    connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onScaleTypeChanged(int)));
 }
 
 DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
@@ -43,44 +47,46 @@ DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
     // no need to delete child widgets, Qt does it all for us
 }
 
+void DlgPrefsTechDraw2Imp::onScaleTypeChanged(int index)
+{
+    // disable custom scale if the scale type is not custom
+
+    if (index == 2) // if custom
+        this->pdsbViewScale->setEnabled(true);
+    else
+        this->pdsbViewScale->setEnabled(false);
+}
+
 void DlgPrefsTechDraw2Imp::saveSettings()
 {
-    cbShowUnits->onSave();
-    plsb_FontSize->onSave();
-    colDimColor->onSave();
-    leDiameter->onSave();
-    pcbMatting->onSave();
-    pcbCenterStyle->onSave();
-    colCenterLine->onSave();
-    pcbSectionStyle->onSave();
-    colSectionLine->onSave();
-    pcbArrow->onSave();
-    cbGlobalDecimals->onSave();
-    sbAltDecimals->onSave();
-    plsb_ArrowSize->onSave();
-    leLineGroup->onSave();
-    pdsb_VertexScale->onSave();
-    pcb_VertexColor->onSave();
+    pdsbToleranceScale->onSave();
+    pdsbTemplateMark->onSave();
+    pdsbVertexScale->onSave();
+    pdsbCenterScale->onSave();
+    pdsbPageScale->onSave();
+    cbViewScaleType->onSave();
+    pdsbViewScale->onSave();
+    pdsbEdgeFuzz->onSave();
+    pdsbMarkFuzz->onSave();
+    pdsbTemplateMark->onSave();
+    pdsbSymbolScale->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
 {
-    cbShowUnits->onRestore();
-    plsb_FontSize->onRestore();
-    colDimColor->onRestore();
-    leDiameter->onRestore();
-    pcbMatting->onRestore();
-    pcbCenterStyle->onRestore();
-    colCenterLine->onRestore();
-    pcbSectionStyle->onRestore();
-    colSectionLine->onRestore();
-    pcbArrow->onRestore();
-    cbGlobalDecimals->onRestore();
-    sbAltDecimals->onRestore();
-    plsb_ArrowSize->onRestore();
-    leLineGroup->onRestore();
-    pdsb_VertexScale->onRestore();
-    pcb_VertexColor->onRestore();
+    double markDefault = 3.0;
+    pdsbTemplateMark->setValue(markDefault);
+    pdsbToleranceScale->onRestore();
+    pdsbTemplateMark->onRestore();
+    pdsbVertexScale->onRestore();
+    pdsbCenterScale->onRestore();
+    pdsbPageScale->onRestore();
+    cbViewScaleType->onRestore();
+    pdsbViewScale->onRestore();
+    pdsbEdgeFuzz->onRestore();
+    pdsbMarkFuzz->onRestore();
+    pdsbTemplateMark->onRestore();
+    pdsbSymbolScale->onRestore();
 }
 
 /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr" sourcelanguage="en">
+<TS version="2.1" language="fr" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Alignement vertical au centre</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Aligner le contenu des cellules sélectionnées au centre verticalement</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Aligne verticalement au centre le contenu des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Fusionner des cellules</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Fusionner les cellules sélectionnées dans la feuille de calcul</translation>
+      <source>Merge selected cells</source>
+      <translation>Fusionner les cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Diviser la cellule</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Diviser les cellules précédemment fusionnées dans la feuille de calcul</translation>
+      <source>Split previously merged cells</source>
+      <translation>Scinder les cellules précédemment fusionnées</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texte en gras</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Mettre le texte en gras dans les cellules sélectionnées</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Rendre gras le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texte en italique</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Mettre le texte en italique dans les cellules sélectionnées</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Rendre italique le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Texte souligné</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Souligner le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personnalisée</translation>
+      <source>Custom Color</source>
+      <translation>Couleur personnalisée</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Texte unité</translation>
+      <translation>Chaîne de caractères de l'unité</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -331,10 +331,6 @@
       <translation>Exporter un fichier</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Contenu de la cellule</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Montrer la feuille de calcul</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Définit la couleur d'arrière-plan des cellules de la feuille de calcul</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tableur (le module) / Feuille de calcul (l'objet créé par le Tableur)</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Gris clair</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personnalisée</translation>
+      <source>Custom Color</source>
+      <translation>Couleur personnalisée</translation>
     </message>
   </context>
   <context>

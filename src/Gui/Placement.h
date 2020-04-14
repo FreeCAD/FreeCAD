@@ -51,16 +51,19 @@ public:
     void accept();
     void reject();
 
+    void bindObject();
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);
 
 protected:
+    void open();
     void changeEvent(QEvent *e);
     void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
+    void openTransaction();
     void on_applyButton_clicked();
     void on_applyIncrementalPlacement_toggled(bool);
     void onPlacementChanged(int);
@@ -87,7 +90,7 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
+    typedef Gui::LocationUi<Ui_Placement> Ui_PlacementComp;
     typedef boost::signals2::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
@@ -101,6 +104,10 @@ private:
      * after user selects points and clicks Selected point(s)
      */
     std::vector<SelectionObject> selectionObjects;
+    /** If false apply the placement directly to the transform nodes,
+     * otherwise change the placement property.
+     */
+    bool changeProperty;
 
     friend class TaskPlacement;
 };
@@ -128,10 +135,12 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
+    void bindObject();
     bool accept();
     bool reject();
     void clicked(int id);
 
+    void open();
     bool isAllowedAlterDocument(void) const
     { return true; }
     bool isAllowedAlterView(void) const

@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -23,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime
+import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -76,28 +74,89 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
     return obj
 
 
-def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
+def getSunDirections(longitude,latitude,tz=None):
 
-    """makeSolarDiagram(longitude,latitude,[scale,complete]):
-    returns a solar diagram as a pivy node. If complete is
-    True, the 12 months are drawn"""
+    """getSunDirections(longitude,latitude,[tz]): returns a list of 9
+    directional 3D vectors corresponding to sun direction at 9h, 12h
+    and 15h on summer solstice, equinox and winter solstice. Tz is the
+    timezone related to UTC (ex: -3 = UTC-3)"""
 
-    from subprocess import call
-    py3_failed = call(["python3", "-c", "import Pysolar"])
-
-    if py3_failed:
+    oldversion = False
+    try:
+        import pysolar
+    except:
         try:
-            import Pysolar
+            import Pysolar as pysolar
         except:
-            print("Pysolar is not installed. Unable to generate solar diagrams")
+            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
             return None
+        else:
+            oldversion = True
+
+    if tz:
+        tz = datetime.timezone(datetime.timedelta(hours=-3))
     else:
-        from subprocess import check_output
+        tz = datetime.timezone.utc
+
+    year = datetime.datetime.now().year
+    hpts = [ [] for i in range(24) ]
+    m = [(6,21),(9,21),(12,21)]
+    pts = []
+    for i,d in enumerate(m):
+        for h in [9,12,15]:
+            if oldversion:
+                dt = datetime.datetime(year, d[0], d[1], h)
+                alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
+                az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
+                az = -90 + az # pysolar's zero is south, ours is X direction
+            else:
+                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=tz)
+                alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
+                az = pysolar.solar.get_azimuth(latitude, longitude, dt)
+                az = 90 + az # pysolar's zero is north, ours is X direction
+            if az < 0:
+                az = 360 + az
+            az = math.radians(az)
+            zc = math.sin(alt)
+            ic = math.cos(alt)
+            xc = math.cos(az)*ic
+            yc = math.sin(az)*ic
+            p = FreeCAD.Vector(xc,yc,zc).negative()
+            p.normalize()
+            if not oldversion:
+                p.x = -p.x # No idea why that is, empirical find
+            pts.append(p)
+    return pts
+
+
+def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
+
+    """makeSolarDiagram(longitude,latitude,[scale,complete,tz]):
+    returns a solar diagram as a pivy node. If complete is
+    True, the 12 months are drawn. Tz is the timezone related to
+    UTC (ex: -3 = UTC-3)"""
+
+    oldversion = False
+    try:
+        import pysolar
+    except:
+        try:
+            import Pysolar as pysolar
+        except:
+            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
+            return None
+        else:
+            oldversion = True
 
     from pivy import coin
 
     if not scale:
         return None
+
+    if tz:
+        tz = datetime.timezone(datetime.timedelta(hours=-3))
+    else:
+        tz = datetime.timezone.utc
 
     def toNode(shape):
         "builds a pivy node from a simple linear shape"
@@ -146,17 +205,16 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
     for i,d in enumerate(m):
         pts = []
         for h in range(24):
-            if not py3_failed:
-                dt = "datetime.datetime(%s, %s, %s, %s)" % (year, d[0], d[1], h)
-                alt_call = "python3 -c 'import datetime,Pysolar; print (Pysolar.solar.get_altitude_fast(%s, %s, %s))'" % (latitude, longitude, dt)
-                alt = math.radians(float(check_output(alt_call, shell=True).strip()))
-                az_call = "python3 -c 'import datetime,Pysolar; print (Pysolar.solar.get_azimuth(%s, %s, %s))'" % (latitude, longitude, dt)
-                az = float(re.search('.+$', check_output(az_call, shell=True)).group(0))
+            if oldversion:
+                dt = datetime.datetime(year, d[0], d[1], h)
+                alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
+                az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
+                az = -90 + az # pysolar's zero is south, ours is X direction
             else:
-                dt = datetime.datetime(year,d[0],d[1],h)
-                alt = math.radians(Pysolar.solar.GetAltitudeFast(latitude,longitude,dt))
-                az = Pysolar.solar.GetAzimuth(latitude,longitude,dt)
-            az = -90 + az # pysolar's zero is south
+                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=tz)
+                alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
+                az = pysolar.solar.get_azimuth(latitude, longitude, dt)
+                az = 90 + az # pysolar's zero is north, ours is X direction
             if az < 0:
                 az = 360 + az
             az = math.radians(az)
@@ -171,6 +229,8 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
                 ep = FreeCAD.Vector(p)
                 ep.multiply(1.08)
                 if ep.z >= 0:
+                    if not oldversion:
+                        h = 24-h # not sure why this is needed now... But it is.
                     if h == 12:
                         if i == 0:
                             h = "SUMMER"
@@ -257,6 +317,152 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
         numsep.addChild(item)
     return mastersep
 
+# Values in mm
+COMPASS_POINTER_LENGTH = 1000
+COMPASS_POINTER_WIDTH = 100
+
+
+class Compass(object):
+    def __init__(self):
+        self.rootNode = self.setupCoin()
+
+    def show(self):
+        from pivy import coin
+        self.compassswitch.whichChild = coin.SO_SWITCH_ALL
+
+    def hide(self):
+        from pivy import coin
+        self.compassswitch.whichChild = coin.SO_SWITCH_NONE
+
+    def rotate(self, angleInDegrees):
+        from pivy import coin
+        self.transform.rotation.setValue(
+            coin.SbVec3f(0, 0, 1), math.radians(angleInDegrees))
+
+    def locate(self, x,y,z):
+        from pivy import coin
+        self.transform.translation.setValue(x, y, z)
+
+    def scale(self, area):
+        from pivy import coin
+
+        scale = round(max(math.sqrt(area.getValueAs("m^2").Value) / 10, 1))
+
+        self.transform.scaleFactor.setValue(coin.SbVec3f(scale, scale, 1))
+
+    def setupCoin(self):
+        from pivy import coin
+
+        compasssep = coin.SoSeparator()
+
+        self.transform = coin.SoTransform()
+
+        darkNorthMaterial = coin.SoMaterial()
+        darkNorthMaterial.diffuseColor.set1Value(
+            0, 0.5, 0, 0)  # north dark color
+
+        lightNorthMaterial = coin.SoMaterial()
+        lightNorthMaterial.diffuseColor.set1Value(
+            0, 0.9, 0, 0)  # north light color
+
+        darkGreyMaterial = coin.SoMaterial()
+        darkGreyMaterial.diffuseColor.set1Value(0, 0.9, 0.9, 0.9)  # dark color
+
+        lightGreyMaterial = coin.SoMaterial()
+        lightGreyMaterial.diffuseColor.set1Value(
+            0, 0.5, 0.5, 0.5)  # light color
+
+        coords = self.buildCoordinates()
+
+        # coordIndex = [0, 1, 2, -1, 2, 3, 0, -1]
+
+        lightColorFaceset = coin.SoIndexedFaceSet()
+        lightColorCoordinateIndex = [4, 5, 6, -1, 8, 9, 10, -1, 12, 13, 14, -1]
+        lightColorFaceset.coordIndex.setValues(
+            0, len(lightColorCoordinateIndex), lightColorCoordinateIndex)
+
+        darkColorFaceset = coin.SoIndexedFaceSet()
+        darkColorCoordinateIndex = [6, 7, 4, -1, 10, 11, 8, -1, 14, 15, 12, -1]
+        darkColorFaceset.coordIndex.setValues(
+            0, len(darkColorCoordinateIndex), darkColorCoordinateIndex)
+
+        lightNorthFaceset = coin.SoIndexedFaceSet()
+        lightNorthCoordinateIndex = [2, 3, 0, -1]
+        lightNorthFaceset.coordIndex.setValues(
+            0, len(lightNorthCoordinateIndex), lightNorthCoordinateIndex)
+
+        darkNorthFaceset = coin.SoIndexedFaceSet()
+        darkNorthCoordinateIndex = [0, 1, 2, -1]
+        darkNorthFaceset.coordIndex.setValues(
+            0, len(darkNorthCoordinateIndex), darkNorthCoordinateIndex)
+
+        self.compassswitch = coin.SoSwitch()
+        self.compassswitch.whichChild = coin.SO_SWITCH_NONE
+        self.compassswitch.addChild(compasssep)
+
+        lightGreySeparator = coin.SoSeparator()
+        lightGreySeparator.addChild(lightGreyMaterial)
+        lightGreySeparator.addChild(lightColorFaceset)
+
+        darkGreySeparator = coin.SoSeparator()
+        darkGreySeparator.addChild(darkGreyMaterial)
+        darkGreySeparator.addChild(darkColorFaceset)
+
+        lightNorthSeparator = coin.SoSeparator()
+        lightNorthSeparator.addChild(lightNorthMaterial)
+        lightNorthSeparator.addChild(lightNorthFaceset)
+
+        darkNorthSeparator = coin.SoSeparator()
+        darkNorthSeparator.addChild(darkNorthMaterial)
+        darkNorthSeparator.addChild(darkNorthFaceset)
+
+        compasssep.addChild(coords)
+        compasssep.addChild(self.transform)
+        compasssep.addChild(lightGreySeparator)
+        compasssep.addChild(darkGreySeparator)
+        compasssep.addChild(lightNorthSeparator)
+        compasssep.addChild(darkNorthSeparator)
+
+        return self.compassswitch
+
+    def buildCoordinates(self):
+        from pivy import coin
+
+        coords = coin.SoCoordinate3()
+
+        # North Arrow
+        coords.point.set1Value(0, 0, 0, 0)
+        coords.point.set1Value(1, COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(2, 0, COMPASS_POINTER_LENGTH, 0)
+        coords.point.set1Value(3, -COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+
+        # East Arrow
+        coords.point.set1Value(4, 0, 0, 0)
+        coords.point.set1Value(
+            5, COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(6, COMPASS_POINTER_LENGTH, 0, 0)
+        coords.point.set1Value(7, COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+
+        # South Arrow
+        coords.point.set1Value(8, 0, 0, 0)
+        coords.point.set1Value(
+            9, -COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(10, 0, -COMPASS_POINTER_LENGTH, 0)
+        coords.point.set1Value(
+            11, COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+
+        # West Arrow
+        coords.point.set1Value(12, 0, 0, 0)
+        coords.point.set1Value(13, -COMPASS_POINTER_WIDTH,
+                               COMPASS_POINTER_WIDTH, 0)
+        coords.point.set1Value(14, -COMPASS_POINTER_LENGTH, 0, 0)
+        coords.point.set1Value(
+            15, -COMPASS_POINTER_WIDTH, -COMPASS_POINTER_WIDTH, 0)
+
+        return coords
 
 class _CommandSite:
 
@@ -281,7 +487,7 @@ class _CommandSite:
         siteobj = []
         warning = False
         for obj in sel :
-            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcRole") and obj.IfcRole == "Building"):
+            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
                 siteobj.append(obj)
             else :
                 if link == True :
@@ -313,17 +519,19 @@ Site creation aborted.") + "\n"
 
 
 
-class _Site(ArchFloor._Floor):
+class _Site(ArchIFC.IfcProduct):
 
     "The Site object"
 
     def __init__(self,obj):
 
-        ArchFloor._Floor.__init__(self,obj)
+        obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcRole = "Site"
+        obj.IfcType = "Site"
 
     def setProperties(self,obj):
+
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Terrain" in pl:
@@ -372,32 +580,34 @@ class _Site(ArchFloor._Floor):
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython", self)
+        if not "IfcType" in pl:
+            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.IfcType = ArchIFC.IfcTypes
+            obj.IcfType = "Site"
+        if not "TimeZone" in pl:
+            obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"))
         self.Type = "Site"
-        obj.setEditorMode('Height',2)
 
     def onDocumentRestored(self,obj):
 
-        ArchFloor._Floor.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
     def execute(self,obj):
 
-        ArchFloor._Floor.execute(self,obj)
-
-        if not obj.isDerivedFrom("Part::Feature"): # old-style Site
+        if not hasattr(obj,'Shape'): # old-style Site
             return
 
         pl = obj.Placement
         shape = None
         if obj.Terrain:
-            if obj.Terrain.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Terrain,'Shape'):
                 if obj.Terrain.Shape:
                     if not obj.Terrain.Shape.isNull():
                         shape = obj.Terrain.Shape.copy()
         if shape:
             shells = []
             for sub in obj.Subtractions:
-                if sub.isDerivedFrom("Part::Feature"):
+                if hasattr(sub,'Shape'):
                     if sub.Shape:
                         if sub.Shape.Solids:
                             for sol in sub.Shape.Solids:
@@ -405,7 +615,7 @@ class _Site(ArchFloor._Floor):
                                 shells.append(sol.Shells[0].common(shape.extrude(obj.ExtrusionVector)))
                                 shape = rest
             for sub in obj.Additions:
-                if sub.isDerivedFrom("Part::Feature"):
+                if hasattr(sub,'Shape'):
                     if sub.Shape:
                         if sub.Shape.Solids:
                             for sol in sub.Shape.Solids:
@@ -425,7 +635,7 @@ class _Site(ArchFloor._Floor):
 
     def onChanged(self,obj,prop):
 
-        ArchFloor._Floor.onChanged(self,obj,prop)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
         if prop == "Terrain":
             if obj.Terrain:
                 if FreeCAD.GuiUp:
@@ -501,13 +711,13 @@ class _Site(ArchFloor._Floor):
 
 
 
-class _ViewProviderSite(ArchFloor._ViewProviderFloor):
+class _ViewProviderSite:
 
     "A View Provider for the Site object"
 
     def __init__(self,vobj):
 
-        ArchFloor._ViewProviderFloor.__init__(self,vobj)
+        vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)
 
@@ -524,6 +734,19 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         if not "SolarDiagramColor" in pl:
             vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
             vobj.SolarDiagramColor = (0.16,0.16,0.25)
+        if not "Orientation" in pl:
+            vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
+                "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
+            vobj.Orientation = ["Project North", "True North"]
+            vobj.Orientation = "Project North"
+        if not "Compass" in pl:
+            vobj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"))
+        if not "CompassRotation" in pl:
+            vobj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"))
+        if not "CompassPosition" in pl:
+            vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"))
+        if not "UpdateDeclination" in pl:
+            vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
 
     def onDocumentRestored(self,vobj):
 
@@ -536,17 +759,19 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
 
     def claimChildren(self):
 
-        objs = self.Object.Group+[self.Object.Terrain]
-        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
-            objs.extend(self.Object.Additions)
-        if hasattr(self.Object,"Subtractions") and prefs.GetBool("swallowSubtractions",True):
-            objs.extend(self.Object.Subtractions)
+        objs = []
+        if hasattr(self,"Object"):
+            objs = self.Object.Group+[self.Object.Terrain]
+            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
+                objs.extend(self.Object.Additions)
+            if hasattr(self.Object,"Subtractions") and prefs.GetBool("swallowSubtractions",True):
+                objs.extend(self.Object.Subtractions)
         return objs
 
     def setEdit(self,vobj,mode):
 
-        if mode == 0:
+        if (mode == 0) and hasattr(self,"Object"):
             import ArchComponent
             taskd = ArchComponent.ComponentTaskPanel()
             taskd.obj = self.Object
@@ -562,7 +787,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
 
     def attach(self,vobj):
 
-        ArchFloor._ViewProviderFloor.attach(self,vobj)
+        self.Object = vobj.Object
         from pivy import coin
         self.diagramsep = coin.SoSeparator()
         self.color = coin.SoBaseColor()
@@ -573,6 +798,11 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
         self.diagramsep.addChild(self.coords)
         self.diagramsep.addChild(self.color)
         vobj.Annotation.addChild(self.diagramswitch)
+        self.compass = Compass()
+        self.updateCompassVisibility(vobj)
+        self.updateCompassScale(vobj)
+        self.rotateCompass(vobj)
+        vobj.Annotation.addChild(self.compass.rootNode)
 
     def updateData(self,obj,prop):
 
@@ -580,6 +810,14 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")
+            self.updateTrueNorthRotation()
+        elif prop == "Terrain":
+            self.updateCompassLocation(obj.ViewObject)
+        elif prop == "Placement":
+            self.updateCompassLocation(obj.ViewObject)
+            self.updateDeclination(obj.ViewObject)
+        elif prop == "ProjectedArea":
+            self.updateCompassScale(obj.ViewObject)
 
     def onChanged(self,vobj,prop):
 
@@ -600,7 +838,10 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                 del self.diagramnode
             if hasattr(vobj,"SolarDiagram") and hasattr(vobj,"SolarDiagramScale"):
                 if vobj.SolarDiagram:
-                    self.diagramnode = makeSolarDiagram(vobj.Object.Longitude,vobj.Object.Latitude,vobj.SolarDiagramScale)
+                    tz = 0
+                    if hasattr(vobj.Object,"TimeZone"):
+                        tz = vobj.Object.TimeZone
+                    self.diagramnode = makeSolarDiagram(vobj.Object.Longitude,vobj.Object.Latitude,vobj.SolarDiagramScale,tz=tz)
                     if self.diagramnode:
                         self.diagramsep.addChild(self.diagramnode)
                         self.diagramswitch.whichChild = 0
@@ -608,6 +849,104 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop == 'Visibility':
+            if vobj.Visibility:
+                self.updateCompassVisibility(self.Object)
+            else:
+                self.compass.hide()
+        elif prop == 'Orientation':
+            if vobj.Orientation == 'True North':
+                self.addTrueNorthRotation()
+            else:
+                self.removeTrueNorthRotation()
+        elif prop == "UpdateDeclination":
+            self.updateDeclination(vobj)
+        elif prop == "Compass":
+            self.updateCompassVisibility(vobj)
+        elif prop == "CompassRotation":
+            self.updateDeclination(vobj)
+            self.rotateCompass(vobj)
+        elif prop == "CompassPosition":
+            self.updateCompassLocation(vobj)
+
+    def updateDeclination(self,vobj):
+
+        if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:
+            return
+        compassRotation = vobj.CompassRotation.Value
+        siteRotation = math.degrees(vobj.Object.Placement.Rotation.Angle) # This assumes Rotation.axis = (0,0,1)
+        vobj.Object.Declination = compassRotation + siteRotation
+
+    def addTrueNorthRotation(self):
+
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            return
+        from pivy import coin
+        self.trueNorthRotation = coin.SoTransform()
+        sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg.insertChild(self.trueNorthRotation, 0)
+        self.updateTrueNorthRotation()
+
+    def removeTrueNorthRotation(self):
+
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+            sg.removeChild(self.trueNorthRotation)
+            self.trueNorthRotation = None
+
+    def updateTrueNorthRotation(self):
+
+        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+            from pivy import coin
+            angle = self.Object.Declination.Value
+            self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
+
+    def updateCompassVisibility(self, vobj):
+
+        if not hasattr(self, 'compass'):
+            return
+        show = hasattr(vobj, 'Compass') and vobj.Compass
+        if show:
+            self.compass.show()
+        else:
+            self.compass.hide()
+
+    def rotateCompass(self, vobj):
+
+        if not hasattr(self, 'compass'):
+            return
+        if hasattr(vobj, 'CompassRotation'):
+            self.compass.rotate(vobj.CompassRotation.Value)
+
+    def updateCompassLocation(self, vobj):
+
+        if not hasattr(self, 'compass'):
+            return
+        if not vobj.Object.Shape:
+            return
+        boundBox = vobj.Object.Shape.BoundBox
+        pos = vobj.Object.Placement.Base
+        x = 0
+        y = 0
+        if hasattr(vobj, "CompassPosition"):
+            x = vobj.CompassPosition.x
+            y = vobj.CompassPosition.y
+        z = boundBox.ZMax = pos.z
+        self.compass.locate(x,y,z+1000)
+
+    def updateCompassScale(self, vobj):
+
+        if not hasattr(self, 'compass'):
+            return
+        self.compass.scale(vobj.Object.ProjectedArea)
+
+    def __getstate__(self):
+
+        return None
+
+    def __setstate__(self,state):
+
+        return None
 
 
 if FreeCAD.GuiUp:

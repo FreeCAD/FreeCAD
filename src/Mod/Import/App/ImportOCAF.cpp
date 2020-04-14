@@ -54,13 +54,14 @@
 # include <XCAFDoc_ShapeTool.hxx>
 # include <XCAFDoc_ColorTool.hxx>
 # include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_GraphNode.hxx>
 # include <TDF_Label.hxx>
+# include <TDF_Tool.hxx>
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
 # include <Quantity_Color.hxx>
 # include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
 # include <STEPControl_Writer.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
@@ -81,11 +82,14 @@
 # endif
 #endif
 
+#include <boost/algorithm/string.hpp>
+#include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Part.h>
+#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
 #include "ImportOCAF.h"
@@ -102,10 +106,7 @@
 #include <tbb/task_group.h>
 #endif
 
-
-
 using namespace Import;
-
 
 #define OCAF_KEEP_PLACEMENT
 
@@ -280,7 +281,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 }
 
 void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name,
-                             std::vector<App::DocumentObject*>& lValue, bool merge)
+                             std::vector<App::DocumentObject*>& lValue, bool mergeShape)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
 #ifdef HAVE_TBB
@@ -294,7 +295,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         std::vector<App::DocumentObject *> localValue;
         App::Part *pcPart = NULL;
 
-        if (merge) {
+        if (mergeShape) {
 
             // We should do that only if there is more than a single shape inside
             // Computing Compounds takes time
@@ -387,7 +388,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
             }
         }
 
-        if (!localValue.empty() && !merge) {
+        if (!localValue.empty() && !mergeShape) {
             pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
             pcPart->Label.setValue(name);
 

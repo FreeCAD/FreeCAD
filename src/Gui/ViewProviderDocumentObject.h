@@ -24,9 +24,10 @@
 #ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 #define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 
+#include <Inventor/SoType.h>
+
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
-#include <Inventor/SoType.h>
 
 class SoMaterial;
 class SoDrawStyle;
@@ -47,7 +48,7 @@ class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
-    PROPERTY_HEADER(Gui::ViewProviderDocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDocumentObject);
 
 public:
     /// constructor.
@@ -59,35 +60,93 @@ public:
     // Display properties
     App::PropertyEnumeration DisplayMode;
     App::PropertyBool Visibility;
+    App::PropertyBool ShowInTree;
+    App::PropertyEnumeration OnTopWhenSelected;
+    App::PropertyEnumeration SelectionStyle;
 
     virtual void attach(App::DocumentObject *pcObject);
-    virtual void updateData(const App::Property*);
+    virtual void reattach(App::DocumentObject *);
+    virtual void update(const App::Property*) override;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide(void) override;
     /// Show the object in the view
-    virtual void show(void);
+    virtual void show(void) override;
+
+    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+            const char *, const std::vector<std::string> &) const override;
+
+    virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
+
+    virtual bool showInTree() const override;
 
     /// Get a list of TaskBoxes associated with this object
-    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const;
+    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
     /// Asks the view provider if the given object can be deleted.
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    virtual bool canDelete(App::DocumentObject* obj) const override;
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
+
+    /// return a hit element given the picked point which contains the full node path
+    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    /// return the coin node detail and path to the node of the subname
+    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
+
+    /* Force update visual
+     *
+     * These method exists because some view provider skips visual update when
+     * hidden (e.g. PartGui::ViewProviderPartExt). Call this function to force
+     * visual update.
+     */
+    //@{
+    virtual void forceUpdate(bool enable = true) {(void)enable;}
+    virtual bool isUpdateForced() const {return false;}
+    //@}
 
     /** @name Restoring view provider from document load */
     //@{
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
+
+    virtual bool removeDynamicProperty(const char* prop) override;
+
+    virtual App::Property* addDynamicProperty(
+            const char* type, const char* name=0,
+            const char* group=0, const char* doc=0,
+            short attr=0, bool ro=false, bool hidden=false) override;
+
+    /** Return the linked view object
+     *
+     * This function is mainly used for GUI navigation (e.g.
+     * StdCmdLinkSelectLinked). 
+     *
+     * @param subname: output as the subname referencing the linked object
+     * @param recursive: whether to follow the link recursively
+     *
+     * @return Returns the linked view provider. If none, it shall return
+     * itself.
+     */
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const;
+
+    virtual std::string getFullName() const override;
+
+    /** Allow this class to be used as an override for the original view provider of the given object
+     *
+     * @sa App::DocumentObject::getViewProviderNameOverride()
+     */
+    virtual bool allowOverride(const App::DocumentObject &) const {
+        return false;
+    }
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
@@ -112,9 +171,9 @@ protected:
      */
     Gui::MDIView* getViewOfNode(SoNode* node) const;
     /// get called before the value is changed
-    virtual void onBeforeChange(const App::Property* prop);
+    virtual void onBeforeChange(const App::Property* prop) override;
     /// Gets called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     /** Searches in all view providers that are attached to an object that
      * is part of the same document as the object this view provider is
      * attached to for an front root of \a type.
@@ -127,18 +186,24 @@ protected:
     /** @name Transaction handling
      */
     //@{
-    /// \internal get called when removing a property of name \a prop
-    void onAboutToRemoveProperty(const char* prop);
-    virtual bool isAttachedToDocument() const;
-    virtual const char* detachFromDocument();
+    virtual bool isAttachedToDocument() const override;
+    virtual const char* detachFromDocument() override;
+
+    /// get called when a property status has changed
+    virtual void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
+
     //@}
 
 protected:
     App::DocumentObject *pcObject;
+    Gui::Document* pcDocument;
 
 private:
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
+    bool _UpdatingView;
+
+    friend class Document;
 };
 
 

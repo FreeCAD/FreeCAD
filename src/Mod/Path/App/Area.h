@@ -35,12 +35,9 @@
 
 #include <Base/Console.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PartPyCXX.h>
 #include "Path.h"
 #include "AreaParams.h"
-
-namespace Part {
-extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 class CArea;
 class CCurve;
@@ -70,6 +67,8 @@ struct PathExport AreaParams: CAreaParams {
     bool operator!=(const AreaParams &other) const {
         return !(*this == other);
     }
+
+    void dump(const char *) const;
 
     AreaParams();
 };
@@ -148,7 +147,7 @@ protected:
     /** Called internally to obtain the combined children shapes */
     TopoDS_Shape toShape(CArea &area, short fill, int reorient=0);
 
-    /** Obtain a list of offsetted areas
+    /** Obtain a list of offset areas
      *
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */

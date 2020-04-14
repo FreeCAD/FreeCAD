@@ -6,7 +6,7 @@
     <message>
       <location filename="../../InitGui.py" line="64"/>
       <source>Ship design</source>
-      <translation>Schiffsdesign</translation>
+      <translation>Schiffsentwurf</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="67"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation>True, wenn es eine gültige Schiff-Instanz ist, ansonsten false</translation>
+      <translation>True, falls es eine gültige Schiffs-Instanz ist, ansonsten False</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="53"/>

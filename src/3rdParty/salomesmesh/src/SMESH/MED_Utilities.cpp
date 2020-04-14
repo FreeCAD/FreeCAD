@@ -45,8 +45,9 @@ MED::PrefixPrinter::~PrefixPrinter()
 {
   if(myIsActive){
     myCounter--;
-    if(myCounter < 0)
-      EXCEPTION(runtime_error,"PrefixPrinter::~PrefixPrinter() - myCounter("<<myCounter<<") < 0");
+    //Do not throw exceptions from inside destructors
+    //if(myCounter < 0)
+    //  EXCEPTION(runtime_error,"PrefixPrinter::~PrefixPrinter() - myCounter("<<myCounter<<") < 0");
   }
 }
 

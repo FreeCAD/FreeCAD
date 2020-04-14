@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,10 +43,6 @@ public:
     //virtual void onChanged(const App::Property*); //no further property for viewProvider
 protected:
     virtual bool setEdit(int ModNum);
-
-private:
-    /// Direction of the force
-    Base::Vector3f forceDirection;
 };
 
 } //namespace FemGui

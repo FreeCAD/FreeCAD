@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-TW" sourcelanguage="en">
+<TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>垂直中央對齊</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>所選儲存格之內容垂直中央對齊</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>合併儲存格</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>於試算表中合併所選儲存格</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>分割儲存格</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>於試算表中將先前合併的儲存格分割</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>粗體</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>所選儲存格設定為粗體</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>斜體</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>所選儲存格設定為斜體</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>文字加上底線</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>所選儲存格設定為文字加上底線</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>自訂</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>匯出檔案</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>儲存格內容</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>顯示試算表</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>試算表</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>淺灰色</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>自訂</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

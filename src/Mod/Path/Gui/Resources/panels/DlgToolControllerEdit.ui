@@ -22,7 +22,7 @@
         <x>0</x>
         <y>0</y>
         <width>543</width>
-        <height>593</height>
+        <height>638</height>
        </rect>
       </property>
       <attribute name="label">
@@ -43,7 +43,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="tcNumber"/>
+           <widget class="QSpinBox" name="tcNumber">
+            <property name="maximum">
+             <number>99999</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -233,7 +237,7 @@
         <x>0</x>
         <y>0</y>
         <width>543</width>
-        <height>593</height>
+        <height>638</height>
        </rect>
       </property>
       <attribute name="label">
@@ -252,7 +256,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
          </layout>

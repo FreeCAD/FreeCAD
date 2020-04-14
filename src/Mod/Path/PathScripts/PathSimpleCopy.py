@@ -26,10 +26,10 @@ import FreeCADGui
 import PathScripts
 from PySide import QtCore
 
-"""Path SimpleCopy command"""
+__doc__ = """Path SimpleCopy command"""
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -47,7 +47,7 @@ class CommandPathSimpleCopy:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except Exception: # pylint: disable=broad-except
             return False
 
     def Activated(self):

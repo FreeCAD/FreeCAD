@@ -325,7 +325,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // web navigation toolbar
     Gui::ToolBarItem* navigation = new Gui::ToolBarItem(root);
     navigation->setCommand("Navigation");
-    *navigation << "Web_OpenWebsite" 
+    *navigation << "Web_BrowserSetURL"
+                << "Separator"
+                << "Web_OpenWebsite"
                 << "Separator" 
                 << "Web_BrowserBack" 
                 << "Web_BrowserNext" 
@@ -349,6 +351,6 @@ Gui::DockWindowItems* Workbench::setupDockWindows() const
 {
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
     //root->setVisibility(false); // hide all dock windows by default
-    //root->setVisibility("Std_CombiView",true); // except of the combi view
+    //root->setVisibility("Std_ComboView",true); // except of the combo view
     return root;
 }

@@ -40,7 +40,7 @@
 
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::PropertyTooltable, App::Property);
+TYPESYSTEM_SOURCE(Path::PropertyTooltable, App::Property)
 
 PropertyTooltable::PropertyTooltable()
 {

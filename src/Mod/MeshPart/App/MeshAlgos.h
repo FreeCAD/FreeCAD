@@ -40,7 +40,7 @@ class TopoDS_Shape;
 namespace MeshCore
 {
 class MeshKernel;
-};
+}
 
 using MeshCore::MeshKernel;
 

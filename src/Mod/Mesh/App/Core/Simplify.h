@@ -13,7 +13,9 @@
 #include <vector>
 #include <Base/Vector3D.h>
 
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
+#endif
 
 typedef Base::Vector3f vec3f;
 
@@ -106,7 +108,7 @@ private:
 //
 // target_count   : target nr. of triangles
 // tolerance      : tolerance for the quadratic errors
-// aggressiveness : sharpness to increase the threashold.
+// aggressiveness : sharpness to increase the threshold.
 //                  5..8 are good numbers
 //                  more iterations yield higher quality
 // If the passed tolerance is > 0 then this will be used to check

@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -28,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 from ... import equationbase
-import femtools.femutils as FemUtils
+from femtools import membertools
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -56,7 +58,7 @@ class ViewProxy(equationbase.BaseViewProxy):
     def doubleClicked(self, vobj):
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        vobj.Document.setEdit(vobj.Object.Name)
         return True
 
     def getTaskWidget(self, vobj):
@@ -75,8 +77,8 @@ class _TaskPanel(object):
             self.form = self._refWidget
         else:
             self.form = [self.refWidget, propWidget]
-        analysis = FemUtils.findAnalysisOfMember(obj)
-        self._mesh = FemUtils.get_single_member(analysis, "Fem::FemMeshObject")
+        analysis = obj.getParentGroup()
+        self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None
@@ -89,14 +91,13 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
-        self._restoreVisibility()
+        self._recomputeAndRestore()
         return True
 
     def accept(self):
         if self._obj.References != self._refWidget.references():
             self._obj.References = self._refWidget.references()
-        self._obj.Document.recompute()
-        self._restoreVisibility()
+        self._recomputeAndRestore()
         return True
 
     def _restoreVisibility(self):
@@ -109,5 +110,14 @@ class _TaskPanel(object):
                 self._part.ViewObject.show()
             else:
                 self._part.ViewObject.hide()
+
+    def _recomputeAndRestore(self):
+        doc = Gui.getDocument(self._obj.Document)
+        doc.Document.recompute()
+        self._restoreVisibility()
+        # TODO: test if there is an active selection observer
+        # if yes Gui.Selection.removeObserver is your friend
+        doc.resetEdit()
+
 
 ##  @}

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -301,6 +301,7 @@ public:
         int numUControlPoints, int numVControlPoints,
         const std::vector<float>& uKnots, const std::vector<float>& vKnots);
     void addCylinder(float radius, float height);
+    void addSphere(float radius);
     //@}
 
     /** @name Bounding Box handling */

@@ -35,6 +35,7 @@ QT_END_NAMESPACE
 namespace Gui 
 {
 class Document;
+class ViewProvider;
 class ViewProviderDocumentObject;
 
 /** Base class of all windows belonging to a document.
@@ -54,7 +55,6 @@ class GuiExport MDIView : public QMainWindow, public BaseView
     Q_OBJECT
 
     TYPESYSTEM_HEADER();
-
 
 public:
     /** View constructor
@@ -80,10 +80,12 @@ public:
     virtual bool canClose(void);
     /// delete itself
     virtual void deleteSelf();
+    virtual PyObject *getPyObject();
     /** @name Printing */
     //@{
 public Q_SLOTS:
     virtual void print(QPrinter* printer);
+
 public:
     /** Print content of view */
     virtual void print();
@@ -113,17 +115,31 @@ public:
 
     /// access getter for the active object list
     template<typename _T>
-    inline _T getActiveObject(const char* name) const
+    inline _T getActiveObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const
     {
-        return ActiveObjects.getObject<_T>(name);
+        return ActiveObjects.getObject<_T>(name,parent,subname);
     }
-    void setActiveObject(App::DocumentObject*o, const char*n)
+    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=0)
     {
-        ActiveObjects.setObject(o, n);
+        ActiveObjects.setObject(o, n, subname);
     }
     bool hasActiveObject(const char*n) const
     {
         return ActiveObjects.hasObject(n);
+    }
+    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=0) const
+    {
+        return ActiveObjects.hasObject(o,n,subname);
+    }
+
+    /*!
+     * \brief containsViewProvider
+     * Checks if the given view provider is part of this view. The default implementation
+     * returns false.
+     * \return bool
+     */
+    virtual bool containsViewProvider(const ViewProvider*) const {
+        return false;
     }
 
 public Q_SLOTS:
@@ -144,6 +160,9 @@ protected:
     void closeEvent(QCloseEvent *e);
     /** \internal */
     void changeEvent(QEvent *e);
+
+protected:
+    PyObject* pythonObject;
 
 private:
     ViewMode currentMode;

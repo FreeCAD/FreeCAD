@@ -42,14 +42,14 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    PyObject* getPyObject();
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+    PyObject* getPyObject() override;
     //@}
 
 protected:
-    void Restore(Base::XMLReader &reader);
-    void onChanged (const App::Property* prop);
+    void Restore(Base::XMLReader &reader) override;
+    void onChanged (const App::Property* prop) override;
 };
 
 class PartExport Vertex : public Part::Primitive

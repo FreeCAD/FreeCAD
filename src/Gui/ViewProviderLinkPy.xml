@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="ViewProviderDocumentObjectPy" 
+		Name="ViewProviderLinkPy" 
+		Twin="ViewProviderLink" 
+		TwinPointer="ViewProviderLink" 
+		Include="Gui/ViewProviderLink.h" 
+		Namespace="Gui" 
+		FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+		FatherNamespace="Gui">
+		<Documentation>
+			<Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+			<UserDocu>This is the ViewProviderLink class</UserDocu>
+		</Documentation>
+        <Attribute Name="DraggingPlacement">
+            <Documentation>
+                <UserDocu>Get/set dragger placement during dragging</UserDocu>
+            </Documentation>
+            <Parameter Name="DraggingPlacement" Type="Object" />
+        </Attribute>
+        <Attribute Name="UseCenterballDragger">
+            <Documentation>
+                <UserDocu>Get/set dragger type</UserDocu>
+            </Documentation>
+            <Parameter Name="UseCenterballDragger" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="LinkView" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Get the associated LinkView object</UserDocu>
+            </Documentation>
+            <Parameter Name="LinkView" Type="Object" />
+        </Attribute>
+	</PythonExport>
+</GenerateModel>

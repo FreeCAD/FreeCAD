@@ -27,6 +27,7 @@
 #include "Curvature.h"
 #include "Visitor.h"
 #include <vector>
+#include <memory>
 
 namespace MeshCore {
 
@@ -55,6 +56,7 @@ protected:
     std::vector<MeshSegment> segments;
     unsigned long minFacets;
 };
+typedef std::shared_ptr<MeshSurfaceSegment> MeshSurfaceSegmentPtr;
 
 // --------------------------------------------------------
 
@@ -97,6 +99,7 @@ public:
     virtual bool Done() const = 0;
     virtual float Fit() = 0;
     virtual float GetDistanceToSurface(const Base::Vector3f&) const = 0;
+    virtual std::vector<float> Parameters() const = 0;
 };
 
 class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
@@ -112,6 +115,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f basepoint;
@@ -132,6 +136,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f basepoint;
@@ -153,6 +158,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f center;
@@ -171,6 +177,7 @@ public:
     void Initialize(unsigned long);
     bool TestInitialFacet(unsigned long) const;
     void AddFacet(const MeshFacet& rclFacet);
+    std::vector<float> Parameters() const;
 
 protected:
     AbstractSurfaceFit* fitter;
@@ -263,7 +270,7 @@ class MeshExport MeshSegmentAlgorithm
 {
 public:
     MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
-    void FindSegments(std::vector<MeshSurfaceSegment*>&);
+    void FindSegments(std::vector<MeshSurfaceSegmentPtr>&);
 
 private:
     const MeshKernel& myKernel;

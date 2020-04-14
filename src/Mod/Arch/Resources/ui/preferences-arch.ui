@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>446</width>
-    <height>792</height>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -190,6 +190,9 @@
         <property name="text">
          <string>Set &quot;Move with host&quot; property to True by default</string>
         </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>MoveWithHost</cstring>
         </property>
@@ -197,6 +200,104 @@
          <cstring>Mod/Arch</cstring>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="text">
+         <string>Set &quot;Move base&quot; property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveBase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="toolTip">
+         <string>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+        </property>
+        <property name="text">
+         <string>Use material color as shape color</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseMaterialColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>IFC version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>The IFC version will change which attributes and products are supported</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IfcVersion</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>IFC4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>IFC2X3</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -481,7 +582,8 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="toolTip">
-           <string>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</string>
+           <string>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</string>
           </property>
           <property name="text">
            <string>30, 10</string>
@@ -540,7 +642,8 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>Scaling factor for patterns used by object that have a Footprint display mode</string>
+           <string>Scaling factor for patterns used by object that have
+a Footprint display mode</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -582,7 +685,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+           <string>The URL of a bim server instance (www.bimserver.org) to connect to.</string>
           </property>
           <property name="text">
            <string>http://localhost:8082</string>
@@ -602,7 +705,9 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is checked, the &quot;Open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is selected, the &quot;Open BimServer in browser&quot;
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>
@@ -678,6 +783,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

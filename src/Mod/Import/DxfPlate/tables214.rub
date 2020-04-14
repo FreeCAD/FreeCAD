@@ -3,7 +3,7 @@ TABLE
   2
 STYLE
   5
-60
+70
 330
 0
 100
@@ -13,9 +13,9 @@ AcDbSymbolTable
   0
 STYLE
   5
-61
+71
 330
-60
+70
 100
 AcDbSymbolTableRecord
 100
@@ -41,9 +41,9 @@ arial.ttf
   0
 STYLE
   5
-62
+72
 330
-60
+70
 100
 AcDbSymbolTableRecord
 100
@@ -73,7 +73,7 @@ TABLE
   2
 VIEW
   5
-63
+73
 330
 0
 100
@@ -87,7 +87,7 @@ TABLE
   2
 UCS
   5
-64
+74
 330
 0
 100
@@ -101,7 +101,7 @@ TABLE
   2
 APPID
   5
-65
+75
 330
 0
 100
@@ -111,9 +111,9 @@ AcDbSymbolTable
   0
 APPID
   5
-66
+76
 330
-65
+75
 100
 AcDbSymbolTableRecord
 100
@@ -125,9 +125,9 @@ ACAD
   0
 APPID
   5
-67
+77
 330
-65
+75
 100
 AcDbSymbolTableRecord
 100
@@ -143,7 +143,7 @@ TABLE
   2
 DIMSTYLE
   5
-68
+78
 330
 0
 100
@@ -153,9 +153,9 @@ AcDbSymbolTable
   0
 DIMSTYLE
 105
-69
+79
 330
-68
+78
 100
 AcDbSymbolTableRecord
 100
@@ -253,7 +253,7 @@ STANDARD
 274
      3
 340
-61
+71
 275
      0
 280

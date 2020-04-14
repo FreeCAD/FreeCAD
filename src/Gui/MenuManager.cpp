@@ -197,6 +197,15 @@ void MenuManager::setup(MenuItem* menuItems) const
     menuBar->clear();
 #endif
 
+    // On Kubuntu 18.10 global menu has issues with FreeCAD 0.18 menu bar.
+    // Optional parameter, clearing the menu bar, can be set as a workaround.
+    // Clearing the menu bar can cause issues, when trying to access menu bar through Python.
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30340&start=440#p289330
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/MainWindow")->GetBool("ClearMenuBar",false)) {
+        menuBar->clear();
+    }
+
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
     for (QList<MenuItem*>::ConstIterator it = items.begin(); it != items.end(); ++it)

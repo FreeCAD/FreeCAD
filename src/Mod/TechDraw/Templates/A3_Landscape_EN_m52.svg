@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Working space 10 10 410 287 -->
 <!-- Title block 210 227 410 287 -->
-
 <svg
    xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -1036,12 +1035,11 @@
      id="path660"
      d="m 387.1866,231.24252 h -0.46062 v 0.30264 h 1.25296 v -0.30264 h -0.46062 v -1.89277 h 0.46062 v -0.30165 h -1.25296 v 0.30165 h 0.46062 z" />
   <text
-     freecad:editable="NomAuteur"
+     freecad:editable="AUTHOR_NAME"
      id="text3331"
      y="232.89519"
      x="220.94621"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="232.89519"
        x="220.94621"
@@ -1049,12 +1047,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">AUTHOR NAME</tspan></text>
   <text
-     freecad:editable="DateDeCreation"
+     freecad:editable="CREATION_DATE"
      id="text3331-5"
      y="240.4381"
      x="220.7397"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="240.4381"
        x="220.7397"
@@ -1062,12 +1059,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">CREATION DATE</tspan></text>
   <text
-     freecad:editable="NomSuperviseur"
+     freecad:editable="SUPERVISOR_NAME"
      id="text3331-5-5"
      y="247.86339"
      x="220.69489"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="247.86339"
        x="220.69489"
@@ -1075,12 +1071,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">SUPERVISOR NAME</tspan></text>
   <text
-     freecad:editable="DateVerification"
+     freecad:editable="CHECK_DATE"
      id="text3331-5-3"
      y="255.27249"
      x="220.64323"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="255.27249"
        x="220.64323"
@@ -1093,7 +1088,6 @@
      y="265.74518"
      x="229.88155"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.07489491px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="265.74518"
        x="229.88155"
@@ -1101,12 +1095,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">A3</tspan></text>
   <text
-     freecad:editable="Echelle"
+     freecad:editable="SCALE"
      id="text3331-5-9"
      y="278.47223"
      x="229.75246"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="278.47223"
        x="229.75246"
@@ -1114,12 +1107,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">SCALE</tspan></text>
   <text
-     freecad:editable="Poids"
+     freecad:editable="WEIGHT"
      id="text3331-5-9-4"
      y="278.47223"
      x="251.72014"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="278.47223"
        x="251.72014"
@@ -1127,25 +1119,23 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">WEIGHT</tspan></text>
   <text
-     freecad:editable="Version"
+     freecad:editable="VERSION"
      id="text3331-5-9-4-3"
      y="278.47223"
      x="266.41663"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="278.47223"
        x="266.41663"
        id="tspan3333-6-6-3-8"
        sodipodi:role="line"
-       style="stroke-width:0.12986936">NUMBER</tspan></text>
+       style="stroke-width:0.12986936">VERSION</tspan></text>
   <text
-     freecad:editable="Feuille"
+     freecad:editable="SHEET"
      id="text3331-5-9-4-3-9"
      y="278.47223"
      x="374.77441"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="278.47223"
        x="374.77441"
@@ -1153,12 +1143,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">SHEET</tspan></text>
   <text
-     freecad:editable="Titre"
+     freecad:editable="TITLE"
      id="text3331-0"
      y="241.19551"
      x="322.54102"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.45815945px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.45815945px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.12986936"
        y="241.19551"
@@ -1166,12 +1155,11 @@
        id="tspan3333-5"
        sodipodi:role="line">TITLE</tspan></text>
   <text
-     freecad:editable="Sous_titre"
+     freecad:editable="SUBTITLE"
      id="text3331-0-4"
      y="248.8811"
      x="322.54102"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.63877249px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="248.8811"
        x="322.54102"
@@ -1179,12 +1167,11 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">SUBTITLE</tspan></text>
   <text
-     freecad:editable="Societe"
+     freecad:editable="COMPANY_NAME"
      id="text241"
      y="264.17239"
      x="266.53876"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.99598026px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="264.17239"
        x="266.53876"
@@ -1197,7 +1184,6 @@
      x="220.60886"
      y="285.88763"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
-     xml:space="preserve"
      transform="scale(1.0001732,0.99982685)"><tspan
        y="285.88763"
        x="220.60886"
@@ -1205,7 +1191,6 @@
        sodipodi:role="line"
        style="stroke-width:0.12986936">COPYRIGHT</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="284.51395"
      x="390.95779"
@@ -1218,7 +1203,6 @@
        y="284.51395"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="277.88495"
      x="390.95779"
@@ -1231,7 +1215,6 @@
        y="277.88495"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="271.18945"
      x="390.95779"
@@ -1244,7 +1227,6 @@
        y="271.18945"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="264.54691"
      x="390.88663"
@@ -1257,7 +1239,6 @@
        y="264.54691"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="257.93546"
      x="390.81546"
@@ -1270,7 +1251,6 @@
        y="257.93546"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="251.24013"
      x="390.88663"
@@ -1283,7 +1263,6 @@
        y="251.24013"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="244.57651"
      x="390.95779"
@@ -1296,7 +1275,6 @@
        y="244.57651"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="237.94699"
      x="390.81546"
@@ -1309,7 +1287,6 @@
        y="237.94699"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.1013248px;line-height:125%;font-family:sans;-inkscape-font-specification:sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12986936;stroke-linecap:butt;stroke-linejoin:miter"
      y="231.25304"
      x="391.12991"
@@ -1322,7 +1299,6 @@
        y="231.25304"
        style="stroke-width:0.12986936">_________</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.80046"
      y="229.05392"
@@ -1334,7 +1310,6 @@
        y="229.05392"
        style="stroke-width:0.99899507">AUTHOR NAME :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.94403"
      y="244.14862"
@@ -1346,7 +1321,6 @@
        y="244.14862"
        style="stroke-width:0.99899507">SUPERVISOR NAME :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.79082"
      y="258.94061"
@@ -1358,7 +1332,6 @@
        y="258.94061"
        style="stroke-width:0.99899507">FORMAT :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="265.72968"
      y="259.11047"
@@ -1370,7 +1343,6 @@
        y="259.11047"
        style="stroke-width:0.99899507">COMPANY :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.7966"
      y="272.12231"
@@ -1382,7 +1354,6 @@
        y="272.12231"
        style="stroke-width:0.99899507">SCALE :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="240.57292"
      y="272.03085"
@@ -1394,7 +1365,6 @@
        y="272.03085"
        style="stroke-width:0.99899507">WEIGHT (kg) :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="265.72968"
      y="272.12231"
@@ -1406,7 +1376,6 @@
        y="272.12231"
        style="stroke-width:0.99899507">VERSION :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="365.55179"
      y="272.12234"
@@ -1418,7 +1387,6 @@
        y="272.12234"
        style="stroke-width:0.99899507">SHEET :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357047px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.80046"
      y="236.4668"
@@ -1430,7 +1398,6 @@
        y="236.4668"
        style="stroke-width:0.99899507">DATE :</tspan></text>
   <text
-     xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:1.97357035px;line-height:119.00000572%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0.01973571px;word-spacing:0.00845816px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.99899507"
      x="220.80046"
      y="251.52934"

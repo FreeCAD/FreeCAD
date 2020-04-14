@@ -47,7 +47,7 @@ namespace KDL {
 
 
 RotationalInterpolation_SingleAxis::RotationalInterpolation_SingleAxis()
-	{};
+	{}
 
 void RotationalInterpolation_SingleAxis::SetStartEnd(Rotation start,Rotation end) {
 	R_base_start = start;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry        <l.parry@warwick.ac.uk>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -52,6 +52,7 @@ public:
     bool isUnsetting(void) { return nowUnsetting; }
 
     int countChildren();
+    void lockChildren(void);
 
     virtual void onDocumentRestored();
     virtual App::DocumentObjectExecReturn *execute(void);

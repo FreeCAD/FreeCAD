@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk" sourcelanguage="en">
+<TS version="2.1" language="sk" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Vertikálne zarovnanie na stred</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek do stredu</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Zlúčiť bunky</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Zlúčiť vybraté bunky v tabuľke</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Rozdeliť bunku</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdelenie predtým zlúčených buniek v tabuľke</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Tučné písmo</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nastaviť tučné písmo vo vybratých bunkách</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kurzívny text</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nastavenie kurzívy vo vybratých bunkách</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podčiarknuť text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Podčiarknuť text vo vybratých bunkách</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Export súboru</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Obsah buniek</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Zobraziť tabuľku</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tabuľka</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Svetlo sivá</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

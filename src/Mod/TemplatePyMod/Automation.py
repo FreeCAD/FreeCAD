@@ -8,6 +8,8 @@ FreeCADCmd -P <path_to_file> Automation.py
 """
 
 import FreeCAD, Part
+import os
+import tempfile
 
 def makeSnapshotWithGui():
 	from PySide import QtGui
@@ -48,7 +50,15 @@ def makeSnapshotWithoutGui():
 
 	# load it into a buffer
 	inp=coin.SoInput()
-	inp.setBuffer(iv)
+	try:
+		inp.setBuffer(iv)
+	except:
+		tempPath = tempfile.gettempdir()
+		fileName = tempPath + os.sep + "cone.iv"
+		file = open(fileName, "w")
+		file.write(iv)
+		file.close()
+		inp.openFile(fileName)
 
 	# and create a scenegraph
 	data = coin.SoDB.readAll(inp)

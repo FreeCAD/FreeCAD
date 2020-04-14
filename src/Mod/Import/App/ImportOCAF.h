@@ -29,10 +29,12 @@
 #include <XCAFDoc_ShapeTool.hxx>
 #include <Quantity_Color.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TDF_LabelMapHasher.hxx>
 #include <climits>
 #include <string>
 #include <set>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <App/Material.h>
 #include <App/Part.h>

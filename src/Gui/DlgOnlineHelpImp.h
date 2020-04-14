@@ -24,18 +24,19 @@
 #ifndef GUI_DIALOG_DLGONLINEHELP_IMP_H
 #define GUI_DIALOG_DLGONLINEHELP_IMP_H
 
-#include "ui_DlgOnlineHelp.h"
 #include "PropertyPage.h"
+#include <memory>
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgOnlineHelp;
 
 /** This class implements the dialog for downloading the online documentation.
  * Moreover it allows to specify location of the start page an an external browser.
  * Here you can specify to use a proxy if necessary and some more stuff.
  * \author Werner Mayer
  */
-class DlgOnlineHelpImp : public PreferencePage, public Ui_DlgOnlineHelp
+class DlgOnlineHelpImp : public PreferencePage
 {
     Q_OBJECT
 
@@ -53,6 +54,9 @@ protected:
 
 protected:
     void on_lineEditDownload_fileNameSelected(const QString&);
+
+private:
+    std::unique_ptr<Ui_DlgOnlineHelp> ui;
 };
 
 } // namespace Dialog

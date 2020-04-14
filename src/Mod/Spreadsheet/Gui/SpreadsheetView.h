@@ -91,6 +91,7 @@ protected Q_SLOTS:
     void modelUpdated(const QModelIndex & topLeft, const QModelIndex & bottomRight);
 protected:
     void updateContentLine();
+    void updateAliasLine();
     void setCurrentCell(QString str);
     void keyPressEvent(QKeyEvent *event);
     void resizeColumn(int col, int newSize);
@@ -104,8 +105,8 @@ protected:
     boost::signals2::scoped_connection rowHeightChangedConnection;
     boost::signals2::scoped_connection positionChangedConnection;
 
-    QMap<int, int> newColumnSizes;
-    QMap<int, int> newRowSizes;
+    std::map<int, int> newColumnSizes;
+    std::map<int, int> newRowSizes;
 };
 
 } // namespace SpreadsheetModGui

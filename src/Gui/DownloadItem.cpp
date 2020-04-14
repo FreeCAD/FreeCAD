@@ -192,9 +192,9 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthent
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
 #if QT_VERSION >= 0x050000
-    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped()).arg(QString(reply->url().toString()).toHtmlEscaped());
+    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped(), QString(reply->url().toString()).toHtmlEscaped());
 #else
-    introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
+    introMessage = introMessage.arg(Qt::escape(reply->url().toString()), Qt::escape(reply->url().toString()));
 #endif
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
@@ -300,7 +300,11 @@ QString DownloadItem::getDownloadDirectory() const
         dirPath = QString::fromUtf8(dir.c_str());
     }
 
+#if QT_VERSION >= 0x050000
+    if (QFileInfo::exists(dirPath) || QDir().mkpath(dirPath)) {
+#else
     if (QFileInfo(dirPath).exists() || QDir().mkpath(dirPath)) {
+#endif
         return dirPath;
     }
     else {
@@ -516,19 +520,17 @@ void DownloadItem::metaDataChanged()
         if (url != redirectUrl) {
             url = redirectUrl;
 
-            if (m_reply) {
-                disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-                disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-                           this, SLOT(error(QNetworkReply::NetworkError)));
-                disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-                           this, SLOT(downloadProgress(qint64, qint64)));
-                disconnect(m_reply, SIGNAL(metaDataChanged()),
-                           this, SLOT(metaDataChanged()));
-                disconnect(m_reply, SIGNAL(finished()),
-                           this, SLOT(finished()));
-                m_reply->close();
-                m_reply->deleteLater();
-            }
+            disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+            disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+                       this, SLOT(error(QNetworkReply::NetworkError)));
+            disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
+                       this, SLOT(downloadProgress(qint64, qint64)));
+            disconnect(m_reply, SIGNAL(metaDataChanged()),
+                       this, SLOT(metaDataChanged()));
+            disconnect(m_reply, SIGNAL(finished()),
+                       this, SLOT(finished()));
+            m_reply->close();
+            m_reply->deleteLater();
 
             m_reply = DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
             init();
@@ -579,17 +581,17 @@ void DownloadItem::updateInfoLabel()
             .arg(timeRemaining)
             .arg(timeRemainingString);
         info = QString(tr("%1 of %2 (%3/sec) %4"))
-            .arg(dataString(m_bytesReceived))
-            .arg(bytesTotal == 0 ? tr("?") : dataString(bytesTotal))
-            .arg(dataString((int)speed))
-            .arg(remaining);
+            .arg(dataString(m_bytesReceived),
+                 bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
+                 dataString((int)speed),
+                 remaining);
     } else {
         if (m_bytesReceived == bytesTotal)
             info = dataString(m_output.size());
         else
             info = tr("%1 of %2 - Stopped")
-                .arg(dataString(m_bytesReceived))
-                .arg(dataString(bytesTotal));
+                .arg(dataString(m_bytesReceived),
+                     dataString(bytesTotal));
     }
     downloadInfoLabel->setText(info);
 }

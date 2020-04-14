@@ -51,8 +51,6 @@ public:
 protected:
     TaskRobot6Axis    *rob; 
     TaskRobotControl  *ctr ;
-; 
-
 };
 
 

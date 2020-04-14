@@ -18,12 +18,18 @@
 				<UserDocu>Update the view representation of the object</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Object" ReadOnly="true">
+		<Attribute Name="Object">
 			<Documentation>
-				<UserDocu>Return the associated data object</UserDocu>
+                <UserDocu>Set/Get the associated data object</UserDocu>
 			</Documentation>
 			<Parameter Name="Object" Type="Object" />
 		</Attribute>
+        <Attribute Name="ForceUpdate">
+            <Documentation>
+                <UserDocu>Reference count to force update visual</UserDocu>
+            </Documentation>
+            <Parameter Name="ForceUpdate" Type="Boolean" />
+        </Attribute>
 		<Attribute Name="Document" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the document the view provider is part of</UserDocu>

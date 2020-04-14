@@ -108,107 +108,107 @@
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
       <translation>Configurare axe</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>Axe active</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>Se aplica la toate axele</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>Dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>Pozitia axei x</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Pozitia axei y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>Scari</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>X auto</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Y auto</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
       <translation>Indicii axelor active</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
       <translation>Adauga axe noi la grafic</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
       <translation>Elimina axele selectate</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>Bifati pentru a aplica transformarea tuturor axelor</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
       <translation>Marginea stanga a axelor</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
       <translation>Marginea dreapta a axelor</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
       <translation>Marginea de jos a axelor</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
       <translation>Marginea de sus a axelor</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
       <translation>Deplasare spre exterior pe axa x</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
       <translation>Deplasare spre interior pe axa Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
       <translation>Selecție automată pentru scara axei X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
       <translation>Selecție automată pentru scara axei Y</translation>
     </message>
@@ -226,12 +226,12 @@
       <translation>matplotlib nu a fost găsit, astfel că modulul Plot va fi dezactivat</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
       <translation>Pentru a fi salvat, documentul Plot trebuie să fie selectat</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
       <translation>Axele 0 nu pot fi sterse</translation>
     </message>
@@ -249,62 +249,62 @@
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
       <translation>Seteaza etichete</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>Axe active</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>Titlu</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>eticheta X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>eticheta Y</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
       <translation>Indicii axelor active</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
       <translation>Titlu (asociat cu axele active)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>Dimensiunea font-ului pentru titlu</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>Titlu pentru axa X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>Dimensiunea font-ului pentru axa X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Titlu pentru axa Y</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
       <translation>Dimensiunea font-ului pentru axa Y</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
       <translation>Salveaza figura</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
       <translation>Țoli</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
       <translation>Puncte pe Țol</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
       <translation>Calea pentru fisierul imagine rezultat</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
       <translation>Prezinta dialogul de selectie a fisierelor</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
       <translation>Dimensiune imagine pe X</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
       <translation>Dimensiune imagine pe Y</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>Puncte pe pixel, cu care se vor defini rezoluția imaginii de ieșire</translation>
     </message>

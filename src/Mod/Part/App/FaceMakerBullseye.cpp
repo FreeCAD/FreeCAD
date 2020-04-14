@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Victor Titov (DeepSOIC)      <vv.titov@gmail.com>  *
+ *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,6 +45,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <QtGlobal>
 #endif
 
 #include "FaceMakerBullseye.h"
@@ -52,7 +53,7 @@
 
 #include "TopoShape.h"
 
-#include <QtGlobal>
+
 
 using namespace Part;
 

@@ -54,7 +54,11 @@ public:
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
 
+    App::PropertyBool AllowMultiFace;
+
     short mustExecute() const;
+
+    void setupObject();
 
     /** calculates and updates the Placement property based on the features
      * this one is made from: either from Base, if there is one, or from sketch,
@@ -99,6 +103,8 @@ public:
     
     Base::Vector3d getProfileNormal() const;
 
+    Part::TopoShape getProfileShape() const;
+
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    
 
@@ -134,6 +140,19 @@ protected:
                               const double L2,
                               const bool midplane,
                               const bool reversed);
+    /**
+      * Generate a linear prism
+      * It will be a stand-alone solid created with BRepFeat_MakePrism
+      */
+    static void generatePrism(TopoDS_Shape& prism,
+                              const std::string& method,
+                              const TopoDS_Shape& baseshape,
+                              const TopoDS_Shape& profileshape,
+                              const TopoDS_Face& sketchface,
+                              const TopoDS_Face& uptoface,
+                              const gp_Dir& direction,
+                              Standard_Integer Mode,
+                              Standard_Boolean Modify);
 
     /// Check whether the wire after projection on the face is inside the face
     static bool checkWireInsideFace(const TopoDS_Wire& wire,

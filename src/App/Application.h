@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #ifndef APP_APPLICATION_H
@@ -28,6 +27,7 @@
 #include <boost/signals2.hpp>
 
 #include <vector>
+#include <deque>
 
 #include <Base/PyObjectBase.h>
 #include <Base/Parameter.h>
@@ -47,7 +47,19 @@ class Document;
 class DocumentObject;
 class ApplicationObserver;
 class Property;
+class AutoTransaction;
+class ExtensionContainer;
 
+enum GetLinkOption {
+    /// Get all links (both directly and in directly) linked to the given object
+    GetLinkRecursive = 1,
+    /// Get link array element instead of the array
+    GetLinkArrayElement = 2,
+    /// Get linked object instead of the link, no effect if GetLinkRecursive
+    GetLinkedObject = 4,
+    /// Get only external links, no effect if GetLinkRecursive
+    GetLinkExternal = 8,
+};
 
 
 /** The Application
@@ -74,13 +86,35 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool createView=true);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=0l);
+    App::Document* openDocument(const char * FileName=0l, bool createView=true);
+    /** Open multiple documents
+     *
+     * @param filenames: input file names
+     * @param paths: optional input file path in case it is different from
+     * filenames (mainly used during recovery).
+     * @param labels: optional label assign to document (mainly used during recovery).
+     * @param errs: optional output error message corresponding to each input
+     * file name. If errs is given, this function will catch all
+     * Base::Exception and save the error message inside. Otherwise, it will
+     * throw on exception when opening the input files.
+     * @param createView: whether to signal Gui module to create view on restore.
+     *
+     * @return Return opened document object corresponding to each input file
+     * name, which maybe NULL if failed.
+     *
+     * This function will also open any external referenced files.
+     */
+    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
+            const std::vector<std::string> *paths=0,
+            const std::vector<std::string> *labels=0,
+            std::vector<std::string> *errs=0,
+            bool createView = true);
     /// Retrieve the active document
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
@@ -94,12 +128,51 @@ public:
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments(void);
+    /// Add pending document to open together with the current opening document
+    int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
+    /// Indicate whether the application is opening (restoring) some document
+    bool isRestoring() const;
+    /// Indicate the application is closing all document
+    bool isClosingAll() const;
+    //@}
+    
+    /** @name Application-wide trandaction setting */
+    //@{
+    /** Setup a pending application-wide active transaction
+     *
+     * @param name: new transaction name
+     * @param persist: by default, if the calling code is inside any invocation
+     * of a command, it will be auto closed once all command within the current
+     * stack exists. To disable auto closing, set persist=true
+     *
+     * @return The new transaction ID.
+     *
+     * Call this function to setup an application-wide transaction. All current
+     * pending transactions of opening documents will be committed first.
+     * However, no new transaction is created by this call. Any subsequent
+     * changes in any current opening document will auto create a transaction
+     * with the given name and ID. If more than one document is changed, the
+     * transactions will share the same ID, and will be undo/redo together.
+     */
+    int setActiveTransaction(const char *name, bool persist=false);
+    /// Return the current active transaction name and ID
+    const char *getActiveTransaction(int *tid=0) const;
+    /** Commit/abort current active transactions
+     *
+     * @param abort: whether to abort or commit the transactions
+     *
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either committed or
+     * aborted
+     */
+    void closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Document&, bool)> signalNewDocument;
     /// signal on document getting deleted
     boost::signals2::signal<void (const Document&)> signalDeleteDocument;
     /// signal on already deleted Document
@@ -122,8 +195,22 @@ public:
     boost::signals2::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
     /// signal on undo in document
     boost::signals2::signal<void (const Document&)> signalUndoDocument;
+    /// signal on application wide undo
+    boost::signals2::signal<void ()> signalUndo;
     /// signal on redo in document
     boost::signals2::signal<void (const Document&)> signalRedoDocument;
+    /// signal on application wide redo
+    boost::signals2::signal<void ()> signalRedo;
+    /// signal before close/abort active transaction
+    boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
+    /// signal after close/abort active transaction
+    boost::signals2::signal<void (bool)> signalCloseTransaction;
+    /// signal on show hidden items
+    boost::signals2::signal<void (const Document&)> signalShowHidden;
+    /// signal on start opening document(s)
+    boost::signals2::signal<void ()> signalStartOpenDocument;
+    /// signal on finished opening document(s)
+    boost::signals2::signal<void ()> signalFinishOpenDocument;
     //@}
 
 
@@ -149,6 +236,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signals2::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal before recomputed document
+    boost::signals2::signal<void (const App::Document&)> signalBeforeRecomputeDocument;
     /// signal on recomputed document
     boost::signals2::signal<void (const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
@@ -171,8 +260,20 @@ public:
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
-    boost::signals2::signal<void (const App::Property&)> signalChangePropertyEditor;
+    boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
+    
+    /** @name Signals of extension changes
+     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part 
+     * of the class definition, hence not dynamic)
+     * The extension in question is provided as parameter.
+     */
+    //@{
+    /// signal before adding the extension
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
+    /// signal after the extension was added
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
+     //@}
 
 
     /** @name methods for parameter handling */
@@ -212,6 +313,8 @@ public:
     //@{
     /// Register an import filetype and a module name
     void addImportType(const char* Type, const char* ModuleName);
+    /// Change the module name of a registered filetype
+    void changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getImportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -228,6 +331,8 @@ public:
     //@{
     /// Register an export filetype and a module name
     void addExportType(const char* Type, const char* ModuleName);
+    /// Change the module name of a registered filetype
+    void changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getExportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -274,6 +379,34 @@ public:
     static std::string getHelpDir();
     //@}
 
+    /** @name Link handling */
+    //@{
+    
+    /** Check for link recursion depth
+     *
+     * @param depth: current depth
+     * @param no_throw: whether to throw exception
+     *
+     * @return Return the maximum remaining depth.
+     *
+     * The function uses an internal count of all objects in all documents as
+     * the limit of recursion depth.
+     */
+    int checkLinkDepth(int depth, bool no_throw=true);
+
+    /** Return the links to a given object
+     *
+     * @param obj: the linked object. If NULL, then all links are returned.
+     * @param option: @sa App::GetLinkOptions
+     * @param maxCount: limit the number of links returned, 0 means no limit
+     */
+    std::set<DocumentObject*> getLinksTo(
+            const DocumentObject *, int options, int maxCount=0) const;
+
+    /// Check if there is any link to the given object
+    bool hasLinksTo(const DocumentObject *obj) const;
+    //@}
+
     friend class App::Document;
 
 protected:
@@ -296,12 +429,27 @@ protected:
     void slotRedoDocument(const App::Document&);
     void slotRecomputedObject(const App::DocumentObject&);
     void slotRecomputed(const App::Document&);
+    void slotBeforeRecompute(const App::Document&);
     void slotOpenTransaction(const App::Document&, std::string);
     void slotCommitTransaction(const App::Document&);
     void slotAbortTransaction(const App::Document&);
     void slotStartSaveDocument(const App::Document&, const std::string&);
     void slotFinishSaveDocument(const App::Document&, const std::string&);
+    void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
+
+    /// open single document only
+    App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
+            const char *label, bool isMainDoc, bool createView, const std::set<std::string> &objNames);
+
+    /// Helper class for App::Document to signal on close/abort transaction
+    class AppExport TransactionSignaller {
+    public:
+        TransactionSignaller(bool abort,bool signal);
+        ~TransactionSignaller();
+    private:
+        bool abort;
+    };
 
 private:
     /// Constructor
@@ -315,7 +463,6 @@ private:
     static ParameterManager *_pcUserParamMngr;
     //@}
 
-
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -328,8 +475,10 @@ private:
     static PyObject* sSetConfig         (PyObject *self,PyObject *args);
     static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
     static PyObject* sAddImportType     (PyObject *self,PyObject *args);
+    static PyObject* sChangeImportModule(PyObject *self,PyObject *args);
     static PyObject* sGetImportType     (PyObject *self,PyObject *args);
     static PyObject* sAddExportType     (PyObject *self,PyObject *args);
+    static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);
@@ -338,10 +487,10 @@ private:
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args);
-    static PyObject* sOpenDocument      (PyObject *self,PyObject *args);
+    static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
     static PyObject* sSaveDocument      (PyObject *self,PyObject *args);
     static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args);
-    static PyObject* sNewDocument       (PyObject *self,PyObject *args);
+    static PyObject* sNewDocument       (PyObject *self,PyObject *args, PyObject *kwd);
     static PyObject* sCloseDocument     (PyObject *self,PyObject *args);
     static PyObject* sActiveDocument    (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument (PyObject *self,PyObject *args);
@@ -349,11 +498,21 @@ private:
     static PyObject* sListDocuments     (PyObject *self,PyObject *args);
     static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
+    static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
 
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
 
-    static PyMethodDef    Methods[];
+    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
+    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
+
+    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args);
+
+    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
+    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
+    static PyObject *sCheckAbort(PyObject *self,PyObject *args);
+    static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
 
@@ -400,6 +559,23 @@ private:
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
+
+    std::deque<const char *> _pendingDocs;
+    std::deque<const char *> _pendingDocsReopen;
+    std::map<std::string,std::set<std::string> > _pendingDocMap;
+    bool _isRestoring;
+    bool _allowPartial;
+    bool _isClosingAll;
+
+    // for estimate max link depth
+    int _objCount;
+
+    friend class AutoTransaction;
+
+    std::string _activeTransactionName;
+    int _activeTransactionID;
+    int _activeTransactionGuard;
+    bool _activeTransactionTmpName;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

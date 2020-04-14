@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -90,4 +90,21 @@ DocumentObject* DocumentObjectExtension::getExtendedObject() {
 
     assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
     return static_cast<DocumentObject*>(getExtendedContainer());
+}
+
+bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&, 
+        const char *, PyObject **, Base::Matrix4D *, bool, int) const
+{
+    return false;
+}
+
+bool DocumentObjectExtension::extensionGetSubObjects(std::vector<std::string>&, int) const
+{
+    return false;
+}
+
+bool DocumentObjectExtension::extensionGetLinkedObject(
+        DocumentObject *&, bool, Base::Matrix4D *, bool, int) const
+{
+    return false;
 }

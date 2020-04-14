@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -107,8 +107,14 @@ void TaskMirroredParameters::setupUI()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    action->setShortcutVisibleInContextMenu(true);
+#endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -178,27 +184,28 @@ void TaskMirroredParameters::updateUI()
     blockUpdate = false;
 }
 
+void TaskMirroredParameters::addObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(label);
+    item->setData(Qt::UserRole, objectName);
+    ui->listWidgetFeatures->addItem(item);
+}
+
+void TaskMirroredParameters::removeObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    removeItemFromListWidget(ui->listWidgetFeatures, label);
+}
+
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
 
         if (originalSelected(msg)) {
-            Gui::SelectionObject selObj(msg);
-            App::DocumentObject* obj = selObj.getObject();
-            Q_ASSERT(obj);
-
-            QString label = QString::fromUtf8(obj->Label.getValue());
-            QString objectName = QString::fromLatin1(msg.pObjectName);
-
-            if (selectionMode == addFeature) {
-                QListWidgetItem* item = new QListWidgetItem();
-                item->setText(label);
-                item->setData(Qt::UserRole, objectName);
-                ui->listWidgetFeatures->addItem(item);
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetFeatures, label);
-            }
             exitSelectionMode();
         } else {
             std::vector<std::string> mirrorPlanes;
@@ -209,6 +216,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                     return;
             
             if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
+                setupTransaction();
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
                 recomputeFeature();
                 updateUI();
@@ -228,6 +236,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
 {
     if (blockUpdate)
         return;
+    setupTransaction();
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     try{
         if(planeLinks.getCurrentLink().getValue() == 0){
@@ -252,6 +261,7 @@ void TaskMirroredParameters::onUpdateView(bool on)
 {
     blockUpdate = !on;
     if (on) {
+        setupTransaction();
         // Do the same like in TaskDlgMirroredParameters::accept() but without doCommand
         PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
         std::vector<std::string> mirrorPlanes;
@@ -269,6 +279,7 @@ void TaskMirroredParameters::onFeatureDeleted(void)
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    setupTransaction();
     pcTransformed->Originals.setValues(originals);
     ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
     recomputeFeature();
@@ -329,15 +340,13 @@ TaskDlgMirroredParameters::TaskDlgMirroredParameters(ViewProviderMirrored *Mirro
 
 bool TaskDlgMirroredParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
     TaskMirroredParameters* mirrorParameter = static_cast<TaskMirroredParameters*>(parameter);
     std::vector<std::string> mirrorPlanes;
     App::DocumentObject* obj;
     mirrorParameter->getMirrorPlane(obj, mirrorPlanes);
     std::string mirrorPlane = buildLinkSingleSubPythonStr(obj, mirrorPlanes);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), mirrorPlane.c_str());
+    FCMD_OBJ_CMD(vp->getObject(),"MirrorPlane = " << mirrorPlane);
 
     return TaskDlgTransformedParameters::accept();
 }

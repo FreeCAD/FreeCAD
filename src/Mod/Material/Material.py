@@ -20,18 +20,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-# here the usage description if you use this tool from the command line ("__main__")
+import sys
+import FreeCAD
+
+
+# The usage description if you use this tool from the command line ("__main__")
 CommandlineUsage = """Material - Tool to work with FreeCAD Material definition cards
 
 Usage:
    Material [Options] card-file-name
 
 Options:
- -c, --output-csv=file-name     write a comma separated grid with the material data
+ -c, --output-csv=filename     write a comma separated grid with the material data
 
 Exit:
  0      No Error or Warning found
- 1      Argument error, wrong or less Arguments given
+ 1      Argument error, wrong or too few Arguments given
 
 Tool to work with FreeCAD Material definition cards
 
@@ -49,6 +53,11 @@ Version:
 """
 
 
+# see comments in module importFCMat, there is an independent parser implementation
+# for reading and writing FCMat files
+# inside FreeCAD mostly the one from importFCMat.py is used
+
+
 def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
     try:
@@ -56,9 +65,16 @@ def importFCMat(fileName):
     except ImportError:
         import configparser
 
+    FreeCAD.Console.PrintError(
+        'This mat card reader is probably deprecated and not widely used in FreeCAD. '
+        'See comment in Material.py module.\n'
+    )
     Config = configparser.RawConfigParser()
     Config.optionxform = str
-    Config.read(fileName)
+    if sys.version_info.major >= 3:
+        Config.read(fileName, encoding='utf-8')  # respect unicode filenames
+    else:
+        Config.read(fileName)
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
@@ -77,6 +93,10 @@ def exportFCMat(fileName, matDict):
     import string
     Config = configparser.RawConfigParser()
 
+    FreeCAD.Console.PrintError(
+        'This mat card writer is probably deprecated and not widely used in FreeCAD. '
+        'See comment in Material.py module.\n'
+    )
     # create groups
     for x in matDict.keys():
         grp, key = string.split(x, sep='_')
@@ -95,35 +115,7 @@ def exportFCMat(fileName, matDict):
         Config.write(configfile)
 
 
-def getMaterialAttributeStructure(withSpaces=None):
-
-    ''''''
-
-    # material properties
-    # see the following resources in the FreeCAD wiki for more informations about the material specific properties:
-    # https://www.freecadweb.org/wiki/Material_data_model
-    # https://www.freecadweb.org/wiki/Material
-
-    import os
-    import xml.etree.ElementTree as ElementTree
-
-    infile = os.path.dirname(__file__) + os.sep + "MatPropDict.xml"
-    tree = ElementTree.parse(infile)
-
-    if withSpaces:
-        # on attributes, add a space before a capital letter, will be used for better display in the ui
-        import re
-        root = tree.getroot()
-        for group in root.getchildren():
-            for proper in group.getchildren():
-                proper.set('Name', re.sub(r"(\w)([A-Z]+)", r"\1 \2",
-                           proper.attrib['Name']))
-
-    return tree
-
-
 if __name__ == '__main__':
-    import sys
     import getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:", ["output-csv="])

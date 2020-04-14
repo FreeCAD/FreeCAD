@@ -84,20 +84,20 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if(!obj)
         return new App::DocumentObjectExecReturn("No shape linked.");
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+        shape = Feature::getShape(obj);
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
+    const Part::TopoShape& part = Feature::getTopoShape(obj);
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
             shape = part.getSubShape(element[0].c_str());
@@ -187,15 +187,24 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
             if (!a1.IsNull() && !a2.IsNull()) {
                 // get end points of 1st curve
-                gp_Pnt p1 = a1->Value(a1->FirstParameter());
-                gp_Pnt p2 = a1->Value(a1->LastParameter());
+                Standard_Real first, last;
+                first = a1->FirstParameter();
+                last = a1->LastParameter();
+                if (S1.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p1 = a1->Value(first);
+                gp_Pnt p2 = a1->Value(last);
                 if (S1.Orientation() == TopAbs_REVERSED) {
                     std::swap(p1, p2);
                 }
 
                 // get end points of 2nd curve
-                gp_Pnt p3 = a2->Value(a2->FirstParameter());
-                gp_Pnt p4 = a2->Value(a2->LastParameter());
+                first = a2->FirstParameter();
+                last = a2->LastParameter();
+                if (S2.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p3 = a2->Value(first);
+                gp_Pnt p4 = a2->Value(last);
                 if (S2.Orientation() == TopAbs_REVERSED) {
                     std::swap(p3, p4);
                 }
@@ -302,9 +311,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
         std::vector<App::DocumentObject*>::const_iterator it;
         for (it = shapes.begin(); it != shapes.end(); ++it) {
-            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
-            TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            TopoDS_Shape shape = Feature::getShape(*it);
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
 
@@ -415,12 +422,12 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
     if (Sections.getSize() == 0)
         return new App::DocumentObjectExecReturn("No sections linked.");
     App::DocumentObject* spine = Spine.getValue();
-    if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if (!spine)
         return new App::DocumentObjectExecReturn("No spine linked.");
     const std::vector<std::string>& subedge = Spine.getSubValues();
 
     TopoDS_Shape path;
-    const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
+    const Part::TopoShape& shape = Feature::getTopoShape(spine);
     if (!shape.getShape().IsNull()) {
         try {
             if (!subedge.empty()) {
@@ -474,9 +481,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
         std::vector<App::DocumentObject*>::const_iterator it;
         for (it = shapes.begin(); it != shapes.end(); ++it) {
-            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
-            TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            TopoDS_Shape shape = Feature::getShape(*it);
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
 
@@ -629,9 +634,9 @@ void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 App::DocumentObjectExecReturn *Thickness::execute(void)
 {
     App::DocumentObject* source = Faces.getValue();
-    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
-    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    const TopoShape& shape = Feature::getTopoShape(source);
     if (shape.isNull())
         return new App::DocumentObjectExecReturn("Source shape is empty.");
 
@@ -663,4 +668,55 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     else
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Refine, Part::Feature)
+
+Refine::Refine()
+{
+    ADD_PROPERTY_TYPE(Source,(0),"Refine",App::Prop_None,"Source shape");
+}
+
+App::DocumentObjectExecReturn *Refine::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoShape myShape = source->Shape.getShape();
+        this->Shape.setValue(myShape.removeSplitter());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Reverse, Part::Feature)
+
+Reverse::Reverse()
+{
+    ADD_PROPERTY_TYPE(Source, (0), "Reverse", App::Prop_None, "Source shape");
+}
+
+App::DocumentObjectExecReturn* Reverse::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoDS_Shape myShape = source->Shape.getValue();
+        if (!myShape.IsNull())
+            this->Shape.setValue(myShape.Reversed());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure & e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
 }

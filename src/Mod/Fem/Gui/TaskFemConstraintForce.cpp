@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,10 +26,13 @@
 
 #ifndef _PreComp_
 # include <sstream>
+
+# include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <QAction>
+
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -42,6 +46,8 @@
 
 #include "ui_TaskFemConstraintForce.h"
 #include "TaskFemConstraintForce.h"
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/PropertyGeo.h>
@@ -56,7 +62,6 @@
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -64,7 +69,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintForce */
 
 TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "fem-constraint-force")
+    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintForce")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -72,28 +77,24 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // Create a context menu for the listview of the references
-    QAction* action = new QAction(tr("Delete"), ui->listReferences);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onReferenceDeleted()));
-    ui->listReferences->addAction(action);
-    ui->listReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->listReferences);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->spinForce, SIGNAL(valueChanged(double)),
             this, SLOT(onForceChanged(double)));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
     connect(ui->buttonDirection, SIGNAL(pressed()),
             this, SLOT(onButtonDirection()));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onCheckReverse(bool)));
+    connect(ui->listReferences, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
     ui->spinForce->blockSignals(true);
     ui->listReferences->blockSignals(true);
-    ui->buttonReference->blockSignals(true);
     ui->buttonDirection->blockSignals(true);
     ui->checkReverse->blockSignals(true);
 
@@ -122,9 +123,12 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
 
     ui->spinForce->blockSignals(false);
     ui->listReferences->blockSignals(false);
-    ui->buttonReference->blockSignals(false);
     ui->buttonDirection->blockSignals(false);
     ui->checkReverse->blockSignals(false);
+
+    //Selection buttons
+    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
+    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
 
     updateUI();
 }
@@ -136,105 +140,112 @@ void TaskFemConstraintForce::updateUI()
         onButtonReference(true);
         return;
     }
-
-    std::string ref = ui->listReferences->item(0)->text().toStdString();
-    int pos = ref.find_last_of(":");
-    if (ref.substr(pos+1, 6) == "Vertex")
-        ui->labelForce->setText(tr("Point load"));
-    else if (ref.substr(pos+1, 4) == "Edge")
-        ui->labelForce->setText(tr("Line load"));
-    else if (ref.substr(pos+1, 4) == "Face")
-        ui->labelForce->setText(tr("Area load"));
 }
 
-void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskFemConstraintForce::addToSelection()
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        // Don't allow selection in other document
-        if (strcmp(msg.pDocName, ConstraintView->getObject()->getDocument()->getName()) != 0)
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
+    Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
-
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
-            return;
-        std::string subName(msg.pSubName);
-
-        if (selectionMode == selnone)
-            return;
-
-        std::vector<std::string> references(1,subName);
-        Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
-        Part::Feature* feat = static_cast<Part::Feature*>(obj);
-        TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
-
-        if (selectionMode == selref) {
-            std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-            std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-
-            // Ensure we don't have mixed reference types
-            if (SubElements.size() > 0) {
-                if (subName.substr(0,4) != SubElements.front().substr(0,4)) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Mixed shape types are not possible. Use a second constraint instead"));
-                    return;
+        }
+        const std::vector<std::string>& subNames = it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+            bool addMe = true;
+            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                itr != SubElements.end();
+                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
+            {// for every sub element in selection that matches one in old list
+                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so don't add
+                    addMe = false;
                 }
             }
-            else {
-                if ((subName.substr(0,4) != "Face") && (subName.substr(0,4) != "Edge") && (subName.substr(0,6) != "Vertex")) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only faces, edges and vertices can be picked"));
-                    return;
-                }
-            }
+            // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
+            std::string searchStr;
+            if (subNames[subIt].find("Vertex") != std::string::npos)
+                searchStr = "Vertex";
+            else if (subNames[subIt].find("Edge") != std::string::npos)
+                searchStr = "Edge";
+            else
+                searchStr = "Face";
 
-            // Avoid duplicates
-            std::size_t pos = 0;
-            for (; pos < Objects.size(); pos++) {
-                if (obj == Objects[pos]) {
+            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
+                if (SubElements[iStr].find(searchStr) == std::string::npos) {
+                    QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    addMe = false;
                     break;
                 }
             }
-
-            if (pos != Objects.size()) {
-                if (subName == SubElements[pos]) {
-                    return;
-                }
+            if (addMe) {
+                QSignalBlocker block(ui->listReferences);
+                Objects.push_back(obj);
+                SubElements.push_back(subNames[subIt]);
+                ui->listReferences->addItem(makeRefText(obj, subNames[subIt]));
             }
-
-            // add the new reference
-            Objects.push_back(obj);
-            SubElements.push_back(subName);
-            pcConstraint->References.setValues(Objects,SubElements);
-            ui->listReferences->addItem(makeRefText(obj, subName));
-
-            // Turn off reference selection mode
-            onButtonReference(false);
         }
-        else if (selectionMode == seldir) {
-            if (subName.substr(0,4) == "Face") {
-                if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
-                    return;
-                }
-            }
-            else if (subName.substr(0,4) == "Edge") {
-                if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
-                    QMessageBox::warning(this, tr("Selection error"), tr("Only linear edges can be picked"));
-                    return;
-                }
-            }
-            else {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces and edges can be picked"));
-                return;
-            }
-            pcConstraint->Direction.setValue(obj, references);
-            ui->lineDirection->setText(makeRefText(obj, subName));
-
-            // Turn off direction selection mode
-            onButtonDirection(false);
-        }
-
-        Gui::Selection().clearSelection();
-        updateUI();
     }
+    //Update UI
+    pcConstraint->References.setValues(Objects, SubElements);
+    updateUI();
+}
+
+void TaskFemConstraintForce::removeFromSelection()
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
+    Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+    std::vector<size_t> itemsToDel;
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
+        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            return;
+        }
+        const std::vector<std::string>& subNames = it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
+
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                itr != SubElements.end();
+                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
+            {// for every sub element in selection that matches one in old list
+                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+                    itemsToDel.push_back(std::distance(SubElements.begin(), itr));
+                }
+            }
+        }
+    }
+    std::sort(itemsToDel.begin(), itemsToDel.end());
+    while (itemsToDel.size() > 0) {
+        Objects.erase(Objects.begin() + itemsToDel.back());
+        SubElements.erase(SubElements.begin() + itemsToDel.back());
+        itemsToDel.pop_back();
+    }
+    //Update UI
+    {
+        QSignalBlocker block(ui->listReferences);
+        ui->listReferences->clear();
+        for (unsigned int j = 0; j < Objects.size(); j++) {
+            ui->listReferences->addItem(makeRefText(Objects[j], SubElements[j]));
+        }
+    }
+    pcConstraint->References.setValues(Objects, SubElements);
+    updateUI();
 }
 
 void TaskFemConstraintForce::onForceChanged(double f)
@@ -244,20 +255,68 @@ void TaskFemConstraintForce::onForceChanged(double f)
 }
 
 void TaskFemConstraintForce::onReferenceDeleted() {
-    int row = ui->listReferences->currentIndex().row();
-    TaskFemConstraint::onReferenceDeleted(row);
-    ui->listReferences->model()->removeRow(row);
-    ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
+    TaskFemConstraintForce::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
 }
 
-void TaskFemConstraintForce::onButtonDirection(const bool pressed) {
-    if (pressed) {
-        selectionMode = seldir;
-    } else {
-        selectionMode = selnone;
+void TaskFemConstraintForce::onButtonDirection(const bool pressed)
+{
+    // sets the normal vector of the currently selecteed planar face as direction
+
+    Q_UNUSED(pressed)
+    //get vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); 
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face, please."));
+        return;
     }
-    ui->buttonDirection->setChecked(pressed);
-    Gui::Selection().clearSelection();
+    Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+
+    // we only handle the first selected object
+    Gui::SelectionObject& selectionElement = selection.at(0);
+
+    // we can only handle part objects
+    if (!selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Selected object is not a part object!"));
+        return;
+    }
+    // get the names of the subobjects
+    const std::vector<std::string>& subNames = selectionElement.getSubNames();
+
+    if (subNames.size() != 1) {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Only one planar face or edge can be selected!"));
+        return;
+    }
+    // we are now sure we only have one object
+    std::string subNamesElement = subNames[0];
+    // vector for the direction
+    std::vector<std::string> direction(1, subNamesElement);
+
+    Part::Feature* feat = static_cast<Part::Feature*>(selectionElement.getObject());
+    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
+
+    if (subNamesElement.substr(0, 4) == "Face") {
+        if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
+            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar faces can be picked for 3D"));
+            return;
+        }
+    }
+    else if (subNamesElement.substr(0, 4) == "Edge") { // 2D or 3D can use edge as direction vector
+        if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
+            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar edges can be picked for 2D"));
+            return;
+        }
+    }
+    else {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Only faces for 3D part or edges for 2D can be picked"));
+        return;
+    }
+
+    // update the direction
+    pcConstraint->Direction.setValue(feat, direction);
+    ui->lineDirection->setText(makeRefText(feat, subNamesElement));
+
+    //Update UI
+    updateUI(); 
 }
 
 void TaskFemConstraintForce::onCheckReverse(const bool pressed)
@@ -309,6 +368,11 @@ bool TaskFemConstraintForce::getReverse() const
 TaskFemConstraintForce::~TaskFemConstraintForce()
 {
     delete ui;
+}
+
+bool TaskFemConstraintForce::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintForce::changeEvent(QEvent *e)

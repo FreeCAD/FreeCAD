@@ -44,7 +44,7 @@ enum class Workflow {
 
 /**
  * This class controls the workflow of each file.
- * It has been introdused to support legacy files migrating to the new workflow.
+ * It has been introduced to support legacy files migrating to the new workflow.
  */
 class PartDesignGuiExport WorkflowManager {
 public:

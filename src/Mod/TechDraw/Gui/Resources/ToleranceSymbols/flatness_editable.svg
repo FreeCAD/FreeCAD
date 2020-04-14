@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -97,11 +98,11 @@ All symbols in this repository are licensed under CC-BY 3.0</dc:description>
          x="17.047827"
          y="1041.8041"
          id="text3801"
-         xml:space="preserve"
          style="font-size:5px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:100%;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.28200001;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:osifont;-inkscape-font-specification:osifont"><tspan
            x="17.047827"
            y="1041.8041"
-           id="tspan3803">0.000</tspan></text>
+           id="tspan3803"
+           xml:space="preserve">0.000</tspan></text>
     </g>
   </g>
   <g

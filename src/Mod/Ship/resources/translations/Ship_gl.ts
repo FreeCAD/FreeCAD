@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Tonelaxe</translation>
+      <translation>Desprazamento</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation>Seleccionadas Formas de obxecto descoñecidas</translation>
+      <translation>Escolmadas Formas de obxecto descoñecidas</translation>
     </message>
   </context>
 </TS>

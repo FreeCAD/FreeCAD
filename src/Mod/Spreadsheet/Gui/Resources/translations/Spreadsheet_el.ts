@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="el" sourcelanguage="en">
+<TS version="2.1" language="el" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Κατακόρυφη στοίχιση στο κέντρο</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Κατακόρυφη στοίχιση των περιεχομένων των επιλεγμένων κελιών στο κέντρο</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Συγχώνευση επιλεγμένων κελιών στο υπολογιστικό φύλλο</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Διαχωρισμός κελιού</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Διαχωρισμός των κελιών που είχαν προηγουμένως συγχωνευτεί στο υπολογιστικό φύλλο</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Έντονη γραφή</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ορισμός έντονης γραφής στα επιλεγμένα κελιά</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Πλάγια γραφή</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ορισμός πλάγιας γραφής στα επιλεγμένα κελιά</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Υπογράμμιση κειμένου</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Ορισμός υπογράμμισης κειμένου σε επιλεγμένα κελιά</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Επιλογή</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Εξαγωγή αρχείου</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Περιεχόμενα κελιού</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Εμφάνιση υπολογιστικού φύλλου</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Ορίζει το χρώμα υποβάθρου κελιών του Υπολογιστικού Φύλλου</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Υπολογιστικό Φύλλο</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Ανοιχτό γκρι</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Επιλογή</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

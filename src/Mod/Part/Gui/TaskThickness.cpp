@@ -34,7 +34,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -42,6 +42,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,7 +60,7 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness;
-    Private()
+    Private() : thickness(nullptr)
     {
     }
     ~Private()
@@ -97,11 +98,29 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->thickness = thickness;
     d->ui.setupUi(this);
+    d->ui.labelOffset->setText(tr("Thickness"));
+    d->ui.fillOffset->hide();
+
+    QSignalBlocker blockOffset(d->ui.spinOffset);
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.spinOffset->setValue(d->thickness->Value.getValue());
-    d->ui.labelOffset->setText(tr("Thickness"));
-    d->ui.fillOffset->hide();
+
+    int mode = d->thickness->Mode.getValue();
+    d->ui.modeType->setCurrentIndex(mode);
+
+    int join = d->thickness->Join.getValue();
+    d->ui.joinType->setCurrentIndex(join);
+
+    QSignalBlocker blockIntSct(d->ui.intersection);
+    bool intsct = d->thickness->Intersection.getValue();
+    d->ui.intersection->setChecked(intsct);
+
+    QSignalBlocker blockSelfInt(d->ui.selfIntersection);
+    bool selfint = d->thickness->SelfIntersection.getValue();
+    d->ui.selfIntersection->setChecked(selfint);
+
+    d->ui.spinOffset->bind(d->thickness->Value);
 }
 
 ThicknessWidget::~ThicknessWidget()
@@ -206,22 +225,17 @@ bool ThicknessWidget::accept()
     if (d->loop.isRunning())
         return false;
 
-    std::string name = d->thickness->getNameInDocument();
     try {
         if (!d->selection.empty()) {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Faces = %s",
-                name.c_str(),d->selection.c_str());
+            Gui::cmdAppObjectArgs(d->thickness, "Faces = %s", d->selection.c_str());
         }
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value().getValue());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
-            name.c_str(),d->ui.modeType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
-            name.c_str(),d->ui.joinType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
-            name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",
-            name.c_str(),d->ui.selfIntersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
+        Gui::cmdAppObjectArgs(d->thickness, "Mode = %i", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s", 
+            d->ui.intersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s", 
+            d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->thickness->isValid())

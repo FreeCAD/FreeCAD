@@ -27,25 +27,10 @@ import FreeCAD
 import FreeCADGui
 import Path
 
-# Qt tanslation handling
+
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-# class OldHighlighter(QtGui.QSyntaxHighlighter):
-
-#     def highlightBlock(self, text):
-
-#         myClassFormat = QtGui.QTextCharFormat()
-#         myClassFormat.setFontWeight(QtGui.QFont.Bold)
-#         myClassFormat.setForeground(QtCore.Qt.green)
-#         # the regex pattern to be colored
-#         pattern = "(G.*?|M.*?)\\s"
-#         expression = QtCore.QRegExp(pattern)
-#         index = text.index(expression)
-#         while index >= 0:
-#             length = expression.matchedLength()
-#             setFormat(index, length, myClassFormat)
-#             index = text.index(expression, index + length)
 
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
@@ -93,12 +78,12 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
     def highlightBlock(self, text):
 
-        for pattern, format in self.highlightingRules:
+        for pattern, fmt in self.highlightingRules:
             expression = QtCore.QRegExp(pattern)
             index = expression.indexIn(text)
             while index >= 0:
                 length = expression.matchedLength()
-                self.setFormat(index, length, format)
+                self.setFormat(index, length, fmt)
                 index = expression.indexIn(text, index + length)
 
 
@@ -110,11 +95,11 @@ class GCodeEditorDialog(QtGui.QDialog):
         layout = QtGui.QVBoxLayout(self)
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        c = p.GetUnsigned("DefaultHighlightPathColor", 4286382335 )
+        c = p.GetUnsigned("DefaultHighlightPathColor", 4286382335)
         Q = QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
-        highlightcolor = (Q.red()/255., Q.green()/255., Q.blue()/255., Q.alpha()/255.)
+        highlightcolor = (Q.red() / 255., Q.green() / 255., Q.blue() / 255., Q.alpha() / 255.)
 
-        self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature","selection")
+        self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "selection")
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
@@ -127,7 +112,6 @@ class GCodeEditorDialog(QtGui.QDialog):
         font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
         self.editor.setText("G01 X55 Y4.5 F300.0")
-        self.highlighter = GCodeHighlighter(self.editor.document())
         layout.addWidget(self.editor)
 
         # Note
@@ -146,7 +130,20 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.selectionChanged.connect(self.highlightpath)
         self.finished.connect(self.cleanup)
 
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        Xpos = int(prefs.GetString('inspecteditorX', "0"))
+        Ypos = int(prefs.GetString('inspecteditorY', "0"))
+        height = int(prefs.GetString('inspecteditorH', "500"))
+        width = int(prefs.GetString('inspecteditorW', "600"))
+        self.move(Xpos, Ypos)
+        self.resize(width, height)
+
     def cleanup(self):
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        prefs.SetString('inspecteditorX', str(self.x()))
+        prefs.SetString('inspecteditorY', str(self.y()))
+        prefs.SetString('inspecteditorW', str(self.width()))
+        prefs.SetString('inspecteditorH', str(self.height()))
         FreeCAD.ActiveDocument.removeObject(self.selectionobj.Name)
 
     def highlightpath(self):
@@ -160,7 +157,7 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         commands = self.PathObj.Commands
 
-        #Derive the starting position for the first selected command
+        # Derive the starting position for the first selected command
         prevX = prevY = prevZ = None
         prevcommands = commands[:startrow]
         prevcommands.reverse()
@@ -183,27 +180,40 @@ class GCodeEditorDialog(QtGui.QDialog):
         if prevZ is None:
             prevZ = 0.0
 
-        #Build a new path with selection
+        # Build a new path with selection
         p = Path.Path()
-        firstrapid = Path.Command("G0", {"X": prevX, "Y":prevY, "Z":prevZ})
+        firstrapid = Path.Command("G0", {"X": prevX, "Y": prevY, "Z": prevZ})
 
-        selectionpath = [firstrapid] + commands[startrow:endrow +1]
+        selectionpath = [firstrapid] + commands[startrow:endrow + 1]
         p.Commands = selectionpath
         self.selectionobj.Path = p
 
 
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
-
+    
+    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+    # default Max Highlighter Size = 512 Ko
+    defaultMHS = 512 * 1024 
+    mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
+    
     if hasattr(obj, "Path"):
         if obj.Path:
             dia = GCodeEditorDialog(obj.Path)
             dia.editor.setText(obj.Path.toGCode())
+            gcodeSize = len(dia.editor.toPlainText())
+            if (gcodeSize <= mhs):
+                # because of poor performance, syntax highlighting is 
+                # limited to mhs octets (default 512 KB).
+                # It seems than the response time curve has an inflexion near 500 KB
+                # beyond 500 KB, the response time increases exponentially.
+                dia.highlighter = GCodeHighlighter(dia.editor.document())
+            else:
+                FreeCAD.Console.PrintMessage(translate("Path", "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize)))
             result = dia.exec_()
             # exec_() returns 0 or 1 depending on the button pressed (Ok or
             # Cancel)
             if result:
-                import Path
                 p = Path.Path(dia.editor.toPlainText())
                 FreeCAD.ActiveDocument.openTransaction("Edit Path")
                 obj.Path = p
@@ -223,7 +233,7 @@ class CommandPathInspect:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
@@ -231,11 +241,11 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object")+"\n")
+                translate("Path_Inspect", "Please select exactly one path object") + "\n")
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_Inspect", "Please select exactly one path object")+"\n")
+                translate("Path_Inspect", "Please select exactly one path object") + "\n")
             return
 
         # if everything is ok, execute

@@ -33,9 +33,9 @@
 # include <Geom_Surface.hxx>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
-#include <boost/uuid/uuid_io.hpp>
+# include <boost/uuid/uuid_io.hpp>
+#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Matrix.h>
@@ -51,6 +51,7 @@
 #include "GeometryPy.h"
 #include "GeometryPy.cpp"
 
+#include "GeometryExtensionPy.h"
 #include "TopoShape.h"
 #include "TopoShapePy.h"
 
@@ -114,7 +115,7 @@ PyObject* GeometryPy::rotate(PyObject *args)
 
     rot.getValue(dir, angle);
     pnt = plm->getPosition();
-    
+
     gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
     getGeometryPtr()->handle()->Rotate(ax1, angle);
     Py_Return;
@@ -131,7 +132,7 @@ PyObject* GeometryPy::scale(PyObject *args)
         getGeometryPtr()->handle()->Scale(pnt, scale);
         Py_Return;
     }
-    
+
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!d", &PyTuple_Type,&o, &scale)) {
         vec = Base::getVectorFromTuple<double>(o);
@@ -212,6 +213,247 @@ PyObject* GeometryPy::copy(PyObject *args)
     return cpy;
 }
 
+PyObject* GeometryPy::clone(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    Part::Geometry* geom = this->getGeometryPtr();
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = 0;
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create clone of geometry");
+        return 0;
+    }
+
+    Part::GeometryPy* geompy = static_cast<Part::GeometryPy*>(cpy);
+    // the PyMake function must have created the corresponding instance of the 'Geometry' subclass
+    // so delete it now to avoid a memory leak
+    if (geompy->_pcTwinPointer) {
+        Part::Geometry* clone = static_cast<Part::Geometry*>(geompy->_pcTwinPointer);
+        delete clone;
+    }
+    geompy->_pcTwinPointer = geom->clone();
+    return cpy;
+}
+
+PyObject* GeometryPy::setExtension(PyObject *args)
+{
+    PyObject* o;
+    if (PyArg_ParseTuple(args, "O!", &(GeometryExtensionPy::Type),&o)) {
+        Part::GeometryExtension * ext;
+        ext = static_cast<GeometryExtensionPy *>(o)->getGeometryExtensionPtr();
+
+        // make copy of Python managed memory and wrap it in smart pointer
+        auto cpy = ext->copy();
+
+        this->getGeometryPtr()->setExtension(std::move(cpy));
+        Py_Return;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A geometry extension object was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::getExtensionOfType(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
+
+                // we create a copy and transfer this copy's memory management responsibility to Python
+                PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+
+                return cpy;
+            }
+            catch(const Base::ValueError& e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+            catch(const std::bad_weak_ptr&) {
+                PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension type was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::getExtensionOfName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
+
+            // we create a copy and transfer this copy's memory management responsibility to Python
+            PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+
+            return cpy;
+        }
+        catch(const Base::ValueError& e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+        catch(const std::bad_weak_ptr&) {
+            PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(type)));
+            }
+            catch(const Base::ValueError& e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::hasExtensionOfName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(std::string(o))));
+        }
+        catch(const Base::ValueError& e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                this->getGeometryPtr()->deleteExtension(type);
+                Py_Return;
+            }
+            catch(const Base::ValueError& e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with a type object was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            this->getGeometryPtr()->deleteExtension(std::string(o));
+            Py_Return;
+        }
+        catch(const Base::ValueError& e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::getExtensions(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")){
+        PyErr_SetString(PartExceptionOCCError, "No arguments were expected");
+        return NULL;
+    }
+
+    try {
+        const std::vector<std::weak_ptr<GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
+
+        PyObject* list = PyList_New(ext.size());
+
+        Py::Tuple tuple(ext.size());
+
+        for (std::size_t i=0; i<ext.size(); ++i) {
+
+            std::shared_ptr<GeometryExtension> p = ext[i].lock();
+
+            if(p) {
+                // we create a python copy and add it to the list
+                Py::Tuple args(size_t(0));
+                PyObject* cpy = static_cast<GeometryExtensionPy *>(p->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+
+                PyList_SetItem( list, i, cpy);
+            }
+        }
+
+        return list;
+    }
+    catch(const Base::ValueError& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return 0;
+    }
+
+}
+
 Py::Boolean GeometryPy::getConstruction(void) const
 {
     return Py::Boolean(getGeometryPtr()->Construction);
@@ -236,5 +478,5 @@ PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
 
 int GeometryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

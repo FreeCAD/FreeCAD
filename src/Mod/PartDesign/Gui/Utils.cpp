@@ -28,6 +28,7 @@
 # include <gp_Pln.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
@@ -51,6 +52,7 @@
 #include "Utils.h"
 #include "WorkflowManager.h"
 
+FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
 //===========================================================================
 // Helper for Body
@@ -58,6 +60,35 @@
 using namespace Attacher;
 
 namespace PartDesignGui {
+
+bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
+    if(!obj || !obj->getNameInDocument()) {
+        FC_ERR("invalid object");
+        return false;
+    }
+    if(body == 0) {
+        body = getBodyFor(obj, false);
+        if(!body) {
+            FC_ERR("no body found");
+            return false;
+        }
+    }
+    auto *activeView = Gui::Application::Instance->activeView();
+    if(!activeView) return false;
+    App::DocumentObject *parent = 0;
+    std::string subname;
+    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
+    if(activeBody != body) {
+        parent = obj;
+        subname.clear();
+    }else{
+        subname += obj->getNameInDocument();
+        subname += '.';
+    }
+    _FCMD_OBJ_DOC_CMD(Gui,parent,"setEdit(" << Gui::Command::getObjectCmd(parent) 
+            << ",0,'" << subname << "')");
+    return true;
+}
 
 /*!
  * \brief Return active body or show a warning message.
@@ -67,7 +98,8 @@ namespace PartDesignGui {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern)
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern, 
+        App::DocumentObject **topParent, std::string *subname)
 {
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
@@ -76,13 +108,33 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
         bool singleBodyDocument = activeView->getAppDocument()->
             countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
         if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
-            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+            activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
             if (!activeBody && singleBodyDocument && autoActivate) {
-                Gui::Command::doCommand( Gui::Command::Gui,
-                    "Gui.activeView().setActiveObject('pdbody',App.ActiveDocument.findObjects('PartDesign::Body')[0])");
-                activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-                return activeBody;
+                auto doc = activeView->getAppDocument();
+                auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
+                App::DocumentObject *parent = 0;
+                App::DocumentObject *body = 0;
+                std::string sub;
+                if(bodies.size()==1) {
+                    body = bodies[0];
+                    for(auto &v : body->getParents()) {
+                        if(v.first->getDocument()!=doc)
+                            continue;
+                        if(parent) {
+                            body = 0;
+                            break;
+                        }
+                        parent = v.first;
+                        sub = v.second;
+                    }
+                }
+                if(body) {
+                    auto doc = parent?parent->getDocument():body->getDocument();
+                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
+                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
+                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                }
             }
             if (!activeBody && messageIfNot) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
@@ -112,24 +164,27 @@ PartDesign::Body * makeBody(App::Document *doc)
     // This is intended as a convenience when starting a new document.
     auto bodyName( doc->getUniqueObjectName("Body") );
     Gui::Command::doCommand( Gui::Command::Doc,
-                             "App.activeDocument().addObject('PartDesign::Body','%s')",
-                             bodyName.c_str() );
-    Gui::Command::doCommand( Gui::Command::Gui,
-                             "Gui.activateView('Gui::View3DInventor', True)\n"
-                             "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-                             PDBODYKEY, bodyName.c_str() );
-
-    auto activeView( Gui::Application::Instance->activeView() );
-    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+                             "App.getDocument('%s').addObject('PartDesign::Body','%s')",
+                             doc->getName(), bodyName.c_str() );
+    auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
+    if(body) {
+        auto vp = Gui::Application::Instance->getViewProvider(body);
+        if(vp) {
+            // make the new body active
+            vp->doubleClicked();
+        }
+    }
+    return body;
 }
 
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
-                             bool autoActivate, bool assertModern)
+                             bool autoActivate, bool assertModern,
+                             App::DocumentObject **topParent, std::string *subname)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern);
+    PartDesign::Body * rv = getBody(/*messageIfNot =*/false, autoActivate, assertModern, topParent, subname);
     if (rv && rv->hasObject(obj))
         return rv;
 
@@ -237,12 +292,9 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
 
     if (fabs(offset) < Precision::Confusion()) {
         // One of the base planes
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
-                sketch->getNameInDocument(), plane->getNameInDocument () );
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
-                sketch->getNameInDocument(), reverseSketch ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                sketch->getNameInDocument(), Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
+        FCMD_OBJ_CMD(sketch,"Support = (" << Gui::Command::getObjectCmd(plane) << ",[''])");
+        FCMD_OBJ_CMD(sketch,"MapReversed = " << (reverseSketch ? "True" : "False"));
+        FCMD_OBJ_CMD(sketch,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
 
     } else {
         // Offset to base plane
@@ -252,26 +304,16 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
             offset *= -1.0;
 
         std::string Datum = doc->getUniqueObjectName("DatumPlane");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",
-                Datum.c_str());
-        QString refStr = QString::fromLatin1("[(App.activeDocument().%1,'')]")
-            .arg ( QString::fromLatin1 ( plane->getNameInDocument () ) );
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
-                Datum.c_str(), refStr.toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                Datum.c_str(), AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.AttachmentOffset.Base.z = %f",
-                Datum.c_str(), offset);
-        Gui::Command::doCommand(Gui::Command::Doc,
-                "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s)",
-                body->getNameInDocument(), Datum.c_str(), sketch->getNameInDocument());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                "App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
-                sketch->getNameInDocument(), Datum.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
-                sketch->getNameInDocument(), reverseSketch ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
-                sketch->getNameInDocument(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
+        FCMD_DOC_CMD(doc,"addObject('PartDesign::Plane','"<<Datum<<"')");
+        auto obj = doc->getObject(Datum.c_str());
+        FCMD_OBJ_CMD(obj,"Support = [(" << Gui::Command::getObjectCmd(plane) << ",'')]");
+        FCMD_OBJ_CMD(obj,"MapMode = '" << AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
+        FCMD_OBJ_CMD(obj,"AttachmentOffset.Base.z = " << offset);
+        FCMD_OBJ_CMD(body,"insertObject("<<Gui::Command::getObjectCmd(obj)<<','<<
+                Gui::Command::getObjectCmd(sketch)<<")");
+        FCMD_OBJ_CMD(sketch,"Support = (" << Gui::Command::getObjectCmd(obj) << ",[''])");
+        FCMD_OBJ_CMD(sketch,"MapReversed = " <<  (reverseSketch ? "True" : "False"));
+        FCMD_OBJ_CMD(sketch,"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace) << "'");
     }
 }
 
@@ -327,8 +369,6 @@ void relinkToBody (PartDesign::Feature *feature) {
         throw Base::RuntimeError ("Couldn't find body for the feature");
     }
 
-    std::string bodyName = body->getNameInDocument ();
-
     for ( const auto & obj: doc->getObjects () ) {
         if ( !isPartDesignAwareObjecta ( obj ) ) {
             std::vector <App::Property *> properties;
@@ -340,7 +380,7 @@ void relinkToBody (PartDesign::Feature *feature) {
                     if ( propLink->getValue() != feature ) {
                         continue;
                     }
-                    valueStr = std::string ( "App.activeDocument()." ).append ( bodyName );
+                    valueStr = Gui::Command::getObjectCmd(body);
                 } else if ( prop->isDerivedFrom ( App::PropertyLinkSub::getClassTypeId() ) ) {
                     App::PropertyLinkSub *propLink = static_cast <App::PropertyLinkSub *> ( prop );
                     if ( propLink->getValue() != feature ) {
@@ -380,8 +420,7 @@ void relinkToBody (PartDesign::Feature *feature) {
                 }
 
                 if ( !valueStr.empty () ) {
-                    Gui::Command::doCommand ( Gui::Command::Doc, "App.activeDocument().%s.%s=%s",
-                            obj->getNameInDocument (), prop->getName (), valueStr.c_str() );
+                    FCMD_OBJ_CMD(obj,prop->getName() << '=' << valueStr);
                 }
             }
         }

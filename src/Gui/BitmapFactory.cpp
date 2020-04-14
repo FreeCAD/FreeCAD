@@ -278,8 +278,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QString::fromLatin1("%1.%2").arg(fileName).
-                    arg(QString::fromLatin1((*fm).toLower().constData()));
+                QString path = QString::fromLatin1("%1.%2").arg(fileName,
+                    QString::fromLatin1((*fm).toLower().constData()));
                 if (loadPixmap(path, icon)) {
                     break;
                 }
@@ -424,9 +424,9 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
 
     QPainter p(&image);
     // tmp. disable the report window to suppress some bothering warnings
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
     QSvgRenderer svg(contents);
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
     svg.render(&p);
     p.end();
 
@@ -492,8 +492,7 @@ QPixmap BitmapFactoryInst::resize(int w, int h, const QPixmap& p, Qt::BGMode bgm
         QColor dl = pal.color(QPalette::Disabled, QPalette::Light);
         QColor dt = pal.color(QPalette::Disabled, QPalette::Text);
 
-        QPixmap pm = pix;
-        pm = QPixmap(w,h);
+        QPixmap pm(w,h);
         pm.fill(dl);
 
         QPainter pt;
@@ -572,20 +571,27 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
+#if QT_VERSION >= 0x050000
+    qreal dpr1 = p1.devicePixelRatio();
+    qreal dpr2 = p2.devicePixelRatio();
+#else
+    qreal dpr1 = 1;
+    qreal dpr2 = 1;
+#endif
 
     switch (pos)
     {
-    case Qt::TopLeftCorner:
+    case TopLeft:
         break;
-    case Qt::TopRightCorner:
-        x = p1.width () - p2.width ();
+    case TopRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
         break;
-    case Qt::BottomLeftCorner:
-        y = p1.height() - p2.height();
+    case BottomLeft:
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
-    case Qt::BottomRightCorner:
-        x = p1.width () - p2.width ();
-        y = p1.height() - p2.height();
+    case BottomRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
     }
 
@@ -644,13 +650,13 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     int width  = (int)size[0];
     int height = (int)size[1];
 
-    for (int y = 0; y < height; y++) 
+    for (int y = 0; y < height; y++)
     {
         unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
             QRgb rgb = p.pixel(x,y);
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
                 break;
@@ -687,19 +693,21 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     int numcomponents;
 
     const unsigned char * bytes = p.getValue(size, numcomponents);
+    if (!bytes)
+        return;
 
     int width  = (int)size[0];
     int height = (int)size[1];
 
     img = QImage(width, height, QImage::Format_RGB32);
     QRgb * bits = (QRgb*) img.bits();
-    
-    for (int y = 0; y < height; y++) 
+
+    for (int y = 0; y < height; y++)
     {
         const unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
             case 1:
@@ -721,3 +729,17 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     }
 }
 
+QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position)
+{
+    QIcon overlayedIcon;
+
+    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    return overlayedIcon;
+}

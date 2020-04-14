@@ -167,6 +167,9 @@ public:
 #endif
         setFormat(surfaceFormat);
     }
+    ~CustomGLWidget()
+    {
+    }
     void initializeGL()
     {
         QOpenGLContext *context = QOpenGLContext::currentContext();
@@ -185,8 +188,30 @@ public:
         }
         connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
     }
+    // paintGL() is invoked when e.g. using the method grabFramebuffer of this class
+    // \code
+    // from PySide2 import QtWidgets
+    // mw = Gui.getMainWindow()
+    // mdi = mw.findChild(QtWidgets.QMdiArea)
+    // gl = mdi.findChild(QtWidgets.QOpenGLWidget)
+    // img = gl.grabFramebuffer()
+    // \endcode
+    void paintGL()
+    {
+        QuarterWidget* qw = qobject_cast<QuarterWidget*>(parentWidget());
+        if (qw) {
+            qw->redraw();
+        }
+    }
     void aboutToDestroyGLContext()
     {
+#if QT_VERSION >= 0x050900
+        // With Qt 5.9 a signal is emitted while the QuarterWidget is being destroyed.
+        // At this state its type is a QWidget, not a QuarterWidget any more.
+        QuarterWidget* qw = qobject_cast<QuarterWidget*>(parent());
+        if (!qw)
+            return;
+#endif
         QMetaObject::invokeMethod(parent(), "aboutToDestroyGLContext",
             Qt::DirectConnection,
             QGenericReturnArgument());
@@ -876,7 +901,11 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     glMatrixMode(GL_PROJECTION);
 
     QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
-    assert(w->isValid() && "No valid GL context found!");
+    if (!w->isValid()) {
+        qWarning() << "No valid GL context found!";
+        return;
+    }
+    //assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
     // if paintGL() is called from Qt, and we might have some sensors
     // waiting to trigger (the redraw sensor has a lower priority than a
@@ -970,7 +999,20 @@ bool QuarterWidget::viewportEvent(QEvent* event)
         QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
         QGraphicsItem *item = itemAt(mouse->pos());
         if (!item) {
-            QGraphicsView::viewportEvent(event);
+            bool ok = QGraphicsView::viewportEvent(event);
+            // Avoid that wheel events are handled twice
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=44822
+            // However, this workaround seems to cause a regression on macOS
+            // so it's disabled for this platform.
+            // https://forum.freecadweb.org/viewtopic.php?f=4&t=44855
+#if defined(Q_OS_MAC)
+            Q_UNUSED(ok)
+#else
+            if (event->type() == QEvent::Wheel) {
+                event->setAccepted(ok);
+                return ok;
+            }
+#endif
             return false;
         }
     }

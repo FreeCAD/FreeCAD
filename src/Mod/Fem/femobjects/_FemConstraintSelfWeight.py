@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,18 +29,40 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM constraint self weight object
 
+from . import FemConstraint
 
-class _FemConstraintSelfWeight:
-    "The FemConstraintSelfWeight object"
+
+class _FemConstraintSelfWeight(FemConstraint.Proxy):
+    """
+    The FemConstraintSelfWeight object"
+    """
+
+    Type = "Fem::ConstraintSelfWeight"
+
     def __init__(self, obj):
-        obj.addProperty("App::PropertyFloat", "Gravity_x", "Gravity", "set the gravity component in the x direction")
-        obj.addProperty("App::PropertyFloat", "Gravity_y", "Gravity", "set the gravity component in the y direction")
-        obj.addProperty("App::PropertyFloat", "Gravity_z", "Gravity", "set the gravity component in the z direction")
+        super(_FemConstraintSelfWeight, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_x",
+            "Gravity",
+            "Gravity direction: set the x-component of the normalized gravity vector"
+        )
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_y",
+            "Gravity",
+            "Gravity direction: set the y-component of the normalized gravity vector"
+        )
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_z",
+            "Gravity",
+            "Gravity direction: set the z-component of the normalized gravity vector"
+        )
+
         obj.Gravity_x = 0.0
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0
-        obj.Proxy = self
-        self.Type = "Fem::ConstraintSelfWeight"
-
-    def execute(self, obj):
-        return

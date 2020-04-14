@@ -1,23 +1,23 @@
 #/******************************************************************************
-# * Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
-# * *
-# * This file is part of the FreeCAD CAx development system. *
-# * *
-# * This library is free software; you can redistribute it and/or *
-# * modify it under the terms of the GNU Library General Public *
-# * License as published by the Free Software Foundation; either *
-# * version 2 of the License, or (at your option) any later version. *
-# * *
-# * This library is distributed in the hope that it will be useful, *
-# * but WITHOUT ANY WARRANTY; without even the implied warranty of *
-# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
-# * GNU Library General Public License for more details. *
-# * *
-# * You should have received a copy of the GNU Library General Public *
-# * License along with this library; see the file COPYING.LIB. If not, *
-# * write to the Free Software Foundation, Inc., 59 Temple Place, *
-# * Suite 330, Boston, MA 02111-1307, USA *
-# * *
+# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+# *                                                                            *
+# *   This file is part of the FreeCAD CAx development system.                 *
+# *                                                                            *
+# *   This library is free software; you can redistribute it and/or            *
+# *   modify it under the terms of the GNU Library General Public              *
+# *   License as published by the Free Software Foundation; either             *
+# *   version 2 of the License, or (at your option) any later version.         *
+# *                                                                            *
+# *   This library  is distributed in the hope that it will be useful,         *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+# *   GNU Library General Public License for more details.                     *
+# *                                                                            *
+# *   You should have received a copy of the GNU Library General Public        *
+# *   License along with this library; see the file COPYING.LIB. If not,       *
+# *   write to the Free Software Foundation, Inc., 59 Temple Place,            *
+# *   Suite 330, Boston, MA  02111-1307, USA                                   *
+# *                                                                            *
 # ******************************************************************************/
 
 import FreeCAD, FreeCADGui
@@ -101,7 +101,7 @@ class Hole():
 
     def onChanged(self, fp, prop):
         #self.App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        if fp == None or fp.Support == None:
+        if fp is None or fp.Support is None:
             return
 
         if (prop == "HoleType" or prop == "Threaded" or prop == "Counterbore" or prop == "Countersink"
@@ -116,7 +116,7 @@ class Hole():
 
     def executePositionChanged(self, fp):
         "Change the position of the hole"
-        if fp.Support == None:
+        if fp.Support is None:
             return
         plane = self.feature.HoleGroove.Sketch.Support[0]
         # Get support (face)
@@ -134,7 +134,7 @@ class Hole():
             firstLine = None
             for e in wire.Edges:
                 if type(e.Curve) == Part.LineSegment:
-                    if firstLine == None:
+                    if firstLine is None:
                         firstLine = e
                         firstDirection = e.Curve.EndPoint - e.Curve.StartPoint
                     else:
@@ -274,7 +274,7 @@ class Hole():
 
     def executeSketchChanged(self, fp):
         "Change the sketch shape of the hole"
-        if self.feature.HoleGroove == None:
+        if self.feature.HoleGroove is None:
             return
         if fp.HoleType == "Thru":
             # TODO: Make this more stable

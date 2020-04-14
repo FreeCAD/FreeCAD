@@ -25,14 +25,19 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QDoubleSpinBox>
 # include <QRegExp>
+# include <QGridLayout>
 # include <QMessageBox>
 # include <memory>
 #endif
 
 #include "DlgSettings3DViewImp.h"
+#include "ui_DlgSettings3DView.h"
+#include "MainWindow.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
+#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ui_MouseButtons.h"
 #include <App/Application.h>
@@ -52,9 +57,9 @@ bool DlgSettings3DViewImp::showMsg = true;
  */
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     : PreferencePage( parent )
+    , ui(new Ui_DlgSettings3DView)
 {
-    this->setupUi(this);
-    retranslate();
+    ui->setupUi(this);
 }
 
 /** 
@@ -71,114 +76,68 @@ void DlgSettings3DViewImp::saveSettings()
     // where we set some attributes afterwards
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
-    hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
-    int index = comboOrbitStyle->currentIndex();
-    hGrp->SetInt("OrbitStyle", index);
-    
-    index = this->comboAliasing->currentIndex();
+    int index = ui->comboAliasing->currentIndex();
     hGrp->SetInt("AntiAliasing", index);
 
-    index = this->naviCubeCorner->currentIndex();
-    hGrp->SetInt("CornerNaviCube", index);
+    index = ui->renderCache->currentIndex();
+    hGrp->SetInt("RenderCache", index);
 
-    QVariant const &vBoxMarkerSize = this->boxMarkerSize->itemData(this->boxMarkerSize->currentIndex());
+    ui->comboTransparentRender->onSave();
+
+    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
-    checkBoxZoomAtCursor->onSave();
-    checkBoxInvertZoom->onSave();
-    checkBoxDisableTilt->onSave();
-    spinBoxZoomStep->onSave();
-    checkBoxDragAtCursor->onSave();
-    CheckBox_CornerCoordSystem->onSave();
-    CheckBox_ShowFPS->onSave();
-    CheckBox_useVBO->onSave();
-    CheckBox_NaviCube->onSave();
-    CheckBox_UseAutoRotation->onSave();
-    FloatSpinBox_EyeDistance->onSave();
-    checkBoxBacklight->onSave();
-    backlightColor->onSave();
-    sliderIntensity->onSave();
-    radioPerspective->onSave();
-    radioOrthographic->onSave();
+    ui->CheckBox_CornerCoordSystem->onSave();
+    ui->CheckBox_WbByTab->onSave();
+    ui->CheckBox_ShowFPS->onSave();
+    ui->CheckBox_useVBO->onSave();
+    ui->FloatSpinBox_EyeDistance->onSave();
+    ui->checkBoxBacklight->onSave();
+    ui->backlightColor->onSave();
+    ui->sliderIntensity->onSave();
+    ui->radioPerspective->onSave();
+    ui->radioOrthographic->onSave();
 }
 
 void DlgSettings3DViewImp::loadSettings()
 {
-    checkBoxZoomAtCursor->onRestore();
-    checkBoxInvertZoom->onRestore();
-    checkBoxDisableTilt->onRestore();
-    spinBoxZoomStep->onRestore();
-    checkBoxDragAtCursor->onRestore();
-    CheckBox_CornerCoordSystem->onRestore();
-    CheckBox_ShowFPS->onRestore();
-    CheckBox_useVBO->onRestore();
-    CheckBox_NaviCube->onRestore();
-    CheckBox_UseAutoRotation->onRestore();
-    FloatSpinBox_EyeDistance->onRestore();
-    checkBoxBacklight->onRestore();
-    backlightColor->onRestore();
-    sliderIntensity->onRestore();
-    radioPerspective->onRestore();
-    radioOrthographic->onRestore();
+    ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->CheckBox_WbByTab->onRestore();
+    ui->CheckBox_ShowFPS->onRestore();
+    ui->CheckBox_useVBO->onRestore();
+    ui->FloatSpinBox_EyeDistance->onRestore();
+    ui->checkBoxBacklight->onRestore();
+    ui->backlightColor->onRestore();
+    ui->sliderIntensity->onRestore();
+    ui->radioPerspective->onRestore();
+    ui->radioOrthographic->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    std::string model = hGrp->GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-    int index = comboNavigationStyle->findData(QByteArray(model.c_str()));
-    if (index > -1) comboNavigationStyle->setCurrentIndex(index);
 
-    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
-    index = Base::clamp(index, 0, comboOrbitStyle->count()-1);
-    comboOrbitStyle->setCurrentIndex(index);
-    
-    index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
-    index = Base::clamp(index, 0, comboAliasing->count()-1);
-    comboAliasing->setCurrentIndex(index);
+    int index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
+    index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
+    ui->comboAliasing->setCurrentIndex(index);
     // connect after setting current item of the combo box
-    connect(comboAliasing, SIGNAL(currentIndexChanged(int)),
+    connect(ui->comboAliasing, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onAliasingChanged(int)));
 
-    index = hGrp->GetInt("CornerNaviCube", 1);
-    naviCubeCorner->setCurrentIndex(index);
+    index = hGrp->GetInt("RenderCache", 0);
+    ui->renderCache->setCurrentIndex(index);
+
+    ui->comboTransparentRender->onRestore();
 
     int const current = hGrp->GetInt("MarkerSize", 9L);
-    this->boxMarkerSize->addItem(tr("5px"), QVariant(5));
-    this->boxMarkerSize->addItem(tr("7px"), QVariant(7));
-    this->boxMarkerSize->addItem(tr("9px"), QVariant(9));
-    this->boxMarkerSize->addItem(tr("11px"), QVariant(11));
-    this->boxMarkerSize->addItem(tr("13px"), QVariant(13));
-    this->boxMarkerSize->addItem(tr("15px"), QVariant(15));
-    index = this->boxMarkerSize->findData(QVariant(current));
+    ui->boxMarkerSize->addItem(tr("5px"), QVariant(5));
+    ui->boxMarkerSize->addItem(tr("7px"), QVariant(7));
+    ui->boxMarkerSize->addItem(tr("9px"), QVariant(9));
+    ui->boxMarkerSize->addItem(tr("11px"), QVariant(11));
+    ui->boxMarkerSize->addItem(tr("13px"), QVariant(13));
+    ui->boxMarkerSize->addItem(tr("15px"), QVariant(15));
+    index = ui->boxMarkerSize->findData(QVariant(current));
     if (index < 0) index = 2;
-    this->boxMarkerSize->setCurrentIndex(index);
-}
-
-void DlgSettings3DViewImp::on_mouseButton_clicked()
-{
-    QDialog dlg(this);
-    Ui_MouseButtons ui;
-    ui.setupUi(&dlg);
-
-    QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
-    void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
-    std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
-    QString descr;
-    descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
-    descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
-    descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
-    descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
-    descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
-    descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
-    descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
-    descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
-    dlg.exec();
+    ui->boxMarkerSize->setCurrentIndex(index);
 }
 
 /**
@@ -187,35 +146,14 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 void DlgSettings3DViewImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        comboAliasing->blockSignals(true);
-        int navigation = comboNavigationStyle->currentIndex();
-        int orbit = comboOrbitStyle->currentIndex();
-        int aliasing = comboAliasing->currentIndex();
-        int corner = naviCubeCorner->currentIndex();
-        retranslateUi(this);
-        retranslate();
-        comboNavigationStyle->setCurrentIndex(navigation);
-        comboOrbitStyle->setCurrentIndex(orbit);
-        comboAliasing->setCurrentIndex(aliasing);
-        comboAliasing->blockSignals(false);
-        naviCubeCorner->setCurrentIndex(corner);
+        ui->comboAliasing->blockSignals(true);
+        int aliasing = ui->comboAliasing->currentIndex();
+        ui->retranslateUi(this);
+        ui->comboAliasing->setCurrentIndex(aliasing);
+        ui->comboAliasing->blockSignals(false);
     }
     else {
         QWidget::changeEvent(e);
-    }
-}
-
-void DlgSettings3DViewImp::retranslate()
-{
-    comboNavigationStyle->clear();
-
-    // add submenu at the end to select navigation style
-    std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
-        QByteArray data(it->first.getName());
-        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
-
-        comboNavigationStyle->addItem(name, data);
     }
 }
 

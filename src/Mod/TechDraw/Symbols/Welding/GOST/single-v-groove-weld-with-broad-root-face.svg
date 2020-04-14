@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Стыковой шов односторонний с V-образным скосом с притуплением кромок. Single V Groove Weld with Broad Root Face - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,15 l20,25 20,-25 " fill="none" stroke="#000" stroke-width="2" />
+ <path d="m25,40 v20 " fill="none" stroke="#000" stroke-width="2" />
+</g>
+</svg>

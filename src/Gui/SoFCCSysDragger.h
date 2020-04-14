@@ -239,8 +239,11 @@ public:
     bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
+    virtual void GLRender(SoGLRenderAction * action) override;
+
 protected:
     virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+    virtual void handleEvent(SoHandleEventAction * action) override;
 
     static void translationSensorCB(void *f, SoSensor *);
     static void rotationSensorCB(void *f, SoSensor *);
@@ -255,6 +258,14 @@ protected:
     SoFieldSensor cameraSensor;
 
 private:
+    // Used to compensate for axis scale in world transformation when doing
+    // auto scale.
+    SbVec3f axisScale;
+
+    bool scaleInited;
+
+    void updateAxisScale();
+
     typedef SoDragger inherited;
 };
 

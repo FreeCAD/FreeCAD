@@ -1,0 +1,558 @@
+{
+    "IfcBSplineCurveForm": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcBSplineSurfaceForm": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcBooleanOperator": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcKnotType": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcNullStyle": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcPreferredSurfaceCurveRepresentation": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcSIPrefix": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcSIUnitName": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcSurfaceSide": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcTextPath": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcTransitionCode": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcTrimmingPreference": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    },
+    "IfcAbsorbedDoseMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcAccelerationMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcAmountOfSubstanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcAngularVelocityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcAreaDensityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcAreaMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcBoolean": {
+        "base": "xs:boolean",
+        "property": "PropertyBool"
+    },
+    "IfcBoxAlignment": {
+        "base": "ifc:IfcLabel",
+        "property": "PropertyString"
+    },
+    "IfcCardinalPointReference": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcContextDependentMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcCountMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcCurvatureMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcDate": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcDateTime": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcDayInMonthNumber": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcDayInWeekNumber": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcDescriptiveMeasure": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcDimensionCount": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcDoseEquivalentMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcDuration": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcDynamicViscosityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricCapacitanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricChargeMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricConductanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricCurrentMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricResistanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcElectricVoltageMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcEnergyMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcFontStyle": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcFontVariant": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcFontWeight": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcForceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcFrequencyMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcGloballyUniqueId": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcHeatFluxDensityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcHeatingValueMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcIdentifier": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcIlluminanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcInductanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcInteger": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcIntegerCountRateMeasure": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcIonConcentrationMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcIsothermalMoistureCapacityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcKinematicViscosityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLabel": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcLanguageId": {
+        "base": "ifc:IfcIdentifier",
+        "property": "PropertyString"
+    },
+    "IfcLengthMeasure": {
+        "base": "xs:double",
+        "property": "PropertyLength"
+    },
+    "IfcLinearForceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLinearMomentMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLinearStiffnessMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLinearVelocityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLogical": {
+        "base": "ifc:logical",
+        "property": "PropertyBool"
+    },
+    "IfcLuminousFluxMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLuminousIntensityDistributionMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcLuminousIntensityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMagneticFluxDensityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMagneticFluxMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMassDensityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMassFlowRateMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMassMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMassPerLengthMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcModulusOfElasticityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcModulusOfLinearSubgradeReactionMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcModulusOfRotationalSubgradeReactionMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcModulusOfSubgradeReactionMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMoistureDiffusivityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMolecularWeightMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMomentOfInertiaMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMonetaryMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcMonthInYearNumber": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcNonNegativeLengthMeasure": {
+        "base": "ifc:IfcLengthMeasure",
+        "property": "PropertyLength"
+    },
+    "IfcNormalisedRatioMeasure": {
+        "base": "ifc:IfcRatioMeasure",
+        "property": "PropertyFloat"
+    },
+    "IfcNumericMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcPHMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcParameterValue": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcPlanarForceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcPlaneAngleMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcPositiveInteger": {
+        "base": "ifc:IfcInteger",
+        "property": "PropertyInteger"
+    },
+    "IfcPositiveLengthMeasure": {
+        "base": "ifc:IfcLengthMeasure",
+        "property": "PropertyLength"
+    },
+    "IfcPositivePlaneAngleMeasure": {
+        "base": "ifc:IfcPlaneAngleMeasure",
+        "property": "PropertyFloat"
+    },
+    "IfcPositiveRatioMeasure": {
+        "base": "ifc:IfcRatioMeasure",
+        "property": "PropertyFloat"
+    },
+    "IfcPowerMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcPresentableText": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcPressureMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcRadioActivityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcRatioMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcReal": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcRotationalFrequencyMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcRotationalMassMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcRotationalStiffnessMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSectionModulusMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSectionalAreaIntegralMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcShearModulusMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSolidAngleMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSoundPowerLevelMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSoundPowerMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSoundPressureLevelMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSoundPressureMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSpecificHeatCapacityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSpecularExponent": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcSpecularRoughness": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcTemperatureGradientMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcTemperatureRateOfChangeMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcText": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcTextAlignment": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcTextDecoration": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcTextFontName": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcTextTransformation": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcThermalAdmittanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcThermalConductivityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcThermalExpansionCoefficientMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcThermalResistanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcThermalTransmittanceMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcThermodynamicTemperatureMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcTime": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcTimeMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcTimeStamp": {
+        "base": "xs:long",
+        "property": "PropertyFloat"
+    },
+    "IfcTorqueMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcURIReference": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "IfcVaporPermeabilityMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcVolumeMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcVolumetricFlowRateMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcWarpingConstantMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "IfcWarpingMomentMeasure": {
+        "base": "xs:double",
+        "property": "PropertyFloat"
+    },
+    "aggregateType": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "logical": {
+        "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "List-IfcCompoundPlaneAngleMeasure": {
+        "base": "xs:string",
+        "property": "PropertyString"
+    }
+}

@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,25 +24,21 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
 __title__ = "Base Path Profile Operation"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path profile operations."
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
-# Qt tanslation handling
+
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -54,9 +52,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # Profile Properties
         obj.addProperty("App::PropertyEnumeration", "Side", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
         obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
-        obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
+        obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if using Cutter Radius Compensation"))
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
@@ -79,9 +77,23 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
+        self.extraOpOnChanged(obj, prop)
+
+    def extraOpOnChanged(self, obj, prop):
+        '''otherOpOnChanged(obj, porp) ... overwrite to process onChange() events.
+        Can safely be overwritten by subclasses.'''
+        pass # pylint: disable=unnecessary-pass
+
+    def setOpEditorProperties(self, obj):
+        '''setOpEditorProperties(obj, porp) ... overwrite to process operation specific changes to properties.
+        Can safely be overwritten by subclasses.'''
+        pass # pylint: disable=unnecessary-pass
+
     def areaOpOnDocumentRestored(self, obj):
         for prop in ['UseComp', 'JoinType']:
             self.areaOpOnChanged(obj, prop)
+
+        self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
@@ -123,6 +135,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params['orientation'] = 0
         else:
             params['orientation'] = 1
+
         if not obj.UseComp:
             if direction == 'CCW':
                 params['orientation'] = 1
@@ -130,7 +143,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 params['orientation'] = 0
 
         return params
-    
+
     def areaOpUseProjection(self, obj):
         '''areaOpUseProjection(obj) ... returns True'''
         return True
@@ -145,8 +158,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.JoinType = "Round"
         obj.MiterLimit = 0.1
 
+
 def SetupProperties():
-    setup = []
+    setup = PathAreaOp.SetupProperties()
     setup.append('Side')
     setup.append('OffsetExtra')
     setup.append('Direction')

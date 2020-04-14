@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -23,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands, DraftVecUtils
+import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -75,9 +73,9 @@ class _CommandFloor:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
-                'Accel': "F, L",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
+                'Accel': "L, V",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
 
@@ -99,9 +97,9 @@ class _CommandFloor:
                 else:
                     warning = True
         if warning :
-            message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
-Floor object are not allowed to accept Site or Building object.\n\
-Site, Building and Floor objects will be removed from the selection.\n\
+            message = translate( "Arch" , "You can put anything but the following objects: Site, Building, and Floor - in a Floor object.\n\
+Floor object is not allowed to accept Site, Building, or Floor objects.\n\
+Site, Building, and Floor objects will be removed from the selection.\n\
 You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
         if sel and len(floorobj) == 0:
@@ -122,7 +120,7 @@ Floor creation aborted.") + "\n"
             FreeCAD.ActiveDocument.recompute()
 
 
-class _Floor:
+class _Floor(ArchIFC.IfcProduct):
 
     "The Floor object"
 
@@ -131,10 +129,11 @@ class _Floor:
         obj.Proxy = self
         self.Object = obj
         _Floor.setProperties(self,obj)
-        self.IfcRole = "Building Storey"
+        self.IfcType = "Building Storey"
 
     def setProperties(self,obj):
 
+        ArchIFC.IfcProduct.setProperties(self, obj)
         pl = obj.PropertiesList
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
@@ -143,10 +142,6 @@ class _Floor:
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):
@@ -162,6 +157,7 @@ class _Floor:
         return None
 
     def onChanged(self,obj,prop):
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if not hasattr(self,"Object"):
             # on restore, self.Object is not there anymore

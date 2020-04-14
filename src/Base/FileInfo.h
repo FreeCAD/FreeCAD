@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -48,7 +47,7 @@ public:
         ReadWrite = 0x03,
     };
 
-    /// Constrction
+    /// Construction
     FileInfo (const char* _FileName="");
     FileInfo (const std::string &_FileName);
     /// Set a new file name
@@ -99,9 +98,9 @@ public:
     bool isReadable () const;
     /// Checks if the file exist and is writable
     bool isWritable () const;
-    /// Tries to set the file permisson
+    /// Tries to set the file permission
     bool setPermissions (Permissions);
-    /// Checks if it is a file (not a direrctory)
+    /// Checks if it is a file (not a directory)
     bool isFile () const;
     /// Checks if it is a directory (not a file)
     bool isDir () const;
@@ -148,4 +147,3 @@ protected:
 
 
 #endif // BASE_FILEINFO_H
-

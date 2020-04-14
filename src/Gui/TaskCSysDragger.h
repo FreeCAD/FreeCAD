@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Thomas Anderson         <blobfish[at]gmx.com>      *
+ *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,7 @@ namespace Gui
   {
       Q_OBJECT
     public:
-      TaskCSysDragger(ViewProviderDragger *vpObjectIn, SoFCCSysDragger *draggerIn);
+      TaskCSysDragger(ViewProviderDocumentObject *vpObjectIn, SoFCCSysDragger *draggerIn);
       virtual ~TaskCSysDragger() override;
       virtual QDialogButtonBox::StandardButtons getStandardButtons() const override
         { return QDialogButtonBox::Ok;}

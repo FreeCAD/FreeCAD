@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Peter Lama (peterldev94@gmail.com)                 *
+ *   Copyright (c) 2017 Peter Lama <peterldev94@gmail.com>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

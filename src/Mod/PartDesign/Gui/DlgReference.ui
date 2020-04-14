@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</string>
+      <string>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</string>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

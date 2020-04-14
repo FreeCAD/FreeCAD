@@ -27,6 +27,15 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
+    <Methode Name="toStr" Const="true">
+      <Documentation>
+        <UserDocu>
+          toStr([decimals])
+          returns a string representation rounded to number of decimals. If no decimals are specified then
+          the internal precision is used
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getUserPreferred" Const="true">
       <Documentation>
         <UserDocu>
@@ -45,6 +54,14 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
           getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
           getValueAs(Qantity('N/m^2')) # a quantity
           getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="__round__" Const="true">
+      <Documentation>
+        <UserDocu>
+Return the Integral closest to x, rounding half toward even.
+When an argument is passed, work like built-in round(x, ndigits).
         </UserDocu>
       </Documentation>
     </Methode>

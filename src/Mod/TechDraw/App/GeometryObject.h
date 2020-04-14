@@ -41,9 +41,11 @@ namespace TechDraw
 class DrawViewPart;
 class DrawViewDetail;
 class DrawView;
+class CosmeticVertex;
+class CosmeticEdge;
 }
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class BaseGeom;
 class Vector;
@@ -51,9 +53,15 @@ class Face;
 class Vertex;
 
 //! scales & mirrors a shape about a center
+
+TopoDS_Shape TechDrawExport mirrorShapeVec(const TopoDS_Shape &input,
+                             const Base::Vector3d& inputCenter = Base::Vector3d(0.0, 0.0, 0.0),
+                             double scale = 1.0);
+
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
                         double scale = 1.0);
+
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
 TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
@@ -70,6 +78,8 @@ gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
                                       const gp_Ax2 viewAxis);
 Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
+Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
+                                              const gp_Ax2 cs);
 
 gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
@@ -78,6 +88,9 @@ gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
                                   const Base::Vector3d& xAxis,
                                   const bool flip=true);
+gp_Ax2 TechDrawExport legacyViewAxis1(const Base::Vector3d origin,
+                                     const Base::Vector3d& direction,
+                                     const bool flip=true);
 
 class TechDrawExport GeometryObject
 {
@@ -95,12 +108,17 @@ public:
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
     const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
+    
+    void setVertexGeometry(std::vector<Vertex*> newVerts) {vertexGeom = newVerts; }
+    void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
                       const gp_Ax2 viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
                                      const gp_Ax2 viewAxis);
-    
+    TopoDS_Shape projectFace(const TopoDS_Shape &face,
+                             const gp_Ax2 CS);
+
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();
@@ -113,6 +131,7 @@ public:
     void setFocus(double f) { m_focus = f; }
     double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
+    TopoDS_Shape invertGeometry(const TopoDS_Shape s);
 
     TopoDS_Shape getVisHard(void)    { return visHard; }
     TopoDS_Shape getVisOutline(void) { return visOutline; }
@@ -124,6 +143,28 @@ public:
     TopoDS_Shape getHidSmooth(void)  { return hidSmooth; }
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
+
+    void addVertex(TechDraw::Vertex* v);
+    void addEdge(TechDraw::BaseGeom* bg);
+
+
+    int addCosmeticVertex(CosmeticVertex* cv);
+    int addCosmeticVertex(Base::Vector3d pos);
+    int addCosmeticVertex(Base::Vector3d pos,
+                          std::string tagString);
+
+    int addCosmeticEdge(CosmeticEdge* ce);
+    int addCosmeticEdge(Base::Vector3d start,
+                        Base::Vector3d end);
+    int addCosmeticEdge(Base::Vector3d start,
+                        Base::Vector3d end,
+                        std::string tagString);
+    int addCosmeticEdge(TechDraw::BaseGeom* base,
+                        std::string tagString);
+
+    int addCenterLine(TechDraw::BaseGeom* bg,
+                      std::string tag);
+/*                       int s = 0, int si = -1);*/
 
 protected:
     //HLR output
@@ -153,7 +194,7 @@ protected:
     std::vector<Vertex *> vertexGeom;
     std::vector<Face *> faceGeom;
 
-    bool findVertex(Base::Vector2d v);
+    bool findVertex(Base::Vector3d v);
 
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
@@ -163,6 +204,6 @@ protected:
     bool m_usePolygonHLR;
 };
 
-} //namespace TechDrawGeometry
+} //namespace TechDraw
 
 #endif

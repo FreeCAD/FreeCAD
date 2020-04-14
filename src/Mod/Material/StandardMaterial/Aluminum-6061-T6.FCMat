@@ -1,17 +1,24 @@
 ; Aluminum-6061-T6
 ; (c) 2016 Mandeep Singh (CC-BY 3.0)
-; Information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Aluminum 6061-T6
 Description = Precipitation-hardened, Nonferrous Aluminum alloy
 Father = Metal
-ProductURL = https://en.wikipedia.org/wiki/6061_aluminium_alloy
-YoungsModulus = 69000 MPa
-UltimateTensileStrength = 310 MPa
-PoissonRatio = 0.33
-Density = 2700 kg/m^3
 KindOfMaterial = Aluminium
 KindOfMaterialDE = Aluminium
+
+[Mechanical]
+Density = 2700 kg/m^3
+PoissonRatio = 0.33
+UltimateTensileStrength = 310 MPa
+YoungsModulus = 69000 MPa
+
+[Thermal]
 ThermalConductivity = 167 W/m/K
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/6061_aluminium_alloy

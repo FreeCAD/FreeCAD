@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2018     *
+ *   Copyright (c) 2018 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -99,6 +99,16 @@ PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
     return ret;
 }
 
+PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
+{
+    (void) args;
+    DrawViewDimension* dvd = getDrawViewDimensionPtr();
+    pointPair pts = dvd->getArrowPositions();
+    PyObject* ret = PyList_New(0);
+    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.first)));
+    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.second)));
+    return ret;
+}
 PyObject *DrawViewDimensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

@@ -26,6 +26,7 @@ set(SketcherGui_LIBS
 )
 
 set(SketcherGui_MOC_HDRS
+    EditDatumDialog.h
     TaskSketcherConstrains.h
     TaskSketcherElements.h
     TaskSketcherCreateCommands.h
@@ -62,6 +63,7 @@ set(SketcherGui_UIC_SRCS
     SketchMirrorDialog.ui
     SketcherSettings.ui
     SketcherSettingsColors.ui
+    SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
 )
@@ -139,6 +141,13 @@ SET(SketcherGui_SRCS
     ViewProviderPython.cpp
     ViewProviderPython.h
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 
 SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg

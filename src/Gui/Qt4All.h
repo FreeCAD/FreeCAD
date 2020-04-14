@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
+ *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -93,6 +93,7 @@
 #include <QItemDelegate>
 #include <QStyledItemDelegate>
 #include <QItemEditorFactory>
+#include <QKeyEvent>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>

@@ -266,13 +266,23 @@
        </item>
        <item>
         <widget class="QPushButton" name="duplicateButton">
-         <property name="text">
-         <string>Duplicate</string>
-         </property>
          <property name="enabled">
-         <bool>false</bool>
+          <bool>false</bool>
          </property>
-         </widget>
+         <property name="text">
+          <string>Duplicate</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="toolbarButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Toolbar</string>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer>
@@ -320,6 +330,7 @@
   <tabstop>editButton</tabstop>
   <tabstop>renameButton</tabstop>
   <tabstop>duplicateButton</tabstop>
+  <tabstop>toolbarButton</tabstop>
   <tabstop>addonsButton</tabstop>
   <tabstop>fileChooser</tabstop>
  </tabstops>

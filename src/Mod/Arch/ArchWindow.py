@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,6 +27,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -74,8 +73,8 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
-    obj.Label = translate("Arch",name)
     _Window(obj)
+    obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
         #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
@@ -90,7 +89,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
         obj.WindowParts = parts
     else:
         if baseobj:
-            if baseobj.isDerivedFrom("Part::Part2DObject"):
+            if baseobj.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
                 if baseobj.Shape.Wires:
                     i = 0
                     ws = ''
@@ -104,14 +103,18 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
         from DraftGui import todo
-        todo.delay(recolorize,obj)
+        todo.delay(recolorize,[obj.Document.Name,obj.Name])
     return obj
 
-def recolorize(obj):
+def recolorize(names): # names is [docname,objname]
 
-    if obj.ViewObject:
-        if obj.ViewObject.Proxy:
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+    if names[0] in FreeCAD.listDocuments():
+        doc = FreeCAD.getDocument(names[0])
+        obj = doc.getObject(names[1])
+        if obj:
+            if obj.ViewObject:
+                if obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.colorize(obj,force=True)
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -354,7 +357,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 s.renameConstraint(58,'Frame8')
                 s.renameConstraint(59,'Frame9')
                 s.renameConstraint(60,'F10')
-                s.setExpression('Constraints.F10','-Constraints.Frame5')
+                s.setExpression('.Constraints.F10','-.Constraints.Frame5')
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"
@@ -566,7 +569,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
-                obj.IfcRole = "Door"
+                obj.IfcType = "Door"
                 obj.Label = translate("Arch","Door")
             FreeCAD.ActiveDocument.recompute()
             return obj
@@ -578,6 +581,10 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 class _CommandWindow:
 
     "the Arch Window command definition"
+
+    def __init__(self):
+        
+        self.doormode = False
 
     def GetResources(self):
 
@@ -596,7 +603,10 @@ class _CommandWindow:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Thickness = p.GetFloat("WindowThickness",50)
         self.Width = p.GetFloat("WindowWidth",1000)
-        self.Height = p.GetFloat("WindowHeight",1000)
+        if self.doormode:
+            self.Height = p.GetFloat("DoorHeight",2100)
+        else:
+            self.Height = p.GetFloat("WindowHeight",1000)
         self.RemoveExternal =  p.GetBool("archRemoveExternal",False)
         self.Preset = 0
         self.LibraryPreset = 0
@@ -609,7 +619,7 @@ class _CommandWindow:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,'Shape'):
                 if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
@@ -644,7 +654,7 @@ class _CommandWindow:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-        import DraftTrackers
+
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
@@ -659,7 +669,7 @@ class _CommandWindow:
         "this function is called by the snapper when it has a 3D point"
 
         self.tracker.finalize()
-        if point == None:
+        if point is None:
             return
         # if something was selected, override the underlying object
         if self.sel:
@@ -741,17 +751,17 @@ class _CommandWindow:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Window options"))
         grid = QtGui.QGridLayout(w)
 
         # include box
-        include = QtGui.QCheckBox(translate("Arch","Auto include in host object", utf8_decode=True))
+        include = QtGui.QCheckBox(translate("Arch","Auto include in host object"))
         include.setChecked(True)
         grid.addWidget(include,0,0,1,2)
         QtCore.QObject.connect(include,QtCore.SIGNAL("stateChanged(int)"),self.setInclude)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height", utf8_decode=True))
+        labels = QtGui.QLabel(translate("Arch","Sill height"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
@@ -774,9 +784,18 @@ class _CommandWindow:
                                         self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
             else:
                 librarypath = None
+        # check for existing presets
+        presetdir = os.path.join(FreeCAD.getUserAppDataDir(),"Arch")
+        for tp in ["Windows","Doors"]:
+            wdir = os.path.join(presetdir,tp)
+            if os.path.exists(wdir):
+                for wfile in os.listdir(wdir):
+                    if wfile.lower().endswith(".fcstd"):
+                        self.librarypresets.append([tp[:-1]+" - "+wfile[:-6],wfile])
+
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset", utf8_decode=True))
+        labelp = QtGui.QLabel(translate("Arch","Preset"))
         valuep = QtGui.QComboBox()
         valuep.setMinimumContentsLength(6)
         valuep.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
@@ -804,7 +823,7 @@ class _CommandWindow:
         # parameters
         i = 5
         for param in self.wparams:
-            lab = QtGui.QLabel(translate("Arch",param, utf8_decode=True))
+            lab = QtGui.QLabel(translate("Arch",param))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
             if param == "Width":
@@ -812,29 +831,48 @@ class _CommandWindow:
             elif param == "Height":
                 wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
             elif param == "O1":
-                wid.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-                setattr(self,param,0)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowO1",0.0)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             elif param == "W1":
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness*2,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness*2)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowW1",self.Thickness*2)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             else:
-                wid.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
-                setattr(self,param,self.Thickness)
+                n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("Window"+param,self.Thickness)
+                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                setattr(self,param,n)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
             i += 1
             valueChanged = self.getValueChanged(param)
             FreeCAD.wid = wid
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"), valueChanged)
+
+        # restore saved states
+        if self.doormode:
+            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("DoorPreset",0)
+            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("DoorSill",0)
+        else:
+            i = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("WindowPreset",0)
+            d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowSill",0)
+        if i < valuep.count():
+            valuep.setCurrentIndex(i)
+        values.setText(FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).UserString)
+
         return w
 
     def getValueChanged(self,p):
 
-      return lambda d : self.setParams(p, d)
+        return lambda d : self.setParams(p, d)
 
     def setSill(self,d):
 
         self.Sill = d
+        if self.doormode:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("DoorSill",d)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WindowSill",d)
 
     def setInclude(self,i):
 
@@ -846,10 +884,15 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.height(self.Height)
         self.tracker.width(self.W1)
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("Window"+param,d)
 
     def setPreset(self,i):
 
         self.Preset = i
+        if self.doormode:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("DoorPreset",i)
+        else:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WindowPreset",i)
         if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
             self.tracker.length(self.Width)
@@ -913,7 +956,7 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Window"
+        obj.IfcType = "Window"
         obj.MoveWithHost = True
 
     def setProperties(self,obj):
@@ -1050,11 +1093,10 @@ class _Window(ArchComponent.Component):
                     e = obj.Base.Shape.Edges[hinge]
                     ev1 = e.Vertexes[0].Point
                     ev2 = e.Vertexes[-1].Point
-                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
-                        if ev2.y < ev1.y:
-                            ev1,ev2 = ev2,ev1
-                    elif ev2.z < ev1.z:
+                    # choose the one with lowest z to draw the symbol
+                    if ev2.z < ev1.z:
                         ev1,ev2 = ev2,ev1
+                    # find the point most distant from the hinge
                     p = None
                     d = 0
                     for v in shape.Vertexes:
@@ -1063,13 +1105,16 @@ class _Window(ArchComponent.Component):
                             d = dist
                             p = v.Point
                     if p:
+                        # bring that point to the level of ev1 if needed
                         chord = p.sub(ev1)
                         enorm = ev2.sub(ev1)
                         proj = DraftVecUtils.project(chord,enorm)
                         v1 = ev1
                         if proj.Length > 0:
-                            chord = p.sub(ev1.add(proj))
-                            p = v1.add(chord)
+                            #chord = p.sub(ev1.add(proj))
+                            #p = v1.add(chord)
+                            p = p.add(proj.negative())
+                        # calculate symbols
                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                         if omode == 1: # Arc 90
                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
@@ -1217,7 +1262,7 @@ class _Window(ArchComponent.Component):
         self.sshapes = []
         self.vshapes = []
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,'Shape'):
                 if hasattr(obj,"WindowParts"):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = self.buildShapes(obj)
@@ -1262,7 +1307,7 @@ class _Window(ArchComponent.Component):
         # check if we have a custom subvolume
         if hasattr(obj,"Subvolume"):
             if obj.Subvolume:
-                if obj.Subvolume.isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Subvolume,'Shape'):
                     if not obj.Subvolume.Shape.isNull():
                         sh = obj.Subvolume.Shape.copy()
                         if plac:
@@ -1274,7 +1319,7 @@ class _Window(ArchComponent.Component):
         if obj.Base:
             base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):
+        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
@@ -1282,13 +1327,14 @@ class _Window(ArchComponent.Component):
                 b = base.Shape.BoundBox
                 width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
-            if Draft.isClone(obj,"Window"):
+            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
                 if hasattr(obj,"CloneOf"):
                     orig = obj.CloneOf
                 else:
                     orig = obj.Objects[0]
                 if orig.Base:
                     base = orig.Base
+
                 if hasattr(orig,"HoleDepth"):
                     if orig.HoleDepth.Value:
                         width = orig.HoleDepth.Value
@@ -1298,16 +1344,33 @@ class _Window(ArchComponent.Component):
                         width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
+
         if not base:
-            return None
+            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
+                if hasattr(obj,"CloneOf"):
+                    orig = obj.CloneOf
+                else:
+                    orig = obj.Objects[0]  # not sure what is this exactly
+                if orig.Base:
+                    base = orig.Base
+                else:
+                    return None
 
         # finding which wire to use to drill the hole
 
         f = None
-        if hasattr(obj,"HoleWire"):
+        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
+
+        if not f:
+            if Draft.isClone(obj,"Window"):  
+                # check original HoleWire then
+                if orig.HoleWire > 0:
+                    if orig.HoleWire <= len(base.Shape.Wires):
+                        f = base.Shape.Wires[obj.HoleWire-1]
+
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -1368,7 +1431,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.update()
             self.colorize(obj)
         elif prop == "CloneOf":
-            if obj.CloneOf:
+            if hasattr(obj,"CloneOf") and obj.CloneOf:
                 mat = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
@@ -1419,7 +1482,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     def colorize(self,obj,force=False):
 
         "setting different part colors"
-        if obj.CloneOf:
+        if hasattr(obj,"CloneOf") and obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
             return
@@ -1452,7 +1515,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                         if "(" in mat.Material['DiffuseColor']:
                                             ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                                     if ccol and ('Transparency' in mat.Material):
-                                        ccol = (ccol[0],ccol[1],ccol[2],float(mat.Material['Transparency']))
+                                        t = float(mat.Material['Transparency'])/100.0
+                                        ccol = (ccol[0],ccol[1],ccol[2],t)
             if not ccol:
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
@@ -1673,11 +1737,11 @@ class _ArchWindowTaskPanel:
     def getIcon(self,obj):
 
         if hasattr(obj.ViewObject,"Proxy"):
-            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
 
@@ -1691,7 +1755,7 @@ class _ArchWindowTaskPanel:
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0,self.obj.Base.Name)
                 item.setIcon(0,self.getIcon(self.obj.Base))
-                if self.obj.Base.isDerivedFrom("Part::Feature"):
+                if hasattr(self.obj.Base,'Shape'):
                     i = 0
                     for w in self.obj.Base.Shape.Wires:
                         if w.isClosed():
@@ -1845,6 +1909,8 @@ class _ArchWindowTaskPanel:
                     hinge = self.field6.property("text")
                     n = self.field7.currentIndex()
                     if (hinge.startswith("Edge")) and (n > 0):
+                        # remove accelerator added by Qt
+                        hinge = hinge.replace("&","")
                         t += "," + hinge + ",Mode" + str(n)
             ar.append(t)
 

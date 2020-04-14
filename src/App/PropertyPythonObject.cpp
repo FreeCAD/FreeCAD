@@ -40,7 +40,7 @@
 using namespace App;
 
 
-TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property)
 
 PropertyPythonObject::PropertyPythonObject()
 {
@@ -109,6 +109,8 @@ std::string PropertyPythonObject::toString() const
         repr = str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
+        Py::String typestr(this->object.type().str());
+        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n", typestr.as_string().c_str());
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
@@ -333,6 +335,12 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 if (mod.isNull())
                     throw Py::Exception();
                 PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+                if (!cls) {
+                    std::stringstream s;
+                    s << "Module " << reader.getAttribute("module")
+                      << " has no class " << reader.getAttribute("class");
+                    throw Py::AttributeError(s.str());
+                }
 #if PY_MAJOR_VERSION >= 3
                 if (PyType_Check(cls)) {
 #else

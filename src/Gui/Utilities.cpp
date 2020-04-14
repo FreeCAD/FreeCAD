@@ -39,7 +39,6 @@ using namespace Gui;
 
 ViewVolumeProjection::ViewVolumeProjection (const SbViewVolume &vv)
   : viewVolume(vv)
-  , hasTransform(false)
 {
     matrix = viewVolume.getMatrix();
     invert = matrix.inverse();
@@ -47,11 +46,10 @@ ViewVolumeProjection::ViewVolumeProjection (const SbViewVolume &vv)
 
 Base::Vector3f ViewVolumeProjection::operator()(const Base::Vector3f &pt) const
 {
-    SbVec3f pt3d(pt.x,pt.y,pt.z);
-    if (hasTransform) {
-        Base::Vector3f ptt = transform * pt;
-        pt3d.setValue(ptt.x, ptt.y, ptt.z);
-    }
+    Base::Vector3f src;
+    transformInput(pt, src);
+
+    SbVec3f pt3d(src.x,src.y,src.z);
 
     // See SbViewVolume::projectToScreen
     matrix.multVecMatrix(pt3d, pt3d);
@@ -80,17 +78,6 @@ Base::Vector3d ViewVolumeProjection::inverse (const Base::Vector3d &pt) const
     return Base::convertTo<Base::Vector3d>(ptf);
 }
 
-/*!
- * \brief This method applies an additional transformation to the input points
- * passed with the () operator.
- * \param mat
- */
-void ViewVolumeProjection::setTransform(const Base::Matrix4D& mat)
-{
-    transform = mat;
-    hasTransform = (mat != Base::Matrix4D());
-}
-
 Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const
 {
     // Inventor stores the transposed matrix
@@ -99,11 +86,6 @@ Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const
     for (int i=0; i<4; i++) {
         for (int j=0; j<4; j++)
             mat[i][j] = matrix[j][i];
-    }
-
-    // Compose the object transform, if defined
-    if (hasTransform) {
-        mat = mat * transform;
     }
 
     return mat;

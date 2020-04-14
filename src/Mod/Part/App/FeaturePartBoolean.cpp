@@ -73,23 +73,31 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        Part::Feature *base = dynamic_cast<Part::Feature*>(Base.getValue());
-        Part::Feature *tool = dynamic_cast<Part::Feature*>(Tool.getValue());
+        auto base = Base.getValue();
+        auto tool = Tool.getValue();
 
         if (!base || !tool)
             return new App::DocumentObjectExecReturn("Linked object is not a Part object");
 
         // Now, let's get the TopoDS_Shape
-        TopoDS_Shape BaseShape = base->Shape.getValue();
+        TopoDS_Shape BaseShape = Feature::getShape(base);
         if (BaseShape.IsNull())
             throw NullShapeException("Base shape is null");
-        TopoDS_Shape ToolShape = tool->Shape.getValue();
+        TopoDS_Shape ToolShape = Feature::getShape(tool);
         if (ToolShape.IsNull())
             throw NullShapeException("Tool shape is null");
 
         std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
-            return new App::DocumentObjectExecReturn("Boolean operation failed");
+            std::stringstream error;
+            error << "Boolean operation failed";
+            if (BaseShape.ShapeType() != TopAbs_SOLID) {
+                error << std::endl << base->Label.getValue() << " is not a solid";
+            }
+            if (ToolShape.ShapeType() != TopAbs_SOLID) {
+                error << std::endl << tool->Label.getValue() << " is not a solid";
+            }
+            return new App::DocumentObjectExecReturn(error.str());
         }
         TopoDS_Shape resShape = mkBool->Shape();
         if (resShape.IsNull()) {

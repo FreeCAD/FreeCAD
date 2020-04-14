@@ -52,7 +52,7 @@ ImageOrientationDialog::ImageOrientationDialog()
 
 ImageOrientationDialog::~ImageOrientationDialog()
 {
-
+    delete ui;
 }
 
 void ImageOrientationDialog::accept()

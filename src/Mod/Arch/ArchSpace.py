@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -264,7 +262,7 @@ class _Space(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Space"
+        obj.IfcType = "Space"
 
     def setProperties(self,obj):
 
@@ -286,8 +284,6 @@ class _Space(ArchComponent.Component):
             obj.SpaceType = SpaceTypes
         if not "FloorThickness" in pl:
             obj.addProperty("App::PropertyLength",     "FloorThickness","Space",QT_TRANSLATE_NOOP("App::Property","The thickness of the floor finish"))
-        if not "Zone" in pl:
-            obj.addProperty("App::PropertyLink",       "Zone",          "Space",QT_TRANSLATE_NOOP("App::Property","A zone this space is part of"))
         if not "NumberOfPeople" in pl:
             obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Space",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
         if not "LightingPower" in pl:
@@ -331,7 +327,8 @@ class _Space(ArchComponent.Component):
             if obj.Zone:
                 if obj.Zone.ViewObject:
                     if hasattr(obj.Zone.ViewObject,"Proxy"):
-                        obj.Zone.ViewObject.Proxy.claimChildren()
+                        if hasattr(obj.Zone.ViewObject.Proxy,"claimChildren"):
+                            obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -353,7 +350,7 @@ class _Space(ArchComponent.Component):
 
     def getShape(self,obj):
 
-        "computes a shape from a base shape and/or bounday faces"
+        "computes a shape from a base shape and/or boundary faces"
         import Part
         shape = None
         faces = []
@@ -364,7 +361,7 @@ class _Space(ArchComponent.Component):
         # 1: if we have a base shape, we use it
 
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
                     shape = obj.Base.Shape.copy()
                     shape = shape.removeSplitter()
@@ -376,7 +373,7 @@ class _Space(ArchComponent.Component):
         else:
             bb = None
             for b in obj.Boundaries:
-                if b[0].isDerivedFrom("Part::Feature"):
+                if hasattr(b[0],'Shape'):
                     if not bb:
                         bb = b[0].Shape.BoundBox
                     else:
@@ -389,7 +386,7 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-                if b[0].isDerivedFrom("Part::Feature"):
+                if hasattr(b[0],'Shape'):
                     for sub in b[1]:
                         if "Face" in sub:
                             fn = int(sub[4:])-1
@@ -418,7 +415,7 @@ class _Space(ArchComponent.Component):
                 #print("setting objects shape")
                 shape = shape.Solids[0]
                 obj.Shape = shape
-                pl = pl.multiply(obj.Placement)
+                #pl = pl.multiply(obj.Placement)
                 obj.Placement = pl
                 if hasattr(obj.Area,"Value"):
                     a = self.getArea(obj)
@@ -426,15 +423,38 @@ class _Space(ArchComponent.Component):
                         obj.Area = a
                 return
 
-        print("Arch: error computing space boundary")
+        print("Arch: error computing space boundary for",obj.Label)
 
-    def getArea(self,obj):
+    def getArea(self,obj,notouch=False):
 
         "returns the horizontal area at the center of the space"
 
+        self.face = self.getFootprint(obj)
+        if self.face:
+            if not notouch:
+                if hasattr(obj,"PerimeterLength"):
+                    if self.face.OuterWire.Length != obj.PerimeterLength.Value:
+                        obj.PerimeterLength = self.face.OuterWire.Length
+                if hasattr(obj,"VerticalArea"):
+                    a = 0
+                    for f in obj.Shape.Faces:
+                        ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                        if (ang > 1.57) and (ang < 1.571):
+                            a += f.Area
+                        if a != obj.VerticalArea.Value:
+                            obj.VerticalArea = a
+            #print "area of ",obj.Label," : ",f.Area
+            return self.face.Area
+        else:
+            return 0
+
+    def getFootprint(self,obj):
+
+        "returns a face that represents the footprint of this space"
+
         import Part,DraftGeomUtils
         if not hasattr(obj.Shape,"CenterOfMass"):
-            return 0
+            return None
         try:
             pl = Part.makePlane(1,1)
             pl.translate(obj.Shape.CenterOfMass)
@@ -443,23 +463,12 @@ class _Space(ArchComponent.Component):
             e = sh.section(cutplane)
             e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
-            f = Part.Face(w)
+            dv = FreeCAD.Vector(obj.Shape.CenterOfMass.x,obj.Shape.CenterOfMass.y,obj.Shape.BoundBox.ZMin)
+            dv = dv.sub(obj.Shape.CenterOfMass)
+            w.translate(dv)
+            return Part.Face(w)
         except Part.OCCError:
-            return 0
-        else:
-            if hasattr(obj,"PerimeterLength"):
-                if w.Length != obj.PerimeterLength.Value:
-                    obj.PerimeterLength = w.Length
-            if hasattr(obj,"VerticalArea"):
-                a = 0
-                for f in sh.Faces:
-                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-                    if (ang > 1.57) and (ang < 1.571):
-                        a += f.Area
-                    if a != obj.VerticalArea.Value:
-                        obj.VerticalArea = a
-            #print "area of ",obj.Label," : ",f.Area
-            return f.Area
+            return None
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
@@ -469,10 +478,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         self.setProperties(vobj)
-        vobj.Transparency = 85
-        vobj.LineWidth = 1
-        vobj.LineColor = (1.0,0.0,0.0,1.0)
-        vobj.DrawStyle = "Dotted"
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        vobj.Transparency = prefs.GetInt("defaultSpaceTransparency",85)
+        vobj.LineWidth = Draft.getParam("linewidth")
+        vobj.LineColor = ArchCommands.getDefaultColor("Space")
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][prefs.GetInt("defaultSpaceStyle",2)]
+        if prefs.GetInt("defaultSpaceTransparency",85) == 100:
+            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -500,6 +512,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         if not "TextAlign" in pl:
             vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Space",QT_TRANSLATE_NOOP("App::Property","The justification of the text"))
             vobj.TextAlign = ["Left","Center","Right"]
+            vobj.TextAlign = "Center"
         if not "Decimals" in pl:
             vobj.addProperty("App::PropertyInteger",       "Decimals",    "Space",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"))
             vobj.Decimals = Draft.getParam("dimPrecision",2)
@@ -511,13 +524,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         self.setProperties(vobj)
 
-    def getDefaultDisplayMode(self):
-
-        return "Wireframe"
-
     def getIcon(self):
 
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Space_Clone.svg"
         return ":/icons/Arch_Space_Tree.svg"
 
     def attach(self,vobj):
@@ -550,6 +563,19 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         self.onChanged(vobj,"FirstLine")
         self.onChanged(vobj,"LineSpacing")
         self.onChanged(vobj,"FontName")
+        self.Object = vobj.Object
+        # footprint mode
+        self.fmat = coin.SoMaterial()
+        self.fcoords = coin.SoCoordinate3()
+        self.fset = coin.SoIndexedFaceSet()
+        fhints = coin.SoShapeHints()
+        fhints.vertexOrdering = fhints.COUNTERCLOCKWISE
+        sep = coin.SoSeparator()
+        sep.addChild(self.fmat)
+        sep.addChild(self.fcoords)
+        sep.addChild(fhints)
+        sep.addChild(self.fset)
+        vobj.RootNode.addChild(sep)
 
     def updateData(self,obj,prop):
 
@@ -571,6 +597,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     pos = FreeCAD.Vector()
             else:
                 pos = vobj.TextPosition
+        # placement's displacement will be already added by the coin node
+        pos = vobj.Object.Placement.inverse().multVec(pos)
         return pos
 
     def onChanged(self,vobj,prop):
@@ -628,6 +656,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         elif (prop == "FontSize"):
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
+                if hasattr(vobj,"FirstLine"):
+                    scale = vobj.FirstLine.Value/vobj.FontSize.Value
+                    self.header.scaleFactor.setValue([scale,scale,scale])
 
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
@@ -642,7 +673,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         elif prop == "TextPosition":
             if hasattr(self,"coords") and hasattr(self,"header") and hasattr(vobj,"TextPosition") and hasattr(vobj,"FirstLine"):
                 pos = self.getTextPosition(vobj)
-                self.coords.translation.setValue([pos.x,pos.y,pos.z])
+                self.coords.translation.setValue([pos.x,pos.y,pos.z+0.01]) # adding small z offset to separate from bottom face
                 up = vobj.FirstLine.Value * vobj.LineSpacing
                 self.header.translation.setValue([0,up,0])
 
@@ -670,6 +701,14 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 self.label.whichChild = 0
             else:
                 self.label.whichChild = -1
+        
+        elif prop == "ShapeColor":
+            if hasattr(vobj,"ShapeColor"):
+                self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))
+
+        elif prop == "Transparency":
+            if hasattr(vobj,"Transparency"):
+                self.fmat.transparency.setValue(vobj.Transparency/100.0)
 
     def setEdit(self,vobj,mode):
         taskd = SpaceTaskPanel()
@@ -678,6 +717,33 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         taskd.updateBoundaries()
         FreeCADGui.Control.showDialog(taskd)
         return True
+
+    def getDisplayModes(self,vobj):
+
+        modes = ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)+["Footprint"]
+        return modes
+
+    def setDisplayMode(self,mode):
+
+        self.fset.coordIndex.deleteValues(0)
+        self.fcoords.point.deleteValues(0)
+        if mode == "Footprint":
+            if hasattr(self,"Object"):
+                face = self.Object.Proxy.getFootprint(self.Object)
+                if face:
+                    verts = []
+                    fdata = []
+                    idx = 0
+                    tri = face.tessellate(1)
+                    for v in tri[0]:
+                        verts.append([v.x,v.y,v.z])
+                    for f in tri[1]:
+                        fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
+                    idx += len(tri[0])
+                    self.fcoords.point.setValues(verts)
+                    self.fset.coordIndex.setValues(0,len(fdata),fdata)
+            return "Points"
+        return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
 
 class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):

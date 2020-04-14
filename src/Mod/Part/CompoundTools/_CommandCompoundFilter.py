@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2016 - Victor Titov (DeepSOIC) <vv.titov@gmail.com>     *
+# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -98,10 +97,14 @@ def cmdCreateCompoundFilter(name):
         FreeCADGui.doCommand("f.Proxy.execute(f)")
         FreeCADGui.doCommand("f.purgeTouched()")
     except Exception as err:
+        if hasattr(err, "message"):
+            error_string = err.message
+        else:
+            error_string = err
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        mb.setText(_translate("Part_CompoundFilter", "Computing the result failed with an error: \n\n{err}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
-                   .format(err=err.message))
+        mb.setText(_translate("Part_CompoundFilter", "Computing the result failed with an error: \n\n{errstr}\n\nClick 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
+                   .format(errstr=error_string))
         mb.setWindowTitle(_translate("Part_CompoundFilter", "Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(_translate("Part_SplitFeatures", "Continue", None), QtGui.QMessageBox.ButtonRole.ActionRole)

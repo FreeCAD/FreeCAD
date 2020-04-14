@@ -36,6 +36,7 @@
 
 class SoSeparator;
 class SoSwitch;
+class QCheckBox;
 class QTextEdit;
 
 namespace PartGui {
@@ -101,13 +102,14 @@ public:
     TaskCheckGeometryResults(QWidget *parent = 0);
     ~TaskCheckGeometryResults();
     QString getShapeContentString();
+    void goCheck();
 
 private Q_SLOTS:
     void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
 
+
 private:
     void setupInterface();
-    void goCheck();
     void recursiveCheck(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
                         ResultEntry *parent);
     void checkSub(const BRepCheck_Analyzer &shapeCheck, const TopoDS_Shape &shape,
@@ -125,6 +127,7 @@ private:
     SoSeparator *currentSeparator;
     std::vector<FunctionMapType> functionMap;
     std::string shapeContentString;
+
 };
 
 class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
@@ -135,16 +138,54 @@ public:
     ~TaskCheckGeometryDialog();
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-        {return QDialogButtonBox::Close;}
+        {return QDialogButtonBox::Ok | QDialogButtonBox::Close;}
     virtual bool isAllowedAlterDocument(void) const
         {return false;}
     virtual bool needsFullSpace() const {return true;}
+
+private Q_SLOTS:
+    void on_runBOPCheckBox_toggled(bool isOn);
+    void on_runSingleThreadedCheckBox_toggled(bool isOn);
+    void on_logErrorsCheckBox_toggled(bool isOn);
+    void on_expandShapeContentCheckBox_toggled(bool isOn);
+    void on_autoRunCheckBox_toggled(bool isOn);
+    void on_argumentTypeModeCheckBox_toggled(bool isOn);
+    void on_selfInterModeCheckBox_toggled(bool isOn);
+    void on_smallEdgeModeCheckBox_toggled(bool isOn);
+    void on_rebuildFaceModeCheckBox_toggled(bool isOn);
+    void on_continuityModeCheckBox_toggled(bool isOn);
+    void on_tangentModeCheckBox_toggled(bool isOn);
+    void on_mergeVertexModeCheckBox_toggled(bool isOn);
+    void on_mergeEdgeModeCheckBox_toggled(bool isOn);
+    void on_curveOnSurfaceModeCheckBox_toggled(bool isOn);
+    void on_clicked(QAbstractButton* btn);
 
 private:
     TaskCheckGeometryResults* widget;
     Gui::TaskView::TaskBox* taskbox;
     Gui::TaskView::TaskBox* shapeContentBox;
+    Gui::TaskView::TaskBox* settingsBox;
     QTextEdit *contentLabel;
+    QCheckBox *autoRunCheckBox;
+    QCheckBox *runBOPCheckBox;
+    QCheckBox *runSingleThreadedCheckBox;
+    QCheckBox *logErrorsCheckBox;
+    QCheckBox *expandShapeContentCheckBox;
+    QCheckBox *argumentTypeModeCheckBox;
+    QCheckBox *selfInterModeCheckBox;
+    QCheckBox *smallEdgeModeCheckBox;
+    QCheckBox *rebuildFaceModeCheckBox;
+    QCheckBox *continuityModeCheckBox;
+    QCheckBox *tangentModeCheckBox;
+    QCheckBox *mergeVertexModeCheckBox;
+    QCheckBox *mergeEdgeModeCheckBox;
+    QCheckBox *curveOnSurfaceModeCheckBox;
+    bool accept();
+    bool reject();
+    virtual void modifyStandardButtons(QDialogButtonBox*);
+    QPushButton *okBtn;
+    QPushButton *settingsBtn;
+    QPushButton *resultsBtn;
 };
 
 class BOPProgressIndicator : public Message_ProgressIndicator

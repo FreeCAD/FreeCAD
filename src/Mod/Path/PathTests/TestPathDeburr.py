@@ -26,7 +26,6 @@ import Path
 import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
-import math
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())

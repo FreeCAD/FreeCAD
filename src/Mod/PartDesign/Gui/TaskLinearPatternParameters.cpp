@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -110,8 +110,14 @@ void TaskLinearPatternParameters::setupUI()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    action->setShortcutVisibleInContextMenu(true);
+#endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -216,6 +222,7 @@ void TaskLinearPatternParameters::updateUI()
 
 void TaskLinearPatternParameters::onUpdateViewTimer()
 {
+    setupTransaction();
     recomputeFeature();
 }
 
@@ -224,29 +231,30 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
+void TaskLinearPatternParameters::addObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(label);
+    item->setData(Qt::UserRole, objectName);
+    ui->listWidgetFeatures->addItem(item);
+}
+
+void TaskLinearPatternParameters::removeObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    removeItemFromListWidget(ui->listWidgetFeatures, label);
+}
+
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
-            Gui::SelectionObject selObj(msg);
-            App::DocumentObject* obj = selObj.getObject();
-            Q_ASSERT(obj);
-
-            QString label = QString::fromUtf8(obj->Label.getValue());
-            QString objectName = QString::fromLatin1(msg.pObjectName);
-
-            if (selectionMode == addFeature) {
-                QListWidgetItem* item = new QListWidgetItem();
-                item->setText(label);
-                item->setData(Qt::UserRole, objectName);
-                ui->listWidgetFeatures->addItem(item);
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetFeatures, label);
-            }
-
             exitSelectionMode();
-        } else {
+        }
+        else if (selectionMode == reference) {
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
@@ -261,8 +269,8 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                                selObj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
                                selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ||
                                selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))) {
+                    setupTransaction();
                     pcLinearPattern->Direction.setValue(selObj, directions);
-
                     recomputeFeature();
                     updateUI();
                 }
@@ -340,6 +348,7 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
         std::vector<std::string> directions;
         App::DocumentObject* obj;
 
+        setupTransaction();
         getDirection(obj, directions);
         pcLinearPattern->Direction.setValue(obj,directions);
         pcLinearPattern->Reversed.setValue(getReverse());
@@ -355,6 +364,7 @@ void TaskLinearPatternParameters::onFeatureDeleted(void)
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    setupTransaction();
     pcTransformed->Originals.setValues(originals);
     ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
     recomputeFeature();
@@ -413,15 +423,14 @@ void TaskLinearPatternParameters::changeEvent(QEvent *e)
 
 void TaskLinearPatternParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    auto tobj = TransformedView->getObject();
+    FCMD_OBJ_CMD(tobj,"Direction = " << direction);
+    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
 
     ui->spinLength->apply();
     ui->spinOccurrences->apply();

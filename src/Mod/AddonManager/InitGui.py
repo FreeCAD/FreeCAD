@@ -2,6 +2,9 @@
 # AddonManager gui init module
 # (c) 2001 Juergen Riegel
 # License LGPL
-from AddonManagerGui import CmdAddonMgr
 
-FreeCADGui.addCommand('Std_AddonMgr', CmdAddonMgr())
+import AddonManager
+import AddonManager_rc
+
+FreeCADGui.addLanguagePath(":/translations")
+FreeCADGui.addCommand('Std_AddonMgr', AddonManager.CommandAddonManager())

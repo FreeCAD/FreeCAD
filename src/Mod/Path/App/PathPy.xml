@@ -40,6 +40,12 @@ commands (optional) is a list of Path commands</UserDocu>
             </Documentation>
             <Parameter Name="Center" Type="Object"/>
         </Attribute>
+        <Attribute Name="BoundBox" ReadOnly="true">
+            <Documentation>
+                <UserDocu>the extent of this path</UserDocu>
+            </Documentation>
+            <Parameter Name="BoundBox" Type="Object"/>
+        </Attribute>
         <Methode Name="addCommands">
             <Documentation>
                 <UserDocu>adds a command or a list of commands at the end of the path</UserDocu>

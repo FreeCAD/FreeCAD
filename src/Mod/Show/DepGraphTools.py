@@ -64,16 +64,3 @@ def getAllDependent(feat):
         list_traversing_now = list_to_be_traversed_next
     
     return list_of_deps
-
-def isContainer(obj):
-    '''isContainer(obj): returns True if obj is an object container, such as 
-    Group, Part, Body. The important characterisic of an object being a 
-    container is visibility nesting.'''
-    
-    if obj.hasExtension('App::OriginGroupExtension'):
-        return True
-    if obj.hasExtension('App::GroupExtension'):
-        return True
-    if obj.isDerivedFrom('App::Origin'):
-        return True
-    return False

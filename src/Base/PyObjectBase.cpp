@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,9 +32,12 @@
 #include "Console.h"
 #include "Interpreter.h"
 
+#define ATTR_TRACKING
+
 using namespace Base;
 
 PyObject* Base::BaseExceptionFreeCADError = 0;
+PyObject* Base::BaseExceptionFreeCADAbort = 0;
 
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
@@ -164,6 +167,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         return NULL;
     }
 
+#ifdef ATTR_TRACKING
     // If an attribute references this as parent then reset it (bug #0002902)
     PyObject* cur = pyObj->getTrackedAttribute(attr);
     if (cur) {
@@ -173,11 +177,13 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
             pyObj->untrackAttribute(attr);
         }
     }
+#endif
 
     PyObject* value = pyObj->_getattr(attr);
-#if 1
+#ifdef ATTR_TRACKING
     if (value && PyObject_TypeCheck(value, &(PyObjectBase::Type))) {
-        if (!static_cast<PyObjectBase*>(value)->isConst()) {
+        if (!static_cast<PyObjectBase*>(value)->isConst() &&
+            !static_cast<PyObjectBase*>(value)->isNotTracking()) {
             static_cast<PyObjectBase*>(value)->setAttributeOf(attr, pyObj);
             pyObj->trackAttribute(attr, value);
         }
@@ -222,6 +228,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
         return -1;
     }
 
+#ifdef ATTR_TRACKING
     // If an attribute references this as parent then reset it
     // before setting the new attribute
     PyObject* cur = static_cast<PyObjectBase*>(obj)->getTrackedAttribute(attr);
@@ -232,9 +239,10 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
             static_cast<PyObjectBase*>(obj)->untrackAttribute(attr);
         }
     }
+#endif
 
     int ret = static_cast<PyObjectBase*>(obj)->_setattr(attr, value);
-#if 1
+#ifdef ATTR_TRACKING
     if (ret == 0) {
         static_cast<PyObjectBase*>(obj)->startNotify();
     }

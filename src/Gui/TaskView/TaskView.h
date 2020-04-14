@@ -47,7 +47,7 @@ class Property;
 namespace Gui {
 class ControlSingleton;
 namespace DockWnd{
-class CombiView;
+class ComboView;
 }
 namespace TaskView {
 
@@ -180,7 +180,7 @@ public:
     virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                           Gui::SelectionSingleton::MessageType Reason);
 
-    friend class Gui::DockWnd::CombiView;
+    friend class Gui::DockWnd::ComboView;
     friend class Gui::ControlSingleton;
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
@@ -196,7 +196,9 @@ protected Q_SLOTS:
     void clicked (QAbstractButton * button);
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+    virtual void keyPressEvent(QKeyEvent*);
+    virtual bool event(QEvent*);
+
     void addTaskWatcher(void);
     void removeTaskWatcher(void);
     /// update the visibility of the TaskWatcher accordant to the selection

@@ -34,6 +34,9 @@
       </property>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkLogging">
+        <property name="toolTip">
+         <string>Log messages will be recorded</string>
+        </property>
         <property name="text">
          <string>Record log messages</string>
         </property>
@@ -47,6 +50,9 @@
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkWarning">
+        <property name="toolTip">
+         <string>Warnings will be recorded</string>
+        </property>
         <property name="text">
          <string>Record warnings</string>
         </property>
@@ -63,6 +69,9 @@
       </item>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkError">
+        <property name="toolTip">
+         <string>Error messages will be recorded</string>
+        </property>
         <property name="text">
          <string>Record error messages</string>
         </property>
@@ -71,6 +80,86 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkError</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnError">
+        <property name="toolTip">
+         <string>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</string>
+        </property>
+        <property name="text">
+         <string>Show report view on error</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnError</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnWarning">
+        <property name="toolTip">
+         <string>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</string>
+        </property>
+        <property name="text">
+         <string>Show report view on warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnWarning</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnNormalMessage">
+        <property name="toolTip">
+         <string>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</string>
+        </property>
+        <property name="text">
+         <string>Show report view on normal message</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnNormalMessage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnLogMessage">
+        <property name="toolTip">
+         <string>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</string>
+        </property>
+        <property name="text">
+         <string>Show report view on log message</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnLogMessage</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>OutputWindow</cstring>
@@ -171,6 +260,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Font color for normal messages in Report view panel</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -225,6 +317,9 @@
             <width>75</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>Font color for log messages in Report view panel</string>
           </property>
           <property name="text">
            <string/>
@@ -281,6 +376,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Font color for warning messages in Report view panel</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -336,6 +434,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Font color for error messages in Report view panel</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -367,6 +468,10 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="pythonOutput">
+        <property name="toolTip">
+         <string>Internal Python output will be redirected
+from Python console to Report view panel</string>
+        </property>
         <property name="text">
          <string>Redirect internal Python output to report view</string>
         </property>
@@ -383,6 +488,10 @@
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="pythonError">
+        <property name="toolTip">
+         <string>Internal Python error messages will be redirected
+from Python console to Report view panel</string>
+        </property>
         <property name="text">
          <string>Redirect internal Python errors to report view</string>
         </property>
@@ -440,6 +549,10 @@
   <tabstop>checkLogging</tabstop>
   <tabstop>checkWarning</tabstop>
   <tabstop>checkError</tabstop>
+  <tabstop>checkShowReportViewOnWarning</tabstop>
+  <tabstop>checkShowReportViewOnError</tabstop>
+  <tabstop>checkShowReportViewOnNormalMessage</tabstop>
+  <tabstop>checkShowReportViewOnLogMessage</tabstop>
   <tabstop>colorText</tabstop>
   <tabstop>colorLogging</tabstop>
   <tabstop>colorWarning</tabstop>

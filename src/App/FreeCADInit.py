@@ -1,12 +1,12 @@
 # FreeCAD init module
-# (c) 2001 Juergen Riegel
+# (c) 2001 Jürgen Riegel
 #
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,7 +26,6 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
 
@@ -50,11 +49,6 @@ FreeCAD._importFromFreeCAD = removeFromPath
 
 
 def InitApplications():
-	try:
-		import sys,os,traceback,io
-	except ImportError:
-		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
-		raise
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
 	ModDir = os.path.realpath(ModDir)
@@ -62,10 +56,22 @@ def InitApplications():
 	ExtDir = os.path.realpath(ExtDir)
 	BinDir = FreeCAD.getHomePath()+'bin'
 	BinDir = os.path.realpath(BinDir)
+	libpaths = []
 	LibDir = FreeCAD.getHomePath()+'lib'
 	LibDir = os.path.realpath(LibDir)
+	if os.path.exists(LibDir):
+		libpaths.append(LibDir)
 	Lib64Dir = FreeCAD.getHomePath()+'lib64'
 	Lib64Dir = os.path.realpath(Lib64Dir)
+	if os.path.exists(Lib64Dir):
+		libpaths.append(Lib64Dir)
+	if sys.version_info[0] == 3:
+		LibPyDir = FreeCAD.getHomePath()+'lib-py3'
+	else:
+		LibPyDir = FreeCAD.getHomePath()+'lib-py2'
+	LibPyDir = os.path.realpath(LibPyDir)
+	if (os.path.exists(LibPyDir)):
+		libpaths.append(LibPyDir)
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
@@ -117,12 +123,12 @@ def InitApplications():
 
 	# this allows importing with:
 	# from FreeCAD.Module import package
-	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
+	FreeCAD.__path__ = [ModDir] + libpaths + [HomeMod]
 
 	# also add these directories to the sys.path to 
 	# not change the old behaviour. once we have moved to 
 	# proper python modules this can eventuelly be removed.
-	sys.path = [ModDir, Lib64Dir, LibDir, ExtDir] + sys.path
+	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
@@ -140,7 +146,7 @@ def InitApplications():
 					Log('-'*100+'\n')
 					Log(traceback.format_exc())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
 					Err('Please look into the log file for further information\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
@@ -156,25 +162,25 @@ def InitApplications():
 		for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
 			if freecad_module_ispkg:
 				Log('Init: Initializing ' + freecad_module_name + '\n')
-				freecad_module = importlib.import_module(freecad_module_name)
-				extension_modules += [freecad_module_name]
-				if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-					try:
+				try:
+					freecad_module = importlib.import_module(freecad_module_name)
+					extension_modules += [freecad_module_name]
+					if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
 						importlib.import_module(freecad_module_name + '.init')
 						Log('Init: Initializing ' + freecad_module_name + '... done\n')
-					except Exception as inst:
-						Err('During initialization the error ' + str(inst) + ' occurred in ' + freecad_module_name + '\n')
-						Err('-'*80+'\n')
-						Err(traceback.format_exc())
-						Err('-'*80+'\n')
-						Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
-						Log('-'*80+'\n')
-						Log(traceback.format_exc())
-						Log('-'*80+'\n')
-				else:
-					Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+					else:
+						Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
+				except Exception as inst:
+					Err('During initialization the error "' + str(inst) + '" occurred in ' + freecad_module_name + '\n')
+					Err('-'*80+'\n')
+					Err(traceback.format_exc())
+					Err('-'*80+'\n')
+					Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
+					Log('-'*80+'\n')
+					Log(traceback.format_exc())
+					Log('-'*80+'\n')
 	except ImportError as inst:
-		Err('During initialization the error ' + str(inst) + ' occurred\n')
+		Err('During initialization the error "' + str(inst) + '" occurred\n')
 
 	Log("Using "+ModDir+" as module path!\n")
 	# In certain cases the PathExtension list can contain invalid strings. We concatenate them to a single string
@@ -185,7 +191,6 @@ def InitApplications():
 			PathEnvironment += path + os.pathsep
 		except UnicodeDecodeError:
 			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
-			pass
 
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
@@ -235,6 +240,384 @@ App.__unit_test__ = []
 
 Log ('Init: starting App::FreeCADInit.py\n')
 
+try:
+    import sys,os,traceback,io,inspect
+    from datetime import datetime
+except ImportError:
+    FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+    raise
+
+# Backward compatibility to Py2
+import sys
+if sys.version_info.major < 3:
+    import time
+    time.process_time = time.clock
+
+class FCADLogger(object):
+    '''Convenient class for tagged logging.
+    
+       Example usage:
+           >>> logger = FreeCAD.Logger('MyModule')
+           >>> logger.info('log test {}',1)
+           24.36053 <MyModule> <input>(1): test log 1
+
+       The default output format is:
+           <timestamp> <tag> <source file>(line number): message
+
+       The message is formatted using new style Python string formatting, e.g.
+       'test {}'.format(1). It is strongly recommended to not directly use
+       Python string formatting, but pass additional argument indirectly through
+       various logger print function, because the logger can skip string
+       evaluation in case the logging level is disabled. For more options,
+       please consult the docstring of __init__(), catch() and report().
+
+       To set/get logger level:
+           >>> FreeCAD.setLogLevel('MyModule','Trace')
+           >>> FreeCAD.getLogLevel('MyModule')
+           4
+
+        There are five predefined logger level, each corresponding to an integer
+        value, as shown below together with the corresponding logger print
+        method,
+            0: Error, Logger.error()
+            1: Warning, Logger.warn()
+            2: Message, Logger.msg() or info()
+            3: Log, Logger.log() or debug()
+            4: Trace, Logger.trace()
+
+        FreeCAD.setLogLevel() supports both text and integer value, which allows
+        you to define your own levels. The level set is persisted to user
+        configuration file.
+
+        By default any tag has a log level of 2 for release, and 3 for debug
+        build.
+    '''
+
+    _string_type = str if sys.version_info[0] >= 3 else basestring
+
+    _levels = { 'Error':0, 'error':0,
+                'Warning':1, 'warn':1,
+                'Message':2, 'msg':2, 'info':2,
+                'Log':3, 'log':3, 'debug':3,
+                'Trace':4, 'trace':4,}
+    _printer = [
+            FreeCAD.Console.PrintError,
+            FreeCAD.Console.PrintWarning,
+            FreeCAD.Console.PrintMessage,
+            FreeCAD.Console.PrintLog,
+            FreeCAD.Console.PrintLog ]
+
+    def __init__(self, tag, **kargs):
+        '''Construct a logger instance.
+
+        Supported arguments are their default values are,
+
+        * tag: a string tag for this logger. The log level of this logger can be
+               accessed using FreeCAD.getLogLevel(tag)/setLogLevel(tag,level).
+               All logger instance with the same tag shares the same level
+               setting.
+
+        * printTag (True): whether to print tag
+
+        * noUpdateUI (True): whether to update GUI when printing. This is useful
+                             to show log output on lengthy operations. Be
+                             careful though, this may allow unexpected user
+                             interaction when the application is busy, which may
+                             lead to crash
+
+        * timing (True): whether to print time stamp
+
+        * lineno (True): whether to print source file and line number
+
+        * parent (None): provide a parent logger, so that the log printing will
+                         check for parent's log level in addition of its own
+
+        * title ('FreeCAD'): message box title used by report()
+        '''
+        self.tag = tag
+        self.laststamp = datetime.now()
+        for key,default in (('printTag',True),('noUpdateUI',True),
+                ('timing',True),('lineno',True),('parent',None),
+                ('title','FreeCAD')) :
+            setattr(self,key,kargs.get(key,default))
+
+    def _isEnabledFor(self,level):
+        '''Internal function to check for an integer log level.
+
+            * level: integer log level
+        '''
+
+        if self.parent and not self.parent._isEnabledFor(level):
+            return False
+        return FreeCAD.getLogLevel(self.tag) >= level
+
+    def isEnabledFor(self,level):
+        '''To check for an integer or text log level.
+
+            * level: integer or text log level
+        '''
+        if not isinstance(level,int):
+            level = self.__class__._levels[level]
+        return self._isEnabledFor(level)
+
+    def error(self,msg,*args,**kargs):
+        '''"Error" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(0):
+            frame = kargs.pop('frame',0)+1
+            self._log(0,msg,frame,args,kargs)
+
+    def warn(self,msg,*args,**kargs):
+        '''"Warning" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(1):
+            frame = kargs.pop('frame',0)+1
+            self._log(1,msg,frame,args,kargs)
+
+    def msg(self,msg,*args,**kargs):
+        '''"Message" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(2):
+            frame = kargs.pop('frame',0)+1
+            self._log(2,msg,frame,args,kargs)
+
+    info = msg
+
+    def log(self,msg,*args,**kargs):
+        '''"Log" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(3):
+            frame = kargs.pop('frame',0)+1
+            self._log(3,msg,frame,args,kargs)
+
+    debug = log
+
+    def trace(self,msg,*args,**kargs):
+        '''"Trace" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(4):
+            frame = kargs.pop('frame',0)+1
+            self._log(4,msg,frame,args,kargs)
+
+    def _log(self,level,msg,frame=0,args=(),kargs=None):
+        '''Internal log printing function.
+
+            * level: integer log level
+
+            * msg: message, may contain new style string format specifier
+
+            * frame (0): the calling frame for printing source file and line
+                         number.  For example, in case you have your own logging
+                         function, and you want to show the callers source
+                         location, then set frame to one.
+
+            * args: tuple for positional arguments to be passed to
+                    string.format()
+
+            * kargs: dictionary for keyword arguments to be passed to
+                     string.format()
+        '''
+
+        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+            if not kargs:
+                msg = msg.format(*args)
+            else:
+                msg = msg.format(*args,**kargs)
+
+        prefix = ''
+
+        if self.timing:
+            now = datetime.now()
+            prefix += '{} '.format((now-self.laststamp).total_seconds())
+            self.laststamp = now
+
+        if self.printTag:
+            prefix += '<{}> '.format(self.tag)
+
+        if self.lineno:
+            try:
+                frame = sys._getframe(frame+1)
+                prefix += '{}({}): '.format(os.path.basename(
+                    frame.f_code.co_filename),frame.f_lineno)
+            except Exception:
+                frame = inspect.stack()[frame+1]
+                prefix += '{}({}): '.format(os.path.basename(frame[1]),frame[2])
+
+        self.__class__._printer[level]('{}{}\n'.format(prefix,msg))
+
+        if not self.noUpdateUI and FreeCAD.GuiUp:
+            import FreeCADGui
+            try:
+                FreeCADGui.updateGui()
+            except Exception:
+                pass
+
+    def _catch(self,level,msg,func,args=None,kargs=None):
+        '''Internal function to log exception of any callable.
+
+            * level: integer log level
+
+            * msg: message string. Unlike _log(), this argument must not contain
+                   any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        try:
+            if not args:
+                args = []
+            if not kargs:
+                kargs = {}
+            return func(*args,**kargs)
+        except Exception:
+            if self._isEnabledFor(level):
+                self._log(level,msg+'\n'+traceback.format_exc(),frame=2)
+
+    def catch(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Error".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(0,msg,func,args,kargs)
+
+    def catchWarn(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Warning".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(1,msg,func,args,kargs)
+
+    def catchMsg(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Message".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(2,msg,func,args,kargs)
+
+    catchInfo = catchMsg
+
+    def catchLog(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Log".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(3,msg,func,args,kargs)
+
+    catchDebug = catchLog
+
+    def catchTrace(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Trace".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(4,msg,func,args,kargs)
+
+    def report(self,msg,func,*args,**kargs):
+        '''Catch any exception report it with a message box.
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        try:
+            return func(*args,**kargs)
+        except Exception as e:
+            self.error(msg+'\n'+traceback.format_exc(),frame=1)
+            if FreeCAD.GuiUp:
+                import FreeCADGui,PySide
+                PySide.QtGui.QMessageBox.critical(
+                        FreeCADGui.getMainWindow(),self.title,str(e))
+
+FreeCAD.Logger = FCADLogger
+
 # init every application by importing Init.py
 try:
 	import traceback
@@ -260,7 +643,14 @@ App.Units.DeciMetre     = App.Units.Quantity('dm')
 App.Units.Metre         = App.Units.Quantity('m')
 App.Units.KiloMetre     = App.Units.Quantity('km')
 
+App.Units.MilliLiter    = App.Units.Quantity('ml')
 App.Units.Liter         = App.Units.Quantity('l')
+
+App.Units.Hertz         = App.Units.Quantity('Hz')
+App.Units.KiloHertz     = App.Units.Quantity('kHz')
+App.Units.MegaHertz     = App.Units.Quantity('MHz')
+App.Units.GigaHertz     = App.Units.Quantity('GHz')
+App.Units.TeraHertz     = App.Units.Quantity('THz')
 
 App.Units.MicroGram     = App.Units.Quantity('ug')
 App.Units.MilliGram     = App.Units.Quantity('mg')
@@ -281,6 +671,7 @@ App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
 App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
+App.Units.MilliMole     = App.Units.Quantity('mmol')
 App.Units.Mole          = App.Units.Quantity('mol')
 
 App.Units.Candela       = App.Units.Quantity('cd')
@@ -291,64 +682,146 @@ App.Units.Thou          = App.Units.Quantity('thou')
 App.Units.Yard          = App.Units.Quantity('yd')
 App.Units.Mile          = App.Units.Quantity('mi')
 
+App.Units.SquareFoot    = App.Units.Quantity('sqft')
+App.Units.CubicFoot     = App.Units.Quantity('cft')
+
 App.Units.Pound         = App.Units.Quantity('lb')
 App.Units.Ounce         = App.Units.Quantity('oz')
 App.Units.Stone         = App.Units.Quantity('st')
 App.Units.Hundredweights= App.Units.Quantity('cwt')
 
 App.Units.Newton        = App.Units.Quantity('N')
+App.Units.MilliNewton   = App.Units.Quantity('mN')
 App.Units.KiloNewton    = App.Units.Quantity('kN')
 App.Units.MegaNewton    = App.Units.Quantity('MN')
-App.Units.MilliNewton   = App.Units.Quantity('mN')
 
 App.Units.Pascal        = App.Units.Quantity('Pa')
 App.Units.KiloPascal    = App.Units.Quantity('kPa')
 App.Units.MegaPascal    = App.Units.Quantity('MPa')
 App.Units.GigaPascal    = App.Units.Quantity('GPa')
 
+App.Units.MilliBar      = App.Units.Quantity('mbar')
+App.Units.Bar           = App.Units.Quantity('bar')
+
+App.Units.PoundForce    = App.Units.Quantity('lbf')
+App.Units.Torr          = App.Units.Quantity('Torr')
+App.Units.mTorr         = App.Units.Quantity('mTorr')
+App.Units.yTorr         = App.Units.Quantity('uTorr')
+
 App.Units.PSI           = App.Units.Quantity('psi')
+App.Units.KSI           = App.Units.Quantity('ksi')
+App.Units.MPSI          = App.Units.Quantity('Mpsi')
 
 App.Units.Watt          = App.Units.Quantity('W')
+App.Units.MilliWatt     = App.Units.Quantity('mW')
+App.Units.KiloWatt      = App.Units.Quantity('kW')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
 App.Units.Volt          = App.Units.Quantity('V')
+App.Units.MilliVolt     = App.Units.Quantity('mV')
+App.Units.KiloVolt      = App.Units.Quantity('kV')
+
+App.Units.Siemens       = App.Units.Quantity('S')
+App.Units.MilliSiemens  = App.Units.Quantity('mS')
+App.Units.MicroSiemens  = App.Units.Quantity('uS')
+
+App.Units.Ohm          = App.Units.Quantity('Ohm')
+App.Units.KiloOhm      = App.Units.Quantity('kOhm')
+App.Units.MegaOhm      = App.Units.Quantity('MOhm')
+
+App.Units.Coulomb       = App.Units.Quantity('C')
+
+App.Units.Tesla         = App.Units.Quantity('T')
+App.Units.Gauss         = App.Units.Quantity('G')
+
+App.Units.Weber         = App.Units.Quantity('Wb')
+
+App.Units.Oersted       = App.Units.Quantity('Oe')
+
+App.Units.PicoFarad     = App.Units.Quantity('pF')
+App.Units.NanoFarad     = App.Units.Quantity('nF')
+App.Units.MicroFarad    = App.Units.Quantity('uF')
+App.Units.MilliFarad    = App.Units.Quantity('mF')
+App.Units.Farad         = App.Units.Quantity('F')
+
+App.Units.NanoHenry     = App.Units.Quantity('nH')
+App.Units.MicroHenry    = App.Units.Quantity('uH')
+App.Units.MilliHenry    = App.Units.Quantity('mH')
+App.Units.Henry         = App.Units.Quantity('H')
 
 App.Units.Joule         = App.Units.Quantity('J')
+App.Units.MilliJoule    = App.Units.Quantity('mJ')
+App.Units.KiloJoule     = App.Units.Quantity('kJ')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
+App.Units.KiloWattHour  = App.Units.Quantity('kWh')
+App.Units.ElectronVolt  = App.Units.Quantity('eV')
+App.Units.KiloElectronVolt = App.Units.Quantity('keV')
+App.Units.MegaElectronVolt = App.Units.Quantity('MeV')
+App.Units.Calorie       = App.Units.Quantity('cal')
+App.Units.KiloCalorie   = App.Units.Quantity('kcal')
 
 App.Units.MPH           = App.Units.Quantity('mi/h')
 App.Units.KMH           = App.Units.Quantity('km/h')
 
-
 App.Units.Degree        = App.Units.Quantity('deg')
 App.Units.Radian        = App.Units.Quantity('rad')
 App.Units.Gon           = App.Units.Quantity('gon')
+App.Units.AngularMinute = App.Units.Quantity().AngularMinute
+App.Units.AngularSecond = App.Units.Quantity().AngularSecond
 
 App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
 App.Units.Mass          = App.Units.Unit(0,1) 
-App.Units.Angle         = App.Units.Unit(0,0,0,0,0,0,0,1) 
+# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
+
+# Angle
+App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
+
+App.Units.Density       = App.Units.Unit(-3,1)
 
 App.Units.TimeSpan      = App.Units.Unit(0,0,1) 
+App.Units.Frequency     = App.Units.Unit(0,0,-1)
 App.Units.Velocity      = App.Units.Unit(1,0,-1) 
 App.Units.Acceleration  = App.Units.Unit(1,0,-2) 
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 
 
-App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
-App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1) 
+App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
+App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
+App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
+App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
+App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
+App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
-App.Units.Stress        = App.Units.Unit(-1,1,-2) 
-App.Units.Pressure      = App.Units.Unit(-1,1,-2) 
+# Pressure
+App.Units.CompressiveStrength     = App.Units.Unit(-1,1,-2)
+App.Units.Pressure                = App.Units.Unit(-1,1,-2)
+App.Units.ShearModulus            = App.Units.Unit(-1,1,-2)
+App.Units.Stress                  = App.Units.Unit(-1,1,-2)
+App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
+App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
+App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
 
 App.Units.Force         = App.Units.Unit(1,1,-2) 
 App.Units.Work          = App.Units.Unit(2,1,-2) 
 App.Units.Power         = App.Units.Unit(2,1,-3) 
 
+App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
+App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
+App.Units.ThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
+App.Units.SpecificHeat                 = App.Units.Unit(2,0,-2,0,-1)
+App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
+App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
+App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
+App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
+App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # clean up namespace
 del(InitApplications)

@@ -38,7 +38,7 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
-#include <QListWidgetItem>
+#include <QKeyEvent>
 
 class Ui_TaskFemConstraintHeatflux;
 
@@ -66,13 +66,12 @@ private Q_SLOTS:
     void Flux();
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
+    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintHeatflux* ui;
 };

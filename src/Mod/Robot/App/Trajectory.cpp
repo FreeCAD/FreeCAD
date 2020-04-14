@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ using namespace Base;
 //using namespace KDL;
 
 
-TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence);
+TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
 Trajectory::Trajectory()
 :pcTrajectory(0)
@@ -81,6 +81,9 @@ Trajectory::~Trajectory()
 
 Trajectory &Trajectory::operator=(const Trajectory& Trac)
 {
+    if (this == &Trac)
+        return *this;
+
     for(std::vector<Waypoint*>::iterator it = vpcWaypoints.begin();it!=vpcWaypoints.end();++it)
         delete ( *it );
     vpcWaypoints.clear();
@@ -174,7 +177,7 @@ void Trajectory::generateTrajectory(void)
                 case Waypoint::LINE:
                 case Waypoint::PTP:{
                     KDL::Frame Next = toFrame((*it)->EndPos);
-                    // continues the movement until no continus waypoint or the end
+                    // continues the movement until no continuous waypoint or the end
                     bool Cont = (*it)->Cont && !(it==--vpcWaypoints.end());
                     // start of a continue block
                     if (Cont && !pcRoundComp) {
@@ -253,7 +256,7 @@ std::string Trajectory::getUniqueWaypointName(const char *Name) const
     std::vector<Robot::Waypoint*>::const_iterator it;
     for(it = vpcWaypoints.begin();it!=vpcWaypoints.end();++it)
         if((*it)->Name == CleanName) break;
-  
+
     if (it == vpcWaypoints.end()) {
         // if not, name is OK
         return CleanName;
@@ -322,8 +325,3 @@ void Trajectory::Restore(XMLReader &reader)
     }
     generateTrajectory();
 }
-
-
-
-
- 

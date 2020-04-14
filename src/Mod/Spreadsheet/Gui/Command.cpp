@@ -52,7 +52,7 @@ using namespace App;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetMergeCells);
+DEF_STD_CMD_A(CmdSpreadsheetMergeCells)
 
 CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
   : Command("Spreadsheet_MergeCells")
@@ -60,7 +60,7 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Merge cells");
-    sToolTipText    = QT_TR_NOOP("Merge selected cells in spreadsheet");
+    sToolTipText    = QT_TR_NOOP("Merge selected cells");
     sWhatsThis      = "Spreadsheet_MergeCells";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetMergeCells";
@@ -105,7 +105,7 @@ bool CmdSpreadsheetMergeCells::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetSplitCell);
+DEF_STD_CMD_A(CmdSpreadsheetSplitCell)
 
 CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
   : Command("Spreadsheet_SplitCell")
@@ -113,7 +113,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Split cell");
-    sToolTipText    = QT_TR_NOOP("Split previously merged cells in spreadsheet");
+    sToolTipText    = QT_TR_NOOP("Split previously merged cells");
     sWhatsThis      = "Spreadsheet_SplitCell";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetSplitCell";
@@ -161,7 +161,7 @@ bool CmdSpreadsheetSplitCell::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetImport);
+DEF_STD_CMD_A(CmdSpreadsheetImport)
 
 CmdSpreadsheetImport::CmdSpreadsheetImport()
   : Command("Spreadsheet_Import")
@@ -201,7 +201,7 @@ bool CmdSpreadsheetImport::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetExport);
+DEF_STD_CMD_A(CmdSpreadsheetExport)
 
 CmdSpreadsheetExport::CmdSpreadsheetExport()
   : Command("Spreadsheet_Export")
@@ -250,7 +250,7 @@ bool CmdSpreadsheetExport::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignLeft);
+DEF_STD_CMD_A(CmdSpreadsheetAlignLeft)
 
 CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
   : Command("Spreadsheet_AlignLeft")
@@ -302,7 +302,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignCenter);
+DEF_STD_CMD_A(CmdSpreadsheetAlignCenter)
 
 CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
   : Command("Spreadsheet_AlignCenter")
@@ -354,7 +354,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignRight);
+DEF_STD_CMD_A(CmdSpreadsheetAlignRight)
 
 CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
   : Command("Spreadsheet_AlignRight")
@@ -406,7 +406,7 @@ bool CmdSpreadsheetAlignRight::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignTop);
+DEF_STD_CMD_A(CmdSpreadsheetAlignTop)
 
 CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
   : Command("Spreadsheet_AlignTop")
@@ -458,7 +458,7 @@ bool CmdSpreadsheetAlignTop::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignBottom);
+DEF_STD_CMD_A(CmdSpreadsheetAlignBottom)
 
 CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
   : Command("Spreadsheet_AlignBottom")
@@ -510,7 +510,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter);
+DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter)
 
 CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
   : Command("Spreadsheet_AlignVCenter")
@@ -518,7 +518,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Vertically center-align");
-    sToolTipText    = QT_TR_NOOP("Center-align contents vertically of selected cells");
+    sToolTipText    = QT_TR_NOOP("Vertically center-align contents of selected cells");
     sWhatsThis      = "Spreadsheet_AlignVCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetAlignVCenter";
@@ -562,7 +562,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleBold);
+DEF_STD_CMD_A(CmdSpreadsheetStyleBold)
 
 CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
   : Command("Spreadsheet_StyleBold")
@@ -570,7 +570,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Bold text");
-    sToolTipText    = QT_TR_NOOP("Set bold text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Set text in selected cells bold");
     sWhatsThis      = "Spreadsheet_StyleBold";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleBold";
@@ -636,7 +636,7 @@ bool CmdSpreadsheetStyleBold::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleItalic);
+DEF_STD_CMD_A(CmdSpreadsheetStyleItalic)
 
 CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
   : Command("Spreadsheet_StyleItalic")
@@ -644,7 +644,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Italic text");
-    sToolTipText    = QT_TR_NOOP("Set italic text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Set text in selected cells italic");
     sWhatsThis      = "Spreadsheet_StyleItalic";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleItalic";
@@ -710,7 +710,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline);
+DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline)
 
 CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
   : Command("Spreadsheet_StyleUnderline")
@@ -718,7 +718,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Underline text");
-    sToolTipText    = QT_TR_NOOP("Set underline text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Underline text in selected cells");
     sWhatsThis      = "Spreadsheet_StyleUnderline";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleUnderline";
@@ -783,7 +783,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetSetAlias);
+DEF_STD_CMD_A(CmdSpreadsheetSetAlias)
 
 CmdSpreadsheetSetAlias::CmdSpreadsheetSetAlias()
   : Command("Spreadsheet_SetAlias")
@@ -812,8 +812,8 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
             if (selection.size() == 1) {
                 std::vector<Range> range;
 
-                range.push_back(Range(selection[0].row(), selection[0].column(),
-                                      selection[0].row(), selection[0].column()));
+                range.emplace_back(selection[0].row(), selection[0].column(),
+                                      selection[0].row(), selection[0].column());
 
                 std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, range, sheetView));
 
@@ -847,7 +847,7 @@ bool CmdSpreadsheetSetAlias::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdCreateSpreadsheet);
+DEF_STD_CMD_A(CmdCreateSpreadsheet)
 
 CmdCreateSpreadsheet::CmdCreateSpreadsheet()
     :Command("Spreadsheet_CreateSheet")
@@ -868,6 +868,8 @@ void CmdCreateSpreadsheet::activated(int iMsg)
 
     openCommand("Create Spreadsheet");
     doCommand(Doc,"App.activeDocument().addObject('Spreadsheet::Sheet','%s\')",FeatName.c_str());
+    doCommand(Gui,"Gui.Selection.clearSelection()\n");
+    doCommand(Gui,"Gui.Selection.addSelection(App.activeDocument().Name,'%s\')",FeatName.c_str());
     commitCommand();
 }
 
@@ -904,4 +906,3 @@ void CreateSpreadsheetCommands(void)
 
     rcCmdMgr.addCommand(new CmdSpreadsheetSetAlias());
 }
-

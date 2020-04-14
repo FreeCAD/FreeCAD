@@ -1,22 +1,27 @@
-; EN-GJS-800-1 - 0.7080 - EN 1563
+; Steel-EN-GJS-800-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-800-1
 NameDE = GGG-80
 DescriptionDE = Zahnräder
 Father = Metal
-YoungsModulus = 180000 MPa
-UltimateTensileStrength = 800
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.708
-ModulusOfShare = 67000
 Norm = EN 1563
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 67000 MPa
 UltimateStrain = 2
-YieldStrength = 480
+UltimateTensileStrength = 800 MPa
+YieldStrength = 480 MPa
+YoungsModulus = 180000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

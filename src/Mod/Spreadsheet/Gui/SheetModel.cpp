@@ -23,17 +23,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QtCore>
+# include <QtCore>
 # include <QApplication>
+# include <QLocale>
 # include <QMessageBox>
+# include <QTextDocument>
 #endif
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
@@ -175,7 +179,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         return QVariant(v);
     }
 #else
-    if (role == Qt::ToolTipRole) {
+    if (!cell->hasException() && role == Qt::ToolTipRole) {
         std::string alias;
         if (cell->getAlias(alias))
             return QVariant(Base::Tools::fromStdString(alias));
@@ -184,14 +188,26 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
     if (cell->hasException()) {
         switch (role) {
-        case Qt::ToolTipRole:
-            return QVariant::fromValue(Base::Tools::fromStdString(cell->getException()));
-        case Qt::DisplayRole:
+        case Qt::ToolTipRole: {
+#if QT_VERSION >= 0x050000
+            QString txt(Base::Tools::fromStdString(cell->getException()).toHtmlEscaped());
+#else
+            QString txt(Qt::escape(Base::Tools::fromStdString(cell->getException())));
+#endif
+            return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
+        }
+        case Qt::DisplayRole: {
 #ifdef DEBUG_DEPS
             return QVariant::fromValue(QString::fromUtf8("#ERR: %1").arg(Tools::fromStdString(cell->getException())));
 #else
+            std::string str;
+            if(cell->getStringContent(str))
+                return QVariant::fromValue(QString::fromUtf8(str.c_str()));
             return QVariant::fromValue(QString::fromUtf8("#ERR"));
 #endif
+        }
+        case Qt::TextColorRole:
+            return QVariant::fromValue(QColor(255.0, 0, 0));
         case Qt::TextAlignmentRole:
             return QVariant(Qt::AlignVCenter | Qt::AlignLeft);
         default:
@@ -212,9 +228,6 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     // Get display value as computed property
     std::string address = CellAddress(row, col).toString();
     Property * prop = sheet->getPropertyByName(address.c_str());
-
-    if (prop == 0)
-        return QVariant();
 
     if (role == Qt::BackgroundRole) {
         Color color;
@@ -265,7 +278,24 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(f);
     }
 
-    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    if (!prop) {
+        switch (role) {
+        case  Qt::TextColorRole: {
+            return QColor(0, 0, 255.0);
+        }
+        case Qt::TextAlignmentRole: {
+            qtAlignment = Qt::AlignHCenter | Qt::AlignVCenter;
+            return QVariant::fromValue(qtAlignment);
+        }
+        case Qt::DisplayRole:
+            if(cell->getExpression())
+                return QVariant(QLatin1String("#PENDING"));
+            else
+                return QVariant();
+        default:
+            return QVariant();
+        }
+    } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
         /* String */
         const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
 
@@ -328,17 +358,24 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             const Base::Unit & computedUnit = floatProp->getUnit();
             DisplayUnit displayUnit;
 
+            // Display locale specific decimal separator (#0003875,#0003876)
             if (cell->getDisplayUnit(displayUnit)) {
-                if (computedUnit.isEmpty() || computedUnit == displayUnit.unit)
-                    v = QString::number(floatProp->getValue() / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
-                else
-                    v = QString::fromUtf8("ERR: unit");
+                if (computedUnit.isEmpty() || computedUnit == displayUnit.unit) {
+                    QString number = QLocale().toString(floatProp->getValue() / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                    //QString number = QString::number(floatProp->getValue() / displayUnit.scaler);
+                    v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+                }
+                else {
+                    v = QString::fromUtf8("#ERR: unit");
+                }
             }
             else {
+                QString number = QLocale().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
+                //QString number = QString::number(floatProp->getValue());
                 if (!computedUnit.isEmpty())
-                    v = QString::number(floatProp->getValue()) + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
+                    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
                 else
-                    v = QString::number(floatProp->getValue());
+                    v = number;
             }
 
             return QVariant(v);
@@ -347,9 +384,15 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) 
+                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) 
+    {
         /* Number */
-        const App::PropertyFloat * floatProp = static_cast<const App::PropertyFloat*>(prop);
+        double d;
+        if(prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()))
+            d = static_cast<const App::PropertyFloat*>(prop)->getValue();
+        else
+            d = static_cast<const App::PropertyInteger*>(prop)->getValue();
 
         switch (role) {
         case  Qt::TextColorRole: {
@@ -358,7 +401,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
             else {
-                if (floatProp->getValue() < 0)
+                if (d < 0)
                     return QVariant::fromValue(QColor(negativeFgColor));
                 else
                     return QVariant::fromValue(QColor(positiveFgColor));
@@ -379,11 +422,61 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             QString v;
             DisplayUnit displayUnit;
 
-            if (cell->getDisplayUnit(displayUnit))
-                v = QString::number(floatProp->getValue() / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
-            else
-                v = QString::number(floatProp->getValue());
+            // Display locale specific decimal separator (#0003875,#0003876)
+            if (cell->getDisplayUnit(displayUnit)) {
+                QString number = QLocale().toString(d / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                //QString number = QString::number(d / displayUnit.scaler);
+                v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            }
+            else {
+                v = QLocale().toString(d,'f',Base::UnitsApi::getDecimals());
+                //v = QString::number(d);
+            }
             return QVariant(v);
+        }
+        default:
+            return QVariant();
+        }
+    }
+    else if (prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+        auto pyProp = static_cast<const App::PropertyPythonObject*>(prop);
+
+        switch (role) {
+        case  Qt::TextColorRole: {
+            Color color;
+
+            if (cell->getForeground(color))
+                return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
+            else 
+                return QVariant(QColor(textFgColor));
+        }
+        case Qt::TextAlignmentRole: {
+            if (alignment & Cell::ALIGNMENT_HIMPLIED) {
+                qtAlignment &= ~(Qt::AlignLeft | Qt::AlignHCenter | Qt::AlignRight);
+                qtAlignment |= Qt::AlignHCenter;
+            }
+            if (alignment & Cell::ALIGNMENT_VIMPLIED) {
+                qtAlignment &= ~(Qt::AlignTop | Qt::AlignVCenter | Qt::AlignBottom);
+                qtAlignment |= Qt::AlignVCenter;
+            }
+            return QVariant::fromValue(qtAlignment);
+        }
+        case Qt::DisplayRole: {
+            Base::PyGILStateLocker lock;
+            std::string value;
+            try {
+                value = pyProp->getValue().as_string();
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                value = "#ERR: ";
+                value += e.what();
+            } catch (Base::Exception &e) {
+                value = "#ERR: ";
+                value += e.what();
+            } catch (...) {
+                value = "#ERR: unknown exception";
+            }
+            return QVariant(QString::fromUtf8(value.c_str()));
         }
         default:
             return QVariant();
@@ -428,26 +521,27 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
         CellAddress address(index.row(), index.column());
 
         try {
-            std::string strAddress = address.toString();
             QString str = value.toString();
-            std::string content;
-            Cell * cell = sheet->getCell(address);
-
-            if (cell)
-                cell->getStringContent(content);
-
-            if ( content != Base::Tools::toStdString(str)) {
-                str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-                Gui::Command::openCommand("Edit cell");
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),
-                                        strAddress.c_str(), str.toUtf8().constData());
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
+            Gui::Command::openCommand("Edit cell");
+            // Because of possible complication of recursively escaped
+            // characters, let's take a shortcut and bypass the command
+            // interface for now.
+#if 0
+            std::string strAddress = address.toString();
+            str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
+            str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
+            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
+                    str.toUtf8().constData() << "')");
+#else
+            sheet->setContent(address, str.toUtf8().constData());
+#endif
+            Gui::Command::commitCommand();
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         catch (const Base::Exception& e) {
-            QMessageBox::critical(qApp->activeWindow(), QObject::tr("Cell contents"), QString::fromUtf8(e.what()));
+            e.ReportException();
             Gui::Command::abortCommand();
+            return false;
         }
     }
     return true;

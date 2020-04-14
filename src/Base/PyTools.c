@@ -16,6 +16,7 @@ is provided on an as is basis, without warranties of any kind.
 #include <assert.h>
 #include <compile.h>
 #include <eval.h>
+#include <frameobject.h>
 
 #if PY_VERSION_HEX <= 0x02050000
 #error "Use Python2.5.x or higher"
@@ -200,7 +201,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
  * so you should call one of these, one time, per exception:
  * caveats: not thread-specific since saves data in globals,
  * and only exports traceback object (the exception type and 
- * data are converted to text strings and disgarded);  the 
+ * data are converted to text strings and discarded);  the 
  * PyErr_Print() built-in also does a bit more on syntax errors,
  * and sends its text to sys.stderr: in principle, we could
  * assign stderr to a StringIO object and call PyErr_Print, but
@@ -219,6 +220,7 @@ char PP_last_error_trace[MAX];              /* exception traceback text */
 
 PyObject *PP_last_traceback = NULL;         /* saved exception traceback object */
 PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
+PyObject *PP_last_exception_type = NULL;    /* saved exception python type */
 
 
 void PP_Fetch_Error_Text()
@@ -254,7 +256,8 @@ void PP_Fetch_Error_Text()
     }
     else
     {
-        strcpy(PP_last_error_type, "<unknown exception type>");
+        /* strcpy(PP_last_error_type, "<unknown exception type>"); */
+        PP_last_error_type[0] = '\0';
     }
     
     Py_XDECREF(pystring);
@@ -318,11 +321,32 @@ void PP_Fetch_Error_Text()
         PP_last_error_trace[MAX-1] = '\0';
         free(tempstr);  /* it's a strdup */
     }
-    else 
-        strcpy(PP_last_error_trace, "<unknown exception traceback>"); 
+    else {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(!frame) 
+            return;
+        int line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+        const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+        const char *file = PyString_AsString(frame->f_code->co_filename);
+#endif
+#ifdef FC_OS_WIN32
+        const char *_f = strstr(file, "\\src\\");
+#else
+        const char *_f = strstr(file, "/src/");
+#endif
+        /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
+        snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
+    }
     Py_XDECREF(pystring);
 
-
+    Py_XDECREF(PP_last_exception_type);
+    if(errobj) {
+        PP_last_exception_type = errobj;
+        Py_INCREF(errobj);
+    }else
+        PP_last_exception_type = 0;
     Py_XDECREF(errobj);
     Py_XDECREF(errdata);               /* this function owns all 3 objects */
     Py_XDECREF(PP_last_traceback);     /* they've been NULL'd out in Python */ 

@@ -108,31 +108,29 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     }
 
     // Print some more information to the log file (if active) to ease bug fixing
-    if (receiver && event) {
-        try {
-            std::stringstream dump;
-            dump << "The event type " << (int)event->type() << " was sent to "
-                 << receiver->metaObject()->className() << "\n";
-            dump << "Object tree:\n";
-            if (receiver->isWidgetType()) {
-                QWidget* w = qobject_cast<QWidget*>(receiver);
-                while (w) {
-                    dump << "\t";
-                    dump << w->metaObject()->className();
-                    QString name = w->objectName();
-                    if (!name.isEmpty())
-                        dump << " (" << (const char*)name.toUtf8() << ")";
-                    w = w->parentWidget();
-                    if (w)
-                        dump << " is child of\n";
-                }
-                std::string str = dump.str();
-                Base::Console().Log("%s",str.c_str());
+    try {
+        std::stringstream dump;
+        dump << "The event type " << (int)event->type() << " was sent to "
+             << receiver->metaObject()->className() << "\n";
+        dump << "Object tree:\n";
+        if (receiver->isWidgetType()) {
+            QWidget* w = qobject_cast<QWidget*>(receiver);
+            while (w) {
+                dump << "\t";
+                dump << w->metaObject()->className();
+                QString name = w->objectName();
+                if (!name.isEmpty())
+                    dump << " (" << (const char*)name.toUtf8() << ")";
+                w = w->parentWidget();
+                if (w)
+                    dump << " is child of\n";
             }
+            std::string str = dump.str();
+            Base::Console().Log("%s",str.c_str());
         }
-        catch (...) {
-            Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
-        }
+    }
+    catch (...) {
+        Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
     }
 
     return true;

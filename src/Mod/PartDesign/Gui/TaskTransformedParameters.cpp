@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -31,6 +31,8 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -54,6 +56,7 @@
 
 #include "TaskTransformedParameters.h"
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -77,6 +80,9 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
         Gui::Document* doc = TransformedView->getDocument();
         this->attachDocument(doc);
     }
+
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -113,6 +119,14 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
+void TaskTransformedParameters::addObject(App::DocumentObject*)
+{
+}
+
+void TaskTransformedParameters::removeObject(App::DocumentObject*)
+{
+}
+
 bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
@@ -129,16 +143,23 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
             std::vector<App::DocumentObject*>::iterator o = std::find(originals.begin(), originals.end(), selectedObject);
             if (selectionMode == addFeature) {
-                if (o == originals.end())
+                if (o == originals.end()) {
                     originals.push_back(selectedObject);
-                else
+                    addObject(selectedObject);
+                }
+                else {
                     return false; // duplicate selection
+                }
             } else {
-                if (o != originals.end())
+                if (o != originals.end()) {
                     originals.erase(o);
-                else
+                    removeObject(selectedObject);
+                }
+                else {
                     return false;
+                }
             }
+            setupTransaction();
             pcTransformed->Originals.setValues(originals);
             recomputeFeature();
 
@@ -147,6 +168,23 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
     }
 
     return false;
+}
+
+void TaskTransformedParameters::setupTransaction()
+{
+    auto obj = getObject();
+    if (!obj)
+        return;
+
+    int tid = 0;
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid && tid == transactionID)
+        return;
+
+    // open a transaction if none is active
+    std::string n("Edit ");
+    n += obj->Label.getValue();
+    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -161,11 +199,28 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
     }
 }
 
+// Make sure only some feature before the given one is visible
+void TaskTransformedParameters::checkVisibility() {
+    auto feat = getObject();
+    auto body = feat->getFeatureBody();
+    if(!body) return;
+    auto inset = feat->getInListEx(true);
+    inset.emplace(feat);
+    for(auto o : body->Group.getValues()) {
+        if(!o->Visibility.getValue() 
+                || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            continue;
+        if(inset.count(o))
+            break;
+        return;
+    }
+    FCMD_OBJ_SHOW(getBaseObject());
+}
+
 void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 {
     if (checked) {
-        hideObject();
-        showBase();
+        checkVisibility();
         selectionMode = removeFeature;
         Gui::Selection().clearSelection();
     } else {
@@ -289,14 +344,16 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
         return nullptr;
 }
 
-Part::Feature *TaskTransformedParameters::getBaseObject() const {
+App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
     // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
-    return feature->getBaseObject();
-}
-
-const std::vector<App::DocumentObject*> & TaskTransformedParameters::getOriginals(void) const {
-    return getTopTransformedObject()->Originals.getValues();
+    App::DocumentObject *base = feature->getBaseObject(true);
+    if(!base) {
+        auto body = feature->getFeatureBody();
+        if(body)
+            base = body->getPrevSolidFeature(feature);
+    }
+    return base;
 }
 
 App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
@@ -305,52 +362,40 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
 
 void TaskTransformedParameters::hideObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setHide(getTopTransformedObject()->getNameInDocument());
-    }
+    FCMD_OBJ_HIDE(getTopTransformedObject());
 }
 
 void TaskTransformedParameters::showObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setShow(getTopTransformedObject()->getNameInDocument());
-    }
+    FCMD_OBJ_SHOW(getTopTransformedObject());
 }
 
 void TaskTransformedParameters::hideBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setHide(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
-    }
+    FCMD_OBJ_HIDE(getBaseObject());
 }
 
 void TaskTransformedParameters::showBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setShow(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
-    }
+    FCMD_OBJ_SHOW(getBaseObject());
 }
 
 void TaskTransformedParameters::exitSelectionMode()
 {
-    clearButtons();
-    selectionMode = none;
-    Gui::Selection().rmvSelectionGate();
-    showObject();
-    hideBase();
+    try {
+        clearButtons();
+        selectionMode = none;
+        Gui::Selection().rmvSelectionGate();
+        showObject();
+    } catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole)
 {
-    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
+            new ReferenceSelection(getBaseObject(), edge, face, planar,false,whole));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
@@ -373,19 +418,7 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 
 bool TaskDlgTransformedParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand(featureName + " changed");
-    std::vector<App::DocumentObject*> originals = parameter->getOriginals();
-    std::stringstream str;
-    str << "App.ActiveDocument." << name.c_str() << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
-    {
-        if ((*it) != NULL)
-            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
-    }
-    str << "]";
-    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+    parameter->exitSelectionMode();
 
     // Continue (usually in virtual method accept())
     return TaskDlgFeatureParameters::accept ();
@@ -395,7 +428,6 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
-
     return TaskDlgFeatureParameters::reject ();
 }
 

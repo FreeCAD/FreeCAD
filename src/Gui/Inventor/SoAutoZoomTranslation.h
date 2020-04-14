@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) 2011 Luke Parry                                                   *
+ *   Copyright (c) 2011 Luke Parry                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,6 +38,8 @@ public:
     static void initClass();
     SoAutoZoomTranslation();
     //SoSFVec3f abPos;
+
+    SoSFFloat scaleFactor;
 
 protected:
     virtual ~SoAutoZoomTranslation() {};

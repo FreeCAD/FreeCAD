@@ -24,6 +24,8 @@
 #define GUI_INPUTVECTOR_H
 
 #include <cfloat>
+#include <memory>
+#include <boost/any.hpp>
 #include <QDialog>
 #include <QMessageBox>
 #include <QApplication>
@@ -72,7 +74,7 @@ private:
     QComboBox *dValue;
 };
 
-/** This is the base dialog class that defines the interface for
+/** This is the abstract base dialog class that defines the interface for
  * specifying a direction vector by the user.
  * @author Werner Mayer
  */
@@ -104,22 +106,22 @@ private:
  * The template argument can be the Ui interface class built by uic out of a
  * .ui file.
  * This class might be very useful for dialogs where a combo box is used to
- * define a direction vector by the user. For such classes the programmer don't
- * to write a subclass to implement the appropriate signals/slots. Instead it's
- * possible to omit this further class and use LocationInterface parametrized
+ * define a direction vector by the user. For such classes the programmer doesn't
+ * have to write a subclass to implement the appropriate signals/slots. Instead it's
+ * possible to omit this further class and use LocationDialogUi parametrized
  * with the generated Ui class.
  * @author Werner Mayer
  */
 template <class Ui>
-class LocationInterface : public LocationDialog, public Ui
+class LocationDialogUi : public LocationDialog, public Ui
 {
 public:
-    LocationInterface(QWidget* parent = 0, Qt::WindowFlags fl = 0)  : LocationDialog(parent, fl)
+    LocationDialogUi(QWidget* parent = 0, Qt::WindowFlags fl = 0)  : LocationDialog(parent, fl)
     {
         this->setupUi(this);
         this->retranslate();
     }
-    virtual ~LocationInterface(){}
+    virtual ~LocationDialogUi(){}
 
     void retranslate()
     {
@@ -147,6 +149,13 @@ public:
             this->direction->setItemText(this->direction->count()-1,
                 QApplication::translate("Gui::LocationDialog", "User defined..."));
         }
+    }
+
+    void setPosition(const Base::Vector3d& v)
+    {
+        this->xPos->setValue(v.x);
+        this->yPos->setValue(v.y);
+        this->zPos->setValue(v.z);
     }
 
     Base::Vector3d getPosition() const
@@ -179,6 +188,33 @@ protected:
     }
 
 private:
+    void setDirection(const Base::Vector3d& dir)
+    {
+        if (dir.Length() < Base::Vector3d::epsilon()) {
+            return;
+        }
+
+        // check if the user-defined direction is already there
+        for (int i=0; i<this->direction->count()-1; i++) {
+            QVariant data = this->direction->itemData (i);
+            if (data.canConvert<Base::Vector3d>()) {
+                const Base::Vector3d val = data.value<Base::Vector3d>();
+                if (val == dir) {
+                    this->direction->setCurrentIndex(i);
+                    return;
+                }
+            }
+        }
+
+        // add a new item before the very last item
+        QString display = QString::fromLatin1("(%1,%2,%3)")
+            .arg(dir.x)
+            .arg(dir.y)
+            .arg(dir.z);
+        this->direction->insertItem(this->direction->count()-1, display,
+            QVariant::fromValue<Base::Vector3d>(dir));
+        this->direction->setCurrentIndex(this->direction->count()-2);
+    }
     void directionActivated(int index)
     {
         // last item is selected to define direction by user
@@ -192,49 +228,29 @@ private:
                     return;
                 }
 
-                // check if the user-defined direction is already there
-                for (int i=0; i<this->direction->count()-1; i++) {
-                    QVariant data = this->direction->itemData (i);
-                    if (data.canConvert<Base::Vector3d>()) {
-                        const Base::Vector3d val = data.value<Base::Vector3d>();
-                        if (val == dir) {
-                            this->direction->setCurrentIndex(i);
-                            return;
-                        }
-                    }
-                }
-
-                // add a new item before the very last item
-                QString display = QString::fromLatin1("(%1,%2,%3)")
-                    .arg(dir.x)
-                    .arg(dir.y)
-                    .arg(dir.z);
-                this->direction->insertItem(this->direction->count()-1, display,
-                    QVariant::fromValue<Base::Vector3d>(dir));
-                this->direction->setCurrentIndex(this->direction->count()-2);
+                setDirection(dir);
             }
         }
     }
 };
 
-/** This template class does basically the same as LocationInterface unless
- * that the Ui class is used as composition not as further base class.
- * This class acts as a small wrapper class around the UI_-generated classes
- * by Qt for which the location interface is needed. This class can be used
- * as composition in dialog-based classes without including the ui_-generated
- * header file. The Ui_-class can simply be forward declared.
+/** This template class does basically the same as LocationDialogUi unless
+ * that it doesn inherit from a widget but only from the UI_-generated class.
+ * Thus, this class can be used as composition in dialog-based classes without
+ * including the ui_-generated header file. The Ui_-class can simply be forward
+ * declared, then.
  * @author Werner Mayer
  */
 template <class Ui>
-class LocationInterfaceComp : public Ui
+class LocationUi : public Ui
 {
 public:
-    LocationInterfaceComp(QDialog *dlg)
+    LocationUi(QDialog *dlg)
     {
         this->setupUi(dlg);
         this->retranslate(dlg);
     }
-    ~LocationInterfaceComp()
+    ~LocationUi()
     {
     }
 
@@ -338,23 +354,23 @@ public:
     }
 };
 
-/** This template class is a subclass of LocationDialog using LocationInterfaceComp
- * which implements the pure virtual method directionActivated().
+/** This template class is a subclass of LocationDialog using LocationUi
+ * and implements the pure virtual methods of its base class.
  * Other dialog-based classes can directly inherit from this class if the
  * location-interface is required. But note, in this case the ui_-header file
- * needs to be included. If this should be avoided the class LocationInterfaceComp
+ * needs to be included. If this should be avoided the class LocationUi
  * must be used instead of whereas the Ui_-class can be forward declared.
  * @author Werner Mayer
  */
 template <class Ui>
-class LocationDialogComp : public LocationDialog
+class LocationDialogImp : public LocationDialog
 {
 public:
-    LocationDialogComp(QWidget* parent = 0, Qt::WindowFlags fl = 0)
+    LocationDialogImp(QWidget* parent = 0, Qt::WindowFlags fl = 0)
       : LocationDialog(parent, fl), ui(this)
     {
     }
-    virtual ~LocationDialogComp()
+    virtual ~LocationDialogImp()
     {
         // no need to delete child widgets, Qt does it all for us
     }
@@ -382,7 +398,185 @@ private:
     }
 
 protected:
-    LocationInterfaceComp<Ui> ui;
+    LocationUi<Ui> ui;
+};
+
+/**
+ * @brief The AbstractUi class
+ * Abstract base class the defines the class interface.
+ * @author Werner Mayer
+ */
+class AbstractUi
+{
+public:
+    virtual ~AbstractUi() = default;
+    virtual void retranslate(QDialog *dlg) = 0;
+    virtual void setPosition(const Base::Vector3d& v) = 0;
+    virtual Base::Vector3d getPosition() const = 0;
+    virtual Base::Vector3d getDirection() const = 0;
+    virtual void setDirection(const Base::Vector3d& dir) = 0;
+    virtual bool directionActivated(LocationDialog* dlg, int index) = 0;
+    virtual boost::any get() = 0;
+};
+
+/** This is the template class that implements the interface of AbstractUi.
+ * The template argument is the Ui interface class built by uic out of a
+ * .ui file.
+ * @author Werner Mayer
+ */
+template <class Ui>
+class LocationImpUi : public AbstractUi
+{
+public:
+    LocationImpUi(Ui* ui) : ui(ui)
+    {
+    }
+    ~LocationImpUi()
+    {
+    }
+
+    boost::any get()
+    {
+        return ui;
+    }
+
+    void retranslate(QDialog *dlg)
+    {
+        ui->retranslateUi(dlg);
+
+        if (ui->direction->count() == 0) {
+            ui->direction->insertItems(0, QStringList()
+             << QApplication::translate("Gui::LocationDialog", "X")
+             << QApplication::translate("Gui::LocationDialog", "Y")
+             << QApplication::translate("Gui::LocationDialog", "Z")
+             << QApplication::translate("Gui::LocationDialog", "User defined...")
+            );
+
+            ui->direction->setCurrentIndex(2);
+
+            // Vector3d declared to use with QVariant see Gui/propertyeditor/PropertyItem.h
+            ui->direction->setItemData(0, QVariant::fromValue<Base::Vector3d>(Base::Vector3d(1,0,0)));
+            ui->direction->setItemData(1, QVariant::fromValue<Base::Vector3d>(Base::Vector3d(0,1,0)));
+            ui->direction->setItemData(2, QVariant::fromValue<Base::Vector3d>(Base::Vector3d(0,0,1)));
+        }
+        else {
+            ui->direction->setItemText(0, QApplication::translate("Gui::LocationDialog", "X"));
+            ui->direction->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
+            ui->direction->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
+            ui->direction->setItemText(ui->direction->count()-1,
+                QApplication::translate("Gui::LocationDialog", "User defined..."));
+        }
+    }
+
+    void setPosition(const Base::Vector3d& v)
+    {
+        ui->xPos->setValue(v.x);
+        ui->yPos->setValue(v.y);
+        ui->zPos->setValue(v.z);
+    }
+
+    Base::Vector3d getPosition() const
+    {
+        return Base::Vector3d(ui->xPos->value().getValue(),
+                              ui->yPos->value().getValue(),
+                              ui->zPos->value().getValue());
+    }
+
+    Base::Vector3d getDirection() const
+    {
+        QVariant data = ui->direction->itemData (ui->direction->currentIndex());
+        if (data.canConvert<Base::Vector3d>()) {
+            return data.value<Base::Vector3d>();
+        }
+        else {
+            return Base::Vector3d(0,0,1);
+        }
+    }
+
+public:
+    void setDirection(const Base::Vector3d& dir)
+    {
+        if (dir.Length() < Base::Vector3d::epsilon()) {
+            return;
+        }
+
+        // check if the user-defined direction is already there
+        for (int i=0; i<ui->direction->count()-1; i++) {
+            QVariant data = ui->direction->itemData (i);
+            if (data.canConvert<Base::Vector3d>()) {
+                const Base::Vector3d val = data.value<Base::Vector3d>();
+                if (val == dir) {
+                    ui->direction->setCurrentIndex(i);
+                    return;
+                }
+            }
+        }
+
+        // add a new item before the very last item
+        QString display = QString::fromLatin1("(%1,%2,%3)")
+            .arg(dir.x)
+            .arg(dir.y)
+            .arg(dir.z);
+        ui->direction->insertItem(ui->direction->count()-1, display,
+            QVariant::fromValue<Base::Vector3d>(dir));
+        ui->direction->setCurrentIndex(ui->direction->count()-2);
+    }
+    bool directionActivated(LocationDialog* dlg, int index)
+    {
+        // last item is selected to define direction by user
+        if (index+1 == ui->direction->count()) {
+            bool ok;
+            Base::Vector3d dir = dlg->getUserDirection(&ok);
+            if (ok) {
+                if (dir.Length() < Base::Vector3d::epsilon()) {
+                    QMessageBox::critical(dlg, LocationDialog::tr("Wrong direction"),
+                        LocationDialog::tr("Direction must not be the null vector"));
+                    return false;
+                }
+                setDirection(dir);
+            }
+        }
+        return true;
+    }
+
+private:
+    std::shared_ptr<Ui> ui;
+};
+
+/** This is a subclass of LocationDialog using AbstractUi that implements
+ * the pure virtual methods of its base class.
+ * Other dialog-based classes can directly inherit from this class if the
+ * location-interface is required.
+ * The advantage of this class compared to LocationDialogImp is that the
+ * ui_-header file doesn't need to be included in the header file of its
+ * sub-classes because it uses "type erasure with templates".
+ * @author Werner Mayer
+ */
+class GuiExport LocationDialogUiImp : public LocationDialog
+{
+public:
+    template<class T>
+    LocationDialogUiImp(T* t, QWidget* parent = 0, Qt::WindowFlags fl = 0)
+      : LocationDialog(parent, fl), ui(new LocationImpUi<T>(t))
+    {
+        std::shared_ptr<T> uit = boost::any_cast< std::shared_ptr<T> >(ui->get());
+        uit->setupUi(this);
+        ui->retranslate(this);
+    }
+    virtual ~LocationDialogUiImp();
+
+    Base::Vector3d getDirection() const;
+
+    Base::Vector3d getPosition() const;
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    void directionActivated(int index);
+
+protected:
+    std::unique_ptr<AbstractUi> ui;
 };
 
 } // namespace Gui

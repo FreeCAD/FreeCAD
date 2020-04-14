@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -26,19 +28,19 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as FemUtils
+from femtools import femutils
 from ... import equationbase
 from . import linear
 
 
 def create(doc, name="Fluxsolver"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
 class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
 
-    Type = "Fem::FemEquationElmerFluxsolver"
+    Type = "Fem::EquationElmerFluxsolver"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -48,18 +50,18 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
         obj.addProperty(
             "App::PropertyString", "FluxVariable",
             "Fluxsolver", "Insert variable name for flux calculation")
-        '''
+        """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxAbs",
             #"Fluxsolver", "Select calculation of abs of flux")
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxMagnitude",
             #"Fluxsolver", "Select calculation of magnitude of flux")
-        '''
+        """
         obj.addProperty(
             "App::PropertyBool", "CalculateGrad",
             "Fluxsolver", "Select  calculation of gradient")
-        '''
+        """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateGradAbs",
             #"Fluxsolver", "Select calculation of abs of gradient")
@@ -69,7 +71,7 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
         #obj.addProperty(
             #"App::PropertyBool", "EnforcePositiveMagnitude",
             #"Fluxsolver", "Select calculation of positive magnitude")
-        '''
+        """
         obj.Priority = 5
 
 

@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,15 +32,17 @@ from PySide import QtCore
 from PySide import QtGui
 
 import FreeCADGui as Gui
-import femsolver.run
+
 import femsolver.report
+import femsolver.run
 
 
 _UPDATE_INTERVAL = 50
 _REPORT_TITLE = "Run Report"
 _REPORT_ERR = (
-    "Failed to run. Please try again after all"
-    "of the following errors are resolved.")
+    "Failed to run. Please try again after all "
+    "of the following errors are resolved."
+)
 
 
 class ControlTaskPanel(QtCore.QObject):
@@ -283,7 +286,7 @@ class ControlWidget(QtGui.QWidget):
         self._timeLbl.setText(timeStr)
 
     def time(self):
-        if (self._timeLbl.text() == ""):
+        if self._timeLbl.text() == "":
             return None
         return float(self._timeLbl.text())
 

@@ -51,19 +51,19 @@ public:
     
     FeaturePrimitive();
     
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
-    virtual void onChanged(const App::Property* prop);
-    virtual PyObject* getPyObject();
+    virtual void onChanged(const App::Property* prop) override;
+    virtual PyObject* getPyObject() override;
     
     /// Do nothing, just to suppress warning, must be redefined in derived classes
-    virtual App::DocumentObjectExecReturn* execute() {
+    virtual App::DocumentObjectExecReturn* execute() override {
         return PartDesign::FeatureAddSub::execute();
     }
 protected:
-    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
     Type primitiveType = Box;   

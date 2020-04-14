@@ -27,6 +27,7 @@
 #endif
 
 #include "DlgReportViewImp.h"
+#include "ui_DlgReportView.h"
 #include "PrefWidgets.h"
 
 
@@ -43,8 +44,9 @@ using namespace Gui::Dialog;
  */
 DlgReportViewImp::DlgReportViewImp( QWidget* parent )
   : PreferencePage(parent)
+  , ui(new Ui_DlgReportView)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /** 
@@ -56,32 +58,40 @@ DlgReportViewImp::~DlgReportViewImp()
 
 void DlgReportViewImp::saveSettings()
 {
-    checkLogging->onSave();
-    checkWarning->onSave();
-    checkError->onSave();
-    colorText->onSave();
-    colorLogging->onSave();
-    colorWarning->onSave();
-    colorError->onSave();
-    pythonOutput->onSave();
-    pythonError->onSave();
+    ui->checkLogging->onSave();
+    ui->checkWarning->onSave();
+    ui->checkError->onSave();
+    ui->checkShowReportViewOnWarning->onSave();
+    ui->checkShowReportViewOnError->onSave();
+    ui->checkShowReportViewOnNormalMessage->onSave();
+    ui->checkShowReportViewOnLogMessage->onSave();
+    ui->colorText->onSave();
+    ui->colorLogging->onSave();
+    ui->colorWarning->onSave();
+    ui->colorError->onSave();
+    ui->pythonOutput->onSave();
+    ui->pythonError->onSave();
 }
 
 void DlgReportViewImp::loadSettings()
 {
-    checkLogging->onRestore();
-    checkWarning->onRestore();
-    checkError->onRestore();
-    colorText->onRestore();
-    colorLogging->onRestore();
-    colorWarning->onRestore();
-    colorError->onRestore();
-    pythonOutput->blockSignals(true);
-    pythonOutput->onRestore();
-    pythonOutput->blockSignals(false);
-    pythonError->blockSignals(true);
-    pythonError->onRestore();
-    pythonError->blockSignals(false);
+    ui->checkLogging->onRestore();
+    ui->checkWarning->onRestore();
+    ui->checkError->onRestore();
+    ui->checkShowReportViewOnWarning->onRestore();
+    ui->checkShowReportViewOnError->onRestore();
+    ui->checkShowReportViewOnNormalMessage->onRestore();
+    ui->checkShowReportViewOnLogMessage->onRestore();
+    ui->colorText->onRestore();
+    ui->colorLogging->onRestore();
+    ui->colorWarning->onRestore();
+    ui->colorError->onRestore();
+    ui->pythonOutput->blockSignals(true);
+    ui->pythonOutput->onRestore();
+    ui->pythonOutput->blockSignals(false);
+    ui->pythonError->blockSignals(true);
+    ui->pythonError->onRestore();
+    ui->pythonError->blockSignals(false);
 }
 
 /**
@@ -90,7 +100,7 @@ void DlgReportViewImp::loadSettings()
 void DlgReportViewImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

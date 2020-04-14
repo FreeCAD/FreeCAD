@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,6 +41,7 @@
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4181)
+#   pragma warning(disable : 4267)
 #   pragma warning(disable : 4275)
 #   pragma warning(disable : 4305)
 #   pragma warning(disable : 4522)

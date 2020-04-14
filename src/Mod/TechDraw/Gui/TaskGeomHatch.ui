@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>385</width>
-    <height>265</height>
+    <height>191</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -25,8 +25,8 @@
   <property name="windowTitle">
    <string>Apply Geometric Hatch to Face</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -37,8 +37,8 @@
      <property name="title">
       <string>Define your pattern</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,1">
         <item row="0" column="1">
          <widget class="Gui::FileChooser" name="fcFile">
@@ -62,7 +62,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item>
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,1">
         <item row="0" column="0">
          <widget class="QLabel" name="label_4">
@@ -107,6 +107,12 @@
         </item>
         <item row="0" column="2">
          <widget class="QComboBox" name="cbName">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Name of pattern within file</string>
           </property>
@@ -114,15 +120,33 @@
         </item>
         <item row="3" column="2">
          <widget class="Gui::ColorButton" name="ccColor">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Color of pattern lines</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QDoubleSpinBox" name="sbScale">
+         <widget class="Gui::QuantitySpinBox" name="sbScale">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Enlarges/shrinks the pattern</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -130,9 +154,21 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QDoubleSpinBox" name="sbWeight">
+         <widget class="Gui::QuantitySpinBox" name="sbWeight">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Thickness of lines within the pattern</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -144,19 +180,6 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -164,6 +187,11 @@
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>

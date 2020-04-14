@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,7 @@
 #define BASE_UNITSAPI_H
 
 #include <CXX/WrapPython.h>
+#include <memory>
 #include <string>
 #include <QString>
 #include "UnitsSchema.h"
@@ -32,7 +33,7 @@
 
 
 namespace Base {
-    
+typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
 
 /**
  * The UnitsApi
@@ -85,13 +86,12 @@ public:
 
     static double defaultFactor;
 
-protected:
     /// return an instance of the given enum value
-    static UnitsSchema* createSchema(UnitSystem s);
+    static UnitsSchemaPtr createSchema(UnitSystem s);
 
 protected:
     // not used at the moment
-    static UnitsSchema *  UserPrefSystem;
+    static UnitsSchemaPtr UserPrefSystem;
     static UnitSystem actSystem;
     /// number of decimals for floats
     static int      UserPrefDecimals;

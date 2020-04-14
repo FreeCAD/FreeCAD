@@ -31,19 +31,22 @@ namespace PartDesign
 
 class PartDesignExport CoordinateSystem : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::CoordinateSystem);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::CoordinateSystem);
 
 public:
     CoordinateSystem();
     virtual ~CoordinateSystem();
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderDatumCoordinateSystem";
     }
 
     Base::Vector3d getXAxis();
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
+
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 };
 
 } //namespace PartDesign

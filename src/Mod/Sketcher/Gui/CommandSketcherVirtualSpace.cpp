@@ -28,18 +28,17 @@
 # include <Precision.hxx>
 # include <QApplication>
 # include <Standard_Version.hxx>
-#endif
-
 # include <QMessageBox>
+#endif
 
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
@@ -88,7 +87,7 @@ void ActivateVirtualSpaceHandler(Gui::Document *doc,DrawSketchHandler *handler)
 }
 
 // Show/Hide B-spline degree
-DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace);
+DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace)
 
 CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
 :Command("Sketcher_SwitchVirtualSpace")
@@ -155,13 +154,13 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-        
+
         // undo command open
         openCommand("Toggle constraints to the other virtual space");
-        
+
         int successful=SubNames.size();
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
@@ -170,9 +169,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 Gui::Command::openCommand("Update constraint's virtual space");
                 try {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleVirtualSpace(%d)",
-                                            Obj->getNameInDocument(),
-                                            ConstrId);
+                    Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;

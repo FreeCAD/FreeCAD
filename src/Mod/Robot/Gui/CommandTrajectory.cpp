@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,7 @@ using namespace RobotGui;
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotCreateTrajectory);
+DEF_STD_CMD_A(CmdRobotCreateTrajectory)
 
 CmdRobotCreateTrajectory::CmdRobotCreateTrajectory()
 	:Command("Robot_CreateTrajectory")
@@ -71,12 +71,12 @@ CmdRobotCreateTrajectory::CmdRobotCreateTrajectory()
 void CmdRobotCreateTrajectory::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Trajectory");
- 
+
     openCommand("Create trajectory");
     doCommand(Doc,"App.activeDocument().addObject(\"Robot::TrajectoryObject\",\"%s\")",FeatName.c_str());
     updateActive();
     commitCommand();
-      
+
 }
 
 bool CmdRobotCreateTrajectory::isActive(void)
@@ -86,7 +86,7 @@ bool CmdRobotCreateTrajectory::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotInsertWaypoint);
+DEF_STD_CMD_A(CmdRobotInsertWaypoint)
 
 CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
 	:Command("Robot_InsertWaypoint")
@@ -106,7 +106,7 @@ void CmdRobotInsertWaypoint::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
- 
+
     if (n1 != 1 || n2 != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Robot and one Trajectory object."));
@@ -133,7 +133,7 @@ void CmdRobotInsertWaypoint::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App.activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),RoboName.c_str(),RoboName.c_str());
     updateActive();
     commitCommand();
-      
+
 }
 
 bool CmdRobotInsertWaypoint::isActive(void)
@@ -143,7 +143,7 @@ bool CmdRobotInsertWaypoint::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotInsertWaypointPreselect);
+DEF_STD_CMD_A(CmdRobotInsertWaypointPreselect)
 
 CmdRobotInsertWaypointPreselect::CmdRobotInsertWaypointPreselect()
 	:Command("Robot_InsertWaypointPreselect")
@@ -162,7 +162,7 @@ CmdRobotInsertWaypointPreselect::CmdRobotInsertWaypointPreselect()
 
 void CmdRobotInsertWaypointPreselect::activated(int)
 {
-    
+
     if (getSelection().size() != 1 ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Trajectory object."));
@@ -197,7 +197,7 @@ void CmdRobotInsertWaypointPreselect::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),x,y,z);
     updateActive();
     commitCommand();
-      
+
 }
 
 bool CmdRobotInsertWaypointPreselect::isActive(void)
@@ -207,7 +207,7 @@ bool CmdRobotInsertWaypointPreselect::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotSetDefaultOrientation);
+DEF_STD_CMD_A(CmdRobotSetDefaultOrientation)
 
 CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 	:Command("Robot_SetDefaultOrientation")
@@ -215,7 +215,7 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set default orientation");
-    sToolTipText    = QT_TR_NOOP("set the default orientation for subsequent commands for waypoint creation");
+    sToolTipText    = QT_TR_NOOP("Set the default orientation for subsequent commands for waypoint creation");
     sWhatsThis      = "Robot_SetDefaultOrientation";
     sStatusTip      = sToolTipText;
     sPixmap         = 0;
@@ -225,18 +225,17 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 
 void CmdRobotSetDefaultOrientation::activated(int)
 {
-    // create placement dialog 
-    Gui::Dialog::Placement *Dlg = new Gui::Dialog::Placement();
+    // create placement dialog
+    Gui::Dialog::Placement Dlg;
     Base::Placement place;
-    Dlg->setPlacement(place);
-    if(Dlg->exec() == QDialog::Accepted ){
-        place = Dlg->getPlacement();
+    Dlg.setPlacement(place);
+    if (Dlg.exec() == QDialog::Accepted ){
+        place = Dlg.getPlacement();
         Base::Rotation rot = place.getRotation();
         Base::Vector3d disp = place.getPosition();
         doCommand(Doc,"_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)",rot[0],rot[1],rot[2],rot[3]);
         doCommand(Doc,"_DefDisplacement = FreeCAD.Vector(%f,%f,%f)",disp[0],disp[1],disp[2]);
     }
-      
 }
 
 bool CmdRobotSetDefaultOrientation::isActive(void)
@@ -246,7 +245,7 @@ bool CmdRobotSetDefaultOrientation::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotSetDefaultValues);
+DEF_STD_CMD_A(CmdRobotSetDefaultValues)
 
 CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
 	:Command("Robot_SetDefaultValues")
@@ -254,7 +253,7 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set default values");
-    sToolTipText    = QT_TR_NOOP("set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation");
+    sToolTipText    = QT_TR_NOOP("Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation");
     sWhatsThis      = "Robot_SetDefaultValues";
     sStatusTip      = sToolTipText;
     sPixmap         = 0;
@@ -266,32 +265,32 @@ void CmdRobotSetDefaultValues::activated(int)
 {
 
     bool ok;
-    QString text = QInputDialog::getText(0, QObject::tr("set default speed"),
+    QString text = QInputDialog::getText(0, QObject::tr("Set default speed"),
                                           QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s"), &ok);
     if ( ok && !text.isEmpty() ) {
         doCommand(Doc,"_DefSpeed = '%s'",text.toLatin1().constData());
-    } 
+    }
 
     QStringList items;
     items  << QString::fromLatin1("False") << QString::fromLatin1("True");
 
-    QString item = QInputDialog::getItem(0, QObject::tr("set default continuity"),
+    QString item = QInputDialog::getItem(0, QObject::tr("Set default continuity"),
                                           QObject::tr("continuous ?"), items, 0, false, &ok);
     if (ok && !item.isEmpty())
         doCommand(Doc,"_DefCont = %s",item.toLatin1().constData());
 
     text.clear();
 
-    text = QInputDialog::getText(0, QObject::tr("set default acceleration"),
+    text = QInputDialog::getText(0, QObject::tr("Set default acceleration"),
                                           QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s^2"), &ok);
     if ( ok && !text.isEmpty() ) {
         doCommand(Doc,"_DefAccelaration = '%s'",text.toLatin1().constData());
-    } 
+    }
 
 
-    // create placement dialog 
+    // create placement dialog
     //Gui::Dialog::Placement *Dlg = new Gui::Dialog::Placement();
     //Base::Placement place;
     //Dlg->setPlacement(place);
@@ -302,7 +301,7 @@ void CmdRobotSetDefaultValues::activated(int)
     //    doCommand(Doc,"_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)",rot[0],rot[1],rot[2],rot[3]);
     //    doCommand(Doc,"_DefDisplacement = FreeCAD.Vector(%f,%f,%f)",disp[0],disp[1],disp[2]);
     //}
-      
+
 }
 
 bool CmdRobotSetDefaultValues::isActive(void)
@@ -312,7 +311,7 @@ bool CmdRobotSetDefaultValues::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotEdge2Trac);
+DEF_STD_CMD_A(CmdRobotEdge2Trac)
 
 CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 	:Command("Robot_Edge2Trac")
@@ -330,9 +329,9 @@ CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 
 void CmdRobotEdge2Trac::activated(int)
 {
-     
+
  /*   App::DocumentObject *obj = this->getDocument()->getObject(FeatName.c_str());
-    App::Property *prop = &(dynamic_cast<Robot::Edge2TracObject *>(obj)->Source); 
+    App::Property *prop = &(dynamic_cast<Robot::Edge2TracObject *>(obj)->Source);
 
     Gui::TaskView::TaskDialog* dlg = new TaskDlgEdge2Trac(dynamic_cast<Robot::Edge2TracObject *>(obj));
     Gui::Control().showDialog(dlg);*/
@@ -364,7 +363,7 @@ void CmdRobotEdge2Trac::activated(int)
         doCommand(Doc,"App.activeDocument().addObject('Robot::Edge2TracObject','%s')",FeatName.c_str());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
- 
+
 
 
 }
@@ -376,7 +375,7 @@ bool CmdRobotEdge2Trac::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotTrajectoryDressUp);
+DEF_STD_CMD_A(CmdRobotTrajectoryDressUp)
 
 CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 	:Command("Robot_TrajectoryDressUp")
@@ -423,7 +422,7 @@ bool CmdRobotTrajectoryDressUp::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotTrajectoryCompound);
+DEF_STD_CMD_A(CmdRobotTrajectoryCompound)
 
 CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
 	:Command("Robot_TrajectoryCompound")

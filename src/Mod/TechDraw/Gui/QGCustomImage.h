@@ -26,6 +26,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPointF>
+#include <QSize>
 #include <QByteArray>
 #include <QPixmap>
 
@@ -52,6 +53,7 @@ public:
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QString fileSpec);
+    virtual QSize imageSize(void);
 
 protected:
     QPixmap m_px;

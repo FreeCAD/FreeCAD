@@ -59,6 +59,14 @@ class TaskPanel:
         self.onPath = onPath
         self.obj = None
 
+        self.pt = None
+        self.point = None
+        self.pointCbClick = None
+        self.pointCbMove = None
+        self.pointWhenDone = None
+        self.escape = None
+        self.view = None
+
     def setupUi(self):
         '''setupUi() ... internal function - do not call.'''
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
@@ -148,6 +156,7 @@ class TaskPanel:
                 self.pointAcceptAndContinue()
 
         def cancel():
+            # pylint: disable=unused-variable
             self.pointReject()
 
         self.pointWhenDone = whenDone

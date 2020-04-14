@@ -35,7 +35,7 @@ EventBase::EventBase(QEvent::Type event) : QInputEvent(static_cast<QEvent::Type>
 }
 
 MotionEvent::MotionEvent() : EventBase(static_cast<QEvent::Type>(MotionEventType)),
-    xTrans(0), yTrans(0), zTrans(0), xRot(0), yRot(0), zRot(0), handled(false)
+    xTrans(0), yTrans(0), zTrans(0), xRot(0), yRot(0), zRot(0)
 {
 }
 

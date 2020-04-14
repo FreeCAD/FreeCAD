@@ -85,7 +85,7 @@ function printAddons(data) {
             if (wblist.indexOf(data.data[i].name.toLowerCase()) == -1) {
                 html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
             } else {
-                html.push('<li>', data.data[i].name, '&nbsp;<img src="images/installed.png"></li>');
+                html.push('<li>', data.data[i].name, '&nbsp;<img src="IMAGE_SRC_INSTALLED"></li>');
             }
         }
     }

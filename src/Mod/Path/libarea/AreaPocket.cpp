@@ -135,7 +135,7 @@ void GetCurveItem::GetCurve(CCurve& output)
 				std::list<CVertex>::iterator VIt = output.m_vertices.insert(this->EndIt, CVertex(inner.point_on_parent));
 
 				//inner.GetCurve(output);
-				GetCurveItem::to_do_list.push_back(GetCurveItem(&inner, VIt));
+				GetCurveItem::to_do_list.emplace_back(&inner, VIt);
 			}
 
 			if(back().m_p != vertex.m_p)output.m_vertices.insert(this->EndIt, vertex);
@@ -157,7 +157,7 @@ void GetCurveItem::GetCurve(CCurve& output)
 		std::list<CVertex>::iterator VIt = output.m_vertices.insert(this->EndIt, CVertex(inner.point_on_parent));
 
 		//inner.GetCurve(output);
-		GetCurveItem::to_do_list.push_back(GetCurveItem(&inner, VIt));
+		GetCurveItem::to_do_list.emplace_back(&inner, VIt);
 
 	}
 }
@@ -243,7 +243,7 @@ void CurveTree::MakeOffsets2()
 			for(std::list<IslandAndOffset*>::const_iterator It2 = island_and_offset->touching_offsets.begin(); It2 != island_and_offset->touching_offsets.end(); It2++)
 			{
 				const IslandAndOffset* touching = *It2;
-				touching_list.push_back(IslandAndOffsetLink(touching, inners.back()));
+				touching_list.emplace_back(touching, inners.back());
 				added.insert(touching);
 			}
 
@@ -276,7 +276,7 @@ void CurveTree::MakeOffsets2()
 				{
 					if(added.find(*It2)==added.end() && ((*It2) != island_and_offset))
 					{
-						touching_list.push_back(IslandAndOffsetLink(*It2, touching.add_to->inners.back()));
+						touching_list.emplace_back(*It2, touching.add_to->inners.back());
 						added.insert(*It2);
 					}
 				}
@@ -501,10 +501,10 @@ void CArea::MakeOnePocketCurve(std::list<CCurve> &curve_list, const CAreaPocketP
 	if(CArea::m_please_abort)return;
 	CArea::m_processing_done = CArea::m_after_MakeOffsets_length;
 
-	curve_list.push_back(CCurve());
+	curve_list.emplace_back();
 	CCurve& output = curve_list.back();
 
-	GetCurveItem::to_do_list.push_back(GetCurveItem(&top_level, output.m_vertices.end()));
+	GetCurveItem::to_do_list.emplace_back(&top_level, output.m_vertices.end());
 
 	while(GetCurveItem::to_do_list.size() > 0)
 	{

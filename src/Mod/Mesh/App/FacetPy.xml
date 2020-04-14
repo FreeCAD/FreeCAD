@@ -98,5 +98,35 @@ The two angles are given in radian.
             </Documentation>
             <Parameter Name="Area" Type="Float"/>
         </Attribute>
+        <Attribute Name="AspectRatio" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The aspect ratio of the facet computed by longest edge and its height</UserDocu>
+            </Documentation>
+            <Parameter Name="AspectRatio" Type="Float"/>
+        </Attribute>
+        <Attribute Name="AspectRatio2" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The aspect ratio of the facet computed by radius of circum-circle and in-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="AspectRatio2" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Roundness" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The roundness of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="Roundness" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CircumCircle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The center and radius of the circum-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="CircumCircle" Type="Tuple"/>
+        </Attribute>
+        <Attribute Name="InCircle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The center and radius of the in-circle</UserDocu>
+            </Documentation>
+            <Parameter Name="InCircle" Type="Tuple"/>
+        </Attribute>
     </PythonExport>
 </GenerateModel>

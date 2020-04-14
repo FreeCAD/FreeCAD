@@ -125,7 +125,7 @@ public:
   bool GetPositionToIndex(unsigned long id, unsigned long& ulX, unsigned long& ulY, unsigned long& ulZ) const;
   /** Returns the number of elements in a given grid. */
   unsigned long GetCtElements(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
-  { return _aulGrid[ulX][ulY][ulZ].size(); }
+  { return static_cast<unsigned long>(_aulGrid[ulX][ulY][ulZ].size()); }
   /** Validates the grid structure and rebuilds it if needed. Must be implemented in sub-classes. */
   virtual void Validate (const MeshKernel &rclM) = 0;
   /** Verifies the grid structure and returns false if inconsistencies are found. */
@@ -395,9 +395,9 @@ inline bool MeshGrid::CheckPos (unsigned long ulX, unsigned long ulY, unsigned l
 
 inline void MeshFacetGrid::Pos (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const
 {
-  rulX = (unsigned long)((rclPoint.x - _fMinX) / _fGridLenX);
-  rulY = (unsigned long)((rclPoint.y - _fMinY) / _fGridLenY);
-  rulZ = (unsigned long)((rclPoint.z - _fMinZ) / _fGridLenZ);
+  rulX = static_cast<unsigned long>((rclPoint.x - _fMinX) / _fGridLenX);
+  rulY = static_cast<unsigned long>((rclPoint.y - _fMinY) / _fGridLenY);
+  rulZ = static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ);
 
   assert((rulX < _ulCtGridsX) && (rulY < _ulCtGridsY) && (rulZ < _ulCtGridsZ));
 }
@@ -408,7 +408,7 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
     rulX = 0;
   else
   {
-    rulX = (unsigned long)((rclPoint.x - _fMinX) / _fGridLenX);
+    rulX = static_cast<unsigned long>((rclPoint.x - _fMinX) / _fGridLenX);
     if (rulX >= _ulCtGridsX)
       rulX = (_ulCtGridsX-1);
   }
@@ -417,7 +417,7 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
     rulY = 0;
   else
   {
-    rulY = (unsigned long)((rclPoint.y - _fMinY) / _fGridLenY);
+    rulY = static_cast<unsigned long>((rclPoint.y - _fMinY) / _fGridLenY);
     if (rulY >= _ulCtGridsY)
       rulY = (_ulCtGridsY-1);
   }
@@ -426,7 +426,7 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
     rulZ = 0;
   else
   {
-    rulZ = (unsigned long)((rclPoint.z - _fMinZ) / _fGridLenZ);
+    rulZ = static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ);
     if (rulZ >= _ulCtGridsZ)
       rulZ = (_ulCtGridsZ-1);
   }

@@ -43,7 +43,7 @@ class SoFCCSysDragger;
  */
 class GuiExport ViewProviderDragger : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderDragger);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDragger);
 
 public:
     /// constructor.
@@ -54,18 +54,20 @@ public:
 
     /** @name Edit methods */
     //@{
-    bool doubleClicked(void);
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    void updateData(const App::Property*);
+    bool doubleClicked(void) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void updateData(const App::Property*) override;
+
+    virtual ViewProvider *startEditing(int ModNum=0) override;
 
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);
 
 protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
-    void setEditViewer(View3DInventorViewer*, int ModNum);
-    void unsetEditViewer(View3DInventorViewer*);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    void setEditViewer(View3DInventorViewer*, int ModNum) override;
+    void unsetEditViewer(View3DInventorViewer*) override;
     //@}
     SoFCCSysDragger *csysDragger = nullptr;
 
@@ -74,6 +76,10 @@ private:
     static void dragFinishCallback(void * data, SoDragger * d);
     
     static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+
+    bool checkLink();
+
+    ViewProvider *_linkDragger = nullptr;
 };
 
 } // namespace Gui

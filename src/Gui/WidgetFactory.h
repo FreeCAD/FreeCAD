@@ -26,6 +26,7 @@
 
 #include <vector>
 #include <QUiLoader>
+#include <QGraphicsItem>
 
 #include <Base/Factory.h>
 #include <Base/PyObjectBase.h>
@@ -49,6 +50,7 @@ public:
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
+    QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     Py::Object fromQWidget(QWidget*, const char* className=0);
     const char* getWrapperName(QObject*) const;
     /*!
@@ -56,6 +58,7 @@ public:
       and the Python wrapper takes ownership of it.
      */
     Py::Object fromQIcon(const QIcon*);
+    QIcon *toQIcon(PyObject *pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };
@@ -173,7 +176,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -212,7 +215,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -295,7 +298,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 

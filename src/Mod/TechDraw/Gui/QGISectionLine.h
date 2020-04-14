@@ -54,6 +54,9 @@ public:
     void setDirection(double xDir,double yDir);
     void setDirection(Base::Vector3d dir);
     void setFont(QFont f, double fsize);
+    void setSectionStyle(int style);
+    void setSectionColor(QColor c);
+
     virtual void draw();
 
 protected:
@@ -67,7 +70,7 @@ protected:
     void makeSymbolsTrad();
     void makeSymbolsISO();
     void setTools();
-    int  getPrefSectionFormat();
+    int  getPrefSectionStandard();
 
 private:
     char* m_symbol;
@@ -76,8 +79,8 @@ private:
     QGIArrow*          m_arrow2;
     QGCustomText*      m_symbol1;
     QGCustomText*      m_symbol2;
-    QPointF            m_start;
-    QPointF            m_end;
+    QPointF            m_start;         //start of section line
+    QPointF            m_end;           //end of section line
     Base::Vector3d     m_arrowDir;
     std::string        m_symFontName;
     QFont              m_symFont;
@@ -85,7 +88,7 @@ private:
     double             m_arrowSize;
     //QColor             m_color;
     double             m_extLen;
-    int                m_sectionFormat;     //0 = ASME, 1 = ISO
+//    int                m_sectionFormat;     //0 = ASME, 1 = ISO
 };
 
 }

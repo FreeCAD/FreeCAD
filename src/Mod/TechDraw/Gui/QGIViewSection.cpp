@@ -82,15 +82,16 @@ void QGIViewSection::drawSectionFace()
 
     float lineWidth    = sectionVp->LineWidth.getValue();
 
-
+    std::vector<TopoDS_Wire> sectionWires = section->getSectionFaceWires();
+    
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
-        //Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
+        Base::Console().
+             Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
 
-    std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
-    QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
+    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit,-1);
@@ -102,39 +103,53 @@ void QGIViewSection::drawSectionFace()
         } else {
             newFace->setDrawEdges(false);
         }
-        newFace->setFill(faceColor, Qt::SolidPattern);
 
-        if (sectionVp->HatchCutSurface.getValue()) {
+        if (section->CutSurfaceDisplay.isValue("Hide")) {
+            return;
+        } else if (section->CutSurfaceDisplay.isValue("Color")) {
+            newFace->isHatched(false);
+            newFace->setFillMode(QGIFace::PlainFill);
+            QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
+            newFace->setFillColor(faceColor);
+            newFace->setFillStyle(Qt::SolidPattern);
+        } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
+            if (getExporting()) {
+                newFace->hideSvg(true);
+                newFace->isHatched(false);
+                newFace->setFillMode(QGIFace::PlainFill);
+            } else {
+                newFace->hideSvg(false);
+                newFace->isHatched(true);
+                newFace->setFillMode(QGIFace::SvgFill);
+                newFace->setHatchColor(sectionVp->HatchColor.getValue());
+                newFace->setHatchScale(section->HatchScale.getValue());
+//                std::string hatchSpec = section->FileHatchPattern.getValue();
+                std::string hatchSpec = section->SvgIncluded.getValue();
+                newFace->setHatchFile(hatchSpec);
+            }
+        } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
-            newFace->setFillMode(QGIFace::FromFile);
-            newFace->setHatchColor(sectionVp->HatchColor.getValue());
+            newFace->setFillMode(QGIFace::GeomHatchFill);
+            newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-
-            std::string hatchFile = section->FileHatchPattern.getValue();
-            newFace->setHatchFile(hatchFile);
-            std::string patternName = section->NameGeomPattern.getValue();
-            QFileInfo hfi(QString::fromUtf8(hatchFile.data(),hatchFile.size()));
-            if (hfi.isReadable()) {
-                QString ext = hfi.suffix();
-                if ((ext.toUpper() == QString::fromUtf8("PAT")) &&
-                    !patternName.empty() )  {
-                    newFace->setFillMode(QGIFace::GeomHatchFill);
-                    newFace->setLineWeight(sectionVp->WeightPattern.getValue());
-                    std::vector<LineSet> lineSets = section->getDrawableLines(i);
-                    if (!lineSets.empty()) {
-                        newFace->clearLineSets();
-                        for (auto& ls: lineSets) {
-//                            QPainterPath bigPath;
-//                            for (auto& g: ls.getGeoms()) {
-//                                QPainterPath smallPath = drawPainterPath(g);
-//                                bigPath.addPath(smallPath);
-//                            }
-                            newFace->addLineSet(ls);
-                        }
+            newFace->setLineWeight(sectionVp->WeightPattern.getValue());
+            std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
+            if (!lineSets.empty()) {
+                newFace->clearLineSets();
+                for (auto& ls: lineSets) {
+                    QPainterPath bigPath;
+                    for (auto& g: ls.getGeoms()) {
+                        QPainterPath smallPath = drawPainterPath(g);
+                        bigPath.addPath(smallPath);
                     }
+                    newFace->addLineSet(ls);
                 }
             }
+        } else {
+            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n", 
+                                    section->CutSurfaceDisplay.getValue());
         }
+
         newFace->draw();
         newFace->setPrettyNormal();
         newFace->setAcceptHoverEvents(false);
@@ -144,20 +159,18 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
+    Q_UNUSED(update);
     auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
     }
 
-    if(update ||
-       viewPart->SectionNormal.isTouched() ||
-       viewPart->SectionOrigin.isTouched()) {
-        QGIViewPart::updateView(true);
-        drawSectionFace();
-    } else {
-        QGIViewPart::updateView();
-        drawSectionFace();
-    }
+    std::string dbHatch = viewPart->FileHatchPattern.getValue();
+
+    draw();
+
+    QGIView::updateView(update);
+
 }
 
 void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
@@ -166,3 +179,4 @@ void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
     Q_UNUSED(s);
    //override QGIVP::drawSectionLine
 }
+

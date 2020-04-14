@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                          <jrheinlaender[at]users.sourceforge.net>       *
+ *                                   <jrheinlaender@users.sourceforge.net> *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -40,7 +41,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintPulley, Fem::ConstraintGear);
+PROPERTY_SOURCE(Fem::ConstraintPulley, Fem::ConstraintGear)
 
 ConstraintPulley::ConstraintPulley()
 {
@@ -86,7 +87,7 @@ void ConstraintPulley::onChanged(const App::Property* prop)
         if (neg)
             force *= -1.0;
 
-        if ((IsDriven.getValue() && neg) || (!IsDriven.getValue() && !neg)) {
+        if (IsDriven.getValue() == neg) {
             BeltForce1.setValue(force + TensionForce.getValue());
             BeltForce2.setValue(TensionForce.getValue());
         } else {

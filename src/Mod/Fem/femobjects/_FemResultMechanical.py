@@ -1,6 +1,8 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,57 +30,290 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD DocumentObject class to hold mechanical results in FEM workbench
 
+from . import FemConstraint
 
-class _FemResultMechanical():
-    """The Fem::_FemResultMechanical's Proxy python type, add result specific properties
+
+class _FemResultMechanical(FemConstraint.Proxy):
     """
-    def __init__(self, obj):
-        self.Type = "Fem::FemResultMechanical"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+    The Fem::_FemResultMechanical's Proxy python type, add result specific properties
+    """
 
-        obj.addProperty("App::PropertyString", "ResultType", "Base", "Type of the result", 1)  # the 1 set the property to ReadOnly
+    Type = "Fem::ResultMechanical"
+
+    def __init__(self, obj):
+        super(_FemResultMechanical, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyString",
+            "ResultType",
+            "Base",
+            "Type of the result",
+            1  # the 1 set the property to ReadOnly
+        )
         obj.ResultType = str(self.Type)
 
         # for frequency analysis
-        obj.addProperty("App::PropertyInteger", "Eigenmode", "Data", "", True)
-        obj.addProperty("App::PropertyFloat", "EigenmodeFrequency", "Data", "User Defined Results", True)
+        obj.addProperty(
+            "App::PropertyInteger",
+            "Eigenmode",
+            "Data",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "EigenmodeFrequency",
+            "Data",
+            "User Defined Results",
+            True
+        )
 
         # node results
+        # set read only or hide a property:
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=10#p108072
         # do not show up in propertyEditor of comboView
-        obj.addProperty("App::PropertyVectorList", "DisplacementVectors", "NodeData", "List of displacement vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StressVectors", "NodeData", "List of stress vectors", True)
-        obj.addProperty("App::PropertyVectorList", "StrainVectors", "NodeData", "List of strain vectors", True)
-        obj.addProperty("App::PropertyFloatList", "Peeq", "NodeData", "List of equivalent plastic strain values", True)
-        # readonly in propertyEditor of comboView
-        obj.addProperty("App::PropertyFloatList", "DisplacementLengths", "NodeData", "List of displacement lengths", True)
-        obj.addProperty("App::PropertyFloatList", "StressValues", "NodeData", "", True)
-        obj.addProperty("App::PropertyFloatList", "PrincipalMax", "NodeData", "", True)
-        obj.addProperty("App::PropertyFloatList", "PrincipalMed", "NodeData", "", True)
-        obj.addProperty("App::PropertyFloatList", "PrincipalMin", "NodeData", "", True)
-        obj.addProperty("App::PropertyFloatList", "MaxShear", "NodeData", "List of Maximum Shear stress values", True)
-        obj.addProperty("App::PropertyFloatList", "MassFlowRate", "NodeData", "List of mass flow rate values", True)
-        obj.addProperty("App::PropertyFloatList", "NetworkPressure", "NodeData", "List of network pressure values", True)
-        obj.addProperty("App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True)
-        obj.addProperty("App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True)
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "DisplacementVectors",
+            "NodeData",
+            "List of displacement vectors",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "Peeq",
+            "NodeData",
+            "List of equivalent plastic strain values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "MohrCoulomb",
+            "NodeData",
+            "List of Mohr Coulomb stress values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_x",
+            "NodeData",
+            "Reinforcement ratio x-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_y",
+            "NodeData",
+            "Reinforcement ratio y-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "ReinforcementRatio_z",
+            "NodeData",
+            "Reinforcement ratio z-direction",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS1Vector",
+            "NodeData",
+            "List of 1st Principal Stress Vectors",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS2Vector",
+            "NodeData",
+            "List of 2nd Principal Stress Vectors",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "PS3Vector",
+            "NodeData",
+            "List of 3rd Principal Stress Vectors",
+            True
+        )
 
-        # initialize the Stats with the appropriate count of items (see fill_femresult_stats in feminout/importToolsFem.py)
-        zero_list = 39 * [0]
+        # readonly in propertyEditor of comboView
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "DisplacementLengths",
+            "NodeData",
+            "List of displacement lengths",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "vonMises",
+            "NodeData",
+            "List of von Mises equivalent stresses",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "PrincipalMax",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "PrincipalMed",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "PrincipalMin",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "MaxShear",
+            "NodeData",
+            "List of Maximum Shear stress values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "MassFlowRate",
+            "NodeData",
+            "List of mass flow rate values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NetworkPressure",
+            "NodeData",
+            "List of network pressure values",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "UserDefined",
+            "NodeData",
+            "User Defined Results",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "Temperature",
+            "NodeData",
+            "Temperature field",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressXX",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressYY",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressZZ",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressXY",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressXZ",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStressYZ",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainXX",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainYY",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainZZ",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainXY", "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainXZ",
+            "NodeData",
+            "",
+            True
+        )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "NodeStrainYZ",
+            "NodeData",
+            "",
+            True
+        )
+
+        # initialize the Stats with the appropriate count of items
+        # see fill_femresult_stats in femresult/resulttools.py
+        zero_list = 26 * [0]
         obj.Stats = zero_list
 
-    # standard Feature methods
-    def execute(self, obj):
-        """"this method is executed on object creation and whenever the document is recomputed"
-        update Part or Mesh should NOT lead to recomputation of the analysis automatically, time consuming
-        """
-        return
+    def onDocumentRestored(self, obj):
+        # migrate old result objects, because property "StressValues"
+        # was renamed to "vonMises" in commit 8b68ab7
+        if hasattr(obj, "StressValues") is True:
+            obj.addProperty(
+                "App::PropertyFloatList",
+                "vonMises",
+                "NodeData",
+                "List of von Mises equivalent stresses",
+                True
+            )
+            obj.vonMises = obj.StressValues
+            obj.removeProperty("StressValues")
 
-    def onChanged(self, obj, prop):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+        # migrate old result objects, because property "Stats"
+        # consisting of min, avg, max values was reduced to min, max in commit c2a57b3e
+        if len(obj.Stats) == 39:
+            temp = obj.Stats
+            for i in range(12, -1, -1):
+                del temp[3 * i + 1]
+            obj.Stats = temp

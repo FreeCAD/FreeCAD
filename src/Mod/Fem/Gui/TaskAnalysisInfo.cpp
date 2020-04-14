@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,9 +25,10 @@
 #ifndef _PreComp_
 # include <QString>
 # include <QSlider>
+
+# include <Standard_math.hxx>
 #endif
 
-#include <Standard_math.hxx>
 #include "ui_TaskAnalysisInfo.h"
 #include "TaskAnalysisInfo.h"
 #include <Gui/Application.h>
@@ -41,7 +42,7 @@ using namespace Gui;
 
 
 TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-analysis"),
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_Analysis"),
       tr("Nodes set"),
       true,
       parent),

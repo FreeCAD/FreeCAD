@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
                     first = false;
                 else
                     beg += stp;
-                Base::SequencerLauncher seq("Create way points", static_cast<size_t>((end-beg)/stp));
+                Base::SequencerLauncher seq("Create waypoints", static_cast<size_t>((end-beg)/stp));
 				if(reversed)
 				{
 					for (;beg > end; beg += stp) {

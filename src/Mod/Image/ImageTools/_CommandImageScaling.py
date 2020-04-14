@@ -19,28 +19,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the Image_Scaling GuiCommand."""
 
 __title__ = "ImageTools._CommandImageScaling"
-__author__  = "JAndersM"
-__url__     = "http://www.freecadweb.org/index-fr.html"
-__version__ = "00.01"
-__date__    = "19/01/2016" 
- 
- 
-import FreeCAD
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-    from PySide import QtCore
-    import FreeCADGui, FreeCAD, Part
-    import math
-    import pivy.coin as pvy
-    from PySide import QtCore, QtGui
-    import DraftTrackers, Draft
+__author__ = "JAndersM"
+__url__ = "http://www.freecadweb.org/index-fr.html"
+__version__ = "00.02"
+__date__ = "03/05/2019"
 
-# translation-related code
-#(see forum thread "A new Part tool is being born... JoinFeatures!"
-#http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
+import math
+import FreeCAD
+from PySide import QtCore
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
+    import pivy.coin as pvy
+
+    import FreeCADGui
+    import draftguitools.gui_trackers as trackers
+
+# Translation-related code
+# See forum thread "A new Part tool is being born... JoinFeatures!"
+# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except (Exception):
@@ -59,7 +59,7 @@ if FreeCAD.GuiUp:
 class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
     def GetResources(self):
-        return {'Pixmap': ":/icons/image-scale.svg",
+        return {'Pixmap': "Image_Scaling",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scale image plane"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
@@ -86,14 +86,13 @@ def cmdCreateImageScaling(name):
         dz=p2[2]-p1[2]
         return math.sqrt(dx*dx+dy*dy+dz*dz)
         
-    sizeX = 300; sizeY = 102
     def centerOnScreen (widg):
         '''centerOnScreen()
         Centers the window on the screen.'''
-        resolution = QtGui.QDesktopWidget().screenGeometry()
-        xp=(resolution.width() / 2) - sizeX/2
-        yp=(resolution.height() / 2) - sizeY/2
-        widg.setGeometry(xp, yp, sizeX, sizeY)
+        resolution = QtGui.QDesktopWidget().screenGeometry() # TODO: fix multi monitor support
+        xp=(resolution.width() / 2) - widg.frameGeometry().width()/2
+        yp=(resolution.height() / 2) - widg.frameGeometry().height()/2
+        widg.move(xp, yp)
     
     class Ui_Dialog(object):
         def setupUi(self, Dialog):
@@ -105,41 +104,59 @@ def cmdCreateImageScaling(name):
             self.dialog=Dialog
             Dialog.setObjectName(_fromUtf8("Dialog"))
             Dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-            Dialog.resize(sizeX, sizeY)
+
+            self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+            self.verticalLayout.setObjectName("verticalLayout")
+            self.horizontalLayout = QtGui.QHBoxLayout()
+            self.horizontalLayout.setObjectName("horizontalLayout")
+
+            self.label = QtGui.QLabel(Dialog)
+            self.label.setObjectName(_fromUtf8("label"))
+            self.horizontalLayout.addWidget(self.label)
+
+            self.lineEdit = QtGui.QLineEdit(Dialog)
+            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+            self.horizontalLayout.addWidget(self.lineEdit)
+
+            self.label1 = QtGui.QLabel(Dialog)
+            self.label1.setObjectName(_fromUtf8("label1"))
+
             self.buttonBox = QtGui.QDialogButtonBox(Dialog)
-            self.buttonBox.setGeometry(QtCore.QRect(50, 70, 191, 32))
             self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
             self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
             self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
-            self.label = QtGui.QLabel(Dialog)
-            self.label.setGeometry(QtCore.QRect(30, 10, 66, 17))
-            self.label.setObjectName(_fromUtf8("label"))
-            self.lineEdit = QtGui.QLineEdit(Dialog)
-            self.lineEdit.setGeometry(QtCore.QRect(100, 10, 113, 29))
-            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-            self.label1 = QtGui.QLabel(Dialog)
-            self.label1.setGeometry(QtCore.QRect(20, 45, 260, 17))
-            self.label1.setObjectName(_fromUtf8("label1"))
+
+            self.verticalLayout.addLayout(self.horizontalLayout)
+            self.verticalLayout.addWidget(self.label1)
+            self.verticalLayout.addWidget(self.buttonBox)
+
             self.retranslateUi(Dialog)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
             QtCore.QMetaObject.connectSlotsByName(Dialog)
-            self.tracker = DraftTrackers.lineTracker(scolor=(1,0,0))
+            self.tracker = trackers.lineTracker(scolor=(1,0,0))
             self.tracker.raiseTracker()
             self.tracker.on()
             self.dialog.show()
     
         def retranslateUi(self, Dialog):
             Dialog.setWindowTitle(_translate("Dialog", "Scale image plane", None))
-            self.label.setText(_translate("Dialog", "Distance", None))
+            self.label.setText(_translate("Dialog", "Distance [mm]", None))
             self.label1.setText(_translate("Dialog", "Select first point", None))
             
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
             try:
-                locale=QtCore.QLocale.system()
-                d, ok = locale.toFloat(str(eval(self.lineEdit.text())))
+                try:
+                    q = FreeCAD.Units.parseQuantity(self.lineEdit.text())
+                    d = q.Value
+                    if q.Unit == FreeCAD.Units.Unit(): # plain number
+                        ok = True
+                    elif q.Unit == FreeCAD.Units.Length:
+                        ok = True
+                except:
+                    ok = False
                 if not ok:
                     raise ValueError
                 s=d/self.distance

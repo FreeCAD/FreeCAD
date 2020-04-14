@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -398,14 +400,16 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
+        # use six to be sure to be Python 2.7 and 3.x compatible
+        if issubclass(dataType, six.string_types):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
+        # use six to be sure to be Python 2.7 and 3.x compatible
+        if issubclass(dataType, six.string_types):
             return '"%s"' % data
         return str(data)
 

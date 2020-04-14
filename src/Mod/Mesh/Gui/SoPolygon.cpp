@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+# include <Windows.h>
 # endif
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
@@ -55,7 +55,7 @@
 using namespace MeshGui;
 
 
-SO_NODE_SOURCE(SoPolygon);
+SO_NODE_SOURCE(SoPolygon)
 
 void SoPolygon::initClass()
 {

@@ -22,6 +22,8 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
+
 __title__="downloadwiki"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "http://www.freecadweb.org"
@@ -37,10 +39,20 @@ from urllib2 import urlopen, HTTPError
 
 DEFAULTURL = "https://www.freecadweb.org" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
-GETTRANSLATIONS = False # Set true if you want to get the translations too.
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 
+              'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds',
+              'FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','WikiPages'] # pages that won't be fetched (kept online)
+NORETRIEVE += ['Constraint_Concentric','Constraint_EqualLength','Constraint_ExternalAngle',
+               'Constraint_Horizontal','Constraint_HorizontalDistance','Constraint_Internal_Alignment',
+               'Constraint_InternalAngle','Constraint_Length','Constraint_Lock','Constraint_Parallel',
+               'Constraint_Perpendicular','Constraint_PointOnEnd','Constraint_PointOnMidPoint',
+               'Constraint_PointOnObject','Constraint_PointOnPoint','Constraint_PointOnStart',
+               'Constraint_PointToObject','Constraint_Radius','Constraint_SnellsLaw',
+               'Constraint_Symmetric','Constraint_Tangent','Constraint_TangentToEnd',
+               'Constraint_TangentToStart','Constraint_Vertical'] # pages that have been renamed but still dangle around...GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
+GETTRANSLATIONS = False # Set true if you want to get the translations too.
 
 #    END CONFIGURATION      ##############################################
 

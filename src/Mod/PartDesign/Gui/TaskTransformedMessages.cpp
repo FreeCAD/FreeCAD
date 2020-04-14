@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
 #endif
 
 #include "ui_TaskTransformedMessages.h"
@@ -31,8 +32,6 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-
-#include <boost/bind.hpp>
 
 #include "ViewProviderTransformed.h"
 
@@ -53,6 +52,7 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
+    ui->labelTransformationStatus->setText(transformedView->getMessage());
 
     connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this,_1));
 }

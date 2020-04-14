@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,12 @@
 
 class gp_Ax1;
 class gp_Ax2;
+class gp_Pln;
 class gp_Vec;
+
+namespace App {
+class Color;
+}
 
 namespace Part
 {
@@ -119,6 +124,8 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
+    static Base::Matrix4D convert(const gp_Trsf& trsf);
+    static gp_Trsf convert(const Base::Matrix4D& mtrx);
     //@}
 
     /** @name Subelement management */
@@ -144,10 +151,16 @@ public:
         std::vector<Facet> &faces) const;
     //@}
     /// get the Topo"sub"Shape with the given name
-    TopoDS_Shape getSubShape(const char* Type) const;
+    TopoDS_Shape getSubShape(const char* Type, bool silent=false) const;
+    TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
     unsigned long countSubShapes(const char* Type) const;
+    unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
+    bool hasSubShape(const char *Type) const;
+    bool hasSubShape(TopAbs_ShapeEnum type) const;
     /// get the Topo"sub"Shape with the given name
-    PyObject * getPySubShape(const char* Type) const;
+    PyObject * getPySubShape(const char* Type, bool silent=false) const;
 
     /** @name Save/restore */
     //@{
@@ -175,7 +188,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&);
     void exportStl (const char *FileName, double deflection) const;
-    void exportFaceSet(double, double, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 
@@ -185,6 +198,8 @@ public:
     bool isValid() const;
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
+    bool isCoplanar(const TopoShape &other, double tol=-1) const;
+    bool findPlane(gp_Pln &pln, double tol=-1) const;
     //@}
 
     /** @name Boolean operation*/
@@ -259,7 +274,7 @@ public:
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
     TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
-    void transformShape(const Base::Matrix4D&, bool copy);
+    bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
@@ -285,6 +300,68 @@ public:
     void getDomains(std::vector<Domain>&) const;
     //@}
 
+    /** @name Element name mapping aware shape maker 
+     *
+     * To be complete in next batch of patches
+     */
+    //@{
+    TopoShape &makECompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
+
+    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
+    TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
+        return TopoShape().makEWires(*this,op,fix,tol);
+    }
+    TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
+    TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
+    TopoShape makEFace(const char *op=0, const char *maker=0) const {
+        return TopoShape().makEFace(*this,op,maker);
+    }
+    bool _makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false);
+
+    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false) {
+        _makETransform(shape,mat,op,checkScale,copy);
+        return *this;
+    }
+    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
+            bool checkScale=false, bool copy=false) const {
+        return TopoShape().makETransform(*this,mat,op,checkScale,copy);
+    }
+
+    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, 
+            const char *op=0, bool copy=false);
+    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
+        return TopoShape().makETransform(*this,trsf,op,copy);
+    }
+
+    void move(const TopLoc_Location &loc) {
+        _Shape.Move(loc);
+    }
+    TopoShape moved(const TopLoc_Location &loc) const {
+        TopoShape ret(*this);
+        ret._Shape.Move(loc);
+        return ret;
+    }
+
+    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
+            const char *op=0, bool copy=false);
+    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
+        return TopoShape().makEGTransform(*this,mat,op,copy);
+    }
+
+    TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
+    TopoShape makERefine(const char *op=0, bool no_fail=true) const {
+        return TopoShape().makERefine(*this,op,no_fail);
+    }
+    //@}
+
+    static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);
+    static TopAbs_ShapeEnum shapeType(char type,bool silent=false);
+    TopAbs_ShapeEnum shapeType(bool silent=false) const;
+    static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
+    const std::string &shapeName(bool silent=false) const;
+    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 private:
     TopoDS_Shape _Shape;
 };

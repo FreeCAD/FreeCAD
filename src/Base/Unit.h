@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel                                     *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -93,24 +93,43 @@ public:
     static Unit Length;
     /// Mass unit
     static Unit Mass;
+
     /// Angle
     static Unit Angle;
+    static Unit AngleOfFriction;
+    
     static Unit Density;
 
     static Unit Area;
     static Unit Volume;
     static Unit TimeSpan;
+    static Unit Frequency;
     static Unit Velocity;
     static Unit Acceleration;
     static Unit Temperature;
 
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
+    static Unit ElectricCharge;
+    static Unit MagneticFieldStrength;
+    static Unit MagneticFlux;
+    static Unit MagneticFluxDensity;
+    static Unit ElectricalCapacitance;
+    static Unit ElectricalInductance;
+    static Unit ElectricalConductance;
+    static Unit ElectricalResistance;
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 
-    static Unit Stress;
+    // Pressure
+    static Unit CompressiveStrength;
     static Unit Pressure;
+    static Unit ShearModulus;
+    static Unit Stress;
+    static Unit UltimateTensileStrength;
+    static Unit YieldStrength;
+    static Unit YoungsModulus;
+
     static Unit Force;
     static Unit Work;
     static Unit Power;
@@ -123,6 +142,7 @@ public:
     static Unit HeatFlux;
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
+    static Unit VacuumPermittivity;
 
     //@}
 protected:

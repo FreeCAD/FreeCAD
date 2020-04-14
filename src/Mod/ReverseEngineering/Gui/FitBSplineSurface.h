@@ -45,6 +45,9 @@ private:
     void saveSettings();
     void changeEvent(QEvent *e);
 
+private Q_SLOTS:
+    void on_makePlacement_clicked();
+
 private:
     class Private;
     Private* d;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pl" sourcelanguage="en">
+<TS version="2.1" language="pl" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Wyrównaj do środka pionowo</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Wyrównaj do środka pionowo zawartość wybranych komórek</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Scal komórki</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Scal wybrane komórki w arkuszu kalkulacyjnym</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdziel uprzednio scalone komórki w arkuszu kalkulacyjnym</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Tekst pogrubiony</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ustaw pogrubiony tekst w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursywa</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ustaw kursywę w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podkreśl tekst</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Podkreśl tekst w zaznaczonych komórkach</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Zawartość komórki</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Pokaż arkusz kalkulacyjny</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Jasnoszary</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
     </message>
   </context>
   <context>

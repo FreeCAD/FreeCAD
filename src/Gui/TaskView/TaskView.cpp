@@ -25,9 +25,11 @@
 
 #ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
@@ -42,6 +44,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/MainWindow.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -416,6 +419,40 @@ TaskView::~TaskView()
     Gui::Selection().Detach(this);
 }
 
+bool TaskView::event(QEvent* event)
+{
+    // Workaround for a limitation in Qt (#0003794)
+    // Line edits and spin boxes don't handle the key combination
+    // Shift+Keypad button (if NumLock is activated)
+    if (event->type() == QEvent::ShortcutOverride) {
+        QWidget* focusWidget = qApp->focusWidget();
+        bool isLineEdit = qobject_cast<QLineEdit*>(focusWidget);
+        bool isSpinBox = qobject_cast<QAbstractSpinBox*>(focusWidget);
+
+        if (isLineEdit || isSpinBox) {
+            QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+            Qt::KeyboardModifiers ShiftKeypadModifier = Qt::ShiftModifier | Qt::KeypadModifier;
+            if (kevent->modifiers() == Qt::NoModifier ||
+                kevent->modifiers() == Qt::ShiftModifier ||
+                kevent->modifiers() == Qt::KeypadModifier ||
+                kevent->modifiers() == ShiftKeypadModifier) {
+                switch (kevent->key()) {
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                    kevent->accept();
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    return QScrollArea::event(event);
+}
+
 void TaskView::keyPressEvent(QKeyEvent* ke)
 {
     if (ActiveCtrl && ActiveDialog) {
@@ -440,7 +477,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 }
             }
         }
-        else if (ke->key() == Qt::Key_Escape) {
+        else if (ke->key() == Qt::Key_Escape && ActiveDialog->isEscapeButtonEnabled()) {
             // get only the buttons of the button box
             QDialogButtonBox* box = ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
@@ -577,10 +614,14 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog = dlg;
 
     ActiveDialog->open();
+
+    getMainWindow()->updateActions();
 }
 
 void TaskView::removeDialog(void)
 {
+    getMainWindow()->updateActions();
+
     if (ActiveCtrl) {
         taskPanel->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
@@ -684,6 +725,19 @@ void TaskView::addTaskWatcher(void)
     updateWatcher();
 
 #if defined (QSINT_ACTIONPANEL)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+    // Workaround to avoid a crash in Qt. See also
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
+    //
+    // Notify the button box about a style change so that it can
+    // safely delete the style animation of its push buttons.
+    QDialogButtonBox* box = taskPanel->findChild<QDialogButtonBox*>();
+    if (box) {
+        QEvent event(QEvent::StyleChange);
+        QApplication::sendEvent(box, &event);
+    }
+#endif
+
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
 #endif
 }

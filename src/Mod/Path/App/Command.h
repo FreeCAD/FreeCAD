@@ -49,7 +49,7 @@ namespace Path
         virtual void Restore(Base::XMLReader &/*reader*/);
         
         // specific methods
-        Base::Placement getPlacement (void) const; // returns a placement from the x,y,z,a,b,c parameters
+        Base::Placement getPlacement (const Base::Vector3d pos = Base::Vector3d()) const; // returns a placement from the x,y,z,a,b,c parameters
         Base::Vector3d getCenter (void) const; // returns a 3d vector from the i,j,k parameters
         void setCenter(const Base::Vector3d&, bool clockwise=true); // sets the center coordinates and the command name
         std::string toGCode (int precision=6, bool padzero=true) const; // returns a GCode string representation of the command
@@ -61,9 +61,9 @@ namespace Path
         void scaleBy(double factor); // scales the receiver - use for imperial/metric conversions
 
         // this assumes the name is upper case
-        inline double getParam(const std::string &name) const {
+        inline double getParam(const std::string &name, double fallback = 0.0) const {
             auto it = Parameters.find(name);
-            return it==Parameters.end()?0.0:it->second;
+            return it==Parameters.end() ? fallback : it->second;
         }
 
         // attributes

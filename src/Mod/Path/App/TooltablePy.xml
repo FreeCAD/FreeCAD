@@ -15,6 +15,18 @@
             <Author Licence="LGPL" Name="Yorik van Havre" EMail="yorik@uncreated.net" />
             <UserDocu>The Tooltable object holds a table of CNC tools</UserDocu>
         </Documentation>
+        <Attribute Name="Name" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the name of this tool table</UserDocu>
+            </Documentation>
+            <Parameter Name="Name" Type="String"/>
+        </Attribute>
+        <Attribute Name="Version" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the version of this tooltable</UserDocu>
+            </Documentation>
+            <Parameter Name="Version" Type="Int"/>
+        </Attribute>
         <Attribute Name="Tools" ReadOnly="false">
             <Documentation>
                 <UserDocu>the dictionary of tools of this table</UserDocu>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <Base/Type.h>
+#include <Base/Placement.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
@@ -54,7 +55,9 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;
+class SoPickStyle;
 class NaviCube;
+class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -65,7 +68,6 @@ class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
 class Document;
-class SoFCUnifiedSelection;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
@@ -73,7 +75,7 @@ class ViewerEventFilter;
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
-class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public Gui::SelectionSingleton::ObserverType
+class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
     
@@ -103,7 +105,7 @@ public:
     
     /** @name Anti-Aliasing modes of the rendered 3D scene
       * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically depreciated)
+      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
       * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
       */
     //@{
@@ -133,8 +135,9 @@ public:
     void init();
 
     /// Observer message from the Selection
-    virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                          Gui::SelectionSingleton::MessageType Reason);
+    virtual void onSelectionChanged(const SelectionChanges &Reason);
+    void checkGroupOnTop(const SelectionChanges &Reason);
+    void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);
@@ -178,7 +181,12 @@ public:
 
     /** @name Handling of view providers */
     //@{
+    /// Checks if the view provider is a top-level object of the scene
     SbBool hasViewProvider(ViewProvider*) const;
+    /// Checks if the view provider is part of the scene.
+    /// In contrast to hasViewProvider() this method also checks if the view
+    /// provider is a child of another view provider
+    SbBool containsViewProvider(const ViewProvider*) const;
     /// adds an ViewProvider to the view, e.g. from a feature
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
@@ -189,11 +197,22 @@ public:
     /// get all view providers of given type
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     /// set the ViewProvider in special edit mode
-    SbBool setEditingViewProvider(Gui::ViewProvider* p, int ModNum=0);
+    void setEditingViewProvider(Gui::ViewProvider* p, int ModNum);
     /// return whether a view provider is edited
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
+    void resetEditingRoot(bool updateLinks=true);
+    void setEditingTransform(const Base::Matrix4D &mat);
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const;
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
+    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
@@ -222,6 +241,8 @@ public:
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
+    void setSelectionEnabled(const SbBool enable);
+    SbBool isSelectionEnabled(void) const;
     //@}
     
     /// Returns the screen coordinates of the origin of the path's tail object
@@ -279,7 +300,8 @@ public:
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Adds or remove a manipulator to/from the scenegraph. */
-    void toggleClippingPlane();
+    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false, 
+            bool noManip=false, const Base::Placement &pla = Base::Placement());
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
     /** Project the given normalized 2d point onto the near plane */
@@ -352,6 +374,7 @@ public:
     NaviCube* getNavigationCube() const;
     void setEnabledVBO(bool b);
     bool isEnabledVBO() const;
+    void setRenderCache(int);
 
     NavigationStyle* navigationStyle() const;
 
@@ -361,6 +384,7 @@ public:
     virtual PyObject *getPyObject(void);
 
 protected:
+    GLenum getInternalTextureFormat() const;
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
@@ -379,7 +403,7 @@ protected:
 
     enum eWinGestureTuneState{
         ewgtsDisabled, //suppress tuning/re-tuning after errors
-        ewgtsNeedTuning, //gestures are to be retuned upon next event
+        ewgtsNeedTuning, //gestures are to be re-tuned upon next event
         ewgtsTuned
     };
     eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
@@ -415,9 +439,21 @@ private:
     SoDirectionalLight* backlight;
 
     SoSeparator * pcViewProviderRoot;
+
+    SoGroup * pcGroupOnTop;
+    SoGroup * pcGroupOnTopSel;
+    SoGroup * pcGroupOnTopPreSel;
+    std::map<std::string,SoNode*> objectsOnTop;
+    std::map<std::string,SoNode*> objectsOnTopPreSel;
+
+    SoSeparator * pcEditingRoot;
+    SoTransform * pcEditingTransform;
+    bool restoreEditingRoot;
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+
+    SoClipPlane *pcClipPlane;
 
     RenderType renderType;
     QtGLFramebufferObject* framebuffer;
@@ -458,4 +494,3 @@ private:
 } // namespace Gui
 
 #endif  // GUI_VIEW3DINVENTORVIEWER_H
-

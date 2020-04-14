@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel (FreeCAD@juergen-riegel.net)        *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +30,6 @@
 #endif
 
 #include <QString>
-#include <QLocale>
 #include "Console.h"
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -144,24 +143,15 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
 
 QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
-    double UnitValue = std::abs(quant.getValue());
+    //double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.00000254) {// smaller then 0.001 thou -> inch and scientific notation
-            unitString = QString::fromLatin1("in");
-            factor = 25.4;
-        //}else if(UnitValue < 2.54){ // smaller then 0.1 inch -> Thou (mil)
-        //    unitString = QString::fromLatin1("thou");
-        //    factor = 0.0254;
-        }
-        else { // bigger then 1000 mi -> scientific notation
-            unitString = QString::fromLatin1("in");
-            factor = 25.4;
-        }
+        unitString = QString::fromLatin1("in");
+        factor = 25.4;
     }
     else if (unit == Unit::Area) {
         // TODO Cascade for the Areas
@@ -182,18 +172,16 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         factor = 0.45359237;
     }
     else if (unit == Unit::Pressure) {
-        if (UnitValue < 6894.744) {// psi is the smallest
-            unitString = QString::fromLatin1("psi");
-            factor = 6.894744825494;
-        }
-        else { // bigger then 1000 ksi -> psi + scientific notation
-            unitString = QString::fromLatin1("psi");
-            factor = 6.894744825494;
-        }
+        unitString = QString::fromLatin1("psi");
+        factor = 6.894744825494;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
-        factor = 25.4/60;
+        factor = 25.4 / 60;
+    }
+    else if (unit == Unit::Acceleration) {
+        unitString = QString::fromLatin1("in/min^2");
+        factor = 25.4 / 3600;
     }
     else {
         // default action for all cases without special treatment:
@@ -313,7 +301,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         factor = 92903.04;
     }
     else if (unit == Unit::Volume) {
-        unitString = QString::fromLatin1("cuft");
+        unitString = QString::fromLatin1("cft");
         factor = 28316846.592;
     }
     else if (unit == Unit::Velocity) {
@@ -358,7 +346,7 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mph");
-        factor =  0.002235598;                         //1mm/sec => mph
+        factor =  447.04;                         //1mm/sec => mph
     }
     // this schema expresses angles in degrees + minutes + seconds
     else if (unit == Unit::Angle) {

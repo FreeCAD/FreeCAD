@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,6 +29,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include "DlgPartImportStepImp.h"
+#include "ui_DlgPartImportStep.h"
 
 using namespace PartGui;
 
@@ -43,8 +44,9 @@ using namespace PartGui;
  */
 DlgPartImportStepImp::DlgPartImportStepImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
+    , ui(new Ui_DlgPartImportStep)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /*  
@@ -67,10 +69,10 @@ void DlgPartImportStepImp::onChooseFileName()
 {
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null,
         QString::fromLatin1("%1 (*.stp *.step);;%2 (*.*)"))
-        .arg(tr("STEP"))
-        .arg(tr("All Files"));
+        .arg(tr("STEP"),
+             tr("All Files"));
     if (!fn.isEmpty()) {
-        FileName->setText(fn);
+        ui->FileName->setText(fn);
     }
 }
 

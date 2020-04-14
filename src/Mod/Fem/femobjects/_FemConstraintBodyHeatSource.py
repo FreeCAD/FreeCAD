@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -37,6 +38,10 @@ class Proxy(FemConstraint.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
         obj.addProperty(
-            "App::PropertyFloat", "HeatSource",
-            "Base", "Body heat source")
+            "App::PropertyFloat",
+            "HeatSource",
+            "Base",
+            "Body heat source"
+        )

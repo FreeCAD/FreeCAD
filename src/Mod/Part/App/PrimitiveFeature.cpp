@@ -61,7 +61,6 @@
 # include <Standard_Version.hxx>
 #endif
 
-
 #include "PrimitiveFeature.h"
 #include <Mod/Part/App/PartFeaturePy.h>
 #include <App/FeaturePythonPyImp.h>
@@ -88,7 +87,7 @@ using namespace Part;
 
 PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(Part::Primitive, Part::Feature)
 
-Primitive::Primitive(void) 
+Primitive::Primitive(void)
 {
     AttachExtension::initExtension(this);
     touch();
@@ -224,7 +223,7 @@ App::DocumentObjectExecReturn *Vertex::execute(void)
     point.SetX(this->X.getValue());
     point.SetY(this->Y.getValue());
     point.SetZ(this->Z.getValue());
-    
+
     BRepBuilderAPI_MakeVertex MakeVertex(point);
     const TopoDS_Vertex& vertex = MakeVertex.Vertex();
     this->Shape.setValue(vertex);
@@ -479,7 +478,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         gp_Dir dir(0.0,0.0,1.0);
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
-                                        Radius2.getValue(), 
+                                        Radius2.getValue(),
                                         Angle1.getValue()/180.0f*M_PI,
                                         Angle2.getValue()/180.0f*M_PI,
                                         Angle3.getValue()/180.0f*M_PI);
@@ -854,7 +853,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         TopoShape helix;
         // work around for OCC bug #23314 (FC #0954)
         // the exact conditions for failure are unknown.  building the helix 1 turn at a time
-        // seems to always work. 
+        // seems to always work.
         this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
 //        if (myHeight / myPitch > 50.0)
 //            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
@@ -1101,7 +1100,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     gp_Elips ellipse;
     ellipse.SetMajorRadius(this->MajorRadius.getValue());
     ellipse.SetMinorRadius(this->MinorRadius.getValue());
-    
+
     BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
                                                 Base::toRadians<double>(this->Angle1.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();

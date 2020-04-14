@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2016     *
+# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -76,7 +75,7 @@ def editAttachment(feature = None,
 class CommandEditAttachment:
     'Command to edit attachment'
     def GetResources(self):
-        return {'Pixmap': ':/icons/Part_Attachment.svg',
+        return {'Pixmap': 'Part_Attachment',
                 'MenuText': QT_TRANSLATE_NOOP("AttachmentEditor","Attachment..."),
                 'Accel': "",
                 'ToolTip': QT_TRANSLATE_NOOP("AttachmentEditor","Edit attachment of selected object.")}

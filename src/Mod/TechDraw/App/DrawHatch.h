@@ -23,9 +23,10 @@
 #ifndef _TechDraw_DrawHatch_h_
 #define _TechDraw_DrawHatch_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <App/Material.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
 namespace TechDraw
@@ -34,7 +35,7 @@ class DrawViewPart;
 
 class TechDrawExport DrawHatch : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawHatch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawHatch);
 
 public:
     DrawHatch();
@@ -43,19 +44,33 @@ public:
     App::PropertyVector      DirProjection;                            //Source is only valid for original projection?
     App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
+    App::PropertyFileIncluded SvgIncluded;
 
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
 
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderHatch";
     }
+    virtual void unsetupObject(void) override;
+
     //return PyObject as DrawHatchPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     DrawViewPart* getSourceView(void) const;
-
+    bool affectsFace(int i);
+    bool removeSub(std::string toRemove);
+    bool removeSub(int i);
+    bool empty(void);
+    static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
+    static std::string prefSvgHatch(void);
+    static App::Color prefSvgHatchColor(void);
+    
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
+    virtual void onDocumentRestored() override;
+    virtual void setupObject() override;
+    void setupSvgIncluded(void);
+    void replaceSvgIncluded(std::string newSvgFile);
 
 private:
 

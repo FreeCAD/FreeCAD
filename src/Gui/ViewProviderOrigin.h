@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -75,7 +75,7 @@ public:
     }
 
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
-    static double defaultSize() {return 10.;}
+    static double defaultSize();
 protected:
     virtual void onChanged(const App::Property* prop);
     virtual bool onDelete(const std::vector<std::string> &);

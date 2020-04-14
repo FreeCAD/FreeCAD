@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,16 +58,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* item = root->findItem("&Windows");
 
 // == Profile menu ==========================================
-    Gui::MenuItem* profile = new Gui::MenuItem;
+/*    Gui::MenuItem* profile = new Gui::MenuItem;
     root->insertItem(item, profile);
     profile->setCommand("P&rofiles");
 
-    *profile << "Sketcher_ProfilesHexagon1";
+    *profile << "Sketcher_ProfilesHexagon1";*/
 
 // == Sketcher menu ==========================================
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
-    root->insertItem(profile, sketch);
+//    root->insertItem(profile, sketch);
+    root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
@@ -80,16 +81,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* consaccel = new Gui::MenuItem();
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
-    
+
     Gui::MenuItem* bsplines = new Gui::MenuItem();
     bsplines->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bsplines);
-    
+
     Gui::MenuItem* virtualspace = new Gui::MenuItem();
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
+    *sketch << "Sketcher_StopOperation";
     *sketch << geom
             << cons
             << consaccel
@@ -118,11 +120,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools( *consaccel );
-    
+
     Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines( *bspline );
-    
+
     Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace( *virtualspace );
@@ -181,7 +183,8 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::MenuItem>(Gui::MenuItem& geo
             << "Sketcher_CreatePentagon"
             << "Sketcher_CreateHexagon"
             << "Sketcher_CreateHeptagon"
-            << "Sketcher_CreateOctagon";
+            << "Sketcher_CreateOctagon"
+            << "Sketcher_CreateRegularPolygon";
 }
 template <>
 inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
@@ -234,7 +237,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons){
             << "Sketcher_ConstrainSnellsLaw"
             << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint";
+            << "Sketcher_ToggleDrivingConstraint"
+            << "Sketcher_ToggleActiveConstraint";
 }
 
 template <>
@@ -258,7 +262,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint";
+            << "Sketcher_ToggleDrivingConstraint"
+            << "Sketcher_ToggleActiveConstraint";
 }
 
 template <typename T>

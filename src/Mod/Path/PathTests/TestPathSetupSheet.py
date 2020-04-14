@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathLog as PathLog
 import sys

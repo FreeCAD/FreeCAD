@@ -38,13 +38,10 @@ __doc__ = "Functions to extract and convert between Path.Command and Part.Edge a
 
 Tolerance = 0.000001
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -57,7 +54,7 @@ class Side:
 
     @classmethod
     def toString(cls, side):
-        """(side)
+        """toString(side)
         Returns a string representation of the enum value."""
         if side == cls.Left:
             return 'Left'
@@ -67,7 +64,7 @@ class Side:
 
     @classmethod
     def of(cls, ptRef, pt):
-        """(ptRef, pt)
+        """of(ptRef, pt)
         Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
         then the two vectors either form a straight line (On) or pt
@@ -85,31 +82,32 @@ CmdMoveCW       = ['G2', 'G02']
 CmdMoveCCW      = ['G3', 'G03']
 CmdMoveArc      = CmdMoveCW + CmdMoveCCW
 CmdMove         = CmdMoveStraight + CmdMoveArc
+CmdMoveAll      = CmdMove + CmdMoveRapid
 
 def isRoughly(float1, float2, error=Tolerance):
-    """(float1, float2, [error=%s])
-    Returns true if the two values are the same within a given error.""" % Tolerance
+    """isRoughly(float1, float2, [error=Tolerance])
+    Returns true if the two values are the same within a given error."""
     return math.fabs(float1 - float2) <= error
 
 def pointsCoincide(p1, p2, error=Tolerance):
-    """(p1, p2, [error=%s])
-    Return True if two points are roughly identical (see also isRoughly).""" % Tolerance
+    """pointsCoincide(p1, p2, [error=Tolerance])
+    Return True if two points are roughly identical (see also isRoughly)."""
     return isRoughly(p1.x, p2.x, error) and isRoughly(p1.y, p2.y, error) and isRoughly(p1.z, p2.z, error)
 
 def edgesMatch(e0, e1, error=Tolerance):
-    """(e0, e1, [error=%s]
-    Return true if the edges start and end at the same point and have the same type of curve.""" % Tolerance
+    """edgesMatch(e0, e1, [error=Tolerance]
+    Return true if the edges start and end at the same point and have the same type of curve."""
     if type(e0.Curve) != type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
         return False
-    return all(pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point) for i in range(len(e0.Vertexes)))
+    return all(pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point, error) for i in range(len(e0.Vertexes)))
 
 def edgeConnectsTo(edge, vector, error=Tolerance):
-    """(edge, vector, error=%f)
-    Returns True if edge connects to given vector.""" % Tolerance
-    return pointsCoincide(edge.valueAt(edge.FirstParameter), vector) or pointsCoincide(edge.valueAt(edge.LastParameter), vector)
+    """edgeConnectsTop(edge, vector, error=Tolerance)
+    Returns True if edge connects to given vector."""
+    return pointsCoincide(edge.valueAt(edge.FirstParameter), vector, error) or pointsCoincide(edge.valueAt(edge.LastParameter), vector, error)
 
 def getAngle(vector):
-    """(vector)
+    """getAngle(vector)
     Returns the angle [-pi,pi] of a vector using the X-axis as the reference.
     Positive angles for vertexes in the upper hemisphere (positive y values)
     and negative angles for the lower hemisphere."""
@@ -119,7 +117,7 @@ def getAngle(vector):
     return a
 
 def diffAngle(a1, a2, direction = 'CW'):
-    """(a1, a2, [direction='CW'])
+    """diffAngle(a1, a2, [direction='CW'])
     Returns the difference between two angles (a1 -> a2) into a given direction."""
     if direction == 'CW':
         while a1 < a2:
@@ -196,7 +194,7 @@ def isHorizontal(obj):
 
 
 def commandEndPoint(cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):
-    """(cmd, [defaultPoint=Vector()], [X='X'], [Y='Y'], [Z='Z'])
+    """commandEndPoint(cmd, [defaultPoint=Vector()], [X='X'], [Y='Y'], [Z='Z'])
     Extracts the end point from a Path Command."""
     x = cmd.Parameters.get(X, defaultPoint.x)
     y = cmd.Parameters.get(Y, defaultPoint.y)
@@ -204,12 +202,35 @@ def commandEndPoint(cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):
     return Vector(x, y, z)
 
 def xy(point):
-    """(point)
+    """xy(point)
     Convenience function to return the projection of the Vector in the XY-plane."""
     return Vector(point.x, point.y, 0)
 
-def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
-    """(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
+def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
+    if isRoughly(hSpeed, vSpeed):
+        return hSpeed
+
+    d = p1 - p0
+    if isRoughly(0.0, d.z):
+        return hSpeed
+    if isRoughly(0.0, d.x) and isRoughly(0.0, d.y):
+        return vSpeed
+    # need to interpolate between hSpeed and vSpeed depending on the pitch
+    pitch = 2 * math.atan2(xy(d).Length, math.fabs(d.z)) / math.pi
+    while pitch < 0:
+        pitch = pitch + 1
+    while pitch > 1:
+        pitch = pitch - 1
+    print("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
+    speed = vSpeed + pitch * (hSpeed - vSpeed)
+    if speed > hSpeed and speed > vSpeed:
+        return max(hSpeed, vSpeed)
+    if speed < hSpeed and speed < vSpeed:
+        return min(hSpeed, vSpeed)
+    return speed
+
+def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed = 0, vSpeed = 0):
+    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
     If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
@@ -220,13 +241,16 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if hSpeed > 0 and vSpeed > 0:
+            pt2 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
+            params.update({'F': speedBetweenPoints(pt, pt2, hSpeed, vSpeed)})
         commands =  [Path.Command('G1', params)]
     else:
         p1 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
         p3 = pt
 
-        if (type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+        if hasattr(edge.Curve, 'Axis') and ((type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve)):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
                 cmd = 'G2' if not flip else 'G3'
@@ -251,6 +275,9 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
             PathLog.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
 
             params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
+            # G2/G3 commands are always performed at hSpeed
+            if hSpeed > 0:
+                params.update({'F': hSpeed})
             commands = [ Path.Command(cmd, params) ]
 
         else:
@@ -266,20 +293,28 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50):
             segments = int(math.ceil((deviation / eStraight.Length) * segm))
             #print("**** pixellation with %d segments" % segments)
             dParameter = (edge.LastParameter - edge.FirstParameter) / segments
+            # starting point
+            p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
             for i in range(0, segments):
                 if flip:
                     p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
                 else:
                     p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
+                if hSpeed > 0 and vSpeed > 0:
+                    params.update({'F': speedBetweenPoints(p0, p, hSpeed, vSpeed)})
                 cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
                 #print("***** %s" % cmd)
                 commands.append(cmd)
+                p0 = p
     #print commands
     return commands
 
 def edgeForCmd(cmd, startPoint):
-    """(cmd, startPoint).
+    """edgeForCmd(cmd, startPoint).
     Returns an Edge representing the given command, assuming a given startPoint."""
+
+    PathLog.debug("cmd: {}".format(cmd))
+    PathLog.debug("startpoint {}".format(startPoint))
 
     endPoint = commandEndPoint(cmd, startPoint)
     if (cmd.Name in CmdMoveStraight) or (cmd.Name in CmdMoveRapid):
@@ -311,6 +346,10 @@ def edgeForCmd(cmd, startPoint):
         if isRoughly(startPoint.z, endPoint.z):
             midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
             PathLog.debug("arc: (%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (startPoint.x, startPoint.y, midPoint.x, midPoint.y, endPoint.x, endPoint.y))
+            PathLog.debug("StartPoint:{}".format(startPoint))
+            PathLog.debug("MidPoint:{}".format(midPoint))
+            PathLog.debug("EndPoint:{}".format(endPoint))
+
             return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
         # It's a Helix
@@ -333,7 +372,7 @@ def edgeForCmd(cmd, startPoint):
     return None
 
 def wireForPath(path, startPoint = Vector(0, 0, 0)):
-    """(path, [startPoint=Vector(0,0,0)])
+    """wireForPath(path, [startPoint=Vector(0,0,0)])
     Returns a wire representing all move commands found in the given path."""
     edges = []
     rapid = []
@@ -345,10 +384,12 @@ def wireForPath(path, startPoint = Vector(0, 0, 0)):
                     rapid.append(edge)
                 edges.append(edge)
                 startPoint = commandEndPoint(cmd, startPoint)
+    if not edges:
+        return (None, rapid)
     return (Part.Wire(edges), rapid)
 
 def wiresForPath(path, startPoint = Vector(0, 0, 0)):
-    """(path, [startPoint=Vector(0,0,0)])
+    """wiresForPath(path, [startPoint=Vector(0,0,0)])
     Returns a collection of wires, each representing a continuous cutting Path in path."""
     wires = []
     if hasattr(path, "Commands"):
@@ -366,12 +407,12 @@ def wiresForPath(path, startPoint = Vector(0, 0, 0)):
     return wires
 
 def arcToHelix(edge, z0, z1):
-    """(edge, z0, z1)
+    """arcToHelix(edge, z0, z1)
     Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1."""
 
 
     p1 = edge.valueAt(edge.FirstParameter)
-    p2 = edge.valueAt(edge.LastParameter)
+    # p2 = edge.valueAt(edge.LastParameter)
 
     cmd = cmdsForEdge(edge)[0]
     params = cmd.Parameters
@@ -385,7 +426,7 @@ def arcToHelix(edge, z0, z1):
 
 
 def helixToArc(edge, z = 0):
-    """(edge, z=0)
+    """helixToArc(edge, z=0)
     Returns the projection of the helix onto the XY-plane with a given offset."""
     p1 = edge.valueAt(edge.FirstParameter)
     p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
@@ -396,28 +437,16 @@ def helixToArc(edge, z = 0):
     return Part.Edge(Part.Arc(p01, p02, p03))
 
 def splitArcAt(edge, pt):
-    """(edge, pt)
+    """splitArcAt(edge, pt)
     Returns a list of 2 edges which together form the original arc split at the given point.
     The Vector pt has to represent a point on the given arc."""
-    p1 = edge.valueAt(edge.FirstParameter)
-    p2 = pt
-    p3 = edge.valueAt(edge.LastParameter)
-    edges = []
-
-    p = edge.Curve.parameter(p2)
-    #print("splitArcAt(%.2f, %.2f, %.2f): %.2f - %.2f - %.2f" % (pt.x, pt.y, pt.z, edge.FirstParameter, p, edge.LastParameter))
-
-    p12 = edge.Curve.value((edge.FirstParameter + p)/2)
-    p23 = edge.Curve.value((p + edge.LastParameter)/2)
-    #print("splitArcAt: p12=(%.2f, %.2f, %.2f) p23=(%.2f, %.2f, %.2f)" % (p12.x, p12.y, p12.z, p23.x, p23.y, p23.z))
-
-    edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
-    edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
-
-    return edges
+    p = edge.Curve.parameter(pt)
+    e0 = Part.Arc(edge.Curve.copy(), edge.FirstParameter, p).toShape()
+    e1 = Part.Arc(edge.Curve.copy(), p, edge.LastParameter).toShape()
+    return [e0, e1]
 
 def splitEdgeAt(edge, pt):
-    """(edge, pt)
+    """splitEdgeAt(edge, pt)
     Returns a list of 2 edges, forming the original edge split at the given point.
     The results are undefined if the Vector representing the point is not part of the edge."""
     # I could not get the OCC parameterAt and split to work ...
@@ -425,7 +454,7 @@ def splitEdgeAt(edge, pt):
     p1 = edge.valueAt(edge.FirstParameter)
     p2 = pt
     p3 = edge.valueAt(edge.LastParameter)
-    edges = []
+    # edges = []
 
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
         # it's a line
@@ -484,8 +513,11 @@ def flipEdge(edge):
         # Now the edge always starts at 0 and LastParameter is the value range
         arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
         return arc
-    elif Part.BSplineCurve == type(edge.Curve):
-        spline = edge.Curve
+    elif type(edge.Curve) in [Part.BSplineCurve, Part.BezierCurve]:
+        if type(edge.Curve) == Part.BSplineCurve:
+            spline = edge.Curve
+        else:
+            spline = edge.Curve.toBSpline()
 
         mults = spline.getMultiplicities()
         weights = spline.getWeights()
@@ -509,7 +541,7 @@ def flipEdge(edge):
 
         return Part.Edge(flipped)
 
-    global OddsAndEnds
+    global OddsAndEnds # pylint: disable=global-statement
     OddsAndEnds.append(edge)
     PathLog.warning(translate('PathGeom', "%s not support for flipping") % type(edge.Curve))
 
@@ -517,4 +549,6 @@ def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
     edges = [flipEdge(e) for e in wire.Edges]
     edges.reverse()
+    PathLog.debug(edges)
     return Part.Wire(edges)
+

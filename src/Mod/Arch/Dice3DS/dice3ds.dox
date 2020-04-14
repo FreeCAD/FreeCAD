@@ -1,0 +1,5 @@
+/**
+   \defgroup DICE3DS Dice 3DS
+   \ingroup EMBEDDED
+   \brief The Dice 3DS library provides 3DStudio files import to the Arch module
+ */

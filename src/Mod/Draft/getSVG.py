@@ -1,5 +1,6 @@
-import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
-import Part, DraftGeomUtils
+import six
+
+import FreeCAD, math, os, DraftVecUtils, WorkingPlane
 from FreeCAD import Vector
 from Draft import getType, getrgb, svgpatterns, gui
 
@@ -66,24 +67,34 @@ def getPattern(pat):
     return ''
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0,fillSpaces=False,override=True):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
 
+    import Part, DraftGeomUtils
+
     # if this is a group, gather all the svg views of its children
     if hasattr(obj,"isDerivedFrom"):
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup") or getType(obj) == "Layer":
             svg = ""
             for child in obj.Group:
-                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
+                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw,rotation,fillSpaces,override)
             return svg
 
     pathdata = []
     svg = ""
     linewidth = float(linewidth)/scale
+    if not override:
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"LineWidth"):
+                if hasattr(obj.ViewObject.LineWidth,"Value"):
+                    lw = obj.ViewObject.LineWidth.Value
+                else:
+                    lw = obj.ViewObject.LineWidth
+                linewidth = lw*linewidth
     fontsize = (float(fontsize)/scale)/2
     if linespacing:
         linespacing = float(linespacing)/scale
@@ -100,7 +111,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
     stroke = "#000000"
-    if color:
+    if color and override:
         if "#" in color:
             stroke = color
         else:
@@ -109,10 +120,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if hasattr(obj,"ViewObject"):
             if hasattr(obj.ViewObject,"LineColor"):
                 stroke = getrgb(obj.ViewObject.LineColor)
-
+            elif hasattr(obj.ViewObject,"TextColor"):
+                stroke = getrgb(obj.ViewObject.TextColor)
+    lstyle = "none"
+    if override:
+        lstyle = getLineStyle(linestyle, scale)
+    else:
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"DrawStyle"):
+                lstyle = getLineStyle(obj.ViewObject.DrawStyle, scale)
 
     def getPath(edges=[],wires=[],pathname=None):
-        import Part,DraftGeomUtils
+
         svg = "<path "
         if pathname is None:
             svg += 'id="%s" ' % obj.Name
@@ -123,8 +142,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             egroups = Part.sortEdges(edges)
         else:
             egroups = []
+            first = True
             for w in wires:
                 w1=w.copy()
+                if first:
+                    first = False
+                else:
+                    # invert further wires to create holes
+                    w1 = DraftGeomUtils.invert(w1)
                 w1.fixWire()
                 egroups.append(Part.__sortEdges__(w1.Edges))
         for egroupindex, edges in enumerate(egroups):
@@ -175,11 +200,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                             elif len(e.Vertexes) == 1 and isellipse:
                                 #svg = getEllipse(e)
                                 #return svg
-                                endpoints = (getProj(c.value((c.LastParameter-\
-                                        c.FirstParameter)/2.0), plane), \
-                                        getProj(vs[-1].Point, plane))
+                                endpoints = [getProj(c.value((c.LastParameter-c.FirstParameter)/2.0), plane),
+                                             getProj(vs[-1].Point, plane)]
                             else:
-                                endpoints = (getProj(vs[-1].Point), plane)
+                                endpoints = [getProj(vs[-1].Point, plane)]
                             # arc
                             if iscircle:
                                 rx = ry = c.Radius
@@ -270,7 +294,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             drawing_plane_normal = FreeCAD.Vector(0,0,1)
         if plane: drawing_plane_normal = plane.axis
-        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) == 0:
+        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) in [0, 3.14]:
             # perpendicular projection: circle
             svg = '<circle cx="' + str(cen.x)
             svg += '" cy="' + str(cen.y)
@@ -367,7 +391,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'x2="'+ str(shootsize*-1) +'" y2="0" />\n'
         return svg
 
-    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
+    def getText(tcolor,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
         if isinstance(angle,FreeCAD.Rotation):
             if not plane:
                 angle = angle.Angle
@@ -375,6 +399,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 if plane.axis.getAngle(angle.Axis) < 0.001:
                     angle = angle.Angle
                 elif abs(plane.axis.getAngle(angle.Axis)-math.pi) < 0.001:
+                    if abs(angle.Angle) > 0.1:
+                        angle = -angle.Angle
+                    else:
+                        angle = angle.Angle
+                elif abs(plane.axis.getAngle(angle.Axis)-math.pi/2) < 0.001:
                     return "" # text is perpendicular to view, so it shouldn't appear
                 else:
                     angle = 0 #TODO maybe there is something better to do here?
@@ -389,13 +418,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             svg = ""
             for i in range(len(text)):
-                t = text[i]
-                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
+                t = text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+                if six.PY2 and not isinstance(t, six.text_type):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
                 #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
-                svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
+                svg += '<text stroke-width="0" stroke="' + tcolor + '" fill="' + tcolor +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
@@ -405,8 +434,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 #svg += '" freecad:skip="1"'
                 svg += '>\n' + t + '</text>\n'
         else:
-            svg = '<text fill="'
-            svg += color +'" font-size="'
+            svg = '<text stroke-width="0" stroke="' + tcolor + '" fill="'
+            svg += tcolor +'" font-size="'
             svg += str(fontsize) + '" '
             svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
             svg += 'font-family:'+ fontname +'" '
@@ -425,9 +454,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += '>\n'
             if len(text) == 1:
                 try:
-                    svg += text[0]
+                    svg += text[0].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                 except:
-                    svg += text[0].decode("utf8")
+                    svg += text[0].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
             else:
                 for i in range(len(text)):
                     if i == 0:
@@ -435,9 +464,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     else:
                         svg += '<tspan x="0" dy="'+str(linespacing)+'">'
                     try:
-                        svg += text[i]
+                        svg += text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                     except:
-                        svg += text[i].decode("utf8")
+                        svg += text[i].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                     svg += '</tspan>\n'
             svg += '</text>\n'
         return svg
@@ -453,7 +482,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             fill = "#888888"
         else:
             fill = 'url(#'+fillstyle+')'
-        lstyle = getLineStyle(linestyle, scale)
         svg += getPath(obj.Edges,pathname="")
 
 
@@ -478,8 +506,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     angle = -DraftVecUtils.angle(getProj(rv, plane))
                     #angle = -DraftVecUtils.angle(p3.sub(p2))
 
+                    svg = ''
+                    nolines = False
+                    if hasattr(obj.ViewObject,"ShowLine"):
+                         if not obj.ViewObject.ShowLine:
+                             nolines = True
+
                     # drawing lines
-                    svg = '<path '
+                    if not nolines:
+                        svg += '<path '
                     if obj.ViewObject.DisplayMode == "2D":
                         tangle = angle
                         if tangle > math.pi/2:
@@ -492,51 +527,54 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                             if abs(tangle+math.radians(rotation)) < 0.0001:
                                 tangle += math.pi
                                 tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                        if not nolines:
+                            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
                     else:
                         tangle = 0
                         if rotation != 0:
                             tangle = -math.radians(rotation)
                         tbase = tbase.add(Vector(0,-2.0/scale,0))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-                        svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                        if not nolines:
+                            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                            svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                            svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
 
-                    svg += 'fill="none" stroke="'
-                    svg += stroke + '" '
-                    svg += 'stroke-width="' + str(linewidth) + ' px" '
-                    svg += 'style="stroke-width:'+ str(linewidth)
-                    svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-                    svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-                    svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-                    svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-                    svg += '/>\n'
+                    if not nolines:
+                        svg += 'fill="none" stroke="'
+                        svg += stroke + '" '
+                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'style="stroke-width:'+ str(linewidth)
+                        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+                        svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+                        svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+                        svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+                        svg += '/>\n'
 
-                    # drawing dimension and extension lines overshoots
-                    if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
-                        shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
-                    if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
-                        shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
-                        shootangle = -DraftVecUtils.angle(p1.sub(p2))
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
+                        # drawing dimension and extension lines overshoots
+                        if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
+                            shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
+                            svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
+                            svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
+                        if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
+                            shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
+                            shootangle = -DraftVecUtils.angle(p1.sub(p2))
+                            svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
+                            svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
 
-                    # drawing arrows
-                    if hasattr(obj.ViewObject,"ArrowType"):
-                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                        if hasattr(obj.ViewObject,"FlipArrows"):
-                            if obj.ViewObject.FlipArrows:
-                                angle = angle+math.pi
-                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
+                        # drawing arrows
+                        if hasattr(obj.ViewObject,"ArrowType"):
+                            arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
+                            if hasattr(obj.ViewObject,"FlipArrows"):
+                                if obj.ViewObject.FlipArrows:
+                                    angle = angle+math.pi
+                            svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                            svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
 
                     # drawing text
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
@@ -551,7 +589,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
                     # drawing arc
                     fill= "none"
-                    lstyle = getLineStyle(linestyle, scale)
                     if obj.ViewObject.DisplayMode == "2D":
                         svg += getPath([prx.circle])
                     else:
@@ -665,7 +702,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 print ("export of axes to SVG is only available in GUI mode")
             else:
                 vobj = obj.ViewObject
-                lorig = getLineStyle(linestyle, scale)
+                lorig = lstyle
                 fill = 'none'
                 rad = vobj.BubbleSize.Value/2
                 n = 0
@@ -702,10 +739,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
                                 svg += '</text>\n'
                                 n += 1
+                lstyle = lorig
 
     elif getType(obj) == "Pipe":
         fill = stroke
-        lstyle = getLineStyle(linestyle, scale)
         if obj.Base and obj.Diameter:
             svg += getPath(obj.Base.Shape.Edges)
         for f in obj.Shape.Faces:
@@ -715,7 +752,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Rebar":
         fill = "none"
-        lstyle = getLineStyle(linestyle, scale)
         if obj.Proxy:
             if not hasattr(obj.Proxy,"wires"):
                 obj.Proxy.execute(obj)
@@ -731,6 +767,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if not obj.ViewObject:
                 print ("export of spaces to SVG is only available in GUI mode")
             else:
+                if fillSpaces:
+                    if hasattr(obj,"Proxy"):
+                        if not hasattr(obj.Proxy,"face"):
+                            obj.Proxy.getArea(obj,notouch=True)
+                        if hasattr(obj.Proxy,"face"):
+                            # setting fill
+                            if gui:
+                                fill = getrgb(obj.ViewObject.ShapeColor,testbw=False)
+                                fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
+                            else:
+                                fill = "#888888"
+                            svg += getPath(wires=[obj.Proxy.face.OuterWire])
                 c = getrgb(obj.ViewObject.TextColor)
                 n = obj.ViewObject.FontName
                 a = 0
@@ -740,16 +788,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 t2 = obj.ViewObject.Proxy.text2.string.getValues()
                 scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
                 f1 = fontsize*scale
-                p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+                p2 = obj.Placement.multVec(FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue()))
                 lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
                 p1 = p2.add(lspc)
                 j = obj.ViewObject.TextAlign
-                svg += getText(c,f1,n,a,getProj(p1, plane),t1,linespacing,j,flip=True)
+                t3 = getText(c,f1,n,a,getProj(p1, plane),t1,linespacing,j,flip=True)
+                svg += t3
                 if t2:
-                    ofs = FreeCAD.Vector(0,lspc.Length,0)
+                    ofs = FreeCAD.Vector(0,-lspc.Length,0)
                     if a:
                         ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-                    svg += getText(c,fontsize,n,a,getProj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
+                    t4 = getText(c,fontsize,n,a,getProj(p1, plane).add(ofs),t2,linespacing,j,flip=True)
+                    svg += t4
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
@@ -774,12 +824,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 fill = "#888888"
         else:
             fill = 'none'
-        lstyle = getLineStyle(linestyle, scale)
 
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
             if obj.Shape.Faces:
                 for i,f in enumerate(obj.Shape.Faces):
+                    # place outer wire first
+                    wires = [f.OuterWire]
+                    wires.extend([w for w in f.Wires if w.hashCode() != f.OuterWire.hashCode()])
                     svg += getPath(wires=f.Wires,pathname='%s_f%04d' % \
                             (obj.Name,i))
                     wiredEdges.extend(f.Edges)
@@ -790,7 +842,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
                 for i,e in enumerate(obj.Shape.Edges):
-                    if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
+                    if (DraftGeomUtils.findEdge(e,wiredEdges) is None):
                         svg += getPath([e],pathname='%s_nwe%04d' % \
                                 (obj.Name,i))
         else:
@@ -803,13 +855,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if FreeCAD.GuiUp:
             if hasattr(obj.ViewObject,"EndArrow") and hasattr(obj.ViewObject,"ArrowType") and (len(obj.Shape.Vertexes) > 1):
                 if obj.ViewObject.EndArrow:
-                    p1 = getProj(obj.Shape.Vertexes[-2].Point, plane)
-                    p2 = getProj(obj.Shape.Vertexes[-1].Point, plane)
+                    p1 = getProj(obj.Shape.Vertexes[-1].Point, plane)
+                    p2 = getProj(obj.Shape.Vertexes[-2].Point, plane)
                     angle = -DraftVecUtils.angle(p2.sub(p1))
                     arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                    svg += getArrow(obj.ViewObject.ArrowType,p1,arrowsize,stroke,linewidth,angle)
 
     # techdraw expects bottom-to-top coordinates
     if techdraw:
-        svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
+        svg = '<g transform ="scale(1,-1)">\n    '+svg+'</g>\n'
     return svg

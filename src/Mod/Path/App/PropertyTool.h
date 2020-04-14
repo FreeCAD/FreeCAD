@@ -24,7 +24,7 @@
 #ifndef PROPERTYTOOL_H
 #define PROPERTYTOOL_H
 
-#include "Tooltable.h"
+#include "Tool.h"
 #include <App/Property.h>
 
 namespace Path

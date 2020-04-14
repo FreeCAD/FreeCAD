@@ -110,7 +110,7 @@ void FilletRadiusDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
     spinBox->interpretText();
     //double value = spinBox->value();
     //QString value = QString::fromLatin1("%1").arg(spinBox->value(),0,'f',2);
-    //QString value = QLocale::system().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
+    //QString value = QLocale().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
     Base::Quantity value = spinBox->value();
 
     model->setData(index, QVariant::fromValue<Base::Quantity>(value), Qt::EditRole);
@@ -223,7 +223,7 @@ namespace PartGui {
             }
         };
     };
-};
+}
 
 /* TRANSLATOR PartGui::DlgFilletEdges */
 
@@ -594,8 +594,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-                //model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
-                //model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
+                //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
+                //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
                 model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius1, Base::Unit::Length)));
                 model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius2, Base::Unit::Length)));
 
@@ -628,10 +628,15 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
         App::Document* doc = d->object->getDocument();
         // get current selection and their sub-elements
-        std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
-        std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
-            Private::SelectionObjectCompare(d->object));
+        //std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
+        //std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
+        //    Private::SelectionObjectCompare(d->object));
 
+
+         /*
+          * Edit: the following check is no longer necessary, as Gui::Selection
+          * will do the check
+          *
         // If sub-objects are already selected then only add the un-selected parts.
         // This is impotant to avoid recursive calls of rmvSelection() which
         // invalidates the internal iterator (#0002200).
@@ -645,9 +650,12 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             std::set_difference(subElements.begin(), subElements.end(), selElements.begin(), selElements.end(), biit);
             subElements = complementary;
         }
+        */
+
+        Gui::Selection().clearSelection(doc->getName());
 
         if (!subElements.empty()) {
-            Gui::Selection().addSelection(doc->getName(),
+            Gui::Selection().addSelections(doc->getName(),
                 d->object->getNameInDocument(),
                 subElements);
         }
@@ -743,8 +751,8 @@ void DlgFilletEdges::on_shapeObject_activated(int index)
         for (std::vector<int>::iterator it = d->edge_ids.begin(); it != d->edge_ids.end(); ++it) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
             model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
-          //model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
-          //model->setData(model->index(index, 2), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+          //model->setData(model->index(index, 1), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+          //model->setData(model->index(index, 2), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
             model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             std::stringstream element;
@@ -795,7 +803,7 @@ void DlgFilletEdges::on_selectAllButton_clicked()
 
     if (d->object) {
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().addSelection(doc->getName(),
+        Gui::Selection().addSelections(doc->getName(),
             d->object->getNameInDocument(),
             subElements);
     }

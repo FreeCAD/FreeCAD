@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen <eivind@kvedalen.name> 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,39 +24,86 @@
 #ifndef APP_PATH_H
 #define APP_PATH_H
 
+#include <climits>
+#include <memory>
 #include <vector>
 #include <string>
+#include <set>
+#include <map>
+#include <bitset>
 #ifndef BOOST_105400
 #include <boost/any.hpp>
 #else
 #include <boost_any_1_55.hpp>
 #endif
+#include <CXX/Objects.hxx>
 
 namespace App
 {
+
+using any = boost::any;
+
+template<class T>
+inline const T &any_cast(const boost::any &value) {
+    return boost::any_cast<const T&>(value);
+}
+
+template<class T>
+inline T &any_cast(boost::any &value) {
+    return boost::any_cast<T&>(value);
+}
 
 class Property;
 class Document;
 class PropertyContainer;
 class DocumentObject;
+class ExpressionVisitor;
 
-AppExport std::string quote(const std::string &input);
+AppExport std::string quote(const std::string &input, bool toPython=false);
+
+// Unfortunately VS2013 does not support default move constructor, so we have
+// to implement them manually
+#define FC_DEFAULT_CTORS(_t) \
+    _t(const _t &) = default;\
+    _t &operator=(const _t &) = default;\
+    _t(_t &&other) { *this = std::move(other); }\
+    _t &operator=(_t &&other)
 
 class AppExport ObjectIdentifier {
 
 public:
 
+    class AppExport DocumentMapper {
+    public:
+        DocumentMapper(const std::map<std::string,std::string> &);
+        ~DocumentMapper();
+    };
+
     class String {
+        friend class ObjectIdentifier;
 
     public:
 
         // Constructor
-        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false) : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) { }
+        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false)
+            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+        { }
+
+        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false)
+            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+        { }
+
+        FC_DEFAULT_CTORS(String) {
+            str = std::move(other.str);
+            isString = other.isString;
+            forceIdentifier = other.forceIdentifier;
+            return *this;
+        }
 
         // Accessors
 
         /** Returns the string */
-        std::string getString() const { return str; }
+        const std::string &getString() const { return str; }
 
         /** Return true is string need to be quoted */
         bool isRealString() const { return isString; }
@@ -64,7 +111,7 @@ public:
         bool isForceIdentifier() const { return forceIdentifier; }
 
         /** Returns a possibly quoted string */
-        std::string toString() const;
+        std::string toString(bool toPython=false) const;
 
         // Operators
 
@@ -82,6 +129,8 @@ public:
 
         bool operator>(const String & other) const { return str > other.str; }
 
+        void checkImport(const App::DocumentObject *owner, 
+                const App::DocumentObject *obj=0, String *objName=0);
     private:
 
         std::string str;
@@ -103,22 +152,38 @@ public:
         enum typeEnum {
             SIMPLE,
             MAP,
-            ARRAY
+            ARRAY,
+            RANGE,
         } ;
 
     public:
 
         // Constructors
+        FC_DEFAULT_CTORS(Component) {
+            name = std::move(other.name);
+            type = other.type;
+            begin = other.begin;
+            end = other.end;
+            step = other.step;
+            return *this;
+        }
 
-        Component(const String &_component, typeEnum _type = SIMPLE, int _index = -1, String _key = String());
+        Component(const String &_name = String(), typeEnum _type=SIMPLE, 
+                int begin=INT_MAX, int end=INT_MAX, int step=1);
+        Component(String &&_name, typeEnum _type=SIMPLE, 
+                int begin=INT_MAX, int end=INT_MAX, int step=1);
 
         static Component SimpleComponent(const char * _component);
 
         static Component SimpleComponent(const String & _component);
+        static Component SimpleComponent(String &&_component);
 
-        static Component ArrayComponent(const String &_component, int _index);
+        static Component ArrayComponent(int _index);
 
-        static Component MapComponent(const String &_component, const String &_key);
+        static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
+
+        static Component MapComponent(const String &_key);
+        static Component MapComponent(String &&_key);
 
         // Type queries
 
@@ -128,93 +193,176 @@ public:
 
         bool isArray() const { return type == ARRAY; }
 
+        bool isRange() const { return type == RANGE; }
+
         // Accessors
 
-        std::string toString() const;
+        void toString(std::ostream &ss, bool toPython=false) const;
 
-        std::string getName() const { return name.getString(); }
+        const std::string &getName() const { return name.getString(); }
 
-        std::size_t getIndex() const { return static_cast<std::size_t>(index); }
+        int getIndex() const {return begin;}
+        size_t getIndex(size_t count) const;
 
-        String getKey() const { return key; }
-
-        bool getKeyIsString() const { return keyIsString; }
+        int getBegin() const { return begin; }
+        int getEnd() const { return end; }
+        int getStep() const { return step; }
 
         // Operators
 
         bool operator==(const Component & other) const;
+        bool operator<(const Component & other) const;
+
+        Py::Object get(const Py::Object &pyobj) const;
+        void set(Py::Object &pyobj, const Py::Object &value) const;
+        void del(Py::Object &pyobj) const;
 
     private:
 
         String name;
         typeEnum type;
-        int index;
-        String key;
-        bool keyIsString;
-
+        int begin;
+        int end;
+        int step;
         friend class ObjectIdentifier;
 
     };
 
-    ObjectIdentifier(const App::PropertyContainer * _owner = 0, const std::string & property = std::string());
+    static Component SimpleComponent(const char * _component) 
+        {return Component::SimpleComponent(_component);}
 
-    ObjectIdentifier(const App::Property & prop);
+    static Component SimpleComponent(const String & _component) 
+        {return Component::SimpleComponent(_component);}
+
+    static Component SimpleComponent(String &&_component) 
+        {return Component::SimpleComponent(std::move(_component));}
+
+    static Component ArrayComponent(int _index) 
+        {return Component::ArrayComponent(_index); }
+
+    static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1)
+        {return Component::RangeComponent(_begin,_end,_step);}
+
+    static Component MapComponent(const String &_key)
+        {return Component::MapComponent(_key);}
+
+    static Component MapComponent(String &&_key)
+        {return Component::MapComponent(_key);}
+
+    ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
+            const std::string & property = std::string(), int index=INT_MAX);
+
+    ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
+
+    ObjectIdentifier(const App::Property & prop, int index=INT_MAX);
+
+    FC_DEFAULT_CTORS(ObjectIdentifier) {
+        owner = other.owner;
+        documentName = std::move(other.documentName);
+        documentObjectName = std::move(other.documentObjectName);
+        subObjectName = std::move(other.subObjectName);
+        shadowSub = std::move(other.shadowSub);
+        components = std::move(other.components);
+        documentNameSet = other.documentNameSet;
+        documentObjectNameSet = other.documentObjectNameSet;
+        localProperty = other.localProperty;
+        _cache = std::move(other._cache);
+        _hash = other._hash;
+        return *this;
+    }
 
     virtual ~ObjectIdentifier() {}
 
+    App::DocumentObject *getOwner() const { return owner; }
+
     // Components
-    void addComponent(const Component &c) { components.push_back(c); }
+    void addComponent(const Component &c) { 
+        components.push_back(c);
+        _cache.clear();
+    }
+
+    // Components
+    void addComponent(Component &&c) { 
+        components.push_back(std::move(c));
+        _cache.clear();
+    }
+
+    std::string getPropertyName() const;
 
     template<typename C>
     void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
 
-    const std::string getPropertyName() const;
+    const Component & getPropertyComponent(int i, int *idx=0) const;
 
-    const Component & getPropertyComponent(int i) const;
+    void setComponent(int idx, Component &&comp);
+    void setComponent(int idx, const Component &comp);
 
-    std::string getSubPathStr() const;
+    std::vector<Component> getPropertyComponents() const;
+    const std::vector<Component> &getComponents() const { return components; }
+
+    std::string getSubPathStr(bool toPython=false) const;
 
     int numComponents() const;
 
     int numSubComponents() const;
 
-    virtual std::string toString() const;
+    const std::string &toString() const;
+
+    std::string toPersistentString() const;
 
     std::string toEscapedString() const;
 
-    App::Property *getProperty() const;
+    bool isTouched() const;
+
+    App::Property *getProperty(int *ptype=0) const;
 
     App::ObjectIdentifier canonicalPath() const;
 
     // Document-centric functions
 
-    void setDocumentName(const String & name, bool force = false);
+    void setDocumentName(String &&name, bool force = false);
 
-    const String getDocumentName() const;
+    String getDocumentName() const;
 
-    void setDocumentObjectName(const String & name, bool force = false);
+    void setDocumentObjectName(String &&name, bool force = false, 
+            String &&subname = String(), bool checkImport=false);
 
-    const String getDocumentObjectName() const;
+    void setDocumentObjectName(const App::DocumentObject *obj, bool force = false, 
+            String &&subname = String(), bool checkImport=false);
 
-    bool validDocumentObjectRename(const std::string &oldName, const std::string &newName);
+    bool hasDocumentObjectName(bool forced=false) const;
 
-    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
+    bool isLocalProperty() const { return localProperty; }
 
-    bool validDocumentRename(const std::string &oldName, const std::string &newName);
+    String getDocumentObjectName() const;
 
-    bool renameDocument(const std::string &oldName, const std::string &newName);
+    const std::string &getSubObjectName(bool newStyle) const;
+    const std::string &getSubObjectName() const;
 
-    App::Document *getDocument(String name = String()) const;
+    typedef std::map<std::pair<App::DocumentObject*,std::string>,std::string> SubNameMap;
+    void importSubNames(const SubNameMap &subNameMap);
+
+    bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
+
+    bool relabeledDocument(ExpressionVisitor &v, const std::string &oldLabel, const std::string &newLabel);
+
+    std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
+
+    App::Document *getDocument(String name = String(), bool *ambiguous=0) const;
 
     App::DocumentObject *getDocumentObject() const;
-
+    
     std::vector<std::string> getStringList() const;
 
     App::ObjectIdentifier relativeTo(const App::ObjectIdentifier & other) const;
 
+    bool replaceObject(ObjectIdentifier &res, const App::DocumentObject *parent,
+            App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
+
     // Operators
 
     App::ObjectIdentifier & operator<<(const Component & value);
+    App::ObjectIdentifier & operator<<(Component &&value);
 
     bool operator==(const ObjectIdentifier & other) const;
 
@@ -224,18 +372,30 @@ public:
 
     // Getter
 
-    boost::any getValue() const;
+    App::any getValue(bool pathValue=false, bool *isPseudoProperty=0) const;
 
-    // Setter; is const because it does not alter the object state,
-    // but does have a aide effect.
+    Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=0) const;
 
-    void setValue(const boost::any & value) const;
+    // Setter: is const because it does not alter the object state,
+    // but does have an aiding effect.
+
+    void setValue(const App::any & value) const;
 
     // Static functions
 
     static ObjectIdentifier parse(const App::DocumentObject *docObj, const std::string & str);
 
     std::string resolveErrorString() const;
+
+    bool adjustLinks(ExpressionVisitor &v, const std::set<App::DocumentObject *> &inList);
+
+    bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=0, bool reverse=false);
+
+    void resolveAmbiguity();
+
+    bool verify(const App::Property &prop, bool silent=false) const;
+
+    std::size_t hash() const;
 
 protected:
 
@@ -248,29 +408,72 @@ protected:
         String resolvedDocumentName;
         App::DocumentObject * resolvedDocumentObject;
         String resolvedDocumentObjectName;
+        String subObjectName;
+        App::DocumentObject * resolvedSubObject;
         App::Property * resolvedProperty;
         std::string propertyName;
+        int propertyType;
+        std::bitset<32> flags;
 
         std::string resolveErrorString() const;
+        void getProperty(const ObjectIdentifier &oi);
     };
 
-    std::string getPythonAccessor() const;
+    friend struct ResolveResults;
+
+    App::Property *resolveProperty(const App::DocumentObject *obj, 
+        const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
+
+    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
+
+    Py::Object access(const ResolveResults &rs, Py::Object *value=0) const;
 
     void resolve(ResolveResults & results) const;
+    void resolveAmbiguity(ResolveResults &results);
 
-    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name, bool &byIdentifier) const;
+    static App::DocumentObject *getDocumentObject(
+            const App::Document *doc, const String &name, std::bitset<32> &flags);
 
-    const App::PropertyContainer * owner;
+    App::DocumentObject * owner;
     String  documentName;
-    bool documentNameSet;
     String  documentObjectName;
-    bool documentObjectNameSet;
+    String  subObjectName;
+    std::pair<std::string,std::string> shadowSub;
     std::vector<Component> components;
+    bool documentNameSet;
+    bool documentObjectNameSet;
+    bool localProperty;
 
+private:
+    std::string _cache; // Cached string represstation of this identifier
+    std::size_t _hash; // Cached hash of this string
 };
 
-std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
+inline std::size_t hash_value(const App::ObjectIdentifier & path) {
+    return path.hash();
+}
 
+/** Helper function to convert Python object to/from App::any
+*
+* WARNING! Must hold Python global interpreter lock before calling these
+* functions
+*/
+//@{
+App::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
+Py::Object AppExport pyObjectFromAny(const App::any &value);
+//@}
+}
+
+namespace std {
+
+template<> 
+struct hash<App::ObjectIdentifier> {
+    typedef App::ObjectIdentifier argument_type;
+    typedef std::size_t result_type;
+    inline result_type operator()(argument_type const& s) const {
+        return s.hash();
+    }
+};
 }
 
 #endif

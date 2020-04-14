@@ -93,10 +93,10 @@ void TaskTrajectoryDressUpParameter::writeValues(void)
 
 void TaskTrajectoryDressUpParameter::createPlacementDlg(void)
 {
-    Gui::Dialog::Placement *plc = new Gui::Dialog::Placement();
-    plc->setPlacement(PosAdd);
-    if(plc->exec()==QDialog::Accepted){
-        PosAdd = plc->getPlacement();
+    Gui::Dialog::Placement plc;
+    plc.setPlacement(PosAdd);
+    if (plc.exec() == QDialog::Accepted) {
+        PosAdd = plc.getPlacement();
         viewPlacement();
     }
 

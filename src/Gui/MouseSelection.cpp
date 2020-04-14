@@ -390,7 +390,16 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
+#if QT_VERSION >= 0x050600
+        qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
+#else
+        qreal dpr = 1.0;
+#endif
         QRect r = _pcView3D->getGLWidget()->rect();
+        if (dpr != 1.0) {
+            r.setHeight(r.height()*dpr);
+            r.setWidth(r.width()*dpr);
+        }
 
         if (!r.contains(clPoint)) {
             if (clPoint.x() < r.left())
@@ -599,7 +608,16 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
+#if QT_VERSION >= 0x050600
+        qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
+#else
+        qreal dpr = 1.0;
+#endif
         QRect r = _pcView3D->getGLWidget()->rect();
+        if (dpr != 1.0) {
+            r.setHeight(r.height()*dpr);
+            r.setWidth(r.width()*dpr);
+        }
 
         if (!r.contains(clPoint)) {
             if (clPoint.x() < r.left())

@@ -152,21 +152,28 @@ public:
 
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
+    bool hasCell(const std::vector<App::Range> &ranges) const;
     PyObject *getPyObject();
 
-    App::Property *getPropertyByName(const char *name) const;
+    PropertySheet *getCells() { return &cells; }
 
-    const char* getPropertyName(const App::Property* prop) const;
+    App::Property *getPropertyByName(const char *name) const;
 
     virtual short mustExecute(void) const;
 
     App::DocumentObjectExecReturn *execute(void);
 
-    void getCellAddress(const App::Property *prop, App::CellAddress &address);
+    bool getCellAddress(const App::Property *prop, App::CellAddress &address);
 
     std::map<int, int> getColumnWidths() const;
 
     std::map<int, int> getRowHeights() const;
+
+    std::string getRow(int offset=0) const;
+
+    std::string getColumn(int offset=0) const;
+
+    void touchCells(App::Range range);
 
     // Signals
 
@@ -178,69 +185,17 @@ public:
 
     boost::signals2::signal<void (int, int)> rowHeightChanged;
 
-    /** @name Access properties */
-    //@{
-    App::Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
-        short attr=0, bool ro=false, bool hidden=false) {
-        return props.addDynamicProperty(type, name, group, doc, attr, ro, hidden);
-    }
-    virtual bool removeDynamicProperty(const char* name) {
-        App::DocumentObject::onAboutToRemoveProperty(name);
-        return props.removeDynamicProperty(name);
-    }
-    std::vector<std::string> getDynamicPropertyNames() const {
-        return props.getDynamicPropertyNames();
-    }
-    App::Property *getDynamicPropertyByName(const char* name) const {
-        return props.getDynamicPropertyByName(name);
-    }
-    virtual void addDynamicProperties(const App::PropertyContainer* cont) {
-        return props.addDynamicProperties(cont);
-    }
-    /// get all properties of the class (including properties of the parent)
-    virtual void getPropertyList(std::vector<App::Property*> &List) const {
-        props.getPropertyList(List);
-    }
-    /// get all properties of the class (including parent)
-    void getPropertyMap(std::map<std::string,App::Property*> &Map) const {
-        props.getPropertyMap(Map);
-    }
-
-    short getPropertyType(const App::Property *prop) const {
-        return props.getPropertyType(prop);
-    }
-
-    /// get the group of a property
-    const char* getPropertyGroup(const App::Property* prop) const {
-        return props.getPropertyGroup(prop);
-    }
-
-    /// get the documentation of a property
-    const char* getPropertyDocumentation(const App::Property* prop) const {
-        return props.getPropertyDocumentation(prop);
-    }
-
-    /// get the name of a property
-    virtual const char* getName(const App::Property* prop) const {
-        return props.getPropertyName(prop);
-    }
-    //@}
-
     void observeDocument(App::Document *document);
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
 protected:
 
-    void providesTo(App::CellAddress address, std::set<App::CellAddress> & result) const;
+    void updateColumnsOrRows(bool horizontal, int section, int count) ;
+
+    std::set<App::CellAddress> providesTo(App::CellAddress address) const;
 
     void onDocumentRestored();
-
-    void onRelabledDocument(const App::Document & document);
-
-    void onRenamedDocument(const App::Document & document);
 
     void recomputeCell(App::CellAddress p);
 
@@ -254,11 +209,13 @@ protected:
 
     App::Property *setStringProperty(App::CellAddress key, const std::string & value) ;
 
+    App::Property *setObjectProperty(App::CellAddress key, Py::Object obj) ;
+
     App::Property *setFloatProperty(App::CellAddress key, double value);
 
-    App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
+    App::Property *setIntegerProperty(App::CellAddress key, long value);
 
-    void renamedDocumentObject(const App::DocumentObject * docObj);
+    App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
     void aliasRemoved(App::CellAddress address, const std::string &alias);
 
@@ -267,7 +224,7 @@ protected:
     virtual void onSettingDocument();
 
     /* Properties for used cells */
-    App::DynamicProperty props;
+    App::DynamicProperty &props;
 
     /* Mapping of properties to cell position */
     std::map<const App::Property*, App::CellAddress > propAddress;
@@ -289,15 +246,12 @@ protected:
     /* Row heights */
     PropertyRowHeights rowHeights;
 
-    /* Dependencies to other documents */
-    App::PropertyLinkList docDeps;
-
     /* Document observers to track changes to external properties */
     typedef std::map<std::string, SheetObserver* > ObserverMap;
     ObserverMap observers;
 
-    boost::signals2::scoped_connection onRelabledDocumentConnection;
-    boost::signals2::scoped_connection onRenamedDocumentConnection;
+    int currentRow = -1;
+    int currentCol = -1;
 
     friend class SheetObserver;
 

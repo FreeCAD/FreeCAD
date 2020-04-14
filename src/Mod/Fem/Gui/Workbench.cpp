@@ -37,24 +37,33 @@ using namespace FemGui;
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "FEM");
     qApp->translate("Workbench", "&FEM");
+    //
     qApp->translate("Workbench", "Model");
     qApp->translate("Workbench", "M&odel");
+    qApp->translate("Workbench", "Materials");
+    qApp->translate("Workbench", "&Materials");
+    qApp->translate("Workbench", "Element Geometry");
+    qApp->translate("Workbench", "&Element Geometry");
+    qApp->translate("Workbench", "Electrostatic Constraints");
+    qApp->translate("Workbench", "&Electrostatic Constraints");
+    qApp->translate("Workbench", "Fluid Constraints");
+    qApp->translate("Workbench", "&Fluid Constraints");
     qApp->translate("Workbench", "Mechanical Constraints");
     qApp->translate("Workbench", "&Mechanical Constraints");
     qApp->translate("Workbench", "Thermal Constraints");
     qApp->translate("Workbench", "&Thermal Constraints");
+    //
     qApp->translate("Workbench", "Mesh");
     qApp->translate("Workbench", "M&esh");
-    qApp->translate("Workbench", "Fluid Constraints");
-    qApp->translate("Workbench", "&Fluid Constraints");
-    qApp->translate("Workbench", "Electrostatic Constraints");
-    qApp->translate("Workbench", "&Electrostatic Constraints");
+    //
     qApp->translate("Workbench", "Solve");
     qApp->translate("Workbench", "&Solve");
+    //
     qApp->translate("Workbench", "Results");
     qApp->translate("Workbench", "&Results");
-    qApp->translate("Workbench", "Materials");
-    qApp->translate("Workbench", "&Element Geometry");
+    qApp->translate("Workbench", "Filter functions");
+    qApp->translate("Workbench", "&Filter functions");
+    //
     qApp->translate("Workbench", "Utilities");
 #endif
 
@@ -87,6 +96,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MaterialSolid"
            << "FEM_MaterialFluid"
            << "FEM_MaterialMechanicalNonlinear"
+           << "FEM_MaterialReinforced"
            << "FEM_MaterialEditor"
            << "Separator"
            << "FEM_ElementGeometry1D"
@@ -100,6 +110,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "FEM_ConstraintDisplacement"
           << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintContact"
+          << "FEM_ConstraintTie"
           << "FEM_ConstraintTransform"
           << "Separator"
           << "FEM_ConstraintForce"
@@ -143,11 +154,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_SolverCalculiX"
            << "FEM_SolverElmer"
            << "Separator"
-           << "FEM_EquationHeat"
            << "FEM_EquationElasticity"
-           << "FEM_EquationFluxsolver"
            << "FEM_EquationElectrostatic"
            << "FEM_EquationFlow"
+           << "FEM_EquationFluxsolver"
+           << "FEM_EquationHeat"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";
@@ -161,19 +172,19 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "FEM_PostApplyChanges"
               << "FEM_PostPipelineFromResult"
               << "Separator"
-              << "FEM_PostCreateWarpVectorFilter"
-              << "FEM_PostCreateScalarClipFilter"
-              << "FEM_PostCreateCutFilter"
-              << "FEM_PostCreateClipFilter"
-              << "FEM_PostCreateDataAlongLineFilter"
-              << "FEM_PostCreateLinearizedStressesFilter"
-              << "FEM_PostCreateDataAtPointFilter"
+              << "FEM_PostFilterWarp"
+              << "FEM_PostFilterClipScalar"
+              << "FEM_PostFilterCutFunction"
+              << "FEM_PostFilterClipRegion"
+              << "FEM_PostFilterDataAlongLine"
+              << "FEM_PostFilterLinearizedStresses"
+              << "FEM_PostFilterDataAtPoint"
               << "Separator"
               << "FEM_PostCreateFunctions";
 #endif
 
      Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
-     utils->setCommand("Results");
+     utils->setCommand("Utilities");
      *utils << "FEM_ClippingPlaneAdd"
             << "FEM_ClippingPlaneRemoveAll";
 
@@ -190,6 +201,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *material << "FEM_MaterialSolid"
               << "FEM_MaterialFluid"
               << "FEM_MaterialMechanicalNonlinear"
+              << "FEM_MaterialReinforced"
               << "FEM_MaterialEditor";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
@@ -209,6 +221,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "FEM_ConstraintDisplacement"
           << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintContact"
+          << "FEM_ConstraintTie"
           << "FEM_ConstraintTransform"
           << "Separator"
           << "FEM_ConstraintForce"
@@ -270,11 +283,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "FEM_SolverElmer"
            << "FEM_SolverZ88"
            << "Separator"
-           << "FEM_EquationHeat"
            << "FEM_EquationElasticity"
            << "FEM_EquationElectrostatic"
-           << "FEM_EquationFluxsolver"
            << "FEM_EquationFlow"
+           << "FEM_EquationFluxsolver"
+           << "FEM_EquationHeat"
            << "Separator"
            << "FEM_SolverControl"
            << "FEM_SolverRun";
@@ -289,13 +302,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
              << "Separator"
-             << "FEM_PostCreateWarpVectorFilter"
-             << "FEM_PostCreateScalarClipFilter"
-             << "FEM_PostCreateCutFilter"
-             << "FEM_PostCreateClipFilter"
-             << "FEM_PostCreateDataAlongLineFilter"
-             << "FEM_PostCreateLinearizedStressesFilter"
-             << "FEM_PostCreateDataAtPointFilter"
+             << "FEM_PostFilterWarp"
+             << "FEM_PostFilterClipScalar"
+             << "FEM_PostFilterCutFunction"
+             << "FEM_PostFilterClipRegion"
+             << "FEM_PostFilterDataAlongLine"
+             << "FEM_PostFilterLinearizedStresses"
+             << "FEM_PostFilterDataAtPoint"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif

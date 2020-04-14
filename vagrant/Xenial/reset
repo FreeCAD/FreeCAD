@@ -13,13 +13,13 @@ if [ "$(id -u)" != 0 ]; then
 fi
 
 echo "This script will permanently destroy and reset all state in snapd"
-echo "You will loose all of your installed snaps"
+echo "You will lose all of your installed snaps"
 echo
 echo "Type: DESTROY to remove all of your snap state"
 echo
 read consent
 
-if [ "$consent" != "DESTROY" ]; then 
+if [ "$consent" != "DESTROY" ]; then
     echo "No consent, aborting"
     exit 0
 fi

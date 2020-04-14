@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fil" sourcelanguage="en">
+<TS version="2.1" language="fil" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Patayong center-align</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Center-align ng patayo ang mga contents ng napiling mga cell</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Pagsamahin ang mga cell</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Pagsamahin ang mga napiling cell sa spreadsheet</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>I-split ang cell</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>I-split ang nakaraang pinagsamang mga cell sa spreadsheet</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Bold text</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>I-set ang bold text sa napiling mga cell</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Italic na text</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>I-set ang italic text sa napiling mga cell</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>I-underline ang text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>I-set ang underline text sa napiling mga cell</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Custom</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Export ang file</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Mga content ng cell</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Ipakita ang spreadsheet</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Lumilikha sa kulay ng harapan ng Spreadsheet cell(s)</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Light na kulay abo</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Custom</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

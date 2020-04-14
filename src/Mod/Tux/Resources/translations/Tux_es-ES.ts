@@ -44,11 +44,6 @@
       <translation>Foco de rotación</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Botón central del ratón o la tecla H.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Botón central del ratón.</translation>
@@ -71,12 +66,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Compacto</translation>
+      <translation>Compactar</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>ToolTip</translation>
+      <translation>Descripción</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Indefinido</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Botón central del ratón o la tecla H.</translation>
     </message>
   </context>
 </TS>

@@ -6,7 +6,7 @@
 # runs when the gui is up
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002
+#*   (c) 2002 Juergen Riegel <juergen.riegel@web.de>                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -45,3 +45,6 @@ class TechDrawWorkbench (Workbench):
         return "TechDrawGui::Workbench"
 
 Gui.addWorkbench(TechDrawWorkbench())
+
+# Append the export handler
+FreeCAD.addExportType("Technical Drawing (*.svg *.dxf *.pdf)","TechDrawGui")

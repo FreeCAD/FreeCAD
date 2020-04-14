@@ -67,7 +67,7 @@ def retranslateUi():
     text06 = translate("NavigationIndicator", "Navigation style")
     text07 = translate("NavigationIndicator", "Page Up or Page Down key.")
     text08 = translate("NavigationIndicator", "Rotation focus")
-    text09 = translate("NavigationIndicator", "Middle mouse button or key H.")
+    text09 = translate("NavigationIndicator", "Middle mouse button or H key.")
     text10 = translate("NavigationIndicator", "Middle mouse button.")
 
     global t0

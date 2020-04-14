@@ -419,7 +419,7 @@ inline bool BoundBox3<_Precision>::GetOctantFromVector (const Vector3<_Precision
         usNdx |= 2;
     if (isOnRayS ((MinZ + MaxZ)/2, MaxZ, rclVct.z))  // back/FRONT
         usNdx |= 4;
-    rclOctant = (OCTANT) usNdx;
+    rclOctant = static_cast<OCTANT>(usNdx);
     return true;
 }
 
@@ -615,7 +615,7 @@ inline bool BoundBox3<_Precision>::IntersectionPoint (const Vector3<_Precision> 
                 // does intersection point lie in desired direction
                 // or was found the opposing side?
                 // -> scalar product of both direction vectors > 0 (angle < 90)
-                rc = ((cVctRes - rcVct) * rcVctDir) >= (_Precision)0.0;
+                rc = ((cVctRes - rcVct) * rcVctDir) >= 0.0;
             }
         }
     }

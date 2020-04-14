@@ -71,7 +71,7 @@ using namespace Gui;
 // Std_Workbench
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdWorkbench);
+DEF_STD_CMD_AC(StdCmdWorkbench)
 
 StdCmdWorkbench::StdCmdWorkbench()
   : Command("Std_Workbench")
@@ -146,7 +146,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 /**
@@ -247,7 +247,7 @@ void StdCmdAbout::languageChange()
 //===========================================================================
 // Std_AboutQt
 //===========================================================================
-DEF_STD_CMD(StdCmdAboutQt);
+DEF_STD_CMD(StdCmdAboutQt)
 
 StdCmdAboutQt::StdCmdAboutQt()
   :Command("Std_AboutQt")
@@ -269,7 +269,7 @@ void StdCmdAboutQt::activated(int iMsg)
 //===========================================================================
 // Std_WhatsThis
 //===========================================================================
-DEF_STD_CMD(StdCmdWhatsThis);
+DEF_STD_CMD(StdCmdWhatsThis)
 
 StdCmdWhatsThis::StdCmdWhatsThis()
   :Command("Std_WhatsThis")
@@ -293,7 +293,7 @@ void StdCmdWhatsThis::activated(int iMsg)
 //===========================================================================
 // Std_DlgParameter
 //===========================================================================
-DEF_STD_CMD(StdCmdDlgParameter);
+DEF_STD_CMD(StdCmdDlgParameter)
 
 StdCmdDlgParameter::StdCmdDlgParameter()
   :Command("Std_DlgParameter")
@@ -318,7 +318,7 @@ void StdCmdDlgParameter::activated(int iMsg)
 //===========================================================================
 // Std_DlgPreferences
 //===========================================================================
-DEF_STD_CMD_C(StdCmdDlgPreferences);
+DEF_STD_CMD_C(StdCmdDlgPreferences)
 
 StdCmdDlgPreferences::StdCmdDlgPreferences()
   :Command("Std_DlgPreferences")
@@ -349,7 +349,7 @@ void StdCmdDlgPreferences::activated(int iMsg)
 //===========================================================================
 // Std_DlgCustomize
 //===========================================================================
-DEF_STD_CMD(StdCmdDlgCustomize);
+DEF_STD_CMD(StdCmdDlgCustomize)
 
 StdCmdDlgCustomize::StdCmdDlgCustomize()
   :Command("Std_DlgCustomize")
@@ -376,7 +376,7 @@ void StdCmdDlgCustomize::activated(int iMsg)
 //===========================================================================
 // Std_CommandLine
 //===========================================================================
-DEF_STD_CMD(StdCmdCommandLine);
+DEF_STD_CMD(StdCmdCommandLine)
 
 StdCmdCommandLine::StdCmdCommandLine()
   :Command("Std_CommandLine")
@@ -424,7 +424,7 @@ void StdCmdCommandLine::activated(int iMsg)
 // Std_OnlineHelp
 //===========================================================================
 
-DEF_STD_CMD(StdCmdOnlineHelp);
+DEF_STD_CMD(StdCmdOnlineHelp)
 
 StdCmdOnlineHelp::StdCmdOnlineHelp()
   :Command("Std_OnlineHelp")
@@ -449,7 +449,7 @@ void StdCmdOnlineHelp::activated(int iMsg)
 // Std_OnlineHelpWebsite
 //===========================================================================
 
-DEF_STD_CMD(StdCmdOnlineHelpWebsite);
+DEF_STD_CMD(StdCmdOnlineHelpWebsite)
 
 StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
   :Command("Std_OnlineHelpWebsite")
@@ -476,7 +476,7 @@ void StdCmdOnlineHelpWebsite::activated(int iMsg)
 // Std_FreeCADWebsite
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFreeCADWebsite);
+DEF_STD_CMD(StdCmdFreeCADWebsite)
 
 StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
   :Command("Std_FreeCADWebsite")
@@ -504,7 +504,7 @@ void StdCmdFreeCADWebsite::activated(int iMsg)
 // Std_FreeCADUserHub
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFreeCADUserHub);
+DEF_STD_CMD(StdCmdFreeCADUserHub)
 
 StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
   :Command("Std_FreeCADUserHub")
@@ -532,7 +532,7 @@ void StdCmdFreeCADUserHub::activated(int iMsg)
 // Std_FreeCADPowerUserHub
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFreeCADPowerUserHub);
+DEF_STD_CMD(StdCmdFreeCADPowerUserHub)
 
 StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
   :Command("Std_FreeCADPowerUserHub")
@@ -560,7 +560,7 @@ void StdCmdFreeCADPowerUserHub::activated(int iMsg)
 // Std_FreeCADForum
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFreeCADForum);
+DEF_STD_CMD(StdCmdFreeCADForum)
 
 StdCmdFreeCADForum::StdCmdFreeCADForum()
   :Command("Std_FreeCADForum")
@@ -588,7 +588,7 @@ void StdCmdFreeCADForum::activated(int iMsg)
 // Std_FreeCADFAQ
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFreeCADFAQ);
+DEF_STD_CMD(StdCmdFreeCADFAQ)
 
 StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
   :Command("Std_FreeCADFAQ")
@@ -616,7 +616,7 @@ void StdCmdFreeCADFAQ::activated(int iMsg)
 // Std_PythonWebsite
 //===========================================================================
 
-DEF_STD_CMD(StdCmdPythonWebsite);
+DEF_STD_CMD(StdCmdPythonWebsite)
 
 StdCmdPythonWebsite::StdCmdPythonWebsite()
   :Command("Std_PythonWebsite")
@@ -640,7 +640,7 @@ void StdCmdPythonWebsite::activated(int iMsg)
 // Std_MeasurementSimple
 //===========================================================================
 
-DEF_STD_CMD(StdCmdMeasurementSimple);
+DEF_STD_CMD(StdCmdMeasurementSimple)
 
 StdCmdMeasurementSimple::StdCmdMeasurementSimple()
   :Command("Std_MeasurementSimple")
@@ -692,10 +692,45 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     updateActive();
     commitCommand();
 }
+
+//===========================================================================
+// Std_TextDocument
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdTextDocument)
+
+StdCmdTextDocument::StdCmdTextDocument()
+  :Command("Std_TextDocument")
+{
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Add text document");
+    sToolTipText  = QT_TR_NOOP("Add text document to active document");
+    sWhatsThis    = "Std_TextDocument";
+    sStatusTip    = QT_TR_NOOP("Add text document to active document");
+    sPixmap       = "TextDocument";
+    eType         = 0;
+}
+
+void StdCmdTextDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand("Insert text document");
+    doCommand(Doc, "App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
+    doCommand(Gui, "Gui.ActiveDocument.ActiveObject.doubleClicked()");
+    updateActive();
+    commitCommand();
+}
+
+bool StdCmdTextDocument::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // Std_UnitsCalculator
 //===========================================================================
-DEF_STD_CMD(StdCmdUnitsCalculator);
+DEF_STD_CMD(StdCmdUnitsCalculator)
 
 StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
@@ -741,6 +776,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
+    rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());

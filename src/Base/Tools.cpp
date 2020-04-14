@@ -192,6 +192,74 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     return string;
 }
 
+QString Base::Tools::escapeEncodeString(const QString& s)
+{
+    QString result;
+    const int len = s.length();
+    result.reserve(int(len * 1.1));
+    for (int i = 0; i < len; ++i) {
+        if (s.at(i) == QLatin1Char('\\'))
+            result += QLatin1String("\\\\");
+        else if (s.at(i) == QLatin1Char('\"'))
+            result += QLatin1String("\\\"");
+        else if (s.at(i) == QLatin1Char('\''))
+            result += QLatin1String("\\\'");
+        else
+            result += s.at(i);
+    }
+    result.squeeze();
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        if (s.at(i) == '\\')
+            result += "\\\\";
+        else if (s.at(i) == '\"')
+            result += "\\\"";
+        else if (s.at(i) == '\'')
+            result += "\\\'";
+        else
+            result += s.at(i);
+    }
+    return result;
+}
+
+QString Base::Tools::escapeEncodeFilename(const QString& s)
+{
+    QString result;
+    const int len = s.length();
+    result.reserve(int(len * 1.1));
+    for (int i = 0; i < len; ++i) {
+        if (s.at(i) == QLatin1Char('\"'))
+            result += QLatin1String("\\\"");
+        else if (s.at(i) == QLatin1Char('\''))
+            result += QLatin1String("\\\'");
+        else
+            result += s.at(i);
+    }
+    result.squeeze();
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeFilename(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        if (s.at(i) == '\"')
+            result += "\\\"";
+        else if (s.at(i) == '\'')
+            result += "\\\'";
+        else
+            result += s.at(i);
+    }
+    return result;
+}
+
 // ----------------------------------------------------------------------------
 
 using namespace Base;

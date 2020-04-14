@@ -53,10 +53,10 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    ~DrawProjGroupItem();
+    virtual ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
-    App::PropertyVector      RotationVector;
+    App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
 
     short mustExecute() const override;
     virtual void onDocumentRestored() override;
@@ -64,6 +64,10 @@ public:
 
     DrawProjGroup* getPGroup(void) const;
     double getRotateAngle();
+    virtual Base::Vector3d getXDirection(void) const override;
+    virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
+                                      const Base::Vector3d& axis,
+                                      const bool flip = true)  const override;
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual const char* getViewProviderName(void) const override {
@@ -72,17 +76,23 @@ public:
     //return PyObject as DrawProjGroupItemPy
     virtual PyObject *getPyObject(void) override;
 
+    //this doesn't override for dvp pointer??
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;
 
     virtual double getScale(void) const override;
     void autoPosition(void);
-    bool isAnchor(void);
+    bool isAnchor(void) const;
 
+    //DPGI always fits on page since DPG handles scaling
+    virtual bool checkFit(void) const override { return true; }
+    virtual bool checkFit(DrawPage*) const override { return true; }
 
 protected:
     void onChanged(const App::Property* prop) override;
+    virtual bool isLocked(void) const override;
+    virtual bool showLock(void) const override;
 
 private:
     static const char* TypeEnums[];

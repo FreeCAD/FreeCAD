@@ -20,8 +20,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui
+import FreeCAD
+import FreeCADGui
+
 FreeCAD.newDocument()
+FreeCADGui.activeDocument().activeView().viewDefaultOrientation()
 
 from StartPage import StartPage
 StartPage.postStart()

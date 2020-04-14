@@ -44,7 +44,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive)
 
 static const char * primitiveIntToName(int id)
 {
@@ -59,7 +59,7 @@ static const char * primitiveIntToName(int id)
         case 7:  return "Wedge";
         default: return nullptr;
     };
-};
+}
 
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
   : Command("PartDesign_CompPrimitiveAdditive")
@@ -98,35 +98,39 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
 
     Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
     if (shouldMakeBody) {
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
-
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-    Gui::Command::updateActive();
-
-    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
-    if (prm->BaseFeature.getValue())
-       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
-
-    if (pcActiveBody) {
-        copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
+    if (pcActiveBody == nullptr) {
+        return;
     }
 
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
+
+    FCMD_OBJ_DOC_CMD(pcActiveBody,"addObject('PartDesign::Additive"<<shapeType<<"','"<<FeatName<<"')");
+
+    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
+            pcActiveBody->getDocument()->getObject(FeatName.c_str()));
+
+    if(!prm) return;
+    FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
+    Gui::Command::updateActive();
+
+    auto base = prm->BaseFeature.getValue();
+    FCMD_OBJ_HIDE(base);
+
+    if(!base)
+        base = pcActiveBody;
+    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "LineColor", base);
+    copyVisual(prm, "PointColor", base);
+    copyVisual(prm, "Transparency", base);
+    copyVisual(prm, "DisplayMode", base);
+    
+    PartDesignGui::setEdit(prm,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
@@ -136,35 +140,35 @@ Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Box"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Box"));
     p1->setObjectName(QString::fromLatin1("PartDesign_AdditiveBox"));
     p1->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveBox"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Cylinder"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Cylinder"));
     p2->setObjectName(QString::fromLatin1("PartDesign_AdditiveCylinder"));
     p2->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveCylinder"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Sphere"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Sphere"));
     p3->setObjectName(QString::fromLatin1("PartDesign_AdditiveSphere"));
     p3->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveSphere"));
     QAction* p4 = pcAction->addAction(QString());
-    p4->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Cone"));
+    p4->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Cone"));
     p4->setObjectName(QString::fromLatin1("PartDesign_AdditiveCone"));
     p4->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveCone"));
     QAction* p5 = pcAction->addAction(QString());
-    p5->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Ellipsoid"));
+    p5->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Ellipsoid"));
     p5->setObjectName(QString::fromLatin1("PartDesign_AdditiveEllipsoid"));
     p5->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveEllipsoid"));
     QAction* p6 = pcAction->addAction(QString());
-    p6->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Torus"));
+    p6->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Torus"));
     p6->setObjectName(QString::fromLatin1("PartDesign_AdditiveTorus"));
     p6->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveTorus"));
     QAction* p7 = pcAction->addAction(QString());
-    p7->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Prism"));
+    p7->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Prism"));
     p7->setObjectName(QString::fromLatin1("PartDesign_AdditivePrism"));
     p7->setWhatsThis(QString::fromLatin1("PartDesign_AdditivePrism"));
     QAction* p8 = pcAction->addAction(QString());
-    p8->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Wedge"));
+    p8->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Additive_Wedge"));
     p8->setObjectName(QString::fromLatin1("PartDesign_AdditiveWedge"));
     p8->setWhatsThis(QString::fromLatin1("PartDesign_AdditiveWedge"));
 
@@ -189,11 +193,11 @@ void CmdPrimtiveCompAdditive::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height and length"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height, and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cylinder"));
-    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height and angle"));
+    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height, and angle"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Sphere"));
@@ -226,7 +230,7 @@ bool CmdPrimtiveCompAdditive::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive)
 
 CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
   : Command("PartDesign_CompPrimitiveSubtractive")
@@ -264,34 +268,25 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     }
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
 
     Gui::Command::openCommand( (std::string("Make subtractive ") + shapeType).c_str() );
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Subtractive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
-
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
     Gui::Command::updateActive();
+
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "LineColor", prevSolid);
+    copyVisual(Feat, "PointColor", prevSolid);
+    copyVisual(Feat, "Transparency", prevSolid);
+    copyVisual(Feat, "DisplayMode", prevSolid);
 
     if ( isActiveObjectValid() ) {
         // TODO  (2015-08-05, Fat-Zer)
-        if (prevSolid) {
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolid->getNameInDocument());
-        }
+        FCMD_OBJ_HIDE(prevSolid);
     }
 
-    if (pcActiveBody) {
-        copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
-    }
-
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    PartDesignGui::setEdit(Feat,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)
@@ -301,35 +296,35 @@ Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Box"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Box"));
     p1->setObjectName(QString::fromLatin1("PartDesign_SubtractiveBox"));
     p1->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveBox"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Cylinder"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Cylinder"));
     p2->setObjectName(QString::fromLatin1("PartDesign_SubtractiveCylinder"));
     p2->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveCylinder"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Sphere"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Sphere"));
     p3->setObjectName(QString::fromLatin1("PartDesign_SubtractiveSphere"));
     p3->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveSphere"));
     QAction* p4 = pcAction->addAction(QString());
-    p4->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Cone"));
+    p4->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Cone"));
     p4->setObjectName(QString::fromLatin1("PartDesign_SubtractiveCone"));
     p4->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveCone"));
     QAction* p5 = pcAction->addAction(QString());
-    p5->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Ellipsoid"));
+    p5->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Ellipsoid"));
     p5->setObjectName(QString::fromLatin1("PartDesign_SubtractiveEllipsoid"));
     p5->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveEllipsoid"));
     QAction* p6 = pcAction->addAction(QString());
-    p6->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Torus"));
+    p6->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Torus"));
     p6->setObjectName(QString::fromLatin1("PartDesign_SubtractiveTorus"));
     p6->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveTorus"));
     QAction* p7 = pcAction->addAction(QString());
-    p7->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Prism"));
+    p7->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Prism"));
     p7->setObjectName(QString::fromLatin1("PartDesign_SubtractivePrism"));
     p7->setWhatsThis(QString::fromLatin1("PartDesign_SubtractivePrism"));
     QAction* p8 = pcAction->addAction(QString());
-    p8->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Wedge"));
+    p8->setIcon(Gui::BitmapFactory().iconFromTheme("PartDesign_Subtractive_Wedge"));
     p8->setObjectName(QString::fromLatin1("PartDesign_SubtractiveWedge"));
     p8->setWhatsThis(QString::fromLatin1("PartDesign_SubtractiveWedge"));
 

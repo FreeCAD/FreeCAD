@@ -23,12 +23,20 @@ def DProjGroupTest():
     FreeCAD.newDocument("TDGroup")
     FreeCAD.setActiveDocument("TDGroup")
     FreeCAD.ActiveDocument=FreeCAD.getDocument("TDGroup")
+    doc = FreeCAD.ActiveDocument
+    print("document created")
 
     #make Fusion feature
     box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
+    box.recompute()
+    print("box created")
     sphere = FreeCAD.ActiveDocument.addObject("Part::Sphere","Sphere")
+    sphere.recompute()
+    print("sphere created")
     fusion = FreeCAD.ActiveDocument.addObject("Part::MultiFuse","Fusion")
     FreeCAD.ActiveDocument.Fusion.Shapes = [box,sphere]
+    fusion.recompute()
+    print("Fusion created")
 
     #make a page
     print("making a page")
@@ -36,15 +44,33 @@ def DProjGroupTest():
     FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
     FreeCAD.ActiveDocument.Template.Template = templateFileSpec
     FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
-#    page.ViewObject.show()     #unit tests run in console mode
+#    page.ViewObject.show()     #for debugging. unit tests run in console mode
+    print("Page created")
 
     #make projection group
     print("making a projection group")
-    group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup','ProjGroup')
+    doc.openTransaction("Create Proj Group")
+    groupName = 'ProjGroup'
+    group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup', groupName)
     rc = page.addView(group)
+    print("Group created")
     group.Source = [fusion]
 
     print("adding views")
+    frontView = group.addProjection("Front")               ##need an Anchor
+    print("added Front")
+
+    #update group
+    anchorDir = FreeCAD.Vector(0.0, 0.0, 1.0);
+    anchorRot = FreeCAD.Vector(1.0, 0.0, 0.0);
+    group.Anchor.Direction = anchorDir
+    group.Anchor.RotationVector = anchorRot
+    print("Anchor values set")
+    group.Anchor.recompute()
+    doc.commitTransaction()
+    print("Front/Anchor recomputed")
+
+    print("adding left")
     leftView = group.addProjection("Left")
     print("added Left")
     topView = group.addProjection("Top")
@@ -57,8 +83,8 @@ def DProjGroupTest():
     print("added Bottom")
 
     #remove a view from projection group
-    #iv = group.removeProjection("Left")
-    #print("removed Left")
+    iv = group.removeProjection("Left")
+    print("removed Left")
 
     ##test getItemByLabel method
     print("testing getItemByLabel")

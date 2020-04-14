@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="eu" sourcelanguage="en">
+<TS version="2.1" language="eu" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Lerrokatu erdian bertikalean</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Lerrokatu erdian bertikalean hautatutako gelaxken edukiak</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Lerrokatu erdian eta bertikalean hautatutako gelaxken edukiak</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Fusionatu gelaxkak</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Fusionatu kalkulu-orrian hautatutako gelaxkak</translation>
+      <source>Merge selected cells</source>
+      <translation>Fusionatu hautatutako gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Zatitu gelaxka</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Zatitu lehenago fusionatu diren kalkulu-orriko gelaxkak</translation>
+      <source>Split previously merged cells</source>
+      <translation>Zatitu lehenago fusionatutako gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Testu lodia</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ezarri testu lodia hautatutako gelaxketan</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Ezarri letra lodia hautatutako gelaxken testuan</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Testu etzana</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ezarri testu etzana hautatutako gelaxketan</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Ezarri letra etzana hautatutako gelaxken testuan</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Testu azpimarratua</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Ezarri testu azpimarratua hautatutako gelaxketan</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Azpimarratu testua hautatutako gelaxketan</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Pertsonalizatua</translation>
+      <source>Custom Color</source>
+      <translation>Kolore pertsonalizatua</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Esportatu fitxategia</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Gelaxka-edukiak</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Gris argia</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Pertsonalizatua</translation>
+      <source>Custom Color</source>
+      <translation>Kolore pertsonalizatua</translation>
     </message>
   </context>
   <context>

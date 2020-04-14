@@ -1,5 +1,6 @@
 /******************************************************************************
- *   Copyright (c)2012 Konstantinos Poulios <logari81@gmail.com>              *
+ *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
+ *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
@@ -39,12 +40,16 @@ class ReferenceSelection : public Gui::SelectionFilterGate
     bool point;
     // If set to true, allow picking objects from another body in the same part
     bool allowOtherBody;
+    // Allow whole object selection
+    bool whole;
 
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       const bool edge_, const bool plane_, const bool planar_, const bool point_ = false)
+                       const bool edge_, const bool plane_, const bool planar_, 
+                       const bool point_ = false, bool whole_ = false)
         : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
-          support(support_), edge(edge_), plane(plane_), planar(planar_), point(point_), allowOtherBody(true)
+          support(support_), edge(edge_), plane(plane_), 
+          planar(planar_), point(point_), allowOtherBody(true), whole(whole_)
     {
     }
     /**

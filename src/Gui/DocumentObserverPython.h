@@ -65,6 +65,8 @@ private:
     /** Checks if the given object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProvider& Obj);
     /** The property of an observed object has changed */
+    void slotBeforeChangeObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
+    /** The property of an observed object has changed */
     void slotChangedObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
     /** The object was set into edit mode */
     void slotInEdit(const Gui::ViewProviderDocumentObject& Obj);
@@ -75,17 +77,25 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef boost::signals2::connection Connection;
-    Connection connectApplicationCreatedDocument;
-    Connection connectApplicationDeletedDocument;
-    Connection connectApplicationRelabelDocument;
-    Connection connectApplicationRenameDocument;
-    Connection connectApplicationActivateDocument;
-    Connection connectDocumentCreatedObject;
-    Connection connectDocumentDeletedObject;
-    Connection connectDocumentChangedObject;
-    Connection connectDocumentObjectInEdit;
-    Connection connectDocumentObjectResetEdit;
+    typedef struct {
+       boost::signals2::scoped_connection slot;
+       Py::Object py;
+       PyObject* ptr() {
+           return py.ptr();
+       }
+    } Connection;
+
+    Connection pyCreatedDocument;
+    Connection pyDeletedDocument;
+    Connection pyRelabelDocument;
+    Connection pyRenameDocument;
+    Connection pyActivateDocument;
+    Connection pyCreatedObject;
+    Connection pyDeletedObject;
+    Connection pyBeforeChangeObject;
+    Connection pyChangedObject;
+    Connection pyInEdit;
+    Connection pyResetEdit;
 };
 
 } //namespace Gui

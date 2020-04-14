@@ -29,6 +29,8 @@
 # include <QContextMenuEvent>
 # include <QTextCursor>
 # include <QTextStream>
+# include <QDockWidget>
+# include <QPointer>
 #endif
 
 #include <Base/Interpreter.h>
@@ -37,6 +39,8 @@
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "BitmapFactory.h"
+#include "MainWindow.h"
+#include "Application.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -226,6 +230,69 @@ private:
 
 // ----------------------------------------------------------
 
+/**
+ * The ReportOutputObserver class is used to check if messages sent to the
+ * report view are warnings or errors, and if so and if the user has not
+ * disabled this in preferences, the report view is toggled on so the
+ * user always gets the warnings/errors
+ */
+
+ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
+{
+    this->reportView = report;
+}
+
+void ReportOutputObserver::showReportView(){
+    // get the QDockWidget parent of the report view
+    QDockWidget* dw = nullptr;
+    QWidget* par = reportView->parentWidget();
+    while (par) {
+        dw = qobject_cast<QDockWidget*>(par);
+        if (dw)
+            break;
+        par = par->parentWidget();
+    }
+
+    if (dw && !dw->toggleViewAction()->isChecked()) {
+        dw->toggleViewAction()->activate(QAction::Trigger);
+    }
+}
+
+bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::User && obj == reportView.data()) {
+        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        if (cr) {
+            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+            ReportHighlighter::Paragraph msgType = cr->messageType();
+            if (msgType == ReportHighlighter::Warning){
+                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::Error){
+                if (group->GetBool("checkShowReportViewOnError", true)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::Message){
+                if (group->GetBool("checkShowReportViewOnNormalMessage", false)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::LogText){
+                if (group->GetBool("checkShowReportViewOnLogMessage", false)) {
+                    showReportView();
+                }
+            }
+        }
+        return false;  //true would prevent the messages reaching the report view
+    }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
+}
+
+// ----------------------------------------------------------
+
 class ReportOutput::Data
 {
 public:
@@ -301,6 +368,12 @@ ReportOutput::ReportOutput(QWidget* parent)
     _prefs->Attach(this);
     _prefs->Notify("FontSize");
 
+#ifdef FC_DEBUG
+    messageSize = _prefs->GetInt("LogMessageSize",0);
+#else
+    messageSize = _prefs->GetInt("LogMessageSize",2048);
+#endif
+
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
 }
@@ -323,35 +396,37 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::Warning(const char * s)
+void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
 {
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Warning, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Message(const char * s)
-{
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Message, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Error  (const char * s)
-{
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Error, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Log (const char * s)
-{
-    QString msg = QString::fromUtf8(s);
-    if (msg.length() < 1000){
-        // Send the event to itself to allow thread-safety. Qt will delete it when done.
-        CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
-        QApplication::postEvent(this, ev);
+    ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
+    switch (level) {
+        case Base::LogStyle::Warning:
+            style = ReportHighlighter::Warning;
+            break;
+        case Base::LogStyle::Message:
+            style = ReportHighlighter::Message;
+            break;
+        case Base::LogStyle::Error:
+            style = ReportHighlighter::Error;
+            break;
+        case Base::LogStyle::Log:
+            style = ReportHighlighter::LogText;
+            break;
     }
+
+    QString qMsg = QString::fromUtf8(msg.c_str());
+
+    // This truncates log messages that are too long
+    if (style == ReportHighlighter::LogText) {
+        if (messageSize > 0 && qMsg.size()>messageSize) {
+            qMsg.truncate(messageSize);
+            qMsg += QString::fromLatin1("...\n");
+        }
+    }
+
+    // Send the event to itself to allow thread-safety. Qt will delete it when done.
+    CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
+    QApplication::postEvent(this, ev);
 }
 
 void ReportOutput::customEvent ( QEvent* ev )
@@ -378,10 +453,11 @@ void ReportOutput::changeEvent(QEvent *ev)
     if (ev->type() == QEvent::StyleChange) {
         QPalette pal = palette();
         QColor color = pal.windowText().color();
-        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned long value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
-        text = getWindowParameter()->GetUnsigned("colorText", text);
-        getWindowParameter()->SetUnsigned("colorText", text);
+        value = getWindowParameter()->GetUnsigned("colorText", value);
+        getWindowParameter()->SetUnsigned("colorText", value);
     }
     QTextEdit::changeEvent(ev);
 }
@@ -467,6 +543,26 @@ void ReportOutput::onToggleError()
 {
     bErr = bErr ? false : true;
     getWindowParameter()->SetBool( "checkError", bErr );
+}
+
+void ReportOutput::onToggleShowReportViewOnWarning(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnError(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnError", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnNormalMessage(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnLogMessage(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
 }
 
 void ReportOutput::onToggleWarning()
@@ -569,6 +665,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
+    }else if(strcmp(sReason, "LogMessageSize") == 0) {
+#ifdef FC_DEBUG
+        messageSize = rclGrp.GetInt(sReason,0);
+#else
+        messageSize = rclGrp.GetInt(sReason,2048);
+#endif
     }
 }
 

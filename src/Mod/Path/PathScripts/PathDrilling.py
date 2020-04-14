@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,10 +23,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+# *                                                                         *
+# *   Additional modifications and contributions beginning 2019             *
+# *   Focus: 4th-axis integration                                           *
+# *   by Russell Johnson  <russ4262@gmail.com>                              *
+# *                                                                         *
+# ***************************************************************************
 
 from __future__ import print_function
 
-import ArchPanel
 import FreeCAD
 import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
@@ -32,7 +39,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathUtils import fmt, waiting_effects
 from PySide import QtCore
 
 __title__ = "Path Drilling Operation"
@@ -40,14 +46,11 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -57,7 +60,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations.'''
-        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations
+        # return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureRotation
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... add drilling specific properties to obj.'''
@@ -66,14 +70,30 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
         obj.addProperty("App::PropertyBool", "AddTipLength", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
-        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
-        obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
+        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G99"))
+        obj.ReturnLevel = ['G99', 'G98']  # Canned Cycle Return Level
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
+        obj.addProperty("App::PropertyEnumeration", "ExtraOffset", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"))
+        obj.ExtraOffset = ['None', 'Drill Tip', '2x Drill Tip']  # Canned Cycle Return Level
 
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
+        # Rotation related properties
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
+        if not hasattr(obj, 'ReverseDirection'):
+            obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Reverse direction of pocket operation.'))
+        if not hasattr(obj, 'InverseAngle'):
+            obj.addProperty('App::PropertyBool', 'InverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Inverse the angle. Example: -22.5 -> 22.5 degrees.'))
+        if not hasattr(obj, 'AttemptInverseAngle'):
+            obj.addProperty('App::PropertyBool', 'AttemptInverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Attempt the inverse angle for face access if original rotation fails.'))
 
     def circularHoleExecute(self, obj, holes):
         '''circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes.'''
         PathLog.track()
+        PathLog.debug("\ncircularHoleExecute() in PathDrilling.py")
+
+        lastAxis = None
+        lastAngle = 0.0
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
@@ -81,44 +101,110 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         tiplength = 0.0
-        if obj.AddTipLength:
+        if obj.ExtraOffset == 'Drill Tip':
             tiplength = PathUtils.drillTipLength(self.tool)
+        elif obj.ExtraOffset == '2x Drill Tip':
+            tiplength = PathUtils.drillTipLength(self.tool) * 2
 
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
 
-        # ml: I'm not sure whey these were here, they seem redundant
-        ## rapid to first hole location, with spindle still retracted:
-        #p0 = holes[0]
-        #self.commandlist.append(Path.Command('G0', {'X': p0['x'], 'Y': p0['y'], 'F': self.horizRapid}))
-        ## move tool to clearance plane
-        #self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-
-        cmd = "G81"
-        cmdParams = {}
-        cmdParams['Z'] = obj.FinalDepth.Value - tiplength
-        cmdParams['F'] = self.vertFeed
-        cmdParams['R'] = obj.RetractHeight.Value
-        if obj.PeckEnabled and obj.PeckDepth.Value > 0:
-            cmd = "G83"
-            cmdParams['Q'] = obj.PeckDepth.Value
-        elif obj.DwellEnabled and obj.DwellTime > 0:
-            cmd = "G82"
-            cmdParams['P'] = obj.DwellTime
-
         for p in holes:
+            cmd = "G81"
+            cmdParams = {}
+            cmdParams['Z'] = p['trgtDep'] - tiplength
+            cmdParams['F'] = self.vertFeed
+            cmdParams['R'] = obj.RetractHeight.Value
+            if obj.PeckEnabled and obj.PeckDepth.Value > 0:
+                cmd = "G83"
+                cmdParams['Q'] = obj.PeckDepth.Value
+            elif obj.DwellEnabled and obj.DwellTime > 0:
+                cmd = "G82"
+                cmdParams['P'] = obj.DwellTime
+
             params = {}
             params['X'] = p['x']
             params['Y'] = p['y']
             params.update(cmdParams)
+            if obj.EnableRotation != 'Off':
+                angle = p['angle']
+                axis = p['axis']
+                # Rotate model to index for hole
+                if axis == 'X':
+                    axisOfRot = 'A'
+                elif axis == 'Y':
+                    axisOfRot = 'B'
+                elif axis == 'Z':
+                    axisOfRot = 'C'
+                else:
+                    axisOfRot = 'A'
+
+                # Set initial values for last axis and angle
+                if lastAxis is None:
+                    lastAxis = axisOfRot
+                    lastAngle = angle
+
+                # Handle axial and angular transitions
+                if axisOfRot != lastAxis:
+                    self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+                    self.commandlist.append(Path.Command('G0', {lastAxis: 0.0, 'F': self.axialRapid}))
+                elif angle != lastAngle:
+                    self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+                # Prepare for drilling cycle
+                self.commandlist.append(Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
+                self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
+                self.commandlist.append(Path.Command('G1', {'Z': p['stkTop'], 'F': self.vertFeed}))
+
+            # Perform canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
 
-        self.commandlist.append(Path.Command('G80'))
+            # Cancel canned drilling cycle
+            self.commandlist.append(Path.Command('G80'))
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
+
+            # shift axis and angle values
+            if obj.EnableRotation != 'Off':
+                lastAxis = axisOfRot
+                lastAngle = angle
+
+        if obj.EnableRotation != 'Off':
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+            self.commandlist.append(Path.Command('G0', {lastAxis: 0.0, 'F': self.axialRapid}))
 
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
-        obj.RetractHeight = 10
+
+        parentJob = PathUtils.findParentJob(obj)
+
+        if hasattr(parentJob.SetupSheet, 'RetractHeight'):
+            obj.RetractHeight = parentJob.SetupSheet.RetractHeight
+        elif self.applyExpression(obj, 'RetractHeight', 'OpStartDepth+1mm'):
+            obj.RetractHeight = 10
+
+        if hasattr(parentJob.SetupSheet, 'PeckDepth'):
+            obj.PeckDepth = parentJob.SetupSheet.PeckDepth
+        elif self.applyExpression(obj, 'PeckDepth', 'OpToolDiameter*0.75'):
+            obj.PeckDepth = 1
+
+        if hasattr(parentJob.SetupSheet, 'DwellTime'):
+            obj.DwellTime = parentJob.SetupSheet.DwellTime
+        else:
+            obj.DwellTime = 1
+
+        obj.ReverseDirection = False
+        obj.InverseAngle = False
+        obj.AttemptInverseAngle = False
+        obj.ExtraOffset = "None"
+
+        # Initial setting for EnableRotation is taken from Job SetupSheet
+        # User may override on per-operation basis as needed.
+        if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
+            obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
+        else:
+            obj.EnableRotation = 'Off'
+
 
 def SetupProperties():
     setup = []
@@ -128,14 +214,22 @@ def SetupProperties():
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
     setup.append("ReturnLevel")
+    setup.append("ExtraOffset")
     setup.append("RetractHeight")
+    setup.append("EnableRotation")
+    setup.append("ReverseDirection")
+    setup.append("InverseAngle")
+    setup.append("AttemptInverseAngle")
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectDrilling(obj, name)
+    
+    obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
-        proxy.findAllHoles(obj)
+        obj.Proxy.findAllHoles(obj)
+    
     return obj

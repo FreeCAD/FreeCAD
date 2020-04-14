@@ -27,6 +27,7 @@
 #include <App/Material.h>
 
 #include "DlgMaterialPropertiesImp.h"
+#include "ui_DlgMaterialProperties.h"
 #include "Widgets.h"
 #include "SpinBox.h"
 #include "ViewProvider.h"
@@ -44,19 +45,21 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), material(mat)
+  : QDialog(parent, fl)
+  , ui(new Ui_DlgMaterialProperties)
+  , material(mat)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
     if (material != "ShapeMaterial") {
-        this->textLabel1->hide();
-        this->diffuseColor->hide();
+        ui->textLabel1->hide();
+        ui->diffuseColor->hide();
     }
 
 //#if !defined(Q_OS_MAC)
-    ambientColor->setAutoChangeColor(true);
-    diffuseColor->setAutoChangeColor(true);
-    emissiveColor->setAutoChangeColor(true);
-    specularColor->setAutoChangeColor(true);
+    ui->ambientColor->setAutoChangeColor(true);
+    ui->diffuseColor->setAutoChangeColor(true);
+    ui->emissiveColor->setAutoChangeColor(true);
+    ui->specularColor->setAutoChangeColor(true);
 //#endif
 }
 
@@ -67,12 +70,17 @@ DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp()
 {
 }
 
+QColor DlgMaterialPropertiesImp::diffuseColor() const
+{
+    return ui->diffuseColor->color();
+}
+
 /**
  * Sets the ambient color.
  */
 void DlgMaterialPropertiesImp::on_ambientColor_changed()
 {
-    QColor col = ambientColor->color();
+    QColor col = ui->ambientColor->color();
     float r = (float)col.red()/255.0f;
     float g = (float)col.green()/255.0f;
     float b = (float)col.blue()/255.0f;
@@ -94,7 +102,7 @@ void DlgMaterialPropertiesImp::on_ambientColor_changed()
  */
 void DlgMaterialPropertiesImp::on_diffuseColor_changed()
 {
-    QColor col = diffuseColor->color();
+    QColor col = ui->diffuseColor->color();
     float r = (float)col.red()/255.0f;
     float g = (float)col.green()/255.0f;
     float b = (float)col.blue()/255.0f;
@@ -116,7 +124,7 @@ void DlgMaterialPropertiesImp::on_diffuseColor_changed()
  */
 void DlgMaterialPropertiesImp::on_emissiveColor_changed()
 {
-    QColor col = emissiveColor->color();
+    QColor col = ui->emissiveColor->color();
     float r = (float)col.red()/255.0f;
     float g = (float)col.green()/255.0f;
     float b = (float)col.blue()/255.0f;
@@ -138,7 +146,7 @@ void DlgMaterialPropertiesImp::on_emissiveColor_changed()
  */
 void DlgMaterialPropertiesImp::on_specularColor_changed()
 {
-    QColor col = specularColor->color();
+    QColor col = ui->specularColor->color();
     float r = (float)col.red()/255.0f;
     float g = (float)col.green()/255.0f;
     float b = (float)col.blue()/255.0f;
@@ -187,22 +195,22 @@ void DlgMaterialPropertiesImp::setViewProviders(const std::vector<Gui::ViewProvi
             int r = int(mat.ambientColor.r * 255.0f);
             int g = int(mat.ambientColor.g * 255.0f);
             int b = int(mat.ambientColor.b * 255.0f);
-            ambientColor->setColor( QColor(r,g,b) );
+            ui->ambientColor->setColor( QColor(r,g,b) );
             r = int(mat.diffuseColor.r * 255.0f);
             g = int(mat.diffuseColor.g * 255.0f);
             b = int(mat.diffuseColor.b * 255.0f);
-            diffuseColor->setColor( QColor(r,g,b) );
+            ui->diffuseColor->setColor( QColor(r,g,b) );
             r = int(mat.emissiveColor.r * 255.0f);
             g = int(mat.emissiveColor.g * 255.0f);
             b = int(mat.emissiveColor.b * 255.0f);
-            emissiveColor->setColor( QColor(r,g,b) );
+            ui->emissiveColor->setColor( QColor(r,g,b) );
             r = int(mat.specularColor.r * 255.0f);
             g = int(mat.specularColor.g * 255.0f);
             b = int(mat.specularColor.b * 255.0f);
-            specularColor->setColor( QColor(r,g,b) );
-            shininess->blockSignals(true);
-            shininess->setValue((int)(100.0f * (mat.shininess+0.001f)));
-            shininess->blockSignals(false);
+            ui->specularColor->setColor( QColor(r,g,b) );
+            ui->shininess->blockSignals(true);
+            ui->shininess->setValue((int)(100.0f * (mat.shininess+0.001f)));
+            ui->shininess->blockSignals(false);
             break;
         }
     }

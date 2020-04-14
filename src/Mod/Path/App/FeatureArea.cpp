@@ -23,10 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <BRep_Builder.hxx>
+# include <TopoDS_Compound.hxx>
 #endif
-
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
 
 #include "FeatureArea.h"
 #include "FeatureAreaPy.h"
@@ -106,7 +105,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     }
 
     myShapes.clear();
-    if(myArea.getSectionCount()==0) 
+    if(myArea.getSectionCount()==0)
         myShapes.push_back(myArea.getShape(-1));
     else {
         myShapes.reserve(myArea.getSectionCount());

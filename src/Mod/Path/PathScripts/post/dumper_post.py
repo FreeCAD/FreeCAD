@@ -40,6 +40,9 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def export(objectslist, filename,argstring):
+    "called when freecad exports a list of objects"
+    # pylint: disable=unused-argument
+
     output = '''(This output produced with the dump post processor)
 (Dump is useful for inspecting the raw commands in your paths)
 (but is not useful for driving machines.)
@@ -48,7 +51,6 @@ def export(objectslist, filename,argstring):
 
 '''
 
-    "called when freecad exports a list of objects"
     for obj in objectslist:
 
         if not hasattr(obj, "Path"):

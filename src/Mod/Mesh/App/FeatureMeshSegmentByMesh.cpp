@@ -28,6 +28,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
+#include <Base/Converter.h>
 
 #include "Core/Algorithm.h"
 #include "Core/Evaluation.h"

@@ -34,19 +34,18 @@
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <BRep_Tool.hxx>
+# include <gp_Pnt.hxx>
+# include <Precision.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <algorithm>
 #endif
-
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <algorithm>
 
 #include "ui_TaskSketcherValidation.h"
 #include "TaskSketcherValidation.h"
@@ -83,8 +82,9 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
         Precision::Confusion() * 100000
     };
 
+    QLocale loc;
     for (int i=0; i<8; i++) {
-        ui->comboBoxTolerance->addItem(QLocale::system().toString(tolerances[i]), QVariant(tolerances[i]));
+        ui->comboBoxTolerance->addItem(loc.toString(tolerances[i]), QVariant(tolerances[i]));
     }
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);
@@ -222,7 +222,7 @@ void SketcherValidation::on_findReversed_clicked()
                    "%2 constraints are linking to the endpoints. The constraints have"
                    " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
-                   " Do this only once to sketches created in FreeCAD older than v0.15.???"
+                   " Do this only once to sketches created in FreeCAD older than v0.15"
                    ).arg(points.size()/2).arg(nc)
                                  );
             ui->swapReversed->setEnabled(true);

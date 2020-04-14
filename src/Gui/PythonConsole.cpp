@@ -92,7 +92,7 @@ struct PythonConsoleP
     InteractiveInterpreter* interpreter;
     CallTipsList* callTipsList;
     ConsoleHistory history;
-    QString output, error, info;
+    QString output, error, info, historyFile;
     QStringList statements;
     bool interactive;
     QMap<QString, QColor> colormap; // Color map
@@ -106,6 +106,7 @@ struct PythonConsoleP
         interpreter = 0;
         callTipsList = 0;
         interactive = false;
+        historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -323,7 +324,8 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         if (PyErr_Occurred()) {                   /* get latest python exception information */
             PyObject *errobj, *errdata, *errtraceback;
             PyErr_Fetch(&errobj, &errdata, &errtraceback);
-            if (PyDict_Check(errdata)) {
+            // the error message can be empty so errdata will be null
+            if (errdata && PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
                     Base::RuntimeError e;
@@ -468,14 +470,16 @@ PythonConsole::PythonConsole(QWidget *parent)
 #endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
-    .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));
+    .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
+    loadHistory();
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonConsole::~PythonConsole()
 {
+    saveHistory();
     Base::PyGILStateLocker lock;
     getWindowParameter()->Detach( this );
     delete pythonSyntax;
@@ -486,7 +490,7 @@ PythonConsole::~PythonConsole()
     delete d;
 }
 
-/** Set new font and colors according to the paramerts. */  
+/** Set new font and colors according to the parameters. */  
 void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sReason )
 {
     Q_UNUSED(rCaller); 
@@ -514,8 +518,10 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-            col = hPrefGrp->GetUnsigned( sReason, col);
+            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned long value = static_cast<unsigned long>(col);
+            value = hPrefGrp->GetUnsigned(sReason, value);
+            col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
@@ -929,10 +935,11 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = palette();
         QColor color = pal.windowText().color();
-        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned long value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
-        text = getWindowParameter()->GetUnsigned("Text", text);
-        getWindowParameter()->SetUnsigned("Text", text);
+        value = getWindowParameter()->GetUnsigned("Text", value);
+        getWindowParameter()->SetUnsigned("Text", value);
     }
     TextEdit::changeEvent(e);
 }
@@ -1024,29 +1031,34 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
         return;
     // First check on urls instead of text otherwise it may happen that a url
     // is handled as text
+    bool existingFile = false;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
         for (QList<QUrl>::ConstIterator it = uri.begin(); it != uri.end(); ++it) {
             // get the file name and check the extension
             QFileInfo info((*it).toLocalFile());
             QString ext = info.suffix().toLower();
-            if (info.exists() && info.isFile() && 
-                (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
-                // load the file and read-in the source code
-                QFile file(info.absoluteFilePath());
-                if (file.open(QIODevice::ReadOnly)) {
-                    QTextStream str(&file);
-                    runSourceFromMimeData(str.readAll());
+            if (info.exists()) {
+                existingFile = true;
+                if (info.isFile() && (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))) {
+                    // load the file and read-in the source code
+                    QFile file(info.absoluteFilePath());
+                    if (file.open(QIODevice::ReadOnly)) {
+                        QTextStream str(&file);
+                        runSourceFromMimeData(str.readAll());
+                    }
+                    file.close();
                 }
-                file.close();
             }
         }
-
-        return;
     }
-    if (source->hasText()) {
+
+    // Some applications copy text into the clipboard with the formats
+    // 'text/plain' and 'text/uri-list'. In case the url is not an existing
+    // file we can handle it as normal text, then. See forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=34618
+    if (source->hasText() && !existingFile) {
         runSourceFromMimeData(source->text());
-        return;
     }
 }
 
@@ -1223,6 +1235,9 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+
     a = menu.addAction(tr("&Copy"), this, SLOT(copy()), Qt::CTRL+Qt::Key_C);
     a->setEnabled(textCursor().hasSelection());
 
@@ -1234,6 +1249,11 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     a = menu.addAction( tr("Save history as..."), this, SLOT(onSaveHistoryAs()));
     a->setEnabled(!d->history.isEmpty());
+
+    QAction* saveh = menu.addAction(tr("Save history"));
+    saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
+    saveh->setCheckable(true);
+    saveh->setChecked(hGrp->GetBool("SavePythonHistory", false));
 
     menu.addSeparator();
 
@@ -1254,8 +1274,6 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     if (hGrp->GetBool("PythonWordWrap", true)) {
         wrap->setChecked(true);
         this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -1273,6 +1291,8 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
             this->setWordWrapMode(QTextOption::NoWrap);
             hGrp->SetBool("PythonWordWrap", false);
         }
+    } else if (exec == saveh) {
+        hGrp->SetBool("SavePythonHistory", saveh->isChecked());
     }
 }
 
@@ -1352,6 +1372,56 @@ QString PythonConsole::readline( void )
       { PyErr_SetInterrupt(); }            //< send SIGINT to python
     this->_sourceDrain = NULL;             //< disable source drain
     return inputBuffer.append(QChar::fromLatin1('\n')); //< pass a newline here, since the readline-caller may need it!
+}
+
+/**
+ * loads history contents from the default history file
+ */
+void PythonConsole::loadHistory() const
+{
+    // only load contents if history is empty, to not overwrite anything
+    if (!d->history.isEmpty())
+        return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (!hGrp->GetBool("SavePythonHistory", false))
+        return;
+    QFile f(d->historyFile);
+    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QString l;
+        while (!f.atEnd()) {
+            l = QString::fromUtf8(f.readLine());
+            if (!l.isEmpty()) {
+                l.chop(1); // removes the last \n
+                d->history.append(l);
+            }
+        }
+        f.close();
+    }
+}
+
+/**
+ * saves the current history to the default history file
+ */
+void PythonConsole::saveHistory() const
+{
+    if (d->history.isEmpty())
+        return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (!hGrp->GetBool("SavePythonHistory", false))
+        return;
+    QFile f(d->historyFile);
+    if (f.open(QIODevice::WriteOnly)) {
+        QTextStream t (&f);
+        QStringList hist = d->history.values();
+        // only save last 100 entries so we don't inflate forever...
+        if (hist.length() > 100)
+            hist = hist.mid(hist.length()-100);
+        for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
+            t << *it << "\n";
+        f.close();
+    }
 }
 
 // ---------------------------------------------------------------------

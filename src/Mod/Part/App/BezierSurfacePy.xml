@@ -61,14 +61,14 @@
 			</Documentation>
 			<Parameter Name="NbVPoles" Type="Long"/>
 		</Attribute>
-		<Methode Name="bounds">
+        <Methode Name="bounds" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns the parametric bounds (U1, U2, V1, V2) of this Bezier surface.
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isURational">
+        <Methode Name="isURational" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns false if the equation of this Bezier surface is polynomial
@@ -78,7 +78,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isVRational">
+        <Methode Name="isVRational" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns false if the equation of this Bezier surface is polynomial
@@ -88,17 +88,17 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isUPeriodic">
+        <Methode Name="isUPeriodic" Const="true">
 			<Documentation>
 				<UserDocu>Returns false.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isVPeriodic">
+        <Methode Name="isVPeriodic" Const="true">
 			<Documentation>
 				<UserDocu>Returns false.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isUClosed">
+        <Methode Name="isUClosed" Const="true">
 			<Documentation>
 				<UserDocu>
 					Checks if this surface is closed in the u parametric direction.
@@ -107,7 +107,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isVClosed">
+        <Methode Name="isVClosed" Const="true">
 			<Documentation>
 				<UserDocu>
 					Checks if this surface is closed in the v parametric direction.
@@ -233,12 +233,12 @@
 				<UserDocu>Set the row of poles of the Bezier surface.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPole">
+        <Methode Name="getPole" Const="true">
 			<Documentation>
 				<UserDocu>Get a pole of index (UIndex,VIndex) of the Bezier surface.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPoles">
+        <Methode Name="getPoles" Const="true">
 			<Documentation>
 				<UserDocu>Get all poles of the Bezier surface.</UserDocu>
 			</Documentation>
@@ -267,7 +267,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeight">
+        <Methode Name="getWeight" Const="true">
 			<Documentation>
 				<UserDocu>
 					Get a weight of the pole of index (UIndex,VIndex)
@@ -275,7 +275,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeights">
+        <Methode Name="getWeights" Const="true">
 			<Documentation>
 				<UserDocu>Get all weights of the Bezier surface.</UserDocu>
 			</Documentation>
@@ -308,12 +308,12 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="uIso">
+        <Methode Name="uIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the U isoparametric Bezier curve of this Bezier surface</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="vIso">
+        <Methode Name="vIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the V isoparametric Bezier curve of this Bezier surface</UserDocu>
 			</Documentation>

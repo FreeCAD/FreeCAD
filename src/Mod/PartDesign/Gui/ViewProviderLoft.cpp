@@ -25,9 +25,12 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderLoft.h"
 //#include "TaskLoftParameters.h"
 #include "TaskLoftParameters.h"
@@ -38,8 +41,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+
 
 using namespace PartDesignGui;
 
@@ -81,8 +83,7 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderLoft::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderLoft::setEdit(int ModNum)
@@ -173,6 +174,6 @@ QIcon ViewProviderLoft::getIcon(void) const {
         str += QString::fromLatin1("Subtractive_");
 
     str += QString::fromLatin1("Loft.svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

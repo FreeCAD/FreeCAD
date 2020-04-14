@@ -519,7 +519,7 @@ bool MeshKernel::DeletePoint (const MeshPointIterator &rclIter)
 {
     MeshFacetIterator pFIter(*this), pFEnd(*this);
     std::vector<MeshFacetIterator>  clToDel; 
-    unsigned long i, ulInd;
+    unsigned long ulInd;
 
     // index of the point to delete
     ulInd = rclIter._clIter - _aclPointArray.begin(); 
@@ -529,7 +529,7 @@ bool MeshKernel::DeletePoint (const MeshPointIterator &rclIter)
 
     // check corner points of all facets
     while (pFIter < pFEnd) {
-        for (i = 0; i < 3; i++) {
+        for (size_t i = 0; i < 3; i++) {
             if (ulInd == pFIter._clIter->_aulPoints[i])
                 clToDel.push_back(pFIter);
         }
@@ -541,7 +541,7 @@ bool MeshKernel::DeletePoint (const MeshPointIterator &rclIter)
 
     // delete each facet separately (from back to front to avoid to
     // invalidate the iterators)
-    for (i = clToDel.size(); i > 0; i--)
+    for (size_t i = clToDel.size(); i > 0; i--)
         DeleteFacet(clToDel[i-1]); 
     return true;
 }
@@ -745,11 +745,36 @@ std::vector<unsigned long> MeshKernel::GetFacetPoints(const std::vector<unsigned
         points.push_back(p0);
         points.push_back(p1);
         points.push_back(p2);
-  }
+    }
 
     std::sort(points.begin(), points.end());
     points.erase(std::unique(points.begin(), points.end()), points.end());
     return points;
+}
+
+std::vector<unsigned long> MeshKernel::GetPointFacets(const std::vector<unsigned long>& points) const
+{
+    _aclPointArray.ResetFlag(MeshPoint::TMP0);
+    _aclFacetArray.ResetFlag(MeshFacet::TMP0);
+    for (std::vector<unsigned long>::const_iterator pI = points.begin(); pI != points.end(); ++pI)
+        _aclPointArray[*pI].SetFlag(MeshPoint::TMP0);
+
+    // mark facets if at least one corner point is marked
+    for (MeshFacetArray::_TConstIterator pF = _aclFacetArray.begin(); pF != _aclFacetArray.end(); ++pF) {
+        const MeshPoint &rclP0 = _aclPointArray[pF->_aulPoints[0]];
+        const MeshPoint &rclP1 = _aclPointArray[pF->_aulPoints[1]];
+        const MeshPoint &rclP2 = _aclPointArray[pF->_aulPoints[2]];
+
+        if (rclP0.IsFlag(MeshPoint::TMP0) ||
+            rclP1.IsFlag(MeshPoint::TMP0) ||
+            rclP2.IsFlag(MeshPoint::TMP0)) {
+            pF->SetFlag(MeshFacet::TMP0);
+        }
+    }
+
+    std::vector<unsigned long> facets;
+    MeshAlgorithm(*this).GetFacetsFlag(facets, MeshFacet::TMP0);
+    return facets;
 }
 
 std::vector<unsigned long> MeshKernel::HasFacets (const MeshPointIterator &rclIter) const
@@ -799,8 +824,8 @@ void MeshKernel::Write (std::ostream &rclOut) const
     Base::OutputStream str(rclOut);
 
     // Write a header with a "magic number" and a version
-    str << (uint32_t)0xA0B0C0D0;
-    str << (uint32_t)0x010000;
+    str << static_cast<uint32_t>(0xA0B0C0D0);
+    str << static_cast<uint32_t>(0x010000);
 
     char szInfo[257]; // needs an additional byte for zero-termination
     strcpy(szInfo, "MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-MESH-"
@@ -810,7 +835,7 @@ void MeshKernel::Write (std::ostream &rclOut) const
     rclOut.write(szInfo, 256);
 
     // write the number of points and facets
-    str << (uint32_t)CountPoints() << (uint32_t)CountFacets();
+    str << static_cast<uint32_t>(CountPoints()) << static_cast<uint32_t>(CountFacets());
 
     // write the data
     for (MeshPointArray::_TConstIterator it = _aclPointArray.begin(); it != _aclPointArray.end(); ++it) {
@@ -818,12 +843,12 @@ void MeshKernel::Write (std::ostream &rclOut) const
     }
 
     for (MeshFacetArray::_TConstIterator it = _aclFacetArray.begin(); it != _aclFacetArray.end(); ++it) {
-        str << (uint32_t)it->_aulPoints[0] 
-            << (uint32_t)it->_aulPoints[1] 
-            << (uint32_t)it->_aulPoints[2];
-        str << (uint32_t)it->_aulNeighbours[0] 
-            << (uint32_t)it->_aulNeighbours[1] 
-            << (uint32_t)it->_aulNeighbours[2];
+        str << static_cast<uint32_t>(it->_aulPoints[0])
+            << static_cast<uint32_t>(it->_aulPoints[1])
+            << static_cast<uint32_t>(it->_aulPoints[2]);
+        str << static_cast<uint32_t>(it->_aulNeighbours[0])
+            << static_cast<uint32_t>(it->_aulNeighbours[1])
+            << static_cast<uint32_t>(it->_aulNeighbours[2]);
     }
 
     str << _clBoundBox.MinX << _clBoundBox.MaxX;
@@ -942,7 +967,7 @@ void MeshKernel::Read (std::istream &rclIn)
         }
 
         // without edge array
-        if (ratio < 2.5) {
+        if (ratio < 2.5f) {
             // the stored mesh kernel might be empty
             if (uCtPts > 0) {
                 pointArray.resize(uCtPts);
@@ -1096,8 +1121,8 @@ float MeshKernel::GetVolume() const
         fVolume += (-p3.x*p2.y*p1.z + p2.x*p3.y*p1.z + p3.x*p1.y*p2.z - p1.x*p3.y*p2.z - p2.x*p1.y*p3.z + p1.x*p2.y*p3.z);
     }
 
-    fVolume /= 6.0;
-    fVolume = (float)fabs(fVolume);
+    fVolume /= 6.0f;
+    fVolume = fabs(fVolume);
 
     return fVolume;
 }

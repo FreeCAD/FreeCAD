@@ -103,7 +103,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
 
 bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
 {
-    int i;
+    size_t i;
     unsigned long j;
     Base::Polygon2d clPoly;
     Base::Line2d clFacLine, clPolyLine;
@@ -169,21 +169,21 @@ bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& 
     A = clFacPoly[0];
     B = clFacPoly[1];
     C = clFacPoly[2];
-    fDetABC = (float)(A.x*B.y+A.y*C.x+B.x*C.y-(B.y*C.x+A.y*B.x+A.x*C.y));
+    fDetABC = static_cast<float>(A.x*B.y+A.y*C.x+B.x*C.y-(B.y*C.x+A.y*B.x+A.x*C.y));
 
     for (unsigned long j=0; j<myPoly.GetCtVectors(); j++) {
         // facet contains a polygon point -> calculate the corresponding 3d-point
         if (clFacPoly.Contains(myPoly[j])) {
             P = myPoly[j];
-            fDetPAC = (float)(A.x*P.y+A.y*C.x+P.x*C.y-(P.y*C.x+A.y*P.x+A.x*C.y));
-            fDetPBC = (float)(P.x*B.y+P.y*C.x+B.x*C.y-(B.y*C.x+P.y*B.x+P.x*C.y));
-            fDetPAB = (float)(A.x*B.y+A.y*P.x+B.x*P.y-(B.y*P.x+A.y*B.x+A.x*P.y));
+            fDetPAC = static_cast<float>(A.x*P.y+A.y*C.x+P.x*C.y-(P.y*C.x+A.y*P.x+A.x*C.y));
+            fDetPBC = static_cast<float>(P.x*B.y+P.y*C.x+B.x*C.y-(B.y*C.x+P.y*B.x+P.x*C.y));
+            fDetPAB = static_cast<float>(A.x*B.y+A.y*P.x+B.x*P.y-(B.y*P.x+A.y*B.x+A.x*P.y));
             u = fDetPBC / fDetABC;
             v = fDetPAC / fDetABC;
             w = fDetPAB / fDetABC;
       
             // point is on edge or no valid convex combination
-            if (u == 0.0f || v == 0.0f || w == 0.0f || fabs(u+v+w-1.0f) >= 0.001)
+            if (u == 0.0f || v == 0.0f || w == 0.0f || fabs(u+v+w-1.0f) >= 0.001f)
                 return false;
             // 3d point
             clPoint = u*rclFacet._aclPoints[0]+v*rclFacet._aclPoints[1]+w*rclFacet._aclPoints[2];
@@ -223,23 +223,23 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
             clFacLine.clV1 = P1;
             clFacLine.clV2 = P2;
 
-            if (clPolyLine.Intersect(P1, MESH_MIN_PT_DIST)) {
+            if (clPolyLine.Intersect(P1, double(MESH_MIN_PT_DIST))) {
                 // do not pick up corner points
                 iIntersections++;
             }
-            else if (clPolyLine.Intersect(P2, MESH_MIN_PT_DIST)) {
+            else if (clPolyLine.Intersect(P2, double(MESH_MIN_PT_DIST))) {
                 // do not pick up corner points
                 iIntersections++;
             }
             else if (clPolyLine.Intersect(clFacLine, S)) {
                 bool bPushBack=true;
-                float fP1P2 = (float)(P2-P1).Length();
-                float fSP1  = (float)(P1-S).Length();
-                float fSP2  = (float)(P2-S).Length();
+                float fP1P2 = static_cast<float>((P2-P1).Length());
+                float fSP1  = static_cast<float>((P1-S).Length());
+                float fSP2  = static_cast<float>((P2-S).Length());
 
-                float fP3P4 = (float)(P4-P3).Length();
-                float fSP3  = (float)(P3-S).Length();
-                float fSP4  = (float)(P4-S).Length();
+                float fP3P4 = static_cast<float>((P4-P3).Length());
+                float fSP3  = static_cast<float>((P3-S).Length());
+                float fSP4  = static_cast<float>((P4-S).Length());
                 // compute proportion of length
                 float l = fSP1 / fP1P2;
                 float m = fSP2 / fP1P2;
@@ -248,7 +248,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
                 float s = fSP4 / fP3P4;
  
                 // is intersection point convex combination?
-                if ((fabs(l+m-1.0f) < 0.001) && (fabs(r+s-1.0f) < 0.001)) {
+                if ((fabs(l+m-1.0f) < 0.001f) && (fabs(r+s-1.0f) < 0.001f)) {
                     Base::Vector3f clIntersection(m*clFac._aclPoints[j]+l*clFac._aclPoints[(j+1)%3]);
 
                     iIntersections++;
@@ -353,7 +353,7 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
         for (int i=0; i<3; i++) {
             clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
             clProjPnt = Base::Vector2d(clFacPnt.x, clFacPnt.y);
-            if (myPoly.Intersect(clProjPnt, MESH_MIN_PT_DIST))
+            if (myPoly.Intersect(clProjPnt, double(MESH_MIN_PT_DIST)))
                 ++iCtPtsOn;
             else if (myPoly.Contains(clProjPnt) == myInner)
                 ++iCtPtsIn;
@@ -380,7 +380,7 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
             clFacLine.clV1 = P1;
             clFacLine.clV2 = P2;
 
-            if (clFacLine.Intersect(P, MESH_MIN_PT_DIST)) {
+            if (clFacLine.Intersect(P, double(MESH_MIN_PT_DIST))) {
                 if (myPoly.Contains(P1) == myInner) {
                     MeshGeomFacet clNew;
                     clNew._aclPoints[0] = raclPoints[0];

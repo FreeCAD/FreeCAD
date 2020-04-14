@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -51,17 +51,17 @@ public:
    /** @name methods override feature */
     //@{
     /// Recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderBoolean";
     }
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     //@}
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
 

@@ -18,6 +18,8 @@
 									<xs:attribute name="Name" type="xs:string" use="required"/>
 									<xs:attribute name="Const" type="xs:boolean" use="optional"/>
 									<xs:attribute name="Keyword" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="Class" type="xs:boolean" use="optional" default="false"/>
+									<xs:attribute name="Static" type="xs:boolean" use="optional" default="false"/>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
@@ -46,6 +48,7 @@
 							</xs:element>
 							<xs:element name="CustomAttributes" minOccurs="0"/>
 							<xs:element name="ClassDeclarations" type="xs:string"/>
+							<xs:element name="ForwardDeclarations" type="xs:string"/>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string" use="required"/>
 						<xs:attribute name="PythonName" type="xs:string" use="optional"/>

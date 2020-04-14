@@ -37,11 +37,12 @@
 #include "Document.h"
 #include "Application.h"
 #include "NavigationStyle.h"
+#include "View3DPy.h"
 
 
 using namespace Gui;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView)
 
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
@@ -69,6 +70,16 @@ void AbstractSplitView::deleteSelf()
         (*it)->setSceneGraph(0);
     }
     MDIView::deleteSelf();
+}
+
+bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
+{
+    for (auto it = _viewer.begin(); it != _viewer.end(); ++it) {
+        if ((*it)->containsViewProvider(vp))
+            return true;
+    }
+
+    return false;
 }
 
 void AbstractSplitView::setupSettings()
@@ -301,60 +312,64 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char**)
         return true;
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {
+        SbRotation rot(Camera::rotation(Camera::Bottom));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(-1, 0, 0, 0);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewFront",pMsg) == 0) {
-        float root = (float)(sqrt(2.0)/2.0);
+        SbRotation rot(Camera::rotation(Camera::Front));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(-root, 0, 0, -root);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewLeft",pMsg) == 0) {
+        SbRotation rot(Camera::rotation(Camera::Left));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(-0.5, 0.5, 0.5, -0.5);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewRear",pMsg) == 0) {
-        float root = (float)(sqrt(2.0)/2.0);
+        SbRotation rot(Camera::rotation(Camera::Rear));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(0, root, root, 0);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewRight",pMsg) == 0) {
+        SbRotation rot(Camera::rotation(Camera::Right));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(0.5, 0.5, 0.5, 0.5);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewTop",pMsg) == 0) {
+        SbRotation rot(Camera::rotation(Camera::Top));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(0, 0, 0, 1);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
     }
     else if (strcmp("ViewAxo",pMsg) == 0) {
-        float root = (float)(sqrt(3.0)/4.0);
+        SbRotation rot(Camera::rotation(Camera::Isometric));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
             SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
-            cam->orientation.setValue(-0.333333f, -0.166666f, -0.333333f, -root);
+            cam->orientation.setValue(rot);
             (*it)->viewAll();
         }
         return true;
@@ -433,7 +448,8 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewRear",&AbstractSplitViewPy::viewRear,"viewRear()");
     add_varargs_method("viewRight",&AbstractSplitViewPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&AbstractSplitViewPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewAxometric,"viewAxometric()");
+    add_varargs_method("viewAxometric",&AbstractSplitViewPy::viewIsometric,"viewAxometric()");
+    add_varargs_method("viewIsometric",&AbstractSplitViewPy::viewIsometric,"viewIsometric()");
     add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
     add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
 }
@@ -616,7 +632,7 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object AbstractSplitViewPy::viewAxometric(const Py::Tuple& args)
+Py::Object AbstractSplitViewPy::viewIsometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
@@ -649,7 +665,7 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
         Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
         if (!view)
             throw Py::IndexError("Index out of range");
-        return Py::Object(view->getPyObject());
+        return Py::asObject(view->getPyObject());
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -668,7 +684,7 @@ Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
     if (viewIndex >= _view->getSize() || viewIndex < 0)
         throw Py::IndexError("Index out of range");
     PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
-    return Py::Object(viewer);
+    return Py::asObject(viewer);
 }
 
 int AbstractSplitViewPy::sequence_length()
@@ -693,7 +709,7 @@ Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
 
 // ------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView)
 
 SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)

@@ -24,11 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <SMESH_Mesh.hxx>
 #endif
 
 #include "PropertyFemMeshItem.h"
 #include <Mod/Fem/App/FemMeshProperty.h>
-#include <SMESH_Mesh.hxx>
+
 
 using namespace FemGui;
 

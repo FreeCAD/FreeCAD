@@ -102,6 +102,7 @@ public:
 protected:
     void setupLabels();
     void showLicenseInformation();
+    void showCollectionInformation();
 
 protected Q_SLOTS:
     virtual void on_copyButton_clicked();

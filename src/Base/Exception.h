@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -40,7 +39,7 @@
 /// If you want to mark text for translation, use the QT_TRANSLATE_NOOP macro
 /// with the context "Exceptions" and the right throwing macro from below (the one ending in T)
 /// example:
-/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."));
+/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the B-Spline."));
 ///
 /// N.B.: The QT_TRANSLATE_NOOP macro won't translate your string. It will just allow lupdate to identify that string for translation so that
 /// if you ask for a translation (and the translator have provided one) at that time it gets translated (e.g. in the UI before showing the message
@@ -79,6 +78,12 @@
 
 #endif
 
+#define FC_THROWM(_exception,_msg) do {\
+    std::stringstream ss;\
+    ss << _msg;\
+    THROWM(_exception,ss.str().c_str());\
+}while(0)
+
 namespace Base
 {
 
@@ -105,16 +110,25 @@ public:
   inline int getLine() const;
   inline std::string getFunction() const;
   inline bool getTranslatable() const;
+  inline bool getReported() const { return _isReported; }
   
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
   
   inline void setTranslatable(bool translatable);
+
+  inline void setReported(bool reported) { _isReported = reported; }
+
   /// returns a Python dictionary containing the exception data
   virtual PyObject * getPyObject(void);
   /// returns sets the exception data from a Python dictionary
   virtual void setPyObject( PyObject * pydict);
+
+  /// returns the corresponding python exception type
+  virtual PyObject * getPyExceptionType() const;
+  /// Sets the Python error indicator and an error message
+  virtual void setPyException() const;
 
 protected:
  /* sMessage may be:
@@ -143,6 +157,7 @@ protected:
  */
 class BaseExport AbortException : public Exception
 {
+  TYPESYSTEM_HEADER();
 public:
   /// Construction
   AbortException(const char * sMessage);
@@ -239,15 +254,17 @@ public:
   /// Assignment operator
   FileException &operator=(const FileException &inst);
   /// Description of the exception
-  virtual const char* what() const throw();
+  virtual const char* what() const throw() override;
   /// Report generation
-  virtual void ReportException (void) const;
-  /// Get file name for use with tranlatable message
+  virtual void ReportException (void) const override;
+  /// Get file name for use with translatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void);
+  virtual PyObject * getPyObject(void) override;
   /// returns sets the exception data from a Python dictionary
-  virtual void setPyObject( PyObject * pydict);
+  virtual void setPyObject( PyObject * pydict) override;
+
+  virtual PyObject * getPyExceptionType() const override;
 protected:
   FileInfo file;
   // necessary   for what() legacy behaviour as it returns a buffer that
@@ -310,7 +327,7 @@ public:
   virtual ~MemoryException() throw() {}
 #if defined (__GNUC__)
   /// Description of the exception
-  virtual const char* what() const throw();
+  virtual const char* what() const throw() override;
 #endif
 };
 
@@ -398,6 +415,7 @@ public:
   TypeError(const TypeError &inst);
   /// Destruction
   virtual ~TypeError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -415,6 +433,7 @@ public:
   ValueError(const ValueError &inst);
   /// Destruction
   virtual ~ValueError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -432,6 +451,35 @@ public:
   IndexError(const IndexError &inst);
   /// Destruction
   virtual ~IndexError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
+};
+
+class BaseExport NameError : public Exception
+{
+public:
+  /// Construction
+  NameError();
+  NameError(const char * sMessage);
+  NameError(const std::string& sMessage);
+  /// Construction
+  NameError(const NameError &inst);
+  /// Destruction
+  virtual ~NameError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
+};
+
+class BaseExport ImportError : public Exception
+{
+public:
+  /// Construction
+  ImportError();
+  ImportError(const char * sMessage);
+  ImportError(const std::string& sMessage);
+  /// Construction
+  ImportError(const ImportError &inst);
+  /// Destruction
+  virtual ~ImportError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -449,6 +497,7 @@ public:
   AttributeError(const AttributeError &inst);
   /// Destruction
   virtual ~AttributeError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -466,6 +515,7 @@ public:
   RuntimeError(const RuntimeError &inst);
   /// Destruction
   virtual ~RuntimeError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -500,10 +550,11 @@ public:
   NotImplementedError(const NotImplementedError &inst);
   /// Destruction
   virtual ~NotImplementedError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
- * The DivisionByZeroError can be used to indicate a division by zero.
+ * The ZeroDivisionError can be used to indicate a division by zero.
  * @author Werner Mayer
  */
 class BaseExport DivisionByZeroError : public Exception
@@ -517,10 +568,11 @@ public:
   DivisionByZeroError(const DivisionByZeroError &inst);
   /// Destruction
   virtual ~DivisionByZeroError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
- * The ReferencesError can be used to indicate a reference counter has the wrong value.
+ * The ReferenceError can be used to indicate a reference counter has the wrong value.
  * @author Werner Mayer
  */
 class BaseExport ReferencesError : public Exception
@@ -534,6 +586,7 @@ public:
   ReferencesError(const ReferencesError &inst);
   /// Destruction
   virtual ~ReferencesError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -586,6 +639,7 @@ public:
   UnicodeError(const UnicodeError &inst);
   /// Destruction
   virtual ~UnicodeError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -603,6 +657,7 @@ public:
   OverflowError(const OverflowError &inst);
   /// Destruction
   virtual ~OverflowError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -620,6 +675,7 @@ public:
   UnderflowError(const UnderflowError &inst);
   /// Destruction
   virtual ~UnderflowError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -637,6 +693,7 @@ public:
   UnitsMismatchError(const UnitsMismatchError &inst);
   /// Destruction
   virtual ~UnitsMismatchError() throw() {}
+  virtual PyObject * getPyExceptionType() const override;
 };
 
  /* The CADKernelError can be used to indicate an exception originating in the CAD Kernel
@@ -745,4 +802,3 @@ private:
 } //namespace Base
 
 #endif // BASE_EXCEPTION_H
-

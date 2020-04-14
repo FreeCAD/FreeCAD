@@ -25,6 +25,7 @@
 #define GUI_QUANTITYSPINBOX_H
 
 #include <QAbstractSpinBox>
+#include <Base/UnitsSchema.h>
 #include <Gui/MetaTypes.h>
 #include "ExpressionBinding.h"
 
@@ -91,6 +92,18 @@ public:
     /// Sets the value of the maximum property 
     void setMaximum(double max);
 
+    /// Gets the number of decimals
+    int decimals() const;
+    /// Sets the number of decimals
+    void setDecimals(int v);
+
+    /// Sets a specific unit schema to handle quantities.
+    /// The system-wide schema won't be used any more.
+    void setSchema(const Base::UnitSystem& s);
+
+    /// Clears the schemaand again use the system-wide schema.
+    void clearSchema();
+
     /// Gets the path of the bound property
     QString boundToName() const;
     /// Sets the path of the bound property
@@ -111,6 +124,8 @@ public:
     virtual QValidator::State validate(QString &input, int &pos) const;
     virtual void fixup(QString &str) const;
 
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
     bool event(QEvent *event);
 
     void setExpression(boost::shared_ptr<App::Expression> expr);
@@ -141,6 +156,8 @@ protected:
 
 private:
     void updateText(const Base::Quantity&);
+    QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
+    QString getUserString(const Base::Quantity& val) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

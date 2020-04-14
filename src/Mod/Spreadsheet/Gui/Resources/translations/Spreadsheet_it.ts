@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="it" sourcelanguage="en">
+<TS version="2.1" language="it" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Al centro</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Allinea verticalmente al centro il contenuto delle celle selezionate</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Centra in verticale il contenuto delle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Unisci le celle</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Unisce le celle selezionate nel foglio di calcolo</translation>
+      <source>Merge selected cells</source>
+      <translation>Unisci le celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividi cella</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividi le celle precedentemente Unite nel foglio di calcolo</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividi le celle precedentemente unite</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Grassetto</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Imposta il testo in grassetto nelle celle selezionate</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Imposta testo in grassetto nelle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Corsivo</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Imposta il testo in corsivo nelle celle selezionate</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Imposta testo in corsivo nelle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Sottolineato</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Imposta la sottolineatura del testo nelle celle selezionate</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Sottolinea il testo nelle celle selezionate</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizza</translation>
+      <source>Custom Color</source>
+      <translation>Colore personalizzato</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Esporta file</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Contenuto della cella</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Visualizza il foglio di calcolo</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Imposta il colore di sfondo delle celle del foglio di calcolo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Foglio di calcolo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Grigio chiaro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizza</translation>
+      <source>Custom Color</source>
+      <translation>Colore personalizzato</translation>
     </message>
   </context>
   <context>

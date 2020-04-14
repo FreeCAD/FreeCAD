@@ -23,8 +23,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
-#define DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
 
 #include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw2.h>
 #include <Gui/PropertyPage.h>
@@ -39,6 +39,9 @@ public:
     DlgPrefsTechDraw2Imp( QWidget* parent = 0 );
     ~DlgPrefsTechDraw2Imp();
 
+protected Q_SLOTS:
+    void onScaleTypeChanged(int index);
+
 protected:
     void saveSettings();
     void loadSettings();
@@ -47,4 +50,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H

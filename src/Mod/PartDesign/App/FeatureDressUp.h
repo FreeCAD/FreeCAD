@@ -25,12 +25,12 @@
 #define PARTDESIGN_DressUp_H
 
 #include <App/PropertyStandard.h>
-#include "Feature.h"
+#include "FeatureAddSub.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport DressUp : public PartDesign::Feature
+class PartDesignExport DressUp : public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER(PartDesign::DressUp);
 
@@ -43,6 +43,7 @@ public:
      * But for consistency if BaseFeature is nonzero this links to the same body as it.
      */
     App::PropertyLinkSub Base;
+    App::PropertyBool SupportTransform;
 
     short mustExecute() const;
     /// updates the Placement property from the Placement of the BaseFeature
@@ -56,11 +57,12 @@ public:
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
     /// extracts all edges from the subshapes (including face edges) and furthermore adds
-    /// all C0 continuos edges to the vector
+    /// all C0 continuous edges to the vector
     void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
 
 protected:
     virtual void onChanged(const App::Property* prop);
+    virtual void setupObject();
 };
 
 } //namespace PartDesign

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Pystysuoraan tasaus keskelle</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Tasaa yläreunaan pystysuorassa valittujen solujen sisältö</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Yhdistä solut</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Yhdistä valitut solut laskentataulukossa</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Jaa solu</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Jaa laskentataulukon aiemmin yhdistetyt solut</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Lihavoitu teksti</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Määritä lihavoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursivoitu teksti</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Määritä kursivoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Alleviivaa teksti</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Määritä alleviivattu teksti valituissa soluissa</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Mukautettu</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Vie tiedosto</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Solun sisältö</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Näytä laskentataulukko</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Taulukkolaskenta</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Vaaleanharmaa</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Mukautettu</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

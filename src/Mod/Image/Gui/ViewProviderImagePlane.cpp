@@ -31,6 +31,7 @@
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoImage.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTextureCoordinate2.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <QFile>
@@ -91,6 +92,8 @@ void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
     // texture
     texture->model = SoTexture2::MODULATE;
     planesep->addChild(texture);
+
+    planesep->addChild(pcShapeMaterial);
 
     // plane
     pcCoords->point.set1Value(0,0,0,0);

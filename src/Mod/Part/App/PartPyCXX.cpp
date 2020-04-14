@@ -33,11 +33,11 @@
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
 
 namespace Part {
-PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
+PartExport Py::Object shape2pyshape(const TopoShape &shape)
 {
     PyObject* ret = 0;
-    if (!shape.IsNull()) {
-        TopAbs_ShapeEnum type = shape.ShapeType();
+    if (!shape.isNull()) {
+        TopAbs_ShapeEnum type = shape.getShape().ShapeType();
         switch (type)
         {
         case TopAbs_COMPOUND:
@@ -79,6 +79,11 @@ PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
 
     return Py::asObject(ret);
 }
+
+PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape) {
+    return shape2pyshape(TopoShape(shape));
+}
+
 } //namespace Part
 
 

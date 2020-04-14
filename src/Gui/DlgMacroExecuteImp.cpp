@@ -24,11 +24,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
+# include <QLabel>
 # include <QHeaderView>
 # include <QMessageBox>
+# include <QComboBox>
 #endif
 
 #include "DlgMacroExecuteImp.h"
+#include "ui_DlgMacroExecute.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -38,6 +41,8 @@
 #include "Document.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
+#include "DlgCustomizeImp.h"
+#include "DlgToolbarsImp.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -73,21 +78,23 @@ namespace Gui {
  *  true to construct a modal dialog.
  */
 DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog( parent, fl ), WindowParameter( "Macro" )
+    : QDialog( parent, fl )
+    , WindowParameter( "Macro" )
+    , ui(new Ui_DlgMacroExecute)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
     std::string path = getWindowParameter()->GetASCII("MacroPath",
         App::Application::getUserMacroDir().c_str());
     this->macroPath = QString::fromUtf8(path.c_str());
-    fileChooser->setFileName(this->macroPath);
+    ui->fileChooser->setFileName(this->macroPath);
 
     // Fill the List box
     QStringList labels; labels << tr("Macros");
-    userMacroListBox->setHeaderLabels(labels);
-    userMacroListBox->header()->hide();
-    systemMacroListBox->setHeaderLabels(labels);
-    systemMacroListBox->header()->hide();
+    ui->userMacroListBox->setHeaderLabels(labels);
+    ui->userMacroListBox->header()->hide();
+    ui->systemMacroListBox->setHeaderLabels(labels);
+    ui->systemMacroListBox->header()->hide();
     fillUpList();
 }
 
@@ -108,19 +115,19 @@ void DlgMacroExecuteImp::fillUpList(void)
     QDir dir(this->macroPath, QLatin1String("*.FCMacro *.py"));
 
     // fill up with the directory
-    userMacroListBox->clear();
+    ui->userMacroListBox->clear();
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        MacroItem* item = new MacroItem(userMacroListBox,false);
+        MacroItem* item = new MacroItem(ui->userMacroListBox,false);
         item->setText(0, dir[i]);
     }
 
     QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
     dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
 
-    systemMacroListBox->clear();
+    ui->systemMacroListBox->clear();
     if (dir.exists()) {
         for (unsigned int i=0; i<dir.count(); i++ ) {
-            MacroItem* item = new MacroItem(systemMacroListBox,true);
+            MacroItem* item = new MacroItem(ui->systemMacroListBox,true);
             item->setText(0, dir[i]);
         }
     }
@@ -132,44 +139,48 @@ void DlgMacroExecuteImp::fillUpList(void)
 void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
-        LineEditMacroName->setText(item->text(0));
+        ui->LineEditMacroName->setText(item->text(0));
 
-        executeButton->setEnabled(true);
-        deleteButton->setEnabled(true);
-        createButton->setEnabled(true);
-        editButton->setEnabled(true);
-        renameButton->setEnabled(true);
-        duplicateButton->setEnabled(true);
+        ui->executeButton->setEnabled(true);
+        ui->deleteButton->setEnabled(true);
+        ui->toolbarButton->setEnabled(true);
+        ui->createButton->setEnabled(true);
+        ui->editButton->setEnabled(true);
+        ui->renameButton->setEnabled(true);
+        ui->duplicateButton->setEnabled(true);
     }
     else {
-        executeButton->setEnabled(false);
-        deleteButton->setEnabled(false);
-        createButton->setEnabled(true);
-        editButton->setEnabled(false);
-        renameButton->setEnabled(false);
-        duplicateButton->setEnabled(false);
+        ui->executeButton->setEnabled(false);
+        ui->deleteButton->setEnabled(false);
+        ui->toolbarButton->setEnabled(false);
+        ui->createButton->setEnabled(true);
+        ui->editButton->setEnabled(false);
+        ui->renameButton->setEnabled(false);
+        ui->duplicateButton->setEnabled(false);
     }
 }
 
 void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
-        LineEditMacroName->setText(item->text(0));
+        ui->LineEditMacroName->setText(item->text(0));
 
-        executeButton->setEnabled(true);
-        deleteButton->setEnabled(false);
-        createButton->setEnabled(false);
-        editButton->setEnabled(true); //look but don't touch
-        renameButton->setEnabled(false);
-        duplicateButton->setEnabled(false);
+        ui->executeButton->setEnabled(true);
+        ui->deleteButton->setEnabled(false);
+        ui->toolbarButton->setEnabled(false);
+        ui->createButton->setEnabled(false);
+        ui->editButton->setEnabled(true); //look but don't touch
+        ui->renameButton->setEnabled(false);
+        ui->duplicateButton->setEnabled(false);
     }
     else {
-        executeButton->setEnabled(false);
-        deleteButton->setEnabled(false);
-        createButton->setEnabled(false);
-        editButton->setEnabled(false);
-        renameButton->setEnabled(false);
-        duplicateButton->setEnabled(false);
+        ui->executeButton->setEnabled(false);
+        ui->deleteButton->setEnabled(false);
+        ui->toolbarButton->setEnabled(false);
+        ui->createButton->setEnabled(false);
+        ui->editButton->setEnabled(false);
+        ui->renameButton->setEnabled(false);
+        ui->duplicateButton->setEnabled(false);
     }
 }
 
@@ -178,50 +189,54 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
     QTreeWidgetItem* item;
 
     if (index == 0) { //user-specific
-        item = userMacroListBox->currentItem();
+        item = ui->userMacroListBox->currentItem();
         if (item) {
-            executeButton->setEnabled(true);
-            deleteButton->setEnabled(true);
-            createButton->setEnabled(true);
-            editButton->setEnabled(true);
-            renameButton->setEnabled(true);
-            duplicateButton->setEnabled(true);
+            ui->executeButton->setEnabled(true);
+            ui->deleteButton->setEnabled(true);
+            ui->toolbarButton->setEnabled(true);
+            ui->createButton->setEnabled(true);
+            ui->editButton->setEnabled(true);
+            ui->renameButton->setEnabled(true);
+            ui->duplicateButton->setEnabled(true);
         }
         else {
-            executeButton->setEnabled(false);
-            deleteButton->setEnabled(false);
-            createButton->setEnabled(true);
-            editButton->setEnabled(false);
-            renameButton->setEnabled(false);
-            duplicateButton->setEnabled(false);
+            ui->executeButton->setEnabled(false);
+            ui->deleteButton->setEnabled(false);
+            ui->toolbarButton->setEnabled(false);
+            ui->createButton->setEnabled(true);
+            ui->editButton->setEnabled(false);
+            ui->renameButton->setEnabled(false);
+            ui->duplicateButton->setEnabled(false);
         }
     }
     else { //index==1 system-wide
-        item = systemMacroListBox->currentItem();
+        item = ui->systemMacroListBox->currentItem();
 
         if (item) {
-            executeButton->setEnabled(true);
-            deleteButton->setEnabled(false);
-            createButton->setEnabled(false);
-            editButton->setEnabled(true); //but you can't save it
-            renameButton->setEnabled(false);
-            duplicateButton->setEnabled(false);
+            ui->executeButton->setEnabled(true);
+            ui->deleteButton->setEnabled(false);
+            ui->toolbarButton->setEnabled(false);
+            ui->createButton->setEnabled(false);
+            ui->editButton->setEnabled(true); //but you can't save it
+            ui->renameButton->setEnabled(false);
+            ui->duplicateButton->setEnabled(false);
         }
         else {
-            executeButton->setEnabled(false);
-            deleteButton->setEnabled(false);
-            createButton->setEnabled(false);
-            editButton->setEnabled(false);
-            renameButton->setEnabled(false);
-            duplicateButton->setEnabled(false);
+            ui->executeButton->setEnabled(false);
+            ui->deleteButton->setEnabled(false);
+            ui->toolbarButton->setEnabled(false);
+            ui->createButton->setEnabled(false);
+            ui->editButton->setEnabled(false);
+            ui->renameButton->setEnabled(false);
+            ui->duplicateButton->setEnabled(false);
         }
     }
 
     if (item) {
-        LineEditMacroName->setText(item->text(0));
+        ui->LineEditMacroName->setText(item->text(0));
     }
     else {
-        LineEditMacroName->clear();
+        ui->LineEditMacroName->clear();
     }
 }
 
@@ -232,13 +247,13 @@ void DlgMacroExecuteImp::accept()
 {
     QTreeWidgetItem* item;
 
-    int index = tabMacroWidget->currentIndex();
+    int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = userMacroListBox->currentItem();
+        item = ui->userMacroListBox->currentItem();
     }
     else {
         //index == 1 system-wide
-        item = systemMacroListBox->currentItem();
+        item = ui->systemMacroListBox->currentItem();
     }
     if (!item)
         return;
@@ -295,14 +310,14 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = tabMacroWidget->currentIndex();
+    int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = userMacroListBox->currentItem();
+        item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
     else {
         //index == 1 system-wide
-        item = systemMacroListBox->currentItem();
+        item = ui->systemMacroListBox->currentItem();
         dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
     }
 
@@ -311,10 +326,11 @@ void DlgMacroExecuteImp::on_editButton_clicked()
 
     MacroItem * mitem = static_cast<MacroItem *>(item);
 
-    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath()).arg(item->text(0));
+    QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath(), item->text(0));
     PythonEditor* editor = new PythonEditor();
     editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
     PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+    edit->setDisplayName(PythonEditorView::FileName);
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
@@ -322,7 +338,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     if (mitem->systemWide) {
         editor->setReadOnly(true);
         QString shownName;
-        shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0)).arg(tr("Read-only"));
+        shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0), tr("Read-only"));
         edit->setWindowTitle(shownName);
     }
 
@@ -375,7 +391,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 /** Deletes the selected macro file from your harddisc. */
 void DlgMacroExecuteImp::on_deleteButton_clicked()
 {
-    QTreeWidgetItem* item = userMacroListBox->currentItem();
+    QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
     if (!item)
         return;
 
@@ -395,11 +411,249 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
     {
         QDir dir(this->macroPath);
         dir.remove(fn);
-        int index = userMacroListBox->indexOfTopLevelItem(item);
-        userMacroListBox->takeTopLevelItem(index);
+        int index = ui->userMacroListBox->indexOfTopLevelItem(item);
+        ui->userMacroListBox->takeTopLevelItem(index);
         delete item;
     }
 }
+
+/**
+ * Walk user through process of adding macro to global custom toolbar
+ * We create a custom customize dialog with instructions embedded
+ * within the dialog itself for the user, and the buttons to push in red text
+ * There are 2 dialogs we need to create: the macros dialog and the
+ * toolbar dialog.
+ */
+
+void DlgMacroExecuteImp::on_toolbarButton_clicked()
+{
+    /**
+     * advise user of what we are doing, offer chance to cancel
+     * unless user already said not to show this messagebox again
+    **/
+
+    bool showAgain = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ShowWalkthroughMessage", true);
+    if (showAgain){
+        QMessageBox msgBox;
+        QAbstractButton* doNotShowAgainButton = msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
+        msgBox.setText(tr("Guided Walkthrough"));
+        msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
+global toolbar.  Instructions will be in red text inside the dialog.\n\
+\n\
+Note: your changes will be applied when you next switch workbenches\n"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int result = msgBox.exec();
+        if (result == QMessageBox::Cancel){
+            return;
+        }
+        if (msgBox.clickedButton() == doNotShowAgainButton){
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ShowWalkthroughMessage",false);
+        }
+    }
+
+    QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
+    if (!item)
+        return;
+
+    QString fn = item->text(0);
+    QString bareFileName = QFileInfo(fn).baseName(); //for use as default menu text (filename without extension)
+
+    /** check if user already has custom toolbar, so we can tailor instructions accordingly **/
+    bool hasCustomToolbar = true;
+    if (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbench/Global/Toolbar")->GetGroups().empty()) {
+        hasCustomToolbar=false;
+    }
+
+    /** check if user already has this macro command created, if so skip dialog 1 **/
+    bool hasMacroCommand = false;
+    QString macroMenuText;
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    std::vector<Command*> aCmds = cCmdMgr.getGroupCommands("Macros");
+    for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+        MacroCommand* mc = dynamic_cast<MacroCommand*>(*it);
+        if (mc && fn.compare(QLatin1String(mc->getScriptName())) == 0) {
+            hasMacroCommand = true;
+            macroMenuText = QString::fromLatin1(mc->getMenuText());
+        }
+    }
+
+    QTabWidget* tabWidget = nullptr;
+
+    if (!hasMacroCommand){
+        /** first the custom macros page dialog **/
+        Gui::Dialog::DlgCustomizeImp dlg(this);
+
+        /** title is normally "Customize" **/
+        dlg.setWindowTitle(tr("Walkthrough, dialog 1 of 2"));
+
+        tabWidget = dlg.findChild<QTabWidget*>(QString::fromLatin1("Gui__Dialog__TabWidget"));
+        if (!tabWidget) {
+            std::cerr << "Toolbar walkthrough error: Unable to find tabwidget" << std::endl;
+            return;
+        }
+
+        QWidget* setupCustomMacrosPage = tabWidget->findChild<QWidget*>(QString::fromLatin1("Gui__Dialog__DlgCustomActions"));
+        if (!setupCustomMacrosPage) {
+            std::cerr << "Toolbar walkthrough error: Unable to find setupCustomMacrosPage" << std::endl;
+            return;
+        }
+        tabWidget->setCurrentWidget(setupCustomMacrosPage);
+
+        QGroupBox* groupBox7 = setupCustomMacrosPage->findChild<QGroupBox*>(QString::fromLatin1("GroupBox7"));
+        if (!groupBox7) {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find groupBox7\n");
+            //just warn when not a fatal error
+        } else {
+            /** normally the groupbox title is "Setup Custom Macros", but we change it here **/
+            groupBox7->setTitle(tr("Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close"));
+            groupBox7->setStyleSheet(QString::fromLatin1("QGroupBox::title {color:red}"));
+        }
+
+        QPushButton* buttonAddAction = setupCustomMacrosPage->findChild<QPushButton*>(QString::fromLatin1("buttonAddAction"));
+        if (!buttonAddAction) {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find buttonAddAction\n");
+        } else {
+            buttonAddAction->setStyleSheet(QString::fromLatin1("color:red"));
+        }
+
+        QComboBox* macroListBox = setupCustomMacrosPage->findChild<QComboBox*>(QString::fromLatin1("actionMacros"));
+        if (!macroListBox) {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
+        } else {
+            int macroIndex = macroListBox->findText(fn); //fn is the macro filename
+            macroListBox->setCurrentIndex(macroIndex); //select it for the user so he doesn't have to
+        }
+
+        QLineEdit* menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
+        if (!menuText) {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find actionMenu menuText\n");
+        } else {
+            menuText->setText(bareFileName); //user can fill in other fields, e.g. tooltip
+        }
+
+        dlg.exec();
+    }
+
+    /** now for the toolbar selection dialog **/
+
+    Gui::Dialog::DlgCustomizeImp dlg(this);
+
+    if (hasMacroCommand){
+        dlg.setWindowTitle(tr("Walkthrough, dialog 1 of 1"));
+    } else {
+        dlg.setWindowTitle(tr("Walkthrough, dialog 2 of 2"));
+    }
+
+    tabWidget = nullptr;
+    tabWidget = dlg.findChild<QTabWidget*>(QString::fromLatin1("Gui__Dialog__TabWidget"));
+    if (!tabWidget) {
+        std::cerr << "Toolbar walkthrough: Unable to find tabWidget Gui__Dialog__TabWidget" << std::endl;
+        return;
+    }
+
+    DlgCustomToolbars* setupToolbarPage = tabWidget->findChild<DlgCustomToolbars*>(QString::fromLatin1("Gui__Dialog__DlgCustomToolbars"));
+    if (!setupToolbarPage){
+        std::cerr << "Toolbar walkthrough: Unable to find setupToolbarPage Gui__Dialog__DlgCustomToolbars" << std::endl;
+        return;
+    }
+
+    tabWidget->setCurrentWidget(setupToolbarPage);
+    QPushButton* moveActionRightButton = setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("moveActionRightButton"));
+    if (!moveActionRightButton){
+        Base::Console().Warning("Toolbar walkthrough: Unable to find moveActionRightButton\n");
+    } else {
+        moveActionRightButton->setStyleSheet(QString::fromLatin1("background-color: red"));
+    }
+    /** tailor instructions depending on whether user already has custom toolbar created
+     * if not he needs to click New button to create one first
+    **/
+
+    QString instructions2 = tr("Walkthrough instructions: Click right arrow button (->), then Close.");
+    QComboBox* workbenchBox = setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
+    if (!workbenchBox) {
+        Base::Console().Warning("Toolbar walkthrough: Unable to find workbenchBox\n");
+    }
+    else {
+        /** find the Global workbench and select it for the user **/
+
+        int globalIdx = workbenchBox->findData(QString::fromLatin1("Global"));
+        if (globalIdx != -1){
+            workbenchBox->setCurrentIndex(globalIdx);
+            QMetaObject::invokeMethod(setupToolbarPage, "on_workbenchBox_activated",
+                Qt::DirectConnection,
+                QGenericReturnArgument(),
+                Q_ARG(int, globalIdx));
+        } else {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
+        }
+
+        if (!hasCustomToolbar){
+            QPushButton* newButton = setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("newButton"));
+            if (!newButton){
+                Base::Console().Warning("Toolbar walkthrough: Unable to find newButton\n");
+            } else {
+                newButton->setStyleSheet(QString::fromLatin1("color:red"));
+                instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) button, then Close.");
+            }
+        }
+    }
+    /** "label" normally says "Note: the changes become active the next time you load the appropriate workbench" **/
+
+    QLabel *label = setupToolbarPage->findChild<QLabel*>(QString::fromLatin1("label"));
+    if (!label){
+        Base::Console().Warning("Toolbar walkthrough: Unable to find label\n");
+    } else {
+        label->setText(instructions2);
+        label->setStyleSheet(QString::fromLatin1("color:red"));
+    }
+
+    /** find Macros category and select it for the user **/
+    QComboBox* categoryBox = setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("categoryBox"));
+    if (!categoryBox){
+        Base::Console().Warning("Toolbar walkthrough: Unable to find categoryBox\n");
+    } else {
+        int macrosIdx = categoryBox->findText(tr("Macros"));
+        if (macrosIdx != -1){
+            categoryBox->setCurrentIndex(macrosIdx);
+            QMetaObject::invokeMethod(setupToolbarPage, "on_categoryBox_activated",
+                Qt::DirectConnection,
+                QGenericReturnArgument(),
+                Q_ARG(int, macrosIdx));
+        } else {
+            Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
+        }
+    }
+
+    /** expand custom toolbar items **/
+    QTreeWidget* toolbarTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("toolbarTreeWidget"));
+    if (!toolbarTreeWidget) {
+        Base::Console().Warning("Toolbar walkthrough: Unable to find toolbarTreeWidget\n");
+    } else {
+        toolbarTreeWidget->expandAll();
+    }
+
+    /** preselect macro command for user **/
+
+    QTreeWidget* commandTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("commandTreeWidget"));
+    if (!commandTreeWidget) {
+        Base::Console().Warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
+    } else {
+        if (!hasMacroCommand){  //will be the last in the list, the one just created
+            commandTreeWidget->setCurrentItem(commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount()-1));
+            commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
+        } else {  //pre-select it for the user (will be the macro menu text)
+            QList <QTreeWidgetItem*> items = commandTreeWidget->findItems(macroMenuText, Qt::MatchFixedString | Qt::MatchWrap,1);
+            if (!items.empty()) {
+                commandTreeWidget->setCurrentItem(items[0]);
+                commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
+            }
+        }
+    }
+    dlg.exec();
+}
+
+
 
 /**
  * renames the selected macro
@@ -409,9 +663,9 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = tabMacroWidget->currentIndex();
+    int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = userMacroListBox->currentItem();
+        item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 
@@ -442,7 +696,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
         else {
             // keep the item selected although it's not necessarily in alphabetic order
             item->setText(0, fn);
-            LineEditMacroName->setText(fn);
+            ui->LineEditMacroName->setText(fn);
         }
     }
 }
@@ -458,9 +712,9 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = tabMacroWidget->currentIndex();
+    int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = userMacroListBox->currentItem();
+        item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 

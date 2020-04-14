@@ -40,7 +40,6 @@
 # include <GC_MakeArcOfHyperbola.hxx>
 #endif
 
-
 #include "ArcPy.h"
 #include "ArcPy.cpp"
 #include "CirclePy.h"
@@ -204,5 +203,5 @@ PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 
 int ArcPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

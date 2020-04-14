@@ -1,7 +1,7 @@
-from .CompoundFilter import makeCompoundFilter 
+from .CompoundFilter import makeCompoundFilter
 
 def explodeCompound(compound_obj, b_group = None):
-    """explodeCompound(compound_obj, b_group = None): creates a bunch of compound filters, to extract every child of a compount into a separate object. 
+    """explodeCompound(compound_obj, b_group = None): creates a bunch of compound filters, to extract every child of a compound into a separate object.
     group: if True, Group is always made. If False, group is never made. If None, group is made if there is more than one child.
     returns: (group_object, list_of_child_objects)"""
     sh = compound_obj.Shape
@@ -10,7 +10,7 @@ def explodeCompound(compound_obj, b_group = None):
         b_group = n > 1
     if b_group:
         group = compound_obj.Document.addObject('App::DocumentObjectGroup','GrExplode_'+compound_obj.Name)
-        group.Label = 'Exploded {obj.Label}'.format(obj = compound_obj)        
+        group.Label = 'Exploded {obj.Label}'.format(obj = compound_obj)
     else:
         group = compound_obj.Document
     features_created = []

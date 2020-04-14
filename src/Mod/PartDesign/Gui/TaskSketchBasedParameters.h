@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>*
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +55,7 @@ protected:
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.
-    /// For faster access a suggeted name can be tested, first.
+    /// For faster access a suggested name can be tested, first.
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
     static QString getFaceReference(const QString& obj, const QString& sub);

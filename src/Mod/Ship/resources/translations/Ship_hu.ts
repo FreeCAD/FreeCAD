@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation>Külső vonal rajzolása</translation>
+      <translation>Körvonal rajzolása</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="80"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="233"/>
       <source>Outline draw</source>
-      <translation>Külső vonal rajzolása</translation>
+      <translation>Körvonal rajzolása</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>

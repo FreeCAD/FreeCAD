@@ -401,7 +401,7 @@ void FillingUnboundPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             // extend faces and continuities lists if needed
             auto faces = editedObject->UnboundFaces.getValues();
             if (count == faces.size()) {
-                faces.push_back(std::string());
+                faces.emplace_back();
                 editedObject->UnboundFaces.setValues(faces);
             }
             auto conts = editedObject->UnboundOrder.getValues();

@@ -33,6 +33,7 @@
 #include <App/Application.h>
 
 class QCloseEvent;
+class SoNode;
 
 namespace Gui{
 class BaseView;
@@ -46,10 +47,10 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 
 /** The Application main class
- * This is the central class of the GUI 
+ * This is the central class of the GUI
  * @author Jürgen Riegel, Werner Mayer
  */
-class GuiExport Application 
+class GuiExport Application
 {
 public:
     /// construction
@@ -65,6 +66,8 @@ public:
     void importFrom(const char* FileName, const char* DocName, const char* Module);
     /// Export objects from the document DocName to a single file
     void exportTo(const char* FileName, const char* DocName, const char* Module);
+    /// Reload a partial opened document
+    App::Document *reopen(App::Document *doc);
     //@}
 
 
@@ -74,6 +77,10 @@ public:
     bool sendMsgToActiveView(const char* pMsg, const char** ppReturn=0);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
+    /// send Messages to the focused view
+    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn=0);
+    /// send Messages test to the focused view
+    bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
     void attachView(Gui::BaseView* pcView);
     /// Detach a view (get called by the FCView destructor)
@@ -89,7 +96,7 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Gui::Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Gui::Document&, bool)> signalNewDocument;
     /// signal on deleted Document
     boost::signals2::signal<void (const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document
@@ -102,6 +109,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalDeletedObject;
+    /// signal on changed Object
+    boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed object property
     boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
@@ -114,6 +123,8 @@ public:
     boost::signals2::signal<void (const char*)> signalAddWorkbench;
     /// signal on removed workbench
     boost::signals2::signal<void (const char*)> signalRemoveWorkbench;
+    /// signal on show hidden items
+    boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
     boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
     /// signal on entering in edit mode
@@ -126,11 +137,12 @@ public:
     //@{
 protected:
     /// Observer message from the Application
-    void slotNewDocument(const App::Document&);
+    void slotNewDocument(const App::Document&,bool);
     void slotDeleteDocument(const App::Document&);
     void slotRelabelDocument(const App::Document&);
     void slotRenameDocument(const App::Document&);
     void slotActiveDocument(const App::Document&);
+    void slotShowHidden(const App::Document&);
     void slotNewObject(const ViewProvider&);
     void slotDeletedObject(const ViewProvider&);
     void slotChangedObject(const ViewProvider&, const App::Property& Prop);
@@ -146,6 +158,11 @@ public:
     Gui::Document* activeDocument(void) const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
+    /// Getter for the editing document
+    Gui::Document* editDocument(void) const;
+    Gui::MDIView* editViewOfNode(SoNode *node) const;
+    /// Set editing document, which will reset editing of all other document
+    void setEditDocument(Gui::Document* pcDocument);
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
     * If no such document exists 0 is returned.
     */
@@ -166,7 +183,7 @@ public:
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
     //@}
 
-    /// true when the application shuting down
+    /// true when the application shutting down
     bool isClosing(void);
     void checkForPreviousCrashes();
 
@@ -179,6 +196,12 @@ public:
     QString workbenchMenuText(const QString&) const;
     QStringList workbenches(void) const;
     void setupContextMenu(const char* recipient, MenuItem*) const;
+    //@}
+
+    /** @name Appearance */
+    //@{
+    /// Activate a named workbench
+    void setStyleSheet(const QString& qssFile, bool tiledBackground);
     //@}
 
     /** @name User Commands */
@@ -205,7 +228,7 @@ public:
 
 public:
     //---------------------------------------------------------------------
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++	
+    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
     // static python wrapper of the exported functions
     static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args); // activates a workbench object
@@ -218,8 +241,11 @@ public:
     static PyObject* sAddLangPath              (PyObject *self,PyObject *args); // adds a path to a qm file
     static PyObject* sAddIconPath              (PyObject *self,PyObject *args); // adds a path to an icon file
     static PyObject* sAddIcon                  (PyObject *self,PyObject *args); // adds an icon to the cache
+    static PyObject* sGetIcon                  (PyObject *self,PyObject *args); // get an icon from the cache
+    static PyObject* sIsIconCached             (PyObject *self,PyObject *args); // check if an icon is cached
 
     static PyObject* sSendActiveView           (PyObject *self,PyObject *args);
+    static PyObject* sSendFocusView            (PyObject *self,PyObject *args);
 
     static PyObject* sGetMainWindow            (PyObject *self,PyObject *args);
     static PyObject* sUpdateGui                (PyObject *self,PyObject *args);
@@ -232,7 +258,11 @@ public:
 
     static PyObject* sRunCommand               (PyObject *self,PyObject *args);
     static PyObject* sAddCommand               (PyObject *self,PyObject *args);
+    static PyObject* sGetCommandInfo           (PyObject *self,PyObject *args);
     static PyObject* sListCommands             (PyObject *self,PyObject *args);
+    static PyObject* sGetCommandShortcut       (PyObject *self,PyObject *args);
+    static PyObject* sIsCommandActive          (PyObject *self,PyObject *args);
+    static PyObject* sUpdateCommands           (PyObject *self,PyObject *args);
 
     static PyObject* sHide                     (PyObject *self,PyObject *args); // deprecated
     static PyObject* sShow                     (PyObject *self,PyObject *args); // deprecated
@@ -242,12 +272,17 @@ public:
     static PyObject* sOpen                     (PyObject *self,PyObject *args); // open Python scripts
     static PyObject* sInsert                   (PyObject *self,PyObject *args); // open Python scripts
     static PyObject* sExport                   (PyObject *self,PyObject *args);
+    static PyObject* sReload                   (PyObject *self,PyObject *args); // reload FCStd file
+    static PyObject* sLoadFile                 (PyObject *self,PyObject *args); // open all types of files
+
+    static PyObject* sCoinRemoveAllChildren    (PyObject *self,PyObject *args);
 
     static PyObject* sActiveDocument           (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument        (PyObject *self,PyObject *args);
     static PyObject* sActiveView               (PyObject *self,PyObject *args);
     static PyObject* sActivateView             (PyObject *self,PyObject *args);
     static PyObject* sGetDocument              (PyObject *self,PyObject *args);
+    static PyObject* sEditDocument             (PyObject *self,PyObject *args);
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);
@@ -258,11 +293,11 @@ public:
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
-    
+
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
 private:
     struct ApplicationP* d;

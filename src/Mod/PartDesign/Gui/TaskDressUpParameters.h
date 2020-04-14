@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2012 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +31,9 @@
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
 
+class QAction;
 class QListWidget;
+class QListWidgetItem;
 
 namespace Part {
     class Feature;
@@ -51,23 +54,33 @@ public:
 
     void hideObject();
     void showObject();
+    void setupTransaction();
 
     /// Apply the changes made to the object to it
-    virtual void apply() {};
+    virtual void apply() {}
+
+    int getTransactionID() const {
+        return transactionID;
+    }
 
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
-    virtual void onRefDeleted(void)=0;
+    void doubleClicked(QListWidgetItem* item);
+    void setSelection(QListWidgetItem* current);
+    void itemClickedTimeout();
+    virtual void onRefDeleted(void) = 0;
+    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
 
 protected:
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
+    bool wasDoubleClicked = false;
+    bool KeyEvent(QEvent *e);
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
-    virtual void changeEvent(QEvent *e) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const
@@ -76,9 +89,11 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
+    QAction* deleteAction;
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    
+    int transactionID;
 };
 
 /// simulation dialog for the TaskView
@@ -96,6 +111,7 @@ public:
 public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
+    virtual bool reject();
 
 protected:
     TaskDressUpParameters  *parameter;

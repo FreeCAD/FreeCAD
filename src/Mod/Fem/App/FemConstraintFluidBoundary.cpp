@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                          <jrheinlaender[at]users.sourceforge.net>       *
+ *                                   <jrheinlaender@users.sourceforge.net> *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -40,7 +41,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
@@ -70,7 +71,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
     ADD_PROPERTY_TYPE(Subtype,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
-                      "Subtype defines more specific boudnary types");
+                      "Subtype defines more specific boundary types");
     Subtype.setEnums(WallSubtypes);
     ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Scaler value for the specific value subtype, like pressure, velocity magnitude");
@@ -146,6 +147,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         // need to trigger ViewProvider::updateData() for redraw in 3D view after this method
     }
 
+    //naturalDirectionVector is a private member of this class
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
@@ -157,8 +159,8 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     } else if (prop == &Direction) {
-        Base::Vector3d direction = getDirection(Direction);
-        if (direction.Length() < Precision::Confusion())
+        Base::Vector3d direction = getDirection(Direction);  // Fem::Constraint
+        if (direction.Length() < Precision::Confusion())  // if Direct has no link provided return Base::Vector3d(0,0,0);
             return;
         naturalDirectionVector = direction;
         if (Reversed.getValue())

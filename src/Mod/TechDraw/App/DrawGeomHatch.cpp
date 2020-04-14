@@ -60,6 +60,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -77,12 +78,11 @@
 #include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 using namespace std;
 
 App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
                                                                        std::numeric_limits<double>::max(),
-                                                                       pow(10,- Base::UnitsApi::getDecimals())};
+                                                                       (0.1)}; // increment by 0.1
 
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
@@ -92,15 +92,21 @@ DrawGeomHatch::DrawGeomHatch(void)
     static const char *vgroup = "GeomHatch";
 
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
-    ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
-    ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
+    Source.setScope(App::LinkScope::Global);
+    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,
+                                            "Embedded Pat hatch file. System use only.");   // n/a to end users
+    ADD_PROPERTY_TYPE(NamePattern,(prefGeomHatchName()),vgroup,App::Prop_None,"The name of the pattern");
     ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
 
     m_saveFile = "";
     m_saveName = "";
 
-    getParameters();
+//    getParameters();
+
+    std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
+    FilePattern.setFilter(patFilter);
 
 }
 
@@ -110,12 +116,18 @@ DrawGeomHatch::~DrawGeomHatch()
 
 void DrawGeomHatch::onChanged(const App::Property* prop)
 {
-    if (prop == &Source )   {
-        if (!isRestoring()) {
+    if (!isRestoring()) {
+        if (prop == &Source) {
             DrawGeomHatch::execute();
         }
-    }
-    if (isRestoring()) {
+        App::Document* doc = getDocument();
+        if ((prop == &FilePattern) &&
+            (doc != nullptr) ) {
+            if (!FilePattern.isEmpty()) {
+                replacePatIncluded(FilePattern.getValue());
+            }
+        }
+    } else {
         if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
             (prop == &NamePattern))   {
             DrawGeomHatch::execute();
@@ -143,12 +155,24 @@ short DrawGeomHatch::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
 {
-    //save names & check if different
-    if ((!FilePattern.isEmpty())  &&
+//    Base::Console().Message("DGH::execute()\n");
+    makeLineSets();
+    DrawViewPart* parent = getSourceView();
+    if (parent != nullptr) {
+        parent->requestPaint();
+    }
+    return App::DocumentObject::StdReturn;
+}
+
+
+void DrawGeomHatch::makeLineSets(void)
+{
+//    Base::Console().Message("DGH::makeLineSets()\n");
+    if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        if ((m_saveFile != FilePattern.getValue()) ||
+        if ((m_saveFile != PatIncluded.getValue()) ||
             (m_saveName != NamePattern.getValue()))  {
-            m_saveFile = FilePattern.getValue();
+            m_saveFile = PatIncluded.getValue();
             m_saveName = NamePattern.getValue();
             std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
             m_lineSets.clear();
@@ -160,7 +184,6 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
             }
         }
     }
-    return App::DocumentObject::StdReturn;
 }
 
 DrawViewPart* DrawGeomHatch::getSourceView(void) const
@@ -172,7 +195,7 @@ DrawViewPart* DrawGeomHatch::getSourceView(void) const
 
 std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile()
 {
-    std::string fileSpec = FilePattern.getValue();
+    std::string fileSpec = PatIncluded.getValue();
     std::string myPattern = NamePattern.getValue();
     return getDecodedSpecsFromFile(fileSpec,myPattern);
 }
@@ -212,7 +235,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
     std::vector<LineSet> result;
 
     if (lineSets.empty()) {
-        Base::Console().Log("INFO - DGH::getTrimmedLines - no LineSets!\n");
+        Base::Console().Log("DGH::getTrimmedLines - no LineSets!\n");
         return result;
     }
 
@@ -262,10 +285,10 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
             resultEdges.push_back(edge);
         }
 
-        std::vector<TechDrawGeometry::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeom*> resultGeoms;
         int i = 0;
         for (auto& e: resultEdges) {
-            TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
@@ -410,10 +433,10 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
-        std::vector<TechDrawGeometry::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeom*> resultGeoms;
         int i = 0;
         for (auto& e: candidates) {
-            TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
@@ -513,6 +536,113 @@ PyObject *DrawGeomHatch::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
+{
+//    Base::Console().Message("DGH::replacePatHatch(%s)\n", newPatFile.c_str());
+    if (PatIncluded.isEmpty()) {
+        setupPatIncluded();
+    } else {
+        std::string tempName = PatIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(newPatFile, tempName);
+        PatIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawGeomHatch::onDocumentRestored() 
+{
+//    Base::Console().Message("DGH::onDocumentRestored()\n");
+    if (PatIncluded.isEmpty()) {
+        if (!FilePattern.isEmpty()) {
+            std::string patFileName = FilePattern.getValue();
+            Base::FileInfo tfi(patFileName);
+            if (tfi.isReadable()) {
+                if (PatIncluded.isEmpty()) {
+                    setupPatIncluded();
+                }
+            }
+        }
+    }
+    execute();
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawGeomHatch::setupObject()
+{
+    //by this point DGH should have a name and belong to a document
+    setupPatIncluded();
+
+    App::DocumentObject::setupObject();
+}
+
+void DrawGeomHatch::setupPatIncluded(void)
+{
+//    Base::Console().Message("DGH::setupPatIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "PatHatch.pat";
+    std::string dir = doc->TransientDir.getValue();
+    std::string patName = dir + special;
+
+    if (PatIncluded.isEmpty()) {
+        DrawUtil::copyFile(std::string(), patName);
+        PatIncluded.setValue(patName.c_str());
+    }
+
+    if (!FilePattern.isEmpty()) {
+        std::string exchName = PatIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(FilePattern.getValue(), exchName);
+        PatIncluded.setValue(exchName.c_str(), special.c_str());
+    }
+}
+
+void DrawGeomHatch::unsetupObject(void)
+{
+//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv != nullptr) {
+        dv->requestPaint();
+    }
+    App::DocumentObject::unsetupObject();
+}
+
+std::string DrawGeomHatch::prefGeomHatchFile(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    std::string defaultFileName = defaultDir + "FCPAT.pat";
+    std::string result = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
+    if (result.empty()) {
+        result = defaultFileName;
+    }
+    return result;
+}
+
+std::string DrawGeomHatch::prefGeomHatchName()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+    std::string defaultNamePattern = "Diamond";
+    std::string result = hGrp->GetASCII("NamePattern",defaultNamePattern.c_str());
+    if (result.empty()) {
+        result = defaultNamePattern;
+    }
+    return result;
+}
+
+App::Color DrawGeomHatch::prefGeomHatchColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
+    return fcColor;
+}
+
+
 
 // Python Drawing feature ---------------------------------------------------------
 

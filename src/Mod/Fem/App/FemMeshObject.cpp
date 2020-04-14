@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,7 +40,8 @@ PROPERTY_SOURCE(Fem::FemMeshObject, App::GeoFeature)
 
 FemMeshObject::FemMeshObject()
 {
-    ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_None,"FEM Mesh object");
+    ADD_PROPERTY_TYPE(FemMesh,(), "FEM Mesh",Prop_NoRecompute,"FEM Mesh object");
+    // in the regard of recomputes see: https://forum.freecadweb.org/viewtopic.php?f=18&t=33329#p279203
 }
 
 FemMeshObject::~FemMeshObject()

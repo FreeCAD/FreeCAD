@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -33,15 +34,14 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
-# Qt tanslation handling
+
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectPocket(PathAreaOp.ObjectOp):
     '''Base class for proxy objects of all pocket operations.'''
@@ -51,12 +51,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
 
     def pocketOpFeatures(self, obj):
+        # pylint: disable=unused-argument
         return 0
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... overwrite to initialize subclass.
         Can safely be overwritten by subclass.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def pocketInvertExtraOffset(self):
         '''pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
@@ -69,7 +70,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         PathLog.track()
 
         # Pocket Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
+        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)"))
         obj.CutMode = ['Climb', 'Conventional']
         obj.addProperty("App::PropertyDistance", "ExtraOffset", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra offset to apply to the operation. Direction is operation dependent."))
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start pocketing at center or boundary"))
@@ -132,12 +133,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['threshold'] = self.radius * 2
         return params
 
+
 def SetupProperties():
-    setup = []
+    setup = PathAreaOp.SetupProperties()
     setup.append('CutMode')
     setup.append('ExtraOffset')
     setup.append('StepOver')
     setup.append('ZigZagAngle')
     setup.append('OffsetPattern')
     return setup
-

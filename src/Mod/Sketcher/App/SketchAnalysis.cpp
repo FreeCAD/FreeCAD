@@ -26,19 +26,19 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <BRep_Tool.hxx>
+# include <gp_Pnt.hxx>
+# include <Precision.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <algorithm>
+# include <cmath>
 #endif
-
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <algorithm>
 
 #include <Base/Console.h>
 #include <App/Document.h>
@@ -46,8 +46,6 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/Geometry.h>
-
-#include <cmath>
 
 #include "SketchAnalysis.h"
 
@@ -373,7 +371,7 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying coincident constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying coincident constraints."));
             }
         }
         else {
@@ -452,7 +450,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints."));
             }
         }
         else {
@@ -647,7 +645,7 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying equality constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying equality constraints."));
             }
         }
         else {
@@ -701,7 +699,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
     solvesketch(status,dofs,true);
 
     if(status) {// it should not be possible at this moment as we start from a clean situation
-        THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch without constraints.\n"))
+        THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch without constraints."));
     }
 
     // STAGE 1: Vertical/Horizontal Line Segments
@@ -738,7 +736,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints."));
         }
     }
 
@@ -760,7 +758,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying point-on-point constraints."));
         }
     }
 
@@ -788,7 +786,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying equality constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying equality constraints."));
         }
     }
 

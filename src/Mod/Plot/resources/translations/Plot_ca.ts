@@ -108,107 +108,107 @@
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
       <translation>Configurar els eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>Eixos actius</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>S'apliquen a tots els eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>Dimensions</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>Posició de l'eix X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Posició de l'eix Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>Escales</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>X auto</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Y auto</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
       <translation>Índex dels eixos actius</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
       <translation>Afegir nous eixos al Plot</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
       <translation>Esborra els eixos seleccionats</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>Comprovar-ho per aplicar transformacions a tots els eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
       <translation>Esquerra obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
       <translation>Límit Dret dels eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
       <translation>Fons obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
       <translation>Part superior obligat dels eixos</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
       <translation>Desplaçament cap a fora de l'eix X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
       <translation>Desplaçament cap a fora de l'eix Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
       <translation>Eix X auto seleccionar l'escala</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
       <translation>Y eix escala autoseleciò</translation>
     </message>
@@ -226,12 +226,12 @@
       <translation>matplotlib no es troba, mòdul s'impossibilitarà</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
       <translation>Cal seleccionar Plot document per tal de salvar-lo</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
       <translation>Eixos 0 no es pot suprimir</translation>
     </message>
@@ -249,62 +249,62 @@
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
       <translation>Conjunt d'Etiquetes</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>Eixos actius</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>Títol</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>X etiqueta</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>Etiquetes d'Y</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
       <translation>Índex dels eixos actius</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
       <translation>Títol (associada als eixos actius)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>Lletra de títol</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>X el títol d'eix</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>X eix títol de lletra</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Títol de l'eix Y</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
       <translation>Mida de lletra de títol de l'eix Y</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
       <translation>Salvar la figura</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
       <translation>Polzades</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
       <translation>Punts per polzada</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
       <translation>Camí d'arxiu d'imatge de sortida</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
       <translation>Mostra un diàleg de selecció de fitxer</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
       <translation>X la mida de la imatge</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
       <translation>Mida d'imatge Y</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>Punts per cada punt, amb mida definirà la resolució d'imatge de sortida</translation>
     </message>

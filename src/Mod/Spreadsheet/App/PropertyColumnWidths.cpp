@@ -37,7 +37,7 @@ using namespace Spreadsheet;
 const int PropertyColumnWidths::defaultWidth = 100;
 const int PropertyColumnWidths::defaultHeaderWidth = 50;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property)
 
 PropertyColumnWidths::PropertyColumnWidths()
 {
@@ -63,8 +63,11 @@ App::Property *PropertyColumnWidths::Copy() const
 
 void PropertyColumnWidths::Paste(const App::Property &from)
 {
+    setValues(dynamic_cast<const PropertyColumnWidths&>(from).getValues());
+}
+
+void PropertyColumnWidths::setValues(const std::map<int,int> &values) {
     aboutToSetValue();
-    const PropertyColumnWidths * frompcw = static_cast<const PropertyColumnWidths*>(&from);
 
     std::map<int, int>::const_iterator i;
 
@@ -79,8 +82,8 @@ void PropertyColumnWidths::Paste(const App::Property &from)
     clear();
 
     /* Copy new map from from */
-    i = frompcw->begin();
-    while (i != frompcw->end()) {
+    i = values.begin();
+    while (i != values.end()) {
         insert(*i);
         dirty.insert(i->first);
         ++i;

@@ -25,12 +25,12 @@ The trimmed surface is built from a copy of the basis surface. Therefore, when t
 is modified the trimmed surface is not changed. Consequently, the trimmed surface does not
 necessarily have the same orientation as the basis surface.</UserDocu>
 		</Documentation>
-		<Methode Name="uIso">
+        <Methode Name="uIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the U isoparametric curve</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="vIso">
+        <Methode Name="vIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the V isoparametric curve</UserDocu>
 			</Documentation>

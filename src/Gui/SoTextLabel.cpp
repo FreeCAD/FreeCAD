@@ -94,7 +94,7 @@ App.ActiveDocument.addObject("App::InventorObject","iv").Buffer=s
 \endcode
 */
 
-SO_NODE_SOURCE(SoTextLabel);
+SO_NODE_SOURCE(SoTextLabel)
 
 void SoTextLabel::initClass()
 {
@@ -297,7 +297,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoStringLabel);
+SO_NODE_SOURCE(SoStringLabel)
 
 void SoStringLabel::initClass()
 {
@@ -394,7 +394,7 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoFrameLabel);
+SO_NODE_SOURCE(SoFrameLabel)
 
 void SoFrameLabel::initClass()
 {
@@ -569,7 +569,7 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(TranslateManip);
+SO_NODE_SOURCE(TranslateManip)
 
 void
 TranslateManip::initClass()

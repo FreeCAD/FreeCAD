@@ -49,29 +49,46 @@ class BaseExport Vector2d
 public:
   double x, y;
 
-  inline Vector2d (void);
-  inline Vector2d (float x, float y);
-  inline Vector2d (double x, double y);
-  inline Vector2d (const Vector2d &rclVct);
-
-  // methods
-  inline double Length (void) const;
-  inline double Distance(const Vector2d&) const;
-  inline bool IsEqual(const Vector2d&, double tolerance) const;
+  inline Vector2d(void);
+  inline Vector2d(float x, float y);
+  inline Vector2d(double x, double y);
+  inline Vector2d(const Vector2d &v);
 
   // operators
-  inline Vector2d& operator= (const Vector2d &rclVct);
-  inline double    operator* (const Vector2d &rclVct) const;
-  inline bool      operator== (const Vector2d &rclVct) const;
-  inline Vector2d  operator+ (const Vector2d &rclVct) const;
-  inline Vector2d  operator- (const Vector2d &rclVct) const;
-  inline Vector2d  operator/ (double c) const;
+  inline Vector2d& operator=  (const Vector2d &v);
+  inline bool      operator== (const Vector2d &v) const;
+  inline Vector2d  operator+  (void) const;
+  inline Vector2d  operator+  (const Vector2d &v) const;
+  inline Vector2d& operator+= (const Vector2d &v);
+  inline Vector2d  operator-  (void) const;
+  inline Vector2d  operator-  (const Vector2d &v) const;
+  inline Vector2d& operator-= (const Vector2d &v);
+  inline Vector2d  operator*  (double c) const;
+  inline Vector2d& operator*= (double c);
+  inline double    operator*  (const Vector2d &v) const;
+  inline Vector2d  operator/  (double c) const;
+  inline Vector2d& operator/= (double c);
 
-  inline void Set (double fPX, double fPY);
-  inline void Scale (double fS);
-  inline void Normalize (void);
-  double GetAngle (const Vector2d &rclVect) const;
-  void  ProjectToLine (const Vector2d &rclPt, const Vector2d &rclLine);
+  // methods
+  inline bool IsNull(double tolerance = 0.0) const;
+  inline double Length(void) const;
+  inline double Angle(void) const;
+  inline double Sqr(void) const;
+
+  inline Vector2d& Set(double x, double y);
+  inline Vector2d& Negate(void);
+  inline Vector2d& Scale(double factor);
+  inline Vector2d& Rotate(double angle);
+  inline Vector2d& Normalize(void);
+
+  inline Vector2d Perpendicular(bool clockwise = false) const;
+  static inline Vector2d FromPolar(double r, double fi);
+
+  inline double Distance(const Vector2d &v) const;
+  inline bool IsEqual(const Vector2d &v, double tolerance = 0.0) const;
+
+  double GetAngle(const Vector2d &v) const;
+  void  ProjectToLine(const Vector2d &point, const Vector2d &line);
 };
 
 /** BoundBox2d ********************************************/
@@ -89,19 +106,24 @@ public:
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
   inline bool IsValid (void);
   inline bool IsEqual(const BoundBox2d&, double tolerance) const;
-  
+
   // operators
   inline BoundBox2d& operator= (const BoundBox2d& rclBB);
   inline bool operator== (const BoundBox2d& rclBB) const;
+  
+  // methods
+  inline double Width(void) const;
+  inline double Height(void) const;
+  inline bool Contains(const Vector2d &v) const;
+  inline bool Contains(const Vector2d &v, double tolerance) const;
+  inline Vector2d GetCenter(void) const;
+
+  inline void SetVoid(void);
+  inline void Add(const Vector2d &v);
+
   bool Intersect(const Line2d &rclLine) const;
   bool Intersect(const BoundBox2d &rclBB) const;
   bool Intersect(const Polygon2d &rclPoly) const;
-  inline void Add(const Vector2d &rclVct);
-
-  void SetVoid (void) { MinX = MinY = DOUBLE_MAX; MaxX = MaxY = -DOUBLE_MAX; }
-
-  // misc
-  bool Contains (const Vector2d &rclV) const;
 };
 
 /** Line2d ********************************************/
@@ -160,6 +182,7 @@ public:
   BoundBox2d CalcBoundBox (void) const;
   bool Contains (const Vector2d &rclV) const;
   void Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rclResultPolygonList) const;
+  bool Intersect (const Polygon2d &rclPolygon) const;
   bool Intersect (const Vector2d &rclV, double eps) const;
 
 private:
@@ -168,96 +191,190 @@ private:
 
 /** INLINES ********************************************/
 
-inline Vector2d::Vector2d (void)
+inline Vector2d::Vector2d(void)
 : x(0.0), y(0.0)
 {
 }
 
-inline Vector2d::Vector2d (float x, float y)
+inline Vector2d::Vector2d(float x, float y)
 : x(x), y(y)
 {
 }
 
-inline Vector2d::Vector2d (double x, double y)
+inline Vector2d::Vector2d(double x, double y)
 : x(x), y(y)
 {
 }
 
-inline Vector2d::Vector2d (const Vector2d &rclVct)
-: x(rclVct.x), y(rclVct.y)
+inline Vector2d::Vector2d(const Vector2d &v)
+: x(v.x), y(v.y)
 {
 }
 
-inline double Vector2d::Length (void) const
+inline Vector2d& Vector2d::operator= (const Vector2d &v)
 {
-  return sqrt ((x * x) + (y * y));
+  x = v.x;
+  y = v.y;
+  return *this;
+}
+
+inline bool Vector2d::operator== (const Vector2d &v) const
+{
+  return (x == v.x) && (y == v.y);
+}
+
+inline Vector2d Vector2d::operator+ (void) const
+{
+  return Vector2d(x, y);
+}
+
+inline Vector2d Vector2d::operator+ (const Vector2d &v) const
+{
+  return Vector2d(x + v.x, y + v.y);
+}
+
+inline Vector2d& Vector2d::operator+= (const Vector2d &v)
+{
+  x += v.x;
+  y += v.y;
+  return *this;
+}
+
+inline Vector2d Vector2d::operator- (void) const
+{
+  return Vector2d(-x, -y);
+}
+
+inline Vector2d Vector2d::operator- (const Vector2d &v) const
+{
+  return Vector2d(x - v.x, y - v.y);
+}
+
+inline Vector2d& Vector2d::operator-= (const Vector2d &v)
+{
+  x -= v.x;
+  y -= v.y;
+  return *this;
+}
+
+inline Vector2d Vector2d::operator* (double c) const
+{
+  return Vector2d(c*x, c*y);
+}
+
+inline Vector2d& Vector2d::operator*= (double c)
+{
+  x *= c;
+  y *= c;
+  return *this;
+}
+
+inline double Vector2d::operator* (const Vector2d &v) const
+{
+  return x*v.x + y*v.y;
+}
+
+inline Vector2d operator* (double c, const Vector2d &v)
+{
+    return Vector2d(c*v.x, c*v.y);
+}
+
+inline Vector2d Vector2d::operator/ (double c) const
+{
+  return Vector2d(x/c, y/c);
+}
+
+inline Vector2d& Vector2d::operator/= (double c)
+{
+  x /= c;
+  y /= c;
+  return *this;
+}
+
+inline bool Vector2d::IsNull(double tolerance) const
+{
+  return x*x + y*y <= tolerance*tolerance;
+}
+
+inline double Vector2d::Length(void) const
+{
+  return sqrt(x*x + y*y);
+}
+
+inline double Vector2d::Angle(void) const
+{
+  return atan2(y, x);
+}
+
+inline double Vector2d::Sqr(void) const
+{
+  return x*x + y*y;
+}
+
+inline Vector2d& Vector2d::Set(double x, double y)
+{
+  this->x = x;
+  this->y = y;
+  return *this;
+}
+
+inline Vector2d& Vector2d::Negate(void)
+{
+  x = -x;
+  y = -y;
+  return *this;
+}
+
+inline Vector2d& Vector2d::Scale(double factor)
+{
+  x *= factor;
+  y *= factor;
+  return *this;
+}
+
+inline Vector2d& Vector2d::Rotate(double angle)
+{
+  x = x*cos(angle) - y*sin(angle);
+  y = x*sin(angle) + y*cos(angle);
+  return *this;
+}
+
+inline Vector2d& Vector2d::Normalize(void)
+{
+  double length = Length();
+  if (length > 0.0)
+  {
+    x /= length;
+    y /= length;
+  }
+
+  return *this;
+}
+
+inline Vector2d Vector2d::Perpendicular(bool clockwise) const
+{
+  return clockwise ? Vector2d(y, -x) : Vector2d(-y, x);
+}
+
+inline Vector2d Vector2d::FromPolar(double r, double fi)
+{
+  return Vector2d(r*cos(fi), r*sin(fi));
 }
 
 inline double Vector2d::Distance(const Vector2d& v) const
 {
   double dx = (x - v.x);
   double dy = (y - v.y);
+
   return sqrt(dx*dx + dy*dy);
 }
 
 inline bool Vector2d::IsEqual(const Vector2d& v, double tolerance) const
 {
-  return Distance (v) <= tolerance;
+  return Distance(v) <= tolerance;
 }
 
-inline Vector2d& Vector2d::operator= (const Vector2d &rclVct)
-{
-  x = rclVct.x;
-  y = rclVct.y;
-  return *this;
-}
-
-inline bool Vector2d::operator== (const Vector2d &rclVct) const
-{
-  return (x == rclVct.x) && (y == rclVct.y);
-}
-
-inline Vector2d Vector2d::operator+ (const Vector2d &rclVct) const
-{
-  return Vector2d(x + rclVct.x, y + rclVct.y);
-}
-
-inline Vector2d Vector2d::operator- (const Vector2d &rclVct) const
-{
-  return Vector2d(x - rclVct.x, y - rclVct.y);
-}
-
-inline double Vector2d::operator* (const Vector2d &rclVct) const
-{
-  return (x * rclVct.x) + (y * rclVct.y);
-}
-
-inline Vector2d Vector2d::operator/ (double c) const
-{
-  return Vector2d(x / c, y / c);
-}
-
-inline void Vector2d::Scale (double fS)
-{
-  x *= fS;
-  y *= fS;
-}
-
-inline void Vector2d::Normalize (void)
-{
-  double fLen = Length();
-  if (fLen != 0.0f)
-  {
-    x /= fLen;
-    y /= fLen;
-  }
-}
-
-inline void Vector2d::Set (double fPX, double fPY)
-{
-  x = fPX;
-  y = fPY;
-}
+// ========================================
 
 inline Polygon2d::Polygon2d (const Polygon2d &rclPoly)
 {
@@ -307,7 +424,6 @@ inline Vector2d& Polygon2d::At (size_t ulNdx) const
 {
   return (Vector2d&) _aclVct[ulNdx];
 }
-
 
 inline Line2d::Line2d (const Line2d &rclLine)
     : clV1 (rclLine.clV1),
@@ -392,12 +508,45 @@ inline bool BoundBox2d::operator== (const BoundBox2d& rclBB) const
          (MaxY == rclBB.MaxY);
 }
 
-inline void BoundBox2d::Add(const Vector2d &rclVct)
+inline double BoundBox2d::Width(void) const
 {
-  MinX = std::min<double>(MinX, rclVct.x);
-  MinY = std::min<double>(MinY, rclVct.y);
-  MaxX = std::max<double>(MaxX, rclVct.x);
-  MaxY = std::max<double>(MaxY, rclVct.y);
+  return MaxX - MinX;
+}
+
+inline double BoundBox2d::Height(void) const
+{
+  return MaxY - MinY;
+}
+
+inline bool BoundBox2d::Contains(const Vector2d &v) const
+{
+  return v.x >= MinX && v.x <= MaxX
+      && v.y >= MinY && v.y <= MaxY;
+}
+
+inline bool BoundBox2d::Contains(const Vector2d &v, double tolerance) const
+{
+  return v.x >= MinX - tolerance && v.x <= MaxX + tolerance
+      && v.y >= MinY - tolerance && v.y <= MaxY + tolerance;
+}
+
+inline Vector2d BoundBox2d::GetCenter(void) const
+{
+  return Vector2d((MinX + MaxX)*0.5, (MinY + MaxY)*0.5);
+}
+
+inline void BoundBox2d::SetVoid(void)
+{
+  MinX = MinY = DOUBLE_MAX;
+  MaxX = MaxY = -DOUBLE_MAX;
+}
+
+inline void BoundBox2d::Add(const Vector2d &v)
+{
+  MinX = std::min<double>(MinX, v.x);
+  MinY = std::min<double>(MinY, v.y);
+  MaxX = std::max<double>(MaxX, v.x);
+  MaxY = std::max<double>(MaxY, v.y);
 }
 
 } // namespace Base

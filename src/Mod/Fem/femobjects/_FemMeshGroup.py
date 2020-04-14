@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,14 +29,29 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshGroup
 
+from . import FemConstraint
 
-class _FemMeshGroup:
-    "The FemMeshGroup object"
+
+class _FemMeshGroup(FemConstraint.Proxy):
+    """
+    The FemMeshGroup object
+    """
+
+    Type = "Fem::MeshGroup"
+
     def __init__(self, obj):
-        obj.addProperty("App::PropertyBool", "UseLabel", "MeshGroupProperties", "The identifier used for export (True: Label, False: Name)")
-        obj.addProperty("App::PropertyLinkSubList", "References", "MeshGroupShapes", "List of FEM mesh group shapes")
-        obj.Proxy = self
-        self.Type = "Fem::FemMeshGroup"
+        super(_FemMeshGroup, self).__init__(obj)
 
-    def execute(self, obj):
-        return
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseLabel",
+            "MeshGroupProperties",
+            "The identifier used for export (True: Label, False: Name)"
+        )
+
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshGroupShapes",
+            "List of FEM mesh group shapes"
+        )

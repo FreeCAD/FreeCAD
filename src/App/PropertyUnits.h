@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -173,6 +173,18 @@ public:
     PropertyAngle(void);
     virtual ~PropertyAngle(){}
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
+};
+
+/** Frequency property
+ * This is a property for representing frequency. It is basically a float
+ * property. On the Gui it has a quantity like 1/s or Hz.
+ */
+class AppExport PropertyFrequency: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyFrequency(void);
+    virtual ~PropertyFrequency(){}
 };
 
 /** Speed property

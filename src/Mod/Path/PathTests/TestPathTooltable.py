@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import Path
 
 from PathTests.PathTestUtils import PathTestBase

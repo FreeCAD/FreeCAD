@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,12 +25,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-/*
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
-# include <Precision.hxx>*/
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Geom_Plane.hxx>
@@ -38,6 +33,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Line.hxx>
 # include <gp_Lin.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -275,7 +271,7 @@ TaskDlgFemConstraintGear::TaskDlgFemConstraintGear(ViewProviderFemConstraintGear
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "fem-constraint-gear");
+    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "FEM_ConstraintGear");
 
     Content.push_back(parameter);
 }

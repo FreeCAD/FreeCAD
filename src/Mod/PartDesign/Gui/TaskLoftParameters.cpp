@@ -324,8 +324,8 @@ bool TaskDlgLoftParameters::accept()
     // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
 
-    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", obj->getNameInDocument());
+    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+        FCMD_OBJ_HIDE(obj);
     }
 
 

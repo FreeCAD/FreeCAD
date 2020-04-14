@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,25 +21,38 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD FEM command definitions"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+## @package commands
+#  \ingroup FEM
+#  \brief FreeCAD FEM command definitions
 
 import FreeCAD
 import FreeCADGui
+
 from .manager import CommandManager
-from PySide import QtCore
+from femtools.femutils import is_of_type
 
 
 # Python command definitions
 # for C++ command definitions see src/Mod/Fem/Command.cpp
+# TODO, may be even more generic class creation
+# with type() and identifier instead of class for
+# the commands which add new document objects.
+# see https://www.python-course.eu/python3_classes_and_type.php
 
-class _CommandFemAnalysis(CommandManager):
+
+class _Analysis(CommandManager):
     "The FEM_Analysis command definition"
+
     def __init__(self):
-        super(_CommandFemAnalysis, self).__init__()
-        self.resources = {'Pixmap': 'fem-analysis',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container"),
-                          'Accel': "N, A",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_Analysis", "Creates an analysis container with standard solver CalculiX")}
-        self.is_active = 'with_document'
+        super(_Analysis, self).__init__()
+        self.menuetext = "Analysis container"
+        self.accel = "N, A"
+        self.tooltip = "Creates an analysis container with standard solver CalculiX"
+        self.is_active = "with_document"
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
@@ -46,30 +60,39 @@ class _CommandFemAnalysis(CommandManager):
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
-        # create a CalculiX ccx tools solver for any new analysis, to be on the save side fo rnew users
+        # create a CalculiX ccx tools solver for any new analysis
+        # to be on the safe side for new users
         FreeCADGui.doCommand("ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+        )
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemClippingPlaneAdd(CommandManager):
+class _ClippingPlaneAdd(CommandManager):
     "The FEM_ClippingPlaneAdd command definition"
+
     def __init__(self):
-        super(_CommandFemClippingPlaneAdd, self).__init__()
-        self.resources = {'Pixmap': 'fem-clipping-plane-add',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping plane on face"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Add a clipping plane on a selected face")}
-        self.is_active = 'with_document'
+        super(_ClippingPlaneAdd, self).__init__()
+        self.menuetext = "Clipping plane on face"
+        self.tooltip = "Add a clipping plane on a selected face"
+        self.is_active = "with_document"
 
     def Activated(self):
-        from femtools import femutils
-        overalboundbox = femutils.getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
+        from pivy import coin
+        from femtools.femutils import getBoundBoxOfAllDocumentShapes
+        from femtools.femutils import getSelectedFace
+
+        overalboundbox = getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
         # print(overalboundbox)
-        min_bb_length = (min(set([overalboundbox.XLength, overalboundbox.YLength, overalboundbox.ZLength])))
+        min_bb_length = (min(set([
+            overalboundbox.XLength,
+            overalboundbox.YLength,
+            overalboundbox.ZLength
+        ])))
         dbox = min_bb_length * 0.2
 
-        aFace = femutils.getSelectedFace(FreeCADGui.Selection.getSelectionEx())
+        aFace = getSelectedFace(FreeCADGui.Selection.getSelectionEx())
         if aFace:
             f_CoM = aFace.CenterOfMass
             f_uvCoM = aFace.Surface.parameter(f_CoM)  # u,v at CoM for normalAt calculation
@@ -78,778 +101,811 @@ class _CommandFemClippingPlaneAdd(CommandManager):
             f_CoM = FreeCAD.Vector(0, 0, 0)
             f_normal = FreeCAD.Vector(0, 0, 1)
 
-        from pivy import coin
         coin_normal_vector = coin.SbVec3f(-f_normal.x, -f_normal.y, -f_normal.z)
-        coin_bound_box = coin.SbBox3f(f_CoM.x - dbox, f_CoM.y - dbox, f_CoM.z - dbox * 0.15, f_CoM.x + dbox, f_CoM.y + dbox, f_CoM.z + dbox * 0.15)
+        coin_bound_box = coin.SbBox3f(
+            f_CoM.x - dbox, f_CoM.y - dbox,
+            f_CoM.z - dbox * 0.15,
+            f_CoM.x + dbox,
+            f_CoM.y + dbox,
+            f_CoM.z + dbox * 0.15
+        )
         clip_plane = coin.SoClipPlaneManip()
         clip_plane.setValue(coin_bound_box, coin_normal_vector, 1)
         FreeCADGui.ActiveDocument.ActiveView.getSceneGraph().insertChild(clip_plane, 1)
 
 
-class _CommandFemClippingPlaneRemoveAll(CommandManager):
+class _ClippingPlaneRemoveAll(CommandManager):
     "The FEM_ClippingPlaneemoveAll command definition"
+
     def __init__(self):
-        super(_CommandFemClippingPlaneRemoveAll, self).__init__()
-        self.resources = {'Pixmap': 'fem-clipping-plane-remove-all',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes")}
-        self.is_active = 'with_document'
+        super(_ClippingPlaneRemoveAll, self).__init__()
+        self.menuetext = "Remove all clipping planes"
+        self.tooltip = "Remove all clipping planes"
+        self.is_active = "with_document"
 
     def Activated(self):
-        line1 = 'for node in list(sg.getChildren()):\n'
-        line2 = '    if isinstance(node, coin.SoClipPlane):\n'
-        line3 = '        sg.removeChild(node)'
+        line1 = "for node in list(sg.getChildren()):\n"
+        line2 = "    if isinstance(node, coin.SoClipPlane):\n"
+        line3 = "        sg.removeChild(node)"
         FreeCADGui.doCommand("from pivy import coin")
         FreeCADGui.doCommand("sg = Gui.ActiveDocument.ActiveView.getSceneGraph()")
         FreeCADGui.doCommand("nodes = sg.getChildren()")
         FreeCADGui.doCommand(line1 + line2 + line3)
 
 
-class _CommandFemConstraintBodyHeatSource(CommandManager):
+class _ConstraintBodyHeatSource(CommandManager):
     "The FEM_ConstraintBodyHeatSource command definition"
+
     def __init__(self):
-        super(_CommandFemConstraintBodyHeatSource, self).__init__()
-        self.resources = {
-            'Pixmap': 'fem-constraint-heatflux',  # the heatflux icon is used
-            'MenuText': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintBodyHeatSource",
-                "Constraint body heat source"),
-            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintBodyHeatSource",
-                "Creates a FEM constraint body heat source")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintBodyHeatSource")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintBodyHeatSource(FreeCAD.ActiveDocument))")
-        FreeCAD.ActiveDocument.recompute()
+        super(_ConstraintBodyHeatSource, self).__init__()
+        self.pixmap = "FEM_ConstraintHeatflux"  # the heatflux icon is used
+        self.menuetext = "Constraint body heat source"
+        self.tooltip = "Creates a FEM constraint body heat source"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _CommandFemConstraintElectrostaticPotential(CommandManager):
+class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
+
     def __init__(self):
-        super(_CommandFemConstraintElectrostaticPotential, self).__init__()
-        self.resources = {
-            'Pixmap': 'fem-constraint-electrostatic-potential',
-            'MenuText': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintElectrostaticPotential",
-                "Constraint electrostatic potential"),
-            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintElectrostaticPotential",
-                "Creates a FEM constraint electrostatic potential")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintElectrostaticPotential")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintElectrostaticPotential(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ConstraintElectrostaticPotential, self).__init__()
+        self.menuetext = "Constraint electrostatic potential"
+        self.tooltip = "Creates a FEM constraint electrostatic potential"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemConstraintFlowVelocity(CommandManager):
+class _ConstraintFlowVelocity(CommandManager):
     "The FEM_ConstraintFlowVelocity command definition"
+
     def __init__(self):
-        super(_CommandFemConstraintFlowVelocity, self).__init__()
-        self.resources = {
-            'Pixmap': 'fem-constraint-flow-velocity',
-            'MenuText': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintFlowVelocity",
-                "Constraint flow velocity"),
-            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintFlowVelocity",
-                "Creates a FEM constraint flow velocity")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintFlowVelocity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintFlowVelocity(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ConstraintFlowVelocity, self).__init__()
+        self.menuetext = "Constraint flow velocity"
+        self.tooltip = "Creates a FEM constraint flow velocity"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemConstraintInitialFlowVelocity(CommandManager):
+class _ConstraintInitialFlowVelocity(CommandManager):
     "The FEM_ConstraintInitialFlowVelocity command definition"
+
     def __init__(self):
-        super(_CommandFemConstraintInitialFlowVelocity, self).__init__()
-        self.resources = {
-            'Pixmap': 'fem-constraint-initial-flow-velocity',
-            'MenuText': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintInitialFlowVelocity",
-                "Constraint initial flow velocity"),
-            'ToolTip': QtCore.QT_TRANSLATE_NOOP(
-                "FEM_ConstraintInitialFlowVelocity",
-                "Creates a FEM constraint initial flow velocity")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintInitialFlowVelocity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintInitialFlowVelocity(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ConstraintInitialFlowVelocity, self).__init__()
+        self.menuetext = "Constraint initial flow velocity"
+        self.tooltip = "Creates a FEM constraint initial flow velocity"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemConstraintSelfWeight(CommandManager):
+class _ConstraintSelfWeight(CommandManager):
     "The FEM_ConstraintSelfWeight command definition"
+
     def __init__(self):
-        super(_CommandFemConstraintSelfWeight, self).__init__()
-        self.resources = {'Pixmap': 'fem-constraint-selfweight',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Constraint self weight"),
-                          'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a FEM constraint self weight")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemConstraintSelfWeight")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeConstraintSelfWeight(FreeCAD.ActiveDocument))")
-        FreeCAD.ActiveDocument.recompute()
+        super(_ConstraintSelfWeight, self).__init__()
+        self.menuetext = "Constraint self weight"
+        self.accel = "C, W"
+        self.tooltip = "Creates a FEM constraint self weight"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _CommandFemElementFluid1D(CommandManager):
+class _ConstraintTie(CommandManager):
+    "The FEM_ConstraintTie command definition"
+
+    def __init__(self):
+        super(_ConstraintTie, self).__init__()
+        self.menuetext = "Constraint tie"
+        self.accel = "C, T"
+        self.tooltip = "Creates a FEM constraint tie"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
+class _ElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
+
     def __init__(self):
-        super(_CommandFemElementFluid1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-element-fluid-1d',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid section for 1D flow"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Creates a FEM fluid section for 1D flow")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementFluid1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementFluid1D(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ElementFluid1D, self).__init__()
+        self.menuetext = "Fluid section for 1D flow"
+        self.accel = "C, B"
+        self.tooltip = "Creates a FEM fluid section for 1D flow"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemElementGeometry1D(CommandManager):
+class _ElementGeometry1D(CommandManager):
     "The Fem_ElementGeometry1D command definition"
+
     def __init__(self):
-        super(_CommandFemElementGeometry1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-element-geometry-1d',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam cross section"),
-                          'Accel': "C, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Creates a FEM beam cross section")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry1D(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ElementGeometry1D, self).__init__()
+        self.menuetext = "Beam cross section"
+        self.accel = "C, B"
+        self.tooltip = "Creates a FEM beam cross section"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemElementGeometry2D(CommandManager):
+class _ElementGeometry2D(CommandManager):
     "The FEM_ElementGeometry2D command definition"
+
     def __init__(self):
-        super(_CommandFemElementGeometry2D, self).__init__()
-        self.resources = {'Pixmap': 'fem-element-geometry-2d',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell plate thickness"),
-                          'Accel': "C, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Creates a FEM shell plate thickness")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementGeometry2D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementGeometry2D(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ElementGeometry2D, self).__init__()
+        self.menuetext = "Shell plate thickness"
+        self.accel = "C, S"
+        self.tooltip = "Creates a FEM shell plate thickness"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemElementRotation1D(CommandManager):
+class _ElementRotation1D(CommandManager):
     "The Fem_ElementRotation1D command definition"
+
     def __init__(self):
-        super(_CommandFemElementRotation1D, self).__init__()
-        self.resources = {'Pixmap': 'fem-element-rotation-1d',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam rotation"),
-                          'Accel': "C, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a FEM beam rotation")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemElementRotation1D")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeElementRotation1D(FreeCAD.ActiveDocument))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_ElementRotation1D, self).__init__()
+        self.menuetext = "Beam rotation"
+        self.accel = "C, R"
+        self.tooltip = "Creates a FEM beam rotation"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _CommandFemEquationElectrostatic(CommandManager):
+class _EquationElectrostatic(CommandManager):
     "The FEM_EquationElectrostatic command definition"
+
     def __init__(self):
-        super(_CommandFemEquationElectrostatic, self).__init__()
-        self.resources = {'Pixmap': 'fem-equation-electrostatic',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Electrostatic equation"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Creates a FEM equation for electrostatic")}
-        self.is_active = 'with_solver_elmer'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeEquationElectrostatic(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_EquationElectrostatic, self).__init__()
+        self.menuetext = "Electrostatic equation"
+        self.tooltip = "Creates a FEM equation for electrostatic"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _CommandFemEquationElasticity(CommandManager):
+class _EquationElasticity(CommandManager):
     "The FEM_EquationElasticity command definition"
+
     def __init__(self):
-        super(_CommandFemEquationElasticity, self).__init__()
-        self.resources = {'Pixmap': 'fem-equation-elasticity',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Elasticity equation"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Creates a FEM equation for elasticity")}
-        self.is_active = 'with_solver_elmer'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationElasticity")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeEquationElasticity(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_EquationElasticity, self).__init__()
+        self.menuetext = "Elasticity equation"
+        self.tooltip = "Creates a FEM equation for elasticity"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _CommandFemEquationFlow(CommandManager):
+class _EquationFlow(CommandManager):
     "The FEM_EquationFlow command definition"
+
     def __init__(self):
-        super(_CommandFemEquationFlow, self).__init__()
-        self.resources = {'Pixmap': 'fem-equation-flow',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Flow equation"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Creates a FEM equation for flow")}
-        self.is_active = 'with_solver_elmer'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFlow")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeEquationFlow(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_EquationFlow, self).__init__()
+        self.menuetext = "Flow equation"
+        self.tooltip = "Creates a FEM equation for flow"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _CommandFemEquationFluxsolver(CommandManager):
+class _EquationFluxsolver(CommandManager):
     "The FEM_EquationFluxsolver command definition"
+
     def __init__(self):
-        super(_CommandFemEquationFluxsolver, self).__init__()
-        self.resources = {'Pixmap': 'fem-equation-fluxsolver',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFluxsolver", "Fluxsolver equation"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationFluxsolver", "Creates a FEM equation for fluxsolver")}
-        self.is_active = 'with_solver_elmer'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationFluxsolver")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeEquationFluxsolver(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_EquationFluxsolver, self).__init__()
+        self.menuetext = "Fluxsolver equation"
+        self.tooltip = "Creates a FEM equation for fluxsolver"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _CommandFemEquationHeat(CommandManager):
+class _EquationHeat(CommandManager):
     "The FEM_EquationHeat command definition"
+
     def __init__(self):
-        super(_CommandFemEquationHeat, self).__init__()
-        self.resources = {'Pixmap': 'fem-equation-heat',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Fluxsolver heat"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Creates a FEM equation for heat")}
-        self.is_active = 'with_solver_elmer'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemEquationHeat")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeEquationHeat(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_EquationHeat, self).__init__()
+        self.menuetext = "Fluxsolver heat"
+        self.tooltip = "Creates a FEM equation for heat"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _CommandFemMaterialEditor(CommandManager):
+class _MaterialEditor(CommandManager):
     "The FEM_MaterialEditor command definition"
+
     def __init__(self):
-        super(_CommandFemMaterialEditor, self).__init__()
-        self.resources = {'Pixmap': 'Arch_Material_Group',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Material_Editor", "Material editor"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Material_Editor", "Opens the FreeCAD material editor")}
-        self.is_active = 'allways'
+        super(_MaterialEditor, self).__init__()
+        self.pixmap = "Arch_Material_Group"
+        self.menuetext = "Material editor"
+        self.tooltip = "Opens the FreeCAD material editor"
+        self.is_active = "always"
 
     def Activated(self):
         FreeCADGui.addModule("MaterialEditor")
         FreeCADGui.doCommand("MaterialEditor.openEditor()")
 
 
-class _CommandFemMaterialFluid(CommandManager):
+class _MaterialFluid(CommandManager):
     "The FEM_MaterialFluid command definition"
+
     def __init__(self):
-        super(_CommandFemMaterialFluid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Material for fluid"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for fluid")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Fluid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialFluid(FreeCAD.ActiveDocument, 'FluidMaterial'))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCAD.ActiveDocument.recompute()
+        super(_MaterialFluid, self).__init__()
+        self.menuetext = "Material for fluid"
+        self.accel = "M M"
+        self.tooltip = "Creates a FEM material for fluid"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemMaterialMechanicalNonlinear(CommandManager):
+class _MaterialMechanicalNonlinear(CommandManager):
     "The FEM_MaterialMechanicalNonlinear command definition"
+
     def __init__(self):
-        super(_CommandFemMaterialMechanicalNonlinear, self).__init__()
-        self.resources = {'Pixmap': 'fem-material-nonlinear',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"),
-                          'Accel': "C, W",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material")}
-        self.is_active = 'with_material_solid_which_has_no_nonlinear_material'
+        super(_MaterialMechanicalNonlinear, self).__init__()
+        self.menuetext = "Nonlinear mechanical material"
+        self.accel = "C, W"
+        self.tooltip = "Creates a nonlinear mechanical material"
+        self.is_active = "with_material_solid"
 
     def Activated(self):
+        # test if there is a nonlinear material which has the selected material as base material
+        for o in self.selobj.Document.Objects:
+            if (
+                is_of_type(o, "Fem::MaterialMechanicalNonlinear")
+                and o.LinearBaseMaterial == self.selobj
+            ):
+                FreeCAD.Console.PrintError(
+                    "Nonlinear material {} is based on the selected material {}. "
+                    "Only one nonlinear object allowed for each material.\n"
+                    .format(o.Name, self.selobj.Name)
+                )
+                return
+
+        # add a nonlinear material
         string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + self.selobj.Name + "')"
-        command_to_run = "FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, " + string_lin_mat_obj + "))"
+        command_to_run = (
+            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
+            "makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, {}))"
+            .format(string_lin_mat_obj)
+        )
         FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.doCommand(command_to_run)
-        # set some property of the solver to nonlinear (only if one solver is available and if this solver is a CalculiX solver):
+        # set some property of the solver to nonlinear
+        # (only if one solver is available and if this solver is a CalculiX solver):
         # nonlinear material
-        # nonlinear geometry --> it is triggered anyway https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+        # nonlinear geometry --> it is triggered anyway
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
         for m in self.active_analysis.Group:
-            if m.isDerivedFrom('Fem::FemSolverObjectPython'):
+            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
                 if not solver_object:
                     solver_object = m
                 else:
-                    # we do not change attributes if we have more than one solver, since we do not know which one to take
+                    # we do not change attributes if we have more than one solver
+                    # since we do not know which one to take
                     solver_object = None
                     break
-        # set solver attribute for nonlinearity for ccxtools CalculiX solver or new frame work CalculiX solver
-        if solver_object and hasattr(solver_object, "Proxy") and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
-            print('Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for ' + solver_object.Label)
+        # set solver attribute for nonlinearity for ccxtools
+        # CalculiX solver or new frame work CalculiX solver
+        if solver_object and (
+            is_of_type(solver_object, "Fem::FemSolverCalculixCcxTools")
+            or is_of_type(solver_object, "Fem::FemSolverObjectCalculix")
+        ):
+            FreeCAD.Console.PrintMessage(
+                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
+                .format(solver_object.Label)
+            )
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMaterialSolid(CommandManager):
+class _MaterialReinforced(CommandManager):
+    "The FEM_MaterialReinforced command definition"
+
+    def __init__(self):
+        super(_MaterialReinforced, self).__init__()
+        self.menuetext = "Reinforced material (concrete)"
+        self.accel = "M, M"
+        self.tooltip = "Creates a material for reinforced matrix material such as concrete"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
+class _MaterialSolid(CommandManager):
     "The FEM_MaterialSolid command definition"
+
     def __init__(self):
-        super(_CommandFemMaterialSolid, self).__init__()
-        self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Material for solid"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Solid Material")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeMaterialSolid(FreeCAD.ActiveDocument, 'SolidMaterial'))")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCAD.ActiveDocument.recompute()
+        super(_MaterialSolid, self).__init__()
+        self.menuetext = "Material for solid"
+        self.accel = "M, M"
+        self.tooltip = "Creates a FEM material for solid"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _CommandFemMesh2Mesh(CommandManager):
-    "The FEM_FemMesh2Mesh command definition"
+class _FEMMesh2Mesh(CommandManager):
+    "The FEM_FEMMesh2Mesh command definition"
+
     def __init__(self):
-        super(_CommandFemMesh2Mesh, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-to-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_FEMMesh2Mesh", "FEM mesh to mesh"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_FEMMesh2Mesh", "Convert the surface of a FEM mesh to a mesh")}
-        self.is_active = 'with_femmesh_andor_res'
+        super(_FEMMesh2Mesh, self).__init__()
+        self.menuetext = "FEM mesh to mesh"
+        self.tooltip = "Convert the surface of a FEM mesh to a mesh"
+        self.is_active = "with_femmesh_andor_res"
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
         if self.selobj and not self.selobj2:  # no result object selected
             FreeCADGui.addModule("femmesh.femmesh2mesh")
-            FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+            FreeCADGui.doCommand(
+                "out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh("
+                "FreeCAD.ActiveDocument.{}.FemMesh)"
+                .format(self.selobj.Name)
+            )
             FreeCADGui.addModule("Mesh")
             FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-            FreeCADGui.doCommand("FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()")
+            FreeCADGui.doCommand(
+                "FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()"
+            )
         if self.selobj and self.selobj2:
             femmesh = self.selobj
             res = self.selobj2
             FreeCADGui.addModule("femmesh.femmesh2mesh")
-            FreeCADGui.doCommand("out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(FreeCAD.ActiveDocument." + femmesh.Name + ".FemMesh, FreeCAD.ActiveDocument." + res.Name + ")")
+            FreeCADGui.doCommand(
+                "out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh("
+                "FreeCAD.ActiveDocument.{}.FemMesh, FreeCAD.ActiveDocument.{})"
+                .format(femmesh.Name, res.Name)
+            )
             FreeCADGui.addModule("Mesh")
             FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-            FreeCADGui.doCommand("FreeCAD.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")
+            FreeCADGui.doCommand(
+                "FreeCAD.ActiveDocument." + femmesh.Name + ".ViewObject.hide()"
+            )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshBoundaryLayer(CommandManager):
+class _MeshBoundaryLayer(CommandManager):
     "The FEM_MeshBoundaryLayer command definition"
+
     def __init__(self):
-        super(_CommandFemMeshBoundaryLayer, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-boundary-layer',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "FEM mesh boundary layer"),
-                          'Accel': "M, B",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "Creates a FEM mesh boundary layer")}
-        self.is_active = 'with_gmsh_femmesh'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshBoundaryLayer")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMeshBoundaryLayer(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_MeshBoundaryLayer, self).__init__()
+        self.menuetext = "FEM mesh boundary layer"
+        self.accel = "M, B"
+        self.tooltip = "Creates a FEM mesh boundary layer"
+        self.is_active = "with_gmsh_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
-class _CommandFemMeshClear(CommandManager):
+class _MeshClear(CommandManager):
     "The FEM_MeshClear command definition"
+
     def __init__(self):
-        super(_CommandFemMeshClear, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear the Mesh of a FEM mesh object")}
-        self.is_active = 'with_femmesh'
+        super(_MeshClear, self).__init__()
+        self.menuetext = "Clear FEM mesh"
+        self.tooltip = "Clear the Mesh of a FEM mesh object"
+        self.is_active = "with_femmesh"
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
         FreeCADGui.addModule("Fem")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()")
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()"
+        )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshDisplayInfo(CommandManager):
+class _MeshDisplayInfo(CommandManager):
     "The FEM_MeshDisplayInfo command definition"
+
     def __init__(self):
-        super(_CommandFemMeshDisplayInfo, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")}
-        self.is_active = 'with_femmesh'
+        super(_MeshDisplayInfo, self).__init__()
+        self.menuetext = "Display FEM mesh info"
+        self.tooltip = "Display FEM mesh info"
+        self.is_active = "with_femmesh"
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Display FEM mesh info")
         FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
         FreeCADGui.addModule("PySide")
-        FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
-        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
+        FreeCADGui.doCommand(
+            "mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)"
+        )
+        FreeCADGui.doCommand(
+            "PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)"
+        )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshGmshFromShape(CommandManager):
+class _MeshGmshFromShape(CommandManager):
     "The FEM_MeshGmshFromShape command definition"
+
     def __init__(self):
-        super(_CommandFemMeshGmshFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by Gmsh"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Create a FEM mesh from a shape by Gmsh mesher")}
-        self.is_active = 'with_part_feature'
+        super(_MeshGmshFromShape, self).__init__()
+        self.menuetext = "FEM mesh from shape by Gmsh"
+        self.tooltip = "Create a FEM mesh from a shape by Gmsh mesher"
+        self.is_active = "with_part_feature"
 
     def Activated(self):
         # a mesh could be made with and without an analysis,
         # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh by Gmsh")
-        mesh_obj_name = 'FEMMeshGmsh'
-        # mesh_obj_name = self.selobj.Name + "_Mesh"  # if requested by some people add Preference for this
+        mesh_obj_name = "FEMMeshGmsh"
+        # if requested by some people add Preference for this
+        # mesh_obj_name = self.selobj.Name + "_Mesh"
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument." + self.selobj.Name)
-        # Gmsh mesh object could be added without an active analysis, but if there is an active analysis move it in there
+        FreeCADGui.doCommand(
+            "ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+        )
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument.{}"
+            .format(self.selobj.Name)
+        )
+        # Gmsh mesh object could be added without an active analysis
+        # but if there is an active analysis move it in there
         import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+            FreeCADGui.doCommand(
+                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+            )
+        FreeCADGui.doCommand(
+            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
+        )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemMeshGroup(CommandManager):
+class _MeshGroup(CommandManager):
     "The FEM_MeshGroup command definition"
+
     def __init__(self):
-        super(_CommandFemMeshGroup, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group"),
-                          'Accel': "M, G",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")}
-        self.is_active = 'with_gmsh_femmesh'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMeshGroup(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_MeshGroup, self).__init__()
+        self.menuetext = "FEM mesh group"
+        self.accel = "M, G"
+        self.tooltip = "Creates a FEM mesh group"
+        self.is_active = "with_gmsh_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
-class _CommandFemMeshNetgenFromShape(CommandManager):
+class _MeshNetgenFromShape(CommandManager):
     "The FEM_MeshNetgenFromShape command definition"
+
     def __init__(self):
-        super(_CommandFemMeshNetgenFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
-        self.is_active = 'with_part_feature'
+        super(_MeshNetgenFromShape, self).__init__()
+        self.menuetext = "FEM mesh from shape by Netgen"
+        self.tooltip = "Create a FEM mesh from a solid or face shape by Netgen internal mesher"
+        self.is_active = "with_part_feature"
 
     def Activated(self):
         # a mesh could be made with and without an analysis,
         # we're going to check not for an analysis in command manager module
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
-        mesh_obj_name = 'FEMMeshNetgen'
-        # mesh_obj_name = sel[0].Name + "_Mesh"  # if requested by some people add Preference for this
+        mesh_obj_name = "FEMMeshNetgen"
+        # if requested by some people add Preference for this
+        # mesh_obj_name = sel[0].Name + "_Mesh"
         FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')")
-        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument." + self.selobj.Name)
-        # Netgen mesh object could be added without an active analysis, but if there is an active analysis move it in there
+        FreeCADGui.doCommand(
+            "ObjectsFem.makeMeshNetgen(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
+        )
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument.{}"
+            .format(self.selobj.Name)
+        )
+        # Netgen mesh object could be added without an active analysis
+        # but if there is an active analysis move it in there
         import FemGui
         if FemGui.getActiveAnalysis():
             FreeCADGui.addModule("FemGui")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
+            FreeCADGui.doCommand(
+                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+            )
+        FreeCADGui.doCommand(
+            "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
+        )
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
-class _CommandFemMeshRegion(CommandManager):
+class _MeshRegion(CommandManager):
     "The FEM_MeshRegion command definition"
+
     def __init__(self):
-        super(_CommandFemMeshRegion, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-region',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh region"),
-                          'Accel': "M, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh region")}
-        self.is_active = 'with_gmsh_femmesh'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FemMeshRegion")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("ObjectsFem.makeMeshRegion(FreeCAD.ActiveDocument, FreeCAD.ActiveDocument." + self.selobj.Name + ")")
-        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
+        super(_MeshRegion, self).__init__()
+        self.menuetext = "FEM mesh region"
+        self.accel = "M, R"
+        self.tooltip = "Creates a FEM mesh region"
+        self.is_active = "with_gmsh_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
-class _CommandFemResultShow(CommandManager):
+class _ResultShow(CommandManager):
     "The FEM_ResultShow command definition"
+
     def __init__(self):
-        super(_CommandFemResultShow, self).__init__()
-        self.resources = {'Pixmap': 'fem-post-result-show',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result"),
-                          'Accel': "S, R",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultShow", "Shows and visualizes selected result data")}
-        self.is_active = 'with_selresult'
+        super(_ResultShow, self).__init__()
+        self.menuetext = "Show result"
+        self.accel = "S, R"
+        self.tooltip = "Shows and visualizes selected result data"
+        self.is_active = "with_selresult"
 
     def Activated(self):
         self.selobj.ViewObject.Document.setEdit(self.selobj.ViewObject, 0)
 
 
-class _CommandFemResultsPurge(CommandManager):
+class _ResultsPurge(CommandManager):
     "The FEM_ResultsPurge command definition"
+
     def __init__(self):
-        super(_CommandFemResultsPurge, self).__init__()
-        self.resources = {'Pixmap': 'fem-post-results-purge',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results"),
-                          'Accel': "S, S",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purges all results from active analysis")}
-        self.is_active = 'with_results'
+        super(_ResultsPurge, self).__init__()
+        self.menuetext = "Purge results"
+        self.accel = "S, S"
+        self.tooltip = "Purges all results from active analysis"
+        self.is_active = "with_results"
 
     def Activated(self):
         import femresult.resulttools as resulttools
         resulttools.purge_results(self.active_analysis)
 
 
-class _CommandFemSolverCalculixCxxtools(CommandManager):
+class _SolverCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
+
     def __init__(self):
-        super(_CommandFemSolverCalculixCxxtools, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-standard',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Solver CalculiX Standard"),
-                          'Accel': "S, X",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculix", "Creates a standard FEM solver CalculiX with ccx tools")}
-        self.is_active = 'with_analysis'
+        super(_SolverCxxtools, self).__init__()
+        self.pixmap = "FEM_SolverStandard"
+        self.menuetext = "Solver CalculiX Standard"
+        self.accel = "S, X"
+        self.tooltip = "Creates a standard FEM solver CalculiX with ccx tools"
+        self.is_active = "with_analysis"
 
     def Activated(self):
         has_nonlinear_material_obj = False
         for m in self.active_analysis.Group:
-            if hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
+            if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
                 has_nonlinear_material_obj = True
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.addModule("FemGui")
         if has_nonlinear_material_obj:
-            FreeCADGui.doCommand("solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)")
+            FreeCADGui.doCommand(
+                "solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)"
+            )
             FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
         else:
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))")
+            FreeCADGui.doCommand(
+                "FemGui.getActiveAnalysis().addObject(ObjectsFem."
+                "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
+            )
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverCalculiX(CommandManager):
+class _SolverCalculix(CommandManager):
     "The FEM_SolverCalculix command definition"
+
     def __init__(self):
-        super(_CommandFemSolverCalculiX, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-standard',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Solver CalculiX (experimental)"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverCalculiX", "Creates a FEM solver CalculiX (experimental)")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create CalculiX solver object")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverCalculix(FreeCAD.ActiveDocument))")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        super(_SolverCalculix, self).__init__()
+        self.pixmap = "FEM_SolverStandard"
+        self.menuetext = "Solver CalculiX (experimental)"
+        self.accel = "S, C"
+        self.tooltip = "Creates a FEM solver CalculiX (experimental)"
+        self.is_active = "with_analysis"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _CommandFemSolverControl(CommandManager):
+class _SolverControl(CommandManager):
     "The FEM_SolverControl command definition"
+
     def __init__(self):
-        super(_CommandFemSolverControl, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-control',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control"),
-                          'Accel': "S, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverControl", "Changes solver attributes and runs the calculations for the selected solver")}
-        self.is_active = 'with_solver'
+        super(_SolverControl, self).__init__()
+        self.menuetext = "Solver job control"
+        self.accel = "S, C"
+        self.tooltip = "Changes solver attributes and runs the calculations for the selected solver"
+        self.is_active = "with_solver"
 
     def Activated(self):
         FreeCADGui.ActiveDocument.setEdit(self.selobj, 0)
 
 
-class _CommandFemSolverElmer(CommandManager):
+class _SolverElmer(CommandManager):
     "The FEM_SolverElmer command definition"
+
     def __init__(self):
-        super(_CommandFemSolverElmer, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-elmer',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Solver Elmer"),
-                          'Accel': "S, E",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverElmer", "Creates a FEM solver Elmer")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create Elmer solver object")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverElmer(FreeCAD.ActiveDocument))")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        super(_SolverElmer, self).__init__()
+        self.menuetext = "Solver Elmer"
+        self.accel = "S, E"
+        self.tooltip = "Creates a FEM solver Elmer"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _CommandFemSolverRun(CommandManager):
+class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
+
     def __init__(self):
-        super(_CommandFemSolverRun, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-run',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run solver calculations"),
-                          'Accel': "R, C",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverRun", "Runs the calculations for the selected solver")}
-        self.is_active = 'with_solver'
+        super(_SolverRun, self).__init__()
+        self.menuetext = "Run solver calculations"
+        self.accel = "R, C"
+        self.tooltip = "Runs the calculations for the selected solver"
+        self.is_active = "with_solver"
 
     def Activated(self):
-        import femsolver.run
-        from PySide import QtGui
-
-        self.solver = self.selobj
-        if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
-            print('CalxuliX ccx tools solver!')
-            from femtools import ccxtools
-            self.fea = ccxtools.FemToolsCcx(None, self.solver)
-            self.fea.reset_mesh_purge_results_checked()
-            self.fea.run()
-        else:
-            print('Frame work solver!')
-            try:
-                machine = femsolver.run.getMachine(self.solver)
-            except femsolver.run.MustSaveError:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Please save the file before executing the solver. "
-                    "This must be done because the location of the working "
-                    "directory is set to \"Beside .fcstd File\".")
-                return
-            except femsolver.run.DirectoryDoesNotExist:
-                QtGui.QMessageBox.critical(
-                    FreeCADGui.getMainWindow(),
-                    "Can't start Solver",
-                    "Selected working directory doesn't exist.")
-                return
-            if not machine.running:
-                machine.reset()
-                machine.target = femsolver.run.RESULTS
-                machine.start()
-                machine.join()  # wait for the machine to finish.
+        from femsolver.run import run_fem_solver
+        run_fem_solver(self.selobj)
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandFemSolverZ88(CommandManager):
+class _SolverZ88(CommandManager):
     "The FEM_SolverZ88 command definition"
-    def __init__(self):
-        super(_CommandFemSolverZ88, self).__init__()
-        self.resources = {'Pixmap': 'fem-solver-standard',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Solver Z88"),
-                          'Accel': "S, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_SolverZ88", "Creates a FEM solver Z88")}
-        self.is_active = 'with_analysis'
 
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create SolverZ88")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(ObjectsFem.makeSolverZ88(FreeCAD.ActiveDocument))")
-        FreeCAD.ActiveDocument.recompute()
+    def __init__(self):
+        super(_SolverZ88, self).__init__()
+        self.pixmap = "FEM_SolverZ88.svg"
+        self.menuetext = "Solver Z88"
+        self.accel = "S, Z"
+        self.tooltip = "Creates a FEM solver Z88"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 # the string in add command will be the page name on FreeCAD wiki
-FreeCADGui.addCommand('FEM_Analysis', _CommandFemAnalysis())
-FreeCADGui.addCommand('FEM_ClippingPlaneAdd', _CommandFemClippingPlaneAdd())
-FreeCADGui.addCommand('FEM_ClippingPlaneRemoveAll', _CommandFemClippingPlaneRemoveAll())
-FreeCADGui.addCommand('FEM_ConstraintBodyHeatSource', _CommandFemConstraintBodyHeatSource())
-FreeCADGui.addCommand('FEM_ConstraintElectrostaticPotential', _CommandFemConstraintElectrostaticPotential())
-FreeCADGui.addCommand('FEM_ConstraintFlowVelocity', _CommandFemConstraintFlowVelocity())
-FreeCADGui.addCommand('FEM_ConstraintInitialFlowVelocity', _CommandFemConstraintInitialFlowVelocity())
-FreeCADGui.addCommand('FEM_ConstraintSelfWeight', _CommandFemConstraintSelfWeight())
-FreeCADGui.addCommand('FEM_ElementFluid1D', _CommandFemElementFluid1D())
-FreeCADGui.addCommand('FEM_ElementGeometry1D', _CommandFemElementGeometry1D())
-FreeCADGui.addCommand('FEM_ElementGeometry2D', _CommandFemElementGeometry2D())
-FreeCADGui.addCommand('FEM_ElementRotation1D', _CommandFemElementRotation1D())
-FreeCADGui.addCommand('FEM_EquationElectrostatic', _CommandFemEquationElectrostatic())
-FreeCADGui.addCommand('FEM_EquationElasticity', _CommandFemEquationElasticity())
-FreeCADGui.addCommand('FEM_EquationFlow', _CommandFemEquationFlow())
-FreeCADGui.addCommand('FEM_EquationFluxsolver', _CommandFemEquationFluxsolver())
-FreeCADGui.addCommand('FEM_EquationHeat', _CommandFemEquationHeat())
-FreeCADGui.addCommand('FEM_MaterialEditor', _CommandFemMaterialEditor())
-FreeCADGui.addCommand('FEM_MaterialFluid', _CommandFemMaterialFluid())
-FreeCADGui.addCommand('FEM_MaterialMechanicalNonlinear', _CommandFemMaterialMechanicalNonlinear())
-FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())
-FreeCADGui.addCommand('FEM_FEMMesh2Mesh', _CommandFemMesh2Mesh())
-FreeCADGui.addCommand('FEM_MeshBoundaryLayer', _CommandFemMeshBoundaryLayer())
-FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())
-FreeCADGui.addCommand('FEM_MeshDisplayInfo', _CommandFemMeshDisplayInfo())
-FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandFemMeshGmshFromShape())
-FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())
-FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandFemMeshNetgenFromShape())
-FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())
-FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())
-FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())
-FreeCADGui.addCommand('FEM_SolverCalculixCxxtools', _CommandFemSolverCalculixCxxtools())
-FreeCADGui.addCommand('FEM_SolverCalculiX', _CommandFemSolverCalculiX())
-FreeCADGui.addCommand('FEM_SolverControl', _CommandFemSolverControl())
-FreeCADGui.addCommand('FEM_SolverElmer', _CommandFemSolverElmer())
-FreeCADGui.addCommand('FEM_SolverRun', _CommandFemSolverRun())
-FreeCADGui.addCommand('FEM_SolverZ88', _CommandFemSolverZ88())
+FreeCADGui.addCommand(
+    "FEM_Analysis",
+    _Analysis()
+)
+FreeCADGui.addCommand(
+    "FEM_ClippingPlaneAdd",
+    _ClippingPlaneAdd()
+)
+FreeCADGui.addCommand(
+    "FEM_ClippingPlaneRemoveAll",
+    _ClippingPlaneRemoveAll()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintBodyHeatSource",
+    _ConstraintBodyHeatSource()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintElectrostaticPotential",
+    _ConstraintElectrostaticPotential()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintFlowVelocity",
+    _ConstraintFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintInitialFlowVelocity",
+    _ConstraintInitialFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintSelfWeight",
+    _ConstraintSelfWeight()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintTie",
+    _ConstraintTie()
+)
+FreeCADGui.addCommand(
+    "FEM_ElementFluid1D",
+    _ElementFluid1D()
+)
+FreeCADGui.addCommand(
+    "FEM_ElementGeometry1D",
+    _ElementGeometry1D()
+)
+FreeCADGui.addCommand(
+    "FEM_ElementGeometry2D",
+    _ElementGeometry2D()
+)
+FreeCADGui.addCommand(
+    "FEM_ElementRotation1D",
+    _ElementRotation1D()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationElectrostatic",
+    _EquationElectrostatic()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationElasticity",
+    _EquationElasticity()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationFlow",
+    _EquationFlow()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationFluxsolver",
+    _EquationFluxsolver()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationHeat",
+    _EquationHeat()
+)
+FreeCADGui.addCommand(
+    "FEM_MaterialEditor",
+    _MaterialEditor()
+)
+FreeCADGui.addCommand(
+    "FEM_MaterialFluid",
+    _MaterialFluid()
+)
+FreeCADGui.addCommand(
+    "FEM_MaterialMechanicalNonlinear",
+    _MaterialMechanicalNonlinear()
+)
+FreeCADGui.addCommand(
+    "FEM_MaterialReinforced",
+    _MaterialReinforced()
+)
+FreeCADGui.addCommand(
+    "FEM_MaterialSolid",
+    _MaterialSolid()
+)
+FreeCADGui.addCommand(
+    "FEM_FEMMesh2Mesh",
+    _FEMMesh2Mesh()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshBoundaryLayer",
+    _MeshBoundaryLayer()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshClear",
+    _MeshClear()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshDisplayInfo",
+    _MeshDisplayInfo()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshGmshFromShape",
+    _MeshGmshFromShape()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshGroup",
+    _MeshGroup()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshNetgenFromShape",
+    _MeshNetgenFromShape()
+)
+FreeCADGui.addCommand(
+    "FEM_MeshRegion",
+    _MeshRegion()
+)
+FreeCADGui.addCommand(
+    "FEM_ResultShow",
+    _ResultShow()
+)
+FreeCADGui.addCommand(
+    "FEM_ResultsPurge",
+    _ResultsPurge()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverCalculixCxxtools",
+    _SolverCxxtools()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverCalculiX",
+    _SolverCalculix()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverControl",
+    _SolverControl()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverElmer",
+    _SolverElmer()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverRun",
+    _SolverRun()
+)
+FreeCADGui.addCommand(
+    "FEM_SolverZ88",
+    _SolverZ88()
+)

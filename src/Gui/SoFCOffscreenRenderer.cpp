@@ -31,6 +31,13 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
+# include <QPainter>
+#endif
+
+#if !defined(FC_OS_MACOSX)
+# include <GL/gl.h>
+# include <GL/glu.h>
+# include <GL/glext.h>
 #endif
 
 //gcc
@@ -399,7 +406,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     else {
         this->renderaction = new SoGLRenderAction(vpr);
         this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-        this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
+        this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
     }
 
     this->didallocation = glrenderaction ? false : true;
@@ -410,6 +417,13 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
 #endif
     this->framebuffer = NULL;
     this->numSamples = -1;
+#if defined(HAVE_QT5_OPENGL)
+    //this->texFormat = GL_RGBA32F_ARB;
+    this->texFormat = GL_RGB32F_ARB;
+#else
+    //this->texFormat = GL_RGBA;
+    this->texFormat = GL_RGB;
+#endif
     this->cache_context = 0;
     this->pbuffer = false;
 }
@@ -527,6 +541,18 @@ SoQtOffscreenRenderer::getNumPasses(void) const
 }
 
 void
+SoQtOffscreenRenderer::setInternalTextureFormat(GLenum internalTextureFormat)
+{
+    PRIVATE(this)->texFormat = internalTextureFormat;
+}
+
+GLenum
+SoQtOffscreenRenderer::internalTextureFormat() const
+{
+    return PRIVATE(this)->texFormat;
+}
+
+void
 SoQtOffscreenRenderer::setPbufferEnable(SbBool enable)
 {
     PRIVATE(this)->pbuffer = enable;
@@ -597,13 +623,7 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     // is to use a certain background color using GL_RGB as texture
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
-#if defined(HAVE_QT5_OPENGL)
-    //fmt.setInternalTextureFormat(GL_RGBA32F_ARB);
-    fmt.setInternalTextureFormat(GL_RGB32F_ARB);
-#else
-    //fmt.setInternalTextureFormat(GL_RGBA);
-    fmt.setInternalTextureFormat(GL_RGB);
-#endif
+    fmt.setInternalTextureFormat(this->texFormat);
 #else
     QtGLFramebufferObject::Attachment fmt;
     fmt = QtGLFramebufferObject::Depth;

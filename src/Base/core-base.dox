@@ -12,7 +12,7 @@
 
 /*! \namespace Base
     \ingroup BASE
-    \brief Basic structures used by other FreeCAD components
+    \brief Basic structures used by other FreeCAD components (C++ API)
 
     The Base module includes most of the basic functions of FreeCAD, such as:
     - Console services: printing different kinds of messages to the FreeCAD report view or the terminal
@@ -21,3 +21,7 @@
     - Units: Management and conversion of different units
 */
 
+/** \defgroup GeomPrimers Geometry primers
+ *  \ingroup BASE
+    \brief Basic structures used by geomoetric objects
+*/

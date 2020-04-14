@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 # include <algorithm>
 #endif
 
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>

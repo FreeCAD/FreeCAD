@@ -28,6 +28,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Quaternion.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_TangentialDeflection.hxx>
@@ -53,6 +54,7 @@
 # include <ShapeConstruct_Curve.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -483,13 +485,13 @@ PyObject* GeometryCurvePy::parameter(PyObject *args)
         if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &p))
             return 0;
         Base::Vector3d v = Py::Vector(p, false).toVector();
-        
+
         double u;
-        
-        if(static_cast<Part::GeomCurve *>(getGeometryPtr())->closestParameter(v,u))
+
+        if (static_cast<Part::GeomCurve *>(getGeometryPtr())->closestParameter(v,u))
             return Py::new_reference_to(Py::Float(u));
     }
-    catch (Base::RuntimeError& e) {
+    catch (Base::CADKernelError& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
         return 0;
     }
@@ -561,6 +563,21 @@ PyObject* GeometryCurvePy::intersect2d(PyObject *args)
             tuple.setItem(0, Py::Float(pt.X()));
             tuple.setItem(1, Py::Float(pt.Y()));
             list.append(tuple);
+        }
+        if (intCC.NbSegments() > 0) {
+            // See also Curve2dPy::intersectCC() that uses Geom2dAPI_ExtremaCurveCurve
+            const Geom2dInt_GInter& gInter = intCC.Intersector();
+            for (int i=1; i <= gInter.NbSegments(); i++) {
+                const IntRes2d_IntersectionSegment& segm = gInter.Segment(i);
+                if (segm.HasFirstPoint()) {
+                    const IntRes2d_IntersectionPoint& fp = segm.FirstPoint();
+                    gp_Pnt2d pt = fp.Value();
+                    Py::Tuple tuple(2);
+                    tuple.setItem(0, Py::Float(pt.X()));
+                    tuple.setItem(1, Py::Float(pt.Y()));
+                    list.append(tuple);
+                }
+            }
         }
         return Py::new_reference_to(list);
     }
@@ -768,7 +785,7 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
             Py::List points;
             for (int i = 1; i <= intersector.NbPoints(); i++) {
                 gp_Pnt p = intersector.Point(i);
-                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
+                points.append(Py::asObject(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
             }
             Py::List segments;
             for (int i = 1; i <= intersector.NbSegments(); i++) {
@@ -819,9 +836,6 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
-
-    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
-    return 0;
 }
 
 // General intersection function
@@ -852,6 +866,17 @@ PyObject* GeometryCurvePy::intersect(PyObject *args)
 
     PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
+}
+
+Py::Object GeometryCurvePy::getRotation(void) const
+{
+    Handle(Geom_Conic) s = Handle(Geom_Conic)::DownCast(getGeometryPtr()->handle());
+    if(!s)
+        return Py::Object();
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position(),gp_Ax3());
+    auto q = trsf.GetRotation();
+    return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
 }
 
 PyObject* GeometryCurvePy::reverse(PyObject *args)

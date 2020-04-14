@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ar" sourcelanguage="en">
+<TS version="2.1" language="ar" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation type="unfinished">Center-align contents of selected cells</translation>
+      <translation>محتويات الخلايا المحددة المحاذاة في الوسط</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation type="unfinished">Top-align contents of selected cells</translation>
+      <translation>محتويات الخلايا المحددة المحاذاة لأعلى</translation>
     </message>
   </context>
   <context>
@@ -99,11 +99,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation type="unfinished">Vertically center-align</translation>
+      <translation>محاذاة للوسط رأسيا</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>محاذاة محتويات الخلايا المحددة للوسط</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>محتويات الخلايا المحددة المحاذاة للوسط رأسيا</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>دمج الخلايا</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>دمج الخلايا المحددة في جدول البيانات</translation>
+      <source>Merge selected cells</source>
+      <translation>ادمج الخلايا المحددة</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>عرف الاسم المستعار</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>عرف الاسم المستعار للخلية المحددة</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>تقسيم الخلية</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>تقسيم الخلايا المدمجة مسبقاً في جدول البيانات</translation>
+      <source>Split previously merged cells</source>
+      <translation>افصل الخلايا المدمجة سابقا</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>نص عريض</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>تعيين نص عريض في الخلايا المحددة</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>اجعل النص في الخلايا المحددة بالخط العريض</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>نص مائل</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>تعيين نص مائل في الخلايا المحددة</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>اجعل النص في الخلايا المحددة بالخط المائل</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>تسطير النص</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>تعيين تسطير النص في الخلايا المحددة</translation>
+      <source>Underline text in selected cells</source>
+      <translation>ضع خطا تحت النص في الخلايا المحددة</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>مخصص</translation>
+      <source>Custom Color</source>
+      <translation>لون معرف</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>أفقيا</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>رأسيا</translation>
     </message>
     <message>
       <source>Top</source>
@@ -285,7 +285,7 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation type="unfinished">&amp;Style</translation>
+      <translation>نمط</translation>
     </message>
     <message>
       <source>Bold</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Unit string</source>
-      <translation type="unfinished">Unit string</translation>
+      <translation>وحدة سلسلة</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation type="unfinished">A&amp;lias</translation>
+      <translation>الاسم المستعار</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation type="unfinished">Alias for this cell</translation>
+      <translation>الاسم المستعار لهذه الخلية</translation>
     </message>
   </context>
   <context>
@@ -329,10 +329,6 @@
     <message>
       <source>Export file</source>
       <translation>تصدير ملف</translation>
-    </message>
-    <message>
-      <source>Cell contents</source>
-      <translation>محتويات الخلية</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>تقوم بتعيين لون الخلفية لخلية(خلايا) جدول البيانات</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>جدول البيانات</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>رمادي فاتح</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>مخصص</translation>
+      <source>Custom Color</source>
+      <translation>لون معرف</translation>
     </message>
   </context>
   <context>

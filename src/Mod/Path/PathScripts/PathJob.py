@@ -37,19 +37,16 @@ import json
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
-"""Path Job object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class JobTemplate:
+    # pylint: disable=no-init
     '''Attribute and sub element strings for template export/import.'''
     Description = 'Desc'
     GeometryTolerance = 'Tolerance'
@@ -66,6 +63,7 @@ def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
 
 def isResourceClone(obj, propLink, resourceName):
+    # pylint: disable=unused-argument
     if hasattr(propLink, 'PathResource') and (resourceName is None or resourceName == propLink.PathResource):
         return True
     return False
@@ -82,6 +80,7 @@ def createResourceClone(obj, orig, name, icon):
     if clone.ViewObject:
         PathIconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
+        clone.ViewObject.Transparency = 80
     obj.Document.recompute() # necessary to create the clone shape
     return clone
 
@@ -102,6 +101,12 @@ class ObjectJob:
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
         obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
+
+        obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","Split output into multiple gcode files"))
+        obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
+        obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
+        obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
+        obj.Fixtures = ['G54']
 
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         #obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
@@ -126,6 +131,9 @@ class ObjectJob:
 
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
+
+        self.tooltip = None
+        self.tooltipArgs = None
 
         obj.Proxy = self
 
@@ -209,6 +217,7 @@ class ObjectJob:
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
             PathUtil.clearExpressionEngine(tc)
+            tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
         obj.ToolController = []
         # SetupSheet
@@ -221,7 +230,7 @@ class ObjectJob:
         if obj.Operations.ViewObject:
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except:
+            except Exception: # pylint: disable=broad-except
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
@@ -331,13 +340,15 @@ class ObjectJob:
     def execute(self, obj):
         obj.Path = obj.Operations.Path
 
-    def addOperation(self, op, before = None):
+    def addOperation(self, op, before = None, removeBefore = False):
         group = self.obj.Operations.Group
         if op not in group:
             if before:
                 try:
                     group.insert(group.index(before), op)
-                except Exception as e:
+                    if removeBefore:
+                        group.remove(before)
+                except Exception as e: # pylint: disable=broad-except
                     PathLog.error(e)
                     group.append(op)
             else:
@@ -380,7 +391,7 @@ class ObjectJob:
     @classmethod
     def baseCandidates(cls):
         '''Answer all objects in the current document which could serve as a Base for a job.'''
-        return sorted(filter(lambda obj: cls.isBaseCandidate(obj) , FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label)
+        return sorted([obj for obj in FreeCAD.ActiveDocument.Objects if cls.isBaseCandidate(obj)], key=lambda o: o.Label)
 
     @classmethod
     def isBaseCandidate(cls, obj):
@@ -403,6 +414,6 @@ def Create(name, base, templateFile = None):
     else:
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, templateFile)
     return obj
 

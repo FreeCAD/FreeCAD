@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru" sourcelanguage="en">
+<TS version="2.1" language="ru" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Выровнять вертикально по центру</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Выровнять содержимое выбранных ячеек вертикально по центру</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Вертикально выровнять содержимое выделенных ячеек по центру</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Объединить ячейки</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Объединение выделенных ячеек в электронной таблице</translation>
+      <source>Merge selected cells</source>
+      <translation>Объединить выделенные ячейки</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Разделить ячейку</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Разделить ранее объединенные ячейки в электронной таблице</translation>
+      <source>Split previously merged cells</source>
+      <translation>Разделить ранее объединенные ячейки</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Полужирный текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Задать полужирный текст в выбранных ячейках</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Сделать текст в выбранных ячейках жирным шрифтом</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Курсивный текст</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Установить курсивный текст в выбранных ячейках</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Сделать текст в выбранных ячейках курсивом</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Подчеркивание текста</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Задать подчеркивание текста в выбранных ячейках</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Подчеркивание текста в выбранных ячейках</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <source>Custom Color</source>
+      <translation>﻿Пользовательский цвет</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Экспорт файла</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Содержимое ячейки</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Показать таблицу</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Задает цвет фона ячеек таблицы</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Электронная таблица</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Светло-серый</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <source>Custom Color</source>
+      <translation>﻿Пользовательский цвет</translation>
     </message>
   </context>
   <context>

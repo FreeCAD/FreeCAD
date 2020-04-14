@@ -23,7 +23,7 @@
 
 
 '''
-These are a common functions and classes for creating custom post processors.  
+These are a common functions and classes for creating custom post processors.
 '''
 
 from PySide import QtCore, QtGui
@@ -33,26 +33,10 @@ FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-# class OldHighlighter(QtGui.QSyntaxHighlighter):
-#     def highlightBlock(self, text):
-#         myClassFormat = QtGui.QTextCharFormat()
-#         myClassFormat.setFontWeight(QtGui.QFont.Bold)
-#         myClassFormat.setForeground(QtCore.Qt.green)
-#         # the regex pattern to be colored
-#         pattern = "(G.*?|M.*?)\\s"
-#         expression = QtCore.QRegExp(pattern)
-#         index = text.index(expression)
-#         while index >= 0:
-#             length = expression.matchedLength()
-#             setFormat(index, length, myClassFormat)
-#             index = text.index(expression, index + length)
-            
-
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None):
         super(GCodeHighlighter, self).__init__(parent)
-        
 
         keywordFormat = QtGui.QTextCharFormat()
         keywordFormat.setForeground(QtCore.Qt.cyan)
@@ -68,12 +52,12 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"),speedFormat))
 
     def highlightBlock(self, text):
-        for pattern, format in self.highlightingRules:
+        for pattern, hlFormat in self.highlightingRules:
             expression = QtCore.QRegExp(pattern)
             index = expression.indexIn(text)
             while index >= 0:
                 length = expression.matchedLength()
-                self.setFormat(index, length, format)
+                self.setFormat(index, length, hlFormat)
                 index = expression.indexIn(text, index + length)
 
 
@@ -94,7 +78,6 @@ class GCodeEditorDialog(QtGui.QDialog):
         font.setPointSize(10)
         self.editor.setFont(font)
         self.editor.setText("G01 X55 Y4.5 F300.0")
-        self.highlighter = GCodeHighlighter(self.editor.document())
         layout.addWidget(self.editor)
 
         # OK and Cancel buttons
@@ -150,8 +133,23 @@ def fmt(num,dec,units):
 
 def editor(gcode):
     '''pops up a handy little editor to look at the code output '''
+    
+    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+    # default Max Highlighter Size = 512 Ko
+    defaultMHS = 512 * 1024 
+    mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
+    
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
+    gcodeSize = len(dia.editor.toPlainText())
+    if (gcodeSize <= mhs):
+        # because of poor performance, syntax highlighting is 
+        # limited to mhs octets (default 512 KB).
+        # It seems than the response time curve has an inflexion near 500 KB
+        # beyond 500 KB, the response time increases exponentially.
+        dia.highlighter = GCodeHighlighter(dia.editor.document())
+    else:
+        FreeCAD.Console.PrintMessage(translate("Path", "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize)))
     result = dia.exec_()
     if result:  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()

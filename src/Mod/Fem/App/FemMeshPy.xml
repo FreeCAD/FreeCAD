@@ -158,6 +158,16 @@
                 <UserDocu>Return a tuple of ElementIDs to a given group ID</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return the element type of a given ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getIdByElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of IDs to a given element type</UserDocu>
+            </Documentation>
+        </Methode>
         <Attribute Name="Nodes" ReadOnly="true">
             <Documentation>
                 <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>

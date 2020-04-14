@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2012 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +26,7 @@
 #define PARTDESIGN_FEATUREDRAFT_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
@@ -38,7 +40,7 @@ class PartDesignExport Draft : public DressUp
 public:
     Draft();
 
-    App::PropertyFloatConstraint Angle;
+    App::PropertyAngle Angle;
     App::PropertyLinkSub NeutralPlane;
     App::PropertyLinkSub PullDirection;
     App::PropertyBool Reversed;
@@ -53,6 +55,10 @@ public:
         return "PartDesignGui::ViewProviderDraft";
     }
     //@}
+
+private:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    static App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace PartDesign

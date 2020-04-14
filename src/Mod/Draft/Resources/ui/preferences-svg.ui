@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>This is the method chosen for importing SVG object color into FreeCAD.</string>
+           <string>Method chosen for importing SVG object color to FreeCAD</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -79,7 +79,8 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</string>
+           <string>If checked, no units conversion will occur.
+One unit in the SVG file will translate as one millimeter. </string>
           </property>
           <property name="text">
            <string>Disable units scaling</string>
@@ -124,7 +125,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="svg_export_style_combobox">
           <property name="toolTip">
-           <string>Style of SVG file to write when exporting a Sketch.</string>
+           <string>Style of SVG file to write when exporting a sketch</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -154,7 +155,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
           <property name="toolTip">
-           <string>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</string>
+           <string>All white lines will appear in black in the SVG for better readability against white backgrounds</string>
           </property>
           <property name="text">
            <string>Translate white line color to black</string>
@@ -200,7 +201,9 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>When arcs are projected, if your version of OpenCasCade doesn't support arc projection, these arcs will be discretized into small line segments. This value is the maximum segment length.</string>
+           <string>Versions of Open CASCADE older than version 6.8 don't support arc projection.
+In this case arcs will be discretized into small line segments.
+This value is the maximum segment length. </string>
           </property>
           <property name="suffix">
            <string>mm</string>

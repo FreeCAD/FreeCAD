@@ -27,6 +27,7 @@
 #include <Base/BaseClass.h>
 #include <boost/signals2.hpp>
 #include <set>
+#include <memory>
 
 namespace App
 {
@@ -62,7 +63,7 @@ public:
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    std::string getDocumentName() const;
+    const std::string &getDocumentName() const;
     /*! Get the document as Python command. */
     std::string getDocumentPython() const;
 
@@ -83,39 +84,285 @@ public:
     /*! Constructor */
     DocumentObjectT();
     /*! Constructor */
-    DocumentObjectT(DocumentObject*);
+    DocumentObjectT(const DocumentObjectT &);
+    /*! Constructor */
+    DocumentObjectT(DocumentObjectT &&);
+    /*! Constructor */
+    DocumentObjectT(const DocumentObject*);
+    /*! Constructor */
+    DocumentObjectT(const char *docName, const char *objName);
+    /*! Constructor */
+    DocumentObjectT(const Property*);
     /*! Destructor */
     ~DocumentObjectT();
     /*! Assignment operator */
-    void operator=(const DocumentObjectT&);
+    DocumentObjectT &operator=(const DocumentObjectT&);
+    /*! Assignment operator */
+    DocumentObjectT &operator=(DocumentObjectT &&);
     /*! Assignment operator */
     void operator=(const DocumentObject*);
+    /*! Assignment operator */
+    void operator=(const Property*);
+    /*! Equality operator */
+    bool operator==(const DocumentObjectT&) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    std::string getDocumentName() const;
+    const std::string &getDocumentName() const;
     /*! Get the document as Python command. */
     std::string getDocumentPython() const;
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
     DocumentObject* getObject() const;
+    /*! Get a pointer to the property or 0 if it doesn't exist any more. */
+    Property* getProperty() const;
     /*! Get the name of the document object. */
-    std::string getObjectName() const;
+    const std::string &getObjectName() const;
     /*! Get the label of the document object. */
-    std::string getObjectLabel() const;
+    const std::string &getObjectLabel() const;
+    /*! Get the name of the property. */
+    const std::string &getPropertyName() const;
     /*! Get the document object as Python command. */
     std::string getObjectPython() const;
+    /*! Get the property as Python command. */
+    std::string getPropertyPython() const;
     /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
     template<typename T>
     inline T* getObjectAs() const
     {
         return Base::freecad_dynamic_cast<T>(getObject());
     }
+    template<typename T>
+    inline T* getPropertyAs() const
+    {
+        return Base::freecad_dynamic_cast<T>(getProperty());
+    }
 
 private:
     std::string document;
     std::string object;
     std::string label;
+    std::string property;
+};
+
+class AppExport SubObjectT : public DocumentObjectT
+{
+public:
+    /*! Constructor */
+    SubObjectT();
+
+    /*! Constructor */
+    SubObjectT(const SubObjectT &);
+
+    /*! Constructor */
+    SubObjectT(SubObjectT &&);
+
+    /*! Constructor */
+    SubObjectT(const DocumentObjectT & obj, const char *subname);
+
+    /*! Constructor */
+    SubObjectT(const DocumentObject*, const char *subname);
+
+    /*! Constructor */
+    SubObjectT(const char *docName, const char *objName, const char *subname);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const SubObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(SubObjectT &&);
+
+    /*! Equality operator */
+    bool operator==(const SubObjectT&) const;
+
+    /// Set the subname path to the sub-object
+    void setSubName(const char *subname);
+
+    /// Return the subname path
+    const std::string &getSubName() const;
+
+    /// Return the subname path without sub-element
+    std::string getSubNameNoElement() const;
+
+    /// Return the sub-element (Face, Edge, etc) of the subname path
+    const char *getElementName() const;
+
+    /// Return the new style sub-element name
+    std::string getNewElementName() const;
+
+    /** Return the old style sub-element name
+     * @param index: if given, then return the element type, and extract the index
+     */
+    std::string getOldElementName(int *index=0) const;
+
+    /// Return the sub-object
+    DocumentObject *getSubObject() const;
+
+    /// Return all objects along the subname path
+    std::vector<DocumentObject *> getSubObjectList() const;
+
+    bool operator<(const SubObjectT &other) const;
+
+    std::string getSubObjectPython(bool force=true) const;
+
+private:
+    std::string subname;
+};
+
+/**
+ * @brief The DocumentWeakPtrT class
+ */
+class AppExport DocumentWeakPtrT
+{
+public:
+    DocumentWeakPtrT(App::Document*) noexcept;
+    ~DocumentWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() noexcept;
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    App::Document* operator->() noexcept;
+
+private:
+    // disable
+    DocumentWeakPtrT(const DocumentWeakPtrT&);
+    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&);
+
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
+ * @brief The DocumentObjectWeakPtrT class
+ */
+class AppExport DocumentObjectWeakPtrT
+{
+public:
+    DocumentObjectWeakPtrT(App::DocumentObject*);
+    ~DocumentObjectWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset();
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    DocumentObjectWeakPtrT& operator= (App::DocumentObject* p);
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    App::DocumentObject* operator->() noexcept;
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const DocumentObjectWeakPtrT& p) const noexcept;
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const DocumentObjectWeakPtrT& p) const noexcept;
+    /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
+    template<typename T>
+    inline T* get() const noexcept
+    {
+        return Base::freecad_dynamic_cast<T>(_get());
+    }
+
+private:
+    App::DocumentObject* _get() const noexcept;
+    // disable
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&);
+    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&);
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
+ * @brief The WeakPtrT class
+ */
+template <class T>
+class WeakPtrT
+{
+public:
+    WeakPtrT(T* t) : ptr(t) {
+    }
+    ~WeakPtrT() {
+    }
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() {
+        ptr.reset();
+    }
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const {
+        return ptr.expired();
+    }
+    /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    WeakPtrT<T>& operator= (T* p) {
+        ptr = p;
+        return *this;
+    }
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    T* operator->() {
+        return ptr.get<T>();
+    }
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const WeakPtrT<T>& p) const {
+        return ptr == p.ptr;
+    }
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const WeakPtrT<T>& p) const {
+        return ptr != p.ptr;
+    }
+
+private:
+    // disable
+    WeakPtrT(const WeakPtrT&);
+    WeakPtrT& operator=(const WeakPtrT&);
+
+private:
+    DocumentObjectWeakPtrT ptr;
 };
 
 /**

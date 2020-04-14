@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de" sourcelanguage="en">
+<TS version="2.1" language="de" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,7 +102,7 @@
       <translation>Vertikal zentrieren</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
+      <source>Vertically center-align contents of selected cells</source>
       <translation>Inhalt der gewählten Zellen vertikal zentrieren</translation>
     </message>
   </context>
@@ -147,8 +147,8 @@
       <translation>Zellen verbinden</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Verbindet ausgewählte Zellen in der Tabelle</translation>
+      <source>Merge selected cells</source>
+      <translation>Ausgewählte Zellen zusammenführen</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Zelle teilen</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Trennt vorher zusammengefügte Zellen in der Tabelle</translation>
+      <source>Split previously merged cells</source>
+      <translation>Vorher zusammengeführte Zellen trennen</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Text in Fettschrift</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Setzt Text in den gewählten Zellen in Fettschrift</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Text in ausgewählten Zellen fett</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Text in Kursivschrift</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Setzt Text in den gewählten Zellen in Kursivschrift</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Text in ausgewählten Zellen kursiv</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Text unterstreichen</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Unterstreicht Text in den gewählten Zellen</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Unterstreiche den Text in den markierten Zellen</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Benutzerdefiniert</translation>
+      <source>Custom Color</source>
+      <translation>Benutzerdefinierte Farbe</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Exportiere Datei</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Zellinhalt</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Zeige Kalkulationstabelle</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Stellt die Hintergrundfarbe der Tabellen Zelle(n) ein</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Hellgrau</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Benutzerdefiniert</translation>
+      <source>Custom Color</source>
+      <translation>Benutzerdefinierte Farbe</translation>
     </message>
   </context>
   <context>
@@ -452,7 +462,7 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <source>Insert rows</source>
-      <translation>Reihen einfügen</translation>
+      <translation>Zeilen einfügen</translation>
     </message>
     <message>
       <source>Remove rows</source>

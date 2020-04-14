@@ -1786,11 +1786,8 @@ def read_3ds_file(filename,check_magic=True,tight=False,recover=True):
 
     """
 
-    flo = open(filename,'rb')
-    try:
+    with open(filename,'rb') as flo:
         return read_3ds_mem(flo.read(),check_magic,tight,recover)
-    finally:
-        flo.close()
 
 
 def write_3ds_mem(dom,check_magic=True):
@@ -1830,11 +1827,8 @@ def write_3ds_file(filename,dom,check_magic=True):
 
     if check_magic and dom.tag != 0x4D4D:
         raise File3dsFormatError("Not a 3D Studio file.")
-    flo = open(filename,'wb')
-    try:
+    with open(filename,'wb') as flo:
         flo.write(write_3ds_mem(dom,False))
-    finally:
-        flo.close()
 
 
 def dump_3ds_chunk(chunk,flo,arraylines=10,indent=''):
@@ -1907,5 +1901,3 @@ def remove_errant_chunks(chunk):
         setattr(chunk,attr,cl)
         for c in cl:
             remove_errant_chunks(c)
-
-

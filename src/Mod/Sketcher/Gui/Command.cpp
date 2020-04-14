@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,10 +36,10 @@
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SelectionFilter.h>
 
 #include <Mod/Sketcher/App/SketchObjectSF.h>
@@ -133,7 +133,7 @@ namespace SketcherGui {
 
 
 /* Sketch commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherNewSketch);
+DEF_STD_CMD_A(CmdSketcherNewSketch)
 
 CmdSketcherNewSketch::CmdSketcherNewSketch()
     :Command("Sketcher_NewSketch")
@@ -206,7 +206,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
         openCommand("Create a Sketch on Face");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        if (mapmode >= 0 && mapmode < Attacher::mmDummy_NumberOfModes)
+        if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(mapmode).c_str());
         else
             assert(0 /* mapmode index out of range */);
@@ -232,35 +232,12 @@ void CmdSketcherNewSketch::activated(int iMsg)
         Base::Vector3d p = Dlg.Pos.getPosition();
         Base::Rotation r = Dlg.Pos.getRotation();
 
-        // do the right view direction
-        std::string camstring;
-        switch(Dlg.DirType){
-            case 0:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n position 0 0 87 \\n orientation 0 0 1  0 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
-                break;
-            case 1:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n position 0 0 -87 \\n orientation -1 0 0  3.1415927 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
-                break;
-            case 2:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 0 -87 0 \\n  orientation -1 0 0  4.712389\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 3:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 0 87 0 \\n  orientation 0 0.70710683 0.70710683  3.1415927\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 4:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position 87 0 0 \\n  orientation 0.57735026 0.57735026 0.57735026  2.0943952 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-            case 5:
-                camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n  position -87 0 0 \\n  orientation -0.57735026 0.57735026 0.57735026  4.1887903 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n  aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
-                break;
-        }
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand("Create a new Sketch");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
         doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
-        doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",camstring.c_str());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
 
@@ -274,7 +251,7 @@ bool CmdSketcherNewSketch::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherEditSketch);
+DEF_STD_CMD_A(CmdSketcherEditSketch)
 
 CmdSketcherEditSketch::CmdSketcherEditSketch()
     :Command("Sketcher_EditSketch")
@@ -305,7 +282,7 @@ bool CmdSketcherEditSketch::isActive(void)
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
-DEF_STD_CMD_A(CmdSketcherLeaveSketch);
+DEF_STD_CMD_A(CmdSketcherLeaveSketch)
 
 CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
   : Command("Sketcher_LeaveSketch")
@@ -324,14 +301,14 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
-    
+
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         if (vp && vp->getSketchMode() != ViewProviderSketch::STATUS_NONE)
             vp->purgeHandler();
     }
-    
+
     openCommand("Sketch changed");
     doCommand(Gui,"Gui.activeDocument().resetEdit()");
     doCommand(Doc,"App.ActiveDocument.recompute()");
@@ -351,7 +328,46 @@ bool CmdSketcherLeaveSketch::isActive(void)
     return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherReorientSketch);
+DEF_STD_CMD_A(CmdSketcherStopOperation)
+
+CmdSketcherStopOperation::CmdSketcherStopOperation()
+  : Command("Sketcher_StopOperation")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Stop operation");
+    sToolTipText    = QT_TR_NOOP("Stop current operation");
+    sWhatsThis      = "Sketcher_StopOperation";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "process-stop";
+    eType           = 0;
+}
+
+void CmdSketcherStopOperation::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document *doc = getActiveGuiDocument();
+
+    if (doc) {
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp) {
+            vp->purgeHandler();
+        }
+    }
+}
+
+bool CmdSketcherStopOperation::isActive(void)
+{
+    Gui::Document *doc = getActiveGuiDocument();
+    if (doc) {
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp)
+            return true;
+    }
+    return false;
+}
+
+DEF_STD_CMD_A(CmdSketcherReorientSketch)
 
 CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     :Command("Sketcher_ReorientSketch")
@@ -423,8 +439,8 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     }
 
     openCommand("Reorient Sketch");
-    doCommand(Doc,"App.ActiveDocument.%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
-                 ,sketch->getNameInDocument(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+    Gui::cmdAppObjectArgs(sketch, "Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                                , p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",sketch->getNameInDocument());
 }
 
@@ -434,7 +450,7 @@ bool CmdSketcherReorientSketch::isActive(void)
         (Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
-DEF_STD_CMD_A(CmdSketcherMapSketch);
+DEF_STD_CMD_A(CmdSketcherMapSketch)
 
 CmdSketcherMapSketch::CmdSketcherMapSketch()
   : Command("Sketcher_MapSketch")
@@ -479,7 +495,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             items, 0, false, &ok);
         if (!ok) return;
         int index = items.indexOf(text);
-        Part2DObject &sketch = *(static_cast<Part2DObject*>(sketches[index]));
+        Part2DObject* sketch = static_cast<Part2DObject*>(sketches[index]);
 
 
         // check circular dependency
@@ -491,7 +507,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
             std::vector<App::DocumentObject*> input = part->getOutList();
-            if (std::find(input.begin(), input.end(), &sketch) != input.end()) {
+            if (std::find(input.begin(), input.end(), sketch) != input.end()) {
                 throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!"));
             }
         }
@@ -508,7 +524,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         bool bAttach = true;
         bool bCurIncompatible = false;
         // * find out the modes that are compatible with selection.
-        eMapMode curMapMode = eMapMode(sketch.MapMode.getValue());
+        eMapMode curMapMode = eMapMode(sketch->MapMode.getValue());
         // * Test if current mode is OK.
         if (std::find(validModes.begin(), validModes.end(), curMapMode) == validModes.end())
             bCurIncompatible = true;
@@ -564,20 +580,19 @@ void CmdSketcherMapSketch::activated(int iMsg)
         }
 
         // * action
-        std::string featName = sketch.getNameInDocument();
         if (bAttach) {
             App::PropertyLinkSubList support;
             Gui::Selection().getAsPropertyLinkSubList(support);
             std::string supportString = support.getPyReprString();
 
             openCommand("Attach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
-            doCommand(Gui,"App.activeDocument().%s.Support = %s",featName.c_str(),supportString.c_str());
+            Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
+            Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
         } else {
             openCommand("Detach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
-            doCommand(Gui,"App.activeDocument().%s.Support = None",featName.c_str());
+            Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
+            Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
         }
     } catch (ExceptionWrongInput &e) {
@@ -593,7 +608,7 @@ bool CmdSketcherMapSketch::isActive(void)
     return getActiveGuiDocument() != 0;
 }
 
-DEF_STD_CMD_A(CmdSketcherViewSketch);
+DEF_STD_CMD_A(CmdSketcherViewSketch)
 
 CmdSketcherViewSketch::CmdSketcherViewSketch()
   : Command("Sketcher_ViewSketch")
@@ -614,8 +629,8 @@ void CmdSketcherViewSketch::activated(int iMsg)
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
-        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
-                     ,vp->getObject()->getNameInDocument());
+        runCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation("
+                "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
     }
 }
 
@@ -631,7 +646,7 @@ bool CmdSketcherViewSketch::isActive(void)
     return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherValidateSketch);
+DEF_STD_CMD_A(CmdSketcherValidateSketch)
 
 CmdSketcherValidateSketch::CmdSketcherValidateSketch()
   : Command("Sketcher_ValidateSketch")
@@ -665,7 +680,7 @@ bool CmdSketcherValidateSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdSketcherMirrorSketch);
+DEF_STD_CMD_A(CmdSketcherMirrorSketch)
 
 CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 : Command("Sketcher_MirrorSketch")
@@ -690,68 +705,69 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
             qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches, please."));
         return;
     }
-    
+
     // Ask the user which kind of mirroring he wants
     SketchMirrorDialog * smd = new SketchMirrorDialog();
-    
+
     int refgeoid=-1;
     Sketcher::PointPos refposid=Sketcher::none;
-    
+
     if( smd->exec() == QDialog::Accepted ){
         refgeoid=smd->RefGeoid;
         refposid=smd->RefPosid;
-        
+
         delete smd;
     }
     else {
         delete smd;
         return;
     }
-    
+
     App::Document* doc = App::GetApplication().getActiveDocument();
-    
+
     openCommand("Create a mirror Sketch for each sketch");
-    
+
     for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
-        // create Sketch 
+        // create Sketch
         std::string FeatName = getUniqueObjectName("MirroredSketch");
-        
+
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        
-        Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));       
-        
+
+        Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
+
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
-        
+
         Base::Placement pl = Obj->Placement.getValue();
-        
+
         Base::Vector3d p = pl.getPosition();
         Base::Rotation r = pl.getRotation();
-        
+
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
                   FeatName.c_str(),
                   p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        
+
         Sketcher::SketchObject* tempsketch = new Sketcher::SketchObject();
-        
+
         int addedGeometries=tempsketch->addGeometry(Obj->getInternalGeometry());
-        
+
         int addedConstraints=tempsketch->addConstraints(Obj->Constraints.getValues());
 
         std::vector<int> geoIdList;
-        
+
         for(int i=0;i<=addedGeometries;i++)
             geoIdList.push_back(i);
-        
+
         tempsketch->addSymmetric(geoIdList, refgeoid, refposid);
-                
+
         std::vector<Part::Geometry *> tempgeo = tempsketch->getInternalGeometry();
         std::vector<Sketcher::Constraint *> tempconstr = tempsketch->Constraints.getValues();
 
-        std::vector<Part::Geometry *> mirrorgeo (tempgeo.begin()+addedGeometries+1,tempgeo.end());
-        std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
+        // If value of addedGeometries or addedConstraints is -1, it gets added to vector begin iterator and that is invalid
+        std::vector<Part::Geometry *> mirrorgeo(tempgeo.begin() + (addedGeometries + 1), tempgeo.end());
+        std::vector<Sketcher::Constraint *> mirrorconstr(tempconstr.begin() + (addedConstraints + 1), tempconstr.end());
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
- 
+
             if ((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==Sketcher::GeoEnum::HAxis || (*itc)->First==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->First-=(addedGeometries+1);
             if ((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==Sketcher::GeoEnum::HAxis || (*itc)->Second==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
@@ -759,15 +775,15 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
             if ((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==Sketcher::GeoEnum::HAxis || (*itc)->Third==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->Third-=(addedGeometries+1);
         }
-        
+
         mirrorsketch->addGeometry(mirrorgeo);
         mirrorsketch->addConstraints(mirrorconstr);
-        
+
         delete tempsketch;
     }
-    
+
     doCommand(Gui,"App.activeDocument().recompute()");
-    
+
 }
 
 bool CmdSketcherMirrorSketch::isActive(void)
@@ -775,7 +791,7 @@ bool CmdSketcherMirrorSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdSketcherMergeSketches);
+DEF_STD_CMD_A(CmdSketcherMergeSketches)
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 : Command("Sketcher_MergeSketches")
@@ -803,7 +819,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
 
-    // create Sketch 
+    // create Sketch
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand("Create a merge Sketch");
@@ -855,7 +871,7 @@ bool CmdSketcherMergeSketches::isActive(void)
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
 // https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
-DEF_STD_CMD_A(CmdSketcherViewSection);
+DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()
 : Command("Sketcher_ViewSection")
@@ -895,6 +911,7 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherNewSketch());
     rcCmdMgr.addCommand(new CmdSketcherEditSketch());
     rcCmdMgr.addCommand(new CmdSketcherLeaveSketch());
+    rcCmdMgr.addCommand(new CmdSketcherStopOperation());
     rcCmdMgr.addCommand(new CmdSketcherReorientSketch());
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherViewSketch());

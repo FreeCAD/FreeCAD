@@ -175,7 +175,6 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
         body = PartDesignGui::getBodyFor (feature, false, false, assertModern);
         // lote of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
-            feature->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
             ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
             ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
               body->BaseFeature.getValue() == feature )
@@ -227,9 +226,20 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
             if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
                 *item << "Std_SetAppearance"
-                      << "Std_RandomColor";
+                      << "Std_RandomColor"
+                      << "Std_Cut"
+                      << "Std_Copy"
+                      << "Std_Paste"
+                      << "Separator"
+                      << "Std_Delete";
             }
         }
+    }
+
+    if (strcmp(recipient, "View") == 0) {
+        if (item->hasItems())
+            *item << "Separator";
+        Gui::StdWorkbench::setupContextMenu(recipient, item);
     }
 }
 
@@ -419,7 +429,8 @@ void Workbench::activated()
     _switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
-    Gui::Control().showTaskView();
+    if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToTask", true))
+        Gui::Control().showTaskView();
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
     Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
@@ -468,6 +479,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Plane"
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
           << "PartDesign_Pad"
@@ -534,6 +546,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Plane"
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);

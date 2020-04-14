@@ -116,7 +116,7 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
             checkAndAdd(ts.getShape(), aWD);
         }
     }
-    catch (Standard_Failure&) { // any OCC exception means an unappropriate shape in the selection
+    catch (Standard_Failure&) { // any OCC exception means an inappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.\n");
     }
 }
@@ -335,7 +335,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             curves.push_back(bspline);
         }
         else {
-            // try to convert it into a b-spline
+            // try to convert it into a B-spline
             BRepBuilderAPI_NurbsConvert mkNurbs(edge);
             TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
             // avoid copying

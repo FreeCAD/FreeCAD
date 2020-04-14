@@ -638,7 +638,7 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         Wm4::Vector3d clProjPnt = clRotMatTrans * Wm4::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
-        vcProjPts.push_back(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
+        vcProjPts.emplace_back(clProjPnt.X(), clProjPnt.Y());
         clBBox.Add(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
     }
 
@@ -819,7 +819,9 @@ void BSplineParameterCorrection::Init()
 
 void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 {
-    if (afKnots.size() != static_cast<std::size_t>(_usUCtrlpoints+_usUOrder))
+    std::size_t numPoints = static_cast<std::size_t>(_usUCtrlpoints);
+    std::size_t order = static_cast<std::size_t>(_usUOrder);
+    if (afKnots.size() != (numPoints + order))
         return;
 
     unsigned usUMax = _usUCtrlpoints-_usUOrder+1;
@@ -837,7 +839,9 @@ void BSplineParameterCorrection::SetUKnots(const std::vector<double>& afKnots)
 
 void BSplineParameterCorrection::SetVKnots(const std::vector<double>& afKnots)
 {
-    if (afKnots.size() != static_cast<std::size_t>(_usVCtrlpoints+_usVOrder))
+    std::size_t numPoints = static_cast<std::size_t>(_usVCtrlpoints);
+    std::size_t order = static_cast<std::size_t>(_usVOrder);
+    if (afKnots.size() != (numPoints + order))
         return;
 
     unsigned usVMax = _usVCtrlpoints-_usVOrder+1;
@@ -865,7 +869,7 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
         fMaxScalar = 1.0;
         fMaxDiff   = 0.0;
 
-        Geom_BSplineSurface* pclBSplineSurf = new Geom_BSplineSurface(_vCtrlPntsOfSurf,
+        Handle(Geom_BSplineSurface) pclBSplineSurf = new Geom_BSplineSurface(_vCtrlPntsOfSurf,
                                                     _vUKnots, _vVKnots, _vUMults, _vVMults, _usUOrder-1, _usVOrder-1);
 
         for (int ii=_pvcPoints->Lower();ii <=_pvcPoints->Upper();ii++) {

@@ -22,7 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include <boost/algorithm/string.hpp>
+
+#ifndef _PreComp_
+# include <boost/algorithm/string.hpp>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>
@@ -241,7 +244,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
 
 Py::Object CommandPy::getPlacement(void) const
 {
-    return Py::Object(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
+    return Py::asObject(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
 }
 
 void CommandPy::setPlacement(Py::Object arg)

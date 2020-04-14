@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,30 +39,33 @@
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 
-#include "DrawView.h"
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawLeaderLine.h"
 #include "DrawUtil.h"
+#include "Geometry.h"
+#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
-using namespace TechDraw;
+#include "DrawView.h"
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawView
 //===========================================================================
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
-                                            "Automatic",
-                                            "Custom",
-                                             NULL};
+                                         "Automatic",
+                                         "Custom",
+                                         NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+                                                                  (0.1)}; // increment by 0.1
 
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
@@ -72,18 +75,17 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-
-    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
-    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
-    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Prevent View from moving in Gui");
-    ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
+    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_None, "Lock View position to parent Page or Group");
+    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
+    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -92,8 +94,10 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+//    Base::Console().Message("DV::execute() - %s\n", getNameInDocument());
+    handleXYLock();
     requestPaint();
-    return App::DocumentObject::StdReturn;                //DO::execute returns 0
+    return App::DocumentObject::execute();
 }
 
 void DrawView::checkScale(void)
@@ -112,12 +116,14 @@ void DrawView::checkScale(void)
 
 void DrawView::onChanged(const App::Property* prop)
 {
+//Coding note: calling execute, recompute or recomputeFeature inside an onChanged
+//method can create infinite loops.  In general don't do this!  There may be 
+//situations where it is OK, but careful analysis is a must. 
     if (!isRestoring()) {
         if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
@@ -127,10 +133,8 @@ void DrawView::onChanged(const App::Property* prop)
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
                 Scale.setStatus(App::Property::ReadOnly,false);
-                App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (!checkFit(page)) {
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
@@ -139,13 +143,50 @@ void DrawView::onChanged(const App::Property* prop)
                     }
                 }
             }
+        } else if (prop == &LockPosition) {
+            handleXYLock();
+            LockPosition.purgeTouched(); 
         }
-//        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-//            prop == &Y) {
-//            requestPaint();
-//        }
+        if ((prop == &Caption) ||
+            (prop == &Label)) {
+            requestPaint();
+        }
     }
     App::DocumentObject::onChanged(prop);
+}
+
+bool DrawView::isLocked(void) const
+{
+    return LockPosition.getValue();
+}
+
+bool DrawView::showLock(void) const
+{
+    return true;
+}
+
+//override this for View inside a group (ex DPGI in DPG)
+void DrawView::handleXYLock(void) 
+{
+    if (isLocked()) {
+        if (!X.testStatus(App::Property::ReadOnly)) {
+            X.setStatus(App::Property::ReadOnly,true);
+            X.purgeTouched();
+        }
+        if (!Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,true);
+            Y.purgeTouched();
+        }
+    } else {
+        if (X.testStatus(App::Property::ReadOnly)) {
+            X.setStatus(App::Property::ReadOnly,false);
+            X.purgeTouched();
+        }
+        if (Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,false);
+            Y.purgeTouched();
+        }
+    }
 }
 
 short DrawView::mustExecute() const
@@ -154,8 +195,10 @@ short DrawView::mustExecute() const
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
                     ScaleType.isTouched() ||
+                    Caption.isTouched() ||
                     X.isTouched() ||
-                    Y.isTouched() );
+                    Y.isTouched() ||
+                    LockPosition.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -172,6 +215,7 @@ QRectF DrawView::getRect() const
 
 void DrawView::onDocumentRestored()
 {
+    handleXYLock();
     DrawView::execute();
 }
 
@@ -225,38 +269,72 @@ DrawViewClip* DrawView::getClipGroup(void)
     return result;
 }
 
-
-double DrawView::autoScale(double w, double h) const
+double DrawView::autoScale(void) const
 {
-    double fudgeFactor = 0.90;
-    QRectF viewBox = getRect();
+    auto page = findParentPage();
+    double w = page->getPageWidth();
+    double h = page->getPageHeight();
+    return autoScale(w,h);
+}
+
+//compare 1:1 rect of view to pagesize(pw,h) 
+double DrawView::autoScale(double pw, double ph) const
+{
+//    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
+    double fudgeFactor = 1.0;  //make it a bit smaller just in case.
+    QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
+    if (!viewBox.isValid()) {
+        return 1.0;
+    }
     //have to unscale rect to determine new scale
     double vbw = viewBox.width()/getScale();
     double vbh = viewBox.height()/getScale();
-    double xScale = w/vbw;
-    double yScale = h/vbh;
-    //TODO: find a standard scale that's close? 1:2, 1:10, 1:100...?  Logic in TaskProjGroup
-    double newScale = fudgeFactor * std::min(xScale,yScale);
-    newScale = DrawUtil::sensibleScale(newScale);
-    return newScale;
+    double xScale = pw/vbw;           // > 1 page bigger than figure
+    double yScale = ph/vbh;           // < 1 page is smaller than figure
+    double newScale = std::min(xScale,yScale) * fudgeFactor; 
+    double sensibleScale = DrawUtil::sensibleScale(newScale);
+    return sensibleScale;
 }
 
-//!check if View fits on Page
+bool DrawView::checkFit(void) const
+{
+    auto page = findParentPage();
+    return checkFit(page);
+}
+
+//!check if View is too big for page
+//should check if unscaled rect is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
-    QRectF viewBox = getRect();
-    if ( (viewBox.width() > p->getPageWidth()) ||
-         (viewBox.height() > p->getPageHeight()) ) {
-        result = false;
+    double fudge = 1.1;
+
+    double width = 0.0;
+    double height = 0.0;
+    QRectF viewBox = getRect();    //rect is scaled
+    if (!viewBox.isValid()) {
+        result = true;
+    } else {
+        width = viewBox.width() / getScale();        //unscaled rect w x h
+        height = viewBox.height() / getScale(); 
+        width *= fudge;
+        height *= fudge;
+        if ( (width > p->getPageWidth()) ||
+             (height > p->getPageHeight()) ) {
+            result = false;
+        }
     }
     return result;
 }
 
-void DrawView::setPosition(double x, double y)
+void DrawView::setPosition(double x, double y, bool force)
 {
-    X.setValue(x);
-    Y.setValue(y);
+//    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
+    if ( (!isLocked()) ||
+         (force) ) {
+        X.setValue(x);
+        Y.setValue(y);
+    }
 }
 
 //TODO: getScale is no longer needed and could revert to Scale.getValue
@@ -270,107 +348,143 @@ double DrawView::getScale(void) const
     return result;
 }
 
-void DrawView::Restore(Base::XMLReader &reader)
+//return list of Leaders which reference this DV
+std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
 {
-// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
-// fcstd files with old property types in use. 
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    std::vector<TechDraw::DrawLeaderLine*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawLeaderLine::getClassTypeId())) {
+            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            result.push_back(lead);
+        }
+    }
+    return result;
+}
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else  {
-                    if (strcmp(PropName, "Scale") == 0) {
-                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do (redundant)
-                        } else {                                                                //Scale, but not PropertyFloatConstraint
-                            App::PropertyFloat tmp;
-                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
-                                tmp.setContainer(this);
-                                tmp.Restore(reader);
-                                double tmpValue = tmp.getValue();
-                                if (tmpValue > 0.0) {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
-                                } else {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
-                                }
-                            } else {
-                                // has Scale prop that isn't Float! 
-                                Base::Console().Log("DrawView::Restore - old Document Scale is Not Float!\n");
-                                // no idea
-                            }
-                        }
-                    } else if (strcmp(PropName, "Source") == 0) {
-                        App::PropertyLinkGlobal glink;
-                        App::PropertyLink link;
-                        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
-                            glink.setContainer(this);
-                            glink.Restore(reader);
-                            if (glink.getValue() != nullptr) {
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(glink.getValue());
-                            }
-                        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
-                            link.setContainer(this);
-                            link.Restore(reader);
-                            if (link.getValue() != nullptr) {
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(link.getValue());
-                            }
-                        
-                        } else {
-                            // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
-                            Base::Console().Log("DrawView::Restore - old Document Source is weird: %s\n", TypeName);
-                            // no idea
-                        }
-                    } else {
-                        Base::Console().Log("DrawView::Restore - old Document has unknown Property\n");
-                    }
-                }
+void DrawView::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+{
+    if (prop == &Scale) {
+        App::PropertyFloat tmp;
+        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            double tmpValue = tmp.getValue();
+            if (tmpValue > 0.0) {
+                Scale.setValue(tmpValue);
+            } else {
+                Scale.setValue(1.0);
+            }
+        } else {
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
+        }
+    }
+    else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
+        && strcmp(prop->getName(), "Source") == 0) {
+        App::PropertyLinkGlobal glink;
+        App::PropertyLink link;
+        if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
+            glink.setContainer(this);
+            glink.Restore(reader);
+            if (glink.getValue() != nullptr) {
+                static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
+                static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
+        else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
+            link.setContainer(this);
+            link.Restore(reader);
+            if (link.getValue() != nullptr) {
+                static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
+                static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
+            }
         }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
-
-        reader.readEndElement("Property");
     }
-    reader.readEndElement("Properties");
+
+    // property X had App::PropertyFloat and was changed to App::PropertyLength
+    // and later to PropertyDistance because some X,Y are relative to existing points on page
+    else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat XProperty;
+        XProperty.setContainer(this);
+        // restore the PropertyFloat to be able to set its value
+        XProperty.Restore(reader);
+        X.setValue(XProperty.getValue());
+    }
+    else if (prop == &X && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength X2Property;
+        X2Property.Restore(reader);
+        X.setValue(X2Property.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat YProperty;
+        YProperty.setContainer(this);
+        YProperty.Restore(reader);
+        Y.setValue(YProperty.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength Y2Property;
+        Y2Property.Restore(reader);
+        Y.setValue(Y2Property.getValue());
+    }
+       
+// property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
+    else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat RotationProperty;
+        RotationProperty.setContainer(this);
+        RotationProperty.Restore(reader);
+        Rotation.setValue(RotationProperty.getValue());
+    }
 }
 
 bool DrawView::keepUpdated(void)
 {
+//    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
     bool result = false;
+
+    bool pageUpdate = false;
+    bool force = false;
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        result = page->KeepUpdated.getValue();
+        pageUpdate = page->KeepUpdated.getValue();
+        force = page->forceRedraw();
     }
+
+    if (DrawPage::GlobalUpdateDrawings() &&
+        pageUpdate)  {
+        result = true;
+    } else if (!DrawPage::GlobalUpdateDrawings() &&
+                DrawPage::AllowPageOverride()    &&
+                pageUpdate) {
+        result = true;
+    }
+    if (force) {         //when do we turn this off??
+        result = true;
+    }
+    return result;
+}
+
+int DrawView::prefScaleType(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    int result = hGrp->GetInt("DefaultScaleType", 0); 
+    return result;
+}
+
+double DrawView::prefScale(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetFloat("DefaultViewScale", 1.0); 
     return result;
 }
 
 void DrawView::requestPaint(void)
 {
+//    Base::Console().Message("DV::requestPaint() - %s\n", getNameInDocument());
     signalGuiPaint(this);
 }
 

@@ -24,9 +24,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
+# include <QRegExp>
+# include <QRegExpValidator>
+# include <Interface_Static.hxx>
 #endif
-
-#include <Interface_Static.hxx>
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
@@ -45,7 +46,7 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
     ui->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsGeneral::~DlgSettingsGeneral()
@@ -95,9 +96,18 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonBRepOff, 0);
     bg->addButton(ui->radioButtonBRepOn, 1);
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportIges::~DlgImportExportIges()
@@ -117,7 +127,7 @@ void DlgImportExportIges::saveSettings()
             Interface_Static::SetCVal("write.iges.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.iges.unit","IN");
+            Interface_Static::SetCVal("write.iges.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
@@ -188,9 +198,25 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
+    ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
+    ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
+
+    // https://tracker.dev.opencascade.org/view.php?id=25654
+    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
+                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
+                                       "the size of the resulting STEP file."));
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportStep::~DlgImportExportStep()
@@ -219,7 +245,7 @@ void DlgImportExportStep::saveSettings()
             Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.step.unit","IN");
+            Interface_Static::SetCVal("write.step.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.step.unit","MM");
@@ -244,6 +270,16 @@ void DlgImportExportStep::saveSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onSave();
+    ui->checkBoxExportHiddenObj->onSave();
+    ui->checkBoxExportLegacy->onSave();
+    ui->checkBoxKeepPlacement->onSave();
+    ui->checkBoxImportHiddenObj->onSave();
+    ui->checkBoxUseLinkGroup->onSave();
+    ui->checkBoxUseBaseName->onSave();
+    ui->checkBoxReduceObjects->onSave();
+    ui->checkBoxExpandCompound->onSave();
+    ui->checkBoxShowProgress->onSave();
+    ui->comboBoxImportMode->onSave();
 }
 
 void DlgImportExportStep::loadSettings()
@@ -278,6 +314,16 @@ void DlgImportExportStep::loadSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onRestore();
+    ui->checkBoxExportHiddenObj->onRestore();
+    ui->checkBoxExportLegacy->onRestore();
+    ui->checkBoxKeepPlacement->onRestore();
+    ui->checkBoxImportHiddenObj->onRestore();
+    ui->checkBoxUseLinkGroup->onRestore();
+    ui->checkBoxUseBaseName->onRestore();
+    ui->checkBoxReduceObjects->onRestore();
+    ui->checkBoxExpandCompound->onRestore();
+    ui->checkBoxShowProgress->onRestore();
+    ui->comboBoxImportMode->onRestore();
 }
 
 /**

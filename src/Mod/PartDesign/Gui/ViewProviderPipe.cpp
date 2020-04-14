@@ -25,9 +25,12 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderPipe.h"
 //#include "TaskPipeParameters.h"
 #include "TaskPipeParameters.h"
@@ -38,8 +41,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+
 
 using namespace PartDesignGui;
 
@@ -63,6 +65,11 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (sketch != NULL)
         temp.push_back(sketch);
 
+    for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            temp.push_back(obj);
+    }
+
     App::DocumentObject* spine = pcPipe->Spine.getValue();
     if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
@@ -84,8 +91,7 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderPipe::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {
@@ -176,6 +182,6 @@ QIcon ViewProviderPipe::getIcon(void) const {
         str += QString::fromLatin1("Subtractive_");
 
     str += QString::fromLatin1("Pipe.svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

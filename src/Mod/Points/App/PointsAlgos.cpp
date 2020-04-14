@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,7 @@
 #include "PointsAlgos.h"
 #include "Points.h"
 
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
@@ -612,7 +613,7 @@ void PlyReader::read(const std::string& filename)
     if (hasData && hasNormal) {
         normals.reserve(numPoints);
         for (std::size_t i=0; i<numPoints; i++) {
-            normals.push_back(Base::Vector3f(data(i,normal_x),data(i,normal_y),data(i,normal_z)));
+            normals.emplace_back(data(i,normal_x),data(i,normal_y),data(i,normal_z));
         }
     }
 
@@ -633,10 +634,10 @@ void PlyReader::read(const std::string& filename)
                 float b = data(i, blue);
                 if (alpha != max_size)
                     a = data(i, alpha);
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
         else if (types[red] == "float") {
@@ -646,7 +647,7 @@ void PlyReader::read(const std::string& filename)
                 float b = data(i, blue);
                 if (alpha != max_size)
                     a = data(i, alpha);
-                colors.push_back(App::Color(r, g, b, a));
+                colors.emplace_back(r, g, b, a);
             }
         }
     }
@@ -661,7 +662,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
 {
     std::string line, element;
     std::vector<std::string> list;
-    std::size_t points = 0;
+    std::size_t numPoints = 0;
     // a pair of numbers of elements and the total size of the properties
     std::vector<std::pair<std::size_t, std::size_t> > count_props;
 
@@ -720,12 +721,12 @@ std::size_t PlyReader::readHeader(std::istream& in,
             std::size_t count = boost::lexical_cast<std::size_t>(list[2]);
             if (name == "vertex") {
                 element = name;
-                points = count;
+                numPoints = count;
             }
             else {
                 // if another element than 'vertex' comes first then calculate the offset
-                if (points == 0) {
-                    count_props.push_back(std::make_pair(count, 0));
+                if (numPoints == 0) {
+                    count_props.emplace_back(count, 0);
                 }
                 else {
                     // this happens for elements coming after 'vertex'
@@ -817,7 +818,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
         }
     }
 
-    return points;
+    return numPoints;
 }
 
 void PlyReader::readAscii(std::istream& inp, std::size_t offset, Eigen::MatrixXd& data)
@@ -1061,7 +1062,7 @@ void PcdReader::read(const std::string& filename)
     if (hasData && hasNormal) {
         normals.reserve(numPoints);
         for (std::size_t i=0; i<numPoints; i++) {
-            normals.push_back(Base::Vector3f(data(i,normal_x),data(i,normal_y),data(i,normal_z)));
+            normals.emplace_back(data(i,normal_x),data(i,normal_y),data(i,normal_z));
         }
     }
 
@@ -1081,10 +1082,10 @@ void PcdReader::read(const std::string& filename)
                 uint32_t r = (packed >> 16) & 0xff;
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
         else if (types[rgba] == "F") {
@@ -1101,10 +1102,10 @@ void PcdReader::read(const std::string& filename)
                 uint32_t r = (packed >> 16) & 0xff;
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
     }
@@ -1169,10 +1170,13 @@ std::size_t PcdReader::readHeader(std::istream& in,
         }
     }
 
+    std::size_t w = static_cast<std::size_t>(this->width);
+    std::size_t h = static_cast<std::size_t>(this->height);
+    std::size_t size = w * h;
     if (fields.size() != sizes.size() ||
         fields.size() != types.size() ||
         fields.size() != counts.size() ||
-        points != static_cast<std::size_t>(this->width * this->height)) {
+        points != size) {
         throw Base::BadFormatError("");
     }
 

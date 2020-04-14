@@ -31,18 +31,16 @@ import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
 import json
+import os
 
 from PySide import QtCore, QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class CommandJobCreate:
     '''
@@ -50,6 +48,9 @@ class CommandJobCreate:
     When activated the command opens a dialog allowing the user to select a base object (has to be a solid)
     and a template to be used for the initial creation.
     '''
+
+    def __init__(self):
+        pass
 
     def GetResources(self):
         return {'Pixmap': 'Path-Job',
@@ -88,6 +89,10 @@ class CommandJobTemplateExport:
     on Job creation and be available for selection.
     '''
 
+
+    def __init__(self):
+        pass
+
     def GetResources(self):
         return {'Pixmap': 'Path-ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
@@ -125,6 +130,10 @@ class CommandJobTemplateExport:
                 PathPreferences.filePath(),
                 "job_*.json")[0]
         if foo: 
+            if not os.path.basename(foo).startswith('job_'):
+                foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
+            if not foo.endswith('.json'):
+                foo = foo + '.json'
             cls.Execute(job, foo, dialog)
 
     @classmethod
@@ -164,7 +173,7 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(PathUtil.toUnicode(path), 'wb') as fp:
+        with open(PathUtil.toUnicode(path), 'w') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
 if FreeCAD.GuiUp:
@@ -172,5 +181,5 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_Job', CommandJobCreate())
     FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
 
-FreeCAD.Console.PrintLog("Loading PathJobGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")
 

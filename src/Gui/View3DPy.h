@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,11 +28,30 @@
 #include <CXX/Extensions.hxx>
 
 class SoEventCallback;
+class SoDragger;
 class QImage;
 
 namespace Gui {
 
 class View3DInventor;
+
+class Camera
+{
+public:
+    enum Orientation {
+        Top,
+        Bottom,
+        Front,
+        Rear,
+        Left,
+        Right,
+        Isometric,
+        Dimetric,
+        Trimetric,
+    };
+
+    static SbRotation rotation(Orientation view);
+};
 
 class View3DInventorPy : public Py::PythonExtension<View3DInventorPy>
 {
@@ -55,7 +74,10 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxonometric(const Py::Tuple&);
+    Py::Object viewIsometric(const Py::Tuple&);
+    Py::Object viewDimetric(const Py::Tuple&);
+    Py::Object viewTrimetric(const Py::Tuple&);
+    Py::Object viewDefaultOrientation(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
     Py::Object viewRotateLeft(const Py::Tuple&);
     Py::Object viewRotateRight(const Py::Tuple&);
@@ -107,6 +129,11 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
+    Py::Object setName(const Py::Tuple&);
+    Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
+    Py::Object hasClippingPlane(const Py::Tuple& args);
+
+    View3DInventor* getView3DIventorPtr() {return _view;}
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);

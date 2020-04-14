@@ -35,7 +35,7 @@
 #include "DlgExpressionInput.h"
 #include "Command.h"
 #include <Base/Tools.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <boost/math/special_functions/round.hpp>
 #include "QuantitySpinBox_p.h"
 #include <App/PropertyUnits.h>
@@ -292,7 +292,7 @@ void UIntSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -300,9 +300,8 @@ void UIntSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-
+        iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 
@@ -344,7 +343,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -354,9 +353,8 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -489,7 +487,7 @@ void IntSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -497,9 +495,8 @@ void IntSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-
+        iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 void IntSpinBox::resizeEvent(QResizeEvent * event)
@@ -525,7 +522,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -535,9 +532,8 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -670,7 +666,7 @@ void DoubleSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -678,9 +674,8 @@ void DoubleSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-
+        iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 void DoubleSpinBox::resizeEvent(QResizeEvent * event)
@@ -706,7 +701,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -716,9 +711,8 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -727,7 +721,6 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
         lineEdit()->setPalette(p);
         iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
-
 }
 
 void DoubleSpinBox::openFormulaDialog()

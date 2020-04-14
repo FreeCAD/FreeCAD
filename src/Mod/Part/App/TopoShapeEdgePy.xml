@@ -298,7 +298,7 @@ Returns:
 			  <UserDocu>Vector = centerOfCurvatureAt(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-        <Methode Name="firstVertex">
+        <Methode Name="firstVertex" Const="true">
             <Documentation>
                 <UserDocu>Vertex = firstVertex(Orientation=False)
 Returns the Vertex of orientation FORWARD in this edge.
@@ -307,7 +307,7 @@ Orientation = True : taking into account the edge orientation
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="lastVertex">
+        <Methode Name="lastVertex" Const="true">
             <Documentation>
             <UserDocu>Vertex = lastVertex(Orientation=False)
 Returns the Vertex of orientation REVERSED in this edge.
@@ -351,7 +351,7 @@ Part.show(s)
 </UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="split">
+        <Methode Name="split" Const="true">
 			<Documentation>
 				<UserDocu>Wire = split(paramval) 
 Splits the edge at the given parameter values and builds a wire out of it
@@ -369,7 +369,7 @@ Returns:
 </UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isSeam">
+        <Methode Name="isSeam" Const="true">
 			<Documentation>
 				<UserDocu>isSeam(Face) - Checks whether the edge is a seam edge.</UserDocu>
 			</Documentation>

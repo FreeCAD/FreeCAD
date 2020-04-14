@@ -111,7 +111,7 @@ public:
     std::vector<std::string> getDisplayModes() const;
 
     //creates the widget used in the task dalogs, either for the function itself or for
-    //the fiter using it
+    //the filter using it
     virtual FunctionWidget* createControlWidget() {return NULL;}
 
 protected:
@@ -143,8 +143,8 @@ private:
     bool                m_autoscale, m_isDragging, m_autoRecompute;
 };
 
-//###############################################################################################
 
+// ***************************************************************************
 class FemGuiExport PlaneWidget : public FunctionWidget {
 
     Q_OBJECT
@@ -179,8 +179,8 @@ protected:
     virtual void updateData(const App::Property*);
 };
 
-//###############################################################################################
 
+// ***************************************************************************
 class FemGuiExport SphereWidget : public FunctionWidget {
 
     Q_OBJECT

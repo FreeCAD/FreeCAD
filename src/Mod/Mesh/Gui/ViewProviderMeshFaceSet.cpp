@@ -154,7 +154,7 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 
         if (direct != directRendering) {
             directRendering = direct;
-            pcShapeGroup->removeAllChildren();
+            Gui::coinRemoveAllChildren(pcShapeGroup);
 
             if (directRendering) {
                 pcShapeGroup->addChild(pcMeshNode);

@@ -43,12 +43,12 @@ public:
     /// destructor.
     virtual ~ViewProviderPart();
 
-    virtual bool doubleClicked(void);
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    virtual bool doubleClicked(void) override;
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;

@@ -166,10 +166,13 @@ CDxfRead::CDxfRead(const char* filepath)
 {
 	m_aci = 0;
 	// start the file
+	memset( m_str, '\0', sizeof(m_str) );
 	memset( m_unused_line, '\0', sizeof(m_unused_line) );
 	m_fail = false;
 	m_eUnits = eMillimeters;
 	strcpy(m_layer_name, "0");	// Default layer name
+	memset( m_section_name, '\0', sizeof(m_section_name) );
+	memset( m_block_name, '\0', sizeof(m_block_name) );
 	m_ignore_errors = true;
 
 	m_ifs = new ifstream(filepath);
@@ -908,7 +911,7 @@ static bool poly_prev_found = false;
 static double poly_prev_x;
 static double poly_prev_y;
 static double poly_prev_z;
-static double poly_prev_bulge_found;
+static bool poly_prev_bulge_found = false;
 static double poly_prev_bulge;
 static bool poly_first_found = false;
 static double poly_first_x;
@@ -1155,7 +1158,7 @@ bool CDxfRead::ReadPolyLine()
 	bool closed = false;
 	int flags;
 	bool first_vertex_section_found = false;
-	double first_vertex[3];
+	double first_vertex[3] = {0};
 	bool bulge_found;
 	double bulge;
 
@@ -1256,13 +1259,10 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
 
 bool CDxfRead::ReadInsert()
 {
-    double c[3]; // coordinate
-    double s[3]; // scale
+    double c[3] = {0,0,0}; // coordinate
+    double s[3] = {1,1,1}; // scale
     double rot = 0.0; // rotation
-    char name[1024];
-    s[0] = 1.0;
-    s[1] = 1.0;
-    s[2] = 1.0;
+    char name[1024] = {0};
 
     while(!((*m_ifs).eof()))
     {

@@ -40,6 +40,7 @@
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/PartPyCXX.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
@@ -93,10 +94,6 @@
     {                                                               \
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);         \
     } throw Py::Exception();                                                               
-
-namespace Part {
-extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 namespace Path {
 class Module : public Py::ExtensionModule<Module>

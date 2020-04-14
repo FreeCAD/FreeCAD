@@ -68,7 +68,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cylinder"
           << "Part_Sphere"
           << "Part_Cone"
-          << "Part_Torus";
+          << "Part_Torus"
+          << "Separator"
+          << "Part_MakeTube";
+
+    Gui::MenuItem* copy = new Gui::MenuItem;
+    copy->setCommand("Create a copy");
+    *copy << "Part_SimpleCopy"
+          << "Part_TransformedCopy"
+          << "Part_ElementCopy"
+          << "Part_RefineShape";
 
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
@@ -109,10 +118,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Builder"
           << "Separator"
           << "Part_ShapeFromMesh"
+          << "Part_PointsFromMesh"
           << "Part_MakeSolid"
           << "Part_ReverseShape"
-          << "Part_SimpleCopy"
-          << "Part_RefineShape"
+          << copy
           << "Part_CheckGeometry"
           << "Part_Defeaturing"
           << "Separator"
@@ -132,6 +141,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Offset"
           << "Part_Offset2D"
           << "Part_Thickness"
+          << "Part_projectionOnSurface"
           << "Separator"
           << "Part_EditAttachment";
 
@@ -141,6 +151,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *measure << "Part_Measure_Linear"
              << "Part_Measure_Angular"
              << "Separator"
+             << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
              << "Part_Measure_Toggle_3d"
@@ -186,7 +197,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Loft"
           << "Part_Sweep"
           << "Part_CompOffset"
-          << "Part_Thickness";
+          << "Part_Thickness"
+          << "Part_projectionOnSurface";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
@@ -207,6 +219,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *measure << "Part_Measure_Linear"
              << "Part_Measure_Angular"
              << "Separator"
+             << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
              << "Part_Measure_Toggle_3d"

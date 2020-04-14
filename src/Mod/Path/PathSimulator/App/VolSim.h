@@ -74,7 +74,7 @@ struct Triangle3D
 
 struct cLineSegment
 {
-	cLineSegment() {}
+	cLineSegment() : len(0), lenXY(0) {}
 	cLineSegment(Point3D & p1, Point3D & p2) { SetPoints(p1, p2); }
 	void SetPoints(Point3D & p1, Point3D & p2);
 	void PointAt(float dist, Point3D & retp); 
@@ -93,7 +93,7 @@ public:
 		CHAMFER,
 		ROUND
 	};
-	cSimTool() {}
+	cSimTool() : type(FLAT), radius(0), tipAngle(0), dradius(0), chamRatio(0) {}
 	cSimTool(Type t, float rad, float tipang = 180) : type(t), radius(rad), tipAngle(tipang) { InitTool(); }
 	~cSimTool() {}
 	void InitTool();

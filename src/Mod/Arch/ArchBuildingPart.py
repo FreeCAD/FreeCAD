@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +21,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,DraftVecUtils,sys
+import FreeCAD
+import Draft
+import ArchCommands
+import DraftVecUtils
+import sys
+import ArchIFC
+import tempfile
+import os
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -35,7 +41,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-import sys
 if sys.version_info.major >= 3:
     unicode = str
 
@@ -202,7 +207,10 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
-    #obj.IfcRole = "Building Storey" # set default to Floor
+    # if no IfcType is set it will be the first in the available
+    # Annotation in IFC2x3 and Actuator in IFC4, both is certainly wrong
+    # use Undefined ATM
+    obj.IfcType = "Undefined"
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
@@ -216,7 +224,7 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building Storey"
+    obj.IfcType = "Building Storey"
     return obj
 
 
@@ -226,7 +234,7 @@ def makeBuilding(objectslist=None,baseobj=None,name="Building"):
 
     obj = makeBuildingPart(objectslist)
     obj.Label = name
-    obj.IfcRole = "Building"
+    obj.IfcType = "Building"
     obj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
     obj.BuildingType = BuildingTypes
     if FreeCAD.GuiUp:
@@ -248,9 +256,9 @@ def convertFloors(floor=None):
         if Draft.getType(obj) in ["Floor","Building"]:
             nobj = makeBuildingPart(obj.Group)
             if Draft.getType(obj) == "Floor":
-                nobj.IfcRole = "Building Storey"
+                nobj.IfcType = "Building Storey"
             else:
-                nobj.IfcRole = "Building"
+                nobj.IfcType = "Building"
                 nobj.addProperty("App::PropertyEnumeration","BuildingType","Building",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
                 nobj.BuildingType = BuildingTypes
             label = obj.Label
@@ -301,13 +309,14 @@ class CommandBuildingPart:
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("obj = Arch.makeBuildingPart("+ss+")")
         FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
 
-class BuildingPart:
+class BuildingPart(ArchIFC.IfcProduct):
 
 
     "The BuildingPart object"
@@ -320,28 +329,28 @@ class BuildingPart:
         self.setProperties(obj)
 
     def setProperties(self,obj):
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        if not "HeightPropagate" in pl:
+            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects"))
+            obj.HeightPropagate = True
         if not "LevelOffset" in pl:
             obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
         if not "Area" in pl:
             obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
-        if not "IfcRole" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcRole","Component",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
-            import ArchComponent
-            obj.IfcRole = ArchComponent.IfcRoles
         if not "Description" in pl:
             obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
         if not "Tag" in pl:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
-        if not "IfcProperties" in pl:
-            obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
+        if not "SavedInventor" in pl:
+            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
+            obj.setEditorMode("SavedInventor",2)
+
         self.Type = "BuildingPart"
 
     def onDocumentRestored(self,obj):
@@ -363,15 +372,19 @@ class BuildingPart:
 
     def onChanged(self,obj,prop):
 
-        if prop == "Height":
-            for child in obj.Group:
-                if Draft.getType(child) in ["Wall","Structure"]:
-                    if not child.Height.Value:
-                        #print("Executing ",child.Label)
-                        child.Proxy.execute(child)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
+
+        # clean svg cache if needed
+        if prop in ["Placement","Group"]:
+            self.svgcache = None
+            self.shapecache = None
+
+        if (prop == "Height" or prop == "HeightPropagate") and obj.Height.Value:
+            self.touchChildren(obj)
+
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
-                if self.oldPlacement:
+                if self.oldPlacement and (self.oldPlacement != obj.Placement):
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
@@ -392,9 +405,10 @@ class BuildingPart:
                                 #print("angle before rotation:",shape.Placement.Rotation.Angle)
                                 #print("rotation angle:",math.degrees(deltar.Angle))
                                 shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                                #print("angle after rotation:",shape.Placement.Rotation.Angle)
+                                print("angle after rotation:",shape.Placement.Rotation.Angle)
                                 child.Placement = shape.Placement
                             if deltap:
+                                print("moving child")
                                 child.Placement.move(deltap)
 
     def execute(self,obj):
@@ -402,26 +416,37 @@ class BuildingPart:
         # gather all the child shapes into a compound
         shapes = self.getShapes(obj)
         if shapes:
+            f = []
+            for s in shapes:
+                f.extend(s.Faces)
+            #print("faces before compound:",len(f))
             import Part
-            obj.Shape = Part.makeCompound(shapes)
+            obj.Shape = Part.makeCompound(f)
+            #print("faces after compound:",len(obj.Shape.Faces))
+            #print("recomputing ",obj.Label)
+        obj.Area = self.getArea(obj)
+
+    def getArea(self,obj):
+
+        "computes the area of this floor by adding its inner spaces"
+
+        area = 0
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                if hasattr(child,"Area") and hasattr(child,"IfcType"):
+                    # only add arch objects that have an Area property
+                    # TODO only spaces? ATM only spaces and windows have an Area property
+                    area += child.Area.Value
+        return area
 
     def getShapes(self,obj):
 
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
-            shapes.append(obj.Shape)
-        if hasattr(obj,"Group"):
-            for child in obj.Group:
-                shapes.extend(self.getShapes(child))
-        for i in obj.InList:
-            if hasattr(i,"Hosts"):
-                if obj in i.Hosts:
-                    shapes.extend(self.getShapes(i))
-            elif hasattr(i,"Host"):
-                if obj == i.Host:
-                    shapes.extend(self.getShapes(i))
+        for child in Draft.getGroupContents(obj):
+            if hasattr(child,'Shape'):
+                shapes.extend(child.Shape.Faces)
         return shapes
 
     def getSpaces(self,obj):
@@ -435,6 +460,17 @@ class BuildingPart:
                     g.append(o)
         return g
 
+    def touchChildren(self,obj):
+        
+        "Touches all descendents where applicable"
+
+        for child in obj.Group:
+            if Draft.getType(child) in ["Wall","Structure"]:
+                if not child.Height.Value:
+                    print("Executing ",child.Label)
+                    child.Proxy.execute(child)
+            elif Draft.getType(child) in ["Group","BuildingPart"]:
+                self.touchChildren(child)
 
 
 class ViewProviderBuildingPart:
@@ -466,13 +502,10 @@ class ViewProviderBuildingPart:
             vobj.ShowLevel = True
         if not "ShowUnit" in pl:
             vobj.addProperty("App::PropertyBool","ShowUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"))
-        if not "SetWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","SetWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
-            vobj.SetWorkingPlane = True
         if not "OriginOffset" in pl:
-            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, Display offset will affect the origin mark too"))
+            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, display offset will affect the origin mark too"))
         if not "ShowLabel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the object's label is displayed"))
+            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, the object's label is displayed"))
             vobj.ShowLabel = True
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"))
@@ -480,15 +513,55 @@ class ViewProviderBuildingPart:
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
             vobj.FontSize = Draft.getParam("textheight",2.0)
-        if not "ViewData" in pl:
-            vobj.addProperty("App::PropertyFloatList","ViewData","BuildingPart",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
-        if not "RestoreView" in pl:
-            vobj.addProperty("App::PropertyBool","RestoreView","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DiffuseColor" in pl:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
-        if not "AutoWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
 
+        # Interaction properties
+        if not "SetWorkingPlane" in pl:
+            vobj.addProperty("App::PropertyBool","SetWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
+            vobj.SetWorkingPlane = True
+        if not "AutoWorkingPlane" in pl:
+            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
+        if not "ViewData" in pl:
+            vobj.addProperty("App::PropertyFloatList","ViewData","Interaction",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
+            vobj.setEditorMode("ViewData",2)
+        if not "RestoreView" in pl:
+            vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
+        if not "DoubleClickActivates" in pl:
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree turns it active"))
+
+        # inventor saving
+        if not "SaveInventor" in pl:
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
+        if not "SavedInventor" in pl:
+            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
+            vobj.setEditorMode("SavedInventor",2)
+
+        # children properties
+        if not "ChildrenOverride" in pl:
+            vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"))
+        if not "ChildrenLineWidth" in pl:
+            vobj.addProperty("App::PropertyFloat","ChildrenLineWidth","Children",QT_TRANSLATE_NOOP("App::Property","The line width of child objects"))
+            vobj.LineWidth = 1
+        if not "ChildrenLineColor" in pl:
+            vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
+            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
+            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+        if not "ChildrenShapeolor" in pl:
+            vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
+            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
+            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+        if not "ChildrenTransparency" in pl:
+            vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
+
+        # clip properties
+        if not "CutView" in pl:
+            vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"))
+        if not "CutMargin" in pl:
+            vobj.addProperty("App::PropertyLength","CutMargin","Clip",QT_TRANSLATE_NOOP("App::Property","The distance between the level plane and the cut line"))
+            vobj.CutMargin = 1600
+        if not "AutoCutView" in pl:
+            vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
 
     def onDocumentRestored(self,vobj):
 
@@ -498,15 +571,16 @@ class ViewProviderBuildingPart:
 
         import Arch_rc
         if hasattr(self,"Object"):
-            if self.Object.IfcRole == "Building Storey":
+            if self.Object.IfcType == "Building Storey":
                 return ":/icons/Arch_Floor_Tree.svg"
-            elif self.Object.IfcRole == "Building":
+            elif self.Object.IfcType == "Building":
                 return ":/icons/Arch_Building_Tree.svg"
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
     def attach(self,vobj):
 
         self.Object = vobj.Object
+        self.clip = None
         from pivy import coin
         self.sep = coin.SoGroup()
         self.mat = coin.SoMaterial()
@@ -557,6 +631,11 @@ class ViewProviderBuildingPart:
                 if len(colors) == len(obj.Shape.Faces):
                     if colors != obj.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = colors
+                        self.writeInventor(obj)
+                #else:
+                    #print("color mismatch:",len(colors),"colors,",len(obj.Shape.Faces),"faces")
+        elif prop == "Group":
+            self.onChanged(obj.ViewObject,"ChildrenOverride")
         elif prop == "Label":
             self.onChanged(obj.ViewObject,"ShowLabel")
 
@@ -565,23 +644,14 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
-            if hasattr(obj.ViewObject,"DiffuseColor") and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
-                colors.extend(obj.ViewObject.DiffuseColor)
-            elif hasattr(obj.ViewObject,"ShapeColor"):
-                c = obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
-                for i in range(len(obj.Shape.Faces)):
-                    colors.append(c)
-        if hasattr(obj,"Group"):
-            for child in obj.Group:
-                colors.extend(self.getColors(child))
-        for i in obj.InList:
-            if hasattr(i,"Hosts"):
-                if obj in i.Hosts:
-                    colors.extend(self.getColors(i))
-            elif hasattr(i,"Host"):
-                if obj == i.Host:
-                    colors.extend(self.getColors(i))
+        for child in Draft.getGroupContents(obj):
+            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+                    colors.extend(child.ViewObject.DiffuseColor)
+                else:
+                    c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                    for i in range(len(child.Shape.Faces)):
+                        colors.append(c)
         return colors
 
     def onChanged(self,vobj,prop):
@@ -631,7 +701,10 @@ class ViewProviderBuildingPart:
                         u = vobj.OverrideUnit
                     else:
                         u = q.getUserPreferred()[2]
-                    q = q.getValueAs(u)
+                    try:
+                        q = q.getValueAs(u)
+                    except:
+                        q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"
                     if not vobj.ShowUnit:
@@ -642,11 +715,71 @@ class ViewProviderBuildingPart:
                 if isinstance(txt,unicode):
                     txt = txt.encode("utf8")
                 self.txt.string.setValue(txt)
+        elif prop in ["ChildrenOverride","ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]:
+            if hasattr(vobj,"ChildrenOverride") and vobj.ChildrenOverride:
+                props = ["ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]
+                for child in vobj.Object.Group:
+                    for prop in props:
+                        if hasattr(vobj,prop) and hasattr(child.ViewObject,prop[8:]) and not hasattr(child,"ChildrenOverride"):
+                            setattr(child.ViewObject,prop[8:],getattr(vobj,prop))
+        elif prop in ["CutView","CutMargin"]:
+            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                if vobj.CutView:
+                    from pivy import coin
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "One side"
+                    self.clip = coin.SoClipPlane()
+                    self.clip.on.setValue(True)
+                    norm = vobj.Object.Placement.multVec(FreeCAD.Vector(0,0,1))
+                    mp = vobj.Object.Placement.Base
+                    mp = DraftVecUtils.project(mp,norm)
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
+                    norm = norm.negative()
+                    marg = 1
+                    if hasattr(vobj,"CutMargin"):
+                        marg = vobj.CutMargin.Value
+                    if mp.getAngle(norm) > 1:
+                        dist += marg
+                        dist = -dist
+                    else:
+                        dist -= marg
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
+                    self.clip.plane.setValue(plane)
+                    sg.insertChild(self.clip,0)
+                else:
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "Two side"
+        elif prop == "Visibility":
+            # turn clipping off when turning the object off
+            if hasattr(vobj,"Visibility") and not(vobj.Visibility) and hasattr(vobj,"CutView"):
+                vobj.CutView = False
+        elif prop == "SaveInventor":
+            self.writeInventor(vobj.Object)
+
+    def onDelete(self,vobj,subelements):
+
+        if self.clip:
+            sg.removeChild(self.clip)
+            self.clip = None
+        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+            if hasattr(o.ViewObject,"Lighting"):
+                o.ViewObject.Lighting = "Two side"
+        return True
 
     def doubleClicked(self,vobj):
 
         self.activate(vobj)
-        FreeCADGui.Selection.clearSelection()
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            FreeCADGui.Selection.clearSelection()
         return True
 
     def activate(self,vobj):
@@ -656,7 +789,8 @@ class ViewProviderBuildingPart:
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane(restore=True)
         else:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
+            if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane()
 
@@ -673,16 +807,29 @@ class ViewProviderBuildingPart:
         action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
         QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
         menu.addAction(action3)
+        action4 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
+        QtCore.QObject.connect(action4,QtCore.SIGNAL("triggered()"),self.reorder)
+        menu.addAction(action4)
+        action5 = QtGui.QAction(QtGui.QIcon(),"Clone level up",menu)
+        QtCore.QObject.connect(action5,QtCore.SIGNAL("triggered()"),self.cloneUp)
+        menu.addAction(action5)
 
     def setWorkingPlane(self,restore=False):
 
         if hasattr(self,"Object") and hasattr(FreeCAD,"DraftWorkingPlane"):
             import FreeCADGui
+            autoclip = False
+            if hasattr(self.Object.ViewObject,"AutoCutView"):
+                autoclip = self.Object.ViewObject.AutoCutView
             if restore:
                 FreeCAD.DraftWorkingPlane.restore()
+                if autoclip:
+                    self.Object.ViewObject.CutView = False
             else:
                 FreeCAD.DraftWorkingPlane.save()
                 FreeCADGui.runCommand("Draft_SelectPlane")
+                if autoclip:
+                    self.Object.ViewObject.CutView = True
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
             if hasattr(FreeCADGui,"draftToolBar"):
@@ -691,6 +838,7 @@ class ViewProviderBuildingPart:
                 else:
                     self.wptext = FreeCADGui.draftToolBar.wplabel.text()
                     FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
+            FreeCAD.DraftWorkingPlane.lastBuildingPart = self.Object.Name
 
     def writeCamera(self):
 
@@ -713,16 +861,87 @@ class ViewProviderBuildingPart:
             self.Object.ViewObject.ViewData = cdata
 
     def createGroup(self):
-        
+
         if hasattr(self,"Object"):
             s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
             FreeCADGui.doCommand(s)
+
+    def reorder(self):
+
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                g = self.Object.Group
+                g.sort(key=lambda obj: obj.Label)
+                self.Object.Group = g
+                FreeCAD.ActiveDocument.recompute()
+
+    def cloneUp(self):
+
+        if hasattr(self,"Object"):
+            if not self.Object.Height.Value:
+                FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
+                return
+            height = self.Object.Height.Value
+            ng = []
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                for o in self.Object.Group:
+                    no = Draft.clone(o)
+                    Draft.move(no,FreeCAD.Vector(0,0,height))
+                    ng.append(no)
+            nobj = makeBuildingPart()
+            Draft.formatObject(nobj,self.Object)
+            nobj.Placement = self.Object.Placement
+            nobj.Placement.move(FreeCAD.Vector(0,0,height))
+            nobj.IfcType = self.Object.IfcType
+            nobj.Height = height
+            nobj.Label = self.Object.Label
+            nobj.Group = ng
+            for parent in self.Object.InList:
+                if hasattr(parent,"Group") and hasattr(parent,"addObject") and (self.Object in parent.Group):
+                    parent.addObject(nobj)
+            FreeCAD.ActiveDocument.recompute()
+            # fix for missing IFC attributes
+            for no in ng:
+                if hasattr(no,"LongName") and hasattr(no,"CloneOf") and no.CloneOf and hasattr(no.CloneOf,"LongName"):
+                    no.LongName = no.CloneOf.LongName
+            FreeCAD.ActiveDocument.recompute()
 
     def __getstate__(self):
         return None
 
     def __setstate__(self,state):
         return None
+
+    def writeInventor(self,obj):
+
+        def callback(match):
+            return next(callback.v)
+
+        if hasattr(obj.ViewObject,"SaveInventor") and obj.ViewObject.SaveInventor:
+            if obj.Shape and obj.Shape.Faces and hasattr(obj,"SavedInventor"):
+                colors = obj.ViewObject.DiffuseColor
+                if len(colors) != len(obj.Shape.Faces):
+                    print("Debug: Colors mismatch in",obj.Label)
+                    colors = None
+                iv = self.Object.Shape.writeInventor()
+                import re
+                if colors:
+                    if len(re.findall("IndexedFaceSet",iv)) == len(obj.Shape.Faces):
+                        # convert colors to iv representations
+                        colors = ["Material { diffuseColor "+str(color[0])+" "+str(color[1])+" "+str(color[2])+"}\n    IndexedFaceSet" for color in colors]
+                        # replace
+                        callback.v=iter(colors)
+                        iv = re.sub("IndexedFaceSet",callback,iv)
+                    else:
+                        print("Debug: IndexedFaceSet mismatch in",obj.Label)
+                # save embedded file
+                tf = tempfile.mkstemp(prefix=obj.Name,suffix=".iv")[1]
+                f = open(tf,"w")
+                f.write(iv)
+                f.close()
+                obj.SavedInventor = tf
+                os.remove(tf)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_BuildingPart',CommandBuildingPart())

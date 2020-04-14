@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,10 +58,9 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
+# include <boost/bind.hpp>
 //# include <QtGlobal>
 #endif
-
-#include <boost/bind.hpp>
 
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
@@ -81,6 +80,7 @@
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
+#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
 
 #undef DEBUG
@@ -88,6 +88,8 @@
 
 using namespace Sketcher;
 using namespace Base;
+
+FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 const int GeoEnum::RtPnt  = -1;
 const int GeoEnum::HAxis  = -1;
@@ -175,6 +177,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     // setup and diagnose the sketch
     try {
         rebuildExternalGeometry();
+        Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
@@ -417,6 +420,64 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
 
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+
+    return 0;
+}
+
+int SketchObject::setActive(int ConstrId, bool isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = isactive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
+int SketchObject::getActive(int ConstrId, bool &isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    isactive = vals[ConstrId]->isActive;
+
+    return 0;
+}
+
+int SketchObject::toggleActive(int ConstrId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = !constNew->isActive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }
@@ -853,9 +914,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     }
 
     this->Geometry.setValues(newVals);
-    this->Constraints.setValues(newConstraints);
-    for (Constraint* it : newConstraints)
-        delete it;
+    this->Constraints.setValues(std::move(newConstraints));
     this->Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
 
@@ -2810,15 +2869,13 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
                 *rsn = rlOtherBody;
             return false;
         }
-    } else {
+    }
+    else {
         // cross-part link. Disallow, should be done via shapebinders only
         if (rsn)
             *rsn = rlOtherPart;
         return false;
     }
-
-    assert(0);
-    return true;
 }
 
 bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn) const
@@ -4728,20 +4785,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                             }
                         }
 
-                        if ( (f && !s) || (!f && s)  ) { // the equality constraint constraints a pole but it is not interpole
+                        if (f != s) { // the equality constraint constraints a pole but it is not interpole
                             (*ita)++;
                         }
 
                     }
-                        // ignore radiuses and diameters
-                        else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) )
+                    // ignore radii and diameters
+                    else if (((*itc)->Type!=Sketcher::Radius && (*itc)->Type!=Sketcher::Diameter) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) ) {
                         (*ita)++;
+                    }
+                }
 
-                 }
-
-                 if ( (*ita) < 2 ) { // IA
-                     delgeometries.push_back((*it));
-                 }
+                if ( (*ita) < 2 ) { // IA
+                    delgeometries.push_back((*it));
+                }
             }
         }
 
@@ -4865,8 +4922,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
 
-    Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
-
+    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
 
     try {
         int cdegree = bspline->getDegree();
@@ -4882,7 +4938,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    newVals[GeoId] = bspline;
+    newVals[GeoId] = bspline.release();
 
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
@@ -4898,7 +4954,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     #endif
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline GeoId is out of bounds."))
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
 
     if (multiplicityincr == 0) // no change in multiplicity
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."))
@@ -4906,7 +4962,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     const Part::Geometry *geo = getGeometry(GeoId);
 
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The GeoId provided is not a B-spline curve."))
+        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The Geometry Index (GeoId) provided is not a B-spline curve."))
 
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
@@ -4920,7 +4976,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     int curmult = bsp->getMultiplicity(knotIndex);
 
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."))
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the B-spline."))
 
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
@@ -5143,7 +5199,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
-        if(construction) {
+        if(construction && geoNew->getTypeId() != Part::GeomPoint::getClassTypeId()) {
             geoNew->Construction = true;
         }
         newVals.push_back(geoNew);
@@ -5177,11 +5233,13 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
 
-        if ((*it)->Type == Sketcher::Distance ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ||
-            (*it)->Type == Sketcher::SnellsLaw) {
+        if ((*it)->Type == Sketcher::Distance   ||
+            (*it)->Type == Sketcher::Radius     ||
+            (*it)->Type == Sketcher::Diameter   ||
+            (*it)->Type == Sketcher::Angle      ||
+            (*it)->Type == Sketcher::SnellsLaw  ||
+            (*it)->Type == Sketcher::DistanceX  ||
+            (*it)->Type == Sketcher::DistanceY ) {
             // then we link its value to the parent
             // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
             if ((*it)->isDriving) {
@@ -5194,45 +5252,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
                 boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
-
-
             }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceX) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(xinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceY ) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(yinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
         }
     }
 
@@ -5267,7 +5287,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 
     // add the new ones
     Objects.push_back(Obj);
-    SubElements.push_back(std::string(SubName));
+    SubElements.emplace_back(SubName);
 
     // set the Link list.
     ExternalGeometry.setValues(Objects,SubElements);
@@ -5337,9 +5357,7 @@ int SketchObject::delExternal(int ExtGeoId)
     }
 
     solverNeedsUpdate=true;
-    Constraints.setValues(newConstraints);
-    for (Constraint* it : newConstraints)
-        delete it;
+    Constraints.setValues(std::move(newConstraints));
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -5409,7 +5427,7 @@ int SketchObject::delConstraintsToExternal()
         }
     }
 
-    Constraints.setValues(newConstraints);
+    Constraints.setValues(std::move(newConstraints));
     Constraints.acceptGeometry(getCompleteGeometry());
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
@@ -5425,7 +5443,7 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
         if (GeoId < int(geomlist.size()))
             return geomlist[GeoId];
     }
-    else if (GeoId <= -1 && -GeoId <= int(ExternalGeo.size()))
+    else if (-GeoId <= int(ExternalGeo.size()))
         return ExternalGeo[-GeoId-1];
 
     return 0;
@@ -5435,18 +5453,17 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
 Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Plane)& gPlane, const Base::Placement& invPlm)
 {
     double first = curve.FirstParameter();
-    bool infinite = false;
+
     if (fabs(first) > 1E99) {
         // TODO: What is OCE's definition of Infinite?
         // TODO: The clean way to do this is to handle a new sketch geometry Geom::Line
         // but its a lot of work to implement...
         first = -10000;
-        //infinite = true;
     }
+
     double last = curve.LastParameter();
     if (fabs(last) > 1E99) {
         last = +10000;
-        //infinite = true;
     }
 
     gp_Pnt P1 = curve.Value(first);
@@ -5468,14 +5485,9 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
         point->Construction = true;
         return point;
     }
-    else if (!infinite) {
+    else {
         Part::GeomLineSegment* line = new Part::GeomLineSegment();
         line->setPoints(p1,p2);
-        line->Construction = true;
-        return line;
-    } else {
-        Part::GeomLine* line = new Part::GeomLine();
-        line->setLine(p1, p2 - p1);
         line->Construction = true;
         return line;
     }
@@ -6259,45 +6271,31 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
 {
     //if requireXXX,  GeoUndef is treated as an error. If not requireXXX,
     //GeoUndef is accepted. Index range checking is done on everything regardless.
-    bool requireFirst = true;
+
+    // constraints always require a First!!
     bool requireSecond = false;
     bool requireThird = false;
 
     switch (constraint->Type) {
         case Radius:
-            requireFirst = true;
-            break;
         case Diameter:
-            requireFirst = true;
-            break;
         case Horizontal:
         case Vertical:
-            requireFirst = true;
-            break;
         case Distance:
         case DistanceX:
         case DistanceY:
-            requireFirst = true;
-            break;
         case Coincident:
         case Perpendicular:
         case Parallel:
         case Equal:
         case PointOnObject:
+        case Angle:
+            break;
         case Tangent:
-            requireFirst = true;
             requireSecond = true;
             break;
         case Symmetric:
-            requireFirst = true;
-            requireSecond = true;
-            requireThird = true;
-            break;
-        case Angle:
-            requireFirst = true;
-            break;
         case SnellsLaw:
-            requireFirst = true;
             requireSecond = true;
             requireThird = true;
             break;
@@ -6311,10 +6309,10 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     //the actual checks
     bool ret = true;
     int geoId;
+
+    // First is always required and GeoId must be within range
     geoId = constraint->First;
-    ret = ret && ((geoId == Constraint::GeoUndef && !requireFirst)
-                  ||
-                  (geoId >= -extGeoCount && geoId < intGeoCount) );
+    ret = ret && (geoId >= -extGeoCount && geoId < intGeoCount);
 
     geoId = constraint->Second;
     ret = ret && ((geoId == Constraint::GeoUndef && !requireSecond)
@@ -6393,17 +6391,17 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
             return "Reference constraints cannot be set!";
     }
 
-    std::set<App::ObjectIdentifier> deps;
-    expr->getDeps(deps);
+    auto deps = expr->getDeps();
+    auto it = deps.find(this);
+    if(it!=deps.end()) {
+        auto it2 = it->second.find("Constraints");
+        if(it2 != it->second.end()) {
+            for(auto &oid : it2->second) {
+                const Constraint * constraint = Constraints.getConstraint(oid);
 
-    for (std::set<App::ObjectIdentifier>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
-        const App::Property * prop = (*i).getProperty();
-
-        if (prop == &Constraints) {
-            const Constraint * constraint = Constraints.getConstraint(*i);
-
-            if (!constraint->isDriving)
-                return "Reference constraint from this sketch cannot be used in this expression.";
+                if (!constraint->isDriving)
+                    return "Reference constraint from this sketch cannot be used in this expression.";
+            }
         }
     }
     return "";
@@ -6468,7 +6466,7 @@ void SketchObject::constraintsRemoved(const std::set<App::ObjectIdentifier> &rem
     std::set<App::ObjectIdentifier>::const_iterator i = removed.begin();
 
     while (i != removed.end()) {
-        ExpressionEngine.setValue(*i, boost::shared_ptr<App::Expression>(), 0);
+        ExpressionEngine.setValue(*i, boost::shared_ptr<App::Expression>());
         ++i;
     }
 }
@@ -6617,6 +6615,8 @@ void SketchObject::onDocumentRestored()
 void SketchObject::restoreFinished()
 {
     try {
+        validateExternalLinks();
+        rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
@@ -6858,12 +6858,23 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
     return true;
 }
 
-void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment)
+void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr)
 {
-    DocumentObject::setExpression(path, expr, comment);
+    DocumentObject::setExpression(path, expr);
 
-    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
+    if(noRecomputes) {// if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
+        try {
+            auto res = ExpressionEngine.execute();
+            if(res) {
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << res->Why);
+                delete res;
+            }
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
+        }
         solve();
+    }
 }
 
 int SketchObject::autoConstraint(double precision, double angleprecision, bool includeconstruction)

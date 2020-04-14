@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
+# include <cinttypes>
+# include <iomanip>
+# include <boost/algorithm/string.hpp>
+# include <boost/lexical_cast.hpp>
 #endif
-#include <cinttypes>
-#include <iomanip>
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
+
 #include <Base/Vector3D.h>
 #include <Base/Rotation.h>
 #include <Base/Writer.h>
@@ -40,7 +40,7 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Command , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Command , Base::Persistence)
 
 // Constructors & destructors
 
@@ -60,7 +60,7 @@ Command::~Command()
 
 // New methods
 
-Placement Command::getPlacement (void) const
+Placement Command::getPlacement (const Base::Vector3d pos) const
 {
     static const std::string x = "X";
     static const std::string y = "Y";
@@ -68,7 +68,7 @@ Placement Command::getPlacement (void) const
     static const std::string a = "A";
     static const std::string b = "B";
     static const std::string c = "C";
-    Vector3d vec(getParam(x),getParam(y),getParam(z));
+    Vector3d vec(getParam(x, pos.x),getParam(y, pos.y),getParam(z, pos.z));
     Rotation rot;
     rot.setYawPitchRoll(getParam(a),getParam(b),getParam(c));
     Placement plac(vec,rot);
@@ -103,7 +103,7 @@ std::string Command::toGCode (int precision, bool padzero) const
     std::stringstream str;
     str.fill('0');
     str << Name;
-    if(precision<0) 
+    if(precision<0)
         precision = 0;
     double scale = std::pow(10.0,precision+1);
     std::int64_t iscale = static_cast<std::int64_t>(scale)/10;

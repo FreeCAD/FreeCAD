@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -140,7 +139,7 @@ public:
     //printf("Attach observer %p\n", ToObserv);
     _ObserverSet.insert(ToObserv);
     if ( _ObserverSet.size() == count )
-      printf("Observer %p already attached\n", ToObserv);
+      printf("Observer %p already attached\n", static_cast<void*>(ToObserv));
 #else
     _ObserverSet.insert(ToObserv);
 #endif
@@ -159,7 +158,7 @@ public:
     //printf("Detach observer %p\n", ToObserv);
     _ObserverSet.erase(ToObserv);
     if ( _ObserverSet.size() == count )
-      printf("Observer %p already detached\n", ToObserv);
+      printf("Observer %p already detached\n", static_cast<void*>(ToObserv));
 #else
     _ObserverSet.erase(ToObserv);
 #endif

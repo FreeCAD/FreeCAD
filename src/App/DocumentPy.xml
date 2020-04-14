@@ -50,7 +50,14 @@
     </Methode>
     <Methode Name="openTransaction">
       <Documentation>
-        <UserDocu>Open a new Undo/Redo transaction.</UserDocu>
+          <UserDocu>openTransaction(name) - Open a new Undo/Redo transaction.
+
+This function no long creates a new transaction, but calls
+FreeCAD.setActiveTransaction(name) instead, which will auto creates a
+transaction with the given name when any change happed in any opened document.
+If more than one document is changed, all newly created transactions will have
+the same internal ID and will be undo/redo together.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="abortTransaction">
@@ -63,9 +70,20 @@
         <UserDocu>Commit an Undo/Redo transaction</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="addObject">
+    <Methode Name="addObject" Keyword="true">
       <Documentation>
-        <UserDocu>Add an object with given type and name to the document</UserDocu>
+          <UserDocu>addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
+
+Add an object to document
+
+type (String): the type of the document object to create.
+name (String): the optional name of the new object.
+objProxy (Object): the Python binding object to attach to the new document object.
+viewProxy (Object): the Python binding object to attach the view provider of this object.
+attach (Boolean): if True, then bind the document object first before adding to the document
+        to allow Python code to override view provider type. Once bound, and before adding to
+        the document, it will try to call Python binding object's attach(obj) method.
+viewType (String): override the view provider type directly, only effective when attach is False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeObject">
@@ -75,14 +93,38 @@
     </Methode>
     <Methode Name="copyObject">
       <Documentation>
-        <UserDocu>copyObject(object, bool with_dependencies = False, bool ignored_argument = False)
-        Copy an object from another document to this document. If with_dependencies is True, all objects this object depends on are copied too.</UserDocu>
+          <UserDocu>
+copyObject(object, with_dependencies=False)
+Copy an object or objects from another document to this document. 
+
+object: can either a single object or sequence of objects
+with_dependencies: if True, all internal dependent objects are copied too.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveObject">
       <Documentation>
-        <UserDocu>moveObject(object, bool with_dependencies = False)
-        Transfers an object from another document to this document. If with_dependencies is True, all objects this object depends on are transferred too.</UserDocu>
+        <UserDocu>
+moveObject(object, bool with_dependencies = False)
+Transfers an object from another document to this document.
+              
+object: can either a single object or sequence of objects
+with_dependencies: if True, all internal dependent objects are copied too.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="importLinks">
+      <Documentation>
+          <UserDocu>
+importLinks(object|[object...])
+
+Import any externally linked object given a list of objects in
+this document.  Any link type properties of the input objects
+will be automatically reassigned to the imported object
+
+If no object is given as input, it import all externally linked
+object of this document.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="undo">
@@ -102,7 +144,7 @@
     </Methode>
     <Methode Name="recompute">
       <Documentation>
-        <UserDocu>Recompute the document and returns the amount of recomputed features</UserDocu>
+        <UserDocu>recompute(objs=None): Recompute the document and returns the amount of recomputed features</UserDocu>
       </Documentation>
     </Methode>
 	<Methode Name="getObject">
@@ -123,6 +165,16 @@ Return a list of objects that match the specified type and name.
 Both parameters are optional.</UserDocu>
 		</Documentation>
 	</Methode>
+    <Methode Name="getLinksTo">
+        <Documentation>
+            <UserDocu>
+getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
+
+options: 1: recursive, 2: check link array. Options can combine.
+maxCount: to limit the number of links returned
+            </UserDocu>
+        </Documentation>
+    </Methode>
 	  <Methode Name="supportedTypes">
 		  <Documentation>
 			  <UserDocu>A list of supported types of objects</UserDocu>
@@ -131,6 +183,17 @@ Both parameters are optional.</UserDocu>
 	  <Methode Name="getTempFileName">
 		  <Documentation>
 			  <UserDocu>Returns a file name with path in the temp directory of the document.</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="getDependentDocuments">
+		  <Documentation>
+              <UserDocu>
+getDependentDocuments(sort=True)
+
+Returns a list of documents that this document directly or indirectly links to including itself.
+
+sort: whether to topologically sort the return list
+              </UserDocu>
 		  </Documentation>
 	  </Methode>
 	  <Attribute Name="DependencyGraph" ReadOnly="true">
@@ -210,6 +273,60 @@ Both parameters are optional.</UserDocu>
         <UserDocu>Returns or sets if automatic recomputes for this document are disabled.</UserDocu>
       </Documentation>
       <Parameter Name="RecomputesFrozen" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="HasPendingTransaction" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Check if there is a pending transaction</UserDocu>
+      </Documentation>
+      <Parameter Name="HasPendingTransaction" Type="Boolean"/>
+    </Attribute>
+	<Attribute Name="InList" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>A list of all documents that link to this document.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="InList" Type="List" />
+	</Attribute>
+	<Attribute Name="OutList" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>A list of all documents that this document links to.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="OutList" Type="List" />
+	</Attribute>
+	<Attribute Name="Restoring" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is restoring</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Restoring" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Partial" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is partially loaded</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Partial" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Importing" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is importing. Note the document will also report Restoring while importing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Importing" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Recomputing" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate if the document is recomputing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Recomputing" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Transacting" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Transacting" Type="Boolean" />
+	</Attribute>
+    <Attribute Name="OldLabel" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Contains the old label before change</UserDocu>
+        </Documentation>
+        <Parameter Name="OldLabel" Type="String"/>
     </Attribute>
     <CustomAttributes />
   </PythonExport>

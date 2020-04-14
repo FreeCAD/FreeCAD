@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hr" sourcelanguage="en">
+<TS version="2.1" language="hr" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Okomito poravnaj</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu vodoravno</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Poravnavanje sadržaja odabranih ćelija u sredinu</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Spajanje ćelija</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Spoji odabrane ćelije u proračunskoj tablici</translation>
+      <source>Merge selected cells</source>
+      <translation>Spajanja odabranih ćelija</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Podijeli ćeliju</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Podjela prethodno spojenih ćelija u proračunskoj tablici</translation>
+      <source>Split previously merged cells</source>
+      <translation>Razdjeli prije spojene ćelije</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Podebljani tekst</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Postavljanje podebljanoga teksta u odabranim ćelijama</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Postavi tekst u odabranim ćelijama podebljano</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Ukošeni tekst</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Postavite ukošeni teksta u odabranim ćelijama</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Postavi tekst u odabranim ćelijama ukošeno</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podcrtavanje teksta</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Postavite podcrtavanje teksta u odabranim ćelijama</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podcrtavanje teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
+      <source>Custom Color</source>
+      <translation>Prilagođena boja</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Izvoz datoteke</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Sadržaj ćelije</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Pokaži Proračunsku Tablicu</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Postavlja boju pozadine ćelije proračunske tablice</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Proračunska tablica</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Svjetlo siva</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
+      <source>Custom Color</source>
+      <translation>Prilagođena boja</translation>
     </message>
   </context>
   <context>

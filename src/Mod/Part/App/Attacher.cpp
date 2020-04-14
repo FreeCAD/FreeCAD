@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,6 +47,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepIntCurveSurface_Inter.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <ShapeExtend_Explorer.hxx>
 # include <GProp_GProps.hxx>
@@ -55,9 +55,9 @@
 # include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 #endif
-#include <BRepLProp_SLProps.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
 
 #include "Attacher.h"
 #include "AttachExtension.h"
@@ -235,7 +235,7 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
     gp_Ax3 ax3;//OCC representation of the final placement
     if (!makeYVertical) {
         ax3 = gp_Ax3(Origin, ZAxis, XAxis);
-    } else if (makeYVertical && !makeLegacyFlatFaceOrientation) {
+    } else if (!makeLegacyFlatFaceOrientation) {
         //align Y along Z, if possible
         gp_Vec YAxis(0.0,0.0,1.0);
         XAxis = YAxis.Crossed(gp_Vec(ZAxis));
@@ -420,7 +420,7 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
 {
     if(sh.IsNull())
         return rtAnything;
-    
+
     switch (sh.ShapeType()){
     case TopAbs_SHAPE:
         return rtAnything; //note: there's no rtPart detection here - not enough data!
@@ -820,7 +820,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             shapes[i] = &(storage[storage.size()-1]);
         } else {
             Base::Console().Warning("Attacher: linked object %s is unexpected, assuming it has no shape.\n",geof->getNameInDocument());
-            storage.push_back(TopoDS_Shape());
+            storage.emplace_back();
             shapes[i] = &(storage[storage.size()-1]);
         }
 
@@ -1163,7 +1163,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: not enough subshapes (need one false and one vertex).");
 
         bool bThruVertex = false;
-        if (shapes[0]->ShapeType() == TopAbs_VERTEX && shapes.size()>=2) {
+        if (shapes[0]->ShapeType() == TopAbs_VERTEX) {
             std::swap(shapes[0],shapes[1]);
             bThruVertex = true;
         }
@@ -1610,7 +1610,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine)
 
 AttachEnginePlane::AttachEnginePlane()
 {
@@ -1639,7 +1639,7 @@ Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement or
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine)
 
 AttachEngineLine::AttachEngineLine()
 {
@@ -2061,17 +2061,8 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
                 throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
             if (shapes[1]->IsNull())
                 throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
-            BRepExtrema_DistShapeShape distancer (*(shapes[0]), *(shapes[1]));
-            if (!distancer.IsDone())
-                throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: proximity calculation failed.");
-            if (distancer.NbSolution()>1)
-                Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
-            gp_Pnt p1 = distancer.PointOnShape1(1);
-            gp_Pnt p2 = distancer.PointOnShape2(1);
-            if (mmode == mm0ProximityPoint1)
-                BasePoint = p1;
-            else
-                BasePoint = p2;
+
+            BasePoint = getProximityPoint(mmode, *(shapes[0]), *(shapes[1]));
         }break;
         case mm0CenterOfMass:{
             GProp_GProps gpr =  AttachEngine::getInertialPropsOfShape(shapes);
@@ -2093,3 +2084,61 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
     return plm;
 }
 
+gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
+{
+    // #0003921: Crash when opening document with datum point intersecting line and plane
+    //
+    // BRepExtrema_DistanceSS is used inside BRepExtrema_DistShapeShape and can cause
+    // a crash if the input shape is an unlimited face.
+    // So, when the input is a face and an edge then before checking for minimum distances
+    // try to determine intersection points.
+    try {
+        TopoDS_Shape face, edge;
+        if (s1.ShapeType() == TopAbs_FACE &&
+            s2.ShapeType() == TopAbs_EDGE) {
+            face = s1;
+            edge = s2;
+        }
+        else if (s1.ShapeType() == TopAbs_EDGE &&
+                 s2.ShapeType() == TopAbs_FACE) {
+            edge = s1;
+            face = s2;
+        }
+
+        // edge and face
+        if (!edge.IsNull() && !face.IsNull()) {
+            BRepAdaptor_Curve crv(TopoDS::Edge(edge));
+            BRepIntCurveSurface_Inter intCS;
+            intCS.Init(face, crv.Curve(), Precision::Confusion());
+            std::vector<gp_Pnt> points;
+            for (; intCS.More(); intCS.Next()) {
+                gp_Pnt pnt = intCS.Pnt();
+                points.push_back(pnt);
+            }
+
+            if (points.size() > 1)
+                Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %d solutions, ambiguous.\n", int(points.size()));
+
+            // if an intersection is found return the first hit
+            // otherwise continue with BRepExtrema_DistShapeShape
+            if (!points.empty())
+                return points.front();
+        }
+    }
+    catch (const Standard_Failure&) {
+        // ignore
+    }
+
+    BRepExtrema_DistShapeShape distancer (s1, s2);
+    if (!distancer.IsDone())
+        throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: proximity calculation failed.");
+    if (distancer.NbSolution() > 1)
+        Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
+
+    gp_Pnt p1 = distancer.PointOnShape1(1);
+    gp_Pnt p2 = distancer.PointOnShape2(1);
+    if (mmode == mm0ProximityPoint1)
+        return p1;
+    else
+        return p2;
+}

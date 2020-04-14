@@ -34,6 +34,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <cfloat>
 #endif
 
@@ -69,7 +70,7 @@ ViewProvider2DObject::ViewProvider2DObject()
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
-    GridRoot = new SoSeparator();
+    GridRoot = new SoAnnotation();
     GridRoot->ref();
     GridRoot->setName("GridRoot");
     MinX = MinY = -100;
@@ -79,7 +80,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "PartFeatureImport";
+    sPixmap = "Tree_Part2D";
 }
 
 ViewProvider2DObject::~ViewProvider2DObject()
@@ -120,15 +121,15 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
         MaY = std::max<float>(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
     }
     //Round the values otherwise grid is not aligned with center
-    MiX = floor(MiX / Step) * Step;
-    MaX = ceil(MaX / Step) * Step;
-    MiY = floor(MiY / Step) * Step;
-    MaY = ceil(MaY / Step) * Step;
+    MiX = (floor(MiX / Step)-0.5) * Step;
+    MaX = (ceil(MaX / Step)+0.5) * Step;
+    MiY = (floor(MiY / Step)-0.5) * Step;
+    MaY = (ceil(MaY / Step)+0.5) * Step;
 
     double zGrid = 0.0;                     // carpet-grid separation
 
     SoGroup *parent = new Gui::SoSkipBoundingGroup();
-    GridRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(GridRoot);
     GridRoot->addChild(parent);
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
@@ -150,9 +151,18 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     carpet->vertexProperty = vts;
     parent->addChild(carpet);*/
 
+    // It seems that SoDepthBuffer will mess up with other object's
+    // pre-selection highlight. No idea why the setting can leak out of a
+    // separator.
+    //
+    // What's the purpose of using SoDepthBuffer here anyway? If the intention
+    // is to render grid always on top, shouldn't it be better to use
+    // SoAnnotation?
+#if 0
     SoDepthBuffer *depth = new SoDepthBuffer;
     depth->function = SoDepthBuffer::ALWAYS;
     parent->addChild(depth);
+#endif
 
     // gridlines
     mycolor = new SoBaseColor;
@@ -198,20 +208,20 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     // set the grid coordinates
     vts->vertex.setNum(2*lines);
-    SbVec3f* coords = vts->vertex.startEditing();
+    SbVec3f* vertex_coords = vts->vertex.startEditing();
 
     // vertical lines
     int i_offset_x = static_cast<int>(MiX / Step);
     for (int i=0; i<vlines; i++) {
-        coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
-        coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
+        vertex_coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
+        vertex_coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
     }
 
     // horizontal lines
     int i_offset_y = static_cast<int>(MiY / Step);
     for (int i=vlines; i<lines; i++) {
-        coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
-        coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
+        vertex_coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
+        vertex_coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
     }
     vts->vertex.finishEditing();
 
@@ -228,7 +238,7 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
         if (!bbox.IsValid()) return;
-        GridRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(GridRoot);
         Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
         place.invert();
         Base::ViewProjMatrix proj(place.toMatrix());
@@ -252,11 +262,11 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
         if (ShowGrid.getValue())
             createGrid();
         else
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
     }
     if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
         if (ShowGrid.getValue()) {
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
             createGrid();
         }
     }

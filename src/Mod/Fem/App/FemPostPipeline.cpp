@@ -24,6 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <SMESH_Mesh.hxx>
+# include <vtkDataSetReader.h>
+# include <vtkGeometryFilter.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkImageData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkAppendFilter.h>
+# include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLImageDataReader.h>
 #endif
 
 #include "FemPostPipeline.h"
@@ -33,22 +46,10 @@
 
 #include <Base/Console.h>
 #include <App/Document.h>
-#include <SMESH_Mesh.hxx>
+
 #include <App/DocumentObjectPy.h>
 #include <Mod/Fem/App/FemPostPipelinePy.h>
 
-#include <vtkDataSetReader.h>
-#include <vtkGeometryFilter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkAppendFilter.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLStructuredGridReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLImageDataReader.h>
 
 using namespace Fem;
 using namespace App;
@@ -246,19 +247,23 @@ bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 }
 
 void FemPostPipeline::load(FemResultObject* res) {
-    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
-        Base::Console().Warning("Mesh of result object is empty or not derived from Fem::FemMeshObject\n");
+    if (!res->Mesh.getValue()) {
+        Base::Console().Log("Result mesh object is empty.\n");
+        return;
+    }
+    if(!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 
     //first copy the mesh over
-    //########################
+    // ***************************
     const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     FemVTKTools::exportVTKMesh(&mesh, grid);
 
     //Now copy the point data over
-    //############################
+    // ***************************
     FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);

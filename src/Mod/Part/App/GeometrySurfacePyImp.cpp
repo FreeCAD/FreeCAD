@@ -31,8 +31,10 @@
 # include <gp_Parab.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Quaternion.hxx>
 # include <Geom_Geometry.hxx>
 # include <Geom_Surface.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <GeomConvert_ApproxSurface.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <Precision.hxx>
@@ -355,13 +357,92 @@ PyObject* GeometrySurfacePy::normal(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
+}
+
+PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
+{
+    PyObject* v;
+    const char* meth = "NearestPoint";
+    static char *kwlist[] = {"Point", "Method", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
+        &Base::VectorPy::Type, &v, &meth))
+        return nullptr;
+
+    try {
+        Base::Vector3d vec = Py::Vector(v, false).toVector();
+        gp_Pnt pnt(vec.x, vec.y, vec.z);
+        std::string method = meth;
+
+        Handle(Geom_Geometry) geom = getGeometryPtr()->handle();
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(geom);
+
+        GeomAPI_ProjectPointOnSurf proj(pnt, surf);
+        if (method == "NearestPoint") {
+            pnt = proj.NearestPoint();
+            vec.Set(pnt.X(), pnt.Y(), pnt.Z());
+            return new Base::VectorPy(vec);
+        }
+        else if (method == "LowerDistance") {
+            Py::Float dist(proj.LowerDistance());
+            return Py::new_reference_to(dist);
+        }
+        else if (method == "LowerDistanceParameters") {
+            Standard_Real u, v;
+            proj.LowerDistanceParameters(u, v);
+            Py::Tuple par(2);
+            par.setItem(0, Py::Float(u));
+            par.setItem(1, Py::Float(v));
+            return Py::new_reference_to(par);
+        }
+        else if (method == "Distance") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                list.append(Py::Float(proj.Distance(i)));
+            }
+            return Py::new_reference_to(list);
+        }
+        else if (method == "Parameters") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                Standard_Real u, v;
+                proj.Parameters(i, u, v);
+                Py::Tuple par(2);
+                par.setItem(0, Py::Float(u));
+                par.setItem(1, Py::Float(v));
+                list.append(par);
+            }
+            return Py::new_reference_to(list);
+        }
+        else if (method == "Point") {
+            Standard_Integer num = proj.NbPoints();
+            Py::List list;
+            for (Standard_Integer i=1; i <= num; i++) {
+                gp_Pnt pnt = proj.Point(i);
+                Base::Vector3d vec(pnt.X(), pnt.Y(), pnt.Z());
+                list.append(Py::Vector(vec));
+            }
+            return Py::new_reference_to(list);
+        }
+        else {
+            PyErr_SetString(PartExceptionOCCError, "Unsupported method");
+            return nullptr;
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
@@ -855,3 +936,16 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
     PyErr_SetString(PyExc_TypeError, "intersect(): Geometry is not a surface");
     return 0;
 }
+
+Py::Object GeometrySurfacePy::getRotation(void) const
+{
+    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
+        (getGeometryPtr()->handle());
+    if(!s)
+        return Py::Object();
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position().Ax2(),gp_Ax3());
+    auto q = trsf.GetRotation();
+    return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
+}
+

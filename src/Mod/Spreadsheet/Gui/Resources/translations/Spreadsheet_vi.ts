@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="vi" sourcelanguage="en">
+<TS version="2.1" language="vi" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Căn giữa theo chiều dọc</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Nội dung căn chỉnh chính giữa theo chiều dọc của các ô đã chọn</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Sát nhập các ô</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sát nhập các ô được chọn trong cùng một bảng tính</translation>
+      <source>Merge selected cells</source>
+      <translation>Trộn các ô đã chọn</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Chia ô</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Tách các ô được sát nhập trước đó trong bảng tính</translation>
+      <source>Split previously merged cells</source>
+      <translation>Tách rời các ô đã được hòa trộn trước đây</translation>
     </message>
   </context>
   <context>
@@ -189,11 +189,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>Chữ in đậm</translation>
+      <translation>In đậm chữ</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Đặt kiểu chữ in đậm cho các ô được chọn</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Đặt chữ trong các ô thành đậm</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Chữ in nghiêng</translation>
+      <translation>Làm nghiêng chữ</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Đặt kiểu chữ in nghiêng cho các ô được chọn</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Đặt chữ trong các ô thành nghiêng</translation>
     </message>
   </context>
   <context>
@@ -219,18 +219,18 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Chữ gạch chân</translation>
+      <translation>Gạch chân chữ</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Đặt kiểu chữ gạch chân cho các ô được chọn</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Gạch chân chữ trong ô đã chọn</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Tùy chọn</translation>
+      <source>Custom Color</source>
+      <translation>Màu tự chọn</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Nằm ngang</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Nằm dọc</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,10 +331,6 @@
       <translation>Xuất tập tin</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Nội dung trong ô</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Hiển thị bảng tính</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Đặt màu nền sau cho (các) ô trong bảng tính</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Bảng tính</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Xám nhạt</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Tùy chọn</translation>
+      <source>Custom Color</source>
+      <translation>Màu tự chọn</translation>
     </message>
   </context>
   <context>

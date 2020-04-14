@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCheckBox>
+# include <QLineEdit>
 # include <QMenu>
 #endif
 
@@ -88,10 +90,8 @@ void pagesize(string & page_template, int dims[4], int block[4])
 
     try
     {
-        while (!file.eof())
+        while (getline (file,line))
         {
-            getline (file,line);
-
             if (line.find("<!-- Working space") != string::npos)
             {
                 sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Berthold Grupp          2005                            *
+ *   Copyright (c) 2005 Berthold Grupp                                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -458,7 +458,7 @@ void SetOperations::CollectFacets (int side, float mult)
   mb.Finish();
 
   MeshAlgorithm algo(mesh);
-  algo.ResetFacetFlag((MeshFacet::TFlagType)(MeshFacet::VISIT | MeshFacet::TMP0));
+  algo.ResetFacetFlag(static_cast<MeshFacet::TFlagType>(MeshFacet::VISIT | MeshFacet::TMP0));
 
   // bool hasFacetsNotVisited = true; // until facets not visited
   // search for facet not visited

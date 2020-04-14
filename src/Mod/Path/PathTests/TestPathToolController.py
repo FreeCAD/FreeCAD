@@ -47,6 +47,7 @@ class TestPathToolController(PathTestBase):
         tc.Label = 'ToolController'
         tc.ToolNumber = 7
         tc.VertFeed = '3 in/s'
+        tc.VertFeed = round(tc.VertFeed, 1)
         tc.HorizFeed = '10 mm/s'
         tc.VertRapid = 40
         tc.HorizRapid = 28
@@ -59,9 +60,9 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs['label'], 'ToolController')
         self.assertEqual(attrs['nr'], 7)
         self.assertEqual(attrs['vfeed'], '76.2 mm/s')
-        self.assertEqual(attrs['hfeed'], '10 mm/s')
-        self.assertEqual(attrs['vrapid'], '40 mm/s')
-        self.assertEqual(attrs['hrapid'], '28 mm/s')
+        self.assertEqual(attrs['hfeed'], '10.0 mm/s')
+        self.assertEqual(attrs['vrapid'], '40.0 mm/s')
+        self.assertEqual(attrs['hrapid'], '28.0 mm/s')
         self.assertEqual(attrs['dir'], 'Reverse')
         self.assertEqual(attrs['speed'], 12000)
         self.assertEqual(attrs['tool'], t.templateAttrs())

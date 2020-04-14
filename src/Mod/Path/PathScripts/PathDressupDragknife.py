@@ -24,17 +24,18 @@
 
 from __future__ import print_function
 import FreeCAD
-import FreeCADGui
 import Path
 from PySide import QtCore
 import math
 import DraftVecUtils as D
 import PathScripts.PathUtils as PathUtils
 
-"""Dragknife Dressup object and FreeCAD command"""
+__doc__ = """Dragknife Dressup object and FreeCAD command"""
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -65,8 +66,6 @@ class ObjectDressup:
         '''Determines whether its shorter to twist CW or CCW to align with the next move'''
         # get the vector of the last move
 
-        global arccommands
-
         if queue[1].Name in arccommands:
             arcLoc = FreeCAD.Vector(queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation['Z'])
             radvector = arcLoc.sub(queue[1].Placement.Base)  # .sub(arcLoc)  # vector of chord from center to point
@@ -93,7 +92,6 @@ class ObjectDressup:
         requires the previous command in order to calculate arcs correctly
         if endpos = True, return the angle at the end of the segment.'''
 
-        global arccommands
         if currCommand.Name in arccommands:
             arcLoc = FreeCAD.Vector((prevCommand.x + currCommand.I), (prevCommand.y + currCommand.J), currentZ)
             if endpos is True:
@@ -126,7 +124,7 @@ class ObjectDressup:
 
     def arcExtension(self, obj, queue):
         '''returns gcode for arc extension'''
-        global currLocation
+        global currLocation # pylint: disable=global-statement
         results = []
 
         offset = obj.offset
@@ -165,7 +163,7 @@ class ObjectDressup:
         '''returns gcode to do an arc move toward an arc to perform
         a corner action twist. Includes lifting and plungeing the knife'''
 
-        global currLocation
+        global currLocation # pylint: disable=global-statement
         pivotheight = obj.pivotheight
         offset = obj.offset
         results = []
@@ -232,7 +230,7 @@ class ObjectDressup:
 
     def lineExtension(self, obj, queue):
         '''returns gcode for line extension'''
-        global currLocation
+        global currLocation # pylint: disable=global-statement
 
         offset = float(obj.offset)
         results = []
@@ -258,7 +256,7 @@ class ObjectDressup:
     def lineTwist(self, obj, queue, lastXY, twistCW=False):
         '''returns gcode to do an arc move toward a line to perform
         a corner action twist. Includes lifting and plungeing the knife'''
-        global currLocation
+        global currLocation # pylint: disable=global-statement
         pivotheight = obj.pivotheight
         offset = obj.offset
 
@@ -309,7 +307,7 @@ class ObjectDressup:
 
     def execute(self, obj):
         newpath = []
-        global currLocation
+        global currLocation # pylint: disable=global-statement
 
         if not obj.Base:
             return
@@ -330,6 +328,13 @@ class ObjectDressup:
                 if curCommand.Name not in movecommands + rapidcommands:
                     newpath.append(curCommand)
                     continue
+
+                if curCommand.x is None:
+                    curCommand.x = currLocation['X']
+                if curCommand.y is None:
+                    curCommand.y = currLocation['Y']
+                if curCommand.z is None:
+                    curCommand.z = currLocation['Z']
 
                 # rapid retract triggers exit move, else just add to output
                 if curCommand.Name in rapidcommands:
@@ -425,7 +430,7 @@ class ObjectDressup:
 class ViewProviderDressup:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
+        self.Object = vobj.Object
 
     def attach(self, vobj):
         self.Object = vobj.Object
@@ -441,9 +446,11 @@ class ViewProviderDressup:
             # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
 
     def unsetEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         return False
 
     def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         return True
 
     def claimChildren(self):
@@ -453,17 +460,22 @@ class ViewProviderDressup:
         return None
 
     def __setstate__(self, state):
+        # pylint: disable=unused-argument
         return None
 
     def onDelete(self, arg1=None, arg2=None):
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        job = PathUtils.findParentJob(arg1.Object.Base)
-        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-        arg1.Object.Base = None
+        # pylint: disable=unused-argument
+        if arg1.Object and arg1.Object.Base:
+            FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+            job = PathUtils.findParentJob(arg1.Object.Base)
+            if job:
+                job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+            arg1.Object.Base = None
         return True
 
 
 class CommandDressupDragknife:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -474,7 +486,7 @@ class CommandDressupDragknife:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
@@ -504,7 +516,7 @@ class CommandDressupDragknife:
         FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
-        FreeCADGui.doCommand('PathScripts.PathDressupDragknife.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupDragknife.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCADGui.doCommand('obj.filterangle = 20')
         FreeCADGui.doCommand('obj.offset = 2')

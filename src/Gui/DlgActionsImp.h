@@ -24,15 +24,22 @@
 #ifndef GUI_DIALOG_DLGACTIONS_IMP_H
 #define GUI_DIALOG_DLGACTIONS_IMP_H
 
-#include "ui_DlgActions.h"
+#include <memory>
 #include "PropertyPage.h"
 #include <QDialog>
 #include <QList>
 #include <QPair>
 
+class QListWidgetItem;
+class QTreeWidgetItem;
+class QLabel;
+class QGridLayout;
+class QLineEdit;
 
 namespace Gui {
 namespace Dialog {
+
+class Ui_DlgCustomActions;
 
 /** This class implements the creation of user defined actions executing a recorded macro.
  * It is possible to use these actions in own toolbars or commandbars.
@@ -41,7 +48,7 @@ namespace Dialog {
  * @see Command
  * \author Werner Mayer
  */
-class DlgCustomActionsImp : public CustomizeActionPage, public Ui_DlgCustomActions
+class DlgCustomActionsImp : public CustomizeActionPage
 { 
     Q_OBJECT
 
@@ -82,6 +89,7 @@ private:
     QString newActionName();
 
 private:
+    std::unique_ptr<Ui_DlgCustomActions> ui;
     bool bShown; /**< For internal use only*/
     QString m_sPixmap; /**< Name of the specified pixmap */
 };

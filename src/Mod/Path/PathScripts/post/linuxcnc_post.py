@@ -54,6 +54,7 @@ parser.add_argument('--postamble', help='set commands to be issued after the las
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
 parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
+parser.add_argument('--no-tlo', action='store_true', help='suppress tool length offset (G43) following tool changes')
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -63,6 +64,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
+USE_TLO = True # if true G43 will be output following tool changes 
 OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -102,6 +104,7 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -113,6 +116,7 @@ def processArguments(argstring):
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
     global MODAL
+    global USE_TLO
     global OUTPUT_DOUBLES
 
     try:
@@ -138,17 +142,19 @@ def processArguments(argstring):
             PRECISION = 4
         if args.modal:
             MODAL = True
+        if args.no_tlo:
+            USE_TLO = False
         if args.axis_modal:
             print ('here')
             OUTPUT_DOUBLES = False
 
-    except:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
 
-
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     if not processArguments(argstring):
         return None
     global UNITS
@@ -178,6 +184,14 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # Skip inactive operations
+        if hasattr(obj, 'Active'): 
+            if not obj.Active:
+                continue
+        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
+            if not obj.Base.Active:
+                continue
+
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
@@ -203,6 +217,24 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = 'None'
+        if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
+            if hasattr(obj, "CoolantMode"):
+                coolantMode = obj.CoolantMode
+            else:
+                coolantMode = obj.Base.CoolantMode
+
+        # turn coolant on if required
+        if OUTPUT_COMMENTS:
+            if not coolantMode == 'None':
+                gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
+        if coolantMode == 'Flood':
+            gcode  += linenumber() + 'M8' + '\n'
+        if coolantMode == 'Mist':
+            gcode += linenumber() + 'M7' + '\n'
+
+        # process the operation gcode
         gcode += parse(obj)
 
         # do the post_op
@@ -210,6 +242,12 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
+
+        # turn coolant off if required
+        if not coolantMode == 'None':
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'    
+            gcode  += linenumber() +'M9' + '\n'
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -231,7 +269,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == '-':
-        gfile = pythonopen(filename, "wb")
+        gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
 
@@ -239,6 +277,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+    # pylint: disable=global-statement
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
@@ -247,6 +286,7 @@ def linenumber():
 
 
 def parse(pathobj):
+    # pylint: disable=global-statement
     global PRECISION
     global MODAL
     global OUTPUT_DOUBLES
@@ -325,10 +365,15 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
+                # stop the spindle
+                out += linenumber() + "M5\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
+
+                # add height offset
+                if USE_TLO:
+                    tool_height = '\nG43 H' + str(int(c.Parameters['T']))
+                    outstring.append(tool_height)
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:

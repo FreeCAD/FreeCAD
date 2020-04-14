@@ -56,6 +56,7 @@ public:
 
     View3DInventorViewer *getViewer(unsigned int) const;
     void setOverrideCursor(const QCursor&);
+    virtual bool containsViewProvider(const ViewProvider*) const;
 
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
@@ -88,7 +89,7 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxometric(const Py::Tuple&);
+    Py::Object viewIsometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
     Py::Object sequence_item(ssize_t);
     Py::Object close(const Py::Tuple&);

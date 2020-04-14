@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,11 +27,15 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QAction>
-#endif
 
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,10 +54,6 @@
 #include <Gui/Utilities.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
-
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Fem/App/FemMeshObject.h>
@@ -108,7 +108,8 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
 // commands Part, Analysis, Solver
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemAddPart);
+/* ATM no gui command implemented in workbench.cpp, user does it in single steps
+DEF_STD_CMD_A(CmdFemAddPart)
 
 CmdFemAddPart::CmdFemAddPart()
   : Command("FEM_FemAddPart")
@@ -134,7 +135,7 @@ void CmdFemAddPart::activated(int)
 
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+            QObject::tr("Select an edge, face, or body. Only one body is allowed."));
         return;
     }
 
@@ -168,12 +169,12 @@ bool CmdFemAddPart::isActive(void)
     Base::Type type = Base::Type::fromName("Part::Feature");
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
-
+*/
 
 //================================================================================================
 // analysis
 /* done in Python
-DEF_STD_CMD_A(CmdFemCreateAnalysis);
+DEF_STD_CMD_A(CmdFemCreateAnalysis)
 
 CmdFemCreateAnalysis::CmdFemCreateAnalysis()
   : Command("FEM_CreateAnalysis")
@@ -184,7 +185,7 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
     sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
     sWhatsThis      = "FEM_CreateAnalysis";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-analysis";
+    sPixmap         = "FEM_Analysis";
 }
 
 void CmdFemCreateAnalysis::activated(int)
@@ -199,7 +200,7 @@ void CmdFemCreateAnalysis::activated(int)
 
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge, face or body. Only one body is allowed."));
+            QObject::tr("Select an edge, face, or body. Only one body is allowed."));
         return;
     }
 
@@ -237,7 +238,7 @@ bool CmdFemCreateAnalysis::isActive(void)
 //================================================================================================
 // solver
 /* done in Python
-DEF_STD_CMD_A(CmdFemCreateSolver);
+DEF_STD_CMD_A(CmdFemCreateSolver)
 
 CmdFemCreateSolver::CmdFemCreateSolver()
   : Command("FEM_CreateSolver")
@@ -248,7 +249,7 @@ CmdFemCreateSolver::CmdFemCreateSolver()
     sToolTipText    = QT_TR_NOOP("Add a solver to the Analysis");
     sWhatsThis      = "FEM_CreateSolver";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-solver-standard";
+    sPixmap         = "FEM_SolverStandard";
 }
 
 void CmdFemCreateSolver::activated(int)
@@ -285,7 +286,7 @@ bool CmdFemCreateSolver::isActive(void)
 // commands Constraints
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintBearing);
+DEF_STD_CMD_A(CmdFemConstraintBearing)
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
   : Command("FEM_ConstraintBearing")
@@ -296,7 +297,7 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a bearing");
     sWhatsThis      = "FEM_ConstraintBearing";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-bearing";
+    sPixmap         = "FEM_ConstraintBearing";
 }
 
 void CmdFemConstraintBearing::activated(int)
@@ -306,7 +307,7 @@ void CmdFemConstraintBearing::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintBearing");
+    std::string FeatName = getUniqueObjectName("ConstraintBearing");
 
     openCommand("Make FEM constraint for bearing");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
@@ -326,7 +327,7 @@ bool CmdFemConstraintBearing::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintContact);
+DEF_STD_CMD_A(CmdFemConstraintContact)
 
 CmdFemConstraintContact::CmdFemConstraintContact()
   : Command("FEM_ConstraintContact")
@@ -337,7 +338,7 @@ CmdFemConstraintContact::CmdFemConstraintContact()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
     sWhatsThis      = "FEM_ConstraintContact";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-contact";
+    sPixmap         = "FEM_ConstraintContact";
 }
 
 void CmdFemConstraintContact::activated(int)
@@ -347,7 +348,7 @@ void CmdFemConstraintContact::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintContact");
+    std::string FeatName = getUniqueObjectName("ConstraintContact");
 
     openCommand("Make FEM constraint contact on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",FeatName.c_str());
@@ -371,7 +372,7 @@ bool CmdFemConstraintContact::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintDisplacement);
+DEF_STD_CMD_A(CmdFemConstraintDisplacement)
 
 CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
   : Command("FEM_ConstraintDisplacement")
@@ -382,7 +383,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
     sWhatsThis      = "FEM_ConstraintDisplacement";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-displacement";
+    sPixmap         = "FEM_ConstraintDisplacement";
 }
 
 void CmdFemConstraintDisplacement::activated(int)
@@ -392,7 +393,7 @@ void CmdFemConstraintDisplacement::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintDisplacement");
+    std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
 
     openCommand("Make FEM constraint displacement on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
@@ -414,7 +415,7 @@ bool CmdFemConstraintDisplacement::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintFixed);
+DEF_STD_CMD_A(CmdFemConstraintFixed)
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
   : Command("FEM_ConstraintFixed")
@@ -425,7 +426,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a fixed geometric entity");
     sWhatsThis      = "FEM_ConstraintFixed";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-fixed";
+    sPixmap         = "FEM_ConstraintFixed";
 }
 
 void CmdFemConstraintFixed::activated(int)
@@ -435,7 +436,7 @@ void CmdFemConstraintFixed::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintFixed");
+    std::string FeatName = getUniqueObjectName("ConstraintFixed");
 
     openCommand("Make FEM constraint fixed geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
@@ -456,7 +457,7 @@ bool CmdFemConstraintFixed::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
+DEF_STD_CMD_A(CmdFemConstraintFluidBoundary)
 
 CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
   : Command("FEM_ConstraintFluidBoundary")
@@ -467,7 +468,7 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
     sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
     sWhatsThis      = "FEM_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-fluid-boundary";
+    sPixmap         = "FEM_ConstraintFluidBoundary";
 }
 
 void CmdFemConstraintFluidBoundary::activated(int)
@@ -477,7 +478,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FluidBoundary");
+    std::string FeatName = getUniqueObjectName("ConstraintFluidBoundary");
 
     openCommand("Create fluid boundary condition");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
@@ -499,7 +500,7 @@ bool CmdFemConstraintFluidBoundary::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintForce);
+DEF_STD_CMD_A(CmdFemConstraintForce)
 
 CmdFemConstraintForce::CmdFemConstraintForce()
   : Command("FEM_ConstraintForce")
@@ -510,7 +511,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
     sWhatsThis      = "FEM_ConstraintForce";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-force";
+    sPixmap         = "FEM_ConstraintForce";
 }
 
 void CmdFemConstraintForce::activated(int)
@@ -520,7 +521,7 @@ void CmdFemConstraintForce::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintForce");
+    std::string FeatName = getUniqueObjectName("ConstraintForce");
 
     openCommand("Make FEM constraint force on geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
@@ -543,7 +544,7 @@ bool CmdFemConstraintForce::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintGear);
+DEF_STD_CMD_A(CmdFemConstraintGear)
 
 CmdFemConstraintGear::CmdFemConstraintGear()
   : Command("FEM_ConstraintGear")
@@ -554,7 +555,7 @@ CmdFemConstraintGear::CmdFemConstraintGear()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a gear");
     sWhatsThis      = "FEM_ConstraintGear";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-gear";
+    sPixmap         = "FEM_ConstraintGear";
 }
 
 void CmdFemConstraintGear::activated(int)
@@ -563,7 +564,7 @@ void CmdFemConstraintGear::activated(int)
 
     if(getConstraintPrerequisits(&Analysis))
         return;
-    std::string FeatName = getUniqueObjectName("FemConstraintGear");
+    std::string FeatName = getUniqueObjectName("ConstraintGear");
 
     openCommand("Make FEM constraint for gear");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
@@ -584,7 +585,7 @@ bool CmdFemConstraintGear::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintHeatflux);
+DEF_STD_CMD_A(CmdFemConstraintHeatflux)
 
 CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
   : Command("FEM_ConstraintHeatflux")
@@ -595,7 +596,7 @@ CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
     sWhatsThis      = "FEM_ConstraintHeatflux";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-heatflux";
+    sPixmap         = "FEM_ConstraintHeatflux";
 }
 
 void CmdFemConstraintHeatflux::activated(int)
@@ -605,7 +606,7 @@ void CmdFemConstraintHeatflux::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintHeatflux");
+    std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
 
     openCommand("Make FEM constraint heatflux on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",FeatName.c_str());
@@ -629,7 +630,7 @@ bool CmdFemConstraintHeatflux::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintInitialTemperature);
+DEF_STD_CMD_A(CmdFemConstraintInitialTemperature)
 
 CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
   : Command("FEM_ConstraintInitialTemperature")
@@ -640,7 +641,7 @@ CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for initial temperature acting on a body");
     sWhatsThis      = "FEM_ConstraintInitialTemperature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-InitialTemperature";
+    sPixmap         = "FEM_ConstraintInitialTemperature";
 }
 
 void CmdFemConstraintInitialTemperature::activated(int)
@@ -650,7 +651,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintInitialTemperature");
+    std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
 
     openCommand("Make FEM constraint initial temperature on body");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",FeatName.c_str());
@@ -672,7 +673,7 @@ bool CmdFemConstraintInitialTemperature::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
+DEF_STD_CMD_A(CmdFemConstraintPlaneRotation)
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
   : Command("FEM_ConstraintPlaneRotation")
@@ -683,7 +684,7 @@ CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for plane rotation face");
     sWhatsThis      = "FEM_ConstraintPlaneRotation";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-planerotation";
+    sPixmap         = "FEM_ConstraintPlaneRotation";
 }
 
 void CmdFemConstraintPlaneRotation::activated(int)
@@ -693,7 +694,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPlaneRotation");
+    std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
 
     openCommand("Make FEM constraint Plane Rotation face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",FeatName.c_str());
@@ -714,7 +715,7 @@ bool CmdFemConstraintPlaneRotation::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPressure);
+DEF_STD_CMD_A(CmdFemConstraintPressure)
 
 CmdFemConstraintPressure::CmdFemConstraintPressure()
   : Command("FEM_ConstraintPressure")
@@ -725,7 +726,7 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pressure acting on a face");
     sWhatsThis      = "FEM_ConstraintPressure";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-pressure";
+    sPixmap         = "FEM_ConstraintPressure";
 }
 
 void CmdFemConstraintPressure::activated(int)
@@ -735,7 +736,7 @@ void CmdFemConstraintPressure::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPressure");
+    std::string FeatName = getUniqueObjectName("ConstraintPressure");
 
     openCommand("Make FEM constraint pressure on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")",FeatName.c_str());
@@ -759,7 +760,7 @@ bool CmdFemConstraintPressure::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPulley);
+DEF_STD_CMD_A(CmdFemConstraintPulley)
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
   : Command("FEM_ConstraintPulley")
@@ -770,7 +771,7 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pulley");
     sWhatsThis      = "FEM_ConstraintPulley";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-pulley";
+    sPixmap         = "FEM_ConstraintPulley";
 }
 
 void CmdFemConstraintPulley::activated(int)
@@ -780,7 +781,7 @@ void CmdFemConstraintPulley::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPulley");
+    std::string FeatName = getUniqueObjectName("ConstraintPulley");
 
     openCommand("Make FEM constraint for pulley");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")",FeatName.c_str());
@@ -805,7 +806,7 @@ bool CmdFemConstraintPulley::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTemperature);
+DEF_STD_CMD_A(CmdFemConstraintTemperature)
 
 CmdFemConstraintTemperature::CmdFemConstraintTemperature()
   : Command("FEM_ConstraintTemperature")
@@ -816,7 +817,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
     sWhatsThis      = "FEM_ConstraintTemperature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-temperature";
+    sPixmap         = "FEM_ConstraintTemperature";
 }
 
 void CmdFemConstraintTemperature::activated(int)
@@ -826,7 +827,7 @@ void CmdFemConstraintTemperature::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintTemperature");
+    std::string FeatName = getUniqueObjectName("ConstraintTemperature");
 
     openCommand("Make FEM constraint temperature on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
@@ -848,7 +849,7 @@ bool CmdFemConstraintTemperature::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTransform);
+DEF_STD_CMD_A(CmdFemConstraintTransform)
 
 CmdFemConstraintTransform::CmdFemConstraintTransform()
   : Command("FEM_ConstraintTransform")
@@ -859,7 +860,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
     sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-transform";
+    sPixmap         = "FEM_ConstraintTransform";
 }
 
 void CmdFemConstraintTransform::activated(int)
@@ -869,7 +870,7 @@ void CmdFemConstraintTransform::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintTransform");
+    std::string FeatName = getUniqueObjectName("ConstraintTransform");
 
     openCommand("Make FEM constraint transform on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
@@ -898,7 +899,7 @@ bool CmdFemConstraintTransform::isActive(void)
 // commands mesh
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemDefineNodesSet);
+DEF_STD_CMD_A(CmdFemDefineNodesSet)
 
 void DefineNodesCallback(void * ud, SoEventCallback * n)
 {
@@ -964,7 +965,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.ActiveObject.Nodes = %s",set.str().c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",Analysis->getNameInDocument());
-    ////Gui::Command::updateActive();
+    // Gui::Command::updateActive();
     Gui::Command::commitCommand();
 
     //std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
@@ -995,7 +996,7 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
     sToolTipText  = QT_TR_NOOP("Create node set by Poly");
     sWhatsThis    = "FEM_DefineNodesSet";
     sStatusTip    = QT_TR_NOOP("Create node set by Poly");
-    sPixmap       = "fem-femmesh-create-node-by-poly";
+    sPixmap       = "FEM_CreateNodesSet";
 }
 
 void CmdFemDefineNodesSet::activated(int)
@@ -1040,7 +1041,7 @@ bool CmdFemDefineNodesSet::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemCreateNodesSet);
+DEF_STD_CMD_A(CmdFemCreateNodesSet)
 
 CmdFemCreateNodesSet::CmdFemCreateNodesSet()
   : Command("FEM_CreateNodesSet")
@@ -1051,7 +1052,7 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
     sToolTipText    = QT_TR_NOOP("Creates a FEM mesh nodes set");
     sWhatsThis      = "FEM_CreateNodesSet";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-femmesh-create-node-by-poly";
+    sPixmap         = "FEM_CreateNodesSet";
 }
 
 void CmdFemCreateNodesSet::activated(int)
@@ -1134,7 +1135,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         cmd->updateActive();
         cmd->doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
-};
+}
 
 
 std::string Plot() {
@@ -1196,18 +1197,18 @@ plt.show()\n";
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostClipFilter);
+DEF_STD_CMD_A(CmdFemPostClipFilter)
 
 CmdFemPostClipFilter::CmdFemPostClipFilter()
-  : Command("FEM_PostCreateClipFilter")
+  : Command("FEM_PostFilterClipRegion")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Region clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
-    sWhatsThis      = "FEM_PostCreateClipFilter";
+    sWhatsThis      = "FEM_PostFilterClipRegion";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-clip-region";
+    sPixmap         = "FEM_PostFilterClipRegion";
 }
 
 void CmdFemPostClipFilter::activated(int)
@@ -1222,18 +1223,18 @@ bool CmdFemPostClipFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCutFilter);
+DEF_STD_CMD_A(CmdFemPostCutFilter)
 
 CmdFemPostCutFilter::CmdFemPostCutFilter()
-  : Command("FEM_PostCreateCutFilter")
+  : Command("FEM_PostFilterCutFunction")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Function cut filter");
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
-    sWhatsThis      = "FEM_PostCreateCutFilter";
+    sWhatsThis      = "FEM_PostFilterCutFunction";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-cut-function";
+    sPixmap         = "FEM_PostFilterCutFunction";
 }
 
 void CmdFemPostCutFilter::activated(int)
@@ -1248,18 +1249,18 @@ bool CmdFemPostCutFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter);
+DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter)
 
 CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
-  : Command("FEM_PostCreateDataAlongLineFilter")
+  : Command("FEM_PostFilterDataAlongLine")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Line clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
-    sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
+    sWhatsThis      = "FEM_PostFilterDataAlongLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-data-along-line";
+    sPixmap         = "FEM_PostFilterDataAlongLine";
 }
 
 void CmdFemPostDataAlongLineFilter::activated(int)
@@ -1274,18 +1275,18 @@ bool CmdFemPostDataAlongLineFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostDataAtPointFilter);
+DEF_STD_CMD_A(CmdFemPostDataAtPointFilter)
 
 CmdFemPostDataAtPointFilter::CmdFemPostDataAtPointFilter()
-  : Command("FEM_PostCreateDataAtPointFilter")
+  : Command("FEM_PostFilterDataAtPoint")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Data at point clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
-    sWhatsThis      = "FEM_PostCreateDataAtPointFilter";
+    sWhatsThis      = "FEM_PostFilterDataAtPoint";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-data-at-point";
+    sPixmap         = "FEM_PostFilterDataAtPoint";
 }
 
 void CmdFemPostDataAtPointFilter::activated(int)
@@ -1302,18 +1303,18 @@ bool CmdFemPostDataAtPointFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter);
+DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter)
 
 CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
-  : Command("FEM_PostCreateLinearizedStressesFilter")
+  : Command("FEM_PostFilterLinearizedStresses")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Stress linearization plot");
     sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
-    sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
+    sWhatsThis      = "FEM_PostFilterLinearizedStresses";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-linearized-stresses";
+    sPixmap         = "FEM_PostFilterLinearizedStresses";
 }
 
 void CmdFemPostLinearizedStressesFilter::activated(int)
@@ -1324,11 +1325,21 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
     if (DataAlongLineFilter.match()) {
         Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
         std::string FieldName = DataAlongLine->PlotData.getValue();
-        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
-             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
-             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
-             doCommand(Gui::Command::Doc, Plot().c_str());
-        } else {
+        if  (
+                (FieldName == "Tresca Stress")
+                || (FieldName == "von Mises Stress")
+                || (FieldName == "Major Principal Stress")
+                || (FieldName == "Intermediate Principal Stress")
+                || (FieldName == "Minor Principal Stress")
+                // names need to match with names in FemVTKTools.cpp, this is not failsafe, but ATM there is no better way for test on a stress result in vtk pipeline
+       ){
+                // TODO FIXME only works if the data along the line object has the name DataAlongLine
+                // we should get the selected data along the line object 
+                doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
+                doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
+                doCommand(Gui::Command::Doc, Plot().c_str());
+        } 
+        else {
                 QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
@@ -1349,18 +1360,18 @@ bool CmdFemPostLinearizedStressesFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostScalarClipFilter);
+DEF_STD_CMD_A(CmdFemPostScalarClipFilter)
 
 CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
-  : Command("FEM_PostCreateScalarClipFilter")
+  : Command("FEM_PostFilterClipScalar")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Scalar clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
-    sWhatsThis      = "FEM_PostCreateScalarClipFilter";
+    sWhatsThis      = "FEM_PostFilterClipScalar";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-clip-scalar";
+    sPixmap         = "FEM_PostFilterClipScalar";
 }
 
 void CmdFemPostScalarClipFilter::activated(int)
@@ -1375,18 +1386,18 @@ bool CmdFemPostScalarClipFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
+DEF_STD_CMD_A(CmdFemPostWarpVectorFilter)
 
 CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
-  : Command("FEM_PostCreateWarpVectorFilter")
+  : Command("FEM_PostFilterWarp")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Warp filter");
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
-    sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
+    sWhatsThis      = "FEM_PostFilterWarp";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-warp";
+    sPixmap         = "FEM_PostFilterWarp";
 }
 
 void CmdFemPostWarpVectorFilter::activated(int)
@@ -1401,7 +1412,7 @@ bool CmdFemPostWarpVectorFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_ACL(CmdFemPostFunctions);
+DEF_STD_CMD_ACL(CmdFemPostFunctions)
 
 CmdFemPostFunctions::CmdFemPostFunctions()
   : Command("FEM_PostCreateFunctions")
@@ -1479,7 +1490,7 @@ void CmdFemPostFunctions::activated(int iMsg)
             qApp->translate("CmdFemPostClipFilter", "Select a pipeline, please."));
     }
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -1495,10 +1506,10 @@ Gui::Action * CmdFemPostFunctions::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("fem-post-geo-plane"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-plane"));
 
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("fem-post-geo-sphere"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-sphere"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1541,7 +1552,7 @@ bool CmdFemPostFunctions::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_AC(CmdFemPostApllyChanges);
+DEF_STD_CMD_AC(CmdFemPostApllyChanges)
 
 CmdFemPostApllyChanges::CmdFemPostApllyChanges()
   : Command("FEM_PostApplyChanges")
@@ -1586,7 +1597,7 @@ Gui::Action * CmdFemPostApllyChanges::createAction(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostPipelineFromResult);
+DEF_STD_CMD_A(CmdFemPostPipelineFromResult)
 
 CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
   : Command("FEM_PostPipelineFromResult")
@@ -1597,7 +1608,7 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
     sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sWhatsThis      = "FEM_PostPipelineFromResult";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-data-pipline";
+    sPixmap         = "FEM_PostPipelineFromResult";
 }
 
 void CmdFemPostPipelineFromResult::activated(int)
@@ -1625,7 +1636,7 @@ void CmdFemPostPipelineFromResult::activated(int)
 
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
     if (results.size() == 1) {
-        std::string FeatName = getUniqueObjectName("Pipeline");
+        std::string FeatName = getUniqueObjectName("ResultPipeline");
         openCommand("Create pipeline from result");
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().ActiveObject.load("
@@ -1657,7 +1668,7 @@ void CreateFemCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     // part, analysis, solver
-    rcCmdMgr.addCommand(new CmdFemAddPart());
+    //rcCmdMgr.addCommand(new CmdFemAddPart()); // not implemented as GUI menu or click icon
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis()); // Analysis is created in python
     //rcCmdMgr.addCommand(new CmdFemCreateSolver());  // Solver will be extended and created in python
 

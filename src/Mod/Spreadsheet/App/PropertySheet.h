@@ -26,7 +26,7 @@
 #include <map>
 #include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
-#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyLinks.h>
 #include "Cell.h"
 
@@ -37,21 +37,44 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::Property, private App::AtomicPropertyChangeInterface<PropertySheet> {
-    TYPESYSTEM_HEADER();
+class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
+                                      , private App::AtomicPropertyChangeInterface<PropertySheet> {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     PropertySheet(Sheet * _owner = 0);
 
     ~PropertySheet();
 
-    virtual Property *Copy(void) const;
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    virtual void onRelabeledDocument(const App::Document &doc) override;
 
-    virtual void Paste(const Property &from);
+    virtual void updateElementReference(
+            App::DocumentObject *feature,bool reverse=false,bool notify=false) override;
+    virtual bool referenceChanged() const override;
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+                        const std::string &ref, const char *newLabel) const override;
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+                        App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    virtual Property *Copy(void) const override;
+
+    virtual void Paste(const Property &from) override;
+
+    virtual void Save (Base::Writer & writer) const override;
+
+    virtual void Restore(Base::XMLReader & reader) override;
+
+    void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
+
+    void pasteCells(Base::XMLReader &reader, const App::CellAddress &addr);
 
     Cell *createCell(App::CellAddress address);
 
@@ -95,6 +118,8 @@ public:
 
     void setDirty(App::CellAddress address);
 
+    void setDirty();
+
     void clearDirty(App::CellAddress key) { dirty.erase(key); }
 
     void clearDirty() { dirty.clear(); purgeTouched(); }
@@ -102,6 +127,8 @@ public:
     bool isDirty() const { return dirty.size() > 0; }
 
     void moveCell(App::CellAddress currPos, App::CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
+
+    void pasteCells(const std::map<App::CellAddress, std::string> &cells, int rowOffset, int colOffset);
 
     void insertRows(int row, int count);
 
@@ -111,7 +138,7 @@ public:
 
     void removeColumns(int col, int count);
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
 
     bool mergeCells(App::CellAddress from, App::CellAddress to);
 
@@ -127,25 +154,30 @@ public:
 
     const std::set<std::string> &getDeps(App::CellAddress pos) const;
 
-    const std::set<App::DocumentObject*> & getDocDeps() const { return docDeps; }
-
     void recomputeDependencies(App::CellAddress key);
 
-    PyObject *getPyObject(void);
-
-    void resolveAll();
+    PyObject *getPyObject(void) override;
+    void setPyObject(PyObject *) override;
 
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
-
-    void renamedDocument(const App::Document *doc);
-
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
 
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();
+
+    std::string getRow(int offset=0) const;
+
+    std::string getColumn(int offset=0) const;
+
+protected:
+    virtual void hasSetValue() override;
+    virtual void hasSetChildValue(App::Property &prop) override;
+    virtual void onBreakLink(App::DocumentObject *obj) override;
+    virtual void onAddDep(App::DocumentObject *obj) override;
+    virtual void onRemoveDep(App::DocumentObject *obj) override;
 
 private:
 
@@ -191,11 +223,8 @@ private:
 
     void removeDependencies(App::CellAddress key);
 
-    void recomputeDependants(const App::Property * prop);
-
-    void recomputeDependants(const App::DocumentObject * docObj);
-
-    void rebuildDocDepList();
+    void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
+    void recomputeDependants(const App::DocumentObject *obj, const char *propName);
 
     /*! Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.
@@ -213,15 +242,6 @@ private:
     /*! DocumentObject this cell depends on */
     std::map<App::CellAddress, std::set< std::string > > cellToDocumentObjectMap;
 
-    /*! Other document objects the sheet depends on */
-    std::set<App::DocumentObject*> docDeps;
-
-    /*! Name of document objects, used for renaming */
-    std::map<const App::DocumentObject*, std::string> documentObjectName;
-
-    /*! Name of documents, used for renaming */
-    std::map<const App::Document*, std::string> documentName;
-
     /*! Mapping of cell position to alias property */
     std::map<App::CellAddress, std::string> aliasProp;
 
@@ -230,6 +250,11 @@ private:
 
     /*! The associated python object */
     Py::Object PythonObject;
+
+    std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
+
+    int updateCount;
+    bool restoring = false;
 };
 
 }

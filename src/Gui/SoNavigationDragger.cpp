@@ -44,7 +44,7 @@
 // describes the default geometry resources for this class.
 //#include "RotTransDraggerGeom.h"
 
-SO_KIT_SOURCE(RotTransDragger);
+SO_KIT_SOURCE(RotTransDragger)
 
 
 //  Initializes the type ID for this dragger node. This

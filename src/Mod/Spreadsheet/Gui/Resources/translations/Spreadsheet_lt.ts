@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Statmenasis lygiavimas per vidurį</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Pasirinktų langelių statmenasis turinio lygiavimas per vidurį</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Pasirinktų langelių turinio lygiavimas aukštyn per vidurį</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Sulieti langelius</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sulieti pažymėtus langelius skaičiuoklėje</translation>
+      <source>Merge selected cells</source>
+      <translation>Sulieti pasirinktus langelius</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Skelti langelį</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Perskirti anksčiau sulietus langelius skaičiuoklėje</translation>
+      <source>Split previously merged cells</source>
+      <translation>Išskaidyti anksčiau sulietus langelius</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Paryškintasis tekstas</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nustatyti paryškintąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Paryškinti tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Pasvirasis tekstas</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nustatyti pasvirąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Padaryti pasvirą tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Pabrauktasis tekstas</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nustatyti pabrauktąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Pabraukti tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Pasirinktinė</translation>
+      <source>Custom Color</source>
+      <translation>Tinkinta spalva</translation>
     </message>
   </context>
   <context>
@@ -257,11 +257,11 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Gulščiai</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Kairė</translation>
+      <translation>Iš kairės</translation>
     </message>
     <message>
       <source>Center</source>
@@ -269,11 +269,11 @@
     </message>
     <message>
       <source>Right</source>
-      <translation>Dešinys</translation>
+      <translation>Iš dešinės</translation>
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Stačiai</translation>
     </message>
     <message>
       <source>Top</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Apačioje</translation>
+      <translation>Iš apačios</translation>
     </message>
     <message>
       <source>&amp;Style</source>
@@ -331,28 +331,38 @@
       <translation>Eksportuoti failą</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Langelio turinys</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Rodyti skaičiuoklę</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Nustatyti langelio(-ų) priekinio plano spalvą</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Nustatyti lentelės langelio(-ų) priekinio plano spalvą</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Nustatyti langelio(-ų) pagrindo spalvą</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Nustatyti lentelės langelio(-ų) pagrindo spalvą</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Skaičiuoklė</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Šviesiai pilka</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Pasirinktinė</translation>
+      <source>Custom Color</source>
+      <translation>Tinkinta spalva</translation>
     </message>
   </context>
   <context>

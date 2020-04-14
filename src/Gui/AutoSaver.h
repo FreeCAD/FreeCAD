@@ -88,6 +88,9 @@ protected:
     void timerEvent(QTimerEvent * event);
     void saveDocument(const std::string&, AutoSaveProperty&);
 
+public Q_SLOTS:
+    void renameFile(QString dirName, QString file, QString tmpFile);
+
 private:
     int timeout; /*!< Timeout in milliseconds */
     bool compressed;

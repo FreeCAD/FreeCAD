@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -33,7 +33,7 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
-#include <Inventor/nodes/SoGroup.h>
+#include "SoFCUnifiedSelection.h"
 
 using namespace Gui;
 
@@ -43,7 +43,7 @@ ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
 
-    pcGroupChildren = new SoGroup();
+    pcGroupChildren = new SoFCSelectionRoot;
     pcGroupChildren->ref();
 }
 
@@ -85,13 +85,16 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
     // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
     std::vector<App::DocumentObject*> Result;
-
-    // claim for rest content not claimed by any other features
-    std::remove_copy_if (model.begin(), model.end(), std::back_inserter (Result),
-            [outSet] (App::DocumentObject* obj) {
-                return outSet.find (obj) != outSet.end();
-            } );
-
+    for(auto obj : model) {
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        if(outSet.count(obj)) 
+            obj->setStatus(App::ObjectStatus::GeoExcluded,true);
+        else {
+            obj->setStatus(App::ObjectStatus::GeoExcluded,false);
+            Result.push_back(obj);
+        }
+    }
     return Result;
 }
 

@@ -28,7 +28,7 @@
 
 #include "DrawTemplate.h"
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
     class BaseGeom;
 }
@@ -67,7 +67,7 @@ public:
     virtual unsigned int getMemSize(void) const;
 
 public:
-    std::vector<TechDrawGeometry::BaseGeom *> getGeometry() { return geom; }
+    std::vector<TechDraw::BaseGeom *> getGeometry() { return geom; }
     int clearGeometry();
 
     // Template Drawing Methods
@@ -80,7 +80,7 @@ protected:
     void onChanged(const App::Property* prop);
 
 protected:
-    std::vector<TechDrawGeometry::BaseGeom *> geom;
+    std::vector<TechDraw::BaseGeom *> geom;
 
 private:
     static const char* OrientationEnums[];

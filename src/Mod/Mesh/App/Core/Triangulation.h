@@ -93,7 +93,7 @@ public:
      * built out of the axes of the plane.
      */
     Base::Matrix4D GetTransformToFitPlane() const;
-    /** If the points of the polygon set by SetPolygon() doesn't lie in a 
+    /** If the points of the polygon set by SetPolygon() doesn't lie in a
      * plane this method can be used to project the points in a common plane.
      */
     std::vector<Base::Vector3f> ProjectToFitPlane();
@@ -157,11 +157,11 @@ protected:
 private:
     /**
     * Static class to triangulate any contour/polygon (without holes) efficiently.
-    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff 
+    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
     * (jratcliff@verant.com) on July 22, 2000.
     * The original vector of 2d points is replaced by a vector of 3d points where the
-    * z-ccordinate is ignored. This is because the algorithm is often used for 3d points 
-    * projected to a common plane. The result vector of 2d points is replaced by an 
+    * z-coordinate is ignored. This is because the algorithm is often used for 3d points 
+    * projected to a common plane. The result vector of 2d points is replaced by an
     * array of indices to the points of the polygon.
     */
     class Triangulate
@@ -255,4 +255,4 @@ protected:
 } // namespace MeshCore
 
 
-#endif  // MESH_TRIANGULATION_H 
+#endif  // MESH_TRIANGULATION_H

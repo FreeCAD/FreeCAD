@@ -3,18 +3,18 @@ EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c
 OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE )
 SET(PYTHON_MAIN_DIR ${python_libs})
 
-SET(EXT_SRCS
-    __init__.py
-)
+set(NAMESPACE_INIT "${CMAKE_BINARY_DIR}/Ext/freecad/__init__.py")
+configure_file(__init__.py.template ${NAMESPACE_INIT})
 
-ADD_CUSTOM_TARGET(freecad_COPY_SOURCE ALL
-    SOURCES ${EXT_SRCS})
-
-fc_copy_sources(freecad_COPY_SOURCE "${CMAKE_BINARY_DIR}/Ext/freecad" ${EXT_SRCS})
+if (INSTALL_TO_SITEPACKAGES)
+    SET(SITE_PACKAGE_DIR ${PYTHON_MAIN_DIR}/freecad)
+else ()
+    SET(SITE_PACKAGE_DIR Ext/freecad)
+endif()
 
 INSTALL(
     FILES
-        __init__.py
+        ${NAMESPACE_INIT}
     DESTINATION
-        Ext/freecad
+        ${SITE_PACKAGE_DIR}
 )

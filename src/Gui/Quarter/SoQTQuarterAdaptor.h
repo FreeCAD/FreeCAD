@@ -1,6 +1,6 @@
 /*
  * Extends the QuarterWidget with all functions the SoQtViewer has
- * Copyright (C) 2014  Stefan Tröger <stefantroeger@gmx.net>
+ * Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -117,9 +117,8 @@ private:
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
 
-    // Keep track of the frames-per-second counter.
-    std::vector<float> frames;
-    float totaldraw;
+    double frametime;
+    double drawtime;
     double starttime;
     int framecount;
 

@@ -111,6 +111,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Enable preselection and highlight by specified color</string>
+          </property>
           <property name="text">
            <string>Enable preselection highlighting</string>
           </property>
@@ -156,6 +159,9 @@
         </item>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxSelection">
+          <property name="toolTip">
+           <string>Enable selection highlighting and use specified color</string>
+          </property>
           <property name="text">
            <string>Enable selection highlighting</string>
           </property>
@@ -180,7 +186,8 @@
         <item row="2" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
           <property name="toolTip">
-           <string>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</string>
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -212,6 +219,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxColor">
+     <property name="toolTip">
+      <string>Background color for the model view</string>
+     </property>
      <property name="title">
       <string>Background color</string>
      </property>
@@ -288,6 +298,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Background will have selected color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -308,6 +321,9 @@
         </item>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="checkMidColor">
+          <property name="toolTip">
+           <string>Color gradient will get selected color as middle color</string>
+          </property>
           <property name="text">
            <string>Middle color</string>
           </property>
@@ -321,6 +337,9 @@
         </item>
         <item row="2" column="1">
          <widget class="Gui::PrefColorButton" name="backgroundColorTo">
+          <property name="toolTip">
+           <string>Bottom color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -344,6 +363,9 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Middle color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -364,6 +386,9 @@
         </item>
         <item row="1" column="0">
          <widget class="Gui::PrefRadioButton" name="radioButtonGradient">
+          <property name="toolTip">
+           <string>Background will have selected color gradient</string>
+          </property>
           <property name="text">
            <string>Color gradient</string>
           </property>
@@ -380,6 +405,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="backgroundColorFrom">
+          <property name="toolTip">
+           <string>Top color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -406,6 +434,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Background will have selected color</string>
+          </property>
           <property name="text">
            <string>Simple color</string>
           </property>
@@ -425,7 +456,7 @@
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBoxTree">
      <property name="title">
-      <string>Tree View</string>
+      <string>Tree view</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -481,6 +512,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string/>
+          </property>
           <property name="text">
            <string>Object being edited</string>
           </property>
@@ -493,6 +527,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Background color for objects in tree view that are currently edited</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -523,6 +560,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Background color for active containers in tree view</string>
           </property>
           <property name="color" stdset="0">
            <color>

@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::BlenderNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle)
 
 BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false)
 {
@@ -120,7 +120,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;

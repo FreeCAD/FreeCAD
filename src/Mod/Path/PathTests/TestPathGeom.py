@@ -22,16 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import Part
 import Path
-import PathScripts
 import PathScripts.PathGeom as PathGeom
 import math
-import unittest
 
 from FreeCAD import Vector
-#from PathScripts.PathDressupHoldingTags import *
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathGeom(PathTestBase):
@@ -181,6 +177,58 @@ class TestPathGeom(PathTestBase):
         self.assertFalse(PathGeom.isHorizontal(xzCylinder))
         self.assertFalse(PathGeom.isHorizontal(yzCylinder))
 
+    def test07(self):
+        """Verify speed interpolation works for different pitches"""
+        # horizontal
+        self.assertRoughly(100, PathGeom.speedBetweenPoints(Vector(), Vector(1,1,0), 100, 50))
+        self.assertRoughly(100, PathGeom.speedBetweenPoints(Vector(1,1,0), Vector(), 100, 50))
+        # vertical
+        self.assertRoughly( 50, PathGeom.speedBetweenPoints(Vector(), Vector(0,0,1), 100, 50))
+        self.assertRoughly( 50, PathGeom.speedBetweenPoints(Vector(0,0,1), Vector(), 100, 50))
+        # 45°
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(1,0,1), 100, 50))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(0,1,1), 100, 50))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(0.707,0.707,1), 100, 50), 0.01)
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(1,0,1), Vector(), 100, 50))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(0,1,1), Vector(), 100, 50))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(0.707,0.707,1), Vector(), 100, 50), 0.01)
+        # 30°
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(), Vector(0.5774,0,1), 100, 50), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(), Vector(0,0.5774,1), 100, 50), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(0.5774,0,1), Vector(), 100, 50), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(0,0.5774,1), Vector(), 100, 50), 0.01)
+        # 60°
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(), Vector(1,0,0.5774), 100, 50), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(), Vector(0,1,0.5774), 100, 50), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(1,0,0.5774), Vector(), 100, 50), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(0,1,0.5774), Vector(), 100, 50), 0.01)
+
+    def test08(self):
+        """Verify speed interpolation works for different pitches if vSpeed > hSpeed"""
+        # horizontal
+        self.assertRoughly( 50, PathGeom.speedBetweenPoints(Vector(), Vector(1,1,0), 50, 100))
+        self.assertRoughly( 50, PathGeom.speedBetweenPoints(Vector(1,1,0), Vector(), 50, 100))
+        # vertical
+        self.assertRoughly(100, PathGeom.speedBetweenPoints(Vector(), Vector(0,0,1), 50, 100))
+        self.assertRoughly(100, PathGeom.speedBetweenPoints(Vector(0,0,1), Vector(), 50, 100))
+        # 45°
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(1,0,1), 50, 100))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(0,1,1), 50, 100))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(), Vector(0.707,0.707,1), 50, 100), 0.01)
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(1,0,1), Vector(), 50, 100))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(0,1,1), Vector(), 50, 100))
+        self.assertRoughly( 75, PathGeom.speedBetweenPoints(Vector(0.707,0.707,1), Vector(), 50, 100), 0.01)
+        # 30°
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(), Vector(0.5774,0,1), 50, 100), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(), Vector(0,0.5774,1), 50, 100), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(0.5774,0,1), Vector(), 50, 100), 0.01)
+        self.assertRoughly( 83.33, PathGeom.speedBetweenPoints(Vector(0,0.5774,1), Vector(), 50, 100), 0.01)
+        # 60°
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(), Vector(1,0,0.5774), 50, 100), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(), Vector(0,1,0.5774), 50, 100), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(1,0,0.5774), Vector(), 50, 100), 0.01)
+        self.assertRoughly( 66.66, PathGeom.speedBetweenPoints(Vector(0,1,0.5774), Vector(), 50, 100), 0.01)
+
     def test10(self):
         """Verify proper geometry objects for G1 and G01 commands are created."""
         spt = Vector(1,2,3)
@@ -262,7 +310,6 @@ class TestPathGeom(PathTestBase):
 
         self.assertCommandEqual(cmds(center, radius), cmd('G3', Vector(15, 10, 0), Vector(-5, 0, 0)))
 
-
     def test50(self):
         """Verify proper wire(s) aggregation from a Path."""
         commands = []
@@ -315,7 +362,6 @@ class TestPathGeom(PathTestBase):
         e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 2, -2)
         self.assertCurve(e, p1 + Vector(0,0,2), p2, p3 + Vector(0,0,-2))
 
-        o = 10*math.sin(math.pi/4)
         p1 = Vector(10, -10, 1)
         p2 = Vector(10 - 10*math.sin(math.pi/4), -10*math.cos(math.pi/4), 1)
         p3 = Vector(0, 0, 1)
@@ -349,6 +395,8 @@ class TestPathGeom(PathTestBase):
 
     def test65(self):
         """Verify splitEdgeAt."""
+
+        # split a line segment
         e = PathGeom.splitEdgeAt(Part.Edge(Part.LineSegment(Vector(), Vector(2, 4, 6))), Vector(1, 2, 3))
         self.assertLine(e[0], Vector(), Vector(1,2,3))
         self.assertLine(e[1], Vector(1,2,3), Vector(2,4,6))
@@ -377,10 +425,37 @@ class TestPathGeom(PathTestBase):
         o = 10*math.sin(math.pi/4)
         p12 = Vector(10 - o, -o, 2.5)
         p23 = Vector(10 - o, +o, 7.5)
-        pf = e[0].valueAt((e[0].FirstParameter + e[0].LastParameter)/2)
-        pl = e[1].valueAt((e[1].FirstParameter + e[1].LastParameter)/2)
         self.assertCurve(e[0], p1, p12, p2)
         self.assertCurve(e[1], p2, p23, p3)
+
+    def test66(self):
+        '''Split arc real world sample'''
+
+        af = Vector(421.55, 378.41, 1)
+        am = Vector(459.51, 372.61, 1)
+        al = Vector(491.75, 351.75, 1)
+        arc = Part.Edge(Part.ArcOfCircle(af, am, al))
+        ac = arc.Curve.Center
+
+        s = Vector(434.54, 378.26, 1)
+        head, tail = PathGeom.splitEdgeAt(arc, s)
+
+        # make sure the arcs connect as they should
+        self.assertCoincide(arc.valueAt(arc.FirstParameter), head.valueAt(head.FirstParameter), 0.005)
+        self.assertCoincide(s, head.valueAt(head.LastParameter), 0.005)
+        self.assertCoincide(s, tail.valueAt(tail.FirstParameter), 0.005)
+        i = arc.valueAt(arc.LastParameter)
+        j = tail.valueAt(tail.LastParameter)
+        print("(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z))
+        self.assertCoincide(arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005)
+
+        # make sure the radii match
+        self.assertRoughly(arc.Curve.Radius, head.Curve.Radius, 0.001)
+        self.assertRoughly(arc.Curve.Radius, tail.Curve.Radius, 0.001)
+
+        # also, all arcs should have the same center
+        self.assertCoincide(arc.Curve.Center, head.Curve.Center, 0.001)
+        self.assertCoincide(arc.Curve.Center, tail.Curve.Center, 0.001)
 
     def test70(self):
         '''Flip a line.'''
@@ -440,7 +515,7 @@ class TestPathGeom(PathTestBase):
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
     def test75(self):
-        '''Flip a b-spline'''
+        '''Flip a B-spline'''
         spline = Part.BSplineCurve()
         spline.interpolate([Vector(1,2,3), Vector(-3,0,7), Vector(-3,1,9), Vector(1, 3, 5)])
         edge = Part.Edge(spline)
@@ -448,3 +523,5 @@ class TestPathGeom(PathTestBase):
 
         edge = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
+
+

@@ -1,10 +1,8 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Gui::Dialog::DlgEditorSettings</class>
- <widget class="QWidget" name="Gui::Dialog::DlgEditorSettings" >
-  <property name="geometry" >
+ <widget class="QWidget" name="Gui::Dialog::DlgEditorSettings">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,7 +10,7 @@
     <height>553</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Editor</string>
   </property>
   <layout class="QGridLayout" >
@@ -22,9 +20,9 @@
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="1" column="0" >
-    <widget class="QGroupBox" name="GroupBox2" >
-     <property name="title" >
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox2">
+     <property name="title">
       <string>Options</string>
      </property>
      <layout class="QVBoxLayout" >
@@ -35,49 +33,52 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="Gui::PrefCheckBox" name="EnableLineNumber" >
-        <property name="focusPolicy" >
+       <widget class="Gui::PrefCheckBox" name="EnableLineNumber">
+        <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="text" >
+        <property name="toolTip">
+         <string>Code lines will be numbered </string>
+        </property>
+        <property name="text">
          <string>Enable line numbers</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>EnableLineNumber</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="EnableFolding" >
-        <property name="text" >
+       <widget class="Gui::PrefCheckBox" name="EnableFolding">
+        <property name="text">
          <string>Enable folding</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>EnableFolding</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
       <item>
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeType" >
+        <property name="sizeType">
          <enum>QSizePolicy::Ignored</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>40</height>
@@ -88,9 +89,9 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="QGroupBox" name="groupBoxIndent" >
-     <property name="title" >
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBoxIndent">
+     <property name="title">
       <string>Indentation</string>
      </property>
      <layout class="QGridLayout" >
@@ -100,71 +101,83 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="3" column="0" colspan="2" >
-       <widget class="Gui::PrefRadioButton" name="radioSpaces" >
-        <property name="text" >
+      <item row="3" column="0" colspan="2">
+       <widget class="Gui::PrefRadioButton" name="radioSpaces">
+        <property name="toolTip">
+         <string>Pressing &lt;Tab&gt; will insert amount of defined indent size</string>
+        </property>
+        <property name="text">
          <string>Insert spaces</string>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>Spaces</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="textLabel1" >
-        <property name="text" >
+      <item row="0" column="0">
+       <widget class="QLabel" name="textLabel1">
+        <property name="text">
          <string>Tab size:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="Gui::PrefSpinBox" name="tabSize" >
-        <property name="value" >
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="tabSize">
+        <property name="toolTip">
+         <string>Tabulator raster (how many spaces)</string>
+        </property>
+        <property name="value">
          <number>4</number>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>TabSize</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="textLabel2" >
-        <property name="text" >
+      <item row="1" column="0">
+       <widget class="QLabel" name="textLabel2">
+        <property name="text">
          <string>Indent size:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="Gui::PrefSpinBox" name="indentSize" >
-        <property name="value" >
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="indentSize">
+        <property name="toolTip">
+         <string>How many spaces will be inserted when pressing &lt;Tab&gt;</string>
+        </property>
+        <property name="value">
          <number>4</number>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>IndentSize</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2" >
-       <widget class="Gui::PrefRadioButton" name="radioTabs" >
-        <property name="text" >
+      <item row="2" column="0" colspan="2">
+       <widget class="Gui::PrefRadioButton" name="radioTabs">
+        <property name="toolTip">
+         <string>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</string>
+        </property>
+        <property name="text">
          <string>Keep tabs</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>Tabs</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
@@ -172,18 +185,16 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2" >
-    <widget class="QGroupBox" name="GroupBox5" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>5</hsizetype>
-       <vsizetype>7</vsizetype>
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="GroupBox5">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="title" >
-      <string>Display Items</string>
+     <property name="title">
+      <string>Display items</string>
      </property>
      <layout class="QGridLayout" >
       <property name="margin" >
@@ -192,97 +203,105 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="1" column="2" >
-       <widget class="Gui::PrefSpinBox" name="fontSize" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>0</vsizetype>
+      <item row="1" column="2">
+       <widget class="Gui::PrefSpinBox" name="fontSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimum" >
+        <property name="toolTip">
+         <string>Font size to be used for selected code type</string>
+        </property>
+        <property name="minimum">
          <number>1</number>
         </property>
-        <property name="value" >
+        <property name="value">
          <number>10</number>
         </property>
-        <property name="prefEntry" stdset="0" >
+        <property name="prefEntry" stdset="0">
          <cstring>FontSize</cstring>
         </property>
-        <property name="prefPath" stdset="0" >
+        <property name="prefPath" stdset="0">
          <cstring>Editor</cstring>
         </property>
        </widget>
       </item>
-      <item rowspan="4" row="0" column="0" >
-       <widget class="QTreeWidget" name="displayItems" >
-        <property name="rootIsDecorated" >
+      <item row="0" column="0" rowspan="4">
+       <widget class="QTreeWidget" name="displayItems">
+        <property name="toolTip">
+         <string>Color and font settings will be applied to selected type</string>
+        </property>
+        <property name="rootIsDecorated">
          <bool>false</bool>
         </property>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
        </widget>
       </item>
-      <item row="4" column="0" >
-       <widget class="Gui::ColorButton" name="colorButton" >
-        <property name="minimumSize" >
+      <item row="4" column="0">
+       <widget class="Gui::ColorButton" name="colorButton">
+        <property name="minimumSize">
          <size>
           <width>140</width>
           <height>0</height>
          </size>
         </property>
-        <property name="focusPolicy" >
+        <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLabel" name="TextLabel3" >
-        <property name="text" >
+      <item row="0" column="1">
+       <widget class="QLabel" name="TextLabel3">
+        <property name="text">
          <string>Family:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QLabel" name="TextLabel4" >
-        <property name="text" >
+      <item row="1" column="1">
+       <widget class="QLabel" name="TextLabel4">
+        <property name="text">
          <string>Size:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2" >
-       <widget class="QComboBox" name="fontFamily" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>0</vsizetype>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="fontFamily">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Font family to be used for selected code type</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="2" >
-       <widget class="QLabel" name="label" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>5</hsizetype>
-          <vsizetype>0</vsizetype>
+      <item row="2" column="1" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>Preview:</string>
         </property>
        </widget>
       </item>
-      <item rowspan="2" row="3" column="1" colspan="2" >
-       <widget class="QTextEdit" name="textEdit1" >
-        <property name="tabStopWidth" >
+      <item row="3" column="1" rowspan="2" colspan="2">
+       <widget class="QTextEdit" name="textEdit1">
+        <property name="tabStopWidth">
          <number>40</number>
         </property>
        </widget>
@@ -292,7 +311,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>Gui::ColorButton</class>

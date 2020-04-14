@@ -22,18 +22,20 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
-import FreeCADGui
 import Path
 import math
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-"""Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
+__doc__ = """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -139,7 +141,7 @@ class ObjectDressup:
 class ViewProviderDressup:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
+        self.obj = vobj.Object
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -165,13 +167,17 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        job = PathUtils.findParentJob(arg1.Object)
-        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-        arg1.Object.Base = None
+        # pylint: disable=unused-argument
+        if arg1.Object and arg1.Object.Base:
+            FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+            job = PathUtils.findParentJob(arg1.Object)
+            if job:
+                job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+            arg1.Object.Base = None
         return True
 
 class CommandPathDressup:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -183,7 +189,7 @@ class CommandPathDressup:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
@@ -211,7 +217,7 @@ class CommandPathDressup:
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('obj.Radius = 45')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
-        FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

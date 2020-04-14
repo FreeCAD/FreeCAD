@@ -126,11 +126,6 @@ App::DocumentObjectExecReturn *DrawTemplate::execute(void)
     return App::DocumentObject::execute();
 }
 
-void DrawTemplate::getBlockDimensions(double & /*x*/, double & /*y*/, double & /*width*/, double & /*height*/) const
-{
-    throw Base::NotImplementedError("implement in virtual function");
-}
-
 DrawPage* DrawTemplate::getParentPage() const
 {
     TechDraw::DrawPage* page = nullptr;

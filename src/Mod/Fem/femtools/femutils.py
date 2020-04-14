@@ -1,7 +1,8 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,6 +21,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+""" Collection of functions for the Fem module.
+
+This module contains function for extracting relevant parts of geometry and
+a few unrelated function useful at various places in the Fem module.
+"""
 
 
 __title__ = "FEM Utilities"
@@ -27,97 +33,220 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import os
 import sys
+
 import FreeCAD
-import FreeCAD as App
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 
-def createObject(doc, name, proxy, viewProxy):
+# ************************************************************************************************
+# document objects
+def createObject(doc, name, proxy, viewProxy=None):
+    """ Add python object to document using python type string.
+
+    Add a document object suitable for the *proxy* and the *viewProxy* to *doc*
+    and attach it to the *proxy* and the *viewProxy*. This function can only be
+    used with python proxies that specify their C++ type via the BaseType class
+    member (e.g. Cube.BaseType). If there already exists a object with *name* a
+    suitable unique name is generated. To auto generate a name pass ``""``.
+
+    :param doc:         document object to which the object is added
+    :param name:        string of the name of new object in *doc*, use
+                        ``""`` to generate a name
+    :param proxy:       python proxy for new object
+    :param viewProxy:   view proxy for new object
+
+    :returns:           reference to new object
+    """
     obj = doc.addObject(proxy.BaseType, name)
     proxy(obj)
-    if App.GuiUp:
+    if FreeCAD.GuiUp and viewProxy is not None:
         viewProxy(obj.ViewObject)
     return obj
 
 
-def findAnalysisOfMember(member):
-    if member is None:
-        raise ValueError("Member must not be None")
-    for obj in member.Document.Objects:
-        if obj.isDerivedFrom("Fem::FemAnalysis"):
-            if member in obj.Group:
-                return obj
-            if _searchGroups(member, obj.Group):
-                return obj
-    return None
-
-
-def _searchGroups(member, objs):
-    for o in objs:
-        if o == member:
-            return True
-        if hasattr(o, "Group"):
-            return _searchGroups(member, o.Group)
-    return False
-
-
-def get_member(analysis, t):
-    if analysis is None:
-        raise ValueError("Analysis must not be None")
-    matching = []
-    for m in analysis.Group:
-        if is_derived_from(m, t):  # since is _derived_from is used the father could be used to test too (ex. 'Fem::FemMeshObject')
-            matching.append(m)
-    return matching
-
-
-def get_single_member(analysis, t):
-    objs = get_member(analysis, t)
-    return objs[0] if objs else None
-
-
-# collect analysis members used in CalculiX and Z88
-def get_several_member(analysis, t):
-    # if no member is found, an empty list is returned
-    objs = get_member(analysis, t)
-    members = []
-    for m in objs:
-        obj_dict = {}
-        obj_dict['Object'] = m
-        obj_dict['RefShapeType'] = get_refshape_type(m)
-        members.append(obj_dict)
-    return members
-
-
 # typeID and object type defs
 def type_of_obj(obj):
-    '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    """ Return type of *obj* honoring the special typesystem of Fem.
+
+    Python objects of the Fem workbench define their type via a class member
+    ``<Class>.Type``. Return this type if the property exists. If not return
+    the conventional ``TypeId`` value.
+
+    :para obj: a document object
+    """
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     return obj.TypeId
 
 
 def is_of_type(obj, ty):
-    '''returns True if an object is of a given TypeId (C++ objects) or Proxy.Type (Python Features)'''
-    # only returns true if the exact TypeId is given.
-    # For FeaturPythons the Proxy.Type has to be given. Keep in mind the TypeId for them is the TypeId from the C++ father class
+    """ Compare type of *obj* with *ty* honoring Fems typesystem.
+
+    See :py:func:`type_of_obj` for more info about the special typesystem of
+    the Fem module.
+
+    :returns:
+     ``True`` if *obj* is of type *ty*, ``False`` otherwise. Type must match
+     exactly: Derived objects are not considered to be of type of one of their
+     super classes.
+    """
     return type_of_obj(obj) == ty
 
 
 def is_derived_from(obj, t):
-    '''returns True if an object or its inheritance chain is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    # returns true for all FEM objects if given t == 'App::DocumentObject' since this is a father of the given object
-    # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+    """ Check if *obj* is derived from *t* honoring Fems typesytem.
+
+    Essentially just call ``obj.isDerivedFrom(t)`` and return it's value. For
+    objects using Fems typesystem (see :py:func:`type_of_obj`) return always
+    True if the Fem type is equal to *t*.
+
+    :note:
+     Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
+     type is just checked for equality. If the type doesn't match
+     ``obj.isDerivedFrom`` is called as usual. See
+     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+    """
     if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
 
 
+# ************************************************************************************************
+# working dir
+def get_pref_working_dir(solver_obj):
+    """ Return working directory for solver honoring user settings.
+
+    :throws femtools.errors.MustSaveError:
+     If user setting is set to BESIDE and the document isn't saved.
+
+    :note:
+     Not working correctly for most cases because this circumvents directory
+     caching of the solver framework. For solver use getMachine from run.py
+     instead.
+    """
+    from femsolver import settings
+    dir_setting = settings.get_dir_setting()
+    if dir_setting == settings.DirSetting.TEMPORARY:
+        setting_working_dir = get_temp_dir(solver_obj)
+    elif dir_setting == settings.DirSetting.BESIDE:
+        setting_working_dir = get_beside_dir(solver_obj)
+    elif dir_setting == settings.DirSetting.CUSTOM:
+        setting_working_dir = get_custom_dir(solver_obj)
+    else:
+        setting_working_dir = ""
+    return setting_working_dir
+
+
+# these are a duplicate of the methods in src/Mod/Fem/femsolver/run.py
+# see commit xxx (will be added when in master) for more information
+# the FEM preferences will be used by both
+def get_temp_dir(obj=None):
+    from tempfile import mkdtemp
+    return mkdtemp(prefix="fcfem_")
+
+
+def get_beside_dir(obj):
+    base = get_beside_base(obj)
+    specific_path = os.path.join(base, obj.Label)
+    if not os.path.isdir(specific_path):
+        os.makedirs(specific_path)
+    return specific_path
+
+
+def get_custom_dir(obj):
+    base = get_custom_base(obj)
+    specific_path = os.path.join(
+        base, obj.Document.Name, obj.Label)
+    if not os.path.isdir(specific_path):
+        os.makedirs(specific_path)
+    return specific_path
+
+
+def get_beside_base(obj):
+    fcstdPath = obj.Document.FileName
+    if fcstdPath == "":
+        error_message = (
+            "Please save the file before executing a solver or creating a mesh. "
+            "This must be done because the location of the working directory "
+            "is set to \"Beside *.FCStd File\". For the moment a tmp dir is used."
+        )
+        FreeCAD.Console.PrintError(error_message + "\n")
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver or Mesh creation besides FC file.",
+                error_message
+            )
+        # from .errors import MustSaveError
+        # raise MustSaveError()
+        return get_temp_dir()
+    else:
+        return os.path.splitext(fcstdPath)[0]
+
+
+def get_custom_base(solver):
+    from femsolver.settings import get_custom_dir
+    path = get_custom_dir()
+    if not os.path.isdir(path):
+        error_message = "Selected working directory doesn't exist."
+        FreeCAD.Console.PrintError(error_message + "\n")
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver or Mesh creation.",
+                error_message
+            )
+        # from .errors import DirectoryDoesNotExistError
+        # raise DirectoryDoesNotExistError("Invalid path")
+        return get_temp_dir()
+    return path
+
+
+def check_working_dir(wdir):
+    # check if working_dir exist, if not use a tmp dir and inform the user
+    # print(wdir)
+    from os.path import isdir
+    if isdir(wdir):
+        return True
+    else:
+        return False
+
+
+# ************************************************************************************************
+# other
+def get_part_to_mesh(mesh_obj):
+    """
+    gmsh mesh object: the Attribute is Part
+    netgen mesh object: the Attribute is Shape
+    other mesh objects: do not have a Attribute which holds the part to mesh
+    """
+    if is_derived_from(mesh_obj, "Fem::FemMeshGmsh"):
+        return mesh_obj.Part
+    elif is_derived_from(mesh_obj, "Fem::FemMeshShapeNetgenObject"):
+        return mesh_obj.Shape
+    else:
+        return None
+    # TODO: the Attributes should be named with the same name
+    # should it be Shape or Part?
+    # IMHO Part since the Attributes references the document object and not a Shape
+
+
 def getBoundBoxOfAllDocumentShapes(doc):
+    """ Calculate bounding box containing all objects inside *doc*.
+
+    :returns:
+     A bounding box containing all objects that have a *Shape* attribute (all
+     Part and PartDesign objects). If the document contains no such objects or
+     no objects at all return ``None``.
+    """
     overalboundbox = None
     for o in doc.Objects:
         # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
-        if hasattr(o, 'Shape') and hasattr(o.Shape, 'BoundBox'):
+        if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
             try:
                 bb = o.Shape.BoundBox
             except:
@@ -130,45 +259,79 @@ def getBoundBoxOfAllDocumentShapes(doc):
 
 
 def getSelectedFace(selectionex):
+    """ Return selected face if exactly one face is selected.
+
+    :returns:
+     The selected face as a ``Part::TopoShape`` if exactly one face is selected.
+     Otherwise return ``None``.
+
+    :param selectionex:
+     A list of selection object like the one Gui.Selection.getSelectionEx()
+     returns.
+    """
     aFace = None
     # print(selectionex)
     if len(selectionex) != 1:
-        FreeCAD.Console.PrintMessage('none OR more than one object selected')
+        FreeCAD.Console.PrintMessage("No or more than one object selected.\n")
     else:
         sel = selectionex[0]
         if len(sel.SubObjects) != 1:
-            FreeCAD.Console.PrintMessage('more than one element selected')
+            FreeCAD.Console.PrintMessage("More than one element selected.\n")
         else:
             aFace = sel.SubObjects[0]
-            if aFace.ShapeType != 'Face':
-                FreeCAD.Console.PrintMessage('not a Face selected')
+            if aFace.ShapeType != "Face":
+                FreeCAD.Console.PrintMessage("Not a Face selected.\n")
             else:
-                FreeCAD.Console.PrintMessage(':-)')
+                FreeCAD.Console.PrintMessage(":-)\n")
                 return aFace
     return aFace
 
 
 def get_refshape_type(fem_doc_object):
-    # returns the reference shape type
-    # for force object:
-    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
-    # for material object:
-    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-    # we're going to need the RefShapes to be the same type inside one fem_doc_object
-    # TODO: check if all RefShapes inside the object really have the same type
-    import femmesh.meshtools as FemMeshTools
-    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
+    """ Return shape type the constraints references.
+
+    Determine single shape type of references of *fem_doc_object* which must be
+    a constraint (=have a *References* property). All references must be of the
+    same type which is than returned as a string. A type can be "Vertex",
+    "Edge", "Face" or "Solid".
+
+    :param fem_doc_object:
+     A constraint object with a *References* property.
+
+    :returns:
+     A string representing the shape type ("Vertex", "Edge", "Face" or
+     "Solid"). If *fem_doc_object* isn't a constraint ``""`` is returned.
+
+    :note:
+     Undefined behaviour if the type of the references of one object are
+     not all the same.
+
+    :note:
+     Undefined behaviour if constraint contains no references (empty list).
+    """
+    from femtools.geomtools import get_element
+    if hasattr(fem_doc_object, "References") and fem_doc_object.References:
         first_ref_obj = fem_doc_object.References[0]
-        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        first_ref_shape = get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
+        FreeCAD.Console.PrintMessage(
+            "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)
+        )
         return st
     else:
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
-        return ''
+        FreeCAD.Console.PrintMessage(
+            "References: empty in {}, {}\n". format(fem_doc_object.Name, fem_doc_object.Label)
+        )
+        return ""
 
 
 def pydecode(bytestring):
+    """ Return *bytestring* as a unicode string for python 2 and 3.
+
+    For python 2 *bytestring* is converted to a string of type ``unicode``. For
+    python 3 it is returned as is because it uses unicode for it's ``str`` type
+    already.
+    """
     if sys.version_info.major < 3:
         return bytestring
     else:

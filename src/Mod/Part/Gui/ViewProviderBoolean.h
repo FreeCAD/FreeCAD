@@ -44,7 +44,6 @@ public:
     QIcon getIcon(void) const;
     void updateData(const App::Property*);
     bool onDelete(const std::vector<std::string> &);
-    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
 };
 
 /// ViewProvider for the MultiFuse feature
@@ -71,8 +70,6 @@ public:
     bool canDropObjects() const;
     bool canDropObject(App::DocumentObject*) const;
     void dropObject(App::DocumentObject*);
-    /** Replace an object to the view provider by drag and drop */
-    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
 };
 
 /// ViewProvider for the MultiFuse feature
@@ -99,8 +96,6 @@ public:
     bool canDropObjects() const;
     bool canDropObject(App::DocumentObject*) const;
     void dropObject(App::DocumentObject*);
-    /** Replace an object to the view provider by drag and drop */
-    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
 };
 
 

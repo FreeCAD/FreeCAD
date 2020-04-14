@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,15 +17,74 @@
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
    </property>
-   <item row="1" column="0">
+   <item row="0" column="0">
     <widget class="QLabel" name="potentialLbl">
      <property name="text">
       <string>Potential:</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item row="2" column="0" colspan="2">
+    <widget class="QCheckBox" name="potentialConstantBox">
+     <property name="text">
+      <string>Potential Constant</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="electricInfinityBox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Farfield / Electric infinity</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="capacitanceBodyBox">
+       <property name="text">
+        <string>unspecified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="capacitanceBody_spinBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>55</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>1</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="Gui::InputField" name="potentialTxt">
        <property name="enabled">
@@ -51,10 +110,10 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QCheckBox" name="potentialConstantBox">
+   <item row="4" column="0">
+    <widget class="QLabel" name="capacityBody_label">
      <property name="text">
-      <string>Potential Constant</string>
+      <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body: </string>
      </property>
     </widget>
    </item>

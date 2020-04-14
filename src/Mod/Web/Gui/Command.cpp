@@ -41,7 +41,7 @@ using namespace WebGui;
 // CmdWebOpenWebsite
 //===========================================================================
 
-DEF_STD_CMD(CmdWebOpenWebsite);
+DEF_STD_CMD(CmdWebOpenWebsite)
 
 CmdWebOpenWebsite::CmdWebOpenWebsite()
   : Command("Web_OpenWebsite")
@@ -67,7 +67,7 @@ void CmdWebOpenWebsite::activated(int iMsg)
 // CmdWebBrowserBack
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserBack);
+DEF_STD_CMD_A(CmdWebBrowserBack)
 
 CmdWebBrowserBack::CmdWebBrowserBack()
   : Command("Web_BrowserBack")
@@ -96,7 +96,7 @@ bool CmdWebBrowserBack::isActive(void)
 // CmdWebBrowserNext
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserNext);
+DEF_STD_CMD_A(CmdWebBrowserNext)
 
 CmdWebBrowserNext::CmdWebBrowserNext()
   : Command("Web_BrowserNext")
@@ -125,7 +125,7 @@ bool CmdWebBrowserNext::isActive(void)
 // CmdWebBrowserRefresh
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserRefresh);
+DEF_STD_CMD_A(CmdWebBrowserRefresh)
 
 CmdWebBrowserRefresh::CmdWebBrowserRefresh()
   : Command("Web_BrowserRefresh")
@@ -153,7 +153,7 @@ bool CmdWebBrowserRefresh::isActive(void)
 // CmdWebBrowserStop
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserStop);
+DEF_STD_CMD_A(CmdWebBrowserStop)
 
 CmdWebBrowserStop::CmdWebBrowserStop()
 	:Command("Web_BrowserStop")
@@ -161,7 +161,7 @@ CmdWebBrowserStop::CmdWebBrowserStop()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Stop loading");
-    sToolTipText    = QT_TR_NOOP("Stop the current loading");
+    sToolTipText    = QT_TR_NOOP("Stop loading");
     sWhatsThis      = "Web_BrowserStop";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-stop";
@@ -183,7 +183,7 @@ bool CmdWebBrowserStop::isActive(void)
 // CmdWebBrowserZoomIn
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserZoomIn);
+DEF_STD_CMD_A(CmdWebBrowserZoomIn)
 
 CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
   : Command("Web_BrowserZoomIn")
@@ -191,7 +191,7 @@ CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom in");
-    sToolTipText    = QT_TR_NOOP("Zoom into the page");
+    sToolTipText    = QT_TR_NOOP("Zoom in");
     sWhatsThis      = "Web_BrowserZoomIn";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-in";
@@ -212,7 +212,7 @@ bool CmdWebBrowserZoomIn::isActive(void)
 // CmdWebBrowserZoomOut
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserZoomOut);
+DEF_STD_CMD_A(CmdWebBrowserZoomOut)
 
 CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
   : Command("Web_BrowserZoomOut")
@@ -220,7 +220,7 @@ CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom out");
-    sToolTipText    = QT_TR_NOOP("Zoom out of the page");
+    sToolTipText    = QT_TR_NOOP("Zoom out");
     sWhatsThis      = "Web_BrowserZoomOut";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-out";
@@ -237,6 +237,36 @@ bool CmdWebBrowserZoomOut::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
 
+//===========================================================================
+// CmdWebBrowserSetUrl
+//===========================================================================
+
+DEF_STD_CMD_A(CmdWebBrowserSetURL)
+
+CmdWebBrowserSetURL::CmdWebBrowserSetURL()
+  : Command("Web_BrowserSetURL")
+{
+    sAppModule      = "Web";
+    sGroup          = QT_TR_NOOP("Web");
+    sMenuText       = QT_TR_NOOP("Set URL");
+    sToolTipText    = QT_TR_NOOP("Set URL");
+    sWhatsThis      = "Web_BrowserSetURL";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/web-set-url";
+}
+
+void CmdWebBrowserSetURL::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView('SetURL')");
+}
+
+bool CmdWebBrowserSetURL::isActive(void)
+{
+    return getGuiApplication()->sendHasMsgToActiveView("SetURL");
+}
+
+
 
 void CreateWebCommands(void)
 {
@@ -249,4 +279,5 @@ void CreateWebCommands(void)
     rcCmdMgr.addCommand(new CmdWebBrowserStop());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomIn());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomOut());
+    rcCmdMgr.addCommand(new CmdWebBrowserSetURL());
  }

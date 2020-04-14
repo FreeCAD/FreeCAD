@@ -80,9 +80,9 @@ void Workbench::activated()
             Gui::getMainWindow(),
             QObject::tr("No robot files installed"),
             QObject::tr("Please visit %1 and copy the files to %2")
-            .arg(QString::fromLatin1(
-            "https://github.com/FreeCAD/FreeCAD/tree/master"
-            "/src/Mod/Robot/Lib/Kuka")).arg(dir)
+                    .arg(QString::fromLatin1(
+                             "https://github.com/FreeCAD/FreeCAD/tree/master"
+                             "/src/Mod/Robot/Lib/Kuka"), dir)
         );
         wc.setWaitCursor();
     }

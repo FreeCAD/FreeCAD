@@ -53,7 +53,7 @@ SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
 
 SketchRectangularArrayDialog::~SketchRectangularArrayDialog()
 {
-
+    delete ui;
 }
 
 void SketchRectangularArrayDialog::accept()

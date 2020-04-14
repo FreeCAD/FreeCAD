@@ -488,7 +488,7 @@ class TaskPanel:
             "Computing external faces",
             None)
         App.Console.PrintMessage(msg + '...\n')
-        # Valid/unvalid faces detection loop
+        # Valid/Invalid faces detection loop
         for i in range(len(faces)):
             App.Console.PrintMessage("\t{} / {}\n".format(i + 1, len(faces)))
             f = faces[i]

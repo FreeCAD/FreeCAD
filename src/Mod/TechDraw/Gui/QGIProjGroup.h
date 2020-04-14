@@ -25,7 +25,6 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
-#include <App/PropertyLinks.h>
 
 #include "QGIViewCollection.h"
 
@@ -47,27 +46,29 @@ public:
     ~QGIProjGroup() = default;
 
     enum {Type = QGraphicsItem::UserType + 113};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     void alignTo(QGIProjGroup *, const QString &alignment);
 
-    virtual void updateView(bool update = false);
-    virtual void drawBorder(void);
+    virtual void updateView(bool update = false) override;
+    virtual void rotateView(void) override;
+
+    virtual void drawBorder(void) override;
 
 protected:
-    virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event );
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
     QGIView * getAnchorQItem() const;
 
 private:
     /// Convenience function
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
-    QGraphicsRectItem *m_backgroundItem;
+    QGraphicsRectItem *m_groupBackground;
     QGraphicsItem* m_origin;
     QPoint mousePos;
 };

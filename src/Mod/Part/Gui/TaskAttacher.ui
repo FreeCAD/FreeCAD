@@ -118,10 +118,10 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>AttachmentOffset property. The placement is expressed in local space of object being attached.</string>
+      <string/>
      </property>
      <property name="title">
-      <string>Attachment Offset:</string>
+      <string>Attachment Offset (in local coordinates):</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string>In x-direction:</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -149,7 +149,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string>In y-direction:</string>
         </property>
        </widget>
       </item>
@@ -167,6 +167,10 @@
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -178,7 +182,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string>In z-direction:</string>
         </property>
        </widget>
       </item>
@@ -196,6 +200,10 @@
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -207,7 +215,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Yaw:</string>
+         <string>Around x-axis:</string>
         </property>
        </widget>
       </item>
@@ -220,7 +228,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Pitch:</string>
+         <string>Around y-axis:</string>
         </property>
        </widget>
       </item>
@@ -233,7 +241,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Roll:</string>
+         <string>Around z-axis:</string>
         </property>
        </widget>
       </item>
@@ -251,15 +259,24 @@
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the x-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
@@ -283,6 +300,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotation around the y-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
@@ -298,12 +320,17 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the z-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
@@ -324,6 +351,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxFlip">
+     <property name="toolTip">
+      <string>Flip side of attachment and offset</string>
+     </property>
      <property name="text">
       <string>Flip sides</string>
      </property>
@@ -356,9 +386,9 @@
   <tabstop>attachmentOffsetX</tabstop>
   <tabstop>attachmentOffsetY</tabstop>
   <tabstop>attachmentOffsetZ</tabstop>
-  <tabstop>attachmentOffsetYaw</tabstop>
-  <tabstop>attachmentOffsetPitch</tabstop>
   <tabstop>attachmentOffsetRoll</tabstop>
+  <tabstop>attachmentOffsetPitch</tabstop>
+  <tabstop>attachmentOffsetYaw</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>

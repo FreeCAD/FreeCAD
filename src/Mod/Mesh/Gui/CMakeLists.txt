@@ -2,6 +2,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
+    ${COIN3D_INCLUDE_DIRS}/Inventor/annex
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
@@ -37,6 +38,7 @@ set(Mesh_MOC_HDRS
     MeshEditor.h
     PropertyEditorMesh.h
     RemoveComponents.h
+    RemeshGmsh.h
     SegmentationBestFit.h
     Selection.h
 )
@@ -51,6 +53,7 @@ set(Dialogs_UIC_SRCS
     DlgSettingsImportExport.ui
     DlgSmoothing.ui
     RemoveComponents.ui
+    RemeshGmsh.ui
     Segmentation.ui
     SegmentationBestFit.ui
     Selection.ui
@@ -79,6 +82,9 @@ SET(Dialogs_SRCS
     RemoveComponents.ui
     RemoveComponents.cpp
     RemoveComponents.h
+    RemeshGmsh.ui
+    RemeshGmsh.cpp
+    RemeshGmsh.h
     Segmentation.ui
     Segmentation.cpp
     Segmentation.h

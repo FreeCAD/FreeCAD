@@ -28,6 +28,7 @@
 #endif
 
 #include "DlgOnlineHelpImp.h"
+#include "ui_DlgOnlineHelp.h"
 #include "PrefWidgets.h"
 
 #include <Base/Parameter.h>
@@ -46,12 +47,13 @@ using namespace Gui::Dialog;
  */
 DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
   : PreferencePage(parent)
+  , ui(new Ui_DlgOnlineHelp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 
-    prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
-    if (prefStartPage->fileName().isEmpty()) {
-        prefStartPage->setFileName(getStartpage());
+    ui->prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
+    if (ui->prefStartPage->fileName().isEmpty()) {
+        ui->prefStartPage->setFileName(getStartpage());
     }
 }
 
@@ -76,12 +78,12 @@ QString DlgOnlineHelpImp::getStartpage()
 
 void DlgOnlineHelpImp::saveSettings()
 {
-    prefStartPage->onSave();
+    ui->prefStartPage->onSave();
 }
 
 void DlgOnlineHelpImp::loadSettings()
 {
-    prefStartPage->onRestore();
+    ui->prefStartPage->onRestore();
 }
 
 /**
@@ -90,7 +92,7 @@ void DlgOnlineHelpImp::loadSettings()
 void DlgOnlineHelpImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

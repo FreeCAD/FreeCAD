@@ -108,107 +108,107 @@
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
       <translation>Ašių nustatymai</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>Darbinės ašys</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>Taikyti visoms ašims</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>Matmenys</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>X ašies padėtis</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Y ašies padėtis</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>Masteliai</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>Savaiminis X keitimas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Savaiminis Y keitimas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
       <translation>Darbinių ašių rikiuotė</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
       <translation>Įtraukti naujų ašių į brėžinį</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
       <translation>Pašalinti pasirinktas ašis</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>Patikrinkite tai, kad transformacijos būtų pritaikytos visoms ašims</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
       <translation>Kairysis ašių kraštas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
       <translation>Dešinysis ašių kraštas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
       <translation>Apatinis ašių kraštas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
       <translation>Viršutinis ašių kraštas</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
       <translation>X ašies išorinis poslinkis</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
       <translation>Y ašies išorinis poslinkis</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
       <translation>Savaiminis mastelio parinkimas X ašyje</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
       <translation>Savaiminis mastelio parinkimas Y ašyje</translation>
     </message>
@@ -226,12 +226,12 @@
       <translation>matplotlib nerastas, tad diagramų modulis šjungtas</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
       <translation>Turi būti pasirinktas diagramos dokumentas, kad jį būtų galima išsaugoti</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
       <translation>Ašis 0 negali būti panaikinta</translation>
     </message>
@@ -249,62 +249,62 @@
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
       <translation>Nustatyti pavadinimus</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>Darbinės ašys</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>Pavadinimas</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>X pavadinimas</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>Y pavadinimas</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
       <translation>Darbinių ašių rikiuotė</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
       <translation>Pavadinimas (susietas su darbinėmis ašimis)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>Pavadinimo šrifto dydis</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>X ašies pavadinimas</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>X ašies pavadinimo šrifto dydis</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Y ašies pavadinimas</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
       <translation>Y ašies pavadinimo šrifto dydis</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
       <translation>Išsaugoti paveikslėlį</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
       <translation>Coliai</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
       <translation>Taškų colyje</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
       <translation>Vaizdo failo išvesties vieta</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
       <translation>Rodyti failų pasirinkimo dialogą</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
       <translation>Paveikslėlio plotis</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
       <translation>Paveikslėlio aukštis</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>Taškų skaičius tipografiniame taške, apibrėžiantis išvesties vaizdo raišką</translation>
     </message>

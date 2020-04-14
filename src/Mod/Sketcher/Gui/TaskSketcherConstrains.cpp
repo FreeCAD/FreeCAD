@@ -33,6 +33,7 @@
 # include <QStyledItemDelegate>
 # include <QPainter>
 # include <QPixmapCache>
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskSketcherConstrains.h"
@@ -50,8 +51,7 @@
 #include <Gui/Selection.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <boost/bind.hpp>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
 
@@ -177,89 +177,105 @@ public:
             return name;
         }
         else if (role == Qt::DecorationRole) {
-            static QIcon hdist( Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance") );
-            static QIcon vdist( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance") );
-            static QIcon horiz( Gui::BitmapFactory().pixmap("Constraint_Horizontal") );
-            static QIcon vert ( Gui::BitmapFactory().pixmap("Constraint_Vertical") );
-          //static QIcon lock ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock") );
-            static QIcon block ( Gui::BitmapFactory().pixmap("Sketcher_ConstrainBlock") );
-            static QIcon coinc( Gui::BitmapFactory().pixmap("Constraint_PointOnPoint") );
-            static QIcon para ( Gui::BitmapFactory().pixmap("Constraint_Parallel") );
-            static QIcon perp ( Gui::BitmapFactory().pixmap("Constraint_Perpendicular") );
-            static QIcon tang ( Gui::BitmapFactory().pixmap("Constraint_Tangent") );
-            static QIcon dist ( Gui::BitmapFactory().pixmap("Constraint_Length") );
-            static QIcon radi ( Gui::BitmapFactory().pixmap("Constraint_Radius") );
-            static QIcon dia ( Gui::BitmapFactory().pixmap("Constraint_Diameter") );
-          //static QIcon majradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Major_Radius") );
-          //static QIcon minradi ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Minor_Radius") );
-            static QIcon angl ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle") );
-          //static QIcon ellipseXUAngl ( Gui::BitmapFactory().pixmap("Constraint_Ellipse_Axis_Angle") );
-            static QIcon equal( Gui::BitmapFactory().pixmap("Constraint_EqualLength") );
-            static QIcon pntoo( Gui::BitmapFactory().pixmap("Constraint_PointOnObject") );
-            static QIcon symm ( Gui::BitmapFactory().pixmap("Constraint_Symmetric") );
-            static QIcon snell ( Gui::BitmapFactory().pixmap("Constraint_SnellsLaw") );
-            static QIcon iaellipseminoraxis ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_MinorAxis") );
-            static QIcon iaellipsemajoraxis ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_MajorAxis") );
-            static QIcon iaellipsefocus1 ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_Focus1") );
-            static QIcon iaellipsefocus2 ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_Focus2") );
-            static QIcon iaellipseother ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment") );
+            static QIcon hdist( Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance") );
+            static QIcon vdist( Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance") );
+            static QIcon horiz( Gui::BitmapFactory().iconFromTheme("Constraint_Horizontal") );
+            static QIcon vert ( Gui::BitmapFactory().iconFromTheme("Constraint_Vertical") );
+          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock") );
+            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainBlock") );
+            static QIcon coinc( Gui::BitmapFactory().iconFromTheme("Constraint_PointOnPoint") );
+            static QIcon para ( Gui::BitmapFactory().iconFromTheme("Constraint_Parallel") );
+            static QIcon perp ( Gui::BitmapFactory().iconFromTheme("Constraint_Perpendicular") );
+            static QIcon tang ( Gui::BitmapFactory().iconFromTheme("Constraint_Tangent") );
+            static QIcon dist ( Gui::BitmapFactory().iconFromTheme("Constraint_Length") );
+            static QIcon radi ( Gui::BitmapFactory().iconFromTheme("Constraint_Radius") );
+            static QIcon dia ( Gui::BitmapFactory().iconFromTheme("Constraint_Diameter") );
+          //static QIcon majradi ( Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Major_Radius") );
+          //static QIcon minradi ( Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Minor_Radius") );
+            static QIcon angl ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle") );
+          //static QIcon ellipseXUAngl ( Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Axis_Angle") );
+            static QIcon equal( Gui::BitmapFactory().iconFromTheme("Constraint_EqualLength") );
+            static QIcon pntoo( Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject") );
+            static QIcon symm ( Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric") );
+            static QIcon snell ( Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw") );
+            static QIcon iaellipseminoraxis ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAlignment_Ellipse_MinorAxis") );
+            static QIcon iaellipsemajoraxis ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAlignment_Ellipse_MajorAxis") );
+            static QIcon iaellipsefocus1 ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAlignment_Ellipse_Focus1") );
+            static QIcon iaellipsefocus2 ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAlignment_Ellipse_Focus2") );
+            static QIcon iaellipseother ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAlignment") );
 
-            static QIcon hdist_driven ( Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven") );
-            static QIcon vdist_driven( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven") );
-            static QIcon dist_driven ( Gui::BitmapFactory().pixmap("Constraint_Length_Driven") );
-            static QIcon radi_driven ( Gui::BitmapFactory().pixmap("Constraint_Radius_Driven") );
-            static QIcon dia_driven ( Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven") );
-            static QIcon angl_driven ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven") );
-            static QIcon snell_driven ( Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven") );
+            static QIcon hdist_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven") );
+            static QIcon vdist_driven( Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven") );
+            static QIcon dist_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven") );
+            static QIcon radi_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven") );
+            static QIcon dia_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven") );
+            static QIcon angl_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven") );
+            static QIcon snell_driven ( Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw_Driven") );
+
+            auto selicon = [](const Sketcher::Constraint * constr, const QIcon & normal, const QIcon & driven) -> QIcon {
+                if(!constr->isActive) {
+                    QIcon darkIcon;
+                    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+                    darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off), QIcon::Normal, QIcon::Off);
+                    darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::On ), QIcon::Normal, QIcon::On );
+                    return darkIcon;
+                }
+                else if (constr->isDriving) {
+                    return normal;
+                }
+                else {
+                    return driven;
+                }
+            };
 
             switch(constraint->Type){
             case Sketcher::Horizontal:
-                return horiz;
+                return selicon(constraint,horiz,horiz);
             case Sketcher::Vertical:
-                return vert;
+                return selicon(constraint,vert,vert);
             case Sketcher::Coincident:
-                return coinc;
+                return selicon(constraint,coinc,coinc);
             case Sketcher::Block:
-                return block;
+                return selicon(constraint,block,block);
             case Sketcher::PointOnObject:
-                return pntoo;
+                return selicon(constraint,pntoo,pntoo);
             case Sketcher::Parallel:
-                return para;
+                return selicon(constraint,para,para);
             case Sketcher::Perpendicular:
-                return perp;
+                return selicon(constraint,perp,perp);
             case Sketcher::Tangent:
-                return tang;
+                return selicon(constraint,tang,tang);
             case Sketcher::Equal:
-                return equal;
+                return selicon(constraint,equal,equal);
             case Sketcher::Symmetric:
-                return symm;
+                return selicon(constraint,symm,symm);
             case Sketcher::Distance:
-                return constraint->isDriving ? dist : dist_driven;
+                return selicon(constraint,dist,dist_driven);
             case Sketcher::DistanceX:
-                return constraint->isDriving ? hdist : hdist_driven;
+                return selicon(constraint,hdist,hdist_driven);
             case Sketcher::DistanceY:
-                return constraint->isDriving ? vdist : vdist_driven;
+                return selicon(constraint,vdist,vdist_driven);
             case Sketcher::Radius:
-                return constraint->isDriving ? radi : radi_driven;
+                return selicon(constraint,radi,radi_driven);
             case Sketcher::Diameter:
-                return constraint->isDriving ? dia : dia_driven;                
+                return selicon(constraint,dia,dia_driven);
             case Sketcher::Angle:
-                return constraint->isDriving ? angl : angl_driven;
+                return selicon(constraint,angl,angl_driven);
             case Sketcher::SnellsLaw:
-                return constraint->isDriving ? snell : snell_driven;
+                return selicon(constraint,snell,snell_driven);
             case Sketcher::InternalAlignment:
                 switch(constraint->AlignmentType){
                 case Sketcher::EllipseMajorDiameter:
-                    return iaellipsemajoraxis;
+                    return selicon(constraint,iaellipsemajoraxis,iaellipsemajoraxis);
                 case Sketcher::EllipseMinorDiameter:
-                    return iaellipseminoraxis;
+                    return selicon(constraint,iaellipseminoraxis,iaellipseminoraxis);
                 case Sketcher::EllipseFocus1:
-                    return iaellipsefocus1;
+                    return selicon(constraint,iaellipsefocus1,iaellipsefocus1);
                 case Sketcher::EllipseFocus2:
-                    return iaellipsefocus2;
+                    return selicon(constraint,iaellipsefocus2,iaellipsefocus2);
                 case Sketcher::Undef:
                 default:
-                    return iaellipseother;
+                    return selicon(constraint,iaellipseother,iaellipseother);
                 }
             default:
                 return QVariant();
@@ -335,7 +351,13 @@ public:
 
         return sketch->Constraints[ConstraintNbr]->isInVirtualSpace;
     }
-    
+
+    bool isActive() const {
+        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+
+        return sketch->Constraints[ConstraintNbr]->isActive;
+    }
+
     void updateVirtualSpaceStatus() {
         this->setCheckState((this->isInVirtualSpace() != sketchView->getIsShownVirtualSpace())?Qt::Unchecked:Qt::Checked);
     }
@@ -423,6 +445,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
 
     bool isQuantity = false;
     bool isToggleDriving = false;
+    bool isActive = true;
 
     // Non-driving-constraints/measurements
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
@@ -434,6 +457,8 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
             if (it->isEnforceable())
                 isToggleDriving = true;
         }
+
+        isActive = it->isActive();
     }
 
     // This does the same as a double-click and thus it should be the first action and with bold text
@@ -443,6 +468,9 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
 
     QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
     driven->setEnabled(isToggleDriving);
+
+    QAction* activate = menu.addAction(isActive ? tr("Deactivate") : tr("Activate"), this, SLOT(updateActiveStatus()));
+    activate->setEnabled(!items.isEmpty());
 
     menu.addSeparator();
     QAction* show = menu.addAction(tr("Show constraints"), this, SLOT(showConstraints()));
@@ -478,10 +506,20 @@ CONTEXT_MEMBER_DEF("Sketcher_SelectElementsAssociatedWithConstraints",doSelectCo
 void ConstraintView::updateDrivingStatus()
 {
     QListWidgetItem* item = currentItem();
-    
+
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
         onUpdateDrivingStatus(item, !it->isDriving());
+    }
+}
+
+void ConstraintView::updateActiveStatus()
+{
+    QListWidgetItem* item = currentItem();
+
+    ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+    if (it) {
+        onUpdateActiveStatus(item, !it->isActive());
     }
 }
 
@@ -565,15 +603,12 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string tmpname = ss.str();
 
     Gui::Command::openCommand("Swap constraint names");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item1->sketch->getNameInDocument(),
-                            item1->ConstraintNbr, tmpname.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item2->sketch->getNameInDocument(),
-                            item2->ConstraintNbr, escapedstr1.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item1->sketch->getNameInDocument(),
-                            item1->ConstraintNbr, escapedstr2.c_str());
+    Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
+                          item1->ConstraintNbr, tmpname.c_str());
+    Gui::cmdAppObjectArgs(item2->sketch, "renameConstraint(%d, u'%s')",
+                          item2->ConstraintNbr, escapedstr1.c_str());
+    Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
+                          item1->ConstraintNbr, escapedstr2.c_str());
     Gui::Command::commitCommand();
 }
 
@@ -616,6 +651,10 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
         ui->listWidgetConstraints, SIGNAL(onUpdateDrivingStatus(QListWidgetItem *, bool)),
         this                     , SLOT  (on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *, bool))
        );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(onUpdateActiveStatus(QListWidgetItem *, bool)),
+        this                     , SLOT  (on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *, bool))
+    );
     QObject::connect(
         ui->filterInternalAlignment, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_filterInternalAlignment_stateChanged(int))
@@ -733,7 +772,6 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
     // if its the right constraint
     if (it->isDimensional()) {
-
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
         delete editDatumDialog;
@@ -750,6 +788,16 @@ void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListW
     slotConstraintsChanged();
 }
 
+void TaskSketcherConstrains::on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status)
+{
+    Q_UNUSED(status);
+    ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
+    if (!citem) return;
+
+    Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleActiveConstraint");
+    slotConstraintsChanged();
+}
+
 void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetItem *item)
 {
     const ConstraintItem *it = dynamic_cast<const ConstraintItem*>(item);
@@ -757,7 +805,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         return;
 
     inEditMode = true;
-    
+
     assert(sketchView);
 
     const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
@@ -766,7 +814,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     const std::string currConstraintName = v->Name;
 
     const std::string basename = Base::Tools::toStdString(it->data(Qt::EditRole).toString());
-    
+
     std::string newName(Sketcher::PropertyConstraintList::getConstraintName(basename, it->ConstraintNbr));
 
     // we only start a rename if we are really sure the name has changed, which is:
@@ -779,9 +827,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
 
         Gui::Command::openCommand("Rename sketch constraint");
         try {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                    sketch->getNameInDocument(),
-                                    it->ConstraintNbr, escapedstr.c_str());
+            Gui::cmdAppObjectArgs(sketch ,"renameConstraint(%d, u'%s')",
+                                  it->ConstraintNbr, escapedstr.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception & e) {
@@ -795,15 +842,14 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     // update constraint virtual space status
     Gui::Command::openCommand("Update constraint's virtual space");
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setVirtualSpace(%d, %s)",
-                                sketch->getNameInDocument(),
-                                it->ConstraintNbr, 
-                                ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
+        Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                              it->ConstraintNbr,
+                              ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception & e) {
         Gui::Command::abortCommand();
-        
+
         QMessageBox::critical(Gui::MainWindow::getInstance(), tr("Error"),
                               QString::fromLatin1(e.what()), QMessageBox::Ok, QMessageBox::Ok);
     }

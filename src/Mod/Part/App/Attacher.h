@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -456,6 +455,9 @@ public:
     AttachEnginePoint();
     virtual AttachEnginePoint* copy() const;
     virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+
+private:
+    gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
 };
 
 //====================================================================

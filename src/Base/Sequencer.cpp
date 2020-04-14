@@ -68,7 +68,7 @@ namespace Base {
     std::vector<SequencerBase*> SequencerP::_instances;
     SequencerLauncher* SequencerP::_topLauncher = 0;
     QMutex SequencerP::mutex(QMutex::Recursive);
-};
+}
 
 SequencerBase& SequencerBase::Instance ()
 {

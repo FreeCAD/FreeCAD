@@ -33,7 +33,7 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 
 using namespace App;
@@ -72,7 +72,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", true);
+        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MAC)
@@ -90,6 +90,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
+        // It is strange that (at least on Linux) DlgExpressionInput will shrink
+        // to be narrower than ui->expression after calling adjustSize() above.
+        // Why?
+        if(this->width() < ui->expression->width() + 18)
+            this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
 }
@@ -134,22 +139,33 @@ void DlgExpressionInput::textChanged(const QString &text)
             ui->okBtn->setEnabled(true);
             ui->msg->clear();
 
+            //set default palette as we may have read text right now
+            ui->msg->setPalette(ui->okBtn->palette());
+
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
+                QString msg = value.getUserString();
 
-                if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
+                if(!impliedUnit.isEmpty()) {
+                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                        throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
-                value.setUnit(impliedUnit);
+                    value.setUnit(impliedUnit);
 
-                ui->msg->setText(value.getUserString());
+                } else if (!value.getUnit().isEmpty()) {
+                    msg += QString::fromUtf8(" (Warning: unit discarded)");
+
+                    QPalette p(ui->msg->palette());
+                    p.setColor(QPalette::WindowText, Qt::red);
+                    ui->msg->setPalette(p);
+                }
+
+                ui->msg->setText(msg);
             }
             else
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
 
-            //set default palette as we may have read text right now
-            ui->msg->setPalette(ui->okBtn->palette());
         }
     }
     catch (Base::Exception & e) {

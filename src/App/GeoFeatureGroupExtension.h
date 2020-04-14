@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,6 +50,7 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
+    typedef App::GroupExtension inherited;
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
@@ -95,6 +96,11 @@ public:
         return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
+            Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
     
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;

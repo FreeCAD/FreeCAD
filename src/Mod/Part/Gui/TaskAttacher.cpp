@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>*
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +50,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/App/AttachExtension.h>
@@ -107,9 +108,12 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     }
 }
 
-TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
+TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
+                           QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
-      ViewProvider(ViewProvider)
+      SelectionObserver(ViewProvider),
+      ViewProvider(ViewProvider),
+      visibilityFunc(visFunc)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
@@ -162,7 +166,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     ui->lineRef4->blockSignals(true);
     ui->listOfModes->blockSignals(true);
 
-    // Get the feature data    
+    // Get the feature data
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<std::string> refnames = pcAttach->Support.getSubValues();
 
@@ -200,6 +204,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     ui->attachmentOffsetX->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.x")));
     ui->attachmentOffsetY->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.y")));
     ui->attachmentOffsetZ->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.z")));
+
+    ui->attachmentOffsetYaw->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Yaw")));
+    ui->attachmentOffsetPitch->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Pitch")));
+    ui->attachmentOffsetRoll->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Roll")));
+
     visibilityAutomation(true);
     updateAttachmentOffsetUI();
     updateReferencesUI();
@@ -316,7 +325,7 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment Offset:") : tr("Attachment Offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
@@ -348,7 +357,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (selObj == ViewProvider->getObject()) return;//prevent self-referencing
+        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
         
         std::string subname = msg.pSubName;
 
@@ -737,10 +746,12 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation part of AttachmentOffset is bound by expressions.") : QString();
-    ui->attachmentOffsetYaw->setToolTip(tooltip);
-    ui->attachmentOffsetPitch->setToolTip(tooltip);
-    ui->attachmentOffsetRoll->setToolTip(tooltip);
+    if (bRotationBound) {
+        QString tooltip = tr("Not editable because rotation of AttachmentOffset is bound by expressions.");
+        ui->attachmentOffsetYaw->setToolTip(tooltip);
+        ui->attachmentOffsetPitch->setToolTip(tooltip);
+        ui->attachmentOffsetRoll->setToolTip(tooltip);
+    }
 
     bBlock = false;
     ui->attachmentOffsetX->blockSignals(bBlock);
@@ -801,8 +812,9 @@ void TaskAttacher::updateListOfModes()
             QString tooltip = mstr[1];
 
             if (mmode != mmDeactivated) {
-                tooltip += tr("\n\nReference combinations:\n") +
-                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+                tooltip += QString::fromLatin1("\n\n%1\n%2")
+                        .arg(tr("Reference combinations:"),
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
             }
             item->setToolTip(tooltip);
 
@@ -827,7 +839,6 @@ void TaskAttacher::updateListOfModes()
                 }
             } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
-                assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
@@ -845,13 +856,13 @@ void TaskAttacher::updateListOfModes()
 
 void TaskAttacher::selectMapMode(eMapMode mmode) {
     ui->listOfModes->blockSignals(true);
-    
+
     for (size_t i = 0;  i < modesInList.size(); ++i) {
         if (modesInList[i] == mmode) {
             ui->listOfModes->item(i)->setSelected(true);
         }
     }
-    
+
     ui->listOfModes->blockSignals(false);
 }
 
@@ -931,6 +942,39 @@ void TaskAttacher::changeEvent(QEvent *e)
 
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
+    auto defvisfunc = [] (bool opening_not_closing,
+                          Gui::ViewProviderDocumentObject* vp,
+                          App::DocumentObject *editObj,
+                          const std::string& editSubName) {
+        if (opening_not_closing) {
+            QString code = QString::fromLatin1(
+                "import Show\n"
+                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "tvObj = %1\n"
+                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
+                "\tdel(visible_features)\n"
+                "tv.hide(dep_features)\n"
+                "del(dep_features)\n"
+                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\t\tif len(tvObj.Support) > 0:\n"
+                "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
+                "del(tvObj)"
+                ).arg(
+                    QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                    QString::fromLatin1(editSubName.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        }
+        else {
+            Base::Interpreter().runString("del(tv)");
+        }
+    };
+
+    auto visAutoFunc = visibilityFunc ? visibilityFunc : defvisfunc;
+
     if (opening_not_closing) {
         //crash guards
         if (!ViewProvider)
@@ -939,25 +983,18 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         if (!ViewProvider->getObject()->getNameInDocument())
             return;
-        try{
-            QString code = QString::fromLatin1(
-                "import Show\n"
-                "from Show.DepGraphTools import getAllDependent, isContainer\n"
-                "tv = Show.TempoVis(App.ActiveDocument)\n"
-                "dep_features = [o for o in getAllDependent(%1) if not isContainer(o)]\n"
-                "if %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\tvisible_features = [feat for feat in %1.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
-                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
-                "tv.hide(dep_features)\n"
-                "if not %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\t\tif len(%1.Support) > 0:\n"
-                "\t\t\ttv.show([lnk[0] for lnk in %1.Support])"
-                );
-            QByteArray code_2 = code.arg(
-                QString::fromLatin1("App.ActiveDocument.") +
-                QString::fromLatin1(ViewProvider->getObject()->getNameInDocument())
-                ).toLatin1();
-                Base::Interpreter().runString(code_2.constData());
+
+        auto editDoc = Gui::Application::Instance->editDocument();
+        App::DocumentObject *editObj = ViewProvider->getObject();
+        std::string editSubName;
+        ViewProviderDocumentObject *editVp = 0;
+        if (editDoc) {
+            editDoc->getInEdit(&editVp,&editSubName);
+            if (editVp)
+                editObj = editVp->getObject();
+        }
+        try {
+            visAutoFunc(opening_not_closing, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception &e){
             e.ReportException();
@@ -969,7 +1006,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
     else {
         try {
-            Base::Interpreter().runString("del(tv)");
+            visAutoFunc(opening_not_closing, nullptr, nullptr, std::string());
         }
         catch (Base::Exception &e) {
             e.ReportException();
@@ -1004,7 +1041,8 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-
+    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
+    document->openCommand("Edit attachment");
 }
 
 void TaskDlgAttacher::clicked(int)
@@ -1021,36 +1059,27 @@ bool TaskDlgAttacher::accept()
             return true;
 
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-        std::string name = ViewProvider->getObject()->getNameInDocument();
-        std::string appDocument = doc.getAppDocumentPython();
-        std::string guiDocument = doc.getGuiDocumentPython();
+        auto obj = ViewProvider->getObject();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
-        if (pcAttach->AttachmentOffset.isTouched()){
+        //if (pcAttach->AttachmentOffset.isTouched()){
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    appDocument.c_str(), name.c_str(),
-                                    plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
-                                    yaw, pitch, roll);
-        }
+            Gui::cmdAppObjectArgs(obj, "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                  plm.getPosition().x, plm.getPosition().y, plm.getPosition().z, yaw, pitch, roll);
+        //}
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.MapReversed = %s",
-                                appDocument.c_str(), name.c_str(),
-                                pcAttach->MapReversed.getValue() ? "True" : "False");
+        Gui::cmdAppObjectArgs(obj, "MapReversed = %s", pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.Support = %s",
-                                appDocument.c_str(), name.c_str(),
-                                pcAttach->Support.getPyReprString().c_str());
+        Gui::cmdAppObjectArgs(obj, "Support = %s", pcAttach->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.MapMode = '%s'",
-                                appDocument.c_str(), name.c_str(),
-                                AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObjectArgs(obj, "MapPathParameter = %f", pcAttach->MapPathParameter.getValue());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", appDocument.c_str());
+        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::Command::doCommand(Gui::Command::Gui, "%s.resetEdit()", guiDocument.c_str());
+        Gui::cmdGuiDocument(obj, "resetEdit()");
         document->commitCommand();
     }
     catch (const Base::Exception& e) {

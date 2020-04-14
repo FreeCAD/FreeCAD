@@ -56,6 +56,7 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
+    _GroupTouched.setStatus(App::Property::Output,true);
 }
 
 /*
@@ -114,21 +115,6 @@ short Body::mustExecute() const
         return 1;
     }
     return Part::BodyBase::mustExecute();
-}
-
-App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
-{
-    std::vector<App::DocumentObject*> features = Group.getValues();
-    if (features.empty()) return NULL;
-    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
-    if (st == NULL)
-        return st; // Tip is NULL
-
-    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
-    if (it == features.end()) return NULL; // Invalid start object
-
-    it--;
-    return *it;
 }
 
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
@@ -246,7 +232,8 @@ bool Body::isAllowed(const App::DocumentObject* f)
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+            f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            f->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
@@ -280,6 +267,17 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     // Move the Tip if we added a solid
     if (isSolidFeature(feature)) {
         Tip.setValue (feature);
+    }
+
+    if(feature->Visibility.getValue()
+        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    {
+        for(auto obj : Group.getValues()) {
+            if(obj->Visibility.getValue() 
+                    && obj!=feature 
+                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                obj->Visibility.setValue(false);
+        }
     }
     
     std::vector<App::DocumentObject*> result = {feature};
@@ -329,6 +327,9 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     model.insert (insertInto, feature);
 
     Group.setValues (model);
+
+    if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
 
     // Set the BaseFeature property
     setBaseProperty(feature);
@@ -445,7 +446,9 @@ void Body::onSettingDocument() {
 
 void Body::onChanged (const App::Property* prop) {
     // we neither load a project nor perform undo/redo
-    if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
@@ -496,4 +499,51 @@ PyObject *Body::getPyObject(void)
         PythonObject = Py::Object(new BodyPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+std::vector<std::string> Body::getSubObjects(int reason) const {
+    if(reason==GS_SELECT && !showTip)
+        return Part::BodyBase::getSubObjects(reason);
+    return {};
+}
+
+App::DocumentObject *Body::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+#if 1
+    return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+#else
+    // The following code returns Body shape only if there is at least one
+    // child visible in the body (when show through, not show tip). The
+    // original intention is to sync visual to shape returned by
+    // Part.getShape() when the body is included in some other group. But this
+    // interfere with direct modeling using body shape. Therefore it is
+    // disabled here.
+
+    if(!pyObj || showTip ||
+       (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')))
+        return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+
+    // We return the shape only if there are feature visible inside
+    for(auto obj : Group.getValues()) {
+        if(obj->Visibility.getValue() && 
+           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) 
+        {
+            return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+        }
+    }
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+    return const_cast<Body*>(this);
+#endif
+}
+
+void Body::onDocumentRestored()
+{
+    for(auto obj : Group.getValues()) {
+        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
+    }
+    _GroupTouched.setStatus(App::Property::Output,true);
+    DocumentObject::onDocumentRestored();
 }

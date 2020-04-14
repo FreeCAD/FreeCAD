@@ -68,7 +68,7 @@ Py::Object Conic2dPy::getLocation(void) const
 
 void  Conic2dPy::setLocation(Py::Object arg)
 {
-    Base::Vector2d loc = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    Base::Vector2d loc = Py::toVector2d(arg.ptr());
     getGeom2dConicPtr()->setLocation(loc);
 }
 
@@ -92,7 +92,7 @@ Py::Object Conic2dPy::getXAxis(void) const
 
 void  Conic2dPy::setXAxis(Py::Object arg)
 {
-    Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    Base::Vector2d dir = Py::toVector2d(arg.ptr());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Ax2d xaxis = conic->XAxis();
     xaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
@@ -113,7 +113,7 @@ Py::Object Conic2dPy::getYAxis(void) const
 
 void  Conic2dPy::setYAxis(Py::Object arg)
 {
-    Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    Base::Vector2d dir = Py::toVector2d(arg.ptr());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(getGeom2dConicPtr()->handle());
     gp_Ax2d yaxis = conic->YAxis();
     yaxis.SetDirection(gp_Dir2d(dir.x, dir.y));

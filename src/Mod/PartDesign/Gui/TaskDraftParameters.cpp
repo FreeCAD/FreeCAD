@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2012 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +27,9 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QListWidget>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskDraftParameters.h"
@@ -50,7 +54,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskDraftParameters */
 
-TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
 {
     // we need a separate container widget to add all controls to
@@ -84,23 +88,28 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->draftAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
+        this, SLOT(onAngleChanged(double)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
+        this, SLOT(onReversedChanged(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
+        this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
+        this, SLOT(onButtonRefRemove(bool)));
     connect(ui->buttonPlane, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonPlane(bool)));
+        this, SLOT(onButtonPlane(bool)));
     connect(ui->buttonLine, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonLine(bool)));
+        this, SLOT(onButtonLine(bool)));
 
     // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    ui->listWidgetReferences->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+
+    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+        this, SLOT(doubleClicked(QListWidgetItem*)));
 
     App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
     strings = pcDraft->NeutralPlane.getSubValues();
@@ -113,17 +122,41 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // executed when the user selected something in the CAD object
+    // adds/deletes the selection accordingly
+
     if (selectionMode == none)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd)
+            if (selectionMode == refAdd) {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-            else
+                // it might be the second one so we can enable the context menu
+                if (ui->listWidgetReferences->count() > 1) {
+                    deleteAction->setEnabled(true);
+                    deleteAction->setStatusTip(QString());
+                    ui->buttonRefRemove->setEnabled(true);
+                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
+                }
+            }
+            else {
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
+                // remove its selection too
+                Gui::Selection().clearSelection();
+                // if there is only one item left, it cannot be deleted
+                if (ui->listWidgetReferences->count() == 1) {
+                    deleteAction->setEnabled(false);
+                    deleteAction->setStatusTip(tr("There must be at least one item"));
+                    ui->buttonRefRemove->setEnabled(false);
+                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+                    // we must also end the selection mode
+                    exitSelectionMode();
+                    clearButtons(none);
+                }
+            }
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } else if (selectionMode == plane) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> planes;
@@ -131,12 +164,13 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getReferencedSelection(pcDraft, msg, selObj, planes);
             if(!selObj)
                 return;
+            setupTransaction();
             pcDraft->NeutralPlane.setValue(selObj, planes);
             ui->linePlane->setText(getRefStr(selObj, planes));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } else if (selectionMode == line) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> edges;
@@ -144,12 +178,13 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getReferencedSelection(pcDraft, msg, selObj, edges);
             if(!selObj)
                 return;
+            setupTransaction();
             pcDraft->PullDirection.setValue(selObj, edges);
             ui->lineLine->setText(getRefStr(selObj, edges));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         }
     }
 }
@@ -187,13 +222,52 @@ void TaskDraftParameters::onButtonLine(bool checked)
 
 void TaskDraftParameters::onRefDeleted(void)
 {
+    // assure we we are not in selection mode
+    exitSelectionMode();
+    clearButtons(none);
+    // delete any selections since the reference(s) might be highlighted
+    Gui::Selection().clearSelection();
+    DressUpView->highlightReferences(false);
+
+    // get the list of items to be deleted
+    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
+    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
+        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
+        return;
+    }
+
+    // get the draft object
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     App::DocumentObject* base = pcDraft->Base.getValue();
-    std::vector<std::string> faces = pcDraft->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    pcDraft->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcDraft->getDocument()->recomputeFeature(pcDraft);
+    // get all draft references
+    std::vector<std::string> refs = pcDraft->Base.getSubValues();
+    setupTransaction();
+
+    // delete the selection backwards to assure the list index keeps valid for the deletion
+    for (int i = selectedList.count() - 1; i > -1; i--) {
+        // the ref index is the same as the listWidgetReferences index
+        // so we can erase using the row number of the element to be deleted
+        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        // erase the reference
+        refs.erase(refs.begin() + rowNumber);
+        // remove from the list
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
+    }
+
+    // update the object
+    pcDraft->Base.setValue(base, refs);
+    // recompute the feature
+    pcDraft->recomputeFeature();
+
+    // if there is only one item left, it cannot be deleted
+    if (ui->listWidgetReferences->count() == 1) {
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
+        ui->buttonRefRemove->setEnabled(false);
+        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+    }
 }
 
 void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
@@ -218,6 +292,7 @@ void TaskDraftParameters::onAngleChanged(double angle)
 {
     clearButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    setupTransaction();
     pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
@@ -230,6 +305,7 @@ double TaskDraftParameters::getAngle(void) const
 void TaskDraftParameters::onReversedChanged(const bool on) {
     clearButtons(none);
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    setupTransaction();
     pcDraft->Reversed.setValue(on);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
@@ -241,8 +317,15 @@ bool TaskDraftParameters::getReversed(void) const
 
 TaskDraftParameters::~TaskDraftParameters()
 {
+    Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
+
     delete ui;
+}
+
+bool TaskDraftParameters::event(QEvent *e)
+{
+    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskDraftParameters::changeEvent(QEvent *e)
@@ -299,18 +382,21 @@ bool TaskDlgDraftParameters::accept()
     std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
 
     // Force the user to select a neutral plane
-    if (neutralPlane.empty() || neutralPlane == "None") {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
-            QObject::tr("Please select a plane or an edge plus a pull direction"));
-        return false;
-    }
+    // if (neutralPlane.empty() || neutralPlane == "None") {
+    //     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
+    //         QObject::tr("Please select a plane or an edge plus a pull direction"));
+    //     return false;
+    // }
 
-    std::string name = vp->getObject()->getNameInDocument();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
+    auto tobj = vp->getObject();
+    FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
+    FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
+    if(neutralPlane.empty())
+        neutralPlane = "None";
+    FCMD_OBJ_CMD(tobj,"NeutralPlane = " << neutralPlane);
+    if(pullDirection.empty())
+        pullDirection = "None";
+    FCMD_OBJ_CMD(tobj,"PullDirection = " << pullDirection);
 
     return TaskDlgDressUpParameters::accept();
 }

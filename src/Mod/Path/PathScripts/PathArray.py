@@ -29,9 +29,9 @@ import PathScripts
 from PySide import QtCore
 import math
 
-"""Path Array object and FreeCAD command"""
+__doc__ = """Path Array object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -213,6 +213,7 @@ class ObjectArray:
 class ViewProviderArray:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -246,7 +247,7 @@ class CommandPathArray:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):

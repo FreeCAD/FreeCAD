@@ -76,7 +76,7 @@ PyObject* Geometry2dPy::mirror(PyObject *args)
 {
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
-        Base::Vector2d vec = Py::Vector2d(o).getCxxObject()->value();
+        Base::Vector2d vec = Py::toVector2d(o);
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Mirror(pnt);
         Py_Return;
@@ -86,8 +86,8 @@ PyObject* Geometry2dPy::mirror(PyObject *args)
     PyObject* axis;
     if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(),&o,
                                        Base::Vector2dPy::type_object(),&axis)) {
-        Base::Vector2d pnt = Py::Vector2d(o).getCxxObject()->value();
-        Base::Vector2d dir = Py::Vector2d(axis).getCxxObject()->value();
+        Base::Vector2d pnt = Py::toVector2d(o);
+        Base::Vector2d dir = Py::toVector2d(axis);
         gp_Ax2d ax1(gp_Pnt2d(pnt.x,pnt.y), gp_Dir2d(dir.x,dir.y));
         getGeometry2dPtr()->handle()->Mirror(ax1);
         Py_Return;
@@ -103,7 +103,7 @@ PyObject* Geometry2dPy::rotate(PyObject *args)
     double angle;
     Base::Vector2d vec;
     if (PyArg_ParseTuple(args, "O!d", Base::Vector2dPy::type_object(), &o, &angle)) {
-        vec = Py::Vector2d(o).getCxxObject()->value();
+        vec = Py::toVector2d(o);
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Rotate(pnt, angle);
         Py_Return;
@@ -119,7 +119,7 @@ PyObject* Geometry2dPy::scale(PyObject *args)
     double scale;
     Base::Vector2d vec;
     if (PyArg_ParseTuple(args, "O!d", Base::Vector2dPy::type_object(), &o, &scale)) {
-        vec = Py::Vector2d(o).getCxxObject()->value();
+        vec = Py::toVector2d(o);
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Scale(pnt, scale);
         Py_Return;
@@ -161,7 +161,7 @@ PyObject* Geometry2dPy::translate(PyObject *args)
     PyObject* o;
     Base::Vector2d vec;
     if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
-        vec = Py::Vector2d(o).getCxxObject()->value();
+        vec = Py::toVector2d(o);
         gp_Vec2d trl(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Translate(trl);
         Py_Return;

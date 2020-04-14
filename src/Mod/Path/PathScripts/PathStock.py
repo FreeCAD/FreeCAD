@@ -30,18 +30,16 @@ import math
 
 from PySide import QtCore
 
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class StockType:
+    # pylint: disable=no-init
+
     NoStock        = 'None'
     FromBase       = 'FromBase'
     CreateBox      = 'CreateBox'
@@ -96,12 +94,12 @@ class StockFromBase(Stock):
     def __init__(self, obj, base):
         "Make stock"
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("PathStock", "The base object this stock is derived from"))
-        obj.addProperty("App::PropertyLength", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
-        obj.addProperty("App::PropertyLength", "ExtXpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive X direction"))
-        obj.addProperty("App::PropertyLength", "ExtYneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Y direction"))
-        obj.addProperty("App::PropertyLength", "ExtYpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Y direction"))
-        obj.addProperty("App::PropertyLength", "ExtZneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Z direction"))
-        obj.addProperty("App::PropertyLength", "ExtZpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Z direction"))
+        obj.addProperty("App::PropertyDistance", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
+        obj.addProperty("App::PropertyDistance", "ExtXpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive X direction"))
+        obj.addProperty("App::PropertyDistance", "ExtYneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Y direction"))
+        obj.addProperty("App::PropertyDistance", "ExtYpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Y direction"))
+        obj.addProperty("App::PropertyDistance", "ExtZneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Z direction"))
+        obj.addProperty("App::PropertyDistance", "ExtZpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Z direction"))
 
         obj.Base = base
         obj.ExtXneg= 1.0
@@ -118,6 +116,12 @@ class StockFromBase(Stock):
         else:
             PathLog.track(obj.Label, base.Label)
         obj.Proxy = self
+
+        # debugging aids
+        self.origin = None
+        self.length = None
+        self.width  = None
+        self.height = None
 
     def __getstate__(self):
         return None
@@ -223,11 +227,24 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
+class FakeJob(object):
+    def __init__(self, base):
+        self.Group = [base]
+
+def _getBase(job):
+    if job and hasattr(job, 'Model'):
+        return job.Model
+    if job:
+        import PathScripts.PathUtils as PathUtils
+        job = PathUtils.findParentJob(job)
+        return job.Model if job else None
+    return None
+
 def CreateFromBase(job, neg=None, pos=None, placement=None):
     PathLog.track(job.Label, neg, pos, placement)
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockFromBase(obj, base)
+    obj.Proxy = StockFromBase(obj, base)
 
     if neg:
         obj.ExtXneg = neg.x
@@ -243,14 +260,14 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
         obj.Placement = placement
 
     SetupStockObject(obj, StockType.FromBase)
-    proxy.execute(obj)
+    obj.Proxy.execute(obj)
     obj.purgeTouched()
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateBox(obj)
+    obj.Proxy = StockCreateBox(obj)
 
     if extent:
         obj.Length = extent.x
@@ -273,9 +290,9 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateCylinder(obj)
+    obj.Proxy = StockCreateCylinder(obj)
 
     if radius:
         obj.Radius = radius

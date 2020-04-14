@@ -6,7 +6,7 @@
     <message>
       <location filename="../../InitGui.py" line="64"/>
       <source>Ship design</source>
-      <translation>Fartygs design</translation>
+      <translation>Fartygsdesign</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="67"/>
@@ -26,17 +26,17 @@
     <message>
       <location filename="../../Instance.py" line="61"/>
       <source>Ship breadth [m]</source>
-      <translation>Fartygets bredd [m]</translation>
+      <translation>Fartygsbredd [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation>Fartygets djup [m]</translation>
+      <translation>Fartygsdjup [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Uppsättning yttre ytor på skeppets skrov</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="87"/>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation>Öppna exempelfartygs geometri</translation>
+      <translation>Öppna exempel på fartygsgeometri</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation>Ladda ett exempel på fartygskrovsgeometri.</translation>
+      <translation>Öppna exempel på fartygskrovsgeometri.</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation>Skissera</translation>
+      <translation>Rita kontur</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="80"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Beräkna kapacitetskurvor</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
@@ -550,7 +550,7 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Skapa ett nytt lastval</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="233"/>
       <source>Outline draw</source>
-      <translation>Skissera</translation>
+      <translation>Rita kontur</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>
@@ -649,7 +649,7 @@
     <message>
       <location filename="../../ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Skapa en ny fartygsvikt</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Okända objektformer markerade</translation>
     </message>
   </context>
 </TS>

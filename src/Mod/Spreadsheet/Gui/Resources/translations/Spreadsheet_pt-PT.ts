@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-PT" sourcelanguage="en">
+<TS version="2.1" language="pt-PT" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Alinhar verticalmente ao centro</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Alinhar verticalmente ao centro o conteúdo das células selecionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Conteúdo das células selecionadas alinhadas ao Centro na verticalmente</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Unir células</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Unir células selecionadas na folha de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir célula</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividir células unidas anteriormente na folha de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texto em negrito</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Definir texto em negrito nas células selecionadas</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texto em itálico</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Definir texto em itálico nas células selecionadas</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Sublinhar texto</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Definir texto sublinhado nas células selecionadas</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Sublinhar o texto nas células selecionadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,10 +331,6 @@
       <translation>Exportar ficheiro</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Conteúdo da célula</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Mostrar folha de cálculo</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Definir a cor de plano de fundo das células da Tabela (folha de cálculo)</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Folha de cálculo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -426,8 +436,8 @@
       <translation>Cinzento claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>

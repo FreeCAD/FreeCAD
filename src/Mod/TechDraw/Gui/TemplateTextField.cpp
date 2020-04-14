@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Ian Rees                    (ian.rees@gmail.com) 2015   *
+ *   Copyright (c) 2015 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,8 @@
   #include <QLineEdit>
   #include <QTextDocument>
 #endif // #ifndef _PreCmp_
+
+#include <Base/Console.h>
 
 #include "DlgTemplateField.h"
 #include "TemplateTextField.h"
@@ -64,11 +66,15 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
 
         if (ui.exec() == QDialog::Accepted) {
-#if QT_VERSION >= 0x050000
-            QString qsClean = ui.getFieldContent().toHtmlEscaped();
-#else
-            QString qsClean = Qt::escape( ui.getFieldContent() );
-#endif
+        //WF: why is this escaped? 
+        //    "<" is converted elsewhere and no other characters cause problems.
+        //    escaping causes "&" to appear as "&amp;" etc
+//#if QT_VERSION >= 0x050000
+//            QString qsClean = ui.getFieldContent().toHtmlEscaped();
+//#else
+//            QString qsClean = Qt::escape( ui.getFieldContent() );
+//#endif
+            QString qsClean = ui.getFieldContent();
             std::string utf8Content = qsClean.toUtf8().constData();
             tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
         }

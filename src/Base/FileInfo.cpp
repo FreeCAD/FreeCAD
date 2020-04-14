@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -483,6 +482,9 @@ bool FileInfo::renameFile(const char* NewName)
         int code = errno;
         std::clog << "Error in renameFile: " << strerror(code) << " (" << code << ")" << std::endl;
     }
+    else {
+        FileName = NewName;
+    }
 
     return res;
 }
@@ -526,7 +528,7 @@ bool FileInfo::deleteDirectory(void) const
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return rmdir(FileName.c_str()) == 0;
 #else
-#   error "FileInfo::createDirectory() not implemented for this platform!"
+#   error "FileInfo::rmdir() not implemented for this platform!"
 #endif
 }
 
@@ -537,7 +539,12 @@ bool FileInfo::deleteDirectoryRecursive(void) const
 
     for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
         if (It->isDir()) {
-            It->setPermissions(FileInfo::ReadWrite);
+            // At least on Linux, directory needs execute permission to be
+            // deleted. We don't really need to set permission for directory
+            // anyway, since FC code does not touch directory permission.
+            //
+            // It->setPermissions(FileInfo::ReadWrite);
+
             It->deleteDirectoryRecursive();
         }
         else if (It->isFile()) {
@@ -584,7 +591,7 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
     {
         std::string dir = dentry->d_name;
         if (dir != "." && dir != "..")
-            List.push_back(FileInfo(FileName + "/" + dir));
+            List.emplace_back(FileName + "/" + dir);
     }
     closedir(dp);
 #else

@@ -22,10 +22,14 @@
 #*   Milos Koutny 2010                                                     *
 #***************************************************************************/
 
-import FreeCAD, Part, os, FreeCADGui, __builtin__
+import FreeCAD, Part, os, FreeCADGui
 from FreeCAD import Base
 from math import *
 import ImportGui
+
+# to distinguish python built-in open function from the one declared here
+if open.__module__ in ['__builtin__','io']:
+    pythonopen = open
 
 ##########################################################
 # Script version dated 19-Jan-2012                       #
@@ -54,15 +58,13 @@ IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
 #              End config section do not touch code below                              #
 ########################################################################################
 
-pythonopen = __builtin__.open # to distinguish python built-in open function from the one declared here
-
 def open(filename):
-	"""called when freecad opens an Emn file"""
-	docname = os.path.splitext(os.path.basename(filename))[0]
-	doc = FreeCAD.newDocument(docname)
-	message='Started with opening of "'+filename+'" file\n'
-	FreeCAD.Console.PrintMessage(message)
-	process_emn(doc,filename)
+    """called when freecad opens an Emn file"""
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    message='Started with opening of "'+filename+'" file\n'
+    FreeCAD.Console.PrintMessage(message)
+    process_emn(doc,filename)
 
 def insert(filename,docname):
     """called when freecad imports an Emn file"""

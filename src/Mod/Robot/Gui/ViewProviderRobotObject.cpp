@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,15 +58,15 @@ PROPERTY_SOURCE(RobotGui::ViewProviderRobotObject, Gui::ViewProviderGeometryObje
 ViewProviderRobotObject::ViewProviderRobotObject()
   : pcDragger(0),toolShape(0)
 {
-    ADD_PROPERTY(Manipulator,(0));   
+    ADD_PROPERTY(Manipulator,(0));
 
-	pcRobotRoot = new Gui::SoFCSelection();
+    pcRobotRoot = new Gui::SoFCSelection();
     pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
     //pcRobotRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     //pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcRobotRoot->ref();
 
-	pcSimpleRoot = new Gui::SoFCSelection();
+    pcSimpleRoot = new Gui::SoFCSelection();
     pcSimpleRoot->highlightMode = Gui::SoFCSelection::OFF;
     //pcSimpleRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     pcSimpleRoot->ref();
@@ -80,6 +80,14 @@ ViewProviderRobotObject::ViewProviderRobotObject()
 
 
     Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+}
+
+ViewProviderRobotObject::~ViewProviderRobotObject()
+{
+    pcRobotRoot->unref();
+    pcSimpleRoot->unref();
+    pcOffRoot->unref();
+    pcTcpRoot->unref();
 }
 
 void ViewProviderRobotObject::setDragger()
@@ -98,23 +106,13 @@ void ViewProviderRobotObject::setDragger()
                    SbVec3f(150,150,150)
                    );
     pcDragger->setMotionMatrix(M);
-
-
 }
+
 void ViewProviderRobotObject::resetDragger()
 {
     assert(pcDragger);
-    pcTcpRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(pcTcpRoot);
     pcDragger = 0;
-
- }
-
-ViewProviderRobotObject::~ViewProviderRobotObject()
-{
-    pcRobotRoot->unref();
-    pcSimpleRoot->unref();
-    pcOffRoot->unref();
-
 }
 
 void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
@@ -135,8 +133,6 @@ void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
 
     addDisplayMaskMode(pcOffRoot, "Off");
     pcOffRoot->addChild(pcTcpRoot);
-
-
 }
 
 void ViewProviderRobotObject::setDisplayMode(const char* ModeName)
@@ -185,7 +181,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
         QString fn = QString::fromUtf8(filename);
         QFile file(fn);
         SoInput in;
-        pcRobotRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(pcRobotRoot);
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QByteArray buffer = file.readAll();
             in.setBuffer((void *)buffer.constData(), buffer.length());
@@ -354,7 +350,7 @@ void ViewProviderRobotObject::setAxisTo(float A1,float A2,float A3,float A4,floa
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
 
 	if(Axis1Node)
-        // FIXME Uggly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
+        // FIXME Ugly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
 		Axis1Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A1*(M_PI/180));
 	if(Axis2Node)
 		Axis2Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A2*(M_PI/180));
@@ -395,4 +391,3 @@ void ViewProviderRobotObject::DraggerMotionCallback(SoDragger *dragger)
     Base::Vector3d pos(translation[0],translation[1],translation[2]);
     robObj->Tcp.setValue(Base::Placement(pos,rot));
 }
-

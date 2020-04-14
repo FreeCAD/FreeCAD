@@ -37,6 +37,9 @@
 #include <sstream>
 #endif
 
+#include <string>
+#include <regex>
+
 #include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
@@ -48,6 +51,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "Rez.h"
@@ -126,13 +130,14 @@ void QGIViewAnnotation::drawAnnotation()
     }
 
     const std::vector<std::string>& annoText = viewAnno->Text.getValues();
+    int fontSize = calculateFontPixelSize(viewAnno->TextSize.getValue());
 
     //build HTML/CSS formatting around Text lines
     std::stringstream ss;
     ss << "<html>\n<head>\n<style>\n";
     ss << "p {";
     ss << "font-family:" << viewAnno->Font.getValue() << "; ";
-    ss << "font-size:" << Rez::guiX(viewAnno->TextSize.getValue()) << "pt; ";   //not really pts???
+    ss << "font-size:" << fontSize << "px; ";
     if (viewAnno->TextStyle.isValue("Normal")) {
         ss << "font-weight:normal; font-style:normal; ";
     } else if (viewAnno->TextStyle.isValue("Bold")) {
@@ -150,13 +155,24 @@ void QGIViewAnnotation::drawAnnotation()
     ss << "color:" << c.asCSSString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
-        if (it == annoText.begin()) {
-            ss << *it;
-        } else {
-            ss << "<br>" << *it ;
+        if (it != annoText.begin()) {
+            ss << "<br>";
         }
+    //TODO: there is still a bug here.  entering "'" works, save and restore works, but edit after
+    //      save and restore brings "\'" back into text.  manually deleting the "\" fixes it until the next
+    //      save/restore/edit cycle.
+    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting. 
+    //      the substituting might be necessary for using the strings in Python.
+    //      &apos; doesn't seem to help in this case.  
+
+        std::string u8String = Base::Tools::escapedUnicodeToUtf8(*it); //from \x??\x?? to real utf8
+        std::string apos = std::regex_replace((u8String), std::regex("\\\\"), "");  //remove doubles.
+        apos = std::regex_replace((apos), std::regex("\\'"), "'");  //replace escaped apos
+        //"less than" symbol chops off line.  need to use html sub. 
+        std::string lt   = std::regex_replace((apos), std::regex("<"), "&lt;");
+        ss << lt;
     }
-    ss << "</p>\n</body>\n</html> ";
+    ss << "<br></p>\n</body>\n</html> ";
 
     prepareGeometryChange();
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));

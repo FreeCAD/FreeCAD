@@ -26,7 +26,7 @@ std::string UnitPy::representation(void) const
     ret << Sig.LuminousIntensity  << ",";
     ret << Sig.Angle  << ")"; 
     std::string type = getUnitPtr()->getTypeString().toUtf8().constData();
-    if(! type.empty())
+    if (! type.empty())
         ret << " [" << type << "]";
 
     return ret.str();
@@ -76,8 +76,14 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
         QString qstr = QString::fromUtf8(string);
         PyMem_Free(string);
-        *self = Quantity::parse(qstr).getUnit();
-        return 0;
+        try {
+            *self = Quantity::parse(qstr).getUnit();
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_RuntimeError, e.what());
+            return -1;
+        }
     }
 
     PyErr_SetString(PyExc_TypeError, "Either string, (float,8 ints), Unit() or Quantity()");
@@ -180,6 +186,21 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
 Py::String UnitPy::getType(void) const
 {
     return Py::String(getUnitPtr()->getTypeString().toUtf8(),"utf-8");
+}
+
+Py::Tuple UnitPy::getSignature(void) const
+{
+    const UnitSignature &  Sig = getUnitPtr()->getSignature();
+    Py::Tuple tuple(8);
+    tuple.setItem(0, Py::Long(Sig.Length));
+    tuple.setItem(1, Py::Long(Sig.Mass));
+    tuple.setItem(2, Py::Long(Sig.Time));
+    tuple.setItem(3, Py::Long(Sig.ElectricCurrent));
+    tuple.setItem(4, Py::Long(Sig.ThermodynamicTemperature));
+    tuple.setItem(5, Py::Long(Sig.AmountOfSubstance));
+    tuple.setItem(6, Py::Long(Sig.LuminousIntensity));
+    tuple.setItem(7, Py::Long(Sig.Angle));
+    return tuple;
 }
 
 

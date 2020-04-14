@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2012 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -59,13 +60,15 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 using namespace PartDesign;
 
 
 PROPERTY_SOURCE(PartDesign::Draft, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatAngle = {0.0,89.99,0.1};
+
+App::PropertyAngle::Constraints Draft::floatAngle = {0.0,89.99,0.1};
 
 Draft::Draft()
 {
@@ -74,6 +77,18 @@ Draft::Draft()
     ADD_PROPERTY_TYPE(NeutralPlane,(0),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
     ADD_PROPERTY_TYPE(PullDirection,(0),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
     ADD_PROPERTY(Reversed,(0));
+}
+
+void Draft::handleChangedPropertyType(Base::XMLReader &reader,
+                                      const char * TypeName,
+                                      App::Property * prop)
+{
+    Base::Type inputType = Base::Type::fromName(TypeName);
+    if (prop == &Angle && inputType == App::PropertyFloatConstraint::getClassTypeId()) {
+        App::PropertyFloatConstraint v;
+        v.Restore(reader);
+        Angle.setValue(v.getValue());
+    }
 }
 
 short Draft::mustExecute() const
@@ -105,7 +120,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         return new App::DocumentObjectExecReturn("No faces specified");
 
     // Draft angle
-    double angle = Angle.getValue() / 180.0 * M_PI;
+    double angle = Base::toRadians(Angle.getValue());
 
     // Pull direction
     gp_Dir pullDirection;
@@ -178,7 +193,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 BRepAdaptor_Surface adapt(TopoDS::Face(face), Standard_False);
                 Handle(Geom_Surface) sf = adapt.Surface().Surface();
                 GeomAPI_IntSS intersector(aux, sf, Precision::Confusion());
-                if (!intersector.IsDone())
+                if (!intersector.IsDone() || intersector.NbLines() < 1)
                     continue;
                 Handle(Geom_Curve) icurve = intersector.Line(1);
                 if (!icurve->IsKind(STANDARD_TYPE(Geom_Line)))

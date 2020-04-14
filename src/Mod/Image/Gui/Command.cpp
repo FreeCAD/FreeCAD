@@ -25,6 +25,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -44,7 +45,7 @@
 
 using namespace ImageGui;
 
-DEF_STD_CMD(CmdImageOpen);
+DEF_STD_CMD(CmdImageOpen)
 
 CmdImageOpen::CmdImageOpen()
   : Command("Image_Open")
@@ -55,7 +56,7 @@ CmdImageOpen::CmdImageOpen()
     sToolTipText    = QT_TR_NOOP("Open image view");
     sWhatsThis      = "Image_Open";
     sStatusTip      = sToolTipText;
-    sPixmap         = "image-import";
+    sPixmap         = "Image_Open";
 }
 
 void CmdImageOpen::activated(int iMsg)
@@ -75,7 +76,8 @@ void CmdImageOpen::activated(int iMsg)
     QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
                                              QString::null, formats);
     if (!s.isEmpty()) {
-        try{
+        try {
+            s = Base::Tools::escapeEncodeFilename(s);
             // load the file with the module
             Command::doCommand(Command::Gui, "import Image, ImageGui");
 #if PY_MAJOR_VERSION < 3
@@ -92,7 +94,7 @@ void CmdImageOpen::activated(int iMsg)
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-DEF_STD_CMD_A(CmdCreateImagePlane);
+DEF_STD_CMD_A(CmdCreateImagePlane)
 
 CmdCreateImagePlane::CmdCreateImagePlane()
     :Command("Image_CreateImagePlane")
@@ -103,7 +105,7 @@ CmdCreateImagePlane::CmdCreateImagePlane()
     sToolTipText    = QT_TR_NOOP("Create a planar image in the 3D space");
     sWhatsThis      = "Image_CreateImagePlane";
     sStatusTip      = sToolTipText;
-    sPixmap         = "image-import-to-plane";
+    sPixmap         = "Image_CreateImagePlane";
 }
 
 void CmdCreateImagePlane::activated(int iMsg)
@@ -148,9 +150,11 @@ void CmdCreateImagePlane::activated(int iMsg)
         height = height * 1000 / yPixelsPerM;
         int nHeight = static_cast<int>(height+0.5);
 
+        QString pyfile = Base::Tools::escapeEncodeFilename(s);
+
         openCommand("Create ImagePlane");
         doCommand(Doc,"App.activeDocument().addObject('Image::ImagePlane','%s\')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)s.toUtf8());
+        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)pyfile.toUtf8());
         doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),nWidth);
         doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),nHeight);
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
@@ -166,7 +170,7 @@ bool CmdCreateImagePlane::isActive()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-DEF_STD_CMD(CmdImageScaling);
+DEF_STD_CMD(CmdImageScaling)
 
 CmdImageScaling::CmdImageScaling()
   : Command("Image_Scaling")
@@ -177,7 +181,7 @@ CmdImageScaling::CmdImageScaling()
     sToolTipText    = QT_TR_NOOP("Image Scaling");
     sWhatsThis      = "Image_Scaling";
     sStatusTip      = sToolTipText;
-    sPixmap         = "image-scale";
+    sPixmap         = "Image_Scaling";
 }
 
 void CmdImageScaling::activated(int iMsg)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #ifndef BASE_INTERPRETER_H
@@ -53,6 +52,40 @@
 
 #include "Exception.h"
 
+/** Helper macro to obtain callable from an object
+ *
+ * @param _pyobj: PyObject pointer
+ * @param _name: the callable string name
+ * @param _var: the callable variable to be assigned
+ *
+ *  See FeaturePythonImp::init() for example usage
+ */
+#define FC_PY_GetCallable(_pyobj,_name,_var) \
+    do {\
+        _var = Py::Object();\
+        if(PyObject_HasAttrString(_pyobj, _name)) {\
+            Py::Object _obj(PyObject_GetAttrString (_pyobj, _name), true);\
+            if(_obj.isCallable())\
+                _var = _obj;\
+        }\
+    }while(0)
+
+/** Helper macro to obtain attribute from an object
+ *
+ * @param _pyobj: PyObject pointer
+ * @param _name: the attribute string name
+ * @param _var: the attribute variable to be assigned
+ *
+ *  See FeaturePythonImp::init() for example usage
+ */
+#define FC_PY_GetObject(_pyobj,_name,_var) \
+    do {\
+        _var = Py::Object();\
+        if(PyObject_HasAttrString(_pyobj, _name))\
+            _var = Py::asObject(PyObject_GetAttrString (_pyobj, _name));\
+    }while(0)
+
+
 namespace Base {
 
     using std::string;
@@ -65,7 +98,10 @@ class BaseExport PyException : public Exception
 public:
     /// constructor does the whole job
     PyException(void);
+    PyException(const Py::Object &obj);
     ~PyException() throw();
+
+    void raiseException();
     
     /// this method determines if the original exception
     /// can be reconstructed or not, if yes throws the reconstructed version
@@ -75,12 +111,30 @@ public:
     ///  this function returns the stack trace
     const std::string &getStackTrace(void) const {return _stackTrace;}
     const std::string &getErrorType(void) const {return _errorType;}
-    void ReportException (void) const;
+    virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
+    void ReportException (void) const override;
+    /// Sets the Python error indicator and an error message
+    virtual void setPyException() const override;
 
 protected:
     std::string _stackTrace;
     std::string _errorType;
+    PyObject *_exceptionType;
 };
+
+inline Py::Object pyCall(PyObject *callable, PyObject *args=0) {
+    PyObject *result = PyObject_CallObject(callable, args);
+    if(!result)
+        throw Py::Exception();
+    return Py::asObject(result);
+}
+
+inline Py::Object pyCallWithKeywords(PyObject *callable, PyObject *args, PyObject *kwds=0) {
+    PyObject *result = PyObject_Call(callable, args, kwds);
+    if(!result)
+        throw Py::Exception();
+    return Py::asObject(result);
+}
 
 /**
  * The SystemExitException is thrown if the Python-internal PyExc_SystemExit exception

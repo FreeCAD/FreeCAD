@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,6 +66,9 @@ public:
     
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
     virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
+
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
+            Base::Matrix4D *mat, bool transform, int depth) const override;
 
 protected:
     /// Checks integrity of the Origin

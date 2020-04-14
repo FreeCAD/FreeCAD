@@ -354,7 +354,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
         for (MOrderIt = m_MachiningOrder.begin();MOrderIt != m_MachiningOrder.end(); ++MOrderIt)
         {
             float temp_max = MOrderIt->first.z;
-            //the check if MOrderIt+1 != end is performend at the bottom of the function
+            //the check if MOrderIt+1 != end is performed at the bottom of the function
             float temp_min = (MOrderIt+1)->first.z;
             //set the direction flags
             if (temp_max> temp_min)
@@ -828,7 +828,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //
 // //  outfile << projectedPoint.X() <<","<<projectedPoint.Y()<<","<<projectedPoint.Z()<<std::endl;
 //   //Jetzt die aktuelle Kurve als BSpline interpolieren
-//  //check for intersections due to wrong offsetted points
+//  //check for intersections due to wrong offset points
 //  checkPointIntersection(finalPoints);
 //  std::vector<gp_Pnt> finalPointscorrected;
 //  finalPointscorrected.clear();
@@ -2738,7 +2738,7 @@ std::vector<SpiralHelper> cutting_tools::OffsetSpiral(const std::vector<SpiralHe
         }
         else if ((i+1==SpiralPoints.size()) && (OffsetPoints.rbegin()->SurfacePoint.SquareDistance(OffsetPoint.SurfacePoint)<(Precision::Confusion()*Precision::Confusion())))
         {
-            //This part is necessary as the last point of the current spiral would otherwise not be offsetted
+            //This part is necessary as the last point of the current spiral would otherwise not be offset
             OffsetPoints.pop_back();//Delete the two currently last points
             OffsetPoints.pop_back();
             OffsetPoints.push_back(OffsetPoint);//Add the last point
@@ -3643,4 +3643,3 @@ double cutting_tools::GetEdgeLength(const TopoDS_Edge& anEdge)
     double length = lProps.Mass();
     return length;
 }
-

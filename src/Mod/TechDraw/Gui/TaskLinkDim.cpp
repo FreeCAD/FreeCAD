@@ -154,13 +154,7 @@ bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim)
         return result;
     }
 
-    //Part::Feature* refPart = static_cast<Part::Feature*>(dim->References3D.getValues().at(0));
-    std::vector<Part::Feature*> refParts;
-    std::vector<App::DocumentObject*> docObjs = dim->References3D.getValues();
-    for (auto& d: docObjs) {
-        Part::Feature* part = static_cast<Part::Feature*>(d);
-        refParts.push_back(part);
-    }
+    std::vector<App::DocumentObject*> refParts = dim->References3D.getValues();
     std::vector<std::string> refSubs = dim->References3D.getSubValues();
     if (refParts.size() == m_parts.size()) {
         if(refParts.size() == 0) {

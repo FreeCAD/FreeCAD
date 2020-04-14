@@ -173,7 +173,7 @@ const Base::Type& NavigationStyleEvent::style() const
 #define PRIVATE(ptr) (ptr->pimpl)
 #define PUBLIC(ptr) (ptr->pub)
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
 NavigationStyle::NavigationStyle() : viewer(0), mouseSelection(0)
 {
@@ -521,11 +521,11 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
     float scale = std::max<float>(scaleX, scaleY);
-    if (cam && cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * scale;
         static_cast<SoOrthographicCamera*>(cam)->height = height;
     }
-    else if (cam && cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
         height = 2.0f * atan(tan(height) * scale);
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
@@ -1625,7 +1625,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
 // ----------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::UserNavigationStyle,Gui::NavigationStyle);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::UserNavigationStyle,Gui::NavigationStyle)
 
 std::string UserNavigationStyle::userFriendlyName() const
 {

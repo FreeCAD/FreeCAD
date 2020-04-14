@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -83,7 +83,7 @@ public:
     //@}
 
     /** returns a list of the transformations that where rejected during the last execute
-      * because they did not ovelap with the support
+      * because they did not overlap with the support
       */
     typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
     const rejectedMap getRejectedTransformations(void) { return rejected; }

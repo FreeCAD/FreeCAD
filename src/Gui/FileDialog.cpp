@@ -115,7 +115,7 @@ void FileDialog::accept()
             // #0001928: do not add a suffix if a file with suffix is entered
             // #0002209: make sure that the entered suffix is part of one of the filters
             if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
-                file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
+                file = QString::fromLatin1("%1.%2").arg(file, ext);
                 // That's the built-in line edit
                 QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
                 if (fileNameEdit)
@@ -199,6 +199,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setNameFilterDetailsVisible(true);
         dlg.setConfirmOverwrite(true);
@@ -295,6 +297,8 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -369,6 +373,8 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -525,7 +531,7 @@ void FileOptionsDialog::accept()
         if (ext.isEmpty())
             setDefaultSuffix(suf);
         else if (ext.toLower() != suf.toLower()) {
-            fn = QString::fromLatin1("%1.%2").arg(fn).arg(suf);
+            fn = QString::fromLatin1("%1.%2").arg(fn, suf);
             selectFile(fn);
             // That's the built-in line edit (fixes Debian bug #811200)
             QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
@@ -613,7 +619,10 @@ QString FileIconProvider::type(const QFileInfo & info) const
  * Constructs a file chooser called \a name with the parent \a parent.
  */
 FileChooser::FileChooser ( QWidget * parent )
-  : QWidget(parent), md( File ), _filter( QString::null )
+  : QWidget(parent)
+  , md( File )
+  , accMode( AcceptOpen )
+  , _filter( QString::null )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -704,7 +713,10 @@ void FileChooser::chooseFile()
 
     QString fn;
     if ( mode() == File ) {
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter,0,dlgOpt );
+        if (acceptMode() == AcceptOpen)
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
+        else
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );
@@ -823,7 +835,7 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
             module = module.left(pos);
         }
 
-        button->setText(QString::fromLatin1("%1 (%2)").arg(filter).arg(module));
+        button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));
         button->setObjectName(it.value());
         gridLayout1->addWidget(button, index, 0, 1, 1);
         group->addButton(button, index);

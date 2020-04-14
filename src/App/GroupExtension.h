@@ -24,6 +24,7 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
+#include <boost/signals2.hpp>
 #include "FeaturePython.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"
@@ -38,6 +39,7 @@ class GroupExtensionPy;
 class AppExport GroupExtension : public DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GroupExtension);
+    typedef DocumentObjectExtension inherited;
 
 public:
     /// Constructor
@@ -91,7 +93,7 @@ public:
     bool isChildOf(const GroupExtension* group, bool recursive = true) const;
     /** Returns a list of all objects this group does have.
      */
-    std::vector<DocumentObject*> getObjects() const;
+    const std::vector<DocumentObject*> &getObjects() const;
     /** Returns a list of all objects of \a typeId this group does have.
      */
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
@@ -109,15 +111,30 @@ public:
     virtual PyObject* getExtensionPyObject(void) override;
 
     virtual void extensionOnChanged(const Property* p) override;
+
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
+
+    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+
+    std::vector<DocumentObject*> getAllChildren() const;
+    void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
     
     /// Properties
     PropertyLinkList Group;
+    PropertyBool _GroupTouched;
 
 private:
     void removeObjectFromDocument(DocumentObject*);
     //this version if has object stores the already searched objects to prevent infinite recursion
     //in case of a cyclic group graph
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
+
+    // for tracking children visibility
+    void slotChildChanged(const App::DocumentObject&, const App::Property&);
+    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
 };
 
 

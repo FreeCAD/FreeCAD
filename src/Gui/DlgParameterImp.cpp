@@ -35,6 +35,7 @@
 
 #include "ui_DlgParameter.h"
 #include "DlgParameterImp.h"
+#include "DlgParameterFind.h"
 #include "DlgInputDialogImp.h"
 #include "BitmapFactory.h"
 #include "FileDialog.h"
@@ -62,11 +63,18 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   , ui(new Ui_DlgParameter)
 {
     ui->setupUi(this);
-    QStringList groupLabels; 
+    ui->checkSort->setVisible(false); // for testing
+
+    QStringList groupLabels;
     groupLabels << tr( "Group" );
     paramGroup = new ParameterGroup(ui->splitter3);
     paramGroup->setHeaderLabels(groupLabels);
     paramGroup->setRootIsDecorated(false);
+#if QT_VERSION >= 0x050000
+    paramGroup->setSortingEnabled(true);
+    paramGroup->sortByColumn(0, Qt::AscendingOrder);
+    paramGroup->header()->setProperty("showSortIndicator", QVariant(true));
+#endif
 
     QStringList valueLabels; 
     valueLabels << tr( "Name" ) << tr( "Type" ) << tr( "Value" );
@@ -75,6 +83,9 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramValue->setRootIsDecorated(false);
 #if QT_VERSION >= 0x050000
     paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    paramValue->setSortingEnabled(true);
+    paramValue->sortByColumn(0, Qt::AscendingOrder);
+    paramValue->header()->setProperty("showSortIndicator", QVariant(true));
 #else
     paramValue->header()->setResizeMode(0, QHeaderView::Stretch);
 #endif
@@ -106,6 +117,20 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), 
             this, SLOT(onGroupSelected(QTreeWidgetItem*)));
     onGroupSelected(paramGroup->currentItem());
+
+    // setup for function on_findGroup_changed:
+    // store the current font properties because
+    // we don't know what style sheet the user uses for FC
+    defaultFont = paramGroup->font();
+    boldFont = defaultFont;
+    boldFont.setBold(true);
+    defaultColor = paramGroup->topLevelItem(0)->foreground(0);
+
+    // set a placeholder text to inform the user
+    // (QLineEdit has no placeholderText property in Qt4)
+#if QT_VERSION >= 0x050200
+    ui->findGroupLE->setPlaceholderText(tr("Search Group"));
+#endif
 }
 
 /** 
@@ -115,6 +140,83 @@ DlgParameterImp::~DlgParameterImp()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgParameterImp::on_buttonFind_clicked()
+{
+    if (finder.isNull())
+        finder = new DlgParameterFind(this);
+    finder->show();
+}
+
+void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
+{
+    // search for group tree items and highlight found results
+
+    QTreeWidgetItem* ExpandItem;
+
+    // at first reset all items to the default font and expand state
+    if (foundList.size() > 0) {
+        for (QTreeWidgetItem* item : foundList) {
+            item->setFont(0, defaultFont);
+            item->setForeground(0, defaultColor);
+            ExpandItem = item;
+            // a group can be nested down to several levels
+            // do not collapse if the search string is empty
+            while (!SearchStr.isEmpty()) {
+                if (!ExpandItem->parent())
+                    break;
+                else {
+                    ExpandItem->setExpanded(false);
+                    ExpandItem = ExpandItem->parent();
+                }
+            }
+        }
+    }
+    // expand the top level entries to get the initial tree state
+    for (int i = 0; i < paramGroup->topLevelItemCount(); ++i) {
+        paramGroup->topLevelItem(i)->setExpanded(true);
+    }
+
+    // don't perform a search if the string is empty
+    if (SearchStr.isEmpty())
+        return;
+
+    // search the tree widget
+    foundList = paramGroup->findItems(SearchStr, Qt::MatchContains | Qt::MatchRecursive);
+    if (foundList.size() > 0) {
+        // reset background style sheet
+        if (!ui->findGroupLE->styleSheet().isEmpty())
+            ui->findGroupLE->setStyleSheet(QString());
+        for (QTreeWidgetItem* item : foundList) {
+            item->setFont(0, boldFont);
+            item->setForeground(0, Qt::red);
+            // expand its parent to see the item
+            // a group can be nested down to several levels
+            ExpandItem = item;
+            while (true) {
+                if (!ExpandItem->parent())
+                    break;
+                else {
+                    ExpandItem->setExpanded(true);
+                    ExpandItem = ExpandItem->parent();
+                }
+            }
+            // if there is only one item found, scroll to it
+            if (foundList.size() == 1) {
+                paramGroup->scrollToItem(foundList[0], QAbstractItemView::PositionAtCenter);
+            }
+        }
+    }
+    else {
+        // Set red background to indicate no matching
+        QString styleSheet = QString::fromLatin1(
+            " QLineEdit {\n"
+            "     background-color: rgb(221,144,161);\n"
+            " }\n"
+        );
+        ui->findGroupLE->setStyleSheet(styleSheet);
+    }
 }
 
 /**
@@ -132,6 +234,21 @@ void DlgParameterImp::changeEvent(QEvent *e)
     } else {
         QDialog::changeEvent(e);
     }
+}
+
+void DlgParameterImp::on_checkSort_toggled(bool on)
+{
+#if QT_VERSION >= 0x050000
+    paramGroup->setSortingEnabled(on);
+    paramGroup->sortByColumn(0, Qt::AscendingOrder);
+    paramGroup->header()->setProperty("showSortIndicator", QVariant(on));
+#endif
+
+#if QT_VERSION >= 0x050000
+    paramValue->setSortingEnabled(on);
+    paramValue->sortByColumn(0, Qt::AscendingOrder);
+    paramValue->header()->setProperty("showSortIndicator", QVariant(on));
+#endif
 }
 
 void DlgParameterImp::on_closeButton_clicked()
@@ -199,6 +316,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 {
     if ( item && item->type() == QTreeWidgetItem::UserType + 1 )
     {
+        bool sortingEnabled = paramValue->isSortingEnabled();
         paramValue->clear();
         Base::Reference<ParameterGrp> _hcGrp = static_cast<ParameterGroupItem*>(item)->_hcGrp;
         static_cast<ParameterValue*>(paramValue)->setCurrentGroup( _hcGrp );
@@ -238,6 +356,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
         {
             (void)new ParameterUInt(paramValue,QString::fromUtf8(It6->first.c_str()),It6->second, _hcGrp);
         }
+        paramValue->setSortingEnabled(sortingEnabled);
     }
 }
 
@@ -258,6 +377,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
     if (!rcParMngr)
         return;
 
+    rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
@@ -395,16 +515,21 @@ void ParameterGroup::onDeleteSelectedItem()
     QTreeWidgetItem* sel = currentItem();
     if (isItemSelected(sel) && sel->parent())
     {
-        if ( QMessageBox::question(this, tr("Remove group"), tr("Do really want to remove this parameter group?"),
+        if ( QMessageBox::question(this, tr("Remove group"), tr("Do you really want to remove this parameter group?"),
                                QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape) == 
                                QMessageBox::Yes )
         {
             QTreeWidgetItem* parent = sel->parent();
             int index = parent->indexOfChild(sel);
             parent->takeChild(index);
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
-            para->_hcGrp->RemoveGrp(sel->text(0).toLatin1());
+
+            std::string groupName = sel->text(0).toStdString();
+            // must delete the tree item here because it and its children still
+            // hold a reference to the parameter group
             delete sel;
+
+            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
+            para->_hcGrp->RemoveGrp(groupName.c_str());
         }
     }
 }
@@ -471,7 +596,6 @@ void ParameterGroup::onImportFromFile()
         QString::null, QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
-        QFileInfo fi(file);
         QTreeWidgetItem* item = currentItem();
         if (isItemSelected(item))
         {
@@ -560,6 +684,11 @@ ParameterValue::~ParameterValue()
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
     _hcGrp = hGrp;
+}
+
+Base::Reference<ParameterGrp> ParameterValue::currentGroup() const
+{
+    return _hcGrp;
 }
 
 bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event )
@@ -805,7 +934,7 @@ ParameterGroupItem::~ParameterGroupItem()
 
 void ParameterGroupItem::fillUp(void)
 {
-    // filing up groups
+    // filling up groups
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();
 
     setText(0,QString::fromUtf8(_hcGrp->GetGroupName()));

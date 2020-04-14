@@ -41,9 +41,9 @@ template <typename T>
 inline Vector3<T> getVectorFromTuple(PyObject* o)
 {
     Py::Sequence tuple(o);
-    T x = (T)Py::Float(tuple.getItem(0));
-    T y = (T)Py::Float(tuple.getItem(1));
-    T z = (T)Py::Float(tuple.getItem(2));
+    T x = static_cast<T>(Py::Float(tuple.getItem(0)));
+    T y = static_cast<T>(Py::Float(tuple.getItem(1)));
+    T z = static_cast<T>(Py::Float(tuple.getItem(2)));
     return Vector3<T>(x,y,z);
 }
 
@@ -77,6 +77,16 @@ private:
 namespace Py {
 
 typedef PythonClassObject<Base::Vector2dPy> Vector2d;
+
+inline Base::Vector2d toVector2d(PyObject *py) {
+    Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
+    return py2d ? py2d->value() : Base::Vector2d();
+}
+
+inline Base::Vector2d toVector2d(const Object& py) {
+    Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
+    return py2d ? py2d->value() : Base::Vector2d();
+}
 
 // Implementing the vector class in the fashion of the PyCXX library.
 class BaseExport Vector : public Object

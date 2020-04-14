@@ -47,7 +47,7 @@ std::string BezierCurvePy::representation(void) const
 
 PyObject *BezierCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of BezierCurvePy and the Twin object 
+    // create a new instance of BezierCurvePy and the Twin object
     return new BezierCurvePy(new GeomBezierCurve);
 }
 
@@ -233,7 +233,7 @@ PyObject* BezierCurvePy::getPoles(PyObject * args)
             gp_Pnt pnt = p(i);
             Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
                 pnt.X(), pnt.Y(), pnt.Z()));
-            poles.append(Py::Object(vec));
+            poles.append(Py::asObject(vec));
         }
         return Py::new_reference_to(poles);
     }
@@ -347,21 +347,21 @@ Py::Long BezierCurvePy::getDegree(void) const
 {
     Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->Degree()); 
+    return Py::Long(curve->Degree());
 }
 
 Py::Long BezierCurvePy::getMaxDegree(void) const
 {
     Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree());
 }
 
 Py::Long BezierCurvePy::getNbPoles(void) const
 {
     Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles());
 }
 
 Py::Object BezierCurvePy::getStartPoint(void) const
@@ -387,5 +387,5 @@ PyObject *BezierCurvePy::getCustomAttributes(const char* /*attr*/) const
 
 int BezierCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

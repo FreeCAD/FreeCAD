@@ -76,24 +76,8 @@ void QGCustomLabel::centerAt(double cX, double cY)
 void QGCustomLabel::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
-    
-    //see QGCustomText for explanation of this code
-    double dppt = 3.53;
-    double svgMagicX = Rez::guiX(8.0);
-    double svgMagicY = Rez::guiX(12.0);
-    double svgMagicYoffset = Rez::guiX(3.0);
-    double fontSize = Rez::appX(font().pointSizeF());
-    double ty = svgMagicY + (svgMagicYoffset*fontSize)/dppt;
-    QPointF svgMove(-svgMagicX/dppt,ty);
 
-    QPaintDevice* hw = painter->device();
-    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
-    if (svg) {
-        painter->scale(Rez::appX(dppt),Rez::appX(dppt));
-        painter->translate(svgMove);
-    } else {
-        painter->scale(1.0,1.0);
-    }
-    
+//    painter->drawRect(boundingRect());          //good for debugging
+
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }

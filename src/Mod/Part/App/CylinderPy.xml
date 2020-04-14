@@ -49,12 +49,12 @@
 			</Documentation>
 			<Parameter Name="Axis" Type="Object"/>
 		</Attribute>
-		<Methode Name="uIso">
+        <Methode Name="uIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the U isoparametric circle of this cylinder</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="vIso">
+        <Methode Name="vIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the V isoparametric circle of this cylinder</UserDocu>
 			</Documentation>
