@@ -4169,7 +4169,7 @@ def readPreferences():
     # reading parameters
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     if FreeCAD.GuiUp and p.GetBool("dxfShowDialog", False):
-        FreeCADGui.showPreferences("Import-Export", 2)
+        FreeCADGui.showPreferences("Import-Export", 3)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
