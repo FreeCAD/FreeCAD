@@ -40,7 +40,7 @@
 #include "MDIViewPage.h"
 
 #include "DlgPrefsTechDrawGeneralImp.h"
-#include "DlgPrefsTechDrawscaleImp.h"
+#include "DlgPrefsTechDrawScaleImp.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "DlgPrefsTechDrawDimensionsImp.h"
 #include "DlgPrefsTechDrawColorsImp.h"

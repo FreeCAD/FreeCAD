@@ -45,7 +45,7 @@ set(TechDrawGui_MOC_HDRS
     QGIViewBalloon.h
     TaskProjGroup.h
     DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDrawscaleImp.h
+    DlgPrefsTechDrawScaleImp.h
     DlgPrefsTechDrawAnnotationImp.h
     DlgPrefsTechDrawDimensionsImp.h
     DlgPrefsTechDrawColorsImp.h
@@ -87,7 +87,7 @@ endif()
 
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDrawGeneral.ui
-    DlgPrefsTechDrawscale.ui
+    DlgPrefsTechDrawScale.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawDimensions.ui
     DlgPrefsTechDrawColors.ui
@@ -152,9 +152,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDrawscale.ui
-    DlgPrefsTechDrawscaleImp.cpp
-    DlgPrefsTechDrawscaleImp.h
+    DlgPrefsTechDrawScale.ui
+    DlgPrefsTechDrawScaleImp.cpp
+    DlgPrefsTechDrawScaleImp.h
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawAnnotationImp.cpp
     DlgPrefsTechDrawAnnotationImp.h
