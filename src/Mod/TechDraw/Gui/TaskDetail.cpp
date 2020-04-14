@@ -46,6 +46,8 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskDetail.h>
@@ -202,6 +204,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
 TaskDetail::~TaskDetail()
 {
+    m_ghost->deleteLater();  //this might not exist if scene is destroyed before TaskDetail is deleted?
     delete ui;
 }
 
@@ -326,8 +329,10 @@ void TaskDetail::editByHighlight()
         return;
     }
 
+    double scale = getBaseFeat()->getScale();
     m_scene->clearSelection();
     m_ghost->setSelected(true);
+    m_ghost->setRadius(ui->qsbRadius->rawValue() * scale);
     m_ghost->setPos(getAnchorScene());
     m_ghost->draw();
     m_ghost->show();
@@ -341,12 +346,25 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
     ui->pbDragger->setEnabled(true);
 
     double scale = getBaseFeat()->getScale();
-    double x = Rez::guiX(getBaseFeat()->X.getValue()) * scale;
-    double y = Rez::guiX(getBaseFeat()->Y.getValue()) * scale;
-    QPointF basePosScene(x, -y);                 //base position in scene coords
+    double x = Rez::guiX(getBaseFeat()->X.getValue());
+    double y = Rez::guiX(getBaseFeat()->Y.getValue());
 
+    DrawViewPart* dvp = getBaseFeat();
+    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    if (dpgi != nullptr) {
+        DrawProjGroup* dpg = dpgi->getPGroup();
+        if (dpg == nullptr) {
+            Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
+            //TODO::throw something.
+            return;
+        }
+        x += Rez::guiX(dpg->X.getValue());
+        y += Rez::guiX(dpg->Y.getValue());
+    }
+
+    QPointF basePosScene(x, -y);                 //base position in scene coords
     QPointF anchorDisplace = dragEnd - basePosScene;
-    QPointF newAnchorPos = Rez::appX(anchorDisplace) / scale;
+    QPointF newAnchorPos = Rez::appX(anchorDisplace / scale);
 
     updateUi(newAnchorPos);
     updateDetail();
@@ -430,17 +448,39 @@ void TaskDetail::updateDetail()
 //get the current Anchor highlight position in scene coords
 QPointF TaskDetail::getAnchorScene()
 {
-    TechDraw::DrawViewPart* dvp = getBaseFeat();
-    TechDraw::DrawViewDetail* dvd = getDetailFeat();
-
+    DrawViewPart* dvp = getBaseFeat();
+    DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
+    DrawViewDetail* dvd = getDetailFeat();
     Base::Vector3d anchorPos = dvd->AnchorPoint.getValue();
-    double x = dvp->X.getValue();
-    double y = dvp->Y.getValue();
-    Base::Vector3d basePos(x, y, 0.0);
-    Base::Vector3d netPos = basePos + anchorPos;
-    netPos = Rez::guiX(netPos * dvp->getScale());
+    anchorPos.y = -anchorPos.y;
+    Base::Vector3d basePos;
+    double scale = 1;
 
-    QPointF qAnchor(netPos.x, - netPos.y);
+    if (dpgi == nullptr) {          //base is normal view
+        double x = dvp->X.getValue();
+        double y = dvp->Y.getValue();
+        basePos = Base::Vector3d (x, -y, 0.0);
+        scale = dvp->getScale();
+    } else {                       //part of projection group
+        
+        DrawProjGroup* dpg = dpgi->getPGroup();
+        if (dpg == nullptr) {
+            Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
+            //TODO::throw something.
+            return QPointF(0.0, 0.0);
+        }
+        double x = dpg->X.getValue();
+        x += dpgi->X.getValue();
+        double y = dpg->Y.getValue();
+        y += dpgi->Y.getValue();
+        basePos = Base::Vector3d(x, -y, 0.0);
+        scale = dpgi->getScale();
+    }
+
+    Base::Vector3d xyScene = Rez::guiX(basePos);
+    Base::Vector3d anchorOffsetScene = Rez::guiX(anchorPos) * scale;
+    Base::Vector3d netPos = xyScene + anchorOffsetScene; 
+    QPointF qAnchor(netPos.x, netPos.y);
     return qAnchor;
 }
 
@@ -496,6 +536,7 @@ bool TaskDetail::accept()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
+    m_ghost->hide();
     getDetailFeat()->requestPaint();
     getBaseFeat()->requestPaint();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
@@ -509,6 +550,7 @@ bool TaskDetail::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
+    m_ghost->hide();
     if (m_mode == CREATEMODE) {
         if (m_created) {
             Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",

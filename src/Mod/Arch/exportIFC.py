@@ -113,7 +113,7 @@ def getPreferences():
 
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
-        FreeCADGui.showPreferences("Import-Export",0)
+        FreeCADGui.showPreferences("Import-Export",1)
     ifcunit = p.GetInt("ifcUnit",0)
     f = 0.001
     u = "metre"
@@ -140,6 +140,14 @@ def getPreferences():
         'SCALE_FACTOR': f,
         'GET_STANDARD': p.GetBool("getStandardType",False)
     }
+    if hasattr(ifcopenshell,"schema_identifier"):
+        schema = ifcopenshell.schema_identifier
+    elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
+        # v0.6 onwards allows to set our own schema
+        schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
+    else:
+        schema = "IFC2X3"
+    preferences["SCHEMA"] = schema
 
     return preferences
 
@@ -152,9 +160,6 @@ def export(exportList,filename,colors=None,preferences=None):
     colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
     to be used in non-GUI mode if you want to be able to export colors."""
 
-    if preferences is None:
-        preferences = getPreferences()
-
     try:
         global ifcopenshell
         import ifcopenshell
@@ -162,6 +167,9 @@ def export(exportList,filename,colors=None,preferences=None):
         FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
         FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
         return
+
+    if preferences is None:
+        preferences = getPreferences()
 
     # process template
 
@@ -174,15 +182,8 @@ def export(exportList,filename,colors=None,preferences=None):
         email = s[1].strip(">")
     global template
     template = ifctemplate.replace("$version",version[0]+"."+version[1]+" build "+version[2])
-    if hasattr(ifcopenshell,"schema_identifier"):
-        schema = ifcopenshell.schema_identifier
-    elif hasattr(ifcopenshell,"version") and (float(ifcopenshell.version[:3]) >= 0.6):
-        # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
-    else:
-        schema = "IFC2X3"
-    if preferences['DEBUG']: print("Exporting an",schema,"file...")
-    template = template.replace("$ifcschema",schema)
+    if preferences['DEBUG']: print("Exporting an",preferences['SCHEMA'],"file...")
+    template = template.replace("$ifcschema",preferences['SCHEMA'])
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
     template = template.replace("$email",email)
@@ -323,8 +324,32 @@ def export(exportList,filename,colors=None,preferences=None):
                     getText("Description",obj.Base),
                     placement,
                     representation,
-                    preferences,
-                    schema)
+                    preferences)
+                
+                assemblyElements.append(subproduct)
+                ifctype = "IfcElementAssembly"
+
+        elif ifctype == "IfcApp::Part":
+            for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
+                representation,placement,shapetype = getRepresentation(
+                    ifcfile,
+                    context,
+                    subobj,
+                    forcebrep=(getBrepFlag(subobj,preferences)),
+                    colors=colors,
+                    preferences=preferences
+                )
+                subproduct = createProduct(
+                    ifcfile,
+                    subobj,
+                    getIfcTypeFromObj(subobj),
+                    getUID(subobj,preferences),
+                    history,
+                    getText("Name",subobj),
+                    getText("Description",subobj),
+                    placement,
+                    representation,
+                    preferences)
                 
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
@@ -420,8 +445,7 @@ def export(exportList,filename,colors=None,preferences=None):
             description,
             placement,
             representation,
-            preferences,
-            schema)
+            preferences)
 
         products[obj.Name] = product
         if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
@@ -1144,7 +1168,7 @@ def export(exportList,filename,colors=None,preferences=None):
                                 rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
                                 break
             if rgb:
-                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2])
+                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2],ifc4=(preferences["SCHEMA"]=="IFC4"))
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
@@ -2161,7 +2185,7 @@ def getBrepFlag(obj,preferences):
     return brepflag
 
 
-def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,representation,preferences,schema):
+def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,representation,preferences):
     """creates a product in the given IFC file"""
 
     kwargs = {
@@ -2180,7 +2204,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
             "SiteAddress":buildAddress(obj,ifcfile),
             "CompositionType": "ELEMENT"
         })
-    if schema == "IFC2X3":
+    if preferences['SCHEMA'] == "IFC2X3":
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences['SCALE_FACTOR'])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
