@@ -28,7 +28,7 @@ from __future__ import print_function
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Class and implementation of Mill Facing operation."
+__doc__ = "Class and implementation of 3D Surface operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 import FreeCAD
@@ -797,7 +797,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         cont = False
 
                 if cont:
-                    if self.showDebugObjects is True:
+                    if self.showDebugObjects:
                         T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCollectiveShape')
                         T.Shape = cfsL
                         T.purgeTouched()
@@ -819,7 +819,7 @@ class ObjectSurface(PathOp.ObjectOp):
                                 casL = ifL[0]
                             else:
                                 casL = Part.makeCompound(ifL)
-                            if self.showDebugObjects is True:
+                            if self.showDebugObjects:
                                 C = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCompoundIntFeat')
                                 C.Shape = casL
                                 C.purgeTouched()
@@ -934,7 +934,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 else:
                     avoid = Part.makeCompound(outFCS)
 
-                if self.showDebugObjects is True:
+                if self.showDebugObjects:
                     PathLog.debug('*** tmpAvoidArea')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpVoidEnvelope')
                     P.Shape = avoid
@@ -942,7 +942,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     self.tempGroup.addObject(P)
 
             if cont:
-                if self.showDebugObjects is True:
+                if self.showDebugObjects:
                     PathLog.debug('*** tmpVoidCompound')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpVoidCompound')
                     P.Shape = avoid
@@ -1338,7 +1338,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     slc.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slc.BoundBox.ZMin))
                     fL.append(slc)
                 comp = Part.makeCompound(fL)
-                if self.showDebugObjects is True:
+                if self.showDebugObjects:
                     PathLog.debug('*** tmpSliceCompound')
                     P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpSliceCompound')
                     P.Shape = comp
@@ -1529,7 +1529,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         fused = Part.makeCompound(fuseShapes)
 
-        if self.showDebugObjects is True:
+        if self.showDebugObjects:
             T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
             T.Shape = fused
             T.purgeTouched()
@@ -1865,10 +1865,10 @@ class ObjectSurface(PathOp.ObjectOp):
             pnt = OS[1]
             for v in range(1, lenOS):
                 nxt = OS[v + 1]
-                if optimize is True:
+                if optimize:
                     # iPOL = prev.isOnLineSegment(nxt, pnt)
                     iPOL = pnt.isOnLineSegment(prev, nxt)
-                    if iPOL is True:
+                    if iPOL:
                         pnt = nxt
                     else:
                         tup = ((prev.x, prev.y), (pnt.x, pnt.y))
@@ -1880,7 +1880,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     LINES.append(tup)
                     prev = pnt
                     pnt = nxt
-            if iPOL is True:
+            if iPOL:
                 tup = ((prev.x, prev.y), (pnt.x, pnt.y))
                 LINES.append(tup)
        # Efor
@@ -1904,7 +1904,7 @@ class ObjectSurface(PathOp.ObjectOp):
         edg0 = compGeoShp.Edges[0]
         p1 = (edg0.Vertexes[0].X, edg0.Vertexes[0].Y)
         p2 = (edg0.Vertexes[1].X, edg0.Vertexes[1].Y)
-        if cutClimb is True:
+        if cutClimb:
             tup = (p2, p1)
             lst = FreeCAD.Vector(p1[0], p1[1], 0.0)
         else:
@@ -1923,32 +1923,32 @@ class ObjectSurface(PathOp.ObjectOp):
             cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (first / middle point)
             # iC = sp.isOnLineSegment(ep, cp)
             iC = cp.isOnLineSegment(sp, ep)
-            if iC is True:
+            if iC:
                 inLine.append('BRK')
                 chkGap = True
             else:
-                if cutClimb is True:
+                if cutClimb:
                     inLine.reverse()
                 LINES.append(inLine)  # Save inLine segments
                 lnCnt += 1
                 inLine = list()  # reset collinear container
-                if cutClimb is True:
+                if cutClimb:
                     sp = cp  # FreeCAD.Vector(v1[0], v1[1], 0.0)
                 else:
                     sp = ep
 
-            if cutClimb is True:
+            if cutClimb:
                 tup = (v2, v1)
-                if chkGap is True:
+                if chkGap:
                     gap = abs(toolDiam - lst.sub(ep).Length)
                 lst = cp
             else:
                 tup = (v1, v2)
-                if chkGap is True:
+                if chkGap:
                     gap = abs(toolDiam - lst.sub(cp).Length)
                 lst = ep
 
-            if chkGap is True:
+            if chkGap:
                 if gap < obj.GapThreshold.Value:
                     b = inLine.pop()  # pop off 'BRK' marker
                     (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
@@ -1963,12 +1963,12 @@ class ObjectSurface(PathOp.ObjectOp):
             inLine.append(tup)
         # Efor
         lnCnt += 1
-        if cutClimb is True:
+        if cutClimb:
             inLine.reverse()
         LINES.append(inLine)  # Save inLine segments
 
         # Handle last inLine set, reversing it.
-        if obj.CutPatternReversed is True:
+        if obj.CutPatternReversed:
             if cpa != 0.0 and cpa % 90.0 == 0.0:
                 F = LINES.pop(0)
                 rev = list()
@@ -2002,7 +2002,7 @@ class ObjectSurface(PathOp.ObjectOp):
         ec = len(compGeoShp.Edges)
         toolDiam = 2.0 * self.radius
 
-        if self.CutClimb is True:
+        if self.CutClimb:
             dirFlg = -1
         else:
             dirFlg = 1
@@ -2029,7 +2029,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
             # iC = sp.isOnLineSegment(ep, cp)
             iC = cp.isOnLineSegment(sp, ep)
-            if iC is True:
+            if iC:
                 inLine.append('BRK')
                 chkGap = True
                 gap = abs(toolDiam - lst.sub(cp).Length)
@@ -2049,7 +2049,7 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 tup = (v2, v1)
 
-            if chkGap is True:
+            if chkGap:
                 if gap < obj.GapThreshold.Value:
                     b = inLine.pop()  # pop off 'BRK' marker
                     (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
@@ -2077,10 +2077,10 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.debug('Line count is ODD.')
             dirFlg = -1 * dirFlg
             if obj.CutPatternReversed is False:
-                if self.CutClimb is True:
+                if self.CutClimb:
                     dirFlg = -1 * dirFlg
 
-        if obj.CutPatternReversed is True:
+        if obj.CutPatternReversed:
             dirFlg = -1 * dirFlg
 
         # Handle last inLine list
@@ -2137,7 +2137,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Separate arc data into Loops and Arcs
         for ei in range(0, ec):
             edg = compGeoShp.Edges[ei]
-            if edg.Closed is True:
+            if edg.Closed:
                 stpOvrEI.append(('L', ei, False))
             else:
                 if isSame is False:
@@ -2151,7 +2151,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     if abs(sameRad - pnt.sub(COM).Length) > 0.00001:
                         isSame = False
 
-                    if isSame is True:
+                    if isSame:
                         segEI.append(ei)
                     else:
                         # Move co-radial arc segments
@@ -2162,7 +2162,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         pnt = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)
                         sameRad = pnt.sub(COM).Length
         # Process trailing `segEI` data, if available
-        if isSame is True:
+        if isSame:
             stpOvrEI.append(['A', segEI, False])
 
         # Identify adjacent arcs with y=0 start/end points that connect
@@ -2279,15 +2279,15 @@ class ObjectSurface(PathOp.ObjectOp):
                     cp = (COM.x, COM.y, 0.0)
                     if dirFlg == 1:
                         arc = (sp, ep, cp)
-                        if chkGap is True:
+                        if chkGap:
                             gap = abs(toolDiam - gapDist(lst, sp))  # abs(toolDiam - lst.sub(sp).Length)
                         lst = ep
                     else:
                         arc = (ep, sp, cp)  # OCL.Arc(firstPnt, lastPnt, centerPnt, dir=True(CCW direction))
-                        if chkGap is True:
+                        if chkGap:
                             gap = abs(toolDiam - gapDist(lst, ep))  # abs(toolDiam - lst.sub(ep).Length)
                         lst = sp
-                    if chkGap is True:
+                    if chkGap:
                         if gap < obj.GapThreshold.Value:
                             PRTS.pop()  # pop off 'BRK' marker
                             (vA, vB, vC) = PRTS.pop()  # pop off previous arc segment for combining with current
@@ -2403,7 +2403,7 @@ class ObjectSurface(PathOp.ObjectOp):
         lenSCANDATA = len(SCANDATA)
         gDIR = ['G3', 'G2']
 
-        if self.CutClimb is True:
+        if self.CutClimb:
             gDIR = ['G2', 'G3']
 
         # Set `ProfileEdges` specific trigger indexes
@@ -2433,7 +2433,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             if so > 0:
                 if obj.CutPattern == 'CircularZigZag':
-                    if odd is True:
+                    if odd:
                         odd = False
                     else:
                         odd = True
@@ -2462,7 +2462,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
                     elif obj.CutPattern in ['Circular', 'CircularZigZag'] and obj.CircularUseG2G3 is True and lenPrt > 2:
                         (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
-                        if rtnVal is True:
+                        if rtnVal:
                             cmds.extend(gcode)
                         else:
                             cmds.extend(self._planarSinglepassProcess(obj, prt))
@@ -2528,7 +2528,7 @@ class ObjectSurface(PathOp.ObjectOp):
         lenSCANDATA = len(SCANDATA)
         gDIR = ['G3', 'G2']
 
-        if self.CutClimb is True:
+        if self.CutClimb:
             gDIR = ['G2', 'G3']
 
         # Set `ProfileEdges` specific trigger indexes
@@ -2571,7 +2571,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     prt = SO[i]
                     lenPrt = len(prt)
                     if prt == 'BRK':
-                        if brkFlg is True:
+                        if brkFlg:
                             ADJPRTS.append(prt)
                             LMAX.append(prt)
                             brkFlg = False
