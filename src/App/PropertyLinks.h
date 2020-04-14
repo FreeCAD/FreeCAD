@@ -1309,6 +1309,9 @@ public:
 
     virtual PyObject *getPyObject(void) override;
     virtual void setPyObject(PyObject *) override;
+
+    //for consistency with PropertyLinkList
+    const std::vector<App::DocumentObject*> getValues(void) const;
 };
 
 
