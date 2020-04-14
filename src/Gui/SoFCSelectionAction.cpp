@@ -1464,9 +1464,9 @@ void SoFCRayPickAction::afterPick() {
     int p = SoFCUnifiedSelection::getPriority(curpp);
 
     bool update = false;
-    if(pos.equals((*ppList)[0]->getPoint(),0.01f))
-        update = (p > lastPriority);
-    else
+    if(p > lastPriority && pos.equals((*ppList)[0]->getPoint(),0.01f))
+        update = true;
+     else
         update = (dist < lastDist);
     if(update) {
         lastPriority = p;
