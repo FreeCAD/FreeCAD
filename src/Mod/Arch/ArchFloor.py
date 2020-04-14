@@ -93,9 +93,9 @@ class _CommandFloor:
     A tool for creating Arch floors.
 
     Creates a floor from the objects selected by the user, if any. Excludes
-    objects that appear higher in the object heirarchy, such as sites or
-    buildings. If free linking is enabled in the Arch preferenecs, allows
-    higher heirarchy objects to be part of floors.
+    objects that appear higher in the object hierarchy, such as sites or
+    buildings. If free linking is enabled in the Arch preferences, allows
+    higher hierarchy objects to be part of floors.
 
     Find documentation on the end user usage of Arch Floor here:
     https://wiki.freecadweb.org/Arch_Floor
@@ -122,9 +122,9 @@ class _CommandFloor:
         """Executed when Arch Floor is called.
 
         Creates a floor from the objects selected by the user, if any. Excludes
-        objects that appear higher in the object heirarchy, such as sites or
-        buildings. If free linking is enabled in the Arch preferenecs, allows
-        higher heirarchy objects to be part of floors.
+        objects that appear higher in the object hierarchy, such as sites or
+        buildings. If free linking is enabled in the Arch preferences, allows
+        higher hierarchy objects to be part of floors.
         """
 
         sel = FreeCADGui.Selection.getSelection()
@@ -172,7 +172,7 @@ class _Floor(ArchIFC.IfcProduct):
     """
 
     def __init__(self,obj):
-        """Initalises the floor.
+        """Initialises the floor.
 
         The floor can be based off either a group, or a python feature. Learn more
         about groups here: https://wiki.freecadweb.org/Std_Group

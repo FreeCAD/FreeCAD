@@ -1508,7 +1508,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
         """Initialises the wall view provider.
 
-        Runs the Arch Component view provider initalisation, and sets the color
+        Runs the Arch Component view provider initialisation, and sets the color
         to the default for walls.
 
         Parameters

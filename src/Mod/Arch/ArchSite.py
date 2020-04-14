@@ -532,7 +532,7 @@ class _Site(ArchIFC.IfcProduct):
     """
 
     def __init__(self,obj):
-        """Initalises the site.
+        """Initialises the site.
 
         The site must be based off a <Part::FeaturePython> object.
 
