@@ -18,9 +18,9 @@ class IfcRoot:
     """This class defines the common methods and properties for managing IFC data.
 
     IFC, or Industry Foundation Classes are a standardised way to digitally
-    describe the built enviroment.  The ultimate goal of IFC is to provide
+    describe the built environment.  The ultimate goal of IFC is to provide
     better interoperability between software that deals with the built
-    enviroment. You can learn more here:
+    environment. You can learn more here:
     https://technical.buildingsmart.org/standards/ifc/
 
     You can learn more about the technical details of the IFC schema here:
@@ -78,7 +78,7 @@ class IfcRoot:
         Adds the attributes specified in the object's IFC type schema, to the
         object's properties. Does not re-add them if they're already present.
         Also removes old IFC attribute properties that no longer appear in the
-        schema for backwards compatability.
+        schema for backwards compatibility.
 
         Does so using the .addIfcAttributes() and
         .purgeUnusedIfcAttributesFromPropertiesList() methods.
@@ -389,7 +389,7 @@ class IfcRoot:
         Removes the property representing an IFC attribute, if it does not
         appear in the schema of the IFC type provided. Also, removes the
         property if it's attribute is an enum type, presumably for backwards
-        compatability.
+        compatibility.
 
         Learn more about IFC enums here:
         https://standards.buildingsmart.org/IFC/RELEASE/IFC4/FINAL/HTML/schema/chapter-3.htm#enumeration

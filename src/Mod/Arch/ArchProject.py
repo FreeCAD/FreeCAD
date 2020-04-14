@@ -140,7 +140,7 @@ class _Project(ArchIFC.IfcContext):
     """
 
     def __init__(self, obj):
-        """Initalises the project.
+        """Initialises the project.
 
         Adds the properties of a project, and sets it's IFC type.
 

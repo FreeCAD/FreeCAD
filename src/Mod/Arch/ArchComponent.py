@@ -1248,7 +1248,7 @@ class ViewProviderComponent:
         the mesh associated as the HiRes property of the host object. See
         ArchComponent.Component's properties. 
 
-        If no shape is set in the HiRes propery, just displays the object as
+        If no shape is set in the HiRes property, just displays the object as
         the Flat Lines display mode.
 
         Parameters
@@ -1454,7 +1454,7 @@ class ViewProviderComponent:
         obj: <Part::Feature>
             The object to change the color of.
         force: bool
-            If true, forces the colorisation even if the two objects have very
+            If true, forces the colourisation even if the two objects have very
             similar colors.
         """
 
@@ -1509,7 +1509,7 @@ class ArchSelectionObserver:
     """
 
     def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
-        """Initalises the ArchSelectionObserver object.
+        """Initialises the ArchSelectionObserver object.
 
         Parameters
         ----------
@@ -1718,7 +1718,7 @@ class ComponentTaskPanel:
         on what the user has selected.
 
         If they have selected one of the root attribute folders, it disables
-        the remove button. If they have seperately selected an object in the 3D
+        the remove button. If they have separately selected an object in the 3D
         view, the add button is enabled, allowing the user to add that object
         to the root attribute folder.
 
@@ -2185,7 +2185,7 @@ if FreeCAD.GuiUp:
 
 
         def __init__(self, parent=None, dialog=None, ptypes=[], plabels=[], *args):
-            """This method initalises the class.
+            """This method initialises the class.
 
             Parameters
             ----------

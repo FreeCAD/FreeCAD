@@ -113,7 +113,7 @@ class IfcContextUI:
         ----------
         name: str
             The name of the datapoint within the RepresentationContexts
-            attribute being editied.
+            attribute being edited.
         label: str
             A human readable version of the name.
 
@@ -153,7 +153,7 @@ class IfcContextUI:
         ----------
         name: str
             The name of the datapoint within the RepresentationContexts
-            attribute being editied.
+            attribute being edited.
         
         Returns
         -------
