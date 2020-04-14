@@ -3067,6 +3067,8 @@ class Offset(Modifier):
                         ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
                          'FreeCAD.ActiveDocument.recompute()'])
             self.finish()
+        else:
+            FreeCAD.Console.PrintError(translate("draft","Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction")+"/n")
 
 
 class Stretch(Modifier):

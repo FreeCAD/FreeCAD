@@ -370,7 +370,7 @@ class recycler:
                 self.sstyles[key] = c
             return c
 
-    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0):
+    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0,ifc4=False):
         if name:
             key = name+str((r,g,b,t))
         else:
@@ -380,7 +380,10 @@ class recycler:
             return self.psas[key]
         else:
             iss = self.createIfcSurfaceStyle(name,r,g,b,t)
-            c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
+            if ifc4:
+                c = iss
+            else:
+                c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
             if self.compress:
                 self.psas[key] = c
             return c

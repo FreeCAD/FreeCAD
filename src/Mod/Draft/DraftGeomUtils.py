@@ -305,7 +305,7 @@ def findIntersection(edge1, edge2,
             except:
                 return []
             norm3 = vec1.cross(vec2)
-            if not DraftVecUtils.isNull(norm3) :
+            if not DraftVecUtils.isNull(norm3) and (norm3.x+norm3.y+norm3.z != 0):
                 k = ((pt3.z-pt1.z)*(vec2.x-vec2.y)+(pt3.y-pt1.y)*(vec2.z-vec2.x)+ \
                      (pt3.x-pt1.x)*(vec2.y-vec2.z))/(norm3.x+norm3.y+norm3.z)
                 vec1.scale(k,k,k)

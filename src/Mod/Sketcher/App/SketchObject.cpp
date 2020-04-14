@@ -1939,6 +1939,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             secondPos = constr->FirstPos;
         }
     };
+    
+    auto isPointAtPosition = [this] (int GeoId1, PointPos pos1, Base::Vector3d point) {
+       
+        Base::Vector3d pp = getPoint(GeoId1,pos1);
+
+        if( (point-pp).Length() < Precision::Confusion() )
+            return true;
+        
+        return false;
+        
+    };
 
     Part::Geometry *geo = geomlist[GeoId];
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -2128,6 +2139,26 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
+            
+            // check first if start and end points are within a confusion tolerance
+            if(isPointAtPosition(GeoId1, Sketcher::start, point1)) {
+                    constrType1 = Sketcher::Coincident;
+                    secondPos1 = Sketcher::start;
+            }
+            else if(isPointAtPosition(GeoId1, Sketcher::end, point1)) {
+                    constrType1 = Sketcher::Coincident;
+                    secondPos1 = Sketcher::end;
+            }
+            
+            if(isPointAtPosition(GeoId2, Sketcher::start, point2)) {
+                    constrType2 = Sketcher::Coincident;
+                    secondPos2 = Sketcher::start;
+            }
+            else if(isPointAtPosition(GeoId2, Sketcher::end, point2)) {
+                    constrType2 = Sketcher::Coincident;
+                    secondPos2 = Sketcher::end;
+            }            
+            
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
                  it != constraints.end(); ++it) {
                 Constraint *constr = *(it);
@@ -2162,6 +2193,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             newConstr->SecondPos = Sketcher::none;
 
             // Add Second Constraint
+            newConstr->Type = constrType2;
             newConstr->First = GeoId;
             newConstr->FirstPos = end;
             newConstr->Second = GeoId2;
