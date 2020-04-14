@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -853,11 +854,45 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.x = x;
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
+    
+    Base::Quantity mmx(Base::Quantity::MilliMetre);
+    mmx.setValue((double)x);
+    Base::Quantity mmy(Base::Quantity::MilliMetre);
+    mmy.setValue((double)y);
+    Base::Quantity mmz(Base::Quantity::MilliMetre);
+    mmz.setValue((double)z);
+    
+    double xfactor, yfactor, zfactor, factor;
+    QString xunit, yunit, zunit, unit;
+    
+    QString xval = Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
+    QString yval = Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
+    QString zval = Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+    
+    if (xfactor <= yfactor && xfactor <= zfactor)
+    {
+        factor = xfactor;
+        unit = xunit;
+    }
+    else if (yfactor <= xfactor && yfactor <= zfactor)
+    {
+        factor = yfactor;
+        unit = yunit;
+    }
+    else
+    {
+        factor = zfactor;
+        unit = zunit;
+    }
+    
+    float xuser = x / factor;
+    float yuser = y / factor;
+    float zuser = z / factor;
 
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",CurrentPreselection.pDocName
+    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f) %s",CurrentPreselection.pDocName
                                                        ,CurrentPreselection.pObjectName
                                                        ,CurrentPreselection.pSubName
-                                                       ,x,y,z);
+                                                       ,xuser,yuser,zuser,unit.toLatin1().data());
 
     if (getMainWindow())
         getMainWindow()->showMessage(QString::fromLatin1(buf));

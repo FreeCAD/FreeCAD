@@ -52,6 +52,7 @@
 #include "View3DInventorViewer.h"
 
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include "SoFCSelection.h"
 #include "MainWindow.h"
 #include "Selection.h"
@@ -401,13 +402,46 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                 }
                 
                 const auto &pt = pp->getPoint();
-                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
+                
+                Base::Quantity mmx(Base::Quantity::MilliMetre);
+                mmx.setValue(fabs(pt[0])>1e-7?(double)pt[0]:0.0);
+                Base::Quantity mmy(Base::Quantity::MilliMetre);
+                mmy.setValue(fabs(pt[1])>1e-7?(double)pt[1]:0.0);
+                Base::Quantity mmz(Base::Quantity::MilliMetre);
+                mmz.setValue(fabs(pt[2])>1e-7?(double)pt[2]:0.0);
+                
+                double xfactor, yfactor, zfactor, factor;
+                QString xunit, yunit, zunit, unit;
+                
+                QString xval = Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
+                QString yval = Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
+                QString zval = Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+                
+                if (xfactor <= yfactor && xfactor <= zfactor)
+                {
+                    factor = xfactor;
+                    unit = xunit;
+                }
+                else if (yfactor <= xfactor && yfactor <= zfactor)
+                {
+                    factor = yfactor;
+                    unit = yunit;
+                }
+                else
+                {
+                    factor = zfactor;
+                    unit = zunit;
+                }
+                
+                float xuser = fabs(pt[0])>1e-7 ? pt[0] / factor : 0.0;
+                float yuser = fabs(pt[1])>1e-7 ? pt[1] / factor : 0.0;
+                float zuser = fabs(pt[2])>1e-7 ? pt[2] / factor : 0.0;
+                
+                snprintf(buf,512,"Preselected: %s.%s.%s (%f, %f, %f) %s",documentName.getValue().getString()
                                            ,objectName.getValue().getString()
                                            ,subElementName.getValue().getString()
-                                           ,fabs(pt[0])>1e-7?pt[0]:0.0
-                                           ,fabs(pt[1])>1e-7?pt[1]:0.0
-                                           ,fabs(pt[2])>1e-7?pt[2]:0.0);
-
+                                           ,xuser,yuser,zuser,unit.toLatin1().data());
+                
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
             else { // picked point
