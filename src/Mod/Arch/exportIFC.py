@@ -329,6 +329,32 @@ def export(exportList,filename,colors=None,preferences=None):
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
+        elif ifctype == "IfcApp::Part":
+            for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
+                representation,placement,shapetype = getRepresentation(
+                    ifcfile,
+                    context,
+                    subobj,
+                    forcebrep=(getBrepFlag(subobj,preferences)),
+                    colors=colors,
+                    preferences=preferences
+                )
+                subproduct = createProduct(
+                    ifcfile,
+                    subobj,
+                    getIfcTypeFromObj(subobj),
+                    getUID(subobj,preferences),
+                    history,
+                    getText("Name",subobj),
+                    getText("Description",subobj),
+                    placement,
+                    representation,
+                    preferences,
+                    schema)
+                
+                assemblyElements.append(subproduct)
+                ifctype = "IfcElementAssembly"
+
         # export grids
 
         if ifctype in ["IfcAxis","IfcAxisSystem","IfcGrid"]:
