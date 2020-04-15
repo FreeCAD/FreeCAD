@@ -884,6 +884,16 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
 
+    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size(vp.getViewportSizePixels());
+    const SbVec2s pos(ev->getPosition());
+    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
+                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+
+    // set lastmouseposition to avoid Coin warning caused by
+    // DRAGGING handling in NavigationStyle::setViewingMode()
+    this->lastmouseposition = posn;
+
     NS::Event smev;
     smev.inventor_event = ev;
 
