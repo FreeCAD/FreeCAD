@@ -205,8 +205,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def setEditorProperties(self, obj):
         # Used to hide inputs in properties list
-        show = 0
-        hide = A = 2
+        expMode = G = 0
+        show = hide = A = B = C = 2
         if hasattr(obj, 'EnableRotation'):
             obj.setEditorMode('EnableRotation', hide)
 
@@ -224,29 +224,35 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode('GapSizes', hide)
 
         if obj.Algorithm == 'OCL Dropcutter':
-            expMode = 0
-            obj.setEditorMode('ClearLastLayer', hide)
+            B = 2
         elif obj.Algorithm == 'Experimental':
-            A = 0
-            expMode = 2
-            if obj.CutPattern == 'None':
+            A = B = C = 0
+            expMode = G = 2
+
+            cutPattern = obj.CutPattern
+            if obj.ClearLastLayer != 'Off':
+                cutPattern = obj.CutPattern
+
+            if cutPattern == 'None':
                 show = hide = A = 2
-            elif obj.CutPattern in ['Line', 'ZigZag']:
+            elif cutPattern in ['Line', 'ZigZag']:
                 show = 0
-            elif obj.CutPattern in ['Circular', 'CircularZigZag']:
+            elif cutPattern in ['Circular', 'CircularZigZag']:
                 show = 2  # hide
                 hide = 0  # show
+            elif cutPattern == 'Spiral':
+                G = 0
 
-            obj.setEditorMode('CutPatternAngle', show)
-            obj.setEditorMode('CircularCenterAt', hide)
-            obj.setEditorMode('CircularCenterCustom', hide)
+        obj.setEditorMode('CutPatternAngle', show)
+        obj.setEditorMode('CircularCenterAt', hide)
+        obj.setEditorMode('CircularCenterCustom', hide)
+        obj.setEditorMode('CutPatternReversed', A)
 
-            obj.setEditorMode('CutPatternReversed', A)
-            obj.setEditorMode('ClearLastLayer', A)
-            obj.setEditorMode('StepOver', A)
-
-        obj.setEditorMode('IgnoreOuterAbove', A)
-        obj.setEditorMode('SampleInterval', expMode)
+        obj.setEditorMode('ClearLastLayer', C)
+        obj.setEditorMode('StepOver', B)
+        obj.setEditorMode('IgnoreOuterAbove', B)
+        obj.setEditorMode('CutPattern', C)
+        obj.setEditorMode('SampleInterval', G)
         obj.setEditorMode('LinearDeflection', expMode)
         obj.setEditorMode('AngularDeflection', expMode)
 
