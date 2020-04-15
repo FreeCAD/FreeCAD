@@ -142,7 +142,6 @@ class DebianGitHub(VersionControl):
         commit = f.readline()
         f.close()
 
-        import requests
         base_url = "https://api.github.com"
         owner = "FreeCAD"
         repo = "FreeCAD"
@@ -150,6 +149,7 @@ class DebianGitHub(VersionControl):
         self.hash = sha
 
         try:
+            import requests
             request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(base_url, owner, repo, sha)
             commit_req = requests.get(request_url)
             if not commit_req.ok:
