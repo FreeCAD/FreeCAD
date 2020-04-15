@@ -28,10 +28,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
 import FreeCAD
-import DraftGeomUtils
-import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -39,8 +36,14 @@ import PathScripts.PathUtils as PathUtils
 from PySide import QtCore
 import PathScripts.PathGeom as PathGeom
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+
 import math
-import Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
 

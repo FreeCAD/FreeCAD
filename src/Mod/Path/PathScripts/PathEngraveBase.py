@@ -22,13 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-import DraftGeomUtils
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import copy
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 from PySide import QtCore
 
