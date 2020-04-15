@@ -41,9 +41,18 @@ from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 class ViewProviderText(ViewProviderDraftAnnotation):
     """A View Provider for the Draft Text annotation"""
 
+
     def __init__(self,vobj):
 
-        super().__init__(vobj)
+        super(ViewProviderText, self).__init__(vobj)
+
+        self.set_properties(vobj)
+
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+
+    def set_properties(self, vobj):
 
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
                          "Annotation",QT_TRANSLATE_NOOP("App::Property",
@@ -73,13 +82,17 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         vobj.FontName = utils.get_param("textfont","sans")
         vobj.FontSize = utils.get_param("textheight",1)
 
+
     def getIcon(self):
         return ":/icons/Draft_Text.svg"
+
 
     def claimChildren(self):
         return []
 
+
     def attach(self,vobj):
+        '''Setup the scene sub-graph of the view provider'''
         self.mattext = coin.SoMaterial()
         textdrawstyle = coin.SoDrawStyle()
         textdrawstyle.style = coin.SoDrawStyle.FILLED
@@ -110,11 +123,14 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         self.onChanged(vobj,"Justification")
         self.onChanged(vobj,"LineSpacing")
 
+
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
 
+
     def setDisplayMode(self,mode):
         return mode
+
 
     def updateData(self,obj,prop):
         if prop == "Text":
@@ -128,6 +144,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         elif prop == "Placement":
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
+
 
     def onChanged(self,vobj,prop):
         if prop == "ScaleMultiplier":

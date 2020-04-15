@@ -42,7 +42,7 @@ if App.GuiUp:
 
 
 def make_text(stringslist, point=App.Vector(0,0,0), screen=False):
-    """makeText(strings,[point],[screen])
+    """makeText(strings, point, screen)
     
     Creates a Text object containing the given strings. 
     The current color and text height and font
@@ -51,22 +51,24 @@ def make_text(stringslist, point=App.Vector(0,0,0), screen=False):
     Parameters
     ----------
     stringlist : List
-        Given list of strings, one string by line (strings can also 
-        be one single string)
+                 Given list of strings, one string by line (strings can also
+                 be one single string)
 
     point : App::Vector
-
+            insert point of the text
 
     screen : Bool
-        If screen is True, the text always faces the view direction.
+             If screen is True, the text always faces the view direction.
 
     """
 
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
+
     utils.type_check([(point, App.Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
+
     obj = App.ActiveDocument.addObject("App::FeaturePython","Text")
     Text(obj)
     obj.Text = stringslist
@@ -92,9 +94,17 @@ def make_text(stringslist, point=App.Vector(0,0,0), screen=False):
 class Text(DraftAnnotation):
     """The Draft Text object"""
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        super().__init__(obj, "Text")
+        super(Text, self).__init__(obj, "Text")
+
+        self.init_properties(obj)
+
+        obj.Proxy = self
+    
+
+    def init_properties(self, obj):
+        """Add Text specific properties to the object and set them"""
 
         obj.addProperty("App::PropertyPlacement",
                         "Placement",
@@ -108,6 +118,14 @@ class Text(DraftAnnotation):
                         QT_TRANSLATE_NOOP("App::Property",
                                           "The text displayed by this object"))
 
-    def execute(self,obj):
 
-        pass
+    def execute(self,obj):
+        '''Do something when recompute object'''
+
+        return
+
+
+    def onChanged(self,obj,prop):
+        '''Do something when a property has changed'''
+                
+        return

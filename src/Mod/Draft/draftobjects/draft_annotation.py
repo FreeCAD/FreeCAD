@@ -31,57 +31,34 @@ import FreeCAD as App
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from draftutils import gui_utils
 
-class DraftAnnotation:
+class DraftAnnotation(object):
     """The Draft Annotation Base object
     This class is not used directly, but inherited by all annotation
     objects.
     """
-    def __init__(self, obj, tp="Unknown"):
-        if obj:
-            obj.Proxy = self
+    def __init__(self, obj, tp="Annotation"):
+        """Add general Annotation properties to the object"""
+
         self.Type = tp
+
 
     def __getstate__(self):
         return self.Type
+
 
     def __setstate__(self,state):
         if state:
             self.Type = state
 
+
     def execute(self,obj):
-        pass
+        '''Do something when recompute object'''
+
+        return
+
 
     def onChanged(self, obj, prop):
-        pass
-
-class StylesContainerBase:
-    """The Base class for Annotation Containers"""
-
-    def __init__(self, obj, tp = "AnnotationContainer"):
-
-        self.Type = tp
-        obj.Proxy = self
-
-    def execute(self, obj):
-
-        g = obj.Group
-        g.sort(key=lambda o: o.Label)
-        obj.Group = g
-
-    def make_unique_visible(self, obj, active_style):
-        "turn non visible all the concurrent styles"
-        if hasattr(active_style, "Visibility"):
-            for o in obj.Group:
-                if o.Name != active_style.Name:
-                    if hasattr(o, "Visibility"):
-                        o.Visibility = False
-
-
-class AnnotationStylesContainer(StylesContainerBase):
-    """The Annotation Container"""
-
-    def __init__(self, obj):
-
-        self.Type = "AnnotationContainer"
-        obj.Proxy = self
+        '''Do something when a property has changed'''
+                
+        return
 
