@@ -49,6 +49,7 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
+import PathScripts.PathSurfaceSupport as PathSurfaceSupport
 import time
 import math
 import Part
@@ -207,7 +208,7 @@ class ObjectSurface(PathOp.ObjectOp):
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'CircularCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
             'DropCutterDir': ['X', 'Y'],
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
@@ -226,6 +227,8 @@ class ObjectSurface(PathOp.ObjectOp):
             if obj.CutPattern in ['Circular', 'CircularZigZag']:
                 P0 = 2
                 P2 = 0
+            elif obj.CutPattern == 'Offset':
+                P0 = 2
         elif obj.ScanType == 'Rotational':
             R2 = P0 = P2 = 2
             R0 = 0
@@ -404,6 +407,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.tempGroup = None
         self.CutClimb = False
         self.closedGap = False
+        self.tmpCOM = None
         self.gaps = [0.1, 0.2, 0.3]
         CMDS = list()
         modelVisibility = list()
@@ -1623,36 +1627,50 @@ class ObjectSurface(PathOp.ObjectOp):
                                     depthparams[lenDP - 1], obj.SampleInterval.Value, useSafeCutter=False)
 
         profScan = list()
+        offsetPoints = False
         if obj.ProfileEdges != 'None':
+            offsetPoints = True
             prflShp = self.profileShapes[mdlIdx][fsi]
             if prflShp is False:
                 PathLog.error('No profile shape is False.')
                 return list()
-            if self.showDebugObjects is True:
+            if self.showDebugObjects:
                 P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpNewProfileShape')
                 P.Shape = prflShp
                 P.purgeTouched()
                 self.tempGroup.addObject(P)
             # get offset path geometry and perform OCL scan with that geometry
-            pathOffsetGeom = self._planarMakeProfileGeom(obj, prflShp)
+            pathOffsetGeom = self._offsetFacesToPointData(obj, prflShp)
             if pathOffsetGeom is False:
                 PathLog.error('No profile geometry returned.')
                 return list()
-            profScan = [self._planarPerformOclScan(obj, pdc, pathOffsetGeom, offsetPoints=True)]
+            profScan = [self._planarPerformOclScan(obj, pdc, pathOffsetGeom, offsetPoints)]
 
         geoScan = list()
         if obj.ProfileEdges != 'Only':
-            if self.showDebugObjects is True:
+            if self.showDebugObjects:
                 F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCutArea')
                 F.Shape = cmpdShp
                 F.purgeTouched()
                 self.tempGroup.addObject(F)
             # get internal path geometry and perform OCL scan with that geometry
-            pathGeom = self._planarMakePathGeom(obj, cmpdShp)
+            PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
+            if self.showDebugObjects:
+                PGG.setDebugObjectsGroup(self.tempGroup)
+            self.tmpCOM = PGG.getCenterOfMass()
+            pathGeom = PGG.getPathGeometryGenerator()
             if pathGeom is False:
                 PathLog.error('No path geometry returned.')
                 return list()
-            geoScan = self._planarPerformOclScan(obj, pdc, pathGeom, offsetPoints=False)
+            if obj.CutPattern == 'Offset':
+                offsetPoints = True
+                useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
+                if useGeom is False:
+                    PathLog.error('No profile geometry returned.')
+                    return list()
+                geoScan = [self._planarPerformOclScan(obj, pdc, useGeom, offsetPoints)]
+            else:
+                geoScan = self._planarPerformOclScan(obj, pdc, pathGeom, offsetPoints)
 
         if obj.ProfileEdges == 'Only':  # ['None', 'Only', 'First', 'Last']
             SCANDATA.extend(profScan)
@@ -1696,305 +1714,33 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return final
 
-    def _planarMakePathGeom(self, obj, faceShp):
-        '''_planarMakePathGeom(obj, faceShp)...
-        Creates the line/arc cut pattern geometry and returns the intersection with the received faceShp.
-        The resulting intersecting line/arc geometries are then converted to lines or arcs for OCL.'''
-        PathLog.debug('_planarMakePathGeom()')
-        GeoSet = list()
-
-        def getSpiralPoint(move, b, radAng):
-            x = b * radAng * math.cos(radAng)
-            y = b * radAng * math.sin(radAng)
-            return FreeCAD.Vector(x, y, 0.0).add(move)
-
-        def getOppositeSpiralPoint(move, b, radAng):
-            x = b * radAng * math.cos(radAng)
-            y = b * radAng * math.sin(radAng)
-            return FreeCAD.Vector(-1 * x, y, 0.0).add(move)
-
-        # Apply drop cutter extra offset and set the max and min XY area of the operation
-        xmin = faceShp.BoundBox.XMin
-        xmax = faceShp.BoundBox.XMax
-        ymin = faceShp.BoundBox.YMin
-        ymax = faceShp.BoundBox.YMax
-        zmin = faceShp.BoundBox.ZMin
-        zmax = faceShp.BoundBox.ZMax
-
-        # Compute weighted center of mass of all faces combined
-        fCnt = 0
-        totArea = 0.0
-        zeroCOM = FreeCAD.Vector(0.0, 0.0, 0.0)
-        for F in faceShp.Faces:
-            comF = F.CenterOfMass
-            areaF = F.Area
-            totArea += areaF
-            fCnt += 1
-            zeroCOM = zeroCOM.add(FreeCAD.Vector(comF.x, comF.y, 0.0).multiply(areaF))
-        if fCnt == 0:
-            PathLog.error(translate('PathSurface', 'Cannot calculate the Center Of Mass. Using Center of Boundbox.'))
-            zeroCOM = FreeCAD.Vector((xmin + xmax) / 2.0, (ymin + ymax) / 2.0, 0.0)
-        else:
-            avgArea = totArea / fCnt
-            zeroCOM.multiply(1 / fCnt)
-            zeroCOM.multiply(1 / avgArea)
-        COM = FreeCAD.Vector(zeroCOM.x, zeroCOM.y, 0.0)
-
-        # get X, Y, Z spans; Compute center of rotation
-        deltaX = abs(xmax-xmin)
-        deltaY = abs(ymax-ymin)
-        deltaC = math.sqrt(deltaX**2 + deltaY**2)
-        lineLen = deltaC + (2.0 * self.cutter.getDiameter())  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-        halfLL = math.ceil(lineLen / 2.0)
-        cutPasses = math.ceil(lineLen / self.cutOut) + 1  # Number of lines(passes) required to cover lineLen
-        halfPasses = math.ceil(cutPasses / 2.0)
-        bbC = faceShp.BoundBox.Center
-
-        # Generate the line/circle sets to be intersected with the cut-face-area
-        if obj.CutPattern in ['ZigZag', 'Line']:
-            centRot = FreeCAD.Vector(0.0, 0.0, 0.0)  # Bottom left corner of face/selection/model
-            cAng = math.atan(deltaX / deltaY)  # BoundaryBox angle
-
-            # Determine end points and create top lines
-            x1 = centRot.x - halfLL
-            x2 = centRot.x + halfLL
-            diag = None
-            if obj.CutPatternAngle == 0 or obj.CutPatternAngle == 180:
-                diag = deltaY
-            elif obj.CutPatternAngle == 90 or obj.CutPatternAngle == 270:
-                diag = deltaX
-            else:
-                perpDist = math.cos(cAng - math.radians(obj.CutPatternAngle)) * deltaC
-                diag = perpDist
-            y1 = centRot.y + diag
-            # y2 = y1
-
-            # Create end points for set of lines to intersect with cross-section face
-            pntTuples = list()
-            for lc in range((-1 * (halfPasses - 1)), halfPasses + 1):
-                x1 = centRot.x - halfLL
-                x2 = centRot.x + halfLL
-                y1 = centRot.y + (lc * self.cutOut)
-                # y2 = y1
-                p1 = FreeCAD.Vector(x1, y1, 0.0)
-                p2 = FreeCAD.Vector(x2, y1, 0.0)
-                pntTuples.append( (p1, p2) )
-
-            # Convert end points to lines
-            for (p1, p2) in pntTuples:
-                line = Part.makeLine(p1, p2)
-                GeoSet.append(line)
-        elif obj.CutPattern in ['Circular', 'CircularZigZag']:
-            zTgt = faceShp.BoundBox.ZMin
-            axisRot = FreeCAD.Vector(0.0, 0.0, 1.0)
-            cntr = FreeCAD.Placement()
-            cntr.Rotation = FreeCAD.Rotation(axisRot, 0.0)
-
-            if obj.CircularCenterAt == 'CenterOfMass':
-                cntr.Base = FreeCAD.Vector(COM.x, COM.y, zTgt)  # COM  # Use center of Mass
-            elif obj.CircularCenterAt == 'CenterOfBoundBox':
-                cent = faceShp.BoundBox.Center
-                cntr.Base = FreeCAD.Vector(cent.x, cent.y, zTgt)  
-            elif obj.CircularCenterAt == 'XminYmin':
-                cntr.Base = FreeCAD.Vector(faceShp.BoundBox.XMin, faceShp.BoundBox.YMin, zTgt)
-            elif obj.CircularCenterAt == 'Custom':
-                newCent = FreeCAD.Vector(obj.CircularCenterCustom.x, obj.CircularCenterCustom.y, zTgt)
-                cntr.Base = newCent
-
-            # recalculate cutPasses value, if need be
-            radialPasses = halfPasses
-            if obj.CircularCenterAt != 'CenterOfBoundBox':
-                # make 4 corners of boundbox in XY plane, find which is greatest distance to new circular center
-                EBB = faceShp.BoundBox
-                CORNERS = [
-                    FreeCAD.Vector(EBB.XMin, EBB.YMin, 0.0),
-                    FreeCAD.Vector(EBB.XMin, EBB.YMax, 0.0),
-                    FreeCAD.Vector(EBB.XMax, EBB.YMax, 0.0),
-                    FreeCAD.Vector(EBB.XMax, EBB.YMin, 0.0),
-                ]
-                dMax = 0.0
-                for c in range(0, 4):
-                    dist = CORNERS[c].sub(cntr.Base).Length
-                    if dist > dMax:
-                        dMax = dist
-                lineLen = dMax + (2.0 * self.cutter.getDiameter())  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-                radialPasses = math.ceil(lineLen / self.cutOut) + 1  # Number of lines(passes) required to cover lineLen
-            
-            # Update COM point and current CircularCenter
-            if obj.CircularCenterAt != 'Custom':
-                obj.CircularCenterCustom = cntr.Base
-
-            minRad = self.cutter.getDiameter() * 0.45
-            siX3 = 3 * obj.SampleInterval.Value
-            minRadSI = (siX3 / 2.0) / math.pi
-            if minRad < minRadSI:
-                minRad = minRadSI
-
-            # Make small center circle to start pattern
-            if obj.StepOver > 50:
-                circle = Part.makeCircle(minRad, cntr.Base)
-                GeoSet.append(circle)
-
-            for lc in range(1, radialPasses + 1):
-                rad = (lc * self.cutOut)
-                if rad >= minRad:
-                    circle = Part.makeCircle(rad, cntr.Base)
-                    GeoSet.append(circle)
-            # Efor
-            COM = cntr.Base
-        elif obj.CutPattern in ['Spiral']:
-            SEGS = list()
-            loopRadians = 0.0  # Used to keep track of complete loops/cycles
-            sumRadians = 0.0
-            loopCnt = 0
-            segCnt = 0
-            twoPi = 2.0 * math.pi
-            maxDist = halfLL
-            move = COM  # FreeCAD.Vector(0.0, 0.0, 0.0)  # Use to translate the center of the spiral
-
-            # Set tool properties and calculate cutout
-            effectiveCut = self.cutter.getDiameter() * float(obj.StepOver) / 100.0
-            cutOut = effectiveCut / twoPi
-
-            segLen = obj.SampleInterval.Value  # CutterDiameter / 10.0  # SampleInterval.Value
-            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # math.pi / 18.0  # 10 degrees
-            stopRadians = maxDist / cutOut
-
-            draw = True
-            lastPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
-            if obj.CutPatternReversed:
-                if obj.CutMode == 'Conventional':
-                    while draw:
-                        radAng = sumRadians + stepAng
-                        p1 = lastPoint
-                        p2 = getOppositeSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
-                        sumRadians += stepAng  # Increment sumRadians
-                        loopRadians += stepAng  # Increment loopRadians
-                        if loopRadians > twoPi:
-                            loopCnt += 1
-                            loopRadians -= twoPi
-                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
-                        segCnt += 1
-                        lastPoint = p2
-                        if sumRadians > stopRadians:
-                            draw = False
-                        # Create line and show in Object tree
-                        lineSeg = Part.makeLine(p2, p1)
-                        SEGS.append(lineSeg)
-                else:
-                    while draw:
-                        radAng = sumRadians + stepAng
-                        p1 = lastPoint
-                        p2 = getSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
-                        sumRadians += stepAng  # Increment sumRadians
-                        loopRadians += stepAng  # Increment loopRadians
-                        if loopRadians > twoPi:
-                            loopCnt += 1
-                            loopRadians -= twoPi
-                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
-                        segCnt += 1
-                        lastPoint = p2
-                        if sumRadians > stopRadians:
-                            draw = False
-                        # Create line and show in Object tree
-                        lineSeg = Part.makeLine(p2, p1)
-                        SEGS.append(lineSeg)
-                # Eif
-                SEGS.reverse()
-            else:
-                if obj.CutMode == 'Climb':
-                    while draw:
-                        radAng = sumRadians + stepAng
-                        p1 = lastPoint
-                        p2 = getOppositeSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
-                        sumRadians += stepAng  # Increment sumRadians
-                        loopRadians += stepAng  # Increment loopRadians
-                        if loopRadians > twoPi:
-                            loopCnt += 1
-                            loopRadians -= twoPi
-                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
-                        segCnt += 1
-                        lastPoint = p2
-                        if sumRadians > stopRadians:
-                            draw = False
-                        # Create line and show in Object tree
-                        lineSeg = Part.makeLine(p1, p2)
-                        SEGS.append(lineSeg)
-                else:
-                    while draw:
-                        radAng = sumRadians + stepAng
-                        p1 = lastPoint
-                        p2 = getSpiralPoint(move, cutOut, radAng)  # cutOut is 'b' in the equation r = b * radAng
-                        sumRadians += stepAng  # Increment sumRadians
-                        loopRadians += stepAng  # Increment loopRadians
-                        if loopRadians > twoPi:
-                            loopCnt += 1
-                            loopRadians -= twoPi
-                            stepAng = segLen / ((loopCnt + 1) * effectiveCut)  # adjust stepAng with each loop/cycle
-                        segCnt += 1
-                        lastPoint = p2
-                        if sumRadians > stopRadians:
-                            draw = False
-                        # Create line and show in Object tree
-                        lineSeg = Part.makeLine(p1, p2)
-                        SEGS.append(lineSeg)
-                # Eif
-            spiral = Part.Wire([ls.Edges[0] for ls in SEGS])
-            GeoSet.append(spiral)
-        elif obj.CutPattern in ['Offset']:
-            pass
-        # Eif
-
-        if obj.CutPatternReversed is True:
-            GeoSet.reverse()
-
-        if faceShp.BoundBox.ZMin != 0.0:
-            faceShp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - faceShp.BoundBox.ZMin))
-
-        # Create compound object to bind all lines in Lineset
-        geomShape = Part.makeCompound(GeoSet)
-
-        # Position and rotate the Line and ZigZag geometry
-        if obj.CutPattern in ['Line', 'ZigZag']:
-            if obj.CutPatternAngle != 0.0:
-                geomShape.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.CutPatternAngle)
-            geomShape.Placement.Base = FreeCAD.Vector(bbC.x, bbC.y, 0.0 - geomShape.BoundBox.ZMin)
-
-        if self.showDebugObjects is True:
-            F = FreeCAD.ActiveDocument.addObject('Part::Feature','tmpGeometrySet')
-            F.Shape = geomShape
-            F.purgeTouched()
-            self.tempGroup.addObject(F)
-
-        # Identify intersection of cross-section face and lineset
-        cmnShape = faceShp.common(geomShape)
-
-        if self.showDebugObjects is True:
-            F = FreeCAD.ActiveDocument.addObject('Part::Feature','tmpPathGeometry')
-            F.Shape = cmnShape
-            F.purgeTouched()
-            self.tempGroup.addObject(F)
-
-        self.tmpCOM = FreeCAD.Vector(COM.x, COM.y, faceShp.BoundBox.ZMin)
-        return cmnShape
-
-    def _planarMakeProfileGeom(self, obj, subShp):
-        PathLog.debug('_planarMakeProfileGeom()')
+    def _offsetFacesToPointData(self, obj, subShp, profile=True):
+        PathLog.debug('_offsetFacesToPointData()')
 
         offsetLists = list()
         dist = obj.SampleInterval.Value / 5.0
         # defl = obj.SampleInterval.Value / 5.0
 
-        # Reference https://forum.freecadweb.org/viewtopic.php?t=28861#p234939
-        for fc in subShp.Faces:
+        if not profile:
             # Reverse order of wires in each face - inside to outside
-            for w in range(len(fc.Wires) - 1, -1, -1):
-                W = fc.Wires[w]
+            for w in range(len(subShp.Wires) - 1, -1, -1):
+                W = subShp.Wires[w]
                 PNTS = W.discretize(Distance=dist)
                 # PNTS = W.discretize(Deflection=defl)
-                if self.CutClimb is True:
+                if self.CutClimb:
                     PNTS.reverse()
                 offsetLists.append(PNTS)
+        else:
+            # Reference https://forum.freecadweb.org/viewtopic.php?t=28861#p234939
+            for fc in subShp.Faces:
+                # Reverse order of wires in each face - inside to outside
+                for w in range(len(fc.Wires) - 1, -1, -1):
+                    W = fc.Wires[w]
+                    PNTS = W.discretize(Distance=dist)
+                    # PNTS = W.discretize(Deflection=defl)
+                    if self.CutClimb:
+                        PNTS.reverse()
+                    offsetLists.append(PNTS)
 
         return offsetLists
 
@@ -2005,7 +1751,7 @@ class ObjectSurface(PathOp.ObjectOp):
         PathLog.debug('_planarPerformOclScan()')
         SCANS = list()
 
-        if offsetPoints is True:
+        if offsetPoints or obj.CutPattern == 'Offset':
             PNTSET = self._pathGeomToOffsetPointSet(obj, pathGeom)
             for D in PNTSET:
                 stpOvr = list()
