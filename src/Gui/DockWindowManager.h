@@ -137,7 +137,7 @@ private Q_SLOTS:
 
     void onToggleDockWidget(bool checked);
 
-    void onResize();
+    void onTimer();
 
     void onFocusChanged(QWidget *, QWidget *);
 
@@ -151,6 +151,8 @@ private:
 };
 
 #ifdef FC_HAS_DOCK_OVERLAY
+
+class OverlayProxyWidget;
 
 class OverlayTabWidget: public QTabWidget
 {
@@ -181,22 +183,30 @@ protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
 
-    bool eventFilter(QObject *, QEvent *ev);
-
     static void _setOverlayMode(QWidget *widget, int enable);
-
-protected Q_SLOTS:
-    void onCurrentChanged(int index);
-    void onTimer();
 
 private:
     QRect rectActive;
     QRect rectOverlay;
-    QTimer timer;
-    QWidget *proxyWidget;
+    OverlayProxyWidget *proxyWidget;
     bool overlayed = false;
     bool autoHide = false;
     bool transparent = false;
+};
+
+class OverlayProxyWidget: public QWidget
+{
+    Q_OBJECT
+public:
+    OverlayProxyWidget(OverlayTabWidget *);
+
+    OverlayTabWidget *getOwner() const {return owner;}
+
+protected:
+    void enterEvent(QEvent*);
+
+private:
+    OverlayTabWidget* owner;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY
