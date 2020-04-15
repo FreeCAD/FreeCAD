@@ -69,8 +69,10 @@ translationtable = {
     "Stair Flight":"StairFlight",
     "Curtain Wall":"CurtainWall",
     "Pipe Segment":"PipeSegment",
-    "Pipe Fitting":"PipeFitting"
-}
+    "Pipe Fitting":"PipeFitting",
+    "VisGroup":"Group",
+    "Undefined":"BuildingElementProxy",
+    }
 
 
 # the base IFC template for export
@@ -1550,12 +1552,6 @@ def getIfcTypeFromObj(obj):
 
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
-    if ifctype == "VisGroup":
-        ifctype = "Group"
-    if ifctype == "Undefined":
-        ifctype = "BuildingElementProxy"
-    if ifctype == "Furniture":
-        ifctype = "FurnishingElement"
 
     return "Ifc" + ifctype
 
@@ -1595,6 +1591,7 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
 
 def exportIfcAttributes(obj, kwargs, scale=0.001):
 
+    ifctype = getIfcTypeFromObj(obj)
     for property in obj.PropertiesList:
         if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
             value = obj.getPropertyByName(property)
@@ -1602,7 +1599,10 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
                 value = float(value)
                 if property in ["ElevationWithFlooring","Elevation"]:
                     value = value*scale # some properties must be changed to meters
-            kwargs.update({property: value})
+            if (ifctype == "IfcFurnishingElement") and (property == "PredefinedType"):
+                pass # IFC2x3 Furniture objects get converted to IfcFurnishingElement and have no PredefinedType anymore
+            else:
+                kwargs.update({property: value})
     return kwargs
 
 
