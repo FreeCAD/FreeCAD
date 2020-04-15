@@ -116,13 +116,16 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
+
+    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
+    //valueChanged fires every keystroke causing a recompute.
+    connect(ui->qsbX, SIGNAL(editingFinished()),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
+    connect(ui->qsbY, SIGNAL(editingFinished()),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
+    connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
-    connect(ui->aeReference, SIGNAL(textChanged(QString)),
+    connect(ui->aeReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
@@ -186,14 +189,17 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
+
+    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
+    //valueChanged fires every keystroke causing a recompute.
+    connect(ui->qsbX, SIGNAL(editingFinished()),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
+    connect(ui->qsbY, SIGNAL(editingFinished()),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
+    connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
-    connect(ui->aeReference, SIGNAL(textChanged(QString)),
-            this, SLOT(onReferenceEdit()));
+    connect(ui->aeReference, SIGNAL(editingFinished()),
+        this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
     m_scene->addItem(m_ghost);
