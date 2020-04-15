@@ -46,7 +46,14 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def __init__(self,vobj):
 
-        super().__init__(vobj)
+        super(ViewProviderLabel, self).__init__(vobj)
+
+        self.set_properties(vobj)
+
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+    def set_properties(self, vobj):
 
         # Text properties
 
@@ -96,7 +103,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                          "Graphics",QT_TRANSLATE_NOOP("App::Property",
                          "Line color"))
 
-        vobj.Proxy = self
         self.Object = vobj.Object
         vobj.TextAlignment = ["Top","Middle","Bottom"]
         vobj.TextAlignment = "Middle"
@@ -120,6 +126,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         return []
 
     def attach(self,vobj):
+        '''Setup the scene sub-graph of the view provider'''
         self.arrow = coin.SoSeparator()
         self.arrowpos = coin.SoTransform()
         self.arrow.addChild(self.arrowpos)

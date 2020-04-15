@@ -106,9 +106,17 @@ def make_label(targetpoint=None, target=None, direction=None,
 class Label(DraftAnnotation):
     """The Draft Label object"""
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        super().__init__(obj, "Label")
+        super(Label, self).__init__(obj, "Label")
+
+        self.init_properties(obj)
+
+        obj.Proxy = self
+
+
+    def init_properties(self, obj):
+        """Add properties to the object and set them"""
 
         obj.addProperty("App::PropertyPlacement",
                         "Placement",
@@ -174,6 +182,7 @@ class Label(DraftAnnotation):
 
 
     def execute(self,obj):
+        '''Do something when recompute object'''
 
         if obj.StraightDirection != "Custom":
             p1 = obj.Placement.Base
@@ -223,12 +232,8 @@ class Label(DraftAnnotation):
                     if hasattr(obj.Target[0].Shape,"Volume"):
                         obj.Text = [App.Units.Quantity(obj.Target[0].Shape.Volume,App.Units.Volume).UserString.replace("^3","³")]
 
+
     def onChanged(self,obj,prop):
-        pass
+        '''Do something when a property has changed'''
 
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
+        return

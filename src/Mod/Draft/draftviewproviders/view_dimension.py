@@ -87,6 +87,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
     """
     def __init__(self, vobj):
 
+        super(ViewProviderDimensionBase, self).__init__(vobj)
+
         # text properties
         vobj.addProperty("App::PropertyFont","FontName",
                          "Text",
@@ -171,12 +173,6 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         vobj.ShowUnit = utils.get_param("showUnit",True)
         vobj.ShowLine = True
 
-        super().__init__(vobj)
-
-    def attach(self, vobj):
-        """called on object creation"""
-        return
-
     def updateData(self, obj, prop):
         """called when the base object is changed"""
         return
@@ -219,11 +215,16 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
     """
     A View Provider for the Draft Linear Dimension object
     """
-    def __init__(self, vobj):         
-        super().__init__(vobj)
+    def __init__(self, vobj):
+
+        super(ViewProviderLinearDimension, self).__init__(vobj)
+           
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
 
     def attach(self, vobj):
-        """called on object creation"""
+        '''Setup the scene sub-graph of the view provider'''
         self.Object = vobj.Object
         self.color = coin.SoBaseColor()
         self.font = coin.SoFont()
@@ -664,13 +665,17 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
     """A View Provider for the Draft Angular Dimension object"""
     def __init__(self, vobj):
 
+        super(ViewProviderAngularDimension, self).__init__(vobj)
+
         vobj.addProperty("App::PropertyBool","FlipArrows",
                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Rotate the dimension arrows 180 degrees"))
         
-        super().__init__(vobj)
+        self.Object = vobj.Object
+        vobj.Proxy = self
 
     def attach(self, vobj):
+        '''Setup the scene sub-graph of the view provider'''
         from pivy import coin
         self.Object = vobj.Object
         self.color = coin.SoBaseColor()

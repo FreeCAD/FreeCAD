@@ -32,46 +32,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 if App.GuiUp:
     import FreeCADGui as Gui
 
-class ViewProviderStylesContainerBase:
-    """A Base View Provider for Annotation Styles Containers"""
 
-    def __init__(self, vobj):
-
-        vobj.Proxy = self
-
-    def getIcon(self):
-
-        return ":/icons/Draft_Annotation_Style.svg"
-
-    def attach(self, vobj):
-
-        self.Object = vobj.Object
-
-    def __getstate__(self):
-
-        return None
-
-    def __setstate__(self, state):
-
-        return None
-
-
-class ViewProviderAnnotationStylesContainer(ViewProviderStylesContainerBase):
-    """A View Provider for the Annotation Styles Container"""
-
-    def __init__(self, vobj):
-        super().__init__(vobj)
-
-    def getIcon(self):
-
-        return ":/icons/Draft_Annotation_Style.svg"
-
-    def attach(self, vobj):
-
-        self.Object = vobj.Object
-
-
-class ViewProviderDraftAnnotation:
+class ViewProviderDraftAnnotation(object):
     """
     The base class for Draft Annotation Viewproviders
     This class is not used directly, but inherited by all annotation
@@ -79,8 +41,8 @@ class ViewProviderDraftAnnotation:
     """
 
     def __init__(self, vobj):
-        vobj.Proxy = self
-        self.Object = vobj.Object
+        #vobj.Proxy = self
+        #self.Object = vobj.Object
 
         # annotation properties
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
@@ -95,7 +57,8 @@ class ViewProviderDraftAnnotation:
 
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-        vobj.ScaleMultiplier = 1 / annotation_scale
+        if annotation_scale != 0:
+            vobj.ScaleMultiplier = 1 / annotation_scale
 
 
     def __getstate__(self):

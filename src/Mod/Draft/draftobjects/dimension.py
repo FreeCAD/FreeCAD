@@ -22,7 +22,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 """This module provides the object code for Draft Dimension.
 """
 ## @package dimension
@@ -167,9 +166,10 @@ class DimensionBase(DraftAnnotation):
     """
 
     def __init__(self, obj, tp = "Dimension"):
-        "Initialize common properties for dimension objects"
-        DraftAnnotation.__init__(self,obj, tp)
+        """Add common dimension properties to the object and set them"""
         
+        super(DimensionBase, self).__init__(obj, tp)
+
         # Draft
         obj.addProperty("App::PropertyVector",
                         "Normal",
@@ -195,16 +195,21 @@ class DimensionBase(DraftAnnotation):
                         QT_TRANSLATE_NOOP("App::Property",
                                           "Point on which the dimension \n"
                                           "line is placed."))
-
-    def onChanged(self,obj,prop):
-        
-        return
+                                          
+        obj.Dimline = App.Vector(0,1,0)
+        obj.Normal = App.Vector(0,0,1)
 
 
     def execute(self, obj):
+        '''Do something when recompute object'''
         
         return
 
+
+    def onChanged(self,obj,prop):
+        '''Do something when a property has changed'''
+
+        return
 
 
 class LinearDimension(DimensionBase):
@@ -213,8 +218,17 @@ class LinearDimension(DimensionBase):
     """
 
     def __init__(self, obj):
-        super().__init__(obj, "Dimension")
-        
+
+        super(LinearDimension, self).__init__(obj, "LinearDimension")
+
+        obj.Proxy = self
+
+        self.init_properties(obj)
+
+
+    def init_properties(self, obj):
+        """Add Linear Dimension specific properties to the object and set them"""
+
         # Draft
         obj.addProperty("App::PropertyVectorDistance",
                         "Start",
@@ -248,10 +262,9 @@ class LinearDimension(DimensionBase):
 
         obj.Start = App.Vector(0,0,0)
         obj.End = App.Vector(1,0,0)
-        obj.Dimline = App.Vector(0,1,0)
-        obj.Normal = App.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
+        '''Do something when a property has changed'''
         if hasattr(obj, "Distance"):
             obj.setEditorMode('Distance', 1)
         #if hasattr(obj,"Normal"):
@@ -261,7 +274,7 @@ class LinearDimension(DimensionBase):
 
 
     def execute(self, obj):
-        # set start point and end point according to the linked geometry
+        """ Set start point and end point according to the linked geometry"""
         if obj.LinkedGeometry:
             if len(obj.LinkedGeometry) == 1:
                 lobj = obj.LinkedGeometry[0][0]
@@ -324,7 +337,15 @@ class AngularDimension(DimensionBase):
 
     def __init__(self, obj):
 
-        super().__init__(obj,"AngularDimension")
+        super(AngularDimension, self).__init__(obj, "AngularDimension")
+        
+        self.init_properties(obj)
+
+        obj.Proxy = self    
+
+
+    def init_properties(self, obj):
+        """Add Angular Dimension specific properties to the object and set them"""
 
         obj.addProperty("App::PropertyAngle",
                         "FirstAngle",
@@ -356,7 +377,15 @@ class AngularDimension(DimensionBase):
         obj.Center = App.Vector(0,0,0)
         obj.Normal = App.Vector(0,0,1)
 
+
+    def execute(self, fp):
+        '''Do something when recompute object'''
+        if fp.ViewObject:
+            fp.ViewObject.update()
+
+
     def onChanged(self,obj,prop):
+        '''Do something when a property has changed'''
         super().onChanged(obj, prop)
         if hasattr(obj,"Angle"):
             obj.setEditorMode('Angle',1)
@@ -365,6 +394,4 @@ class AngularDimension(DimensionBase):
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
 
-    def execute(self, fp):
-        if fp.ViewObject:
-            fp.ViewObject.update()
+
