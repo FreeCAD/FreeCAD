@@ -37,7 +37,7 @@ from PySide import QtGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-geomType = LazyLoader('DraftDraftGeomUtils', globals(), 'DraftDraftGeomUtils.geomType')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 Part = LazyLoader('Part', globals(), 'Part')
 TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
 
@@ -337,13 +337,13 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
 
 
 def reverseEdge(e):
-    if geomType(e) == "Circle":
+    if DraftGeomUtils.geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
         arcmid = e.valueAt((e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif geomType(e) == "LineSegment" or geomType(e) == "Line":
+    elif DraftGeomUtils.geomType(e) == "LineSegment" or DraftGeomUtils.geomType(e) == "Line":
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)

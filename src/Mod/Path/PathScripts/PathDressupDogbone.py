@@ -35,7 +35,7 @@ from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-DraftDraftGeomUtils = LazyLoader('DraftDraftGeomUtils', globals(), 'DraftDraftGeomUtils')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 Part = LazyLoader('Part', globals(), 'Part')
 
 LOG_MODULE = PathLog.thisModule()
