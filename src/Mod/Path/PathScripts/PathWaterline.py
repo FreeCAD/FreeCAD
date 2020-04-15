@@ -270,6 +270,19 @@ class ObjectWaterline(PathOp.ObjectOp):
         else:
             obj.setEditorMode('ShowTempObjects', 0)  # show
 
+        # Repopulate enumerations in case of changes
+        ENUMS = self.propertyEnumerations()
+        for n in ENUMS:
+            restore = False
+            if hasattr(obj, n):
+                val = obj.getPropertyByName(n)
+                restore = True
+            cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
+            exec(cmdStr)
+            if restore:
+                cmdStr = 'obj.{}={}'.format(n, "'" + val + "'")
+                exec(cmdStr)
+
         self.setEditorProperties(obj)
 
     def opSetDefaultValues(self, obj, job):
