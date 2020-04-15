@@ -298,10 +298,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.AvoidLastX_InternalFeatures = True
         obj.CutPatternReversed = False
         obj.IgnoreOuterAbove = obj.StartDepth.Value + 0.00001
-        #obj.StartPoint.x = 0.0
-        #obj.StartPoint.y = 0.0
-        #obj.StartPoint.z = obj.ClearanceHeight.Value
-        obj.StartPoint = FreeCAD.Vector(5.0, 5.0, obj.ClearanceHeight.Value)
+        obj.StartPoint = FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value)
         obj.Algorithm = 'OCL Dropcutter'
         obj.ProfileEdges = 'None'
         obj.LayerMode = 'Single-pass'
@@ -318,10 +315,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.BoundaryAdjustment.Value = 0.0
         obj.InternalFeaturesAdjustment.Value = 0.0
         obj.AvoidLastX_Faces = 0
-        #obj.CircularCenterCustom.x = 0.0
-        #obj.CircularCenterCustom.y = 0.0
-        #obj.CircularCenterCustom.z = 0.0
-        obj.CircularCenterCustom = FreeCAD.Vector(5.0, 5.0, 5.0)
+        obj.CircularCenterCustom = FreeCAD.Vector(0.0, 0.0, 0.0)
         obj.GapThreshold.Value = 0.005
         obj.LinearDeflection.Value = 0.0001
         obj.AngularDeflection.Value = 0.25
@@ -333,6 +327,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if job:
             if job.Stock:
                 d = PathUtils.guessDepths(job.Stock.Shape, None)
+                obj.IgnoreOuterAbove = job.Stock.Shape.BoundBox.ZMax + 0.000001
                 PathLog.debug("job.Stock exists")
             else:
                 PathLog.debug("job.Stock NOT exist")
@@ -397,6 +392,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.tempGroup = None
         self.CutClimb = False
         self.closedGap = False
+        self.tmpCOM = None
         self.gaps = [0.1, 0.2, 0.3]
         CMDS = list()
         modelVisibility = list()
@@ -2598,9 +2594,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         Main waterline function to perform waterline extraction from model.'''
         PathLog.debug('_experimentalWaterlineOp()')
 
-        # msg = translate('PathWaterline', 'Experimental Waterline does not currently support selected faces.')
-        # PathLog.info('\n..... ' + msg)
-
         commands = []
         t_begin = time.time()
         base = JOB.Model.Group[mdlIdx]
@@ -2663,29 +2656,29 @@ class ObjectWaterline(PathOp.ObjectOp):
             if area.Area > 0.0:
                 cont = True
                 caWireCnt = len(area.Wires) - 1  # first wire is boundFace wire
-                PathLog.debug('cutAreaWireCnt: {}'.format(caWireCnt))
-                if self.showDebugObjects is True:
+                if self.showDebugObjects:
                     CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'cutArea_{}'.format(caCnt))
                     CA.Shape = area
                     CA.purgeTouched()
                     self.tempGroup.addObject(CA)
             else:
-                PathLog.error('Cut area at {} is zero.'.format(round(csHght, 4)))
+                data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                PathLog.debug('Cut area at {} is zero.'.format(data))
 
             # get offset wire(s) based upon cross-section cut area
             if cont:
                 area.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - area.BoundBox.ZMin))
                 activeArea = area.cut(trimFace)
                 activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
-                PathLog.debug('activeAreaWireCnt: {}'.format(activeAreaWireCnt))
-                if self.showDebugObjects is True:
+                if self.showDebugObjects:
                     CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'activeArea_{}'.format(caCnt))
                     CA.Shape = activeArea
                     CA.purgeTouched()
                     self.tempGroup.addObject(CA)
                 ofstArea = self._extractFaceOffset(activeArea, ofst, makeComp=False)
                 if not ofstArea:
-                    PathLog.error('No offset area returned for cut area depth: {}'.format(csHght))
+                    data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                    PathLog.debug('No offset area returned for cut area depth at {}.'.format(data))
                     cont = False
 
             if cont:
@@ -2700,7 +2693,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                         self.tempGroup.addObject(CA)
                 else:
                     cont = False
-                    PathLog.error('ofstSolids is False.')
+                    data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                    PathLog.error('Could not determine solid faces at {}.'.format(data))
 
             if cont:
                 # Make waterline path for current CUTAREA depth (csHght)
@@ -2744,21 +2738,19 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Cycle through layer depths
         for dp in range(0, lenDP):
             csHght = depthparams[dp]
-            PathLog.debug('Depth {} is {}'.format(dp + 1, csHght))
+            # PathLog.debug('Depth {} is {}'.format(dp + 1, csHght))
 
             # Get slice at depth of shape
             csFaces = self._getModelCrossSection(shape, csHght)  # returned at Z=0.0
             if not csFaces:
-                PathLog.error('No cross-section wires at {}'.format(csHght))
+                data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
             else:
-                PathLog.debug('cross-section face count {}'.format(len(csFaces)))
                 if len(csFaces) > 0:
                     useFaces = self._getSolidAreasFromPlanarFaces(csFaces)
                 else:
                     useFaces = False
 
                 if useFaces:
-                    PathLog.debug('useFacesCnt: {}'.format(len(useFaces)))
                     compAdjFaces = Part.makeCompound(useFaces)
 
                     if self.showDebugObjects is True:
@@ -2871,7 +2863,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         while cont:
             ofstArea = self._extractFaceOffset(shape, ofst, makeComp=True)
             if not ofstArea:
-                # PathLog.debug('No offset clearing area returned.')
                 break
             for F in ofstArea.Faces:
                 cmds.extend(self._wiresToWaterlinePath(obj, F, csHght))
@@ -2974,14 +2965,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 li = fIds.pop()
                 low = csFaces[li]  # senior face
                 pIds = self._idInternalFeature(csFaces, fIds, pIds, li, low)
-            # Ewhile
-            ##PathLog.info('fIds: {}'.format(fIds))
-            ##PathLog.info('pIds: {}'.format(pIds))
             
             for af in range(lenCsF - 1, -1, -1):  # cycle from last item toward first
-                ##PathLog.info('af: {}'.format(af))
                 prnt = pIds[af]
-                ##PathLog.info('prnt: {}'.format(prnt))
                 if prnt == -1:
                     stack = -1
                 else:
@@ -2994,36 +2980,27 @@ class ObjectWaterline(PathOp.ObjectOp):
                         stack.insert(0, nxtPrnt)
                         nxtPrnt = pIds[nxtPrnt]
                 cIds[af] = stack
-            # PathLog.debug('cIds: {}\n'.format(cIds))
 
             for af in range(0, lenCsF):
-                # PathLog.debug('af is {}'.format(af))
                 pFc = cIds[af]
                 if pFc == -1:
                     # Simple, independent region
                     holds[af] = csFaces[af]  # place face in hold
-                    # PathLog.debug('pFc == -1')
                 else:
                     # Compound region
-                    # PathLog.debug('pFc is not -1')
                     cnt = len(pFc)
                     if cnt % 2.0 == 0.0:
                         # even is donut cut
-                        # PathLog.debug('cnt is even')
                         inr = pFc[cnt - 1]
                         otr = pFc[cnt - 2]
-                        # PathLog.debug('inr / otr: {} / {}'.format(inr, otr))
                         holds[otr] = holds[otr].cut(csFaces[inr])
                     else:
                         # odd is floating solid
-                        # PathLog.debug('cnt is ODD')
                         holds[af] = csFaces[af]
-            # Efor
 
             for af in range(0, lenCsF):
                 if holds[af]:
                     useFaces.append(holds[af])  # save independent solid
-                    
         # Eif
 
         if len(useFaces) > 0:
@@ -3079,7 +3056,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 if cmn.Area > 0.0:
                     pIds[li] = hi
                     break
-        # Ewhile
+
         return pIds
 
     def _wireToPath(self, obj, wire, startVect):
@@ -3102,7 +3079,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
-        # PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
 
         self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
 
@@ -3168,8 +3144,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def _clearLayer(self, obj, ca, lastCA, clearLastLayer):
         PathLog.debug('_clearLayer()')
-        usePat = False
-        useOfst = False
         clrLyr = False
 
         if obj.ClearLastLayer == 'Off':
@@ -3179,14 +3153,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             obj.CutPattern = 'None'
             if ca == lastCA:  # if current iteration is last layer
                 PathLog.debug('... Clearing bottom layer.')
-                '''
-                if obj.ClearLastLayer == 'Offset':
-                    # obj.CutPattern = 'None'
-                    useOfst = True
-                else:
-                    # obj.CutPattern = obj.ClearLastLayer
-                    usePat = True
-                '''
                 clrLyr = obj.ClearLastLayer
                 clearLastLayer = False
 
