@@ -297,9 +297,10 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.AvoidLastX_InternalFeatures = True
         obj.CutPatternReversed = False
         obj.IgnoreOuterAbove = obj.StartDepth.Value + 0.00001
-        obj.StartPoint.x = 0.0
-        obj.StartPoint.y = 0.0
-        obj.StartPoint.z = obj.ClearanceHeight.Value
+        #obj.StartPoint.x = 0.0
+        #obj.StartPoint.y = 0.0
+        #obj.StartPoint.z = obj.ClearanceHeight.Value
+        obj.StartPoint = FreeCAD.Vector(5.0, 5.0, obj.ClearanceHeight.Value)
         obj.Algorithm = 'OCL Dropcutter'
         obj.ProfileEdges = 'None'
         obj.LayerMode = 'Single-pass'
@@ -316,9 +317,10 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.BoundaryAdjustment.Value = 0.0
         obj.InternalFeaturesAdjustment.Value = 0.0
         obj.AvoidLastX_Faces = 0
-        obj.CircularCenterCustom.x = 0.0
-        obj.CircularCenterCustom.y = 0.0
-        obj.CircularCenterCustom.z = 0.0
+        #obj.CircularCenterCustom.x = 0.0
+        #obj.CircularCenterCustom.y = 0.0
+        #obj.CircularCenterCustom.z = 0.0
+        obj.CircularCenterCustom = FreeCAD.Vector(5.0, 5.0, 5.0)
         obj.GapThreshold.Value = 0.005
         obj.LinearDeflection.Value = 0.0001
         obj.AngularDeflection.Value = 0.25
