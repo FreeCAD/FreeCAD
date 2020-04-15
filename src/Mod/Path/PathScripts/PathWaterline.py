@@ -97,7 +97,29 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def initOpProperties(self, obj):
         '''initOpProperties(obj) ... create operation specific properties'''
-        PROPS = [
+        missing = list()
+
+        for (prtyp, nm, grp, tt) in self.opProperties():
+            if not hasattr(obj, nm):
+                obj.addProperty(prtyp, nm, grp, tt)
+                missing.append(nm)
+                newPropMsg = translate('PathSurface', 'New property added: ') + nm + '. '
+                newPropMsg += translate('PathSurface', 'Check its default value.')
+                PathLog.warning(newPropMsg)
+
+        # Set enumeration lists for enumeration properties
+        if len(missing) > 0:
+            ENUMS = self.propertyEnumerations()
+            for n in ENUMS:
+                if n in missing:
+                    cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
+                    exec(cmdStr)
+
+        self.addedAllProperties = True
+
+    def opProperties(self):
+        '''opProperties() ... return list of tuples containing operation specific properties'''
+        return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Show the temporary path construction objects when module is in DEBUG mode.")),
 
@@ -167,31 +189,15 @@ class ObjectWaterline(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"))
         ]
 
-        missing = list()
-        for (prtyp, nm, grp, tt) in PROPS:
-            if not hasattr(obj, nm):
-                obj.addProperty(prtyp, nm, grp, tt)
-                missing.append(nm)
-
-        # Set enumeration lists for enumeration properties
-        if len(missing) > 0:
-            ENUMS = self._propertyEnumerations()
-            for n in ENUMS:
-                if n in missing:
-                    cmdStr = 'obj.{}={}'.format(n, ENUMS[n])
-                    exec(cmdStr)
-
-        self.addedAllProperties = True
-
-    def _propertyEnumerations(self):
+    def propertyEnumerations(self):
         # Enumeration lists for App::PropertyEnumeration properties
         return {
             'Algorithm': ['OCL Dropcutter', 'Experimental'],
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'CircularCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
-            'ClearLastLayer': ['Off', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'ZigZag'],
+            'ClearLastLayer': ['Off', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['None', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['None', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
             'ProfileEdges': ['None', 'Only', 'First', 'Last'],
