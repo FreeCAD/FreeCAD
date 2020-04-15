@@ -49,6 +49,7 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
+import PathScripts.PathSurfaceSupport as PathSurfaceSupport
 import time
 import math
 import Part
@@ -1609,177 +1610,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         return final
 
     # Methods for creating path geometry
-    def _planarMakePathGeom(self, obj, faceShp):
-        '''_planarMakePathGeom(obj, faceShp)...
-        Creates the line/arc cut pattern geometry and returns the intersection with the received faceShp.
-        The resulting intersecting line/arc geometries are then converted to lines or arcs for OCL.'''
-        PathLog.debug('_planarMakePathGeom()')
-        GeoSet = list()
-
-        # Apply drop cutter extra offset and set the max and min XY area of the operation
-        xmin = faceShp.BoundBox.XMin
-        xmax = faceShp.BoundBox.XMax
-        ymin = faceShp.BoundBox.YMin
-        ymax = faceShp.BoundBox.YMax
-        zmin = faceShp.BoundBox.ZMin
-        zmax = faceShp.BoundBox.ZMax
-
-        # Compute weighted center of mass of all faces combined
-        fCnt = 0
-        totArea = 0.0
-        zeroCOM = FreeCAD.Vector(0.0, 0.0, 0.0)
-        for F in faceShp.Faces:
-            comF = F.CenterOfMass
-            areaF = F.Area
-            totArea += areaF
-            fCnt += 1
-            zeroCOM = zeroCOM.add(FreeCAD.Vector(comF.x, comF.y, 0.0).multiply(areaF))
-        if fCnt == 0:
-            PathLog.error(translate('PathWaterline', 'Cannot calculate the Center Of Mass. Using Center of Boundbox.'))
-            zeroCOM = FreeCAD.Vector((xmin + xmax) / 2.0, (ymin + ymax) / 2.0, 0.0)
-        else:
-            avgArea = totArea / fCnt
-            zeroCOM.multiply(1 / fCnt)
-            zeroCOM.multiply(1 / avgArea)
-        COM = FreeCAD.Vector(zeroCOM.x, zeroCOM.y, 0.0)
-
-        # get X, Y, Z spans; Compute center of rotation
-        deltaX = abs(xmax-xmin)
-        deltaY = abs(ymax-ymin)
-        deltaC = math.sqrt(deltaX**2 + deltaY**2)
-        lineLen = deltaC + (2.0 * self.cutter.getDiameter())  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-        halfLL = math.ceil(lineLen / 2.0)
-        cutPasses = math.ceil(lineLen / self.cutOut) + 1  # Number of lines(passes) required to cover lineLen
-        halfPasses = math.ceil(cutPasses / 2.0)
-        bbC = faceShp.BoundBox.Center
-
-        # Generate the line/circle sets to be intersected with the cut-face-area
-        if obj.CutPattern in ['ZigZag', 'Line']:
-            centRot = FreeCAD.Vector(0.0, 0.0, 0.0)  # Bottom left corner of face/selection/model
-            cAng = math.atan(deltaX / deltaY)  # BoundaryBox angle
-
-            # Determine end points and create top lines
-            x1 = centRot.x - halfLL
-            x2 = centRot.x + halfLL
-            diag = None
-            if obj.CutPatternAngle == 0 or obj.CutPatternAngle == 180:
-                diag = deltaY
-            elif obj.CutPatternAngle == 90 or obj.CutPatternAngle == 270:
-                diag = deltaX
-            else:
-                perpDist = math.cos(cAng - math.radians(obj.CutPatternAngle)) * deltaC
-                diag = perpDist
-            y1 = centRot.y + diag
-            # y2 = y1
-
-            # Create end points for set of lines to intersect with cross-section face
-            pntTuples = list()
-            for lc in range((-1 * (halfPasses - 1)), halfPasses + 1):
-                x1 = centRot.x - halfLL
-                x2 = centRot.x + halfLL
-                y1 = centRot.y + (lc * self.cutOut)
-                # y2 = y1
-                p1 = FreeCAD.Vector(x1, y1, 0.0)
-                p2 = FreeCAD.Vector(x2, y1, 0.0)
-                pntTuples.append( (p1, p2) )
-
-            # Convert end points to lines
-            for (p1, p2) in pntTuples:
-                line = Part.makeLine(p1, p2)
-                GeoSet.append(line)
-        elif obj.CutPattern in ['Circular', 'CircularZigZag']:
-            zTgt = faceShp.BoundBox.ZMin
-            axisRot = FreeCAD.Vector(0.0, 0.0, 1.0)
-            cntr = FreeCAD.Placement()
-            cntr.Rotation = FreeCAD.Rotation(axisRot, 0.0)
-
-            if obj.CircularCenterAt == 'CenterOfMass':
-                cntr.Base = FreeCAD.Vector(COM.x, COM.y, zTgt)  # COM  # Use center of Mass
-            elif obj.CircularCenterAt == 'CenterOfBoundBox':
-                cent = faceShp.BoundBox.Center
-                cntr.Base = FreeCAD.Vector(cent.x, cent.y, zTgt)  
-            elif obj.CircularCenterAt == 'XminYmin':
-                cntr.Base = FreeCAD.Vector(faceShp.BoundBox.XMin, faceShp.BoundBox.YMin, zTgt)
-            elif obj.CircularCenterAt == 'Custom':
-                newCent = FreeCAD.Vector(obj.CircularCenterCustom.x, obj.CircularCenterCustom.y, zTgt)
-                cntr.Base = newCent
-
-            # recalculate cutPasses value, if need be
-            radialPasses = halfPasses
-            if obj.CircularCenterAt != 'CenterOfBoundBox':
-                # make 4 corners of boundbox in XY plane, find which is greatest distance to new circular center
-                EBB = faceShp.BoundBox
-                CORNERS = [
-                    FreeCAD.Vector(EBB.XMin, EBB.YMin, 0.0),
-                    FreeCAD.Vector(EBB.XMin, EBB.YMax, 0.0),
-                    FreeCAD.Vector(EBB.XMax, EBB.YMax, 0.0),
-                    FreeCAD.Vector(EBB.XMax, EBB.YMin, 0.0),
-                ]
-                dMax = 0.0
-                for c in range(0, 4):
-                    dist = CORNERS[c].sub(cntr.Base).Length
-                    if dist > dMax:
-                        dMax = dist
-                lineLen = dMax + (2.0 * self.cutter.getDiameter())  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-                radialPasses = math.ceil(lineLen / self.cutOut) + 1  # Number of lines(passes) required to cover lineLen
-            
-            # Update COM point and current CircularCenter
-            if obj.CircularCenterAt != 'Custom':
-                obj.CircularCenterCustom = cntr.Base
-
-            minRad = self.cutter.getDiameter() * 0.45
-            siX3 = 3 * obj.SampleInterval.Value
-            minRadSI = (siX3 / 2.0) / math.pi
-            if minRad < minRadSI:
-                minRad = minRadSI
-
-            # Make small center circle to start pattern
-            if obj.StepOver > 50:
-                circle = Part.makeCircle(minRad, cntr.Base)
-                GeoSet.append(circle)
-
-            for lc in range(1, radialPasses + 1):
-                rad = (lc * self.cutOut)
-                if rad >= minRad:
-                    circle = Part.makeCircle(rad, cntr.Base)
-                    GeoSet.append(circle)
-            # Efor
-            COM = cntr.Base
-        # Eif
-
-        if obj.CutPatternReversed is True:
-            GeoSet.reverse()
-
-        if faceShp.BoundBox.ZMin != 0.0:
-            faceShp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - faceShp.BoundBox.ZMin))
-
-        # Create compound object to bind all lines in Lineset
-        geomShape = Part.makeCompound(GeoSet)
-
-        # Position and rotate the Line and ZigZag geometry
-        if obj.CutPattern in ['Line', 'ZigZag']:
-            if obj.CutPatternAngle != 0.0:
-                geomShape.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.CutPatternAngle)
-            geomShape.Placement.Base = FreeCAD.Vector(bbC.x, bbC.y, 0.0 - geomShape.BoundBox.ZMin)
-
-        if self.showDebugObjects is True:
-            F = FreeCAD.ActiveDocument.addObject('Part::Feature','tmpGeometrySet')
-            F.Shape = geomShape
-            F.purgeTouched()
-            self.tempGroup.addObject(F)
-
-        # Identify intersection of cross-section face and lineset
-        cmnShape = faceShp.common(geomShape)
-
-        if self.showDebugObjects is True:
-            F = FreeCAD.ActiveDocument.addObject('Part::Feature','tmpPathGeometry')
-            F.Shape = cmnShape
-            F.purgeTouched()
-            self.tempGroup.addObject(F)
-
-        self.tmpCOM = FreeCAD.Vector(COM.x, COM.y, faceShp.BoundBox.ZMin)
-        return cmnShape
-
     def _pathGeomToLinesPointSet(self, obj, compGeoShp):
         '''_pathGeomToLinesPointSet(obj, compGeoShp)...
         Convert a compound set of sequential line segments to directionally-oriented collinear groupings.'''
@@ -2209,14 +2039,59 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return ARCS
 
-    def _getExperimentalWaterlinePaths(self, obj, PNTSET, csHght):
-        '''_getExperimentalWaterlinePaths(obj, PNTSET, csHght)...
+    def _pathGeomToSpiralPointSet(self, obj, compGeoShp):
+        '''_pathGeomToSpiralPointSet(obj, compGeoShp)...
+        Convert a compound set of sequential line segments to directional, connected groupings.'''
+        PathLog.debug('_pathGeomToSpiralPointSet()')
+        # Extract intersection line segments for return value as list()
+        LINES = list()
+        inLine = list()
+        lnCnt = 0
+        ec = len(compGeoShp.Edges)
+        start = 2
+
+        if obj.CutPatternReversed:
+            edg1 = compGeoShp.Edges[0]  # Skip first edge, as it is the closing edge: center to outer tail
+            ec -= 1
+            start = 1
+        else:
+            edg1 = compGeoShp.Edges[1]  # Skip first edge, as it is the closing edge: center to outer tail
+        p1 = FreeCAD.Vector(edg1.Vertexes[0].X, edg1.Vertexes[0].Y, 0.0)
+        p2 = FreeCAD.Vector(edg1.Vertexes[1].X, edg1.Vertexes[1].Y, 0.0)
+        tup = ((p1.x, p1.y), (p2.x, p2.y))
+        inLine.append(tup)
+        lst = p2
+
+        for ei in range(start, ec):  # Skipped first edge, started with second edge above as edg1
+            edg = compGeoShp.Edges[ei]  # Get edge for vertexes
+            sp = FreeCAD.Vector(edg.Vertexes[0].X, edg.Vertexes[0].Y, 0.0)  # check point (first / middle point)
+            ep = FreeCAD.Vector(edg.Vertexes[1].X, edg.Vertexes[1].Y, 0.0)  # end point
+            tup = ((sp.x, sp.y), (ep.x, ep.y))
+
+            if sp.sub(p2).Length < 0.000001:
+                inLine.append(tup)
+            else:
+                LINES.append(inLine)  # Save inLine segments
+                lnCnt += 1
+                inLine = list()  # reset container
+                inLine.append(tup)
+            p1 = sp
+            p2 = ep
+        # Efor
+
+        lnCnt += 1
+        LINES.append(inLine)  # Save inLine segments
+
+        return LINES
+
+    def _getExperimentalWaterlinePaths(self, PNTSET, csHght, cutPattern):
+        '''_getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
         Switching function for calling the appropriate path-geometry to OCL points conversion function
         for the various cut patterns.'''
         PathLog.debug('_getExperimentalWaterlinePaths()')
         SCANS = list()
 
-        if obj.CutPattern == 'Line':
+        if cutPattern in ['Line', 'Spiral']:
             stpOvr = list()
             for D in PNTSET:
                 for SEG in D:
@@ -2230,7 +2105,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         stpOvr.append((P1, P2))
                 SCANS.append(stpOvr)
                 stpOvr = list()
-        elif obj.CutPattern == 'ZigZag':
+        elif cutPattern == 'ZigZag':
             stpOvr = list()
             for (dirFlg, LNS) in PNTSET:
                 for SEG in LNS:
@@ -2244,7 +2119,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         stpOvr.append((P1, P2))
                 SCANS.append(stpOvr)
                 stpOvr = list()
-        elif obj.CutPattern in ['Circular', 'CircularZigZag']:
+        elif cutPattern in ['Circular', 'CircularZigZag']:
             # PNTSET is list, by stepover.
             # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
             for so in range(0, len(PNTSET)):
@@ -2279,19 +2154,19 @@ class ObjectWaterline(PathOp.ObjectOp):
         return SCANS
 
     # Main planar scan functions
-    def _stepTransitionCmds(self, obj, lstPnt, first, minSTH, tolrnc):
+    def _stepTransitionCmds(self, obj, cutPattern, lstPnt, first, minSTH, tolrnc):
         cmds = list()
         rtpd = False
         horizGC = 'G0'
         hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
 
-        if obj.CutPattern in ['Line', 'Circular']:
+        if cutPattern in ['Line', 'Circular', 'Spiral']:
             if obj.OptimizeStepOverTransitions is True:
                 height = minSTH + 2.0
             # if obj.LayerMode == 'Multi-pass':
             #    rtpd = minSTH
-        elif obj.CutPattern in ['ZigZag', 'CircularZigZag']:
+        elif cutPattern in ['ZigZag', 'CircularZigZag']:
             if obj.OptimizeStepOverTransitions is True:
                 zChng = first.z - lstPnt.z
                 # PathLog.debug('first.z: {}'.format(first.z))
@@ -2320,17 +2195,17 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return cmds
 
-    def _breakCmds(self, obj, lstPnt, first, minSTH, tolrnc):
+    def _breakCmds(self, obj, cutPattern, lstPnt, first, minSTH, tolrnc):
         cmds = list()
         rtpd = False
         horizGC = 'G0'
         hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
 
-        if obj.CutPattern in ['Line', 'Circular']:
+        if cutPattern in ['Line', 'Circular', 'Spiral']:
             if obj.OptimizeStepOverTransitions is True:
                 height = minSTH + 2.0
-        elif obj.CutPattern in ['ZigZag', 'CircularZigZag']:
+        elif cutPattern in ['ZigZag', 'CircularZigZag']:
             if obj.OptimizeStepOverTransitions is True:
                 zChng = first.z - lstPnt.z
                 if abs(zChng) < tolrnc:  # transitions to same Z height
@@ -2835,26 +2710,23 @@ class ObjectWaterline(PathOp.ObjectOp):
                 lastCsHght = csHght
 
                 # Clear layer as needed
-                (useOfst, usePat, clearLastLayer) = self._clearLayer(obj, ca, lastCA, clearLastLayer)
-                ##if self.showDebugObjects is True and (usePat or useOfst):
-                ##    OA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'clearPatternArea_{}'.format(round(csHght, 2)))
-                ##    OA.Shape = clearArea
-                ##    OA.purgeTouched()
-                ##    self.tempGroup.addObject(OA)
-                if usePat:
-                    commands.extend(self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght))
-                if useOfst:
-                    commands.extend(self._makeOffsetLayerPaths(JOB, obj, clearArea, csHght))
+                (clrLyr, clearLastLayer) = self._clearLayer(obj, ca, lastCA, clearLastLayer)
+                if clrLyr == 'Offset':
+                    commands.extend(self._makeOffsetLayerPaths(obj, clearArea, csHght))
+                elif clrLyr:
+                    cutPattern = obj.CutPattern
+                    if clearLastLayer is False:
+                        cutPattern = obj.ClearLastLayer
+                    commands.extend(self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, cutPattern))
         # Efor
 
         if clearLastLayer:
-            (useOfst, usePat, cLL) = self._clearLayer(obj, 1, 1, False)
-            clearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
-            if usePat:
-                commands.extend(self._makeCutPatternLayerPaths(JOB, obj, lastClearArea, lastCsHght))
-
-            if useOfst:
-                commands.extend(self._makeOffsetLayerPaths(JOB, obj, lastClearArea, lastCsHght))
+            (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
+            lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
+            if clrLyr == 'Offset':
+                commands.extend(self._makeOffsetLayerPaths(obj, lastClearArea, lastCsHght))
+            elif clrLyr:
+                commands.extend(self._makeCutPatternLayerPaths(JOB, obj, lastClearArea, lastCsHght, obj.ClearLastLayer))
 
         PathLog.info("Waterline: All layer scans combined took " + str(time.time() - t_begin) + " s")
         return commands
@@ -2928,7 +2800,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         commands.append(Path.Command('N (Cut Area {}.)'.format(round(csHght, 2))))
         start = 1
-        if ofstPlnrShp.BoundBox.ZMin < obj.IgnoreOuterAbove:
+        if csHght < obj.IgnoreOuterAbove:
             start = 0
         for w in range(start, len(ofstPlnrShp.Wires)):
             wire = ofstPlnrShp.Wires[w]
@@ -2946,90 +2818,97 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return commands
 
-    def _makeCutPatternLayerPaths(self, JOB, obj, clrAreaShp, csHght):
+    def _makeCutPatternLayerPaths(self, JOB, obj, clrAreaShp, csHght, cutPattern):
         PathLog.debug('_makeCutPatternLayerPaths()')
         commands = []
 
         clrAreaShp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clrAreaShp.BoundBox.ZMin))
-        pathGeom = self._planarMakePathGeom(obj, clrAreaShp)
-        pathGeom.translate(FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin))
-        # clrAreaShp.translate(FreeCAD.Vector(0.0, 0.0, csHght - clrAreaShp.BoundBox.ZMin))
-
-        if self.showDebugObjects is True:
-            OA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'pathGeom_{}'.format(round(csHght, 2)))
-            OA.Shape = pathGeom
-            OA.purgeTouched()
-            self.tempGroup.addObject(OA)
 
         # Convert pathGeom to gcode more efficiently
-        if obj.CutPattern == 'Offset':
-            commands.extend(self._makeOffsetLayerPaths(JOB, obj, clrAreaShp, csHght))
+        if cutPattern == 'Offset':
+            commands.extend(self._makeOffsetLayerPaths(obj, clrAreaShp, csHght))
         else:
-            clrAreaShp.translate(FreeCAD.Vector(0.0, 0.0, csHght - clrAreaShp.BoundBox.ZMin))
-            if obj.CutPattern == 'Line':
+            # Request path geometry from external support class
+            PGG = PathSurfaceSupport.PathGeometryGenerator(obj, clrAreaShp, cutPattern)
+            if self.showDebugObjects:
+                PGG.setDebugObjectsGroup(self.tempGroup)
+            self.tmpCOM = PGG.getCenterOfMass()
+            pathGeom = PGG.getPathGeometryGenerator()
+            if not pathGeom:
+                PathLog.warning('No path geometry generated.')
+                return commands
+            pathGeom.translate(FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin))
+
+            if self.showDebugObjects is True:
+                OA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'pathGeom_{}'.format(round(csHght, 2)))
+                OA.Shape = pathGeom
+                OA.purgeTouched()
+                self.tempGroup.addObject(OA)
+
+            if cutPattern == 'Line':
                 pntSet = self._pathGeomToLinesPointSet(obj, pathGeom)
-            elif obj.CutPattern == 'ZigZag':
+            elif cutPattern == 'ZigZag':
                 pntSet = self._pathGeomToZigzagPointSet(obj, pathGeom)
-            elif obj.CutPattern in ['Circular', 'CircularZigZag']:
+            elif cutPattern in ['Circular', 'CircularZigZag']:
                 pntSet = self._pathGeomToArcPointSet(obj, pathGeom)
-            stpOVRS = self._getExperimentalWaterlinePaths(obj, pntSet, csHght)
-            # PathLog.debug('stpOVRS:\n{}'.format(stpOVRS))
+            elif cutPattern == 'Spiral':
+                pntSet = self._pathGeomToSpiralPointSet(obj, pathGeom)
+
+            stpOVRS = self._getExperimentalWaterlinePaths(pntSet, csHght, cutPattern)
             safePDC = False
-            cmds = self._clearGeomToPaths(JOB, obj, safePDC, stpOVRS, csHght)
+            cmds = self._clearGeomToPaths(JOB, obj, safePDC, stpOVRS, cutPattern)
             commands.extend(cmds)
 
         return commands
 
-    def _makeOffsetLayerPaths(self, JOB, obj, clrAreaShp, csHght):
+    def _makeOffsetLayerPaths(self, obj, clrAreaShp, csHght):
         PathLog.debug('_makeOffsetLayerPaths()')
-        PathLog.warning('Using `Offset` for clearing bottom layer.')
         cmds = list()
-        # ofst = obj.BoundaryAdjustment.Value
-        ofst = 0.0 - self.cutOut  # - self.cutter.getDiameter()  # (self.radius + (tolrnc / 10.0))
+        ofst = 0.0 - self.cutOut
         shape = clrAreaShp
         cont = True
         cnt = 0
         while cont:
             ofstArea = self._extractFaceOffset(shape, ofst, makeComp=True)
             if not ofstArea:
-                PathLog.warning('No offset clearing area returned.')
+                # PathLog.debug('No offset clearing area returned.')
                 break
             for F in ofstArea.Faces:
                 cmds.extend(self._wiresToWaterlinePath(obj, F, csHght))
             shape = ofstArea
             if cnt == 0:
-                ofst = 0.0 - self.cutOut  # self.cutter.Diameter()
+                ofst = 0.0 - self.cutOut
             cnt += 1
         return cmds
 
-    def _clearGeomToPaths(self, JOB, obj, safePDC, SCANDATA, csHght):
+    def _clearGeomToPaths(self, JOB, obj, safePDC, stpOVRS, cutPattern):
         PathLog.debug('_clearGeomToPaths()')
 
         GCODE = [Path.Command('N (Beginning of Single-pass layer.)', {})]
         tolrnc = JOB.GeometryTolerance.Value
-        lenSCANDATA = len(SCANDATA)
+        lenstpOVRS = len(stpOVRS)
         gDIR = ['G3', 'G2']
 
         if self.CutClimb is True:
             gDIR = ['G2', 'G3']
 
         # Send cutter to x,y position of first point on first line
-        first = SCANDATA[0][0][0]  # [step][item][point]
+        first = stpOVRS[0][0][0]  # [step][item][point]
         GCODE.append(Path.Command('G0', {'X': first.x, 'Y': first.y, 'F': self.horizRapid}))
 
         # Cycle through step-over sections (line segments or arcs)
         odd = True
         lstStpEnd = None
-        for so in range(0, lenSCANDATA):
+        for so in range(0, lenstpOVRS):
             cmds = list()
-            PRTS = SCANDATA[so]
+            PRTS = stpOVRS[so]
             lenPRTS = len(PRTS)
             first = PRTS[0][0]  # first point of arc/line stepover group
             last = None
             cmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
 
             if so > 0:
-                if obj.CutPattern == 'CircularZigZag':
+                if cutPattern == 'CircularZigZag':
                     if odd is True:
                         odd = False
                     else:
@@ -3037,7 +2916,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 # minTrnsHght = self._getMinSafeTravelHeight(safePDC, lstStpEnd, first)  # Check safe travel height against fullSTL
                 minTrnsHght = obj.SafeHeight.Value
                 # cmds.append(Path.Command('N (Transition: last, first: {}, {}:  minSTH: {})'.format(lstStpEnd, first, minTrnsHght), {}))
-                cmds.extend(self._stepTransitionCmds(obj, lstStpEnd, first, minTrnsHght, tolrnc))
+                cmds.extend(self._stepTransitionCmds(obj, cutPattern, lstStpEnd, first, minTrnsHght, tolrnc))
 
             # Cycle through current step-over parts
             for i in range(0, lenPRTS):
@@ -3048,14 +2927,14 @@ class ObjectWaterline(PathOp.ObjectOp):
                     # minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart)  # Check safe travel height against fullSTL
                     minSTH = obj.SafeHeight.Value
                     cmds.append(Path.Command('N (Break)', {}))
-                    cmds.extend(self._breakCmds(obj, last, nxtStart, minSTH, tolrnc))
+                    cmds.extend(self._breakCmds(obj, cutPattern, last, nxtStart, minSTH, tolrnc))
                 else:
                     cmds.append(Path.Command('N (part {}.)'.format(i + 1), {}))
-                    if obj.CutPattern in ['Line', 'ZigZag']:
+                    if cutPattern in ['Line', 'ZigZag', 'Spiral']:
                         start, last = prt
                         cmds.append(Path.Command('G1', {'X': start.x, 'Y': start.y, 'Z': start.z, 'F': self.horizFeed}))
                         cmds.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'F': self.horizFeed}))
-                    elif obj.CutPattern in ['Circular', 'CircularZigZag']:
+                    elif cutPattern in ['Circular', 'CircularZigZag']:
                         start, last, centPnt, cMode = prt
                         gcode = self._makeGcodeArc(start, last, odd, gDIR, tolrnc)
                         cmds.extend(gcode)
@@ -3291,22 +3170,27 @@ class ObjectWaterline(PathOp.ObjectOp):
         PathLog.debug('_clearLayer()')
         usePat = False
         useOfst = False
+        clrLyr = False
 
         if obj.ClearLastLayer == 'Off':
             if obj.CutPattern != 'None':
-                usePat = True
+                clrLyr = obj.CutPattern
         else:
-            if ca == lastCA:
+            obj.CutPattern = 'None'
+            if ca == lastCA:  # if current iteration is last layer
                 PathLog.debug('... Clearing bottom layer.')
+                '''
                 if obj.ClearLastLayer == 'Offset':
-                    obj.CutPattern = 'None'
+                    # obj.CutPattern = 'None'
                     useOfst = True
                 else:
-                    obj.CutPattern = obj.ClearLastLayer
+                    # obj.CutPattern = obj.ClearLastLayer
                     usePat = True
+                '''
+                clrLyr = obj.ClearLastLayer
                 clearLastLayer = False
 
-        return (useOfst, usePat, clearLastLayer)
+        return (clrLyr, clearLastLayer)
 
     # Support methods
     def resetOpVariables(self, all=True):
