@@ -346,12 +346,22 @@ void OverlayTabWidget::setAutoHide(bool enable)
         setOverlayMode(true);
 }
 
+void OverlayTabWidget::setTransparent(bool enable)
+{
+    if(transparent == enable)
+        return;
+    transparent = enable;
+    if(count()) {
+        setOverlayMode(true);
+        DockWindowManager::instance()->refreshOverlay();
+    }
+}
+
 void OverlayTabWidget::setOverlayMode(bool enable)
 {
     overlayed = enable;
 
-    if(!enable && !ViewParams::getDockOverlayOnEnter()
-               && !ViewParams::getDockOverlayOnLeave())
+    if(!enable && transparent)
     {
         setStyleSheet(OverlayStyleSheet::instance()->onOffStyleSheet);
         setOverlayMode(this, -1);
@@ -613,6 +623,7 @@ struct OverlayInfo {
         hGrp->SetInt("Height", rect.height());
         hGrp->SetInt("Active", tabWidget->currentIndex());
         hGrp->SetBool("AutoHide", tabWidget->isAutoHide());
+        hGrp->SetBool("Transparent", tabWidget->isTransparent());
 
         std::ostringstream os;
         for(int i=0,c=tabWidget->count(); i<c; ++i)
@@ -640,6 +651,7 @@ struct OverlayInfo {
         if(index >= 0)
             tabWidget->setCurrentIndex(index);
         tabWidget->setAutoHide(hGrp->GetBool("AutoHide", false));
+        tabWidget->setTransparent(hGrp->GetBool("Transparent", false));
     }
 
 };
@@ -651,6 +663,7 @@ enum OverlayToggleMode {
     OverlaySet,
     OverlayToggle,
     OverlayToggleAutoHide,
+    OverlayToggleTransparent,
     OverlayCheck,
 };
 
@@ -695,25 +708,26 @@ struct DockWindowManagerP
 
         auto it = _overlays.find(dock);
         if(it != _overlays.end()) {
-            if(toggle == OverlayCheck)
-                return true;
-            auto overlay = it.value();
-            if(overlay->tabWidget->isAutoHide()) {
-                if(toggle == OverlaySet || toggle == OverlayToggleAutoHide) {
-                    overlay->tabWidget->setAutoHide(false);
-                    _timer.start(50);
-                    return true;
-                }
-            } else if (toggle == OverlayToggleAutoHide) {
-                overlay->tabWidget->setAutoHide(true);
-                _timer.start(50);
-                return true;
-            } else if (toggle == OverlaySet)
-                return true;
-
-            _overlays.erase(it);
-            overlay->removeWidget();
-            return false;
+            auto o = it.value();
+            switch(toggle) {
+            case OverlaySet:
+                o->tabWidget->setAutoHide(false);
+                break;
+            case OverlayToggleAutoHide:
+                o->tabWidget->setAutoHide(!o->tabWidget->isAutoHide());
+                break;
+            case OverlayToggleTransparent:
+                o->tabWidget->setTransparent(!o->tabWidget->isTransparent());
+                break;
+            case OverlayUnset:
+            case OverlayToggle:
+                _overlays.erase(it);
+                o->removeWidget();
+                return false;
+            default:
+                break;
+            }
+            return true;
         }
 
         if(toggle == OverlayUnset)
@@ -721,28 +735,28 @@ struct DockWindowManagerP
 
         if(dockPos == Qt::NoDockWidgetArea)
             dockPos = getMainWindow()->dockWidgetArea(dock);
-        OverlayInfo *overlay;
+        OverlayInfo *o;
         switch(dockPos) {
         case Qt::LeftDockWidgetArea:
-            overlay = &_left;
+            o = &_left;
             break;
         case Qt::RightDockWidgetArea:
-            overlay = &_right;
+            o = &_right;
             break;
         case Qt::TopDockWidgetArea:
-            overlay = &_top;
+            o = &_top;
             break;
         case Qt::BottomDockWidgetArea:
-            overlay = &_bottom;
+            o = &_bottom;
             break;
         default:
             return false;
         }
-        if(toggle == OverlayCheck && !overlay->tabWidget->count())
+        if(toggle == OverlayCheck && !o->tabWidget->count())
             return false;
-        if(overlay->addWidget(dock)) {
-            overlay->tabWidget->setAutoHide(toggle == OverlayToggleAutoHide);
-            _timer.start(50);
+        if(o->addWidget(dock)) {
+            o->tabWidget->setAutoHide(toggle == OverlayToggleAutoHide);
+            o->tabWidget->setTransparent(toggle == OverlayToggleTransparent);
         }
         return true;
     }
@@ -871,6 +885,21 @@ struct DockWindowManagerP
             }
             setOverlayMode(DockWindowManager::AutoHideAll);
             return;
+        case DockWindowManager::TransparentAll:
+        case DockWindowManager::TransparentNone:
+            for(auto o : _overlayInfos)
+                o->tabWidget->setTransparent(mode == DockWindowManager::TransparentAll);
+            _timer.start(500);
+            return;
+        case DockWindowManager::ToggleTransparentAll:
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->isTransparent()) {
+                    setOverlayMode(DockWindowManager::TransparentNone);
+                    return;
+                }
+            }
+            setOverlayMode(DockWindowManager::TransparentAll);
+            return;
         default:
             break;
         }
@@ -896,6 +925,9 @@ struct DockWindowManagerP
             break;
         case DockWindowManager::ToggleAutoHide:
             m = OverlayToggleAutoHide;
+            break;
+        case DockWindowManager::ToggleTransparent:
+            m = OverlayToggleTransparent;
             break;
         case DockWindowManager::EnableActive:
             m = OverlaySet;

@@ -100,11 +100,12 @@ public:
     void saveState();
     void retranslate();
 
-    void refreshOverlay(QWidget *widget=nullptr, bool resizeOnly=false);
+    void refreshOverlay(QWidget *widget=nullptr);
 
     enum OverlayMode {
         ToggleActive,
         ToggleAutoHide,
+        ToggleTransparent,
         EnableActive,
         DisableActive,
         EnableAll,
@@ -113,6 +114,9 @@ public:
         AutoHideAll,
         AutoHideNone,
         ToggleAutoHideAll,
+        TransparentAll,
+        TransparentNone,
+        ToggleTransparentAll,
     };
     void setOverlayMode(OverlayMode mode);
 
@@ -159,8 +163,12 @@ public:
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget);
     void setCurrent(QWidget *widget);
+
     void setAutoHide(bool enable);
     bool isAutoHide() const {return autoHide;}
+
+    void setTransparent(bool enable);
+    bool isTransparent() const {return transparent;}
 
     void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
@@ -188,6 +196,7 @@ private:
     QWidget *proxyWidget;
     bool overlayed = false;
     bool autoHide = false;
+    bool transparent = false;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY
