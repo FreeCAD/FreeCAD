@@ -22,10 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 from __future__ import print_function
-import DraftGeomUtils
 import FreeCAD
 import math
-import Part
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -34,6 +32,11 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+Part = LazyLoader('Part', globals(), 'Part')
 
 LOG_MODULE = PathLog.thisModule()
 

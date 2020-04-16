@@ -30,7 +30,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import MeshPart
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
@@ -39,8 +38,12 @@ import PathScripts.PathOp as PathOp
 from PySide import QtCore
 import time
 import math
-import Part
-import Draft
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
+Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
     import FreeCADGui

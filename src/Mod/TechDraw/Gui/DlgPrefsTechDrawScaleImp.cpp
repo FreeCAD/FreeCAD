@@ -25,54 +25,74 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw5Imp.h"
+#include "DlgPrefsTechDrawScaleImp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw5Imp::DlgPrefsTechDraw5Imp( QWidget* parent )
+DlgPrefsTechDrawScaleImp::DlgPrefsTechDrawScaleImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
+
+    this->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    this->pdsbTemplateMark->setMinimum(0);
+
+    connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onScaleTypeChanged(int)));
 }
 
-DlgPrefsTechDraw5Imp::~DlgPrefsTechDraw5Imp()
+DlgPrefsTechDrawScaleImp::~DlgPrefsTechDrawScaleImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw5Imp::saveSettings()
+void DlgPrefsTechDrawScaleImp::onScaleTypeChanged(int index)
 {
-    pcbSeamViz->onSave();
-    pcbSmoothViz->onSave();
-    pcbHardViz->onSave();
-    pcbPolygon->onSave();
-    pcbIsoViz->onSave();
-    pcbSmoothHid->onSave();
-    pcbSeamHid->onSave();
-    pcbIsoHid->onSave();
-    psbIsoCount->onSave();
-    pcbHardHid->onSave();
+    // disable custom scale if the scale type is not custom
+
+    if (index == 2) // if custom
+        this->pdsbViewScale->setEnabled(true);
+    else
+        this->pdsbViewScale->setEnabled(false);
 }
 
-void DlgPrefsTechDraw5Imp::loadSettings()
+void DlgPrefsTechDrawScaleImp::saveSettings()
 {
-    pcbSeamViz->onRestore();
-    pcbSmoothViz->onRestore();
-    pcbHardViz->onRestore();
-    pcbPolygon->onRestore();
-    pcbIsoViz->onRestore();
-    pcbSmoothHid->onRestore();
-    pcbSeamHid->onRestore();
-    pcbIsoHid->onRestore();
-    psbIsoCount->onRestore();
-    pcbHardHid->onRestore();
+    pdsbToleranceScale->onSave();
+    pdsbTemplateMark->onSave();
+    pdsbVertexScale->onSave();
+    pdsbCenterScale->onSave();
+    pdsbPageScale->onSave();
+    cbViewScaleType->onSave();
+    pdsbViewScale->onSave();
+    pdsbEdgeFuzz->onSave();
+    pdsbMarkFuzz->onSave();
+    pdsbTemplateMark->onSave();
+    pdsbSymbolScale->onSave();
+}
+
+void DlgPrefsTechDrawScaleImp::loadSettings()
+{
+    double markDefault = 3.0;
+    pdsbTemplateMark->setValue(markDefault);
+    pdsbToleranceScale->onRestore();
+    pdsbTemplateMark->onRestore();
+    pdsbVertexScale->onRestore();
+    pdsbCenterScale->onRestore();
+    pdsbPageScale->onRestore();
+    cbViewScaleType->onRestore();
+    pdsbViewScale->onRestore();
+    pdsbEdgeFuzz->onRestore();
+    pdsbMarkFuzz->onRestore();
+    pdsbTemplateMark->onRestore();
+    pdsbSymbolScale->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw5Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDrawScaleImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -84,4 +104,4 @@ void DlgPrefsTechDraw5Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw5Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawScaleImp.cpp>

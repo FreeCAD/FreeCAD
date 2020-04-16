@@ -1,7 +1,6 @@
  /**************************************************************************
- *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw5Imp.cpp                     *
+ *   Copyright (c) 2020 FreeCAD Developers                                 *
+ *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,28 +22,30 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw5.h>
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAnnotation.h>
 #include <Gui/PropertyPage.h>
 
 namespace TechDrawGui {
 
-class DlgPrefsTechDraw5Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw5Imp
+class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawAnnotationImp
 {
     Q_OBJECT
 
 public:
-    DlgPrefsTechDraw5Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw5Imp();
+    DlgPrefsTechDrawAnnotationImp( QWidget* parent = 0 );
+    ~DlgPrefsTechDrawAnnotationImp();
 
 protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+    
+    int prefBalloonArrow(void) const;
 };
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP5_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
