@@ -73,13 +73,11 @@ def insert(filename, docname):
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
-    print(inputstring)
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.split("\n")
-    output = ""
-    lastcommand = None
-    print(lines)
+    output = [] #""
+    lastcommand = None 
 
     for lin in lines:
         # remove any leftover trailing and preceding spaces
@@ -91,7 +89,7 @@ def parse(inputstring):
             # remove line numbers
             lin = lin.split(" ", 1)
             if len(lin) >= 1:
-                lin = lin[1]
+                lin = lin[1].strip()
             else:
                 continue
 
@@ -100,7 +98,8 @@ def parse(inputstring):
             continue
         if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
-            output += lin + "\n"
+            #output += lin + "\n"
+            output.append(Path.Command(str(lin))) # + "\n"
             last = lin[0].upper()
             for c in lin[1:]:
                 if not c.isdigit():
@@ -110,7 +109,7 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
-            output += lastcommand + " " + lin + "\n"
+            output.append(Path.Command(str(lastcommand + " " + lin))) # + "\n"
 
     print("done preprocessing.")
     return output

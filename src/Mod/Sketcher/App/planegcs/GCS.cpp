@@ -1740,7 +1740,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         // check error
         double err=e.squaredNorm();
-        if (err <= eps) { // error is small, Success
+        if (err <= eps*eps) { // error is small, Success
             stop = 1;
             break;
         }

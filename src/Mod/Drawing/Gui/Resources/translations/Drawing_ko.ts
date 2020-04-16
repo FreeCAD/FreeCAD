@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ko" sourcelanguage="en">
+<TS version="2.1" language="ko" sourcelanguage="en">
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="481"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>&amp;Annotation</source>
       <translation>&amp;주석</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>활성 드로잉에서 주석 보기 삽입</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>&amp;Clip</source>
       <translation>&amp;클립</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="531"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>활성 도면에 클립 그룹을 삽입한다</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>&amp;Draft View</source>
       <translation>&amp; 초안 뷰</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>활성도면에 선택된 물체(들)의 초안 뷰를 삽입한다</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>File</source>
       <translation>파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="636"/>
       <source>&amp;Export page...</source>
       <translation>&amp; 페이지 내보내기...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="633"/>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Export a page to an SVG file</source>
       <translation>SVG 파일로 페이지 내보내기</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Insert new drawing</source>
       <translation>새 도면 삽입</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Insert view in drawing</source>
       <translation>도면에 뷰 삽입</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>활성 도면에 파트의 새로운 뷰를 삽입한다</translation>
     </message>
@@ -126,113 +126,113 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
       <translation>SVG 열기...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="62"/>
       <source>Open a scalable vector graphic</source>
-      <translation type="unfinished">Open a scalable vector graphic</translation>
+      <translation>SVG 형식의 파일 열기</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="443"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
-      <translation type="unfinished">Open &amp;browser view</translation>
+      <translation>열기 &amp;브라우저 보기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Opens the selected page in a browser view</source>
-      <translation type="unfinished">Opens the selected page in a browser view</translation>
+      <translation>브라우져 화면에서 선택한 페이지 열기</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="393"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Insert orthographic views</source>
-      <translation type="unfinished">Insert orthographic views</translation>
+      <translation>직교 화면을 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="392"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation type="unfinished">Insert an orthographic projection of a part in the active drawing</translation>
+      <translation>활성화된 드로잉에서 파트의 직교 투영을 추가</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../Command.cpp" line="692"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="693"/>
       <source>Project shape...</source>
       <translation type="unfinished">Project shape...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="694"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation type="unfinished">Project shape onto a user-defined plane</translation>
+      <translation>사용자가 정의한 평면에 모양을 투영</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="760"/>
       <source>&amp;Spreadsheet View</source>
       <translation type="unfinished">&amp;Spreadsheet View</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>활성화된 드로잉에 선택한 스프레드 시트의 화면을 추가</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Drawing</source>
       <translation>드로잉</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>&amp;Symbol</source>
       <translation type="unfinished">&amp;Symbol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="575"/>
+      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="578"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+      <translation>활성화된 드로잉에 SVG파일로부터 심벌을 추가</translation>
     </message>
   </context>
   <context>
@@ -305,27 +305,27 @@
     <message>
       <location filename="../../DrawingView.cpp" line="489"/>
       <source>A1</source>
-      <translation type="unfinished">A1</translation>
+      <translation>A1</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="491"/>
       <source>A2</source>
-      <translation type="unfinished">A2</translation>
+      <translation>A2</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="493"/>
       <source>A3</source>
-      <translation type="unfinished">A3</translation>
+      <translation>A3</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="495"/>
       <source>A4</source>
-      <translation type="unfinished">A4</translation>
+      <translation>A4</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="497"/>
       <source>A5</source>
-      <translation type="unfinished">A5</translation>
+      <translation>A5</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="578"/>
@@ -336,8 +336,7 @@
       <location filename="../../DrawingView.cpp" line="579"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>프린터 사용중인 방향이 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="586"/>
@@ -350,18 +349,17 @@ Do you want to continue?</translation>
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+      <translation>프린터가 사용중인 종이 크기가 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="606"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>파일 열기 실패</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="607"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>쓰기에 사용할 '%1' 파일을 열 수 없습니다.</translation>
     </message>
   </context>
   <context>
@@ -369,7 +367,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="26"/>
       <source>Orthographic Projection</source>
-      <translation type="unfinished">Orthographic Projection</translation>
+      <translation>직교 투영</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="46"/>
@@ -385,7 +383,7 @@ Do you want to continue?</translation>
       <location filename="../../TaskOrthoViews.ui" line="302"/>
       <location filename="../../TaskOrthoViews.ui" line="362"/>
       <source>Right click for axonometric settings</source>
-      <translation type="unfinished">Right click for axonometric settings</translation>
+      <translation>축척 설정을 위한 오른쪽 클릭</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="324"/>
@@ -635,32 +633,32 @@ Do you want to continue?</translation>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Landscape</source>
       <translation>가로</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Portrait</source>
       <translation>세로</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="229"/>
       <source>%1%2 %3</source>
       <translation type="unfinished">%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>%1%2 %3 (%4)</source>
       <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
     </message>
@@ -668,93 +666,93 @@ Do you want to continue?</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="595"/>
       <source>Choose an SVG file to open</source>
       <translation>불러올 SVG 파일을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="593"/>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>스케일러블 벡터 그래픽(SVG)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="403"/>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="644"/>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="328"/>
       <source>Select a Part object.</source>
       <translation type="unfinished">Select a Part object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="412"/>
-      <location filename="../../Command.cpp" line="493"/>
-      <location filename="../../Command.cpp" line="541"/>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>No page found</source>
       <translation>페이지를 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="413"/>
-      <location filename="../../Command.cpp" line="494"/>
-      <location filename="../../Command.cpp" line="542"/>
-      <location filename="../../Command.cpp" line="587"/>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Create a page first.</source>
       <translation type="unfinished">Create a page first.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Select exactly one Part object.</source>
       <translation type="unfinished">Select exactly one Part object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="649"/>
       <source>Select one Page object.</source>
       <translation type="unfinished">Select one Page object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Export page</source>
       <translation>페이지 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="53"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make axonometric...</source>
       <translation type="unfinished">Make axonometric...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Edit axonometric settings...</source>
       <translation type="unfinished">Edit axonometric settings...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Make orthographic</source>
       <translation type="unfinished">Make orthographic</translation>
     </message>

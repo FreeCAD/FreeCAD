@@ -37,6 +37,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Part.h>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -72,6 +73,9 @@ DrawProjGroup::DrawProjGroup(void) :
     
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
+    Source.setAllowExternal(true);
+    ADD_PROPERTY_TYPE(XSource ,(0),group,App::Prop_None,"External 3D Shape to view");
+
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
 
@@ -91,15 +95,28 @@ DrawProjGroup::~DrawProjGroup()
 {
 }
 
+
+//TODO: this duplicates code in DVP
+std::vector<App::DocumentObject*> DrawProjGroup::getAllSources(void) const
+{
+//    Base::Console().Message("DPG::getAllSources()\n");
+    const std::vector<App::DocumentObject*> links = Source.getValues();
+    std::vector<DocumentObject*> xLinks;
+    XSource.getLinks(xLinks);
+    std::vector<App::DocumentObject*> result = links;
+    if (!xLinks.empty()) {
+        result.insert(result.end(), xLinks.begin(), xLinks.end());
+    }
+    return result;
+}
+
+
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
     //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones don't... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
     //if group hasn't been added to page yet, can't scale or distribute projItems
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
-        if (prop == &Source) {
-            //nothing in particular
-        }
         if (prop == &Scale) {
             if (!m_lockScale) {
                 updateChildrenScale();
@@ -110,7 +127,8 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             updateChildrenEnforce();
         }
 
-        if (prop == &Source) {
+        if ( (prop == &Source) ||
+             (prop == &XSource) ) {
             updateChildrenSource();
         }
 
@@ -154,7 +172,7 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    std::vector<App::DocumentObject*> docObjs = Source.getValues();
+    std::vector<App::DocumentObject*> docObjs = getAllSources();
     if (docObjs.empty()) {
         return DrawViewCollection::execute();
     }
@@ -186,6 +204,7 @@ short DrawProjGroup::mustExecute() const
     if (!isRestoring()) {
         result = Views.isTouched() ||
                  Source.isTouched() ||
+                 XSource.isTouched() ||
                  Scale.isTouched()  ||
                  ScaleType.isTouched() ||
                  ProjectionType.isTouched() ||
@@ -422,12 +441,17 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
         if (view != nullptr) {                        //coverity CID 151722
+            // the label must be set before the view is added
+            view->Label.setValue(viewProjType);
             addView(view);                            //from DrawViewCollection
-            view->Source.setValues( Source.getValues() );
-            view->Scale.setValue( getScale() );
-            view->Type.setValue( viewProjType );
-            view->Label.setValue( viewProjType );
-            view->Source.setValues( Source.getValues() );
+            view->Source.setValues(Source.getValues());
+//            std::vector<DocumentObject*> xLinks;
+//            XSource.getLinks(xLinks);
+//            view->XSource.setValues(xLinks);
+            view->XSource.setValues(XSource.getValues());
+
+            // the Scale is already set by DrawView
+            view->Type.setValue(viewProjType);
             if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
                 vecs = getDirsFromFront(view);
                 view->Direction.setValue(vecs.first);
@@ -958,8 +982,13 @@ void DrawProjGroup::updateChildrenSource(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else if (view->Source.getValues() != Source.getValues()) {
-            view->Source.setValues(Source.getValues());
+        } else {
+            if (view->Source.getValues() != Source.getValues()) {
+                view->Source.setValues(Source.getValues());
+            }
+            if (view->XSource.getValues() != XSource.getValues()) {
+                view->XSource.setValues(XSource.getValues());
+            }
         }
     }
 }

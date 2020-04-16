@@ -26,10 +26,12 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
-import femtools.femutils as femutils
 import numpy as np
 from math import isnan
+
+import FreeCAD
+
+from femtools.femutils import is_of_type
 
 
 def purge_results(analysis):
@@ -42,21 +44,19 @@ def purge_results(analysis):
     """
 
     for m in analysis.Group:
-        if (m.isDerivedFrom("Fem::FemResultObject")):
-            if m.Mesh \
-                    and hasattr(m.Mesh, "Proxy") \
-                    and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
+        if m.isDerivedFrom("Fem::FemResultObject"):
+            if m.Mesh and is_of_type(m.Mesh, "Fem::MeshResult"):
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
-    FreeCAD.ActiveDocument.recompute()
+    analysis.Document.recompute()
     # if analysis typ check is used result mesh
     # without result obj is created in the analysis
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
     for m in analysis.Group:
-        if femutils.is_of_type(m, "Fem::FemMeshResult"):
+        if is_of_type(m, "Fem::MeshResult"):
             analysis.Document.removeObject(m.Name)
-    FreeCAD.ActiveDocument.recompute()
+    analysis.Document.recompute()
 
 
 def reset_mesh_deformation(resultobj):
@@ -64,7 +64,7 @@ def reset_mesh_deformation(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -78,7 +78,7 @@ def reset_mesh_color(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -106,7 +106,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str, optional
         default is Sabs
@@ -142,7 +142,7 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     values : list of floats
         the values to be colored and cutoff
@@ -175,7 +175,7 @@ def get_stats(res_obj, result_type):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str
         type of FEM result
@@ -227,7 +227,7 @@ def get_all_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
 
 
@@ -257,7 +257,7 @@ def fill_femresult_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -418,7 +418,7 @@ def get_concrete_nodes(res_obj):
 
     for obj in res_obj.getParentGroup().Group:
         if obj.isDerivedFrom("App::MaterialObjectPython") \
-                and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
+                and is_of_type(obj, "Fem::MaterialReinforced"):
             FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -430,7 +430,7 @@ def get_concrete_nodes(res_obj):
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and femutils.is_of_type(obj, "Fem::Material"):
+                and is_of_type(obj, "Fem::Material"):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -472,7 +472,7 @@ def add_principal_stress_reinforced(res_obj):
 
     # material parameter
     for obj in res_obj.getParentGroup().Group:
-        if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
+        if is_of_type(obj, "Fem::MaterialReinforced"):
             matrix_af = float(
                 FreeCAD.Units.Quantity(obj.Material["AngleOfFriction"]).getValueAs("rad")
             )

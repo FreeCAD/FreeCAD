@@ -171,6 +171,25 @@ float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
         return fitter->GetDistanceToPlane(pnt);
 }
 
+std::vector<float> PlaneSurfaceFit::Parameters() const
+{
+    Base::Vector3f base = basepoint;
+    Base::Vector3f norm = normal;
+    if (fitter) {
+        base = fitter->GetBase();
+        norm = fitter->GetNormal();
+    }
+
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(norm.x);
+    c.push_back(norm.y);
+    c.push_back(norm.z);
+    return c;
+}
+
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
@@ -257,6 +276,28 @@ float CylinderSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
+std::vector<float> CylinderSurfaceFit::Parameters() const
+{
+    Base::Vector3f base = basepoint;
+    Base::Vector3f norm = axis;
+    float radval = radius;
+    if (fitter) {
+        base = fitter->GetBase();
+        norm = fitter->GetAxis();
+        radval = fitter->GetRadius();
+    }
+
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(norm.x);
+    c.push_back(norm.y);
+    c.push_back(norm.z);
+    c.push_back(radval);
+    return c;
+}
+
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
@@ -332,6 +373,23 @@ float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
+std::vector<float> SphereSurfaceFit::Parameters() const
+{
+    Base::Vector3f base = center;
+    float radval = radius;
+    if (fitter) {
+        base = fitter->GetCenter();
+        radval = fitter->GetRadius();
+    }
+
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(radval);
+    return c;
+}
+
 // --------------------------------------------------------
 
 MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit* fit,
@@ -381,6 +439,11 @@ void MeshDistanceGenericSurfaceFitSegment::AddFacet(const MeshFacet& face)
 {
     MeshGeomFacet triangle = kernel.GetFacet(face);
     fitter->AddTriangle(triangle);
+}
+
+std::vector<float> MeshDistanceGenericSurfaceFitSegment::Parameters() const
+{
+    return fitter->Parameters();
 }
 
 // --------------------------------------------------------
@@ -471,7 +534,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
 
 // --------------------------------------------------------
 
-void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
+void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
 {
     // reset VISIT flags
     unsigned long startFacet;
@@ -487,7 +550,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
     cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
     std::vector<unsigned long> resetVisited;
 
-    for (std::vector<MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 

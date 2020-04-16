@@ -35,7 +35,7 @@ namespace Dialog {
 class Ui_DlgSettingsImage;
 
 /**
- * The DlgSettings3DViewImp class implements a preference page to change settings
+ * The DlgSettingsImageImp class implements a preference page to change settings
  * for the Inventor viewer.
  * @author Werner Mayer
  */

@@ -71,6 +71,9 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
 {
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
+
     selectionMode = none;
     showObject();
 
@@ -116,7 +119,10 @@ void TaskDressUpParameters::setupTransaction() {
     std::string n("Edit ");
     n += DressUpView->getObject()->getNameInDocument();
     if(!name || n!=name)
-        App::GetApplication().setActiveTransaction(n.c_str());
+        tid = App::GetApplication().setActiveTransaction(n.c_str());
+
+    if (!transactionID)
+        transactionID = tid;
 }
 
 void TaskDressUpParameters::setup(QLabel *label, QListWidget *widget, QPushButton *_btnAdd, bool touched)

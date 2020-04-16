@@ -92,6 +92,7 @@ public:
     void toggleFrameState(void);
     void setTemplateMarkers(bool state);
     void setGraphicsView(QGVPage* gv);
+    virtual bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
     bool setEdit(int ModNum) override;

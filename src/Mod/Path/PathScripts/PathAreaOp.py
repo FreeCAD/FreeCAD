@@ -30,21 +30,17 @@ import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import Draft
 import math
+import Part
 
 # from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
-__contributors__ = "russ4262 (Russell Johnson)"
-__createdDate__ = "2017"
-__scriptVersion__ = "2p"
-__lastModified__ = "2020-02-13 17:11 CST"
 
 LOGLEVEL = PathLog.Level.INFO
 PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
@@ -52,9 +48,8 @@ PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
 if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
 
+
 # Qt translation handling
-
-
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -71,7 +66,6 @@ class ObjectOp(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
-        # return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureRotation
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureCoolant
 
     def areaOpFeatures(self, obj):
@@ -286,6 +280,57 @@ class ObjectOp(PathOp.ObjectOp):
 
         return pp, simobj
 
+    def _buildProfileOpenEdges(self, obj, baseShape, isHole, start, getsim):
+        '''_buildPathArea(obj, baseShape, isHole, start, getsim) ... internal function.'''
+        # pylint: disable=unused-argument
+        PathLog.track()
+
+        paths = []
+        heights = [i for i in self.depthparams]
+        PathLog.debug('depths: {}'.format(heights))
+        lstIdx = len(heights) - 1
+        for i in range(0, len(heights)):
+            hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+            hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
+
+            pathParams = {} # pylint: disable=assignment-from-no-return
+            pathParams['shapes'] = [hWire]
+            pathParams['feedrate'] = self.horizFeed
+            pathParams['feedrate_v'] = self.vertFeed
+            pathParams['verbose'] = True
+            pathParams['resume_height'] = obj.SafeHeight.Value
+            pathParams['retraction'] = obj.ClearanceHeight.Value
+            pathParams['return_end'] = True
+            # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+            pathParams['preamble'] = False
+
+            if self.endVector is None:
+                V = hWire.Wires[0].Vertexes
+                lv = len(V) - 1
+                pathParams['start'] = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                if obj.Direction == 'CCW':
+                    pathParams['start'] = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
+            else:
+                pathParams['start'] = self.endVector
+
+            obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
+            PathLog.debug("Path with params: {}".format(obj.PathParams))
+
+            (pp, end_vector) = Path.fromShapes(**pathParams)
+            paths.extend(pp.Commands)
+            PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
+
+        self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
+
+        simobj = None
+        if getsim and False:
+            areaParams['ToolRadius'] = self.radius - self.radius * .005
+            area.setParams(**areaParams)
+            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
+            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+
+        return paths, simobj
+
     def opExecute(self, obj, getsim=False): # pylint: disable=arguments-differ
         '''opExecute(obj, getsim=False) ... implementation of Path.Area ops.
         determines the parameters for _buildPathArea().
@@ -306,6 +351,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.tempObjectNames = []  # pylint: disable=attribute-defined-outside-init
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
+        self.profileEdgesIsOpen = False
 
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
@@ -325,12 +371,6 @@ class ObjectOp(PathOp.ObjectOp):
             obj.ClearanceHeight.Value = strDep + self.clrOfset
             obj.SafeHeight.Value = strDep + self.safOfst
 
-            #if self.initWithRotation is False:
-            #    if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
-            #        obj.FinalDepth.Value = finDep
-            #    if obj.StartDepth.Value == obj.OpStartDepth.Value:
-            #        obj.StartDepth.Value = strDep
-
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
@@ -344,15 +384,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.axialRapid = 360 / safeCircum * self.horizRapid # pylint: disable=attribute-defined-outside-init
 
         # Initiate depthparams and calculate operation heights for rotational operation
-        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-        self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
-            clearance_height=obj.ClearanceHeight.Value,
-            safe_height=obj.SafeHeight.Value,
-            start_depth=obj.StartDepth.Value,
-            step_down=obj.StepDown.Value,
-            z_finish_step=finish_step,
-            final_depth=obj.FinalDepth.Value,
-            user_depths=None)
+        self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
 
         # Set start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
@@ -384,9 +416,13 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = [j['shape'] for j in jobs]
 
+        if self.profileEdgesIsOpen is True:
+            if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                osp = obj.StartPoint
+                self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
+
         sims = []
         numShapes = len(shapes)
-
         for ns in range(0, numShapes):
             (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
             if ns < numShapes - 1:
@@ -394,45 +430,42 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 nextAxis = 'L'
 
-            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-            self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=strDep,  # obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=finish_step,
-                final_depth=finDep,  # obj.FinalDepth.Value,
-                user_depths=None)
+            self.depthparams = self._customDepthParams(obj, strDep, finDep)
 
             try:
-                (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
+                if self.profileEdgesIsOpen is True:
+                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+                else:
+                    (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e: # pylint: disable=broad-except
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
             else:
-                ppCmds = pp.Commands
+                if self.profileEdgesIsOpen is True:
+                    ppCmds = pp
+                else:
+                    ppCmds = pp.Commands
                 if obj.EnableRotation != 'Off' and self.rotateFlag is True:
                     # Rotate model to index for cut
                     if axis == 'X':
                         axisOfRot = 'A'
                     elif axis == 'Y':
                         axisOfRot = 'B'
-                        # Reverse angle temporarily to match model. Error in FreeCAD render of B axis rotations
-                        if obj.B_AxisErrorOverride is True:
-                            angle = -1 * angle
                     elif axis == 'Z':
                         axisOfRot = 'C'
                     else:
                         axisOfRot = 'A'
                     # Rotate Model to correct angle
-                    ppCmds.insert(0, Path.Command('G1', {axisOfRot: angle, 'F': self.axialFeed}))
-                    ppCmds.insert(0, Path.Command('N100', {}))
+                    ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
 
-                    # Raise cutter to safe depth and return index to starting position
-                    ppCmds.append(Path.Command('N200', {}))
-                    ppCmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                    if axis != nextAxis:
-                        ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
+                    # Raise cutter to safe height
+                    ppCmds.insert(0, Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+                    # Return index to starting position if axis of rotation changes.
+                    if numShapes > 1:
+                        if ns != numShapes - 1:
+                            if axis != nextAxis:
+                                ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
                 # Eif
 
                 # Save gcode commands to object command list
@@ -445,9 +478,43 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Raise cutter to safe height and rotate back to original orientation
         if self.rotateFlag is True:
+            resetAxis = False
+            lastJobOp = None
+            nextJobOp = None
+            opIdx = 0
+            JOB = PathUtils.findParentJob(obj)
+            jobOps = JOB.Operations.Group
+            numJobOps = len(jobOps)
+
+            for joi in range(0, numJobOps):
+                jo = jobOps[joi]
+                if jo.Name == obj.Name:
+                    opIdx = joi
+            lastOpIdx = opIdx - 1
+            nextOpIdx = opIdx + 1
+            if lastOpIdx > -1:
+                lastJobOp = jobOps[lastOpIdx]
+            if nextOpIdx < numJobOps:
+                nextJobOp = jobOps[nextOpIdx]
+
+            if lastJobOp is not None:
+                if hasattr(lastJobOp, 'EnableRotation'):
+                    PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
+                    if lastJobOp.EnableRotation != obj.EnableRotation:
+                        resetAxis = True
+            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+                if nextJobOp is not None:
+                    if hasattr(nextJobOp, 'EnableRotation'):
+                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                        if nextJobOp.EnableRotation != obj.EnableRotation:
+                            resetAxis = True
+
+            # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
-            self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
+            # reset rotational axes if necessary
+            if resetAxis is True:
+                self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
+                self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
 
         self.useTempJobClones('Delete')  # Delete temp job clone group and contents
         self.guiMessage('title', None, show=True)  # Process GUI messages to user
@@ -493,10 +560,8 @@ class ObjectOp(PathOp.ObjectOp):
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
-        # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        # zlim = 0.0
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):
@@ -703,7 +768,7 @@ class ObjectOp(PathOp.ObjectOp):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
             # zAx = 'zAxCyl'
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
+            VA = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
@@ -735,6 +800,7 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
+            VA.purgeTouched()
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
@@ -750,6 +816,8 @@ class ObjectOp(PathOp.ObjectOp):
                     for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
                         FreeCAD.ActiveDocument.removeObject(cln.Name)
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
+                else:
+                    FreeCAD.ActiveDocument.getObject('rotJobClones').purgeTouched()
         else:
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
@@ -859,7 +927,7 @@ class ObjectOp(PathOp.ObjectOp):
         obj.AttemptInverseAngle = False
         angle = -1 * angle
 
-        PathLog.info(translate("Path", "Rotated to inverse angle."))
+        PathLog.debug(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
@@ -902,3 +970,33 @@ class ObjectOp(PathOp.ObjectOp):
             return True
         else:
             return False
+
+    def isFaceUp(self, base, face):
+        up = face.extrude(FreeCAD.Vector(0.0, 0.0, 5.0))
+        dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
+        upCmn = base.Shape.common(up)
+        dwnCmn = base.Shape.common(dwn)
+        if upCmn.Volume == 0.0:
+            return True
+        elif dwnCmn.Volume == 0.0:
+            return False
+        if dwnCmn.Volume > upCmn.Volume:
+            return True
+        return False
+
+    def _customDepthParams(self, obj, strDep, finDep):
+        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+        cdp = PathUtils.depth_params(
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=strDep,
+            step_down=obj.StepDown.Value,
+            z_finish_step=finish_step,
+            final_depth=finDep,
+            user_depths=None)
+        return cdp
+
+
+def SetupProperties():
+    setup = ['EnableRotation']
+    return setup

@@ -62,7 +62,7 @@ public:
     void setup(QLabel *msg, QListWidget *widget, QPushButton *btnAdd, bool touched=false);
 
     /// Apply the changes made to the object to it
-    virtual void apply() {};
+    virtual void apply() {}
 
     int getTransactionID() const {
         return transactionID;

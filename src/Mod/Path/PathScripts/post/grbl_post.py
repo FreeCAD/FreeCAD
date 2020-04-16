@@ -3,6 +3,7 @@
 # *                                                                         *
 # *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
 # *   (c) Gauthier Briere - 2018, 2019                                      *
+# *   (c) Schildkroet - 2019-2020                                           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -30,6 +31,7 @@ import PathScripts.PostUtils as PostUtils
 import argparse
 import datetime
 import shlex
+import PathScripts.PathUtil as PathUtil
 
 
 TOOLTIP = '''
@@ -108,7 +110,7 @@ TOOLTIP_ARGS = parser.format_help()
 # ***************************************************************************
 MOTION_COMMANDS = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']  # Motion gCode commands definition
 RAPID_MOVES = ['G0', 'G00']                                             # Rapid moves gCode commands definition
-SUPPRESS_COMMANDS = ['G98', 'G80']                                      # These commands are ignored by commenting them out
+SUPPRESS_COMMANDS = []                                      # These commands are ignored by commenting them out
 COMMAND_SPACE = " "
 # Global variables storing current position
 CURRENT_X = 0
@@ -208,6 +210,7 @@ def export(objectslist, filename, argstring):
   global UNIT_FORMAT
   global UNIT_SPEED_FORMAT
   global MOTION_MODE
+  global SUPPRESS_COMMANDS
 
   print("Post Processor: " + __name__ + " postprocessing...")
   gcode = ""
@@ -217,6 +220,13 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + "(Exported by FreeCAD)\n"
     gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
     gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
+  
+  # Check canned cycles for drilling
+  if TRANSLATE_DRILL_CYCLES:
+    if len(SUPPRESS_COMMANDS) == 0:
+      SUPPRESS_COMMANDS = ['G98', 'G80']
+    else:
+      SUPPRESS_COMMANDS += ['G98', 'G80']
 
   # Write the preamble
   if OUTPUT_COMMENTS:
@@ -249,6 +259,10 @@ def export(objectslist, filename, argstring):
     if not hasattr(obj, "Path"):
       print("The object " + obj.Name + " is not a path. Please select only path and Compounds.")
       return
+    
+    # Skip inactive operations
+    if PathUtil.opProperty(obj, 'Active') is False:
+        continue
 
     # do the pre_op
     if OUTPUT_BCNC:
@@ -259,6 +273,23 @@ def export(objectslist, filename, argstring):
       gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
     for line in PRE_OPERATION.splitlines(True):
       gcode += linenumber() + line
+      
+    # get coolant mode
+    coolantMode = 'None'
+    if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
+        if hasattr(obj, "CoolantMode"):
+            coolantMode = obj.CoolantMode
+        else:
+            coolantMode = obj.Base.CoolantMode
+
+    # turn coolant on if required
+    if OUTPUT_COMMENTS:
+        if not coolantMode == 'None':
+            gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
+    if coolantMode == 'Flood':
+        gcode  += linenumber() + 'M8' + '\n'
+    if coolantMode == 'Mist':
+        gcode += linenumber() + 'M7' + '\n'
 
     # Parse the op
     gcode += parse(obj)
@@ -268,6 +299,12 @@ def export(objectslist, filename, argstring):
       gcode += linenumber() + "(Finish operation: " + obj.Label + ")\n"
     for line in POST_OPERATION.splitlines(True):
       gcode += linenumber() + line
+
+    # turn coolant off if required
+    if not coolantMode == 'None':
+        if OUTPUT_COMMENTS:
+            gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
+        gcode += linenumber() +'M9' + '\n'
 
   # do the post_amble
   if OUTPUT_BCNC:
@@ -380,7 +417,7 @@ def parse(pathobj):
       # store the latest command
       lastcommand = command
 
-      # Memorise la position courante pour calcul des mouvements relatis et du plan de retrait
+      # Memorizes the current position for calculating the related movements and the withdrawal plan
       if command in MOTION_COMMANDS:
         if 'X' in c.Parameters:
           CURRENT_X = Units.Quantity(c.Parameters['X'], FreeCAD.Units.Length)
@@ -398,7 +435,7 @@ def parse(pathobj):
       if TRANSLATE_DRILL_CYCLES:
         if command in ('G81', 'G82', 'G83'):
           out += drill_translate(outstring, command, c.Parameters)
-          # Efface la ligne que l'on vient de translater
+          # Erase the line we just translated
           del(outstring[:])
           outstring = []
 

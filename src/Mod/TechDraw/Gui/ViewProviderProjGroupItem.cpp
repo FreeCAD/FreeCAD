@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+ #include <QMessageBox>
+ #include <QTextStream>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -41,6 +43,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderProjGroupItem.h"
 
@@ -139,6 +143,79 @@ void ViewProviderProjGroupItem::unsetEdit(int ModNum)
 
 bool ViewProviderProjGroupItem::doubleClicked(void)
 {
+    return true;
+}
+
+bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
+{
+    // we cannot delete the anchor view, thus check if the item is the front item
+    // we also cannot delete if the item has a section or detail view
+
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+    bool isAnchor = false;
+
+    // get the item and group
+    TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+    TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
+    // get the projection
+    TechDraw::DrawProjGroupItem* proj = getObject();
+    // check if it is the anchor projection
+    if ((dpg != nullptr) && (dpg->hasProjection(proj->Type.getValueAsString()))
+        && (dpg->getAnchor() == dpgi))
+        isAnchor = true;
+
+    // get child views
+    auto viewSection = getObject()->getSectionRefs();
+    auto viewDetail = getObject()->getDetailRefs();
+    auto viewLeader = getObject()->getLeaders();
+
+   if (isAnchor)
+   {
+       // generate dialog
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete the anchor view of a projection group.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        // don't allow to delete
+        return false;
+   }
+   else if (!viewSection.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has a section view that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else if (!viewDetail.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has a detail view that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else if (!viewLeader.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has a leader line that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else {
+        return true;
+   }
+}
+
+bool ViewProviderProjGroupItem::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of objects from a ProjGroupItem don't necessarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
     return true;
 }
 

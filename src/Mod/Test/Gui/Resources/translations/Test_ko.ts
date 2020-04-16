@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ko" sourcelanguage="en">
+<TS version="2.1" language="ko" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -102,34 +102,34 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
       <translation>도움말</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>호출할 객체의 이름을 입력하세요. 입력한 객체가 호출되면 테스트 케이스를 반환합니다.
+'시작'을 누르면 반환된 테스트케이스가 실행됩니다.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+트리 뷰의 오류를 더블 클릭하면 스택 추적을 포함하여 더 자세한 정보를 확인할 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD 유닛테스트에 대하여</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>저작권 (c) Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD 유닛테스트는 FreeCAD의 일부이며 모듈별로 유닛테스트를 작성할 수 있습니다.</translation>
     </message>
   </context>
 </TS>

@@ -7,7 +7,11 @@ if(NOT DEFINED APPDATA_RELEASE_DATE)
             WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
             OUTPUT_STRIP_TRAILING_WHITESPACE)
     else()
-        file(TIMESTAMP "${CMAKE_SOURCE_DIR}/CMakeLists.txt" APPDATA_RELEASE_DATE "%Y-%m-%d")
+        if(NOT (CMAKE_VERSION VERSION_LESS 3.8.0))
+            string(TIMESTAMP APPDATA_RELEASE_DATE "%Y-%m-%d")
+        else()
+            file(TIMESTAMP "${CMAKE_SOURCE_DIR}/CMakeLists.txt" APPDATA_RELEASE_DATE "%Y-%m-%d")
+        endif()
     endif()
 endif()
 

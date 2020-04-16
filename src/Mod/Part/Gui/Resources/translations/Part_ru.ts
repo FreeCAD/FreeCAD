@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru" sourcelanguage="en">
+<TS version="2.1" language="ru" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Ошибка: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Смещение присоединения:</translation>
@@ -132,11 +137,6 @@
       <translation>Сначала выберите фигуру, являющуюся соединением! Второй выбранный элемент(необязательный) будут рассматриваться как трафарет.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Плохой выбор</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Нажмите «Продолжить», чтобы создать элемент в любом случае, или «Отмена», чтобы отменить.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Плохой выбор</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -339,7 +357,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation>Удалить пересекающиеся фпагменты</translation>
+      <translation>Удалить фрагменты пересечения</translation>
     </message>
   </context>
   <context>
@@ -366,7 +384,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <location filename="../../AttacherTexts.cpp" line="315"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="317"/>
@@ -1707,12 +1725,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
       <source>Shape builder...</source>
-      <translation>Построитель форм ...</translation>
+      <translation>Построитель форм...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1537"/>
       <source>Advanced utility to create shapes</source>
-      <translation>Дополнительные утилиты для создания фигур</translation>
+      <translation>Дополнительная утилита для создания форм</translation>
     </message>
   </context>
   <context>
@@ -1766,7 +1784,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Инструменты соединений: работа со списками фигур.</translation>
+      <translation>Инструменты соединений: работа со списками форм.</translation>
     </message>
   </context>
   <context>
@@ -1838,7 +1856,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Составить соединение из нескольких фигур</translation>
+      <translation>Создать соединение из нескольких форм</translation>
     </message>
   </context>
   <context>
@@ -1963,7 +1981,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Extrude...</source>
-      <translation>Выдавить ...</translation>
+      <translation>Выдавить...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
@@ -3860,7 +3878,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation>Максимальное угловое смещение</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation>°</translation>
@@ -4421,7 +4439,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="623"/>
@@ -4870,7 +4888,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="80"/>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="83"/>

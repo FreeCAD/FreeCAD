@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-CN" sourcelanguage="en">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>设置随后命令的默认方向，以创建航点</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>设置为随后创建航点命令的速度、加速和连续性的默认值</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>需要至少两个航点来模拟。</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>世界</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20mm / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10mm / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5mm / 0.5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1mm / 0.1°</translation>

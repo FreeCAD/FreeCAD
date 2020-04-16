@@ -87,15 +87,15 @@ public Q_SLOTS:
     void onPrismHeightChanged(double);
     void onPrismPolygonChanged(int);
     void onWedgeXmaxChanged(double);
-    void onWedgeXinChanged(double);
+    void onWedgeXminChanged(double);
     void onWedgeYmaxChanged(double);
-    void onWedgeYinChanged(double);
+    void onWedgeYminChanged(double);
     void onWedgeZmaxChanged(double);
-    void onWedgeZinChanged(double);
+    void onWedgeZminChanged(double);
     void onWedgeX2maxChanged(double);
-    void onWedgeX2inChanged(double);
+    void onWedgeX2minChanged(double);
     void onWedgeZ2maxChanged(double);
-    void onWedgeZ2inChanged(double);
+    void onWedgeZ2minChanged(double);
 
 private:
     /** Notifies when the object is about to be removed. */

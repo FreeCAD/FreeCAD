@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -27,10 +29,15 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshGmsh
 
+from . import FemConstraint
 
-class _FemMeshGmsh():
-    """A Fem::FemMeshObject python type, add Gmsh specific properties
+
+class _FemMeshGmsh(FemConstraint.Proxy):
     """
+    A Fem::FemMeshObject python type, add Gmsh specific properties
+    """
+
+    Type = "Fem::FemMeshGmsh"
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
     known_element_dimensions = ["From Shape", "1D", "2D", "3D"]
@@ -55,9 +62,7 @@ class _FemMeshGmsh():
     ]
 
     def __init__(self, obj):
-        self.Type = "Fem::FemMeshGmsh"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+        super(_FemMeshGmsh, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLinkList",
@@ -206,13 +211,3 @@ class _FemMeshGmsh():
             "For each group create not only the elements but the nodes too."
         )
         obj.GroupsOfNodes = False
-
-    def execute(self, obj):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hr" sourcelanguage="en">
+<TS version="2.1" language="hr" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,6 +12,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Za dodavanje reference odaberite ih u 3D prikazu i kliknite "Dodaj".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -145,7 +150,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Stvara FEM ograničenje početnog ubrzanja protoka</translation>
     </message>
   </context>
   <context>
@@ -162,6 +167,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
@@ -172,6 +190,11 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation>Stvara FEM odjeljak tekućine za 1D protok</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -270,12 +293,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Protok topline rješavač</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -299,9 +322,9 @@
       <translation>Materijal za tekućinu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
-      <source>Material for fluid</source>
-      <translation>Materijal za tekućinu</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -326,18 +349,18 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Stvaranje nelinearnih mehaničkih materijala</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="618"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Stvaranje nelinearnih mehaničkih materijala</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Ojačani materijal (beton)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
@@ -348,9 +371,9 @@
       <translation>Materijal za kruto tijelo</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Material for solid</source>
-      <translation>Materijal za kruto tijelo</translation>
+      <location filename="../../../femcommands/commands.py" line="616"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -397,12 +420,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>FEM mreža od oblika po GMSH</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Napravite FEM mrežu iz oblika pomoću Gmsh mreženja</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -436,9 +459,9 @@
       <translation>FEM mreža od Netgen forme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="957"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM mreža od Netgen forme</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Kreiranje FEM mreže čvrstog tijela ili oblikovanje površine uz pomoć Netgenovog internog kreatora mreža</translation>
     </message>
   </context>
   <context>
@@ -498,12 +521,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="679"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Alat za rješavanje CalculiX Standard</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="681"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Stvara standardni FEM solver CalculiX s ccx alatima</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
@@ -534,12 +557,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Rješavač Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1174"/>
-      <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -634,6 +657,11 @@
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation>Odaberite elemente tijela koji će biti dodani na popis. Nakon toga pritisnite "Dodaj".</translation>
     </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+    </message>
   </context>
   <context>
     <name>_Selector</name>
@@ -641,11 +669,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Dodaj</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Ukloniti</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
@@ -1746,7 +1769,7 @@
     <message>
       <location filename="../../TaskObjectName.cpp" line="48"/>
       <source>TaskObjectName</source>
-      <translation type="unfinished">TaskObjectName</translation>
+      <translation>TaskObjectName</translation>
     </message>
   </context>
   <context>
@@ -1754,7 +1777,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation type="unfinished">Tet Parameter</translation>
+      <translation>Tetraedar parametar</translation>
     </message>
   </context>
   <context>
@@ -1775,7 +1798,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>FEM modul je izgrađen bez NETGEN podrške.Putanje mreže (Meshing) neće raditi!!!</translation>
     </message>
   </context>
   <context>
@@ -1800,7 +1823,7 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>za uređivanje vrijednosti presjeka</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
@@ -1818,7 +1841,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>da odaberete sve preostale oblike</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1834,7 +1857,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>za uređivanje vrijednosti debljine</translation>
     </message>
   </context>
   <context>
@@ -1922,7 +1945,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>da odaberete sve preostale oblike</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1952,12 +1975,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Vanjski materijalni resursi</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
       <source>MatWeb database...</source>
-      <translation type="unfinished">MatWeb database...</translation>
+      <translation>MatWeb baza podataka...</translation>
     </message>
   </context>
   <context>
@@ -1965,12 +1988,12 @@
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>No active Analysis</source>
-      <translation type="unfinished">No active Analysis</translation>
+      <translation>Nema aktivne Analize</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>You need to create or activate a Analysis</source>
-      <translation type="unfinished">You need to create or activate a Analysis</translation>
+      <translation>Trebate stvoriti ili aktivirati analizu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -1986,7 +2009,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+      <translation>Vaš je FreeCAD izgrađen bez NETGEN podrške. Putanje mreže (Meshing) neće raditi....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2042,7 +2065,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Meshing (Putanje mreže)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
@@ -2071,7 +2094,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Vrsta rezultata</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
@@ -2096,7 +2119,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Von Mises naprezanje</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
@@ -2136,7 +2159,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
-      <translation type="unfinished">Slider max:</translation>
+      <translation>Klizač max:</translation>
     </message>
   </context>
   <context>
@@ -2207,7 +2230,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjancent nodes</source>
-      <translation type="unfinished">Collect adjancent nodes</translation>
+      <translation>Skupite susjedne čvorove</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -2296,7 +2319,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation type="unfinished">Other pulley dia</translation>
+      <translation>Drugi promjeri kolotura</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -2311,17 +2334,17 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
       <source>Belt tension force</source>
-      <translation type="unfinished">Belt tension force</translation>
+      <translation>Sila zatezanja remena</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation type="unfinished">Driven pulley</translation>
+      <translation>Pogonski kolotur</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
       <source>Force location [deg]</source>
-      <translation type="unfinished">Force location [deg]</translation>
+      <translation>Kut sile [deg]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
@@ -2336,7 +2359,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
       <source>Axial free</source>
-      <translation type="unfinished">Axial free</translation>
+      <translation>Aksijalno pokretljivo</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
@@ -2354,7 +2377,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Propisani pomak</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -2409,7 +2432,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Rotacije vrijede samo za elemente nosača i lima.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>

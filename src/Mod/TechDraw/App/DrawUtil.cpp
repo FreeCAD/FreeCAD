@@ -570,6 +570,13 @@ Base::Vector3d DrawUtil::invertY(Base::Vector3d v)
     return result;
 }
 
+QPointF DrawUtil::invertY(QPointF v)
+{
+    QPointF result(v.x(), -v.y());
+    return result;
+}
+
+
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
@@ -656,7 +663,7 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
-    bool crazyOK = hGrp->GetBool("allowCrazyEdge", true);
+    bool crazyOK = hGrp->GetBool("allowCrazyEdge", false);
     if (crazyOK) {
         return false;
     }
@@ -1062,6 +1069,25 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d &circl
     mergeBoundedPoint(circleCenter + Base::Vector2d::FromPolar(circleRadius, arcBaseAngle + arcRotation),
                       rectangle, intersections);
 }
+
+//copy whole text file from inSpec to outSpec
+//create empty outSpec file if inSpec
+void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream output(outSpec);
+        return;
+    }
+    Base::FileInfo fi(inSpec);
+    if (fi.isReadable()) {
+        bool rc = fi.copyTo(outSpec.c_str());
+        if (!rc) {
+            Base::Console().Message("DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(), outSpec.c_str());
+        }
+    }
+}
+
 
 //============================
 // various debugging routines.

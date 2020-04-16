@@ -15,8 +15,8 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout" columnstretch="0,3,0,1">
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>&amp;Contents</string>
@@ -26,10 +26,32 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="SpreadsheetGui::LineEdit" name="cellContent">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="alias_label">
+       <property name="text">
+        <string>&amp;Alias</string>
+       </property>
+       <property name="buddy">
+        <cstring>cellAlias</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="SpreadsheetGui::LineEdit" name="cellAlias">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+       <string>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </string>
        </property>
       </widget>
      </item>
@@ -55,6 +77,7 @@
  <tabstops>
   <tabstop>cells</tabstop>
   <tabstop>cellContent</tabstop>
+  <tabstop>cellAlias</tabstop>
  </tabstops>
  <resources/>
  <connections/>

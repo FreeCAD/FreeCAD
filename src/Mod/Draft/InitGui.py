@@ -1,4 +1,3 @@
-"""Initialization of the Draft workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -19,7 +18,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Initialization of the Draft workbench (graphical interface)."""
+
 import os
+
 import FreeCAD
 import FreeCADGui
 
@@ -82,6 +84,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             import DraftFillet
             from draftguitools import gui_circulararray
             from draftguitools import gui_polararray
+            from draftguitools import gui_orthoarray
+            from draftguitools import gui_arrays
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
         except Exception as exc:
@@ -171,4 +175,4 @@ FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui", QT_TRANSLATE_NOOP("Draft
 FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 
-FreeCAD.__unit_test__ += ["TestDraft"]
+FreeCAD.__unit_test__ += ["TestDraftGui"]

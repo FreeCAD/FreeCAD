@@ -367,7 +367,7 @@ public:
          * before, and only then will it call the property's aboutToSetValue().
          */
         void aboutToChange() {
-            if(!mProp.hasChanged) {
+            if (!mProp.hasChanged) {
                 mProp.hasChanged = true;
                 mProp.aboutToSetValue();
             }
@@ -388,12 +388,12 @@ public:
                 // Must make sure to not throw in a destructor
                 try {
                     mProp.hasSetValue();
-                }catch(Base::Exception &e) {
+                } catch(Base::Exception &e) {
                     e.ReportException();
-                }catch(...) {}
+                } catch(...) {}
                 mProp.hasChanged = false;
             }
-            if(mProp.signalCounter>0)
+            if (mProp.signalCounter>0)
                 mProp.signalCounter--;
         }
 
@@ -405,9 +405,9 @@ public:
         // Destructor cannot throw. So we provide this function to allow error
         // propagation.
         void tryInvoke() {
-            if(mProp.signalCounter==1 && mProp.hasChanged) {
+            if (mProp.signalCounter==1 && mProp.hasChanged) {
                 mProp.hasSetValue();
-                if(mProp.signalCounter>0)
+                if (mProp.signalCounter>0)
                     --mProp.signalCounter;
                 mProp.hasChanged = false;
             }
@@ -606,14 +606,14 @@ public:
 
     virtual void set1Value(int index, const_reference value) {
         int size = getSize();
-        if(index<-1 || index>size)
+        if (index<-1 || index>size)
             throw Base::RuntimeError("index out of bound");
 
         atomic_change guard(*this);
-        if(index==-1 || index == size) {
+        if (index==-1 || index == size) {
             index = size;
             setSize(index+1,value);
-        }else
+        } else
             _lValueList[index] = value;
         this->_touchList.insert(index);
         guard.tryInvoke();
@@ -646,17 +646,17 @@ protected:
 
     void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
     {
-        if(indices.empty()) {
+        if (indices.empty()) {
             ListT values;
             values.resize(vals.size());
-            for(std::size_t i=0,count=vals.size();i<count;++i)
+            for (std::size_t i=0,count=vals.size();i<count;++i)
                 values[i] = getPyValue(vals[i]);
             setValues(std::move(values));
             return;
         }
         assert(vals.size()==indices.size());
         atomic_change guard(*this);
-        for(int i=0,count=indices.size();i<count;++i)
+        for (int i=0,count=indices.size();i<count;++i)
             set1Value(indices[i],getPyValue(vals[i]));
         guard.tryInvoke();
     }

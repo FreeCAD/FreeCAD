@@ -60,7 +60,7 @@ public:
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
     const char *getName(void) const {return "EditorView";}
-    void onUpdate(void){};
+    void onUpdate(void){}
 
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
@@ -88,6 +88,9 @@ public:
 
 protected:
     void focusInEvent(QFocusEvent* e);
+    void showEvent(QShowEvent*);
+    void hideEvent(QHideEvent*);
+    void closeEvent(QCloseEvent*);
 
 private Q_SLOTS:
     void checkTimestamp();

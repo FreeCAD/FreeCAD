@@ -151,6 +151,31 @@ bool StdCmdDlgMacroExecuteDirect::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("Run");
 }
 
+DEF_STD_CMD_A(StdCmdMacroAttachDebugger)
+
+StdCmdMacroAttachDebugger::StdCmdMacroAttachDebugger()
+  : Command("Std_MacroAttachDebugger")
+{
+    sGroup        = QT_TR_NOOP("Macro");
+    sMenuText     = QT_TR_NOOP("Attach to remote debugger...");
+    sToolTipText  = QT_TR_NOOP("Attach to a remotely running debugger");
+    sWhatsThis    = "Std_MacroAttachDebugger";
+    sStatusTip    = QT_TR_NOOP("Attach to a remotely running debugger");
+    eType         = 0;
+}
+
+void StdCmdMacroAttachDebugger::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Gui, "from freecad.gui import RemoteDebugger\n"
+                   "RemoteDebugger.attachToRemoteDebugger()");
+}
+
+bool StdCmdMacroAttachDebugger::isActive(void)
+{
+    return true;
+}
+
 DEF_STD_CMD_A(StdCmdMacroStartDebug)
 
 StdCmdMacroStartDebug::StdCmdMacroStartDebug()
@@ -297,6 +322,7 @@ void CreateMacroCommands(void)
     rcCmdMgr.addCommand(new StdCmdMacroStopRecord());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecute());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecuteDirect());
+    rcCmdMgr.addCommand(new StdCmdMacroAttachDebugger());
     rcCmdMgr.addCommand(new StdCmdMacroStartDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStopDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStepOver());

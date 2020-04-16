@@ -1138,37 +1138,61 @@ static void showShapes(const T &shapes, const char *name, const char *fmt=0, ...
 }
 
 template<class Func>
-static int foreachSubshape(const TopoDS_Shape &shape, Func func, int type=TopAbs_FACE) {
-    bool haveShape = false;
+static int foreachSubshape(const TopoDS_Shape &shape,
+        Func func, int type=TopAbs_FACE, bool groupOpenEdges=false)
+{
+    int res = -1;
+    std::vector<TopoDS_Shape> openShapes;
     switch(type) {
     case TopAbs_SOLID:
         for(TopExp_Explorer it(shape,TopAbs_SOLID); it.More(); it.Next()) {
-            haveShape = true;
+            res = TopAbs_SOLID;
             func(it.Current(),TopAbs_SOLID);
         }
-        if(haveShape) return TopAbs_SOLID;
+        if(res>=0) break;
         //fall through
     case TopAbs_FACE:
         for(TopExp_Explorer it(shape,TopAbs_FACE); it.More(); it.Next()) {
-            haveShape = true;
+            res = TopAbs_FACE;
             func(it.Current(),TopAbs_FACE);
         }
-        if(haveShape) return TopAbs_FACE;
+        if(res>=0) break;
         //fall through
     case TopAbs_WIRE:
-        for(TopExp_Explorer it(shape,TopAbs_WIRE); it.More(); it.Next()) {
-            haveShape = true;
-            func(it.Current(),TopAbs_WIRE);
+        for(TopExp_Explorer it(shape, TopAbs_WIRE); it.More(); it.Next()) {
+            res = TopAbs_WIRE;
+            if(groupOpenEdges && !BRep_Tool::IsClosed(TopoDS::Wire(it.Current())))
+                openShapes.push_back(it.Current());
+            else
+                func(it.Current(),TopAbs_WIRE);
         }
-        if(haveShape) return TopAbs_WIRE;
+        if(res>=0) break;
         //fall through
     default:
         for(TopExp_Explorer it(shape,TopAbs_EDGE); it.More(); it.Next()) {
-            haveShape = true;
+            res = TopAbs_EDGE;
+            if(groupOpenEdges) {
+                TopoDS_Edge e = TopoDS::Edge(it.Current());
+                gp_Pnt p1,p2;
+                getEndPoints(e,p1,p2);
+                if(p1.SquareDistance(p2) > Precision::SquareConfusion()) {
+                    openShapes.push_back(it.Current());
+                    continue;
+                }
+            }
             func(it.Current(),TopAbs_EDGE);
         }
     }
-    return haveShape?TopAbs_EDGE:-1;
+    if(openShapes.empty())
+        return res;
+ 
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+    for(auto &s : openShapes)
+        builder.Add(comp,s);
+    func(comp, TopAbs_COMPOUND);
+    return TopAbs_COMPOUND;
 }
 
 struct FindPlane {
@@ -2950,7 +2974,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
             //explode the shape
             if(!shape.IsNull()){
                 foreachSubshape(shape,ShapeInfoBuilder(
-                    arcPlaneFound,arc_plane,trsf,shape_list,rparams));
+                    arcPlaneFound,arc_plane,trsf,shape_list,rparams),TopAbs_FACE,true);
             }
         }
         FC_TIME_LOG(t1,"plane finding");

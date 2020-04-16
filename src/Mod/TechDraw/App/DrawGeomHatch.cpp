@@ -93,17 +93,17 @@ DrawGeomHatch::DrawGeomHatch(void)
 
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,
                                             "Embedded Pat hatch file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
+    ADD_PROPERTY_TYPE(NamePattern,(prefGeomHatchName()),vgroup,App::Prop_None,"The name of the pattern");
     ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
 
     m_saveFile = "";
     m_saveName = "";
 
-    getParameters();
+//    getParameters();
 
     std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
     FilePattern.setFilter(patFilter);
@@ -544,7 +544,7 @@ void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
         setupPatIncluded();
     } else {
         std::string tempName = PatIncluded.getExchangeTempFile();
-        copyFile(newPatFile, tempName);
+        DrawUtil::copyFile(newPatFile, tempName);
         PatIncluded.setValue(tempName.c_str());
     }
 }
@@ -585,29 +585,63 @@ void DrawGeomHatch::setupPatIncluded(void)
     std::string patName = dir + special;
 
     if (PatIncluded.isEmpty()) {
-        copyFile(std::string(), patName);
+        DrawUtil::copyFile(std::string(), patName);
         PatIncluded.setValue(patName.c_str());
     }
 
     if (!FilePattern.isEmpty()) {
         std::string exchName = PatIncluded.getExchangeTempFile();
-        copyFile(FilePattern.getValue(), exchName);
+        DrawUtil::copyFile(FilePattern.getValue(), exchName);
         PatIncluded.setValue(exchName.c_str(), special.c_str());
     }
 }
 
-//copy whole text file from inSpec to outSpec
-void DrawGeomHatch::copyFile(std::string inSpec, std::string outSpec)
+void DrawGeomHatch::unsetupObject(void)
 {
-//    Base::Console().Message("DGH::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
-    if (inSpec.empty()) {
-        std::ofstream  dst(outSpec);   //make an empty file
-    } else {
-        std::ifstream  src(inSpec);
-        std::ofstream  dst(outSpec);
-        dst << src.rdbuf();
+//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv != nullptr) {
+        dv->requestPaint();
     }
+    App::DocumentObject::unsetupObject();
 }
+
+std::string DrawGeomHatch::prefGeomHatchFile(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    std::string defaultFileName = defaultDir + "FCPAT.pat";
+    std::string result = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
+    if (result.empty()) {
+        result = defaultFileName;
+    }
+    return result;
+}
+
+std::string DrawGeomHatch::prefGeomHatchName()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+    std::string defaultNamePattern = "Diamond";
+    std::string result = hGrp->GetASCII("NamePattern",defaultNamePattern.c_str());
+    if (result.empty()) {
+        result = defaultNamePattern;
+    }
+    return result;
+}
+
+App::Color DrawGeomHatch::prefGeomHatchColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
+    return fcColor;
+}
+
 
 
 // Python Drawing feature ---------------------------------------------------------

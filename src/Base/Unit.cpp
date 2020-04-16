@@ -361,7 +361,7 @@ std::string Unit::getStdString(void) const
         }
 
         if (Sig.Mass < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "kg";
@@ -370,7 +370,7 @@ std::string Unit::getStdString(void) const
         }
 
         if (Sig.Time < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "s";
@@ -379,7 +379,7 @@ std::string Unit::getStdString(void) const
         }
 
         if (Sig.ElectricCurrent < 0) {
-            if(mult)
+            if (mult)
                 ret<<'*';
             mult = true;
             ret << "A";

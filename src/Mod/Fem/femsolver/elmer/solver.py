@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -26,17 +28,15 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as femutils
-
-from .. import run
-from .. import solverbase
 from . import tasks
-
-from .equations import heat
 from .equations import elasticity
 from .equations import electrostatic
-from .equations import fluxsolver
 from .equations import flow
+from .equations import fluxsolver
+from .equations import heat
+from .. import run
+from .. import solverbase
+from femtools import femutils
 
 
 def create(doc, name="ElmerSolver"):
@@ -95,6 +95,6 @@ class ViewProxy(solverbase.ViewProxy):
     """Proxy for FemSolverElmers View Provider."""
 
     def getIcon(self):
-        return ":/icons/fem-solver-elmer.svg"
+        return ":/icons/FEM_SolverElmer.svg"
 
 ##  @}

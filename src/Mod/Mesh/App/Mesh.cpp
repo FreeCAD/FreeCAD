@@ -83,7 +83,7 @@ MeshObject::MeshObject(const MeshObject& mesh)
   : _Mtrx(mesh._Mtrx),_kernel(mesh._kernel)
 {
     // copy the mesh structure
-    this->_segments = mesh._segments;
+    copySegments(mesh);
 }
 
 MeshObject::~MeshObject()
@@ -172,13 +172,33 @@ Base::BoundBox3d MeshObject::getBoundBox(void)const
     return Bnd2;
 }
 
+void MeshObject::copySegments(const MeshObject& mesh)
+{
+    // After copying the segments the mesh pointers must be adjusted
+    this->_segments = mesh._segments;
+    std::for_each(this->_segments.begin(), this->_segments.end(), [this](Segment& s) {
+        s._mesh = this;
+    });
+}
+
+void MeshObject::swapSegments(MeshObject& mesh)
+{
+    this->_segments.swap(mesh._segments);
+    std::for_each(this->_segments.begin(), this->_segments.end(), [this](Segment& s) {
+        s._mesh = this;
+    });
+    std::for_each(mesh._segments.begin(), mesh._segments.end(), [&mesh](Segment& s) {
+        s._mesh = &mesh;
+    });
+}
+
 void MeshObject::operator = (const MeshObject& mesh)
 {
     if (this != &mesh) {
         // copy the mesh structure
         setTransform(mesh._Mtrx);
         this->_kernel = mesh._kernel;
-        this->_segments = mesh._segments;
+        copySegments(mesh);
     }
 }
 
@@ -199,7 +219,7 @@ void MeshObject::swap(MeshCore::MeshKernel& Kernel)
 void MeshObject::swap(MeshObject& mesh)
 {
     this->_kernel.Swap(mesh._kernel);
-    this->_segments.swap(mesh._segments);
+    swapSegments(mesh);
     Base::Matrix4D tmp=this->_Mtrx;
     this->_Mtrx = mesh._Mtrx;
     mesh._Mtrx = tmp;
@@ -1795,7 +1815,7 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
         return segm;
 
     MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
-    std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
+    std::shared_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
         //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
@@ -1815,8 +1835,8 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
     }
 
     if (surf.get()) {
-        std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
-        surfaces.push_back(surf.get());
+        std::vector<MeshCore::MeshSurfaceSegmentPtr> surfaces;
+        surfaces.push_back(surf);
         finder.FindSegments(surfaces);
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();

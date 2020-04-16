@@ -113,6 +113,8 @@ public:
     const std::string &getErrorType(void) const {return _errorType;}
     virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
     void ReportException (void) const override;
+    /// Sets the Python error indicator and an error message
+    virtual void setPyException() const override;
 
 protected:
     std::string _stackTrace;

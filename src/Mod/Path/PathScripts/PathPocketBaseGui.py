@@ -62,6 +62,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if not FeatureFacing & self.pocketFeatures():
             form.facingWidget.hide()
+            form.clearEdges.hide()
 
         if FeaturePocket & self.pocketFeatures():
             form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
@@ -103,6 +104,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StepOver = self.form.stepOverPercent.value()
         if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
             obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
+            obj.EnableRotation = str(self.form.enableRotation.currentText())
 
         PathGui.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
@@ -121,6 +124,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureFacing & self.pocketFeatures():
             if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
                 obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            if obj.ClearEdges != self.form.clearEdges.isChecked():
+                obj.ClearEdges = self.form.clearEdges.isChecked()
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
@@ -140,9 +145,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+        self.selectInComboBox(obj.EnableRotation, self.form.enableRotation)
 
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
+            self.form.clearEdges.setChecked(obj.ClearEdges)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
@@ -158,8 +165,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.useOutline.clicked)
         signals.append(self.form.minTravel.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.enableRotation.currentIndexChanged)
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)
+            signals.append(self.form.clearEdges.clicked)
 
         return signals

@@ -30,15 +30,17 @@
 #ifdef FC_OS_WIN32
 # define ReenExport    __declspec(dllimport)
 # define ReenGuiExport __declspec(dllexport)
-# define PartExport __declspec(dllimport)
+# define PartExport    __declspec(dllimport)
 # define MeshExport    __declspec(dllimport)
-# define PointsExport __declspec(dllimport)
-# define AppExport __declspec(dllimport)
+# define MeshGuiExport __declspec(dllimport)
+# define PointsExport  __declspec(dllimport)
+# define AppExport     __declspec(dllimport)
 #else // for Linux
 # define ReenExport
 # define ReenGuiExport
 # define PartExport
 # define MeshExport
+# define MeshGuiExport
 # define PointsExport
 # define AppExport
 #endif

@@ -86,107 +86,6 @@ bool isCreateConstraintActive(Gui::Document *doc)
     return false;
 }
 
-void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
-{
-    const std::vector<Sketcher::Constraint *> &Constraints = sketch->Constraints.getValues();
-    Sketcher::Constraint* Constr = Constraints[ConstrNbr];
-
-    // Return if constraint doesn't have editable value
-    if (Constr->isDimensional()) {
-
-        QDialog dlg(Gui::getMainWindow());
-        Ui::InsertDatum ui_ins_datum;
-        ui_ins_datum.setupUi(&dlg);
-
-        double datum = Constr->getValue();
-        Base::Quantity init_val;
-
-        if (Constr->Type == Sketcher::Angle) {
-            datum = Base::toDegrees<double>(datum);
-            dlg.setWindowTitle(EditDatumDialog::tr("Insert angle"));
-            init_val.setUnit(Base::Unit::Angle);
-            ui_ins_datum.label->setText(EditDatumDialog::tr("Angle:"));
-            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherAngle"));
-        }
-        else if (Constr->Type == Sketcher::Radius) {
-            dlg.setWindowTitle(EditDatumDialog::tr("Insert radius"));
-            init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum.label->setText(EditDatumDialog::tr("Radius:"));
-            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
-        }
-        else if (Constr->Type == Sketcher::Diameter) {
-            dlg.setWindowTitle(EditDatumDialog::tr("Insert diameter"));
-            init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum.label->setText(EditDatumDialog::tr("Diameter:"));
-            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
-        }
-        else if (Constr->Type == Sketcher::SnellsLaw) {
-            dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", "Constraint_SnellsLaw"));
-            ui_ins_datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
-            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
-        }
-        else {
-            dlg.setWindowTitle(EditDatumDialog::tr("Insert length"));
-            init_val.setUnit(Base::Unit::Length);
-            ui_ins_datum.label->setText(EditDatumDialog::tr("Length:"));
-            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
-        }
-
-        // e.g. an angle or a distance X or Y applied on a line or two vertexes
-        init_val.setValue(datum);
-
-        ui_ins_datum.labelEdit->setValue(init_val);
-        ui_ins_datum.labelEdit->selectNumber();
-        ui_ins_datum.labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
-        ui_ins_datum.name->setText(Base::Tools::fromStdString(Constr->Name));
-
-        if (dlg.exec()) {
-            Base::Quantity newQuant = ui_ins_datum.labelEdit->value();
-            if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
-                // save the value for the history
-                ui_ins_datum.labelEdit->pushToHistory();
-
-                double newDatum = newQuant.getValue();
-
-                try {
-                    if (ui_ins_datum.labelEdit->hasExpression())
-                        ui_ins_datum.labelEdit->apply();
-                    else
-                        Gui::cmdAppObjectArgs(sketch, "setDatum(%i,App.Units.Quantity('%f %s'))",
-                                              ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
-
-                    QString constraintName = ui_ins_datum.name->text().trimmed();
-                    if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
-                        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        Gui::cmdAppObjectArgs(sketch, "renameConstraint(%d, u'%s')",
-                                              ConstrNbr, escapedstr.c_str());
-                    }
-                    Gui::Command::commitCommand();
-
-                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
-                        sketch->ExpressionEngine.execute();
-                        sketch->solve();
-                    }
-
-                    tryAutoRecompute(sketch);
-                }
-                catch (const Base::Exception& e) {
-                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
-                    Gui::Command::abortCommand();
-
-                    tryAutoRecomputeIfNotSolve(sketch);
-                }
-            }
-        }
-        else {
-            // command canceled
-            Gui::Command::abortCommand();
-
-            tryAutoRecomputeIfNotSolve(sketch); // we have to update the solver after this aborted addition.
-        }
-    }
-}
-
 // Utility method to avoid repeating the same code over and over again
 void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch, bool isDriven=true)
 {
@@ -210,7 +109,8 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
 
     // Ask for the value of the distance immediately
     if (show && isDriven) {
-        openEditDatumDialog(sketch, ConStr.size() - 1);
+        EditDatumDialog editDatumDialog(sketch, ConStr.size() - 1);
+        editDatumDialog.exec();
     }
     else {
         // no dialog was shown so commit the command
@@ -911,25 +811,26 @@ protected:
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
 
+extern char cursor_crosshair_color[];
+
 /* XPM */
 static const char *cursor_genericconstraint[]={
-"32 32 3 1",
+"32 32 2 1",
 "  c None",
-". c #FFFFFF",
-"+ c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
+cursor_crosshair_color,
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
 "                                ",
-".....   .....                   ",
+"+++++   +++++                   ",
 "                                ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
 "                                ",
 "                                ",
 "                                ",
@@ -970,6 +871,8 @@ public:
 
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
+
+        setCrosshairColor();
 
         // Constrain icon size in px
         int iconSize = 16;

@@ -204,6 +204,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->attachmentOffsetX->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.x")));
     ui->attachmentOffsetY->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.y")));
     ui->attachmentOffsetZ->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Base.z")));
+
+    ui->attachmentOffsetYaw->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Yaw")));
+    ui->attachmentOffsetPitch->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Pitch")));
+    ui->attachmentOffsetRoll->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(),std::string("AttachmentOffset.Rotation.Roll")));
+
     visibilityAutomation(true);
     updateAttachmentOffsetUI();
     updateReferencesUI();
@@ -1038,7 +1043,8 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-
+    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
+    document->openCommand("Edit attachment");
 }
 
 void TaskDlgAttacher::clicked(int)
@@ -1058,20 +1064,21 @@ bool TaskDlgAttacher::accept()
         auto obj = ViewProvider->getObject();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
-        if (pcAttach->AttachmentOffset.isTouched()){
+        //if (pcAttach->AttachmentOffset.isTouched()){
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
             Gui::cmdAppObjectArgs(obj, "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
                                   plm.getPosition().x, plm.getPosition().y, plm.getPosition().z, yaw, pitch, roll);
-        }
+        //}
 
         Gui::cmdAppObjectArgs(obj, "MapReversed = %s", pcAttach->MapReversed.getValue() ? "True" : "False");
 
         Gui::cmdAppObjectArgs(obj, "Support = %s", pcAttach->Support.getPyReprString().c_str());
 
-        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObjectArgs(obj, "MapPathParameter = %f", pcAttach->MapPathParameter.getValue());
 
+        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
         Gui::cmdAppObject(obj, "recompute()");
 
         Gui::cmdGuiDocument(obj, "resetEdit()");

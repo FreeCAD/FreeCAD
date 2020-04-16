@@ -32,7 +32,6 @@
 
 #include "DrawTile.h"
 
-
 namespace TechDraw
 {
 
@@ -47,10 +46,13 @@ public:
     App::PropertyString       LeftText;
     App::PropertyString       RightText;
     App::PropertyString       CenterText;
-    App::PropertyFileIncluded SymbolFile;
+    App::PropertyFile         SymbolFile;
+    App::PropertyFileIncluded SymbolIncluded;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onDocumentRestored(); 
+    virtual void setupObject();
 
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderTile";
@@ -58,11 +60,14 @@ public:
     virtual PyObject *getPyObject(void);
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
-    void replaceSymbol(std::string newSymbolFile);
+    void replaceSymbolIncluded(std::string newSymbolFile);
+    void setupSymbolIncluded(void);
+//    void replaceSymbol(std::string newSymbolFile);
+
+    std::string prefSymbol(void);
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    void copyFile(std::string inSpec, std::string outSpec);
 
 private:
 };

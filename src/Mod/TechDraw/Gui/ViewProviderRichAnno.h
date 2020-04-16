@@ -58,6 +58,7 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawRichAnno* getViewObject() const;
     TechDraw::DrawRichAnno* getFeature()  const;
@@ -71,7 +72,6 @@ protected:
 
 private:
     static App::PropertyIntegerConstraint::Constraints LineStyleRange;
-
 
 };
 

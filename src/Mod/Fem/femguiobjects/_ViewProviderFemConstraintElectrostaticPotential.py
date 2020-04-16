@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -30,33 +31,23 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
-
-# for the panel
-import femtools.femutils as femutils
-import femtools.membertools as membertools
 from FreeCAD import Units
+
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
+from femtools import femutils
+from femtools import membertools
 
 
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-electrostatic-potential.svg"
-
     def setEdit(self, vobj, mode=0):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # show task panel
-        task = _TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(task)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel
+        )
 
 
 class _TaskPanel(object):

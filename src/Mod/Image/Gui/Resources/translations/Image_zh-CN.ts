@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-CN" sourcelanguage="en">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>选择图像平面并输入距离</translation>
     </message>
   </context>
   <context>

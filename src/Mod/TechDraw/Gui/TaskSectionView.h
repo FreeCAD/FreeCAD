@@ -51,15 +51,17 @@ public:
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onUpClicked(bool b);
-    void onDownClicked(bool b);
-    void onLeftClicked(bool b);
-    void onRightClicked(bool b);
-    void onApplyClicked(bool b);
+    void onUpClicked();
+    void onDownClicked();
+    void onLeftClicked();
+    void onRightClicked();
+    void onIdentifierChanged();
+    void onScaleChanged();
+    void onXChanged();
+    void onYChanged();
+    void onZChanged();
 
 protected:
-    void blockButtons(bool b);
-
     void changeEvent(QEvent *e);
     void saveSectionState();
     void restoreSectionState();
@@ -68,13 +70,18 @@ protected:
     void applyQuick(std::string dir);
     void applyAligned(void);
 
-    TechDraw::DrawViewSection* createSectionView(void);
+    void createSectionView(void);
     void updateSectionView(void);
 
     void setUiPrimary();
     void setUiEdit();
 
     void checkAll(bool b);
+    void enableAll(bool b);
+
+    void failNoObject(std::string objName);
+    bool isBaseValid(void);
+    bool isSectionValid(void);
 
 private:
     Ui_TaskSectionView * ui;
@@ -93,12 +100,17 @@ private:
     double m_saveScale;
 
     std::string m_dirName;
+    std::string m_sectionName;
+    std::string m_baseName;
+    App::Document* m_doc;
 
     bool m_createMode;
     bool m_saved;
 
     std::string m_saveBaseName;
     std::string m_savePageName;
+
+    bool m_abort;
 
 };
 
@@ -123,14 +135,16 @@ public:
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
 
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 /*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
+
+    virtual bool isAllowedAlterSelection(void) const
+    { return false; }
+    virtual bool isAllowedAlterDocument(void) const
+    { return false; }
 
 protected:
 

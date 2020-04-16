@@ -26,6 +26,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt, utf8_decode=False):
@@ -232,7 +233,7 @@ class _CommandWall:
 
         if not done:
             # interactive mode
-            import DraftTrackers
+
             self.points = []
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
@@ -604,6 +605,10 @@ class _Wall(ArchComponent.Component):
                 shps = []
                 # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
                 sketchBaseToFuse = obj.Base.getLinkedObject().isDerivedFrom("Sketcher::SketchObject")
+                # but turn this off if we have layers, otherwise layers get merged
+                if hasattr(obj,"Material") and obj.Material \
+                and hasattr(obj.Material,"Materials") and obj.Material.Materials:
+                    sketchBaseToFuse = False
                 for b in bplates:
                     b.Placement = extdata[2].multiply(b.Placement)
                     b = b.extrude(extv)
@@ -988,7 +993,7 @@ class _Wall(ArchComponent.Component):
                         # if not sketch, e.g. Dwire, can have wire which is 3d so not on the placement's working plane - below applied to Sketch not applicable here
                         #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))  #normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
-                    if self.basewires: # and width:				# width already tested earlier...
+                    if self.basewires: # and width: # width already tested earlier...
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0

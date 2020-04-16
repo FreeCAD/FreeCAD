@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja" sourcelanguage="en">
+<TS version="2.1" language="ja" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>通過点の作成コマンドの後で、適用に必要となる既定値の設定</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>通過点の作成コマンドの後で必要とする加速と連続性に就いて、速度の既定値を設定する。</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>シミュレーションをするためには、軌道に対して少なくとも２つの通過地点を必要としています。</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>デフォルトに継続を設定</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>World</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20mm / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10mm / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5mm / 0.5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1mm / 0.1°</translation>

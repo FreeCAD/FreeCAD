@@ -119,7 +119,7 @@
  *
  * - \c default is the default value of this parameter. Right now, you must
  *   supply a default value. Boost.PP has trouble dealing with empty values.
- *   Remember that a sequence cannot be empty. Neight can tuple. Only array,
+ *   Remember that a sequence cannot be empty. Neither can tuple. Only array,
  *   something like <tt>(0,())</tt> for an empty array. It is awkward to write,
  *   and didn't add much functionality I want, hence the restriction of
  *   non-empty defaults here.

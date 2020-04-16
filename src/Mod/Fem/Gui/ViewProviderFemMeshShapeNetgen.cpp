@@ -48,8 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemMeshShapeNetgen, FemGui::ViewProviderFemM
 
 ViewProviderFemMeshShapeNetgen::ViewProviderFemMeshShapeNetgen()
 {
-
-
+    sPixmap = "FEM_MeshNetgenFromShape";
 }
 
 ViewProviderFemMeshShapeNetgen::~ViewProviderFemMeshShapeNetgen()

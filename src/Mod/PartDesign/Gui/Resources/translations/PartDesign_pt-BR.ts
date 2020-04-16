@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Criar um sistema de coordenadas locais novo</translation>
+      <translation>Criar um novo sistema de coordenadas local</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="1666"/>
       <source>Make a draft on a face</source>
-      <translation>Fazer um projecto sobre uma face</translation>
+      <translation>Fazer um esboço sobre uma face</translation>
     </message>
   </context>
   <context>

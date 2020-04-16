@@ -1,6 +1,9 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,9 +31,15 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemElementFluid1D
 
+from . import FemConstraint
 
-class _FemElementFluid1D:
-    "The FemElementFluid1D object"
+
+class _FemElementFluid1D(FemConstraint.Proxy):
+    """
+    The FemElementFluid1D object
+    """
+
+    Type = "Fem::ElementFluid1D"
 
     known_fluid_types = ["Liquid"]
     # "Gas", "Open Channel" are not implemented in ccx writer
@@ -52,42 +61,50 @@ class _FemElementFluid1D:
     known_channel_types = ["NONE"]
 
     def __init__(self, obj):
+        super(_FemElementFluid1D, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
             "FluidSection",
             "List of fluid section shapes"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "SectionType",
             "FluidSection",
             "select fluid section type"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "LiquidSectionType",
             "LiquidSection",
             "select liquid section type"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "ManningArea",
             "LiquidManning",
             "set area of the manning fluid section"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "ManningRadius",
             "LiquidManning",
             "set hydraulic radius of manning fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "ManningCoefficient",
             "LiquidManning",
             "set coefficient of manning fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "EnlargeArea1",
@@ -100,168 +117,196 @@ class _FemElementFluid1D:
             "LiquidEnlargement",
             "set enlarged area of enlargement fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "ContractArea1",
             "LiquidContraction",
             "set initial area of the contraction fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "ContractArea2",
             "LiquidContraction",
             "set contracted area of contraction fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "InletPressure",
             "LiquidInlet",
             "set inlet pressure for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "OutletPressure",
             "LiquidOutlet",
             "set outlet pressure for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "InletFlowRate",
             "LiquidInlet",
             "set inlet mass flow rate for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "OutletFlowRate",
             "LiquidOutlet",
             "set outlet mass flow rate for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyBool",
             "InletPressureActive",
             "LiquidInlet",
             "activates or deactivates inlet pressure for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyBool",
             "OutletPressureActive",
             "LiquidOutlet",
             "activates or deactivates outlet pressure for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyBool",
             "InletFlowRateActive",
             "LiquidInlet",
             "activates or deactivates inlet flow rate for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyBool",
             "OutletFlowRateActive",
             "LiquidOutlet",
             "activates or deactivates outlet flow rate for fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "EntrancePipeArea",
             "LiquidEntrance",
             "set the pipe area of the entrance fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "EntranceArea",
             "LiquidEntrance",
             "set the entrance area of the entrance fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "DiaphragmPipeArea",
             "LiquidDiaphragm",
             "set the pipe area of the diaphragm fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "DiaphragmArea",
             "LiquidDiaphragm",
             "set the diaphragm area of the diaphragm fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "BendPipeArea",
             "LiquidBend",
             "set pipe area of the bend fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "BendRadiusDiameter",
             "LiquidBend",
             "set ratio of bend radius over pipe diameter of the bend fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "BendAngle",
             "LiquidBend",
             "set bend angle of the bend fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "BendLossCoefficient",
             "LiquidBend",
             "set loss coefficient of the bend fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "GateValvePipeArea",
             "LiquidGateValve",
             "set pipe area of the gate valve fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "GateValveClosingCoeff",
             "LiquidGateValve",
             "set closing coefficient of the gate valve fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloatList",
             "PumpFlowRate",
             "LiquidPump",
             "set the pump characteristic flow rate of the pump fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloatList",
             "PumpHeadLoss",
             "LiquidPump",
             "set the pump characteristic head loss of the pump fluid section"
         )
+
         obj.addProperty(
             "App::PropertyArea",
             "ColebrookeArea",
             "LiquidColebrooke",
             "set pipe area of the colebrooke fluid section"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "ColebrookeRadius",
             "LiquidColebrooke",
             "set hydraulic radius of the colebrooke fluid section"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "ColebrookeGrainDiameter",
             "LiquidColebrooke",
             "set grain diameter of the colebrooke fluid section"
         )
+
         obj.addProperty(
             "App::PropertyFloat",
             "ColebrookeFormFactor",
             "LiquidColebrooke",
             "set coefficient of the colebrooke fluid section"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "GasSectionType",
             "GasSection",
             "select gas section type"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "ChannelSectionType",
@@ -309,8 +354,3 @@ class _FemElementFluid1D:
         obj.OutletPressureActive = True
         obj.InletFlowRateActive = False
         obj.OutletFlowRateActive = False
-        obj.Proxy = self
-        self.Type = "Fem::FemElementFluid1D"
-
-    def execute(self, obj):
-        return

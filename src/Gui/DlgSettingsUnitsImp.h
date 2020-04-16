@@ -59,4 +59,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
+#endif // GUI_DIALOG_DLGSETTINGSUnitsIMP_H

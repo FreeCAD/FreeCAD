@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="cs" sourcelanguage="en">
+<TS version="2.1" language="cs" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Vzdálenost [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>

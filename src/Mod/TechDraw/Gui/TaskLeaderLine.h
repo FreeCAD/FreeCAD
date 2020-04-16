@@ -89,6 +89,7 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
+    void recomputeFeature();
 
 
 protected Q_SLOTS:
@@ -120,6 +121,13 @@ protected:
 
    void saveState(void);
    void restoreState(void);
+
+private Q_SLOTS:
+    void onStartSymbolChanged();
+    void onEndSymbolChanged();
+    void onColorChanged();
+    void onLineWidthChanged();
+    void onLineStyleChanged();
 
 private:
     Ui_TaskLeaderLine * ui;

@@ -116,6 +116,9 @@ void DrawView::checkScale(void)
 
 void DrawView::onChanged(const App::Property* prop)
 {
+//Coding note: calling execute, recompute or recomputeFeature inside an onChanged
+//method can create infinite loops.  In general don't do this!  There may be 
+//situations where it is OK, but careful analysis is a must. 
     if (!isRestoring()) {
         if (prop == &ScaleType) {
             auto page = findParentPage();
@@ -143,6 +146,10 @@ void DrawView::onChanged(const App::Property* prop)
         } else if (prop == &LockPosition) {
             handleXYLock();
             LockPosition.purgeTouched(); 
+        }
+        if ((prop == &Caption) ||
+            (prop == &Label)) {
+            requestPaint();
         }
     }
     App::DocumentObject::onChanged(prop);

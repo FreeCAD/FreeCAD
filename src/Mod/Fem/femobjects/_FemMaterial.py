@@ -1,5 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,25 +30,31 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM material
 
+from . import FemConstraint
 
-class _FemMaterial:
-    "The FEM Material object"
+
+class _FemMaterial(FemConstraint.Proxy):
+    """
+    The FEM Material object
+    """
+
+    Type = "Fem::Material"
+
     def __init__(self, obj):
+        super(_FemMaterial, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
             "Material",
             "List of material shapes"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "Category",
             "Material",
             "Material type: fluid or solid"
         )
-        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
-        obj.Proxy = self
-        self.Type = "Fem::Material"
 
-    def execute(self, obj):
-        return
+        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel

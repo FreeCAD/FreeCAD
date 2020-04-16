@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-PT" sourcelanguage="en">
+<TS version="2.1" language="pt-PT" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Podes configurar uma pasta costumizada para mostrar aqui no menu Edita r-&gt; Preferências -&gt; Começar-&gt; Mostrar pasta adicional</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>

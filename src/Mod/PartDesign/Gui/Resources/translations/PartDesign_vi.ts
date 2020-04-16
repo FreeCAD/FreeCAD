@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Tạo một hệ tọa độ nội bộ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Tạo một hệ tọa độ nội bộ mới</translation>
     </message>
   </context>
   <context>
@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Tính năng được yêu cầu không thể được tạo. Lý do có thể là:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ Phần thân kích hoạt không chứa hình dạng cơ bản, do đó ở đây không có
+chất liệu để mà bỏ đi;
+  â¢ bản phác thảo đã chọn không thuộc về phần Thân được kích hoạt.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Tính năng được yêu cầu không thể được tạo. Lý do có thể là:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ Phần thân kích hoạt không chứa hình dạng cơ bản, do đó ở đây không có
+chất liệu để mà bỏ đi;
+  â¢ bản phác thảo đã chọn không thuộc về phần Thân được kích hoạt.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Tính năng được yêu cầu không thể được tạo. Lý do có thể là:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ Phần thân kích hoạt không chứa hình dạng cơ bản, do đó ở đây không có
+chất liệu để mà bỏ đi;
+  â¢ bản phác thảo đã chọn không thuộc về phần Thân được kích hoạt.</translation>
     </message>
   </context>
   <context>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Từ phần thân khác của cùng một bộ phận</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Đường dẫn để quét dọc theo nó</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2523,32 +2523,32 @@
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Several sub-elements selected</source>
-      <translation type="unfinished">Several sub-elements selected</translation>
+      <translation>Đã chọn nhiều phần tử con</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a single face as support for a sketch!</translation>
+      <translation>Bạn phải chọn một mặt đơn để hỗ trợ cho vẽ phác thảo!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>No support face selected</source>
-      <translation type="unfinished">No support face selected</translation>
+      <translation>Chưa chọn mặt hỗ trợ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a face as support for a sketch!</translation>
+      <translation>Bạn phải chọn một mặt để hỗ trợ cho vẽ phác thảo!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No planar support</source>
-      <translation type="unfinished">No planar support</translation>
+      <translation>Chưa hỗ trợ mặt hai chiều</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="497"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation type="unfinished">You need a planar face as support for a sketch!</translation>
+      <translation>Bạn phải chọn một mặt hai chiều để hỗ trợ cho vẽ phác thảo!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="679"/>
@@ -2755,7 +2755,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Không tìm thấy tính năng PartDesign cái mà không thuộc về phần thân. Không có gì để nâng cấp cả.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2880,9 +2880,9 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Để sử dụng PartDesign, bạn cần một đối tượng Phần thân đang hoạt động trong tài liệu. Hãy kích hoạt (nhấp đúp) hoặc tạo một cái. 
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Nếu bạn có một tài liệu cũ với các đối tượng PartDesign không có Phần thân, hãy sử dụng chức năng nâng cấp trong PartDesign để đưa chúng vào một phần thân.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
@@ -3055,9 +3055,9 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Lưu ý: Nếu bạn chọn nâng cấp lên thì bạn sẽ không thể chỉnh sửa tập tin với phiên bản FreeCAD cũ.
+Nếu bạn từ chối di chuyển, bạn sẽ không thể sử dụng các tính năng PartDesign mới như Phần thân và các bộ phận. Kết quả là bạn cũng sẽ không thể sử dụng các bộ phận của bạn trong bàn làm việc lắp ráp.
+Mặc dù bạn sẽ có thể di chuyển bất kỳ lúc nào sau đó với 'Part Design-&gt; Migrate...'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

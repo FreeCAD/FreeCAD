@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Geselecteerde cellen samenvoegen</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Eerder samengevoegde cellen splitsen</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Tekst in geselecteerde cellen vet instellen</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Tekst in geselecteerde cellen cursief instellen</translation>
     </message>
   </context>
   <context>
@@ -331,10 +331,6 @@
       <translation>Bestand exporteren</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Celinhoud</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Rekenblad tonen</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Stelt de achtergrondkleur van de Spreadsheet-cel(len) op</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Rekenblad</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>

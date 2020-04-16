@@ -116,7 +116,7 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
             checkAndAdd(ts.getShape(), aWD);
         }
     }
-    catch (Standard_Failure&) { // any OCC exception means an unappropriate shape in the selection
+    catch (Standard_Failure&) { // any OCC exception means an inappropriate shape in the selection
         Standard_Failure::Raise("Wrong shape type.\n");
     }
 }

@@ -1,5 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -30,26 +33,28 @@ modules.
 """
 
 __title__ = "FreeCAD FEM solver run"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-# import threading  # not used ATM
 import shutil
 import tempfile
+# import threading  # not used ATM
 
 import FreeCAD as App
-import femtools.femutils as femutils
-import femtools.membertools as membertools
+
 from . import settings
 from . import signal
 from . import task
-from femtools.errors import MustSaveError, DirectoryDoesNotExistError
+from femtools import femutils
+from femtools import membertools
+from femtools.errors import DirectoryDoesNotExistError
+from femtools.errors import MustSaveError
 
 if App.GuiUp:
-    import FreeCADGui
     from PySide import QtGui
+    import FreeCADGui
 
 
 CHECK = 0

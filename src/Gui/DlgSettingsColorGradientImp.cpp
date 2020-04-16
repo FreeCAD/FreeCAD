@@ -136,17 +136,17 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
 void DlgSettingsColorGradientImp::setRange( float fMin, float fMax )
 {
     ui->floatLineEditMax->blockSignals(true);
-    ui->floatLineEditMax->setText(QLocale::system().toString(fMax, 'f', numberOfDecimals()));
+    ui->floatLineEditMax->setText(QLocale().toString(fMax, 'f', numberOfDecimals()));
     ui->floatLineEditMax->blockSignals(false);
     ui->floatLineEditMin->blockSignals(true);
-    ui->floatLineEditMin->setText(QLocale::system().toString(fMin, 'f', numberOfDecimals()));
+    ui->floatLineEditMin->setText(QLocale().toString(fMin, 'f', numberOfDecimals()));
     ui->floatLineEditMin->blockSignals(false);
 }
 
 void DlgSettingsColorGradientImp::getRange(float& fMin, float& fMax) const
 {
-    fMax = QLocale::system().toFloat(ui->floatLineEditMax->text());
-    fMin = QLocale::system().toFloat(ui->floatLineEditMin->text());
+    fMax = QLocale().toFloat(ui->floatLineEditMax->text());
+    fMin = QLocale().toFloat(ui->floatLineEditMin->text());
 }
 
 void DlgSettingsColorGradientImp::setNumberOfLabels(int val)
@@ -171,8 +171,8 @@ int DlgSettingsColorGradientImp::numberOfDecimals() const
 
 void DlgSettingsColorGradientImp::accept()
 {
-    double fMax = QLocale::system().toDouble(ui->floatLineEditMax->text());
-    double fMin = QLocale::system().toDouble(ui->floatLineEditMin->text());
+    double fMax = QLocale().toDouble(ui->floatLineEditMax->text());
+    double fMin = QLocale().toDouble(ui->floatLineEditMin->text());
 
     if (fMax <= fMin) {
         QMessageBox::warning(this, tr("Wrong parameter"),

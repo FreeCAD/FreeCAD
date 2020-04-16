@@ -28,7 +28,7 @@ from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -317,8 +317,7 @@ class Component(ArchIFC.IfcProduct):
         return siblings
 
     def getExtrusionData(self,obj):
-
-        "returns (shape,extrusion vector,placement) or None"
+        """returns (shape,extrusion vector or path,placement) or None"""
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
                 if hasattr(obj.CloneOf,"Proxy"):

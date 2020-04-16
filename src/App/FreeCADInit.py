@@ -456,7 +456,7 @@ class FCADLogger(object):
                          function, and you want to show the callers source
                          location, then set frame to one.
 
-            * args: tuple for postiional arguments to be passed to
+            * args: tuple for positional arguments to be passed to
                     string.format()
 
             * kargs: dictionary for keyword arguments to be passed to

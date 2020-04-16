@@ -1,6 +1,8 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 FreeCAD Developers                                 *
 # *   Copyright (c) 2015 Przemo Fiszt <przemo@firszt.eu>                    *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,32 +22,35 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Fem Commands"
-__author__ = "Przemo Firszt"
+__title__ = "FreeCAD FEM command base class"
+__author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package manager
+#  \ingroup FEM
+#  \brief FreeCAD FEM command base class
 
 import FreeCAD
-import femtools.femutils as femutils
+
+from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
+    from PySide import QtCore
     import FreeCADGui
     import FemGui
-    from PySide import QtCore
 
 
 class CommandManager(object):
 
     def __init__(self):
-        self.resources = {
-            "Pixmap": "FemWorkbench",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
-            "Accel": "",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")
-        }
-        # FIXME add option description
+
+        self.command = "FEM" + self.__class__.__name__
+        self.pixmap = self.command
+        self.menuetext = self.__class__.__name__.lstrip("_")
+        self.accel = ""
+        self.tooltip = "Creates a {}".format(self.menuetext)
+        self.resources = None
+
         self.is_active = None
         self.do_activated = None
         self.selobj = None
@@ -53,6 +58,13 @@ class CommandManager(object):
         self.active_analysis = None
 
     def GetResources(self):
+        if self.resources is None:
+            self.resources = {
+                "Pixmap": self.pixmap,
+                "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menuetext),
+                "Accel": self.accel,
+                "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip)
+            }
         return self.resources
 
     def IsActive(self):
@@ -154,7 +166,7 @@ class CommandManager(object):
         result_mesh = False
         analysis_members = FemGui.getActiveAnalysis().Group
         for o in analysis_members:
-            if femutils.is_of_type(o, "Fem::FemMeshResult"):
+            if is_of_type(o, "Fem::MeshResult"):
                 result_mesh = True
         return result_mesh
 
@@ -185,11 +197,7 @@ class CommandManager(object):
 
     def gmsh_femmesh_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if (
-            len(sel) == 1
-            and hasattr(sel[0], "Proxy")
-            and sel[0].Proxy.Type == "Fem::FemMeshGmsh"
-        ):
+        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemMeshGmsh"):
             self.selobj = sel[0]
             return True
         else:
@@ -258,11 +266,7 @@ class CommandManager(object):
 
     def solver_elmer_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if (
-            len(sel) == 1
-            and hasattr(sel[0], "Proxy")
-            and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer"
-        ):
+        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemSolverObjectElmer"):
             self.selobj = sel[0]
             return True
         else:
@@ -363,6 +367,3 @@ class CommandManager(object):
         )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
-
-
-##  @}

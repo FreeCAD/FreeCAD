@@ -231,7 +231,7 @@ class CheckWBWorker(QtCore.QThread):
 
 
 class FillMacroListWorker(QtCore.QThread):
-    """This worker opulates the list of macros"""
+    """This worker populates the list of macros"""
 
     add_macro_signal = QtCore.Signal(Macro)
     info_label_signal = QtCore.Signal(str)

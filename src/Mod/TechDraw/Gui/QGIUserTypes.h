@@ -1,26 +1,26 @@
 /*
-Derived QGraphicsItem Classes type() Values
+Derived QGI Classes type() Values
 
 Qt First UserType>> QGraphicsItem::UserType = 65536
 
-QGraphicsItemView : 101
-QGraphicsItemViewPart : 102
-QGraphicsItemEdge: 103
-QGraphicsItemFace: 104
-QGraphicsItemVertex: 105
-QGraphicsItemViewDimension : 106
-QGraphicsItemViewBalloon : 140
-QGraphicsItemBalloonLabel : 141
-QGraphicsItemDatumLabel : 107
-QGraphicsItemViewSection : 108
-QGraphicsItemArrow: 109
-QGraphicsItemViewCollection : 110
-QGraphicsItemViewOrthographic : 113
-QGraphicsItemViewAnnotation : 120
-QGraphicsItemViewSymbol : 121
-QGraphicsItemHatch : 122     //obsolete
-QGraphicsItemClip : 123
-QGraphicsItemSpreadsheet : 124
+QGIView : 101
+QGIViewPart : 102
+QGIEdge: 103
+QGIFace: 104
+QGIVertex: 105
+QGIViewDimension : 106
+QGIViewBalloon : 140
+QGIBalloonLabel : 141
+QGIDatumLabel : 107
+QGIViewSection : 108
+QGIArrow: 109
+QGIViewCollection : 110
+QGIProjGroup : 113
+QGIViewAnnotation : 120
+QGIViewSymbol : 121
+QGIHatch : 122     //obsolete
+QGIClip : 123
+QGISpreadsheet : 124
 QGCustomText: 130
 QGCustomSvg: 131
 QGCustomClip: 132
@@ -28,9 +28,9 @@ QGCustomRect: 133
 QGCustomLabel:135
 QGCustomBorder: 136
 QGDisplayArea: 137
-QGraphicsItemTemplate: 150
-QGraphicsItemDrawingTemplate: 151
-QGraphicsItemSVGTemplate: 153
+QGITemplate: 150
+QGIDrawingTemplate: 151
+QGISVGTemplate: 153
 TemplateTextField: 160
 QGIPrimPath: 170
 QGICMark: 171
@@ -38,6 +38,8 @@ QGISectionLine: 172
 QGIDecoration: 173
 QGICenterLine: 174
 QGIDimLines: 175
+QGIHighlight: 176
+QGIGhostHighlight: 177
 QGICaption: 180
 QGIViewImage: 200
 QGCustomImage: 201

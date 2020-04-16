@@ -25,17 +25,29 @@
 
 #include "PreCompiled.h"
 
+#include <App/Application.h>
+
+#include <Base/Parameter.h>
+#include <Base/Console.h>
+
+#include "DrawGuiUtil.h"
 #include "DlgPrefsTechDraw3Imp.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
+using namespace TechDraw;
+
 
 DlgPrefsTechDraw3Imp::DlgPrefsTechDraw3Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
     plsb_FontSize->setUnit(Base::Unit::Length);
+    plsb_FontSize->setMinimum(0);
     plsb_ArrowSize->setUnit(Base::Unit::Length);
+    plsb_ArrowSize->setMinimum(0);
+    pdsbBalloonKink->setUnit(Base::Unit::Length);
+    pdsbBalloonKink->setMinimum(0);
 }
 
 DlgPrefsTechDraw3Imp::~DlgPrefsTechDraw3Imp()
@@ -55,7 +67,6 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     cbShowCenterMarks->onSave();
     cbShowUnits->onSave();
     leDiameter->onSave();
-    leformatSpec->onSave();
     leLineGroup->onSave();
     pcbArrow->onSave();
     pcbBalloonArrow->onSave();
@@ -68,10 +79,22 @@ void DlgPrefsTechDraw3Imp::saveSettings()
     plsb_ArrowSize->onSave();
     plsb_FontSize->onSave();
     sbAltDecimals->onSave();
+    cbCutSurface->onSave();
+    pcbHighlightStyle->onSave();
 }
 
 void DlgPrefsTechDraw3Imp::loadSettings()
 {
+    //set defaults for Quantity widgets if property not found
+    //Quantity widgets do not use preset value since they are based on
+    //QAbstractSpinBox
+    double kinkDefault = 5.0;
+    pdsbBalloonKink->setValue(kinkDefault);
+    double arrowDefault = 5.0;
+    plsb_ArrowSize->setValue(arrowDefault);
+    double fontDefault = 4.0;
+    plsb_FontSize->setValue(fontDefault);
+
     cbAutoHoriz->onRestore();
     cbGlobalDecimals->onRestore();
     cbHiddenLineStyle->onRestore();
@@ -82,7 +105,6 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     cbShowCenterMarks->onRestore();
     cbShowUnits->onRestore();
     leDiameter->onRestore();
-    leformatSpec->onRestore();
     leLineGroup->onRestore();
     pcbArrow->onRestore();
     pcbBalloonArrow->onRestore();
@@ -95,6 +117,13 @@ void DlgPrefsTechDraw3Imp::loadSettings()
     plsb_ArrowSize->onRestore();
     plsb_FontSize->onRestore();
     sbAltDecimals->onRestore();
+    cbCutSurface->onRestore();
+    pcbHighlightStyle->onRestore();
+
+    DrawGuiUtil::loadArrowBox(pcbBalloonArrow);
+    pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+    DrawGuiUtil::loadArrowBox(pcbArrow);
+    pcbArrow->setCurrentIndex(prefArrowStyle());
 }
 
 /**
@@ -111,5 +140,25 @@ void DlgPrefsTechDraw3Imp::changeEvent(QEvent *e)
         QWidget::changeEvent(e);
     }
 }
+
+int DlgPrefsTechDraw3Imp::prefBalloonArrow(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Decorations");
+    int end = hGrp->GetInt("BalloonArrow", 0);
+    return end;
+}
+
+int DlgPrefsTechDraw3Imp::prefArrowStyle(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    int style = hGrp->GetInt("ArrowStyle", 0);
+    return style;
+}
+
+
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw3Imp.cpp>

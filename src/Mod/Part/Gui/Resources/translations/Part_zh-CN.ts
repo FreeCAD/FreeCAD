@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-CN" sourcelanguage="en">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>没有名为 {name} 的对象</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>解析链接失败(遇到了一个以上的冒号)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>对象 {name} 不可移动和依附，不能编辑附件</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>附件</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -36,37 +36,37 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
       <source>Edit attachment of {feat}</source>
-      <translation type="unfinished">Edit attachment of {feat}</translation>
+      <translation>编辑 {feat} 的附件</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>忽略。不能将对象附加到自己！</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} 取决于被附加的对象，不能将它用作附件</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} (添加 {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} （添加更多参照）</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>参照组合：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>参照 {i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>解析链接失败。 {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
@@ -91,7 +91,12 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>错误: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
@@ -106,12 +111,12 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>附件...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>编辑选中对象的附件。</translation>
     </message>
   </context>
   <context>
@@ -119,7 +124,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>组合过滤器</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -178,7 +196,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>连接对象</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
@@ -204,7 +222,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>嵌入的对象</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
@@ -258,12 +276,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>创建管道</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>创建一个管道</translation>
     </message>
   </context>
   <context>
@@ -299,7 +317,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>从交叉处分割对象</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -3857,7 +3875,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation>最大偏移角</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4448,7 +4466,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>参照组合：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>

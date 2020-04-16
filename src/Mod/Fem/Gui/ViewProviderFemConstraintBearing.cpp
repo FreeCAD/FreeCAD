@@ -50,7 +50,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintBearing, FemGui::ViewProviderFe
 
 ViewProviderFemConstraintBearing::ViewProviderFemConstraintBearing()
 {
-    sPixmap = "fem-constraint-bearing";
+    sPixmap = "FEM_ConstraintBearing";
 }
 
 ViewProviderFemConstraintBearing::~ViewProviderFemConstraintBearing()

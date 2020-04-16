@@ -58,16 +58,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* item = root->findItem("&Windows");
 
 // == Profile menu ==========================================
-    Gui::MenuItem* profile = new Gui::MenuItem;
+/*    Gui::MenuItem* profile = new Gui::MenuItem;
     root->insertItem(item, profile);
     profile->setCommand("P&rofiles");
 
-    *profile << "Sketcher_ProfilesHexagon1";
+    *profile << "Sketcher_ProfilesHexagon1";*/
 
 // == Sketcher menu ==========================================
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
-    root->insertItem(profile, sketch);
+//    root->insertItem(profile, sketch);
+    root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");

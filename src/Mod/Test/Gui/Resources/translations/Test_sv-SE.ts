@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -102,34 +102,34 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
       <translation>Hjälp</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>Ange namnet på ett anropsbart objekt, som returnerar ett TestCase.
+Klicka på 'Start', för att köra testet.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+Dubbelklicka på ett fel i trädvyn för att se mer information om det, inklusive anropsstacken.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Om FreeCAD EnhetsTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD UnitTest är en del av FreeCAD och stödjer utveckling av enhets tester för egna moduler.</translation>
     </message>
   </context>
 </TS>

@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <QMessageBox>
 # include <QTextStream>
 #endif
@@ -40,9 +41,12 @@
 #include <Gui/WaitCursor.h>
 
 #include <Base/Interpreter.h>
+#include <Base/Converter.h>
+#include <Base/CoordinateSystem.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Placement.h>
+#include <Mod/Mesh/App/Core/Approximation.h>
 
 
 using namespace ReenGui;
@@ -107,6 +111,63 @@ void FitBSplineSurfaceWidget::saveSettings()
     d->ui.uvdir->onSave();
 }
 
+void FitBSplineSurfaceWidget::on_makePlacement_clicked()
+{
+    try {
+        App::GeoFeature* geo = d->obj.getObjectAs<App::GeoFeature>();
+        if (geo) {
+            const App::PropertyComplexGeoData* geom = geo->getPropertyOfGeometry();
+            if (geom) {
+                std::vector<Base::Vector3d> points, normals;
+                geom->getComplexData()->getPoints(points, normals, 0.001f);
+
+                std::vector<Base::Vector3f> data;
+                std::transform(points.begin(), points.end(), std::back_inserter(data), [](const Base::Vector3d& v) {
+                    return Base::convertTo<Base::Vector3f>(v);
+                });
+                MeshCore::PlaneFit fit;
+                fit.AddPoints(data);
+                if (fit.Fit() < FLOAT_MAX) {
+                    Base::Vector3f base = fit.GetBase();
+                    Base::Vector3f dirU = fit.GetDirU();
+                    Base::Vector3f norm = fit.GetNormal();
+
+                    Base::CoordinateSystem cs;
+                    cs.setPosition(Base::convertTo<Base::Vector3d>(base));
+                    cs.setAxes(Base::convertTo<Base::Vector3d>(norm),
+                               Base::convertTo<Base::Vector3d>(dirU));
+                    Base::Placement pm = Base::CoordinateSystem().displacement(cs);
+                    double q0, q1, q2, q3;
+                    pm.getRotation().getValue(q0, q1, q2, q3);
+
+                    QString argument = QString::fromLatin1("Base.Placement(Base.Vector(%1, %2, %3), Base.Rotation(%4, %5, %6, %7))")
+                            .arg(base.x)
+                            .arg(base.y)
+                            .arg(base.z)
+                            .arg(q0)
+                            .arg(q1)
+                            .arg(q2)
+                            .arg(q3);
+
+                    QString document = QString::fromStdString(d->obj.getDocumentPython());
+                    QString command = QString::fromLatin1("%1.addObject(\"App::Placement\", \"Placement\").Placement = %2")
+                        .arg(document, argument);
+
+                    Gui::Command::openCommand("Placement");
+                    Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");
+                    Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
+                    Gui::Command::commitCommand();
+                    Gui::Command::updateActive();
+                }
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        Gui::Command::abortCommand();
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+    }
+}
+
 bool FitBSplineSurfaceWidget::accept()
 {
     try {
@@ -114,7 +175,7 @@ bool FitBSplineSurfaceWidget::accept()
         QString object = QString::fromStdString(d->obj.getObjectPython());
 
         QString argument = QString::fromLatin1(
-            "Points=%1.Points, "
+            "Points=getattr(%1, %1.getPropertyNameOfGeometry()), "
             "UDegree=%2, VDegree=%3, "
             "NbUPoles=%4, NbVPoles=%5, "
             "Smooth=%6, "

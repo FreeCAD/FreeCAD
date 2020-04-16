@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Pasirinktų langelių turinio lygiavimas aukštyn per vidurį</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Sulieti pasirinktus langelius</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Išskaidyti anksčiau sulietus langelius</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Paryškinti tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Padaryti pasvirą tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Pabraukti tekstą pasirinktuose langeliuose</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Tinkinta spalva</translation>
     </message>
   </context>
   <context>
@@ -257,11 +257,11 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Gulščiai</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Kairė</translation>
+      <translation>Iš kairės</translation>
     </message>
     <message>
       <source>Center</source>
@@ -269,11 +269,11 @@
     </message>
     <message>
       <source>Right</source>
-      <translation>Dešinys</translation>
+      <translation>Iš dešinės</translation>
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Stačiai</translation>
     </message>
     <message>
       <source>Top</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Apačioje</translation>
+      <translation>Iš apačios</translation>
     </message>
     <message>
       <source>&amp;Style</source>
@@ -331,28 +331,38 @@
       <translation>Eksportuoti failą</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Langelio turinys</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Rodyti skaičiuoklę</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Nustatyti langelio(-ų) priekinio plano spalvą</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Nustatyti lentelės langelio(-ų) priekinio plano spalvą</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Nustatyti langelio(-ų) pagrindo spalvą</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Nustatyti lentelės langelio(-ų) pagrindo spalvą</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Skaičiuoklė</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -427,7 +437,7 @@
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Tinkinta spalva</translation>
     </message>
   </context>
   <context>

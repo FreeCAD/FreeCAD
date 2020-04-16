@@ -34,12 +34,12 @@ import FreeCAD
 
 
 """
-load FreeCADs 3D FEM example from Start Workbench
-
-femmesh = App.ActiveDocument.getObject("Box_Mesh").FemMesh
-result = App.ActiveDocument.getObject("CalculiX_static_results")
-import femmesh.femmesh2mesh
-out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(femmesh, result)
+from femexamples.manager import *
+doc = run_ccx_cantileverfaceload()
+fem_mesh = doc.getObject("Mesh").FemMesh  # do not remove the _
+result = doc.getObject("CCX_Results")
+from femmesh import femmesh2mesh
+out_mesh = femmesh2mesh.femmesh_2_mesh(fem_mesh, result)
 import Mesh
 Mesh.show(Mesh.Mesh(out_mesh))
 

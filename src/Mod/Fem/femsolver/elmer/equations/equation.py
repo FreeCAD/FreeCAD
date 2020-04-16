@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -28,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 from ... import equationbase
-import femtools.membertools as membertools
+from femtools import membertools
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -56,7 +58,7 @@ class ViewProxy(equationbase.BaseViewProxy):
     def doubleClicked(self, vobj):
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        vobj.Document.setEdit(vobj.Object.Name)
         return True
 
     def getTaskWidget(self, vobj):

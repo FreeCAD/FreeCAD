@@ -655,6 +655,7 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
             specStr.replace(dp,loc.decimalPoint());
+            specVal.replace(dp,loc.decimalPoint());
         }
         //Remove space between dimension and degree sign
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
@@ -1093,7 +1094,25 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     return result;
 }
 
-//are there non-blank references?
+void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])
+{
+    if (positions == nullptr) {
+        m_arrowPositions.first = Base::Vector3d(0.0, 0.0, 0.0);
+        m_arrowPositions.second = Base::Vector3d(0.0, 0.0, 0.0);
+    } else {
+        double scale = getViewPart()->getScale();
+        m_arrowPositions.first = Base::Vector3d(positions[0].x, positions[0].y, 0.0) / scale;
+        m_arrowPositions.second = Base::Vector3d(positions[1].x, positions[1].y, 0.0) / scale;
+    }
+}
+
+//return position within parent view of dimension arrow heads/dimline endpoints
+//note positions are in apparent coord (inverted y).
+pointPair DrawViewDimension::getArrowPositions(void)
+{
+    return m_arrowPositions;
+}
+
 bool DrawViewDimension::has2DReferences(void) const
 {
 //    Base::Console().Message("DVD::has2DReferences() - %s\n",getNameInDocument());
@@ -1140,7 +1159,7 @@ bool DrawViewDimension::showUnits() const
     bool result = false;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    result = hGrp->GetBool("ShowUnits", true);
+    result = hGrp->GetBool("ShowUnits", false);
     return result;
 }
 

@@ -137,7 +137,11 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
 
-    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+//    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate); //this prevents crash when deleting dims.
+                                                          //scene(view?) indices of dirty regions gets
+                                                          //out of sync.  missing prepareGeometryChange
+                                                          //somewhere???? QTBUG-18021????
     setCacheMode(QGraphicsView::CacheBackground);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -306,7 +310,8 @@ int QGVPage::removeQViewByName(const char* name)
             balloon->disconnect();
         }
         removeQViewFromScene(ourItem);
-        delete ourItem;
+        delete ourItem;              //commenting this prevents crash but means a small memory waste.
+                                     //alternate fix(?) is to change indexing/caching option in scene/view
     }
 
     return 0;
@@ -314,17 +319,13 @@ int QGVPage::removeQViewByName(const char* name)
 
 void QGVPage::removeQViewFromScene(QGIView *view)
 {
-    QGraphicsItemGroup* grp = view->group();
-    if (grp) {
-        grp->removeFromGroup(view);
-    }
-
-    if (view->parentItem()) {    //not top level
-        view->setParentItem(0);
-    }
-
-    if (view->scene()) {
-        view->scene()->removeItem(view);
+    if (view->scene() != nullptr) {
+        QGIView* qgParent = dynamic_cast<QGIView*>(view->parentItem());
+        if (qgParent != nullptr) {
+            qgParent->removeChild(view);
+        } else {
+            view->scene()->removeItem(view);
+        }
     }
 }
 
@@ -975,7 +976,7 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     }
 
     QTextStream stream( &outFile );
-    stream.setGenerateByteOrderMark(true);
+    stream.setGenerateByteOrderMark(false);
     stream.setCodec("UTF-8");
 
     stream << exportDoc.toByteArray();

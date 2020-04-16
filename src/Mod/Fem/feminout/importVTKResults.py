@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   (c) Qingfeng Xia 2017                       *
+# *   Copyright (c) 2017 qingfeng Xia <qingfeng.xia@gmail.coom>             *
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +20,6 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# *   Juergen Riegel 2002                                                   *
 # ***************************************************************************/
 
 __title__ = "FreeCAD Result import and export VTK file library"

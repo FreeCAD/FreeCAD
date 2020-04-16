@@ -68,7 +68,6 @@ public:
 
     // Private property holding object link for color override
     App::PropertyLinkSubHidden ColoredElements;
-    //@}
 
     /// Constructor
     Part(void);

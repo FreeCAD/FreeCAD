@@ -25,6 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <QMessageBox>
@@ -61,10 +63,15 @@
 
 using namespace TechDrawGui;
 
-// there are only 5 line styles
-App::PropertyIntegerConstraint::Constraints ViewProviderLeader::LineStyleRange = { 0, 5, 1 };
-
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
+
+const char* ViewProviderLeader::LineStyleEnums[] = { "NoLine",
+                                                  "Continuous",
+                                                  "Dash",
+                                                  "Dot",
+                                                  "DashDot",
+                                                  "DashDotDot",
+                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
@@ -76,10 +83,9 @@ ViewProviderLeader::ViewProviderLeader()
     static const char *group = "Line Format";
 
     ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style index");
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
-
-    LineStyle.setConstraints(&LineStyleRange);
+    LineStyle.setEnums(LineStyleEnums);
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -189,7 +195,6 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
     return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
 }
 
-
 double ViewProviderLeader::getDefLineWeight(void)
 {
     double result = 0.0;
@@ -228,5 +233,44 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
     }
+
+    // property LineStyle had the App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
+        App::PropertyIntegerConstraint LineStyleProperty;
+        // restore the PropertyIntegerConstraint to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
 }
 
+bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
+{
+    // a leader line cannot be deleted if it has a child weld symbol
+
+    // get childs
+    auto childs = claimChildren();
+
+    if (!childs.empty()) {
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage); 
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete this leader line because\n it has a weld symbol that would become broken.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of Leader line objects don't destroy anything
+    // thus we can pass this action
+    // that the parent view cannot be deleted is handled
+    // in its onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}

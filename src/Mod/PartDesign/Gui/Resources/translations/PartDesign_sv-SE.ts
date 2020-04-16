@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation>Additivt loft</translation>
+      <translation>Additiv profilsvepning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Loft en markerad profil genom andra profil sektioner</translation>
+      <translation>Svep en markerad profil genom andra profilsnitt</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>Create body</source>
-      <translation>Skapa Body</translation>
+      <translation>Skapa kropp</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
       <source>Create a new body and make it active</source>
-      <translation>Skapa en ny Body och gör den aktiv</translation>
+      <translation>Skapa en ny kropp och gör den aktiv</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="2237"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>Boolesk operation med två eller fler kroppar</translation>
+      <translation>Boolesk funktion med två eller fler kroppar</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Skapa ett lokalt koordinatsystem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Skapa ett nytt lokalt koordinatsystem</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
       <source>Duplicate selected object</source>
-      <translation>Duplicera valda objekt</translation>
+      <translation>Duplicera markerat objekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Duplicerar det markerade objektet och lägger till den till aktiva kroppen</translation>
+      <translation>Duplicerar det markerade objektet och lägger till det till aktiva kroppen</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Groove a selected sketch</source>
-      <translation>Skåra en markerad skiss</translation>
+      <translation>Skåra från en markerad skiss</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>Skapa ett hål med den valda ritningen</translation>
+      <translation>Skapa ett hål med den markerade skissen</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Create a datum line</source>
-      <translation>Skapa en datumlinje</translation>
+      <translation>Skapa en referenslinje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation>Skapa en ny datumlinje</translation>
+      <translation>Skapa en ny referenslinje</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="1943"/>
       <source>Create a linear pattern feature</source>
-      <translation>Skapa ett linjärt mönster av detaljer</translation>
+      <translation>Skapa en linjär mönsterfunktion</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Migrera dokumentet till det nya design flödet för PartDesign</translation>
+      <translation>Migrera dokumentet till det nya designflödet för Part Design</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation>Skapa ett speglat föremål</translation>
+      <translation>Skapa en speglingsfunktion</translation>
     </message>
   </context>
   <context>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="690"/>
       <source>Moves the selected object to another body</source>
-      <translation>Flyttar objektet till en annan kropp</translation>
+      <translation>Flyttar det markerade objektet till en annan kropp</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation>Flytta objekt efter andra objekt</translation>
+      <translation>Flytta objekt efter ett annat objekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Flyttar det markerade objektet och infoga det efter ett annat objekt</translation>
+      <translation>Flyttar det markerade objektet och infogar det efter ett annat objekt</translation>
     </message>
   </context>
   <context>
@@ -335,7 +335,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
       <source>Set tip</source>
-      <translation>Ställ in spets</translation>
+      <translation>Ange spets</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="554"/>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../Command.cpp" line="2115"/>
       <source>Create MultiTransform</source>
-      <translation>Skapa MultiTransform</translation>
+      <translation>Skapa fleromvandling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2116"/>
       <source>Create a multitransform feature</source>
-      <translation>Skapa ett multitransformdetalj</translation>
+      <translation>Skapa en fleromvandlingsfunktion</translation>
     </message>
   </context>
   <context>
@@ -407,12 +407,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Create a datum plane</source>
-      <translation>Skapa ett datumplan</translation>
+      <translation>Skapa ett referensplan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Create a new datum plane</source>
-      <translation>Skapa ett nytt datumplan</translation>
+      <translation>Skapa ett nytt referensplan</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Skapa en ficka av den valda skissen</translation>
+      <translation>Skapa en hålighet av den markerade skissen</translation>
     </message>
   </context>
   <context>
@@ -443,12 +443,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Create a datum point</source>
-      <translation>Skapa en datumpunkt</translation>
+      <translation>Skapa en referenspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>Create a new datum point</source>
-      <translation>Skapa en ny datumpunkt</translation>
+      <translation>Skapa en ny referenspunkt</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation>Skapa ett polärt mönster av detaljer</translation>
+      <translation>Skapa en polär mönsterfunktion</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation>Skapa ett skalad detalj</translation>
+      <translation>Skapa en skalningsfunktion</translation>
     </message>
   </context>
   <context>
@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Skapa en formbindning</translation>
+      <translation>Skapa en formbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation>Skapa en ny formbindning</translation>
+      <translation>Skapa en ny formbindare</translation>
     </message>
   </context>
   <context>
@@ -533,12 +533,12 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation>Subtraktivt loft</translation>
+      <translation>Subtraktiv svepning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Använd den markerade profilen samt andra profiler för att göra ett hål i kroppen</translation>
+      <translation>Svep en markerad profil genom andra profilsnitt och ta bort från kroppen</translation>
     </message>
   </context>
   <context>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Svep en vald skiss längs en bana eller till andra profiler och ta bort den från kroppen</translation>
+      <translation>Svep en markerad skiss längs en bana eller till andra profiler och subtrahera från kroppen</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Gör en tjock solid</translation>
+      <translation>Skapa en solid med tjocklek</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Wedge</source>
-      <translation>Additativ Kil</translation>
+      <translation>Additiv kil</translation>
     </message>
   </context>
   <context>
@@ -705,12 +705,12 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skissen används redan av annan detalj</translation>
+      <translation>Skiss används redan av annan funktion</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Skissen tillhör en annan kropps detalj</translation>
+      <translation>Skissen tillhör en annan kroppfunktion</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
@@ -720,7 +720,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Detaljen ligger efter spetsdetaljen</translation>
+      <translation>Funktionen ligger efter spetsen</translation>
     </message>
   </context>
   <context>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Evolvent-parameter</translation>
+      <translation>Spiralparameter</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -772,13 +772,13 @@
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
       <location filename="../../../InvoluteGearFeature.ui" line="166"/>
       <source>True</source>
-      <translation>Sann</translation>
+      <translation>Sant</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="144"/>
       <location filename="../../../InvoluteGearFeature.ui" line="171"/>
       <source>False</source>
-      <translation>Falsk</translation>
+      <translation>Falskt</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Den begärda funktionen kan inte skapas. Det kan bero på:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+\xe2\x80\xa2 den aktiva kroppen innehåller inte en basform, så det 
+finns inget material att avlägsna;
+\xe2\x80\xa2 den markerade skissen tillhör inte den aktiva kroppen.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Den begärda funktionen kan inte skapas. Det kan bero på:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+\xe2\x80\xa2 den aktiva kroppen innehåller inte en basform, så det 
+finns inget material att avlägsna;
+\xe2\x80\xa2 den markerade skissen tillhör inte den aktiva kroppen.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Den begärda funktionen kan inte skapas. Det kan bero på:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+\xe2\x80\xa2 den aktiva kroppen innehåller inte en basform, så det 
+finns inget material att avlägsna;
+\xe2\x80\xa2 den markerade skissen tillhör inte den aktiva kroppen.</translation>
     </message>
   </context>
   <context>
@@ -896,12 +896,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="646"/>
       <source>U parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>U-parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="462"/>
       <source>V parameters:</source>
-      <translation>V parametrar:</translation>
+      <translation>V-parametrar:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="599"/>
@@ -912,12 +912,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="669"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="759"/>
       <source>V parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>V-parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="736"/>
       <source>U Parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>U-parameter:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="886"/>
@@ -929,7 +929,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="906"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1788"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Radie för omskriven cirkel:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="957"/>
@@ -1055,7 +1055,7 @@
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Du har valt geometrier som inte är del av aktiva kroppen. Definiera hur dessa val ska hanteras. Om du inte vill ha dessa referenser välj avbryt.</translation>
+      <translation>Du markerade geometrier som inte är del av den aktiva kroppen. Vänligen definiera hur dessa markeringar ska hanteras. Om du inte vill ha dessa referenser välj avbryt.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1078,7 +1078,7 @@
     <message>
       <location filename="../../ReferenceSelection.cpp" line="183"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>Om du väljer detta kommer det att orsaka cirkelberoende.</translation>
+      <translation>Att markera detta kommer orsaka ett cirkelberoende.</translation>
     </message>
   </context>
   <context>
@@ -1101,7 +1101,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Kombinera</translation>
+      <translation>Förena</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -1111,7 +1111,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation>Vanligt</translation>
+      <translation>Gemensam</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
@@ -1178,12 +1178,12 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="327"/>
       <source>Empty body list</source>
-      <translation>Tom Body lista</translation>
+      <translation>Töm kropplista</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
       <source>The body list cannot be empty</source>
-      <translation>Body listan får ej vara tom</translation>
+      <translation>Kropplistan får ej vara tom</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
@@ -1201,7 +1201,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Det finns inget sammankopplings-läge som passar de givna referenserna. Om du väljer att fortsätta kommer detaljen att vara kvar där den är nu och kommer inte att flyttas om referenserna ändras. Fortsätt?</translation>
+      <translation>Det finns inget knytningsläge som passar de givna referenserna. Om du väljer att fortsätta kommer funktionen att vara kvar där den är nu och kommer inte att flyttas om referenserna ändras. Fortsätt?</translation>
     </message>
   </context>
   <context>
@@ -1281,22 +1281,22 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation>Tillåt använda detaljer</translation>
+      <translation>Tillåt använda funktioner</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
       <source>Allow external features</source>
-      <translation>Tillåt externa detaljer</translation>
+      <translation>Tillåt externa funktioner</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Från andra kroppar av samma del</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation>Från andra delar eller fria detaljer</translation>
+      <translation>Från andra delar eller fria funktioner</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
@@ -1331,7 +1331,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skissen används redan av annan detalj</translation>
+      <translation>Skiss används redan av annan funktion</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
@@ -1356,12 +1356,12 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Detaljen ligger efter spetsdetaljen</translation>
+      <translation>Funktionen ligger efter spetsfunktionen</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>Select feature</source>
-      <translation>Välj detalj</translation>
+      <translation>Markera funktion</translation>
     </message>
   </context>
   <context>
@@ -1397,7 +1397,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation>Hål parametrar</translation>
+      <translation>Hålparametrar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1412,7 +1412,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO metriska fin profil</translation>
+      <translation>ISO metrisk fin profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -1440,12 +1440,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Lägg till ny detalj</translation>
+      <translation>Lägg till funktion</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Ta bort detalj</translation>
+      <translation>Ta bort funktion</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1518,12 +1518,12 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Lägg till avsnitt</translation>
+      <translation>Lägg till snitt</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Ta bort avsnitt</translation>
+      <translation>Ta bort snitt</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
@@ -1533,7 +1533,7 @@
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Loft-parametrar</translation>
+      <translation>Svepningsparametrar</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
@@ -1551,12 +1551,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Lägg till ny detalj</translation>
+      <translation>Lägg till funktion</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Ta bort detalj</translation>
+      <translation>Ta bort funktion</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
@@ -1594,12 +1594,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Lägg till ny detalj</translation>
+      <translation>Lägg till funktion</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Ta bort detalj</translation>
+      <translation>Ta bort funktion</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -1764,7 +1764,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation>Orienterings-läge</translation>
+      <translation>Riktningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -1819,7 +1819,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation>Ange den konstanta binormalvektorn som används för att beräkna profilers orientering</translation>
+      <translation>Ange den konstanta binormala vektorn som används för att beräkna profilers riktning</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="182"/>
@@ -1839,7 +1839,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="365"/>
       <source>Section orientation</source>
-      <translation>Sektionsorientering</translation>
+      <translation>Snittriktning</translation>
     </message>
   </context>
   <context>
@@ -1863,12 +1863,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner Transition</source>
-      <translation>Hörntransition</translation>
+      <translation>Hörnövergång</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation>Transformerad</translation>
+      <translation>Omvandlad</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Bana att svepa längs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -1911,7 +1911,7 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation>Transformeringsläge</translation>
+      <translation>Omvandlingsläge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
@@ -1921,22 +1921,22 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Flerval</translation>
+      <translation>Flersnitt</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Lägg till avsnitt</translation>
+      <translation>Lägg till snitt</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Ta bort avsnitt</translation>
+      <translation>Ta bort snitt</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
       <source>Section transformation</source>
-      <translation>Avsnittsomvandling</translation>
+      <translation>Snittomvandling</translation>
     </message>
   </context>
   <context>
@@ -2041,12 +2041,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Lägg till ny detalj</translation>
+      <translation>Lägg till funktion</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Ta bort detalj</translation>
+      <translation>Ta bort funktion</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2171,12 +2171,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Lägg till ny detalj</translation>
+      <translation>Lägg till funktion</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Ta bort detalj</translation>
+      <translation>Ta bort funktion</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>
@@ -2229,7 +2229,7 @@
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation>Datum-formens parametrar</translation>
+      <translation>Utgångsformens parametrar</translation>
     </message>
   </context>
   <context>
@@ -2270,7 +2270,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="82"/>
       <source>Join Type</source>
-      <translation>Föreningstyp</translation>
+      <translation>Sammanbindningstyp</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="90"/>
@@ -2285,7 +2285,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation>Framsida baksida</translation>
+      <translation>Baksida framsida</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2313,7 +2313,7 @@
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="43"/>
       <source>Transformed feature messages</source>
-      <translation>Transformationsmeddelanden</translation>
+      <translation>Omvandlingsfunktionsmeddelanden</translation>
     </message>
   </context>
   <context>
@@ -2363,17 +2363,17 @@
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="248"/>
       <source>Base XY plane</source>
-      <translation>Basens XY-plan</translation>
+      <translation>XY-basplan</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="249"/>
       <source>Base YZ plane</source>
-      <translation>Basens YZ-plan</translation>
+      <translation>YZ-basplan</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="250"/>
       <source>Base XZ plane</source>
-      <translation>Basens XZ-plan</translation>
+      <translation>XZ-basplan</translation>
     </message>
   </context>
   <context>
@@ -2389,17 +2389,17 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="192"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation>Skapa en additiv låda av dess vidd, höjd och längd</translation>
+      <translation>Skapa en additiv låda av bredd, höjd och längd</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation>Skapa en additiv cylinder av dess radie, höjd och vinkel</translation>
+      <translation>Skapa en additiv cylinder av radie, höjd och vinkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Skapa en additiv sfär av dess radie och olika vinklar</translation>
+      <translation>Skapa en additiv sfär av en radie och diverse vinklar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -2419,7 +2419,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive prism</source>
-      <translation>Skapa ett additiv prisma</translation>
+      <translation>Skapa ett additivt prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
@@ -2432,17 +2432,17 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Skapa en subtraktiv låda av dess vidd, höjd och längd</translation>
+      <translation>Skapa en subtraktiv låda av bredd, höjd och längd</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Skapa en subtraktiv cylinder av dess radie, höjd och vinkel</translation>
+      <translation>Skapa en subtraktiv cylinder av radie, höjd och vinkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Skapa en subtraktiv sfär av dess radie och olika vinklar</translation>
+      <translation>Skapa en subtraktiv sfär av radie och diverse vinklar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
@@ -2475,12 +2475,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="755"/>
       <source>Select body</source>
-      <translation>Välj kropp</translation>
+      <translation>Markera kropp</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Select a body from the list</source>
-      <translation>Välj en kropp från listan</translation>
+      <translation>Markera en kropp från listan</translation>
     </message>
   </context>
   <context>
@@ -2488,12 +2488,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="906"/>
       <source>Select feature</source>
-      <translation>Välj detalj</translation>
+      <translation>Markera funktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="907"/>
       <source>Select a feature from the list</source>
-      <translation>Välj en detalj från listan</translation>
+      <translation>Markera en funktion från listan</translation>
     </message>
   </context>
   <context>
@@ -2501,12 +2501,12 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Invalid selection</source>
-      <translation>Ogiltigt val</translation>
+      <translation>Ogiltig markering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Det finns inget sammankopplingslägen som passar de valda objekten. Välj något annat.</translation>
+      <translation>Det finns inget sammankopplingsläge som passar de markerade objekten. Markera något annat.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="141"/>
@@ -2518,7 +2518,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Det finns ingen aktiv Body. Vänligen gör en Body aktiv innan du sätter in en datum-enhet.</translation>
+      <translation>Det finns ingen aktiv kropp. Vänligen gör en kropp aktiv innan en referens läggs till.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
@@ -2558,7 +2558,7 @@
     <message>
       <location filename="../../Command.cpp" line="680"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Vänligen skapa ett plan först eller välj en sida att skissa på</translation>
+      <translation>Vänligen skapa ett plan först eller välj en yta att skissa på</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -2594,7 +2594,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>No sketch is available in the document</source>
-      <translation>Ingen skiss finns i dokumentet</translation>
+      <translation>Ingen skiss är tillgänglig i dokumentet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
@@ -2607,23 +2607,23 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>Välj en kant, sida eller kropp.</translation>
+      <translation>Välj en kant, yta eller kropp.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation>Välj en kant, sida eller kropp från en enda kropp.</translation>
+      <translation>Markera en kant, yta eller kropp från enbart en kropp.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <location filename="../../Command.cpp" line="1855"/>
       <source>Selection is not in Active Body</source>
-      <translation>Markeringen är inte i den aktiva kroppen</translation>
+      <translation>Markering är inte i aktiv kropp</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>Välj en kant, sida eller Body från en aktiv Body.</translation>
+      <translation>Markera en kant, yta eller kropp från en aktiv kropp.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2638,12 +2638,12 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Shape of the selected Part is empty</source>
-      <translation>Form på den markerade delen är tom</translation>
+      <translation>Formen på den markerade delen är tom</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source> not possible on selected faces/edges.</source>
-      <translation> inte är möjligt på valda sidor/kanter.</translation>
+      <translation> inte möjligt på markerade ytor/kanter.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1842"/>
@@ -2653,32 +2653,32 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation>Vänligen skapa en subtraktiv eller additiv detalj först.</translation>
+      <translation>Vänligen skapa en subtraktiv eller additiv funktion först.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Multiple Features Selected</source>
-      <translation>Flera object markerade</translation>
+      <translation>Flera funktioner markerade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation>Vänligen skapa en subtraktiv eller additiv detalj först.</translation>
+      <translation>Vänligen markera enbart en subtraktiv eller additiv funktion först.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation>Vänligen skapa en subtraktiv eller additiv detalj i en aktiv Body först.</translation>
+      <translation>Vänligen markera enbart en subtraktiv eller additiv funktion i en aktiv kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
       <source>Part creation failed</source>
-      <translation>Delen gick inte att skapa</translation>
+      <translation>Misslyckades med att skapa del</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
       <source>Failed to create a part object.</source>
-      <translation>Det gick inte att skapa en delobjekt.</translation>
+      <translation>Misslyckades med att skapa en del.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
@@ -2687,17 +2687,17 @@
       <location filename="../../CommandBody.cpp" line="142"/>
       <location filename="../../CommandBody.cpp" line="191"/>
       <source>Bad base feature</source>
-      <translation>Felaktig basdetalj</translation>
+      <translation>Felaktig basfunktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="123"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Kroppen kan inte baseras på en PartDesign detalj.</translation>
+      <translation>Kroppen kan inte baseras på en PartDesign-funktion.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 tillhör redan en kropp, kan inte använda den som bas-detalj för ett annan kropp.</translation>
+      <translation>%1 tillhör redan en kropp, kan inte använda den som basfunktion för en annan kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
@@ -2707,7 +2707,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Bas-detalj (%1) tillhör annan del.</translation>
+      <translation>Basfunktion (%1) tillhör en annan del.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
@@ -2725,7 +2725,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="175"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>Den markerade formen består av ett skal. Detta kan leda till oväntade resultat.</translation>
+      <translation>Den markerade formen består av enbart ett skal. Detta kan leda till oväntade resultat.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="179"/>
@@ -2736,12 +2736,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation>Basdetalj</translation>
+      <translation>Basfunktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Kroppen kan inte baseras på mer än en detalj.</translation>
+      <translation>Kroppen kan baseras på enbart en funktion.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
@@ -2751,7 +2751,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Inga PartDesign-funktioner som inte tillhör en kropp hittades. Ingenting att migrera.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2761,7 +2761,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="518"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Vänligen redigera '%1' och omdefiniera det att använda en bas eller datumplan som skissplanet.</translation>
+      <translation>Vänligen redigera '%1' och omdefiniera det att använda ett bas- eller utgångsplan som skissplan.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="580"/>
@@ -2775,34 +2775,34 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="581"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Välj exakt en PartDesign-detalj eller en kropp.</translation>
+      <translation>Välj exakt en PartDesign-funktion eller en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="585"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation>Kunde inte hitta en kropp för den valda detaljen '%s'.</translation>
+      <translation>Kunde inte fastställa en kropp för den markerade funktionen '%s'.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="590"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Endast en solid kan vara toppen av en kropp.</translation>
+      <translation>Endast en solid funktion kan vara spetsen hos en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="706"/>
       <location filename="../../CommandBody.cpp" line="728"/>
       <location filename="../../CommandBody.cpp" line="743"/>
       <source>Features cannot be moved</source>
-      <translation>Det går inte att flytta detaljerna</translation>
+      <translation>Funktionerna kan inte flyttas</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="707"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation>Några av de valda detaljerna har beroenden i källkroppen</translation>
+      <translation>Några av de markerade funktionerna har beroenden i källkroppen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="729"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation>Bara detaljer baserad på en kropp kan flyttas</translation>
+      <translation>Bara funktioner av enbart en källkropp kan flyttas</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="744"/>
@@ -2812,12 +2812,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="879"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Omöjligt att flytta basdetaljen för en kropp.</translation>
+      <translation>Omöjligt att flytta basfunktionen av en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Select one or more features from the same body.</source>
-      <translation>Välj en eller flera detaljer i samma kropp.</translation>
+      <translation>Markera en eller fler funktioner från samma kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="899"/>
@@ -2827,12 +2827,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="261"/>
       <source>No previous feature found</source>
-      <translation>Ingen tidigare detalj som funnen</translation>
+      <translation>Ingen föregående funktion hittad</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="262"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Det går inte att skapa en subtraktiv detalj utan en tillgänglig bas-detalj</translation>
+      <translation>Det går inte att skapa en subtraktiv funktion utan en tillgänglig basfunktion</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="303"/>
@@ -2876,39 +2876,39 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>För att använda PartDesign behöver du en aktiv kropp i dokumentet. Vänligen sätt en som aktiv (dubbelklick) eller skapa en.
+      <translation>För att använda Part Design behöver du en aktiv kropp i dokumentet. Vänligen gör en kropp aktiv (dubbelklick) eller skapa en ny kropp.
 
-Om du har ett utdaterat dokument med PartDesign-objekt utan kropp, använd migrations-funktionen i PartDesign för att lägga till dem i en kropp.</translation>
+Om du har ett utdaterat dokument med Part Design-objekt utan kropp, använd migrationsfunktionen i Part Design för att lägga till dem i en kropp.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Det krävs en aktiv kropp</translation>
+      <translation>En aktiv kropp krävs</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>För att skapa ett nytt PartDesign-objekt, måste det finnas en aktiv Body-objekt i dokumentet. Gör en aktiv (dubbel klicka) eller skapa en ny Body.</translation>
+      <translation>För att skapa ett nyttPart Design-objekt, måste det finnas en aktiv kropp i dokumentet. Vänligen gör en kropp aktiv (dubbelklick) eller skapa en ny kropp.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="142"/>
       <source>Feature is not in a body</source>
-      <translation>Detaljen är inte i en kropp</translation>
+      <translation>Funktionen är inte i en kropp</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>För att kunna använda denna detalj måste den tillhöra en kropp i dokumentet.</translation>
+      <translation>För att kunna använda denna funktion måste den tillhöra en kropp i dokumentet.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="175"/>
       <source>Feature is not in a part</source>
-      <translation>Detaljen är inte i en del</translation>
+      <translation>Funktionen är inte i en del</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="176"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>För att kunna använda denna detalj måste den tillhöra en del i dokumentet.</translation>
+      <translation>För att kunna använda denna funktion måste den tillhöra en del i dokumentet.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="96"/>
@@ -2918,7 +2918,7 @@ Om du har ett utdaterat dokument med PartDesign-objekt utan kropp, använd migra
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Edit boolean</source>
-      <translation>Redigera booleskt värde</translation>
+      <translation>Redigera boolesk funktion</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
@@ -2946,7 +2946,7 @@ Om du har ett utdaterat dokument med PartDesign-objekt utan kropp, använd migra
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="232"/>
       <source>Edit datum</source>
-      <translation>Redigera datum</translation>
+      <translation>Redigera utgångsreferens</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="49"/>
@@ -2957,13 +2957,13 @@ Om du har ett utdaterat dokument med PartDesign-objekt utan kropp, använd migra
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="70"/>
       <source>Feature error</source>
-      <translation>Detaljfel</translation>
+      <translation>Funktionsfel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation>%1 saknar en bas-detalj. Denna detalj är trasig och kan inte redigeras.</translation>
+      <translation>%1 saknar en basfunktion. Denna funktion är trasig och kan inte redigeras.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="51"/>
@@ -2978,7 +2978,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation>Redigera loft</translation>
+      <translation>Redigera svepning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3013,32 +3013,32 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>
       <source>One transformed shape does not intersect support</source>
-      <translation>En transformerad form skär inte stödet</translation>
+      <translation>En omvandlad form skär inte stödet</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="154"/>
       <source>%1 transformed shapes do not intersect support</source>
-      <translation>%1 transformerade former stöds inte för snitt</translation>
+      <translation>%1 omvandlade former skär inte stödet</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="163"/>
       <source>Transformation succeeded</source>
-      <translation>Transformeringen lyckades</translation>
+      <translation>Omvandling lyckades</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Dokumentet ”%1” du redigerar skapades med en gammal version av PartDesign workbench.</translation>
+      <translation>Dokumentet ”%1” du redigerar skapades med en gammal version av DelDesign arbetsbänk.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Vill du migrera för att kunna använda moderna PartDesign detaljer?</translation>
+      <translation>Vill du migrera för att kunna använda nya PartDesign-funktioner?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Dokumentet "%1" verkar vara antingen mitt i migreringsprocessen från äldre PartDesign eller ha en något skadad struktur.</translation>
+      <translation>Dokumentet "%1" verkar vara antingen mitt i migreringsprocessen från äldre DelDesign eller ha en något skadad struktur.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
@@ -3050,9 +3050,8 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Om du väljer att migrera kommer du inte att kunna redigera filen med gamla FreeCAD-versioner. 
+Om du inte migrerar kommer du inte att kunna använda nya PartDesign-funktioner som kroppar och delar. Du kommer heller inte kunna använda dina delar i arbetsbänken Assembly. Dock kan du alltid migrera senare med 'PartDesign' &gt; 'Migrera...'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>
@@ -3113,12 +3112,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation>Försänk</translation>
+      <translation>Sned försänkning</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
       <source>Counterbore</source>
-      <translation>Upprymning</translation>
+      <translation>Rak försänkning</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
@@ -3171,17 +3170,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
       <source>Counterbore/sink dia</source>
-      <translation>Upprymning/förs. dia</translation>
+      <translation>Rak försänkning/dia</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
       <source>Counterbore depth</source>
-      <translation>Upprymningsdjup</translation>
+      <translation>Rak försänkningsdjup</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Försänkningsvinkel</translation>
+      <translation>Sned försänkningsvinkel</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -3267,7 +3266,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="240"/>
       <source>Model actual thread</source>
-      <translation>Modellera gänga</translation>
+      <translation>Modellera faktisk gänga</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="247"/>
@@ -3287,7 +3286,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="293"/>
       <source>Countersink angle</source>
-      <translation>Försänkningsvinkel</translation>
+      <translation>Sned försänkningsvinkel</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
@@ -3317,12 +3316,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="396"/>
       <source>Cutoff outer</source>
-      <translation>Skärav yttre</translation>
+      <translation>Skär av yttre</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="449"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;borr punkt&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;borrpunkt&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
@@ -3332,7 +3331,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="466"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Hål skär&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Hålskär&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="473"/>

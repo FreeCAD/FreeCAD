@@ -217,6 +217,7 @@ void QGIDatumLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
 {
+    prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if( qgivd == nullptr ) {
         return;                  //tarfu
@@ -266,6 +267,7 @@ void QGIDatumLabel::setLabelCenter()
 
 void QGIDatumLabel::setFont(QFont f)
 {
+    prepareGeometryChange();
     m_dimText->setFont(f);
     m_unitText->setFont(f);
     QFont tFont(f);
@@ -679,6 +681,7 @@ QString QGIViewDimension::getLabelText(void)
 
 void QGIViewDimension::draw()
 {
+    prepareGeometryChange();
     if (!isVisible()) {
         return;
     }
@@ -804,8 +807,8 @@ int QGIViewDimension::compareAngleStraightness(double straightAngle, double left
 
 double QGIViewDimension::getIsoStandardLinePlacement(double labelAngle)
 {
-    // According to ISO 129-1 Standard Figure 23, the bordering angle is 2/3 PI, resp. -1/3 PI
-    return labelAngle < -M_PI/3.0 || labelAngle > +2.0*M_PI/3.0
+    // According to ISO 129-1 Standard Figure 23, the bordering angle is 1/2 PI, resp. -1/2 PI
+    return labelAngle < -M_PI/2.0 || labelAngle > +M_PI/2.0
            ? +1.0 : -1.0;
 }
 
@@ -1176,6 +1179,8 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
     const int arrowCount = 2;
     QGIArrow *arrows[arrowCount] = { aHead1, aHead2 };
 
+    arrowPositionsToFeature(positions);
+
     for (int i = 0; i < arrowCount; ++i) {
         QGIArrow *arrow = arrows[i];
 
@@ -1193,9 +1198,22 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         arrow->setSize(QGIArrow::getPrefArrowSize());
         arrow->setFlipped(flipped);
 
-        arrow->draw();
-        arrow->show();
+        if (QGIArrow::getPrefArrowStyle() != 7) { // if not "None"
+            arrow->draw();
+            arrow->show();
+        }
+        else
+            arrow->hide();
     }
+}
+
+void QGIViewDimension::arrowPositionsToFeature(const Base::Vector2d positions[]) const
+{
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    if( dim == nullptr )
+        return;
+
+    dim->saveArrowPositions(positions);
 }
 
 void QGIViewDimension::drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,

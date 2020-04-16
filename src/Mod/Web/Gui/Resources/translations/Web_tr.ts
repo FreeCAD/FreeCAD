@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>URL Ayarla</translation>
     </message>
   </context>
   <context>
@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="686"/>
+      <location filename="../../BrowserView.cpp" line="718"/>
       <source>Browser</source>
       <translation>Tarayıcı</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="529"/>
+      <location filename="../../BrowserView.cpp" line="547"/>
       <source>File does not exist!</source>
       <translation>Dosya mevcut değil!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="520"/>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="538"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Dosya yüklemesi esnasında hatalar vardı. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. İlgili nesneler hakkında daha spesifik bilgi için rapor görünümüne bakın.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="657"/>
+      <location filename="../../BrowserView.cpp" line="689"/>
       <source>Loading %1...</source>
       <translation>Yükleniyor %1...</translation>
     </message>
@@ -161,19 +161,19 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="299"/>
+      <location filename="../../BrowserView.cpp" line="300"/>
       <source>Open in External Browser</source>
       <translation>Dış tarayıcıda aç</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="303"/>
+      <location filename="../../BrowserView.cpp" line="304"/>
       <source>Open in new window</source>
       <translation>Yeni pencerede aç</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="335"/>
+      <location filename="../../BrowserView.cpp" line="336"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Kaynağı görüntüle</translation>
     </message>
   </context>
   <context>

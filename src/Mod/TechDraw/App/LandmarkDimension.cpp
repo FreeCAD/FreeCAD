@@ -115,7 +115,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute(void)
 
     std::vector<DocumentObject*> features = References3D.getValues();
     //if distance, required size = 2
-    //if angle, required size = 3;
+    //if angle, required size = 3;    //not implemented yet
     unsigned int requiredSize = 2;
     if (features.size() < requiredSize) {
         return App::DocumentObject::StdReturn;
@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute(void)
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
  
-    //m_anglePoints.first = 
+    //m_anglePoints.first =                  //not implemented yet
     
     App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
@@ -257,6 +257,23 @@ void LandmarkDimension::onDocumentRestored()
 
     DrawViewDimension::onDocumentRestored();
 }
+
+void LandmarkDimension::unsetupObject()
+{
+    
+//    bool isRemoving = testStatus(App::ObjectStatus::Remove);
+//    Base::Console().Message("LD::unsetupObject - isRemove: %d status: %X\n",
+//                            isRemoving, getStatus());
+    TechDraw::DrawViewPart* dvp = getViewPart();
+
+    std::vector<std::string> tags = ReferenceTags.getValues();
+    for (auto& t: tags) {
+        dvp->removeReferenceVertex(t);
+    }
+    dvp->resetReferenceVerts();
+    dvp->requestPaint();
+}
+
 
 //??? why does getPyObject work sometimes and no others???
 //PyObject *LandmarkDimension::getPyObject(void)

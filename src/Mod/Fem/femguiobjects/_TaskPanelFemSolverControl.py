@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -30,8 +32,9 @@ from PySide import QtCore
 from PySide import QtGui
 
 import FreeCADGui as Gui
-import femsolver.run
+
 import femsolver.report
+import femsolver.run
 
 
 _UPDATE_INTERVAL = 50

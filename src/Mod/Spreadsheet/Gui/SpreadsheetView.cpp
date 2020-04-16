@@ -41,6 +41,7 @@
 #include <App/Range.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/ExpressionCompleter.h>
 #include <App/DocumentObject.h>
@@ -50,6 +51,7 @@
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
 #include <LineEdit.h>
+#include <Base/Tools.h>
 
 #include "ui_Sheet.h"
 
@@ -95,6 +97,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
             this, SLOT(rowResized(int, int, int)));
 
     connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
+    connect(ui->cellAlias, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
@@ -116,6 +119,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
+    ui->cellAlias->setDocumentObject(sheet);
 }
 
 SheetView::~SheetView()
@@ -205,6 +209,7 @@ void SheetView::setCurrentCell(QString str)
 {
     Q_UNUSED(str);
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::keyPressEvent(QKeyEvent *event)
@@ -240,6 +245,25 @@ void SheetView::updateContentLine()
     }
 }
 
+void SheetView::updateAliasLine()
+{
+    QModelIndex i = ui->cells->currentIndex();
+
+    if (i.isValid()) {
+        std::string str;
+        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+
+        if (cell)
+            cell->getAlias(str);
+        ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
+        ui->cellAlias->setIndex(i);
+        ui->cellAlias->setEnabled(true);
+
+        // Update completer model; for the time being, we do this by setting the document object of the input line.
+        ui->cellAlias->setDocumentObject(sheet);
+    }
+}
+
 void SheetView::columnResizeFinished()
 {
     if (newColumnSizes.size() == 0)
@@ -272,6 +296,7 @@ void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bott
         return;
 
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
@@ -305,13 +330,43 @@ void SheetView::editingFinished()
         return;
     }
 
+    if (ui->cellAlias->completerActive()) {
+        ui->cellAlias->hideCompleter();
+        return;
+    }
+
     QModelIndex i = ui->cells->currentIndex();
 
-    // Update data in cell
-    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+    if (i.isValid()) {
+        QString str = ui->cellAlias->text();
+        bool aliasOkay = true;
 
-    ui->cells->setCurrentIndex(ui->cellContent->next());
-    ui->cells->setFocus();
+        if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
+            aliasOkay = false;
+        }
+
+        ui->cellAlias->setDocumentObject(sheet);
+        ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+
+        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+        if (cell){
+            if (!aliasOkay){
+                //do not show error message if failure to set new alias is because it is already the same string
+                std::string current_alias;
+                cell->getAlias(current_alias);
+                if (str != QString::fromUtf8(current_alias.c_str())){
+                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
+                }
+            } else {
+                std::string address = CellAddress(i.row(), i.column()).toString();
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                                      address, str.toStdString());
+                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+            }
+        }
+        ui->cells->setCurrentIndex(ui->cellContent->next());
+        ui->cells->setFocus();
+    }
 }
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
@@ -319,6 +374,7 @@ void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex 
     Q_UNUSED(current);
     Q_UNUSED(previous);
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::updateCell(const App::Property *prop)
@@ -333,8 +389,10 @@ void SheetView::updateCell(const App::Property *prop)
         if(!sheet->getCellAddress(prop, address))
             return;
 
-        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() ){
             updateContentLine();
+            updateAliasLine();
+        }
     }
     catch (...) {
         // Property is not a cell

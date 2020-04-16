@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ko" sourcelanguage="en">
+<TS version="2.1" language="ko" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation type="unfinished">Error: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation type="unfinished">Attachment Offset:</translation>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -3326,7 +3344,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="72"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>모든 파일</translation>
     </message>
   </context>
   <context>
@@ -3357,7 +3375,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="71"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>모든 파일</translation>
     </message>
   </context>
   <context>
@@ -3861,7 +3879,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation type="unfinished"> °</translation>
@@ -4844,7 +4862,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="1112"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>모든 파일</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -5274,7 +5292,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>분할</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

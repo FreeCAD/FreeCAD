@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -29,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
+
 from femmesh import meshtools
 from femtools.femutils import type_of_obj
 
@@ -47,6 +50,7 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
         self.mesh_object = mesh_obj
+        self.document = self.analysis.Document
         # materials
         self.material_objects = member.mats_linear
         self.material_nonlinear_objects = member.mats_nonlinear
@@ -77,7 +81,7 @@ class FemInputWriter():
                 "Error: FemInputWriter has no working_dir --> "
                 "we are going to make a temporary one!\n"
             )
-            self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace(
+            self.dir_name = self.document.TransientDir.replace(
                 "\\", "/"
             ) + "/FemAnl_" + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
@@ -276,7 +280,7 @@ class FemInputWriter():
         # it applies here too. Mhh it applies to all constraints ...
 
         """
-        # depreciated version
+        # deprecated version
         # get the faces and face numbers
         for femobj in self.pressure_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -305,9 +309,9 @@ class FemInputWriter():
                 self.femelement_table,
                 self.femnodes_ele_table, femobj
             )
-            # the data model is for compatibility reason with depreciated version
+            # the data model is for compatibility reason with deprecated version
             # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
-            # some_string was the reference_shape_element_string in depreciated method
+            # some_string was the reference_shape_element_string in deprecated method
             # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
             some_string = "{}: face load".format(femobj["Object"].Name)
             femobj["PressureFaces"] = [(some_string, pressure_faces)]

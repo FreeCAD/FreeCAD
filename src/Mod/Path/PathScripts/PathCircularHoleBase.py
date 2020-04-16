@@ -440,7 +440,7 @@ class ObjectOp(PathOp.ObjectOp):
         zlim = 0.0
         xRotRad = 0.01
         yRotRad = 0.01
-        xRotRad = 0.01
+        zRotRad = 0.01
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):

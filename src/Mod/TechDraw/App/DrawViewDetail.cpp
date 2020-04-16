@@ -100,8 +100,6 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewDetail, TechDraw::DrawViewPart)
 
 DrawViewDetail::DrawViewDetail()
-// :
-//    m_mattingStyle(0)
 {
     static const char *dgroup = "Detail";
 
@@ -117,7 +115,6 @@ DrawViewDetail::DrawViewDetail()
     //hide Properties not relevant to DVDetail
     Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
     Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
-
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -147,13 +144,15 @@ void DrawViewDetail::onChanged(const App::Property* prop)
                                   std::string(Reference.getValue());
             Label.setValue(lblText);
         }
-        if ((prop == &Reference)  ||
-           (prop == &Radius)     ||
-           (prop == &AnchorPoint))  {
-//            BaseView.getValue()->touch();    //hack.  sb "update graphics"
-            enforceRecompute();
+        if ((prop == &Reference) ||
+            (prop == &Radius) ||
+            (prop == &BaseView)) {
+            requestPaint();
         }
-
+        if (prop == &AnchorPoint)  {
+            // to see AnchorPoint changes repainting is not enough, we must recompute
+            recomputeFeature(true);
+        }
     }
     DrawView::onChanged(prop);
 }
@@ -416,6 +415,17 @@ bool DrawViewDetail::debugDetail(void) const
 
     bool result = hGrp->GetBool("debugDetail",false);
     return result;
+}
+
+void DrawViewDetail::unsetupObject()
+{
+//    Base::Console().Message("DVD::unsetupObject()\n");
+    App::DocumentObject* baseObj = BaseView.getValue();
+    DrawView* base = dynamic_cast<DrawView*>(baseObj);
+    if (base != nullptr) {
+        base->requestPaint();
+    }
+
 }
 
 

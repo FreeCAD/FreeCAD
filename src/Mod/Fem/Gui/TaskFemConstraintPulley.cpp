@@ -51,7 +51,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPulley */
 
 TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent)
-    : TaskFemConstraintGear(ConstraintView, parent, "fem-constraint-pulley")
+    : TaskFemConstraintGear(ConstraintView, parent, "FEM_ConstraintPulley")
 {
     connect(ui->spinOtherDiameter, SIGNAL(valueChanged(double)),
             this, SLOT(onOtherDiameterChanged(double)));

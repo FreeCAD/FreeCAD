@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 - FreeCAD Developers                               *
-# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,15 +19,19 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
+__title__ = "Results FEM unit tests"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+import unittest
+from os.path import join
 
 import FreeCAD
-import unittest
+
 from . import support_utils as testtools
 from .support_utils import fcc_print
-
-from os.path import join
 
 
 class TestResult(unittest.TestCase):
@@ -39,15 +42,8 @@ class TestResult(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
     def test_00print(
         self

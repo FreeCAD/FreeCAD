@@ -1,6 +1,8 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,83 +30,40 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD ViewProvider for mechanical ResultObjectPython in FEM workbench
 
-import FreeCAD
-import FreeCADGui
-import FemGui  # needed to display the icons in TreeView
+import matplotlib.pyplot as plt
+import numpy as np
 
-# for the panel
-import femresult.resulttools as resulttools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import numpy as np
-import matplotlib.pyplot as plt
+
+import FreeCAD
+import FreeCADGui
+
+from . import ViewProviderFemConstraint
+import femresult.resulttools as resulttools
 
 
-False if FemGui.__name__ else True  # flake8, dummy FemGui usage
-
-
-class _ViewProviderFemResultMechanical:
-    "A View Provider for the FemResultObject Python derived FemResult class"
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def getIcon(self):
-        """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        return ":/icons/fem-post-result-show.svg"
-
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
+class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
+    """
+    A View Provider for the FemResultObject Python derived FemResult class
+    """
 
     def setEdit(self, vobj, mode=0):
-        if hasattr(self.Object, "Mesh") and self.Object.Mesh:
-            hide_femmeshes_postpiplines()
-            # only show the FEM result mesh
-            self.Object.Mesh.ViewObject.show()
-            taskd = _TaskPanelFemResultShow(self.Object)
-            taskd.obj = vobj.Object
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        else:
-            error_message = "FEM: Result object has no appropriate FEM mesh.\n"
-            FreeCAD.Console.PrintError(error_message)
-            from PySide import QtGui
-            QtGui.QMessageBox.critical(None, "No result object", error_message)
-            return False
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel,
+        )
 
+    # overwrite unsetEdit, hide result mesh object on task panel exit
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         # hide the mesh after result viewing is finished, but do not reset the coloring
         self.Object.Mesh.ViewObject.hide()
         return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
 
     def claimChildren(self):
         return [self.Object.Mesh]  # claimChildren needs to return a list !
@@ -120,8 +79,10 @@ class _ViewProviderFemResultMechanical:
         return True
 
 
-class _TaskPanelFemResultShow:
-    """The task panel for the post-processing"""
+class _TaskPanel:
+    """
+    The task panel for the post-processing
+    """
 
     def __init__(self, obj):
         self.result_obj = obj
@@ -129,6 +90,8 @@ class _TaskPanelFemResultShow:
         # task panel should be started by use of setEdit of view provider
         # in view provider checks: Mesh, active analysis and
         # if Mesh and result are in active analysis
+        # activate the result mesh object
+        self.mesh_obj.ViewObject.show()
 
         ui_path = FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/"
         self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")
@@ -713,13 +676,6 @@ class _TaskPanelFemResultShow:
 
 
 # helper
-def hide_femmeshes_postpiplines():
-    # hide all visible FEM mesh objects and VTK FemPostPipeline objects
-    for o in FreeCAD.ActiveDocument.Objects:
-        if o.isDerivedFrom("Fem::FemMeshObject") or o.isDerivedFrom("Fem::FemPostPipeline"):
-            o.ViewObject.hide()
-
-
 def hide_parts_constraints():
     from FemGui import getActiveAnalysis
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")

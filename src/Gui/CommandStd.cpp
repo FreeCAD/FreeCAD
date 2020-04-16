@@ -716,7 +716,8 @@ void StdCmdTextDocument::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     openCommand("Insert text document");
-    doCommand(Doc,"App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
+    doCommand(Doc, "App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
+    doCommand(Gui, "Gui.ActiveDocument.ActiveObject.doubleClicked()");
     updateActive();
     commitCommand();
 }

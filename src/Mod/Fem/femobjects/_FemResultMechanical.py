@@ -1,5 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,14 +30,18 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD DocumentObject class to hold mechanical results in FEM workbench
 
+from . import FemConstraint
 
-class _FemResultMechanical():
-    """The Fem::_FemResultMechanical's Proxy python type, add result specific properties
+
+class _FemResultMechanical(FemConstraint.Proxy):
     """
+    The Fem::_FemResultMechanical's Proxy python type, add result specific properties
+    """
+
+    Type = "Fem::ResultMechanical"
+
     def __init__(self, obj):
-        self.Type = "Fem::FemResultMechanical"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+        super(_FemResultMechanical, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyString",
@@ -289,18 +296,6 @@ class _FemResultMechanical():
         zero_list = 26 * [0]
         obj.Stats = zero_list
 
-    # standard Feature methods
-    def execute(self, obj):
-        """"this method is executed on object creation and
-        whenever the document is recomputed"
-        update Part or Mesh should NOT lead to recomputation
-        of the analysis automatically, time consuming
-        """
-        return
-
-    def onChanged(self, obj, prop):
-        return
-
     def onDocumentRestored(self, obj):
         # migrate old result objects, because property "StressValues"
         # was renamed to "vonMises" in commit 8b68ab7
@@ -322,10 +317,3 @@ class _FemResultMechanical():
             for i in range(12, -1, -1):
                 del temp[3 * i + 1]
             obj.Stats = temp
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state

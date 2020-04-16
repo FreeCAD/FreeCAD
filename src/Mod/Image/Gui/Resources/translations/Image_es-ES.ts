@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Escale plano de imagen</translation>
+      <translation>Escala del plano de la imagen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -16,27 +16,27 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation>Seleccione el primer punto</translation>
+      <translation>Selecciona el primer punto</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;escriba distancia&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Introducir distancia&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Seleccione ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Seleccionar ImagePlane&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation>Seleccione el segundo punto</translation>
+      <translation>Selecciona el segundo punto</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation>Seleccione el plano de imagen y escriba la distancia</translation>
+      <translation>Selecciona el plano de la imagen y escribe la distancia</translation>
     </message>
   </context>
   <context>
@@ -44,12 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation>Escale plano de imagen</translation>
+      <translation>Escala del plano de la imagen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Escala un plano de imagen definiendo una distancia entre dos puntos</translation>
+      <translation>Escala del plano de imagen definiendo por una distancia entre dos puntos</translation>
     </message>
   </context>
   <context>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation>Escala de...</translation>
+      <translation>Escala...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>Escalado de imagen</translation>
+      <translation>Escalado de la imagen</translation>
     </message>
   </context>
   <context>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>No se pudo cargar la imagen solicitada</translation>
+      <translation>No se pude cargar la imagen solicitada</translation>
     </message>
   </context>
   <context>

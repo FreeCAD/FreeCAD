@@ -1678,11 +1678,11 @@ std::string Cell::getFormattedQuantity(void)
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
         const Base::Unit& computedUnit = floatProp->getUnit();
-        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
-                    QLocale::system().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
+                    QLocale().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
                 qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
             }
         }
@@ -1692,9 +1692,9 @@ std::string Cell::getFormattedQuantity(void)
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
-        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
-            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
             qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
         }
     } else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
@@ -1703,9 +1703,9 @@ std::string Cell::getFormattedQuantity(void)
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
         int iRawVal = std::round(rawVal);
-        qFormatted = QLocale::system().toString(iRawVal);
+        qFormatted = QLocale().toString(iRawVal);
         if (hasDisplayUnit) {
-            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
             qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
         }
     }

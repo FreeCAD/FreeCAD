@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Liite</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Valitaan...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
@@ -92,6 +92,11 @@
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
       <translation type="unfinished">Error: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Virheellinen valinta</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -170,7 +188,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
   </context>
   <context>
@@ -230,7 +248,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -263,7 +281,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Luo putken</translation>
     </message>
   </context>
   <context>
@@ -284,7 +302,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -1493,7 +1511,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2355"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2356"/>
@@ -1508,7 +1526,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2104"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
@@ -1526,7 +1544,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2138"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2139"/>
@@ -1544,7 +1562,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2204"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2205"/>
@@ -1558,7 +1576,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2233"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2234"/>
@@ -1572,7 +1590,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2175"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2176"/>
@@ -1586,7 +1604,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2297"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2298"/>
@@ -1600,7 +1618,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2262"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2263"/>
@@ -1614,7 +1632,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="2326"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2327"/>
@@ -1628,7 +1646,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1274"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1275"/>
@@ -1646,7 +1664,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="87"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="88"/>
@@ -1666,7 +1684,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="136"/>
@@ -1684,7 +1702,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -1702,7 +1720,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
@@ -1720,7 +1738,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1439"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1440"/>
@@ -1738,7 +1756,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="350"/>
@@ -1756,7 +1774,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="782"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="783"/>
@@ -1774,12 +1792,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Join objects...</source>
-      <translation type="unfinished">Join objects...</translation>
+      <translation>Yhdistä objektit...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
@@ -1792,7 +1810,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1720"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1721"/>
@@ -1810,7 +1828,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -1828,7 +1846,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="889"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="890"/>
@@ -1846,7 +1864,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="169"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="170"/>
@@ -1866,7 +1884,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1496"/>
@@ -1884,7 +1902,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -1902,7 +1920,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="46"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="47"/>
@@ -1922,7 +1940,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="271"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
@@ -1940,7 +1958,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1047"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1048"/>
@@ -1958,7 +1976,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -1976,7 +1994,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1412"/>
@@ -1994,7 +2012,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
@@ -2012,7 +2030,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="987"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -2030,7 +2048,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1094"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1095"/>
@@ -2048,7 +2066,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1564"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
@@ -2066,7 +2084,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1333"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
@@ -2084,7 +2102,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1142"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -2102,7 +2120,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1468"/>
@@ -2120,7 +2138,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1622"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1623"/>
@@ -2138,7 +2156,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1672"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1673"/>
@@ -2156,7 +2174,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -2174,7 +2192,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -2192,7 +2210,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="218"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="219"/>
@@ -2210,7 +2228,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1221"/>
@@ -2228,7 +2246,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1384"/>
@@ -2246,7 +2264,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1988"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1989"/>
@@ -2264,7 +2282,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="940"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -2282,7 +2300,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="108"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
@@ -2300,7 +2318,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -2318,7 +2336,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="58"/>
@@ -2336,7 +2354,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="128"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="129"/>
@@ -2356,7 +2374,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1593"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
@@ -2374,7 +2392,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1813"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1814"/>
@@ -2408,7 +2426,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandParametric.cpp" line="210"/>
       <source>Part</source>
-      <translation>osa</translation>
+      <translation>Osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="211"/>
@@ -2433,7 +2451,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Valinta hyväksytty</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2821,7 +2839,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.cpp" line="181"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Valitaan...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="422"/>
@@ -3862,7 +3880,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -3994,7 +4012,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>Merkinnät</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
@@ -4043,7 +4061,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Valitut profiilit</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4241,7 +4259,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Valitut profiilit</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4317,7 +4335,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Valinta hyväksytty</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4398,7 +4416,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>tuntematon virhe</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
@@ -4438,7 +4456,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="690"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Valitaan...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
@@ -4734,7 +4752,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="172"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Yksinkertainen</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
@@ -4841,7 +4859,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
       <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
+      <translation>Kaikki CAD tiedostot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1112"/>
@@ -4867,7 +4885,7 @@ Haluatko jatkaa?</translation>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Ei viittausta valittuna</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>

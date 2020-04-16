@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -27,22 +29,15 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshResult
 
+from . import FemConstraint
 
-class _FemMeshResult():
-    """The Fem::FemMeshObject's Proxy python type, add Result specific object type
+
+class _FemMeshResult(FemConstraint.Proxy):
+    """
+    The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """
 
+    Type = "Fem::MeshResult"
+
     def __init__(self, obj):
-        self.Type = "Fem::FemMeshResult"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
-
-    def execute(self, obj):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+        super(_FemMeshResult, self).__init__(obj)

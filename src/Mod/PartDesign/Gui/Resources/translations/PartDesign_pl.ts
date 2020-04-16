@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Utwórz lokalny system współrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Utwórz nowy system współrzędnych lokalnych</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="1666"/>
       <source>Make a draft on a face</source>
-      <translation>Tworzenie szkicu na obszarze</translation>
+      <translation>Tworzenie szkicu na ścianie</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Hole</source>
-      <translation>Dziura</translation>
+      <translation>Otwór</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
+  materiału do usunięcia;
+   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
+  materiału do usunięcia;
+   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
+  materiału do usunięcia;
+   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
     </message>
   </context>
   <context>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Z innych części tej samej bryły</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Ścieżka do wyciagnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2755,7 +2755,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Brak jakichkolwiek elementów PartDesign, które nie należą do bryły. Nie ma nic do migracji.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2880,9 +2880,9 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Aby móc korzystać z PartDesign potrzebujesz aktywnego obiektu Body w dokumencie. Proszę aktywować wybrany obiekt (podwójne kliknięcie) lub utworzyć nowy.
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funkcji migracji w programie PartDesign, aby umieścić je w obiekcie Body.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
@@ -3055,9 +3055,9 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Uwaga: Jeśli zdecydujesz się na aktualizację, nie będziesz mógł edytować pliku w starszej wersji FreeCAD.
+Jeśli zrezygnujesz z przeprowadzenia aktualizacji, nie będziesz mógł korzystać z nowych elementów PartDesign, takich jak Body i Parts. W rezultacie nie będziesz mógł używać swoich części w Środowisku pracy assembly.
+Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pomocą opcji "Part Design-&gt;Przenieś....".</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

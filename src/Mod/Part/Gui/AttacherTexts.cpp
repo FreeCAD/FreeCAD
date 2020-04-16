@@ -52,13 +52,13 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher3D", "Translate origin","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","Attachment3D mode tooltip"));
         case mmObjectXY:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  X Y Z","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's X Y Z","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Placement is made equal to Placement of linked object.","Attachment3D mode tooltip"));
         case mmObjectXZ:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  X Z-Y","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's X Z Y","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.","Attachment3D mode tooltip"));
         case mmObjectYZ:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  Y Z X","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's Y Z X","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X', Y', Z' axes are matched with object's local Y, Z, X, respectively.","Attachment3D mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher3D", "XY on plane","Attachment3D mode caption"),
@@ -133,7 +133,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher2D", "Object's XZ","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to XZ local plane of linked object.","AttachmentPlane mode tooltip"));
         case mmObjectYZ:
-            return TwoStrings(qApp->translate("Attacher2D", "Object's  YZ","AttachmentPlane mode caption"),
+            return TwoStrings(qApp->translate("Attacher2D", "Object's YZ","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to YZ local plane of linked object.","AttachmentPlane mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher2D", "Plane face","AttachmentPlane mode caption"),

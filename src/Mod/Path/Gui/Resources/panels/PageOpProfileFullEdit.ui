@@ -56,6 +56,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QWidget" name="widget" native="true">
+     <property name="locale">
+      <locale language="English" country="Germany"/>
+     </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="cutSideLabel">
@@ -123,6 +126,37 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Enable Rotation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="enableRotation">
+        <item>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A(x)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>B(y)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A &amp; B</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

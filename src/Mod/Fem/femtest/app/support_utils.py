@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 FreeCAD Developers                                 *
-# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,17 +19,18 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 __title__ = "Tools for FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-
 import os
-import unittest
 import tempfile
+import unittest
+
 import FreeCAD
+
 from os.path import join
 
 
@@ -222,7 +222,7 @@ def compare_stats(
         loc_stat_types = stat_types
 
     # get stats from result obj which should be compared
-    obj = FreeCAD.ActiveDocument.getObject(res_obj_name)
+    obj = fea.analysis.Document.getObject(res_obj_name)
     # fcc_print(obj)
     if obj:
         # fcc_print(obj.Name)

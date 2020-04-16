@@ -54,7 +54,8 @@
       <item row="5" column="0">
        <widget class="QGroupBox" name="group_center">
         <property name="toolTip">
-         <string>The coordinates of the point through which the axis of rotation passes.</string>
+         <string>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</string>
         </property>
         <property name="title">
          <string>Center of rotation</string>
@@ -127,7 +128,7 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset">
            <property name="toolTip">
-            <string>Reset the coordinates of the center of rotation</string>
+            <string>Reset the coordinates of the center of rotation.</string>
            </property>
            <property name="text">
             <string>Reset point</string>
@@ -142,7 +143,8 @@
         <item>
          <widget class="QCheckBox" name="checkbox_fuse">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be fused if they touch each other</string>
+           <string>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if &quot;Link array&quot; is off.</string>
           </property>
           <property name="text">
            <string>Fuse</string>
@@ -152,10 +154,14 @@
         <item>
          <widget class="QCheckBox" name="checkbox_link">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be Links instead of simple copies</string>
+           <string>If checked, the resulting object will be a &quot;Link array&quot; instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
           </property>
           <property name="text">
-           <string>Use Links</string>
+           <string>Link array</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -166,7 +172,9 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_angle">
           <property name="toolTip">
-           <string>Sweeping angle of the polar distribution</string>
+           <string>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</string>
           </property>
           <property name="text">
            <string>Polar angle</string>
@@ -176,20 +184,29 @@
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="spinbox_angle">
           <property name="toolTip">
-           <string>Sweeping angle of the polar distribution</string>
+           <string>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
           <property name="value">
-           <double>180.000000000000000</double>
+           <double>360.000000000000000</double>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_number">
           <property name="toolTip">
-           <string>Number of elements in the array, including a copy of the original object. It must be at least 2.</string>
+           <string>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</string>
           </property>
           <property name="text">
            <string>Number of elements</string>
@@ -199,10 +216,14 @@
         <item row="1" column="1">
          <widget class="QSpinBox" name="spinbox_number">
           <property name="toolTip">
-           <string>Number of elements in the array, including a copy of the original object. It must be at least 2.</string>
+           <string>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</string>
+          </property>
+          <property name="minimum">
+           <number>2</number>
           </property>
           <property name="value">
-           <number>4</number>
+           <number>5</number>
           </property>
          </widget>
         </item>

@@ -202,12 +202,12 @@ struct FlagToggler {
     FlagToggler(Flag &_flag, Flag check)
         :flag(_flag),toggled(check==_flag)
     {
-        if(toggled)
+        if (toggled)
             flag = !flag;
     }
 
     ~FlagToggler() {
-        if(toggled)
+        if (toggled)
             flag = !flag;
     }
 };

@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples import ccx_cantilever_std as canti
@@ -30,13 +29,14 @@ canti.setup_cantileverbase()
 canti.setup_cantileverfaceload()
 canti.setup_cantilevernodeload()
 canti.setup_cantileverprescribeddisplacement()
+canti.setup_cantileverhexa20faceload()
 
 """
 
-
 import FreeCAD
-import ObjectsFem
+
 import Fem
+import ObjectsFem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -53,16 +53,16 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    box_obj = doc.addObject("Part::Box", "Box")
-    box_obj.Height = box_obj.Width = 1000
-    box_obj.Length = 8000
+    # geometry object
+    # name is important because the other method in this module use obj name
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = geom_obj.Width = 1000
+    geom_obj.Length = 8000
     doc.recompute()
 
     if FreeCAD.GuiUp:
-        import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().fitAll()
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -105,7 +105,7 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(doc.Box, "Face1")]
+    fixed_constraint.References = [(geom_obj, "Face1")]
 
     # mesh
     from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
@@ -181,6 +181,26 @@ def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
     displacement_constraint.zFix = False
     displacement_constraint.zFree = False
     displacement_constraint.zDisplacement = -250.0
+
+    doc.recompute()
+    return doc
+
+
+def setup_cantileverhexa20faceload(doc=None, solvertype="ccxtools"):
+    doc = setup_cantileverfaceload(doc, solvertype)
+
+    # load the hexa20 mesh
+    from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
+    fem_mesh = Fem.FemMesh()
+    control = create_nodes(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
+    control = create_elements(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
+
+    # overwrite mesh with the hexa20 mesh
+    doc.getObject(mesh_name).FemMesh = fem_mesh
 
     doc.recompute()
     return doc

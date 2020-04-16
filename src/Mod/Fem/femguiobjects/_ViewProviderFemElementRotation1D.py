@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,89 +29,37 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemElementRotation1D
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-import FemGui  # needed to display the icons in TreeView
 
-# for the panel
-from PySide import QtCore
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
-False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
-
-class _ViewProviderFemElementRotation1D:
-    "A View Provider for the FemElementRotation1D object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def getIcon(self):
-        return ":/icons/fem-element-rotation-1d.svg"
-
-    def attach(self, vobj):
-        from pivy import coin
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Default")
-
-    def getDisplayModes(self, obj):
-        return ["Default"]
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
+class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
+    """
+    A View Provider for the FemElementRotation1D object
+    """
 
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # show task panel
-        taskd = _TaskPanelFemElementRotation1D(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel
+        )
     """
 
-    def setEdit(self, vobj, mode=0):
-        # avoid edit mode by return False
-        # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
-        return False
 
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemElementRotation1D objects
+    """
 
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-
-class _TaskPanelFemElementRotation1D:
-    """The TaskPanel for editing References property of FemElementRotation1D objects"""
     def __init__(self, obj):
 
         self.obj = obj

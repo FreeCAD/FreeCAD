@@ -28,6 +28,7 @@
 #include "MainWindow.h"
 #include "Document.h"
 #include "EditorView.h"
+#include "TextDocumentEditorView.h"
 
 using namespace Gui::Dialog;
 
@@ -60,9 +61,15 @@ void UndoDialog::onFetchInfo()
     clear(); // Remove first all items
 
     MDIView* mdi =  getMainWindow()->activeWindow();
-    EditorView* view = qobject_cast<EditorView*>(mdi);
-    if (view) {
-        QStringList vecUndos = view->undoActions();
+    EditorView* editview = qobject_cast<EditorView*>(mdi);
+    TextDocumentEditorView* textedit = qobject_cast<TextDocumentEditorView*>(mdi);
+    if (editview) {
+        QStringList vecUndos = editview->undoActions();
+        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
+            addAction(*i, this, SLOT(onSelected()));
+    }
+    else if (textedit) {
+        QStringList vecUndos = textedit->undoActions();
         for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
             addAction(*i, this, SLOT(onSelected()));
     }
@@ -117,9 +124,15 @@ void RedoDialog::onFetchInfo()
     clear(); // Remove first all items
 
     MDIView* mdi = getMainWindow()->activeWindow();
-    EditorView* view = qobject_cast<EditorView*>(mdi);
-    if (view) {
-        QStringList vecRedos = view->redoActions();
+    EditorView* editview = qobject_cast<EditorView*>(mdi);
+    TextDocumentEditorView* textedit = qobject_cast<TextDocumentEditorView*>(mdi);
+    if (editview) {
+        QStringList vecRedos = editview->redoActions();
+        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
+            addAction(*i, this, SLOT(onSelected()));
+    }
+    else if (textedit) {
+        QStringList vecRedos = textedit->redoActions();
         for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
             addAction(*i, this, SLOT(onSelected()));
     }

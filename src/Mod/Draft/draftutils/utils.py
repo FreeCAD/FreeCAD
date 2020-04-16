@@ -1,13 +1,4 @@
 # -*- coding: utf-8 -*-
-"""This module provides utility functions for the Draft Workbench.
-
-This module should contain auxiliary functions which don't require
-the graphical user interface (GUI).
-"""
-## @package utils
-# \ingroup DRAFT
-# \brief This module provides utility functions for the Draft Workbench
-
 # ***************************************************************************
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
@@ -32,52 +23,35 @@ the graphical user interface (GUI).
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides utility functions for the Draft Workbench.
+
+This module contains auxiliary functions which can be used
+in other modules of the workbench, and which don't require
+the graphical user interface (GUI).
+"""
+## @package utils
+# \ingroup DRAFT
+# \brief This module provides utility functions for the Draft Workbench
 
 import os
-import FreeCAD
 from PySide import QtCore
+
+import FreeCAD
 import Draft_rc
+from draftutils.messages import _msg, _log
+from draftutils.translate import _tr
+
 App = FreeCAD
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc else False
-
-
-if App.GuiUp:
-    # The right translate function needs to be imported here
-    # from DraftGui import translate
-
-    # At the moment it is the same function as without GUI
-    def translate(context, text):
-        return text
-else:
-    def translate(context, text):
-        return text
-
-
-def _tr(text):
-    """Function to translate with the context set."""
-    return translate("Draft", text)
-
-
-def _msg(text, end="\n"):
-    App.Console.PrintMessage(text + end)
-
-
-def _wrn(text, end="\n"):
-    App.Console.PrintWarning(text + end)
-
-
-def _log(text, end="\n"):
-    App.Console.PrintLog(text + end)
-
 
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
 arrowtypes = ARROW_TYPES
 
 
 def string_encode_coin(ustr):
-    """Encode a unicode object to be used as a string in coin
+    """Encode a unicode object to be used as a string in coin.
 
     Parameters
     ----------
@@ -132,7 +106,7 @@ def type_check(args_and_types, name="?"):
         Defaults to `'?'`. The name of the check.
 
     Raises
-    -------
+    ------
     TypeError
         If the first element in the tuple is not an instance of the second
         element, it raises `Draft.name`.
@@ -183,7 +157,8 @@ def get_param_type(param):
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit"):
+                   "DiscretizeEllipses", "showUnit",
+                   "Draft_array_fuse", "Draft_array_Link"):
         return "bool"
     elif param in ("color", "constructioncolor",
                    "snapcolor", "gridColor"):
@@ -196,7 +171,7 @@ getParamType = get_param_type
 
 
 def get_param(param, default=None):
-    """Return a paramater value from the current parameter database.
+    """Return a parameter value from the current parameter database.
 
     The parameter database is located in the tree
     ::
@@ -265,7 +240,7 @@ getParam = get_param
 
 
 def set_param(param, value):
-    """Set a Draft parameter with the given value
+    """Set a Draft parameter with the given value.
 
     The parameter database is located in the tree
     ::
@@ -318,7 +293,7 @@ setParam = set_param
 
 
 def precision():
-    """Return the precision value from the paramater database.
+    """Return the precision value from the parameter database.
 
     It is the number of decimal places that a float will have.
     Example
@@ -378,7 +353,7 @@ def epsilon():
 def get_real_name(name):
     """Strip the trailing numbers from a string to get only the letters.
 
-    Paramaters
+    Parameters
     ----------
     name : str
         A string that may have a number at the end, `Line001`.
@@ -402,7 +377,7 @@ getRealName = get_real_name
 def get_type(obj):
     """Return a string indicating the type of the given object.
 
-    Paramaters
+    Parameters
     ----------
     obj : App::DocumentObject
         Any type of scripted object created with Draft,
@@ -981,7 +956,7 @@ getMovableChildren = get_movable_children
 
 
 def utf8_decode(text):
-    """Decode the input string and return a unicode string.
+    r"""Decode the input string and return a unicode string.
 
     Python 2:
     ::
@@ -1017,14 +992,14 @@ def utf8_decode(text):
 
         >>> "Aá".decode("utf-8")
         >>> b"Aá".decode("utf-8")
-        u'A\\xe1'
+        u'A\xe1'
 
         In Python 2 the unicode string is prefixed with `u`,
         and unicode characters are replaced by their two-digit hexadecimal
         representation, or four digit unicode escape.
 
         >>> "AáBẃCñ".decode("utf-8")
-        u'A\\xe1B\\u1e83C\\xf1'
+        u'A\xe1B\u1e83C\xf1'
 
         In Python 2 it will always return a `unicode` object.
 
@@ -1045,3 +1020,29 @@ def utf8_decode(text):
         return text.decode("utf-8")
     except AttributeError:
         return text
+
+
+def print_header(name, description, debug=True):
+    """Print a line to the console when something is called, and log it.
+
+    Parameters
+    ----------
+    name: str
+        The name of the function or class that is being called.
+        This `name` will be logged in the log file, so if there are problems
+        the log file can be investigated for clues.
+
+    description: str
+        Arbitrary text that will be printed to the console
+        when the function or class is called.
+
+    debug: bool, optional
+        It defaults to `True`.
+        If it is `False` the `description` will not be printed
+        to the console.
+        On the other hand the `name` will always be logged.
+    """
+    _log(name)
+    if debug:
+        _msg(16 * "-")
+        _msg(description)

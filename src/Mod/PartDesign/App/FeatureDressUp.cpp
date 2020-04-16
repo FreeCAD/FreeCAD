@@ -68,6 +68,12 @@ short DressUp::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+void DressUp::setupObject()
+{
+    SupportTransform.setValue(true);
+    Feature::setupObject();
+}
+
 void DressUp::positionByBaseFeature(void)
 {
     Part::Feature *base = static_cast<Part::Feature*>(BaseFeature.getValue());

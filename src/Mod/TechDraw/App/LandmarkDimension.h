@@ -52,6 +52,8 @@ public:
     
     virtual App::DocumentObjectExecReturn *execute(void) override;
     short mustExecute() const override;
+    virtual void unsetupObject() override;
+
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDimension"; }
 /*    virtual PyObject *getPyObject(void) override;*/

@@ -49,6 +49,8 @@ public:
 
     void onChanged(const App::Property* prop);
 
+    virtual MDIView *getMDIView() const;
+
 private:
     bool activateView() const;
 

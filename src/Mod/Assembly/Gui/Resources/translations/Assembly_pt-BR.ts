@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-BR" sourcelanguage="en">
+<TS version="2.1" language="pt-BR" sourcelanguage="en">
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>

@@ -27,15 +27,17 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import sys
 import subprocess
+import sys
 
 import FreeCAD
 from FreeCAD import Console
-import Fem
 from FreeCAD import Units
+
+import Fem
 from . import meshtools
-import femtools.femutils as femutils
+from femtools import femutils
+from femtools import geomtools
 
 
 class GmshTools():
@@ -365,23 +367,25 @@ class GmshTools():
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
-            if self.mesh_obj.MeshRegionList:
-                # other part obj might not have a Proxy, thus an exception would be raised
-                if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
-                    if part.Proxy.Type == "FeatureBooleanFragments" \
-                            or part.Proxy.Type == "FeatureSlice" \
-                            or part.Proxy.Type == "FeatureXOR":
-                        error_message = (
-                            "  The mesh to shape is a boolean split tools Compound "
-                            "and the mesh has mesh region list. "
-                            "Gmsh could return unexpected meshes in such circumstances. "
-                            "It is strongly recommended to extract the shape to mesh "
-                            "from the Compound and use this one."
-                        )
-                        Console.PrintError(error_message + "\n")
-                        # TODO: no gui popup because FreeCAD will be in a endless output loop
-                        #       as long as the pop up is on --> maybe find a better solution for
-                        #       either of both --> thus the pop up is in task panel
+            if (
+                self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                error_message = (
+                    "  The mesh to shape is a boolean split tools Compound "
+                    "and the mesh has mesh region list. "
+                    "Gmsh could return unexpected meshes in such circumstances. "
+                    "It is strongly recommended to extract the shape to mesh "
+                    "from the Compound and use this one."
+                )
+                Console.PrintError(error_message + "\n")
+                # TODO: no gui popup because FreeCAD will be in a endless output loop
+                #       as long as the pop up is on --> maybe find a better solution for
+                #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
@@ -410,8 +414,8 @@ class GmshTools():
                                     # Shape to mesh and use the found element as elems
                                     # the method getElement(element)
                                     # does not return Solid elements
-                                    ele_shape = meshtools.get_element(sub[0], elems)
-                                    found_element = meshtools.find_element_in_shape(
+                                    ele_shape = geomtools.get_element(sub[0], elems)
+                                    found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape, ele_shape
                                     )
                                     if found_element:
@@ -447,8 +451,8 @@ class GmshTools():
                     )
             for eleml in self.ele_length_map:
                 # the method getElement(element) does not return Solid elements
-                ele_shape = meshtools.get_element(self.part_obj, eleml)
-                ele_vertexes = meshtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+                ele_shape = geomtools.get_element(self.part_obj, eleml)
+                ele_vertexes = geomtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
             Console.PrintMessage("  {}\n".format(self.ele_length_map))
             Console.PrintMessage("  {}\n".format(self.ele_node_map))
@@ -498,8 +502,8 @@ class GmshTools():
                                     # we try to find the element it in the Shape to mesh
                                     # and use the found element as elems
                                     # the method getElement(element) does not return Solid elements
-                                    ele_shape = meshtools.get_element(sub[0], elems)
-                                    found_element = meshtools.find_element_in_shape(
+                                    ele_shape = geomtools.get_element(sub[0], elems)
+                                    found_element = geomtools.find_element_in_shape(
                                         self.part_obj.Shape,
                                         ele_shape
                                     )

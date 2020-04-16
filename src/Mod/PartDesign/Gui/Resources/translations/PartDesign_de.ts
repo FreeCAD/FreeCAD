@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation>Objekt nach einem anderen Objekt verschieben</translation>
+      <translation>Objekt hinter ein anderes Objekt verschieben</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Verschiebt das ausgewählte Objekt und fügt es nach einem anderen Objekt ein</translation>
+      <translation>Verschiebt das ausgewählte Objekt und fügt es hinter einem anderen Objekt ein</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS fine profile</source>
-      <translation>UST Feinprofil</translation>
+      <translation>UTS Feinprofil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>

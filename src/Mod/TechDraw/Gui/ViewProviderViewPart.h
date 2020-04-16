@@ -52,19 +52,33 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyEnumeration   SectionLineStyle;
+    App::PropertyColor  SectionLineColor;
+    App::PropertyEnumeration   HighlightLineStyle;
+    App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
     App::PropertyBool   ShowAllEdges;
+
+    static const char* LineStyleEnums[];
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool canDelete(App::DocumentObject* obj) const;
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    virtual bool doubleClicked(void);
 
 public:
     virtual void onChanged(const App::Property *prop);
     virtual void updateData(const App::Property*);
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    App::Color prefSectionColor(void);
+    App::Color prefHighlightColor(void);
+    int prefHighlightStyle(void);
 
 
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;

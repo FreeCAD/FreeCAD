@@ -35,6 +35,7 @@
 
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
+#include <Base/BoundBox.h>
 
 namespace Wm4
 {
@@ -94,6 +95,7 @@ protected:
 }
 
 namespace MeshCore {
+class MeshPointArray;
 
 /**
  * Abstract base class for approximation of a geometry to a given set of points.
@@ -125,6 +127,10 @@ public:
      * Add points for the fit algorithm.
      */
     void AddPoints(const std::list<Base::Vector3f> &rsPointList);
+    /**
+     * Add points for the fit algorithm.
+     */
+    void AddPoints(const MeshPointArray &points);
     /**
      * Get all added points.
      */
@@ -228,6 +234,12 @@ public:
      * array is returned.
      */
     std::vector<Base::Vector3f> GetLocalPoints() const;
+    /**
+     * Returns the local bounding box of the transformed points relative to the
+     * coordinate system of the plane. If this method is called before the plane is
+     *  computed an invalid bounding box is returned.
+     */
+    Base::BoundBox3f GetBoundings() const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the plane. */
@@ -342,6 +354,21 @@ public:
     float Fit();
     double Value(double x, double y) const;
     void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
+    /**
+     * @brief Transform
+     * Transforms points from the local coordinate system to the world coordinate system
+     */
+    void Transform(std::vector<Base::Vector3f>&) const;
+    void Transform(std::vector<Base::Vector3d>&) const;
+    /**
+     * @brief toBezier
+     * @param umin Parameter range
+     * @param umax Parameter range
+     * @param vmin Parameter range
+     * @param vmax Parameter range
+     * @return control points of the Bezier surface
+     */
+    std::vector<Base::Vector3d> toBezier(double umin=0.0, double umax=1.0, double vmin=0.0, double vmax=1.0) const;
 
 protected:
     double PolynomFit();

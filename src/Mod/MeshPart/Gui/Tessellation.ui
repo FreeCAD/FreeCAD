@@ -20,42 +20,18 @@
       <string>Meshing options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButtonStandard">
-        <property name="toolTip">
-         <string>Use the standard mesher</string>
-        </property>
-        <property name="text">
-         <string>Standard</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QRadioButton" name="radioButtonMefisto">
-        <property name="toolTip">
-         <string>Use the Mefisto mesher</string>
-        </property>
-        <property name="text">
-         <string>Mefisto</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QRadioButton" name="radioButtonNetgen">
-        <property name="toolTip">
-         <string>Use the Netgen mesher</string>
-        </property>
-        <property name="text">
-         <string>Netgen</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="3">
-       <widget class="QStackedWidget" name="stackedWidget">
+      <item row="0" column="0" colspan="3">
+       <widget class="QTabWidget" name="stackedWidget">
         <property name="currentIndex">
          <number>0</number>
         </property>
         <widget class="QWidget" name="pageStandard">
+         <attribute name="title">
+          <string>Standard</string>
+         </attribute>
+         <attribute name="toolTip">
+          <string>Use the standard mesher</string>
+         </attribute>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout">
@@ -165,10 +141,12 @@ this feature (e.g. the format OBJ).</string>
          </layout>
         </widget>
         <widget class="QWidget" name="pageMefisto">
-         <property name="toolTip">
-          <string>If this number is smaller the mesh becomes finer.
-The smallest value is 0.</string>
-         </property>
+         <attribute name="title">
+          <string>Mefisto</string>
+         </attribute>
+         <attribute name="toolTip">
+          <string>Use the Mefisto mesher</string>
+         </attribute>
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -179,6 +157,10 @@ The smallest value is 0.</string>
               </property>
               <property name="checked">
                <bool>true</bool>
+              </property>
+              <property name="toolTip">
+               <string>If this number is smaller the mesh becomes finer.
+The smallest value is 0.</string>
               </property>
              </widget>
             </item>
@@ -220,6 +202,12 @@ The smallest value is 0.</string>
          </layout>
         </widget>
         <widget class="QWidget" name="pageNetgen">
+         <attribute name="title">
+          <string>Netgen</string>
+         </attribute>
+         <attribute name="toolTip">
+          <string>Use the Netgen mesher</string>
+         </attribute>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_4">
@@ -426,6 +414,13 @@ A value in the range of 0.2-10.</string>
           </item>
          </layout>
         </widget>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBoxDontQuit">
+        <property name="text">
+         <string>Leave panel open</string>
+        </property>
        </widget>
       </item>
      </layout>

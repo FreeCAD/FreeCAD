@@ -28,6 +28,7 @@
 
 #include "Exception.h"
 #include "Console.h"
+#include "PyObjectBase.h"
 #include <CXX/Objects.hxx>
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
@@ -90,14 +91,14 @@ void Exception::ReportException (void) const
 {
     if (!_isReported) {
         const char *msg;
-        if(_sErrMsg.empty())
+        if (_sErrMsg.empty())
             msg = typeid(*this).name();
         else
             msg = _sErrMsg.c_str();
 #ifdef FC_DEBUG
-        if(_function.size()) {
+        if (_function.size()) {
             _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
-        }else
+        } else
 #endif
             _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
@@ -146,6 +147,21 @@ void Exception::setPyObject( PyObject * pydict)
         if (edict.hasKey("breported"))
             _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
     }
+}
+
+PyObject * Exception::getPyExceptionType() const
+{
+    return BaseExceptionFreeCADError;
+}
+
+void Exception::setPyException() const
+{
+    PyObject* exc = getPyExceptionType();
+    if (!exc) {
+        exc = BaseExceptionFreeCADError;
+    }
+
+    PyErr_SetString(exc, what());
 }
 
 // ---------------------------------------------------------
@@ -303,14 +319,14 @@ void FileException::ReportException (void) const
 {
     if (!_isReported) {
         const char *msg;
-        if(_sErrMsgAndFileName.empty())
+        if (_sErrMsgAndFileName.empty())
             msg = typeid(*this).name();
         else
             msg = _sErrMsgAndFileName.c_str();
 #ifdef FC_DEBUG
-        if(_function.size()) {
+        if (_function.size()) {
             _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
-        }else
+        } else
 #endif
             _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;

@@ -1177,7 +1177,7 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const 
     }
 
     // First, search without actual property name for sub-object/link
-    // references, i.e indirect references. The depenedecies of these
+    // references, i.e indirect references. The dependencies of these
     // references are too complex to track exactly, so we only track the
     // top parent object instead, and mark the involved expression
     // whenever the top parent changes.

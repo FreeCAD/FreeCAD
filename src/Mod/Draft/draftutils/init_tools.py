@@ -1,14 +1,3 @@
-"""Provides lists of commands for the Draft Workbench.
-
-This module returns lists of commands, so that the toolbars
-can be initilized by Draft, and by other workbenches.
-These commands should be defined in `DraftTools`, and in the individual
-modules in `draftguitools`.
-"""
-## @package init_tools
-# \ingroup DRAFT
-# \brief This module provides lists of commands for the Draft Workbench.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -31,6 +20,16 @@ modules in `draftguitools`.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides lists of commands for the Draft Workbench.
+
+This module returns lists of commands, so that the toolbars
+can be initialized by Draft, and by other workbenches.
+These commands should be defined in `DraftTools`, and in the individual
+modules in `draftguitools`.
+"""
+## @package init_tools
+# \ingroup DRAFT
+# \brief This module provides lists of commands for the Draft Workbench.
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -43,36 +42,40 @@ def get_draft_drawing_commands():
             "Draft_ArcTools",
             "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle",
             "Draft_Polygon", "Draft_BSpline", "Draft_BezierTools",
-            "Draft_Point", "Draft_Facebinder"]
+            "Draft_Point", "Draft_Facebinder",
+            "Draft_ShapeString"]
 
 
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
-    return ["Draft_Text", "Draft_ShapeString", "Draft_Dimension",
+    return ["Draft_Text", "Draft_Dimension",
             "Draft_Label"]
 
 
 def get_draft_array_commands():
     """Return the array commands list."""
-    # After the array commands are grouped, return this
-    # return ["Draft_ArrayTools"]
-    return ["Draft_Array", "Draft_LinkArray",
-            "Draft_PolarArray", "Draft_CircularArray",
-            "Draft_PathArray", "Draft_PathLinkArray", "Draft_PointArray"]
+    return ["Draft_ArrayTools"]
 
 
 def get_draft_modification_commands():
     """Return the modification commands list."""
-    lst = ["Draft_Move", "Draft_Rotate", "Draft_Offset",
-           "Draft_Trimex", "Draft_Join", "Draft_Split",
-           "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-           "Draft_Edit", "Draft_SubelementHighlight",
-           "Draft_WireToBSpline", "Draft_AddPoint",
-           "Draft_DelPoint", "Draft_Shape2DView",
-           "Draft_Draft2Sketch"]
+    lst = ["Draft_Move", "Draft_Rotate",
+           "Draft_Scale", "Draft_Mirror",
+           "Draft_Offset", "Draft_Trimex",
+           "Draft_Stretch",
+           "Separator",
+           "Draft_Clone"]
     lst += get_draft_array_commands()
-    lst += ["Draft_Clone",
-            "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
+    lst += ["Separator",
+            "Draft_Edit", "Draft_SubelementHighlight",
+            "Separator",
+            "Draft_Join", "Draft_Split",
+            "Draft_Upgrade", "Draft_Downgrade",
+            "Separator",
+            "Draft_WireToBSpline", "Draft_Draft2Sketch",
+            "Separator",
+            "Draft_Shape2DView", "Draft_Drawing",
+            "Draft_WorkingPlaneProxy"]
     return lst
 
 
@@ -95,7 +98,7 @@ def get_draft_utility_commands():
     return ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
             "Draft_ToggleConstructionMode",
             "Draft_ToggleContinueMode", "Draft_Edit",
-            "Draft_Slope", "Draft_SetWorkingPlaneProxy",
+            "Draft_Slope", "Draft_WorkingPlaneProxy",
             "Draft_AddConstruction"]
 
 

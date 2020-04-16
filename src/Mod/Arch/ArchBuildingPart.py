@@ -532,7 +532,7 @@ class ViewProviderBuildingPart:
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
         if not "SavedInventor" in pl:
             vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
             vobj.setEditorMode("SavedInventor",2)
@@ -645,8 +645,8 @@ class ViewProviderBuildingPart:
 
         colors = []
         for child in Draft.getGroupContents(obj):
-            if hasattr(child,'Shape'):
-                if len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
                 else:
                     c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)

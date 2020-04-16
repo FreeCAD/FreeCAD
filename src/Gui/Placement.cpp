@@ -560,6 +560,13 @@ void Placement::reject()
     /*emit*/ placementChanged(data, true, false);
 
     revertTransformation();
+
+    // One of the quantity spin boxes still can emit a signal when it has the focus
+    // but its content is not fully updated.
+    // In order to override again the placement the signalMapper is blocked
+    // See related forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341#p378659
+    QSignalBlocker block(signalMapper);
     QDialog::reject();
 }
 
@@ -626,6 +633,21 @@ void Placement::on_resetButton_clicked()
     }
 
     onPlacementChanged(0);
+}
+
+void Placement::bindObject()
+{
+    if (!selectionObjects.empty()) {
+        App::DocumentObject* obj = selectionObjects.front().getObject();
+
+        ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
+        ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
+        ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
+
+        ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
+        ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
+        ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+    }
 }
 
 void Placement::directionActivated(int index)
@@ -831,6 +853,11 @@ TaskPlacement::TaskPlacement()
 TaskPlacement::~TaskPlacement()
 {
     // automatically deleted in the sub-class
+}
+
+void TaskPlacement::bindObject()
+{
+    widget->bindObject();
 }
 
 void TaskPlacement::open()

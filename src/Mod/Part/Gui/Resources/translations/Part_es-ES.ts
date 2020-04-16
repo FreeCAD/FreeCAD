@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Ignorado. ¡No se puede adjuntar objeto a sí mismo!</translation>
+      <translation>Ignorado. ¡No se puede adjuntar el objeto por sí mismo!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
@@ -94,6 +94,11 @@
       <translation>Error: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Separación del archivo adjunto:</translation>
@@ -132,11 +137,6 @@
       <translation>¡Seleccione una forma que es un compuesto, primero! Segundo elemento seleccionado (opcional) se tratará como una plantilla.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Mala selección</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Haga clic en 'Continuar' para crear la operación de todos modos, o 'Abortar' para cancelar.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Mala selección</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -1292,7 +1310,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Alinear O-Y-X</translation>
+      <translation>Alinear O-Y-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="114"/>
@@ -1323,7 +1341,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano normal y horizontal hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Normal y Horizontal al vértice / a lo largo de la linea.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
@@ -1335,13 +1353,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano vertical y normal hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Normal y Vertical al vértice / a lo largo de la linea.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinear el planos de ejes horizontales y verticales hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Horizontal y Vertical al vértice / a lo largo de la linea.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
@@ -1353,7 +1371,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinear los planos de ejes horizontales y verticales hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Horizontal y Normal al vértice / a lo largo de la linea.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
@@ -1365,13 +1383,13 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinear planos de ejes y normal hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Vertical y Normal al vértice / a lo largo de la linea.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Coincidir el origen con el primer vértice. Alinee el eje del plano normal y horizontal hacia el vértice/a lo largo de la línea.</translation>
+      <translation>Coincidir origen con el primer vértice. Alinear los ejes del plano en dirección Vertical y Horizontal al vértice / a lo largo de la linea.</translation>
     </message>
   </context>
   <context>
@@ -1839,7 +1857,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Crear cuerpo a partir de varios</translation>
+      <translation>Crear composición desde varias formas</translation>
     </message>
   </context>
   <context>
@@ -3860,10 +3878,10 @@ Por favor selecciona primero una o más aristas.</translation>
       <source>Maximum angular deflection</source>
       <translation>Deflexión angular máxima</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
-      <translation> °</translation>
+      <translation>  °</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="69"/>
@@ -3982,7 +4000,7 @@ Por favor selecciona primero una o más aristas.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
       <source>Default line color</source>
-      <translation>Color de línea predeterminado</translation>
+      <translation>Color de la línea predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
@@ -4787,7 +4805,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="214"/>
       <source>Display</source>
-      <translation>Visualización</translation>
+      <translation>Mostrar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk" sourcelanguage="en">
+<TS version="2.1" language="sk" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -56,13 +56,13 @@
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>Nastaviť URL</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Internet</translation>
+      <translation>Web</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="686"/>
+      <location filename="../../BrowserView.cpp" line="718"/>
       <source>Browser</source>
       <translation>Prehliadač</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="529"/>
+      <location filename="../../BrowserView.cpp" line="547"/>
       <source>File does not exist!</source>
       <translation>Súbor neexistuje!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="520"/>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="538"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="657"/>
+      <location filename="../../BrowserView.cpp" line="689"/>
       <source>Loading %1...</source>
       <translation>Načítanie %1...</translation>
     </message>
@@ -161,19 +161,19 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="299"/>
+      <location filename="../../BrowserView.cpp" line="300"/>
       <source>Open in External Browser</source>
       <translation>Otvoriť v externom prehliadači</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="303"/>
+      <location filename="../../BrowserView.cpp" line="304"/>
       <source>Open in new window</source>
-      <translation type="unfinished">Open in new window</translation>
+      <translation>Otvoriť v novom okne</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="335"/>
+      <location filename="../../BrowserView.cpp" line="336"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Zobraziť zdroj</translation>
     </message>
   </context>
   <context>

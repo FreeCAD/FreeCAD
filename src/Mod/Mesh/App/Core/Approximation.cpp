@@ -30,6 +30,7 @@
 #endif
 
 #include "Approximation.h"
+#include "Elements.h"
 #include "Utilities.h"
 
 #include <Base/BoundBox.h>
@@ -92,6 +93,12 @@ void Approximation::AddPoints(const std::set<Base::Vector3f> &points)
 }
 
 void Approximation::AddPoints(const std::list<Base::Vector3f> &points)
+{
+    std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
+    _bIsFitted = false;
+}
+
+void Approximation::AddPoints(const MeshPointArray &points)
 {
     std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
     _bIsFitted = false;
@@ -403,6 +410,15 @@ std::vector<Base::Vector3f> PlaneFit::GetLocalPoints() const
     }
 
     return localPoints;
+}
+
+Base::BoundBox3f PlaneFit::GetBoundings() const
+{
+    Base::BoundBox3f bbox;
+    std::vector<Base::Vector3f> pts = GetLocalPoints();
+    for (auto it : pts)
+        bbox.Add(it);
+    return bbox;
 }
 
 // -------------------------------------------------------------------------------
@@ -788,6 +804,129 @@ void SurfaceFit::GetCoefficients(double& a,double& b,double& c,double& d,double&
     f = _fCoeff[0];
 }
 
+void SurfaceFit::Transform(std::vector<Base::Vector3f>& pts) const
+{
+    Base::Vector3d bs = Base::convertTo<Base::Vector3d>(this->_vBase);
+    Base::Vector3d ex = Base::convertTo<Base::Vector3d>(this->_vDirU);
+    Base::Vector3d ey = Base::convertTo<Base::Vector3d>(this->_vDirV);
+    Base::Vector3d ez = Base::convertTo<Base::Vector3d>(this->_vDirW);
+
+    Base::Matrix4D mat;
+    mat[0][0] = ex.x;
+    mat[0][1] = ey.x;
+    mat[0][2] = ez.x;
+    mat[0][3] = bs.x;
+
+    mat[1][0] = ex.y;
+    mat[1][1] = ey.y;
+    mat[1][2] = ez.y;
+    mat[1][3] = bs.y;
+
+    mat[2][0] = ex.z;
+    mat[2][1] = ey.z;
+    mat[2][2] = ez.z;
+    mat[2][3] = bs.z;
+
+    std::transform(pts.begin(), pts.end(), pts.begin(), [&mat](const Base::Vector3f& pt) {
+        Base::Vector3f v(pt);
+        mat.multVec(v, v);
+        return v;
+    });
+}
+
+void SurfaceFit::Transform(std::vector<Base::Vector3d>& pts) const
+{
+    Base::Vector3d bs = Base::convertTo<Base::Vector3d>(this->_vBase);
+    Base::Vector3d ex = Base::convertTo<Base::Vector3d>(this->_vDirU);
+    Base::Vector3d ey = Base::convertTo<Base::Vector3d>(this->_vDirV);
+    Base::Vector3d ez = Base::convertTo<Base::Vector3d>(this->_vDirW);
+
+    Base::Matrix4D mat;
+    mat[0][0] = ex.x;
+    mat[0][1] = ey.x;
+    mat[0][2] = ez.x;
+    mat[0][3] = bs.x;
+
+    mat[1][0] = ex.y;
+    mat[1][1] = ey.y;
+    mat[1][2] = ez.y;
+    mat[1][3] = bs.y;
+
+    mat[2][0] = ex.z;
+    mat[2][1] = ey.z;
+    mat[2][2] = ez.z;
+    mat[2][3] = bs.z;
+
+    std::transform(pts.begin(), pts.end(), pts.begin(), [&mat](const Base::Vector3d& pt) {
+        Base::Vector3d v(pt);
+        mat.multVec(v, v);
+        return v;
+    });
+}
+
+/*!
+ * \brief SurfaceFit::toBezier
+ * This function computes the Bezier representation of the polynomial surface of the form
+ * f(x,y) = a*x*x + b*y*y + c*x*y + d*y + e*f + f
+ * by getting the 3x3 control points.
+ */
+std::vector<Base::Vector3d> SurfaceFit::toBezier(double umin, double umax, double vmin, double vmax) const
+{
+    std::vector<Base::Vector3d> pts;
+    pts.reserve(9);
+
+    // the Bezier surface is defined by the 3x3 control points
+    // P11 P21 P31
+    // P12 P22 P32
+    // P13 P23 P33
+    //
+    // The surface goes through the points P11, P31, P31 and P33
+    // To get the four control points P21, P12, P32 and P23 we inverse
+    // the de-Casteljau algorithm used for Bezier curves of degree 2
+    // as we already know the points for the parameters
+    // (0, 0.5), (0.5, 0), (0.5, 1.0) and (1.0, 0.5)
+    // To get the control point P22 we inverse the de-Casteljau algorithm
+    // for the surface point on (0.5, 0.5)
+    double umid = 0.5 * (umin + umax);
+    double vmid = 0.5 * (vmin + vmax);
+
+    // first row
+    double z11 = Value(umin, vmin);
+    double v21 = Value(umid, vmin);
+    double z31 = Value(umax, vmin);
+    double z21 = 2.0 * v21 - 0.5 * (z11 + z31);
+
+    // third row
+    double z13 = Value(umin, vmax);
+    double v23 = Value(umid, vmax);
+    double z33 = Value(umax, vmax);
+    double z23 = 2.0 * v23 - 0.5 * (z13 + z33);
+
+    // second row
+    double v12 = Value(umin, vmid);
+    double z12 = 2.0 * v12 - 0.5 * (z11 + z13);
+    double v32 = Value(umax, vmid);
+    double z32 = 2.0 * v32 - 0.5 * (z31 + z33);
+    double v22 = Value(umid, vmid);
+    double z22 = 4.0 * v22 - 0.25 * (z11 + z31 + z13 + z33 + 2.0 * (z12 + z21 + z32 + z23));
+
+    // first row
+    pts.emplace_back(umin, vmin, z11);
+    pts.emplace_back(umid, vmin, z21);
+    pts.emplace_back(umax, vmin, z31);
+
+    // second row
+    pts.emplace_back(umin, vmid, z12);
+    pts.emplace_back(umid, vmid, z22);
+    pts.emplace_back(umax, vmid, z32);
+
+    // third row
+    pts.emplace_back(umin, vmax, z13);
+    pts.emplace_back(umid, vmax, z23);
+    pts.emplace_back(umax, vmax, z33);
+    return pts;
+}
+
 // -------------------------------------------------------------------------------
 
 namespace MeshCore {
@@ -899,7 +1038,7 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
-#if 0
+#if 1
     std::vector<Wm4::Vector3d> input;
     std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
                    [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });

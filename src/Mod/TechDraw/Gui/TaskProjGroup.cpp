@@ -466,9 +466,9 @@ void TaskProjGroup::setUiPrimary()
 QString TaskProjGroup::formatVector(Base::Vector3d v)
 {
     QString data = QString::fromLatin1("[%1 %2 %3]")
-        .arg(QLocale::system().toString(v.x, 'f', 2))
-        .arg(QLocale::system().toString(v.y, 'f', 2))
-        .arg(QLocale::system().toString(v.z, 'f', 2));
+        .arg(QLocale().toString(v.x, 'f', 2))
+        .arg(QLocale().toString(v.y, 'f', 2))
+        .arg(QLocale().toString(v.z, 'f', 2));
     return data;
 }
 

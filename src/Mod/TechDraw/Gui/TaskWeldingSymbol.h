@@ -33,7 +33,6 @@
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 class Ui_TaskWeldingSymbol;
-class Ui_TaskCL2Lines;
 
 namespace App {
 class DocumentObject;
@@ -103,14 +102,17 @@ public:
     ~TaskWeldingSymbol();
 
 public Q_SLOTS:
-    void onArrowSymbolClicked(bool b);
-
-    void onOtherSymbolClicked(bool b);
-    void onOtherEraseClicked(bool b);
-
-    void onArrowTextChanged(const QString& qs);
-    void onOtherTextChanged(const QString& qs);
-
+    void onArrowSymbolCreateClicked();
+    void onArrowSymbolClicked();
+    void onOtherSymbolCreateClicked();
+    void onOtherSymbolClicked();
+    void onOtherEraseCreateClicked();
+    void onOtherEraseClicked();
+    void onFlipSidesCreateClicked();
+    void onFlipSidesClicked();
+    void onArrowTextChanged();
+    void onOtherTextChanged();
+    void onWeldingChanged();
     void onDirectorySelected(const QString& newDir);
     void onSymbolSelected(QString symbolPath, QString source);
 
@@ -126,8 +128,6 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-
-    void blockButtons(bool b);
     void setUiPrimary(void);
     void setUiEdit();
 
@@ -142,7 +142,6 @@ protected:
     void collectOtherData(void);
 
     std::string prefSymbolDir();
-    void saveState(void);
 
     QString m_currDir;
 
@@ -164,14 +163,10 @@ private:
     QString m_arrowSymbol;
     QString m_otherSymbol;
 
-/*    std::vector<std::string> m_toRemove;*/
-
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
     bool m_createMode;
-
-    bool m_arrowDirty;
     bool m_otherDirty;
 };
 

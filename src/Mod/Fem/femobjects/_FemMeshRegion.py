@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -27,24 +29,29 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshRegion
 
+from . import FemConstraint
 
-class _FemMeshRegion:
-    "The FemMeshRegion object"
+
+class _FemMeshRegion(FemConstraint.Proxy):
+    """
+    The FemMeshRegion object
+    """
+
+    Type = "Fem::MeshRegion"
+
     def __init__(self, obj):
+        super(_FemMeshRegion, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLength",
             "CharacteristicLength",
             "MeshRegionProperties",
             "set characteristic length of FEM elements for this region"
         )
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
             "MeshRegionShapes",
             "List of FEM mesh region shapes"
         )
-        obj.Proxy = self
-        self.Type = "Fem::FemMeshRegion"
-
-    def execute(self, obj):
-        return

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk" sourcelanguage="en">
+<TS version="2.1" language="sk" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Documents</source>
-      <translation type="unfinished">Documents</translation>
+      <translation>Dokumenty</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Activity</source>
-      <translation type="unfinished">Activity</translation>
+      <translation>Činnosť</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation type="unfinished">Tip</translation>
+      <translation>Tip</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Príklady</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation type="unfinished">General documentation</translation>
+      <translation>Všeobecná dokumentácia</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>Táto časť obsahuje dokumentáciu užitočnú pre používateľov FreeCADu: zoznam všetkých pracovných stolov, podrobné pokyny na inštaláciu a používanie aplikácie FreeCAD, návody a všetko, čo potrebujete, aby ste mohli začať.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation>Táto časť zhromažďuje dokumentáciu pre pokročilých používateľov a ľudí zaujímajúcich sa o písanie Python skriptov. Nájdete tu tiež úložisko makier, pokyny na ich inštaláciu a používanie a ďalšie informácie o prispôsobení FreeCADu vašim konkrétnym potrebám.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -76,17 +76,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Táto časť obsahuje materiál pre vývojárov: Ako skompilovať FreeCAD, ako je štruktúrovaný zdrojový kód FreeCAD + ako sa v ňom navigovať, ako rozvíjať nové pracovné stoly a/alebo vkladať FreeCAD do vašej vlastnej aplikácie.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Manuál</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>Príručka FreeCAD je ďalším, priamejším spôsobom, ako prezentovať informácie obsiahnuté v tejto wiki. Bol napísaný vo forme knihy, a postupne vám predstaví mnoho ďalších stránok vo vyššie spomínaných huboch. K dispozícii sú aj &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; verzie elektronických kníh &lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation type="unfinished">Getting help from the community</translation>
+      <translation>Získanie pomoci od komunity</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>version</source>
-      <translation type="unfinished">version</translation>
+      <translation>verzia</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
@@ -171,12 +171,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation type="unfinished">Create new...</translation>
+      <translation>Vytvoriť nový...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Unknown</source>
-      <translation type="unfinished">Unknown</translation>
+      <translation>Neznáma</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
@@ -196,17 +196,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Creation date</source>
-      <translation type="unfinished">Creation date</translation>
+      <translation>Dátum vytvorenia</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>Last modification</source>
-      <translation type="unfinished">Last modification</translation>
+      <translation>Posledná úprava</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Poznámky</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
-      <translation type="unfinished">Start page</translation>
+      <translation>Úvodná stránka</translation>
     </message>
   </context>
   <context>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation type="unfinished">Start Page</translation>
+      <translation>Úvodná stránka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
@@ -241,27 +241,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>Možnosti úvodnej stránky</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>Šablóna úvodnej stránky</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Voliteľná šablóna HTML, ktorá sa použije namiesto predvolenej úvodnej stránky.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Obsah</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation type="unfinished">Show forum</translation>
+      <translation>Zobraziť fórum</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
@@ -396,7 +396,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>Otvoriť odkazy</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
@@ -421,12 +421,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>Základná veľkosť písma, ktorá sa použije pre všetky texty úvodnej stránky</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>

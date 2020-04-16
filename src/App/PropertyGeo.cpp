@@ -718,6 +718,10 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const App::an
             avalue =  App::any_cast<short>(value);
         else if (value.type() == typeid(unsigned short))
             avalue =  App::any_cast<unsigned short>(value);
+        else if (value.type() == typeid(long))
+            avalue =  App::any_cast<long>(value);
+        else if (value.type() == typeid(unsigned long))
+            avalue =  App::any_cast<unsigned long>(value);
         else
             throw std::bad_cast();
 

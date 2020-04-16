@@ -772,6 +772,7 @@ void ColorButton::onChooseColor()
                     this, SLOT(onColorChosen(const QColor&)));
         }
 
+        cd.setCurrentColor(currentColor);
         if (cd.exec() == QDialog::Accepted) {
             QColor c = cd.selectedColor();
             if (c.isValid()) {

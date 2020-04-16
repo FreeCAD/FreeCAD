@@ -28,7 +28,6 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyStandard.h>
-
 #include <Gui/ViewProviderFeature.h>
 
 
@@ -52,19 +51,18 @@ public:
     App::PropertyFloat       WeightPattern;
     App::PropertyColor       ColorPattern;
 
-
     virtual void attach(App::DocumentObject *) override;
     virtual void updateData(const App::Property*) override;
     virtual void onChanged(const App::Property *prop) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
     virtual bool doubleClicked(void) override;
-
     virtual bool useNewSelectionModel(void) const override {return false;}
     virtual void setDisplayMode(const char* ModeName) override;
     virtual std::vector<std::string> getDisplayModes(void) const override;
     void updateGraphic(void);
     void getParameters(void);
+    virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 
@@ -72,6 +70,5 @@ public:
 };
 
 } // namespace TechDrawGui
-
 
 #endif // DRAWINGGUI_VIEWPROVIDERHATCH_H

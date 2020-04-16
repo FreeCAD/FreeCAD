@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -37,23 +39,44 @@ class Proxy(FemConstraint.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "VelocityX",
-            "Parameter", "Body heat flux")
+            "App::PropertyFloat",
+            "VelocityX",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyBool", "VelocityXEnabled",
-            "Parameter", "Body heat flux")
+            "App::PropertyBool",
+            "VelocityXEnabled",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyFloat", "VelocityY",
-            "Parameter", "Body heat flux")
+            "App::PropertyFloat",
+            "VelocityY",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyBool", "VelocityYEnabled",
-            "Parameter", "Body heat flux")
+            "App::PropertyBool",
+            "VelocityYEnabled",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyFloat", "VelocityZ",
-            "Parameter", "Body heat flux")
+            "App::PropertyFloat",
+            "VelocityZ",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyBool", "VelocityZEnabled",
-            "Parameter", "Body heat flux")
+            "App::PropertyBool",
+            "VelocityZEnabled",
+            "Parameter",
+            "Body heat flux"
+        )
         obj.addProperty(
-            "App::PropertyBool", "NormalToBoundary",
-            "Parameter", "Body heat flux")
+            "App::PropertyBool",
+            "NormalToBoundary",
+            "Parameter",
+            "Body heat flux"
+        )

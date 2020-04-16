@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Özel bir klasörü burada görüntülemek için menüden Düzenle -&gt; Seçenekler -&gt; Başlat -&gt; ek klasörleri göster'e gitmelisiniz</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>

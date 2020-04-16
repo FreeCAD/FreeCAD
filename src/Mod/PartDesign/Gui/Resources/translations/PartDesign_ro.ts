@@ -83,12 +83,14 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Create a local coordinate system
+Creati noi coordonate in sistemul local</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Create a local coordinate system
+Creati noi coordonate in sistemul local</translation>
     </message>
   </context>
   <context>
@@ -795,7 +797,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -811,7 +813,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -827,7 +829,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1291,7 +1293,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>From other bodies of the same part</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>

@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -316,7 +317,7 @@ def write_fenics_mesh_xdmf(
     fem_mesh = fem_mesh_obj.FemMesh
     gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
-    if gmshgroups is not ():
+    if gmshgroups != ():
         Console.PrintMessage("found mesh groups\n")
 
     for g in gmshgroups:

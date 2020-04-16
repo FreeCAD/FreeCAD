@@ -92,6 +92,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
     onTopEnabled = Gui::ViewParams::instance()->getShowSelectionOnTop();
     if(!onTopEnabled)
         Gui::ViewParams::instance()->setShowSelectionOnTop(true);
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -157,7 +159,12 @@ void TaskTransformedParameters::originalSelectionChanged()
     recomputeFeature();
 }
 
-void TaskTransformedParameters::setupTransaction() {
+void TaskTransformedParameters::setupTransaction()
+{
+    auto obj = getObject();
+    if (!obj)
+        return;
+
     int tid = 0;
     const char *name = App::GetApplication().getActiveTransaction(&tid);
     if(tid && tid == transactionID)
@@ -166,7 +173,7 @@ void TaskTransformedParameters::setupTransaction() {
     std::string n("Edit ");
     n += getObject()->getNameInDocument();
     if(!name || n!=name)
-        App::GetApplication().setActiveTransaction(n.c_str());
+        tid = App::GetApplication().setActiveTransaction(n.c_str());
 
     if(!transactionID)
         transactionID = tid;

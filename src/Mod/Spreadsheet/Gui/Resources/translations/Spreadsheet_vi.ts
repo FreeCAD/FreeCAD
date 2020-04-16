@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="vi" sourcelanguage="en">
+<TS version="2.1" language="vi" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Trộn các ô đã chọn</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Tách rời các ô đã được hòa trộn trước đây</translation>
     </message>
   </context>
   <context>
@@ -189,11 +189,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>Chữ in đậm</translation>
+      <translation>In đậm chữ</translation>
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Đặt chữ trong các ô thành đậm</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Chữ in nghiêng</translation>
+      <translation>Làm nghiêng chữ</translation>
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Đặt chữ trong các ô thành nghiêng</translation>
     </message>
   </context>
   <context>
@@ -219,18 +219,18 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Chữ gạch chân</translation>
+      <translation>Gạch chân chữ</translation>
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Gạch chân chữ trong ô đã chọn</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Màu tự chọn</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Nằm ngang</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Nằm dọc</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,10 +331,6 @@
       <translation>Xuất tập tin</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Nội dung trong ô</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Hiển thị bảng tính</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Đặt màu nền sau cho (các) ô trong bảng tính</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Bảng tính</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -427,7 +437,7 @@
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Màu tự chọn</translation>
     </message>
   </context>
   <context>

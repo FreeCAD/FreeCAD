@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hr" sourcelanguage="en">
+<TS version="2.1" language="hr" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Greška: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Dodavanje pomaka:</translation>
@@ -124,17 +129,12 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation>Složeni materijal Filtar: ukloni neke nasljednike iz složenog materijala</translation>
+      <translation>Složeni materijal Filtar: ukloni neke potomke iz složenog materijala</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
       <translation>Prvo odaberite oblik koji je spoj materijala! Drugo odabrane stavke (nije obavezno) će se tretirati kao matrica.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Nevažeći odabir</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustajanje.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Nevažeći odabir</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -2709,7 +2727,7 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation>Korisnički smjer:</translation>
+      <translation>Prilagođeni smjer:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
@@ -2735,7 +2753,7 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Postavite smjer kako bi bio usklađen smjeru ravanoga ruba. Savjet: za proračun duljine ruba takođe, postavite obje dužine na nulu.</translation>
+      <translation>Podesite smjer tako da odgovara smjeru ravnog ruba. Savjet: da biste uzeli i dužinu ruba, obje duljine postavite na nulu.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
@@ -2873,7 +2891,7 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation>Smjer istiskivanja je nulte duljine. Mora biti različito od nule.</translation>
+      <translation>Smjer istiskivanja je nulte dužine. Mora biti različito od nule.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
@@ -2966,7 +2984,7 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>
       <source>Variable Length</source>
-      <translation>Varijabla Dužina</translation>
+      <translation>Promjenjiva Dužina</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
@@ -2977,12 +2995,12 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <location filename="../../DlgFilletEdges.cpp" line="835"/>
       <source>Start length</source>
-      <translation>Početak dužine</translation>
+      <translation>Početna dužina</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>End length</source>
-      <translation>Kraj dužine</translation>
+      <translation>Krajnja dužina</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3799,7 +3817,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Rotiranje u smjeru osi je nula. Ne smije biti nula.</translation>
+      <translation>Rotiranje u smjeru osi je nulte dužine. Ne smije biti nula.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -3857,7 +3875,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation>Maksimalno kutno odstupanje</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>

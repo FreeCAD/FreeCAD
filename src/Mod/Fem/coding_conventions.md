@@ -24,7 +24,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
     - a .gitattributes file has been added to ensure line endings of text files are LF
     - use `?w=1` in link address to suppress line ending changes on github
 - never use mixed line endings on one file
-- 4 Spaces for indent
+- 4 Spaces for indent (in this file too ;-))
 - no trailing white spaces
 
 
@@ -33,8 +33,32 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - except W503 all Python code is pep8 compliant
 - maximal line length is 100
 - double quotes as string identifier
-- One import per line, no * imports allowed as it makes harder to validate code
-- the import of FreeCADGui should be guarded by a 'if FreeCAD.GuiUp:'
+
+### Imports
+- Python imports should be grouped into three groups:
+    - Standard library imports
+    - One empty line
+    - Third-party imports
+    - One empty line
+    - FreeCAD-specific imports from module FreeCAD
+    - One empty line
+    - Other FreeCAD non Gui imports
+    - One empty line
+    - FreeCAD Gui imports: 
+        - The import of Gui modules should be guarded by a 'if FreeCAD.GuiUp:'
+        - On Gui only modules the guard is not needed
+        - Same as above but without an empty line
+        - Standard library imports
+        - Third-party Gui imports
+        - FreeCAD-specific imports from module FreeCADGui
+        - other FreeCAD Gui imports
+- Each group should be sorted alphabetically
+- First the import imports, than the from imports
+- On from imports firs the one dot, than two dot and so on imports 
+- Only one import per line
+- Even for from mymodule import mymethod should only be one method
+- The above paragraphs highly reduces merge conflicts
+- Star import should not be used at all (from mymodule import *)
 
 ### Naming policy
 - snake_case_names
@@ -54,15 +78,28 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 
 ### Coding
 - print() vs. FreeCAD.Console.PrintMessage()
-  - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
-  - `print()` should be used for debugging only
-  - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
-  - BTW: Console prints need a new line where as print does not need one
-
+    - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
+    - `print()` should be used for debugging only
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
+    - BTW: Console prints need a new line where as print does not need one
+- type checking:
+    - do not use hasattr(obj, "Proxy") and obj.Proxy.Type
+    - use method is_of_typ(obj, "TypeString") from module femtool.femutils
+- ActiveDocument
+    - try to avoid the use of App.ActiveDocument or FreeCAD.ActiveDocument
+    - instead try to use some_obj.Document instead
+    - try to avoid the use of Gui.ActiveDocument or FreeCADGui.ActiveDocument
+    - instead try to use some_obj.ViewObject.Document or some_view_obj.Document
+    - activeDocument() is more robust than ActiveDocument
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=44133)
+    - FreeCAD Python console
+        - in code examples which will be copied in FreeCAD Python console
+        - it is common to use App.ActiveDocument.some_obj or method
+    
 ### Documenting
 Python style is preferred over Doxygen style
-  - see `ccx` tools module in fem tools package
-  - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
+    - see `ccx` tools module in fem tools package
+    - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
 
 ## C++
 ### Naming policy
@@ -72,3 +109,8 @@ Python style is preferred over Doxygen style
 - slashes
     - Do not use to many slashes in a row. This could cause trouble with Doxygen.
     - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
+
+## Icons
+### Naming plicy
+- Command icons use the command name.
+- see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)

@@ -1887,7 +1887,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
     meshCurv.ComputePerVertex();
 
     Py::Sequence func(l);
-    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     for (Py::Sequence::iterator it = func.begin(); it != func.end(); ++it) {
         Py::Tuple t(*it);
         float c1 = (float)Py::Float(t[0]);
@@ -1899,13 +1899,13 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.emplace_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);
 
     Py::List list;
-    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
+    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
         const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
             Py::List ary;
@@ -1918,7 +1918,6 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
             }
             list.append(ary);
         }
-        delete (*segmIt);
     }
 
     return Py::new_reference_to(list);

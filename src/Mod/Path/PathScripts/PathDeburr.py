@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,6 +33,11 @@ import math
 
 from PySide import QtCore
 
+__title__ = "Path Deburr Operation"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Deburr operation."
+
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
 
@@ -53,6 +59,7 @@ def toolDepthAndOffset(width, extraDepth, tool):
     toolOffset = float(tool.FlatRadius)
     extraOffset = float(tool.Diameter) / 2 - width if 180 == angle else extraDepth / tan
     offset = toolOffset + extraOffset
+    
     return (depth, offset)
 
 
@@ -71,6 +78,10 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setEditorMode('Join', 2)  # hide for now
         obj.addProperty('App::PropertyEnumeration', 'Direction',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Direction of Operation'))
         obj.Direction = ['CW', 'CCW']
+        obj.addProperty('App::PropertyEnumeration', 'Side',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Side of Operation'))
+        obj.Side = ['Outside', 'Inside']
+        obj.setEditorMode('Side', 2) # Hide property, it's calculated by op
+        obj.addProperty('App::PropertyInteger', 'EntryPoint',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Select the segment, there the operations starts'))
 
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode('Join', 2)  # hide for now
@@ -99,13 +110,20 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 basewires.append(Part.Wire(edgelist))
 
             self.basewires.extend(basewires)
-
+            
+            # Set default value
+            side = ["Outside"]
+            
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True, side)
                 if wire:
                     wires.append(wire)
-
+        
+        # Save Outside or Inside
+        obj.Side = side[0]
+        
+        # Set direction of op
         forward = True
         if obj.Direction == 'CCW':
             forward = False
@@ -118,9 +136,12 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 zValues.append(z)
         zValues.append(depth)
         PathLog.track(obj.Label, depth, zValues)
-
+        
+        if obj.EntryPoint < 0:
+            obj.EntryPoint = 0;
+        
         self.wires = wires # pylint: disable=attribute-defined-outside-init
-        self.buildpathocc(obj, wires, zValues, True, forward)
+        self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
 
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
@@ -133,11 +154,13 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         PathLog.track(obj.Label, job.Label)
         obj.Width = '1 mm'
-        obj.ExtraDepth = '0.1 mm'
+        obj.ExtraDepth = '0.5 mm'
         obj.Join = 'Round'
         obj.setExpression('StepDown', '0 mm')
         obj.StepDown = '0 mm'
         obj.Direction = 'CW'
+        obj.Side = "Outside"
+        obj.EntryPoint = 0;
 
 
 def SetupProperties():

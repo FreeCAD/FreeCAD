@@ -49,7 +49,7 @@ public:
     virtual ~ViewProviderLeader();
 
     App::PropertyLength             LineWidth;
-    App::PropertyIntegerConstraint  LineStyle;
+    App::PropertyEnumeration        LineStyle;
     App::PropertyColor              Color;
 
     virtual void attach(App::DocumentObject *);
@@ -61,6 +61,10 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
+    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool canDelete(App::DocumentObject* obj) const;
+
+    static const char* LineStyleEnums[];
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 

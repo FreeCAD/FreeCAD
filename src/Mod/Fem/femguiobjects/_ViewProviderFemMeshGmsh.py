@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -28,27 +30,34 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
 
 import sys
-import FreeCAD
-import FreeCADGui
-import FemGui
+import time
 
-# for the panel
-from femobjects import _FemMeshGmsh
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import time
+
+import FreeCAD
+import FreeCADGui
+
+import FemGui
+# from . import ViewProviderBaseObject
+from femobjects import _FemMeshGmsh
+from femtools.femutils import is_of_type
 
 
+# TODO use ViewProviderBaseObject see _ViewProviderFemMeshResult
+# class _ViewProviderFemMeshGmsh(ViewProviderBaseObject.ViewProxy):
 class _ViewProviderFemMeshGmsh:
-    "A View Provider for the FemMeshGmsh object"
+    """
+    A View Provider for the FemMeshGmsh object
+    """
 
     def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-from-shape.svg"
+        return ":/icons/FEM_MeshGmshFromShape.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -61,21 +70,44 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def setEdit(self, vobj, mode):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
+        # hide all FEM meshes and VTK FemPost* objects
+        for o in vobj.Object.Document.Objects:
+            if (
+                o.isDerivedFrom("Fem::FemMeshObject")
+                or o.isDerivedFrom("Fem::FemPostPipeline")
+                or o.isDerivedFrom("Fem::FemPostClipFilter")
+                or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
+                or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
+                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
+                or o.isDerivedFrom("Fem::FemPostCutFilter")
+                or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                or o.isDerivedFrom("Fem::FemPostPlaneFunction")
+                or o.isDerivedFrom("Fem::FemPostSphereFunction")
+            ):
                 o.ViewObject.hide()
         # show the mesh we like to edit
         self.ViewObject.show()
         # show task panel
-        taskd = _TaskPanelFemMeshGmsh(self.Object)
-        taskd.obj = vobj.Object
+        taskd = _TaskPanel(self.Object)
+        # taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
 
+    """
+    def setEdit(self, vobj, mode=0):
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel
+        )
+    """
+
+    # overwrite unsetEdit, hide mesh object on task panel exit
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
-        self.ViewObject.hide()  # hide the mesh after edit is finished
+        self.ViewObject.hide()
         return True
 
     def doubleClicked(self, vobj):
@@ -195,14 +227,11 @@ class _ViewProviderFemMeshGmsh:
         return True
 
     def canDragObject(self, dragged_object):
-        if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
-            return True
-        elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
-            return True
-        elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+        if (
+            is_of_type(dragged_object, "Fem::MeshBoundaryLayer")
+            or is_of_type(dragged_object, "Fem::MeshGroup")
+            or is_of_type(dragged_object, "Fem::MeshRegion")
+        ):
             return True
         else:
             return False
@@ -211,42 +240,40 @@ class _ViewProviderFemMeshGmsh:
         return True
 
     def dragObject(self, selfvp, dragged_object):
-        if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+        if is_of_type(dragged_object, "Fem::MeshBoundaryLayer"):
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+        elif is_of_type(dragged_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.remove(dragged_object)
             self.Object.MeshGroupList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+        elif is_of_type(dragged_object, "Fem::MeshRegion"):
             objs = self.Object.MeshRegionList
             objs.remove(dragged_object)
             self.Object.MeshRegionList = objs
 
     def dropObject(self, selfvp, incoming_object):
-        if hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+        if is_of_type(incoming_object, "Fem::MeshBoundaryLayer"):
             objs = self.Object.MeshBoundaryLayerList
             objs.append(incoming_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshGroup":
+        elif is_of_type(incoming_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.append(incoming_object)
             self.Object.MeshGroupList = objs
-        elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshRegion":
+        elif is_of_type(incoming_object, "Fem::MeshRegion"):
             objs = self.Object.MeshRegionList
             objs.append(incoming_object)
             self.Object.MeshRegionList = objs
-        FreeCAD.ActiveDocument.recompute()
+        incoming_object.Document.recompute()
 
 
-class _TaskPanelFemMeshGmsh:
-    """The TaskPanel for editing References property of
-    FemMeshGmsh objects and creation of new FEM mesh"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of
+    FemMeshGmsh objects and creation of new FEM mesh
+    """
 
     def __init__(self, obj):
         self.mesh_obj = obj
@@ -299,13 +326,13 @@ class _TaskPanelFemMeshGmsh:
 
     def accept(self):
         self.set_mesh_params()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        self.mesh_obj.ViewObject.Document.resetEdit()
+        self.mesh_obj.Document.recompute()
         return True
 
     def reject(self):
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        self.mesh_obj.ViewObject.Document.resetEdit()
+        self.mesh_obj.Document.recompute()
         return True
 
     def clicked(self, button):
@@ -361,37 +388,39 @@ class _TaskPanelFemMeshGmsh:
 
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        part = self.obj.Part
-        if self.mesh_obj.MeshRegionList:
-            #  other part obj might not have a Proxy, thus an exception would be raised
-            if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
-                if part.Proxy.Type == "FeatureBooleanFragments" \
-                        or part.Proxy.Type == "FeatureSlice" \
-                        or part.Proxy.Type == "FeatureXOR":
-                    error_message = (
-                        "The shape to mesh is a boolean split tools Compound "
-                        "and the mesh has mesh region list. "
-                        "Gmsh could return unexpected meshes in such circumstances. "
-                        "It is strongly recommended to extract the shape "
-                        "to mesh from the Compound and use this one."
-                    )
-                    qtbox_title = (
-                        "Shape to mesh is a BooleanFragmentsCompound "
-                        "and mesh regions are defined"
-                    )
-                    QtGui.QMessageBox.critical(
-                        None,
-                        qtbox_title,
-                        error_message
-                    )
+        part = self.mesh_obj.Part
+        if (
+            self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
+            and (
+                is_of_type(part, "FeatureBooleanFragments")
+                or is_of_type(part, "FeatureSlice")
+                or is_of_type(part, "FeatureXOR")
+            )
+        ):
+            error_message = (
+                "The shape to mesh is a boolean split tools Compound "
+                "and the mesh has mesh region list. "
+                "Gmsh could return unexpected meshes in such circumstances. "
+                "It is strongly recommended to extract the shape "
+                "to mesh from the Compound and use this one."
+            )
+            qtbox_title = (
+                "Shape to mesh is a BooleanFragmentsCompound "
+                "and mesh regions are defined"
+            )
+            QtGui.QMessageBox.critical(
+                None,
+                qtbox_title,
+                error_message
+            )
         self.Start = time.time()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         self.console_message_gmsh = ""
         self.gmsh_runs = True
         self.console_log("We are going to start ...")
         self.get_active_analysis()
-        import femmesh.gmshtools as gmshtools
-        gmsh_mesh = gmshtools.GmshTools(self.obj, self.analysis)
+        from femmesh import gmshtools
+        gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
         self.console_log("Start Gmsh ...")
         error = ""
         try:

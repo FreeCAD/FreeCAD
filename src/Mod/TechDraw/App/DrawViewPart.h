@@ -93,6 +93,7 @@ public:
     virtual ~DrawViewPart();
 
     App::PropertyLinkList     Source;
+    App::PropertyXLinkList    XSource;
     App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
     App::PropertyVector       XDirection;
     App::PropertyBool         Perspective;
@@ -124,10 +125,10 @@ public:
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
-    const std::vector<TechDraw::Vertex *> getVertexGeometry() const;
-    const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
-    const std::vector<TechDraw::BaseGeom  *> getVisibleFaceEdges() const;
-    const std::vector<TechDraw::Face *> & getFaceGeometry() const;
+    const std::vector<TechDraw::Vertex*> getVertexGeometry() const;
+    const std::vector<TechDraw::BaseGeom*> getEdgeGeometry() const;
+    const std::vector<TechDraw::BaseGeom*> getVisibleFaceEdges() const;
+    const std::vector<TechDraw::Face*> getFaceGeometry() const;
 
     bool hasGeometry(void) const;
     TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
@@ -201,6 +202,9 @@ public:
     void updateReferenceVert(std::string tag, Base::Vector3d loc2d);
     void removeAllReferencesFromGeom();
     void resetReferenceVerts();
+
+    std::vector<App::DocumentObject*> getAllSources(void) const;
+
 
 protected:
     bool checkXDirection(void) const;

@@ -82,8 +82,9 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
         Precision::Confusion() * 100000
     };
 
+    QLocale loc;
     for (int i=0; i<8; i++) {
-        ui->comboBoxTolerance->addItem(QLocale::system().toString(tolerances[i]), QVariant(tolerances[i]));
+        ui->comboBoxTolerance->addItem(loc.toString(tolerances[i]), QVariant(tolerances[i]));
     }
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);

@@ -1,61 +1,89 @@
 # -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provide GUI commands of the Draft Workbench.
 
-__title__="FreeCAD Draft Workbench GUI Tools"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
-__url__ = "https://www.freecadweb.org"
-
+This module loads all graphical commands of the Draft Workbench,
+that is, those actions that can be called from menus and buttons.
+This module must be imported only when the graphical user interface
+is available, for example, during the workbench definition in `IntiGui.py`.
+"""
 ## @package DraftTools
 #  \ingroup DRAFT
-#  \brief GUI Commands of the Draft workbench
+#  \brief Provide GUI commands of the Draft workbench.
 #
-#  This module contains all the FreeCAD commands
-#  of the Draft module
+#  This module contains all the graphical commands of the Draft workbench,
+#  that is, those actions that can be called from menus and buttons.
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Generic stuff
-#---------------------------------------------------------------------------
-
-import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
-from FreeCAD import Vector
-from PySide import QtCore,QtGui
-from DraftGui import todo, translate, utf8_decode
-from DraftSnap import *
-from DraftTrackers import *
+# ---------------------------------------------------------------------------
+import math
+import sys
+from PySide import QtCore, QtGui
 from pivy import coin
 
-#---------------------------------------------------------------------------
+import FreeCAD
+import FreeCADGui
+from FreeCAD import Vector
+
+import Draft
+import Draft_rc
+import DraftGui  # Initializes the DraftToolBar class
+import DraftVecUtils
+import WorkingPlane
+from draftutils.todo import ToDo
+from draftutils.translate import translate
+import draftguitools.gui_snapper as gui_snapper
+import draftguitools.gui_trackers as trackers
+
+# The module is used to prevent complaints from code checkers (flake8)
+True if Draft_rc.__name__ else False
+True if DraftGui.__name__ else False
+
+__title__ = "FreeCAD Draft Workbench GUI Tools"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin")
+__url__ = "https://www.freecadweb.org"
+
+if not hasattr(FreeCADGui, "Snapper"):
+    FreeCADGui.Snapper = gui_snapper.Snapper()
+
+if not hasattr(FreeCAD, "DraftWorkingPlane"):
+    FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
+
+# ---------------------------------------------------------------------------
 # Commands that have been migrated to their own modules
-#---------------------------------------------------------------------------
-
-import DraftEdit
+# ---------------------------------------------------------------------------
+import draftguitools.gui_edit
+import draftguitools.gui_selectplane
+import draftguitools.gui_planeproxy
 # import DraftFillet
-import DraftSelectPlane
+import drafttaskpanels.task_shapestring as task_shapestring
+import drafttaskpanels.task_scale as task_scale
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Preflight stuff
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 # update the translation engine
 FreeCADGui.updateLocale()
 
@@ -76,10 +104,9 @@ MODCONSTRAIN = MODS[Draft.getParam("modconstrain",0)]
 MODSNAP = MODS[Draft.getParam("modsnap",1)]
 MODALT = MODS[Draft.getParam("modalt",2)]
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # General functions
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 def formatUnit(exp,unit="mm"):
     '''returns a formatting string to set a number to the correct unit'''
     return FreeCAD.Units.Quantity(exp,FreeCAD.Units.Length).UserString
@@ -211,12 +238,9 @@ def setMod(args,mod,state):
         args["AltDown"] = state
 
 
-
-
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Base Class
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 class DraftTool:
     """The base class of all Draft Tools"""
 
@@ -263,7 +287,7 @@ class DraftTool:
         self.ui.setTitle(name)
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
-            self.planetrack = PlaneTracker()
+            self.planetrack = trackers.PlaneTracker()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.setTrackers()
 
@@ -286,7 +310,7 @@ class DraftTool:
                 pass
             self.call = None
         if self.commitList:
-            todo.delayCommit(self.commitList)
+            ToDo.delayCommit(self.commitList)
         self.commitList = []
 
     def commit(self,name,func):
@@ -324,10 +348,9 @@ class DraftTool:
         return qr,sup,points,fil
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Geometry constructors
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 def redraw3DView():
     """redraw3DView(): forces a redraw of 3d view."""
     try:
@@ -453,7 +476,7 @@ class Line(Creator):
                 # object already deleted, for some reason
                 pass
             else:
-                todo.delay(self.doc.removeObject,old)
+                ToDo.delay(self.doc.removeObject, old)
         self.obj = None
 
     def undolast(self):
@@ -565,7 +588,7 @@ class Wire(Line):
                     pts = pts.replace("Vector","FreeCAD.Vector")
                     rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
                     FreeCADGui.addModule("Draft")
-                    todo.delayCommit([(translate("draft","Convert to Wire"),
+                    ToDo.delayCommit([(translate("draft", "Convert to Wire"),
                             ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)',
                              'FreeCAD.ActiveDocument.recompute()'])])
                     return
@@ -588,7 +611,7 @@ class BSpline(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","BSpline"))
         if self.doc:
-            self.bsplinetrack = bsplineTracker()
+            self.bsplinetrack = trackers.bsplineTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -655,7 +678,7 @@ class BSpline(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if (len(self.node) > 1):
             try:
                 # building command string
@@ -689,7 +712,7 @@ class BezCurve(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","BezCurve"))
         if self.doc:
-            self.bezcurvetrack = bezcurveTracker()
+            self.bezcurvetrack = trackers.bezcurveTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -775,7 +798,7 @@ class BezCurve(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if (len(self.node) > 1):
             try:
                 # building command string
@@ -808,7 +831,7 @@ class CubicBezCurve(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","CubicBezCurve"))
         if self.doc:
-            self.bezcurvetrack = bezcurveTracker()
+            self.bezcurvetrack = trackers.bezcurveTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -934,7 +957,7 @@ class CubicBezCurve(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if closed == False :
             cleannd=(len(self.node)-1) % self.degree
             if cleannd == 0 : self.node = self.node[0:-3]
@@ -1037,7 +1060,7 @@ class Rectangle(Creator):
                 self.fillstate = self.ui.hasFill.isChecked()
                 self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rect = rectangleTracker()
+            self.rect = trackers.rectangleTracker()
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
 
     def finish(self,closed=False,cont=False):
@@ -1164,8 +1187,8 @@ class Arc(Creator):
             else: self.ui.circleUi()
             self.altdown = False
             self.ui.sourceCmd = self
-            self.linetrack = lineTracker(dotted=True)
-            self.arctrack = arcTracker()
+            self.linetrack = trackers.lineTracker(dotted=True)
+            self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick center point")+"\n")
 
@@ -1502,7 +1525,7 @@ class Polygon(Creator):
             self.ui.numFacesLabel.show()
             self.altdown = False
             self.ui.sourceCmd = self
-            self.arctrack = arcTracker()
+            self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick center point")+"\n")
 
@@ -1680,7 +1703,7 @@ class Ellipse(Creator):
             self.ui.pointUi(name)
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rect = rectangleTracker()
+            self.rect = trackers.rectangleTracker()
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
 
     def finish(self,closed=False,cont=False):
@@ -1882,8 +1905,8 @@ class Dimension(Creator):
             self.finish()
         elif self.hasMeasures():
             Creator.Activated(self,name)
-            self.dimtrack = dimTracker()
-            self.arctrack = arcTracker()
+            self.dimtrack = trackers.dimTracker()
+            self.arctrack = trackers.arcTracker()
             self.createOnMeasures()
             self.finish()
         else:
@@ -1894,8 +1917,8 @@ class Dimension(Creator):
                 self.ui.selectButton.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent",self.action)
-                self.dimtrack = dimTracker()
-                self.arctrack = arcTracker()
+                self.dimtrack = trackers.dimTracker()
+                self.arctrack = trackers.arcTracker()
                 self.link = None
                 self.edges = []
                 self.pts = []
@@ -2215,14 +2238,22 @@ class Dimension(Creator):
             if not self.cont:
                 self.finish()
 
+
 class ShapeString(Creator):
-    """This class creates a shapestring feature."""
+    """The Draft_ShapeString FreeCAD command definition."""
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_ShapeString',
-                'Accel' : "S, S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
+        """Set icon, menu and tooltip."""
+        _menu = "Shape from text"
+        _tooltip = ("Creates a shape from a text string by choosing "
+                    "a specific font and a placement.\n"
+                    "The closed shapes can be used for extrusions "
+                    "and boolean operations.")
+        d = {'Pixmap': 'Draft_ShapeString',
+             'Accel': "S, S",
+             'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _menu),
+             'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _tooltip)}
+        return d
 
     def Activated(self):
         name = translate("draft","ShapeString")
@@ -2236,9 +2267,9 @@ class ShapeString(Creator):
                     del self.task
                 except AttributeError:
                     pass
-                self.task = DraftGui.ShapeStringTaskPanel()
+                self.task = task_shapestring.ShapeStringTaskPanel()
                 self.task.sourceCmd = self
-                DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+                ToDo.delay(FreeCADGui.Control.showDialog, self.task)
             else:
                 self.dialog = None
                 self.text = ''
@@ -2398,7 +2429,7 @@ class Move(Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.delayAfter(self.Activated,[])
+                ToDo.delayAfter(self.Activated, [])
         Modifier.finish(self)
 
     def action(self,arg):
@@ -2452,7 +2483,7 @@ class Move(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -2460,7 +2491,7 @@ class Move(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def move(self):
         if self.ui.isSubelementMode.isChecked():
@@ -2608,7 +2639,7 @@ class Rotate(Modifier):
         self.ui.rotateSetCenterUi()
         self.ui.modUi()
         self.ui.setTitle(translate("draft","Rotate"))
-        self.arctrack = arcTracker()
+        self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick rotation center")+"\n")
 
@@ -2722,7 +2753,7 @@ class Rotate(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -2730,7 +2761,7 @@ class Rotate(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def finish(self, closed=False, cont=False):
         """finishes the arc"""
@@ -2740,7 +2771,7 @@ class Rotate(Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.delayAfter(self.Activated,[])
+                ToDo.delayAfter(self.Activated, [])
         Modifier.finish(self)
         if self.doc:
             self.doc.recompute()
@@ -2884,19 +2915,19 @@ class Offset(Modifier):
             self.npts = None
             self.constrainSeg = None
             self.ui.offsetUi()
-            self.linetrack = lineTracker()
+            self.linetrack = trackers.lineTracker()
             self.faces = False
             self.shape = self.sel.Shape
             self.mode = None
             if Draft.getType(self.sel) in ["Circle","Arc"]:
-                self.ghost = arcTracker()
+                self.ghost = trackers.arcTracker()
                 self.mode = "Circle"
                 self.center = self.shape.Edges[0].Curve.Center
                 self.ghost.setCenter(self.center)
                 self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
                 self.ghost.setEndAngle(math.radians(self.sel.LastAngle))
             elif Draft.getType(self.sel) == "BSpline":
-                self.ghost = bsplineTracker(points=self.sel.Points)
+                self.ghost = trackers.bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
             elif Draft.getType(self.sel) == "BezCurve":
                 FreeCAD.Console.PrintWarning(translate("draft", "Sorry, offset of Bezier curves is currently still not supported")+"\n")
@@ -2906,7 +2937,7 @@ class Offset(Modifier):
                 if len(self.sel.Shape.Edges) == 1:
                     import Part
                     if isinstance(self.sel.Shape.Edges[0].Curve,Part.Circle):
-                        self.ghost = arcTracker()
+                        self.ghost = trackers.arcTracker()
                         self.mode = "Circle"
                         self.center = self.shape.Edges[0].Curve.Center
                         self.ghost.setCenter(self.center)
@@ -2914,7 +2945,7 @@ class Offset(Modifier):
                             self.ghost.setStartAngle(self.sel.Shape.Edges[0].FirstParameter)
                             self.ghost.setEndAngle(self.sel.Shape.Edges[0].LastParameter)
                 if not self.ghost:
-                    self.ghost = wireTracker(self.shape)
+                    self.ghost = trackers.wireTracker(self.shape)
                     self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick distance")+"\n")
@@ -3036,6 +3067,8 @@ class Offset(Modifier):
                         ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
                          'FreeCAD.ActiveDocument.recompute()'])
             self.finish()
+        else:
+            FreeCAD.Console.PrintError(translate("draft","Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction")+"/n")
 
 
 class Stretch(Modifier):
@@ -3094,7 +3127,7 @@ class Stretch(Modifier):
             self.ui.pointUi("Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rectracker = rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
+            self.rectracker = trackers.rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
             self.nodetracker = []
             self.displacement = None
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point of selection rectangle")+"\n")
@@ -3187,7 +3220,7 @@ class Stretch(Modifier):
                         self.ops.append([o])
                         nodes.append(p)
             for n in nodes:
-                nt = editTracker(n,inactive=True)
+                nt = trackers.editTracker(n,inactive=True)
                 nt.on()
                 self.nodetracker.append(nt)
             self.step = 3
@@ -3530,7 +3563,7 @@ class Trimex(Modifier):
             return
         self.obj = sel[0]
         self.ui.trimUi()
-        self.linetrack = lineTracker()
+        self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
 
@@ -3540,10 +3573,10 @@ class Trimex(Modifier):
         if len(self.obj.Shape.Faces) == 1:
             # simple extrude mode, the object itself is extruded
             self.extrudeMode = True
-            self.ghost = [ghostTracker([self.obj])]
+            self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(.5,.5)
             for v in self.obj.Shape.Vertexes:
-                self.ghost.append(lineTracker())
+                self.ghost.append(trackers.lineTracker())
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss =  FreeCADGui.Selection.getSelectionEx()[0]
@@ -3552,10 +3585,10 @@ class Trimex(Modifier):
                     self.obj = self.doc.addObject("Part::Feature","Face")
                     self.obj.Shape = ss.SubObjects[0]
                     self.extrudeMode = True
-                    self.ghost = [ghostTracker([self.obj])]
+                    self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(.5,.5)
                     for v in self.obj.Shape.Vertexes:
-                        self.ghost.append(lineTracker())
+                        self.ghost.append(trackers.lineTracker())
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -3575,9 +3608,9 @@ class Trimex(Modifier):
             sw = self.width
             for e in self.edges:
                 if DraftGeomUtils.geomType(e) == "Line":
-                    self.ghost.append(lineTracker(scolor=sc,swidth=sw))
+                    self.ghost.append(trackers.lineTracker(scolor=sc,swidth=sw))
                 else:
-                    self.ghost.append(arcTracker(scolor=sc,swidth=sw))
+                    self.ghost.append(trackers.arcTracker(scolor=sc,swidth=sw))
         if not self.ghost: self.finish()
         for g in self.ghost: g.on()
         self.activePoint = 0
@@ -3959,7 +3992,7 @@ class Scale(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -3967,7 +4000,7 @@ class Scale(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def pickRef(self):
         self.pickmode = True
@@ -4121,11 +4154,11 @@ class Scale(Modifier):
             self.ui.offUi()
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
-            self.task = DraftGui.ScaleTaskPanel()
+            self.task = task_scale.ScaleTaskPanel()
             self.task.sourceCmd = self
-            DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
-            DraftGui.todo.delay(self.task.xValue.selectAll,None)
-            DraftGui.todo.delay(self.task.xValue.setFocus,None)
+            ToDo.delay(FreeCADGui.Control.showDialog, self.task)
+            ToDo.delay(self.task.xValue.selectAll, None)
+            ToDo.delay(self.task.xValue.setFocus, None)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:
@@ -4401,56 +4434,6 @@ class AddToGroup():
                         pass
 
 
-class AddPoint(Modifier):
-    """The Draft_AddPoint FreeCAD command definition"""
-
-    def __init__(self):
-        self.running = False
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_AddPoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Add Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing Wire or B-spline")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if selection:
-            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.runCommand("Draft_Edit")
-                FreeCADGui.draftToolBar.vertUi(True)
-
-
-class DelPoint(Modifier):
-    """The Draft_DelPoint FreeCAD command definition"""
-
-    def __init__(self):
-        self.running = False
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_DelPoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing Wire or B-spline")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if selection:
-            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.runCommand("Draft_Edit")
-                FreeCADGui.draftToolBar.vertUi(False)
-
-
 class WireToBSpline(Modifier):
     """The Draft_Wire2BSpline FreeCAD command definition"""
 
@@ -4489,7 +4472,8 @@ class WireToBSpline(Modifier):
                             if (Draft.getType(self.obj) == 'Wire'):
                                 n = Draft.makeBSpline(self.Points, self.closed, self.pl)
                             elif (Draft.getType(self.obj) == 'BSpline'):
-                                n = Draft.makeWire(self.Points, self.closed, self.pl)
+                                self.bs2wire = True
+                                n = Draft.makeWire(self.Points, self.closed, self.pl, None, None, self.bs2wire)
                             if n:
                                 Draft.formatObject(n,self.obj)
                                 self.doc.recompute()
@@ -4638,10 +4622,6 @@ class Array(Modifier):
         Modifier.__init__(self)
         self.use_link = use_link
 
-    def __init__(self,useLink=False):
-        Modifier.__init__(self)
-        self.useLink = useLink
-
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Array", "Array"),
@@ -4686,10 +4666,6 @@ class PathArray(Modifier):
     def __init__(self,use_link=False):
         Modifier.__init__(self)
         self.use_link = use_link
-
-    def __init__(self,useLink=False):
-        Modifier.__init__(self)
-        self.useLink = useLink
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_PathArray',
@@ -4835,7 +4811,7 @@ class Point(Creator):
                                         ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
                                          'Draft.autogroup(point)',
                                          'FreeCAD.ActiveDocument.recompute()']))
-                todo.delayCommit(commitlist)
+                ToDo.delayCommit(commitlist)
                 FreeCADGui.Snapper.off()
             self.finish()
 
@@ -4903,7 +4879,7 @@ class Draft_Clone(Modifier):
     def finish(self,close=False):
         Modifier.finish(self,close=False)
         if self.moveAfterCloning:
-            todo.delay(FreeCADGui.runCommand,"Draft_Move")
+            ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
 class ToggleGrid():
@@ -4913,7 +4889,8 @@ class ToggleGrid():
         return {'Pixmap'  : 'Draft_Grid',
                 'Accel' : "G,R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off"),
+                'CmdType' : 'ForEdit'}
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
@@ -5020,7 +4997,7 @@ class Mirror(Modifier):
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        #self.ghost = ghostTracker(self.sel) TODO: solve this (see below)
+        # self.ghost = trackers.ghostTracker(self.sel) TODO: solve this (see below)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick start point of mirror line")+"\n")
         self.ui.isCopy.hide()
@@ -5247,7 +5224,7 @@ class Draft_Label(Creator):
         self.ui.labelUi(self.name,callback=self.setmode)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.ghost = DraftTrackers.lineTracker()
+        self.ghost = trackers.lineTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick target point")+"\n")
         self.ui.isCopy.hide()
@@ -5411,10 +5388,9 @@ class Draft_Arc_3Points:
 
     def Activated(self):
 
-        import DraftTrackers
         self.points = []
         self.normal = None
-        self.tracker = DraftTrackers.arcTracker()
+        self.tracker = trackers.arcTracker()
         self.tracker.autoinvert = False
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
@@ -5431,19 +5407,15 @@ class Draft_Arc_3Points:
                 self.tracker.on()
             FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
         else:
-            import Part
-            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
+            import draftobjects.arc_3points as arc3
             if Draft.getParam("UsePartPrimitives",False):
-                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
-                o.Shape = e
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=True)
             else:
-                radius = e.Curve.Radius
-                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
-                placement = FreeCAD.Placement(e.Curve.Center,rot)
-                start = e.FirstParameter
-                end = e.LastParameter/math.pi*180
-                c = Draft.makeCircle(radius,placement,startangle=start,endangle=end)
-                Draft.autogroup(c)
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=False)
             self.tracker.off()
             FreeCAD.ActiveDocument.recompute()
 
@@ -5456,185 +5428,7 @@ class Draft_Arc_3Points:
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
-
-class Draft_Snap_Lock():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Lock',
-                'Accel' : "Shift+S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Toggle On/Off"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Activates/deactivates all snap tools at once")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"masterbutton"):
-                FreeCADGui.Snapper.masterbutton.toggle()
-
-class Draft_Snap_Midpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Midpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Midpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to midpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonmidpoint":
-                        b.toggle()
-
-class Draft_Snap_Perpendicular():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Perpendicular',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Perpendicular"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to perpendicular points on edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonperpendicular":
-                        b.toggle()
-
-class Draft_Snap_Grid():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Grid',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to grid points")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtongrid":
-                        b.toggle()
-
-class Draft_Snap_Intersection():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Intersection',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Intersection"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to edges intersections")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonintersection":
-                        b.toggle()
-
-class Draft_Snap_Parallel():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Parallel',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Parallel"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to parallel directions of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonparallel":
-                        b.toggle()
-
-class Draft_Snap_Endpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Endpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Endpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to endpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonendpoint":
-                        b.toggle()
-
-class Draft_Snap_Angle():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Angle',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Angles"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to 45 and 90 degrees points on arcs and circles")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonangle":
-                        b.toggle()
-
-class Draft_Snap_Center():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Center',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Center"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to center of circles and arcs")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtoncenter":
-                        b.toggle()
-
-class Draft_Snap_Extension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Extension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Extension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to extension of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonextension":
-                        b.toggle()
-
-class Draft_Snap_Near():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Near',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Near", "Nearest"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snaps to nearest point on edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonpassive":
-                        b.toggle()
-
-class Draft_Snap_Ortho():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Ortho',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Ortho"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to orthogonal and 45 degrees directions")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonortho":
-                        b.toggle()
-
-class Draft_Snap_Special():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Special',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Special", "Special"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snaps to special locations of objects")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonspecial":
-                        b.toggle()
-
-class Draft_Snap_Dimensions():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Dimensions',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Dimensions"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Shows temporary dimensions when snapping to Arch objects")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonDimensions":
-                        b.toggle()
-
-class Draft_Snap_WorkingPlane():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_WorkingPlane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Working Plane"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Restricts the snapped point to the current working plane")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonWorkingPlane":
-                        b.toggle()
+import draftguitools.gui_snaps
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -5692,8 +5486,6 @@ FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
 FreeCADGui.addCommand('Draft_SubelementHighlight', SubelementHighlight())
-FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
-FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
@@ -5723,23 +5515,6 @@ FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
-
-# snap commands
-FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())
-FreeCADGui.addCommand('Draft_Snap_Midpoint',Draft_Snap_Midpoint())
-FreeCADGui.addCommand('Draft_Snap_Perpendicular',Draft_Snap_Perpendicular())
-FreeCADGui.addCommand('Draft_Snap_Grid',Draft_Snap_Grid())
-FreeCADGui.addCommand('Draft_Snap_Intersection',Draft_Snap_Intersection())
-FreeCADGui.addCommand('Draft_Snap_Parallel',Draft_Snap_Parallel())
-FreeCADGui.addCommand('Draft_Snap_Endpoint',Draft_Snap_Endpoint())
-FreeCADGui.addCommand('Draft_Snap_Angle',Draft_Snap_Angle())
-FreeCADGui.addCommand('Draft_Snap_Center',Draft_Snap_Center())
-FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
-FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
-FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
-FreeCADGui.addCommand('Draft_Snap_Special',Draft_Snap_Special())
-FreeCADGui.addCommand('Draft_Snap_Dimensions',Draft_Snap_Dimensions())
-FreeCADGui.addCommand('Draft_Snap_WorkingPlane',Draft_Snap_WorkingPlane())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None

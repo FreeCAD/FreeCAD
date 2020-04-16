@@ -32,6 +32,7 @@
 
 #include "RemeshGmsh.h"
 #include "ui_RemeshGmsh.h"
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -45,11 +46,10 @@
 
 using namespace MeshGui;
 
-class RemeshGmsh::Private {
+class GmshWidget::Private {
 public:
-    Private(Mesh::Feature* mesh, QWidget* parent)
-      : mesh(mesh)
-      , mesher(parent)
+    Private(QWidget* parent)
+      : gmsh(parent)
     {
     }
 
@@ -68,30 +68,24 @@ public:
     Ui_RemeshGmsh ui;
     QPointer<Gui::StatusWidget> label;
     QPointer<Gui::DockWnd::ReportHighlighter> syntax;
-    App::DocumentObjectWeakPtrT mesh;
-    MeshCore::MeshKernel copy;
-    QProcess mesher;
+    QProcess gmsh;
     QTime time;
-    std::string stlFile;
-    std::string geoFile;
 };
 
-RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
+GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
-  , d(new Private(mesh, parent))
+  , d(new Private(parent))
 {
-    connect(&d->mesher, SIGNAL(started()), this, SLOT(started()));
-    connect(&d->mesher, SIGNAL(finished(int, QProcess::ExitStatus)),
+    connect(&d->gmsh, SIGNAL(started()), this, SLOT(started()));
+    connect(&d->gmsh, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(finished(int, QProcess::ExitStatus)));
-    connect(&d->mesher, SIGNAL(errorOccurred(QProcess::ProcessError)),
+    connect(&d->gmsh, SIGNAL(errorOccurred(QProcess::ProcessError)),
             this, SLOT(errorOccurred(QProcess::ProcessError)));
-    connect(&d->mesher, SIGNAL(readyReadStandardError()),
+    connect(&d->gmsh, SIGNAL(readyReadStandardError()),
             this, SLOT(readyReadStandardError()));
-    connect(&d->mesher, SIGNAL(readyReadStandardOutput()),
+    connect(&d->gmsh, SIGNAL(readyReadStandardOutput()),
             this, SLOT(readyReadStandardOutput()));
 
-    // Copy mesh that is used each time when applying gmsh's remeshing function
-    d->copy = mesh->Mesh.getValue().getKernel();
     d->ui.setupUi(this);
     d->ui.fileChooser->onRestore();
     d->syntax = new Gui::DockWnd::ReportHighlighter(d->ui.outputWindow);
@@ -107,17 +101,14 @@ RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
     d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(5));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(6));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(9));
-
-    d->stlFile = App::Application::getTempFileName() + "mesh.stl";
-    d->geoFile = App::Application::getTempFileName() + "mesh.geo";
 }
 
-RemeshGmsh::~RemeshGmsh()
+GmshWidget::~GmshWidget()
 {
     d->ui.fileChooser->onSave();
 }
 
-void RemeshGmsh::changeEvent(QEvent *e)
+void GmshWidget::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
@@ -125,40 +116,175 @@ void RemeshGmsh::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#if 0 // this is for meshing a CAD shape see gmshtools.py write_geo
-// geo file for meshing with Gmsh meshing software created by FreeCAD
+bool GmshWidget::writeProject(QString& inpFile, QString& outFile)
+{
+    Q_UNUSED(inpFile)
+    Q_UNUSED(outFile)
 
-// open brep geometry
-Merge "/tmp/fcfem_f1enjjfa/Part__Feature_Geometry.brep";
+    return false;
+}
 
-// Characteristic Length
-// no boundary layer settings for this mesh
-// min, max Characteristic Length
-Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 0.0;
+bool GmshWidget::loadOutput()
+{
+    return false;
+}
 
-// optimize the mesh
-Mesh.Optimize = 1;
-Mesh.OptimizeNetgen = 0;
-Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
+int GmshWidget::meshingAlgorithm() const
+{
+    return d->ui.method->itemData(d->ui.method->currentIndex()).toInt();
+}
 
-// mesh order
-Mesh.ElementOrder = 2;
-Mesh.SecondOrderLinear = 1; // Second order nodes are created by linear interpolation instead by curvilinear
+double GmshWidget::getAngle() const
+{
+    return d->ui.angle->value().getValue();
+}
 
-// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
-// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)
-Mesh.Algorithm = 2;
-// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)
-Mesh.Algorithm3D = 1;
+double GmshWidget::getMaxSize() const
+{
+    return d->ui.maxSize->value().getValue();
+}
 
-// meshing
-Geometry.Tolerance = 1e-06; // set geometrical tolerance (also used for merging nodes)
-Mesh  2;
-Coherence Mesh; // Remove duplicate vertices
-#endif
+double GmshWidget::getMinSize() const
+{
+    return d->ui.minSize->value().getValue();
+}
 
-void RemeshGmsh::accept()
+void GmshWidget::accept()
+{
+    if (d->gmsh.state() == QProcess::Running) {
+        Base::Console().Warning("Cannot start gmsh because it's already running\n");
+        return;
+    }
+
+    QString inpFile;
+    QString outFile;
+    if (writeProject(inpFile, outFile)) {
+        // ./gmsh - -bin -2 /tmp/mesh.geo -o /tmp/best.stl
+        QString proc = d->ui.fileChooser->fileName();
+        QStringList args;
+        args << QLatin1String("-")
+             << QLatin1String("-bin")
+             << QLatin1String("-2")
+             << inpFile
+             << QLatin1String("-o")
+             << outFile;
+        d->gmsh.start(proc, args);
+
+        d->time.start();
+        d->ui.labelTime->setText(tr("Time:"));
+    }
+}
+
+void GmshWidget::readyReadStandardError()
+{
+    QByteArray msg = d->gmsh.readAllStandardError();
+    if (msg.startsWith("\0[1m\0[31m")) {
+        msg = msg.mid(9);
+    }
+    if (msg.endsWith("\0[0m")) {
+        msg.chop(5);
+    }
+
+    QString text = QString::fromUtf8(msg.data());
+    d->appendText(text, true);
+}
+
+void GmshWidget::readyReadStandardOutput()
+{
+    QByteArray msg = d->gmsh.readAllStandardOutput();
+    QString text = QString::fromUtf8(msg.data());
+    d->appendText(text, false);
+}
+
+void GmshWidget::on_killButton_clicked()
+{
+    if (d->gmsh.state() == QProcess::Running) {
+        d->gmsh.kill();
+        d->gmsh.waitForFinished(1000);
+        d->ui.killButton->setDisabled(true);
+    }
+}
+
+void GmshWidget::on_clearButton_clicked()
+{
+    d->ui.outputWindow->clear();
+}
+
+void GmshWidget::started()
+{
+    d->ui.killButton->setEnabled(true);
+    if (!d->label) {
+        d->label = new Gui::StatusWidget(this);
+        d->label->setAttribute(Qt::WA_DeleteOnClose);
+        d->label->setStatusText(tr("Running gmsh..."));
+        d->label->show();
+    }
+}
+
+void GmshWidget::finished(int /*exitCode*/, QProcess::ExitStatus exitStatus)
+{
+    d->ui.killButton->setDisabled(true);
+    if (d->label)
+        d->label->close();
+
+    d->ui.labelTime->setText(QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
+    if (exitStatus == QProcess::NormalExit) {
+        loadOutput();
+    }
+}
+
+void GmshWidget::errorOccurred(QProcess::ProcessError error)
+{
+    QString msg;
+    switch (error) {
+    case QProcess::FailedToStart:
+        msg = tr("Failed to start");
+        break;
+    default:
+        break;
+    }
+
+    if (!msg.isEmpty()) {
+        QMessageBox::warning(this, tr("Error"), msg);
+    }
+}
+
+void GmshWidget::reject()
+{
+    on_killButton_clicked();
+}
+
+// -------------------------------------------------
+
+class RemeshGmsh::Private {
+public:
+    Private(Mesh::Feature* mesh)
+      : mesh(mesh)
+    {
+    }
+
+public:
+    App::DocumentObjectWeakPtrT mesh;
+    MeshCore::MeshKernel copy;
+    std::string stlFile;
+    std::string geoFile;
+};
+
+RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
+  : GmshWidget(parent, fl)
+  , d(new Private(mesh))
+{
+    // Copy mesh that is used each time when applying gmsh's remeshing function
+    d->copy = mesh->Mesh.getValue().getKernel();
+    d->stlFile = App::Application::getTempFileName() + "mesh.stl";
+    d->geoFile = App::Application::getTempFileName() + "mesh.geo";
+}
+
+RemeshGmsh::~RemeshGmsh()
+{
+}
+
+bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
 {
     if (!d->mesh.expired()) {
         Base::FileInfo stl(d->stlFile);
@@ -168,12 +294,12 @@ void RemeshGmsh::accept()
         stlOut.close();
 
         // Parameters
-        int algorithm = d->ui.method->itemData(d->ui.method->currentIndex()).toInt();
-        double maxSize = d->ui.maxSize->value().getValue();
+        int algorithm = meshingAlgorithm();
+        double maxSize = getMaxSize();
         if (maxSize == 0.0)
             maxSize = 1.0e22;
-        double minSize = d->ui.minSize->value().getValue();
-        double angle = d->ui.angle->value().getValue();
+        double minSize = getMinSize();
+        double angle = getAngle();
         int maxAngle = 120;
         int minAngle = 20;
 
@@ -212,118 +338,40 @@ void RemeshGmsh::accept()
             << "Volume(1) = {1};\n";
         geoOut.close();
 
-        // ./gmsh - -bin -2 /tmp/mesh.geo -o /tmp/best.stl
-        QString proc = d->ui.fileChooser->fileName();
-        QStringList args;
-        args << QLatin1String("-")
-             << QLatin1String("-bin")
-             << QLatin1String("-2")
-             << QString::fromUtf8(d->geoFile.c_str())
-             << QLatin1String("-o")
-             << QString::fromUtf8(d->stlFile.c_str());
-        d->mesher.start(proc, args);
+        inpFile = QString::fromUtf8(d->geoFile.c_str());
+        outFile = QString::fromUtf8(d->stlFile.c_str());
 
-        d->time.start();
-        d->ui.labelTime->setText(tr("Time:"));
-    }
-}
-
-void RemeshGmsh::readyReadStandardError()
-{
-    QByteArray msg = d->mesher.readAllStandardError();
-    if (msg.startsWith("\0[1m\0[31m")) {
-        msg = msg.mid(9);
-    }
-    if (msg.endsWith("\0[0m")) {
-        msg.chop(5);
+        return true;
     }
 
-    QString text = QString::fromUtf8(msg.data());
-    d->appendText(text, true);
+    return false;
 }
 
-void RemeshGmsh::readyReadStandardOutput()
+bool RemeshGmsh::loadOutput()
 {
-    QByteArray msg = d->mesher.readAllStandardOutput();
-    QString text = QString::fromUtf8(msg.data());
-    d->appendText(text, false);
-}
+    if (d->mesh.expired())
+        return false;
 
-void RemeshGmsh::on_killButton_clicked()
-{
-    if (d->mesher.state() == QProcess::Running) {
-        d->mesher.kill();
-        d->mesher.waitForFinished(1000);
-        d->ui.killButton->setDisabled(true);
-    }
-}
+    // Now read-in modified mesh
+    Base::FileInfo stl(d->stlFile);
+    Base::FileInfo geo(d->geoFile);
 
-void RemeshGmsh::on_clearButton_clicked()
-{
-    d->ui.outputWindow->clear();
-}
+    Mesh::MeshObject kernel;
+    MeshCore::MeshInput input(kernel.getKernel());
+    Base::ifstream stlIn(stl, std::ios::in | std::ios::binary);
+    input.LoadBinarySTL(stlIn);
+    stlIn.close();
+    kernel.harmonizeNormals();
 
-void RemeshGmsh::started()
-{
-    d->ui.killButton->setEnabled(true);
-    if (!d->label) {
-        d->label = new Gui::StatusWidget(this);
-        d->label->setAttribute(Qt::WA_DeleteOnClose);
-        d->label->setStatusText(tr("Running remeshing..."));
-        d->label->show();
-    }
-}
+    Mesh::Feature* fea = d->mesh.get<Mesh::Feature>();
+    App::Document* doc = fea->getDocument();
+    doc->openTransaction("Remesh");
+    fea->Mesh.setValue(kernel.getKernel());
+    doc->commitTransaction();
+    stl.deleteFile();
+    geo.deleteFile();
 
-void RemeshGmsh::finished(int /*exitCode*/, QProcess::ExitStatus exitStatus)
-{
-    d->ui.killButton->setDisabled(true);
-    if (d->label)
-        d->label->close();
-
-    d->ui.labelTime->setText(QString::fromLatin1("%1 %2 ms").arg(tr("Time:")).arg(d->time.elapsed()));
-    if (exitStatus == QProcess::NormalExit) {
-        if (!d->mesh.expired()) {
-            // Now read-in modified mesh
-            Base::FileInfo stl(d->stlFile);
-            Base::FileInfo geo(d->geoFile);
-
-            Mesh::MeshObject kernel;
-            MeshCore::MeshInput input(kernel.getKernel());
-            Base::ifstream stlIn(stl, std::ios::in | std::ios::binary);
-            input.LoadBinarySTL(stlIn);
-            stlIn.close();
-            kernel.harmonizeNormals();
-
-            Mesh::Feature* fea = d->mesh.get<Mesh::Feature>();
-            App::Document* doc = fea->getDocument();
-            doc->openTransaction("Remesh");
-            fea->Mesh.setValue(kernel.getKernel());
-            doc->commitTransaction();
-            stl.deleteFile();
-            geo.deleteFile();
-        }
-    }
-}
-
-void RemeshGmsh::errorOccurred(QProcess::ProcessError error)
-{
-    QString msg;
-    switch (error) {
-    case QProcess::FailedToStart:
-        msg = tr("Failed to start");
-        break;
-    default:
-        break;
-    }
-
-    if (!msg.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), msg);
-    }
-}
-
-void RemeshGmsh::reject()
-{
-    on_killButton_clicked();
+    return true;
 }
 
 // -------------------------------------------------

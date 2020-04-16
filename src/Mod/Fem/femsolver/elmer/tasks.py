@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -26,17 +28,17 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import subprocess
 import os.path
+import subprocess
 import sys
 
 import FreeCAD
-import femtools.femutils as femutils
-import femtools.membertools as membertools
 
+from . import writer
 from .. import run
 from .. import settings
-from . import writer
+from femtools import femutils
+from femtools import membertools
 
 
 class Check(run.Check):

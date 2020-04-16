@@ -285,8 +285,7 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None),
-            "Support of the geometry");
+    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
     Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
@@ -688,7 +687,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         Shape.setValue(result);
     }
 
-    // collect transformation matrix cache entires
+    // collect transformation matrix cache entries
     std::unordered_set<std::string> caches;
     for(const auto &name : getDynamicPropertyNames()) {
         if(boost::starts_with(name,"Cache_"))

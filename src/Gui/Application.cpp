@@ -97,6 +97,7 @@
 #include "DocumentRecovery.h"
 #include "TransactionObject.h"
 #include "FileDialog.h"
+#include "ExpressionBindingPy.h"
 
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
@@ -308,7 +309,7 @@ Application::Application(bool GUIenabled)
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
-        QString lang = QLocale::languageToString(QLocale::system().language());
+        QString lang = QLocale::languageToString(QLocale().language());
         Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
@@ -322,7 +323,7 @@ Application::Application(bool GUIenabled)
         // Check for the symbols for group separator and decimal point. They must be different otherwise
         // Qt doesn't work properly.
 #if defined(Q_OS_WIN32)
-        if (QLocale::system().groupSeparator() == QLocale::system().decimalPoint()) {
+        if (QLocale().groupSeparator() == QLocale().decimalPoint()) {
             QMessageBox::critical(0, QLatin1String("Invalid system settings"),
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
                               "This causes serious problems and makes the application fail to work properly.\n"
@@ -334,7 +335,7 @@ Application::Application(bool GUIenabled)
         // http://forum.freecadweb.org/viewtopic.php?f=10&t=6910
         // A workaround is to disable the group separator for double-to-string conversion, i.e.
         // setting the flag 'OmitGroupSeparator'.
-        QLocale loc = QLocale::system();
+        QLocale loc;
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
         QLocale::setDefault(loc);
 #endif
@@ -387,6 +388,10 @@ Application::Application(bool GUIenabled)
         PySideUicModule* pySide = new PySideUicModule();
         Py_INCREF(pySide->module().ptr());
         PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
+
+        ExpressionBindingPy::init_type();
+        Base::Interpreter().addType(ExpressionBindingPy::type_object(),
+            module,"ExpressionBinding");
 
         //insert Selection module
 #if PY_MAJOR_VERSION >= 3
@@ -522,21 +527,23 @@ void Application::open(const char* FileName, const char* Module)
 
     if (Module != 0) {
         try {
-            if(File.hasExtension("FCStd")) {
+            if (File.hasExtension("FCStd")) {
                 bool handled = false;
                 std::string filepath = File.filePath();
-                for(auto &v : d->documents) {
+                for (auto &v : d->documents) {
                     auto doc = v.second->getDocument();
                     std::string fi = Base::FileInfo(doc->FileName.getValue()).filePath();
-                    if(filepath == fi) {
+                    if (filepath == fi) {
                         handled = true;
                         Command::doCommand(Command::App, "FreeCADGui.reload('%s')", doc->getName());
                         break;
                     }
                 }
-                if(!handled)
-                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", FileName);
-            } else {
+
+                if (!handled)
+                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", unicodepath.c_str());
+            }
+            else {
                 // issue module loading
                 Command::doCommand(Command::App, "import %s", Module);
 
@@ -2109,9 +2116,6 @@ void Application::runApplication(void)
     }
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    QMdiArea* mdi = mw.findChild<QMdiArea*>();
-    mdi->setProperty("showImage", hGrp->GetBool("TiledBackground", false));
-
     std::string style = hGrp->GetASCII("StyleSheet");
     if (style.empty()) {
         // check the branding settings
@@ -2120,37 +2124,8 @@ void Application::runApplication(void)
         if (it != config.end())
             style = it->second;
     }
-    if (!style.empty()) {
-        QFile f(QLatin1String(style.c_str()));
-        if (f.open(QFile::ReadOnly)) {
-            mdi->setBackground(QBrush(Qt::NoBrush));
-            QTextStream str(&f);
-            qApp->setStyleSheet(str.readAll());
 
-            ActionStyleEvent e(ActionStyleEvent::Clear);
-            qApp->sendEvent(&mw, &e);
-        }
-    }
-    else {
-        if (hGrp->GetBool("TiledBackground", false)) {
-            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
-        }
-#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
-        // Under Windows the tree indicator branch gets corrupted after a while.
-        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
-        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
-        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
-        QString qss = QString::fromLatin1(
-               "QTreeView::branch:closed:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_closed.png);\n"
-               "}\n"
-               "\n"
-               "QTreeView::branch:open:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_open.png);\n"
-               "}\n");
-        qApp->setStyleSheet(qss);
-#endif
-    }
+    app.setStyleSheet(QLatin1String(style.c_str()), hGrp->GetBool("TiledBackground", false));
 
 #if QT_VERSION >= 0x050600 && defined(Q_OS_WIN32)
     // Fix menu not shown when in full screen on windows.
@@ -2218,6 +2193,72 @@ void Application::runApplication(void)
     }
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
+{
+    Gui::MainWindow* mw = getMainWindow();
+    QMdiArea* mdi = mw->findChild<QMdiArea*>();
+    mdi->setProperty("showImage", tiledBackground);
+
+    QString current = mw->property("fc_currentStyleSheet").toString();
+    mw->setProperty("fc_currentStyleSheet", qssFile);
+
+    if (!qssFile.isEmpty() && current != qssFile) {
+        // Search for stylesheet in user-defined search paths.
+        // For qss they are set-up in runApplication() with the prefix "qss"
+        QString prefix(QLatin1String("qss:"));
+
+        QFile f;
+        if (QFile::exists(qssFile)) {
+            f.setFileName(qssFile);
+        }
+        else if (QFile::exists(prefix + qssFile)) {
+            f.setFileName(prefix + qssFile);
+        }
+
+        if (!f.fileName().isEmpty() && f.open(QFile::ReadOnly | QFile::Text)) {
+            mdi->setBackground(QBrush(Qt::NoBrush));
+            QTextStream str(&f);
+            qApp->setStyleSheet(str.readAll());
+
+            ActionStyleEvent e(ActionStyleEvent::Clear);
+            qApp->sendEvent(mw, &e);
+        }
+    }
+
+    if (qssFile.isEmpty()) {
+        if (tiledBackground) {
+            qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
+            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
+        }
+        else {
+            qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
+            mdi->setBackground(QBrush(QColor(160,160,160)));
+        }
+#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
+        // Under Windows the tree indicator branch gets corrupted after a while.
+        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
+        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
+        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
+        QString qss = QString::fromLatin1(
+               "QTreeView::branch:closed:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_closed.png);\n"
+               "}\n"
+               "\n"
+               "QTreeView::branch:open:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_open.png);\n"
+               "}\n");
+        qApp->setStyleSheet(qss);
+#endif
+    }
+
+    if (mdi->style())
+        mdi->style()->unpolish(qApp);
 }
 
 void Application::checkForPreviousCrashes()

@@ -83,7 +83,7 @@ public:
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
      * @param objs        the list of objects to traverse, due to we traverse the scene graph, the geo children
-     *                    will likely be traveresed too.
+     *                    will likely be traversed too.
      */
     static SbBox3f getRelevantBoundBox (
             const std::vector <App::DocumentObject *> &objs);

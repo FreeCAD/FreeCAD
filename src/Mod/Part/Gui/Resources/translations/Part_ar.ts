@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ar" sourcelanguage="en">
+<TS version="2.1" language="ar" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>الخطأ: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation type="unfinished">Attachment Offset:</translation>
@@ -132,11 +137,6 @@
       <translation>أولًا، عليك اختيار شكل يكون مركّبًا. العنصر الثاني الذي سيُحدّد (اختياريًا) سيكون بمثابة الاستنسل.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>التحديد سيّئ</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 انقر ”متابعة“ لإنشاء الميزة بوجود الخطأ، أو ”أجهِض“ للإلغاء.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>التحديد سيّئ</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -1730,7 +1748,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation type="unfinished">Chamfer the selected edges of a shape</translation>
+      <translation>شطف الحافة المختارة من الشكل</translation>
     </message>
   </context>
   <context>
@@ -3314,7 +3332,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -3345,7 +3363,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -3862,7 +3880,7 @@ Please check one or more edge entities first.</translation>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -5267,7 +5285,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>البدائيون</translation>
+      <translation>اساسيات</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

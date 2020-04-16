@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -8,112 +6,70 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64px"
-   height="64px"
-   id="svg2985"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Draft_Wipe.svg">
+   id="svg2985"
+   height="64px"
+   width="64px">
   <defs
      id="defs2987">
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3793">
       <stop
-         style="stop-color:#a40000;stop-opacity:1"
+         id="stop3795"
          offset="0"
-         id="stop3795" />
+         style="stop-color:#a40000;stop-opacity:1" />
       <stop
-         style="stop-color:#ef2929;stop-opacity:1"
+         id="stop3797"
          offset="1"
-         id="stop3797" />
+         style="stop-color:#ef2929;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3793"
-       id="linearGradient3799"
-       x1="29"
-       y1="47"
-       x2="15"
+       gradientUnits="userSpaceOnUse"
        y2="17"
-       gradientUnits="userSpaceOnUse" />
+       x2="15"
+       y1="47"
+       x1="29"
+       id="linearGradient3799"
+       xlink:href="#linearGradient3793" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="12.379992"
-     inkscape:cx="9.4685168"
-     inkscape:cy="42.321644"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2986"
-       units="px"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="1px"
-       spacingy="1px" />
-  </sodipodi:namedview>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="layer1">
     <rect
-       style="fill:#3465a4;fill-opacity:1;stroke:#0b1521;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3801"
-       width="36"
-       height="8"
+       y="27"
        x="25"
-       y="27" />
-    <rect
-       style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="rect3784"
-       width="22"
        height="8"
-       x="3"
-       y="27" />
-    <rect
-       style="fill:#3465a4;fill-opacity:1;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3801-6"
        width="36"
-       height="4"
-       x="23"
-       y="29" />
+       id="rect3801"
+       style="fill:#3465a4;fill-opacity:1;stroke:#0b1521;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <rect
-       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="rect3784-3"
-       width="19"
+       y="27"
+       x="3"
+       height="8"
+       width="22"
+       id="rect3784"
+       style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       y="29"
+       x="23"
        height="4"
+       width="36"
+       id="rect3801-6"
+       style="fill:#3465a4;fill-opacity:1;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       y="29"
        x="5"
-       y="29" />
+       height="4"
+       width="19"
+       id="rect3784-3"
+       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <path
-       style="color:#000000;fill:url(#linearGradient3799);fill-opacity:1;fill-rule:evenodd;stroke:#280000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="M 15,15 9,21 19,31 9,41 15,47 25,37 35,47 41,41 31,31 41,21 35,15 25,25 z"
        id="rect3761"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccccc" />
+       d="M 15,15 9,21 19,31 9,41 15,47 25,37 35,47 41,41 31,31 41,21 35,15 25,25 z"
+       style="color:#000000;fill:url(#linearGradient3799);fill-opacity:1;fill-rule:evenodd;stroke:#280000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <path
-       style="color:#000000;fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="M 15,18 12,21 22,31 12,41 15,44 25,34 35,44 38,41 28,31 38,21 35,18 25,28 z"
        id="rect3761-3"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccccc" />
+       d="M 15,18 12,21 22,31 12,41 15,44 25,34 35,44 38,41 28,31 38,21 35,18 25,28 z"
+       style="color:#000000;fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
   </g>
   <metadata
      id="metadata5843">
@@ -123,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Draft_Wipe</dc:title>
+        <dc:title></dc:title>
         <cc:license
            rdf:resource="" />
         <dc:date>Fri Oct 14 18:47:29 2011 +0000</dc:date>

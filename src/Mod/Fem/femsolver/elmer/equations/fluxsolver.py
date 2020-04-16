@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -26,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as femutils
+from femtools import femutils
 from ... import equationbase
 from . import linear
 
@@ -38,7 +40,7 @@ def create(doc, name="Fluxsolver"):
 
 class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
 
-    Type = "Fem::FemEquationElmerFluxsolver"
+    Type = "Fem::EquationElmerFluxsolver"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

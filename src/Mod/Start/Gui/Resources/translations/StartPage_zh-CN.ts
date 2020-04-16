@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-CN" sourcelanguage="en">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
+      <translation>下面是其他可用的工作台列表，可以添加到您的 FreeCAD 安装中。从菜单工具 -&gt; 插件管理器浏览并安装它们。您可以通过点击下面的链接更多的了解这些工具。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <translation>查看 github 上的所有提交</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -376,12 +376,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+      <translation>页面内框的背景颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>框背景颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>

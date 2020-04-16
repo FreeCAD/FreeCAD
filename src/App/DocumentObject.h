@@ -77,7 +77,7 @@ public:
     DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=0)
         : Which(WhichObject)
     {
-        if(sWhy)
+        if (sWhy)
             Why = sWhy;
     }
 

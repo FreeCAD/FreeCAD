@@ -61,54 +61,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
-    // box
-    ui->boxLength->setMaximum(INT_MAX);
-    ui->boxWidth->setMaximum(INT_MAX);
-    ui->boxHeight->setMaximum(INT_MAX);
-
-    // cylinder
-    ui->cylinderRadius->setMaximum(INT_MAX);
-    ui->cylinderHeight->setMaximum(INT_MAX);
-
-    // cone
-    ui->coneRadius1->setMaximum(INT_MAX);
-    ui->coneRadius2->setMaximum(INT_MAX);
-    ui->coneHeight->setMaximum(INT_MAX);
-
-    // sphere
-    ui->sphereRadius->setMaximum(INT_MAX);
-
-    // ellipsoid
-    ui->ellipsoidRadius1->setMaximum(INT_MAX);
-    ui->ellipsoidRadius2->setMaximum(INT_MAX);
-    ui->ellipsoidRadius3->setMaximum(INT_MAX);
-
-    // torus
-    ui->torusRadius1->setMaximum(INT_MAX);
-    ui->torusRadius2->setMaximum(INT_MAX);
-
-    // wedge
-    ui->wedgeXmin->setMinimum(INT_MIN);
-    ui->wedgeXmin->setMaximum(INT_MAX);
-    ui->wedgeYmin->setMinimum(INT_MIN);
-    ui->wedgeYmin->setMaximum(INT_MAX);
-    ui->wedgeZmin->setMinimum(INT_MIN);
-    ui->wedgeZmin->setMaximum(INT_MAX);
-    ui->wedgeX2min->setMinimum(INT_MIN);
-    ui->wedgeX2min->setMaximum(INT_MAX);
-    ui->wedgeZ2min->setMinimum(INT_MIN);
-    ui->wedgeZ2min->setMaximum(INT_MAX);
-    ui->wedgeXmax->setMinimum(INT_MIN);
-    ui->wedgeXmax->setMaximum(INT_MAX);
-    ui->wedgeYmax->setMinimum(INT_MIN);
-    ui->wedgeYmax->setMaximum(INT_MAX);
-    ui->wedgeZmax->setMinimum(INT_MIN);
-    ui->wedgeZmax->setMaximum(INT_MAX);
-    ui->wedgeX2max->setMinimum(INT_MIN);
-    ui->wedgeX2max->setMaximum(INT_MAX);
-    ui->wedgeZ2max->setMinimum(INT_MIN);
-    ui->wedgeZ2max->setMaximum(INT_MAX);
-
     this->groupLayout()->addWidget(proxy);
 
     int index = 0;
@@ -117,64 +69,178 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
             ui->boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
+            ui->boxLength->bind(static_cast<PartDesign::Box*>(vp->getObject())->Length);
             ui->boxHeight->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Height.getValue());
+            ui->boxHeight->bind(static_cast<PartDesign::Box*>(vp->getObject())->Height);
             ui->boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
+            ui->boxWidth->bind(static_cast<PartDesign::Box*>(vp->getObject())->Width);
+            ui->boxLength->setMinimum(0.0);
+            ui->boxLength->setMaximum(INT_MAX);
+            ui->boxWidth->setMinimum(0.0);
+            ui->boxWidth->setMaximum(INT_MAX);
+            ui->boxHeight->setMinimum(0.0);
+            ui->boxHeight->setMaximum(INT_MAX);
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
             ui->cylinderAngle->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getValue());
+            ui->cylinderAngle->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle);
             ui->cylinderHeight->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getValue());
+            ui->cylinderHeight->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height);
             ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
+            ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
+            ui->cylinderAngle->setMaximum(360.0);
+            ui->cylinderAngle->setMinimum(0.0);
+            ui->cylinderHeight->setMaximum(INT_MAX);
+            ui->cylinderHeight->setMinimum(0.0);
+            ui->cylinderRadius->setMaximum(INT_MAX);
+            ui->cylinderRadius->setMinimum(0.0);
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
             ui->sphereAngle1->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getValue());
+            ui->sphereAngle1->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1);
             ui->sphereAngle2->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getValue());
+            ui->sphereAngle2->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2);
             ui->sphereAngle3->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getValue());
+            ui->sphereAngle3->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3);
             ui->sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
+            ui->sphereRadius->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius);
+            ui->sphereAngle1->setMaximum(ui->sphereAngle2->rawValue()); // must geometrically be <= than sphereAngle2
+            ui->sphereAngle1->setMinimum(-90.0);
+            ui->sphereAngle2->setMaximum(90);
+            ui->sphereAngle2->setMinimum(ui->sphereAngle1->rawValue());
+            ui->sphereAngle3->setMaximum(360.0);
+            ui->sphereAngle3->setMinimum(0.0);
+            ui->sphereRadius->setMaximum(INT_MAX);
+            ui->sphereRadius->setMinimum(0.0);
             break;
         case PartDesign::FeaturePrimitive::Cone:
             index = 3;
             ui->coneAngle->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getValue());
+            ui->coneAngle->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Angle);
             ui->coneHeight->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getValue());
+            ui->coneHeight->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Height);
             ui->coneRadius1->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getValue());
+            ui->coneRadius1->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1);
             ui->coneRadius2->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getValue());
+            ui->coneRadius2->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2);
+            ui->coneAngle->setMaximum(360.0);
+            ui->coneAngle->setMinimum(0.0);
+            ui->coneHeight->setMaximum(INT_MAX);
+            ui->coneHeight->setMinimum(0.0);
+            ui->coneRadius1->setMaximum(INT_MAX);
+            ui->coneRadius1->setMinimum(0.0);
+            ui->coneRadius2->setMaximum(INT_MAX);
+            ui->coneRadius2->setMinimum(0.0);
             break;
         case PartDesign::FeaturePrimitive::Ellipsoid:
             index = 5;
             ui->ellipsoidAngle1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1.getValue());
+            ui->ellipsoidAngle1->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1);
             ui->ellipsoidAngle2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2.getValue());
+            ui->ellipsoidAngle2->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2);
             ui->ellipsoidAngle3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getValue());
+            ui->ellipsoidAngle3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3);
             ui->ellipsoidRadius1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getValue());
+            ui->ellipsoidRadius1->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1);
             ui->ellipsoidRadius2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getValue());
+            ui->ellipsoidRadius2->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2);
             ui->ellipsoidRadius3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getValue());
+            ui->ellipsoidRadius3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3);
+            ui->ellipsoidAngle1->setMaximum(ui->ellipsoidAngle2->rawValue()); // must geometrically be <= than sphereAngle2
+            ui->ellipsoidAngle1->setMinimum(-90.0);
+            ui->ellipsoidAngle2->setMaximum(90);
+            ui->ellipsoidAngle2->setMinimum(ui->ellipsoidAngle1->rawValue());
+            ui->ellipsoidAngle3->setMaximum(360.0);
+            ui->ellipsoidAngle3->setMinimum(0.0);
+            ui->ellipsoidRadius1->setMinimum(0.0);
+            ui->ellipsoidRadius1->setMaximum(INT_MAX);
+            ui->ellipsoidRadius2->setMinimum(0.0);
+            ui->ellipsoidRadius2->setMaximum(INT_MAX);
+            ui->ellipsoidRadius3->setMinimum(0.0);
+            ui->ellipsoidRadius3->setMaximum(INT_MAX);
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
             ui->torusAngle1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1.getValue());
+            ui->torusAngle1->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1);
             ui->torusAngle2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2.getValue());
+            ui->torusAngle2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2);
             ui->torusAngle3->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getValue());
+            ui->torusAngle3->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3);
             ui->torusRadius1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getValue());
+            ui->torusRadius1->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1);
             ui->torusRadius2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getValue());
+            ui->torusRadius2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2);
+            ui->torusAngle1->setMaximum(ui->torusAngle2->rawValue()); // must geometrically be <= than sphereAngle2
+            ui->torusAngle1->setMinimum(-180.0);
+            ui->torusAngle2->setMaximum(180);
+            ui->torusAngle2->setMinimum(ui->torusAngle1->rawValue());
+            ui->torusAngle3->setMaximum(360.0);
+            ui->torusAngle3->setMinimum(0.0);
+            // this is the outer radius that must not be smaller than the inner one
+            // otherwise the geometry is impossible and we can even get a crash:
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
+            ui->torusRadius1->setMaximum(INT_MAX);
+            ui->torusRadius1->setMinimum(ui->torusRadius2->rawValue());
+            ui->torusRadius2->setMaximum(ui->torusRadius1->rawValue());
+            ui->torusRadius2->setMinimum(0.0);
             break;
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
             ui->prismPolygon->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Polygon.getValue());
             ui->prismCircumradius->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getValue());
+            ui->prismCircumradius->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius);
             ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
+            ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
+            ui->prismCircumradius->setMaximum(INT_MAX);
+            ui->prismCircumradius->setMinimum(0.0);
+            ui->prismHeight->setMaximum(INT_MAX);
+            ui->prismHeight->setMinimum(0.0);
             break;
         case PartDesign::FeaturePrimitive::Wedge:
             index = 8;
             ui->wedgeXmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax.getValue());
+            ui->wedgeXmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax);
             ui->wedgeXmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin.getValue());
+            ui->wedgeXmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin);
             ui->wedgeX2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max.getValue());
+            ui->wedgeX2max->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max);
             ui->wedgeX2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min.getValue());
+            ui->wedgeX2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min);
             ui->wedgeYmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax.getValue());
+            ui->wedgeYmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax);
             ui->wedgeYmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin.getValue());
+            ui->wedgeYmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin);
             ui->wedgeZmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax.getValue());
+            ui->wedgeZmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax);
             ui->wedgeZmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin.getValue());
+            ui->wedgeZmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin);
             ui->wedgeZ2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max.getValue());
+            ui->wedgeZ2max->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max);
             ui->wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
+            ui->wedgeZ2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min);
+            ui->wedgeXmin->setMinimum(INT_MIN);
+            ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeYmin->setMinimum(INT_MIN);
+            ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be <= than wedgeYmax
+            ui->wedgeZmin->setMinimum(INT_MIN);
+            ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be <= than wedgeZmax
+            ui->wedgeX2min->setMinimum(INT_MIN);
+            ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeZ2min->setMinimum(INT_MIN);
+            ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeXmax->setMinimum(ui->wedgeXmin->rawValue());
+            ui->wedgeXmax->setMaximum(INT_MAX);
+            ui->wedgeYmax->setMinimum(ui->wedgeYmin->rawValue());
+            ui->wedgeYmax->setMaximum(INT_MAX);
+            ui->wedgeZmax->setMinimum(ui->wedgeZmin->rawValue());
+            ui->wedgeZmax->setMaximum(INT_MAX);
+            ui->wedgeX2max->setMinimum(ui->wedgeX2min->rawValue());
+            ui->wedgeX2max->setMaximum(INT_MAX);
+            ui->wedgeZ2max->setMinimum(ui->wedgeZ2min->rawValue());
+            ui->wedgeZ2max->setMaximum(INT_MAX);
             break;
     }
 
@@ -246,15 +312,15 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     // wedge
     connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
+    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXminChanged(double)));
     connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
+    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYminChanged(double)));
     connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
+    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZminChanged(double)));
     connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
+    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2minChanged(double)));
     connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
+    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2minChanged(double)));
 }
 
 /*
@@ -320,12 +386,14 @@ void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
 
 void TaskBoxPrimitives::onSphereAngle1Changed(double v) {
     PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    ui->sphereAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onSphereAngle2Changed(double v) {
     PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    ui->sphereAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle2.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -369,12 +437,14 @@ void TaskBoxPrimitives::onConeRadius2Changed(double v) {
 
 void TaskBoxPrimitives::onEllipsoidAngle1Changed(double v) {
     PartDesign::Ellipsoid* sph = static_cast<PartDesign::Ellipsoid*>(vp->getObject());
+    ui->ellipsoidAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onEllipsoidAngle2Changed(double v) {
     PartDesign::Ellipsoid* sph = static_cast<PartDesign::Ellipsoid*>(vp->getObject());
+    ui->ellipsoidAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle22
     sph->Angle2.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -405,12 +475,14 @@ void TaskBoxPrimitives::onEllipsoidRadius3Changed(double v) {
 
 void TaskBoxPrimitives::onTorusAngle1Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
+    ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2  
     sph->Angle1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onTorusAngle2Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
+    ui->torusAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle2.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -423,12 +495,17 @@ void TaskBoxPrimitives::onTorusAngle3Changed(double v) {
 
 void TaskBoxPrimitives::onTorusRadius1Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
+    // this is the outer radius that must not be smaller than the inner one
+    // otherwise the geometry is impossible and we can even get a crash:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
+    ui->torusRadius2->setMaximum(v);
     sph->Radius1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onTorusRadius2Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
+    ui->torusRadius1->setMinimum(v);
     sph->Radius2.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
@@ -452,62 +529,72 @@ void TaskBoxPrimitives::onPrismPolygonChanged(int v) {
 }
 
 
-void TaskBoxPrimitives::onWedgeX2inChanged(double v) {
+void TaskBoxPrimitives::onWedgeX2minChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeX2max->setMinimum(v); // wedgeX2min must be <= than wedgeX2max
     sph->X2min.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeX2maxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeX2min->setMaximum(v); // wedgeX2min must be <= than wedgeX2max
     sph->X2max.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
-void TaskBoxPrimitives::onWedgeXinChanged(double v) {
+void TaskBoxPrimitives::onWedgeXminChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeXmax->setMinimum(v);
     sph->Xmin.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeXmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeXmin->setMaximum(v); // must be <= than wedgeXmax
     sph->Xmax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
-void TaskBoxPrimitives::onWedgeYinChanged(double v) {
+void TaskBoxPrimitives::onWedgeYminChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeYmax->setMinimum(v);
     sph->Ymin.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeYmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeYmin->setMaximum(v);
     sph->Ymax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
-void TaskBoxPrimitives::onWedgeZ2inChanged(double v) {
+void TaskBoxPrimitives::onWedgeZ2minChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeZ2max->setMinimum(v);
     sph->Z2min.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZ2maxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeZ2min->setMaximum(v); // must be <= than wedgeXmax
     sph->Z2max.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
-void TaskBoxPrimitives::onWedgeZinChanged(double v) {
+void TaskBoxPrimitives::onWedgeZminChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeZmax->setMinimum(v);
     sph->Zmin.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
+    ui->wedgeZmin->setMaximum(v);
     sph->Zmax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }

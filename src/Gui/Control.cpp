@@ -110,7 +110,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         return;
     }
 
-    // Since the caller sets up a modeless task panel, it indicates intension
+    // Since the caller sets up a modeless task panel, it indicates intention
     // for prolonged editing. So disable auto transaction in the current call
     // stack.
     // Do this before showing the dialog because its open() function is called

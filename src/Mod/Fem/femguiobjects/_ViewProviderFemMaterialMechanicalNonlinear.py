@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,61 +29,12 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMaterialMechanicalNonlinear
 
-import FreeCAD
-import FreeCADGui
-import FemGui  # needed to display the icons in TreeView
-
-from pivy import coin
-
-False if FemGui.__name__ else True  # flake8, dummy FemGui usage
+from . import ViewProviderFemConstraint
 
 
-class _ViewProviderFemMaterialMechanicalNonlinear:
-    "A View Provider for the FemMaterialMechanicalNonlinear object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+class _ViewProviderFemMaterialMechanicalNonlinear(ViewProviderFemConstraint.ViewProxy):
+    """
+    A View Provider for the FemMaterialMechanicalNonlinear object
+    """
 
-    def getIcon(self):
-        return ":/icons/fem-material-nonlinear.svg"
-
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Default")
-
-    def getDisplayModes(self, obj):
-        return ["Default"]
-
-    def getDefaultDisplayMode(self):
-        return "Default"
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def setEdit(self, vobj, mode=0):
-        # avoid edit mode by return False
-        # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
-        return False
-
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+    pass

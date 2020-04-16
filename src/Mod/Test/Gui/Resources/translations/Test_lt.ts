@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -102,34 +102,33 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
       <translation>Žinynas</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>Įveskite iškviečiamo objekto pavadinimą, kurį iškvietus bus grąžinamas bandymo atvejis. Paspaudus „Pradėti“, taip sudarytas bandymas bus įvykdytas.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+Dukart spustelėkite klaidą medžio rodinyje ir gausite išsamų aprašą apie apie ja, įskaitant dėklo pėdsaką.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Apie FreeCAD modulių patikrą</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>Autorinės teisės (c) Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+„FreeCAD“ modulių patikra yra programos „FreeCAD“ dalis, palaikanti savų modulių patikrą.</translation>
     </message>
   </context>
 </TS>

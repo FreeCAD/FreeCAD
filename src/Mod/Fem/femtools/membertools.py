@@ -2,6 +2,8 @@
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -140,7 +142,7 @@ def get_mesh_to_solve(analysis):
         if (
             m.isDerivedFrom("Fem::FemMeshObject")
             # the next line should not be needed as the result mesh is not a analysis member
-            and not femutils.is_of_type(m, "Fem::FemMeshResult")
+            and not femutils.is_of_type(m, "Fem::MeshResult")
         ):
             if not mesh_to_solve:
                 mesh_to_solve = m
@@ -251,16 +253,16 @@ class AnalysisMember():
 
         # geometries
         self.geos_beamsection = self.get_several_member(
-            "Fem::FemElementGeometry1D"
+            "Fem::ElementGeometry1D"
         )
         self.geos_beamrotation = self.get_several_member(
-            "Fem::FemElementRotation1D"
+            "Fem::ElementRotation1D"
         )
         self.geos_fluidsection = self.get_several_member(
-            "Fem::FemElementFluid1D"
+            "Fem::ElementFluid1D"
         )
         self.geos_shellthickness = self.get_several_member(
-            "Fem::FemElementGeometry2D"
+            "Fem::ElementGeometry2D"
         )
 
         # constraints

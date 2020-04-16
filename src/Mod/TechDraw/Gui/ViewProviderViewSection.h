@@ -48,6 +48,7 @@ public:
     App::PropertyColor  CutSurfaceColor;
     App::PropertyBool   HatchCutSurface;       //obsolete - use CutSurfaceDisplay
     App::PropertyColor  HatchColor;
+    App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
 
@@ -65,8 +66,7 @@ public:
 
     void updateGraphic(void);
     void getParameters(void);
-
-
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawViewSection* getViewObject() const;
 };

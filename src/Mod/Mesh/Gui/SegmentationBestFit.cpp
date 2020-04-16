@@ -382,7 +382,7 @@ void SegmentationBestFit::accept()
 
     MeshCore::MeshSegmentAlgorithm finder(kernel);
 
-    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxCyl->isChecked()) {
         MeshCore::AbstractSurfaceFit* fitter;
         if (cylinderParameter.size() == 7) {
@@ -395,7 +395,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::CylinderSurfaceFit;
         }
-        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numCyl->value(), ui->tolCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
@@ -409,7 +409,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::SphereSurfaceFit;
         }
-        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numSph->value(), ui->tolSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
@@ -423,7 +423,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::PlaneSurfaceFit;
         }
-        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numPln->value(), ui->tolPln->value()));
     }
     finder.FindSegments(segm);
@@ -438,7 +438,7 @@ void SegmentationBestFit::accept()
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
@@ -452,7 +452,6 @@ void SegmentationBestFit::accept()
             label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
             feaSegm->Label.setValue(label.str());
         }
-        delete (*it);
     }
     document->commitTransaction();
 }

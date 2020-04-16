@@ -51,6 +51,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
         import DraftGui
         from draftguitools import gui_circulararray
         from draftguitools import gui_polararray
+        from draftguitools import gui_orthoarray
+        from draftguitools import gui_arrays
         import Arch_rc
         import Arch
 
@@ -178,6 +180,7 @@ FreeCADGui.addWorkbench(ArchWorkbench)
 import Arch_rc
 from PySide.QtCore import QT_TRANSLATE_NOOP
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 
 FreeCAD.__unit_test__ += ["TestArch"]

@@ -31,7 +31,7 @@ namespace RaytracingGui {
 class Ui_DlgSettingsRay;
 
 /**
- * The DlgSettings3DViewImp class implements a preference page to change settings
+ * The DlgSettingsRayImp class implements a preference page to change settings
  * for the Inventor viewer.
  * \author Jürgen Riegel
  */

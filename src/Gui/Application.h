@@ -202,6 +202,12 @@ public:
     void setupContextMenu(const char* recipient, MenuItem*) const;
     //@}
 
+    /** @name Appearance */
+    //@{
+    /// Activate a named workbench
+    void setStyleSheet(const QString& qssFile, bool tiledBackground);
+    //@}
+
     /** @name User Commands */
     //@{
     /// Get macro manager
@@ -256,7 +262,9 @@ public:
 
     static PyObject* sRunCommand               (PyObject *self,PyObject *args);
     static PyObject* sAddCommand               (PyObject *self,PyObject *args);
+    static PyObject* sGetCommandInfo           (PyObject *self,PyObject *args);
     static PyObject* sListCommands             (PyObject *self,PyObject *args);
+    static PyObject* sGetCommandShortcut       (PyObject *self,PyObject *args);
     static PyObject* sIsCommandActive          (PyObject *self,PyObject *args);
     static PyObject* sUpdateCommands           (PyObject *self,PyObject *args);
 

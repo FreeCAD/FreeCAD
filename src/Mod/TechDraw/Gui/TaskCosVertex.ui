@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
-    <height>405</height>
+    <width>400</width>
+    <height>167</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -31,202 +31,160 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="leBaseView">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Base View</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pbTracker">
+       <property name="text">
+        <string>Point Picker</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>300</height>
-      </size>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="toolTip">
+      <string>Position from the view center</string>
      </property>
-     <property name="baseSize">
-      <size>
-       <width>300</width>
-       <height>300</height>
-      </size>
+     <property name="title">
+      <string>Position</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="leBaseView">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="mouseTracking">
-             <bool>false</bool>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="acceptDrops">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Base View</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pbTracker">
-            <property name="text">
-             <string>Point Picker</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>X</string>
           </property>
          </widget>
         </item>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_2" columnstretch="3,0,3">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>X</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Z</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Y</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QDoubleSpinBox" name="dsbX">
-            <property name="decimals">
-             <number>4</number>
-            </property>
-            <property name="minimum">
-             <double>-2147483647.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>2147483647.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QDoubleSpinBox" name="dsbY">
-            <property name="decimals">
-             <number>4</number>
-            </property>
-            <property name="minimum">
-             <double>-2147483647.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>2147483647.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QDoubleSpinBox" name="dsbZ">
-            <property name="decimals">
-             <number>4</number>
-            </property>
-            <property name="minimum">
-             <double>-2147483647.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>2147483647.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>28</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::QuantitySpinBox" name="dsbX">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <double>-2147483647.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>2147483647.000000000000000</double>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>4</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::QuantitySpinBox" name="dsbY">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <double>-2147483647.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>2147483647.000000000000000</double>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>4</number>
+          </property>
+         </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="Resources/TechDraw.qrc"/>
  </resources>

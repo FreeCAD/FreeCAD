@@ -60,6 +60,7 @@ public:
     virtual Gui::MDIView *getMDIView() const override;
 
     void setMarkers(bool state);
+    virtual bool onDelete(const std::vector<std::string> &) override;
 };
 
 } // namespace TechDrawGui

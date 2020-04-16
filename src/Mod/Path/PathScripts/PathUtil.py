@@ -64,7 +64,7 @@ def getProperty(obj, prop):
     return attr
 
 def getPropertyValueString(obj, prop):
-    '''getPropertyValueString(obj, prop) ... answer a string represntation of an object's property's value.'''
+    '''getPropertyValueString(obj, prop) ... answer a string representation of an object's property's value.'''
     attr = getProperty(obj, prop)
     if hasattr(attr, 'UserString'):
         return attr.UserString

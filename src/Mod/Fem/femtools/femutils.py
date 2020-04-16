@@ -2,6 +2,8 @@
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -118,7 +120,7 @@ def is_derived_from(obj, t):
 def get_pref_working_dir(solver_obj):
     """ Return working directory for solver honoring user settings.
 
-    :throws femtools.erros.MustSaveError:
+    :throws femtools.errors.MustSaveError:
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:
@@ -307,10 +309,10 @@ def get_refshape_type(fem_doc_object):
     :note:
      Undefined behaviour if constraint contains no references (empty list).
     """
-    import femmesh.meshtools as FemMeshTools
+    from femtools.geomtools import get_element
     if hasattr(fem_doc_object, "References") and fem_doc_object.References:
         first_ref_obj = fem_doc_object.References[0]
-        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        first_ref_shape = get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
         FreeCAD.Console.PrintMessage(
             "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)

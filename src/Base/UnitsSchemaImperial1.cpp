@@ -30,7 +30,6 @@
 #endif
 
 #include <QString>
-#include <QLocale>
 #include "Console.h"
 #include "Exception.h"
 #include "UnitsApi.h"

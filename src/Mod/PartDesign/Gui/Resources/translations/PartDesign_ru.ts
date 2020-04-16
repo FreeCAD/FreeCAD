@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Дублирует выбранный объект и заносит его в активное тело</translation>
+      <translation>Дублирует выбранный объект и добавляет его в активное тело</translation>
     </message>
   </context>
   <context>
@@ -1644,7 +1644,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
       <source>Add scaled transformation</source>
-      <translation>Добавить изменения в масштабе</translation>
+      <translation>Добавить преобразование масштаба</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
@@ -1711,7 +1711,7 @@
       <location filename="../../TaskPadParameters.cpp" line="112"/>
       <location filename="../../TaskPadParameters.cpp" line="435"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="128"/>
@@ -1727,7 +1727,7 @@
       <location filename="../../TaskPadParameters.cpp" line="63"/>
       <location filename="../../TaskPadParameters.cpp" line="420"/>
       <source>No face selected</source>
-      <translation>Поверхность не выбрана</translation>
+      <translation>Грань не выбрана</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="125"/>
@@ -1774,7 +1774,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Закфиксировано</translation>
+      <translation>Зафиксировано</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -1873,12 +1873,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation>Правильный угол</translation>
+      <translation>Правый угол</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation>Скругленный угол</translation>
+      <translation>Скруглённый угол</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
@@ -1911,17 +1911,17 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation>Тип преобразования</translation>
+      <translation>Режим трансформации</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation>Постоянный</translation>
+      <translation>Постоянная</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Многопрофильный</translation>
+      <translation>Много сечений</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -1936,7 +1936,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
       <source>Section transformation</source>
-      <translation>Параметры трансформации сечения</translation>
+      <translation>Преобразование сечения</translation>
     </message>
   </context>
   <context>
@@ -1988,7 +1988,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="107"/>
       <location filename="../../TaskPocketParameters.cpp" line="462"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="128"/>
@@ -2004,7 +2004,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
       <location filename="../../TaskPocketParameters.cpp" line="447"/>
       <source>No face selected</source>
-      <translation>Поверхность не выбрана</translation>
+      <translation>Грань не выбрана</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="120"/>
@@ -2237,7 +2237,7 @@
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="155"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
   </context>
   <context>
@@ -2869,7 +2869,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="84"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="88"/>
@@ -3078,7 +3078,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
       <source>Face</source>
-      <translation>Поверхность</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>

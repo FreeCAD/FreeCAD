@@ -50,6 +50,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/PropertyGeo.h>
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -61,8 +63,6 @@
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
-
 
 using namespace FemGui;
 using namespace Gui;
@@ -70,7 +70,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPlaneRotation */
 
 TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-planerotation")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPlaneRotation")
 { //Note change "planerotation" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintPlaneRotation();
@@ -129,15 +129,14 @@ void TaskFemConstraintPlaneRotation::updateUI()
 void TaskFemConstraintPlaneRotation::addToSelection()
 {
     int rows = ui->lw_references->model()->rowCount();
-    if (rows==1){
+    if (rows == 1){
         QMessageBox::warning(this, tr("Selection error"), tr("Only one face can be selected for a plane rotation constraint!"));
         Gui::Selection().clearSelection();
         return;
     }
     else {
-
         std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.size()==0){
+        if (selection.size() == 0){
             QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
             return;
         }
@@ -145,45 +144,41 @@ void TaskFemConstraintPlaneRotation::addToSelection()
         std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
         std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-        for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
-            if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
-               QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+        for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
+            if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+               QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
                return;
              }
+        const std::vector<std::string>& subNames = it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
 
-        std::vector<std::string> subNames=it->getSubNames();
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-
-        if (subNames.size()==1){
-            for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
-                bool addMe=true;
-                if ((subNames[subIt].substr(0,4) != "Face")) {
+        if (subNames.size() == 1){
+            for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
+                bool addMe = true;
+                if ((subNames[subIt].substr(0, 4) != "Face")) {
                     QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
                     return;
                 }
                 Part::Feature* feat = static_cast<Part::Feature*>(obj);
                 TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNames[subIt].c_str());
-                if ((subNames[subIt].substr(0,4) == "Face")) {
+                if ((subNames[subIt].substr(0, 4) == "Face")) {
                     if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                         QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked"));
                         return;
                     }
                 }
-                for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
-                    itr!= SubElements.end();
-                    itr =  std::find(++itr,SubElements.end(),subNames[subIt])){// for every sub element in selection that matches one in old list
-                    if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                    itr != SubElements.end();
+                    itr = std::find(++itr, SubElements.end(), subNames[subIt])){// for every sub element in selection that matches one in old list
+                    if (obj==Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
                         addMe=false;
                     }
                 }
                 if (addMe){
-                        disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-                            this, SLOT(setSelection(QListWidgetItem*)));
-                        Objects.push_back(obj);
-                        SubElements.push_back(subNames[subIt]);
-                        ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
-                        connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-                            this, SLOT(setSelection(QListWidgetItem*)));
+                    QSignalBlocker block(ui->lw_references);
+                    Objects.push_back(obj);
+                    SubElements.push_back(subNames[subIt]);
+                    ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
                 }
             }
         }
@@ -193,7 +188,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
             return;
         }
         //Update UI
-        pcConstraint->References.setValues(Objects,SubElements);
+        pcConstraint->References.setValues(Objects, SubElements);
         updateUI();
         }
     }
@@ -202,54 +197,48 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 void TaskFemConstraintPlaneRotation::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size()==0){
+    if (selection.size() == 0){
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-
     Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<int> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
-        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
-            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+    std::vector<size_t> itemsToDel;
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
+        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
+        const std::vector<std::string>& subNames=it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
 
-        std::vector<std::string> subNames=it->getSubNames();
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-
-        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
-            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
-                itr!= SubElements.end();
-                itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
+            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
+                itr != SubElements.end();
+                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
             {// for every sub element in selection that matches one in old list
-                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
-                    itemsToDel.push_back(std::distance(SubElements.begin(),itr));
+                if (obj == Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+                    itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
         }
     }
-
-    std::sort(itemsToDel.begin(),itemsToDel.end());
-    while (itemsToDel.size()>0){
-        Objects.erase(Objects.begin()+itemsToDel.back());
-        SubElements.erase(SubElements.begin()+itemsToDel.back());
+    std::sort(itemsToDel.begin(), itemsToDel.end());
+    while (itemsToDel.size() > 0){
+        Objects.erase(Objects.begin() + itemsToDel.back());
+        SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
     //Update UI
-    disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-
-    ui->lw_references->clear();
-    for (unsigned int j=0;j<Objects.size();j++){
-        ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
+    {
+        QSignalBlocker block(ui->lw_references);
+        ui->lw_references->clear();
+        for (unsigned int j = 0; j < Objects.size(); j++) {
+            ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
+        }
     }
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-
-    pcConstraint->References.setValues(Objects,SubElements);
+    pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
 }
 

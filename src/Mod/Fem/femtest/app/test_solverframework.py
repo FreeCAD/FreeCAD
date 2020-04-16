@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 FreeCAD Developers                                 *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,16 +19,21 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
+__title__ = "Solver frame work FEM unit tests"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+import unittest
+from os.path import join
 
 import FreeCAD
-import ObjectsFem
+
 import femsolver.run
-import unittest
+import ObjectsFem
 from . import support_utils as testtools
 from .support_utils import fcc_print
-
-from os.path import join
 
 
 class TestSolverFrameWork(unittest.TestCase):
@@ -40,15 +44,8 @@ class TestSolverFrameWork(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
         # more inits
         self.mesh_name = "Mesh"
@@ -74,9 +71,9 @@ class TestSolverFrameWork(unittest.TestCase):
 
         # set up the CalculiX static analysis example
         from femexamples import boxanalysis as box
-        box.setup_static(self.active_doc, "calculix")
+        box.setup_static(self.document, "calculix")
 
-        solver_obj = self.active_doc.SolverCalculiX
+        solver_obj = self.document.SolverCalculiX
 
         base_name = "cube_static"
         analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
@@ -84,7 +81,7 @@ class TestSolverFrameWork(unittest.TestCase):
         # save the file
         save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
         fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
-        self.active_doc.saveAs(save_fc_file)
+        self.document.saveAs(save_fc_file)
 
         # write input file
         fcc_print("Checking FEM input file writing for CalculiX solver framework solver ...")
@@ -116,19 +113,19 @@ class TestSolverFrameWork(unittest.TestCase):
 
         # set up the Elmer static analysis example
         from femexamples import boxanalysis as box
-        box.setup_static(self.active_doc, "elmer")
+        box.setup_static(self.document, "elmer")
 
-        analysis_obj = self.active_doc.Analysis
-        solver_obj = self.active_doc.SolverElmer
-        material_obj = self.active_doc.MechanicalMaterial
-        mesh_obj = self.active_doc.Mesh
-        box_object = self.active_doc.Box
+        analysis_obj = self.document.Analysis
+        solver_obj = self.document.SolverElmer
+        material_obj = self.document.MechanicalMaterial
+        mesh_obj = self.document.Mesh
+        box_object = self.document.Box
 
         base_name = "cube_static"
         analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
 
         # TODO move to elmer solver of femexample code
-        ObjectsFem.makeEquationElasticity(self.active_doc, solver_obj)
+        ObjectsFem.makeEquationElasticity(self.document, solver_obj)
 
         # set ThermalExpansionCoefficient
         # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
@@ -139,17 +136,17 @@ class TestSolverFrameWork(unittest.TestCase):
 
         # elmer needs a GMHS mesh object
         # FIXME error message on Python solver run
-        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.active_doc)
+        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.document)
         mesh_gmsh.CharacteristicLengthMin = "9 mm"
         mesh_gmsh.FemMesh = mesh_obj.FemMesh
         mesh_gmsh.Part = box_object
         analysis_obj.addObject(mesh_gmsh)
-        self.active_doc.removeObject(mesh_obj.Name)  # remove original mesh object
+        self.document.removeObject(mesh_obj.Name)  # remove original mesh object
 
         # save the file
         save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
         fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
-        self.active_doc.saveAs(save_fc_file)
+        self.document.saveAs(save_fc_file)
 
         # write input files
         fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")

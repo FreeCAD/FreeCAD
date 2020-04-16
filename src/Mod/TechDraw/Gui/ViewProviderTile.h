@@ -48,6 +48,7 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    virtual bool canDelete(App::DocumentObject *obj) const;
 
 /*    virtual TechDraw::DrawTile* getViewObject() const;*/
     virtual TechDraw::DrawTile* getFeature() const;

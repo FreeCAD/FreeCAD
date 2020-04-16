@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,71 +29,47 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemSolverCalculix
 
-import FreeCAD
-import FreeCADGui
-import FemGui
-
-# for the panel
+import os
+import sys
+import time
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import os
-import time
-import sys
+
+import FreeCAD
+import FreeCADGui
+
+import FemGui
+from . import ViewProviderFemConstraint
+
 if sys.version_info.major >= 3:
     def unicode(text, *args):
         return str(text)
 
 
-class _ViewProviderFemSolverCalculix:
-    "A View Provider for the FemSolverCalculix object"
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
+class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
+    """
+    A View Provider for the FemSolverCalculix object
+    """
 
     def getIcon(self):
-        return ":/icons/fem-solver-standard.svg"
-
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
+        return ":/icons/FEM_SolverStandard.svg"
 
     def setEdit(self, vobj, mode=0):
-        taskd = _TaskPanelFemSolverCalculix(self.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel,
+            hide_mesh=False
+        )
 
 
-class _TaskPanelFemSolverCalculix:
-    """The TaskPanel for CalculiX ccx tools solver object"""
+class _TaskPanel:
+    """
+    The TaskPanel for CalculiX ccx tools solver object
+    """
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(

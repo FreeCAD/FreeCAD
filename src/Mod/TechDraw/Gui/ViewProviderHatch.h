@@ -54,6 +54,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void updateData(const App::Property*) override;
+    virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawHatch* getViewObject() const;
 

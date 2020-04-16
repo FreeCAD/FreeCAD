@@ -301,14 +301,40 @@ class _Rebar(ArchComponent.Component):
         if self.clone(obj):
             return
         if not obj.Base:
+            FreeCAD.Console.PrintError(
+                "No Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Base.Shape:
+            FreeCAD.Console.PrintError(
+                "No Shape in Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
-        if not obj.Base.Shape.Wires:
+        if obj.Base.Shape.Faces:
+            FreeCAD.Console.PrintError(
+                "Faces in Shape of Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
+            return
+        if not obj.Base.Shape.Edges:
+            FreeCAD.Console.PrintError(
+                "No Edges in Shape of Base, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Diameter.Value:
+            FreeCAD.Console.PrintError(
+                "No Diameter Value, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         if not obj.Amount:
+            FreeCAD.Console.PrintError(
+                "No Amount, return without a rebar shape for {}.\n"
+                .format(obj.Name)
+            )
             return
         father = obj.Host
         fathershape = None
@@ -322,13 +348,22 @@ class _Rebar(ArchComponent.Component):
             if hasattr(father,'Shape'):
                 fathershape = father.Shape
 
-        wire = obj.Base.Shape.Wires[0]
+        import Part
+        # corner cases:
+        #    compound from more Wires
+        #    compound without Wires but with multiple Edges
+        # Does they make sense? If yes handle them.
+        # Does it makes sense to handle Shapes with Faces or even Solids?
+        if not obj.Base.Shape.Wires and len(obj.Base.Shape.Edges) == 1:
+            wire = Part.Wire(obj.Base.Shape.Edges[0])
+        else:
+            wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
             #print(obj.Rounding)
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
-                import DraftGeomUtils
-                wire = DraftGeomUtils.filletWire(wire,radius)
+                from DraftGeomUtils import filletWire
+                wire = filletWire(wire,radius)
         bpoint, bvec = self.getBaseAndAxis(wire)
         if not bpoint:
             return
@@ -362,7 +397,6 @@ class _Rebar(ArchComponent.Component):
             if length:
                 obj.Length = length
         pl = obj.Placement
-        import Part
         circle = Part.makeCircle(obj.Diameter.Value/2,bpoint,bvec)
         circle = Part.Wire(circle)
         try:

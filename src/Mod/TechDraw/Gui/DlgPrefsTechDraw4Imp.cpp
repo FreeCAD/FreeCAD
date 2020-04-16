@@ -52,6 +52,8 @@ void DlgPrefsTechDraw4Imp::saveSettings()
     cbFuseBeforeSection->onSave();
     sbMaxTiles->onSave();
     sbMaxPat->onSave();
+    cbShowLoose->onSave();
+    leFormatSpec->onSave();
 }
 
 void DlgPrefsTechDraw4Imp::loadSettings()
@@ -65,6 +67,8 @@ void DlgPrefsTechDraw4Imp::loadSettings()
     cbFuseBeforeSection->onRestore();
     sbMaxTiles->onRestore();
     sbMaxPat->onRestore();
+    cbShowLoose->onRestore();
+    leFormatSpec->onRestore();
 }
 
 /**

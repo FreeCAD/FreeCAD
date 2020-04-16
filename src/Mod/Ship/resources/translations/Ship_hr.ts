@@ -64,7 +64,7 @@
     <message>
       <location filename="../../ShipGui.py" line="97"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Nacrtajte krivulju poprečnih područja</translation>
     </message>
   </context>
   <context>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Napravite novi primjerak broda na vrhu geometrije trupa</translation>
     </message>
   </context>
   <context>
@@ -139,7 +139,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
       <source>Plot the transversal areas curve</source>
-      <translation type="unfinished">Plot the transversal areas curve</translation>
+      <translation>Nacrtajte krivulju poprečnih područja</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
@@ -190,7 +190,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="157"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">Please create or load a ship hull geometry before using this tool</translation>
+      <translation>Prije korištenja ovog alata napravite ili unesite geometriju trupa broda</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
+      <translation>Odabrano je više brodova (zanemarit će se dodatni brodovi)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
@@ -260,92 +260,92 @@
     <message>
       <location filename="../../InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
+      <translation>Modul grafikona je onemogućen, alati ne mogu napraviti grafikon izlazne krivulje</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="85"/>
       <source>Failure detecting external faces from the ship object</source>
-      <translation type="unfinished">Failure detecting external faces from the ship object</translation>
+      <translation>Greška kod otkrivanja vanjskih lica od objekta broda</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Prije upotrebe ovog alata mora biti odabrana instanca spremnika (nije odabran nijedan objekt)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="134"/>
       <source>More than one tank have been selected (the extra tanks will be ignored)</source>
-      <translation type="unfinished">More than one tank have been selected (the extra tanks will be ignored)</translation>
+      <translation>Odabrano je više od jednog spremnika (dodatni spremnici će se zanemariti)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no valid tank found at the selected objects)</translation>
+      <translation>Prije upotrebe ovog alata mora biti odabrana instanca spremnika (kod odabranih objekata nije pronađen valjani spremnik)</translation>
     </message>
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Operacija volumena spremnika nije uspjela. Alat pokušava ponovo malo pomaknuti položaj slobodne površine</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Prije korištenja ovog alata mora biti odabrana instanca stanja učitavanja (nije odabran nijedan objekt)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Pogrešna oznaka broda! (nije pronađen nijedan slučaj označen kao "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Dvoznačna brodska oznaka! ({} pronađeni primjerci "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Odabrano je više od jednog stanja utovara (dodatni uvjeti utovara bit će zanemareni)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Prije korištenja ovog alata mora biti odabrana instanca stanja učitavanja (u odabranim objektima nije pronađen valjani uvjet učitavanja)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Prevelika težina! Brod nikad neće istisnuti dovoljno vode</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Pogrešna oznaka težine! (nije pronađen nijedan slučaj označen kao "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Dvoznačna oznaka težine! ({} pronađeni primjerci "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>Nevažeća težina! (objekt označen kao "{}" nije težina)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Pogrešna oznaka tanka! (nije pronađen nijedan slučaj označen kao "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="282"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Dvoznačna oznaka tanka! ({} pronađeni primjerci oznake"{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Nevažeći tank! (objekt označen kao "{}" nije spremnik)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
@@ -355,37 +355,37 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Boolova operacija nije uspjela kada je pokušao doći do podvodne strane. Alat pokušava ponovno polako pomaknuti položaj slobodne površine</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: Računanje poprečnog područja nije uspjelo</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Nulta zapremina pronađena je tijekom računanja pomaka!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Plutajuće područje se ne može izračunati</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>ZeroDivisionError: Nijedno područje nije pronađeno tijekom računanja plutajućeg područja!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Područje glavnog okvira se ne može izračunati</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Nula površina pronađena tijekom izračuna koeficijenta glavnog područja nosača!</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Iscrtaj GZ krivulju</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
@@ -461,27 +461,27 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="253"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Promjenjivo skraćivanje</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Brod će se zakretati za svaki kut motanja u ravnotežno kutno skraćivanje. Znatno će se povećati traženo računalno vrijeme</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>Odabran kut [deg] alata GZ krivulje</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="299"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>Broj odabranih točaka u alatu GZ krivulje</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="314"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Odabir promjenjivog kuta skraćivanja alata GZ krivulje</translation>
     </message>
   </context>
   <context>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="247"/>
       <source>Create sections</source>
-      <translation>Kreiraj dijelove</translation>
+      <translation>Kreiraj odjeljke</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="252"/>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Objekti tankova mogu se stvoriti samo na vrhu njegove geometrije (nije odabran nijedan objekt)</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
@@ -674,12 +674,12 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Predmeti s težinom mogu se stvoriti samo na vrhu njegove geometrije (nije odabran nijedan objekt)</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="126"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation>U odabranim objektima nisu pronađeni geometrijski oblici</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
