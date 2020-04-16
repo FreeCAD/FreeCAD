@@ -1052,7 +1052,7 @@ class Component(ArchIFC.IfcProduct):
 class ViewProviderComponent:
     """A default View Provider for Component objects.
 
-    Acts as a base for all other Arch view providers. It’s properties and
+    Acts as a base for all other Arch view providers. It's properties and
     behaviours are common to all Arch view providers.
     """ 
 
