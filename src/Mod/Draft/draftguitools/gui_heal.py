@@ -1,4 +1,6 @@
 # ***************************************************************************
+# *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
+# *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,52 +22,55 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft ArrayTools command to group the other array tools."""
-## @package gui_arrays
+"""Provides the Draft_Heal command to heal older Draft files."""
+## @package gui_health
 # \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \brief Provides the Draft_Heal command to heal older Draft files.
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
-import draftguitools.gui_circulararray
-import draftguitools.gui_polararray
-import draftguitools.gui_orthoarray
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
-True if draftguitools.gui_circulararray.__name__ else False
-True if draftguitools.gui_polararray.__name__ else False
-True if draftguitools.gui_orthoarray.__name__ else False
+import Draft
+import draftguitools.gui_base as gui_base
+from draftutils.translate import _tr
 
 
-class ArrayGroupCommand:
-    """Gui command for the group of array tools."""
+class Heal(gui_base.GuiCommandSimplest):
+    """The Draft Heal command definition.
 
-    def GetCommands(self):
-        """Tuple of array commands."""
-        return ("Draft_OrthoArray",
-                "Draft_PolarArray", "Draft_CircularArray",
-                "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray")
+    Heal faulty Draft objects saved with an earlier version of the program.
+
+    It inherits `GuiCommandSimplest` to set up the document
+    and other behavior. See this class for more information.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
+        _tip = ("Heal faulty Draft objects saved with an earlier version "
+                "of the program.\n"
+                "If an object is selected it will try to heal that object "
+                "in particular,\n"
+                "otherwise it will try to heal all objects "
+                "in the active document.")
 
-        return {'Pixmap': 'Draft_Array',
-                'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", _tooltip)}
+        return {'Pixmap': 'Draft_Heal',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", _tip)}
 
-    def IsActive(self):
-        """Return True when this command should be available."""
-        if App.activeDocument():
-            return True
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated()
+
+        s = Gui.Selection.getSelection()
+        self.doc.openTransaction("Heal")
+        if s:
+            Draft.heal(s)
         else:
-            return False
+            Draft.heal()
+        self.doc.commitTransaction()
 
 
-Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
+Gui.addCommand('Draft_Heal', Heal())

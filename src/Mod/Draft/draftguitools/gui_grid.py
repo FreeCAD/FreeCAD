@@ -1,4 +1,6 @@
 # ***************************************************************************
+# *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
+# *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,52 +22,58 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft ArrayTools command to group the other array tools."""
-## @package gui_arrays
+"""Provide the Draft_ToggleGrid command to show the Draft grid."""
+## @package gui_grid
 # \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \brief Provide the Draft_ToggleGrid command to show the Draft grid.
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
-import draftguitools.gui_circulararray
-import draftguitools.gui_polararray
-import draftguitools.gui_orthoarray
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
-True if draftguitools.gui_circulararray.__name__ else False
-True if draftguitools.gui_polararray.__name__ else False
-True if draftguitools.gui_orthoarray.__name__ else False
+import draftguitools.gui_base as gui_base
+from draftutils.translate import _tr
 
 
-class ArrayGroupCommand:
-    """Gui command for the group of array tools."""
+class ToggleGrid(gui_base.GuiCommandSimplest):
+    """The Draft ToggleGrid command definition.
 
-    def GetCommands(self):
-        """Tuple of array commands."""
-        return ("Draft_OrthoArray",
-                "Draft_PolarArray", "Draft_CircularArray",
-                "Draft_PathArray", "Draft_PathLinkArray",
-                "Draft_PointArray")
+    If the grid tracker is invisible (hidden), it makes it visible (shown);
+    and if it is visible, it hides it.
+
+    It inherits `GuiCommandSimplest` to set up the document
+    and other behavior. See this class for more information.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Toggle grid"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
+        _tip = "Toggles the Draft grid on and off."
 
-        return {'Pixmap': 'Draft_Array',
-                'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", _tooltip)}
+        d = {'Pixmap': 'Draft_Grid',
+             'Accel': "G,R",
+             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleGrid",
+                                           "Toggle grid"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleGrid",
+                                          _tip),
+             'CmdType': 'ForEdit'}
 
-    def IsActive(self):
-        """Return True when this command should be available."""
-        if App.activeDocument():
-            return True
-        else:
-            return False
+        return d
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated()
+
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.setTrackers()
+            if Gui.Snapper.grid:
+                if Gui.Snapper.grid.Visible:
+                    Gui.Snapper.grid.off()
+                    Gui.Snapper.forceGridOff = True
+                else:
+                    Gui.Snapper.grid.on()
+                    Gui.Snapper.forceGridOff = False
 
 
-Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
+Gui.addCommand('Draft_ToggleGrid', ToggleGrid())
