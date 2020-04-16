@@ -23,17 +23,20 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathUtils as PathUtils
 
-import DraftGeomUtils
-import Draft
 import math
 import PySide
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())

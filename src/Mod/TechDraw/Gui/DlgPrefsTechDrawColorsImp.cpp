@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: WandererFan <wandererfan@gmail.com>                           *
+ *   Copyright (c) 2020 FreeCAD Developers                                 *
+ *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
  *   Based on src/Mod/FEM/Gui/DlgSettingsFEMImp.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -25,74 +25,66 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw2Imp.h"
+#include "DlgPrefsTechDrawColorsImp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
+DlgPrefsTechDrawColorsImp::DlgPrefsTechDrawColorsImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-
-    this->pdsbTemplateMark->setUnit(Base::Unit::Length);
-    this->pdsbTemplateMark->setMinimum(0);
-
-    connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onScaleTypeChanged(int)));
 }
 
-DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
+DlgPrefsTechDrawColorsImp::~DlgPrefsTechDrawColorsImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw2Imp::onScaleTypeChanged(int index)
+void DlgPrefsTechDrawColorsImp::saveSettings()
 {
-    // disable custom scale if the scale type is not custom
-
-    if (index == 2) // if custom
-        this->pdsbViewScale->setEnabled(true);
-    else
-        this->pdsbViewScale->setEnabled(false);
+    pcbDimColor->onSave();
+    pcb_Hatch->onSave();
+    pcb_Background->onSave();
+    pcb_PreSelect->onSave();
+    pcb_Hidden->onSave();
+    pcb_Select->onSave();
+    pcb_Normal->onSave();
+    pcb_Surface->onSave();
+    pcb_GeomHatch->onSave();
+    pcb_Face->onSave();
+    pcb_PaintFaces->onSave();
+    pcbSectionLine->onSave();
+    pcbCenterColor->onSave();
+    pcbVertexColor->onSave();
+    pcbMarkup->onSave();
+    pcbHighlight->onSave();
 }
 
-void DlgPrefsTechDraw2Imp::saveSettings()
+void DlgPrefsTechDrawColorsImp::loadSettings()
 {
-    pdsbToleranceScale->onSave();
-    pdsbTemplateMark->onSave();
-    pdsbVertexScale->onSave();
-    pdsbCenterScale->onSave();
-    pdsbPageScale->onSave();
-    cbViewScaleType->onSave();
-    pdsbViewScale->onSave();
-    pdsbEdgeFuzz->onSave();
-    pdsbMarkFuzz->onSave();
-    pdsbTemplateMark->onSave();
-    pdsbSymbolScale->onSave();
-}
-
-void DlgPrefsTechDraw2Imp::loadSettings()
-{
-    double markDefault = 3.0;
-    pdsbTemplateMark->setValue(markDefault);
-    pdsbToleranceScale->onRestore();
-    pdsbTemplateMark->onRestore();
-    pdsbVertexScale->onRestore();
-    pdsbCenterScale->onRestore();
-    pdsbPageScale->onRestore();
-    cbViewScaleType->onRestore();
-    pdsbViewScale->onRestore();
-    pdsbEdgeFuzz->onRestore();
-    pdsbMarkFuzz->onRestore();
-    pdsbTemplateMark->onRestore();
-    pdsbSymbolScale->onRestore();
+    pcbDimColor->onRestore();
+    pcb_Hatch->onRestore();
+    pcb_Background->onRestore();
+    pcb_PreSelect->onRestore();
+    pcb_Hidden->onRestore();
+    pcb_Select->onRestore();
+    pcb_Normal->onRestore();
+    pcb_Surface->onRestore();
+    pcb_GeomHatch->onRestore();
+    pcb_Face->onRestore();
+    pcb_PaintFaces->onRestore();
+    pcbSectionLine->onRestore();
+    pcbCenterColor->onRestore();
+    pcbVertexColor->onRestore();
+    pcbMarkup->onRestore();
+    pcbHighlight->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDrawColorsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -104,4 +96,4 @@ void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw2Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawColorsImp.cpp>

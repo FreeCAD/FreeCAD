@@ -1846,21 +1846,36 @@ def get_analysis_group_elements(
     aAnalysis,
     aPart
 ):
-    """ all Reference shapes of all Analysis member are searched in the Shape of aPart.
-        If found in shape they are added to a dict
-        {ConstraintName : ["ShapeType of the Elements"], [ElementID, ElementID, ...], ...}
     """
+    all Reference shapes of all Analysis member are searched in the Shape of aPart.
+    If found in shape they are added to a dict
+    {ConstraintName : ["ShapeType of the Elements"], [ElementID, ElementID, ...], ...}
+    """
+    from femtools.femutils import is_of_type
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
+    # find the objects with empty references, if there are more than one of this type
+    # they are for all shapes not in the references of the other objects
+    # ATM: empty references if there are more than one obj of this type are allowed for:
+    # solid meshes: material
+    # face meshes: materials, ShellThickness
+    # edge meshes: material, BeamSection/FluidSection
+    # BTW: some constraints do have empty references in any case (ex. constraint self weight)
     for m in aAnalysis.Group:
-        if hasattr(m, "References") and "ReadOnly" not in m.getEditorMode("References"):
-            # some C++ Constraints have a not used References Property
-            # it is set to Hidden in ReadOnly and PropertyEditor
-            if m.References:
+        if hasattr(m, "References"):
+            if len(m.References) > 0:
                 grp_ele = get_reference_group_elements(m, aPart)
                 group_elements[grp_ele[0]] = grp_ele[1]
-            else:
-                FreeCAD.Console.PrintMessage("  Empty reference: " + m.Name + "\n")
+            elif (
+                len(m.References) == 0
+                and (
+                    is_of_type(m, "Fem::Material")
+                    # TODO test and implement ElementGeometry1D and ElementGeometry2D
+                    # or is_of_type(m, "Fem::ElementGeometry1D")
+                    # or is_of_type(m, "Fem::ElementGeometry2D")
+                )
+            ):
+                FreeCAD.Console.PrintMessage("  Empty reference: {}\n".format(m.Name))
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
@@ -1876,11 +1891,8 @@ def get_analysis_group_elements(
             FreeCAD.Console.PrintMessage(
                 "We are going to try to get the empty material references anyway.\n"
             )
-            # FemElementGeometry2D, ElementGeometry1D and
-            # FemElementFluid1D could have empty references,
-            # but on solid meshes only materials should have empty references
             for er in empty_references:
-                FreeCAD.Console.PrintMessage(er.Name + "\n")
+                FreeCAD.Console.PrintMessage("{}\n".format(er.Name))
             group_elements = get_anlysis_empty_references_group_elements(
                 group_elements,
                 aAnalysis,
@@ -1990,12 +2002,9 @@ def get_anlysis_empty_references_group_elements(
     aAnalysis,
     aShape
 ):
-    """get the elementIDs if the Reference shape is empty
+    """
+    get the elementIDs if the Reference shape is empty
     see get_analysis_group_elements() for more information
-    on solid meshes only material objects could have an
-    empty reference without there being something wrong!
-    face meshes could have empty ShellThickness and
-    edge meshes could have empty BeamSection/FluidSection
     """
     # FreeCAD.Console.PrintMessage("{}\n".format(group_elements))
     material_ref_shapes = []

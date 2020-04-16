@@ -27,8 +27,11 @@ import FreeCAD
 import Path
 from PySide import QtCore
 import math
-import DraftVecUtils as D
 import PathScripts.PathUtils as PathUtils
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+D = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
 
 __doc__ = """Dragknife Dressup object and FreeCAD command"""
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TechDrawGui::DlgPrefsTechDraw2Imp</class>
- <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDraw2Imp">
+ <class>TechDrawGui::DlgPrefsTechDrawScaleImp</class>
+ <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDrawScaleImp">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -1,7 +1,6 @@
  /**************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw3Imp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,33 +22,28 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw3.h>
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
 #include <Gui/PropertyPage.h>
 
 namespace TechDrawGui {
 
-class DlgPrefsTechDraw3Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw3Imp
+class DlgPrefsTechDrawAdvancedImp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDrawAdvancedImp
 {
     Q_OBJECT
 
 public:
-    DlgPrefsTechDraw3Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw3Imp();
+    DlgPrefsTechDrawAdvancedImp( QWidget* parent = 0 );
+    ~DlgPrefsTechDrawAdvancedImp();
 
 protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
-    
-    int prefBalloonArrow(void) const;
-    int prefArrowStyle(void) const;
-
-
 };
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
