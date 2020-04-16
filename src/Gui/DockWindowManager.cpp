@@ -200,20 +200,41 @@ public:
     }
 
     void OnChange(Base::Subject<const char*> &, const char* sReason) {
-        if(sReason && strcmp(sReason, "StyleSheet")==0) {
+        if(!sReason)
+            return;
+        if(strcmp(sReason, "StyleSheet")==0
+                || strcmp(sReason, "OverlayActiveStyleSheet")==0
+                || strcmp(sReason, "OverlayOnStyleSheet")==0
+                || strcmp(sReason, "OverlayOffStyleSheet")==0)
+        {
             update();
+            updating = true;
             DockWindowManager::instance()->refreshOverlay();
         }
     }
 
     void update() {
-        QString name = QString::fromLatin1(handle->GetASCII("StyleSheet").c_str());
+        QString mainstyle = QString::fromLatin1(handle->GetASCII("StyleSheet").c_str());
 
-        QFile f(QString::fromLatin1("%1.overlay").arg(name));
+        QLatin1String prefix("qss:");
+
+        QString name = QString::fromLatin1("%1.overlay").arg(mainstyle);
+        if(!QFile::exists(name)) {
+            name = prefix + name;
+            if(!QFile::exists(name)) {
+                name = QString::fromUtf8(handle->GetASCII("OverlayOnStyleSheet").c_str());
+                if(!QFile::exists(name))
+                    name = prefix + name;
+            }
+        }
+
         onStyleSheet.clear();
-        if (f.open(QFile::ReadOnly)) {
-            QTextStream str(&f);
-            onStyleSheet = str.readAll();
+        if(QFile::exists(name)) {
+            QFile f(name);
+            if(f.open(QFile::ReadOnly)) {
+                QTextStream str(&f);
+                onStyleSheet = str.readAll();
+            }
         }
         if(onStyleSheet.isEmpty()) {
             onStyleSheet = QLatin1String(
@@ -221,14 +242,25 @@ public:
                 // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
                 // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
                 // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
-                "QToolTip { background-color: lightgray; }");
+                "QToolTip { background-color: palette(light); }");
         }
 
-        QFile f2(QString::fromLatin1("%1.overlay2").arg(name));
+        name = QString::fromLatin1("%1.overlay2").arg(mainstyle);
+        if(!QFile::exists(name)) {
+            name = prefix + name;
+            if(!QFile::exists(name)) {
+                name = QString::fromUtf8(handle->GetASCII("OverlayOffStyleSheet").c_str());
+                if(!QFile::exists(name))
+                    name = prefix + name;
+            }
+        }
         offStyleSheet.clear();
-        if (f2.open(QFile::ReadOnly)) {
-            QTextStream str(&f);
-            offStyleSheet = str.readAll();
+        if(QFile::exists(name)) {
+            QFile f(name);
+            if(f.open(QFile::ReadOnly)) {
+                QTextStream str(&f);
+                offStyleSheet = str.readAll();
+            }
         }
         // if(offStyleSheet.isEmpty())
         //     offStyleSheet = QLatin1String("QTabBar {qproperty-drawBase: 1; qproperty-documentMode: 0;}");
@@ -237,41 +269,78 @@ public:
         hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
         hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
 
-        QFile f3(QString::fromLatin1("%1.overlay3").arg(name));
-        acitveStyleSheet.clear();
-        if (f3.open(QFile::ReadOnly)) {
-            QTextStream str(&f);
-            acitveStyleSheet = str.readAll();
+        name = QString::fromLatin1("%1.overlay3").arg(mainstyle);
+        if(!QFile::exists(name)) {
+            name = prefix + name;
+            if(!QFile::exists(name)) {
+                name = QString::fromUtf8(handle->GetASCII("OverlayActiveStyleSheet").c_str());
+                if(!QFile::exists(name))
+                    name = prefix + name;
+            }
         }
-        if(acitveStyleSheet.isEmpty()) {
-            acitveStyleSheet = QLatin1String(
-                "* { background-color: transparent; border: 1px solid darkgray; alternate-background-color: transparent; }"
-                // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
-                "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
-                "QTabBar::tab:selected {background-color: darkgray;}"
-                "QHeaderView::section {background-color: transparent; border: 1px solid darkgray;}"
-                "QToolTip {background-color: lightgray;}"
-                "Gui--CallTipsList::item { background-color: white;}"
-                "Gui--CallTipsList::item::selected { background-color: #5e90fa;}"
-                "Gui--Dialog--DlgExpressionInput { background-color: white; }"
+        activeStyleSheet.clear();
+        if(QFile::exists(name)) {
+            QFile f(name);
+            if(f.open(QFile::ReadOnly)) {
+                QTextStream str(&f);
+                activeStyleSheet = str.readAll();
+            }
+        }
+        if(activeStyleSheet.isEmpty()) {
+            activeStyleSheet = QLatin1String(
+                "* { background-color: transparent;"
+                    "color: palette(window-text);"
+                    "border: 1px solid palette(dark);"
+                    "alternate-background-color: transparent;}"
+                "QComboBox { backgroud : palette(base);"
+                            "selection-background-color: palette(highlight);}"
+                "QComboBox:editable { background : palette(base);}"
+                "QComboBox:!editable { background : palette(base);}"
+                "QLineEdit { background : palette(base);}"
+                "QAbstractSpinBox { background : palette(base);}"
+                "QTabBar {border: none;}"
+                "QTabBar::tab {background-color: transparent; border: 1px solid palette(dark);}"
+                "QTabBar::tab:selected {background-color: palette(mid);}"
+                "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
+                "QToolTip {background-color: palette(base);}"
+                "Gui--CallTipsList::item { background-color: palette(base);}"
+                "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
+                "QDialog { background-color: palette(window); }"
+                "QAbstractButton { background: palette(window);"
+                                  "padding: 2px 4px;"
+                                  "border: 1px outset palette(dark) }"
+                "QAbstractButton:hover { border-color: palette(shadow) }"
+                "QAbstractButton:focus { border-color: palette(dark) }"
+                "QAbstractButton:pressed { border: 1px inset palette(dark) }"
                 );
         }
-
     }
 
     ParameterGrp::handle handle;
     QString onStyleSheet;
     QString offStyleSheet;
-    QString acitveStyleSheet;
+    QString activeStyleSheet;
     bool hideTab = true;
     bool hideHeader = false;
     bool hideScrollBar = false;
+    bool updating = false;
 };
 
 void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
 {
     if(!widget)
         return;
+
+#if QT_VERSION>QT_VERSION_CHECK(5,12,2) && QT_VERSION < QT_VERSION_CHECK(5,12,6)
+    // Work around Qt bug https://bugreports.qt.io/browse/QTBUG-77006
+    if(enable < 0)
+        widget->setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
+    else if(enable)
+        widget->setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
+    else
+        widget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
+#endif
+
     if(enable<0 || OverlayStyleSheet::instance()->hideTab) {
         auto tabbar = qobject_cast<QTabBar*>(widget);
         if(tabbar) {
@@ -348,7 +417,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 
     if(!enable && transparent)
     {
-        setStyleSheet(OverlayStyleSheet::instance()->acitveStyleSheet);
+        setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
         setOverlayMode(this, -1);
     } else {
         if(enable)
@@ -768,6 +837,14 @@ struct DockWindowManagerP
         if(!mdi)
             return;
 
+        if(OverlayStyleSheet::instance()->updating) {
+            OverlayStyleSheet::instance()->updating = false;
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count())
+                    o->tabWidget->setOverlayMode(true);
+            }
+        }
+
         auto focus = findTabWidget(qApp->focusWidget());
         if(focus && focus->isOverlayed()) {
             focus->setOverlayMode(false);
@@ -854,7 +931,16 @@ struct DockWindowManagerP
             }
             setOverlayMode(DockWindowManager::EnableAll);
             return;
-        case DockWindowManager::AutoHideAll:
+        case DockWindowManager::AutoHideAll: {
+            bool found = false;
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count())
+                    found = true;
+            }
+            if(!found)
+                setOverlayMode(DockWindowManager::EnableAll);
+        }
+        // fall through
         case DockWindowManager::AutoHideNone:
             for(auto o : _overlayInfos)
                 o->tabWidget->setAutoHide(mode == DockWindowManager::AutoHideAll);
@@ -862,14 +948,23 @@ struct DockWindowManagerP
             return;
         case DockWindowManager::ToggleAutoHideAll:
             for(auto o : _overlayInfos) {
-                if(o->tabWidget->isAutoHide()) {
+                if(o->tabWidget->count() && o->tabWidget->isAutoHide()) {
                     setOverlayMode(DockWindowManager::AutoHideNone);
                     return;
                 }
             }
             setOverlayMode(DockWindowManager::AutoHideAll);
             return;
-        case DockWindowManager::TransparentAll:
+        case DockWindowManager::TransparentAll: {
+            bool found = false;
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count())
+                    found = true;
+            }
+            if(!found)
+                setOverlayMode(DockWindowManager::EnableAll);
+        }
+        // fall through
         case DockWindowManager::TransparentNone:
             for(auto o : _overlayInfos)
                 o->tabWidget->setTransparent(mode == DockWindowManager::TransparentAll);
@@ -877,7 +972,7 @@ struct DockWindowManagerP
             return;
         case DockWindowManager::ToggleTransparentAll:
             for(auto o : _overlayInfos) {
-                if(o->tabWidget->isTransparent()) {
+                if(o->tabWidget->count() && o->tabWidget->isTransparent()) {
                     setOverlayMode(DockWindowManager::TransparentNone);
                     return;
                 }
