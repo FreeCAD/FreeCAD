@@ -54,10 +54,6 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def set_properties(self, vobj):
 
-        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
-                         "Dimension size overall multiplier"))
-
         vobj.addProperty("App::PropertyLength","FontSize",
                          "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The size of the text"))
