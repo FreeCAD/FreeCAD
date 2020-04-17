@@ -62,6 +62,7 @@ def get_draft_small_commands():
     return ["Draft_Layer",
             "Draft_WorkingPlaneProxy",
             "Draft_ToggleDisplayMode",
+            "Draft_AddNamedGroup",
             "Draft_AddToGroup",
             "Draft_SelectGroup",
             "Draft_AddConstruction",
@@ -93,7 +94,7 @@ def get_draft_modification_commands():
 def get_draft_context_commands():
     """Return the context menu commands list."""
     return ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
-            "Draft_AddToGroup", "Draft_SelectGroup",
+            "Draft_AddToGroup","Draft_AddNamedGroup", "Draft_SelectGroup",
             "Draft_SelectPlane", "Draft_ShowSnapBar",
             "Draft_ToggleGrid", "Draft_AutoGroup"]
 
