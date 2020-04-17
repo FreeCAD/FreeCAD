@@ -35,6 +35,7 @@
 # include <QTimer>
 # include <QMap>
 # include <QTextStream>
+# include <QComboBox>
 #endif
 
 #include <array>
@@ -237,12 +238,14 @@ public:
             }
         }
         if(onStyleSheet.isEmpty()) {
-            onStyleSheet = QLatin1String(
-                "* { background-color: transparent; border: 1px solid darkgray; alternate-background-color: transparent; }"
+            static QLatin1String _default(
+                "* { background-color: transparent; border: 1px solid darkgray; alternate-background-color: transparent;}"
                 // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
                 // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
                 // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
-                "QToolTip { background-color: palette(light); }");
+                "QTreeWidget, QListWidget {background: palette(base);}"
+                "QToolTip { background-color: palette(base); }");
+            onStyleSheet = _default;
         }
 
         name = QString::fromLatin1("%1.overlay2").arg(mainstyle);
@@ -287,12 +290,12 @@ public:
             }
         }
         if(activeStyleSheet.isEmpty()) {
-            activeStyleSheet = QLatin1String(
+            static QLatin1String _default(
                 "* { background-color: transparent;"
                     "color: palette(window-text);"
                     "border: 1px solid palette(dark);"
                     "alternate-background-color: transparent;}"
-                "QComboBox { backgroud : palette(base);"
+                "QComboBox { background : palette(base);"
                             "selection-background-color: palette(highlight);}"
                 "QComboBox:editable { background : palette(base);}"
                 "QComboBox:!editable { background : palette(base);}"
@@ -301,7 +304,9 @@ public:
                 "QTabBar {border: none;}"
                 "QTabBar::tab {background-color: transparent; border: 1px solid palette(dark);}"
                 "QTabBar::tab:selected {background-color: palette(mid);}"
+                "QTabBar::tab:hover {background-color: palette(light);}"
                 "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
+                "QTreeWidget, QListWidget {background: palette(base)}" // necessary for checkable item to work in linux
                 "QToolTip {background-color: palette(base);}"
                 "Gui--CallTipsList::item { background-color: palette(base);}"
                 "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
@@ -309,10 +314,11 @@ public:
                 "QAbstractButton { background: palette(window);"
                                   "padding: 2px 4px;"
                                   "border: 1px outset palette(dark) }"
-                "QAbstractButton:hover { border-color: palette(shadow) }"
-                "QAbstractButton:focus { border-color: palette(dark) }"
-                "QAbstractButton:pressed { border: 1px inset palette(dark) }"
+                "QAbstractButton:hover { background: palette(light) }"
+                "QAbstractButton:focus { background: palette(dark) }"
+                "QAbstractButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
                 );
+            activeStyleSheet = _default;
         }
     }
 
@@ -384,9 +390,17 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
 
 void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
 {
+    if(!widget)
+        return;
     _setOverlayMode(widget, enable);
-    for(auto child : widget->findChildren<QObject*>())
-        _setOverlayMode(qobject_cast<QWidget*>(child), enable);
+
+    if(qobject_cast<QComboBox*>(widget)) {
+        // do not set child QAbstractItemView, otherwise the drop down box
+        // won't be shown
+        return;
+    }
+    for(auto child : widget->children())
+        setOverlayMode(qobject_cast<QWidget*>(child), enable);
 }
 
 void OverlayTabWidget::setAutoHide(bool enable)
