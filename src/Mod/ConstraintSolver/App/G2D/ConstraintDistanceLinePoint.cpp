@@ -22,8 +22,8 @@ void ConstraintDistanceLinePoint::initAttrs()
 {
     SimpleConstraint::initAttrs();
 
-    tieAttr_Shape(line.upcast<ParaObject>(), "line", ParaLine::getClassTypeId());
-    tieAttr_Shape(point.upcast<ParaObject>(), "point", ParaPoint::getClassTypeId());
+    tieAttr_Shape(line, "line", ParaLine::getClassTypeId());
+    tieAttr_Shape(point, "point", ParaPoint::getClassTypeId());
     tieAttr_Parameter(dist, "dist", true, true, 1.0);
 }
 

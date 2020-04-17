@@ -145,7 +145,13 @@ protected: //methods
              >::type
     >
     void tieAttr_Child(UnsafePyHandle<ChildType>& ref, std::string name, PyTypeObject* type, bool make = false, bool required = true, bool writeOnce = false);
-    void tieAttr_Shape(HParaObject& ref, std::string name, Base::Type type);
+    
+    template <  typename ChildType,
+                typename = typename std::enable_if<
+                    std::is_base_of<ParaObject, typename std::decay<ChildType>::type>::value
+             >::type
+    >
+    void tieAttr_Shape(UnsafePyHandle<ChildType>& ref, std::string name, Base::Type type);
     ///we need this to support type-checked shape attributes
     virtual Base::Type shapeType() const {return Base::Type::badType();}
     virtual ~ParaObject() = default; //protect destructor to enforce handle-only
@@ -178,6 +184,19 @@ void ParaObject::tieAttr_Child(UnsafePyHandle<ChildType>& ref, std::string name,
     tmp.required = required;
     tmp.writeOnce = writeOnce;
     _children.push_back(tmp);
+}
+
+
+template <  typename ChildType,
+            typename
+>
+void ParaObject::tieAttr_Shape(UnsafePyHandle<ChildType>& ref, std::string name, Base::Type type)
+{
+    ShapeRef tmp;
+    tmp.value = &(ref.template upcast<ParaObject>());
+    tmp.name = name;
+    tmp.type = type;
+    _shapes.push_back(tmp);
 }
 
 

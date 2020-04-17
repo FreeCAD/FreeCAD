@@ -35,8 +35,8 @@ void FCS::G2D::ParaPlacement::initAttrs()
 {
     ParaObject::initAttrs();
 
-    tieAttr_Child(translation.upcast<ParaObject>(), "translation", &ParaPointPy::Type , true);
-    tieAttr_Child(rotation.upcast<ParaObject>(),    "rotation",    &ParaVectorPy::Type, true);
+    tieAttr_Child(translation, "translation", &ParaPointPy::Type , true);
+    tieAttr_Child(rotation,    "rotation",    &ParaVectorPy::Type, true);
 }
 
 PyObject* ParaPlacement::getPyObject()
