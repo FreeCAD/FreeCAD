@@ -153,7 +153,7 @@ bool OverlayTabWidget::checkAutoHide() const
     if(autoHide || !ViewParams::getDockOverlayAutoView())
         return autoHide;
 
-    auto view = Application::Instance->activeView();
+    auto view = getMainWindow()->activeWindow();
     return !view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
                      && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId()));
 }
@@ -748,12 +748,7 @@ struct DockWindowManagerP
         ,_overlayInfos({&_left,&_right,&_top,&_bottom})
     {
         Application::Instance->signalActivateView.connect([this](const MDIView *) {
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count()) {
-                    _timer.start(100);
-                    return;
-                }
-            }
+            _timer.start(100);
         });
     }
 

@@ -1073,6 +1073,8 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
 {
     if (!w) return;
     MDIView* view = dynamic_cast<MDIView*>(w->widget());
+    if(view == d->activeView)
+        return;
 
     // Even if windowActivated() signal is emitted mdi doesn't need to be a top-level window.
     // This happens e.g. if two windows are top-level and one of them gets docked again.
@@ -1084,8 +1086,10 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // at least under Linux. It seems to be a problem with the window manager.
     // Under Windows it seems to work though it's not really sure that it works reliably.
     // Result: So, we accept the first problem to be sure to avoid the second one.
-    if ( !view /*|| !mdi->isActiveWindow()*/ ) 
+    if ( !view /*|| !mdi->isActiveWindow()*/ ) {
+        DockWindowManager::instance()->refreshOverlay();
         return; // either no MDIView or no valid object or no top-level window
+    }
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     d->activeView = view;
