@@ -75,10 +75,12 @@ class TaskCenterLine : public QWidget
 public:
     TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
                    TechDraw::DrawPage* page,
-                   std::vector<std::string> subNames);
+                   std::vector<std::string> subNames,
+                   bool editMode);
     TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
                    TechDraw::DrawPage* page,
-                   std::string edgeName);
+                   std::string edgeName,
+                   bool editMode);
     ~TaskCenterLine();
 
 public Q_SLOTS:
@@ -145,6 +147,7 @@ private:
     int m_clIdx;
     int m_type;
     int m_mode;
+    bool m_editMode;
 };
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
@@ -154,10 +157,12 @@ class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
 public:
     TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page,
-                      std::vector<std::string> subNames);
+                      std::vector<std::string> subNames,
+                      bool editMode);
     TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page,
-                      std::string edgeName);
+                      std::string edgeName,
+                      bool editMode);
     ~TaskDlgCenterLine();
 
 public:
