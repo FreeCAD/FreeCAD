@@ -363,8 +363,10 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 
 // ---------------------------------------------------------------------------
 
+QTreeWidgetItem *TreeWidget::contextItem;
+
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(true,0), contextItem(0)
+    : QTreeWidget(parent), SelectionObserver(true,0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
     , editingItem(0), hiddenItem(0), currentDocItem(0)
     , myName(name)
@@ -831,24 +833,19 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         contextMenu.addAction(this->recomputeObjectAction);
         contextMenu.addAction(this->relabelObjectAction);
 
-        auto selItems = this->selectedItems();
-        // if only one item is selected setup the edit menu
-        if (selItems.size() == 1) {
-            objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
-            QList<QAction*> editAct = editMenu.actions();
-            if (!editAct.isEmpty()) {
-                QAction* topact = contextMenu.actions().front();
-                for (QList<QAction*>::iterator it = editAct.begin(); it != editAct.end(); ++it)
-                    contextMenu.insertAction(topact,*it);
-                QAction* first = editAct.front();
-                contextMenu.setDefaultAction(first);
-                if (objitem->object()->isEditing())
-                    contextMenu.insertAction(topact, this->finishEditingAction);
-                contextMenu.insertSeparator(topact);
+        if(this->selectedItems().size()==1 && _setupObjectMenu(objitem, editMenu)) {
+            auto topact = contextMenu.actions().front();
+            bool first = true;
+            for(auto action : editMenu.actions()) {
+                contextMenu.insertAction(topact,action);
+                if(first) {
+                    first = false;
+                    contextMenu.setDefaultAction(action);
+                }
             }
+            contextMenu.insertSeparator(topact);
         }
     }
-
 
     // add a submenu to active a document if two or more exist
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -959,8 +956,10 @@ void TreeWidget::onStartEditing()
             int edit = action->data().toInt();
 
             App::DocumentObject* obj = objitem->object()->getObject();
-            if (!obj || !obj->getNameInDocument()) 
+            if (!obj || !obj->getNameInDocument()) {
+                FC_ERR("Cannot find editing object");
                 return;
+            }
             auto doc = const_cast<Document*>(objitem->getOwnerDocument()->document());
             MDIView *view = doc->getActiveView();
             if (view) getMainWindow()->setActiveWindow(view);
@@ -978,7 +977,19 @@ void TreeWidget::onStartEditing()
             if (!ok) doc->abortCommand();
 #else
             editingItem = objitem;
-            if(!doc->setEdit(objitem->object(), edit))
+            App::DocumentObject *topParent = 0;
+            std::ostringstream ss;
+            objitem->getSubName(ss,topParent);
+            if(!topParent)
+                topParent = obj;
+            else
+                ss << obj->getNameInDocument() << '.';
+            auto vp = Application::Instance->getViewProvider(topParent);
+            if(!vp) {
+                FC_ERR("Cannot find editing object");
+                return;
+            }
+            if(!doc->setEdit(vp, edit, ss.str().c_str()))
                 editingItem = 0;
 #endif
         }
@@ -987,15 +998,11 @@ void TreeWidget::onStartEditing()
 
 void TreeWidget::onFinishEditing()
 {
-    if (this->contextItem && this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
-            (this->contextItem);
-        App::DocumentObject* obj = objitem->object()->getObject();
-        if (!obj) return;
-        Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
-        doc->commitCommand();
+    auto doc = Application::Instance->editDocument();
+    if(doc)  {
         doc->resetEdit();
         doc->getDocument()->recompute();
+        doc->commitCommand();
     }
 }
 
@@ -1213,6 +1220,58 @@ void TreeWidget::_selectAllLinks(App::DocumentObject *obj) {
         for(auto &v : DocumentMap)
             v.second->selectAllInstances(*vp);
     }
+}
+
+bool TreeWidget::setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj)
+{
+    auto tree = instance();
+    if(!tree)
+        return false;
+
+    std::vector<App::SubObjectT> sels;
+    if(!sobj) {
+        if(Gui::Selection().getSelectionEx("*",
+                App::DocumentObject::getClassTypeId(), 1, true).size()!=1)
+            return false;
+
+        sels = Gui::Selection().getSelectionT("*", 0);
+        if(sels.empty())
+            return false;
+        sobj = &sels.front();
+    }
+
+    auto it = tree->DocumentMap.find(
+            Application::Instance->getDocument(sobj->getDocumentName().c_str()));
+
+    if(it == tree->DocumentMap.end())
+        return false;
+
+    auto item = it->second->findItemByObject(true, sobj->getObject(), sobj->getSubName().c_str());
+    if(!item)
+        return false;
+    contextItem = item;
+    return tree->_setupObjectMenu(item, menu);
+}
+
+bool TreeWidget::_setupObjectMenu(DocumentObjectItem *item, QMenu &menu)
+{
+    if(!item)
+        return false;
+
+    auto vp = item->object();
+    if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument())
+        return false;
+
+    vp->setupContextMenu(&menu, this, SLOT(onStartEditing()));
+    menu.setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
+    menu.setIcon(vp->getIcon());
+
+    bool res = !menu.actions().isEmpty();
+    if (vp->isEditing()) {
+        res = true;
+        menu.addAction(this->finishEditingAction);
+    }
+    return res;
 }
 
 void TreeWidget::onSearchObjects()
@@ -3305,6 +3364,9 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
 
 DocumentItem::~DocumentItem()
 {
+    if(TreeWidget::contextItem == this)
+        TreeWidget::contextItem = nullptr;
+
     connectNewObject.disconnect();
     connectDelObject.disconnect();
     connectChgObject.disconnect();
@@ -4539,6 +4601,9 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjec
 
 DocumentObjectItem::~DocumentObjectItem()
 {
+    if(TreeWidget::contextItem == this)
+        TreeWidget::contextItem = nullptr;
+
     --countItems;
     TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
     myData->items.erase(this);

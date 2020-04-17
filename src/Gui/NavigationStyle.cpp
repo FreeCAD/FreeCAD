@@ -48,6 +48,7 @@
 #include "Application.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
+#include "Tree.h"
 
 using namespace Gui;
 
@@ -1591,8 +1592,8 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
     Q_UNUSED(position); 
     // ask workbenches and view provider, ...
-    MenuItem* view = new MenuItem;
-    Gui::Application::Instance->setupContextMenu("View", view);
+    MenuItem view;
+    Gui::Application::Instance->setupContextMenu("View", &view);
 
     SelectionMenu contextMenu(viewer->getGLWidget());
     QMenu subMenu;
@@ -1600,7 +1601,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     subMenuGroup.setExclusive(true);
     subMenu.setTitle(QObject::tr("Navigation styles"));
 
-    MenuManager::getInstance()->setupContextMenu(view, contextMenu);
+    MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
     contextMenu.addMenu(&subMenu);
 
     // add submenu at the end to select navigation style
@@ -1617,19 +1618,28 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         subMenu.addAction(item);
     }
 
-    delete view;
+    bool separator = false;
+    auto posAction = contextMenu.actions().front();
+    auto selList = viewer->getPickedList(position, true);
+
+    QMenu objMenu;
+    if(TreeWidget::setupObjectMenu(objMenu, selList.size()?&selList.front():nullptr)) {
+        separator = true;
+        contextMenu.insertMenu(posAction, &objMenu);
+    }
 
     QAction *pickAction = 0;
-    auto selList = viewer->getPickedList(position, true);
     if(selList.size()) {
-        auto posAction = contextMenu.actions().front();
+        separator = true;
         pickAction = new QAction(QObject::tr("Pick geometries"),&contextMenu);
         contextMenu.insertAction(posAction,pickAction);
         contextMenu.insertSeparator(posAction);
     }
 
-    QAction* used = contextMenu.exec(QCursor::pos());
+    if(separator)
+        contextMenu.insertSeparator(posAction);
 
+    QAction* used = contextMenu.exec(QCursor::pos());
     if (used && subMenuGroup.actions().indexOf(used) >= 0 && used->isChecked()) {
         QByteArray type = used->data().toByteArray();
         QWidget* widget = viewer->getWidget();

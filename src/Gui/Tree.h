@@ -39,6 +39,10 @@
 
 class QLineEdit;
 
+namespace App {
+class SubObjectT;
+}
+
 namespace Gui {
 
 class ViewProviderDocumentObject;
@@ -83,12 +87,12 @@ public:
     ~TreeWidget();
 
     static void setupResizableColumn(TreeWidget *tree=0);
-
     static void scrollItemToTop();
     static void selectAllInstances(const ViewProviderDocumentObject &vpd);
     static void selectLinkedObject(App::DocumentObject *linked); 
     static void selectAllLinks(App::DocumentObject *obj); 
     static void expandSelectedItems(TreeItemMode mode);
+    static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
 
     static int iconSize();
 
@@ -139,6 +143,7 @@ protected:
     void _selectLinkedObject(App::DocumentObject *linked); 
     void _selectAllLinks(App::DocumentObject *obj); 
     void _expandSelectedItems(TreeItemMode mode);
+    bool _setupObjectMenu(DocumentObjectItem *item, QMenu &menu);
 
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -232,7 +237,7 @@ private:
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
-    QTreeWidgetItem *contextItem;
+    static QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;
     Gui::Document *searchContextDoc;
