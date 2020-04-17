@@ -100,11 +100,12 @@ public:
     void saveState();
     void retranslate();
 
-    void refreshOverlay(QWidget *widget=nullptr, bool resizeOnly=false);
+    void refreshOverlay(QWidget *widget=nullptr);
 
     enum OverlayMode {
         ToggleActive,
         ToggleAutoHide,
+        ToggleTransparent,
         EnableActive,
         DisableActive,
         EnableAll,
@@ -113,6 +114,9 @@ public:
         AutoHideAll,
         AutoHideNone,
         ToggleAutoHideAll,
+        TransparentAll,
+        TransparentNone,
+        ToggleTransparentAll,
     };
     void setOverlayMode(OverlayMode mode);
 
@@ -133,7 +137,7 @@ private Q_SLOTS:
 
     void onToggleDockWidget(bool checked);
 
-    void onResize();
+    void onTimer();
 
     void onFocusChanged(QWidget *, QWidget *);
 
@@ -148,6 +152,8 @@ private:
 
 #ifdef FC_HAS_DOCK_OVERLAY
 
+class OverlayProxyWidget;
+
 class OverlayTabWidget: public QTabWidget
 {
     Q_OBJECT
@@ -159,8 +165,12 @@ public:
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget);
     void setCurrent(QWidget *widget);
+
     void setAutoHide(bool enable);
     bool isAutoHide() const {return autoHide;}
+
+    void setTransparent(bool enable);
+    bool isTransparent() const {return transparent;}
 
     void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
@@ -173,21 +183,30 @@ protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
 
-    bool eventFilter(QObject *, QEvent *ev);
-
     static void _setOverlayMode(QWidget *widget, int enable);
-
-protected Q_SLOTS:
-    void onCurrentChanged(int index);
-    void onTimer();
 
 private:
     QRect rectActive;
     QRect rectOverlay;
-    QTimer timer;
-    QWidget *proxyWidget;
+    OverlayProxyWidget *proxyWidget;
     bool overlayed = false;
     bool autoHide = false;
+    bool transparent = false;
+};
+
+class OverlayProxyWidget: public QWidget
+{
+    Q_OBJECT
+public:
+    OverlayProxyWidget(OverlayTabWidget *);
+
+    OverlayTabWidget *getOwner() const {return owner;}
+
+protected:
+    void enterEvent(QEvent*);
+
+private:
+    OverlayTabWidget* owner;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY

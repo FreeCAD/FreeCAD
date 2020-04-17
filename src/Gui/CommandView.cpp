@@ -3831,6 +3831,31 @@ void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_DockOverlayTransparentAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayTransparentAll)
+
+StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
+  :Command("Std_DockOverlayTransparentAll")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Toggle transparent for all");
+  sToolTipText  = QT_TR_NOOP("Toggle transparent for all overlay docked window.\n"
+                             "This makes the docked widget stay transparent at al times.");
+  sWhatsThis    = "Std_DockOverlayTransparentAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F4";
+  eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayTransparentAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleTransparentAll);
+}
+
+//===========================================================================
 // Std_DockOverlayToggle
 //===========================================================================
 
@@ -3868,7 +3893,7 @@ StdCmdDockOverlayToggleAutoHide::StdCmdDockOverlayToggleAutoHide()
     sToolTipText  = QT_TR_NOOP("Toggle auto hide mode for the docked widget under cursor");
     sWhatsThis    = "Std_DockOverlayToggleAutoHide";
     sStatusTip    = sToolTipText;
-    sAccel        = "ALT+F3";
+    sAccel        = "CTRL+F3";
     eType         = Alter3DView;
 }
 
@@ -3876,6 +3901,31 @@ void StdCmdDockOverlayToggleAutoHide::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleAutoHide);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTransparent
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTransparent)
+
+StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
+  :Command("Std_DockOverlayToggleTransparent")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle transparent");
+    sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked widget under cursor.\n"
+                               "This makes the docked widget stay transparent at al times.");
+    sWhatsThis    = "Std_DockOverlayToggleTransparent";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+F3";
+    eType         = Alter3DView;
+}
+
+void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleTransparent);
 }
 
 //===========================================================================
@@ -3892,7 +3942,7 @@ StdCmdDockOverlayIncrease::StdCmdDockOverlayIncrease()
   sToolTipText  = QT_TR_NOOP("Increase the overlayed widget size under cursor");
   sWhatsThis    = "Std_DockOverlayIncrease";
   sStatusTip    = sToolTipText;
-  sAccel        = "CTRL+F3";
+  sAccel        = "ALT+F3";
   eType         = Alter3DView;
 }
 
@@ -3900,19 +3950,6 @@ void StdCmdDockOverlayIncrease::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     DockWindowManager::instance()->changeOverlaySize(5);
-}
-//===========================================================================
-// Std_DockOverlayFocus
-//===========================================================================
-
-VIEW_CMD_DEF(DockOverlayOnEnter, DockOverlayOnEnter)
-{
-    sGroup        = QT_TR_NOOP("Standard-View");
-    sMenuText     = QT_TR_NOOP("Overlay on enter");
-    sToolTipText  = QT_TR_NOOP("Turn off overlay on mouse entering the widget");
-    sWhatsThis    = "Std_DockOverlayOnEnter";
-    sStatusTip    = sToolTipText;
-    eType         = Alter3DView;
 }
 
 //===========================================================================
@@ -3929,7 +3966,7 @@ StdCmdDockOverlayDecrease::StdCmdDockOverlayDecrease()
   sToolTipText  = QT_TR_NOOP("Decrease the overlayed widget size under cursor");
   sWhatsThis    = "Std_DockOverlayDecrease";
   sStatusTip    = sToolTipText;
-  sAccel        = "SHIFT+F3";
+  sAccel        = "ALT+F2";
   eType         = Alter3DView;
 }
 
@@ -3937,20 +3974,6 @@ void StdCmdDockOverlayDecrease::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     DockWindowManager::instance()->changeOverlaySize(-5);
-}
-
-//===========================================================================
-// Std_DockOverlayOnLeave
-//===========================================================================
-
-VIEW_CMD_DEF(DockOverlayOnLeave, DockOverlayOnLeave)
-{
-    sGroup        = QT_TR_NOOP("Standard-View");
-    sMenuText     = QT_TR_NOOP("Overlay on leave");
-    sToolTipText  = QT_TR_NOOP("Turn on overlay when mouse leave the widget");
-    sWhatsThis    = "Std_DockOverlayOnLeave";
-    sStatusTip    = sToolTipText;
-    eType         = Alter3DView;
 }
 
 //===========================================================================
@@ -3983,15 +4006,15 @@ public:
 
         addCommand(new StdCmdDockOverlayAll());
         addCommand(new StdCmdDockOverlayAutoHideAll());
+        addCommand(new StdCmdDockOverlayTransparentAll());
         addCommand();
         addCommand(new StdCmdDockOverlayToggle());
         addCommand(new StdCmdDockOverlayToggleAutoHide());
+        addCommand(new StdCmdDockOverlayToggleTransparent());
         addCommand();
         addCommand(new StdCmdDockOverlayIncrease());
         addCommand(new StdCmdDockOverlayDecrease());
         addCommand();
-        addCommand(new StdCmdDockOverlayOnEnter());
-        addCommand(new StdCmdDockOverlayOnLeave());
         addCommand(new StdCmdDockOverlayAutoView());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
