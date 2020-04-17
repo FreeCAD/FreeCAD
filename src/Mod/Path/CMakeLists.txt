@@ -107,6 +107,7 @@ SET(PathScripts_SRCS
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
+    PathScripts/PathSurfaceSupport.py
     PathScripts/PathToolBit.py
     PathScripts/PathToolBitCmd.py
     PathScripts/PathToolBitEdit.py
