@@ -41,7 +41,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("3D Surface")
-        self.updateVisibility()
+        # self.updateVisibility()
 
     def getForm(self):
         '''getForm() ... returns UI'''
@@ -118,6 +118,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.optimizeStepOverTransitions.setCheckState(QtCore.Qt.Unchecked)
 
+        self.updateVisibility()
+
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
@@ -140,16 +142,26 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self):
-        if self.form.scanType.currentText() == "Planar":
-            self.form.cutPattern.setEnabled(True)
-            self.form.boundBoxExtraOffsetX.setEnabled(False)
-            self.form.boundBoxExtraOffsetY.setEnabled(False)
-            self.form.dropCutterDirSelect.setEnabled(False)
-        else:
-            self.form.cutPattern.setEnabled(False)
-            self.form.boundBoxExtraOffsetX.setEnabled(True)
-            self.form.boundBoxExtraOffsetY.setEnabled(True)
-            self.form.dropCutterDirSelect.setEnabled(True)
+        if self.form.scanType.currentText() == 'Planar':
+            self.form.cutPattern.show()
+            self.form.cutPattern_label.show()
+            self.form.optimizeStepOverTransitions.show()
+
+            self.form.boundBoxExtraOffsetX.hide()
+            self.form.boundBoxExtraOffsetY.hide()
+            self.form.boundBoxExtraOffset_label.hide()
+            self.form.dropCutterDirSelect.hide()
+            self.form.dropCutterDirSelect_label.hide()
+        elif self.form.scanType.currentText() == 'Rotational':
+            self.form.cutPattern.hide()
+            self.form.cutPattern_label.hide()
+            self.form.optimizeStepOverTransitions.hide()
+
+            self.form.boundBoxExtraOffsetX.show()
+            self.form.boundBoxExtraOffsetY.show()
+            self.form.boundBoxExtraOffset_label.show()
+            self.form.dropCutterDirSelect.show()
+            self.form.dropCutterDirSelect_label.show()
 
     def registerSignalHandlers(self, obj):
         self.form.scanType.currentIndexChanged.connect(self.updateVisibility)
