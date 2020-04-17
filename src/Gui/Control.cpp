@@ -79,9 +79,10 @@ void ControlSingleton::showTaskView()
 {
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
-    if (pcComboView)
+    if (pcComboView) {
         pcComboView->showTaskView();
-    else if (_taskPanel)
+        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
+    } else if (_taskPanel)
         _taskPanel->raise();
 }
 

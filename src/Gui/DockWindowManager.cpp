@@ -817,8 +817,8 @@ struct DockWindowManagerP
     {
         if(widget) {
             auto tabWidget = findTabWidget(widget);
-            if(tabWidget)
-                OverlayTabWidget::setOverlayMode(widget,1);
+            if(tabWidget && tabWidget->count())
+                tabWidget->setOverlayMode(tabWidget->isOverlayed());
         }
         _timer.start(50);
     }
