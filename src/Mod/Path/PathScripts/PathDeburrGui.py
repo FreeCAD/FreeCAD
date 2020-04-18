@@ -86,6 +86,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setupCoolant(obj, self.form.coolantController)
         self.form.joinRound.setChecked('Round' == obj.Join)
         self.form.joinMiter.setChecked('Miter' == obj.Join)
+        self.form.joinFrame.hide()
         self.selectInComboBox(obj.Direction, self.form.direction)
 
     def updateWidth(self):
