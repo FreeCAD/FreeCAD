@@ -165,5 +165,6 @@
         <file>ui/TaskPanel_PolarArray.ui</file>
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
+        <file>ui/dialog_AnnotationStyleEditor.ui</file>
     </qresource>
 </RCC> 
