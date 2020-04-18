@@ -55,7 +55,7 @@ class FCSExport SolverBackend : public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ///preferences specialized for the actual algorithm
-    struct Prefs{
+    struct FCSExport Prefs{
         public: //data
             ssize_t maxIter = 100; //max number of iterations
             bool maxIterSizeMult = false; //if true, multiply the maxIter by the number of parameters

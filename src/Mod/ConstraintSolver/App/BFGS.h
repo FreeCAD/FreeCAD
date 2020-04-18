@@ -35,7 +35,7 @@ class FCSExport BFGS : public SolverBackend
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    struct Prefs : public SolverBackend::Prefs
+    struct FCSExport Prefs : public SolverBackend::Prefs
     {
     public://data
         double minStep = 1e-10;

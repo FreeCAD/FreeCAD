@@ -47,7 +47,7 @@ public: //constructor
 class SubSystem;
 typedef UnsafePyHandle<SubSystem> HSubSystem;
 
-class SubSystem : public Base::BaseClass
+class FCSExport SubSystem : public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected://data
