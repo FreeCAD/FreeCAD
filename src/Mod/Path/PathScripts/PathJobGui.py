@@ -599,6 +599,7 @@ class TaskPanel:
         
         self.setupGlobal = PathSetupSheetGui.GlobalEditor(self.obj.SetupSheet, self.form)
         self.setupOps = PathSetupSheetGui.OpsDefaultEditor(self.obj.SetupSheet, self.form)
+        self.form.linkStockAndModel.setDown(True)
 
     def preCleanup(self):
         PathLog.track()
@@ -1119,8 +1120,6 @@ class TaskPanel:
             FreeCADGui.Selection.removeSelection(self.obj)
 
         sel = FreeCADGui.Selection.getSelectionEx()
-
-        self.form.linkStockAndModel.setDown(True)
 
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             if 'Vertex' == sel[0].SubObjects[0].ShapeType:
