@@ -538,7 +538,7 @@ class _Site(ArchIFC.IfcProduct):
 
         The site must be based off a <Part::FeaturePython> object.
 
-        Adds the properties of a site, and sets it's IFC type.
+        Adds the properties of a site, and sets its IFC type.
 
         Parameters
         ----------
@@ -793,10 +793,10 @@ class _ViewProviderSite:
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
-        """Gives the site view provider it's site view provider specific properties.
+        """Gives the site view provider its site view provider specific properties.
 
         These include solar diagram and compass data, dealing the orientation
-        of the site, and it's orientation to the sun.
+        of the site, and its orientation to the sun.
 
         You can learn more about properties here: https://wiki.freecadweb.org/property
         """

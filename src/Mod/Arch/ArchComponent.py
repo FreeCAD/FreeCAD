@@ -163,7 +163,7 @@ class Component(ArchIFC.IfcProduct):
     """The Arch Component object.
 
     Acts as a base for all other Arch objects, such as Arch walls and Arch
-    structures. It's properties and behaviours are common to all Arch objects.
+    structures. Its properties and behaviours are common to all Arch objects.
 
     You can learn more about Arch Components, and the purpose of Arch
     Components here: https://wiki.freecadweb.org/Arch_Component
@@ -186,7 +186,7 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
 
     def setProperties(self, obj):
-        """Gives the component it's component specific properties, such as material.
+        """Gives the component its component specific properties, such as material.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -276,7 +276,7 @@ class Component(ArchIFC.IfcProduct):
 
         If "Placement" has changed, it records the old placement, so that
         .onChanged() can compare between the old and new placement, and move
-        it's children accordingly.
+        its children accordingly.
 
         Parameters
         ----------
@@ -366,7 +366,7 @@ class Component(ArchIFC.IfcProduct):
         """Gets a height value from hosts.
 
         Recursively crawls hosts until it finds a Floor or BuildingPart, then
-        returns the value of it's Height property.
+        returns the value of its Height property.
 
         Returns
         -------
@@ -451,7 +451,7 @@ class Component(ArchIFC.IfcProduct):
 
         With this copy, it gets the <Part.Face> the shape was originally
         extruded from, the <Base.Vector> of the extrusion, and the
-        <Base.Placement> needed to move the copy back to it's original
+        <Base.Placement> needed to move the copy back to its original
         location/orientation. It will return this data as a tuple.
 
         If it encounters an object derived from a <Part::Multifuse>, it will
@@ -551,13 +551,13 @@ class Component(ArchIFC.IfcProduct):
     def rebase(self,shape,hint=None):
         """Copies a shape to the (0,0,0) origin.
 
-        Creates a copy of a shape, such that it's center of mass is in the
+        Creates a copy of a shape, such that its center of mass is in the
         (0,0,0) origin.
 
         TODO Determine the way the shape is rotated by this method.
 
         Returns the copy of the shape, and the <Base.Placement> needed to move
-        the copy back to it's original location/orientation.
+        the copy back to its original location/orientation.
 
         Parameters
         ----------
@@ -766,7 +766,7 @@ class Component(ArchIFC.IfcProduct):
         return base
 
     def spread(self,obj,shape,placement=None):
-        """Copies the object to it's Axis's points.
+        """Copies the object to its Axis's points.
 
         If the object has the "Axis" property assigned, this method creates a
         copy of the shape for each point on the object assigned as the "Axis".
@@ -812,7 +812,7 @@ class Component(ArchIFC.IfcProduct):
         """Checks if a placement is *almost* zero.
 
         Check if a <Base.Placement>'s displacement from (0,0,0) is almost zero,
-        and if the angle of it's rotation about it's axis is almost zero.
+        and if the angle of its rotation about its axis is almost zero.
 
         Parameters
         ----------
@@ -982,12 +982,12 @@ class Component(ArchIFC.IfcProduct):
                         obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
     def isStandardCase(self,obj):
-        """Determines if the component is a standard case of it's IFC type.
+        """Determines if the component is a standard case of its IFC type.
 
         Not all IFC types have a standard case.
 
         If an object is a standard case or not varies between the different
-        types. Each type has it's own rules to define what is a standard case.
+        types. Each type has its own rules to define what is a standard case.
 
         Rotated objects, or objects with Additions or Subtractions are not
         standard cases.
@@ -1075,7 +1075,7 @@ class ViewProviderComponent:
         self.setProperties(vobj)
         
     def setProperties(self,vobj):
-        """Gives the component view provider it's component view provider specific properties.
+        """Gives the component view provider its component view provider specific properties.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -1445,9 +1445,9 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
-        """If an object is a clone, sets it it to copy the color of it's parent.
+        """If an object is a clone, sets it it to copy the color of its parent.
 
-        Will only change the color of the clone if the clone and it's parent
+        Will only change the color of the clone if the clone and its parent
         have colors that are distinguishably different from each other.
 
         Parameters
@@ -1758,7 +1758,7 @@ class ComponentTaskPanel:
         return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
-        """Populates the treewidget with it's various items.
+        """Populates the treewidget with its various items.
 
         Checks if the object being edited has attributes relevant to
         subobjects. IE: Additions, Subtractions, etc.
@@ -2055,7 +2055,7 @@ class ComponentTaskPanel:
         dropdown, it adds a property with the property type selected in the
         dropdown.
 
-        This method can also be run standalone, outside it's function as a
+        This method can also be run standalone, outside its function as a
         callback.
 
         Unless otherwise specified, the property will be called "New property".

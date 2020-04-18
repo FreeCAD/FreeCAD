@@ -136,13 +136,13 @@ class _Project(ArchIFC.IfcContext):
     """The project object.
 
     Takes a <Part::FeaturePython>, and turns it into a Project. Then takes a
-    list of Arch sites to own as it's children.
+    list of Arch sites to own as its children.
     """
 
     def __init__(self, obj):
         """Initialises the project.
 
-        Adds the properties of a project, and sets it's IFC type.
+        Adds the properties of a project, and sets its IFC type.
 
         Parameters
         ----------

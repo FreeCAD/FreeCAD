@@ -77,7 +77,7 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         Arch default if left empty.
     align: str, optional
         Either "Center", "Left", or "Right". Effects the alignment of the wall
-        on it's baseline.
+        on its baseline.
     face: int, optional
         The index number of a face on the given baseobj, to base the wall on.
     name: str, optional
@@ -700,7 +700,7 @@ class _Wall(ArchComponent.Component):
         obj.IfcType = "Wall"
 
     def setProperties(self, obj):
-        """Gives the wall it's wall specific properties, such as it's alignment.
+        """Gives the wall its wall specific properties, such as its alignment.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -1201,7 +1201,7 @@ class _Wall(ArchComponent.Component):
                     # If the user has defined a specific face of the Base
                     # object to build the wall from, extrude from that face,
                     # and return the extrusion moved to (0,0,0), normal of the
-                    # face, and placement to move the extrusion back to it's
+                    # face, and placement to move the extrusion back to its
                     # original position.
                     elif obj.Face > 0:
                         if len(obj.Base.Shape.Faces) >= obj.Face:
