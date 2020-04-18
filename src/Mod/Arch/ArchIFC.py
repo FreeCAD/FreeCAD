@@ -186,9 +186,9 @@ class IfcRoot:
 
         Returns
         -------
-        dict:
+        dict
             Returns the schema of the attribute.
-        None:
+        None
             Returns None if the IFC type does not have the attribute requested.
 
         """
