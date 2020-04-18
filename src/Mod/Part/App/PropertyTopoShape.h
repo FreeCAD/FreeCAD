@@ -155,6 +155,8 @@ public:
 
     virtual bool isSame(const App::Property &) const {return false;}
 
+    virtual App::Property *copyBeforeChange() const {return nullptr;}
+
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
 
@@ -243,7 +245,9 @@ public:
 
     virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual bool isSame(const App::Property &) const {return false;}
+    virtual bool isSame(const App::Property &) const override {return false;}
+
+    virtual App::Property *copyBeforeChange() const override {return nullptr;}
 
     static PropertyShapeCache *get(const App::DocumentObject *obj, bool create);
     static bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0);
