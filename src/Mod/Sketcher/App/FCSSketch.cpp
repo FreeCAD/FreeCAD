@@ -257,6 +257,7 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     def.midPointId = Points.size();
     
     Points.push_back(hp);
+    def.index = Points.size() - 1;
 
     // store complete set
     Geoms.push_back(std::move(def));
@@ -303,6 +304,7 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
 
     // set the line for later constraints
     LineSegments.push_back(hl);
+    def.index = LineSegments.size() - 1;
 
     // store complete set
     Geoms.push_back(std::move(def));
