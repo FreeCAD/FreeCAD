@@ -138,7 +138,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.peckEnabled.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
         signals.append(self.form.enableRotation.currentIndexChanged)
 
