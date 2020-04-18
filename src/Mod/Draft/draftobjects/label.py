@@ -62,7 +62,7 @@ def make_label(targetpoint=None, target=None, direction=None,
             ["Horizontal","Vertical","Custom"]
 
     distance : Quantity
-            Lenght of the straight segment of label leader line 
+            Length of the straight segment of label leader line 
 
     labeltype : String
             Label type in

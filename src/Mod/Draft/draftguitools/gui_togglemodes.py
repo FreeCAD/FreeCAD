@@ -160,7 +160,7 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
     Switches the display mode of selected objects from flatlines
     to wireframe and back.
 
-    It inherits `GuiCommandNeedsSelection` to only be availbale
+    It inherits `GuiCommandNeedsSelection` to only be available
     when there is a document and a selection.
     See this class for more information.
     """

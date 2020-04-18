@@ -139,7 +139,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
         Parameters
         ----------
         point: Base::Vector
-            The dynamic point pased by the callback
+            The dynamic point passed by the callback
             as we move the pointer in the 3D view.
 
         info: str
