@@ -32,25 +32,32 @@ defined by `gui_trackers.gridTracker`.
 #  This module provides tools to handle point snapping and
 #  everything that goes with it (toolbar buttons, cursor icons, etc.).
 
+import FreeCAD as App
+import FreeCADGui as Gui
+
+from pivy import coin
+from PySide import QtCore, QtGui
+
 import collections as coll
 import inspect
 import itertools
 import math
-from pivy import coin
-from PySide import QtCore, QtGui
 
-import FreeCAD as App
-import FreeCADGui as Gui
 import Draft
 import DraftVecUtils
-from FreeCAD import Vector
+import DraftGeomUtils
+
+import Part
+
 import draftguitools.gui_trackers as trackers
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _msg, _wrn
 
+
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecadweb.org"
+
 
 class Snapper:
     """Classes to manage snapping in Draft and Arch.
@@ -75,6 +82,7 @@ class Snapper:
     """
 
     def __init__(self):
+
         self.activeview = None
         self.lastObj = [None, None]
         self.maxEdges = 0
@@ -180,6 +188,7 @@ class Snapper:
                               ('intersection',  ':/icons/Snap_Intersection.svg'),
                               ('special',       ':/icons/Snap_Special.svg')])
 
+
     def init_active_snaps(self):
         """
         set self.active_snaps according to user prefs
@@ -193,6 +202,7 @@ class Snapper:
                 self.active_snaps.append(self.snaps[i])
             i += 1
 
+
     def cstr(self, lastpoint, constrain, point):
         """Return constraints if needed."""
         if constrain or self.mask:
@@ -203,6 +213,7 @@ class Snapper:
         if self.radiusTracker:
             self.radiusTracker.update(fpt)
         return fpt
+
 
     def snap(self, screenpos,
              lastpoint=None, active=True,
@@ -225,8 +236,6 @@ class Snapper:
 
         self.running = True
 
-        global Part, DraftGeomUtils
-        import Part, DraftGeomUtils
         self.spoint = None
 
         if not hasattr(self, "toolbar"):
@@ -332,9 +341,11 @@ class Snapper:
         self.running = False
         return fp
 
+
     def cycleSnapObject(self):
         """Increse the index of the snap object by one."""
         self.snapObjectIndex = self.snapObjectIndex + 1
+
 
     def snapToObject(self, lastpoint, active, constrain,
                      eline, point, oldActive):
@@ -513,12 +524,14 @@ class Snapper:
         self.running = False
         return self.spoint
 
+
     def toWP(self, point):
         """Project the given point on the working plane, if needed."""
         if self.isEnabled("WorkingPlane"):
             if hasattr(App, "DraftWorkingPlane"):
                 return App.DraftWorkingPlane.projectPoint(point)
         return point
+
 
     def getApparentPoint(self, x, y):
         """Return a 3D point, projected on the current working plane."""
@@ -535,6 +548,7 @@ class Snapper:
                 return App.DraftWorkingPlane.projectPoint(pt, dv)
         return pt
 
+
     def snapToDim(self, obj):
         snaps = []
         if obj.ViewObject:
@@ -542,6 +556,7 @@ class Snapper:
                 snaps.append([obj.ViewObject.Proxy.p2, 'endpoint', self.toWP(obj.ViewObject.Proxy.p2)])
                 snaps.append([obj.ViewObject.Proxy.p3, 'endpoint', self.toWP(obj.ViewObject.Proxy.p3)])
         return snaps
+
 
     def snapToExtensions(self, point, last, constrain, eline):
         """Return a point snapped to extension or parallel line.
@@ -652,6 +667,7 @@ class Snapper:
                                                             return np,de
         return point,eline
 
+
     def snapToCrossExtensions(self, point):
         """Snap to the intersection of the last 2 extension lines."""
         if self.isEnabled('Extension'):
@@ -681,6 +697,7 @@ class Snapper:
                                 self.extLine2.on()
                             return p
         return None
+
 
     def snapToPolar(self,point,last):
         """Snap to polar lines from the given point."""
@@ -721,6 +738,7 @@ class Snapper:
                             return np,de
         return point, None
 
+
     def snapToGrid(self, point):
         """Return a grid snap point if available."""
         if self.grid:
@@ -737,6 +755,7 @@ class Snapper:
                             self.setCursor('grid')
                             return np
         return point
+
 
     def snapToEndpoints(self, shape):
         """Return a list of endpoints snap locations."""
@@ -756,6 +775,7 @@ class Snapper:
                         snaps.append([v, 'endpoint', self.toWP(v)])
         return snaps
 
+
     def snapToMidpoint(self, shape):
         """Return a list of midpoints snap locations."""
         snaps = []
@@ -765,6 +785,7 @@ class Snapper:
                 if mp:
                     snaps.append([mp, 'midpoint', self.toWP(mp)])
         return snaps
+
 
     def snapToPerpendicular(self, shape, last):
         """Return a list of perpendicular snap locations."""
@@ -789,6 +810,7 @@ class Snapper:
                     snaps.append([np, 'perpendicular', self.toWP(np)])
         return snaps
 
+
     def snapToOrtho(self, shape, last, constrain):
         """Return a list of ortho snap locations."""
         snaps = []
@@ -805,6 +827,7 @@ class Snapper:
                                     for p in pt:
                                         snaps.append([p, 'ortho', self.toWP(p)])
         return snaps
+
 
     def snapToExtOrtho(self, last, constrain, eline):
         """Return an ortho X extension snap location."""
@@ -826,6 +849,7 @@ class Snapper:
                 except Exception:
                     return None
         return None
+
 
     def snapToHold(self, point):
         """Return a snap location that is orthogonal to hold points.
@@ -877,6 +901,7 @@ class Snapper:
                     return [p, 'extension', fp]
         return None
 
+
     def snapToExtPerpendicular(self, last):
         """Return a perpendicular X extension snap location."""
         if self.isEnabled("Extension") and self.isEnabled("Perpendicular"):
@@ -886,6 +911,7 @@ class Snapper:
                     np = self.getPerpendicular(tmpEdge, last)
                     return [np, 'perpendicular', np]
         return None
+
 
     def snapToElines(self, e1, e2):
         """Return a snap at the infinite intersection of the given edges."""
@@ -898,6 +924,7 @@ class Snapper:
                     for p in pts:
                         snaps.append([p, 'intersection', self.toWP(p)])
         return snaps
+
 
     def snapToAngles(self, shape):
         """Return a list of angle snap locations."""
@@ -916,6 +943,7 @@ class Snapper:
                 snaps.append([cur, 'angle', self.toWP(cur)])
         return snaps
 
+
     def snapToCenter(self, shape):
         """Return a list of center snap locations."""
         snaps = []
@@ -929,13 +957,14 @@ class Snapper:
                           195, 217.5, 232.5, 255,
                           285, 307.5, 322.5, 345):
                     ang = math.radians(i)
-                    cur = Vector(math.sin(ang) * rad + pos.x,
-                                 math.cos(ang) * rad + pos.y,
-                                 pos.z)
+                    cur = App.Vector(math.sin(ang) * rad + pos.x,
+                                     math.cos(ang) * rad + pos.y,
+                                     pos.z)
                     snaps.append([cur, 'center', c])
             else:
                 snaps.append([c, 'center', c])
         return snaps
+
 
     def snapToFace(self, shape):
         """Return a face center snap location."""
@@ -945,6 +974,7 @@ class Snapper:
             c = self.toWP(pos)
             snaps.append([pos, 'center', c])
         return snaps
+
 
     def snapToIntersection(self, shape):
         """Return a list of intersection snap locations."""
@@ -978,6 +1008,7 @@ class Snapper:
                                     # when trying to read their types
         return snaps
 
+
     def snapToPolygon(self, obj):
         """Return a list of polygon center snap locations."""
         snaps = []
@@ -991,6 +1022,19 @@ class Snapper:
                 snaps.append([v1, 'center', self.toWP(c)])
                 snaps.append([v2, 'center', self.toWP(c)])
         return snaps
+
+
+    def snapToVertex(self,info,active=False):
+        p = App.Vector(info['x'],info['y'],info['z'])
+        if active:
+            if self.isEnabled("Near"):
+                return [p,'endpoint',self.toWP(p)]
+            else:
+                return []
+        elif self.isEnabled("Near"):
+            return [p,'passive',p]
+        else:
+            return []
 
 
     def snapToSpecials(self, obj, lastpoint=None, eline=None):
@@ -1028,6 +1072,7 @@ class Snapper:
 
         return snaps
 
+
     def getScreenDist(self, dist, cursor):
         """Return a distance in 3D space from a screen pixels distance."""
         view = Draft.get3DView()
@@ -1035,12 +1080,14 @@ class Snapper:
         p2 = view.getPoint((cursor[0] + dist, cursor[1]))
         return (p2.sub(p1)).Length
 
+
     def getPerpendicular(self, edge, pt):
         """Return a point on an edge, perpendicular to the given point."""
         dv = pt.sub(edge.Vertexes[0].Point)
         nv = DraftVecUtils.project(dv, DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
+
 
     def setArchDims(self, p1, p2):
         """Show arc dimensions between 2 points."""
@@ -1057,6 +1104,7 @@ class Snapper:
                 self.dim1.on()
             if self.dim2.Distance:
                 self.dim2.on()
+
 
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""
@@ -1091,10 +1139,12 @@ class Snapper:
                         w.setCursor(cur)
                 self.cursorMode = mode
 
+
     def restack(self):
         """Lower the grid tracker so it doesn't obscure other objects."""
         if self.grid:
             self.grid.lowerTracker()
+
 
     def off(self, hideSnapBar=False):
         """Finish snapping."""
@@ -1129,6 +1179,7 @@ class Snapper:
         self.running = False
         self.holdPoints = []
 
+
     def setSelectMode(self, mode):
         """Set the snapper into select mode (hides snapping temporarily)."""
         self.selectMode = mode
@@ -1137,6 +1188,7 @@ class Snapper:
         else:
             if self.trackLine:
                 self.trackLine.off()
+
 
     def setAngle(self, delta=None):
         """Keep the current angle."""
@@ -1147,6 +1199,7 @@ class Snapper:
         elif self.trackLine:
             if self.trackLine.Visible:
                 self.mask = self.trackLine.p2().sub(self.trackLine.p1())
+
 
     def constrain(self, point, basepoint=None, axis=None):
         """Return a constrained point.
@@ -1222,12 +1275,14 @@ class Snapper:
 
         return npoint
 
+
     def unconstrain(self):
         """Unset the basepoint and the constrain line."""
         self.basepoint = None
         self.affinity = None
         if self.constrainLine:
             self.constrainLine.off()
+
 
     def getPoint(self, last=None, callback=None, movecallback=None,
                  extradlg=None, title=None, mode="point"):
@@ -1289,6 +1344,7 @@ class Snapper:
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
+
         def getcoords(point, relative=False):
             """Get the global coordinates from a point."""
             self.pt = point
@@ -1297,11 +1353,13 @@ class Snapper:
                 self.pt = last.add(v)
             accept()
 
+
         def click(event_cb):
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
                     accept()
+
 
         def accept():
             if self.callbackClick:
@@ -1319,6 +1377,7 @@ class Snapper:
                 else:
                     callback(self.pt)
             self.pt = None
+
 
         def cancel():
             if self.callbackClick:
@@ -1351,6 +1410,7 @@ class Snapper:
             self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
             self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
 
+
     def makeSnapToolBar(self):
         """Build the Snap toolbar."""
         mw = Gui.getMainWindow()
@@ -1365,6 +1425,7 @@ class Snapper:
 
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
+
 
     def init_draft_snap_buttons(self, commands, context, button_suffix):
         """
@@ -1399,6 +1460,7 @@ class Snapper:
             if len(b.statusTip()) == 0:
                 b.setStatusTip(b.toolTip())
 
+
     def restore_snap_buttons_state(self, toolbar, button_suffix):
         """
         Restore toolbar button's checked state according to 
@@ -1425,6 +1487,7 @@ class Snapper:
                     else:
                         a.setToolTip(a.toolTip()+" (OFF)")
 
+
     def get_snap_toolbar(self):
         """retuns snap toolbar object"""
         mw = Gui.getMainWindow()
@@ -1434,9 +1497,11 @@ class Snapper:
                 return toolbar
         return None
 
+
     def toggleGrid(self):
         "toggle FreeCAD Draft Grid"
         Gui.runCommand("Draft_ToggleGrid")
+
 
     def showradius(self):
         """Show the snap radius indicator."""
@@ -1446,12 +1511,14 @@ class Snapper:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
 
+
     def isEnabled(self, snap):
         "Returns true if the given snap is on"
         if "Lock" in self.active_snaps and snap in self.active_snaps:
             return True
         else:
             return False
+
 
     def toggle_snap(self, snap, set_to = None):
         "Sets the given snap on/off according to the given parameter"
@@ -1474,6 +1541,7 @@ class Snapper:
         self.save_snap_state()
         return status
 
+
     def save_snap_state(self):
         """
         save snap state to user preferences to be restored in next session
@@ -1486,6 +1554,7 @@ class Snapper:
             else:
                 snap_modes += "0"
         param.SetString("snapModes",snap_modes)
+
 
     def show(self):
         """Show the toolbar and the grid."""
@@ -1510,11 +1579,13 @@ class Snapper:
                             if h:
                                 c.height.setValue(h)
 
+
     def hide(self):
         """Hide the toolbar."""
         if hasattr(self, "toolbar"):
             self.toolbar.hide()
             self.toolbar.toggleViewAction().setVisible(True)
+
 
     def setGrid(self):
         """Set the grid, if visible."""
@@ -1522,6 +1593,7 @@ class Snapper:
         if self.grid and (not self.forceGridOff):
             if self.grid.Visible:
                 self.grid.set()
+
 
     def setTrackers(self):
         """Set the trackers."""
@@ -1570,8 +1642,10 @@ class Snapper:
                 self.trackers[8].append(self.extLine2)
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
+            
         if self.grid and (not self.forceGridOff):
             self.grid.set()
+
 
     def addHoldPoint(self):
         """Add hold snap point to list of hold points."""
