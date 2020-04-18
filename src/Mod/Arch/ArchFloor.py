@@ -21,8 +21,12 @@
 #*                                                                         *
 #***************************************************************************
 
-"""This module provides tools to build Floor objects. Floors are used
-to group different Arch objects situated at a same level.
+"""This module provides tools to build Floor objects. Floors are used to group
+different Arch objects situated at a same level.
+
+The _Floor object and this module as a whole is now obselete. It has been
+superseded by the use of the BuildingPart class, set to the "Building Storey"
+IfcType.
 """
 
 import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
@@ -51,10 +55,10 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-
-
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
-    """Creates a _Floor from a list of objects.
+    """Obselete, superceeded by ArchBuildingPart.makeFloor.
+
+    Creates a floor.
 
     Creates a new floor based on a group, and then adds the objects in
     objectslist to the new floor.
@@ -166,7 +170,9 @@ Floor creation aborted.") + "\n"
 
 
 class _Floor(ArchIFC.IfcProduct):
-    """The Floor object.
+    """Obselete, superceeded by the BuildingPart class, with IfcType set to "Building Storey".
+
+    The Floor object.
 
     Turns a <App::DocumentObjectGroupPython> into a floor object, then
     takes a list of objects to own as it's children.
@@ -308,7 +314,9 @@ class _Floor(ArchIFC.IfcProduct):
 
 
 class _ViewProviderFloor:
-    """A View Provider for the Floor object."""
+    """Obselete, superceeded by the ViewProviderBuildingPart class.
+
+    A View Provider for the Floor object."""
 
     def __init__(self,vobj):
         """Initialises the floor view provider.
