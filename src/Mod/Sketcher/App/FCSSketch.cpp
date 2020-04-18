@@ -56,6 +56,8 @@
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 
+#include <Mod/ConstraintSolver/App/G2D/ConstraintPointCoincident.h>
+
 #include "FCSSketch.h"
 #include "Constraint.h"
 
@@ -66,11 +68,38 @@ using namespace Part;
 TYPESYSTEM_SOURCE(Sketcher::FCSSketch, Sketcher::SketchSolver)
 
 
-FCSSketch::FCSSketch() : parameterStore(Py::None())
+FCSSketch::FCSSketch() : parameterStore(Py::None()), 
+                         ConstraintsCounter(0)
 {
     parameterStore = FCS::ParameterStore::make();
 }
 
+
+void FCSSketch::clear(void)
+{
+    // clear all internal data sets
+    Points.clear();
+    LineSegments.clear();
+    /*Arcs.clear();
+    Circles.clear();
+    Ellipses.clear();
+    ArcsOfEllipse.clear();
+    ArcsOfHyperbola.clear();
+    ArcsOfParabola.clear();
+    BSplines.clear();*/
+    
+    parameterStore = FCS::ParameterStore::make(); // get a new parameterstore
+
+    Geoms.clear();
+
+    
+    /*Constrs.clear();
+
+    GCSsys.clear();
+    isInitMove = false;
+    ConstraintsCounter = 0;
+    Conflicting.clear();*/
+}
 
 int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                         const std::vector<Constraint *> &ConstraintList,
@@ -79,7 +108,7 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     
     Base::TimeInfo start_time;
 
-    //clear();
+    clear();
 
     std::vector<Part::Geometry *> intGeoList;
     std::vector<Part::Geometry *> extGeoList;
@@ -98,11 +127,13 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     for (int i=extStart; i <= extEnd; i++)
         Geoms[i].external = true;
     
-    /*
+    
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
         addConstraints(ConstraintList,unenforceableConstraints);
     }
+    
+    /*
     GCSsys.clearByTag(-1);
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
@@ -121,7 +152,7 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     return GCSsys.dofsNumber();
     */
-    return 0;
+    return 1; // otherwise it is fully constraint
 }
 
 int FCSSketch::addGeometry(const std::vector<Part::Geometry *> &geo,
@@ -276,6 +307,431 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
     return Geoms.size()-1;
 }
 
+// Constraints
+
+
+int FCSSketch::addConstraint(const Constraint *constraint)
+{
+    if (Geoms.empty())
+        throw Base::ValueError("Sketch::addConstraint. Can't add constraint to a sketch with no geometry!");
+    int rtn = -1;
+
+    
+    ConstrDef c;
+    c.constr=const_cast<Constraint *>(constraint);
+    c.driving=constraint->isDriving;
+
+    switch (constraint->Type) {
+    /*    
+    case DistanceX:
+        if (constraint->FirstPos == none){ // horizontal length of a line
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addDistanceXConstraint(constraint->First,c.value,c.driving);
+        }
+        else if (constraint->Second == Constraint::GeoUndef) {// point on fixed x-coordinate
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addCoordinateXConstraint(constraint->First,constraint->FirstPos,c.value,c.driving);
+        }
+        else if (constraint->SecondPos != none) {// point to point horizontal distance
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addDistanceXConstraint(constraint->First,constraint->FirstPos,
+                                         constraint->Second,constraint->SecondPos,c.value,c.driving);
+        }
+        break;
+    case DistanceY:
+        if (constraint->FirstPos == none){ // vertical length of a line
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addDistanceYConstraint(constraint->First,c.value,c.driving);
+        }
+        else if (constraint->Second == Constraint::GeoUndef){ // point on fixed y-coordinate
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addCoordinateYConstraint(constraint->First,constraint->FirstPos,c.value,c.driving);
+        }
+        else if (constraint->SecondPos != none){ // point to point vertical distance
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addDistanceYConstraint(constraint->First,constraint->FirstPos,
+                                         constraint->Second,constraint->SecondPos,c.value,c.driving);
+        }
+        break;
+    case Horizontal:
+        if (constraint->Second == Constraint::GeoUndef) // horizontal line
+            rtn = addHorizontalConstraint(constraint->First);
+        else // two points on the same horizontal line
+            rtn = addHorizontalConstraint(constraint->First,constraint->FirstPos,
+                                          constraint->Second,constraint->SecondPos);
+        break;
+    case Vertical:
+        if (constraint->Second == Constraint::GeoUndef) // vertical line
+            rtn = addVerticalConstraint(constraint->First);
+        else // two points on the same vertical line
+            rtn = addVerticalConstraint(constraint->First,constraint->FirstPos,
+                                        constraint->Second,constraint->SecondPos);
+        break;
+    */
+    case Coincident:
+        rtn = addPointCoincidentConstraint(c,constraint->First,constraint->FirstPos,constraint->Second,constraint->SecondPos);
+        break;
+    /*
+    case PointOnObject:
+        rtn = addPointOnObjectConstraint(constraint->First,constraint->FirstPos, constraint->Second);
+        break;
+    case Parallel:
+        rtn = addParallelConstraint(constraint->First,constraint->Second);
+        break;
+    case Perpendicular:
+        if (constraint->FirstPos == none &&
+                constraint->SecondPos == none &&
+                constraint->Third == Constraint::GeoUndef){
+            //simple perpendicularity
+            rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
+        } else {
+            //any other point-wise perpendicularity
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleAtPointConstraint(
+                        constraint->First, constraint->FirstPos,
+                        constraint->Second, constraint->SecondPos,
+                        constraint->Third, constraint->ThirdPos,
+                        c.value, constraint->Type, c.driving);
+        }
+        break;
+    case Tangent:
+        if (constraint->FirstPos == none &&
+                constraint->SecondPos == none &&
+                constraint->Third == Constraint::GeoUndef){
+            //simple tangency
+            rtn = addTangentConstraint(constraint->First,constraint->Second);
+        } else {
+            //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleAtPointConstraint(
+                        constraint->First, constraint->FirstPos,
+                        constraint->Second, constraint->SecondPos,
+                        constraint->Third, constraint->ThirdPos,
+                        c.value, constraint->Type, c.driving);
+        }
+        break;
+    case Distance:
+        if (constraint->SecondPos != none){ // point to point distance
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+            rtn = addDistanceConstraint(constraint->First,constraint->FirstPos,
+                                        constraint->Second,constraint->SecondPos,
+                                        c.value,c.driving);
+        }
+        else if (constraint->Second != Constraint::GeoUndef) {
+            if (constraint->FirstPos != none) { // point to line distance
+                c.value = new double(constraint->getValue());
+                if(c.driving)
+                    FixParameters.push_back(c.value);
+                else {
+                    Parameters.push_back(c.value);
+                    DrivenParameters.push_back(c.value);
+                }
+                rtn = addDistanceConstraint(constraint->First,constraint->FirstPos,
+                                            constraint->Second,c.value,c.driving);
+            }
+        }
+        else {// line length
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addDistanceConstraint(constraint->First,c.value,c.driving);
+        }
+        break;
+    case Angle:
+        if (constraint->Third != Constraint::GeoUndef){
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleAtPointConstraint (
+                        constraint->First, constraint->FirstPos,
+                        constraint->Second, constraint->SecondPos,
+                        constraint->Third, constraint->ThirdPos,
+                        c.value, constraint->Type,c.driving);
+        } else if (constraint->SecondPos != none){ // angle between two lines (with explicit start points)
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleConstraint(constraint->First,constraint->FirstPos,
+                                     constraint->Second,constraint->SecondPos,c.value,c.driving);
+        }
+        else if (constraint->Second != Constraint::GeoUndef){ // angle between two lines
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleConstraint(constraint->First,constraint->Second,c.value,c.driving);
+        }
+        else if (constraint->First != Constraint::GeoUndef) {// orientation angle of a line
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addAngleConstraint(constraint->First,c.value,c.driving);
+        }
+        break;
+    case Radius:
+    {
+        c.value = new double(constraint->getValue());
+        if(c.driving)
+            FixParameters.push_back(c.value);
+        else {
+            Parameters.push_back(c.value);
+            DrivenParameters.push_back(c.value);
+        }
+
+        rtn = addRadiusConstraint(constraint->First, c.value,c.driving);
+        break;
+    }
+    case Diameter:
+    {
+        c.value = new double(constraint->getValue());
+        if(c.driving)
+            FixParameters.push_back(c.value);
+        else {
+            Parameters.push_back(c.value);
+            DrivenParameters.push_back(c.value);
+        }
+
+        rtn = addDiameterConstraint(constraint->First, c.value,c.driving);
+        break;
+    }
+    case Equal:
+        rtn = addEqualConstraint(constraint->First,constraint->Second);
+        break;
+    case Symmetric:
+        if (constraint->ThirdPos != none)
+            rtn = addSymmetricConstraint(constraint->First,constraint->FirstPos,
+                                         constraint->Second,constraint->SecondPos,
+                                         constraint->Third,constraint->ThirdPos);
+        else
+            rtn = addSymmetricConstraint(constraint->First,constraint->FirstPos,
+                                         constraint->Second,constraint->SecondPos,constraint->Third);
+        break;
+    case InternalAlignment:
+        switch(constraint->AlignmentType) {
+            case EllipseMajorDiameter:
+                rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First,constraint->Second);
+                break;
+            case EllipseMinorDiameter:
+                rtn = addInternalAlignmentEllipseMinorDiameter(constraint->First,constraint->Second);
+                break;
+            case EllipseFocus1:
+                rtn = addInternalAlignmentEllipseFocus1(constraint->First,constraint->Second);
+                break;
+            case EllipseFocus2:
+                rtn = addInternalAlignmentEllipseFocus2(constraint->First,constraint->Second);
+                break;
+            case HyperbolaMajor:
+                rtn = addInternalAlignmentHyperbolaMajorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaMinor:
+                rtn = addInternalAlignmentHyperbolaMinorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaFocus:
+                rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
+                break;
+            case ParabolaFocus:
+                rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
+                break;
+            case BSplineControlPoint:
+                rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
+            case BSplineKnotPoint:
+                rtn = addInternalAlignmentKnotPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
+                break;
+            default:
+                break;
+        }
+        break;
+    case SnellsLaw:
+        {
+            c.value = new double(constraint->getValue());
+            c.secondvalue = new double(constraint->getValue());
+
+            if(c.driving) {
+                FixParameters.push_back(c.value);
+                FixParameters.push_back(c.secondvalue);
+            }
+            else {
+                Parameters.push_back(c.value);
+                Parameters.push_back(c.secondvalue);
+                DrivenParameters.push_back(c.value);
+                DrivenParameters.push_back(c.secondvalue);
+
+            }
+
+            //assert(constraint->ThirdPos==none); //will work anyway...
+            rtn = addSnellsLawConstraint(constraint->First, constraint->FirstPos,
+                                         constraint->Second, constraint->SecondPos,
+                                         constraint->Third,
+                                         c.value, c.secondvalue,c.driving);
+        }
+        break;
+    */
+    case Sketcher::None: // ambiguous enum value
+    case Sketcher::Block: // handled separately while adding geometry
+    case NumConstraintTypes:
+        break;
+    }
+
+    Constrs.push_back(c);
+    return rtn;
+}
+
+int FCSSketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
+{
+    int rtn = -1;
+    int cid = 0;
+
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
+        rtn = addConstraint (*it);
+
+        if(rtn == -1) {
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+        }
+    }
+
+    return rtn;
+}
+
+int FCSSketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
+                           const std::vector<bool> &unenforceableConstraints)
+{
+    int rtn = -1;
+
+    int cid = 0;
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
+        if (!unenforceableConstraints[cid] && (*it)->Type != Block && (*it)->isActive == true) {
+            rtn = addConstraint (*it);
+
+            if(rtn == -1) {
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+            }
+        }
+        else {
+            ++ConstraintsCounter; // For correct solver redundant reporting
+        }
+    }
+
+    return rtn;
+}
+
+int FCSSketch::addPointCoincidentConstraint(ConstrDef &c, int geoId1, PointPos pos1, int geoId2, PointPos pos2)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    int pointId1 = getPointId(geoId1, pos1);
+    int pointId2 = getPointId(geoId2, pos2);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+        
+        FCS::G2D::HParaPoint &p1 = Points[pointId1];
+        FCS::G2D::HParaPoint &p2 = Points[pointId2];
+    
+        //int tag = ++ConstraintsCounter;
+        //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
+        // FCS.G2D.ConstraintPointCoincident
+        // ConstraintPointCoincident(HShape_Point p1, HShape_Point p2, std::string label = "");
+    
+        //c.fcsConstr = new FCS::G2D::ConstraintPointCoincident(p1,p2);
+        
+        
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+
+
+
+
 std::vector<Part::Geometry *> FCSSketch::extractGeometry(bool withConstructionElements,
                                                       bool withExternalElements) const
 {
@@ -310,7 +766,7 @@ Base::Vector3d FCSSketch::calculateNormalAtPoint(int geoIdCurve, double px, doub
     GCSsys.calculateNormalAtPoint(*crv, p, tx, ty);
     return Base::Vector3d(tx,ty,0.0);
     */
-    return Base::Vector3d();
+    return Base::Vector3d(1,1,1);
 }
 
 int FCSSketch::solve(void)
@@ -987,11 +1443,6 @@ TopoShape FCSSketch::toShape(void) const
 #endif
 
     return result;
-}
-
-int FCSSketch::getGeometrySize(void) const
-{
-    return 0;
 }
 
 float FCSSketch::getSolveTime()

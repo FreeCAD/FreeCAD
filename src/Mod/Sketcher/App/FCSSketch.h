@@ -101,7 +101,7 @@ public:
     //double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
 
     /// Returns the size of the Geometry
-    virtual int getGeometrySize(void) const override;
+    virtual int getGeometrySize(void) const override {return Geoms.size();}
     
     virtual float getSolveTime() override;
     virtual void setRecalculateInitialSolutionWhileMovingPoint(bool on) override;
@@ -134,6 +134,15 @@ private:
         int                                 endPointId;     // index in Points of the end point of this geometry
     };
     
+    struct ConstrDef {
+        ConstrDef() : constr(0)
+                    , driving(true)
+                    , fcsConstr(Py::None()){}
+        Constraint *            constr;             // pointer to the constraint
+        bool                    driving;
+        FCS::HConstraint        fcsConstr;
+    };
+    
     
 private:
     /// add unspecified geometry, where each element's "fixed" status is given by the blockedGeometry array
@@ -150,7 +159,22 @@ private:
     
     
     
+    
+    /// add all constraints in the list
+    int addConstraints(const std::vector<Constraint *> &ConstraintList);
+    /// add all constraints in the list, provided that are enforceable
+    int addConstraints(const std::vector<Constraint *> &ConstraintList,
+                       const std::vector<bool> & unenforceableConstraints);
+    /// add one constraint to the sketch
+    int addConstraint(const Constraint *constraint);
+    
+    /// add a coincident constraint to two points of two geometries
+    int addPointCoincidentConstraint(ConstrDef &c, int geoId1, PointPos pos1, int geoId2, PointPos pos2);
+    
+    
     int checkGeoId(int geoId) const;
+    
+    void clear(void);
     
 private:
     // Solver
@@ -161,9 +185,14 @@ private:
     std::vector<FCS::G2D::HParaPoint>           Points;
     std::vector<FCS::G2D::HParaLine>            LineSegments;
     
+    
+    std::vector<ConstrDef>                      Constrs;
+    
     // Equation system diagnosis
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    
+    int ConstraintsCounter;
 };
 
 } //namespace Sketcher
