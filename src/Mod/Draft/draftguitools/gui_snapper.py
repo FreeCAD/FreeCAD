@@ -32,9 +32,6 @@ defined by `gui_trackers.gridTracker`.
 #  This module provides tools to handle point snapping and
 #  everything that goes with it (toolbar buttons, cursor icons, etc.).
 
-import FreeCAD as App
-import FreeCADGui as Gui
-
 from pivy import coin
 from PySide import QtCore, QtGui
 
@@ -46,6 +43,9 @@ import math
 import Draft
 import DraftVecUtils
 import DraftGeomUtils
+
+import FreeCAD as App
+import FreeCADGui as Gui
 
 import Part
 
@@ -82,7 +82,6 @@ class Snapper:
     """
 
     def __init__(self):
-
         self.activeview = None
         self.lastObj = [None, None]
         self.maxEdges = 0
@@ -235,6 +234,9 @@ class Snapper:
             return None
 
         self.running = True
+
+        global Part, DraftGeomUtils
+        import Part, DraftGeomUtils
 
         self.spoint = None
 
@@ -602,69 +604,73 @@ class Snapper:
                         self.setCursor(tsnap[1])
                         return tsnap[2], eline
 
-        for o in [self.lastObj[1], self.lastObj[0]]:
+        for o in (self.lastObj[1], self.lastObj[0]): 
             if o and (self.isEnabled('Extension') 
-                      or self.isEnabled('Parallel')):
+                      or self.isEnabled('Parallel')):            
                 ob = App.ActiveDocument.getObject(o)
-                if ob:
-                    if ob.isDerivedFrom("Part::Feature"):
-                        edges = ob.Shape.Edges
-                        if Draft.getType(ob) == "Wall":
-                            for so in [ob]+ob.Additions:
-                                if Draft.getType(so) == "Wall":
-                                    if so.Base:
-                                        edges.extend(so.Base.Shape.Edges)
-                                        edges.reverse()
-                        if (not self.maxEdges) or (len(edges) <= self.maxEdges):
-                            for e in edges:
-                                if DraftGeomUtils.geomType(e) == "Line":
-                                    np = self.getPerpendicular(e,point)
-                                    if not DraftGeomUtils.isPtOnEdge(np,e):
-                                        if (np.sub(point)).Length < self.radius:
-                                            if self.isEnabled('Extension'):
-                                                if np != e.Vertexes[0].Point:
-                                                    p0 = e.Vertexes[0].Point
-                                                    if self.tracker and not self.selectMode:
-                                                        self.tracker.setCoords(np)
-                                                        self.tracker.setMarker(self.mk['extension'])
-                                                        self.tracker.on()
-                                                    if self.extLine:
-                                                        if self.snapStyle:
-                                                            dv = np.sub(p0)
-                                                            self.extLine.p1(p0.add(dv.multiply(0.5)))
-                                                        else:
-                                                            self.extLine.p1(p0)
-                                                        self.extLine.p2(np)
-                                                        self.extLine.on()
-                                                    self.setCursor('extension')
-                                                    ne = Part.LineSegment(p0,np).toShape()
-                                                    # storing extension line for intersection calculations later
-                                                    if len(self.lastExtensions) == 0:
-                                                        self.lastExtensions.append(ne)
-                                                    elif len(self.lastExtensions) == 1:
-                                                        if not DraftGeomUtils.areColinear(ne,self.lastExtensions[0]):
-                                                            self.lastExtensions.append(self.lastExtensions[0])
-                                                            self.lastExtensions[0] = ne
-                                                    else:
-                                                        if (not DraftGeomUtils.areColinear(ne,self.lastExtensions[0])) and \
-                                                           (not DraftGeomUtils.areColinear(ne,self.lastExtensions[1])):
-                                                                self.lastExtensions[1] = self.lastExtensions[0]
-                                                                self.lastExtensions[0] = ne
-                                                    return np,ne
+                if not ob:
+                    continue
+                if not ob.isDerivedFrom("Part::Feature"):
+                    continue
+                edges = ob.Shape.Edges
+                if Draft.getType(ob) == "Wall":
+                    for so in [ob]+ob.Additions:
+                        if Draft.getType(so) == "Wall":
+                            if so.Base:
+                                edges.extend(so.Base.Shape.Edges)
+                                edges.reverse()
+                if (not self.maxEdges) or (len(edges) <= self.maxEdges):
+                    for e in edges:
+                        if DraftGeomUtils.geomType(e) != "Line":
+                            continue
+                        np = self.getPerpendicular(e,point)
+                        if DraftGeomUtils.isPtOnEdge(np,e):
+                            continue
+                        if (np.sub(point)).Length < self.radius:
+                            if self.isEnabled('Extension'):
+                                if np != e.Vertexes[0].Point:
+                                    p0 = e.Vertexes[0].Point
+                                    if self.tracker and not self.selectMode:
+                                        self.tracker.setCoords(np)
+                                        self.tracker.setMarker(self.mk['extension'])
+                                        self.tracker.on()
+                                    if self.extLine:
+                                        if self.snapStyle:
+                                            dv = np.sub(p0)
+                                            self.extLine.p1(p0.add(dv.multiply(0.5)))
                                         else:
-                                            if self.isEnabled('Parallel'):
-                                                if last:
-                                                    ve = DraftGeomUtils.vec(e)
-                                                    if not DraftVecUtils.isNull(ve):
-                                                        de = Part.LineSegment(last,last.add(ve)).toShape()
-                                                        np = self.getPerpendicular(de,point)
-                                                        if (np.sub(point)).Length < self.radius:
-                                                            if self.tracker and not self.selectMode:
-                                                                self.tracker.setCoords(np)
-                                                                self.tracker.setMarker(self.mk['parallel'])
-                                                                self.tracker.on()
-                                                            self.setCursor('parallel')
-                                                            return np,de
+                                            self.extLine.p1(p0)
+                                        self.extLine.p2(np)
+                                        self.extLine.on()
+                                    self.setCursor('extension')
+                                    ne = Part.LineSegment(p0,np).toShape()
+                                    # storing extension line for intersection calculations later
+                                    if len(self.lastExtensions) == 0:
+                                        self.lastExtensions.append(ne)
+                                    elif len(self.lastExtensions) == 1:
+                                        if not DraftGeomUtils.areColinear(ne,self.lastExtensions[0]):
+                                            self.lastExtensions.append(self.lastExtensions[0])
+                                            self.lastExtensions[0] = ne
+                                    else:
+                                        if (not DraftGeomUtils.areColinear(ne,self.lastExtensions[0])) and \
+                                            (not DraftGeomUtils.areColinear(ne,self.lastExtensions[1])):
+                                                self.lastExtensions[1] = self.lastExtensions[0]
+                                                self.lastExtensions[0] = ne
+                                    return np,ne
+                        else:
+                            if self.isEnabled('Parallel'):
+                                if last:
+                                    ve = DraftGeomUtils.vec(e)
+                                    if not DraftVecUtils.isNull(ve):
+                                        de = Part.LineSegment(last,last.add(ve)).toShape()
+                                        np = self.getPerpendicular(de,point)
+                                        if (np.sub(point)).Length < self.radius:
+                                            if self.tracker and not self.selectMode:
+                                                self.tracker.setCoords(np)
+                                                self.tracker.setMarker(self.mk['parallel'])
+                                                self.tracker.on()
+                                            self.setCursor('parallel')
+                                            return np,de
         return point,eline
 
 
@@ -1024,15 +1030,15 @@ class Snapper:
         return snaps
 
 
-    def snapToVertex(self,info,active=False):
-        p = App.Vector(info['x'],info['y'],info['z'])
+    def snapToVertex(self, info, active=False):
+        p = App.Vector(info['x'], info['y'], info['z'])
         if active:
             if self.isEnabled("Near"):
-                return [p,'endpoint',self.toWP(p)]
+                return [p, 'endpoint', self.toWP(p)]
             else:
                 return []
         elif self.isEnabled("Near"):
-            return [p,'passive',p]
+            return [p, 'passive', p]
         else:
             return []
 
@@ -1046,6 +1052,7 @@ class Snapper:
                 # special snapping for wall: snap to its base shape if it is linear
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
+                        for v in obj.Base.Shape.Vertexes:
                             snaps.append([v.Point, 'special', self.toWP(v.Point)])
 
             elif (Draft.getType(obj) == "Structure"):
@@ -1339,11 +1346,10 @@ class Snapper:
                                        active=ctrl, constrain=shift)
             if hasattr(App, "DraftWorkingPlane"):
                 self.ui.displayPoint(self.pt, last,
-                                     plane = App.DraftWorkingPlane,
-                                     mask = App.Snapper.affinity)
+                                     plane=App.DraftWorkingPlane,
+                                     mask=App.Snapper.affinity)
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
-
 
         def getcoords(point, relative=False):
             """Get the global coordinates from a point."""
@@ -1353,13 +1359,11 @@ class Snapper:
                 self.pt = last.add(v)
             accept()
 
-
         def click(event_cb):
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
                     accept()
-
 
         def accept():
             if self.callbackClick:
@@ -1377,7 +1381,6 @@ class Snapper:
                 else:
                     callback(self.pt)
             self.pt = None
-
 
         def cancel():
             if self.callbackClick:
@@ -1447,7 +1450,7 @@ class Snapper:
             b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Snap " + gc[11:]))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Snap " + gc[11:]))
             b.setObjectName(gc + button_suffix)
-            b.setWhatsThis("Draft_"+gc[11:].capitalize())
+            b.setWhatsThis("Draft_" + gc[11:].capitalize())
             b.setCheckable(True)
             b.setChecked(True)
             context.addAction(b)
@@ -1470,36 +1473,36 @@ class Snapper:
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         snap_modes = param.GetString("snapModes")
 
-        for b in toolbar.actions():
-            if len(b.statusTip()) == 0:
-                b.setStatusTip(b.toolTip())
+        for button in toolbar.actions():
+            if len(button.statusTip()) == 0:
+                button.setStatusTip(button.toolTip())
 
         # restore toolbar buttons state
         if snap_modes:
-            for a in toolbar.findChildren(QtGui.QAction):
-                snap = a.objectName()[11:].replace(button_suffix,"")
+            for action in toolbar.findChildren(QtGui.QAction):
+                snap = action.objectName()[11:].replace(button_suffix, "")
                 if snap in Gui.Snapper.snaps:
                     i = Gui.Snapper.snaps.index(snap)
                     state = bool(int(snap_modes[i]))
-                    a.setChecked(state)
+                    action.setChecked(state)
                     if state:
-                        a.setToolTip(a.toolTip()+" (ON)")
+                        action.setToolTip(action.toolTip() + " (ON)")
                     else:
-                        a.setToolTip(a.toolTip()+" (OFF)")
+                        action.setToolTip(action.toolTip() + " (OFF)")
 
 
     def get_snap_toolbar(self):
-        """retuns snap toolbar object"""
+        """Retuns snap toolbar object."""
         mw = Gui.getMainWindow()
         if mw:
-            toolbar = mw.findChild(QtGui.QToolBar,"Draft Snap")
+            toolbar = mw.findChild(QtGui.QToolBar, "Draft Snap")
             if toolbar:
                 return toolbar
         return None
 
 
     def toggleGrid(self):
-        "toggle FreeCAD Draft Grid"
+        """Toggle FreeCAD Draft Grid."""
         Gui.runCommand("Draft_ToggleGrid")
 
 
@@ -1513,7 +1516,7 @@ class Snapper:
 
 
     def isEnabled(self, snap):
-        "Returns true if the given snap is on"
+        """Returns true if the given snap is on"""
         if "Lock" in self.active_snaps and snap in self.active_snaps:
             return True
         else:
@@ -1521,7 +1524,7 @@ class Snapper:
 
 
     def toggle_snap(self, snap, set_to = None):
-        "Sets the given snap on/off according to the given parameter"
+        """Sets the given snap on/off according to the given parameter"""
         if set_to: # set mode
             if set_to is True:
                 if not snap in self.active_snaps:
@@ -1544,7 +1547,7 @@ class Snapper:
 
     def save_snap_state(self):
         """
-        save snap state to user preferences to be restored in next session
+        Save snap state to user preferences to be restored in next session.
         """
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         snap_modes = ""
