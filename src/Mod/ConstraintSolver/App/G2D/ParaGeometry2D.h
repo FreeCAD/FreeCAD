@@ -32,12 +32,30 @@ namespace G2D {
 
 class ParaGeometry2D;
 
-template <  typename TShape
+template <  typename TGeo2D,
+            typename = typename std::enable_if<
+                    std::is_base_of<ParaGeometry2D, typename std::decay<TGeo2D>::type>::value
+             >::type
 >
-auto toDShape(TShape t) -> decltype((new ParaShape<TShape>((new ParaTransform())->getHandle<ParaTransform>(), t. template getHandle<TShape>()))-> template getHandle<ParaShape<TShape>>()) {
-    // to be improved with singleton identify transformation
-    return (new ParaShape<TShape>((new ParaTransform())->getHandle<ParaTransform>(), t. template getHandle<TShape>()))-> template getHandle<ParaShape<TShape>>();
+UnsafePyHandle<ParaShape<TGeo2D>> toDShape(UnsafePyHandle<TGeo2D> t) {
+    // to be improved:
+    // 1. with singleton identify transformation
+    // 2. or with templated ParaShape including a identity transformation
+    return (new ParaShape<TGeo2D>((new ParaTransform())->getHandle<ParaTransform>(), t))-> template getHandle<ParaShape<TGeo2D>>();
 }
+
+template <  typename TGeo2D,
+            typename = typename std::enable_if<
+                    std::is_base_of<ParaGeometry2D, typename std::decay<TGeo2D>::type>::value
+             >::type
+>
+UnsafePyHandle<ParaShape<TGeo2D>> toDShape(TGeo2D t) {
+    // to be improved:
+    // 1. with singleton identify transformation
+    // 2. or with templated ParaShape including a identity transformation
+    return (new ParaShape<TGeo2D>((new ParaTransform())->getHandle<ParaTransform>(), t. template getHandle<TGeo2D>()))-> template getHandle<ParaShape<TGeo2D>>();
+}
+
     
 typedef UnsafePyHandle<ParaGeometry2D> HParaGeometry2D;
 
