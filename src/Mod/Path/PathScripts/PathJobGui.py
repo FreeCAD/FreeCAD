@@ -602,6 +602,7 @@ class TaskPanel:
         
         self.setupGlobal = PathSetupSheetGui.GlobalEditor(self.obj.SetupSheet, self.form)
         self.setupOps = PathSetupSheetGui.OpsDefaultEditor(self.obj.SetupSheet, self.form)
+        self.form.linkStockAndModel.setDown(True)
 
     def preCleanup(self):
         PathLog.track()
