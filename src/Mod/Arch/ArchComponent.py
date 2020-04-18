@@ -19,16 +19,17 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Component"
-__author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
-__doc__ = """This module provides the base Arch component class, that is shared
+"""This module provides the base Arch component class, that is shared
 by all of the Arch BIM objects.
 
 Examples
 --------
 TODO put examples here.
 """
+
+__title__="FreeCAD Arch Component"
+__author__ = "Yorik van Havre"
+__url__ = "http://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector

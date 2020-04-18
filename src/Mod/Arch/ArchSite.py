@@ -21,6 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module provides tools to build Site objects. Sites are
+containers for Arch objects, and also define a terrain surface.
+"""
+
 import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -46,8 +50,6 @@ else:
 __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
-__doc__ = """This module provides tools to build Site objects. Sites are
-containers for Arch objects, and also define a terrain surface."""
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):

@@ -1,9 +1,9 @@
-import FreeCAD, os, json
-
-__doc__ = """Provides the IFC schema data as dicts, by loading the JSON schema files.
+"""Provides the IFC schema data as dicts, by loading the JSON schema files.
 
 Provides the data as IfcContexts, IfcProducts and IfcTypes.
 """
+
+import FreeCAD, os, json
 
 ifcVersions = ["IFC4", "IFC2X3"] 
 IfcVersion = ifcVersions[FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
