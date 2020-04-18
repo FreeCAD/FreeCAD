@@ -515,6 +515,7 @@ SelectionMenu::SelectionMenu(QWidget *parent)
 
 struct ElementInfo {
     QMenu *menu = nullptr;
+    QIcon icon;
     std::vector<int> indices;
 };
 
@@ -534,6 +535,7 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     pSelList = &sels;
     std::ostringstream ss;
     std::map<std::string, SubMenuInfo> menus;
+    std::map<App::DocumentObject*, QIcon> icons;
 
     int i=-1;
     for(auto &sel : sels) {
@@ -550,7 +552,16 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
         ss << sel.getObjectName() << '.' << sel.getSubNameNoElement();
         std::string key = ss.str();
 
-        menus[element].items[sobj->Label.getStrValue()][key].indices.push_back(i);
+        auto &icon = icons[sobj];
+        if(icon.isNull()) {
+            auto vp = Application::Instance->getViewProvider(sobj);
+            if(vp)
+                icon = vp->getIcon();
+        }
+
+        auto &elementInfo = menus[element].items[sobj->Label.getStrValue()][key];
+        elementInfo.icon = icon;
+        elementInfo.indices.push_back(i);
     }
 
     for(auto &v : menus) {
@@ -584,13 +595,13 @@ void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
                     for(int idx : elementInfo.indices) {
                         ss.str("");
                         ss << label << " (" << sels[idx].getOldElementName() << ")";
-                        QAction *action = info.menu->addAction(QString::fromUtf8(ss.str().c_str()));
+                        QAction *action = info.menu->addAction(elementInfo.icon, QString::fromUtf8(ss.str().c_str()));
                         action->setData(idx+1);
                     }
                     continue;
                 }
                 if(!elementInfo.menu) {
-                    elementInfo.menu = info.menu->addMenu(QString::fromUtf8(label.c_str()));
+                    elementInfo.menu = info.menu->addMenu(elementInfo.icon, QString::fromUtf8(label.c_str()));
                     connect(elementInfo.menu, SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
                 }
                 for(int idx : elementInfo.indices) {
