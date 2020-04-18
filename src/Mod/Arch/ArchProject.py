@@ -21,6 +21,11 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module provides tools to build Project objects.  Project objects are
+objects specifically for better IFC compatability, allowing the user to tweak
+certain IFC relevant values.
+"""
+
 import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC,ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -42,11 +47,6 @@ else:
 __title__="FreeCAD Project"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
-__doc__ = """This module provides tools to build Project objects.
-          Project objects are objects specifically for better IFC
-          compatability, allowing the user to tweak certain IFC
-          relevant values.
-          """
 
 def makeProject(sites=None, name="Project"):
     """Creates an Arch project.

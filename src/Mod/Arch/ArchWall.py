@@ -19,6 +19,16 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module provides tools to build Wall objects.  Walls are simple
+objects, usually vertical, typically obtained by giving a thickness to a base
+line, then extruding it vertically.
+
+Examples
+--------
+TODO put examples here.
+
+"""
+
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -46,16 +56,6 @@ else:
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
-
-__doc__="""This module provides tools to build Wall objects.  Walls are simple
-        objects, usually vertical, typically obtained by giving a thickness to a base
-        line, then extruding it vertically.
-
-        Examples
-        --------
-        TODO put examples here.
-
-        """
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
     """Creates a wall based on a given object, and returns the generated wall.

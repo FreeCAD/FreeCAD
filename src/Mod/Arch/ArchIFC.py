@@ -1,8 +1,8 @@
-import FreeCAD, os, json
-
-__doc__="""This modules sets up and manages the IFC-related properties, types
+"""This modules sets up and manages the IFC-related properties, types
 and attributes of Arch/BIM objects.
 """
+
+import FreeCAD, os, json
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP

@@ -21,6 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module provides tools to build Floor objects. Floors are used
+to group different Arch objects situated at a same level.
+"""
+
 import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -47,9 +51,6 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-__doc__ = """This module provides tools to build Floor objects. Floors are used
-to group different Arch objects situated at a same level.
-"""
 
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):

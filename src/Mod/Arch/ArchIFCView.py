@@ -1,10 +1,10 @@
+"""View providers and UI elements for the Ifc classes."""
+
 import FreeCAD, ArchIFC
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
-
-__doc__ = """View providers and UI elements for the Ifc classes."""
 
 class IfcContextView:
     """A default view provider for IfcContext objects."""
