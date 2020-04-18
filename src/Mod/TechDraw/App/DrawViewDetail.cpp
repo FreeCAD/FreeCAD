@@ -116,9 +116,6 @@ DrawViewDetail::DrawViewDetail()
     //hide Properties not relevant to DVDetail
     Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
     Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
-
-    //hide Properties that can only be set in Base View
-    //HighlightLineColor.setStatus(App::Property::ReadOnly, true);   //Should be same as BaseView
 }
 
 DrawViewDetail::~DrawViewDetail()
