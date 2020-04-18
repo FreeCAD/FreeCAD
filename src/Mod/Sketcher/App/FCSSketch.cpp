@@ -58,6 +58,7 @@
 
 #include <Mod/ConstraintSolver/App/G2D/ConstraintPointCoincident.h>
 
+
 #include "FCSSketch.h"
 #include "Constraint.h"
 
@@ -714,6 +715,8 @@ int FCSSketch::addPointCoincidentConstraint(ConstrDef &c, int geoId1, PointPos p
         
         FCS::G2D::HParaPoint &p1 = Points[pointId1];
         FCS::G2D::HParaPoint &p2 = Points[pointId2];
+    
+        int sh1 = toDShape(*p1);
     
         //int tag = ++ConstraintsCounter;
         //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
