@@ -46,7 +46,7 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawDetail;
+class DrawViewDetail;
 class DrawViewPart;
 }
 

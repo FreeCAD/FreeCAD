@@ -71,7 +71,7 @@ using namespace Gui;
 #define CREATEMODE 0
 #define EDITMODE   1
 
-//creation ctor
+//creation constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     ui(new Ui_TaskDetail),
     m_detailFeat(nullptr),
@@ -119,11 +119,11 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     //use editingFinished signal instead of valueChanged to prevent keyboard lock out
     //valueChanged fires every keystroke causing a recompute.
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
     connect(ui->aeReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
@@ -135,7 +135,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
             this, SLOT(onHighlightMoved(QPointF)));
 }
 
-//edit ctor
+//edit constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     ui(new Ui_TaskDetail),
     m_detailFeat(detailFeat),
@@ -190,13 +190,14 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    // the UI file uses setKeyboardTracking(false) so that a
+    // recomputation will only be triggered when the arrow yeys of the spinboxes are used
+
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
     connect(ui->aeReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
