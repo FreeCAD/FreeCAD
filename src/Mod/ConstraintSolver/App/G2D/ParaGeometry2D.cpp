@@ -2,7 +2,6 @@
 
 #include "ParaGeometry2D.h"
 #include "G2D/ParaGeometry2DPy.h"
-#include "ParaShape.h"
 
 using namespace FCS;
 using namespace FCS::G2D;

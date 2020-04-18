@@ -25,11 +25,20 @@
 #define FREECAD_CONSTRAINTSOLVER_G2D_PARAGEOMETRY2D_H
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
+#include "ParaShape.h"
 
 namespace FCS {
 namespace G2D {
 
 class ParaGeometry2D;
+
+template <  typename TShape
+>
+auto toDShape(TShape t) -> decltype((new ParaShape<TShape>((new ParaTransform())->getHandle<ParaTransform>(), t. template getHandle<TShape>()))-> template getHandle<ParaShape<TShape>>()) {
+    // to be improved with singleton identify transformation
+    return (new ParaShape<TShape>((new ParaTransform())->getHandle<ParaTransform>(), t. template getHandle<TShape>()))-> template getHandle<ParaShape<TShape>>();
+}
+    
 typedef UnsafePyHandle<ParaGeometry2D> HParaGeometry2D;
 
 class FCSExport ParaGeometry2D : public FCS::ParaGeometry
@@ -45,6 +54,9 @@ public: //friends
     friend class ParaGeometry2DPy;
 
 };
+
+
+
 
 }} //namespace
 
