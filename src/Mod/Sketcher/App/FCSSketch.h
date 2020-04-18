@@ -125,7 +125,7 @@ private:
     struct GeoDef {
         GeoDef() : geo(nullptr),type(GeoType::None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
-        std::shared_ptr<Part::Geometry>     geo;            // pointer to the geometry
+        std::unique_ptr<Part::Geometry>     geo;            // pointer to the geometry
         GeoType                             type;           // type of the geometry
         bool                                external;       // flag for external geometries
         int                                 index;          // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
@@ -171,10 +171,11 @@ private:
     /// add a coincident constraint to two points of two geometries
     int addPointCoincidentConstraint(ConstrDef &c, int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     
-    
     int checkGeoId(int geoId) const;
     
     void clear(void);
+    
+    bool updateGeometry(void);
     
 private:
     // Solver

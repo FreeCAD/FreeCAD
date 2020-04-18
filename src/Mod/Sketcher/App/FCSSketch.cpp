@@ -58,6 +58,9 @@
 
 #include <Mod/ConstraintSolver/App/G2D/ConstraintPointCoincident.h>
 
+#include <Mod/ConstraintSolver/App/SubSystem.h>
+#include <Mod/ConstraintSolver/App/LM.h>
+
 
 #include "FCSSketch.h"
 #include "Constraint.h"
@@ -234,7 +237,7 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     GeomPoint *p = static_cast<GeomPoint*>(point.clone());
     // create the definition struct for that geom
     GeoDef def;
-    def.geo  = std::unique_ptr<Geometry>(static_cast<Geometry *>(p));
+    def.geo  = std::move(std::unique_ptr<Geometry>(static_cast<Geometry *>(p)));
     def.type = GeoType::Point;
 
     FCS::G2D::HParaPoint hp = new FCS::G2D::ParaPoint();
@@ -256,7 +259,7 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     Points.push_back(hp);
 
     // store complete set
-    Geoms.push_back(def);
+    Geoms.push_back(std::move(def));
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -269,7 +272,7 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
     GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(lineSegment.clone());
     // create the definition struct for that geom
     GeoDef def;
-    def.geo  = std::unique_ptr<Geometry>(static_cast<Geometry *>(lineSeg));
+    def.geo  = std::move(std::unique_ptr<Geometry>(static_cast<Geometry *>(lineSeg)));
     def.type = GeoType::Line;
 
     // get the points from the line
@@ -715,10 +718,13 @@ int FCSSketch::addPointCoincidentConstraint(ConstrDef &c, int geoId1, PointPos p
         
         FCS::G2D::HParaPoint &p1 = Points[pointId1];
         FCS::G2D::HParaPoint &p2 = Points[pointId2];
+       
+        // TODO: FCS does not have tag review the need
+        
+        int tag = ++ConstraintsCounter;
     
-        int sh1 = toDShape(*p1);
-    
-        //int tag = ++ConstraintsCounter;
+        c.fcsConstr = new FCS::G2D::ConstraintPointCoincident(toDShape(p1),toDShape(p2));
+        
         //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
         // FCS.G2D.ConstraintPointCoincident
         // ConstraintPointCoincident(HShape_Point p1, HShape_Point p2, std::string label = "");
@@ -774,6 +780,33 @@ Base::Vector3d FCSSketch::calculateNormalAtPoint(int geoIdCurve, double px, doub
 
 int FCSSketch::solve(void)
 {
+    if(Geoms.empty() || Constrs.empty())
+        return 0;
+    
+    for(auto &c:Constrs)
+        c.fcsConstr->update();
+    
+    FCS::HSubSystem sys = new FCS::SubSystem;
+    
+    FCS::HParameterSubset freesubset = FCS::ParameterSubset::make(parameterStore->allFree());
+    
+    sys->addUnknown(freesubset);
+    
+    for(auto &c : Constrs)
+        sys->addConstraint(c.fcsConstr);
+        
+    for(auto &g : LineSegments)
+        sys->addConstraint(g->makeRuleConstraints());
+    
+    FCS::HValueSet valueset = FCS::ValueSet::make(freesubset);
+    
+    FCS::HLM lmbackend = new FCS::LM;
+    
+    lmbackend->solve(sys,valueset);
+    
+    updateGeometry();   
+    
+    
     /*
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
@@ -918,6 +951,186 @@ int FCSSketch::solve(void)
     */
     return 0;
 }
+
+bool FCSSketch::updateGeometry()
+{
+    int i=0;
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
+        try {
+            if (it->type == GeoType::Point) {
+                GeomPoint *point = static_cast<GeomPoint*>((*it).geo.get());
+
+                if(!point->Construction) {
+                    point->setPoint(Vector3d(Points[it->startPointId]->x.savedValue(),
+                                         Points[it->startPointId]->y.savedValue(),
+                                         0.0)
+                               );
+                }
+            } else if (it->type == GeoType::Line) {
+                GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>((*it).geo.get());
+                lineSeg->setPoints(Vector3d(LineSegments[it->index]->p0->x.savedValue(),
+                                            LineSegments[it->index]->p0->y.savedValue(),
+                                            0.0),
+                                   Vector3d(LineSegments[it->index]->p1->x.savedValue(),
+                                            LineSegments[it->index]->p1->y.savedValue(),
+                                            0.0)
+                                  );
+            } /*else if (it->type == Arc) {
+                GCS::Arc &myArc = Arcs[it->index];
+                // the following 4 lines are redundant since these equations are already included in the arc constraints
+//                *myArc.start.x = *myArc.center.x + *myArc.rad * cos(*myArc.startAngle);
+//                *myArc.start.y = *myArc.center.y + *myArc.rad * sin(*myArc.startAngle);
+//                *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
+//                *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
+                GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo);
+                aoc->setCenter(Vector3d(*Points[it->midPointId].x,
+                                        *Points[it->midPointId].y,
+                                        0.0)
+                              );
+                aoc->setRadius(*myArc.rad);
+                aoc->setRange(*myArc.startAngle, *myArc.endAngle, true);
+            } else if (it->type == ArcOfEllipse) {
+                GCS::ArcOfEllipse &myArc = ArcsOfEllipse[it->index];
+
+                GeomArcOfEllipse *aoe = static_cast<GeomArcOfEllipse*>(it->geo);
+
+                Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+                double radmin = *myArc.radmin;
+
+                Base::Vector3d fd=f1-center;
+                double radmaj = sqrt(fd*fd+radmin*radmin);
+
+                aoe->setCenter(center);
+                if ( radmaj >= aoe->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
+                    aoe->setMajorRadius(radmaj);
+                    aoe->setMinorRadius(radmin);
+                }  else {
+                    aoe->setMinorRadius(radmin);
+                    aoe->setMajorRadius(radmaj);
+                }
+                aoe->setMajorAxisDir(fd);
+                aoe->setRange(*myArc.startAngle, *myArc.endAngle, true);
+            } else if (it->type == Circle) {
+                GeomCircle *circ = static_cast<GeomCircle*>(it->geo);
+                circ->setCenter(Vector3d(*Points[it->midPointId].x,
+                                         *Points[it->midPointId].y,
+                                         0.0)
+                               );
+                circ->setRadius(*Circles[it->index].rad);
+            } else if (it->type == Ellipse) {
+
+                GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo);
+
+                Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*Ellipses[it->index].focus1.x, *Ellipses[it->index].focus1.y, 0.0);
+                double radmin = *Ellipses[it->index].radmin;
+
+                Base::Vector3d fd=f1-center;
+                double radmaj = sqrt(fd*fd+radmin*radmin);
+
+                ellipse->setCenter(center);
+                if ( radmaj >= ellipse->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
+                    ellipse->setMajorRadius(radmaj);
+                    ellipse->setMinorRadius(radmin);
+                }  else {
+                    ellipse->setMinorRadius(radmin);
+                    ellipse->setMajorRadius(radmaj);
+                }
+                ellipse->setMajorAxisDir(fd);
+            } else if (it->type == ArcOfHyperbola) {
+                GCS::ArcOfHyperbola &myArc = ArcsOfHyperbola[it->index];
+
+                GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo);
+
+                Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+                double radmin = *myArc.radmin;
+
+                Base::Vector3d fd=f1-center;
+                double radmaj = sqrt(fd*fd-radmin*radmin);
+
+                aoh->setCenter(center);
+                if ( radmaj >= aoh->getMinorRadius() ){
+                    aoh->setMajorRadius(radmaj);
+                    aoh->setMinorRadius(radmin);
+                }  else {
+                    aoh->setMinorRadius(radmin);
+                    aoh->setMajorRadius(radmaj);
+                }
+                aoh->setMajorAxisDir(fd);
+                aoh->setRange(*myArc.startAngle, *myArc.endAngle, emulateCCW=true);
+            } else if (it->type == ArcOfParabola) {
+                GCS::ArcOfParabola &myArc = ArcsOfParabola[it->index];
+
+                GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo);
+
+                Base::Vector3d vertex = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+
+                Base::Vector3d fd=f1-vertex;
+
+                aop->setXAxisDir(fd);
+                aop->setCenter(vertex);
+                aop->setFocal(fd.Length());
+                aop->setRange(*myArc.startAngle, *myArc.endAngle, emulateCCW=true);
+            } else if (it->type == BSpline) {
+                GCS::BSpline &mybsp = BSplines[it->index];
+
+                GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo);
+
+                std::vector<Base::Vector3d> poles;
+                std::vector<double> weights;
+
+                std::vector<GCS::Point>::const_iterator it1;
+                std::vector<double *>::const_iterator it2;
+
+                for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
+                    poles.emplace_back( *(*it1).x , *(*it1).y , 0.0);
+                    weights.push_back(*(*it2));
+                }
+
+                bsp->setPoles(poles, weights);
+
+                std::vector<double> knots;
+                std::vector<int> mult;
+
+                std::vector<double *>::const_iterator it3;
+                std::vector<int>::const_iterator it4;
+
+                for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
+                    knots.push_back(*(*it3));
+                    mult.push_back((*it4));
+                }
+
+                bsp->setKnots(knots,mult);
+
+                #if OCC_VERSION_HEX >= 0x060900
+                int index = 0;
+                for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
+                    if( *it5 != Constraint::GeoUndef) {
+                        if (Geoms[*it5].type == Point) {
+                            GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
+
+                            if(point->Construction) {
+                                point->setPoint(bsp->pointAtParameter(knots[index]));
+                            }
+                        }
+                    }
+                }
+                #endif
+
+            }*/
+        } catch (Base::Exception &e) {
+            Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
+                                  i,e.what());
+            return false;
+        }
+    }
+    return true;
+}
+
+
 
 int FCSSketch::initMove(int geoId, PointPos pos, bool fine)
 {
