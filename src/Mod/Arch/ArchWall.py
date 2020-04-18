@@ -1004,7 +1004,7 @@ class _Wall(ArchComponent.Component):
 
         if prop == "Length":
             if (obj.Base and obj.Length.Value 
-                    and hasattr(self,"oldLength") and (self.oldLength != None) 
+                    and hasattr(self,"oldLength") and (self.oldLength is not None) 
                     and (self.oldLength != obj.Length.Value)):
 
                 if hasattr(obj.Base,'Shape'):
