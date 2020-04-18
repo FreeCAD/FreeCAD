@@ -215,7 +215,7 @@ class IfcRoot:
         https://wiki.freecadweb.org/Expressions
 
         Does not add the attribute if the object has a property with the
-        attribute's name. Also does not add the attribute if it's name is
+        attribute's name. Also does not add the attribute if its name is
         RefLatitude, RefLongitude, or Name.
 
         Parameters
@@ -234,10 +234,10 @@ class IfcRoot:
             self.addIfcAttributeValueExpressions(obj, attribute)
 
     def addIfcAttribute(self, obj, attribute):
-        """Adds an IFC type's attribute to the object, within it's properties.
+        """Adds an IFC type's attribute to the object, within its properties.
 
         Adds the attribute's schema to the object's IfcData property, as an
-        item under it's "attributes" array.
+        item under its "attributes" array.
 
         Also adds the attribute as a property of the object.
 
@@ -388,7 +388,7 @@ class IfcRoot:
 
         Removes the property representing an IFC attribute, if it does not
         appear in the schema of the IFC type provided. Also, removes the
-        property if it's attribute is an enum type, presumably for backwards
+        property if its attribute is an enum type, presumably for backwards
         compatibility.
 
         Learn more about IFC enums here:

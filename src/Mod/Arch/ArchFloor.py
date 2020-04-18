@@ -175,7 +175,7 @@ class _Floor(ArchIFC.IfcProduct):
     The Floor object.
 
     Turns a <App::DocumentObjectGroupPython> into a floor object, then
-    takes a list of objects to own as it's children.
+    takes a list of objects to own as its children.
     """
 
     def __init__(self,obj):
@@ -184,7 +184,7 @@ class _Floor(ArchIFC.IfcProduct):
         The floor can be based off either a group, or a python feature. Learn more
         about groups here: https://wiki.freecadweb.org/Std_Group
 
-        Adds the properties of a floor, and sets it's IFC type.
+        Adds the properties of a floor, and sets its IFC type.
 
         Parameters
         ----------
@@ -257,7 +257,7 @@ class _Floor(ArchIFC.IfcProduct):
     def execute(self,obj):
         """Method run when the object is recomputed.
         
-        Moves it's children if it's placement has changed since the previous
+        Moves its children if its placement has changed since the previous
         recompute. Sets any child Walls and Structures to have the height of
         the floor if they have not Height value set.
         """
