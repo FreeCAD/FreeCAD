@@ -33,6 +33,7 @@
 # include <QFileOpenEvent>
 # include <QSessionManager>
 # include <QTimer>
+# include <QMessageBox>
 #endif
 
 #include <QLocalServer>
@@ -90,7 +91,9 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         else
             return QApplication::notify(receiver, event);
     }
-    catch (const Base::SystemExitException &e) {
+    catch (const Base::AccessViolation &e) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Access violation"), QObject::tr(e.what()));
+    } catch (const Base::SystemExitException &e) {
         caughtException.reset(new Base::SystemExitException(e));
         qApp->exit(e.getExitCode());
         return true;
