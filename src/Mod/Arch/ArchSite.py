@@ -620,10 +620,10 @@ class _Site(ArchIFC.IfcProduct):
     def execute(self,obj):
         """Method run when the object is recomputed.
         
-        If the site has no Shape or Terrain property assigned, does nothing.
+        If the site has no Shape or Terrain property assigned, do nothing.
 
-        Performs additions and subtractions on terrain, and assigns to the
-        site's Shape.
+        Perform additions and subtractions on terrain, and assign to the site's
+        Shape.
         """
 
         if not hasattr(obj,'Shape'): # old-style Site
@@ -669,10 +669,10 @@ class _Site(ArchIFC.IfcProduct):
     def onChanged(self,obj,prop):
         """Method called when the object has a property changed.
 
-        If Terrain has changed, hides the base object terrain, then runs
+        If Terrain has changed, hide the base object terrain, then run
         .execute().
 
-        Also calls ArchIFC.IfcProduct.onChanged().
+        Also call ArchIFC.IfcProduct.onChanged().
 
         Parameters
         ----------
@@ -688,17 +688,17 @@ class _Site(ArchIFC.IfcProduct):
                 self.execute(obj)
 
     def computeAreas(self,obj):
-        """Computes the area, perimeter length, and volume of the terrain shape.
+        """Compute the area, perimeter length, and volume of the terrain shape.
 
-        Computes the area of the terrain projected onto an XY hyperplane, IE:
+        Compute the area of the terrain projected onto an XY hyperplane, IE:
         the area of the terrain if viewed from a birds eye view.
 
-        Computes the length of the perimeter of this birds eye view area.
+        Compute the length of the perimeter of this birds eye view area.
 
-        Computes the volume of the terrain that needs to be subtracted and
+        Compute the volume of the terrain that needs to be subtracted and
         added on account of the Additions and Subtractions to the site.
 
-        These values are assigned to their respective site properties.
+        Assign these values to their respective site properties.
         """
 
         if not obj.Shape:
@@ -783,7 +783,7 @@ class _ViewProviderSite:
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
-        """Gives the site view provider its site view provider specific properties.
+        """Give the site view provider its site view provider specific properties.
 
         These include solar diagram and compass data, dealing the orientation
         of the site, and its orientation to the sun.
@@ -817,11 +817,11 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
 
     def onDocumentRestored(self,vobj):
-        """Method run when the document is restored. Re-adds the Arch component properties."""
+        """Method run when the document is restored. Re-add the Arch component properties."""
         self.setProperties(vobj)
 
     def getIcon(self):
-        """Returns the path to the appropriate icon.
+        """Return the path to the appropriate icon.
 
         Returns
         -------
@@ -833,12 +833,12 @@ class _ViewProviderSite:
         return ":/icons/Arch_Site_Tree.svg"
 
     def claimChildren(self):
-        """Defines which objects will appear as children in the tree view.
+        """Define which objects will appear as children in the tree view.
 
-        Sets objects within the site group, and the terrain object as children.
+        Set objects within the site group, and the terrain object as children.
 
-        If the Arch preference swallowSubtractions is true, the additions and
-        subtractions to the terrain are set as children.
+        If the Arch preference swallowSubtractions is true, set the additions
+        and subtractions to the terrain as children.
 
         Returns
         -------
@@ -862,7 +862,7 @@ class _ViewProviderSite:
         Edit mode is entered when a user double clicks on an object in the tree
         view, or when they use the menu option [Edit -> Toggle Edit Mode].
 
-        Just dispays the standard Arch component task panel.
+        Just dispay the standard Arch component task panel.
 
         Parameters
         ----------
@@ -888,7 +888,7 @@ class _ViewProviderSite:
     def unsetEdit(self,vobj,mode):
         """Method called when the document requests the object exit edit mode.
 
-        Closes the Arch component edit task panel.
+        Close the Arch component edit task panel.
 
         Returns
         -------
@@ -899,9 +899,9 @@ class _ViewProviderSite:
         return False
 
     def attach(self,vobj):
-        """Adds display modes' data to the coin scenegraph.
+        """Add display modes' data to the coin scenegraph.
 
-        Adds each display mode as a coin node, whose parent is this view
+        Add each display mode as a coin node, whose parent is this view
         provider. 
 
         Each display mode's node includes the data needed to display the object
@@ -909,8 +909,8 @@ class _ViewProviderSite:
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
 
-        Does not add display modes, but does add the solar diagram and compass
-        to the scenegraph.
+        Doe not add display modes, but do add the solar diagram and compass to
+        the scenegraph.
         """
 
         self.Object = vobj.Object
@@ -933,10 +933,10 @@ class _ViewProviderSite:
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
-        If the Longitude or Lattitude has changed, the SolarDiagram is
-        set to update.
+        If the Longitude or Lattitude has changed, set the SolarDiagram to
+        update.
 
-        If Terrain or Placement has changed, the compass is moved to follow it.
+        If Terrain or Placement has changed, move the compass to follow it.
 
         Parameters
         ----------
@@ -1010,10 +1010,10 @@ class _ViewProviderSite:
             self.updateCompassLocation(vobj)
 
     def updateDeclination(self,vobj):
-        """Updates the declination of the compass 
+        """Update the declination of the compass 
 
-        Updates the declination by adding together how the
-        site has been rotated within the document, and the rotation of the site compass.
+        Update the declination by adding together how the site has been rotated
+        within the document, and the rotation of the site compass.
         """
 
         if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:

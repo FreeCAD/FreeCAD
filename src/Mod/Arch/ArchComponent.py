@@ -54,7 +54,7 @@ else:
 #  is shared by all of the Arch BIM objects
 
 def addToComponent(compobject,addobject,mod=None):
-    """Adds an object to a component's properties.
+    """Add an object to a component's properties.
 
     Does not run if the addobject already exists in the component's properties.
     Adds the object to the first property found of Base, Group, or Hosts.
@@ -114,12 +114,12 @@ def addToComponent(compobject,addobject,mod=None):
 
 
 def removeFromComponent(compobject,subobject):
-    """Removes the object from the given component.
+    """Remove the object from the given component.
 
-    Tries to find the object in the component's properties. If it finds it,
-    removes the object.
+    Try to find the object in the component's properties. If found, remove the
+    object.
 
-    If the object is not found, adds the object in the component's Subtractions
+    If the object is not found, add the object in the component's Subtractions
     property.
 
     Parameters
@@ -180,7 +180,7 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
 
     def setProperties(self, obj):
-        """Gives the component its component specific properties, such as material.
+        """Give the component its component specific properties, such as material.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -234,15 +234,15 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
 
     def onDocumentRestored(self, obj):
-        """Method run when the document is restored. Re-adds the Arch component properties."""
+        """Method run when the document is restored. Re-add the Arch component properties."""
         Component.setProperties(self, obj)
 
     def execute(self,obj):
         """Method run when the object is recomputed.
 
-        If the object is a clone, just copies the shape it's cloned from.
+        If the object is a clone, just copy the shape it's cloned from.
 
-        Processes subshapes of the object to add additions, and subtract
+        Process subshapes of the object to add additions, and subtract
         subtractions from the object's shape.
         """
 
@@ -268,7 +268,7 @@ class Component(ArchIFC.IfcProduct):
 
         Specifically, this method is called before the value changes.
 
-        If "Placement" has changed, it records the old placement, so that
+        If "Placement" has changed, record the old placement, so that
         .onChanged() can compare between the old and new placement, and move
         its children accordingly.
 
@@ -283,11 +283,11 @@ class Component(ArchIFC.IfcProduct):
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
-        If "Placement" has changed, the component moves any children components
-        that have been set to move with their host, such that they stay in the
-        same location to this component.
+        If "Placement" has changed, move any children components that have been
+        set to move with their host, such that they stay in the same location
+        to this component.
 
-        Also calls ArchIFC.IfcProduct.onChanged().
+        Also call ArchIFC.IfcProduct.onChanged().
 
         Parameters
         ----------
@@ -326,7 +326,7 @@ class Component(ArchIFC.IfcProduct):
                             child.Placement.move(deltap)
 
     def getMovableChildren(self,obj):
-        """Finds the component's children set to move with their host.
+        """Find the component's children set to move with their host.
 
         In this case, children refer to Additions, Subtractions, and objects
         linked to this object that refer to it as a host in the "Host" or
@@ -357,10 +357,10 @@ class Component(ArchIFC.IfcProduct):
         return ilist2
 
     def getParentHeight(self,obj):
-        """Gets a height value from hosts.
+        """Get a height value from hosts.
 
-        Recursively crawls hosts until it finds a Floor or BuildingPart, then
-        returns the value of its Height property.
+        Recursively crawl hosts until a Floor or BuildingPart is found, then
+        return the value of its Height property.
 
         Returns
         -------
@@ -382,14 +382,14 @@ class Component(ArchIFC.IfcProduct):
         return 0
 
     def clone(self,obj):
-        """If the object is a clone, copies the shape.
+        """If the object is a clone, copy the shape.
 
-        If the object is a clone according to the "CloneOf" property, it copies
-        the object's shape and several properties relating to shape, such as
+        If the object is a clone according to the "CloneOf" property, copy the
+        object's shape and several properties relating to shape, such as
         "Length" and "Thickness".
 
-        Will only perform the copy if this object and the object it's a clone
-        of are of the same type, or if the object has the type "Component" or
+        Only perform the copy if this object and the object it's a clone of are
+        of the same type, or if the object has the type "Component" or
         "BuildingPart".
 
         Returns
@@ -411,10 +411,10 @@ class Component(ArchIFC.IfcProduct):
         return False
 
     def getSiblings(self,obj):
-        """Finds objects that have the same Base object, and type.
+        """Find objects that have the same Base object, and type.
 
-        Looks to base object, and finds other objects that are based off this
-        base object. If these objects are the same type, returns them.
+        Look to base object, and find other objects that are based off this
+        base object. If these objects are the same type, return them.
 
         Returns
         -------
@@ -437,20 +437,20 @@ class Component(ArchIFC.IfcProduct):
         return siblings
 
     def getExtrusionData(self,obj):
-        """Gets the object's extrusion data.
+        """Get the object's extrusion data.
 
-        This method recursively scrapes the Bases of the object, until it finds
-        a Base that is derived from a <Part::Extrusion>. From there, it copies
-        the extrusion to the (0,0,0) origin. 
+        Recursively scrape the Bases of the object, until a Base that is
+        derived from a <Part::Extrusion> is found. From there, copy the
+        extrusion to the (0,0,0) origin. 
 
-        With this copy, it gets the <Part.Face> the shape was originally
+        With this copy, get the <Part.Face> the shape was originally
         extruded from, the <Base.Vector> of the extrusion, and the
         <Base.Placement> needed to move the copy back to its original
-        location/orientation. It will return this data as a tuple.
+        location/orientation. Return this data as a tuple.
 
-        If it encounters an object derived from a <Part::Multifuse>, it will
-        return this data as a tuple containing lists. The lists will contain
-        the same data as above, from each of the objects within the multifuse.
+        If an object derived from a <Part::Multifuse> is encountered, return
+        this data as a tuple containing lists. The lists will contain the same
+        data as above, from each of the objects within the multifuse.
 
         Returns
         -------
@@ -543,14 +543,14 @@ class Component(ArchIFC.IfcProduct):
         return None
 
     def rebase(self,shape,hint=None):
-        """Copies a shape to the (0,0,0) origin.
+        """Copy a shape to the (0,0,0) origin.
 
-        Creates a copy of a shape, such that its center of mass is in the
+        Create a copy of a shape, such that its center of mass is in the
         (0,0,0) origin.
 
         TODO Determine the way the shape is rotated by this method.
 
-        Returns the copy of the shape, and the <Base.Placement> needed to move
+        Return the copy of the shape, and the <Base.Placement> needed to move
         the copy back to its original location/orientation.
 
         Parameters
@@ -636,14 +636,14 @@ class Component(ArchIFC.IfcProduct):
 
 
     def processSubShapes(self,obj,base,placement=None):
-        """Adds Additions and Subtractions to a base shape.
+        """Add Additions and Subtractions to a base shape.
 
-        If Additions exist, fuses then to the base shape. If no base is
-        provided, it will just fuse other additions to the first addition.
+        If Additions exist, fuse them to the base shape. If no base is
+        provided, just fuse other additions to the first addition.
 
-        If Subtractions exist, it will cut them from the base shape. Roofs and
-        Windows are treated uniquely, as they define their own Shape to
-        subtract from parent shapes using their .getSubVolume() methods.
+        If Subtractions exist, cut them from the base shape. Roofs and Windows
+        are treated uniquely, as they define their own Shape to subtract from
+        parent shapes using their .getSubVolume() methods.
 
         TODO determine what the purpose of the placement argument is.
 
@@ -760,14 +760,14 @@ class Component(ArchIFC.IfcProduct):
         return base
 
     def spread(self,obj,shape,placement=None):
-        """Copies the object to its Axis's points.
+        """Copy the object to its Axis's points.
 
-        If the object has the "Axis" property assigned, this method creates a
-        copy of the shape for each point on the object assigned as the "Axis".
-        Each of these copies are then translated, equal to the displacement of
-        the points from the (0,0,0) origin.
+        If the object has the "Axis" property assigned, create a copy of the
+        shape for each point on the object assigned as the "Axis".  Translate
+        each of these copies equal to the displacement of the points from the
+        (0,0,0) origin.
 
-        If the object's "Axis" is unassigned, returns the original shape
+        If the object's "Axis" is unassigned, return the original shape
         unchanged.
 
         Parameters
@@ -803,7 +803,7 @@ class Component(ArchIFC.IfcProduct):
         return shape
 
     def isIdentity(self,placement):
-        """Checks if a placement is *almost* zero.
+        """Check if a placement is *almost* zero.
 
         Check if a <Base.Placement>'s displacement from (0,0,0) is almost zero,
         and if the angle of its rotation about its axis is almost zero.
@@ -825,16 +825,16 @@ class Component(ArchIFC.IfcProduct):
         return False
 
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
-        """Checks the given shape, then assigns it to the object.
+        """Check the given shape, then assign it to the object.
 
-        Checks if the shape is valid, isn't null, and if it has volume. Removes
-        redundant edges from the shape. Spreads shape to the "Axis" with method
-        .spread().
+        Check if the shape is valid, isn't null, and if it has volume. Remove
+        redundant edges from the shape. Spread the shape to the "Axis" with
+        method .spread().
 
-        Sets the object's Shape and Placement to the values given, if
+        Set the object's Shape and Placement to the values given, if
         successful.
 
-        Finally, runs .computeAreas() method, to calculate the horizontal and
+        Finally, run .computeAreas() method, to calculate the horizontal and
         vertical area of the shape.
 
         Parameters
@@ -890,9 +890,9 @@ class Component(ArchIFC.IfcProduct):
         self.computeAreas(obj)
 
     def computeAreas(self,obj):
-        """Computes the area properties of the object's shape.
+        """Compute the area properties of the object's shape.
 
-        Computes the vertical area, horizontal area, and perimeter length of
+        Compute the vertical area, horizontal area, and perimeter length of
         the object's shape. 
 
         The vertical area is the surface area of the faces perpendicular to the
@@ -905,8 +905,8 @@ class Component(ArchIFC.IfcProduct):
         The perimeter length is the length of the outside edges of this bird's
         eye view.
 
-        These values are assigned to the object's "VerticalArea",
-        "HorizontalArea", and "PerimeterLength" properties.
+        Assign these values to the object's "VerticalArea", "HorizontalArea",
+        and "PerimeterLength" properties.
         """
 
 
@@ -976,7 +976,7 @@ class Component(ArchIFC.IfcProduct):
                         obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
     def isStandardCase(self,obj):
-        """Determines if the component is a standard case of its IFC type.
+        """Determine if the component is a standard case of its IFC type.
 
         Not all IFC types have a standard case.
 
@@ -987,7 +987,7 @@ class Component(ArchIFC.IfcProduct):
         standard cases.
 
         All objects whose IfcType is suffixed with the string " Sandard Case"
-        is automatically a standard case.
+        are automatically a standard case.
 
         Returns
         -------
@@ -1049,27 +1049,20 @@ class ViewProviderComponent:
 
     Acts as a base for all other Arch view providers. It's properties and
     behaviours are common to all Arch view providers.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a component view provider.
     """ 
 
     def __init__(self,vobj):
-        """Initialises the Component view provider.
-
-        Registers the Proxy as this class object. Registers the Object, as the
-        view provider's object. Sets the view provider to have the properties
-        of a component view provider.
-
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into a component view provider.
-        """
-
         vobj.Proxy = self
         self.Object = vobj.Object
         self.setProperties(vobj)
         
     def setProperties(self,vobj):
-        """Gives the component view provider its component view provider specific properties.
+        """Give the component view provider its component view provider specific properties.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -1082,11 +1075,11 @@ class ViewProviderComponent:
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
-        If the object has a Material associated with it, matches the view
+        If the object has a Material associated with it, match the view
         object's ShapeColor and Transparency to match the Material.
 
-        If the object is now cloned, or is part of a compound, the view object
-        inherits the DiffuseColor.
+        If the object is now cloned, or is part of a compound, have the view
+        object inherit the DiffuseColor.
 
         Parameters
         ----------
@@ -1134,10 +1127,10 @@ class ViewProviderComponent:
         return
 
     def getIcon(self):
-        """Returns the path to the appropriate icon.
+        """Return the path to the appropriate icon.
 
-        If a clone, returns the cloned component icon path. Otherwise returns
-        the Arch Component icon.
+        If a clone, return the cloned component icon path. Otherwise return the
+        Arch Component icon.
 
         Returns
         -------
@@ -1196,9 +1189,9 @@ class ViewProviderComponent:
         return
 
     def attach(self,vobj):
-        """Adds display modes' data to the coin scenegraph.
+        """Add display modes' data to the coin scenegraph.
 
-        Adds each display mode as a coin node, whose parent is this view
+        Add each display mode as a coin node, whose parent is this view
         provider. 
 
         Each display mode's node includes the data needed to display the object
@@ -1206,7 +1199,7 @@ class ViewProviderComponent:
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
 
-        Adds the HiRes display mode.
+        Add the HiRes display mode.
         """
 
         from pivy import coin
@@ -1219,9 +1212,9 @@ class ViewProviderComponent:
         return
 
     def getDisplayModes(self,vobj):
-        """Defines the display modes unique to the Arch Component.
+        """Define the display modes unique to the Arch Component.
 
-        Defines mode HiRes, which displays the component as a mesh, intended as
+        Define mode HiRes, which displays the component as a mesh, intended as
         a more visually appealing version of the component.
 
         Returns
@@ -1239,11 +1232,11 @@ class ViewProviderComponent:
         Called when the display mode changes, this method can be used to set
         data that wasn't available when .attach() was called.
 
-        When HiRes is set as display mode, displays the component as a copy of
+        When HiRes is set as display mode, display the component as a copy of
         the mesh associated as the HiRes property of the host object. See
         ArchComponent.Component's properties. 
 
-        If no shape is set in the HiRes property, just displays the object as
+        If no shape is set in the HiRes property, just display the object as
         the Flat Lines display mode.
 
         Parameters
@@ -1306,10 +1299,10 @@ class ViewProviderComponent:
         return None
 
     def claimChildren(self):
-        """Defines which objects will appear as children in the tree view.
+        """Define which objects will appear as children in the tree view.
 
-        Sets the host object's Base object as a child, and sets any additions
-        or subtractions as children.
+        Set the host object's Base object as a child, and set any additions or
+        subtractions as children.
 
         Returns
         -------
@@ -1351,8 +1344,7 @@ class ViewProviderComponent:
         return []
 
     def setEdit(self,vobj,mode):
-        """Method called when the document requests the object to enter edit
-        mode.
+        """Method called when the document requests the object to enter edit mode.
 
         Edit mode is entered when a user double clicks on an object in the tree
         view, or when they use the menu option [Edit -> Toggle Edit Mode].
@@ -1389,12 +1381,12 @@ class ViewProviderComponent:
         return False
 
     def setupContextMenu(self,vobj,menu):
-        """Adds the component specific options to the context menu.
+        """Add the component specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
         clicks on the component in the tree view.
 
-        Adds a menu choice to call the Arch_ToggleSubs Gui command. See
+        Add a menu choice to call the Arch_ToggleSubs Gui command. See
         ArchCommands._ToggleSubs
 
         Parameters
@@ -1416,7 +1408,7 @@ class ViewProviderComponent:
         FreeCADGui.runCommand("Arch_ToggleSubs")
 
     def areDifferentColors(self,a,b):
-        """Checks if two diffuse colors are almost the same.
+        """Check if two diffuse colors are almost the same.
 
         Parameters
         ----------
@@ -1439,10 +1431,10 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
-        """If an object is a clone, sets it it to copy the color of its parent.
+        """If an object is a clone, set it it to copy the color of its parent.
 
-        Will only change the color of the clone if the clone and its parent
-        have colors that are distinguishably different from each other.
+        Only change the color of the clone if the clone and its parent have
+        colors that are distinguishably different from each other.
 
         Parameters
         ----------
@@ -1461,7 +1453,7 @@ class ViewProviderComponent:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
     
     def getHosts(self):
-        """Returns the hosts of the view provider's host object.
+        """Return the hosts of the view provider's host object.
 
         Note that in this case, the hosts are the objects referenced by Arch
         Rebar's "Host" and/or "Hosts" properties specifically. Only Arch Rebar
@@ -1530,11 +1522,11 @@ class ArchSelectionObserver:
     def addSelection(self,document, object, element, position):
         """Method called when a selection is made on the Gui.
 
-        When a nextCommand is specified, the observer fires a Gui command when
-        anything is selected.
+        When a nextCommand is specified, fire a Gui command when anything is
+        selected.
 
-        When a watched object is specified, the observer will only fire when
-        this watched object is selected.
+        When a watched object is specified, only fire when this watched object
+        is selected.
 
         Parameters
         ----------
@@ -1661,8 +1653,8 @@ class ComponentTaskPanel:
         self.update()
 
     def isAllowedAlterSelection(self):
-        """This method indicates whether this task dialog allows other commands
-        to modify the selection while it is open.
+        """Indicate whether this task dialog allows other commands to modify
+        the selection while it is open.
 
         Returns
         -------
@@ -1673,8 +1665,8 @@ class ComponentTaskPanel:
         return True
 
     def isAllowedAlterView(self):
-        """This method indicates whether this task dialog allows other commands
-        to modify the 3D view while it is open.
+        """Indicate whether this task dialog allows other commands to modify
+        the 3D view while it is open.
 
         Returns
         -------
@@ -1685,25 +1677,24 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        """Adds the standard ok button."""
+        """Add the standard ok button."""
 
         return int(QtGui.QDialogButtonBox.Ok)
 
     def check(self,wid,col):
-        """This method is run as the callback when the user selects an item in
-        the tree.
+        """This method is run as the callback when the user selects an item in the tree.
 
-        This method enables and disables the add and remove buttons depending
-        on what the user has selected.
+        Enable and disable the add and remove buttons depending on what the
+        user has selected.
 
-        If they have selected one of the root attribute folders, it disables
-        the remove button. If they have separately selected an object in the 3D
-        view, the add button is enabled, allowing the user to add that object
-        to the root attribute folder.
+        If they have selected one of the root attribute folders, disable the
+        remove button. If they have separately selected an object in the 3D
+        view, enable the add button, allowing the user to add that object to
+        the root attribute folder.
 
         If they have selected one of the items inside a root attribute folder,
-        it enables the remove button, allowing the user to remove the object
-        from that attribute.
+        enable the remove button, allowing the user to remove the object from
+        that attribute.
 
         Parameters
         ----------
@@ -1723,7 +1714,7 @@ class ComponentTaskPanel:
             self.addButton.setEnabled(False)
 
     def getIcon(self,obj):
-        """Gets the path to the icons, of the items that fill the tree widget.
+        """Get the path to the icons, of the items that fill the tree widget.
         """
 
         if hasattr(obj.ViewObject,"Proxy"):
@@ -1736,15 +1727,15 @@ class ComponentTaskPanel:
         return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
-        """Populates the treewidget with its various items.
+        """Populate the treewidget with its various items.
 
-        Checks if the object being edited has attributes relevant to
-        subobjects. IE: Additions, Subtractions, etc.
+        Check if the object being edited has attributes relevant to subobjects.
+        IE: Additions, Subtractions, etc.
 
-        Populates the tree with these subobjects, under folders named after the
+        Populate the tree with these subobjects, under folders named after the
         attributes they are listed in.
 
-        Finally, runs method .retranslateUi().
+        Finally, run method .retranslateUi().
         """
 
         self.tree.clear()
@@ -1780,14 +1771,13 @@ class ComponentTaskPanel:
         self.retranslateUi(self.baseform)
 
     def addElement(self):
-        """This method is run as a callback when the user selects the add
-        button.
+        """This method is run as a callback when the user selects the add button.
 
-        Gets the object selected in the 3D view, and gets the attribute folder
+        Get the object selected in the 3D view, and get the attribute folder
         selected in the tree widget.
 
-        Adds the object selected in the 3D view to the attribute associated
-        with the selected folder, by using function addToComponent().
+        Add the object selected in the 3D view to the attribute associated with
+        the selected folder, by using function addToComponent().
         """
 
         it = self.tree.currentItem()
@@ -1801,12 +1791,11 @@ class ComponentTaskPanel:
         self.update()
 
     def removeElement(self):
-        """This method is run as a callback when the user selects the remove
-        button.
+        """This method is run as a callback when the user selects the remove button.
 
-        Gets the object selected in the tree widget. If there is an object in
-        the document with the same Name as the selected item in the tree, it is
-        removed from the object being edited, with the removeFromComponent()
+        Get the object selected in the tree widget. If there is an object in
+        the document with the same Name as the selected item in the tree,
+        remove it from the object being edited, with the removeFromComponent()
         function.
         """
 
@@ -1819,7 +1808,7 @@ class ComponentTaskPanel:
     def accept(self):
         """This method runs as a callback when the user selects the ok button.
 
-        It recomputes the document, and leaves edit mode.
+        Recomputes the document, and leave edit mode.
         """
 
         FreeCAD.ActiveDocument.recompute()
@@ -1829,10 +1818,10 @@ class ComponentTaskPanel:
     def editObject(self,wid,col):
         """This method is run when the user double clicks on an item in the tree widget.
 
-        If the item in the tree has a corresponding object in the document, it
-        enters edit mode for that associated object.
+        If the item in the tree has a corresponding object in the document,
+        enter edit mode for that associated object.
 
-        At the same time, it makes the object this task panel was opened for
+        At the same time, make the object this task panel was opened for
         transparent and unselectable.
 
         Parameters
@@ -1855,7 +1844,7 @@ class ComponentTaskPanel:
                 FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
 
     def retranslateUi(self, TaskPanel):
-        """Adds the text of the task panel, in translated form.
+        """Add the text of the task panel, in translated form.
         """
 
         self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Component", None))
@@ -1875,13 +1864,13 @@ class ComponentTaskPanel:
         self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit standard code", None))
 
     def editIfcProperties(self):
-        """Opens the IFC editor dialog box.
+        """Open the IFC editor dialog box.
 
         This is the method that runs as a callback when the Edit IFC properties
         button is selected by the user.
 
-        It defines the editor's structure, fills it with data, adds callback
-        for the buttons and other interactions, and shows it.
+        Defines the editor's structure, fill it with data, add a callback for
+        the buttons and other interactions, and show it.
         """
 
         if hasattr(self,"ifcEditor"):
@@ -1989,10 +1978,9 @@ class ComponentTaskPanel:
     def acceptIfcProperties(self):
         """This method runs as a callback when the user selects the ok button in the IFC editor.
         
-        This method scrapes through the rows of the IFC editor's items, and
-        compares them to the object being edited's .IfcData. If the two are
-        different, it changes the object's .IfcData to match the editor's
-        items.
+        Scrape through the rows of the IFC editor's items, and compare them to
+        the object being edited's .IfcData. If the two are different, change
+        the object's .IfcData to match the editor's items.
         """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
@@ -2026,7 +2014,7 @@ class ComponentTaskPanel:
             del self.ifcEditor
 
     def addIfcProperty(self,idx=0,pset=None,prop=None,ptype=None):
-        """Adds an IFC property to the object, within the IFC editor.
+        """Add an IFC property to the object, within the IFC editor.
 
         This method runs as a callback when the user selects an option in the
         Add Property dropdown box in the IFC editor. When used via the
@@ -2085,14 +2073,14 @@ class ComponentTaskPanel:
                 self.ifcEditor.comboProperty.setCurrentIndex(0)
 
     def addIfcPset(self,idx=0):
-        """Adds a IFC property set to the object, within the IFC editor.
+        """Add an IFC property set to the object, within the IFC editor.
         
         This method runs as a callback when the user selects a property set
         within the Add property set dropdown.
 
-        Adds the property set selected in the dropdown, then checks the
-        property set definitions for the property set's standard properties,
-        and adds them with blank values to the new property set.
+        Add the property set selected in the dropdown, then check the property
+        set definitions for the property set's standard properties, and add
+        them with blank values to the new property set.
 
         Parameters
         ----------
@@ -2127,13 +2115,13 @@ class ComponentTaskPanel:
                 self.ifcEditor.comboPset.setCurrentIndex(0)
 
     def removeIfcProperty(self):
-        """Removes an IFC property or property set from the object, within the IFC editor.
+        """Remove an IFC property or property set from the object, within the IFC editor.
 
         This method runs as a callback when the user selects the Delete
         selected property/set button within the IFC editor.
 
-        It finds the selected property, and deletes it. If it's a property set,
-        it deletes the children properties as well.
+        Find the selected property, and delete it. If it's a property set,
+        delete the children properties as well.
         """
 
         if hasattr(self,"ifcEditor") and self.ifcEditor:
@@ -2181,11 +2169,11 @@ if FreeCAD.GuiUp:
             self.plabels = plabels
 
         def createEditor(self,parent,option,index):
-            """Returns the widget used to change data.
+            """Return the widget used to change data.
 
-            Returns a text line editor if editing the property name.  Returns a
+            Return a text line editor if editing the property name.  Return a
             dropdown to change property type if editing property type.  If
-            editing the property's value, returns an appropriate widget
+            editing the property's value, return an appropriate widget
             depending on the datatype of the value.
 
             Parameters
@@ -2226,11 +2214,11 @@ if FreeCAD.GuiUp:
             return editor
 
         def setEditorData(self, editor, index):
-            """Gives data to the edit widget.
+            """Give data to the edit widget.
 
-            This method extracts the data already present in the table, and
-            writes it to the editor. This means the user starts the editor with
-            their previous data already present, instead of a blank slate.
+            Extract the data already present in the table, and write it to the
+            editor. This means the user starts the editor with their previous
+            data already present, instead of a blank slate.
 
             Parameters
             ----------
@@ -2272,7 +2260,7 @@ if FreeCAD.GuiUp:
                     editor.setText(index.data())
 
         def setModelData(self, editor, model, index):
-            """Writes the data in the editor to the IFC editor's table.
+            """Write the data in the editor to the IFC editor's table.
 
             Parameters
             ----------

@@ -58,7 +58,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
-    """Creates a wall based on a given object, and returns the generated wall.
+    """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
 
@@ -132,12 +132,12 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
     return obj
 
 def joinWalls(walls,delete=False):
-    """Joins the given list of walls into one sketch-based wall.
+    """Join the given list of walls into one sketch-based wall.
 
-    Takes the first wall in the list, and adds on the other walls in the list.
-    Returns the modified first wall. 
+    Take the first wall in the list, and adds on the other walls in the list.
+    Return the modified first wall. 
 
-    Setting delete to True, will delete the other walls. Will only join walls
+    Setting delete to True, will delete the other walls. Only join walls
     if the walls have the same width, height and alignment.
 
     Parameters
@@ -190,7 +190,7 @@ def joinWalls(walls,delete=False):
 def mergeShapes(w1,w2):
     """Not currently implemented. 
 
-    Returns a Shape built on two walls that share same properties and have a
+    Return a Shape built on two walls that share same properties and have a
     coincident endpoint.
     """
 
@@ -217,7 +217,7 @@ def mergeShapes(w1,w2):
     return None
 
 def areSameWallTypes(walls):
-    """Checks if a list of walls have the same height, width and alignment.
+    """Check if a list of walls have the same height, width and alignment.
 
     Parameters
     ----------
@@ -253,8 +253,8 @@ class _CommandWall:
 
     A tool for creating Arch walls.
 
-    Creates a wall from the object selected by the user. If no objects are
-    selected, enters an interactive mode to create a wall using selected points
+    Create a wall from the object selected by the user. If no objects are
+    selected, enter an interactive mode to create a wall using selected points
     to create a base.
 
     Find documentation on the end user usage of Arch Wall here:
@@ -404,8 +404,7 @@ class _CommandWall:
                 self.Activated()
 
     def addDefault(self):
-        """Creates a wall using a line segment, with all parameters as the
-        default.
+        """Create a wall using a line segment, with all parameters as the default.
 
         Used solely by _CommandWall.getPoint() when the interactive mode has
         selected two points.
@@ -431,9 +430,9 @@ class _CommandWall:
     def update(self,point):
         """Callback for the mouse moving during the interactive mode.
 
-        Updates the active dialog box to show the coordinates of the location
-        of the cursor. It also shows the length the line would take, if the
-        user selected that point.
+        Update the active dialog box to show the coordinates of the location of
+        the cursor. Also show the length the line would take, if the user
+        selected that point.
 
         Parameters
         ----------
@@ -458,7 +457,7 @@ class _CommandWall:
                 self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
 
     def taskbox(self):
-        """Sets up a simple gui widget for the interactive mode."""
+        """Set up a simple gui widget for the interactive mode."""
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -611,7 +610,7 @@ class _CommandMergeWalls:
 
     A tool for merging walls.
 
-    Joins two or more walls by using the ArchWall.joinWalls() function.
+    Join two or more walls by using the ArchWall.joinWalls() function.
 
     Find documentation on the end user usage of Arch Wall here:
     https://wiki.freecadweb.org/Arch_MergeWalls
@@ -636,7 +635,7 @@ class _CommandMergeWalls:
     def Activated(self):
         """Executed when Arch MergeWalls is called.
 
-        Calls ArchWall.joinWalls() on walls selected by the user, with the
+        Call ArchWall.joinWalls() on walls selected by the user, with the
         delete option enabled. If the user has selected a single wall, check to
         see if the wall has any Additions that are walls. If so, merges these
         additions to the wall, deleting the additions.
@@ -694,7 +693,7 @@ class _Wall(ArchComponent.Component):
         obj.IfcType = "Wall"
 
     def setProperties(self, obj):
-        """Gives the wall its wall specific properties, such as its alignment.
+        """Give the wall its wall specific properties, such as its alignment.
 
         You can learn more about properties here:
         https://wiki.freecadweb.org/property
@@ -768,11 +767,11 @@ class _Wall(ArchComponent.Component):
     def execute(self,obj):
         """Method run when the object is recomputed.
 
-        Extrudes the wall from the Base shape if possible. Processes additions
-        and subtractions. Assigns the resulting shape as the shape of the wall.
+        Extrude the wall from the Base shape if possible. Processe additions
+        and subtractions. Assign the resulting shape as the shape of the wall.
 
-        Adds blocks if the MakeBlocks property is assigned. If the Base shape
-        is a mesh, just copies the mesh.
+        Add blocks if the MakeBlocks property is assigned. If the Base shape is
+        a mesh, just copy the mesh.
         """
 
         if self.clone(obj):
@@ -968,8 +967,8 @@ class _Wall(ArchComponent.Component):
 
         Specifically, this method is called before the value changes.
 
-        If "Length" has changed, it records the old length so that .onChanged()
-        can be sure that the base needs to be changed.
+        If "Length" has changed, record the old length so that .onChanged() can
+        be sure that the base needs to be changed.
 
         Parameters
         ----------
@@ -983,12 +982,12 @@ class _Wall(ArchComponent.Component):
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
-        If length has changed, will extend the length of the Base object, if
-        the Base object only has a single edge to extend.
+        If length has changed, extend the length of the Base object, if the
+        Base object only has a single edge to extend.
 
-        Also hides subobjects.
+        Also hide subobjects.
 
-        Also calls ArchComponent.Component.onChanged().
+        Also call ArchComponent.Component.onChanged().
 
         Parameters
         ----------
@@ -1026,7 +1025,7 @@ class _Wall(ArchComponent.Component):
         ArchComponent.Component.onChanged(self,obj,prop)
 
     def getFootprint(self,obj):
-        """Gets the faces that make up the base/foot of the wall.
+        """Get the faces that make up the base/foot of the wall.
         
         Returns
         -------
@@ -1043,14 +1042,14 @@ class _Wall(ArchComponent.Component):
         return faces
 
     def getExtrusionData(self,obj):
-        """Gets data needed to extrude the wall from a base object.
+        """Get data needed to extrude the wall from a base object.
         
-        This method takes the Base object, and finds a base face to extrude
+        take the Base object, and find a base face to extrude
         out, a vector to define the extrusion direction and distance.
 
-        The base face is rebased to the (0,0,0) origin.
+        Rebase the base face to the (0,0,0) origin.
 
-        The base face is returned, rebased, with the extrusion vector, and the
+        Return the base face, rebased, with the extrusion vector, and the
         <Base.Placement> needed to return the face back to its original
         position.
 
@@ -1510,9 +1509,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
     def getIcon(self):
-        """Returns the path to the appropriate icon.
+        """Return the path to the appropriate icon.
 
-        If a clone, returns the cloned wall icon path. Otherwise returns the
+        If a clone, return the cloned wall icon path. Otherwise return the
         Arch wall icon.
 
         Returns
@@ -1530,9 +1529,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Wall_Tree.svg"
 
     def attach(self,vobj):
-        """Adds display modes' data to the coin scenegraph.
+        """Add display modes' data to the coin scenegraph.
 
-        Adds each display mode as a coin node, whose parent is this view
+        Add each display mode as a coin node, whose parent is this view
         provider. 
 
         Each display mode's node includes the data needed to display the object
@@ -1540,7 +1539,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
 
-        Adds the textures used in the Footprint display mode.
+        Add the textures used in the Footprint display mode.
         """
 
         self.Object = vobj.Object
@@ -1567,7 +1566,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         """Method called when the host object has a property changed.
 
         If the host object's Placement, Shape, or Material has changed, and the
-        host object has a Material assigned, gives the shape the color and
+        host object has a Material assigned, give the shape the color and
         transparency of the Material.
 
         Parameters
@@ -1603,10 +1602,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
     def getDisplayModes(self,vobj):
-        """Defines the display modes unique to the Arch Wall.
+        """Define the display modes unique to the Arch Wall.
 
-        Defines mode Footprint, which only displays the footprint of the wall.
-        Also adds the display modes of the Arch Component.
+        Define mode Footprint, which only displays the footprint of the wall.
+        Also add the display modes of the Arch Component.
 
         Returns
         -------
@@ -1623,11 +1622,11 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         Called when the display mode changes, this method can be used to set
         data that wasn't available when .attach() was called.
 
-        When Footprint is set as display mode, finds the faces that make up the
-        footprint of the wall, and gives them a lined texture. Then displays
+        When Footprint is set as display mode, find the faces that make up the
+        footprint of the wall, and give them a lined texture. Then display
         the wall as a wireframe.
 
-        Then passes the displaymode onto Arch Component's .setDisplayMode().
+        Then pass the displaymode onto Arch Component's .setDisplayMode().
 
         Parameters
         ----------

@@ -30,9 +30,9 @@ class IfcRoot:
     """
 
     def setProperties(self, obj):
-        """Gives the object properties for storing IFC data.
+        """Give the object properties for storing IFC data.
 
-        Also migrates old versions of IFC properties to the new property names
+        Also migrate old versions of IFC properties to the new property names
         using the .migrateDeprecatedAttributes() method.
         """
 
@@ -51,13 +51,12 @@ class IfcRoot:
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
-        If the object's IfcType has changed, this method changes the object's
-        properties that relate to IFC attributes in order to match the IFC
-        schema definition of the new IFC type.
+        If the object's IfcType has changed, change the object's properties
+        that relate to IFC attributes in order to match the IFC schema
+        definition of the new IFC type.
 
-        If a property changes that is in the "IFC Attributes" group, this
-        method will also change the value stored in the IfcData property's
-        JSON.
+        If a property changes that is in the "IFC Attributes" group, also
+        change the value stored in the IfcData property's JSON.
 
         Parameters
         ----------
@@ -73,14 +72,14 @@ class IfcRoot:
                 self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 
     def setupIfcAttributes(self, obj):
-        """Sets up the IFC attributes in the object's properties.
+        """Set up the IFC attributes in the object's properties.
 
-        Adds the attributes specified in the object's IFC type schema, to the
-        object's properties. Does not re-add them if they're already present.
-        Also removes old IFC attribute properties that no longer appear in the
+        Add the attributes specified in the object's IFC type schema, to the
+        object's properties. Do not re-add them if they're already present.
+        Also remove old IFC attribute properties that no longer appear in the
         schema for backwards compatibility.
 
-        Does so using the .addIfcAttributes() and
+        Do so using the .addIfcAttributes() and
         .purgeUnusedIfcAttributesFromPropertiesList() methods.
 
         Learn more about IFC attributes here:
@@ -94,9 +93,9 @@ class IfcRoot:
         self.addIfcAttributes(ifcTypeSchema, obj)
 
     def setupIfcComplexAttributes(self, obj):
-        """Adds the IFC type's complex attributes to the object.
+        """Add the IFC type's complex attributes to the object.
 
-        Gets the object's IFC type schema, and adds the schema for the type's
+        Get the object's IFC type schema, and add the schema for the type's
         complex attributes within the IfcData property.
         """
 
@@ -114,9 +113,9 @@ class IfcRoot:
         obj.IfcData = IfcData
 
     def getIfcTypeSchema(self, IfcType):
-        """Gets the schema of the IFC type provided.
+        """Get the schema of the IFC type provided.
 
-        If the IFC type is undefined, returns the schema of the
+        If the IFC type is undefined, return the schema of the
         IfcBuildingElementProxy.
 
         Parameter
@@ -139,7 +138,7 @@ class IfcRoot:
         return None
 
     def getIfcSchema(self):
-        """Gets the IFC schema of all types relevant to this class.
+        """Get the IFC schema of all types relevant to this class.
 
         Intended to be overwritten by the classes that inherit this class.
 
@@ -152,12 +151,12 @@ class IfcRoot:
         return {}
 
     def getCanonicalisedIfcTypes(self):
-        """This method gets the names of IFC types, converted to the form used in Arch.
+        """Get the names of IFC types, converted to the form used in Arch.
 
-        This method changes the names of all IFC types to a more human readable
-        form which is used instead throughout Arch instead of the raw type
-        names. The names have the "Ifc" stripped from  the start of their
-        name, and spaces inserted between the words.
+        Change the names of all IFC types to a more human readable form which
+        is used instead throughout Arch instead of the raw type names. The
+        names have the "Ifc" stripped from the start of their name, and spaces
+        inserted between the words.
 
         Returns
         -------
@@ -171,11 +170,11 @@ class IfcRoot:
         return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
 
     def getIfcAttributeSchema(self, ifcTypeSchema, name):
-        """Gets the schema of an IFC attribute with the given name.
+        """Get the schema of an IFC attribute with the given name.
         
-        This method does so by converting the IFC attribute's name from the
-        human readable version Arch uses, and converting it to the less
-        readable name it has in the IFC schema.
+        Convert the IFC attribute's name from the human readable version Arch
+        uses, and convert it to the less readable name it has in the IFC
+        schema.
 
         Parameters
         ----------
@@ -199,23 +198,22 @@ class IfcRoot:
         return None
 
     def addIfcAttributes(self, ifcTypeSchema, obj):
-        """Adds the attributes of the IFC type's schema to the object's properties.
+        """Add the attributes of the IFC type's schema to the object's properties.
 
-        Adds the attributes as properties of the object. Also adds the
-        attribute's schema within the object's IfcData property. It does so
-        using the .addIfcAttribute() method.
+        Add the attributes as properties of the object. Also add the
+        attribute's schema within the object's IfcData property. Do so using
+        the .addIfcAttribute() method.
 
-        Also adds expressions to copy data from the object's editable
+        Also add expressions to copy data from the object's editable
         properties.  This means the IFC properties will remain accurate with
-        the actual values of the object. This is not done for all IFC
-        properties. It does so using the .addIfcAttributeValueExpressions()
-        method.
+        the actual values of the object. Do not do so for all IFC properties.
+        Do so using the .addIfcAttributeValueExpressions() method.
 
         Learn more about expressions here:
         https://wiki.freecadweb.org/Expressions
 
-        Does not add the attribute if the object has a property with the
-        attribute's name. Also does not add the attribute if its name is
+        Do not add the attribute if the object has a property with the
+        attribute's name. Also do not add the attribute if its name is
         RefLatitude, RefLongitude, or Name.
 
         Parameters
@@ -234,12 +232,12 @@ class IfcRoot:
             self.addIfcAttributeValueExpressions(obj, attribute)
 
     def addIfcAttribute(self, obj, attribute):
-        """Adds an IFC type's attribute to the object, within its properties.
+        """Add an IFC type's attribute to the object, within its properties.
 
-        Adds the attribute's schema to the object's IfcData property, as an
+        Add the attribute's schema to the object's IfcData property, as an
         item under its "attributes" array.
 
-        Also adds the attribute as a property of the object.
+        Also add the attribute as a property of the object.
 
         Parameters
         ----------
@@ -273,13 +271,13 @@ class IfcRoot:
                             QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def addIfcAttributeValueExpressions(self, obj, attribute):
-        """Adds expressions for IFC attributes, so they stay accurate with the object.
+        """Add expressions for IFC attributes, so they stay accurate with the object.
 
-        Adds expressions to the object that copy data from the editable
+        Add expressions to the object that copy data from the editable
         properties of the object. This ensures that the IFC attributes will
         remain accurate with the actual values of the object.
 
-        Currently adds expressions for the following IFC attributes:
+        Currently, add expressions for the following IFC attributes:
 
         - OverallWidth
         - OverallHeight
@@ -330,7 +328,7 @@ class IfcRoot:
             obj.LongName = obj.Label
 
     def setObjIfcAttributeValue(self, obj, attributeName, value):
-        """Changes the value of an IFC attribute within the IfcData property's json.
+        """Change the value of an IFC attribute within the IfcData property's json.
 
         Parameters
         ----------
@@ -369,7 +367,7 @@ class IfcRoot:
         obj.IfcData = IfcData
 
     def getObjIfcComplexAttribute(self, obj, attributeName):
-        """Gets the value of the complex attribute, as stored in the IfcData JSON.
+        """Get the value of the complex attribute, as stored in the IfcData JSON.
 
         Parameters
         ----------
@@ -384,10 +382,10 @@ class IfcRoot:
         return json.loads(obj.IfcData["complex_attributes"])[attributeName]
 
     def purgeUnusedIfcAttributesFromPropertiesList(self, ifcTypeSchema, obj):
-        """Removes properties representing IFC attributes if they no longer appear.
+        """Remove properties representing IFC attributes if they no longer appear.
 
-        Removes the property representing an IFC attribute, if it does not
-        appear in the schema of the IFC type provided. Also, removes the
+        Remove the property representing an IFC attribute, if it does not
+        appear in the schema of the IFC type provided. Also, remove the
         property if its attribute is an enum type, presumably for backwards
         compatibility.
 
@@ -403,7 +401,7 @@ class IfcRoot:
                 obj.removeProperty(property)
 
     def migrateDeprecatedAttributes(self, obj):
-        """Updates the object to use the newer property names for IFC related properties.
+        """Update the object to use the newer property names for IFC related properties.
         """
 
         if "Role" in obj.PropertiesList:
@@ -436,7 +434,7 @@ class IfcProduct(IfcRoot):
     """
 
     def getIfcSchema(self):
-        """Gets the IFC schema of all IFC types that inherit from IfcProducts.
+        """Get the IFC schema of all IFC types that inherit from IfcProducts.
 
         Returns
         -------
@@ -455,7 +453,7 @@ class IfcContext(IfcRoot):
     """
 
     def getIfcSchema(self):
-        """Gets the IFC schema of all IFC types that inherit from IfcContexts.
+        """Get the IFC schema of all IFC types that inherit from IfcContexts.
 
         Returns
         -------
