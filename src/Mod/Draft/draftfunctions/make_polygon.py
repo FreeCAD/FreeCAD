@@ -37,20 +37,39 @@ from draftviewproviders.view_base import ViewProviderDraft
 
 
 
-def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
-    """makePolgon(nfaces,[radius],[inscribed],[placement],[face]): Creates a
-    polygon object with the given number of faces and the radius.
-    if inscribed is False, the polygon is circumscribed around a circle
-    with the given radius, otherwise it is inscribed. If face is True,
-    the resulting shape is displayed as a face, otherwise as a wireframe.
+def make_polygon(edges, radius=1, inscribed=True, placement=None, face=None, support=None):
+    """makePolgon(edges,[radius],[inscribed],[placement],[face])
+
+    Creates a polygon object with the given number of edges and radius.
+
+    Parameters
+    ----------
+    edges : int
+        Number of edges of the polygon.
+
+    radius : 
+        Radius of the control circle.
+
+    inscribed : bool
+        Defines is the polygon is inscribed or not into the control circle.
+
+    placement : Base.Placement
+        If placement is given, it is used. 
+    
+    face : bool
+        If face is True, the resulting shape is displayed as a face, 
+        otherwise as a wireframe.
+    
+    support : 
+        TODO: Describe
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    if nfaces < 3: return None
+    if edges < 3: return None
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
     Polygon(obj)
-    obj.FacesNumber = nfaces
+    obj.Edges = edges
     obj.Radius = radius
     if face != None:
         obj.MakeFace = face
