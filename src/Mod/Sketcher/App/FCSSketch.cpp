@@ -805,6 +805,7 @@ int FCSSketch::solve(void)
     FCS::HLM lmbackend = new FCS::LM;
     
     lmbackend->solve(sys,valueset);
+    valueset->apply();
     
     updateGeometry();   
     
