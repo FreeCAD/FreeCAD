@@ -252,6 +252,15 @@ if gui:
     from draftviewproviders.view_point import ViewProviderPoint
     _ViewProviderPoint = ViewProviderPoint
 
+#---------------------------------------------------------------------------
+
+from draftfunctions.make_ellipse import  make_ellipse
+from draftobjects.ellipse import Ellipse
+
+makeEllipse = make_ellipse
+_Ellipse = Ellipse
+
+# Ellipse object uses view_base.ViewProviderDraft
 
 #---------------------------------------------------------------------------
 # Draft annotation objects
@@ -566,31 +575,6 @@ def makePointArray(base, ptlst):
         if len(obj.Base.ViewObject.DiffuseColor) > 1:
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
-    return obj
-
-def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
-    """makeEllipse(majradius,minradius,[placement],[face],[support]): makes
-    an ellipse with the given major and minor radius, and optionally
-    a placement."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
-    _Ellipse(obj)
-    if minradius > majradius:
-        majradius,minradius = minradius,majradius
-    obj.MajorRadius = majradius
-    obj.MinorRadius = minradius
-    obj.Support = support
-    if placement:
-        obj.Placement = placement
-    if gui:
-        _ViewProviderDraft(obj.ViewObject)
-        #if not face:
-        #    obj.ViewObject.DisplayMode = "Wireframe"
-        formatObject(obj)
-        select(obj)
-
     return obj
 
 def extrude(obj,vector,solid=False):
@@ -2935,47 +2919,6 @@ class _ViewProviderDraftLink:
             return [obj.Base]
         else:
             return obj.ElementList
-
-
-class _Ellipse(_DraftObject):
-    """The Circle object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Ellipse")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the arc"))
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
-        obj.addProperty("App::PropertyLength","MinorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The minor radius of the ellipse"))
-        obj.addProperty("App::PropertyLength","MajorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The major radius of the ellipse"))
-        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
-        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
-        obj.MakeFace = getParam("fillmode",True)
-
-    def execute(self, obj):
-        import Part
-        plm = obj.Placement
-        if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            FreeCAD.Console.PrintMessage(translate("Draft","Error: Major radius is smaller than the minor radius"))
-            return
-        if obj.MajorRadius.Value and obj.MinorRadius.Value:
-            ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
-            shape = ell.toShape()
-            if hasattr(obj,"FirstAngle"):
-                if obj.FirstAngle.Value != obj.LastAngle.Value:
-                    a1 = obj.FirstAngle.getValueAs(FreeCAD.Units.Radian)
-                    a2 = obj.LastAngle.getValueAs(FreeCAD.Units.Radian)
-                    shape = Part.ArcOfEllipse(ell,a1,a2).toShape()
-            shape = Part.Wire(shape)
-            if shape.isClosed():
-                if hasattr(obj,"MakeFace"):
-                    if obj.MakeFace:
-                        shape = Part.Face(shape)
-                else:
-                    shape = Part.Face(shape)
-            obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
-                obj.Area = shape.Area
-            obj.Placement = plm
-        obj.positionBySupport()
 
 
 class _DrawingView(_DraftObject):
