@@ -285,9 +285,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     double scale = getScale();
 
     BRepBuilderAPI_Copy BuilderCopy(shape);
-    TopoDS_Shape copyShape = BuilderCopy.Shape();
+    TopoDS_Shape myShape = BuilderCopy.Shape();
 
-    gp_Pnt gpCenter = TechDraw::findCentroid(copyShape,
+    gp_Pnt gpCenter = TechDraw::findCentroid(myShape,
                                              dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
     m_saveCentroid = shapeCenter;              //centroid of original shape
@@ -295,7 +295,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     if (dvs != nullptr) {
         //section cutShape should already be on origin
     } else {
-        copyShape = TechDraw::moveShape(copyShape,                     //centre shape on origin
+        myShape = TechDraw::moveShape(myShape,                     //centre shape on origin
                                        -shapeCenter);
     }
 
@@ -310,7 +310,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
-    BRepBndLib::Add(copyShape, bbxSource);
+    BRepBndLib::Add(myShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
     Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
@@ -331,33 +331,47 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     gp_Vec extrudeDir(extrudeVec.x,extrudeVec.y,extrudeVec.z);
     TopoDS_Shape tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
 
-    BRepAlgoAPI_Common mkCommon(copyShape,tool);
-    if (!mkCommon.IsDone()) {
-        Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
-        return;
-    }
-    if (mkCommon.Shape().IsNull()) {
-        Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
-        return;
-    }
 
-    //Did we get a solid?
-    TopExp_Explorer xp;
-    xp.Init(mkCommon.Shape(),TopAbs_SOLID);
-    if (!(xp.More() == Standard_True)) {
-        Base::Console().Warning("DVD::execute - mkCommon.Shape is not a solid!\n");
+    BRep_Builder builder;
+    TopoDS_Compound pieces;
+    builder.MakeCompound(pieces);
+    TopExp_Explorer expl(myShape, TopAbs_SOLID);
+    int indb = 0;
+    int outdb = 0;
+    for (; expl.More(); expl.Next()) {
+        indb++;
+        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
+
+        BRepAlgoAPI_Common mkCommon(s,tool);
+        if (!mkCommon.IsDone()) {
+//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
+            continue;
+        }
+        if (mkCommon.Shape().IsNull()) {
+//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
+            continue;
+        }
+        //this might be overkill for piecewise algo
+        //Did we get at least 1 solid?
+        TopExp_Explorer xp;
+        xp.Init(mkCommon.Shape(),TopAbs_SOLID);
+        if (!(xp.More() == Standard_True)) {
+//            Base::Console().Warning("DVD::execute - mkCommon.Shape is not a solid!\n");
+            continue;
+        }
+        builder.Add(pieces, mkCommon.Shape());
+        outdb++;
     }
-    TopoDS_Shape detail = mkCommon.Shape();
 
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");            //debug
-        BRepTools::Write(copyShape, "DVDCopy.brep");       //debug
-        BRepTools::Write(detail, "DVDCommon.brep");        //debug
+        BRepTools::Write(myShape, "DVDCopy.brep");       //debug
+        BRepTools::Write(pieces, "DVDCommon.brep");        //debug
     }
 
     Bnd_Box testBox;
     testBox.SetGap(0.0);
-    BRepBndLib::Add(detail, testBox);
+    BRepBndLib::Add(pieces, testBox);
     if (testBox.IsVoid()) {
         TechDraw::GeometryObject* go = getGeometryObject();
         if (go != nullptr) {
@@ -373,7 +387,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 //    TopoDS_Compound Comp;
 //    builder.MakeCompound(Comp);
 //    builder.Add(Comp, tool);
-//    builder.Add(Comp, copyShape);
+//    builder.Add(Comp, myShape);
 
     gp_Pnt inputCenter;
     try {
@@ -388,7 +402,8 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);  //sb same CS as base view. 
 
     //center shape on origin
-    TopoDS_Shape centeredShape = TechDraw::moveShape(detail,
+//    TopoDS_Shape centeredShape = TechDraw::moveShape(detail,
+    TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
                                                      centroid * -1.0);
 
     TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
