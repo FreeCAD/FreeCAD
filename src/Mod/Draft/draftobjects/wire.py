@@ -20,11 +20,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Polyline.
+"""This module provides the object code for Draft Wire.
 """
-## @package polyline
+## @package wire
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft Polyline.
+# \brief This module provides the object code for Draft Wire.
 
 import math
 
@@ -43,11 +43,11 @@ from draftobjects.base import DraftObject
 
 
 
-class Polyline(DraftObject):
+class Wire(DraftObject):
     """The Wire object"""
 
     def __init__(self, obj):
-        super(Polyline, self).__init__(obj, "Wire")
+        super(Wire, self).__init__(obj, "Wire")
 
         _tip = "The vertices of the wire"
         obj.addProperty("App::PropertyVectorList","Points",

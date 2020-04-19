@@ -34,11 +34,11 @@ from draftutils.gui_utils import select
 
 from draftutils.utils import type_check
 
-from draftobjects.polyline import Polyline
+from draftobjects.wire import Wire
 from draftviewproviders.view_wire import ViewProviderWire
 
 
-def make_polyline(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
+def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
     """makeWire(pointslist,[closed],[placement])
     
     Creates a Wire object from the given list of vectors.  If face is
@@ -100,7 +100,7 @@ def make_polyline(pointslist, closed=False, placement=None, face=None, support=N
         fname = "Wire"
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", fname)
-    Polyline(obj)
+    Wire(obj)
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support

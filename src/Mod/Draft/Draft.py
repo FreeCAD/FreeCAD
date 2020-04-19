@@ -206,12 +206,12 @@ _Polygon = Polygon
 #---------------------------------------------------------------------------
 
 from draftmake.make_line import make_line
-from draftmake.make_polyline import make_polyline
-from draftobjects.polyline import Polyline
+from draftmake.make_wire import make_wire
+from draftobjects.wire import Wire
 
 makeLine = make_line
-makeWire = make_polyline
-_Polyline = Polyline
+makeWire = make_wire
+_Wire = Wire
 
 if gui:
     from draftviewproviders.view_wire import ViewProviderWire

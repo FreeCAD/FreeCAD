@@ -32,7 +32,7 @@ from draftutils.gui_utils import select
 
 from draftutils.utils import type_check
 
-from draftmake.make_polyline import make_polyline
+from draftmake.make_wire import make_wire
 
 
 def make_line(first_param, last_param=None):
@@ -66,6 +66,6 @@ def make_line(first_param, last_param=None):
             App.Console.PrintError(_err + "\n")
             return
 
-    obj = make_polyline([p1,p2])
+    obj = make_wire([p1,p2])
 
     return obj

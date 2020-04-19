@@ -72,8 +72,8 @@ SET(Draft_make_functions
     draftmake/make_line.py
     draftmake/make_point.py
     draftmake/make_polygon.py
-    draftmake/make_polyline.py
     draftmake/make_rectangle.py
+    draftmake/make_wire.py
 )
 
 SET(Draft_objects
@@ -87,7 +87,6 @@ SET(Draft_objects
     draftobjects/ellipse.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
-    draftobjects/polyline.py
     draftobjects/arc_3points.py
     draftobjects/draft_annotation.py
     draftobjects/label.py
@@ -96,6 +95,7 @@ SET(Draft_objects
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/text.py
+    draftobjects/wire.py
     draftobjects/README.md
 )
 
