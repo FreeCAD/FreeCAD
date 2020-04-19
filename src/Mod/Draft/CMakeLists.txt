@@ -61,6 +61,7 @@ SET(Draft_utilities
 SET(Draft_make_functions
     draftmake/__init__.py
     draftmake/make_circle.py
+    draftmake/make_polygon.py
     draftmake/make_rectangle.py
 )
 
@@ -75,6 +76,7 @@ SET(Draft_objects
     draftobjects/draft_annotation.py
     draftobjects/label.py
     draftobjects/dimension.py
+    draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/text.py
     draftobjects/README.md
