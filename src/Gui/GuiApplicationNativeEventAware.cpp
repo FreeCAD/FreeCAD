@@ -41,7 +41,11 @@
 #elif defined(Q_OS_WIN)
   #include "3Dconnexion/GuiNativeEventWin32.h"
 #elif defined(Q_OS_MACX)
-  #include "3Dconnexion/GuiNativeEventMac.h"
+  #if defined(SPNAV_FOUND)
+    #include "3Dconnexion/GuiNativeEventLinux.h"
+  #else
+    #include "3Dconnexion/GuiNativeEventMac.h"
+  #endif
 #endif // Platform switch
 #endif // Spacemice
 
