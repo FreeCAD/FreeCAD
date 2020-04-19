@@ -37,12 +37,6 @@ class IfcContextUI:
     """A default task panel for editing context objects."""
 
     def __init__(self, object):
-        """Initialises the task panel.
-
-        Defines the layout, and prefills the form with the 
-        data already written to the object.
-        """
-
         self.object = object
         self.lineEditObjects = []
         self.createBaseLayout()

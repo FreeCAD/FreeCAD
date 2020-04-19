@@ -176,22 +176,19 @@ class _Floor(ArchIFC.IfcProduct):
 
     Turns a <App::DocumentObjectGroupPython> into a floor object, then
     takes a list of objects to own as its children.
+        
+    The floor can be based off either a group, or a python feature. Learn more
+    about groups here: https://wiki.freecadweb.org/Std_Group
+
+    Adds the properties of a floor, and sets its IFC type.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
+        The object to turn into a Floor.
     """
 
     def __init__(self,obj):
-        """Initialises the floor.
-
-        The floor can be based off either a group, or a python feature. Learn more
-        about groups here: https://wiki.freecadweb.org/Std_Group
-
-        Adds the properties of a floor, and sets its IFC type.
-
-        Parameters
-        ----------
-        obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
-            The object to turn into a Floor.
-        """
-
         obj.Proxy = self
         self.Object = obj
         _Floor.setProperties(self,obj)
@@ -316,19 +313,15 @@ class _Floor(ArchIFC.IfcProduct):
 class _ViewProviderFloor:
     """Obselete, superceeded by the ViewProviderBuildingPart class.
 
-    A View Provider for the Floor object."""
+    A View Provider for the Floor object.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a floor view provider.
+    """
 
     def __init__(self,vobj):
-        """Initialises the floor view provider.
-
-        Registers the Proxy as this class object.
-
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into a floor view provider.
-        """
-
         vobj.Proxy = self
 
     def getIcon(self):

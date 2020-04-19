@@ -531,21 +531,16 @@ class _Site(ArchIFC.IfcProduct):
     with additions and subtractions as earthmoving, calculating volumes of
     terrain that have been moved by the additions and subtractions. Unlike most
     Arch objects, the Terrain object works well as a mesh.
+
+    The site must be based off a <Part::FeaturePython> object.
+
+    Parameters
+    ----------
+    obj: <Part::FeaturePython>
+        The object to turn into a site.
     """
 
     def __init__(self,obj):
-        """Initialises the site.
-
-        The site must be based off a <Part::FeaturePython> object.
-
-        Adds the properties of a site, and sets its IFC type.
-
-        Parameters
-        ----------
-        obj: <Part::FeaturePython>
-            The object to turn into a site.
-        """
-
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Site"
@@ -774,20 +769,15 @@ class _Site(ArchIFC.IfcProduct):
             obj.AdditionVolume = addvol
 
 class _ViewProviderSite:
-    """A View Provider for the Site object"""
+    """A View Provider for the Site object.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a site view provider.
+    """
 
     def __init__(self,vobj):
-        """Initialises the site view provider.
-
-        Registers the Proxy as this class object. Sets the view provider to have the
-        properties of a site view provider.
-
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into a site view provider.
-        """
-
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)

@@ -137,19 +137,14 @@ class _Project(ArchIFC.IfcContext):
 
     Takes a <Part::FeaturePython>, and turns it into a Project. Then takes a
     list of Arch sites to own as its children.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
+        The object to turn into a Project.
     """
 
     def __init__(self, obj):
-        """Initialises the project.
-
-        Adds the properties of a project, and sets its IFC type.
-
-        Parameters
-        ----------
-        obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
-            The object to turn into a Project.
-        """
-
         obj.Proxy = self
         self.setProperties(obj)
         obj.IfcType = "Project"
@@ -172,19 +167,15 @@ class _Project(ArchIFC.IfcContext):
         self.setProperties(obj)
 
 class _viewproviderproject(ArchIFCView.IfcContextView):
-    """A View Provider for the project object."""
+    """A View Provider for the project object.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a project view provider.
+    """
 
     def __init__(self,vobj):
-        """Initialises the project view provider.
-
-        Registers the Proxy as this class object.
-
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into a project view provider.
-        """
-
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
 

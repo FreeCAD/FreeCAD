@@ -689,12 +689,6 @@ class _Wall(ArchComponent.Component):
     """
 
     def __init__(self, obj):
-        """Initialises the object's properties.
-
-        Sets the object to have the properties of an Arch component, and Arch
-        wall.
-        """
-
         ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
@@ -1503,20 +1497,15 @@ class _Wall(ArchComponent.Component):
         return None
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
-    """The view provider for the wall object."""
+    """The view provider for the wall object.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a wall view provider.
+    """
 
     def __init__(self,vobj):
-        """Initialises the wall view provider.
-
-        Runs the Arch Component view provider initialisation, and sets the color
-        to the default for walls.
-
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The view provider to turn into a wall view provider.
-        """
-
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
