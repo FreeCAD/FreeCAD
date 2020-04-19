@@ -58,9 +58,9 @@ __url__ = "http://www.freecadweb.org"
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     """Obselete, superceeded by ArchBuildingPart.makeFloor.
 
-    Creates a floor.
+    Create a floor.
 
-    Creates a new floor based on a group, and then adds the objects in
+    Create a new floor based on a group, and then adds the objects in
     objectslist to the new floor.
 
     Parameters
@@ -97,10 +97,10 @@ class _CommandFloor:
 
     A tool for creating Arch floors.
 
-    Creates a floor from the objects selected by the user, if any. Excludes
+    Create a floor from the objects selected by the user, if any. Exclude
     objects that appear higher in the object hierarchy, such as sites or
-    buildings. If free linking is enabled in the Arch preferences, allows
-    higher hierarchy objects to be part of floors.
+    buildings. If free linking is enabled in the Arch preferences, allow higher
+    hierarchy objects to be part of floors.
 
     Find documentation on the end user usage of Arch Floor here:
     https://wiki.freecadweb.org/Arch_Floor
@@ -108,7 +108,7 @@ class _CommandFloor:
 
 
     def GetResources(self):
-        """Returns a dictionary with the visual aspects of the Arch Floor tool."""
+        """Return a dictionary with the visual aspects of the Arch Floor tool."""
 
         return {'Pixmap'  : 'Arch_Floor',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
@@ -116,7 +116,7 @@ class _CommandFloor:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
-        """Determines whether or not the Arch Floor tool is active. 
+        """Determine whether or not the Arch Floor tool is active. 
 
         Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
         """
@@ -126,9 +126,9 @@ class _CommandFloor:
     def Activated(self):
         """Executed when Arch Floor is called.
 
-        Creates a floor from the objects selected by the user, if any. Excludes
+        Create a floor from the objects selected by the user, if any. Exclude
         objects that appear higher in the object hierarchy, such as sites or
-        buildings. If free linking is enabled in the Arch preferences, allows
+        buildings. If free linking is enabled in the Arch preferences, allow
         higher hierarchy objects to be part of floors.
         """
 
@@ -195,9 +195,9 @@ class _Floor(ArchIFC.IfcProduct):
         self.IfcType = "Building Storey"
 
     def setProperties(self,obj):
-        """Gives the object properties unique to floors.
+        """Give the object properties unique to floors.
 
-        Adds the IFC product properties, and the floor's height and area.
+        Add the IFC product properties, and the floor's height and area.
         """
 
         ArchIFC.IfcProduct.setProperties(self, obj)
@@ -227,7 +227,7 @@ class _Floor(ArchIFC.IfcProduct):
     def onChanged(self,obj,prop):
         """Method called when the object has a property changed.
 
-        If the objects grouped under the floor object changes, it recomputes
+        If the objects grouped under the floor object changes, recompute
         the Area property.
 
         Also calls ArchIFC.IfcProduct.onChanged().
@@ -254,8 +254,8 @@ class _Floor(ArchIFC.IfcProduct):
     def execute(self,obj):
         """Method run when the object is recomputed.
         
-        Moves its children if its placement has changed since the previous
-        recompute. Sets any child Walls and Structures to have the height of
+        Move its children if its placement has changed since the previous
+        recompute. Set any child Walls and Structures to have the height of
         the floor if they have not Height value set.
         """
 
@@ -280,7 +280,7 @@ class _Floor(ArchIFC.IfcProduct):
                         o.Proxy.execute(o)
 
     def addObject(self,child):
-        """Adds the object to the floor's group.
+        """Add the object to the floor's group.
 
         Parameters
         ----------
@@ -295,7 +295,7 @@ class _Floor(ArchIFC.IfcProduct):
                 self.Object.Group = g
 
     def removeObject(self,child):
-        """Removes the object from the floor's group, if it's present.
+        """Remove the object from the floor's group, if it's present.
 
         Parameters
         ----------
@@ -325,7 +325,7 @@ class _ViewProviderFloor:
         vobj.Proxy = self
 
     def getIcon(self):
-        """Returns the path to the appropriate icon.
+        """Return the path to the appropriate icon.
 
         Returns
         -------
@@ -337,9 +337,9 @@ class _ViewProviderFloor:
         return ":/icons/Arch_Floor_Tree.svg"
 
     def attach(self,vobj):
-        """Adds display modes' data to the coin scenegraph.
+        """Add display modes' data to the coin scenegraph.
 
-        Adds each display mode as a coin node, whose parent is this view
+        Add each display mode as a coin node, whose parent is this view
         provider. 
 
         Each display mode's node includes the data needed to display the object
@@ -347,16 +347,16 @@ class _ViewProviderFloor:
         lines. This data is stored as additional coin nodes which are children
         of the display mode node.
 
-        Does not add any new display modes.
+        Do not add any new display modes.
         """
 
         self.Object = vobj.Object
         return
 
     def claimChildren(self):
-        """Defines which objects will appear as children in the tree view.
+        """Define which objects will appear as children in the tree view.
 
-        Claims all the objects that appear in the floor's group.
+        Claim all the objects that appear in the floor's group.
 
         Returns
         -------
@@ -378,12 +378,12 @@ class _ViewProviderFloor:
         return None
 
     def setupContextMenu(self,vobj,menu):
-        """Adds the floor specific options to the context menu.
+        """Add the floor specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
         clicks on the floor in the tree view.
 
-        Adds a menu choice to convert the floor to an Arch Building Part with
+        Add a menu choice to convert the floor to an Arch Building Part with
         the ArchBuildingPart.convertFloors function.
 
         Parameters

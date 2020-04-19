@@ -49,9 +49,9 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 def makeProject(sites=None, name="Project"):
-    """Creates an Arch project.
+    """Create an Arch project.
 
-    If sites are provided, will add them as children of the new project.
+    If sites are provided, add them as children of the new project.
 
     Parameters
     ----------
@@ -93,14 +93,14 @@ class _CommandProject:
     """
 
     def GetResources(self):
-        """Returns a dictionary with the visual aspects of the Arch Project tool."""
+        """Return a dictionary with the visual aspects of the Arch Project tool."""
         return {'Pixmap'  : 'Arch_Project',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Project", "Project"),
                 'Accel': "P, O",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Project", "Creates a project entity aggregating the selected sites.")}
 
     def IsActive(self):
-        """Determines whether or not the Arch Project tool is active. 
+        """Determine whether or not the Arch Project tool is active. 
 
         Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
         """
@@ -109,7 +109,7 @@ class _CommandProject:
     def Activated(self):
         """Executed when Arch Project is called.
 
-        Creates a project from the objects selected by the user that have the
+        Create a project from the objects selected by the user that have the
         Site IfcType, if any. 
         """
 
@@ -150,9 +150,9 @@ class _Project(ArchIFC.IfcContext):
         obj.IfcType = "Project"
 
     def setProperties(self, obj):
-        """Gives the object properties unique to projects.
+        """Give the object properties unique to projects.
 
-        Adds the IFC context properties, and the group extension if it does not
+        Add the IFC context properties, and the group extension if it does not
         already exist.
         """
 
@@ -163,7 +163,7 @@ class _Project(ArchIFC.IfcContext):
         self.Type = "Project"
 
     def onDocumentRestored(self, obj):
-        """Method run when the document is restored. Re-adds the properties."""
+        """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
 class _viewproviderproject(ArchIFCView.IfcContextView):
@@ -180,7 +180,7 @@ class _viewproviderproject(ArchIFCView.IfcContextView):
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
 
     def getIcon(self):
-        """Returns the path to the appropriate icon.
+        """Return the path to the appropriate icon.
 
         Returns
         -------
