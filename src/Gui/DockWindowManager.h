@@ -179,6 +179,8 @@ public:
     bool getAutoHideRect(QRect &rect) const;
     void changeSize(int changes);
 
+    OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);

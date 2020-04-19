@@ -395,7 +395,7 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
     _setOverlayMode(widget, enable);
 
     if(qobject_cast<QComboBox*>(widget)) {
-        // do not set child QAbstractItemView, otherwise the drop down box
+        // do not set child QAbstractItemView of QComboBox, otherwise the drop down box
         // won't be shown
         return;
     }
@@ -408,10 +408,7 @@ void OverlayTabWidget::setAutoHide(bool enable)
     if(autoHide == enable)
         return;
     autoHide = enable;
-    if(count()) {
-        setOverlayMode(true);
-        DockWindowManager::instance()->refreshOverlay();
-    }
+    DockWindowManager::instance()->refreshOverlay(this);
 }
 
 void OverlayTabWidget::setTransparent(bool enable)
@@ -419,15 +416,15 @@ void OverlayTabWidget::setTransparent(bool enable)
     if(transparent == enable)
         return;
     transparent = enable;
-    if(count()) {
-        setOverlayMode(true);
-        DockWindowManager::instance()->refreshOverlay();
-    }
+    DockWindowManager::instance()->refreshOverlay(this);
 }
 
 void OverlayTabWidget::setOverlayMode(bool enable)
 {
     overlayed = enable;
+
+    if(!isVisible())
+        return;
 
     if(!enable && transparent)
     {
@@ -495,8 +492,9 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
         hide();
     } else if(overlay == overlayed) {
         if(!isVisible() && count()) {
-            show();
             proxyWidget->hide();
+            show();
+            setOverlayMode(overlay);
         }
         if(!overlay && !transparent)
             setGeometry(rectActive);
@@ -579,11 +577,14 @@ struct OverlayInfo {
     Qt::DockWidgetArea dockArea;
     QMap<QDockWidget*, OverlayInfo*> &overlayMap;
     ParameterGrp::handle hGrp;
+    bool updating = false;
 
     OverlayInfo(QWidget *parent, const char *name, Qt::DockWidgetArea pos, QMap<QDockWidget*, OverlayInfo*> &map)
         : name(name), dockArea(pos), overlayMap(map)
     {
         tabWidget = new OverlayTabWidget(parent, dockArea);
+        tabWidget->setObjectName(QString::fromLatin1(name));
+        tabWidget->getProxyWidget()->setObjectName(tabWidget->objectName() + QString::fromLatin1("Proxy"));
         hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
     }
@@ -817,8 +818,14 @@ struct DockWindowManagerP
     {
         if(widget) {
             auto tabWidget = findTabWidget(widget);
-            if(tabWidget && tabWidget->count())
-                tabWidget->setOverlayMode(tabWidget->isOverlayed());
+            if(tabWidget && tabWidget->count()) {
+                for(auto o : _overlayInfos) {
+                    if(tabWidget == o->tabWidget) {
+                        o->updating = true;
+                        break;
+                    }
+                }
+            }
         }
         _timer.start(50);
     }
@@ -846,25 +853,28 @@ struct DockWindowManagerP
         if(!mdi)
             return;
 
-        if(OverlayStyleSheet::instance()->updating) {
-            OverlayStyleSheet::instance()->updating = false;
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count())
-                    o->tabWidget->setOverlayMode(true);
+        for(auto o : _overlayInfos) {
+            if(o->tabWidget->count() && (o->updating || OverlayStyleSheet::instance()->updating)) {
+                o->tabWidget->setOverlayMode(true);
             }
+            o->updating = false;
         }
+        OverlayStyleSheet::instance()->updating = false;
 
         auto focus = findTabWidget(qApp->focusWidget());
         if(focus && focus->isOverlayed()) {
             focus->setOverlayMode(false);
             focus->raise();
         }
+
         auto active = findTabWidget(qApp->widgetAt(QCursor::pos()));
         if(active) {
-            if(active->isOverlayed())
+            if(active->isOverlayed()) {
                 active->setOverlayMode(false);
+            }
             active->raise();
         }
+
         for(auto o : _overlayInfos) {
             if(o->tabWidget != focus 
                     && o->tabWidget != active
