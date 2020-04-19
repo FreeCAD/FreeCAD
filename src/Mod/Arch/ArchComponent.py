@@ -167,20 +167,14 @@ class Component(ArchIFC.IfcProduct):
 
     You can learn more about Arch Components, and the purpose of Arch
     Components here: https://wiki.freecadweb.org/Arch_Component
+
+    Parameters
+    ----------
+    obj: <App::FeaturePython>
+        The object to turn into an Arch Component
     """ 
 
     def __init__(self, obj):
-        """Initialises the Component.
-
-        Registers the Proxy as this class object. Sets the object to have the
-        properties of an Arch component.
-
-        Parameters
-        ----------
-        obj: <App::FeaturePython>
-            The object to turn into an Arch Component
-        """
-
         obj.Proxy = self
         Component.setProperties(self, obj)
         self.Type = "Component"
@@ -1507,30 +1501,27 @@ class ArchSelectionObserver:
     TODO: This could probably use a rework. Most of the functionality isn't
     used. It does not work correctly to reset the appearance of parent object
     in ComponentTaskPanel.editObject(), for example.
+
+    Parameters
+    ----------
+    watched: <App::DocumentObject>, optional
+        If no watched value is provided, functionality relating to origin
+        and hide parameters will not occur. Only the nextCommand will fire.
+
+        When a watched value is provided, the selection observer will only
+        fire when the watched object has been selected.
+    hide: bool
+        Sets if the watched object should be hidden.
+    origin: <App::DocumentObject, optional
+        If provided, and hide is True, will make the origin object
+        selectable, and opaque (set transparency to 0).
+    nextCommand: str
+        Name of Gui command to run when the watched object is selected, (if
+        one is specified), or when anything is selected (if no watched
+        object is specified).
     """
 
     def __init__(self,origin=None,watched=None,hide=True,nextCommand=None):
-        """Initialises the ArchSelectionObserver object.
-
-        Parameters
-        ----------
-        watched: <App::DocumentObject>, optional
-            If no watched value is provided, functionality relating to origin
-            and hide parameters will not occur. Only the nextCommand will fire.
-
-            When a watched value is provided, the selection observer will only
-            fire when the watched object has been selected.
-        hide: bool
-            Sets if the watched object should be hidden.
-        origin: <App::DocumentObject, optional
-            If provided, and hide is True, will make the origin object
-            selectable, and opaque (set transparency to 0).
-        nextCommand: str
-            Name of Gui command to run when the watched object is selected, (if
-            one is specified), or when anything is selected (if no watched
-            object is specified).
-        """
-
         self.origin = origin
         self.watched = watched
         self.hide = hide
@@ -1587,13 +1578,6 @@ class SelectionTaskPanel:
     """
 
     def __init__(self):
-        """Initialises the task panel.
-
-        Adds a label.
-
-        TODO: Label does not seem to appear?
-        """
-
         self.baseform = QtGui.QLabel()
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None))
 
@@ -1618,12 +1602,6 @@ class ComponentTaskPanel:
     """
 
     def __init__(self):
-        """Initialises the task panel.
-
-        Defines the layout of the task panel, and setups callbacks for when
-        buttons and menu items are clicked.
-        """
-
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -2182,24 +2160,21 @@ if FreeCAD.GuiUp:
 
     class IfcEditorDelegate(QtGui.QStyledItemDelegate):
         """This class manages the editing of the individual table cells in the IFC editor.
+
+        Parameters
+        ----------
+        parent: <PySide2.QtWidgets.QWidget>
+            Unclear.
+        dialog: <ArchComponent.ComponentTaskPanel>
+            The dialog box this delegate was created in.
+        ptypes: list of str
+            A list of the names of IFC property types.
+        plables: list of str
+            A list of the human readable names of IFC property types.
         """
 
 
         def __init__(self, parent=None, dialog=None, ptypes=[], plabels=[], *args):
-            """This method initialises the class.
-
-            Parameters
-            ----------
-            parent: <PySide2.QtWidgets.QWidget>
-                Unclear.
-            dialog: <ArchComponent.ComponentTaskPanel>
-                The dialog box this delegate was created in.
-            ptypes: list of str
-                A list of the names of IFC property types.
-            plables: list of str
-                A list of the human readable names of IFC property types.
-            """
-
             self.dialog = dialog
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
             self.ptypes = ptypes
