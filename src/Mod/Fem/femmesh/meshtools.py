@@ -1699,17 +1699,17 @@ def get_contact_obj_faces(
             "(example: multiple element faces per master or slave\n"
         )
 
-    FreeCAD.Console.PrintLog("Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
-    FreeCAD.Console.PrintLog("Master: {}, {}\n".format(master_ref[0].Name, master_ref))
+    FreeCAD.Console.PrintLog("    Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
+    FreeCAD.Console.PrintLog("    Master: {}, {}\n".format(master_ref[0].Name, master_ref))
 
     if is_solid_femmesh(femmesh):
-        # get the nodes, sorted and duplicates removed
+        FreeCAD.Console.PrintLog("    Get the nodes, sorted and duplicates removed.\n")
         slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
         masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
-        # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
-        # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
+        FreeCAD.Console.PrintLog("    slaveface_nds: {}\n".format(slaveface_nds))
+        FreeCAD.Console.PrintLog("    masterface_nds: {}\n".format(slaveface_nds))
 
-        # fill the bit_pattern_dict and search for the faces
+        FreeCAD.Console.PrintLog("    Fill the bit_pattern_dict and search for the faces.\n")
         slave_bit_pattern_dict = get_bit_pattern_dict(
             femelement_table,
             femnodes_ele_table,
@@ -1721,16 +1721,18 @@ def get_contact_obj_faces(
             masterface_nds
         )
 
-        # get the faces ids
+        FreeCAD.Console.PrintLog("    Get the FaceIDs.\n")
         slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
         master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
 
     elif is_face_femmesh(femmesh):
         slave_ref_shape = slave_ref[0].Shape.getElement(slave_ref[1][0])
         master_ref_shape = master_ref[0].Shape.getElement(master_ref[1][0])
-        # get the faces ids
+
+        FreeCAD.Console.PrintLog("    Get the FaceIDs.\n")
         slave_face_ids = femmesh.getFacesByFace(slave_ref_shape)
         master_face_ids = femmesh.getFacesByFace(master_ref_shape)
+
         # build slave_faces and master_faces
         # face 2 for tria6 element
         # is it face 2 for all shell elements
@@ -1739,8 +1741,13 @@ def get_contact_obj_faces(
         for fid in master_face_ids:
             master_faces.append([fid, 2])
 
-    FreeCAD.Console.PrintLog("slave_faces: {}\n".format(slave_faces))
-    FreeCAD.Console.PrintLog("master_faces: {}\n".format(master_faces))
+    FreeCAD.Console.PrintLog("    Master and slave face ready to use for writer:\n")
+    FreeCAD.Console.PrintLog("    slave_faces: {}\n".format(slave_faces))
+    FreeCAD.Console.PrintLog("    master_faces: {}\n".format(master_faces))
+    if len(slave_faces) == 0:
+        FreeCAD.Console.PrintError("No faces found for contact slave face.\n")
+    if len(master_faces) == 0:
+        FreeCAD.Console.PrintError("No faces found for contact master face.\n")
     return [slave_faces, master_faces]
 
 
