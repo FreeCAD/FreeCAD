@@ -29,10 +29,13 @@ This module provide the code for the Draft Statusbar, activated by initGui
 # \ingroup DRAFT
 # \brief This module provides the code for the Draft Statusbar.
 
+from PySide import QtCore
+from PySide import QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD as App
 import FreeCADGui as Gui
-from PySide import QtCore, QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
+
 from draftutils.init_tools import get_draft_snap_commands
 
 #----------------------------------------------------------------------------
@@ -148,7 +151,8 @@ def _set_scale(action):
         if custom_scale[1]:
             print(custom_scale[0])
             scale = label_to_scale(custom_scale[0])
-            if scale is None: return
+            if scale is None:
+                return
             param.SetFloat("DraftAnnotationScale", scale)
             cs = scale_to_label(scale)
             scale_widget.scaleLabel.setText(cs)
