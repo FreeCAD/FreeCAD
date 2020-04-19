@@ -173,7 +173,7 @@ from draftutils.gui_utils import load_texture
 # Draft objects
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_circle import  make_circle
+from draftmake.make_circle import  make_circle
 from draftobjects.circle import Circle
 
 makeCircle = make_circle
@@ -183,7 +183,7 @@ _Circle = Circle
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_rectangle import make_rectangle
+from draftmake.make_rectangle import make_rectangle
 from draftobjects.rectangle import Rectangle
 
 makeRectangle = make_rectangle
@@ -195,7 +195,7 @@ if gui:
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_polygon import make_polygon
+from draftmake.make_polygon import make_polygon
 from draftobjects.polygon import Polygon
 
 makePolygon = make_polygon
@@ -205,8 +205,8 @@ _Polygon = Polygon
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_line import make_line
-from draftfunctions.make_polyline import make_polyline
+from draftmake.make_line import make_line
+from draftmake.make_polyline import make_polyline
 from draftobjects.polyline import Polyline
 
 makeLine = make_line
@@ -222,7 +222,7 @@ if gui:
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_bezcurve import make_bezcurve
+from draftmake.make_bezcurve import make_bezcurve
 from draftobjects.bezcurve import BezCurve
 
 makeBezCurve = make_bezcurve
@@ -232,7 +232,7 @@ _BezCurve = BezCurve
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_bspline import make_bspline
+from draftmake.make_bspline import make_bspline
 from draftobjects.bspline import BSpline
 
 makeBSpline = make_bspline
@@ -242,7 +242,7 @@ _BSpline = BSpline
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_point import make_point
+from draftmake.make_point import make_point
 from draftobjects.point import Point
 
 makePoint = make_point
@@ -254,7 +254,7 @@ if gui:
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_ellipse import  make_ellipse
+from draftmake.make_ellipse import  make_ellipse
 from draftobjects.ellipse import Ellipse
 
 makeEllipse = make_ellipse
@@ -264,7 +264,7 @@ _Ellipse = Ellipse
 
 #---------------------------------------------------------------------------
 
-from draftfunctions.make_clone import make_clone
+from draftmake.make_clone import make_clone
 from draftobjects.clone import Clone
 
 clone = make_clone

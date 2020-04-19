@@ -32,7 +32,7 @@ from draftutils.gui_utils import select
 
 from draftutils.utils import type_check
 
-from draftfunctions.make_polyline import make_polyline
+from draftmake.make_polyline import make_polyline
 
 
 def make_line(first_param, last_param=None):
