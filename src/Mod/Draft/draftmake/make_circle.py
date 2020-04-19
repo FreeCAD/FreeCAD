@@ -75,7 +75,7 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if placement: type_check([(placement,App.Placement)], "makeCircle")
+    if placement: type_check([(placement,App.Placement)], "make_circle")
 
     if startangle != endangle:
         _name = "Arc"

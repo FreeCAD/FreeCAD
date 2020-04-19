@@ -1,9 +1,3 @@
-"""This module provides the view provider code for the base Draft object.
-"""
-## @package view_base
-# \ingroup DRAFT
-# \brief This module provides the view provider code for the base Draft object.
-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -26,6 +20,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""This module provides the view provider code for the base Draft object.
+"""
+## @package view_base
+# \ingroup DRAFT
+# \brief This module provides the view provider code for the base Draft object.
 
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP

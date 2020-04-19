@@ -74,7 +74,7 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
-    if placement: type_check([(placement,App.Placement)], "makeBezCurve")
+    if placement: type_check([(placement,App.Placement)], "make_bezcurve")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BezCurve"
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)

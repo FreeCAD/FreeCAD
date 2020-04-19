@@ -33,7 +33,6 @@ from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
 
 from draftutils.utils import get_param
-from draftutils.utils import type_check
 from draftutils.utils import get_type
 from draftutils.todo import ToDo
 

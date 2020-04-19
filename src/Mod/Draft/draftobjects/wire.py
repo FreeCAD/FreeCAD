@@ -30,8 +30,6 @@ import math
 
 import FreeCAD as App
 
-import Part
-
 import DraftGeomUtils
 import DraftVecUtils
 

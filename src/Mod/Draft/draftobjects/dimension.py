@@ -28,18 +28,25 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Dimension.
 
-import FreeCAD as App
 import math
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils, DraftVecUtils
+
+import FreeCAD as App
+
+import DraftGeomUtils
+import DraftVecUtils
+
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+
 from draftobjects.draft_annotation import DraftAnnotation
 
 if App.GuiUp:
     from draftviewproviders.view_dimension import ViewProviderDimensionBase
     from draftviewproviders.view_dimension import ViewProviderLinearDimension
     from draftviewproviders.view_dimension import ViewProviderAngularDimension
+
 
 def make_dimension(p1,p2,p3=None,p4=None):
     """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
@@ -119,9 +126,24 @@ def make_dimension(p1,p2,p3=None,p4=None):
     return obj
 
 
-def make_angular_dimension(center,angles,p3,normal=None):
-    """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
-    from the given center, with the given list of angles, passing through p3.
+def make_angular_dimension(center, angles, p3, normal=None):
+    """makeAngularDimension(center, angle1, angle2, p3, [normal])
+    
+    Creates an angular Dimension
+
+    Parameters
+    ----------
+    center : Base.Vector
+        Center of the dimension.
+
+    angles : list
+        List of angles.
+
+    p3 : Base.Vector
+        Point to position the dimension line.
+
+    normal : Base.Vector (default None)
+        Vector that defines the dimension normal.
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")

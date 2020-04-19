@@ -19,11 +19,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_polyline function.
+"""This module provides the object code for Draft make_wire function.
 """
-## @package make_polyline
+## @package make_wire
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_polyline function.
+# \brief This module provides the code for Draft make_wire function.
 
 import FreeCAD as App
 
@@ -89,7 +89,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     #print(closed)
     
     if placement:
-        type_check([(placement,App.Placement)], "makeWire")
+        type_check([(placement, App.Placement)], "make_wire")
         ipl = placement.inverse()
         if not bs2wire:
             pointslist = [ipl.multVec(p) for p in pointslist]

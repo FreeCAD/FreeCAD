@@ -22,15 +22,13 @@
 # ***************************************************************************
 """This module provides the object code for Draft Polygon.
 """
-## @package poligon
+## @package polygon
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Polygon.
 
 import math
 
 import FreeCAD as App
-
-import Part
 
 import DraftGeomUtils
 

@@ -30,8 +30,6 @@ import FreeCAD as App
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
 
-from draftutils.utils import type_check
-
 from draftobjects.ellipse import Ellipse
 from draftviewproviders.view_base import ViewProviderDraft
 

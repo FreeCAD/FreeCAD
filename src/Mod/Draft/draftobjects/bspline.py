@@ -30,13 +30,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
-import Part
-
 from draftutils.utils import get_param
 
 from draftobjects.base import DraftObject
-
-
 
 
 class BSpline(DraftObject):

@@ -26,11 +26,11 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Clone.
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD as App
 
 import DraftVecUtils
-
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftobjects.base import DraftObject
 

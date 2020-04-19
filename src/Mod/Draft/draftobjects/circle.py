@@ -28,8 +28,6 @@
 
 import FreeCAD as App
 
-import Part
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftutils.utils import get_param
@@ -69,6 +67,7 @@ class Circle(DraftObject):
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""
+        import Part
 
         plm = obj.Placement
 

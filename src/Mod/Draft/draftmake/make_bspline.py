@@ -87,7 +87,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
             App.Console.PrintError(translate("Draft", _err)+"\n")
             return
     # should have sensible parms from here on
-    if placement: type_check([(placement,App.Placement)], "makeBSpline")
+    if placement: type_check([(placement,App.Placement)], "make_bspline")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BSpline"
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)

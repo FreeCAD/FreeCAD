@@ -58,7 +58,7 @@ def make_rectangle(length, height, placement=None, face=None, support=None):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if placement: type_check([(placement,App.Placement)], "makeRectangle")
+    if placement: type_check([(placement,App.Placement)], "make_rectangle")
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
     Rectangle(obj)

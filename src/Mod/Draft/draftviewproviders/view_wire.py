@@ -120,7 +120,7 @@ class ViewProviderWire(ViewProviderDraft):
             if hasattr(self, "pt"):
                 self.pt[0].rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
 
-        super(ViewProviderWire, self).onChanged(vobj,prop)
+        super(ViewProviderWire, self).onChanged(vobj, prop)
         return
 
     def claimChildren(self):
