@@ -27,7 +27,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-class DraftObject:
+class DraftObject(object):
     """The base class for Draft objects.
 
     Parameters

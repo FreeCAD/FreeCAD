@@ -41,7 +41,7 @@ from pivy import coin
 True if Draft_rc.__name__ else False
 
 
-class ViewProviderDraft:
+class ViewProviderDraft(object):
     """The base class for Draft view providers.
 
     Parameters
