@@ -37,35 +37,7 @@ from draftobjects.bezcurve import BezCurve
 from draftviewproviders.view_wire import ViewProviderWire
 
 
-def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None):
-    """make_bspline(pointslist, [closed], [placement])
-    
-    Creates a B-Spline object from the given list of vectors.
-    
-    Parameters
-    ----------
-    pointlist : [Base.Vector]
-        List of points to create the polyline.
-        Instead of a pointslist, you can also pass a Part Wire.
-        TODO: Change the name so!
-
-    closed : bool
-        If closed is True or first and last points are identical, 
-        the created BSpline will be closed.
-
-    placement : Base.Placement
-        If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
-
-    support : 
-        TODO: Describe
-    """
-
-
-def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,degree=None):
+def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
     """make_bezcurve(pointslist, [closed], [placement])
     
     Creates a Bezier Curve object from the given list of vectors.
