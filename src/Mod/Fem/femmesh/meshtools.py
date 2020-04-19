@@ -1426,6 +1426,7 @@ def build_mesh_faces_of_volume_elements(
         FreeCAD.Console.PrintLog("VolElement: {}\n".format(veID))
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
+        node_numbers = ()
         if vol_node_ct == 10:
             FreeCAD.Console.PrintLog("  --> tetra10 --> tria6 face\n")
             # node order of face in tetra10 volume element
