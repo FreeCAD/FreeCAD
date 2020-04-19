@@ -28,11 +28,12 @@
 # \brief Provide the Draft_Snap commands used by the snapping mechanism
 # in Draft.
 
-import FreeCADGui as Gui
-import draftguitools.gui_base as gui_base
-
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCADGui as Gui
+
+import draftguitools.gui_base as gui_base
 from draftutils.translate import _tr
 
 
@@ -40,7 +41,7 @@ from draftutils.translate import _tr
 
 
 def get_snap_statusbar_widget():
-    """retuns snap statusbar button"""
+    """Return snap statusbar button."""
     mw = Gui.getMainWindow()
     if mw:
         sb = mw.statusBar()
@@ -50,7 +51,7 @@ def get_snap_statusbar_widget():
 
 
 def sync_snap_toolbar_button(button, status):
-    """set snap toolbar button to given state"""
+    """Set snap toolbar button to given state."""
     snap_toolbar = Gui.Snapper.get_snap_toolbar()
     if not snap_toolbar:
         return
@@ -71,7 +72,7 @@ def sync_snap_toolbar_button(button, status):
 
 
 def sync_snap_statusbar_button(button, status):
-    """set snap statusbar button to given state"""
+    """Set snap statusbar button to given state."""
     ssw = get_snap_statusbar_widget()
     if not ssw:
         return
