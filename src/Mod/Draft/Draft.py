@@ -173,7 +173,7 @@ from draftutils.gui_utils import load_texture
 # Draft objects
 #---------------------------------------------------------------------------
 
-from draftmake.make_circle import  make_circle
+from draftfunctions.make_circle import  make_circle
 from draftobjects.circle import Circle
 
 makeCircle = make_circle
@@ -183,7 +183,7 @@ _Circle = Circle
 
 #---------------------------------------------------------------------------
 
-from draftmake.make_rectangle import make_rectangle
+from draftfunctions.make_rectangle import make_rectangle
 from draftobjects.rectangle import Rectangle
 
 makeRectangle = make_rectangle
@@ -195,9 +195,7 @@ if gui:
 
 #---------------------------------------------------------------------------
 
-#---------------------------------------------------------------------------
-
-from draftmake.make_polygon import make_polygon
+from draftfunctions.make_polygon import make_polygon
 from draftobjects.polygon import Polygon
 
 makePolygon = make_polygon
@@ -226,6 +224,7 @@ if gui:
     _ViewProviderDimension = ViewProviderLinearDimension
     _ViewProviderAngularDimension = ViewProviderAngularDimension
 
+#---------------------------------------------------------------------------
 
 from draftobjects.label import make_label
 from draftobjects.label import Label
@@ -237,15 +236,19 @@ if gui:
     from draftviewproviders.view_label import ViewProviderLabel
     ViewProviderDraftLabel = ViewProviderLabel
 
+#---------------------------------------------------------------------------
 
 from draftobjects.text import make_text
 from draftobjects.text import Text
+
 makeText = make_text
 DraftText = Text
 
 if gui:
     from draftviewproviders.view_text import ViewProviderText
     ViewProviderDraftText = ViewProviderText
+
+#---------------------------------------------------------------------------
 
 def convertDraftTexts(textslist=[]):
     """
