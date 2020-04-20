@@ -714,7 +714,15 @@ void BrowserView::onLoadProgress(int step)
 
 void BrowserView::onLoadFinished(bool ok)
 {
-    if (ok) {
+    (void)ok;
+    // For some reason, Qt 5.12.1 always reports ok==false when opening new
+    // document. So we hide the progress bar regardless if it is ok. Note that,
+    // showMessage() below won't clear any warning or error message, as those
+    // messages are displayed using MainWindow::showStatus(), which has higher
+    // priority than showMessage().
+    //
+    // if (ok)
+    {
         QProgressBar* bar = SequencerBar::instance()->getProgressBar();
         bar->setValue(100);
         bar->hide();
