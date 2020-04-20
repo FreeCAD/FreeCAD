@@ -141,14 +141,16 @@ class _ToggleOperation:
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(PathScripts.PathDressup.baseOp(obj).Proxy, PathScripts.PathOp.ObjectOp)
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if not isinstance(PathScripts.PathDressup.baseOp(sel.Object).Proxy, PathScripts.PathOp.ObjectOp):
+                    return False
+            return True
         except(IndexError, AttributeError):
             return False
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        PathScripts.PathDressup.baseOp(obj).Active = not(PathScripts.PathDressup.baseOp(obj).Active)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            PathScripts.PathDressup.baseOp(sel.Object).Active = not(PathScripts.PathDressup.baseOp(sel.Object).Active)
         FreeCAD.ActiveDocument.recompute()
 
 
