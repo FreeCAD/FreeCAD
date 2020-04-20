@@ -421,8 +421,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         if self.profileEdgesIsOpen is True:
             if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-                osp = obj.StartPoint
-                self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
+                self.commandlist.append(Path.Command('G0', {'X': start.x, 'Y': start.y, 'F': self.horizRapid}))
 
         sims = []
         numShapes = len(shapes)
@@ -448,6 +447,24 @@ class ObjectOp(PathOp.ObjectOp):
                     ppCmds = pp
                 else:
                     ppCmds = pp.Commands
+
+                # Insert rapid to initial start point X Y before dropping to X Y Z - to avoid collision
+                if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                    # firstZ = None
+                    zIdx = None
+                    for c in range(0, len(ppCmds)):
+                        gCmd = ppCmds[c]
+                        cmdName = gCmd.Name
+                        cp = gCmd.Parameters
+                        # Locate first rapid Z move
+                        if zIdx is None and cmdName in ['G0', 'G00'] and 'Z' in cp:
+                            zIdx = c + 1
+                            # firstZ = cp['Z']
+                        if zIdx and 'X' in cp and 'Y' in cp:
+                            # ppCmds.insert(zIdx, Path.Command('G0', {'X': cp['X'], 'Y': cp['Y'], 'Z': firstZ}))
+                            ppCmds.insert(zIdx, Path.Command('G0', {'X': cp['X'], 'Y': cp['Y']}))
+                            break
+
                 if obj.EnableRotation != 'Off' and self.rotateFlag is True:
                     # Rotate model to index for cut
                     if axis == 'X':
