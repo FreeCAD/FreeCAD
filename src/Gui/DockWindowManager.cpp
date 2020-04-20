@@ -121,6 +121,10 @@ void OverlayProxyWidget::enterEvent(QEvent *)
     DockWindowManager::instance()->refreshOverlay();
 }
 
+OverlayToolButton::OverlayToolButton(QWidget *parent)
+    :QToolButton(parent)
+{}
+
 OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     :QTabWidget(parent)
 {
@@ -172,6 +176,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     }
     actTransparent.setIcon(pxTransparent);
     actTransparent.setCheckable(true);
+    actTransparent.setData(QString::fromLatin1("OBTN Transparent"));
     addAction(&actTransparent);
 
     QPixmap pxAutoHide;
@@ -209,6 +214,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         break;
     }
     actAutoHide.setCheckable(true);
+    actAutoHide.setData(QString::fromLatin1("OBTN AutoHide"));
     addAction(&actAutoHide);
 
     static QIcon pxEditHide;
@@ -233,6 +239,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     }
     actEditHide.setIcon(pxEditHide);
     actEditHide.setCheckable(true);
+    actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
     addAction(&actEditHide);
 
     static QIcon pxIncrease;
@@ -256,6 +263,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         pxIncrease = QIcon(QPixmap(bytes));
     }
     actIncrease.setIcon(pxIncrease);
+    actIncrease.setData(QString::fromLatin1("OBTN Increase"));
     addAction(&actIncrease);
 
     static QIcon pxDecrease;
@@ -279,6 +287,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         pxDecrease = QIcon(QPixmap(bytes));
     }
     actDecrease.setIcon(pxDecrease);
+    actDecrease.setData(QString::fromLatin1("OBTN Decrease"));
     addAction(&actDecrease);
 
     static QIcon pxOverlay;
@@ -302,6 +311,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         pxOverlay = QIcon(QPixmap(bytes));
     }
     actOverlay.setIcon(pxOverlay);
+    actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
     addAction(&actOverlay);
 
     setupActions();
@@ -441,18 +451,12 @@ public:
         }
         if(onStyleSheet.isEmpty()) {
             static QLatin1String _default(
-                "* { background-color: transparent; border: 1px solid darkgray; alternate-background-color: transparent;}"
+                "* { background-color: transparent; border: 1px solid palette(dark); alternate-background-color: transparent;}"
                 // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
                 // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
                 // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
                 "QTreeWidget, QListWidget {background: palette(base);}"
                 "QToolTip { background-color: palette(base); }"
-                "QToolButton { background: transparent; padding: 0px; border: none }"
-                "QToolButton:hover { background: palette(light); border: 1px solid palette(dark) }"
-                "QToolButton:focus { background: palette(dark) ; border: 1px solid palette(dark)}"
-                "QToolButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
-                "QToolButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
-                "QToolButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
             );
             onStyleSheet = _default;
         }
@@ -474,8 +478,17 @@ public:
                 offStyleSheet = str.readAll();
             }
         }
-        // if(offStyleSheet.isEmpty())
-        //     offStyleSheet = QLatin1String("QTabBar {qproperty-drawBase: 1; qproperty-documentMode: 0;}");
+        if(offStyleSheet.isEmpty()) {
+            static QLatin1String _default(
+                "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
+                "Gui--OverlayToolButton:hover { background: palette(light); border: 1px solid palette(dark) }"
+                "Gui--OverlayToolButton:focus { background: palette(dark); border: 1px solid palette(dark) }"
+                "Gui--OverlayToolButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
+                "Gui--OverlayToolButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
+                "Gui--OverlayToolButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
+            );
+            offStyleSheet = _default;
+        }
 
         hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
         hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
@@ -528,7 +541,7 @@ public:
                 "QAbstractButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
-                "QToolButton { background: transparent; padding: 0px; border: none }"
+                "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
                 );
             activeStyleSheet = _default;
         }
@@ -750,9 +763,9 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
         layout->addSpacerItem(new QSpacerItem(size,size,
                     vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
                     vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
-
         for(auto action : this->actions()) {
-            auto button = new QToolButton(widget);
+            auto button = new OverlayToolButton(widget);
+            button->setObjectName(action->data().toString());
             button->setDefaultAction(action);
             button->setAutoRaise(true);
             button->setContentsMargins(0,0,0,0);

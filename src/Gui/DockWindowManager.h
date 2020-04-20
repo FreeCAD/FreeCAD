@@ -28,6 +28,7 @@
 #include <QTabWidget>
 #include <QTimer>
 #include <QAction>
+#include <QToolButton>
 
 #if QT_VERSION  >= 0x050000
 #   define FC_HAS_DOCK_OVERLAY
@@ -207,6 +208,13 @@ private:
     QAction actIncrease;
     QAction actDecrease;
     bool overlayed = false;
+};
+
+class OverlayToolButton: public QToolButton
+{
+    Q_OBJECT
+public:
+    OverlayToolButton(QWidget *parent);
 };
 
 class OverlayProxyWidget: public QWidget
