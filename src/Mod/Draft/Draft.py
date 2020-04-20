@@ -225,10 +225,8 @@ _Wire = Wire
 
 if gui:
     from draftviewproviders.view_wire import ViewProviderWire
+    # FC v < 0.19: BSpline and BezCurve Objects used _ViewProviderWire
     _ViewProviderWire = ViewProviderWire
-    # for compatibility with older versions : ?This was like this before splitting
-    _ViewProviderBSpline = ViewProviderWire 
-    _ViewProviderBezCurve = ViewProviderWire
 
 #---------------------------------------------------------------------------
 
@@ -238,7 +236,10 @@ from draftobjects.bezcurve import BezCurve
 makeBezCurve = make_bezcurve
 _BezCurve = BezCurve
 
-# BezCurve object uses view_base.ViewProviderWire
+if gui:
+    from draftviewproviders.view_bezcurve import ViewProviderBezCurve
+    # probably FC v < 0.18 : BezCurve Object used _ViewProviderBezCurve
+    _ViewProviderBezCurve = ViewProviderBezCurve
 
 #---------------------------------------------------------------------------
 
@@ -248,7 +249,10 @@ from draftobjects.bspline import BSpline
 makeBSpline = make_bspline
 _BSpline = BSpline
 
-# BSpline object uses view_base.ViewProviderWire
+if gui:
+    from draftviewproviders.view_bspline import ViewProviderBSpline
+    # probably FC v < 0.18 : BSpline Object used _ViewProviderBSpline
+    _ViewProviderBSpline = ViewProviderBSpline 
 
 #---------------------------------------------------------------------------
 

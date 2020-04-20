@@ -35,7 +35,7 @@ from draftutils.translate import translate
 
 from draftobjects.bspline import BSpline
 if App.GuiUp:
-    from draftviewproviders.view_wire import ViewProviderWire
+    from draftviewproviders.view_bspline import ViewProviderBSpline
 
 
 def make_bspline(pointslist, closed=False, placement=None, face=None, support=None):
@@ -100,7 +100,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         obj.MakeFace = face
     if placement: obj.Placement = placement
     if App.GuiUp:
-        ViewProviderWire(obj.ViewObject)
+        ViewProviderBSpline(obj.ViewObject)
         format_object(obj)
         select(obj)
 

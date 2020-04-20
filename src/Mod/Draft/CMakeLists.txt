@@ -102,6 +102,8 @@ SET(Draft_objects
 SET(Draft_view_providers
     draftviewproviders/__init__.py
     draftviewproviders/view_base.py
+    draftviewproviders/view_bezcurve.py
+    draftviewproviders/view_bspline.py
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_clone.py
     draftviewproviders/view_orthoarray.py
