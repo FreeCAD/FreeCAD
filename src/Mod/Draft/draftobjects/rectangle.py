@@ -28,7 +28,6 @@
 
 import FreeCAD as App
 
-import Part
 import DraftGeomUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -84,6 +83,7 @@ class Rectangle(DraftObject):
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""
+        import Part
 
         if (obj.Length.Value == 0) or (obj.Height.Value == 0):
             obj.positionBySupport()

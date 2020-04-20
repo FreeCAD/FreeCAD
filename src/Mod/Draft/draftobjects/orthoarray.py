@@ -26,7 +26,9 @@
 # \brief Provide the object code for Draft Array.
 
 import FreeCAD as App
+
 import Draft
+
 import draftutils.utils as utils
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr

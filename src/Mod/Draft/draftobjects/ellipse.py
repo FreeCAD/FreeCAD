@@ -26,9 +26,9 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Ellipse.
 
-import FreeCAD as App
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
 
 from draftutils.utils import get_param
 

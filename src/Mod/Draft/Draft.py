@@ -226,7 +226,7 @@ _Wire = Wire
 if gui:
     from draftviewproviders.view_wire import ViewProviderWire
     _ViewProviderWire = ViewProviderWire
-    # for compatibility with older versions : ????? This was like this before splitting
+    # for compatibility with older versions : ?This was like this before splitting
     _ViewProviderBSpline = ViewProviderWire 
     _ViewProviderBezCurve = ViewProviderWire
 

@@ -30,8 +30,6 @@ import math
 
 import FreeCAD as App
 
-import Part
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftutils.utils import get_param

@@ -26,13 +26,14 @@
 # \brief This module provides the code for Draft make_bezcurve function.
 
 import FreeCAD as App
-import FreeCADGui as Gui
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
 
 from draftobjects.point import Point
-from draftviewproviders.view_point import ViewProviderPoint
+if App.GuiUp:
+    import FreeCADGui as Gui
+    from draftviewproviders.view_point import ViewProviderPoint
 
 
 def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):

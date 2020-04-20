@@ -34,7 +34,8 @@ from draftutils.utils import type_check
 from draftutils.translate import translate
 
 from draftobjects.bspline import BSpline
-from draftviewproviders.view_wire import ViewProviderWire
+if App.GuiUp:
+    from draftviewproviders.view_wire import ViewProviderWire
 
 
 def make_bspline(pointslist, closed=False, placement=None, face=None, support=None):

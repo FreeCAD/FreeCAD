@@ -33,7 +33,8 @@ from draftutils.gui_utils import select
 from draftutils.utils import type_check
 
 from draftobjects.rectangle import Rectangle
-from draftviewproviders.view_rectangle import ViewProviderRectangle
+if App.GuiUp:
+    from draftviewproviders.view_rectangle import ViewProviderRectangle
 
 
 def make_rectangle(length, height, placement=None, face=None, support=None):

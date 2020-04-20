@@ -25,9 +25,10 @@
 # \ingroup DRAFT
 # \brief This module provides the code for Draft make_circle.
 
-import FreeCAD as App
 
 import math
+
+import FreeCAD as App
 
 import Part
 import DraftGeomUtils
@@ -38,7 +39,8 @@ from draftutils.gui_utils import select
 from draftutils.utils import type_check
 
 from draftobjects.circle import Circle
-from draftviewproviders.view_base import ViewProviderDraft
+if App.GuiUp:
+    from draftviewproviders.view_base import ViewProviderDraft
 
 
 def make_circle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):

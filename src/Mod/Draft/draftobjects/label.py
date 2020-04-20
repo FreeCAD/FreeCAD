@@ -29,12 +29,17 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Label.
 
-import FreeCAD as App
 import math
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
+
 import DraftGeomUtils
+
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+
 from draftobjects.draft_annotation import DraftAnnotation
 
 if App.GuiUp:

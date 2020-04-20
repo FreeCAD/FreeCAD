@@ -35,7 +35,8 @@ from draftutils.gui_utils import select
 from draftutils.utils import type_check
 
 from draftobjects.wire import Wire
-from draftviewproviders.view_wire import ViewProviderWire
+if App.GuiUp:
+    from draftviewproviders.view_wire import ViewProviderWire
 
 
 def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):

@@ -31,7 +31,8 @@ from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
 
 from draftobjects.ellipse import Ellipse
-from draftviewproviders.view_base import ViewProviderDraft
+if App.GuiUp:
+    from draftviewproviders.view_base import ViewProviderDraft
 
 
 def make_ellipse(majradius, minradius, placement=None, face=True, support=None):

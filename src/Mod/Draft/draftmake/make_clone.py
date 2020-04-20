@@ -37,7 +37,8 @@ from draftutils.utils import get_type
 from draftutils.todo import ToDo
 
 from draftobjects.clone import Clone
-from draftviewproviders.view_clone import ViewProviderClone
+if App.GuiUp:
+    from draftviewproviders.view_clone import ViewProviderClone
 
 
 def make_clone(obj, delta=None, forcedraft=False):

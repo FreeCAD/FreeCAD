@@ -1,9 +1,3 @@
-"""This module provides the object code for the basic Draft object.
-"""
-## @package base
-# \ingroup DRAFT
-# \brief This module provides the object code for the basic Draft object.
-
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -26,6 +20,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""This module provides the object code for the basic Draft object.
+"""
+## @package base
+# \ingroup DRAFT
+# \brief This module provides the object code for the basic Draft object.
 
 class DraftObject(object):
     """The base class for Draft objects.
