@@ -446,7 +446,14 @@ public:
                 // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
                 // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
                 "QTreeWidget, QListWidget {background: palette(base);}"
-                "QToolTip { background-color: palette(base); }");
+                "QToolTip { background-color: palette(base); }"
+                "QToolButton { background: transparent; padding: 0px; border: none }"
+                "QToolButton:hover { background: palette(light); border: 1px solid palette(dark) }"
+                "QToolButton:focus { background: palette(dark) ; border: 1px solid palette(dark)}"
+                "QToolButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
+                "QToolButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
+                "QToolButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
+            );
             onStyleSheet = _default;
         }
 
@@ -515,9 +522,9 @@ public:
                 "QDialog { background-color: palette(window); }"
                 "QAbstractButton { background: palette(window);"
                                   "padding: 2px 4px;"
-                                  "border: 1px outset palette(dark) }"
-                "QAbstractButton:hover { background: palette(light); border: 1px outset palette(dark) }"
-                "QAbstractButton:focus { background: palette(dark) ; border: 1px outset palette(dark)}"
+                                  "border: 1px solid palette(dark) }"
+                "QAbstractButton:hover { background: palette(light); border: 1px solid palette(dark) }"
+                "QAbstractButton:focus { background: palette(dark) ; border: 1px solid palette(dark)}"
                 "QAbstractButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
