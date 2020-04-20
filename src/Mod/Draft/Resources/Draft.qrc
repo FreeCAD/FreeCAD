@@ -153,6 +153,7 @@
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_zh-TW.qm</file>
         <file>ui/preferences-draft.ui</file>
+        <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
         <file>ui/preferences-draftvisual.ui</file>
