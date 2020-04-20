@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
-import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
@@ -41,6 +39,11 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import traceback
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
+DraftVecUtils = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
 
 from PySide import QtCore, QtGui
 from collections import Counter

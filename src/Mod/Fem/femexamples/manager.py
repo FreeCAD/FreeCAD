@@ -67,7 +67,7 @@ def run_analysis(doc, base_name, filepath=""):
     # print([obj.Name for obj in doc.Objects])
 
     # filepath
-    if filepath is "":
+    if filepath == "":
         filepath = join(gettmp(), "FEM_examples")
     if not exists(filepath):
         makedirs(filepath)
@@ -78,7 +78,7 @@ def run_analysis(doc, base_name, filepath=""):
         from femtools.femutils import is_derived_from
         if (
             is_derived_from(m, "Fem::FemSolverObjectPython")
-            and m.Proxy.Type is not "Fem::FemSolverCalculixCcxTools"
+            and m.Proxy.Type != "Fem::FemSolverCalculixCcxTools"
         ):
             solver = m
             break

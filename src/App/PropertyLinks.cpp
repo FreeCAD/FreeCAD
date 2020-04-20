@@ -4337,6 +4337,14 @@ void PropertyXLinkList::setPyObject(PyObject *value)
     PropertyXLinkSubList::setPyObject(value);
 }
 
+//for consistency with PropertyLinkList
+const std::vector<App::DocumentObject*> PropertyXLinkList::getValues(void) const
+{
+    std::vector<DocumentObject*> xLinks;
+    getLinks(xLinks);
+    return(xLinks);
+}
+
 //**************************************************************************
 // PropertyXLinkContainer
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

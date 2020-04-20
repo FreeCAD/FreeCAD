@@ -1226,7 +1226,7 @@ class _Window(ArchComponent.Component):
                             bb.enlarge(10)
                             step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
                             if step < bb.ZLength:
-                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
+                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreSpacing.Value)
                                 boxes = []
                                 for i in range(int(bb.ZLength/step)+1):
                                     b = box.copy()

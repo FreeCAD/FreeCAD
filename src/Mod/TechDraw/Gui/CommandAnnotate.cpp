@@ -581,13 +581,13 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch(iMsg) {
-        case 0:
+        case 0:                 //faces
             execCenterLine(this);
             break;
-        case 1:
+        case 1:                 //2 lines
             exec2LineCenterLine(this);
             break;
-        case 2:
+        case 2:                 //2 points
             exec2PointCenterLine(this);
             break;
         default:
@@ -743,29 +743,23 @@ void execCenterLine(Gui::Command* cmd)
     if (!faceNames.empty()) {
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        faceNames));
+                                                        faceNames,
+                                                        false));
     } else if (edgeNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("No CenterLine in selection."));
         return;
     } else {
-        std::string edgeName = edgeNames.front();
-        int geomIdx = DrawUtil::getIndexFromName(edgeName);
-        const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
-        BaseGeom* bg = geoms.at(geomIdx);
-//        int clIdx = bg->sourceIndex();
-//        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
-        std::string tag = bg->getCosmeticTag();
-        TechDraw::CenterLine* cl = baseFeat->getCenterLine(tag);
+        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
         if (cl == nullptr) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("No CenterLine in selection."));
+                             QObject::tr("Selection is not a CenterLine."));
             return;
         }
-
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        edgeNames.front()));
+                                                        edgeNames.front(),
+                                                        true));
     }
 }
 
@@ -825,25 +819,19 @@ void exec2LineCenterLine(Gui::Command* cmd)
     if (selectedEdges.size() == 2) {
         Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
                                                         page,
-                                                        selectedEdges));
+                                                        selectedEdges,
+                                                        false));
     } else if (selectedEdges.size() == 1) {
-        std::string edgeName = selectedEdges.front();
-        int geomIdx = DrawUtil::getIndexFromName(edgeName);
-        const std::vector<TechDraw::BaseGeom  *> &geoms = dvp->getEdgeGeometry();
-        BaseGeom* bg = geoms.at(geomIdx);
-//        int clIdx = bg->sourceIndex();
-//        TechDraw::CenterLine* cl = dvp->getCenterLineByIndex(clIdx);
-        std::string tag = bg->getCosmeticTag();
-        TechDraw::CenterLine* cl = dvp->getCenterLine(tag);
+        TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(selectedEdges.front());
         if (cl == nullptr) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("No CenterLine in selection."));
+                             QObject::tr("Selection is not a CenterLine."));
             return;
         } else {
-//            Base::Console().Message("CMD::2LineCenter - show edit dialog here\n");
             Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
                                                             page,
-                                                            selectedEdges.front()));
+                                                            selectedEdges.front(),
+                                                            true));
         }
     } else {  //not create, not edit, what is this???
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
@@ -942,14 +930,23 @@ void exec2PointCenterLine(Gui::Command* cmd)
     if (!vertexNames.empty() && (vertexNames.size() == 2)) {
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        vertexNames));
+                                                        vertexNames,
+                                                        false));
     } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
+        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
+        if (cl == nullptr) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                             QObject::tr("Selection is not a CenterLine."));
+            return;
+        }
+
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        edgeNames.front()));
+                                                        edgeNames.front(),
+                                                        false));
     } else if (vertexNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("No CenterLine in selection."));
+                             QObject::tr("Need 2 Vertices or 1 CenterLine."));
         return;
     }
 }

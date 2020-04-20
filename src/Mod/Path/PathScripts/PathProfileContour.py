@@ -24,15 +24,18 @@
 
 from __future__ import print_function
 
-import ArchPanel
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 
 from PathScripts import PathUtils
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Part = LazyLoader('Part', globals(), 'Part')
 
 FreeCAD.setLogLevel('Path.Area', 0)
 

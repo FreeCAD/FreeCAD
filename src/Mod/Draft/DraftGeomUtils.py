@@ -305,7 +305,7 @@ def findIntersection(edge1, edge2,
             except:
                 return []
             norm3 = vec1.cross(vec2)
-            if not DraftVecUtils.isNull(norm3) :
+            if not DraftVecUtils.isNull(norm3) and (norm3.x+norm3.y+norm3.z != 0):
                 k = ((pt3.z-pt1.z)*(vec2.x-vec2.y)+(pt3.y-pt1.y)*(vec2.z-vec2.x)+ \
                      (pt3.x-pt1.x)*(vec2.y-vec2.z))/(norm3.x+norm3.y+norm3.z)
                 vec1.scale(k,k,k)
@@ -1178,6 +1178,17 @@ def isReallyClosed(wire):
     if DraftVecUtils.equals(v1,v2): return True
     return False
 
+def getSplineNormal(edge):
+    """Find the normal of a BSpline edge"""
+    startPoint = edge.valueAt(edge.FirstParameter)
+    endPoint = edge.valueAt(edge.LastParameter)
+    midParameter = edge.FirstParameter + (edge.LastParameter - edge.FirstParameter)/2
+    midPoint = edge.valueAt(midParameter)
+    v1 = midPoint - startPoint
+    v2 = midPoint - endPoint
+    n = v1.cross(v2)
+    n.normalize()
+    return n
 
 def getNormal(shape):
         """Find the normal of a shape, if possible."""
@@ -1189,10 +1200,17 @@ def getNormal(shape):
         elif shape.ShapeType == "Edge":
                 if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
                         n = shape.Edges[0].Curve.Axis
+                elif geomType(edge) == "BSplineCurve" or \
+                     geomType(edge) == "BezierCurve":
+                        n = getSplineNormal(edge)
         else:
                 for e in shape.Edges:
                         if geomType(e) in ["Circle","Ellipse"]:
                                 n = e.Curve.Axis
+                                break
+                        elif geomType(e) == "BSplineCurve" or \
+                             geomType(e) == "BezierCurve":
+                                n = getSplineNormal(e)
                                 break
                         e1 = vec(shape.Edges[0])
                         for i in range(1,len(shape.Edges)):

@@ -101,6 +101,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.joinRound.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
+        signals.append(self.form.value_W.valueChanged)
+        signals.append(self.form.value_h.valueChanged)
         return signals
 
     def registerSignalHandlers(self, obj):

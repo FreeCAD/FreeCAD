@@ -73,17 +73,24 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
                 if (is2dObject(d)) {
-                    auto shape = Part::Feature::getShape(d);
-                    if(!shape.IsNull()) {
-                        shapes2d.push_back(shape);
+                    if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                        //need to apply global placement here.  ??? because 2d shapes (Points so far)
+                        //don't get gp from Part::feature::getShape() ????
+                        const Part::Feature* pf = static_cast<const Part::Feature*>(d);
+                        Part::TopoShape ts = pf->Shape.getShape();
+                        ts.setPlacement(pf->globalPlacement());
+                        shapes2d.push_back(ts.getShape());
                     }
                 }
             }
         } else {
             if (is2dObject(l)) {
-                auto shape = Part::Feature::getShape(l);
-                if(!shape.IsNull()) {
-                    shapes2d.push_back(shape);
+                if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    //need to apply placement here
+                    const Part::Feature* pf = static_cast<const Part::Feature*>(l);
+                    Part::TopoShape ts = pf->Shape.getShape();
+                    ts.setPlacement(pf->globalPlacement());
+                    shapes2d.push_back(ts.getShape());
                 }
             }
         }
@@ -110,6 +117,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             if(!shape.IsNull()) {
     //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
                 if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
+                    //do we need to apply placement here too??
                     sourceShapes.push_back(shape);
                 } else {                                                  //complex shape
                     std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
@@ -415,16 +423,18 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 //    if (isDraftPoint(obj) {
 //        //Draft Points are not necc. Part::PartFeature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
-//        Base::Vector3d featPos = features[i]->(Placement.getValue()).Position();
 
     Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
     if (pf != nullptr) {
-        TopoDS_Shape ts = pf->Shape.getValue();
+        Part::TopoShape pts = pf->Shape.getShape();
+        pts.setPlacement(pf->globalPlacement());
+        TopoDS_Shape ts = pts.getShape();
         if (ts.ShapeType() == TopAbs_VERTEX)  {
             TopoDS_Vertex v = TopoDS::Vertex(ts);
             result = DrawUtil::vertex2Vector(v);
         }
     }
+
 //    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
 //                            DrawUtil::formatVector(result).c_str());
     return result;

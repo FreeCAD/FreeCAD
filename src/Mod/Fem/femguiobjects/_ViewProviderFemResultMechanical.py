@@ -703,6 +703,8 @@ def get_displacement_scale_factor(res_obj):
     z_span = abs(p_z_max - p_z_min)
     span = max(x_span, y_span, z_span)
     max_disp = max(x_max, y_max, z_max)
+    if max_disp == 0.0:
+        return 0.0  # avoid float division by zero
     # FIXME - add max_allowed_disp to Preferences
     max_allowed_disp = 0.01 * span
     scale = max_allowed_disp / max_disp

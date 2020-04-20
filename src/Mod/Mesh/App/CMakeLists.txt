@@ -94,6 +94,10 @@ SET(Core_SRCS
     Core/Utilities.h
     Core/Visitor.cpp
     Core/Visitor.h
+    Core/CylinderFit.cpp
+    Core/CylinderFit.h
+    Core/SphereFit.cpp
+    Core/SphereFit.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 

@@ -41,10 +41,12 @@
       <item row="6" column="0">
        <widget class="QGroupBox" name="group_Z">
         <property name="toolTip">
-         <string>Distance between the elements in the Z direction. Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.</string>
+         <string>Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</string>
         </property>
         <property name="title">
-         <string>Interval Z</string>
+         <string>Z intervals</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -117,7 +119,7 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset_Z">
            <property name="toolTip">
-            <string>Reset the distances</string>
+            <string>Reset the distances.</string>
            </property>
            <property name="text">
             <string>Reset Z</string>
@@ -132,7 +134,8 @@
         <item>
          <widget class="QCheckBox" name="checkbox_fuse">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be fused if they touch each other</string>
+           <string>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if &quot;Link array&quot; is off.</string>
           </property>
           <property name="text">
            <string>Fuse</string>
@@ -142,10 +145,14 @@
         <item>
          <widget class="QCheckBox" name="checkbox_link">
           <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be Links instead of simple copies</string>
+           <string>If checked, the resulting object will be a &quot;Link array&quot; instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
           </property>
           <property name="text">
-           <string>Use Links</string>
+           <string>Link array</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -164,73 +171,6 @@
         </property>
        </spacer>
       </item>
-      <item row="7" column="0">
-       <widget class="QGroupBox" name="group_copies">
-        <property name="toolTip">
-         <string>Number of elements in the array in the specified direction, including a copy of the original object. The number must be at least 1 in each direction.</string>
-        </property>
-        <property name="title">
-         <string>Number of elements</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="grid_number">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_n_X">
-             <property name="text">
-              <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_n_Z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_n_Y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="spinbox_n_X">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinbox_n_Y">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinbox_n_Z">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_icon">
         <property name="text">
@@ -241,10 +181,12 @@
       <item row="4" column="0">
        <widget class="QGroupBox" name="group_X">
         <property name="toolTip">
-         <string>Distance between the elements in the X direction. Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.</string>
+         <string>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</string>
         </property>
         <property name="title">
-         <string>Interval X</string>
+         <string>X intervals</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
@@ -317,7 +259,7 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset_X">
            <property name="toolTip">
-            <string>Reset the distances</string>
+            <string>Reset the distances.</string>
            </property>
            <property name="text">
             <string>Reset X</string>
@@ -330,10 +272,12 @@
       <item row="5" column="0">
        <widget class="QGroupBox" name="group_Y">
         <property name="toolTip">
-         <string>Distance between the elements in the Y direction. Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.</string>
+         <string>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</string>
         </property>
         <property name="title">
-         <string>Interval Y</string>
+         <string>Y intervals</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="0">
@@ -406,12 +350,80 @@
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset_Y">
            <property name="toolTip">
-            <string>Reset the distances</string>
+            <string>Reset the distances.</string>
            </property>
            <property name="text">
             <string>Reset Y</string>
            </property>
           </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="group_copies">
+        <property name="toolTip">
+         <string>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</string>
+        </property>
+        <property name="title">
+         <string>Number of elements</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="grid_number">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_n_X">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_n_Z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_n_Y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinbox_n_X">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinbox_n_Y">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinbox_n_Z">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -429,10 +441,21 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>spinbox_n_X</tabstop>
+  <tabstop>spinbox_n_Y</tabstop>
+  <tabstop>spinbox_n_Z</tabstop>
   <tabstop>input_X_x</tabstop>
   <tabstop>input_X_y</tabstop>
   <tabstop>input_X_z</tabstop>
   <tabstop>button_reset_X</tabstop>
+  <tabstop>input_Y_x</tabstop>
+  <tabstop>input_Y_y</tabstop>
+  <tabstop>input_Y_z</tabstop>
+  <tabstop>button_reset_Y</tabstop>
+  <tabstop>input_Z_x</tabstop>
+  <tabstop>input_Z_y</tabstop>
+  <tabstop>input_Z_z</tabstop>
+  <tabstop>button_reset_Z</tabstop>
   <tabstop>checkbox_fuse</tabstop>
   <tabstop>checkbox_link</tabstop>
  </tabstops>

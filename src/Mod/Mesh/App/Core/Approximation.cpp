@@ -32,6 +32,8 @@
 #include "Approximation.h"
 #include "Elements.h"
 #include "Utilities.h"
+#include "CylinderFit.h"
+#include "SphereFit.h"
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -1051,6 +1053,29 @@ float CylinderFit::Fit()
     _fRadius = float(radius);
 
     _fLastResult = double(fit);
+
+#if defined(_DEBUG)
+    Base::Console().Message("   WildMagic Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f\n",
+        _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
+#endif
+
+    MeshCoreFit::CylinderFit cylFit;
+    cylFit.AddPoints(_vPoints);
+    //cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
+
+    float result = cylFit.Fit();
+    if (result < FLOAT_MAX) {
+        Base::Vector3d base = cylFit.GetBase();
+        Base::Vector3d dir = cylFit.GetAxis();
+#if defined(_DEBUG)
+        Base::Console().Message("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
+            base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
+#endif
+        _vBase = Base::convertTo<Base::Vector3f>(base);
+        _vAxis = Base::convertTo<Base::Vector3f>(dir);
+        _fRadius = (float)cylFit.GetRadius();
+        _fLastResult = result;
+    }
 #else
     int m = static_cast<int>(_vPoints.size());
     int n = 7;
@@ -1238,24 +1263,88 @@ float SphereFit::Fit()
     _fRadius = float(sphere.Radius);
 
     // TODO
-
     _fLastResult = 0;
+
+#if defined(_DEBUG)
+    Base::Console().Message("   WildMagic Sphere Fit:  Center: (%0.4f, %0.4f, %0.4f),  Radius: %0.4f,  Std Dev: %0.4f\n",
+        _vCenter.x, _vCenter.y, _vCenter.z, _fRadius, GetStdDeviation());
+#endif
+
+    MeshCoreFit::SphereFit sphereFit;
+    sphereFit.AddPoints(_vPoints);
+    sphereFit.ComputeApproximations();
+    float result = sphereFit.Fit();
+    if (result < FLOAT_MAX) {
+        Base::Vector3d center = sphereFit.GetCenter();
+#if defined(_DEBUG)
+        Base::Console().Message("MeshCoreFit::Sphere Fit:  Center: (%0.4f, %0.4f, %0.4f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
+            center.x, center.y, center.z, sphereFit.GetRadius(), sphereFit.GetStdDeviation(), sphereFit.GetNumIterations());
+#endif
+        _vCenter = Base::convertTo<Base::Vector3f>(center);
+        _fRadius = (float)sphereFit.GetRadius();
+        _fLastResult = result;
+    }
+
     return _fLastResult;
 }
 
-float SphereFit::GetDistanceToSphere(const Base::Vector3f &) const
+float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
 {
-    return FLOAT_MAX;
+    float fResult = FLOAT_MAX;
+    if (_bIsFitted) {
+        fResult = Base::Vector3f(rcPoint - _vCenter).Length() - _fRadius;
+    }
+    return fResult;
 }
 
 float SphereFit::GetStdDeviation() const
 {
-    return FLOAT_MAX;
+    // Mean: M=(1/N)*SUM Xi
+    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Standard deviation: SD=SQRT(VAR)
+    // Standard error of the mean: SE=SD/SQRT(N)
+    if (!_bIsFitted)
+        return FLOAT_MAX;
+
+    float fSumXi = 0.0f, fSumXi2 = 0.0f,
+          fMean  = 0.0f, fDist   = 0.0f;
+
+    float ulPtCt = float(CountPoints());
+    std::list< Base::Vector3f >::const_iterator cIt;
+
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
+        fDist = GetDistanceToSphere( *cIt );
+        fSumXi  += fDist;
+        fSumXi2 += ( fDist * fDist );
+    }
+
+    fMean = (1.0f / ulPtCt) * fSumXi;
+    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()
 {
+    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
+        Base::Vector3f& cPnt = *it;
 
+        // Compute unit vector from sphere centre to point.
+        // Because this vector is orthogonal to the sphere's surface at the
+        // intersection point we can easily compute the projection point on the
+        // closest surface point using the radius of the sphere
+        Base::Vector3f diff = cPnt - _vCenter;
+        double length = diff.Length();
+        if (length == 0.0)
+        {
+            // Point is exactly at the sphere center, so it can be projected in any direction onto the sphere!
+            // So here just project in +Z direction
+            cPnt.z += _fRadius;
+        }
+        else
+        {
+            diff /= length;	// normalizing the vector
+            cPnt = _vCenter + diff * _fRadius;
+        }
+    }
 }
 
 // -------------------------------------------------------------------------------

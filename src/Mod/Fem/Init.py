@@ -27,6 +27,8 @@
 import FreeCAD
 
 
+FreeCAD.addExportType("FEM mesh Python (*.meshpy)", "feminout.importPyMesh")
+
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 
 # see FemMesh::read() and FemMesh::write() methods in src/Mod/Fem/App/FemMesh.cpp

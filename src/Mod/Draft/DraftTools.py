@@ -77,6 +77,22 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
 import draftguitools.gui_planeproxy
+from draftguitools.gui_lineops import FinishLine
+from draftguitools.gui_lineops import CloseLine
+from draftguitools.gui_lineops import UndoLine
+from draftguitools.gui_togglemodes import ToggleConstructionMode
+from draftguitools.gui_togglemodes import ToggleContinueMode
+from draftguitools.gui_togglemodes import ToggleDisplayMode
+from draftguitools.gui_groups import AddToGroup
+from draftguitools.gui_groups import SelectGroup
+from draftguitools.gui_groups import SetAutoGroup
+from draftguitools.gui_groups import Draft_AddConstruction
+from draftguitools.gui_grid import ToggleGrid
+from draftguitools.gui_heal import Heal
+from draftguitools.gui_dimension_ops import Draft_FlipDimension
+from draftguitools.gui_lineslope import Draft_Slope
+from draftguitools.gui_arcs import Draft_Arc_3Points
+import draftguitools.gui_arrays
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -978,66 +994,6 @@ class CubicBezCurve(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-
-
-class FinishLine:
-    """a FreeCAD command to finish any running Line drawing operation"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.finish(False)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Finish',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finish line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finishes a line without closing it")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-
-class CloseLine:
-    """a FreeCAD command to close any running Line drawing operation"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.finish(True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Lock',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Close Line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Closes the line being drawn")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-
-class UndoLine:
-    """a FreeCAD command to undo last drawn segment of a line"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.undolast()
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Rotate',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undo last segment"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undoes the last drawn segment of the line being drawn")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
 
 
 class Rectangle(Creator):
@@ -3067,6 +3023,8 @@ class Offset(Modifier):
                         ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
                          'FreeCAD.ActiveDocument.recompute()'])
             self.finish()
+        else:
+            FreeCAD.Console.PrintError(translate("draft","Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction")+"/n")
 
 
 class Stretch(Modifier):
@@ -4179,30 +4137,6 @@ class Scale(Modifier):
         for ghost in self.ghosts:
             ghost.finalize()
 
-class ToggleConstructionMode():
-    """The Draft_ToggleConstructionMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle Construction Mode"),
-                'Accel' : "C, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
-
-    def Activated(self):
-        FreeCADGui.draftToolBar.constrButton.toggle()
-
-
-class ToggleContinueMode():
-    """The Draft_ToggleContinueMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Rotate',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggle Continue Mode"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggles the Continue Mode for next commands.")}
-
-    def Activated(self):
-        FreeCADGui.draftToolBar.toggleContinue()
-
 
 class Drawing(Modifier):
     """The Draft Drawing command definition"""
@@ -4274,30 +4208,6 @@ class Drawing(Modifier):
         self.doc.recompute()
         return page
 
-
-class ToggleDisplayMode():
-    """The ToggleDisplayMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_SwitchMode',
-                'Accel' : "Shift+Space",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Toggle display mode"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Swaps display mode of selected objects between wireframe and flatlines")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        for obj in FreeCADGui.Selection.getSelection():
-            if obj.ViewObject.DisplayMode == "Flat Lines":
-                if "Wireframe" in obj.ViewObject.listDisplayModes():
-                    obj.ViewObject.DisplayMode = "Wireframe"
-            elif obj.ViewObject.DisplayMode == "Wireframe":
-                if "Flat Lines" in obj.ViewObject.listDisplayModes():
-                    obj.ViewObject.DisplayMode = "Flat Lines"
 
 class SubelementHighlight(Modifier):
     """The Draft_SubelementHighlight FreeCAD command definition"""
@@ -4388,49 +4298,6 @@ class SubelementHighlight(Modifier):
                 # This can occur if objects have had graph changing operations
                 pass
 
-class AddToGroup():
-    """The AddToGroup FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_AddToGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Move to group..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Moves the selected object(s) to an existing group")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        self.groups = ["Ungroup"]
-        self.groups.extend(Draft.getGroupNames())
-        self.labels = ["Ungroup"]
-        for g in self.groups:
-            o = FreeCAD.ActiveDocument.getObject(g)
-            if o: self.labels.append(o.Label)
-        self.ui = FreeCADGui.draftToolBar
-        self.ui.sourceCmd = self
-        self.ui.popupMenu(self.labels)
-
-    def proceed(self,labelname):
-        self.ui.sourceCmd = None
-        if labelname == "Ungroup":
-            for obj in FreeCADGui.Selection.getSelection():
-                try:
-                    Draft.ungroup(obj)
-                except:
-                    pass
-        else:
-            if labelname in self.labels:
-                i = self.labels.index(labelname)
-                g = FreeCAD.ActiveDocument.getObject(self.groups[i])
-                for obj in FreeCADGui.Selection.getSelection():
-                    try:
-                        g.addObject(obj)
-                    except:
-                        pass
-
 
 class WireToBSpline(Modifier):
     """The Draft_Wire2BSpline FreeCAD command definition"""
@@ -4477,38 +4344,6 @@ class WireToBSpline(Modifier):
                                 self.doc.recompute()
                         else:
                             self.finish()
-
-
-class SelectGroup():
-    """The SelectGroup FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_SelectGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SelectGroup", "Select group"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects all objects with the same parents as this group")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        sellist = []
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1:
-            if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
-                cts = Draft.getGroupContents(FreeCADGui.Selection.getSelection())
-                for o in cts:
-                    FreeCADGui.Selection.addSelection(o)
-                return
-        for ob in sel:
-            for child in ob.OutList:
-                FreeCADGui.Selection.addSelection(child)
-            for parent in ob.InList:
-                FreeCADGui.Selection.addSelection(parent)
-                for child in parent.OutList:
-                    FreeCADGui.Selection.addSelection(child)
 
 
 class Shape2DView(Modifier):
@@ -4614,9 +4449,16 @@ class Draft2Sketch(Modifier):
 
 
 class Array(Modifier):
-    """The Shape2DView FreeCAD command definition"""
+    """GuiCommand for the Draft_Array tool.
 
-    def __init__(self,use_link=False):
+    Parameters
+    ----------
+    use_link: bool, optional
+        It defaults to `False`. If it is `True`, the created object
+        will be a `Link array`.
+    """
+
+    def __init__(self, use_link=False):
         Modifier.__init__(self)
         self.use_link = use_link
 
@@ -4647,11 +4489,12 @@ class Array(Modifier):
                          'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
+
 class LinkArray(Array):
-    "The Shape2DView FreeCAD command definition"
+    """GuiCommand for the Draft_LinkArray tool."""
 
     def __init__(self):
-        Array.__init__(self,True)
+        Array.__init__(self, use_link=True)
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_LinkArray',
@@ -4820,17 +4663,6 @@ class Point(Creator):
             if self.ui.continueMode:
                 self.Activated()
 
-class ShowSnapBar():
-    """The ShowSnapBar FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show Snap Bar"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows Draft snap toolbar")}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.show()
-
 
 class Draft_Clone(Modifier):
     """The Draft Clone command definition"""
@@ -4880,45 +4712,6 @@ class Draft_Clone(Modifier):
             ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
-class ToggleGrid():
-    """The Draft ToggleGrid command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Grid',
-                'Accel' : "G,R",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off"),
-                'CmdType' : 'ForEdit'}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.setTrackers()
-            if FreeCADGui.Snapper.grid:
-                if FreeCADGui.Snapper.grid.Visible:
-                    FreeCADGui.Snapper.grid.off()
-                    FreeCADGui.Snapper.forceGridOff=True
-                else:
-                    FreeCADGui.Snapper.grid.on()
-                    FreeCADGui.Snapper.forceGridOff=False
-
-class Heal():
-    """The Draft Heal command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Heal',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved from an earlier FreeCAD version")}
-
-    def Activated(self):
-        s = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Heal")
-        if s:
-            Draft.heal(s)
-        else:
-            Draft.heal()
-        FreeCAD.ActiveDocument.commitTransaction()
-
-
 class Draft_Facebinder(Creator):
     """The Draft Facebinder command definition"""
 
@@ -4951,20 +4744,6 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
-
-class Draft_FlipDimension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_FlipDimension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
-
-    def Activated(self):
-        for o in FreeCADGui.Selection.getSelection():
-            if Draft.getType(o) in ["Dimension","AngularDimension"]:
-                FreeCAD.ActiveDocument.openTransaction("Flip dimension")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+o.Name+".Normal = FreeCAD.ActiveDocument."+o.Name+".Normal.negative()")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
 
 
 class Mirror(Modifier):
@@ -5091,117 +4870,6 @@ class Mirror(Modifier):
             self.finish()
 
 
-class Draft_Slope():
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Slope',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Set Slope"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of a selected Line or Wire")}
-
-    def Activated(self):
-        if not FreeCADGui.Selection.getSelection():
-            return
-        for obj in FreeCADGui.Selection.getSelection():
-            if Draft.getType(obj) != "Wire":
-                FreeCAD.Console.PrintMessage(translate("draft", "This tool only works with Wires and Lines")+"\n")
-                return
-        w = QtGui.QWidget()
-        w.setWindowTitle(translate("Draft","Slope"))
-        layout = QtGui.QHBoxLayout(w)
-        label = QtGui.QLabel(w)
-        label.setText(translate("Draft", "Slope")+":")
-        layout.addWidget(label)
-        self.spinbox = QtGui.QDoubleSpinBox(w)
-        self.spinbox.setMinimum(-9999.99)
-        self.spinbox.setMaximum(9999.99)
-        self.spinbox.setSingleStep(0.01)
-        self.spinbox.setToolTip(translate("Draft", "Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down"))
-        layout.addWidget(self.spinbox)
-        taskwidget = QtGui.QWidget()
-        taskwidget.form = w
-        taskwidget.accept = self.accept
-        FreeCADGui.Control.showDialog(taskwidget)
-
-    def accept(self):
-        if hasattr(self,"spinbox"):
-            pc = self.spinbox.value()
-            FreeCAD.ActiveDocument.openTransaction("Change slope")
-            for obj in FreeCADGui.Selection.getSelection():
-                if Draft.getType(obj) == "Wire":
-                    if len(obj.Points) > 1:
-                        lp = None
-                        np = []
-                        for p in obj.Points:
-                            if not lp:
-                                lp = p
-                            else:
-                                v = p.sub(lp)
-                                z = pc*FreeCAD.Vector(v.x,v.y,0).Length
-                                lp = FreeCAD.Vector(p.x,p.y,lp.z+z)
-                            np.append(lp)
-                        obj.Points = np
-            FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-
-class SetAutoGroup():
-    """The SetAutoGroup FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_AutoGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AutoGroup", "AutoGroup"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to automatically add all Draft & Arch objects to")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"draftToolBar"):
-            self.ui = FreeCADGui.draftToolBar
-            s = FreeCADGui.Selection.getSelection()
-            if len(s) == 1:
-                if (Draft.getType(s[0]) == "Layer") or \
-                ( FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups",False) and \
-                (s[0].isDerivedFrom("App::DocumentObjectGroup") or (Draft.getType(s[0]) in ["Site","Building","Floor","BuildingPart",]))):
-                    self.ui.setAutoGroup(s[0].Name)
-                    return
-            self.groups = ["None"]
-            gn = [o.Name for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Layer"]
-            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups",False):
-                gn.extend(Draft.getGroupNames())
-            if gn:
-                self.groups.extend(gn)
-                self.labels = [translate("draft","None")]
-                self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
-                for g in gn:
-                    o = FreeCAD.ActiveDocument.getObject(g)
-                    if o:
-                        self.labels.append(o.Label)
-                        self.icons.append(o.ViewObject.Icon)
-                self.labels.append(translate("draft","Add new Layer"))
-                self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
-                self.ui.sourceCmd = self
-                from PySide import QtCore
-                pos = self.ui.autoGroupButton.mapToGlobal(QtCore.QPoint(0,self.ui.autoGroupButton.geometry().height()))
-                self.ui.popupMenu(self.labels,self.icons,pos)
-
-    def proceed(self,labelname):
-        self.ui.sourceCmd = None
-        if labelname in self.labels:
-            if labelname == self.labels[0]:
-                self.ui.setAutoGroup(None)
-            elif labelname == self.labels[-1]:
-                FreeCADGui.runCommand("Draft_Layer")
-            else:
-                i = self.labels.index(labelname)
-                self.ui.setAutoGroup(self.groups[i])
-
-
-
 class Draft_Label(Creator):
     """The Draft_Label command definition"""
 
@@ -5272,6 +4940,7 @@ class Draft_Label(Creator):
             FreeCAD.ActiveDocument.openTransaction("Create Label")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("l = Draft.makeLabel("+tp+sel+"direction='"+direction+"',distance="+str(dist)+",labeltype='"+self.labeltype+"',"+pl+")")
+            FreeCADGui.doCommand("Draft.autogroup(l)")
             FreeCAD.ActiveDocument.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
         self.finish()
@@ -5336,97 +5005,25 @@ class Draft_Label(Creator):
             self.create()
 
 
-class Draft_AddConstruction():
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the Construction group")}
-
-    def Activated(self):
-        import FreeCADGui
-        if hasattr(FreeCADGui,"draftToolBar"):
-            col = FreeCADGui.draftToolBar.getDefaultColor("constr")
-            col = (float(col[0]),float(col[1]),float(col[2]),0.0)
-            gname = Draft.getParam("constructiongroupname","Construction")
-            grp = FreeCAD.ActiveDocument.getObject(gname)
-            if not grp:
-                grp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",gname)
-            for obj in FreeCADGui.Selection.getSelection():
-                grp.addObject(obj)
-                obrep = obj.ViewObject
-                if "TextColor" in obrep.PropertiesList:
-                    obrep.TextColor = col
-                if "PointColor" in obrep.PropertiesList:
-                    obrep.PointColor = col
-                if "LineColor" in obrep.PropertiesList:
-                    obrep.LineColor = col
-                if "ShapeColor" in obrep.PropertiesList:
-                    obrep.ShapeColor = col
-                if hasattr(obrep,"Transparency"):
-                    obrep.Transparency = 80
-
-
-class Draft_Arc_3Points:
-
-
-    def GetResources(self):
-
-        return {'Pixmap'  : "Draft_Arc_3Points.svg",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by 3 points"),
-                'Accel'   : 'A,T'}
-
-    def IsActive(self):
-
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-
-        self.points = []
-        self.normal = None
-        self.tracker = trackers.arcTracker()
-        self.tracker.autoinvert = False
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.setup()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.drawArc)
-
-    def getPoint(self,point,info):
-        if not point: # cancelled
-            self.tracker.off()
-            return
-        if not(point in self.points): # avoid same point twice
-            self.points.append(point)
-        if len(self.points) < 3:
-            if len(self.points) == 2:
-                self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
-        else:
-            import draftobjects.arc_3points as arc3
-            if Draft.getParam("UsePartPrimitives",False):
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=True)
-            else:
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=False)
-            self.tracker.off()
-            FreeCAD.ActiveDocument.recompute()
-
-    def drawArc(self,point,info):
-        if len(self.points) == 2:
-            if point.sub(self.points[1]).Length > 0.001:
-                self.tracker.setBy3Points(self.points[0],self.points[1],point)
-
-
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
-import draftguitools.gui_snaps
+from draftguitools.gui_snaps import Draft_Snap_Lock
+from draftguitools.gui_snaps import Draft_Snap_Midpoint
+from draftguitools.gui_snaps import Draft_Snap_Perpendicular
+from draftguitools.gui_snaps import Draft_Snap_Grid
+from draftguitools.gui_snaps import Draft_Snap_Intersection
+from draftguitools.gui_snaps import Draft_Snap_Parallel
+from draftguitools.gui_snaps import Draft_Snap_Endpoint
+from draftguitools.gui_snaps import Draft_Snap_Angle
+from draftguitools.gui_snaps import Draft_Snap_Center
+from draftguitools.gui_snaps import Draft_Snap_Extension
+from draftguitools.gui_snaps import Draft_Snap_Near
+from draftguitools.gui_snaps import Draft_Snap_Ortho
+from draftguitools.gui_snaps import Draft_Snap_Special
+from draftguitools.gui_snaps import Draft_Snap_Dimensions
+from draftguitools.gui_snaps import Draft_Snap_WorkingPlane
+from draftguitools.gui_snaps import ShowSnapBar
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -5447,7 +5044,6 @@ class CommandArcGroup:
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 FreeCADGui.addCommand('Draft_Arc',Arc())
-FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
 FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
@@ -5492,27 +5088,12 @@ FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PathLinkArray',PathLinkArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
-FreeCADGui.addCommand('Draft_Heal',Heal())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
-FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
-FreeCADGui.addCommand('Draft_FinishLine',FinishLine())
-FreeCADGui.addCommand('Draft_CloseLine',CloseLine())
-FreeCADGui.addCommand('Draft_UndoLine',UndoLine())
-FreeCADGui.addCommand('Draft_ToggleConstructionMode',ToggleConstructionMode())
-FreeCADGui.addCommand('Draft_ToggleContinueMode',ToggleContinueMode())
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
-FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
-FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
-FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
-FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
-FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
-FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
-FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None

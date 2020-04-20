@@ -347,7 +347,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         }
     }
 
-
     dvp->requestPaint();  //to refresh section line
     return DrawView::execute();
 }
@@ -382,13 +381,26 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
     BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
-    BRepAlgoAPI_Cut mkCut(myShape, prism);
-    if (!mkCut.IsDone()) {
-        Base::Console().Warning("DVS: Section cut has failed in %s\n",getNameInDocument());
-        return;
+    BRep_Builder builder;
+    TopoDS_Compound pieces;
+    builder.MakeCompound(pieces);
+    TopExp_Explorer expl(myShape, TopAbs_SOLID);
+    int indb = 0;
+    int outdb = 0;
+    for (; expl.More(); expl.Next()) {
+        indb++;
+        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
+        BRepAlgoAPI_Cut mkCut(s, prism);
+        if (!mkCut.IsDone()) {
+            Base::Console().Warning("DVS: Section cut has failed in %s\n",getNameInDocument());
+            continue;
+        }
+        TopoDS_Shape cut = mkCut.Shape();
+        builder.Add(pieces, cut);
+        outdb++;
     }
 
-    TopoDS_Shape rawShape = mkCut.Shape();
+    TopoDS_Shape rawShape = pieces;
     if (debugSection()) {
         BRepTools::Write(myShape, "DVSCopy.brep");            //debug
         BRepTools::Write(aProjFace, "DVSFace.brep");          //debug

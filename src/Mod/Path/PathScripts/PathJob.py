@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
-import Draft
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
@@ -33,6 +31,11 @@ import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import json
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Draft = LazyLoader('Draft', globals(), 'Draft')
 
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore

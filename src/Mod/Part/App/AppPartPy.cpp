@@ -62,6 +62,7 @@
 # include <Geom_Plane.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <Interface_Static.hxx>
+# include <Poly_Triangulation.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
@@ -749,7 +750,7 @@ private:
                     p1.Transform(loc.Transformation());
                     p2.Transform(loc.Transformation());
                     p3.Transform(loc.Transformation());
-                    // TODO: verify if tolerence should be hard coded
+                    // TODO: verify if tolerance should be hard coded
                     if (!p1.IsEqual(p2, 0.01) && !p2.IsEqual(p3, 0.01) && !p3.IsEqual(p1, 0.01)) {
                         PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
                         PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));

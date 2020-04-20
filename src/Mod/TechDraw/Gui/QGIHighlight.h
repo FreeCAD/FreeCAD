@@ -50,8 +50,8 @@ public:
     explicit QGIHighlight();
     ~QGIHighlight();
 
-   enum {Type = QGraphicsItem::UserType + 176};
-    int type() const { return Type;}
+    enum {Type = QGraphicsItem::UserType + 176};
+    int type() const override { return Type;}
 
     virtual void paint(QPainter * painter,
                        const QStyleOptionGraphicsItem * option, 
@@ -60,7 +60,7 @@ public:
     void setBounds(double x1,double y1,double x2,double y2);
     void setReference(char* sym);
     void setFont(QFont f, double fsize);
-    virtual void draw();
+    virtual void draw() override;
     void setInteractive(bool state);
 
 protected:
