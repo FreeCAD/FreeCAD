@@ -141,13 +141,10 @@ class ViewProviderSprocket:
 
 
 class SprocketTaskPanel:
-<<<<<<< HEAD
     """
     The editmode TaskPanel for Sprocket objects
     """
-=======
-    '''The editmode TaskPanel for Sprocket objects'''
->>>>>>> 07b2401c1... Converted class names from private to public, per feedback from pull request
+
     def __init__(self,obj,mode):
         self.obj = obj
         
