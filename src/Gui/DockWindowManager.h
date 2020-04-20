@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QTabWidget>
 #include <QTimer>
+#include <QAction>
 
 #if QT_VERSION  >= 0x050000
 #   define FC_HAS_DOCK_OVERLAY
@@ -167,10 +168,13 @@ public:
     void setCurrent(QWidget *widget);
 
     void setAutoHide(bool enable);
-    bool isAutoHide() const {return autoHide;}
+    bool isAutoHide() const {return actAutoHide.isChecked();}
 
     void setTransparent(bool enable);
-    bool isTransparent() const {return transparent;}
+    bool isTransparent() const {return actTransparent.isChecked();}
+
+    void setEditHide(bool enable);
+    bool isEditHide() const {return actEditHide.isChecked();}
 
     void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
@@ -184,16 +188,25 @@ public:
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
+    void changeEvent(QEvent*);
 
     static void _setOverlayMode(QWidget *widget, int enable);
+    void setupActions();
+
+protected Q_SLOTS:
+    void onAction(QAction *);
 
 private:
     QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
+    QAction actOverlay;
+    QAction actAutoHide;
+    QAction actEditHide;
+    QAction actTransparent;
+    QAction actIncrease;
+    QAction actDecrease;
     bool overlayed = false;
-    bool autoHide = false;
-    bool transparent = false;
 };
 
 class OverlayProxyWidget: public QWidget

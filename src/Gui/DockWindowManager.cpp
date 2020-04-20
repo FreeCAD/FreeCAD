@@ -36,6 +36,8 @@
 # include <QMap>
 # include <QTextStream>
 # include <QComboBox>
+# include <QBoxLayout>
+# include <QSpacerItem>
 #endif
 
 #include <array>
@@ -146,16 +148,216 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     setOverlayMode(true);
 
     hide();
+
+#define TITLE_BUTTON_COLOR "# c #101010"
+    static QIcon pxTransparent;
+    if(pxTransparent.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "...........",
+            "....###....",
+            "..#######..",
+            ".##.....##.",
+            "##..###..##",
+            "##..###..##",
+            "##..###..##",
+            ".##.....##.",
+            "..#######..",
+            "....###....",
+            "...........",
+        };
+        pxTransparent = QIcon(QPixmap(bytes));
+    }
+    actTransparent.setIcon(pxTransparent);
+    actTransparent.setCheckable(true);
+    addAction(&actTransparent);
+
+    QPixmap pxAutoHide;
+    if(pxAutoHide.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "....#######",
+            "..........#",
+            "..........#",
+            "..##......#",
+            ".##.......#",
+            "########..#",
+            ".##.......#",
+            "..##......#",
+            "..........#",
+            "..........#",
+            "....#######",
+        };
+        pxAutoHide = QPixmap(bytes);
+    }
+    switch(tabPosition()) {
+    case West:
+        actAutoHide.setIcon(pxAutoHide);
+        break;
+    case East:
+        actAutoHide.setIcon(pxAutoHide.transformed(QTransform().scale(-1,1)));
+        break;
+    case North:
+        actAutoHide.setIcon(pxAutoHide.transformed(QTransform().rotate(90)));
+        break;
+    case South:
+        actAutoHide.setIcon(pxAutoHide.transformed(QTransform().rotate(-90)));
+        break;
+    }
+    actAutoHide.setCheckable(true);
+    addAction(&actAutoHide);
+
+    static QIcon pxEditHide;
+    if(pxEditHide.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "......##...",
+            ".....#.##..",
+            "....#...##.",
+            "...#...#.##",
+            "..#...#...#",
+            ".###.#...#.",
+            "##..#...#..",
+            "##...#.#...",
+            "##...##....",
+            "######.....",
+            "#####......",
+        };
+        pxEditHide = QIcon(QPixmap(bytes));
+    }
+    actEditHide.setIcon(pxEditHide);
+    actEditHide.setCheckable(true);
+    addAction(&actEditHide);
+
+    static QIcon pxIncrease;
+    if(pxIncrease.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "....##.....",
+            "....##.....",
+            "....##.....",
+            "....##.....",
+            "##########.",
+            "##########.",
+            "....##.....",
+            "....##.....",
+            "....##.....",
+            "....##.....",
+            "...........",
+        };
+        pxIncrease = QIcon(QPixmap(bytes));
+    }
+    actIncrease.setIcon(pxIncrease);
+    addAction(&actIncrease);
+
+    static QIcon pxDecrease;
+    if(pxDecrease.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "...........",
+            "...........",
+            "...........",
+            "...........",
+            "##########.",
+            "##########.",
+            "...........",
+            "...........",
+            "...........",
+            "...........",
+            "...........",
+        };
+        pxDecrease = QIcon(QPixmap(bytes));
+    }
+    actDecrease.setIcon(pxDecrease);
+    addAction(&actDecrease);
+
+    static QIcon pxOverlay;
+    if(pxOverlay.isNull()) {
+        const char * const bytes[]={
+            "11 11 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "...........",
+            "###########",
+            "#.........#",
+            "###########",
+            "#.........#",
+            "#.........#",
+            "#.........#",
+            "#.........#",
+            "#.........#",
+            "###########",
+            "...........",
+        };
+        pxOverlay = QIcon(QPixmap(bytes));
+    }
+    actOverlay.setIcon(pxOverlay);
+    addAction(&actOverlay);
+
+    setupActions();
+}
+
+void OverlayTabWidget::changeEvent(QEvent *e)
+{
+    QTabWidget::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+        setupActions();
+}
+
+void OverlayTabWidget::setupActions()
+{
+    actTransparent.setToolTip(tr("Toggle transparent mode"));
+    actAutoHide.setToolTip(tr("Toggle auto hide mode"));
+    actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
+    actIncrease.setToolTip(tr("Increase window size"));
+    actDecrease.setToolTip(tr("Decrease window size"));
+    actOverlay.setToolTip(tr("Turn off overlay"));
+}
+
+void OverlayTabWidget::onAction(QAction *action)
+{
+    if(action == &actEditHide) {
+        if(action->isChecked())
+            setAutoHide(false);
+    } else if(action == &actAutoHide) {
+        if(action->isChecked())
+            setEditHide(false);
+    } else if(action == &actIncrease)
+        changeSize(5);
+    else if(action == &actDecrease)
+        changeSize(-5);
+    else if(action == &actOverlay) {
+        DockWindowManager::instance()->setOverlayMode(DockWindowManager::DisableActive);
+        return;
+    }
+    DockWindowManager::instance()->refreshOverlay(this);
 }
 
 bool OverlayTabWidget::checkAutoHide() const
 {
-    if(autoHide || !ViewParams::getDockOverlayAutoView())
-        return autoHide;
+    if(isAutoHide())
+        return true;
 
-    auto view = getMainWindow()->activeWindow();
-    return !view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
-                     && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId()));
+    if(ViewParams::getDockOverlayAutoView()) {
+        auto view = getMainWindow()->activeWindow();
+        if(!view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
+                        && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId())))
+            return true;
+    }
+
+    if(isEditHide() && Application::Instance->editDocument())
+        return true;
+    return false;
 }
 
 static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr)
@@ -314,9 +516,12 @@ public:
                 "QAbstractButton { background: palette(window);"
                                   "padding: 2px 4px;"
                                   "border: 1px outset palette(dark) }"
-                "QAbstractButton:hover { background: palette(light) }"
-                "QAbstractButton:focus { background: palette(dark) }"
+                "QAbstractButton:hover { background: palette(light); border: 1px outset palette(dark) }"
+                "QAbstractButton:focus { background: palette(dark) ; border: 1px outset palette(dark)}"
                 "QAbstractButton:pressed { background: palette(dark); border: 1px inset palette(dark) }"
+                "QAbstractButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
+                "QAbstractButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
+                "QToolButton { background: transparent; padding: 0px; border: none }"
                 );
             activeStyleSheet = _default;
         }
@@ -405,17 +610,29 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
 
 void OverlayTabWidget::setAutoHide(bool enable)
 {
-    if(autoHide == enable)
+    if(actAutoHide.isChecked() == enable)
         return;
-    autoHide = enable;
+    actAutoHide.setChecked(enable);
+    if(enable)
+        setEditHide(false);
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
 void OverlayTabWidget::setTransparent(bool enable)
 {
-    if(transparent == enable)
+    if(actTransparent.isChecked() == enable)
         return;
-    transparent = enable;
+    actTransparent.setChecked(enable);
+    DockWindowManager::instance()->refreshOverlay(this);
+}
+
+void OverlayTabWidget::setEditHide(bool enable)
+{
+    if(actEditHide.isChecked() == enable)
+        return;
+    actEditHide.setChecked(enable);
+    if(enable)
+        setAutoHide(false);
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
@@ -423,10 +640,17 @@ void OverlayTabWidget::setOverlayMode(bool enable)
 {
     overlayed = enable;
 
-    if(!isVisible())
+    if(!isVisible() || !count())
         return;
 
-    if(!enable && transparent)
+    auto w = currentWidget();
+    if(w) {
+        w = w->findChild<QWidget*>(QLatin1String("OverlayTitle"),Qt::FindDirectChildrenOnly);
+        if(w)
+            w->setVisible(!enable);
+    }
+
+    if(!enable && isTransparent())
     {
         setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
         setOverlayMode(this, -1);
@@ -496,7 +720,7 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
             show();
             setOverlayMode(overlay);
         }
-        if(!overlay && !transparent)
+        if(!overlay && !isTransparent())
             setGeometry(rectActive);
         else
             setGeometry(rectOverlay);
@@ -506,12 +730,30 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
 void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 {
     QRect rect = dock->geometry();
+    dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
 
     if(!dock->titleBarWidget()) {
-        auto w = new QWidget();
-        w->setObjectName(QLatin1String("OverlayTitle"));
-        dock->setTitleBarWidget(w);
-        w->hide();
+        auto widget = new QWidget();
+        widget->setObjectName(QLatin1String("OverlayTitle"));
+
+        int size = 11;
+        bool vertical = (dock->features() & QDockWidget::DockWidgetVerticalTitleBar);
+        auto layout = new QBoxLayout(vertical?QBoxLayout::BottomToTop:QBoxLayout::LeftToRight, widget); 
+        layout->setContentsMargins(1,1,1,1);
+        layout->addSpacerItem(new QSpacerItem(size,size,
+                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
+                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
+
+        for(auto action : this->actions()) {
+            auto button = new QToolButton(widget);
+            button->setDefaultAction(action);
+            button->setAutoRaise(true);
+            button->setContentsMargins(0,0,0,0);
+            button->setFixedSize(size,size);
+            layout->addWidget(button);
+            connect(button, SIGNAL(triggered(QAction*)), this, SLOT(onAction(QAction*)));
+        }
+        dock->setTitleBarWidget(widget);
     }
 
     setOverlayMode(dock, 1);
@@ -526,6 +768,8 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
     int index = indexOf(dock);
     if(index < 0)
         return;
+
+    dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 
     QWidget *w = dock->titleBarWidget();
     if(w && w->objectName() == QLatin1String("OverlayTitle")) {
@@ -682,6 +926,7 @@ struct OverlayInfo {
         hGrp->SetInt("Active", tabWidget->currentIndex());
         hGrp->SetBool("AutoHide", tabWidget->isAutoHide());
         hGrp->SetBool("Transparent", tabWidget->isTransparent());
+        hGrp->SetBool("EditHide", tabWidget->isEditHide());
 
         std::ostringstream os;
         for(int i=0,c=tabWidget->count(); i<c; ++i)
@@ -710,6 +955,7 @@ struct OverlayInfo {
             tabWidget->setCurrentIndex(index);
         tabWidget->setAutoHide(hGrp->GetBool("AutoHide", false));
         tabWidget->setTransparent(hGrp->GetBool("Transparent", false));
+        tabWidget->setEditHide(hGrp->GetBool("EditHide", false));
     }
 
 };
@@ -749,6 +995,12 @@ struct DockWindowManagerP
         ,_overlayInfos({&_left,&_right,&_top,&_bottom})
     {
         Application::Instance->signalActivateView.connect([this](const MDIView *) {
+            _timer.start(100);
+        });
+        Application::Instance->signalInEdit.connect([this](const ViewProviderDocumentObject &) {
+            _timer.start(100);
+        });
+        Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject &) {
             _timer.start(100);
         });
     }
@@ -853,25 +1105,35 @@ struct DockWindowManagerP
         if(!mdi)
             return;
 
+        auto focus = findTabWidget(qApp->focusWidget());
+        auto active = findTabWidget(qApp->widgetAt(QCursor::pos()));
+
+        bool updateFocus = false;
+        bool updateActive = false;
+
         for(auto o : _overlayInfos) {
-            if(o->tabWidget->count() && (o->updating || OverlayStyleSheet::instance()->updating)) {
-                o->tabWidget->setOverlayMode(true);
+            if(o->tabWidget->count()
+                    && (o->updating || OverlayStyleSheet::instance()->updating))
+            {
+                if(o->tabWidget == focus)
+                    updateFocus = true;
+                else if(o->tabWidget == active)
+                    updateActive = true;
+                else 
+                    o->tabWidget->setOverlayMode(true);
             }
             o->updating = false;
         }
         OverlayStyleSheet::instance()->updating = false;
 
-        auto focus = findTabWidget(qApp->focusWidget());
-        if(focus && focus->isOverlayed()) {
+        if(focus && (focus->isOverlayed() || updateFocus)) {
             focus->setOverlayMode(false);
             focus->raise();
         }
 
-        auto active = findTabWidget(qApp->widgetAt(QCursor::pos()));
         if(active) {
-            if(active->isOverlayed()) {
+            if(active != focus && (active->isOverlayed() || updateActive)) 
                 active->setOverlayMode(false);
-            }
             active->raise();
         }
 
