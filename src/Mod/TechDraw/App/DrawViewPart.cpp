@@ -143,6 +143,8 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
+    ADD_PROPERTY_TYPE(XSource ,(0),group,App::Prop_None,"External 3D Shape to view");
+
 
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
                       group,App::Prop_None,"Projection Plane normal. The direction you are looking from.");
@@ -181,7 +183,7 @@ std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
 {
 //    Base::Console().Message("DVP::getSourceShape2d()\n");
     std::vector<TopoDS_Shape> result;
-    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    const std::vector<App::DocumentObject*>& links = getAllSources();
     result = ShapeExtractor::getShapes2d(links);
     return result;
 }
@@ -189,8 +191,9 @@ std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
 
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
+//    Base::Console().Message("DVP::getSourceShape()\n");
     TopoDS_Shape result;
-    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
         bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
         if (isRestoring) {
@@ -208,8 +211,10 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
+//    Base::Console().Message("DVP::getSourceShapeFused()\n");
     TopoDS_Shape result;
-    const std::vector<App::DocumentObject*>& links = Source.getValues();
+//    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
         bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
         if (isRestoring) {
@@ -225,6 +230,20 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
     return result;
 }
 
+std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
+{
+//    Base::Console().Message("DVP::getAllSources()\n");
+    const std::vector<App::DocumentObject*> links = Source.getValues();
+    std::vector<DocumentObject*> xLinks = XSource.getValues();
+//    std::vector<DocumentObject*> xLinks;
+//    XSource.getLinks(xLinks);
+
+    std::vector<App::DocumentObject*> result = links;
+    if (!xLinks.empty()) {
+        result.insert(result.end(), xLinks.begin(), xLinks.end());
+    }
+    return result;
+}
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
@@ -232,10 +251,13 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    
+//    Base::Console().Message("DVP::execute - Source: %d XSource: %d\n",
+//                         Source.getValues().size(), XSource.getValues().size());
 
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
-    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
         if (isRestoring) {
             Base::Console().Warning("DVP::execute - No Sources (but document is restoring) - %s\n",
@@ -246,7 +268,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
         return App::DocumentObject::StdReturn;
     }
-    std::vector<App::DocumentObject*> sources = Source.getValues();
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
@@ -307,6 +328,7 @@ short DrawViewPart::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
+                    XSource.isTouched()  ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
                     Rotation.isTouched() ||

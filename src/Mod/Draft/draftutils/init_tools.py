@@ -57,6 +57,17 @@ def get_draft_array_commands():
     return ["Draft_ArrayTools"]
 
 
+def get_draft_small_commands():
+    """Return a list with only some utilities."""
+    return ["Draft_Layer",
+            "Draft_WorkingPlaneProxy",
+            "Draft_ToggleDisplayMode",
+            "Draft_AddToGroup",
+            "Draft_SelectGroup",
+            "Draft_AddConstruction",
+            "Draft_Heal"]
+
+
 def get_draft_modification_commands():
     """Return the modification commands list."""
     lst = ["Draft_Move", "Draft_Rotate",
@@ -73,6 +84,7 @@ def get_draft_modification_commands():
             "Draft_Upgrade", "Draft_Downgrade",
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
+            "Draft_Slope", "Draft_FlipDimension",
             "Separator",
             "Draft_Shape2DView", "Draft_Drawing"]
     return lst
@@ -97,7 +109,7 @@ def get_draft_utility_commands():
     return ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
             "Draft_ToggleConstructionMode",
             "Draft_ToggleContinueMode", "Draft_Edit",
-            "Draft_Slope", "Draft_SetWorkingPlaneProxy",
+            "Draft_Slope", "Draft_WorkingPlaneProxy",
             "Draft_AddConstruction"]
 
 

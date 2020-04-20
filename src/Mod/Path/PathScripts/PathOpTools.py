@@ -23,12 +23,15 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"

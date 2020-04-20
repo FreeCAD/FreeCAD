@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -32,6 +31,10 @@ import PathScripts.PathUtils as PathUtils
 
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"

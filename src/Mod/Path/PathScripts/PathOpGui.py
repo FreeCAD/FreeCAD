@@ -157,8 +157,6 @@ class ViewProvider(object):
         else:
             return ":/icons/Path-OpActive.svg"
 
-        #return self.OpIcon
-
     def getTaskPanelOpPage(self, obj):
         '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''
         mod = importlib.import_module(self.OpPageModule)
@@ -189,6 +187,7 @@ class ViewProvider(object):
         action = QtGui.QAction(translate('Path', 'Edit'), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
+
 
 class TaskPanelPage(object):
     '''Base class for all task panel pages.'''
@@ -377,7 +376,7 @@ class TaskPanelPage(object):
         combo.clear()
         combo.addItems(options)
         combo.blockSignals(False)
-        
+
         if hasattr(obj, 'CoolantMode'):
             self.selectInComboBox(obj.CoolantMode, combo)
 
@@ -704,10 +703,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
 
     def haveStartDepth(self):
         return PathOp.FeatureDepths & self.features
+
     def haveFinalDepth(self):
         return PathOp.FeatureDepths & self.features and not PathOp.FeatureNoFinalDepth & self.features
+
     def haveFinishDepth(self):
         return PathOp.FeatureDepths & self.features and PathOp.FeatureFinishDepth & self.features
+
     def haveStepDown(self):
         return PathOp.FeatureStepDown & self. features
 

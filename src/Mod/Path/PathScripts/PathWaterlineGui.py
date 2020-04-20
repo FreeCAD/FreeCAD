@@ -90,6 +90,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Unchecked)
 
+        self.updateVisibility()
+
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
@@ -106,21 +108,32 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self):
-        if self.form.algorithmSelect.currentText() == 'OCL Dropcutter':
-            self.form.cutPattern.setEnabled(False)
-            self.form.boundaryAdjustment.setEnabled(False)
-            self.form.stepOver.setEnabled(False)
-            self.form.sampleInterval.setEnabled(True)
-            self.form.optimizeEnabled.setEnabled(True)
-        else:
-            self.form.cutPattern.setEnabled(True)
-            self.form.boundaryAdjustment.setEnabled(True)
+        '''updateVisibility()... Updates visibility of Tasks panel objects.'''
+        Algorithm = self.form.algorithmSelect.currentText()
+        self.form.optimizeEnabled.hide()  # Has no independent QLabel object
+
+        if Algorithm == 'OCL Dropcutter':
+            self.form.cutPattern.hide()
+            self.form.cutPattern_label.hide()
+            self.form.boundaryAdjustment.hide()
+            self.form.boundaryAdjustment_label.hide()
+            self.form.stepOver.hide()
+            self.form.stepOver_label.hide()
+            self.form.sampleInterval.show()
+            self.form.sampleInterval_label.show()
+        elif Algorithm == 'Experimental':
+            self.form.cutPattern.show()
+            self.form.boundaryAdjustment.show()
+            self.form.cutPattern_label.show()
+            self.form.boundaryAdjustment_label.show()
             if self.form.cutPattern.currentText() == 'None':
-                self.form.stepOver.setEnabled(False)
+                self.form.stepOver.hide()
+                self.form.stepOver_label.hide()
             else:
-                self.form.stepOver.setEnabled(True)
-            self.form.sampleInterval.setEnabled(False)
-            self.form.optimizeEnabled.setEnabled(False)
+                self.form.stepOver.show()
+                self.form.stepOver_label.show()
+            self.form.sampleInterval.hide()
+            self.form.sampleInterval_label.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)

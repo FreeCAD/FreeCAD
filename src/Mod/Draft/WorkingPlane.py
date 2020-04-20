@@ -726,6 +726,39 @@ class Plane:
         self.doc = None
         self.weak = True
 
+    def setTop(self):
+        """sets the WP to top position and updates the GUI"""
+        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(0, 0, 1), 0.0)
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            from draftutils.translate import translate
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+            if hasattr(FreeCADGui,"draftToolBar"):
+                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Top"))
+
+    def setFront(self):
+        """sets the WP to front position and updates the GUI"""
+        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(0, 1, 0), 0.0)
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            from draftutils.translate import translate
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+            if hasattr(FreeCADGui,"draftToolBar"):
+                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Front"))
+
+    def setSide(self):
+        """sets the WP to top position and updates the GUI"""
+        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(-1, 0, 0), 0.0)
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            from draftutils.translate import translate
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+            if hasattr(FreeCADGui,"draftToolBar"):
+                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Side"))
+
     def getRotation(self):
         """Return a placement describing the plane orientation only.
 

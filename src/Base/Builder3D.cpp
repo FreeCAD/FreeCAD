@@ -856,6 +856,13 @@ void InventorBuilder::addCylinder(float radius, float height)
            << Base::blanks(indent) << "}\n";
 }
 
+void InventorBuilder::addSphere(float radius)
+{
+    result << Base::blanks(indent) << "Sphere {\n"
+           << Base::blanks(indent) << "  radius " << radius << "\n"
+           << Base::blanks(indent) << "}\n";
+}
+
 void InventorBuilder::addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, short lineWidth,
                                      float color_r,float color_g,float color_b)
 {

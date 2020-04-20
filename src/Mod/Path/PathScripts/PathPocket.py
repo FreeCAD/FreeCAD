@@ -23,13 +23,16 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"

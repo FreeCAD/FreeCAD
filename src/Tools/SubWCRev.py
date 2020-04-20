@@ -127,6 +127,87 @@ class BazaarControl(VersionControl):
     def printInfo(self):
         print("bazaar")
 
+class DebianGitHub(VersionControl):
+    #https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
+    #https://gist.github.com/yershalom/a7c08f9441d1aadb13777bce4c7cdc3b
+    #https://github.community/t5/GitHub-API-Development-and/How-to-get-all-branches-which-contain-a-commit-from-SHA-using/td-p/25006
+    def extractInfo(self, srcdir, bindir):
+        try:
+            f = open(srcdir+"/debian/git-build-recipe.manifest")
+        except:
+            return False
+
+        # Read the first two lines
+        recipe = f.readline()
+        commit = f.readline()
+        f.close()
+
+        base_url = "https://api.github.com"
+        owner = "FreeCAD"
+        repo = "FreeCAD"
+        sha = commit[commit.rfind(':') + 1 : -1]
+        self.hash = sha
+
+        try:
+            import requests
+            request_url = "{}/repos/{}/{}/commits?per_page=1&sha={}".format(base_url, owner, repo, sha)
+            commit_req = requests.get(request_url)
+            if not commit_req.ok:
+                return False
+
+            commit_date = commit_req.headers.get('last-modified')
+
+        except:
+            # if connection fails then use the date of the file git-build-recipe.manifest
+            commit_date = recipe[recipe.rfind('~') + 1 : -1]
+
+
+        try:
+            # Try to convert into the same format as GitControl
+            t = time.strptime(commit_date, "%a, %d %b %Y %H:%M:%S GMT")
+            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+        except:
+            t = time.strptime(commit_date, "%Y%m%d%H%M")
+            commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+
+        self.date = commit_date
+        self.branch = "unknown"
+
+        try:
+            # Try to determine the branch of the sha
+            # There is no function of the rest API of GH but with the url below we get HTML code
+            branch_url = "https://github.com/{}/{}/branch_commits/{}".format(owner, repo, sha)
+            branch_req = requests.get(branch_url)
+            if branch_req.ok:
+                html = branch_req.text
+                pattern = "<li class=\"branch\"><a href="
+                start = html.find(pattern) + len(pattern)
+                end = html.find("\n", start)
+                link = html[start:end]
+                start = link.find(">") + 1
+                end = link.find("<", start)
+                self.branch = link[start:end]
+
+            link = commit_req.headers.get("link")
+            beg = link.rfind("&page=") + 6
+            end = link.rfind(">")
+            self.rev = link[beg:end] + " (GitHub)"
+        except:
+            pass
+
+        self.url = "git://github.com/{}/{}.git {}".format(owner, repo, self.branch)
+        return True
+
+    def writeVersion(self, lines):
+        content = VersionControl.writeVersion(self, lines)
+        content.append('// Git relevant stuff\n')
+        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
+        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        return content
+
+    def printInfo(self):
+        print("Debian/GitHub")
+
 class GitControl(VersionControl):
     #http://www.hermanradtke.com/blog/canonical-version-numbers-with-git/
     #http://blog.marcingil.com/2011/11/creating-build-numbers-using-git-commits/
@@ -374,7 +455,7 @@ def main():
         if o in ("-b", "--bindir"):
             bindir = a
 
-    vcs=[GitControl(), BazaarControl(), Subversion(), MercurialControl(), DebianChangelog(), UnknownControl()]
+    vcs=[GitControl(), DebianGitHub(), BazaarControl(), Subversion(), MercurialControl(), DebianChangelog(), UnknownControl()]
     for i in vcs:
         if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file

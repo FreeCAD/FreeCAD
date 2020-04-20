@@ -98,55 +98,68 @@ def autogroup(obj):
     obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
+    
+    # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
+    if not hasattr(Gui,"draftToolBar"):
+        return
+    if not hasattr(Gui.draftToolBar,"autogroup"):
+        return        
+    if Gui.draftToolBar.isConstructionMode():
+        return
+    
+    # autogroup code
+    if Gui.draftToolBar.autogroup is not None:
+        active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
+        if active_group:
+            found = False
+            for o in active_group.Group:
+                if o.Name == obj.Name:
+                    found = True
+            if not found:
+                gr = active_group.Group
+                gr.append(obj)
+                active_group.Group = gr
+                
+    else:
 
-    doc = App.ActiveDocument
-    view = Gui.ActiveDocument.ActiveView
-
-    # Look for active Arch container
-    active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
-    if hasattr(Gui, "draftToolBar"):
-        if (hasattr(Gui.draftToolBar, "autogroup")
-                and not Gui.draftToolBar.isConstructionMode()):
-            if Gui.draftToolBar.autogroup is not None:
-                active_group = doc.getObject(Gui.draftToolBar.autogroup)
-                if active_group:
-                    found = False
-                    for o in active_group.Group:
-                        if o.Name == obj.Name:
-                            found = True
-                    if not found:
-                        gr = active_group.Group
-                        gr.append(obj)
-                        active_group.Group = gr
-            elif active_arch_obj:
-                active_arch_obj.addObject(obj)
-            elif view.getActiveObject("part", False) is not None:
-                # Add object to active part and change its placement
-                # accordingly so the object does not jump
-                # to a different position, works with App::Link if not scaled.
-                # Modified accordingly to realthunder suggestions
-                p, parent, sub = view.getActiveObject("part", False)
-                matrix = parent.getSubObject(sub, retType=4)
-                if matrix.hasScale() == 1:
-                    _msg(translate("Draft",
-                                   "Unable to insert new object into "
-                                   "a scaled part"))
-                    return
-                inverse_placement = App.Placement(matrix.inverse())
-                if get_type(obj) == 'Point':
-                    # point vector have a kind of placement, so should be
-                    # processed before generic object with placement
-                    point_vector = App.Vector(obj.X, obj.Y, obj.Z)
-                    real_point = inverse_placement.multVec(point_vector)
-                    obj.X = real_point.x
-                    obj.Y = real_point.y
-                    obj.Z = real_point.z
-                elif hasattr(obj, "Placement"):
-                    place = inverse_placement.multiply(obj.Placement)
-                    obj.Placement = App.Placement(place)
-                p.addObject(obj)
+        if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+            # add object to active Arch Container
+            Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
+            
+        elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+            # add object to active part and change it's placement accordingly
+            # so object does not jump to different position, works with App::Link
+            # if not scaled. Modified accordingly to realthunder suggestions
+            p, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
+            matrix = parent.getSubObject(sub, retType=4)
+            if matrix.hasScale() == 1:
+                err = translate("Draft",
+                                "Unable to insert new object into "
+                                "a scaled part")
+                App.Console.PrintMessage(err)
+                return
+            inverse_placement = App.Placement(matrix.inverse())
+            if get_type(obj) == 'Point':
+                point_vector = App.Vector(obj.X, obj.Y, obj.Z)
+                real_point = inverse_placement.multVec(point_vector)
+                obj.X = real_point.x
+                obj.Y = real_point.y
+                obj.Z = real_point.z
+            elif get_type(obj) in ["Dimension"]:
+                obj.Start = inverse_placement.multVec(obj.Start)
+                obj.End = inverse_placement.multVec(obj.End)
+                obj.Dimline = inverse_placement.multVec(obj.Dimline)
+                obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
+                obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
+            elif get_type(obj) in ["Label"]:
+                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+                obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
+            elif hasattr(obj,"Placement"):
+                # every object that have a placement is processed here
+                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+            p.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):

@@ -24,7 +24,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
@@ -32,6 +31,10 @@ import PathScripts.PathOpTools as PathOpTools
 import math
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Path Deburr Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"

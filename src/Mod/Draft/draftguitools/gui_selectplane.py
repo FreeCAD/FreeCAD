@@ -33,6 +33,7 @@ import FreeCADGui
 import Draft
 import Draft_rc
 import DraftVecUtils
+import drafttaskpanels.task_selectplane as task_selectplane
 from draftutils.todo import todo
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -91,7 +92,7 @@ class Draft_SelectPlane:
 
         # Create task panel
         FreeCADGui.Control.closeDialog()
-        self.taskd = SelectPlane_TaskPanel()
+        self.taskd = task_selectplane.SelectPlaneTaskPanel()
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
@@ -493,51 +494,4 @@ class Draft_SelectPlane:
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 
-class SelectPlane_TaskPanel:
-    """The task panel definition of the Draft_SelectPlane command."""
-
-    def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/ui/TaskSelectPlane.ui")
-
-    def getStandardButtons(self):
-        """Execute to set the standard buttons."""
-        return 2097152  # int(QtGui.QDialogButtonBox.Close)
-
-
-class Draft_SetWorkingPlaneProxy:
-    """The Draft_SetWorkingPlaneProxy FreeCAD command definition."""
-
-    def GetResources(self):
-        """Set icon, menu and tooltip."""
-        _menu = "Create Working Plane Proxy"
-        _tip = "Creates a proxy object from the current working plane"
-        d = {'Pixmap': 'Draft_SelectPlane',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
-                                           _menu),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
-                                          _tip)}
-        return d
-
-    def IsActive(self):
-        """Return True when this command should be available."""
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        """Execute when the command is called."""
-        if hasattr(FreeCAD, "DraftWorkingPlane"):
-            FreeCAD.ActiveDocument.openTransaction("Create WP proxy")
-            FreeCADGui.addModule("Draft")
-            _cmd = "Draft.makeWorkingPlaneProxy("
-            _cmd += "FreeCAD.DraftWorkingPlane.getPlacement()"
-            _cmd += ")"
-            FreeCADGui.doCommand(_cmd)
-            FreeCAD.ActiveDocument.recompute()
-            FreeCAD.ActiveDocument.commitTransaction()
-
-
 FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
-FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',
-                      Draft_SetWorkingPlaneProxy())

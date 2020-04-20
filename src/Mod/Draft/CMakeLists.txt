@@ -49,6 +49,7 @@ SET(Draft_tests
 SET(Draft_utilities
     draftutils/__init__.py
     draftutils/init_tools.py
+    draftutils/init_draft_statusbar.py
     draftutils/utils.py
     draftutils/gui_utils.py
     draftutils/todo.py
@@ -63,6 +64,10 @@ SET(Draft_objects
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
+    draftobjects/draft_annotation.py
+    draftobjects/label.py
+    draftobjects/dimension.py
+    draftobjects/text.py
     draftobjects/README.md
 )
 
@@ -71,6 +76,10 @@ SET(Draft_view_providers
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
+    draftviewproviders/view_draft_annotation.py
+    draftviewproviders/view_label.py
+    draftviewproviders/view_dimension.py
+    draftviewproviders/view_text.py
     draftviewproviders/README.md
 )
 
@@ -80,12 +89,21 @@ SET(Draft_GUI_tools
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
+    draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
     draftguitools/gui_arrays.py
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
     draftguitools/gui_edit.py
+    draftguitools/gui_lineops.py
+    draftguitools/gui_togglemodes.py
+    draftguitools/gui_groups.py
+    draftguitools/gui_grid.py
+    draftguitools/gui_heal.py
+    draftguitools/gui_dimension_ops.py
+    draftguitools/gui_lineslope.py
+    draftguitools/gui_arcs.py
     draftguitools/README.md
 )
 
@@ -95,6 +113,7 @@ SET(Draft_task_panels
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
     drafttaskpanels/task_scale.py
+    drafttaskpanels/task_selectplane.py
     drafttaskpanels/task_shapestring.py
     drafttaskpanels/README.md
 )
