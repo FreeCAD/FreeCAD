@@ -3817,7 +3817,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) == "Dimension":
+                elif Draft.getType(ob) in ["Dimension","LinearDimension"]:
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start, ob.End).toShape()
