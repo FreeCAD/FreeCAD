@@ -640,6 +640,8 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if(!isVisible() || !count())
         return;
 
+    touched = false;
+
     auto w = currentWidget();
     if(w) {
         w = w->findChild<QWidget*>(QLatin1String("OverlayTitle"),Qt::FindDirectChildrenOnly);
@@ -711,16 +713,23 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
         proxyWidget->setGeometry(rect);
         proxyWidget->show();
         hide();
-    } else if(overlay == overlayed) {
+    } else {
+        if(overlay == overlayed) {
+            if(!overlay && !isTransparent())
+                setGeometry(rectActive);
+            else
+                setGeometry(rectOverlay);
+        }
         if(!isVisible() && count()) {
             proxyWidget->hide();
             show();
-            setOverlayMode(overlay);
+            setOverlayMode(overlayed);
+            auto w = currentWidget();
+            if(w)
+                w->show();
+            else
+                setCurrentIndex(0);
         }
-        if(!overlay && !isTransparent())
-            setGeometry(rectActive);
-        else
-            setGeometry(rectOverlay);
     }
 }
 
@@ -804,7 +813,6 @@ struct OverlayInfo {
     Qt::DockWidgetArea dockArea;
     QMap<QDockWidget*, OverlayInfo*> &overlayMap;
     ParameterGrp::handle hGrp;
-    bool updating = false;
 
     OverlayInfo(QWidget *parent, const char *name, Qt::DockWidgetArea pos, QMap<QDockWidget*, OverlayInfo*> &map)
         : name(name), dockArea(pos), overlayMap(map)
@@ -1127,7 +1135,7 @@ struct DockWindowManagerP
             if(tabWidget && tabWidget->count()) {
                 for(auto o : _overlayInfos) {
                     if(tabWidget == o->tabWidget) {
-                        o->updating = true;
+                        tabWidget->touch();
                         break;
                     }
                 }
@@ -1166,9 +1174,7 @@ struct DockWindowManagerP
         bool updateActive = false;
 
         for(auto o : _overlayInfos) {
-            if(o->tabWidget->count()
-                    && (o->updating || OverlayStyleSheet::instance()->updating))
-            {
+            if(o->tabWidget->isTouched() || OverlayStyleSheet::instance()->updating) {
                 if(o->tabWidget == focus)
                     updateFocus = true;
                 else if(o->tabWidget == active)
@@ -1176,7 +1182,6 @@ struct DockWindowManagerP
                 else 
                     o->tabWidget->setOverlayMode(true);
             }
-            o->updating = false;
         }
         OverlayStyleSheet::instance()->updating = false;
 

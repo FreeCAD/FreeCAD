@@ -181,6 +181,9 @@ public:
     void setEditHide(bool enable);
     bool isEditHide() const {return actEditHide.isChecked();}
 
+    void touch() {touched = true;}
+    bool isTouched() const {return touched;}
+
     void setRect(QRect rect, bool overlay);
     const QRect &getRect(bool overlay);
     bool isOverlayed() const {return overlayed;}
@@ -209,6 +212,7 @@ private:
     QAction actIncrease;
     QAction actDecrease;
     bool overlayed = false;
+    bool touched = false;
 };
 
 class OverlayToolButton: public QToolButton
