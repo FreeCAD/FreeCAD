@@ -485,7 +485,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += getPath(obj.Edges,pathname="")
 
 
-    elif getType(obj) == "Dimension":
+    elif getType(obj) in ["Dimension","LinearDimension"]:
         if gui:
             if not obj.ViewObject:
                 print ("export of dimensions to SVG is only available in GUI mode")
