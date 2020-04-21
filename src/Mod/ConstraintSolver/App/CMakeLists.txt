@@ -189,6 +189,8 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintLengthPyImp.cpp
     G2D/ConstraintEllipseRules.h
     G2D/ConstraintEllipseRules.cpp
+    G2D/ConstraintHyperbolaRules.h
+    G2D/ConstraintHyperbolaRules.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS

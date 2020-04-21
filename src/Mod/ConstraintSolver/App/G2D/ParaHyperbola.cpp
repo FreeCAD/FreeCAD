@@ -3,7 +3,7 @@
 #include "ParaHyperbola.h"
 #include "G2D/ParaHyperbolaPy.h"
 
-//#include "G2D/ConstraintHyperbolaRules.h"
+#include "G2D/ConstraintHyperbolaRules.h"
 #include "PyUtils.h"
 #include "G2D/ParaPointPy.h"
 
@@ -97,7 +97,7 @@ DualNumber ParaHyperbola::pointOnCurveErrFunc(const ValueSet& vals, Position p)
 std::vector<HConstraint> ParaHyperbola::makeRuleConstraints()
 {
     std::vector<HConstraint> ret = ParaConic::makeRuleConstraints();
-    //ret.push_back(new ConstraintHyperbolaRules(getHandle<ParaHyperbola>()));
+    ret.push_back(new ConstraintHyperbolaRules(getHandle<ParaHyperbola>()));
     return ret;
 }
 

@@ -118,6 +118,7 @@
 #include "G2D/ConstraintLength.h"
 #include "G2D/ConstraintLengthPy.h"
 #include "G2D/ConstraintEllipseRules.h"
+#include "G2D/ConstraintHyperbolaRules.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -324,6 +325,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintDirectionalDistance ::init();
     FCS::G2D::ConstraintLength              ::init();
     FCS::G2D::ConstraintEllipseRules        ::init();
+    FCS::G2D::ConstraintHyperbolaRules      ::init();
 
 
     { //import methods from ConstraintSolverPartGlue.py
