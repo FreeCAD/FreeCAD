@@ -67,7 +67,7 @@ Vector ParaCircle::tangentAtXY(const ValueSet& vals, Position p)
 
 DualNumber ParaCircle::length(const ValueSet& vals, DualNumber u0, DualNumber u1)
 {
-    return vals[radius] * (u1-u0);
+    return vals[radius] * positiveAngle(u1-u0);
 }
 
 DualNumber ParaCircle::length(const ValueSet& vals)
@@ -75,7 +75,7 @@ DualNumber ParaCircle::length(const ValueSet& vals)
     if (isFull())
         return TURN * vals[radius];
     else
-        return vals[radius] * (vals[u1] - vals[u0]);
+        return vals[radius] * positiveAngle(vals[u1] - vals[u0]);
 }
 
 DualNumber ParaCircle::pointOnCurveErrFunc(const ValueSet& vals, Position p)
