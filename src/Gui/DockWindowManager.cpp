@@ -518,6 +518,7 @@ public:
                 "QAbstractButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
                 "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
+                "QMenu { background: palette(window) }"
                 );
             activeStyleSheet = _default;
         }
@@ -560,7 +561,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
         }
     }
     if(enable!=0) {
-        widget->setWindowFlags(Qt::FramelessWindowHint);
+        widget->setWindowFlags(widget->windowFlags() & Qt::FramelessWindowHint);
     } else {
         widget->setWindowFlags(widget->windowFlags() & ~Qt::FramelessWindowHint);
     }
