@@ -53,7 +53,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
     It adds selected objects to a group, or removes them from any group.
 
-    It inherits `GuiCommandNeedsSelection` to only be availbale
+    It inherits `GuiCommandNeedsSelection` to only be available
     when there is a document and a selection.
     See this class for more information.
     """
@@ -169,7 +169,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
     in this case it works in an intuitive manner, selecting
     only the objects under the group.
 
-    It inherits `GuiCommandNeedsSelection` to only be availbale
+    It inherits `GuiCommandNeedsSelection` to only be available
     when there is a document and a selection.
     See this class for more information.
     """
