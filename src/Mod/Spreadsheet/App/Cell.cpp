@@ -1088,17 +1088,23 @@ bool Cell::setEditData(const QVariant &d) {
                 owner->getContainer()->getPropertyByName(address.toString().c_str()));
         if(prop) {
             Base::PyGILStateLocker lock;
-            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
-            if(obj.isCallable()) {
-                try {
-                    Py::Object res = Py::Callable(obj).apply();
-                    if(res.isBoolean())
-                        return res.isTrue();
-                }catch(Py::Exception &) {
-                    Base::PyException::ThrowException();
+            try {
+                Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+                if(obj.isCallable()) {
+                    try {
+                        Py::Object res = Py::Callable(obj).apply();
+                        if(res.isBoolean())
+                            return res.isTrue();
+                    }catch(Py::Exception &) {
+                        Base::PyException::ThrowException();
+                    }
+                    return true;
                 }
-                return true;
+            }catch(Py::Exception &){
+                Base::PyException e;
+                e.ReportException();
             }
+
         }
         FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                 "' evaluates to a Python callable");
@@ -1297,19 +1303,28 @@ QVariant Cell::getEditData(bool silent) const {
         auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
         if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
             Base::PyGILStateLocker lock;
-            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
-            std::string title;
-            if(obj.hasAttr("__doc__")) {
-                PropertyString tmp;
-                tmp.setPyObject(obj.getAttr("__doc__").ptr());
-                title = tmp.getValue();
+            try {
+                Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+                std::string title;
+                if(obj.hasAttr("__doc__")) {
+                    PropertyString tmp;
+                    tmp.setPyObject(obj.getAttr("__doc__").ptr());
+                    title = tmp.getValue();
+                }
+                if(title.size())
+                    return QString::fromUtf8(title.c_str());
+                else if(isUsed(ALIAS_SET))
+                    return QString::fromLatin1(alias.c_str());
+                else
+                    return QString::fromLatin1(address.toString().c_str());
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(!silent)
+                    e.ReportException();
+            } catch (Base::Exception &e) {
+                if(!silent)
+                    e.ReportException();
             }
-            if(title.size())
-                return QString::fromUtf8(title.c_str());
-            else if(isUsed(ALIAS_SET))
-                return QString::fromLatin1(alias.c_str());
-            else
-                return QString::fromLatin1(address.toString().c_str());
         }
         if(!silent)
             FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
@@ -1325,37 +1340,46 @@ QVariant Cell::getEditData(bool silent) const {
         auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
         if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
             Base::PyGILStateLocker lock;
-            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
-            if(obj.isSequence()) {
-                Py::Sequence seq(obj);
-                App::PropertyString tmp;
-                if(editMode == EditLabel) {
-                    if(seq.size()>=1) {
-                        tmp.setPyObject(seq[0].ptr());
-                        return QString::fromUtf8(tmp.getValue());
-                    }
-                }else if(seq.size()>=2) {
-                    QList<QVariant> list;
-                    if(seq[0].isMapping()) {
-                        tmp.setPyObject(seq[1].ptr());
-                        list.append(QString::fromUtf8(tmp.getValue()));
-                        Py::Mapping map(seq[0].ptr());
-                        for(auto it=map.begin();it!=map.end();++it) {
-                            const auto &value = *it;
-                            tmp.setPyObject(value.first.ptr());
-                            list.append(QString::fromUtf8(tmp.getValue()));
+            try {
+                Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+                if(obj.isSequence()) {
+                    Py::Sequence seq(obj);
+                    App::PropertyString tmp;
+                    if(editMode == EditLabel) {
+                        if(seq.size()>=1) {
+                            tmp.setPyObject(seq[0].ptr());
+                            return QString::fromUtf8(tmp.getValue());
                         }
-                        return list;
-                    } else if (seq[0].isSequence()) {
-                        list.append(((int)Py::Int(seq[1].ptr())) + 1);
-                        Py::Sequence s(seq[0].ptr());
-                        for(size_t i=0;i<s.size();++i) {
-                            tmp.setPyObject(s[i].ptr());
+                    }else if(seq.size()>=2) {
+                        QList<QVariant> list;
+                        if(isPyMapping(seq[0])) {
+                            tmp.setPyObject(seq[1].ptr());
                             list.append(QString::fromUtf8(tmp.getValue()));
+                            Py::Mapping map(seq[0].ptr());
+                            for(auto it=map.begin();it!=map.end();++it) {
+                                const auto &value = *it;
+                                tmp.setPyObject(value.first.ptr());
+                                list.append(QString::fromUtf8(tmp.getValue()));
+                            }
+                            return list;
+                        } else if (seq[0].isSequence()) {
+                            list.append(((int)Py::Int(seq[1].ptr())) + 1);
+                            Py::Sequence s(seq[0].ptr());
+                            for(size_t i=0;i<s.size();++i) {
+                                tmp.setPyObject(s[i].ptr());
+                                list.append(QString::fromUtf8(tmp.getValue()));
+                            }
+                            return list;
                         }
-                        return list;
                     }
                 }
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(!silent)
+                    e.ReportException();
+            } catch (Base::Exception &e) {
+                if(!silent)
+                    e.ReportException();
             }
         }
         if(!silent)
@@ -1393,38 +1417,42 @@ QVariant Cell::getEditData(bool silent) const {
                 return map;
 
             Base::PyGILStateLocker lock;
-            Py::Object obj = listExpr->getItems()[2]->getPyValue();
-            if(!obj.isMapping())
-                return map;
-
-            auto getDoubleKey = [&map,&obj](const char *key) {
-                PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
-                if(!item) {
-                    PyErr_Clear();
-                    return;
-                }
-                Py::Object pyItem = Py::asObject(item);
-                if(PyFloat_Check(item))
-                    map[QString::fromLatin1(key)] = PyFloat_AsDouble(item);
-            };
-            auto getStringKey = [&map,&obj](const char *key) {
-                PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
-                if(!item) {
-                    PyErr_Clear();
-                    return;
-                }
-                Py::Object pyItem = Py::asObject(item);
-                PropertyString tmp;
-                tmp.setPyObject(item);
-                map[QString::fromLatin1(key)] = QString::fromUtf8(tmp.getValue());
-            };
             try {
+                Py::Object obj = listExpr->getItems()[2]->getPyValue();
+                if(!isPyMapping(obj))
+                    return map;
+
+                auto getDoubleKey = [&map,&obj](const char *key) {
+                    PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
+                    if(!item) {
+                        PyErr_Clear();
+                        return;
+                    }
+                    Py::Object pyItem = Py::asObject(item);
+                    if(PyFloat_Check(item))
+                        map[QString::fromLatin1(key)] = PyFloat_AsDouble(item);
+                };
+                auto getStringKey = [&map,&obj](const char *key) {
+                    PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
+                    if(!item) {
+                        PyErr_Clear();
+                        return;
+                    }
+                    Py::Object pyItem = Py::asObject(item);
+                    PropertyString tmp;
+                    tmp.setPyObject(item);
+                    map[QString::fromLatin1(key)] = QString::fromUtf8(tmp.getValue());
+                };
                 getDoubleKey("step");
                 getDoubleKey("max");
                 getDoubleKey("min");
                 getStringKey("unit");
                 getDoubleKey("scale");
                 return map;
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(!silent)
+                    e.ReportException();
             } catch (Base::Exception &e) {
                 if(!silent)
                     e.ReportException();
@@ -1442,18 +1470,38 @@ QVariant Cell::getEditData(bool silent) const {
         auto listExpr = SimpleStatement::cast<ListExpression>(expression.get());
         if(!listExpr) {
             Base::PyGILStateLocker lock;
-            return expression->getPyValue().isTrue();
+            try {
+                return expression->getPyValue().isTrue();
+            } catch (Base::Exception &e) {
+                if(!silent) {
+                    e.ReportException();
+                    throw;
+                }
+            }
         }
         if(listExpr->getSize()) {
             QList<QVariant> list;
             Base::PyGILStateLocker lock;
-            list.append(listExpr->getItems()[0]->getPyValue().isTrue());
-            if(listExpr->getSize()>1) {
-                PropertyString tmp;
-                tmp.setPyObject(listExpr->getItems()[1]->getPyValue().ptr());
-                list.append(QString::fromUtf8(tmp.getValue()));
+            try {
+                list.append(listExpr->getItems()[0]->getPyValue().isTrue());
+                if(listExpr->getSize()>1) {
+                    PropertyString tmp;
+                    tmp.setPyObject(listExpr->getItems()[1]->getPyValue().ptr());
+                    list.append(QString::fromUtf8(tmp.getValue()));
+                }
+                return list;
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(!silent) {
+                    e.ReportException();
+                    throw e;
+                }
+            } catch (Base::Exception &e) {
+                if(!silent) {
+                    e.ReportException();
+                    throw;
+                }
             }
-            return list;
         }
         return QVariant();
     }
@@ -1572,70 +1620,74 @@ bool Cell::setEditMode(EditMode mode, bool silent) {
             FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
 
         Base::PyGILStateLocker lock;
-        auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
-        Py::Object obj;
-        if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId()))
-            obj = Py::asObject(static_cast<App::PropertyPythonObject*>(prop)->getPyObject());
+        try {
+            auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
+            Py::Object obj;
+            if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId()))
+                obj = Py::asObject(static_cast<App::PropertyPythonObject*>(prop)->getPyObject());
 
-        switch(mode) {
-        case EditButton: {
-            if(!obj.isCallable()) {
-                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
-                        "' evaluates to a Python callable");
-            }
-            break;
-        }
-        case EditCombo: {
-            bool valid = false;
-            if(SimpleStatement::cast<ListExpression>(expression.get())
-                    || VariableExpression::isDoubleBinding(expression.get()))
-            {
-                if(obj.isSequence()) {
-                    Py::Sequence seq(obj);
-                    if(seq.size() >= 2)
-                        valid = (seq[0].isMapping() && seq[1].isString())
-                                || (seq[0].isSequence() && seq[1].isNumeric());
+            switch(mode) {
+            case EditButton: {
+                if(!obj.isCallable()) {
+                    FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                            "' evaluates to a Python callable");
                 }
+                break;
             }
-            if(!valid)
-                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
-                        "' to be either list(dict, string) or list(list, int)");
-            break;
-        }
-        case EditLabel: {
-            bool valid = false;
-            auto expr = SimpleStatement::cast<ListExpression>(expression.get());
-            if(expr && expr->getSize()>=1) {
-                Py::Sequence seq(obj);
-                valid = seq.size()>=1 && seq[0].isString();
+            case EditCombo: {
+                bool valid = false;
+                if(SimpleStatement::cast<ListExpression>(expression.get())
+                        || VariableExpression::isDoubleBinding(expression.get()))
+                {
+                    if(obj.isSequence()) {
+                        Py::Sequence seq(obj);
+                        if(seq.size() >= 2)
+                            valid = (isPyMapping(seq[0]) && seq[1].isString())
+                                    || (seq[0].isSequence() && seq[1].isNumeric());
+                    }
+                }
+                if(!valid)
+                    FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                            "' to be either list(dict, string) or list(list, int)");
+                break;
             }
-            if(!valid)
-                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
-                        "' contains a list expression [string...]");
-            break;
-        }
-        case EditQuantity: {
-            bool valid = false;
-            auto expr = SimpleStatement::cast<ListExpression>(expression.get());
-            if(expr) {
-                if(expr->getSize()>=1)
-                    valid = expr->getItems()[0]->eval()->isDerivedFrom(NumberExpression::getClassTypeId());
-            } else if (expression) {
-                valid = expression->eval()->isDerivedFrom(NumberExpression::getClassTypeId());
-            } else
-                valid = true;
-            if(!valid)
-                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
-                        "' contains a constant quantity or  list(quantity, dict)\n"
-                        "with keys (value,step,max,min,unit)");
-            break;
-        }
-        case EditCheckBox: {
-            // Always allow?
-            break;
-        }
-        default:
-            FC_THROWM(Base::ValueError,"Unknown edit mode");
+            case EditLabel: {
+                bool valid = false;
+                auto expr = SimpleStatement::cast<ListExpression>(expression.get());
+                if(expr && expr->getSize()>=1) {
+                    Py::Sequence seq(obj);
+                    valid = seq.size()>=1 && seq[0].isString();
+                }
+                if(!valid)
+                    FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                            "' contains a list expression [string...]");
+                break;
+            }
+            case EditQuantity: {
+                bool valid = false;
+                auto expr = SimpleStatement::cast<ListExpression>(expression.get());
+                if(expr) {
+                    if(expr->getSize()>=1)
+                        valid = expr->getItems()[0]->eval()->isDerivedFrom(NumberExpression::getClassTypeId());
+                } else if (expression) {
+                    valid = expression->eval()->isDerivedFrom(NumberExpression::getClassTypeId());
+                } else
+                    valid = true;
+                if(!valid)
+                    FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                            "' contains a constant quantity or  list(quantity, dict)\n"
+                            "with keys (value,step,max,min,unit)");
+                break;
+            }
+            case EditCheckBox: {
+                // Always allow?
+                break;
+            }
+            default:
+                FC_THROWM(Base::ValueError,"Unknown edit mode");
+            }
+        } catch (Py::Exception &) {
+            Base::PyException::ThrowException(); 
         }
     }
 

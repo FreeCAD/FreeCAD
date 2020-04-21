@@ -218,8 +218,14 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     }
 
     // Get edit value by querying the sheet
-    if (role == Qt::EditRole)
-        return cell->getEditData(true);
+    if (role == Qt::EditRole) {
+        try {
+            return cell->getEditData(true);
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+        return QVariant();
+    }
 
     if(cell == emptyCell)
         return QVariant();
@@ -467,11 +473,11 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole: {
-            if(cell->getEditMode())
-                return cell->getDisplayData(true);
             Base::PyGILStateLocker lock;
             std::string value;
             try {
+                if(cell->getEditMode())
+                    return cell->getDisplayData(true);
                 PropertyString tmp;
                 tmp.setPyObject(pyProp->getValue().ptr());
                 value = tmp.getValue();

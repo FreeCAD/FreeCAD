@@ -129,31 +129,36 @@ void SpreadsheetDelegate::commitAndCloseEditor()
     Base::FlagToggler<> flag(commiting);
     Gui::ExpressionTextEdit *editor = qobject_cast<Gui::ExpressionTextEdit *>(sender());
     if(editor) {
-        Q_EMIT commitData(editor);
+        if(!updating)
+            Q_EMIT commitData(editor);
         if(editor->objectName().isEmpty())
             Q_EMIT closeEditor(editor);
         return;
     }
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     if(button) {
-        Q_EMIT commitData(button);
+        if(!updating)
+            Q_EMIT commitData(button);
         return;
     }
     QComboBox *combo = qobject_cast<QComboBox*>(sender());
     if(combo) {
-        Q_EMIT commitData(combo);
+        if(!updating)
+            Q_EMIT commitData(combo);
         if(combo->objectName().isEmpty())
             Q_EMIT closeEditor(combo);
         return;
     }
     Gui::QuantitySpinBox *spinbox = qobject_cast<Gui::QuantitySpinBox*>(sender());
     if(spinbox) {
-        Q_EMIT commitData(spinbox);
+        if(!updating)
+            Q_EMIT commitData(spinbox);
         return;
     }
     QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
     if(checkbox) {
-        Q_EMIT commitData(checkbox->parentWidget());
+        if(!updating)
+            Q_EMIT commitData(checkbox->parentWidget());
         return;
     }
 }
@@ -161,6 +166,8 @@ void SpreadsheetDelegate::commitAndCloseEditor()
 void SpreadsheetDelegate::setEditorData(QWidget *editor,
     const QModelIndex &index) const
 {
+    Base::StateLocker guard(updating);
+
     QVariant data = index.model()->data(index, Qt::EditRole);
     TextEdit *edit = qobject_cast<TextEdit*>(editor);
     if (edit) {
