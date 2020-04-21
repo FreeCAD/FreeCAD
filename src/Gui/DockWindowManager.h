@@ -65,7 +65,7 @@ private:
  * Class that manages the widgets inside a QDockWidget.
  * \author Werner Mayer
  */
-class GuiExport DockWindowManager : QObject
+class GuiExport DockWindowManager : public QObject
 {
     Q_OBJECT
 
@@ -103,6 +103,8 @@ public:
     void retranslate();
 
     void refreshOverlay(QWidget *widget=nullptr);
+
+    void setupTitleBar(QDockWidget *);
 
     enum OverlayMode {
         ToggleActive,
@@ -142,6 +144,8 @@ private Q_SLOTS:
     void onTimer();
 
     void onFocusChanged(QWidget *, QWidget *);
+
+    void onAction();
 
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
@@ -183,6 +187,7 @@ public:
     bool checkAutoHide() const;
     bool getAutoHideRect(QRect &rect) const;
     void changeSize(int changes);
+    void onAction(QAction *);
 
     OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
 
@@ -192,16 +197,12 @@ protected:
     void changeEvent(QEvent*);
 
     static void _setOverlayMode(QWidget *widget, int enable);
-    void setupActions();
-
-protected Q_SLOTS:
-    void onAction(QAction *);
+    void retranslate();
 
 private:
     QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
-    QAction actOverlay;
     QAction actAutoHide;
     QAction actEditHide;
     QAction actTransparent;

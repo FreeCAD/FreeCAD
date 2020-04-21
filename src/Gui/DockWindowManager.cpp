@@ -157,45 +157,44 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     static QIcon pxTransparent;
     if(pxTransparent.isNull()) {
         const char * const bytes[]={
-            "11 11 2 1",
+            "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
-            "...........",
-            "....###....",
-            "..#######..",
-            ".##.....##.",
-            "##..###..##",
-            "##..###..##",
-            "##..###..##",
-            ".##.....##.",
-            "..#######..",
-            "....###....",
-            "...........",
+            "..........",
+            "...####...",
+            ".##....##.",
+            "##..##..##",
+            "#..####..#",
+            "#..####..#",
+            "##..##..##",
+            ".##....##.",
+            "...####...",
+            "..........",
         };
         pxTransparent = QIcon(QPixmap(bytes));
     }
     actTransparent.setIcon(pxTransparent);
     actTransparent.setCheckable(true);
     actTransparent.setData(QString::fromLatin1("OBTN Transparent"));
+    actTransparent.setParent(this);
     addAction(&actTransparent);
 
     QPixmap pxAutoHide;
     if(pxAutoHide.isNull()) {
         const char * const bytes[]={
-            "11 11 2 1",
+            "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
-            "....#######",
-            "..........#",
-            "..........#",
-            "..##......#",
-            ".##.......#",
-            "########..#",
-            ".##.......#",
-            "..##......#",
-            "..........#",
-            "..........#",
-            "....#######",
+            "...#######",
+            ".........#",
+            "..##.....#",
+            ".##......#",
+            "#######..#",
+            "#######..#",
+            ".##......#",
+            "..##.....#",
+            ".........#",
+            "...#######",
         };
         pxAutoHide = QPixmap(bytes);
     }
@@ -215,123 +214,99 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     }
     actAutoHide.setCheckable(true);
     actAutoHide.setData(QString::fromLatin1("OBTN AutoHide"));
+    actAutoHide.setParent(this);
     addAction(&actAutoHide);
 
     static QIcon pxEditHide;
     if(pxEditHide.isNull()) {
         const char * const bytes[]={
-            "11 11 2 1",
+            "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
-            "......##...",
-            ".....#.##..",
-            "....#...##.",
-            "...#...#.##",
-            "..#...#...#",
-            ".###.#...#.",
-            "##..#...#..",
-            "##...#.#...",
-            "##...##....",
-            "######.....",
-            "#####......",
+            "......##..",
+            ".....#.##.",
+            "....#..###",
+            "...#..#..#",
+            "..##.#..#.",
+            ".#.##..#..",
+            "##..###...",
+            "##...#....",
+            "#####.....",
+            "####......",
         };
         pxEditHide = QIcon(QPixmap(bytes));
     }
     actEditHide.setIcon(pxEditHide);
     actEditHide.setCheckable(true);
     actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
+    actEditHide.setParent(this);
     addAction(&actEditHide);
 
     static QIcon pxIncrease;
     if(pxIncrease.isNull()) {
         const char * const bytes[]={
-            "11 11 2 1",
+            "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
-            "....##.....",
-            "....##.....",
-            "....##.....",
-            "....##.....",
-            "##########.",
-            "##########.",
-            "....##.....",
-            "....##.....",
-            "....##.....",
-            "....##.....",
-            "...........",
+            "....##....",
+            "....##....",
+            "....##....",
+            "....##....",
+            "##########",
+            "##########",
+            "....##....",
+            "....##....",
+            "....##....",
+            "....##....",
         };
         pxIncrease = QIcon(QPixmap(bytes));
     }
     actIncrease.setIcon(pxIncrease);
     actIncrease.setData(QString::fromLatin1("OBTN Increase"));
+    actIncrease.setParent(this);
     addAction(&actIncrease);
 
     static QIcon pxDecrease;
     if(pxDecrease.isNull()) {
         const char * const bytes[]={
-            "11 11 2 1",
+            "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
-            "...........",
-            "...........",
-            "...........",
-            "...........",
-            "##########.",
-            "##########.",
-            "...........",
-            "...........",
-            "...........",
-            "...........",
-            "...........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "##########",
+            "##########",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
         };
         pxDecrease = QIcon(QPixmap(bytes));
     }
     actDecrease.setIcon(pxDecrease);
     actDecrease.setData(QString::fromLatin1("OBTN Decrease"));
+    actDecrease.setParent(this);
     addAction(&actDecrease);
 
-    static QIcon pxOverlay;
-    if(pxOverlay.isNull()) {
-        const char * const bytes[]={
-            "11 11 2 1",
-            ". c None",
-            TITLE_BUTTON_COLOR,
-            "...........",
-            "###########",
-            "#.........#",
-            "###########",
-            "#.........#",
-            "#.........#",
-            "#.........#",
-            "#.........#",
-            "#.........#",
-            "###########",
-            "...........",
-        };
-        pxOverlay = QIcon(QPixmap(bytes));
-    }
-    actOverlay.setIcon(pxOverlay);
-    actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
-    addAction(&actOverlay);
-
-    setupActions();
+    retranslate();
 }
 
 void OverlayTabWidget::changeEvent(QEvent *e)
 {
     QTabWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange)
-        setupActions();
+        retranslate();
 }
 
-void OverlayTabWidget::setupActions()
+void OverlayTabWidget::retranslate()
 {
     actTransparent.setToolTip(tr("Toggle transparent mode"));
     actAutoHide.setToolTip(tr("Toggle auto hide mode"));
     actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
     actIncrease.setToolTip(tr("Increase window size"));
     actDecrease.setToolTip(tr("Decrease window size"));
-    actOverlay.setToolTip(tr("Turn off overlay"));
 }
 
 void OverlayTabWidget::onAction(QAction *action)
@@ -346,10 +321,6 @@ void OverlayTabWidget::onAction(QAction *action)
         changeSize(5);
     else if(action == &actDecrease)
         changeSize(-5);
-    else if(action == &actOverlay) {
-        DockWindowManager::instance()->setOverlayMode(DockWindowManager::DisableActive);
-        return;
-    }
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
@@ -750,35 +721,13 @@ void OverlayTabWidget::setRect(QRect rect, bool overlay)
 void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 {
     QRect rect = dock->geometry();
-    dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
-
-    if(!dock->titleBarWidget()) {
-        auto widget = new QWidget();
-        widget->setObjectName(QLatin1String("OverlayTitle"));
-
-        int size = 11;
-        bool vertical = (dock->features() & QDockWidget::DockWidgetVerticalTitleBar);
-        auto layout = new QBoxLayout(vertical?QBoxLayout::BottomToTop:QBoxLayout::LeftToRight, widget); 
-        layout->setContentsMargins(1,1,1,1);
-        layout->addSpacerItem(new QSpacerItem(size,size,
-                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
-                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
-        for(auto action : this->actions()) {
-            auto button = new OverlayToolButton(widget);
-            button->setObjectName(action->data().toString());
-            button->setDefaultAction(action);
-            button->setAutoRaise(true);
-            button->setContentsMargins(0,0,0,0);
-            button->setFixedSize(size,size);
-            layout->addWidget(button);
-            connect(button, SIGNAL(triggered(QAction*)), this, SLOT(onAction(QAction*)));
-        }
-        dock->setTitleBarWidget(widget);
-    }
 
     setOverlayMode(dock, 1);
     addTab(dock, title);
 
+    DockWindowManager::instance()->setupTitleBar(dock);
+
+    dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
     if(count() == 1)
         setRect(rect, true);
 }
@@ -789,13 +738,20 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
     if(index < 0)
         return;
 
-    dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
-
     QWidget *w = dock->titleBarWidget();
     if(w && w->objectName() == QLatin1String("OverlayTitle")) {
-        delete w;
-        dock->setTitleBarWidget(nullptr);
+        for(auto action : actions()) {
+            auto button = w->findChild<OverlayToolButton*>(
+                    action->data().toString(), Qt::FindDirectChildrenOnly);
+            if(button) {
+                button->setDefaultAction(nullptr);
+                button->removeAction(action);
+                button->hide();
+            }
+        }
     }
+
+    dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 
     setOverlayMode(dock, 0);
     removeTab(index);
@@ -1007,12 +963,18 @@ struct DockWindowManagerP
     OverlayInfo _bottom;
     std::array<OverlayInfo*,4> _overlayInfos;
 
-    DockWindowManagerP(QWidget *parent)
+    QAction _actClose;
+    QAction _actFloat;
+    QAction _actOverlay;
+    std::array<QAction*, 3> _actions;
+
+    DockWindowManagerP(DockWindowManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlays)
         ,_right(parent,"OverlayRight", Qt::RightDockWidgetArea,_overlays)
         ,_top(parent,"OverlayTop", Qt::TopDockWidgetArea,_overlays)
         ,_bottom(parent,"OverlayBottom",Qt::BottomDockWidgetArea,_overlays)
         ,_overlayInfos({&_left,&_right,&_top,&_bottom})
+        ,_actions({&_actOverlay,&_actFloat,&_actClose})
     {
         Application::Instance->signalActivateView.connect([this](const MDIView *) {
             _timer.start(100);
@@ -1023,6 +985,71 @@ struct DockWindowManagerP
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject &) {
             _timer.start(100);
         });
+
+        const char * const pixmapOverlay[]={
+            "10 10 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "##########",
+            "#........#",
+            "#........#",
+            "##########",
+            "#........#",
+            "#........#",
+            "#........#",
+            "#........#",
+            "#........#",
+            "##########",
+        };
+        _actOverlay.setIcon(QPixmap(pixmapOverlay));
+        _actOverlay.setData(QString::fromLatin1("OBTN Overlay"));
+
+        const char * const pixmapFloat[]={
+            "10 10 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "...#######",
+            "...#.....#",
+            "...#.....#",
+            "#######..#",
+            "#.....#..#",
+            "#.....#..#",
+            "#.....####",
+            "#.....#...",
+            "#.....#...",
+            "#######...",
+        };
+        _actFloat.setIcon(QPixmap(pixmapFloat));
+        _actFloat.setData(QString::fromLatin1("OBTN Float"));
+
+        const char * const pixmapClose[]={
+            "10 10 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
+            "##......##",
+            "###....###",
+            ".###..###.",
+            "..######..",
+            "...####...",
+            "...####...",
+            "..######..",
+            ".###..###.",
+            "###....###",
+            "##......##",
+        };
+        _actClose.setIcon(QPixmap(pixmapClose));
+        _actClose.setData(QString::fromLatin1("OBTN Close"));
+
+        retranslate();
+
+        for(auto action : _actions) {
+            QObject::connect(action, SIGNAL(triggered(bool)), host, SLOT(onAction()));
+        }
+        for(auto o : _overlayInfos) {
+            for(auto action : o->tabWidget->actions()) {
+                QObject::connect(action, SIGNAL(triggered(bool)), host, SLOT(onAction()));
+            }
+        }
     }
 
     bool toggleOverlay(QDockWidget *dock, OverlayToggleMode toggle,
@@ -1354,9 +1381,106 @@ struct DockWindowManagerP
         _timer.start(100);
     }
 
+    void setupTitleBar(QDockWidget *dock)
+    {
+        int size = 12;
+        auto it = _overlays.find(dock);
+        OverlayTabWidget *tabWidget = it!=_overlays.end()?it.value()->tabWidget:nullptr;
+
+        auto widget = dock->titleBarWidget();
+        if(widget) {
+            if(widget->objectName() != QString::fromLatin1("OverlayTitle"))
+                return;
+
+            auto layout = qobject_cast<QBoxLayout*>(widget->layout());
+            if(tabWidget && layout) {
+                int index = 0;
+                for(auto action : tabWidget->actions()) {
+                    ++index;
+                    auto button = widget->findChild<OverlayToolButton*>(
+                            action->data().toString(), Qt::FindDirectChildrenOnly);
+                    if(button) {
+                        button->setDefaultAction(action);
+                        button->show();
+                    } else 
+                        layout->insertWidget(index,createTitleButton(action, size));
+                }
+            }
+            return;
+        }
+
+        widget = new QWidget();
+        widget->setObjectName(QLatin1String("OverlayTitle"));
+
+        bool vertical = (dock->features() & QDockWidget::DockWidgetVerticalTitleBar);
+        auto layout = new QBoxLayout(vertical?QBoxLayout::BottomToTop:QBoxLayout::LeftToRight, widget); 
+        layout->setContentsMargins(1,1,1,1);
+        layout->addSpacerItem(new QSpacerItem(size,size,
+                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
+                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
+
+        if(tabWidget) {
+            for(auto action : tabWidget->actions())
+                layout->addWidget(createTitleButton(action, size));
+        }
+        for(auto action : _actions)
+            layout->addWidget(createTitleButton(action, size));
+
+        dock->setTitleBarWidget(widget);
+    }
+
+    QWidget *createTitleButton(QAction *action, int size)
+    {
+        auto button = new OverlayToolButton(nullptr);
+        button->setObjectName(action->data().toString());
+        button->setDefaultAction(action);
+        button->setAutoRaise(true);
+        button->setContentsMargins(0,0,0,0);
+        button->setFixedSize(size,size);
+        return button;
+    }
+
+    void onAction(QAction *action) {
+        if(action == &_actOverlay) {
+            DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleActive);
+        } else if(action == &_actFloat || action == &_actClose) {
+            for(auto w=qApp->widgetAt(QCursor::pos());w;w=w->parentWidget()) {
+                auto dock = qobject_cast<QDockWidget*>(w);
+                if(!dock)
+                    continue;
+                if(action == &_actClose) {
+                    dock->toggleViewAction()->activate(QAction::Trigger);
+                } else {
+                    auto it = _overlays.find(dock);
+                    if(it != _overlays.end()) {
+                        it.value()->tabWidget->removeWidget(dock);
+                        getMainWindow()->addDockWidget(it.value()->dockArea, dock);
+                        _overlays.erase(it);
+                        dock->show();
+                        dock->setFloating(true);
+                        refreshOverlay(nullptr);
+                    } else 
+                        dock->setFloating(!dock->isFloating());
+                }
+                return;
+            }
+        } else {
+            auto tabWidget = qobject_cast<OverlayTabWidget*>(action->parent());
+            if(tabWidget)
+                tabWidget->onAction(action);
+        }
+    }
+
+    void retranslate()
+    {
+        _actOverlay.setToolTip(QObject::tr("Toggle overlay"));
+        _actFloat.setToolTip(QObject::tr("Toggle floating window"));
+        _actClose.setToolTip(QObject::tr("Close dock window"));
+    }
+
 #else // FC_HAS_DOCK_OVERLAY
 
-    DockWindowManagerP(QWidget *) {}
+    DockWindowManagerP(DockWindowManager *, QWidget *) {}
     void refreshOverlay(QWidget *) {}
     void saveOverlay() {}
     void restoreOverlay() {}
@@ -1365,6 +1489,9 @@ struct DockWindowManagerP
     void onToggleDockWidget(QDockWidget *, bool) {}
     void changeOverlaySize(int) {}
     void onFocusChanged(QWidget *, QWidget *) {}
+    void onAction(QAction *) {}
+    void setupTitleBar(QDockWidget *) {}
+    void retranslate() {}
 
     bool toggleOverlay(QDockWidget *, OverlayToggleMode,
             Qt::DockWidgetArea dockPos=Qt::NoDockWidgetArea)
@@ -1397,7 +1524,7 @@ DockWindowManager::DockWindowManager()
     auto mdi = getMainWindow()->findChild<QMdiArea*>();
     assert(mdi);
     mdi->installEventFilter(this);
-    d = new DockWindowManagerP(mdi);
+    d = new DockWindowManagerP(this,mdi);
     connect(&d->_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     d->_timer.setSingleShot(true);
 
@@ -1430,6 +1557,8 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     // creates the dock widget as container to embed this widget
     MainWindow* mw = getMainWindow();
     dw = new QDockWidget(mw);
+    setupTitleBar(dw);
+
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets
     // MainWindow::loadLayoutSettings() is called to restore the layout.
@@ -1559,6 +1688,7 @@ void DockWindowManager::retranslate()
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
         (*it)->setWindowTitle(QDockWidget::tr((*it)->objectName().toLatin1()));
     }
+    d->retranslate();
 }
 
 /**
@@ -1745,6 +1875,18 @@ void DockWindowManager::changeOverlaySize(int changes)
 void DockWindowManager::onFocusChanged(QWidget *old, QWidget *now)
 {
     d->onFocusChanged(old, now);
+}
+
+void DockWindowManager::setupTitleBar(QDockWidget *dock)
+{
+    d->setupTitleBar(dock);
+}
+
+void DockWindowManager::onAction()
+{
+    QAction *action = qobject_cast<QAction*>(sender());
+    if(action)
+        d->onAction(action);
 }
 
 #include "moc_DockWindowManager.cpp"
