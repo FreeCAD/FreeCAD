@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_wire function.
+"""This module provides the code for Draft make_wire function.
 """
 ## @package make_wire
 # \ingroup DRAFT
