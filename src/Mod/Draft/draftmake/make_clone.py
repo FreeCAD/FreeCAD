@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_polyline function.
+"""This module provides the code for Draft make_polyline function.
 """
 ## @package make_polyline
 # \ingroup DRAFT

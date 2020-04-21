@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_bezcurve function.
+"""This module provides the code for Draft make_bezcurve function.
 """
 ## @package make_bezcurve
 # \ingroup DRAFT

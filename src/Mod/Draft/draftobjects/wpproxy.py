@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,63 +20,56 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_rectangle function.
+"""This module provides the object code for Draft WorkingPlaneProxy.
 """
-## @package make_rectangle
+## @package wpproxy
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_rectangle function.
+# \brief This module provides the object code for Draft WorkingPlaneProxy.
 
 import FreeCAD as App
 
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
-
-from draftobjects.rectangle import Rectangle
-if App.GuiUp:
-    from draftviewproviders.view_rectangle import ViewProviderRectangle
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-def make_rectangle(length, height, placement=None, face=None, support=None):
-    """makeRectangle(length, width, [placement], [face])
+class WorkingPlaneProxy:
+    """The Draft working plane proxy object"""
 
-    Creates a Rectangle object with length in X direction and height in Y
-    direction.
+    def __init__(self,obj):
+        obj.Proxy = self
 
-    Parameters
-    ----------
-    length, height : dimensions of the rectangle
+        _tip = "The placement of this object"
+        obj.addProperty("App::PropertyPlacement", "Placement",
+                        "Base", QT_TRANSLATE_NOOP("App::Property", _tip))
 
-    placement : Base.Placement
-        If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.
-    """
+        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
 
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
+        self.Type = "WorkingPlaneProxy"
 
-    if placement: type_check([(placement,App.Placement)], "make_rectangle")
+    def execute(self,obj):
+        import Part
+        l = 1
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject,"DisplaySize"):
+                l = obj.ViewObject.DisplaySize.Value
+        p = Part.makePlane(l,
+                           l,
+                           App.Vector(l/2, -l/2, 0),
+                           App.Vector(0, 0, -1))
+        # make sure the normal direction is pointing outwards, you never know what OCC will decide...
+        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(App.Vector(0,0,1))) > 1:
+            p.reverse()
+        p.Placement = obj.Placement
+        obj.Shape = p
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
-    Rectangle(obj)
+    def onChanged(self,obj,prop):
+        pass
 
-    obj.Length = length
-    obj.Height = height
-    obj.Support = support
+    def getNormal(self,obj):
+        return obj.Shape.Faces[0].normalAt(0,0)
 
-    if face != None:
-        obj.MakeFace = face
+    def __getstate__(self):
+        return self.Type
 
-    if placement: obj.Placement = placement
-
-    if App.GuiUp:
-        ViewProviderRectangle(obj.ViewObject)
-        format_object(obj)
-        select(obj)
-
-    return obj
+    def __setstate__(self,state):
+        if state:
+            self.Type = state

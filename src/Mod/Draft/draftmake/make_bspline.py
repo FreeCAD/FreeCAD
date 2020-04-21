@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_bspline function.
+"""This module provides the code for Draft make_bspline function.
 """
 ## @package make_bspline
 # \ingroup DRAFT

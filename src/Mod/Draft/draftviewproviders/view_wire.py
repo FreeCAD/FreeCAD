@@ -29,7 +29,8 @@
 
 
 from pivy import coin
-from PySide import QtCore,QtGui
+from PySide import QtCore
+from PySide import QtGui
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 

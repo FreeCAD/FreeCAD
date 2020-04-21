@@ -19,68 +19,36 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_rectangle function.
+"""This module provides the code for Draft make_working_plane_proxy function.
 """
-## @package make_rectangle
+## @package make_wire
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_rectangle function.
+# \brief This module provides the code for Draft make_working_plane_proxy function.
 
 import FreeCAD as App
 
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
+from draftobjects.wpproxy import WorkingPlaneProxy
 
-from draftobjects.polygon import Polygon
 if App.GuiUp:
-    from draftviewproviders.view_base import ViewProviderDraft
+    from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
 
 
-
-def make_polygon(edges, radius=1, inscribed=True, placement=None, face=None, support=None):
-    """makePolgon(edges,[radius],[inscribed],[placement],[face])
-
-    Creates a polygon object with the given number of edges and radius.
+def make_working_plane_proxy(placement):
+    """make_working_plane_proxy(placement)
+    
+    Creates a Working Plane proxy object in the current document.
 
     Parameters
     ----------
-    edges : int
-        Number of edges of the polygon.
-
-    radius : 
-        Radius of the control circle.
-
-    inscribed : bool
-        Defines is the polygon is inscribed or not into the control circle.
-
     placement : Base.Placement
-        If placement is given, it is used. 
-    
-    face : bool
-        If face is True, the resulting shape is displayed as a face, 
-        otherwise as a wireframe.
-    
-    support : 
-        TODO: Describe
+        specify the p.
     """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-    if edges < 3: return None
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
-    Polygon(obj)
-    obj.Edges = edges
-    obj.Radius = radius
-    if face != None:
-        obj.MakeFace = face
-    if inscribed:
-        obj.DrawMode = "inscribed"
-    else:
-        obj.DrawMode = "circumscribed"
-    obj.Support = support
-    if placement: obj.Placement = placement
-    if App.GuiUp:
-        ViewProviderDraft(obj.ViewObject)
-        format_object(obj)
-        select(obj)
-
-    return obj
+    if App.ActiveDocument:
+        obj = App.ActiveDocument.addObject("App::FeaturePython","WPProxy")
+        WorkingPlaneProxy(obj)
+        if App.GuiUp:
+            ViewProviderWorkingPlaneProxy(obj.ViewObject)
+            obj.ViewObject.Proxy.writeCamera()
+            obj.ViewObject.Proxy.writeState()
+        obj.Placement = placement
+        return obj

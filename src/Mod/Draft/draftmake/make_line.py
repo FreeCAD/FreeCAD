@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_line function.
+"""This module provides the code for Draft make_line function.
 """
 ## @package make_line
 # \ingroup DRAFT
