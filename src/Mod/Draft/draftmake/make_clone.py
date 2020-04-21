@@ -34,10 +34,10 @@ from draftutils.gui_utils import select
 
 from draftutils.utils import get_param
 from draftutils.utils import get_type
-from draftutils.todo import ToDo
 
 from draftobjects.clone import Clone
 if App.GuiUp:
+    from draftutils.todo import ToDo
     from draftviewproviders.view_clone import ViewProviderClone
 
 
