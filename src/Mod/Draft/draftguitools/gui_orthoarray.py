@@ -42,7 +42,7 @@ import draftutils.todo as todo
 bool(Draft_rc.__name__)
 
 
-class GuiCommandOrthoArray(gui_base.GuiCommandBase):
+class OrthoArray(gui_base.GuiCommandBase):
     """Gui command for the OrthoArray tool."""
 
     def __init__(self):
@@ -126,4 +126,4 @@ class GuiCommandOrthoArray(gui_base.GuiCommandBase):
             super().finish()
 
 
-Gui.addCommand('Draft_OrthoArray', GuiCommandOrthoArray())
+Gui.addCommand('Draft_OrthoArray', OrthoArray())
