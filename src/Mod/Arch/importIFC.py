@@ -393,6 +393,11 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     # let multiple buildings through...
                     if preferences['DEBUG']: print(" skipped.")
                     continue
+            elif ptype in ['IfcBuildingStorey']:
+                if len(ifcfile.by_type("IfcBuildingStorey")) == 1:
+                    # let multiple storeys through...
+                    if preferences['DEBUG']: print(" skipped.")
+                    continue
 
         # check if this object is sharing its shape (mapped representation)
         clone = None
