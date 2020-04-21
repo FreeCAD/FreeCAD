@@ -63,11 +63,9 @@
             <property name="editable">
              <bool>false</bool>
             </property>
-            <item>
-             <property name="text">
-              <string>Page</string>
-             </property>
-            </item>
+            <property name="currentText">
+             <string>First Angle</string>
+            </property>
             <item>
              <property name="text">
               <string>First Angle</string>
@@ -76,6 +74,11 @@
             <item>
              <property name="text">
               <string>Third Angle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Page</string>
              </property>
             </item>
            </widget>
