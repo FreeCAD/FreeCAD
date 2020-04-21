@@ -63,7 +63,7 @@
              <item>
               <widget class="QLabel" name="ToolTable">
                <property name="text">
-                <string>Tool Table</string>
+                <string>Tool Tables</string>
                </property>
               </widget>
              </item>
@@ -130,100 +130,145 @@
             </layout>
            </item>
            <item>
-            <widget class="QListWidget" name="TableList"/>
+            <widget class="QListWidget" name="TableList">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="toolTable">
-          <property name="acceptDrops">
-           <bool>true</bool>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <property name="bottomMargin">
+           <number>0</number>
           </property>
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::InternalMove</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-         </widget>
+          <item>
+           <widget class="QTableView" name="toolTable">
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="midLineWidth">
+             <number>0</number>
+            </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::InternalMove</enum>
+            </property>
+            <property name="defaultDropAction">
+             <enum>Qt::MoveAction</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="addToolController">
+              <property name="text">
+               <string>Add Tool(s) to Job</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>140</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="libraryCancel">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close the Tool Bit Library Editor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                <normaloff>:/icons/button_invalid.svg</normaloff>:/icons/button_invalid.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="librarySave">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Save Table</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="librarySaveAs">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the library to a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Save Table As...</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                <normaloff>:/icons/document-save-as.svg</normaloff>:/icons/document-save-as.svg</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="addToolController">
-       <property name="text">
-        <string>Add Tool Controller(s) to Job</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>14</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="libraryCancel">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close the Tool Bit Library Editor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/button_invalid.svg</normaloff>:/icons/button_invalid.svg</iconset>
-       </property>
-      </widget>
-     </item>
+   <item row="0" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="libraryOpen">
        <property name="text">
@@ -235,38 +280,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="librarySave">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Save Table</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="librarySaveAs">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the library to a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Save Table As...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/document-save-as.svg</normaloff>:/icons/document-save-as.svg</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -286,7 +299,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Add Toolbit ...</string>
+        <string>Add Toolbit</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -300,7 +313,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Remove Selected</string>
+        <string>Remove</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">

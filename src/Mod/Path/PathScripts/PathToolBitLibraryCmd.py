@@ -91,7 +91,7 @@ class CommandToolBitLibraryLoad:
 
         library = PathToolBitLibraryGui.ToolBitLibrary()
 
-        if 1 == library.open(dialog=True) and job:
+        if 1 == library.open() and job:
             for nr, tool in library.selectedOrAllTools():
                 tc = PathToolControllerGui.Create("TC: {}".format(tool.Label), tool, nr)
                 job.Proxy.addToolController(tc)

@@ -224,7 +224,8 @@ class ToolBitLibrary(object):
         reply = QtGui.QMessageBox.question(self.form, 'Warning', "Delete " + os.path.basename(self.path) + "?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
         if reply == QtGui.QMessageBox.Yes and len(self.path) > 0:
             os.remove(self.path)
-            self.libraryOpen(False)
+            PathPreferences.setLastPathToolTable("")
+            self.libraryOpen(filedialog=False)
 
     def toolEnumerate(self):
         PathLog.track()
@@ -252,9 +253,11 @@ class ToolBitLibrary(object):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
         Returns 1 if user pressed OK, 0 otherwise.'''
         if path:
-            self.libraryOpen(False)
+            self.libraryOpen(path, filedialog=False)
         elif dialog:
-            self.libraryOpen()
+            self.libraryOpen(None,  True)
+        else:
+            self.libraryOpen(None,  False)
         return self.form.exec_()
 
     def updateToolbar(self):
@@ -263,22 +266,23 @@ class ToolBitLibrary(object):
         else:
             self.form.librarySave.setEnabled(False)
 
-    def libraryOpen(self, filedialog=True):
+    def libraryOpen(self, path = None,  filedialog=True):
         import glob
         PathLog.track()
         
-        if filedialog:
+        path = PathPreferences.lastPathToolLibrary()
+        
+        if filedialog or len(path) == 0:
             path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary(), 1)
+            #p = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
             if len(path) > 0:
                 PathPreferences.setLastPathToolLibrary(path)
             else:
                 return
-        else:
-            path = PathPreferences.lastPathToolLibrary()
 
         self.form.TableList.clear()
         self.LibFiles.clear()
-
+        
         # Find all tool tables in directory
         for file in glob.glob(path + '/*.fctl'):
             self.LibFiles.append(file)
@@ -304,10 +308,17 @@ class ToolBitLibrary(object):
         self.model.setHorizontalHeaderLabels(self.columnNames())
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.setUpdatesEnabled(True)
-
+        
         if len(self.LibFiles) > 0:
-            self.libraryLoad(self.LibFiles[0])
-            self.form.TableList.setCurrentRow(0)
+            for idx in range(len(self.LibFiles)):
+                if PathPreferences.lastPathToolTable() == os.path.basename(self.LibFiles[idx]):
+                    break
+            
+            if idx >= len(self.LibFiles):
+                idx = 0
+            
+            self.libraryLoad(self.LibFiles[idx])
+            self.form.TableList.setCurrentRow(idx)
             self.form.ButtonRemoveToolTable.setEnabled(True)
             self.form.ButtonRenameToolTable.setEnabled(True)
 
@@ -318,6 +329,7 @@ class ToolBitLibrary(object):
 
         if path:
             with open(path) as fp:
+                PathPreferences.setLastPathToolTable(os.path.basename(path))
                 library = json.load(fp)
 
             for toolBit in library['tools']:
@@ -333,6 +345,8 @@ class ToolBitLibrary(object):
             self.toolTableView.resizeColumnsToContents()
 
         self.toolTableView.setUpdatesEnabled(True)
+        
+        #PathPreferences.setLastPathToolLibrary(path)
 
         self.form.setWindowTitle("{} - {}".format(self.title, os.path.basename(path) if path else ''))
         self.path = path
@@ -347,7 +361,7 @@ class ToolBitLibrary(object):
         newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
         if ok and newName:
             os.rename(PathPreferences.lastPathToolLibrary() + '/' + name, PathPreferences.lastPathToolLibrary() + '/' + newName)
-            self.libraryOpen(False)
+            self.libraryOpen(filedialog=False)
 
     #def createToolBit(self):
     #    tool = PathToolBit.ToolBitFactory().Create()
@@ -437,7 +451,7 @@ class ToolBitLibrary(object):
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
                 translate("TooltableEditor", "Save toolbit library", None), \
-                None, "{};;{}".format(TooltableTypeJSON, \
+                PathPreferences.lastPathToolLibrary(), "{};;{}".format(TooltableTypeJSON, \
                     TooltableTypeLinuxCNC))
         # filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
         #        'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
@@ -451,7 +465,8 @@ class ToolBitLibrary(object):
                 self.path = path
                 self.librarySave()
                 self.updateToolbar()
-                self.libraryOpen(False)
+                PathPreferences.setLastPathToolTable(os.path.basename(path))
+                self.libraryOpen(None, False)
 
     def libraryCancel(self):
         self.form.close()
@@ -487,7 +502,7 @@ class ToolBitLibrary(object):
         self.form.ButtonRenameToolTable.clicked.connect(self.renameLibrary)
 
         #self.form.libraryNew.clicked.connect(self.libraryNew)
-        self.form.libraryOpen.clicked.connect(partial(self.libraryOpen, True))
+        self.form.libraryOpen.clicked.connect(partial(self.libraryOpen, filedialog=True))
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
         self.form.libraryCancel.clicked.connect(self.libraryCancel)
