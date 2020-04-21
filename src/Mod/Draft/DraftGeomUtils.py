@@ -1428,7 +1428,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
 
         # Consider whether generating the 'offset wire' or the 'base wire'
-        if offsetMode == None:
+        if offsetMode is None:
             # Consider if curOrientation and/or curDir match their firstOrientation/firstDir - to determine whether and how to offset the current edge 
             if (curOrientation == firstOrientation) != (curDir == firstDir):	# i.e. xor
                 if curAlign in ['Left', 'Right']:
