@@ -42,7 +42,7 @@ import draftutils.todo as todo
 bool(Draft_rc.__name__)
 
 
-class GuiCommandPolarArray(gui_base.GuiCommandBase):
+class PolarArray(gui_base.GuiCommandBase):
     """Gui command for the PolarArray tool."""
 
     def __init__(self):
@@ -139,4 +139,4 @@ class GuiCommandPolarArray(gui_base.GuiCommandBase):
             super().finish()
 
 
-Gui.addCommand('Draft_PolarArray', GuiCommandPolarArray())
+Gui.addCommand('Draft_PolarArray', PolarArray())
