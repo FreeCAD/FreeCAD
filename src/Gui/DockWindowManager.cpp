@@ -128,6 +128,11 @@ OverlayToolButton::OverlayToolButton(QWidget *parent)
 OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     :QTabWidget(parent)
 {
+    // This is necessary to capture any focus lost from switching the tab,
+    // otherwise the lost focus will leak to the parent, i.e. MdiArea, which may
+    // cause unexpected Mdi sub window switching.
+    setFocusPolicy(Qt::StrongFocus);
+
     proxyWidget = new OverlayProxyWidget(this);
     proxyWidget->hide();
     proxyWidget->setStyleSheet(QLatin1String("background-color: transparent;"));
