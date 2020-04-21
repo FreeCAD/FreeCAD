@@ -1027,11 +1027,27 @@ CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
   , _fRadius(0)
+  , _initialGuess(false)
 {
 }
 
 CylinderFit::~CylinderFit()
 {
+}
+
+Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
+{
+    PlaneFit planeFit;
+    planeFit.AddPoints(n);
+    planeFit.Fit();
+    return planeFit.GetNormal();
+}
+
+void CylinderFit::SetInitialValues(const Base::Vector3f& b, const Base::Vector3f& n)
+{
+    _vBase = b;
+    _vAxis = n;
+    _initialGuess = true;
 }
 
 float CylinderFit::Fit()
@@ -1046,15 +1062,22 @@ float CylinderFit::Fit()
                    [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
 
     Wm4::Vector3d cnt, axis;
+    if (_initialGuess) {
+        cnt = Base::convertTo<Wm4::Vector3d>(_vBase);
+        axis = Base::convertTo<Wm4::Vector3d>(_vAxis);
+    }
+
     double radius, height;
-    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, false);
+    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, _initialGuess);
+    _initialGuess = false;
+
     _vBase = Base::convertTo<Base::Vector3f>(cnt);
     _vAxis = Base::convertTo<Base::Vector3f>(axis);
     _fRadius = float(radius);
 
     _fLastResult = double(fit);
 
-#if defined(_DEBUG)
+#if defined(FC_DEBUG)
     Base::Console().Message("   WildMagic Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f\n",
         _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
 #endif
@@ -1067,7 +1090,7 @@ float CylinderFit::Fit()
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
-#if defined(_DEBUG)
+#if defined(FC_DEBUG)
         Base::Console().Message("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
 #endif
@@ -1181,6 +1204,29 @@ float CylinderFit::GetStdDeviation() const
 
     fMean = (1.0f / ulPtCt) * fSumXi;
     return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+}
+
+void CylinderFit::GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const
+{
+    float distMin = FLT_MAX;
+    float distMax = FLT_MIN;
+
+    std::list<Base::Vector3f>::const_iterator cIt;
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
+        float dist = cIt->DistanceToPlane(_vBase, _vAxis);
+        if (dist < distMin) {
+            distMin = dist;
+            bottom = *cIt;
+        }
+        if (dist > distMax) {
+            distMax = dist;
+            top = *cIt;
+        }
+    }
+
+    // Project the points onto the cylinder axis
+    bottom = bottom.Perpendicular(_vBase, _vAxis);
+    top = top.Perpendicular(_vBase, _vAxis);
 }
 
 void CylinderFit::ProjectToCylinder()
