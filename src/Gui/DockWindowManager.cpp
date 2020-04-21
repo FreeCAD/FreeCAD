@@ -749,6 +749,7 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
                 button->hide();
             }
         }
+        w->show();
     }
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
