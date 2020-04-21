@@ -41,7 +41,8 @@ import FreeCADGui as Gui
 import Draft_rc
 import draftutils.utils as utils
 import draftguitools.gui_base as gui_base
-from draftutils.translate import _tr, translate
+from draftutils.translate import _tr
+from DraftTools import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -67,8 +68,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         _tooltip = ("Moves the selected objects to an existing group, "
-                    "or removes them from any group.\n"
-                    "Create a group first to use this tool.")
+                    "or removes them from any group.")
 
         d = {'Pixmap': 'Draft_AddToGroup',
              'Accel':"M",
@@ -102,10 +102,6 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         self.ui = Gui.draftToolBar
         self.ui.sourceCmd = self
         self.ui.popupMenu(self.labels)
-
- #   def actions(self,labelname):
-
-
 
 
     def proceed(self, labelname):
@@ -456,14 +452,15 @@ class Ui_AddNamedGroup():
         self.form = QtGui.QWidget()
         self.form.setWindowTitle(_tr("Add group"))
         row = QtGui.QHBoxLayout(self.form)
-        lbl = QtGui.QLabel(_tr("Group name:"))
+        lbl = QtGui.QLabel(_tr("Group name")+":")
         self.name = QtGui.QLineEdit()
         row.addWidget(lbl)
         row.addWidget(self.name)
 
 
     def accept(self):
-        group = App.activeDocument().addObject("App::DocumentObjectGroup",self.name.text())
+        group = App.activeDocument().addObject("App::DocumentObjectGroup",translate("Gui::Dialog::DlgAddProperty","Group"))
+        group.Label=self.name.text()
         moveToGroup(group)
         Gui.Control.closeDialog()
 
