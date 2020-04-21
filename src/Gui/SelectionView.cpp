@@ -495,7 +495,21 @@ void SelectionView::hideEvent(QHideEvent *ev) {
 void SelectionView::showEvent(QShowEvent *ev) {
     FC_TRACE(this << " attaching selection observer");
     this->attachSelection();
-    enablePickList->setChecked(Selection().needPickedList());
+
+    selectionView->clear();
+    for(auto &objT : Gui::Selection().getSelectionT("*",0))
+        addItem(selectionView, objT);
+
+    bool picking = Selection().needPickedList();
+    enablePickList->setChecked(picking);
+    pickList->clear();
+    if(picking) {
+        pickList->setSortingEnabled(false);
+        for(auto &objT : Selection().getPickedList("*"))
+            addItem(pickList, objT);
+        pickList->setSortingEnabled(true);
+    }
+
     Gui::DockWindow::showEvent(ev);
 }
 
