@@ -122,13 +122,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_surfaces_constraints_contact(inpfile)
         self.write_surfaces_constraints_tie(inpfile)
         self.write_node_sets_constraints_transform(inpfile)
-        if self.analysis_type == "thermomech":
-            self.write_node_sets_constraints_temperature(inpfile)
+        self.write_node_sets_constraints_temperature(inpfile)
 
         # materials and fem element types
         self.write_materials(inpfile)
-        if self.analysis_type == "thermomech":
-            self.write_constraints_initialtemperature(inpfile)
+        self.write_constraints_initialtemperature(inpfile)
         self.write_femelementsets(inpfile)
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
@@ -150,24 +148,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # step begin
         self.write_step_begin(inpfile)
 
-        # constraints depend on step used in all analysis types
+        # constraints dependent from steps
         self.write_constraints_fixed(inpfile)
         self.write_constraints_displacement(inpfile)
-
-        # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency" or self.analysis_type == "check":
-            pass
-        elif self.analysis_type == "static":
-            self.write_constraints_selfweight(inpfile)
-            self.write_constraints_force(inpfile)
-            self.write_constraints_pressure(inpfile)
-        elif self.analysis_type == "thermomech":
-            self.write_constraints_selfweight(inpfile)
-            self.write_constraints_force(inpfile)
-            self.write_constraints_pressure(inpfile)
-            self.write_constraints_temperature(inpfile)
-            self.write_constraints_heatflux(inpfile)
-            self.write_constraints_fluidsection(inpfile)
+        self.write_constraints_selfweight(inpfile)
+        self.write_constraints_force(inpfile)
+        self.write_constraints_pressure(inpfile)
+        self.write_constraints_temperature(inpfile)
+        self.write_constraints_heatflux(inpfile)
+        self.write_constraints_fluidsection(inpfile)
 
         # output and step end
         self.write_outputs_types(inpfile)
@@ -260,8 +249,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.transform_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Transform.inp \n")
 
-        if self.analysis_type == "thermomech":
-            self.write_node_sets_constraints_temperature(inpfileNodeTemp)
+        self.write_node_sets_constraints_temperature(inpfileNodeTemp)
 
         # include separately written temperature constraint in input file
         if self.analysis_type == "thermomech":
@@ -273,8 +261,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # materials and fem element types
         self.write_materials(inpfileMain)
-        if self.analysis_type == "thermomech":
-            self.write_constraints_initialtemperature(inpfileMain)
+        self.write_constraints_initialtemperature(inpfileMain)
         self.write_femelementsets(inpfileMain)
         # Fluid section: Inlet and Outlet requires special element definition
         if self.fluidsection_objects:
@@ -293,24 +280,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # step begin
         self.write_step_begin(inpfileMain)
 
-        # constraints depend on step used in all analysis types
+        # constraints dependent from steps
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
-
-        # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency" or self.analysis_type == "check":
-            pass
-        elif self.analysis_type == "static":
-            self.write_constraints_selfweight(inpfileMain)
-            self.write_constraints_force(inpfileForce)
-            self.write_constraints_pressure(inpfilePressure)
-        elif self.analysis_type == "thermomech":
-            self.write_constraints_selfweight(inpfileMain)
-            self.write_constraints_force(inpfileForce)
-            self.write_constraints_pressure(inpfilePressure)
-            self.write_constraints_temperature(inpfileMain)
-            self.write_constraints_heatflux(inpfileHeatflux)
-            self.write_constraints_fluidsection(inpfileMain)
+        self.write_constraints_selfweight(inpfileMain)
+        self.write_constraints_force(inpfileForce)
+        self.write_constraints_pressure(inpfilePressure)
+        self.write_constraints_temperature(inpfileMain)
+        self.write_constraints_heatflux(inpfileHeatflux)
+        self.write_constraints_fluidsection(inpfileMain)
 
         # include separately written constraints in input file
         inpfileMain.write("\n***********************************************************\n")
@@ -450,6 +428,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_fixed(self, f):
         if not self.fixed_objects:
             return
+        # written in all analysis types
         # get nodes
         self.get_constraints_fixed_nodes()
         # write nodes to file
@@ -478,6 +457,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_displacement(self, f):
         if not self.displacement_objects:
             return
+        # written in all analysis types
         # get nodes
         self.get_constraints_displacement_nodes()
         # write nodes to file
@@ -495,6 +475,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_planerotation(self, f):
         if not self.planerotation_objects:
             return
+        # written in all analysis types
         # get nodes
         self.get_constraints_planerotation_nodes()
         # write nodes to file
@@ -544,6 +525,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_surfaces_constraints_contact(self, f):
         if not self.contact_objects:
             return
+        # written in all analysis types
         # get faces
         self.get_constraints_contact_faces()
         # write faces to file
@@ -566,6 +548,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_surfaces_constraints_tie(self, f):
         if not self.tie_objects:
             return
+        # written in all analysis types
         # get faces
         self.get_constraints_tie_faces()
         # write faces to file
@@ -588,6 +571,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_transform(self, f):
         if not self.transform_objects:
             return
+        # written in all analysis types
         # get nodes
         self.get_constraints_transform_nodes()
         # write nodes to file
@@ -607,6 +591,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_node_sets_constraints_temperature(self, f):
         if not self.temperature_objects:
+            return
+        if not self.analysis_type == "thermomech":
             return
         # get nodes
         self.get_constraints_temperature_nodes()
@@ -717,6 +703,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_initialtemperature(self, f):
         if not self.initialtemperature_objects:
             return
+        if not self.analysis_type == "thermomech":
+            return
+        # get nodes
         f.write("\n***********************************************************\n")
         f.write("** Initial temperature constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1081,6 +1070,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_selfweight(self, f):
         if not self.selfweight_objects:
             return
+        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
+            return
         f.write("\n***********************************************************\n")
         f.write("** Self weight Constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1108,6 +1099,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_constraints_force(self, f):
         if not self.force_objects:
+            return
+        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
         # check shape type of reference shape and get node loads
         self.get_constraints_force_nodeloads()
@@ -1138,6 +1131,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_constraints_pressure(self, f):
         if not self.pressure_objects:
+            return
+        if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
         # get the faces and face numbers
         self.get_constraints_pressure_faces()
@@ -1171,6 +1166,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_temperature(self, f):
         if not self.temperature_objects:
             return
+        if not self.analysis_type == "thermomech":
+            return
         f.write("\n***********************************************************\n")
         f.write("** Fixed temperature constraint applied\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1192,6 +1189,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_constraints_heatflux(self, f):
         if not self.heatflux_objects:
+            return
+        if not self.analysis_type == "thermomech":
             return
         f.write("\n***********************************************************\n")
         f.write("** Heatflux constraints\n")
@@ -1233,6 +1232,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_constraints_fluidsection(self, f):
         if not self.fluidsection_objects:
+            return
+        if not self.analysis_type == "thermomech":
             return
         f.write("\n***********************************************************\n")
         f.write("** FluidSection constraints\n")
