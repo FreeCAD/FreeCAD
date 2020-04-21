@@ -37,6 +37,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
@@ -54,7 +55,7 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
-        fit.AddPoints(pts);
+        fit.AddPoints(pts.points);
         if (fit.Fit() < FLOAT_MAX) {
             Base::Vector3f base = fit.GetBase();
             Base::Vector3f axis = fit.GetNormal();
@@ -77,9 +78,20 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
-        fit.AddPoints(pts);
+        fit.AddPoints(pts.points);
+        if (!pts.normals.empty()) {
+            Base::Vector3f base = fit.GetGravity();
+            Base::Vector3f axis = fit.GetInitialAxisFromNormals(pts.normals);
+            fit.SetInitialValues(base, axis);
+
+#if defined(FC_DEBUG)
+            Base::Console().Message("Initial axis: (%f, %f, %f)\n", axis.x, axis.y, axis.z);
+#endif
+        }
+
         if (fit.Fit() < FLOAT_MAX) {
-            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f base, top;
+            fit.GetBounding(base, top);
             Base::Vector3f axis = fit.GetAxis();
             float radius = fit.GetRadius();
             values.push_back(base.x);
@@ -89,6 +101,25 @@ public:
             values.push_back(axis.y);
             values.push_back(axis.z);
             values.push_back(radius);
+
+#if defined(FC_DEBUG)
+            // Only for testing purposes
+            try {
+                float height = Base::Distance(base, top);
+                Gui::Command::doCommand(Gui::Command::App,
+                                        "cyl = App.ActiveDocument.addObject('Part::Cylinder', 'Cylinder')\n"
+                                        "cyl.Radius = %f\n"
+                                        "cyl.Height = %f\n"
+                                        "cyl.Placement = App.Placement(App.Vector(%f,%f,%f), App.Rotation(App.Vector(0,0,1), App.Vector(%f,%f,%f)))\n",
+                                        radius, height, base.x, base.y, base.z, axis.x, axis.y, axis.z);
+
+                Gui::Command::doCommand(Gui::Command::App,
+                                        "axis = cyl.Placement.Rotation.multVec(App.Vector(0,0,1))\n"
+                                        "print('Final axis: ({}, {}, {})'.format(axis.x, axis.y, axis.z))\n");
+            }
+            catch (...) {
+            }
+#endif
         }
         return values;
     }
@@ -102,7 +133,7 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::SphereFit fit;
-        fit.AddPoints(pts);
+        fit.AddPoints(pts.points);
         if (fit.Fit() < FLOAT_MAX) {
             Base::Vector3f base = fit.GetCenter();
             float radius = fit.GetRadius();
@@ -230,14 +261,15 @@ void ParametersDialog::on_compute_clicked()
 {
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
+        FitParameter::Points fitpts;
         std::vector<unsigned long> facets, points;
         kernel.getFacetsFromSelection(facets);
         points = kernel.getPointsFromFacets(facets);
         MeshCore::MeshPointArray coords = kernel.getKernel().GetPoints(points);
+        fitpts.normals = kernel.getKernel().GetFacetNormals(facets);
 
         // Copy points into right format
-        FitParameter::Points fitpts;
-        fitpts.insert(fitpts.end(), coords.begin(), coords.end());
+        fitpts.points.insert(fitpts.points.end(), coords.begin(), coords.end());
         coords.clear();
 
         values = fitParameter->getParameter(fitpts);
