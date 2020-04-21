@@ -43,6 +43,7 @@ _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 AppExport ExpressionPtr expressionFromPy(const App::DocumentObject *owner, const Py::Object &value);
 AppExport Py::Object pyFromQuantity(const Base::Quantity &quantity);
 AppExport bool pyToQuantity(Base::Quantity &q, const Py::Object &pyobj);
+AppExport bool isPyMapping(const Py::Object &pyobj);
 
 ////////////////////////////////////////////////////////////////////////////////////
 

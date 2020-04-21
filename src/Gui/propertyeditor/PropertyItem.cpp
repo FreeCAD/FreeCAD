@@ -48,6 +48,7 @@
 #include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <App/ExpressionParser.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Widgets.h>
@@ -361,7 +362,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
             if(i<seq.size())
                 ss << "...";
             ss << ']';
-        }else if(pyobj.isMapping()) {
+        }else if(App::isPyMapping(pyobj)) {
             ss << '{';
             Py::Mapping map(pyobj);
             bool first = true;

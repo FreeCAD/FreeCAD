@@ -787,6 +787,13 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
     return !!res;
 }
 
+bool isPyMapping(const Py::Object &obj)
+{
+    // Python3 consider sequence supportin slicing protocol as mapping as well,
+    // but they do not have keys or values.
+    return obj.isMapping() && obj.hasAttr("keys") && obj.hasAttr("values");
+}
+
 } // namespace App
 
 //
@@ -3854,7 +3861,7 @@ static void prepareArguments(const Expression *owner, EvalFrame &frame,
                 *frame.getVar(owner,varName(idx++),BindLocalOnly) = Py::Object(seq[i]);
         }else if(name == "**") {
             Py::Object pyobj = arg->getPyValue();
-            if(!pyobj.isMapping())
+            if(!isPyMapping(pyobj))
                 _EXPR_THROW("Expects Python mapping.", arg);
             Py::Mapping mapping(pyobj);
             for(auto it=mapping.begin();it!=mapping.end();++it) {
@@ -4173,7 +4180,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
                 tuple.setItem(k++,Py::Object(seq[j].ptr()));
         }else if(name == "**") {
             Py::Object pyobj(arg->getPyValue());
-            if(!pyobj.isMapping()) 
+            if(!isPyMapping(pyobj)) 
                 EXPR_THROW("Expects Python mapping.");
             Py::Mapping map(pyobj);
             for(auto it=map.begin();it!=map.end();++it) {
@@ -5222,7 +5229,7 @@ Py::Object DictExpression::_getPyValue(int *) const {
             dict.setItem(key->getPyValue(),pyvalue);
             continue;
         }
-        if(!pyvalue.isMapping()) 
+        if(!isPyMapping(pyvalue)) 
             _EXPR_THROW("Cannot expand non mapping object.",value.get());
         Py::Mapping map(pyvalue);
         for(auto it=map.begin();it!=map.end();++it) {
@@ -5324,7 +5331,7 @@ Py::Object IDictExpression::_getPyValue(int *) const {
             dict.setItem(key,pyvalue);
             continue;
         }
-        if(!pyvalue.isMapping()) 
+        if(!isPyMapping(pyvalue)) 
             _EXPR_THROW("Cannot expand non mapping object.",value.get());
         Py::Mapping map(pyvalue);
         for(auto it=map.begin();it!=map.end();++it) {
