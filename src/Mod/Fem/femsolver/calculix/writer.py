@@ -34,6 +34,7 @@ import os
 import six
 import sys
 import time
+from os.path import join
 
 import FreeCAD
 
@@ -59,7 +60,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             member,
             dir_name
         )
-        from os.path import join
         self.mesh_name = self.mesh_object.Name
         self.include = join(self.dir_name, self.mesh_name)
         self.file_name = self.include + ".inp"
@@ -211,23 +211,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_sets.inp \n")
             inpfileNodes.close()
 
-        if self.contact_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Surfaces for contact constraint\n")
-            inpfileMain.write("** written by write_surfaces_constraints_contact\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Surface_Contact.inp \n")
-            inpfileContact = open(self.include + "_Surface_Contact.inp", "w")
-            self.write_surfaces_constraints_contact(inpfileContact)
-            inpfileContact.close()
-
-        if self.tie_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Surfaces for tie constraint\n")
-            inpfileMain.write("** written by write_surfaces_constraints_tie\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Surface_Tie.inp \n")
-            inpfileTie = open(self.include + "_Surface_Tie.inp", "w")
-            self.write_surfaces_constraints_tie(inpfileTie)
-            inpfileTie.close()
+        self.write_surfaces_constraints_contact(inpfileMain, True)
+        self.write_surfaces_constraints_tie(inpfileMain, True)
 
         if self.transform_objects:
             inpfileMain.write("\n***********************************************************\n")
@@ -522,7 +507,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for i in range(len(MPC_nodes)):
                 f.write(str(MPC_nodes[i]) + ",\n")
 
-    def write_surfaces_constraints_contact(self, f):
+    def write_surfaces_constraints_contact(self, f, splitted=None):
         if not self.contact_objects:
             return
         # write for all analysis types
@@ -530,10 +515,24 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get faces
         self.get_constraints_contact_faces()
 
-        # write faces to file
+        write_name = "contact"
+        write_name = "constraints_contact_surface_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Surfaces for contact constraint\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_surfacefaces_constraints_contact(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_surfacefaces_constraints_contact(f)
+
+    def write_surfacefaces_constraints_contact(self, f):
+        # write faces to file
         for femobj in self.contact_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             contact_obj = femobj["Object"]
@@ -547,7 +546,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for i in femobj["ContactMasterFaces"]:
                 f.write("{},S{}\n".format(i[0], i[1]))
 
-    def write_surfaces_constraints_tie(self, f):
+    def write_surfaces_constraints_tie(self, f, splitted=None):
         if not self.tie_objects:
             return
         # write for all analysis types
@@ -555,10 +554,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get faces
         self.get_constraints_tie_faces()
 
-        # write faces to file
+        write_name = "constraints_tie_surface_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Surfaces for tie constraint\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_surfacefaces_constraints_tie(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_surfacefaces_constraints_tie(f)
+
+    def write_surfacefaces_constraints_tie(self, f):
+        # write faces to file
         for femobj in self.tie_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             tie_obj = femobj["Object"]

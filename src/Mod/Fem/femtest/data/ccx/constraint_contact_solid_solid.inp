@@ -4430,7 +4430,7 @@ Evolumes
 1569,
 
 ***********************************************************
-** Surfaces for contact constraint
+** constraints contact surface sets
 ** written by write_surfaces_constraints_contact function
 ** ConstraintContact
 *SURFACE, NAME=DEPConstraintContact

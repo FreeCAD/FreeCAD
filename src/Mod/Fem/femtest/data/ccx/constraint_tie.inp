@@ -18544,7 +18544,7 @@ Evolumes
 461,
 
 ***********************************************************
-** Surfaces for tie constraint
+** constraints tie surface sets
 ** written by write_surfaces_constraints_tie function
 ** ConstraintTie
 *SURFACE, NAME=TIE_DEPConstraintTie
