@@ -466,6 +466,7 @@ private:
     SoSeparator * foregroundroot;
     SoDirectionalLight* backlight;
 
+    SoMaterial  * pcRootMaterial;
     SoSeparator * pcViewProviderRoot;
 
     SoFCSwitch        * pcGroupOnTopSwitch;

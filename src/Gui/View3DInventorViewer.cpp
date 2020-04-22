@@ -563,6 +563,11 @@ void View3DInventorViewer::init()
     pcEditingRoot->addChild(pcEditingTransform);
     pcViewProviderRoot->addChild(pcEditingRoot);
 
+    pcRootMaterial = new SoMaterial;
+    pcRootMaterial->ref();
+    pcRootMaterial->diffuseColor.setIgnored(true);
+    pcViewProviderRoot->addChild(pcRootMaterial);
+
     // Set our own render action which show a bounding box if
     // the SoFCSelection::BOX style is set
     //
@@ -679,6 +684,9 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcViewProviderRoot = 0;
     this->backlight->unref();
     this->backlight = 0;
+
+    this->pcRootMaterial->unref();
+    this->pcRootMaterial = 0;
 
     if(pCurrentHighlightPath)
         pCurrentHighlightPath->unref();
@@ -1374,6 +1382,7 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
     if(!editViewProvider) 
         return;
     resetEditingRoot(false);
+
     if(mat)
         setEditingTransform(*mat);
     else
@@ -1383,6 +1392,12 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
         pcEditingRoot->addChild(node);
         return;
     }
+
+    if(ViewParams::getEditingAutoTransparent()) {
+        pcRootMaterial->setOverride(true);
+        pcRootMaterial->transparency = ViewParams::getEditingTransparency();
+    }
+
     restoreEditingRoot = true;
     auto root = editViewProvider->getRoot();
     for(int i=0,count=root->getNumChildren();i<count;++i) {
@@ -1395,6 +1410,9 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
 }
 
 void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
+    pcRootMaterial->setOverride(false);
+    pcRootMaterial->transparency = 0.0;
+
     if(!editViewProvider || pcEditingRoot->getNumChildren()<=1)
         return;
     if(!restoreEditingRoot) {
