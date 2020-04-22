@@ -290,6 +290,13 @@ if gui:
 
 #---------------------------------------------------------------------------
 
+from draftmake.make_block import make_block
+from draftobjects.block import Block
+
+makeBlock = make_block
+_Block = Block
+#---------------------------------------------------------------------------
+
 from draftmake.make_facebinder import make_facebinder
 from draftobjects.facebinder import Facebinder
 
@@ -507,20 +514,6 @@ def makeCopy(obj,force=None,reparent=False):
     formatObject(newobj,obj)
     return newobj
 
-def makeBlock(objectslist):
-    """makeBlock(objectslist): Creates a Draft Block from the given objects"""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
-    _Block(obj)
-    obj.Components = objectslist
-    if gui:
-        _ViewProviderDraftPart(obj.ViewObject)
-        for o in objectslist:
-            o.ViewObject.Visibility = False
-        select(obj)
-    return obj
 
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",use_link=False):
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
@@ -2616,25 +2609,6 @@ class _DrawingView(_DraftObject):
         "returns a DXF fragment"
         return getDXF(obj)
 
-
-class _Block(_DraftObject):
-    """The Block object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Block")
-        obj.addProperty("App::PropertyLinkList","Components","Draft",QT_TRANSLATE_NOOP("App::Property","The components of this block"))
-
-    def execute(self, obj):
-        import Part
-        plm = obj.Placement
-        shps = []
-        for c in obj.Components:
-            shps.append(c.Shape)
-        if shps:
-            shape = Part.makeCompound(shps)
-            obj.Shape = shape
-        obj.Placement = plm
-        obj.positionBySupport()
 
 class _Shape2DView(_DraftObject):
     """The Shape2DView object"""
