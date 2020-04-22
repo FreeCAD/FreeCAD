@@ -75,6 +75,7 @@ SET(Draft_make_functions
     draftmake/make_point.py
     draftmake/make_polygon.py
     draftmake/make_rectangle.py
+    draftmake/make_shape2dview.py
     draftmake/make_shapestring.py
     draftmake/make_sketch.py
     draftmake/make_wire.py
@@ -103,6 +104,7 @@ SET(Draft_objects
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/text.py
+    draftobjects/shape2dview.py
     draftobjects/shapestring.py
     draftobjects/wire.py
     draftobjects/wpproxy.py
