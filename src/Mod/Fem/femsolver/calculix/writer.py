@@ -103,6 +103,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return ""
 
     def write_calculix_one_input_file(self):
+
+        # mesh
         self.femmesh.writeABAQUS(self.file_name, 1, False)
 
         # reopen file with "append" and add the analysis definition
@@ -114,8 +116,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfile.close()
             meshtools.write_D_network_element_to_inputfile(self.file_name)
             inpfile = open(self.file_name, "a")
-        # node and element sets
+
+        # element and material sets
         self.write_element_sets_material_and_femelement_type(inpfile)
+
+        # node sets and surface sets
         self.write_node_sets_constraints_fixed(inpfile)
         self.write_node_sets_constraints_displacement(inpfile)
         self.write_node_sets_constraints_planerotation(inpfile)
@@ -167,6 +172,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         inpfile.close()
 
     def write_calculix_splitted_input_file(self):
+
+        # mesh
         # reopen file with "append" and add the analysis definition
         # first open file with "write" to ensure
         # that each new iteration of writing of inputfile starts in new file
@@ -181,6 +188,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         name = self.file_name[:-4]
         include_name = self.main_file_name[:-4]
 
+        # mesh
+        inpfileMain.write("\n***********************************************************\n")
+        inpfileMain.write("**Nodes and Elements\n")
+        inpfileMain.write("** written by femmesh.writeABAQUS\n")
+        inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Elem_sets.inp \n")
         self.femmesh.writeABAQUS(name + "_Node_Elem_sets.inp", 1, False)
         inpfileNodesElem = open(name + "_Node_Elem_sets.inp", "a")
         inpfileNodesElem.write("\n***********************************************************\n")
@@ -190,39 +202,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.fluidsection_objects:
             meshtools.write_D_network_element_to_inputfile(name + "_Node_Elem_sets.inp")
 
-        inpfileMain.write("\n***********************************************************\n")
-        inpfileMain.write("**Nodes and Elements\n")
-        inpfileMain.write("** written by femmesh.writeABAQUS\n")
-        inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Elem_sets.inp \n")
-
-        # create separate inputfiles for each node set or constraint
-        if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
-            inpfileNodes = open(name + "_Node_sets.inp", "w")
-        if self.analysis_type == "thermomech" and self.temperature_objects:
-            inpfileNodeTemp = open(name + "_Node_Temp.inp", "w")
-        if self.force_objects:
-            inpfileForce = open(name + "_Node_Force.inp", "w")
-        if self.pressure_objects:
-            inpfilePressure = open(name + "_Pressure.inp", "w")
-        if self.analysis_type == "thermomech" and self.heatflux_objects:
-            inpfileHeatflux = open(name + "_Node_Heatlfux.inp", "w")
-        if self.contact_objects:
-            inpfileContact = open(name + "_Surface_Contact.inp", "w")
-        if self.tie_objects:
-            inpfileTie = open(name + "_Surface_Tie.inp", "w")
-        if self.transform_objects:
-            inpfileTransform = open(name + "_Node_Transform.inp", "w")
-
-        # node and element sets
+        # element and material sets
         self.write_element_sets_material_and_femelement_type(inpfileMain)
-        self.write_node_sets_constraints_fixed(inpfileNodes)
-        self.write_node_sets_constraints_displacement(inpfileNodes)
-        self.write_node_sets_constraints_planerotation(inpfileNodes)
-        self.write_surfaces_constraints_contact(inpfileContact)
-        self.write_surfaces_constraints_tie(inpfileTie)
-        self.write_node_sets_constraints_transform(inpfileTransform)
 
-        # write commentary and include statement for static case node sets
+        # node sets and surface sets
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("**Node sets for constraints\n")
         inpfileMain.write("** written by write_node_sets_constraints_fixed\n")
@@ -230,34 +213,48 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         inpfileMain.write("** written by write_node_sets_constraints_planerotation\n")
         if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_sets.inp \n")
+            inpfileNodes = open(name + "_Node_sets.inp", "w")
+            self.write_node_sets_constraints_fixed(inpfileNodes)
+            self.write_node_sets_constraints_displacement(inpfileNodes)
+            self.write_node_sets_constraints_planerotation(inpfileNodes)
+            inpfileNodes.close()
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Surfaces for contact constraint\n")
         inpfileMain.write("** written by write_surfaces_constraints_contact\n")
         if self.contact_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Surface_Contact.inp \n")
+            inpfileContact = open(name + "_Surface_Contact.inp", "w")
+            self.write_surfaces_constraints_contact(inpfileContact)
+            inpfileContact.close()
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Surfaces for tie constraint\n")
         inpfileMain.write("** written by write_surfaces_constraints_tie\n")
         if self.tie_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Surface_Tie.inp \n")
+            inpfileTie = open(name + "_Surface_Tie.inp", "w")
+            self.write_surfaces_constraints_tie(inpfileTie)
+            inpfileTie.close()
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Node sets for transform constraint\n")
         inpfileMain.write("** written by write_node_sets_constraints_transform\n")
         if self.transform_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Transform.inp \n")
+            inpfileTransform = open(name + "_Node_Transform.inp", "w")
+            self.write_node_sets_constraints_transform(inpfileTransform)
+            inpfileTransform.close()
 
-        self.write_node_sets_constraints_temperature(inpfileNodeTemp)
-
-        # include separately written temperature constraint in input file
         if self.analysis_type == "thermomech":
             inpfileMain.write("\n***********************************************************\n")
             inpfileMain.write("**Node sets for temperature constraint\n")
             inpfileMain.write("** written by write_node_sets_constraints_temperature\n")
             if self.temperature_objects:
                 inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Temp.inp \n")
+                inpfileNodeTemp = open(name + "_Node_Temp.inp", "w")
+                self.write_node_sets_constraints_temperature(inpfileNodeTemp)
+                inpfileNodeTemp.close()
 
         # materials and fem element types
         self.write_materials(inpfileMain)
@@ -284,24 +281,26 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
-        self.write_constraints_force(inpfileForce)
-        self.write_constraints_pressure(inpfilePressure)
-        self.write_constraints_temperature(inpfileMain)
-        self.write_constraints_heatflux(inpfileHeatflux)
-        self.write_constraints_fluidsection(inpfileMain)
 
-        # include separately written constraints in input file
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Node loads\n")
         inpfileMain.write("** written by write_constraints_force\n")
         if self.force_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Force.inp \n")
+            inpfileForce = open(name + "_Node_Force.inp", "w")
+            self.write_constraints_force(inpfileForce)
+            inpfileForce.close()
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Element + CalculiX face + load in [MPa]\n")
         inpfileMain.write("** written by write_constraints_pressure\n")
         if self.pressure_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Pressure.inp \n")
+            inpfilePressure = open(name + "_Pressure.inp", "w")
+            self.write_constraints_pressure(inpfilePressure)
+            inpfilePressure.close()
+
+        self.write_constraints_temperature(inpfileMain)
 
         if self.analysis_type == "thermomech":
             inpfileMain.write("\n***********************************************************\n")
@@ -309,6 +308,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfileMain.write("** written by write_constraints_heatflux\n")
             if self.heatflux_objects:
                 inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Node_Heatlfux.inp \n")
+                inpfileHeatflux = open(name + "_Node_Heatlfux.inp", "w")
+                self.write_constraints_heatflux(inpfileHeatflux)
+                inpfileHeatflux.close()
+
+        self.write_constraints_fluidsection(inpfileMain)
 
         # output and step end
         self.write_outputs_types(inpfileMain)
