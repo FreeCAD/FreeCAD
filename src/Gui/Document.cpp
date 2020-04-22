@@ -290,6 +290,17 @@ Document::~Document()
 // 3D viewer handling
 //*****************************************************************************************************
 
+struct EditDocumentGuard {
+    EditDocumentGuard():active(true) {}
+
+    ~EditDocumentGuard() {
+        if(active)
+            Application::Instance->setEditDocument(0);
+    }
+
+    bool active;
+};
+
 bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
 {
     ViewProviderDocumentObject* vp = dynamic_cast<ViewProviderDocumentObject*>(p);
@@ -408,6 +419,8 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         getMainWindow()->setActiveWindow(view3d);
     else
         view3d = dynamic_cast<View3DInventor *>(setActiveView(vp));
+
+    EditDocumentGuard guard;
     Application::Instance->setEditDocument(this);
 
     d->_editViewProviderParent = vp;
@@ -448,7 +461,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         auto vpd = static_cast<ViewProviderDocumentObject*>(d->_editViewProvider);
         vpd->getDocument()->signalInEdit(*vpd);
     }
-
+    guard.active = false;
     App::AutoTransaction::setEnable(false);
     return true;
 }
