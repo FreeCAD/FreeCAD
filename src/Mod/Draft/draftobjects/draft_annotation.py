@@ -48,7 +48,10 @@ class DraftAnnotation(object):
 
     def __setstate__(self,state):
         if state:
-            self.Type = state
+            if isinstance(state,dict) and ("Type" in state):
+                self.Type = state["Type"]
+            else:
+                self.Type = state
 
 
     def execute(self,obj):

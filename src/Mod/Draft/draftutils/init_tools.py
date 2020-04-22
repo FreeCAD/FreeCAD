@@ -49,7 +49,7 @@ def get_draft_drawing_commands():
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
     return ["Draft_Text", "Draft_Dimension",
-            "Draft_Label"]
+            "Draft_Label","Draft_AnnotationStyleEditor"]
 
 
 def get_draft_array_commands():
