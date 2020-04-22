@@ -300,6 +300,17 @@ if gui:
 
 #---------------------------------------------------------------------------
 
+from draftmake.make_shapestring import make_shapestring
+from draftobjects.shapestring import ShapeString
+
+makeShapeString = make_shapestring
+_ShapeString = ShapeString
+
+if gui:
+    from draftviewproviders.view_facebinder import ViewProviderFacebinder
+
+#---------------------------------------------------------------------------
+
 from draftmake.make_wpproxy import make_working_plane_proxy
 from draftobjects.wpproxy import WorkingPlaneProxy
 
@@ -3688,11 +3699,11 @@ class _ShapeString(_DraftObject):
             fA = face.Area
             difA = abs(bcfA - fA)
             eps = epsilon()
-#            if biggest.common(face).Area == face.Area:
+            # if biggest.common(face).Area == face.Area:
             if difA <= eps:                              # close enough to zero
                 # biggest completely overlaps current face ==> cut
                 result = result.cut(face)
-#            elif biggest.common(face).Area == 0:
+            # elif biggest.common(face).Area == 0:
             elif bcfA <= eps:
                 # island
                 islands.append(face)
@@ -3705,7 +3716,7 @@ class _ShapeString(_DraftObject):
             w.fixWire()
         glyphfaces = [Part.Face(wl)]
         glyphfaces.extend(islands)
-        ret = Part.Compound(glyphfaces)           # should we fuse these instead of making compound?
+        ret = Part.Compound(glyphfaces) # should we fuse these instead of making compound?
         return ret
 
 
