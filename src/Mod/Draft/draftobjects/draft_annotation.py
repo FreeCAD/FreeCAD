@@ -42,6 +42,16 @@ class DraftAnnotation(object):
         self.Type = tp
 
 
+    def onDocumentRestored(self, obj):
+        print("on document restored called by " + obj.Name +"\n")
+        if hasattr(obj, "ViewObject"):
+            if not 'ScaleMultiplier' in obj.ViewObject.PropertiesList:
+                # annotation properties
+                obj.ViewObject.addProperty("App::PropertyFloat","ScaleMultiplier",
+                                "Annotation",QT_TRANSLATE_NOOP("App::Property",
+                                "Dimension size overall multiplier"))
+                obj.ViewObject.ScaleMultiplier = 1.00
+
     def __getstate__(self):
         return self.Type
 

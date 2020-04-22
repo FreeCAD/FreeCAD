@@ -544,7 +544,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
     def remove_dim_arrows(self):
         # remove existing nodes
         self.node.removeChild(self.marks)
-        self.node3d.removeChild(self.marks)
+        if hasattr(self, "node3d"):
+            self.node3d.removeChild(self.marks)
 
     def draw_dim_arrows(self, vobj):
         from pivy import coin

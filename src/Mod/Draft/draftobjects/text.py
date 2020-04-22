@@ -119,6 +119,10 @@ class Text(DraftAnnotation):
                                           "The text displayed by this object"))
 
 
+    def onDocumentRestored(self, obj):
+        super(Text, self).onDocumentRestored(obj)
+
+
     def execute(self,obj):
         '''Do something when recompute object'''
 
