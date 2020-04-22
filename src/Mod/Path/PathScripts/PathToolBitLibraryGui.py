@@ -273,7 +273,7 @@ class ToolBitLibrary(object):
         path = PathPreferences.lastPathToolLibrary()
         
         if filedialog or len(path) == 0:
-            path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary(), 1)
+            path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary())
             #p = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
             if len(path) > 0:
                 PathPreferences.setLastPathToolLibrary(path)
@@ -282,6 +282,8 @@ class ToolBitLibrary(object):
 
         self.form.TableList.clear()
         self.LibFiles.clear()
+        self.form.lineLibPath.clear()
+        self.form.lineLibPath.insert(path)
         
         # Find all tool tables in directory
         for file in glob.glob(path + '/*.fctl'):

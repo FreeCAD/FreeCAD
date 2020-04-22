@@ -63,7 +63,7 @@
              <item>
               <widget class="QLabel" name="ToolTable">
                <property name="text">
-                <string>Tool Tables</string>
+                <string>Tool Libraries</string>
                </property>
               </widget>
              </item>
@@ -192,7 +192,7 @@
             <item>
              <widget class="QPushButton" name="addToolController">
               <property name="text">
-               <string>Add Tool(s) to Job</string>
+               <string>Add Tool Controller(s) to Job</string>
               </property>
               <property name="icon">
                <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -270,9 +270,31 @@
    <item row="0" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QLineEdit" name="lineLibPath">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>420</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="libraryOpen">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the folder with the tool libraries to load.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Open Library</string>
+        <string/>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -287,7 +309,7 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
+         <width>20</width>
          <height>20</height>
         </size>
        </property>
@@ -296,7 +318,7 @@
      <item>
       <widget class="QPushButton" name="toolAdd">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Add Toolbit</string>
