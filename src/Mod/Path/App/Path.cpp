@@ -31,6 +31,7 @@
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/Exception.h>
+#include <Base/Console.h>
 
 // KDL stuff - at the moment, not used
 //#include "Mod/Robot/App/kdl_cp/path_line.hpp"
@@ -144,6 +145,67 @@ double Toolpath::getLength()
         }
     }
     return l;
+}
+
+double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
+{
+    // check the feedrates are set
+    if ((hFeed == 0) || (vFeed == 0)){
+        Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
+        return 0;
+    }
+
+    if (hRapid == 0){
+        hRapid = hFeed;
+    }
+
+    if (vRapid == 0){
+        vRapid = vFeed;
+    }
+
+    if(vpcCommands.size()==0)
+        return 0;
+    double l = 0;
+    double time = 0;
+    bool verticalMove = false;
+    Vector3d last(0,0,0);
+    Vector3d next;
+    for(std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
+        std::string name = (*it)->Name;
+        float feedrate = (*it)->getParam("F");
+
+        l = 0;
+        verticalMove = false;
+        feedrate = hFeed;
+        next = (*it)->getPlacement(last).getPosition();
+
+        if (last.z != next.z){
+            verticalMove = true;
+            feedrate = vFeed;
+        }
+
+        if ((name == "G0") || (name == "G00")){
+            // Rapid Move
+            l += (next - last).Length();
+            feedrate = hRapid;
+            if(verticalMove){
+                feedrate = vRapid;
+            }
+        }else if ((name == "G1") || (name == "G01")) {
+            // Feed Move
+            l += (next - last).Length();
+        }else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
+            // Arc Move
+            Vector3d center = (*it)->getCenter();
+            double radius = (last - center).Length();
+            double angle = (next - center).GetAngle(last - center);
+            l += angle * radius;
+        }
+
+        time += l / feedrate;
+        last = next;
+    }
+    return time;
 }
 
 class BoundBoxSegmentVisitor : public PathSegmentVisitor
