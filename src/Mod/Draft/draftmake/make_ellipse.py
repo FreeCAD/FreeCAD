@@ -19,11 +19,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_polyline function.
+"""This module provides the code for Draft make_ellipse function.
 """
-## @package make_polyline
+## @package make_ellipse
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_polyline function.
+# \brief This module provides the code for Draft make_ellipse function.
 
 import FreeCAD as App
 
