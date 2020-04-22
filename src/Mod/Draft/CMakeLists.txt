@@ -90,6 +90,7 @@ SET(Draft_objects
     draftobjects/circle.py
     draftobjects/circulararray.py
     draftobjects/clone.py
+    draftobjects/draftlink.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
     draftobjects/orthoarray.py
@@ -115,6 +116,7 @@ SET(Draft_view_providers
     draftviewproviders/view_bspline.py
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_clone.py
+    draftviewproviders/view_draftlink.py
     draftviewproviders/view_facebinder.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
