@@ -210,9 +210,11 @@ void ControlSingleton::closeDialog()
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
-    if (pcComboView)
+    if (pcComboView) {
         pcComboView->closeDialog();
-    else if (_taskPanel)
+        pcComboView->showTreeView();
+        Gui::DockWindowManager::instance()->refreshOverlay(pcComboView);
+    } else if (_taskPanel)
         _taskPanel->removeDialog();
 }
 
