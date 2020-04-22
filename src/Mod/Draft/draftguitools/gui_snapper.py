@@ -1422,6 +1422,7 @@ class Snapper:
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
 
+        # make snap buttons
         snap_gui_commands = get_draft_snap_commands()
         self.init_draft_snap_buttons(snap_gui_commands, self.toolbar, "_Button")
         self.restore_snap_buttons_state(self.toolbar,"_Button")
@@ -1443,6 +1444,15 @@ class Snapper:
                         to define the button name
         """
         for gc in commands:
+            if gc == "Separator":
+                continue
+            if gc == "Draft_ToggleGrid":
+                gb = self.init_grid_button(self.toolbar)
+                context.addAction(gb)
+                QtCore.QObject.connect(gb, QtCore.SIGNAL("triggered()"),
+                                    lambda f=Gui.doCommand, 
+                                    arg='Gui.runCommand("Draft_ToggleGrid")':f(arg))
+                continue
             # setup toolbar buttons
             command = 'Gui.runCommand("' + gc + '")'
             b = QtGui.QAction(context)
@@ -1462,6 +1472,18 @@ class Snapper:
         for b in context.actions():
             if len(b.statusTip()) == 0:
                 b.setStatusTip(b.toolTip())
+
+
+    def init_grid_button(self, context):
+        """Add grid button to the given toolbar"""
+        b = QtGui.QAction(context)
+        b.setIcon(QtGui.QIcon.fromTheme("Draft", QtGui.QIcon(":/icons/"
+                                                         "Draft_Grid.svg")))        
+        b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Toggles Grid On/Off"))
+        b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Toggle Draft Grid"))
+        b.setObjectName("Grid_Button")
+        b.setWhatsThis("Draft_ToggleGrid")
+        return b
 
 
     def restore_snap_buttons_state(self, toolbar, button_suffix):

@@ -61,7 +61,8 @@ def sync_snap_toolbar_button(button, status):
                 # for lock button
                 snap_toolbar.actions()[0].setChecked(status)
                 for a in snap_toolbar.actions()[1:]:
-                    a.setEnabled(status)
+                    if a.objectName()[:10] == "Draft_Snap":
+                        a.setEnabled(status)
             else:
                 # for every other button
                 a.setChecked(status)
@@ -86,7 +87,8 @@ def sync_snap_statusbar_button(button, status):
     if button == "Draft_Snap_Lock_Statusbutton":
         ssb.setChecked(status)
         for a in actions[1:]:
-            a.setEnabled(status)
+            if a.objectName()[:10] == "Draft_Snap":
+                a.setEnabled(status)
     else:
         for a in actions:
             if a.objectName() == button:
