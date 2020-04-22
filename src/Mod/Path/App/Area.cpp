@@ -3311,7 +3311,10 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
 
     // rapid horizontal move if start Z is below retraction
     if(fabs((p.*getter)()-retraction) > Precision::Confusion()) {
-        if(_pstart && p.IsEqual(plast, Precision::Confusion())){
+        // check if last is equal to current, if it is change last so the initial G0 is still emitted
+        gp_Pnt tmpPlast = plast;
+        (tmpPlast.*setter)((p.*getter)());
+        if(_pstart && p.IsEqual(tmpPlast, Precision::Confusion())){
             plast.SetCoord(10.0, 10.0, 10.0);
             (plast.*setter)(retraction);
         }
