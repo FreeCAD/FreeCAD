@@ -141,14 +141,16 @@ class _ToggleOperation:
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(PathScripts.PathDressup.baseOp(obj).Proxy, PathScripts.PathOp.ObjectOp)
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if not isinstance(PathScripts.PathDressup.baseOp(sel.Object).Proxy, PathScripts.PathOp.ObjectOp):
+                    return False
+            return True
         except(IndexError, AttributeError):
             return False
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        PathScripts.PathDressup.baseOp(obj).Active = not(PathScripts.PathDressup.baseOp(obj).Active)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            PathScripts.PathDressup.baseOp(sel.Object).Active = not(PathScripts.PathDressup.baseOp(sel.Object).Active)
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -168,15 +170,17 @@ class _CopyOperation:
         if bool(FreeCADGui.Selection.getSelection()) is False:
             return False
         try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if not isinstance(sel.Object.Proxy, PathScripts.PathOp.ObjectOp):
+                    return False
+            return True
         except(IndexError, AttributeError):
             return False
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        jobname = findParentJob(obj).Name
-        addToJob(FreeCAD.ActiveDocument.copyObject(obj, False), jobname)
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            jobname = findParentJob(sel.Object).Name
+            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
 
 
 if FreeCAD.GuiUp:
