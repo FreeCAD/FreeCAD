@@ -106,8 +106,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # mesh
         self.femmesh.writeABAQUS(self.file_name, 1, False)
-
-        # reopen file with "append" and add the analysis definition
+        # reopen file with "append" and add all the rest
         inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
         inpfile.write("\n\n")
 
@@ -173,22 +172,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     def write_calculix_splitted_input_file(self):
 
-        # mesh
-        # reopen file with "append" and add the analysis definition
-        # first open file with "write" to ensure
-        # that each new iteration of writing of inputfile starts in new file
-        # first open file with "write" to ensure
-        # that the .writeABAQUS also writes in inputfile
-        inpfileMain = open(self.file_name, "w")
-        inpfileMain.close()
-        inpfileMain = open(self.file_name, "a")
-        inpfileMain.write("\n\n")
-
-        # write nodes and elements
         name = self.file_name[:-4]
         include_name = self.main_file_name[:-4]
 
         # mesh
+        inpfileMain = open(self.file_name, "w", encoding="utf-8")
+        inpfileMain.write("\n\n")
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("**Nodes and Elements\n")
         inpfileMain.write("** written by femmesh.writeABAQUS\n")
