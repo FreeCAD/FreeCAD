@@ -125,7 +125,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
             this, SLOT(onYEdit()));
     connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
-    connect(ui->aeReference, SIGNAL(editingFinished()),
+    connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
@@ -198,7 +198,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
             this, SLOT(onYEdit()));
     connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
-    connect(ui->aeReference, SIGNAL(editingFinished()),
+    connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
@@ -280,7 +280,7 @@ void TaskDetail::setUiFromFeat()
     ui->qsbX->setValue(anchor.x);
     ui->qsbY->setValue(anchor.y);
     ui->qsbRadius->setValue(radius);
-    ui->aeReference->setText(ref);
+    ui->leReference->setText(ref);
 }
 
 //update ui point fields after tracker finishes
@@ -295,7 +295,7 @@ void TaskDetail::enableInputFields(bool b)
     ui->qsbX->setEnabled(b);
     ui->qsbY->setEnabled(b);
     ui->qsbRadius->setEnabled(b);
-    ui->aeReference->setEnabled(b);
+    ui->leReference->setEnabled(b);
 }
 
 void TaskDetail::onXEdit()
@@ -315,7 +315,7 @@ void TaskDetail::onRadiusEdit()
 
 void TaskDetail::onReferenceEdit()
 {
-    updateDetail();
+    updateDetail();   //<<<<<
 }
 
 void TaskDetail::onDraggerClicked(bool b)
@@ -430,23 +430,29 @@ void TaskDetail::createDetail()
 void TaskDetail::updateDetail()
 {
 //    Base::Console().Message("TD::updateDetail()\n");
-    Gui::Command::openCommand("Update Detail");
-    double x = ui->qsbX->rawValue();
-    double y = ui->qsbY->rawValue();
-    Base::Vector3d temp(x, y, 0.0);
-    TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
-    detailFeat->AnchorPoint.setValue(temp);
+    try {
+        Gui::Command::openCommand("Update Detail");
+        double x = ui->qsbX->rawValue();
+        double y = ui->qsbY->rawValue();
+        Base::Vector3d temp(x, y, 0.0);
+        TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
+        detailFeat->AnchorPoint.setValue(temp);
 
-    double radius = ui->qsbRadius->rawValue();
-    detailFeat->Radius.setValue(radius);
-    QString qRef = ui->aeReference->text();
-    std::string ref = Base::Tools::toStdString(qRef);
-    detailFeat->Reference.setValue(ref);
+        double radius = ui->qsbRadius->rawValue();
+        detailFeat->Radius.setValue(radius);
+        QString qRef = ui->leReference->text();
+        std::string ref = Base::Tools::toStdString(qRef);
+        detailFeat->Reference.setValue(ref);
 
-    detailFeat->recomputeFeature();
-    getBaseFeat()->requestPaint();
-    Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+        detailFeat->recomputeFeature();
+        getBaseFeat()->requestPaint();
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
+    }
+    catch (...) {
+        //this is probably due to appl closing while dialog is still open
+        Base::Console().Error("Task Detail - detail feature update failed.\n");
+    }
 }
 
 //***** Getters ****************************************************************
