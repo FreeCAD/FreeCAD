@@ -72,14 +72,23 @@ def getIndices(obj,shape,offsetv,offsetvn):
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-                        myshape = obj.Shape.copy(False)
-                        myshape.Placement=obj.getGlobalPlacement()
+                        if obj.isDerivedFrom("App::Link"):
+                            myshape = obj.LinkedObject.Shape.copy(False)
+                            myshape.Placement=obj.LinkPlacement
+                        else:
+                            myshape = obj.Shape.copy(False)
+                            myshape.Placement=obj.getGlobalPlacement()
                         mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-                myshape = obj.Shape.copy(False)
-                myshape.Placement=obj.getGlobalPlacement()
+                if obj.isDerivedFrom("App::Link"):
+                  if obj.Shape:
+                      myshape = obj.Shape.copy(False)
+                      myshape.Placement=obj.LinkPlacement
+                  else:
+                      myshape = obj.Shape.copy(False)
+                      myshape.Placement=obj.getGlobalPlacement()
                 mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
@@ -157,7 +166,7 @@ def export(exportList,filename,colors=None):
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature") or obj.isDerivedFrom("App::Link"):
             hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()

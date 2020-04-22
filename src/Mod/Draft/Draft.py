@@ -514,7 +514,7 @@ def makeCopy(obj,force=None,reparent=False):
         _Point(newobj)
         if gui:
             _ViewProviderPoint(newobj.ViewObject)
-    elif (getType(obj) == "Dimension") or (force == "Dimension"):
+    elif (getType(obj) in ["Dimension","LinearDimension"]) or (force == "Dimension"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
         if gui:
@@ -1025,7 +1025,7 @@ def move(objectslist,vector,copy=False):
             else:
                 newobj = obj
             newobj.Placement.Base = obj.Placement.Base.add(real_vector)
-        elif getType(obj) == "Dimension":
+        elif getType(obj) in ["Dimension","LinearDimension"]:
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
                 _Dimension(newobj)
@@ -1589,7 +1589,7 @@ def getDXF(obj,direction=None):
         ny = DraftVecUtils.project(vec,plane.v)
         return Vector(nx.Length,ny.Length,0)
 
-    if getType(obj) == "Dimension":
+    if getType(obj) in ["Dimension","LinearDimension"]:
         p1 = getProj(obj.Start)
         p2 = getProj(obj.End)
         p3 = getProj(obj.Dimline)

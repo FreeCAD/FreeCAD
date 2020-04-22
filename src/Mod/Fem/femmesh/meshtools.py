@@ -1426,6 +1426,7 @@ def build_mesh_faces_of_volume_elements(
         FreeCAD.Console.PrintLog("VolElement: {}\n".format(veID))
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
+        node_numbers = ()
         if vol_node_ct == 10:
             FreeCAD.Console.PrintLog("  --> tetra10 --> tria6 face\n")
             # node order of face in tetra10 volume element
@@ -1441,7 +1442,7 @@ def build_mesh_faces_of_volume_elements(
             else:
                 FreeCAD.Console.PrintError(
                     "Error in build_mesh_faces_of_volume_elements(): "
-                    "hexa20: face not found! {}\n"
+                    "tetra10: face not found! {}\n"
                     .format(face_node_indexs)
                 )
         elif vol_node_ct == 4:
@@ -1459,7 +1460,7 @@ def build_mesh_faces_of_volume_elements(
             else:
                 FreeCAD.Console.PrintError(
                     "Error in build_mesh_faces_of_volume_elements(): "
-                    "hexa20: face not found! {}\n"
+                    "tetra4: face not found! {}\n"
                     .format(face_node_indexs)
                 )
         elif vol_node_ct == 20:
@@ -1503,7 +1504,7 @@ def build_mesh_faces_of_volume_elements(
             else:
                 FreeCAD.Console.PrintError(
                     "Error in build_mesh_faces_of_volume_elements(): "
-                    "hexa20: face not found! {}\n"
+                    "hexa8: face not found! {}\n"
                     .format(face_node_indexs)
                 )
         elif vol_node_ct == 15:
@@ -1543,7 +1544,7 @@ def build_mesh_faces_of_volume_elements(
             else:
                 FreeCAD.Console.PrintError(
                     "Error in build_mesh_faces_of_volume_elements(): "
-                    "pent6: face not found! {}\n"
+                    "penta6: face not found! {}\n"
                     .format(face_node_indexs)
                 )
         else:
