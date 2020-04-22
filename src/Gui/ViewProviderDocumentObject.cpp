@@ -586,11 +586,13 @@ bool ViewProviderDocumentObject::getDetailPath(
         const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
 {
     if(pcRoot->findChild(pcModeSwitch) < 0) {
-        // this is possible in case of editing, where the switch node
-        // of the linked view object is temporarily removed from its root
-        // if(append)
-        //     pPath->append(pcRoot);
-        return false;
+        // this is possible in case of editing, where the switch node of the
+        // linked view object is temporarily removed from its root. We must
+        // still return true here, to prevent the selection action leaking to
+        // parent and sibling nodes.
+        if(append)
+            path->append(pcRoot);
+        return true;
     }
 
     auto len = path->getLength();
