@@ -75,6 +75,7 @@ SET(Draft_make_functions
     draftmake/make_polygon.py
     draftmake/make_rectangle.py
     draftmake/make_shapestring.py
+    draftmake/make_sketch.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
 )
