@@ -231,7 +231,7 @@ class ObjectOp(object):
 
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
-            
+
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
@@ -556,8 +556,7 @@ class ObjectOp(object):
         
         if not seconds:
             return translate('PathGui', 'Cycletime Error')
-
-        print('cycleTime:', seconds) 
+            
         ## convert the cycle time to a HH:MM:SS format
         cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
 
