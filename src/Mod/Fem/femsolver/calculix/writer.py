@@ -421,9 +421,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_fixed(self, f):
         if not self.fixed_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get nodes
         self.get_constraints_fixed_nodes()
+
         # write nodes to file
         f.write("\n***********************************************************\n")
         f.write("** Node sets for fixed constraint\n")
@@ -450,9 +452,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_displacement(self, f):
         if not self.displacement_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get nodes
         self.get_constraints_displacement_nodes()
+
         # write nodes to file
         f.write("\n***********************************************************\n")
         f.write("** Node sets for prescribed displacement constraint\n")
@@ -468,9 +472,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_planerotation(self, f):
         if not self.planerotation_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get nodes
         self.get_constraints_planerotation_nodes()
+
         # write nodes to file
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
@@ -518,9 +524,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_surfaces_constraints_contact(self, f):
         if not self.contact_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get faces
         self.get_constraints_contact_faces()
+
         # write faces to file
         f.write("\n***********************************************************\n")
         f.write("** Surfaces for contact constraint\n")
@@ -541,9 +549,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_surfaces_constraints_tie(self, f):
         if not self.tie_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get faces
         self.get_constraints_tie_faces()
+
         # write faces to file
         f.write("\n***********************************************************\n")
         f.write("** Surfaces for tie constraint\n")
@@ -564,9 +574,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_node_sets_constraints_transform(self, f):
         if not self.transform_objects:
             return
-        # written in all analysis types
+        # write for all analysis types
+
         # get nodes
         self.get_constraints_transform_nodes()
+
         # write nodes to file
         f.write("\n***********************************************************\n")
         f.write("** Node sets for transform constraint\n")
@@ -587,8 +599,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
-        # get nodes
+ 
+       # get nodes
         self.get_constraints_temperature_nodes()
+
         # write nodes to file
         f.write("\n***********************************************************\n")
         f.write("** Node sets for temperature constraints\n")
@@ -698,7 +712,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
-        # get nodes
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Initial temperature constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -908,6 +923,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_fixed(self, f):
         if not self.fixed_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Fixed Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -946,6 +964,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_displacement(self, f):
         if not self.displacement_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Displacement constraint applied\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -986,6 +1007,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_contact(self, f):
         if not self.contact_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Contact Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1013,6 +1037,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_tie(self, f):
         if not self.tie_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Tie Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1032,6 +1059,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_planerotation(self, f):
         if not self.planerotation_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** PlaneRotation Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1045,6 +1075,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_constraints_transform(self, f):
         if not self.transform_objects:
             return
+        # write for all analysis types
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Transform Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1065,6 +1098,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Self weight Constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1095,8 +1130,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
+
         # check shape type of reference shape and get node loads
         self.get_constraints_force_nodeloads()
+
         # write node loads to file
         f.write("\n***********************************************************\n")
         f.write("** Node loads Constraints\n")
@@ -1127,8 +1164,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
+
         # get the faces and face numbers
         self.get_constraints_pressure_faces()
+
         # write face loads to file
         f.write("\n***********************************************************\n")
         f.write("** Element + CalculiX face + load in [MPa]\n")
@@ -1161,6 +1200,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Fixed temperature constraint applied\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1185,6 +1226,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** Heatflux constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
@@ -1228,6 +1271,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
+
+        # write constraint to file
         f.write("\n***********************************************************\n")
         f.write("** FluidSection constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
