@@ -599,8 +599,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             return
         if not self.analysis_type == "thermomech":
             return
- 
-       # get nodes
+
+        # get nodes
         self.get_constraints_temperature_nodes()
 
         # write nodes to file
