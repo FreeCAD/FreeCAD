@@ -50,6 +50,7 @@
 #include "View3DInventor.h"
 #include "SplitView3DInventor.h"
 #include "Application.h"
+#include "Control.h"
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
 
@@ -376,11 +377,12 @@ bool OverlayTabWidget::checkAutoHide() const
             return true;
     }
 
-    if(Application::Instance->editDocument()) {
-        if(isEditHide())
-            return true;
-    } else if(isEditShow())
+    if(isEditShow())
+        return !Application::Instance->editDocument() && !Control().activeDialog();
+
+    if(isEditHide() && Application::Instance->editDocument())
         return true;
+
     return false;
 }
 
