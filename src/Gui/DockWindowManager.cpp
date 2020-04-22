@@ -228,6 +228,31 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
             "10 10 2 1",
             ". c None",
             TITLE_BUTTON_COLOR,
+            "##....##..",
+            "###..#.##.",
+            ".####..###",
+            "..###.#..#",
+            "..####..#.",
+            ".#..####..",
+            "##...###..",
+            "##...####.",
+            "#####..###",
+            "####....##",
+        };
+        pxEditHide = QIcon(QPixmap(bytes));
+    }
+    actEditHide.setIcon(pxEditHide);
+    actEditHide.setCheckable(true);
+    actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
+    actEditHide.setParent(this);
+    addAction(&actEditHide);
+
+    static QIcon pxEditShow;
+    if(pxEditShow.isNull()) {
+        const char * const bytes[]={
+            "10 10 2 1",
+            ". c None",
+            TITLE_BUTTON_COLOR,
             "......##..",
             ".....#.##.",
             "....#..###",
@@ -239,13 +264,13 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
             "#####.....",
             "####......",
         };
-        pxEditHide = QIcon(QPixmap(bytes));
+        pxEditShow = QIcon(QPixmap(bytes));
     }
-    actEditHide.setIcon(pxEditHide);
-    actEditHide.setCheckable(true);
-    actEditHide.setData(QString::fromLatin1("OBTN EditHide"));
-    actEditHide.setParent(this);
-    addAction(&actEditHide);
+    actEditShow.setIcon(pxEditShow);
+    actEditShow.setCheckable(true);
+    actEditShow.setData(QString::fromLatin1("OBTN EditShow"));
+    actEditShow.setParent(this);
+    addAction(&actEditShow);
 
     static QIcon pxIncrease;
     if(pxIncrease.isNull()) {
@@ -310,6 +335,7 @@ void OverlayTabWidget::retranslate()
     actTransparent.setToolTip(tr("Toggle transparent mode"));
     actAutoHide.setToolTip(tr("Toggle auto hide mode"));
     actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
+    actEditShow.setToolTip(tr("Toggle auto show on edit mode"));
     actIncrease.setToolTip(tr("Increase window size"));
     actDecrease.setToolTip(tr("Decrease window size"));
 }
@@ -317,11 +343,20 @@ void OverlayTabWidget::retranslate()
 void OverlayTabWidget::onAction(QAction *action)
 {
     if(action == &actEditHide) {
-        if(action->isChecked())
+        if(action->isChecked()) {
             setAutoHide(false);
+            setEditShow(false);
+        }
     } else if(action == &actAutoHide) {
-        if(action->isChecked())
+        if(action->isChecked()) {
             setEditHide(false);
+            setEditShow(false);
+        }
+    } else if(action == &actEditShow) {
+        if(action->isChecked()) {
+            setEditHide(false);
+            setAutoHide(false);
+        }
     } else if(action == &actIncrease)
         changeSize(5);
     else if(action == &actDecrease)
@@ -341,7 +376,10 @@ bool OverlayTabWidget::checkAutoHide() const
             return true;
     }
 
-    if(isEditHide() && Application::Instance->editDocument())
+    if(Application::Instance->editDocument()) {
+        if(isEditHide())
+            return true;
+    } else if(isEditShow())
         return true;
     return false;
 }
@@ -610,8 +648,10 @@ void OverlayTabWidget::setAutoHide(bool enable)
     if(actAutoHide.isChecked() == enable)
         return;
     actAutoHide.setChecked(enable);
-    if(enable)
+    if(enable) {
         setEditHide(false);
+        setEditShow(false);
+    }
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
@@ -628,8 +668,22 @@ void OverlayTabWidget::setEditHide(bool enable)
     if(actEditHide.isChecked() == enable)
         return;
     actEditHide.setChecked(enable);
-    if(enable)
+    if(enable) {
         setAutoHide(false);
+        setEditShow(false);
+    }
+    DockWindowManager::instance()->refreshOverlay(this);
+}
+
+void OverlayTabWidget::setEditShow(bool enable)
+{
+    if(actEditShow.isChecked() == enable)
+        return;
+    actEditShow.setChecked(enable);
+    if(enable) {
+        setAutoHide(false);
+        setEditHide(false);
+    }
     DockWindowManager::instance()->refreshOverlay(this);
 }
 
@@ -918,6 +972,7 @@ struct OverlayInfo {
         hGrp->SetBool("AutoHide", tabWidget->isAutoHide());
         hGrp->SetBool("Transparent", tabWidget->isTransparent());
         hGrp->SetBool("EditHide", tabWidget->isEditHide());
+        hGrp->SetBool("EditShow", tabWidget->isEditShow());
 
         std::ostringstream os;
         for(int i=0,c=tabWidget->count(); i<c; ++i)
@@ -947,6 +1002,7 @@ struct OverlayInfo {
         tabWidget->setAutoHide(hGrp->GetBool("AutoHide", false));
         tabWidget->setTransparent(hGrp->GetBool("Transparent", false));
         tabWidget->setEditHide(hGrp->GetBool("EditHide", false));
+        tabWidget->setEditShow(hGrp->GetBool("EditShow", false));
     }
 
 };

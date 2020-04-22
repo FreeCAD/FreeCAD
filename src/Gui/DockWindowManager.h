@@ -181,6 +181,9 @@ public:
     void setEditHide(bool enable);
     bool isEditHide() const {return actEditHide.isChecked();}
 
+    void setEditShow(bool enable);
+    bool isEditShow() const {return actEditShow.isChecked();}
+
     void touch() {touched = true;}
     bool isTouched() const {return touched;}
 
@@ -208,6 +211,7 @@ private:
     OverlayProxyWidget *proxyWidget;
     QAction actAutoHide;
     QAction actEditHide;
+    QAction actEditShow;
     QAction actTransparent;
     QAction actIncrease;
     QAction actDecrease;
