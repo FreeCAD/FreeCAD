@@ -129,8 +129,8 @@ private:
         GeoDef(const GeoDef &) = delete;
         GeoDef & operator=(const GeoDef &) = delete;
         
-        GeoDef(GeoDef &&) = default;
-        GeoDef & operator=(GeoDef &&) = default;
+        GeoDef(GeoDef &&) noexcept = default;
+        GeoDef & operator=(GeoDef &&) noexcept = default;
         
         std::unique_ptr<Part::Geometry>     geo;            // pointer to the geometry
         GeoType                             type;           // type of the geometry
