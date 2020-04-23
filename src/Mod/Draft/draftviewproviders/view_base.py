@@ -27,19 +27,25 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD as App
-import FreeCADGui as Gui
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import Draft
-import Draft_rc
-from pivy import coin
+
+
+import FreeCAD as App
+
+if App.GuiUp:
+    from pivy import coin
+    import FreeCADGui as Gui
+
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
+
+#import Draft_rc
 # from DraftGui import translate
 # from DraftGui import displayExternal
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc.__name__ else False
-
+#True if Draft_rc.__name__ else False
 
 class ViewProviderDraft(object):
     """The base class for Draft view providers.
@@ -94,7 +100,7 @@ class ViewProviderDraft(object):
         vobj.addProperty("App::PropertyFloat", "PatternSize", "Draft",
                          QT_TRANSLATE_NOOP("App::Property",
                                            "Sets the size of the pattern"))
-        vobj.Pattern = ["None"] + list(Draft.svgpatterns().keys())
+        vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
         vobj.PatternSize = 1
 
         # This class is assigned to the Proxy attribute
@@ -265,8 +271,8 @@ class ViewProviderDraft(object):
                             path = vobj.TextureImage
                     if not path:
                         if hasattr(vobj, "Pattern"):
-                            if str(vobj.Pattern) in list(Draft.svgpatterns().keys()):
-                                path = Draft.svgpatterns()[vobj.Pattern][1]
+                            if str(vobj.Pattern) in list(utils.svg_patterns().keys()):
+                                path = utils.svg_patterns()[vobj.Pattern][1]
                             else:
                                 path = "None"
                     if path and vobj.RootNode:
@@ -284,10 +290,10 @@ class ViewProviderDraft(object):
                                     if i.exists():
                                         size = None
                                         if ".SVG" in path.upper():
-                                            size = Draft.getParam("HatchPatternResolution", 128)
+                                            size = utils.get_param("HatchPatternResolution", 128)
                                             if not size:
                                                 size = 128
-                                        im = Draft.loadTexture(path, size)
+                                        im = gui_utils.load_texture(path, size)
                                         if im:
                                             self.texture = coin.SoTexture2()
                                             self.texture.image = im
@@ -372,7 +378,7 @@ class ViewProviderDraft(object):
             It is `True` if `mode` is 0, and `Draft_Edit` ran succesfully.
             It is `False` otherwise.
         """
-        if mode == 0:
+        if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
             return True
         return False
@@ -413,7 +419,8 @@ class ViewProviderDraft(object):
         """
         if App.activeDraftCommand:
             App.activeDraftCommand.finish()
-        Gui.Control.closeDialog()
+        if App.GuiUp: # remove guard after splitting every viewprovider
+            Gui.Control.closeDialog()
         return False
 
     def getIcon(self):

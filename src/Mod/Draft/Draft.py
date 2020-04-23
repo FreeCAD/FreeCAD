@@ -170,7 +170,17 @@ from draftutils.gui_utils import loadTexture
 from draftutils.gui_utils import load_texture
 
 #---------------------------------------------------------------------------
-# Draft objects
+# Draft objects and functions
+#---------------------------------------------------------------------------
+
+import draftobjects.base
+_DraftObject = draftobjects.base.DraftObject
+
+import draftviewproviders.view_base
+_ViewProviderDraft = draftviewproviders.view_base.ViewProviderDraft
+_ViewProviderDraftAlt = draftviewproviders.view_base.ViewProviderDraftAlt
+_ViewProviderDraftPart = draftviewproviders.view_base.ViewProviderDraftPart
+
 #---------------------------------------------------------------------------
 
 from draftmake.make_circle import  make_circle
@@ -2805,14 +2815,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 #---------------------------------------------------------------------------
 # Python Features definitions
 #---------------------------------------------------------------------------
-import draftobjects.base
-_DraftObject = draftobjects.base.DraftObject
-
-import draftviewproviders.view_base
-_ViewProviderDraft = draftviewproviders.view_base.ViewProviderDraft
-_ViewProviderDraftAlt = draftviewproviders.view_base.ViewProviderDraftAlt
-_ViewProviderDraftPart = draftviewproviders.view_base.ViewProviderDraftPart
-
 
 class _ViewProviderDraftLink:
     "a view provider for link type object"
