@@ -213,15 +213,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         self.write_surfaces_constraints_contact(inpfileMain, True)
         self.write_surfaces_constraints_tie(inpfileMain, True)
-
-        if self.transform_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Node sets for transform constraint\n")
-            inpfileMain.write("** written by write_node_sets_constraints_transform\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_Transform.inp \n")
-            inpfileTransform = open(self.include + "_Node_Transform.inp", "w")
-            self.write_node_sets_constraints_transform(inpfileTransform)
-            inpfileTransform.close()
+        self.write_node_sets_constraints_transform(inpfileMain, True)
 
         if self.analysis_type == "thermomech" and self.temperature_objects:
             inpfileMain.write("\n***********************************************************\n")
@@ -584,7 +576,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for i in femobj["TieMasterFaces"]:
                 f.write("{},S{}\n".format(i[0], i[1]))
 
-    def write_node_sets_constraints_transform(self, f):
+    def write_node_sets_constraints_transform(self, f, splitted=None):
         if not self.transform_objects:
             return
         # write for all analysis types
@@ -592,10 +584,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get nodes
         self.get_constraints_transform_nodes()
 
-        # write nodes to file
+        write_name = "constraints_transform_node_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Node sets for transform constraint\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_node_sets_nodes_constraints_transform(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_node_sets_nodes_constraints_transform(f)
+
+    def write_node_sets_nodes_constraints_transform(self, f):
+        # write nodes to file
         for femobj in self.transform_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             trans_obj = femobj["Object"]
