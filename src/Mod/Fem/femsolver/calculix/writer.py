@@ -195,14 +195,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_element_sets_material_and_femelement_type(inpfileMain)
 
         # node sets and surface sets
-        if self.fixed_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Node sets for constraints\n")
-            inpfileNodes = open(self.include + "_Node_sets.inp", "w")
-            if self.fixed_objects:
-                inpfileMain.write("** written by write_node_sets_constraints_fixed\n")
-                self.write_node_sets_constraints_fixed(inpfileNodes)
-
+        self.write_node_sets_constraints_fixed(inpfileMain, True)
         self.write_node_sets_constraints_displacement(inpfileMain, True)
         self.write_node_sets_constraints_planerotation(inpfileMain, True)
         self.write_surfaces_constraints_contact(inpfileMain, True)
@@ -382,7 +375,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 for elid in ccx_elset["ccx_elset"]:
                     f.write(str(elid) + ",\n")
 
-    def write_node_sets_constraints_fixed(self, f):
+    def write_node_sets_constraints_fixed(self, f, splitted=None):
         if not self.fixed_objects:
             return
         # write for all analysis types
@@ -390,10 +383,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get nodes
         self.get_constraints_fixed_nodes()
 
-        # write nodes to file
+        write_name = "constraints_fixed_node_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Node sets for fixed constraint\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_node_sets_nodes_constraints_fixed(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_node_sets_nodes_constraints_fixed(f)
+
+    def write_node_sets_nodes_constraints_fixed(self, f):
+        # write nodes to file
         for femobj in self.fixed_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             fix_obj = femobj["Object"]

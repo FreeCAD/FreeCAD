@@ -4320,7 +4320,7 @@ Evolumes
 Evolumes
 
 ***********************************************************
-** Node sets for fixed constraint
+** constraints fixed node sets
 ** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
