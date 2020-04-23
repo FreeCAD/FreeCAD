@@ -114,7 +114,7 @@ protected:
 
     void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 
-    void _pasteClipboard(const char *name, int type=0);
+    void _pasteClipboard(const char *name, int type);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;

@@ -748,7 +748,7 @@ void SheetTableView::cutSelection()
 
 void SheetTableView::pasteClipboard()
 {
-    _pasteClipboard("Paste cell");
+    _pasteClipboard("Paste cell", Cell::PasteAll);
 }
 
 void SheetTableView::pasteValue()
