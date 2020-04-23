@@ -193,8 +193,9 @@ PyObject* PathPy::getCycleTime(PyObject * args)
 {
     double hFeed, vFeed, hRapid, vRapid;
     if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
-    return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
+        return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
     }
+    return 0;
 }
 
 // GCode methods
