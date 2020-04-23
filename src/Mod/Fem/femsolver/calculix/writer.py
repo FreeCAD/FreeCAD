@@ -195,17 +195,15 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_element_sets_material_and_femelement_type(inpfileMain)
 
         # node sets and surface sets
-        if self.fixed_objects or self.displacement_objects:
+        if self.fixed_objects:
             inpfileMain.write("\n***********************************************************\n")
             inpfileMain.write("** Node sets for constraints\n")
             inpfileNodes = open(self.include + "_Node_sets.inp", "w")
             if self.fixed_objects:
                 inpfileMain.write("** written by write_node_sets_constraints_fixed\n")
                 self.write_node_sets_constraints_fixed(inpfileNodes)
-            if self.displacement_objects:
-                inpfileMain.write("** written by write_node_sets_constraints_displacement\n")
-                self.write_node_sets_constraints_displacement(inpfileNodes)
 
+        self.write_node_sets_constraints_displacement(inpfileMain, True)
         self.write_node_sets_constraints_planerotation(inpfileMain, True)
         self.write_surfaces_constraints_contact(inpfileMain, True)
         self.write_surfaces_constraints_tie(inpfileMain, True)
@@ -415,7 +413,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 for n in femobj["Nodes"]:
                     f.write(str(n) + ",\n")
 
-    def write_node_sets_constraints_displacement(self, f):
+    def write_node_sets_constraints_displacement(self, f, splitted=None):
         if not self.displacement_objects:
             return
         # write for all analysis types
@@ -423,10 +421,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get nodes
         self.get_constraints_displacement_nodes()
 
-        # write nodes to file
+        write_name = "constraints_displacement_node_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Node sets for prescribed displacement constraint\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_node_sets_nodes_constraints_displacement(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_node_sets_nodes_constraints_displacement(f)
+
+    def write_node_sets_nodes_constraints_displacement(self, f):
+        # write nodes to file
         for femobj in self.displacement_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             disp_obj = femobj["Object"]
