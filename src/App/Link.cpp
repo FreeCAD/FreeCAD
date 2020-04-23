@@ -425,7 +425,7 @@ void LinkBaseExtension::checkCopyOnChange(
         return;
 
     linked = objs.back();
-    // linked->Visibility.setValue(false);
+    linked->Visibility.setValue(false);
     linkedProp = linked->getPropertyByName(prop.getName());
     if(linkedProp && linkedProp->getTypeId()==prop.getTypeId()) {
         std::unique_ptr<Property> pcopy(prop.Copy());
