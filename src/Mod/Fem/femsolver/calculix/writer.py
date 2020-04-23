@@ -195,7 +195,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_element_sets_material_and_femelement_type(inpfileMain)
 
         # node sets and surface sets
-        if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
+        if self.fixed_objects or self.displacement_objects:
             inpfileMain.write("\n***********************************************************\n")
             inpfileMain.write("** Node sets for constraints\n")
             inpfileNodes = open(self.include + "_Node_sets.inp", "w")
@@ -205,12 +205,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             if self.displacement_objects:
                 inpfileMain.write("** written by write_node_sets_constraints_displacement\n")
                 self.write_node_sets_constraints_displacement(inpfileNodes)
-            if self.planerotation_objects:
-                inpfileMain.write("** written by write_node_sets_constraints_planerotation\n")
-                self.write_node_sets_constraints_planerotation(inpfileNodes)
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_sets.inp \n")
-            inpfileNodes.close()
 
+        self.write_node_sets_constraints_planerotation(inpfileMain, True)
         self.write_surfaces_constraints_contact(inpfileMain, True)
         self.write_surfaces_constraints_tie(inpfileMain, True)
         self.write_node_sets_constraints_transform(inpfileMain, True)
@@ -439,7 +435,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for n in femobj["Nodes"]:
                 f.write(str(n) + ",\n")
 
-    def write_node_sets_constraints_planerotation(self, f):
+    def write_node_sets_constraints_planerotation(self, f, splitted=None):
         if not self.planerotation_objects:
             return
         # write for all analysis types
@@ -447,12 +443,25 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get nodes
         self.get_constraints_planerotation_nodes()
 
+        write_name = "constraints_planerotation_node_sets"
+        f.write("\n***********************************************************\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_node_sets_nodes_constraints_planerotation(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_node_sets_nodes_constraints_planerotation(f)
+
+    def write_node_sets_nodes_constraints_planerotation(self, f):
         # write nodes to file
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
-        f.write("\n***********************************************************\n")
-        f.write("** Node sets for plane rotation constraint\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         # info about self.constraint_conflict_nodes:
         # is used to check if MPC and constraint fixed and
         # constraint displacement share same nodes
