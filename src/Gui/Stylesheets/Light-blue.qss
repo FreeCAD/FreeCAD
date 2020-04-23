@@ -2014,6 +2014,7 @@ QTableView > QWidget > QSpinBox,
 QTableView > QWidget > QDoubleSpinBox,
 QTableView > QWidget > QLineEdit,
 QTableView > QWidget > QTextEdit,
+QTableView > QWidget > QPlainTextEdit,
 QTableView > QWidget > QTimeEdit,
 QTableView > QWidget > QDateEdit,
 QTableView > QWidget > QDateTimeEdit,
@@ -2040,12 +2041,14 @@ QTableView > QWidget > QSpinBox,
 QTableView > QWidget > QDoubleSpinBox,
 QTableView > QWidget > QLineEdit,
 QTableView > QWidget > QTextEdit,
+QTableView > QWidget > QPlainTextEdit,
 QTableView > QWidget > QTimeEdit,
 QTableView > QWidget > QDateEdit,
 QTableView > QWidget > QDateTimeEdit {
     color: black;
-    background-color: transparent;
-    border-color: transparent;
+    background-color: #f0f0f0;
+    border: none;
+    margin: 0px;
 }
 
 QTableView > QWidget > QComboBox:drop-down,
@@ -2071,14 +2074,28 @@ QTableView > QWidget > QSpinBox:focus,
 QTableView > QWidget > QDoubleSpinBox:focus,
 QTableView > QWidget > QLineEdit:focus,
 QTableView > QWidget > QTextEdit:focus,
+QTableView > QWidget > QPlainTextEdit:focus,
 QTableView > QWidget > QTimeEdit:focus,
 QTableView > QWidget > QDateEdit:focus,
 QTableView > QWidget > QDateTimeEdit:focus {
     color: #1b3774;
     selection-color: white;
     selection-background-color: #5e90fa;
-    border-color: #cbd8e6;
+    border: 1px solid #cbd8e6;
     background-color: #cbd8e6;
+}
+
+QTableView > QWidget > QComboBox:hover,
+QTableView > QWidget > QAbstractSpinBox:hover,
+QTableView > QWidget > QSpinBox:hover,
+QTableView > QWidget > QDoubleSpinBox:hover,
+QTableView > QWidget > QLineEdit:hover,
+QTableView > QWidget > QTextEdit:hover,
+QTableView > QWidget > QPlainTextEdit:hover,
+QTableView > QWidget > QTimeEdit:hover,
+QTableView > QWidget > QDateEdit:hover,
+QTableView > QWidget > QDateTimeEdit:hover {
+    background-color: #f5f5f5;
 }
 
 QTableView > QWidget > QComboBox:disabled,
@@ -2087,12 +2104,12 @@ QTableView > QWidget > QSpinBox:disabled,
 QTableView > QWidget > QDoubleSpinBox:disabled,
 QTableView > QWidget > QLineEdit:disabled,
 QTableView > QWidget > QTextEdit:disabled,
+QTableView > QWidget > QPlainTextEdit:disabled,
 QTableView > QWidget > QTimeEdit:disabled,
 QTableView > QWidget > QDateEdit:disabled,
 QTableView > QWidget > QDateTimeEdit:disabled {
     color: rgba(0,0,0,120);
-    background-color: transparent;
-    border-color: transparent;
+    background-color: #e6e6e6;
 }
 
 QTableView > QWidget > QComboBox:read-only,
@@ -2101,12 +2118,12 @@ QTableView > QWidget > QSpinBox:read-only,
 QTableView > QWidget > QDoubleSpinBox:read-only,
 QTableView > QWidget > QLineEdit:read-only,
 QTableView > QWidget > QTextEdit:read-only,
+QTableView > QWidget > QPlainTextEdit:read-only,
 QTableView > QWidget > QTimeEdit:read-only,
 QTableView > QWidget > QDateEdit:read-only,
 QTableView > QWidget > QDateTimeEdit:read-only {
     color: black;
-    background-color: transparent;
-    border-color: transparent;
+    background-color: #e6e6e6;
 }
 
 
