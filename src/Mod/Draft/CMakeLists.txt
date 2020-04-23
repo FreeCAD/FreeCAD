@@ -59,7 +59,9 @@ SET(Draft_utilities
 )
 
 SET(Draft_functions
-    draftmake/__init__.py
+    draftfunctions/__init__.py
+    draftfunctions/move.py
+    draftfunctions/rotate.py
 )
 
 SET(Draft_make_functions
