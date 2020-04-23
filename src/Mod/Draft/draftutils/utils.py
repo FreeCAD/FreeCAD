@@ -955,6 +955,33 @@ def get_movable_children(objectslist, recursive=True):
 getMovableChildren = get_movable_children
 
 
+def filter_objects_for_modifiers(objects, isCopied=False):
+    """
+    TODO: Describe
+    """
+    filteredObjects = []
+    for object in objects:
+        if hasattr(object, "MoveBase") and object.MoveBase and object.Base:
+            parents = []
+            for parent in object.Base.InList:
+                if parent.isDerivedFrom("Part::Feature"):
+                    parents.append(parent.Name)
+            if len(parents) > 1:
+                warningMessage = _tr("%s shares a base with %d other objects. Please check if you want to modify this.") % (object.Name, len(parents) - 1)
+                FreeCAD.Console.PrintError(warningMessage)
+                if App.GuiUp:
+                    import FreeCADGui as Gui
+                    Gui.getMainWindow().showMessage(warningMessage, 0)
+            filteredObjects.append(object.Base)
+        elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
+           FreeCAD.Console.PrintError(_tr("%s cannot be modified because its placement is readonly.") % obj.Name)
+           continue
+        else:
+           filteredObjects.append(object)
+    return filteredObjects
+
+
+filterObjectsForModifiers = filter_objects_for_modifiers
 def utf8_decode(text):
     r"""Decode the input string and return a unicode string.
 

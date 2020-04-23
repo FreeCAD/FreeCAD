@@ -141,6 +141,9 @@ from draftutils.utils import svg_patterns
 from draftutils.utils import getMovableChildren
 from draftutils.utils import get_movable_children
 
+from draftutils.utils import filterObjectsForModifiers
+from draftutils.utils import filter_objects_for_modifiers
+
 from draftutils.gui_utils import get3DView
 from draftutils.gui_utils import get_3d_view
 
@@ -905,27 +908,6 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
         rectArray(objectslist,arg1,arg2,arg3,arg4)
     else:
         polarArray(objectslist,arg1,arg2,arg3)
-
-def filterObjectsForModifiers(objects, isCopied=False):
-    filteredObjects = []
-    for object in objects:
-        if hasattr(object, "MoveBase") and object.MoveBase and object.Base:
-            parents = []
-            for parent in object.Base.InList:
-                if parent.isDerivedFrom("Part::Feature"):
-                    parents.append(parent.Name)
-            if len(parents) > 1:
-                warningMessage = translate("draft","%s shares a base with %d other objects. Please check if you want to modify this.") % (object.Name,len(parents) - 1)
-                FreeCAD.Console.PrintError(warningMessage)
-                if FreeCAD.GuiUp:
-                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
-            filteredObjects.append(object.Base)
-        elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-           FreeCAD.Console.PrintError(translate("Draft","%s cannot be modified because its placement is readonly.") % obj.Name)
-           continue
-        else:
-           filteredObjects.append(object)
-    return filteredObjects
 
 def rotateVertex(object, vertex_index, angle, center, axis):
     points = object.Points
