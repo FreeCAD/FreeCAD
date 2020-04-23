@@ -281,7 +281,7 @@ void SheetTableView::onRecompute() {
 void SheetTableView::onBind() {
     auto ranges = selectedRanges();
     if(ranges.size()>=1 && ranges.size()<=2) {
-        DlgBindSheet dlg(sheet,ranges,this);
+        DlgBindSheet dlg(sheet,ranges,Gui::getMainWindow());
         dlg.exec();
     }
 }
@@ -290,7 +290,7 @@ void SheetTableView::onConfSetup() {
     auto ranges = selectedRanges();
     if(ranges.empty())
         return;
-    DlgSheetConf dlg(sheet,ranges.back(),this);
+    DlgSheetConf dlg(sheet,ranges.back(),Gui::getMainWindow());
     dlg.exec();
 }
 
