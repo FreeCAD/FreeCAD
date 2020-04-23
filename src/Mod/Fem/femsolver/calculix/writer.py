@@ -214,15 +214,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_surfaces_constraints_contact(inpfileMain, True)
         self.write_surfaces_constraints_tie(inpfileMain, True)
         self.write_node_sets_constraints_transform(inpfileMain, True)
-
-        if self.analysis_type == "thermomech" and self.temperature_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Node sets for temperature constraint\n")
-            inpfileMain.write("** written by write_node_sets_constraints_temperature\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_Temp.inp \n")
-            inpfileNodeTemp = open(self.include + "_Node_Temp.inp", "w")
-            self.write_node_sets_constraints_temperature(inpfileNodeTemp)
-            inpfileNodeTemp.close()
+        self.write_node_sets_constraints_temperature(inpfileMain, True)
 
         # materials and fem element types
         self.write_materials(inpfileMain)
@@ -612,7 +604,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for n in femobj["Nodes"]:
                 f.write(str(n) + ",\n")
 
-    def write_node_sets_constraints_temperature(self, f):
+    def write_node_sets_constraints_temperature(self, f, splitted=None):
         if not self.temperature_objects:
             return
         if not self.analysis_type == "thermomech":
@@ -621,10 +613,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get nodes
         self.get_constraints_temperature_nodes()
 
-        # write nodes to file
+        write_name = "constraints_temperature_node_sets"
         f.write("\n***********************************************************\n")
-        f.write("** Node sets for temperature constraints\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_node_sets_nodes_constraints_temperature(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_node_sets_nodes_constraints_temperature(f)
+
+    def write_node_sets_nodes_constraints_temperature(self, f):
+        # write nodes to file
         for femobj in self.temperature_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             temp_obj = femobj["Object"]
