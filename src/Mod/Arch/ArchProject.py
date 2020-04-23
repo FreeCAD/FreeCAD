@@ -22,7 +22,7 @@
 #***************************************************************************
 
 """This module provides tools to build Project objects.  Project objects are
-objects specifically for better IFC compatability, allowing the user to tweak
+objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 

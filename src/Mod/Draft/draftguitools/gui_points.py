@@ -116,7 +116,7 @@ class Point(gui_base_original.Creator):
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
                 # The command to run is built as a series of text strings
-                # to be commited through the `draftutils.todo.ToDo` class.
+                # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object

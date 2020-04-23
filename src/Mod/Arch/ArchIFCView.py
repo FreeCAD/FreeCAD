@@ -86,7 +86,7 @@ class IfcContextUI:
         self.baseLayout.addLayout(self.createFormEntry("scale", "Scale"))
 
     def prefillMapConversionForm(self):
-        """Prefills each of the form entries with the exising value.
+        """Prefills each of the form entries with the existing value.
 
         Gets the existing value from the object's IfcData, specifically the complex
         attribute, RepresentationContexts.

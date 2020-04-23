@@ -198,7 +198,7 @@ class DraftTool:
         Parameters
         ----------
         name: str
-            An arbitraty string that indicates the name of the operation
+            An arbitrary string that indicates the name of the operation
             to run.
 
         func: list of str
