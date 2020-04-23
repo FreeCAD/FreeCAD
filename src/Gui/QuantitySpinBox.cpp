@@ -67,7 +67,8 @@ public:
       maximum(DOUBLE_MAX),
       minimum(-DOUBLE_MAX),
       singleStep(1.0),
-      userScale(1.0)
+      userScale(1.0),
+      ignoreSizeHint(false)
     {
     }
     ~QuantitySpinBoxPrivate()
@@ -236,6 +237,7 @@ end:
     std::unique_ptr<Base::UnitsSchema> scheme;
     QString userUnitStr;
     double userScale;
+    bool ignoreSizeHint;
 };
 }
 
@@ -268,6 +270,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 
 QuantitySpinBox::~QuantitySpinBox()
 {
+}
+
+void QuantitySpinBox::ignoreSizeHint(bool enable)
+{
+    Q_D(QuantitySpinBox);
+    d->ignoreSizeHint = enable;
 }
 
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
@@ -790,6 +798,10 @@ void QuantitySpinBox::stepBy(int steps)
 QSize QuantitySpinBox::sizeHint() const
 {
     Q_D(const QuantitySpinBox);
+
+    if(d->ignoreSizeHint)
+        return QSize();
+
     ensurePolished();
 
     const QFontMetrics fm(fontMetrics());
@@ -820,6 +832,10 @@ QSize QuantitySpinBox::sizeHint() const
 QSize QuantitySpinBox::minimumSizeHint() const
 {
     Q_D(const QuantitySpinBox);
+
+    if(d->ignoreSizeHint)
+        return QSize();
+
     ensurePolished();
 
     const QFontMetrics fm(fontMetrics());

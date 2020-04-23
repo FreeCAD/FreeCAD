@@ -95,8 +95,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
         }
         case Cell::EditQuantity: {
             auto spinbox = new Gui::QuantitySpinBox(parent);
-            spinbox->setMinimumHeight(0);
-            spinbox->setMinimumWidth(0);
+            spinbox->ignoreSizeHint(true);
             if(cell->isPersistentEditMode())
                 spinbox->setContextMenuPolicy(Qt::NoContextMenu);
             connect(spinbox, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));

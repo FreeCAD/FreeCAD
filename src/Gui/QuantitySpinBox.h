@@ -134,6 +134,8 @@ public:
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 
+    void ignoreSizeHint(bool enable=true);
+
 public Q_SLOTS:
     /// Sets the field with a quantity
     void setValue(const Base::Quantity& val);
