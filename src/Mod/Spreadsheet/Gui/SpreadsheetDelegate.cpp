@@ -95,6 +95,8 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
         }
         case Cell::EditQuantity: {
             auto spinbox = new Gui::QuantitySpinBox(parent);
+            spinbox->setMinimumHeight(0);
+            spinbox->setMinimumWidth(0);
             if(cell->isPersistentEditMode())
                 spinbox->setContextMenuPolicy(Qt::NoContextMenu);
             connect(spinbox, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
@@ -260,6 +262,9 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
 void SpreadsheetDelegate::setModelData(QWidget *editor,
     QAbstractItemModel *model, const QModelIndex &index) const
 {
+    if(updating)
+        return;
+
     TextEdit *edit = qobject_cast<TextEdit *>(editor);
     if (edit) {
         model->setData(index, edit->toPlainText());

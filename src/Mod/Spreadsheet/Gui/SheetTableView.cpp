@@ -33,6 +33,7 @@
 # include <QToolTip>
 #endif
 
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
@@ -43,6 +44,7 @@
 #include "../App/Utils.h"
 #include "../App/Cell.h"
 #include <App/Range.h>
+#include "SpreadsheetDelegate.h"
 #include "SheetTableView.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
@@ -955,6 +957,10 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
         )
 {
     App::Range range(topLeft.row(),topLeft.column(),bottomRight.row(),bottomRight.column());
+    auto delegate = qobject_cast<SpreadsheetDelegate*>(itemDelegate());
+    bool _dummy = false;
+    bool &updating = delegate?delegate->updating:_dummy;
+    Base::StateLocker guard(updating);
     do {
         auto address = *range;
         auto cell = sheet->getCell(address);

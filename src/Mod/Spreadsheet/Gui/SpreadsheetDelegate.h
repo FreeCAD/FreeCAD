@@ -33,6 +33,8 @@ class Sheet;
 
 namespace SpreadsheetGui {
 
+class SheetTableView;
+
 class SpreadsheetDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -54,6 +56,8 @@ private:
     Spreadsheet::Sheet * sheet;
     bool commiting = false;
     mutable bool updating = false;
+
+    friend class SheetTableView;
 };
 
 }
