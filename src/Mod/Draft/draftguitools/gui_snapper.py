@@ -1347,7 +1347,7 @@ class Snapper:
             if hasattr(App, "DraftWorkingPlane"):
                 self.ui.displayPoint(self.pt, last,
                                      plane=App.DraftWorkingPlane,
-                                     mask=App.Snapper.affinity)
+                                     mask=Gui.Snapper.affinity)
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
