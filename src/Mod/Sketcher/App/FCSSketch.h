@@ -125,6 +125,13 @@ private:
     struct GeoDef {
         GeoDef() : geo(nullptr),type(GeoType::None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
+                   
+        GeoDef(const GeoDef &) = delete;
+        GeoDef & operator=(const GeoDef &) = delete;
+        
+        GeoDef(GeoDef &&) = default;
+        GeoDef & operator=(GeoDef &&) = default;
+        
         std::unique_ptr<Part::Geometry>     geo;            // pointer to the geometry
         GeoType                             type;           // type of the geometry
         bool                                external;       // flag for external geometries
