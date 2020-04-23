@@ -98,7 +98,7 @@ class Rectangle(gui_base_original.Creator):
             height = -height
         try:
             # The command to run is built as a series of text strings
-            # to be commited through the `draftutils.todo.ToDo` class.
+            # to be committed through the `draftutils.todo.ToDo` class.
             rot, sup, pts, fil = self.getStrings()
             base = p1
             if length < 0:

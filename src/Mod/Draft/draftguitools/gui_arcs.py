@@ -298,7 +298,7 @@ class Arc(gui_base_original.Creator):
         if self.closedCircle:
             try:
                 # The command to run is built as a series of text strings
-                # to be commited through the `draftutils.todo.ToDo` class.
+                # to be committed through the `draftutils.todo.ToDo` class.
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
                     _base = DraftVecUtils.toString(self.center)
@@ -336,7 +336,7 @@ class Arc(gui_base_original.Creator):
             except Exception:
                 _err("Draft: error delaying commit")
         else:
-            # Not a closed circle, therfore a circular arc
+            # Not a closed circle, therefore a circular arc
             sta = math.degrees(self.firstangle)
             end = math.degrees(self.firstangle + self.angle)
             if end < sta:

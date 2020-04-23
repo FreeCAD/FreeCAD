@@ -163,7 +163,7 @@ class BSpline(gui_lines.Line):
             todo.ToDo.delay(self.doc.removeObject, old)
         if len(self.node) > 1:
             # The command to run is built as a series of text strings
-            # to be commited through the `draftutils.todo.ToDo` class.
+            # to be committed through the `draftutils.todo.ToDo` class.
             try:
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")

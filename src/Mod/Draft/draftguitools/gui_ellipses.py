@@ -92,7 +92,7 @@ class Ellipse(gui_base_original.Creator):
         r2 = (p2.sub(p1).Length)/2
         try:
             # The command to run is built as a series of text strings
-            # to be commited through the `draftutils.todo.ToDo` class.
+            # to be committed through the `draftutils.todo.ToDo` class.
             rot, sup, pts, fil = self.getStrings()
             if r2 > r1:
                 r1, r2 = r2, r1

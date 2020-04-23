@@ -142,7 +142,7 @@ class Line(gui_base_original.Creator):
         if len(self.node) > 1:
             Gui.addModule("Draft")
             # The command to run is built as a series of text strings
-            # to be commited through the `draftutils.todo.ToDo` class.
+            # to be committed through the `draftutils.todo.ToDo` class.
             if (len(self.node) == 2
                     and utils.getParam("UsePartPrimitives", False)):
                 # Insert a Part::Primitive object
@@ -344,7 +344,7 @@ class Wire(Line):
 
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
-                    # to be commited through the `draftutils.todo.ToDo` class
+                    # to be committed through the `draftutils.todo.ToDo` class
                     _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')

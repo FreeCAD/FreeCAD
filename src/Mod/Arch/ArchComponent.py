@@ -382,7 +382,7 @@ class Component(ArchIFC.IfcProduct):
         Recursively crawl hosts until a Floor or BuildingPart is found, then
         return the value of its Height property.
 
-        Paramters
+        Parameters
         ---------
         obj: <App::FeaturePython>
             The component object.
@@ -947,7 +947,7 @@ class Component(ArchIFC.IfcProduct):
         ground.
 
         The horizontal area is the area of the shape, when projected onto a
-        hyperplane across the XY axises, IE: the area when viewed from a bird's
+        hyperplane across the XY axes, IE: the area when viewed from a bird's
         eye view.
 
         The perimeter length is the length of the outside edges of this bird's
@@ -1538,7 +1538,7 @@ class ViewProviderComponent:
 
         Note that in this case, the hosts are the objects referenced by Arch
         Rebar's "Host" and/or "Hosts" properties specifically. Only Arch Rebar
-        has these properies.
+        has these properties.
 
         Returns
         -------
@@ -1796,7 +1796,7 @@ class ComponentTaskPanel:
     def getIcon(self,obj):
         """Get the path to the icons, of the items that fill the tree widget.
 
-        Paramters
+        Parameters
         ---------
         obj: <App::DocumentObject>
             The object being edited.

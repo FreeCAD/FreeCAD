@@ -124,8 +124,8 @@ class Snapper:
         self.callbackMove = None
         self.snapObjectIndex = 0
 
-        # snap keys, it's important tha they are in this order for
-        # saving in preferences and for properly restore the toolbar
+        # snap keys, it's important that they are in this order for
+        # saving in preferences and for properly restoring the toolbar
         self.snaps = ['Lock',           # 0 
                       'Near',           # 1 former "passive" snap
                       'Extension',      # 2
@@ -1514,7 +1514,7 @@ class Snapper:
 
 
     def get_snap_toolbar(self):
-        """Retuns snap toolbar object."""
+        """Returns snap toolbar object."""
         mw = Gui.getMainWindow()
         if mw:
             toolbar = mw.findChild(QtGui.QToolBar, "Draft Snap")
