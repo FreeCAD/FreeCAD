@@ -60,12 +60,6 @@
             <property name="toolTip">
              <string>First or Third Angle</string>
             </property>
-            <property name="editable">
-             <bool>false</bool>
-            </property>
-            <property name="currentText">
-             <string>First Angle</string>
-            </property>
             <item>
              <property name="text">
               <string>First Angle</string>

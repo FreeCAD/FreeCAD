@@ -72,8 +72,9 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 //    double labelDefault = 8.0;
     double labelDefault = Preferences::labelFontSizeMM();
     plsb_LabelSize->setValue(labelDefault);
-    pfb_LabelFont->setCurrentText(Preferences::labelFontQString());
-
+    QFont prefFont(Preferences::labelFontQString());
+    pfb_LabelFont->setCurrentFont(prefFont);
+//    pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
 
     pfc_DefTemp->setFileName(Preferences::defaultTemplate());
     pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
