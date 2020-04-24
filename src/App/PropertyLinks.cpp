@@ -3771,9 +3771,14 @@ void PropertyXLink::restoreDocument(const App::Document &doc) {
 std::map<App::Document*,std::set<App::Document*> > 
 PropertyXLink::getDocumentOutList(App::Document *doc) {
     std::map<App::Document*,std::set<App::Document*> > ret;
+
     for(auto &v : _DocInfoMap) {
         for(auto link : v.second->links) {
-            if(!v.second->pcDoc) continue;
+            if(!v.second->pcDoc
+                    || link->testStatus(Property::PropTransient)
+                    || link->testStatus(Property::Transient)
+                    || link->testStatus(Property::PropNoPersist))
+                continue;
             auto obj = dynamic_cast<App::DocumentObject*>(link->getContainer());
             if(!obj || !obj->getNameInDocument() || !obj->getDocument())
                 continue;
