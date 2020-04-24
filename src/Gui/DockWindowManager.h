@@ -236,9 +236,14 @@ public:
 
 protected:
     void enterEvent(QEvent*);
+    void leaveEvent(QEvent*);
+    void hideEvent(QHideEvent*);
+    void paintEvent(QPaintEvent*);
 
 private:
     OverlayTabWidget* owner;
+    bool drawLine = false;
+    int pos;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY

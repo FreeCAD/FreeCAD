@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QPointer>
+# include <QPainter>
 # include <QDockWidget>
 # include <QMdiArea>
 # include <QTabBar>
@@ -115,11 +116,51 @@ const QList<DockWindowItem>& DockWindowItems::dockWidgets() const
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
     :QWidget(tabOverlay->parentWidget()), owner(tabOverlay)
 {
+    pos = owner->tabPosition();
 }
 
 void OverlayProxyWidget::enterEvent(QEvent *)
 {
+    if(!owner->count())
+        return;
+    drawLine = true;
+    update();
     DockWindowManager::instance()->refreshOverlay();
+}
+
+void OverlayProxyWidget::leaveEvent(QEvent *)
+{
+    drawLine = false;
+    update();
+}
+
+void OverlayProxyWidget::hideEvent(QHideEvent *)
+{
+    drawLine = false;
+    update();
+}
+
+void OverlayProxyWidget::paintEvent(QPaintEvent *)
+{
+    if(!drawLine)
+        return;
+    QPainter painter(this);
+    painter.setPen(QPen(Qt::black, 2));
+    QSize s = this->size();
+    switch(pos) {
+    case QTabWidget::West:
+        painter.drawLine(s.width()-2, 0, s.width()-2, s.height());
+        break;
+    case QTabWidget::East:
+        painter.drawLine(1, 0, 1, s.height()-2);
+        break;
+    case QTabWidget::North:
+        painter.drawLine(0, s.height()-2, s.width(), s.height()-2);
+        break;
+    case QTabWidget::South:
+        painter.drawLine(0, 1, s.width(), 1);
+        break;
+    }
 }
 
 OverlayToolButton::OverlayToolButton(QWidget *parent)
@@ -133,11 +174,6 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     // otherwise the lost focus will leak to the parent, i.e. MdiArea, which may
     // cause unexpected Mdi sub window switching.
     setFocusPolicy(Qt::StrongFocus);
-
-    proxyWidget = new OverlayProxyWidget(this);
-    proxyWidget->hide();
-    proxyWidget->setStyleSheet(QLatin1String("background-color: transparent;"));
-    _setOverlayMode(proxyWidget,true);
 
     switch(pos) {
     case Qt::LeftDockWidgetArea:
@@ -155,8 +191,12 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     default:
         break;
     }
-    setOverlayMode(true);
 
+    proxyWidget = new OverlayProxyWidget(this);
+    proxyWidget->hide();
+    _setOverlayMode(proxyWidget,true);
+
+    setOverlayMode(true);
     hide();
 
 #define TITLE_BUTTON_COLOR "# c #101010"
