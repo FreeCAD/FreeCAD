@@ -1989,6 +1989,9 @@ bool Document::canClose (bool checkModify, bool checkLink)
     if (checkLink && App::PropertyXLink::getDocumentInList(getDocument()).size())
         return true;
 
+    if (getDocument()->testStatus(App::Document::TempDoc))
+        return true;
+
     bool ok = true;
     if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
         const char *docName = getDocument()->Label.getValue();
