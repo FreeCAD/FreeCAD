@@ -540,9 +540,9 @@ public:
                 "QLineEdit { background : palette(base);}"
                 "QAbstractSpinBox { background : palette(base);}"
                 "QTabBar {border: none;}"
-                "QTabBar::tab {background-color: transparent; border: 1px solid palette(dark);}"
-                "QTabBar::tab:selected {background-color: palette(mid);}"
-                "QTabBar::tab:hover {background-color: palette(light);}"
+                "QTabBar::tab {color: #1a1a1a; background-color: transparent; border: 1px solid palette(dark);}"
+                "QTabBar::tab:selected {color: palette(text); background-color: palette(mid);}"
+                "QTabBar::tab:hover {color: palette(text); background-color: palette(light);}"
                 "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
                 "QTreeWidget, QListWidget {background: palette(base)}" // necessary for checkable item to work in linux
                 "QToolTip {background-color: palette(base);}"
