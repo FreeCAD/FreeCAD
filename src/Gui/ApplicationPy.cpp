@@ -1557,25 +1557,33 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
         return 0;                             // NULL triggers exception
     PY_TRY {
         Base::FileInfo fi(path);
-        if (!fi.isFile() || !fi.exists()) {
+        if (!fi.exists()) {
             PyErr_Format(PyExc_IOError, "File %s doesn't exist.", path);
             return 0;
         }
 
+        std::stringstream str;
         std::string module = mod;
         if (module.empty()) {
-            std::string ext = fi.extension();
-            std::vector<std::string> modules = App::GetApplication().getImportModules(ext.c_str());
-            if (modules.empty()) {
-                PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
-                return 0;
-            }
-            else {
-                module = modules.front();
+            if((fi.isDir() && Base::FileInfo(fi.filePath()+"/Document.xml").exists()) 
+                    || fi.fileName() == "Document.xml") 
+            {
+                if(!fi.isDir()) 
+                    fi.setFile(fi.dirPath());
+            } else {
+                std::string ext = fi.extension();
+                std::vector<std::string> modules = App::GetApplication().getImportModules(ext.c_str());
+                if (modules.empty()) {
+                    PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
+                    return 0;
+                }
+                else {
+                    module = modules.front();
+                }
             }
         }
 
-        Application::Instance->open(path,module.c_str());
+        Application::Instance->open(fi.filePath().c_str(), module.c_str());
 
         Py_Return;
     } PY_CATCH

@@ -527,7 +527,7 @@ void Application::open(const char* FileName, const char* Module)
 
     if (Module != 0) {
         try {
-            if (File.hasExtension("FCStd")) {
+            if (File.isDir() || File.hasExtension("FCStd")) {
                 bool handled = false;
                 std::string filepath = File.filePath();
                 for (auto &v : d->documents) {
