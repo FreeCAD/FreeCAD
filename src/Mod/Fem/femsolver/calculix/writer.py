@@ -231,16 +231,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_force(inpfileMain, True)
         self.write_constraints_pressure(inpfileMain, True)
         self.write_constraints_temperature(inpfileMain)
-
-        if self.analysis_type == "thermomech" and self.heatflux_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Convective heat transfer (heat flux)\n")
-            inpfileMain.write("** written by write_constraints_heatflux\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_Heatlfux.inp \n")
-            inpfileHeatflux = open(self.include + "_Node_Heatlfux.inp", "w")
-            self.write_constraints_heatflux(inpfileHeatflux)
-            inpfileHeatflux.close()
-
+        self.write_constraints_heatflux(inpfileMain, True)
         self.write_constraints_fluidsection(inpfileMain)
 
         # output and step end
@@ -1279,16 +1270,29 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 ))
                 f.write("\n")
 
-    def write_constraints_heatflux(self, f):
+    def write_constraints_heatflux(self, f, splitted=None):
         if not self.heatflux_objects:
             return
         if not self.analysis_type == "thermomech":
             return
 
-        # write constraint to file
+        write_name = "constraints_heatflux_element_face_heatflux"
         f.write("\n***********************************************************\n")
-        f.write("** Heatflux constraints\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_faceheatflux_constraints_heatflux(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_faceheatflux_constraints_heatflux(f)
+
+    def write_faceheatflux_constraints_heatflux(self, f):
+        # write heat flux faces to file
         for hfobj in self.heatflux_objects:
             heatflux_obj = hfobj["Object"]
             f.write("** " + heatflux_obj.Label + "\n")

@@ -165,7 +165,7 @@ FemConstraintTemperature,11,11,310.93
 
 
 ***********************************************************
-** Heatflux constraints
+** constraints heatflux element face heatflux
 ** written by write_constraints_heatflux function
 ** FemConstraintHeatflux
 *FILM
