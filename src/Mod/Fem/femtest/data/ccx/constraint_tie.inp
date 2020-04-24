@@ -18634,7 +18634,7 @@ ConstraintFixed,3
 
 
 ***********************************************************
-** Node loads Constraints
+** constraints force node loads
 ** written by write_constraints_force function
 *CLOAD
 ** ConstraintForce

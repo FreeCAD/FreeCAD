@@ -228,15 +228,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
-
-        if self.force_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Node loads\n")
-            inpfileMain.write("** written by write_constraints_force\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_Force.inp \n")
-            inpfileForce = open(self.include + "_Node_Force.inp", "w")
-            self.write_constraints_force(inpfileForce)
-            inpfileForce.close()
+        self.write_constraints_force(inpfileMain, True)
 
         if self.pressure_objects:
             inpfileMain.write("\n***********************************************************\n")
@@ -1174,7 +1166,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # different element sets for different density
         # are written in the material element sets already
 
-    def write_constraints_force(self, f):
+    def write_constraints_force(self, f, splitted=None):
         if not self.force_objects:
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
@@ -1183,10 +1175,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # check shape type of reference shape and get node loads
         self.get_constraints_force_nodeloads()
 
-        # write node loads to file
+        write_name = "constraints_force_node_loads"
         f.write("\n***********************************************************\n")
-        f.write("** Node loads Constraints\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_nodeloads_constraints_force(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_nodeloads_constraints_force(f)
+
+    def write_nodeloads_constraints_force(self, f):
+        # write node loads to file
         f.write("*CLOAD\n")
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
