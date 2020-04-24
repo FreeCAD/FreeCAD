@@ -229,16 +229,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_displacement(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
         self.write_constraints_force(inpfileMain, True)
-
-        if self.pressure_objects:
-            inpfileMain.write("\n***********************************************************\n")
-            inpfileMain.write("** Element + CalculiX face + load in [MPa]\n")
-            inpfileMain.write("** written by write_constraints_pressure\n")
-            inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Pressure.inp \n")
-            inpfilePressure = open(self.include + "_Pressure.inp", "w")
-            self.write_constraints_pressure(inpfilePressure)
-            inpfilePressure.close()
-
+        self.write_constraints_pressure(inpfileMain, True)
         self.write_constraints_temperature(inpfileMain)
 
         if self.analysis_type == "thermomech" and self.heatflux_objects:
@@ -1213,7 +1204,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write("\n")
             f.write("\n")
 
-    def write_constraints_pressure(self, f):
+    def write_constraints_pressure(self, f, splitted=None):
         if not self.pressure_objects:
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
@@ -1222,10 +1213,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get the faces and face numbers
         self.get_constraints_pressure_faces()
 
-        # write face loads to file
+        write_name = "constraints_pressure_element_face_loads"
         f.write("\n***********************************************************\n")
-        f.write("** Element + CalculiX face + load in [MPa]\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if splitted is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_faceloads_constraints_pressure(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_faceloads_constraints_pressure(f)
+
+    def write_faceloads_constraints_pressure(self, f):
+        # write face loads to file
         for femobj in self.pressure_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             prs_obj = femobj["Object"]

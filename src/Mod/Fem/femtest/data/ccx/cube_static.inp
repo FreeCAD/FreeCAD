@@ -559,7 +559,7 @@ FemConstraintFixed,3
 
 
 ***********************************************************
-** Element + CalculiX face + load in [MPa]
+** constraints pressure element face loads
 ** written by write_constraints_pressure function
 ** FemConstraintPressure
 *DLOAD
