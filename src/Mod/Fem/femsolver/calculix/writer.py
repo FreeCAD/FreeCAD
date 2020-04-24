@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import codecs
+import io
 import os
 import six
 import sys
@@ -88,10 +88,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         FreeCAD.Console.PrintLog(
             "writerbaseCcx --> self.file_name  -->  " + self.file_name + "\n"
         )
-        if self.solver_obj.SplitInputWriter is True:
-            self.write_calculix_splitted_input_file()
-        else:
-            self.write_calculix_one_input_file()
+        self.write_calculix_input()
         writing_time_string = (
             "Writing time CalculiX input file: {} seconds"
             .format(round((time.process_time() - timestart), 2))
@@ -106,114 +103,54 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             )
             return ""
 
-    def write_calculix_one_input_file(self):
+    def write_calculix_input(self):
+        if self.solver_obj.SplitInputWriter is True:
+            self.split_inpfile = True
+        else:
+            self.split_inpfile = False
 
         # mesh
-        self.femmesh.writeABAQUS(self.file_name, 1, False)
-        # reopen file with "append" and add all the rest
-        inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
-        inpfile.write("\n\n")
-
-        # Check to see if fluid sections are in analysis and use D network element type
-        if self.fluidsection_objects:
-            inpfile.close()
-            meshtools.write_D_network_element_to_inputfile(self.file_name)
-            inpfile = open(self.file_name, "a")
-
-        # element and material sets
-        self.write_element_sets_material_and_femelement_type(inpfile)
-
-        # node sets and surface sets
-        self.write_node_sets_constraints_fixed(inpfile)
-        self.write_node_sets_constraints_displacement(inpfile)
-        self.write_node_sets_constraints_planerotation(inpfile)
-        self.write_surfaces_constraints_contact(inpfile)
-        self.write_surfaces_constraints_tie(inpfile)
-        self.write_node_sets_constraints_transform(inpfile)
-        self.write_node_sets_constraints_temperature(inpfile)
-
-        # materials and fem element types
-        self.write_materials(inpfile)
-        self.write_constraints_initialtemperature(inpfile)
-        self.write_femelementsets(inpfile)
-        # Fluid section: Inlet and Outlet requires special element definition
-        if self.fluidsection_objects:
-            if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
-                inpfile.close()
-                meshtools.use_correct_fluidinout_ele_def(
-                    self.FluidInletoutlet_ele,
-                    self.file_name,
-                    self.fluid_inout_nodes_file
-                )
-                inpfile = open(self.file_name, "a")
-
-        # constraints independent from steps
-        self.write_constraints_planerotation(inpfile)
-        self.write_constraints_contact(inpfile)
-        self.write_constraints_tie(inpfile)
-        self.write_constraints_transform(inpfile)
-
-        # step begin
-        self.write_step_begin(inpfile)
-
-        # constraints dependent from steps
-        self.write_constraints_fixed(inpfile)
-        self.write_constraints_displacement(inpfile)
-        self.write_constraints_selfweight(inpfile)
-        self.write_constraints_force(inpfile)
-        self.write_constraints_pressure(inpfile)
-        self.write_constraints_temperature(inpfile)
-        self.write_constraints_heatflux(inpfile)
-        self.write_constraints_fluidsection(inpfile)
-
-        # output and step end
-        self.write_outputs_types(inpfile)
-        self.write_step_end(inpfile)
-
-        # footer
-        self.write_footer(inpfile)
-        inpfile.close()
-
-    def write_calculix_splitted_input_file(self):
-
-        # mesh
-        inpfileMain = open(self.file_name, "w", encoding="utf-8")
-        inpfileMain.write("***********************************************************\n")
-        inpfileMain.write("** Nodes and Elements\n")
-        inpfileMain.write("** written by femmesh.writeABAQUS\n")
-        inpfileMain.write("*INCLUDE,INPUT=" + self.mesh_name + "_Node_Elem_sets.inp \n")
-        self.femmesh.writeABAQUS(self.include + "_Node_Elem_sets.inp", 1, False)
-        inpfileNodesElem = open(self.include + "_Node_Elem_sets.inp", "a")
-        inpfileNodesElem.write("\n***********************************************************\n")
-        inpfileNodesElem.close()
-
-        # Check to see if fluid sections are in analysis and use D network element type
-        if self.fluidsection_objects:
-            meshtools.write_D_network_element_to_inputfile(self.include + "_Node_Elem_sets.inp")
+        inpfileMain = self.write_mesh(self.split_inpfile)
 
         # element and material sets
         self.write_element_sets_material_and_femelement_type(inpfileMain)
 
         # node sets and surface sets
-        self.write_node_sets_constraints_fixed(inpfileMain, True)
-        self.write_node_sets_constraints_displacement(inpfileMain, True)
-        self.write_node_sets_constraints_planerotation(inpfileMain, True)
-        self.write_surfaces_constraints_contact(inpfileMain, True)
-        self.write_surfaces_constraints_tie(inpfileMain, True)
-        self.write_node_sets_constraints_transform(inpfileMain, True)
-        self.write_node_sets_constraints_temperature(inpfileMain, True)
+        self.write_node_sets_constraints_fixed(inpfileMain, self.split_inpfile)
+        self.write_node_sets_constraints_displacement(inpfileMain, self.split_inpfile)
+        self.write_node_sets_constraints_planerotation(inpfileMain, self.split_inpfile)
+        self.write_surfaces_constraints_contact(inpfileMain, self.split_inpfile)
+        self.write_surfaces_constraints_tie(inpfileMain, self.split_inpfile)
+        self.write_node_sets_constraints_transform(inpfileMain, self.split_inpfile)
+        self.write_node_sets_constraints_temperature(inpfileMain, self.split_inpfile)
 
         # materials and fem element types
         self.write_materials(inpfileMain)
         self.write_constraints_initialtemperature(inpfileMain)
         self.write_femelementsets(inpfileMain)
-        # Fluid section: Inlet and Outlet requires special element definition
+
+        # Fluid sections:
+        # Inlet and Outlet requires special element definition
+        # some data from the elsets are needed thus this can not be moved
+        # to mesh writing TODO it would be much better if this would be
+        # at mesh writing as the mesh will be changed
         if self.fluidsection_objects:
             if is_fluid_section_inlet_outlet(self.ccx_elsets) is True:
-                meshtools.use_correct_fluidinout_ele_def(
-                    self.FluidInletoutlet_ele, self.mesh_name + "_Node_Elem_sets.inp",
-                    self.fluid_inout_nodes_file
-                )
+                if self.split_inpfile is True:
+                    meshtools.use_correct_fluidinout_ele_def(
+                        self.FluidInletoutlet_ele,
+                        # use mesh file split, see write_mesh method split_mesh_file_path
+                        join(self.dir_name, self.mesh_name + "_femesh.inp"),
+                        self.fluid_inout_nodes_file
+                    )
+                else:
+                    inpfileMain.close()
+                    meshtools.use_correct_fluidinout_ele_def(
+                        self.FluidInletoutlet_ele,
+                        self.file_name,
+                        self.fluid_inout_nodes_file
+                    )
+                    inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
 
         # constraints independent from steps
         self.write_constraints_planerotation(inpfileMain)
@@ -228,10 +165,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
-        self.write_constraints_force(inpfileMain, True)
-        self.write_constraints_pressure(inpfileMain, True)
+        self.write_constraints_force(inpfileMain, self.split_inpfile)
+        self.write_constraints_pressure(inpfileMain, self.split_inpfile)
         self.write_constraints_temperature(inpfileMain)
-        self.write_constraints_heatflux(inpfileMain, True)
+        self.write_constraints_heatflux(inpfileMain, self.split_inpfile)
         self.write_constraints_fluidsection(inpfileMain)
 
         # output and step end
@@ -241,6 +178,37 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # footer
         self.write_footer(inpfileMain)
         inpfileMain.close()
+
+    def write_mesh(self, splitted=None):
+        # write mesh to file
+        if splitted is True:
+            write_name = "femesh"
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            split_mesh_file_path = join(self.dir_name, file_name_splitt)
+            self.femmesh.writeABAQUS(split_mesh_file_path, 1, False)
+
+            # Check to see if fluid sections are in analysis and use D network element type
+            if self.fluidsection_objects:
+                meshtools.write_D_network_element_to_inputfile(split_mesh_file_path)
+
+            inpfile = io.open(self.file_name, "w", encoding="utf-8")
+            inpfile.write("***********************************************************\n")
+            inpfile.write("** {}\n".format(write_name))
+            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+
+        else:
+            self.femmesh.writeABAQUS(self.file_name, 1, False)
+
+            # Check to see if fluid sections are in analysis and use D network element type
+            if self.fluidsection_objects:
+                # inpfile is closed
+                meshtools.write_D_network_element_to_inputfile(self.file_name)
+
+            # reopen file with "append" to add all the rest
+            inpfile = io.open(self.file_name, "a", encoding="utf-8")
+            inpfile.write("\n\n")
+
+        return inpfile
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write("\n***********************************************************\n")
