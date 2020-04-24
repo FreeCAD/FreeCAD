@@ -101,6 +101,7 @@ public:
     FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
     FC_VIEW_PARAM(NaviWidgetSize,int,Int,132) \
     FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true) \
+    FC_VIEW_PARAM(DockOverlayDelay,int,Int,200) \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
 

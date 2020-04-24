@@ -1050,13 +1050,13 @@ struct DockWindowManagerP
         ,_actions({&_actOverlay,&_actFloat,&_actClose})
     {
         Application::Instance->signalActivateView.connect([this](const MDIView *) {
-            _timer.start(100);
+            _timer.start(ViewParams::getDockOverlayDelay());
         });
         Application::Instance->signalInEdit.connect([this](const ViewProviderDocumentObject &) {
-            _timer.start(100);
+            _timer.start(ViewParams::getDockOverlayDelay());
         });
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject &) {
-            _timer.start(100);
+            _timer.start(ViewParams::getDockOverlayDelay());
         });
 
         const char * const pixmapOverlay[]={
@@ -1199,7 +1199,7 @@ struct DockWindowManagerP
                 }
             }
         }
-        _timer.start(50);
+        _timer.start(ViewParams::getDockOverlayDelay());
     }
 
     void saveOverlay()
