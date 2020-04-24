@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintSnellsLawAtXYPy" 
+	  Twin="ConstraintSnellsLawAtXY" 
+	  TwinPointer="ConstraintSnellsLawAtXY" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintSnellsLawAtXY.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Constrains circle be tangent to a line. 
+      Non-reversed is when the circle and line share a direction at their point of tangency.</UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>

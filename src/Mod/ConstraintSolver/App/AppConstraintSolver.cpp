@@ -117,6 +117,14 @@
 #include "G2D/ConstraintDirectionalDistancePy.h"
 #include "G2D/ConstraintLength.h"
 #include "G2D/ConstraintLengthPy.h"
+#include "G2D/ConstraintHorizontal.h"
+#include "G2D/ConstraintHorizontalPy.h"
+#include "G2D/ConstraintPointOnCurve.h"
+#include "G2D/ConstraintPointOnCurvePy.h"
+#include "G2D/ConstraintTangentEllipseLine.h"
+#include "G2D/ConstraintTangentEllipseLinePy.h"
+#include "G2D/ConstraintSnellsLawAtXY.h"
+#include "G2D/ConstraintSnellsLawAtXYPy.h"
 #include "G2D/ConstraintEllipseRules.h"
 #include "G2D/ConstraintHyperbolaRules.h"
 
@@ -250,6 +258,10 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintTangentCircleLinePy   ::Type.tp_name = "ConstraintSolver.G2D.ConstraintTangentCircleLine"  ;
     FCS::G2D::ConstraintDirectionalDistancePy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDirectionalDistance";
     FCS::G2D::ConstraintLengthPy              ::Type.tp_name = "ConstraintSolver.G2D.ConstraintLength"             ;
+    FCS::G2D::ConstraintHorizontalPy          ::Type.tp_name = "ConstraintSolver.G2D.ConstraintHorizontal"         ;
+    FCS::G2D::ConstraintPointOnCurvePy        ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPointOnCurve"       ;
+    FCS::G2D::ConstraintTangentEllipseLinePy  ::Type.tp_name = "ConstraintSolver.G2D.ConstraintTangentEllipseLine" ;
+    FCS::G2D::ConstraintSnellsLawAtXYPy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintSnellsLawAtXY"      ;
 
     Base::Interpreter().addType(&FCS::G2D::VectorPy                   ::Type, submodG2D.ptr(), "Vector"                   );
     Base::Interpreter().addType(&FCS::G2D::ParaGeometry2DPy           ::Type, submodG2D.ptr(), "ParaGeometry2D"           );
@@ -280,6 +292,10 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ConstraintTangentCircleLinePy   ::Type, submodG2D.ptr(), "ConstraintTangentCircleLine"   );
     Base::Interpreter().addType(&FCS::G2D::ConstraintDirectionalDistancePy ::Type, submodG2D.ptr(), "ConstraintDirectionalDistance" );
     Base::Interpreter().addType(&FCS::G2D::ConstraintLengthPy              ::Type, submodG2D.ptr(), "ConstraintLength"              );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintHorizontalPy          ::Type, submodG2D.ptr(), "ConstraintHorizontal"          );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintPointOnCurvePy        ::Type, submodG2D.ptr(), "ConstraintPointOnCurve"        );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintTangentEllipseLinePy  ::Type, submodG2D.ptr(), "ConstraintTangentEllipseLine"  );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintSnellsLawAtXYPy       ::Type, submodG2D.ptr(), "ConstraintSnellsLawAtXY"       );
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
     //fill type system
@@ -324,6 +340,10 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintTangentCircleLine   ::init();
     FCS::G2D::ConstraintDirectionalDistance ::init();
     FCS::G2D::ConstraintLength              ::init();
+    FCS::G2D::ConstraintHorizontal          ::init();
+    FCS::G2D::ConstraintPointOnCurve        ::init();
+    FCS::G2D::ConstraintTangentEllipseLine  ::init();
+    FCS::G2D::ConstraintSnellsLawAtXY       ::init();
     FCS::G2D::ConstraintEllipseRules        ::init();
     FCS::G2D::ConstraintHyperbolaRules      ::init();
 

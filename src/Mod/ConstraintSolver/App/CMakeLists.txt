@@ -65,6 +65,10 @@ generate_from_xml(G2D/ConstraintTangentLineLinePy)
 generate_from_xml(G2D/ConstraintTangentCircleLinePy)
 generate_from_xml(G2D/ConstraintDirectionalDistancePy)
 generate_from_xml(G2D/ConstraintLengthPy)
+generate_from_xml(G2D/ConstraintHorizontalPy)
+generate_from_xml(G2D/ConstraintPointOnCurvePy)
+generate_from_xml(G2D/ConstraintTangentEllipseLinePy)
+generate_from_xml(G2D/ConstraintSnellsLawAtXYPy)
 
 SET(ConstraintSolver_G2D
     G2D/Vector.h
@@ -187,6 +191,22 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintLength.h
     G2D/ConstraintLengthPy.xml
     G2D/ConstraintLengthPyImp.cpp
+    G2D/ConstraintHorizontal.cpp
+    G2D/ConstraintHorizontal.h
+    G2D/ConstraintHorizontalPy.xml
+    G2D/ConstraintHorizontalPyImp.cpp
+    G2D/ConstraintPointOnCurve.cpp
+    G2D/ConstraintPointOnCurve.h
+    G2D/ConstraintPointOnCurvePy.xml
+    G2D/ConstraintPointOnCurvePyImp.cpp
+    G2D/ConstraintTangentEllipseLine.cpp
+    G2D/ConstraintTangentEllipseLine.h
+    G2D/ConstraintTangentEllipseLinePy.xml
+    G2D/ConstraintTangentEllipseLinePyImp.cpp
+    G2D/ConstraintSnellsLawAtXY.cpp
+    G2D/ConstraintSnellsLawAtXY.h
+    G2D/ConstraintSnellsLawAtXYPy.xml
+    G2D/ConstraintSnellsLawAtXYPyImp.cpp
     G2D/ConstraintEllipseRules.h
     G2D/ConstraintEllipseRules.cpp
     G2D/ConstraintHyperbolaRules.h
