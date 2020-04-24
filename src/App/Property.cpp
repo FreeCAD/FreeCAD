@@ -257,6 +257,7 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropTransient)
         |(1<<PropOutput)
         |(1<<PropHidden)
+        |(1<<PropNoPersist)
         |(1<<Busy);
 
     status &= ~mask;
