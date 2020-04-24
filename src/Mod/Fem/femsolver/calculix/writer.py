@@ -499,7 +499,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # get faces
         self.get_constraints_contact_faces()
 
-        write_name = "contact"
         write_name = "constraints_contact_surface_sets"
         f.write("\n***********************************************************\n")
         f.write("** {}\n".format(write_name.replace("_", " ")))
