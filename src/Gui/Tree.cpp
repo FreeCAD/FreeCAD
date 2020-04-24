@@ -2509,7 +2509,8 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
-        it->second->setHidden(0 == displayMode && it != jt);
+        if(!it->first->getDocument()->testStatus(App::Document::TempDoc))
+            it->second->setHidden(0 == displayMode && it != jt);
         if (2 == displayMode) {
             it->second->setExpanded(it == jt);
         }
@@ -2983,6 +2984,10 @@ void TreeWidget::onShowTempDoc()
         auto iter = DocumentMap.find(gdoc);
         if(iter != DocumentMap.end()) {
             iter->second->setHidden(!show);
+            if(!show) {
+                for(auto view : gdoc->getMDIViews())
+                    getMainWindow()->removeWindow(view);
+            }
             continue;
         }
         if(show) {
