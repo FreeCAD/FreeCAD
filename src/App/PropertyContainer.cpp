@@ -390,7 +390,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                 if (!prop->testStatus(Property::Transient) 
                         && !status.test(Property::Transient)
                         && !status.test(Property::PropTransient)
-                        && !(getPropertyType(prop) & Prop_Transient))
+                        && !prop->testStatus(Property::PropTransient))
                 {
                     FC_TRACE("restoring proeprty " << prop->getFullName());
                     prop->Restore(reader);
