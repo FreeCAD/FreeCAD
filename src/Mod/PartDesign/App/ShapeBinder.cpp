@@ -321,10 +321,9 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
                 App::Prop_Hidden|App::Prop_ReadOnly), "");
 
-    _CopiedLink.setContainer(this);
     _CopiedLink.setScope(App::LinkScope::Hidden);
     ADD_PROPERTY_TYPE(_CopiedLink,(0),"Base",(App::PropertyType)(
-                App::Prop_Hidden|App::Prop_ReadOnly), "");
+                App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_NoPersist), "");
 }
 
 SubShapeBinder::~SubShapeBinder() {
