@@ -3605,6 +3605,7 @@ void PropertyXLink::restoreDocument(const App::Document &doc) {
 std::map<App::Document*,std::set<App::Document*> >
 PropertyXLink::getDocumentOutList(App::Document *doc) {
     std::map<App::Document*,std::set<App::Document*> > ret;
+
     for(auto &v : _DocInfoMap) {
         for(auto link : v.second->links) {
             if(!v.second->pcDoc
