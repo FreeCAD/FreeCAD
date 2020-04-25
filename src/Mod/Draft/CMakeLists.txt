@@ -65,6 +65,7 @@ SET(Draft_functions
 SET(Draft_make_functions
     draftmake/__init__.py
     draftmake/make_circle.py
+    draftmake/make_rectangle.py
 )
 
 SET(Draft_objects
@@ -78,6 +79,7 @@ SET(Draft_objects
     draftobjects/draft_annotation.py
     draftobjects/label.py
     draftobjects/dimension.py
+    draftobjects/rectangle.py
     draftobjects/text.py
     draftobjects/README.md
 )
@@ -91,6 +93,7 @@ SET(Draft_view_providers
     draftviewproviders/view_draft_annotation.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
+    draftviewproviders/view_rectangle.py
     draftviewproviders/view_text.py
     draftviewproviders/README.md
 )

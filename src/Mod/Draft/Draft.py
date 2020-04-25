@@ -195,6 +195,13 @@ from draftviewproviders.view_base import _ViewProviderDraftPart
 from draftmake.make_circle import make_circle, makeCircle
 from draftobjects.circle import Circle, _Circle
 
+# rectangle
+from draftmake.make_rectangle import make_rectangle, makeRectangle
+from draftobjects.rectangle import Rectangle, _Rectangle
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_rectangle import ViewProviderRectangle
+    from draftviewproviders.view_rectangle import _ViewProviderRectangle
+
 
 
 #---------------------------------------------------------------------------
@@ -264,31 +271,6 @@ def convertDraftTexts(textslist=[]):
     for n in todelete:
         FreeCAD.ActiveDocument.removeObject(n)
 
-
-def makeRectangle(length, height, placement=None, face=None, support=None):
-    """makeRectangle(length,width,[placement],[face]): Creates a Rectangle
-    object with length in X direction and height in Y direction.
-    If a placement is given, it is used. If face is False, the
-    rectangle is shown as a wireframe, otherwise as a face."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeRectangle")
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
-    _Rectangle(obj)
-
-    obj.Length = length
-    obj.Height = height
-    obj.Support = support
-    if face != None:
-        obj.MakeFace = face
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderRectangle(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wire=False):
     """makeWire(pointslist,[closed],[placement]): Creates a Wire object
@@ -3103,99 +3085,6 @@ class _ViewProviderDraftLink:
             return [obj.Base]
         else:
             return obj.ElementList
-
-
-class _Rectangle(_DraftObject):
-    """The Rectangle object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Rectangle")
-        obj.addProperty("App::PropertyDistance","Length","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the rectangle"))
-        obj.addProperty("App::PropertyDistance","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the rectangle"))
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
-        obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
-        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
-        obj.addProperty("App::PropertyInteger","Rows","Draft",QT_TRANSLATE_NOOP("App::Property","Horizontal subdivisions of this rectangle"))
-        obj.addProperty("App::PropertyInteger","Columns","Draft",QT_TRANSLATE_NOOP("App::Property","Vertical subdivisions of this rectangle"))
-        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
-        obj.MakeFace = getParam("fillmode",True)
-        obj.Length=1
-        obj.Height=1
-        obj.Rows=1
-        obj.Columns=1
-
-    def execute(self, obj):
-        if (obj.Length.Value != 0) and (obj.Height.Value != 0):
-            import Part, DraftGeomUtils
-            plm = obj.Placement
-            shape = None
-            if hasattr(obj,"Rows") and hasattr(obj,"Columns"):
-                if obj.Rows > 1:
-                    rows = obj.Rows
-                else:
-                    rows = 1
-                if obj.Columns > 1:
-                    columns = obj.Columns
-                else:
-                    columns = 1
-                if (rows > 1) or (columns > 1):
-                    shapes = []
-                    l = obj.Length.Value/columns
-                    h = obj.Height.Value/rows
-                    for i in range(columns):
-                        for j in range(rows):
-                            p1 = Vector(i*l,j*h,0)
-                            p2 = Vector(p1.x+l,p1.y,p1.z)
-                            p3 = Vector(p1.x+l,p1.y+h,p1.z)
-                            p4 = Vector(p1.x,p1.y+h,p1.z)
-                            p = Part.makePolygon([p1,p2,p3,p4,p1])
-                            if "ChamferSize" in obj.PropertiesList:
-                                if obj.ChamferSize.Value != 0:
-                                    w = DraftGeomUtils.filletWire(p,obj.ChamferSize.Value,chamfer=True)
-                                    if w:
-                                        p = w
-                            if "FilletRadius" in obj.PropertiesList:
-                                if obj.FilletRadius.Value != 0:
-                                    w = DraftGeomUtils.filletWire(p,obj.FilletRadius.Value)
-                                    if w:
-                                        p = w
-                            if hasattr(obj,"MakeFace"):
-                                if obj.MakeFace:
-                                    p = Part.Face(p)
-                            shapes.append(p)
-                    if shapes:
-                        shape = Part.makeCompound(shapes)
-            if not shape:
-                p1 = Vector(0,0,0)
-                p2 = Vector(p1.x+obj.Length.Value,p1.y,p1.z)
-                p3 = Vector(p1.x+obj.Length.Value,p1.y+obj.Height.Value,p1.z)
-                p4 = Vector(p1.x,p1.y+obj.Height.Value,p1.z)
-                shape = Part.makePolygon([p1,p2,p3,p4,p1])
-                if "ChamferSize" in obj.PropertiesList:
-                    if obj.ChamferSize.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
-                        if w:
-                            shape = w
-                if "FilletRadius" in obj.PropertiesList:
-                    if obj.FilletRadius.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
-                        if w:
-                            shape = w
-                if hasattr(obj,"MakeFace"):
-                    if obj.MakeFace:
-                        shape = Part.Face(shape)
-                else:
-                    shape = Part.Face(shape)
-            obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
-                obj.Area = shape.Area
-            obj.Placement = plm
-        obj.positionBySupport()
-
-class _ViewProviderRectangle(_ViewProviderDraft):
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyFile","TextureImage","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a texture image (overrides hatch patterns)"))
 
 
 class _Ellipse(_DraftObject):
