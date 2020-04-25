@@ -236,7 +236,11 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     // create our own copy
     GeomPoint *p = static_cast<GeomPoint*>(point.clone());
     // create the definition struct for that geom
-    GeoDef def;
+    
+    Geoms.emplace_back();
+    
+    GeoDef &def = Geoms.back();
+    
     def.geo  = std::move(std::unique_ptr<Geometry>(static_cast<Geometry *>(p)));
     def.type = GeoType::Point;
 
@@ -259,9 +263,6 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
     Points.push_back(hp);
     def.index = Points.size() - 1;
 
-    // store complete set
-    Geoms.push_back(std::move(def));
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 
@@ -272,7 +273,11 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
     // create our own copy
     GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(lineSegment.clone());
     // create the definition struct for that geom
-    GeoDef def;
+    
+    Geoms.emplace_back();
+    
+    GeoDef &def = Geoms.back();
+    
     def.geo  = std::move(std::unique_ptr<Geometry>(static_cast<Geometry *>(lineSeg)));
     def.type = GeoType::Line;
 
