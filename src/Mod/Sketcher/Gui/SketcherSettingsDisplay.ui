@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>608</height>
+    <width>420</width>
+    <height>443</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -267,6 +267,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       </item>
       <item row="0" column="1">
        <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Font size used for labels and constraints</string>
         </property>
@@ -318,6 +324,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       </item>
       <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Number of polygons for geometry approximation</string>
         </property>

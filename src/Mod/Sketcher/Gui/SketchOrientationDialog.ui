@@ -84,6 +84,12 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="Offset_doubleSpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>

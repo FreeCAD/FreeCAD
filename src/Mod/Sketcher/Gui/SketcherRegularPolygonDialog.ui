@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
+    <width>250</width>
     <height>86</height>
    </rect>
   </property>
@@ -28,6 +28,12 @@
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="sidesQuantitySpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Number of columns of the linear array</string>
        </property>

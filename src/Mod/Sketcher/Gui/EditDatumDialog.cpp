@@ -122,6 +122,10 @@ void EditDatumDialog::exec(bool atCursor)
 
         init_val.setValue(datum);
 
+        // set a minimal height to avoid issues like the one reported here:
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=45344#p389271
+        ui_ins_datum->labelEdit->setMinimumHeight(20);
+
         ui_ins_datum->labelEdit->setValue(init_val);
         ui_ins_datum->labelEdit->pushToHistory();
         ui_ins_datum->labelEdit->selectNumber();

@@ -38,6 +38,12 @@
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Distance between two subsequent grid lines</string>
        </property>
@@ -154,14 +160,17 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+   <slots>
+    <signal>showFormulaDialog(bool)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>

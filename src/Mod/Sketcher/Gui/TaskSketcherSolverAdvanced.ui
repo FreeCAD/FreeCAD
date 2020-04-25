@@ -120,6 +120,12 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</string>
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="spinBoxMaxIter">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Maximum iterations to find convergence before solver is stopped</string>
        </property>
@@ -651,13 +657,8 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -666,8 +667,13 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

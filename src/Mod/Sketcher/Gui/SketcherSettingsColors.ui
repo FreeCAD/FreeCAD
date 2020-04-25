@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>474</height>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -448,6 +448,12 @@
         </item>
         <item row="13" column="1">
          <widget class="Gui::PrefSpinBox" name="SketcherDatumWidth">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
           </property>
@@ -483,6 +489,12 @@
         </item>
         <item row="14" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultSketcherVertexWidth">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
           </property>
@@ -518,6 +530,12 @@
         </item>
         <item row="15" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultSketcherLineWidth">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>The default line thickness for new shapes</string>
           </property>

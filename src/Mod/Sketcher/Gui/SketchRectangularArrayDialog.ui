@@ -28,6 +28,12 @@
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="ColsQuantitySpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Number of columns of the linear array</string>
        </property>
@@ -55,6 +61,12 @@
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="RowsQuantitySpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Number of rows of the linear array</string>
        </property>
