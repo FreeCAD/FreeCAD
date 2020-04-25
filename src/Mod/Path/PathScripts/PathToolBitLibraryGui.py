@@ -270,16 +270,17 @@ class ToolBitLibrary(object):
         import glob
         PathLog.track()
         
+        # Load default search path
         path = PathPreferences.lastPathToolLibrary()
         
         if filedialog or len(path) == 0:
             path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary())
-            #p = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
             if len(path) > 0:
                 PathPreferences.setLastPathToolLibrary(path)
             else:
                 return
 
+        # Clear view
         self.form.TableList.clear()
         self.LibFiles.clear()
         self.form.lineLibPath.clear()
@@ -291,6 +292,7 @@ class ToolBitLibrary(object):
 	    
         self.LibFiles.sort()
         
+        # Add all tables to list
         for table in self.LibFiles:
             listWidgetItem = QtGui.QListWidgetItem()
             listItem = ToolTableListWidgetItem()
@@ -311,14 +313,16 @@ class ToolBitLibrary(object):
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.setUpdatesEnabled(True)
         
+        # Search last selected table
         if len(self.LibFiles) > 0:
             for idx in range(len(self.LibFiles)):
                 if PathPreferences.lastPathToolTable() == os.path.basename(self.LibFiles[idx]):
                     break
-            
+            # Not found, select first entry
             if idx >= len(self.LibFiles):
                 idx = 0
             
+            # Load selected table
             self.libraryLoad(self.LibFiles[idx])
             self.form.TableList.setCurrentRow(idx)
             self.form.ButtonRemoveToolTable.setEnabled(True)
@@ -347,8 +351,6 @@ class ToolBitLibrary(object):
             self.toolTableView.resizeColumnsToContents()
 
         self.toolTableView.setUpdatesEnabled(True)
-        
-        #PathPreferences.setLastPathToolLibrary(path)
 
         self.form.setWindowTitle("{} - {}".format(self.title, os.path.basename(path) if path else ''))
         self.path = path
@@ -519,7 +521,6 @@ class ToolBitLibrary(object):
 
 
 class ToolTableListWidgetItem(QtGui.QWidget):
-    
     toolMoved = QtCore.Signal()
   
     def __init__(self):
@@ -556,9 +557,10 @@ class ToolTableListWidgetItem(QtGui.QWidget):
 
     def dropEvent(self, e):
         selectedTools = e.source().selectedIndexes()
-        if selectedTools:
-            toolData = selectedTools[1].data()
+        print("Drop: {}, {}".format(selectedTools, selectedTools[1].data()))
+        #if selectedTools:
+            #toolData = selectedTools[1].data()
         
-            if toolData:
+            #if toolData:
                 #self.tlm.moveToTable(int(toolData), self.getTableName())
-                self.toolMoved.emit()
+                #self.toolMoved.emit()
