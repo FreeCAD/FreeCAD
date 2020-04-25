@@ -83,7 +83,7 @@ void FCSSketch::clear(void)
 {
     parameterStore = FCS::ParameterStore::make(); // get a new parameterstore
 
-    Geoms.clear();
+    //Geoms.clear();
 
     Points.clear();
     LineSegments.clear();
@@ -124,18 +124,18 @@ int FCSSketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                                   
     addGeometry(intGeoList,blockedGeometry);
     
-    int extStart=Geoms.size();
+    int extStart=3;
     addGeometry(extGeoList, true);
     
-    int extEnd=Geoms.size()-1;
-    for (int i=extStart; i <= extEnd; i++)
-        Geoms[i].external = true;
+    int extEnd=3;
+    /*for (int i=extStart; i <= extEnd; i++)
+        Geoms[i].external = true;*/
     
     
     // The Geoms list might be empty after an undo/redo
-    if (!Geoms.empty()) {
+    /*if (!Geoms.empty()) {
         addConstraints(ConstraintList,unenforceableConstraints);
-    }
+    }*/
     
     /*
     GCSsys.clearByTag(-1);
@@ -329,8 +329,8 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
 
 int FCSSketch::addConstraint(const Constraint *constraint)
 {
-    if (Geoms.empty())
-        throw Base::ValueError("Sketch::addConstraint. Can't add constraint to a sketch with no geometry!");
+    /*if (Geoms.empty())
+        throw Base::ValueError("Sketch::addConstraint. Can't add constraint to a sketch with no geometry!");*/
     int rtn = -1;
 
     
@@ -758,12 +758,12 @@ std::vector<Part::Geometry *> FCSSketch::extractGeometry(bool withConstructionEl
                                                       bool withExternalElements) const
 {
     std::vector<Part::Geometry *> temp;
-    temp.reserve(Geoms.size());
+    //temp.reserve(Geoms.size());
     
-    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
+    /*for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
         if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
-    }
+    }*/
 
     return temp;
 }
@@ -793,8 +793,8 @@ Base::Vector3d FCSSketch::calculateNormalAtPoint(int geoIdCurve, double px, doub
 
 int FCSSketch::solve(void)
 {
-    if(Geoms.empty() || Constrs.empty())
-        return 0;
+    /*if(Geoms.empty() || Constrs.empty())
+        return 0;*/
     
     for(auto &c:Constrs)
         c.fcsConstr->update();
@@ -969,7 +969,7 @@ int FCSSketch::solve(void)
 bool FCSSketch::updateGeometry()
 {
     int i=0;
-    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
+    /*for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it, i++) {
         try {
             if (it->type == GeoType::Point) {
                 GeomPoint *point = static_cast<GeomPoint*>((*it).geo.get());
@@ -989,7 +989,7 @@ bool FCSSketch::updateGeometry()
                                             LineSegments[it->index]->p1->y.savedValue(),
                                             0.0)
                                   );
-            } /*else if (it->type == Arc) {
+            } else if (it->type == Arc) {
                 GCS::Arc &myArc = Arcs[it->index];
                 // the following 4 lines are redundant since these equations are already included in the arc constraints
 //                *myArc.start.x = *myArc.center.x + *myArc.rad * cos(*myArc.startAngle);
@@ -1134,13 +1134,13 @@ bool FCSSketch::updateGeometry()
                 }
                 #endif
 
-            }*/
+            }
         } catch (Base::Exception &e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
                                   i,e.what());
             return false;
         }
-    }
+    }*/
     return true;
 }
 
@@ -1547,7 +1547,7 @@ int FCSSketch::getPointId(int geoId, PointPos pos) const
 {
 
     // do a range check first
-    if (geoId < 0 || geoId >= (int)Geoms.size())
+    /*if (geoId < 0 || geoId >= (int)Geoms.size())
         return -1;
     switch (pos) {
     case start:
@@ -1558,17 +1558,20 @@ int FCSSketch::getPointId(int geoId, PointPos pos) const
         return Geoms[geoId].midPointId;
     case none:
         break;
-    }
+    }*/
     return -1;
 }
 
 int FCSSketch::checkGeoId(int geoId) const
 {
+    /*
     if (geoId < 0)
         geoId += Geoms.size();//convert negative external-geometry index to index into Geoms
     if(!(   geoId >= 0   &&   geoId < int(Geoms.size())   ))
         throw Base::IndexError("FCSSketch::checkGeoId. GeoId index out range.");
     return geoId;
+    */
+    return 0;
 }
 
 Base::Vector3d FCSSketch::getPoint(int geoId, PointPos pos) const
@@ -1584,7 +1587,7 @@ Base::Vector3d FCSSketch::getPoint(int geoId, PointPos pos) const
 TopoShape FCSSketch::toShape(void) const
 {
     
-    TopoShape result;
+    /*TopoShape result;
     std::vector<GeoDef>::const_iterator it=Geoms.begin();
 
 #if 0
@@ -1671,8 +1674,10 @@ TopoShape FCSSketch::toShape(void) const
         result.setShape(comp);
     }
 #endif
-
-    return result;
+    
+    return result;*/
+    
+    return *(new TopoShape);
 }
 
 float FCSSketch::getSolveTime()
