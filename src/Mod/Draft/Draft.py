@@ -235,6 +235,14 @@ if FreeCAD.GuiUp:
     from draftviewproviders.view_clone import ViewProviderClone
     from draftviewproviders.view_clone import _ViewProviderClone
 
+# point
+from draftmake.make_point import make_point, makePoint
+from draftobjects.point import Point, _Point
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_point import ViewProviderPoint
+    from draftviewproviders.view_point import _ViewProviderPoint
+
+
 #---------------------------------------------------------------------------
 # Draft annotation objects
 #---------------------------------------------------------------------------
@@ -1871,42 +1879,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     nobj.addConstraint(constraints)
 
     return nobj
-
-def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
-    """ makePoint(x,y,z ,[color(r,g,b),point_size]) or
-        makePoint(Vector,color(r,g,b),point_size]) -
-        creates a Point in the current document.
-        example usage:
-        p1 = makePoint()
-        p1.ViewObject.Visibility= False # make it invisible
-        p1.ViewObject.Visibility= True  # make it visible
-        p1 = makePoint(-1,0,0) #make a point at -1,0,0
-        p1 = makePoint(1,0,0,(1,0,0)) # color = red
-        p1.X = 1 #move it in x
-        p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    if isinstance(X,FreeCAD.Vector):
-        Z = X.z
-        Y = X.y
-        X = X.x
-    _Point(obj,X,Y,Z)
-    obj.X = X
-    obj.Y = Y
-    obj.Z = Z
-    if gui:
-        _ViewProviderPoint(obj.ViewObject)
-        if hasattr(FreeCADGui,"draftToolBar") and (not color):
-            color = FreeCADGui.draftToolBar.getDefaultColor('ui')
-        obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
-        obj.ViewObject.PointSize = point_size
-        obj.ViewObject.Visibility = True
-    select(obj)
-
-    return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     """ShapeString(Text,FontFile,Height,Track): Turns a text string
@@ -3642,44 +3614,6 @@ class _PointArray(_DraftObject):
         else:
             FreeCAD.Console.PrintError(translate("draft","No point found\n"))
             obj.Shape = obj.Base.Shape.copy()
-
-class _Point(_DraftObject):
-    """The Draft Point object"""
-    def __init__(self, obj,x=0,y=0,z=0):
-        _DraftObject.__init__(self,obj,"Point")
-        obj.addProperty("App::PropertyDistance","X","Draft",QT_TRANSLATE_NOOP("App::Property","X Location")).X = x
-        obj.addProperty("App::PropertyDistance","Y","Draft",QT_TRANSLATE_NOOP("App::Property","Y Location")).Y = y
-        obj.addProperty("App::PropertyDistance","Z","Draft",QT_TRANSLATE_NOOP("App::Property","Z Location")).Z = z
-        mode = 2
-        obj.setEditorMode('Placement',mode)
-
-    def execute(self, obj):
-        import Part
-        shape = Part.Vertex(Vector(0,0,0))
-        obj.Shape = shape
-        obj.Placement.Base = FreeCAD.Vector(obj.X.Value,obj.Y.Value,obj.Z.Value)
-
-class _ViewProviderPoint(_ViewProviderDraft):
-    """A viewprovider for the Draft Point object"""
-    def __init__(self, obj):
-        _ViewProviderDraft.__init__(self,obj)
-
-    def onChanged(self, vobj, prop):
-        mode = 2
-        vobj.setEditorMode('LineColor',mode)
-        vobj.setEditorMode('LineWidth',mode)
-        vobj.setEditorMode('BoundingBox',mode)
-        vobj.setEditorMode('Deviation',mode)
-        vobj.setEditorMode('DiffuseColor',mode)
-        vobj.setEditorMode('DisplayMode',mode)
-        vobj.setEditorMode('Lighting',mode)
-        vobj.setEditorMode('LineMaterial',mode)
-        vobj.setEditorMode('ShapeColor',mode)
-        vobj.setEditorMode('ShapeMaterial',mode)
-        vobj.setEditorMode('Transparency',mode)
-
-    def getIcon(self):
-        return ":/icons/Draft_Dot.svg"
 
 
 class _ViewProviderDraftArray(_ViewProviderDraft):
