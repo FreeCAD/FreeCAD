@@ -531,6 +531,20 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
         documentTempPixmap = BitmapFactory().merge(
                 documentPixmap.scaled(w,w), QPixmap(hidden_xpm), BitmapFactoryInst::TopLeft);
     }
+
+    for(auto doc : App::GetApplication().getDocuments()) {
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(gdoc)
+            slotNewDocument(*gdoc, doc == App::GetApplication().getActiveDocument());
+    }
+    for(auto &v : DocumentMap) {
+        for(auto obj : v.first->getDocument()->getObjects()) {
+            auto vobj = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                                v.first->getViewProvider(obj));
+            if(vobj)
+                v.second->slotNewObject(*vobj);
+        }
+    }
 }
 
 TreeWidget::~TreeWidget()
@@ -546,6 +560,12 @@ TreeWidget::~TreeWidget()
     Instances.erase(this);
     if(_LastSelectedTreeWidget == this)
         _LastSelectedTreeWidget = 0;
+
+    for(auto doc : App::GetApplication().getDocuments()) {
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(gdoc)
+            slotDeleteDocument(*gdoc);
+    }
 }
 
 const char *TreeWidget::getTreeName() const {
