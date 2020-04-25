@@ -70,6 +70,7 @@ SET(Draft_make_functions
     draftmake/make_clone.py
     draftmake/make_line.py
     draftmake/make_polygon.py
+    draftmake/make_point.py
     draftmake/make_rectangle.py
     draftmake/make_wire.py
 )
@@ -88,6 +89,7 @@ SET(Draft_objects
     draftobjects/draft_annotation.py
     draftobjects/label.py
     draftobjects/dimension.py
+    draftobjects/point.py
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/text.py
@@ -105,6 +107,7 @@ SET(Draft_view_providers
     draftviewproviders/view_draft_annotation.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
+    draftviewproviders/view_point.py
     draftviewproviders/view_rectangle.py
     draftviewproviders/view_text.py
     draftviewproviders/view_wire.py
