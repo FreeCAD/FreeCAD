@@ -650,26 +650,18 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         result.makECompound(shapes);
 
         bool fused = false;
-        if(Fuse.getValue()) {
+        if(Fuse.getValue() && result.hasSubShape(TopAbs_SOLID)) {
             // If the compound has solid, fuse them together, and ignore other type of
             // shapes
-            std::vector<TopoDS_Shape> solids;
-            Part::TopoShape solid;
-            for(auto &s : result.getSubTopoShapes(TopAbs_SOLID)) {
-                if(solid.isNull())
-                    solid = s;
-                else 
-                    solids.push_back(s.getShape());
-            }
-            if(solids.size()) {
-                solid.fuse(solids);
-                result = solid.makERefine();
-                fused = true;
-            } else if (!solid.isNull()) {
+            auto solids = result.getSubTopoShapes(TopAbs_SOLID);
+            if(solids.size() > 1) {
+                result.makEFuse(solids);
+                result = result.makERefine();
+            } else {
                 // wrap the single solid in compound to keep its placement
-                result.makECompound({solid});
-                fused = true;
+                result.makECompound({solids.front()});
             }
+            fused = true;
         } 
         
         if(!fused && MakeFace.getValue()
