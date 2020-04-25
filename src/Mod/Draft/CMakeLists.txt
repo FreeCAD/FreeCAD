@@ -64,12 +64,14 @@ SET(Draft_functions
 
 SET(Draft_make_functions
     draftmake/__init__.py
+    draftmake/make_circle.py
 )
 
 SET(Draft_objects
     draftobjects/__init__.py
     draftobjects/base.py
     draftobjects/circulararray.py
+    draftobjects/circle.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
