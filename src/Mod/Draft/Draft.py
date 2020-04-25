@@ -191,6 +191,12 @@ from draftviewproviders.view_base import _ViewProviderDraftAlt
 from draftviewproviders.view_base import ViewProviderDraftPart
 from draftviewproviders.view_base import _ViewProviderDraftPart
 
+# circle
+from draftmake.make_circle import make_circle, makeCircle
+from draftobjects.circle import Circle, _Circle
+
+
+
 #---------------------------------------------------------------------------
 # Draft annotation objects
 #---------------------------------------------------------------------------
@@ -258,63 +264,6 @@ def convertDraftTexts(textslist=[]):
     for n in todelete:
         FreeCAD.ActiveDocument.removeObject(n)
 
-
-
-def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
-    """makeCircle(radius,[placement,face,startangle,endangle])
-    or makeCircle(edge,[face]):
-    Creates a circle object with given radius. If placement is given, it is
-    used. If face is False, the circle is shown as a
-    wireframe, otherwise as a face. If startangle AND endangle are given
-    (in degrees), they are used and the object appears as an arc. If an edge
-    is passed, its Curve must be a Part.Circle"""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    import Part, DraftGeomUtils
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeCircle")
-    if startangle != endangle:
-        n = "Arc"
-    else:
-        n = "Circle"
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",n)
-    _Circle(obj)
-    if face != None:
-        obj.MakeFace = face
-    if isinstance(radius,Part.Edge):
-        edge = radius
-        if DraftGeomUtils.geomType(edge) == "Circle":
-            obj.Radius = edge.Curve.Radius
-            placement = FreeCAD.Placement(edge.Placement)
-            delta = edge.Curve.Center.sub(placement.Base)
-            placement.move(delta)
-            # Rotation of the edge
-            rotOk = FreeCAD.Rotation(edge.Curve.XAxis, edge.Curve.YAxis, edge.Curve.Axis, "ZXY")
-            placement.Rotation = rotOk
-            if len(edge.Vertexes) > 1:
-                v0 = edge.Curve.XAxis
-                v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
-                v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
-                # Angle between edge.Curve.XAxis and the vector from center to start of arc
-                a0 = math.degrees(FreeCAD.Vector.getAngle(v0, v1))
-                # Angle between edge.Curve.XAxis and the vector from center to end of arc
-                a1 = math.degrees(FreeCAD.Vector.getAngle(v0, v2))
-                obj.FirstAngle = a0
-                obj.LastAngle = a1
-    else:
-        obj.Radius = radius
-        if (startangle != None) and (endangle != None):
-            if startangle == -0: startangle = 0
-            obj.FirstAngle = startangle
-            obj.LastAngle = endangle
-    obj.Support = support
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderDraft(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
 
 def makeRectangle(length, height, placement=None, face=None, support=None):
     """makeRectangle(length,width,[placement],[face]): Creates a Rectangle
@@ -3248,34 +3197,6 @@ class _ViewProviderRectangle(_ViewProviderDraft):
         _ViewProviderDraft.__init__(self,vobj)
         vobj.addProperty("App::PropertyFile","TextureImage","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a texture image (overrides hatch patterns)"))
 
-class _Circle(_DraftObject):
-    """The Circle object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Circle")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the arc"))
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
-        obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the circle"))
-        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
-        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
-        obj.MakeFace = getParam("fillmode",True)
-
-    def execute(self, obj):
-        import Part
-        plm = obj.Placement
-        shape = Part.makeCircle(obj.Radius.Value,Vector(0,0,0),Vector(0,0,1),obj.FirstAngle.Value,obj.LastAngle.Value)
-        if obj.FirstAngle.Value == obj.LastAngle.Value:
-            shape = Part.Wire(shape)
-            if hasattr(obj,"MakeFace"):
-                if obj.MakeFace:
-                    shape = Part.Face(shape)
-            else:
-                shape = Part.Face(shape)
-        obj.Shape = shape
-        if hasattr(obj,"Area") and hasattr(shape,"Area"):
-            obj.Area = shape.Area
-        obj.Placement = plm
-        obj.positionBySupport()
 
 class _Ellipse(_DraftObject):
     """The Circle object"""
