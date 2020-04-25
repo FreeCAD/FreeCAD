@@ -133,7 +133,8 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                     << "newObject('" << fullTypeName << "','" << FeatName << "')");
             doc = pcActiveContainer->getDocument();
         } else {
-            Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), std::ostringstream()
+            doc = App::GetApplication().getActiveDocument();
+            Gui::cmdAppDocument(doc, std::ostringstream()
                     << "addObject('" << fullTypeName << "','" << FeatName << "')");
         }
 
