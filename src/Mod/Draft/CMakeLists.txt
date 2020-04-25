@@ -74,6 +74,7 @@ SET(Draft_make_functions
     draftmake/make_point.py
     draftmake/make_rectangle.py
     draftmake/make_wire.py
+    draftmake/make_wpproxy.py
 )
 
 SET(Draft_objects
@@ -96,6 +97,7 @@ SET(Draft_objects
     draftobjects/rectangle.py
     draftobjects/text.py
     draftobjects/wire.py
+    draftobjects/wpproxy.py
     draftobjects/README.md
 )
 
@@ -113,6 +115,7 @@ SET(Draft_view_providers
     draftviewproviders/view_rectangle.py
     draftviewproviders/view_text.py
     draftviewproviders/view_wire.py
+    draftviewproviders/view_wpproxy.py
     draftviewproviders/README.md
 )
 
