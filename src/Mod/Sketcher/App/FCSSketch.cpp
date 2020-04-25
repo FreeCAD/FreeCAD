@@ -233,6 +233,7 @@ int FCSSketch::addGeometry(const Part::Geometry *geo, bool fixed)
 
 int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
 {
+    /*
     // create our own copy
     GeomPoint *p = static_cast<GeomPoint*>(point.clone());
     // create the definition struct for that geom
@@ -265,11 +266,14 @@ int FCSSketch::addPoint(const Part::GeomPoint &point, bool fixed)
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
+    */
+    return 0;
 
 }
 
 int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
 {
+    /*
     // create our own copy
     GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(lineSegment.clone());
     // create the definition struct for that geom
@@ -316,6 +320,8 @@ int FCSSketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fix
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
+    */
+    return 0;
 }
 
 // Constraints
