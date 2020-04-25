@@ -239,7 +239,7 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
             ++it;
     }
 
-    if(group->_ExportChildren.getSize()!=(int)model.size())
+    if(group->_ExportChildren.getValues()!=model)
         group->_ExportChildren.setValues(std::move(model));
 }
 
