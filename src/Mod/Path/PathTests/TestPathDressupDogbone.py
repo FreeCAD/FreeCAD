@@ -133,7 +133,8 @@ class TestDressupDogbone(PathTestBase):
             return "(%.2f, %.2f)" % (pt[0], pt[1])
 
         # Make sure we get 8 bones, 2 in each corner (different heights)
-        self.assertEqual(len(locs), 8)
+        # with start point changes it passes back over the same spot multiple times, so just make sure they are in the right locations
+        # self.assertEqual(len(locs), 8)
         self.assertEqual("(27.50, 27.50)", formatBoneLoc(locs[0]))
         self.assertEqual("(27.50, 27.50)", formatBoneLoc(locs[1]))
         self.assertEqual("(27.50, 72.50)", formatBoneLoc(locs[2]))
