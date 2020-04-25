@@ -67,6 +67,7 @@ SET(Draft_make_functions
     draftmake/make_bezcurve.py
     draftmake/make_bspline.py
     draftmake/make_circle.py
+    draftmake/make_clone.py
     draftmake/make_line.py
     draftmake/make_polygon.py
     draftmake/make_rectangle.py
@@ -80,6 +81,7 @@ SET(Draft_objects
     draftobjects/bspline.py
     draftobjects/circulararray.py
     draftobjects/circle.py
+    draftobjects/clone.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
@@ -97,6 +99,7 @@ SET(Draft_view_providers
     draftviewproviders/__init__.py
     draftviewproviders/view_base.py
     draftviewproviders/view_circulararray.py
+    draftviewproviders/view_clone.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
     draftviewproviders/view_draft_annotation.py
