@@ -101,7 +101,7 @@ public:
     //double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
 
     /// Returns the size of the Geometry
-    virtual int getGeometrySize(void) const override {return Geoms.size();}
+    virtual int getGeometrySize(void) const override {return 33;}
     
     virtual float getSolveTime() override;
     virtual void setRecalculateInitialSolutionWhileMovingPoint(bool on) override;
@@ -125,6 +125,8 @@ private:
     struct GeoDef {
         GeoDef() : geo(nullptr),type(GeoType::None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
+                   
+        ~GeoDef() noexcept = default;
                    
         GeoDef(const GeoDef &) = delete;
         GeoDef & operator=(const GeoDef &) = delete;
