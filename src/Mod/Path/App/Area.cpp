@@ -3166,27 +3166,17 @@ static inline void addG1(bool verbose,Toolpath &path, const gp_Pnt &last,
 static void addG0(bool verbose, Toolpath &path,
         gp_Pnt last, const gp_Pnt &next,
         AxisGetter getter, AxisSetter setter,
-        double retraction, double resume_height,
-        double f, double &last_f)
+        double resume_height, double f, double &last_f)
 {
     gp_Pnt pt(last);
-    if(retraction-(last.*getter)() > Precision::Confusion()) {
-        (pt.*setter)(retraction);
-        addGCode(verbose,path,last,pt,"G0");
-        last = pt;
-        pt = next;
-        (pt.*setter)(retraction);
-        if(!last.IsEqual(pt, Precision::Confusion()))
-            addGCode(verbose,path,last,pt,"G0");
-    }
     if(resume_height>Precision::Confusion()) {
-        if(resume_height+(next.*getter)() < retraction) {
+        if((next.*getter)() < resume_height) {
+            (pt.*setter)(resume_height);
             if(!last.IsEqual(pt, Precision::Confusion()))
                 addGCode(verbose,path,last,pt,"G0");
             last = pt;
             pt = next;
-            // was originally set to resume height, but retraction gives correct paths
-            (pt.*setter)(retraction);
+            (pt.*setter)(resume_height);
             if(!last.IsEqual(pt, Precision::Confusion()))
                 addGCode(verbose,path,last,pt,"G0");
         }
@@ -3309,7 +3299,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     plast = p;
     p = pstart;
 
-    // rapid horizontal move if start Z is below retraction
+    // rapid horizontal move to start point
     if(fabs((p.*getter)()-retraction) > Precision::Confusion()) {
         // check if last is equal to current, if it is change last so the initial G0 is still emitted
         gp_Pnt tmpPlast = plast;
@@ -3347,11 +3337,9 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (plastTmp.*setter)(0.0);
 
         if(first) {
-            addG0(verbose,path,plast,p,getter,setter,retraction,resume_height,vf,cur_f);
-            // vertical rapid down to feed start
-            addGCode(false,path,plast,p,"G0");
+            addG0(verbose,path,plast,p,getter,setter,resume_height,vf,cur_f);
         }else if(pTmp.SquareDistance(plastTmp)>threshold){
-            addG0(verbose,path,plast,p,getter,setter,retraction,resume_height,vf,cur_f);
+            addG0(verbose,path,plast,p,getter,setter,resume_height,vf,cur_f);
         }else{
             addG1(verbose,path,plast,p,vf,cur_f);
         }
