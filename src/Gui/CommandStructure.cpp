@@ -123,6 +123,67 @@ bool StdCmdGroup::isActive(void)
     return hasActiveDocument();
 }
 
+/* Datum feature commands
+ * Brought here as a shortcut for quick access. The actual command still lives in PartDesign
+ */
+
+#define DATUM_CMD_DEF(_name,_desc,_icon) \
+class StdCmdDatum##_name : public Command \
+{\
+public:\
+    virtual const char* className() const { return "StdCmdDatum" #_name; }\
+    StdCmdDatum##_name():Command("Std_Datum" #_name) {\
+        sGroup          = QT_TR_NOOP("Structure");\
+        sMenuText       = QT_TR_NOOP("Create a " _desc);\
+        sToolTipText    = QT_TR_NOOP("Create a new " _desc);\
+        sWhatsThis      = "PartDesign_" # _name;\
+        sStatusTip      = sToolTipText;\
+        sPixmap         = "Std_" #_icon;\
+    }\
+protected: \
+    virtual void activated(int) {\
+        runCommand(Doc, \
+                  "import PartDesignGui\n" \
+                  "import PartDesign\n" \
+                  "FreeCADGui.runCommand('PartDesign_" #_name "')");\
+    }\
+    virtual bool isActive() { return hasActiveDocument(); }\
+};\
+
+DATUM_CMD_DEF(Point, "datum point", DatumPoint)
+DATUM_CMD_DEF(Line, "datum line", DatumLine)
+DATUM_CMD_DEF(Plane, "datum plane", DatumPlane)
+DATUM_CMD_DEF(CoordinateSystem, "local coordinate system", DatumCS)
+DATUM_CMD_DEF(SubShapeBinder, "sub-shape binder", SubShapeBinder)
+
+//===========================================================================
+// Std_DatumActions
+//===========================================================================
+
+class StdCmdDatumActions : public GroupCommand
+{
+public:
+    StdCmdDatumActions()
+        : GroupCommand("Std_DatumActions")
+    {
+        sGroup        = QT_TR_NOOP("Structure");
+        sMenuText     = QT_TR_NOOP("Datum actions");
+        sToolTipText  = QT_TR_NOOP("Actions for making various datum features");
+        sWhatsThis    = "Std_DatumActions";
+        sStatusTip    = sToolTipText;
+        eType         = AlterDoc;
+        bCanLog       = false;
+
+        addCommand(new StdCmdDatumCoordinateSystem);
+        addCommand(new StdCmdDatumPoint);
+        addCommand(new StdCmdDatumLine);
+        addCommand(new StdCmdDatumPlane);
+        addCommand(new StdCmdDatumSubShapeBinder);
+    }
+
+    virtual const char* className() const {return "StdCmdDatumActions";}
+};
+
 namespace Gui {
 
 void CreateStructureCommands(void)
@@ -131,6 +192,7 @@ void CreateStructureCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
+    rcCmdMgr.addCommand(new StdCmdDatumActions());
 }
 
 } // namespace Gui
