@@ -64,14 +64,20 @@ SET(Draft_functions
 
 SET(Draft_make_functions
     draftmake/__init__.py
+    draftmake/make_bezcurve.py
+    draftmake/make_bspline.py
     draftmake/make_circle.py
+    draftmake/make_line.py
     draftmake/make_polygon.py
     draftmake/make_rectangle.py
+    draftmake/make_wire.py
 )
 
 SET(Draft_objects
     draftobjects/__init__.py
     draftobjects/base.py
+    draftobjects/bezcurve.py
+    draftobjects/bspline.py
     draftobjects/circulararray.py
     draftobjects/circle.py
     draftobjects/orthoarray.py
@@ -83,6 +89,7 @@ SET(Draft_objects
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/text.py
+    draftobjects/wire.py
     draftobjects/README.md
 )
 
@@ -97,6 +104,7 @@ SET(Draft_view_providers
     draftviewproviders/view_dimension.py
     draftviewproviders/view_rectangle.py
     draftviewproviders/view_text.py
+    draftviewproviders/view_wire.py
     draftviewproviders/README.md
 )
 
