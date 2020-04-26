@@ -192,6 +192,8 @@ from draftfunctions.join import join_wires as joinWires
 from draftfunctions.join import join_two_wires
 from draftfunctions.join import join_two_wires as joinTwoWires
 
+from draftfunctions.split import split
+
 #---------------------------------------------------------------------------
 # Draft objects
 #---------------------------------------------------------------------------
@@ -501,39 +503,6 @@ def extrude(obj,vector,solid=False):
 
     return newobj
 
-
-def split(wire, newPoint, edgeIndex):
-    if getType(wire) != "Wire":
-        return
-    elif wire.Closed:
-        splitClosedWire(wire, edgeIndex)
-    else:
-        splitOpenWire(wire, newPoint, edgeIndex)
-
-def splitClosedWire(wire, edgeIndex):
-    wire.Closed = False
-    if edgeIndex == len(wire.Points):
-        makeWire([wire.Placement.multVec(wire.Points[0]),
-            wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
-    else:
-        makeWire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
-            wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
-        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
-
-def splitOpenWire(wire, newPoint, edgeIndex):
-    wire1Points = []
-    wire2Points = []
-    for index, point in enumerate(wire.Points):
-        if index == edgeIndex:
-            wire1Points.append(wire.Placement.inverse().multVec(newPoint))
-            wire2Points.append(newPoint)
-            wire2Points.append(wire.Placement.multVec(point))
-        elif index < edgeIndex:
-            wire1Points.append(point)
-        elif index > edgeIndex:
-            wire2Points.append(wire.Placement.multVec(point))
-    wire.Points = wire1Points
-    makeWire(wire2Points, placement=wire.Placement)
 
 def fuse(object1,object2):
     """fuse(oject1,object2): returns an object made from

@@ -64,6 +64,7 @@ SET(Draft_functions
     draftfunctions/move.py    
     draftfunctions/rotate.py    
     draftfunctions/scale.py    
+    draftfunctions/split.py    
 )
 
 SET(Draft_make_functions
