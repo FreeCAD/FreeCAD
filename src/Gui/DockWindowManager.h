@@ -35,6 +35,7 @@
 #endif
 
 class QDockWidget;
+class QSplitter;
 
 namespace Gui {
 
@@ -170,7 +171,7 @@ public:
     void setOverlayMode(bool enable);
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget);
-    void setCurrent(QWidget *widget);
+    void setCurrent(QDockWidget *widget);
 
     void setAutoHide(bool enable);
     bool isAutoHide() const {return actAutoHide.isChecked();}
@@ -200,25 +201,44 @@ public:
 
     OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
 
+    QDockWidget *currentDockWidget() const;
+    QDockWidget *dockWidget(int index) const;
+    int dockWidgetIndex(QDockWidget *) const;
+
+    void setTitleBar(QWidget *);
+
+    QSplitter *getSplitter() const {return splitter;}
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
     void changeEvent(QEvent*);
+    void resizeEvent(QResizeEvent*);
+    bool eventFilter(QObject *, QEvent *ev);
 
     static void _setOverlayMode(QWidget *widget, int enable);
     void retranslate();
+    void setupLayout();
+
+protected Q_SLOTS:
+    void onCurrentChanged(int index);
+    void onTabMoved(int from, int to);
+    void onSplitterMoved();
 
 private:
     QSize offset;
     QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
+    QSplitter *splitter = nullptr;
+    QWidget *titleBar = nullptr;
     QAction actAutoHide;
     QAction actEditHide;
     QAction actEditShow;
     QAction actTransparent;
     QAction actIncrease;
     QAction actDecrease;
+    QAction actOverlay;
     bool overlayed = false;
     bool touched = false;
 };
