@@ -63,6 +63,7 @@ SET(Draft_functions
     draftfunctions/cut.py
     draftfunctions/downgrade.py
     draftfunctions/draftify.py
+    draftfunctions/extrude.py
     draftfunctions/fuse.py
     draftfunctions/heal.py
     draftfunctions/join.py

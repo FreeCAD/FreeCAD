@@ -185,6 +185,8 @@ from draftfunctions.downgrade import downgrade
 
 from draftfunctions.draftify import draftify
 
+from draftfunctions.extrude import extrude
+
 from draftfunctions.fuse import fuse
 
 from draftfunctions.heal import heal
@@ -499,25 +501,6 @@ def makePointArray(base, ptlst):
             obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
-
-
-def extrude(obj,vector,solid=False):
-    """makeExtrusion(object,vector): extrudes the given object
-    in the direction given by the vector. The original object
-    gets hidden."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion","Extrusion")
-    newobj.Base = obj
-    newobj.Dir = vector
-    newobj.Solid = solid
-    if gui:
-        obj.ViewObject.Visibility = False
-        formatObject(newobj,obj)
-        select(newobj)
-
-    return newobj
 
 
 def moveVertex(object, vertex_index, vector):
