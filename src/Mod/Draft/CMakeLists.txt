@@ -69,6 +69,7 @@ SET(Draft_make_functions
     draftmake/make_bspline.py
     draftmake/make_circle.py
     draftmake/make_clone.py
+    draftmake/make_copy.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_line.py
