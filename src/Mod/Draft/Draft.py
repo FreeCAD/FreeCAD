@@ -196,6 +196,8 @@ from draftfunctions.split import split
 
 from draftfunctions.offset import offset
 
+from draftfunctions.mirror import mirror
+
 #---------------------------------------------------------------------------
 # Draft objects
 #---------------------------------------------------------------------------
@@ -864,49 +866,6 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
             viewobj.LineColor = obj.ViewObject.TextColor
     return viewobj
 
-
-def mirror(objlist, p1, p2):
-    """mirror(objlist, p1, p2)
-    creates a Part::Mirror of the given object(s), along a plane defined
-    by the 2 given points and the draft working plane normal.
-    """
-
-    if not objlist:
-        _err = "No object given"
-        FreeCAD.Console.PrintError(translate("draft", _err) + "\n")
-        return
-    if p1 == p2:
-        _err = "The two points are coincident"
-        FreeCAD.Console.PrintError(translate("draft", _err) + "\n")
-        return
-    if not isinstance(objlist,list):
-        objlist = [objlist]
-
-    if hasattr(FreeCAD, "DraftWorkingPlane"):
-        norm = FreeCAD.DraftWorkingPlane.getNormal()
-    elif gui:
-        norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
-    else:
-        norm = FreeCAD.Vector(0,0,1)
-
-    pnorm = p2.sub(p1).cross(norm).normalize()
-
-    result = []
-
-    for obj in objlist:
-        mir = FreeCAD.ActiveDocument.addObject("Part::Mirroring","mirror")
-        mir.Label = "Mirror of " + obj.Label
-        mir.Source = obj
-        mir.Base = p1
-        mir.Normal = pnorm
-        formatObject(mir, obj)
-        result.append(mir)
-
-    if len(result) == 1:
-        result = result[0]
-        select(result)
-
-    return result
 
 
 def heal(objlist=None,delete=True,reparent=True):

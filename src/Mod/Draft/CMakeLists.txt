@@ -61,6 +61,7 @@ SET(Draft_utilities
 SET(Draft_functions
     draftfunctions/__init__.py
     draftfunctions/join.py
+    draftfunctions/mirror.py    
     draftfunctions/move.py    
     draftfunctions/offset.py    
     draftfunctions/rotate.py    
