@@ -144,6 +144,9 @@ from draftutils.utils import get_movable_children
 from draftutils.utils import filter_objects_for_modifiers
 from draftutils.utils import filterObjectsForModifiers
 
+from draftutils.utils import is_closed_edge
+from draftutils.utils import isClosedEdge
+
 from draftutils.gui_utils import get3DView
 from draftutils.gui_utils import get_3d_view
 
@@ -671,9 +674,6 @@ def copyRotatedEdge(object, edge_index, angle, center, axis):
             object.Placement.multVec(object.Points[edge_index+1]),
             angle, axis, center)
     return makeLine(vertex1, vertex2)
-
-def isClosedEdge(edge_index, object):
-    return edge_index + 1 >= len(object.Points)
 
 
 def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
