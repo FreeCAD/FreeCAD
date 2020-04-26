@@ -82,9 +82,9 @@ def make_wall_from_points(p1, p2, join_first=None, join_last=None,
     ViewProviderWallSegment(shp.ViewObject)
     
     # Add the WallShape as the Wall BaseGeometry
-    obj.addObject(shp)
     obj.BaseGeometry = shp
-    
+    obj.addObject(shp)
+
     # Align the wall to the given point
     obj.Placement.Base = p1
     length = p1.distanceToPoint(p2)

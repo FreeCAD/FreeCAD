@@ -59,11 +59,13 @@ SET(Arch_SRCS
 SET(Arch_GUI_tools
     archguitools/__init__.py
     archguitools/gui_wall.py
+    archguitools/gui_joinwalls.py
 )
 
 SET(Arch_make
     archmake/__init__.py
     archmake/make_wall.py
+    archmake/joinwalls.py
 )
 
 SET(Arch_objects

@@ -118,9 +118,9 @@ class Arch_Wall:
             self.points.append(point) 
 
             wall = make_wall.make_wall_from_points(p1 = self.points[0], 
-                                                   p2 = self.points[1],
-                                                   join_first = self.first_end, 
-                                                   join_last = self.last_end)
+                                                   p2 = self.points[1])
+                                                   #join_first = self.first_end, 
+                                                   #join_last = self.last_end)
 
 
 
