@@ -61,6 +61,7 @@ SET(Draft_utilities
 SET(Draft_functions
     draftfunctions/__init__.py
     draftfunctions/cut.py
+    draftfunctions/downgrade.py
     draftfunctions/draftify.py
     draftfunctions/fuse.py
     draftfunctions/heal.py
