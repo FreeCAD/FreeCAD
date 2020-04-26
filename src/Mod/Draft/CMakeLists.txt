@@ -70,6 +70,7 @@ SET(Draft_functions
     draftfunctions/rotate.py    
     draftfunctions/scale.py    
     draftfunctions/split.py    
+    draftfunctions/upgrade.py    
 )
 
 SET(Draft_make_functions
