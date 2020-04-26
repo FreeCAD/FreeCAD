@@ -176,7 +176,7 @@ from draftutils.gui_utils import load_texture
 # Draft functions
 #---------------------------------------------------------------------------
 
-
+from draftfunctions.move import move
 
 #---------------------------------------------------------------------------
 # Draft objects
@@ -674,104 +674,6 @@ def copyRotatedEdge(object, edge_index, angle, center, axis):
 def isClosedEdge(edge_index, object):
     return edge_index + 1 >= len(object.Points)
 
-def move(objectslist,vector,copy=False):
-    """move(objects,vector,[copy]): Moves the objects contained
-    in objects (that can be an object or a list of objects)
-    in the direction and distance indicated by the given
-    vector. If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned."""
-    typecheck([(vector,Vector), (copy,bool)], "move")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
-    objectslist.extend(getMovableChildren(objectslist))
-    newobjlist = []
-    newgroups = {}
-    objectslist = filter_objects_for_modifiers(objectslist, copy)
-    for obj in objectslist:
-        newobj = None
-        # real_vector have been introduced to take into account
-        # the possibility that object is inside an App::Part
-        if hasattr(obj, "getGlobalPlacement"):
-            v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
-            real_vector = obj.Placement.Rotation.multVec(v_minus_global)
-        else:
-            real_vector = vector
-        if getType(obj) == "Point":
-            v = Vector(obj.X,obj.Y,obj.Z)
-            v = v.add(real_vector)
-            if copy:
-                newobj = makeCopy(obj)
-            else:
-                newobj = obj
-            newobj.X = v.x
-            newobj.Y = v.y
-            newobj.Z = v.z
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
-            pass
-        elif hasattr(obj,'Shape'):
-            if copy:
-                newobj = makeCopy(obj)
-            else:
-                newobj = obj
-            pla = newobj.Placement
-            pla.move(real_vector)
-        elif getType(obj) == "Annotation":
-            if copy:
-                newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
-                newobj.LabelText = obj.LabelText
-                if gui:
-                    formatObject(newobj,obj)
-            else:
-                newobj = obj
-            newobj.Position = obj.Position.add(real_vector)
-        elif getType(obj) == "DraftText":
-            if copy:
-                newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
-                DraftText(newobj)
-                if gui:
-                    ViewProviderDraftText(newobj.ViewObject)
-                    formatObject(newobj,obj)
-                newobj.Text = obj.Text
-                newobj.Placement = obj.Placement
-                if gui:
-                    formatObject(newobj,obj)
-            else:
-                newobj = obj
-            newobj.Placement.Base = obj.Placement.Base.add(real_vector)
-        elif getType(obj) in ["Dimension","LinearDimension"]:
-            if copy:
-                newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
-                _Dimension(newobj)
-                if gui:
-                    _ViewProviderDimension(newobj.ViewObject)
-                    formatObject(newobj,obj)
-            else:
-                newobj = obj
-            newobj.Start = obj.Start.add(real_vector)
-            newobj.End = obj.End.add(real_vector)
-            newobj.Dimline = obj.Dimline.add(real_vector)
-        else:
-            if copy and obj.isDerivedFrom("Mesh::Feature"):
-                print("Mesh copy not supported at the moment") # TODO
-            newobj = obj
-            if "Placement" in obj.PropertiesList:
-                pla = obj.Placement
-                pla.move(real_vector)
-        if newobj is not None:
-            newobjlist.append(newobj)
-        if copy:
-            for p in obj.InList:
-                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
-                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
-                    g.addObject(newobj)
-                    break
-                if getType(p) == "Layer":
-                    p.Proxy.addObject(p,newobj)
-    if copy and getParam("selectBaseObjects",False):
-        select(objectslist)
-    else:
-        select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
-    return newobjlist
 
 def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     """array(objectslist,xvector,yvector,xnum,ynum) for rectangular array,
