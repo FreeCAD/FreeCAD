@@ -60,6 +60,7 @@ SET(Draft_utilities
 
 SET(Draft_functions
     draftfunctions/__init__.py
+    draftfunctions/fuse.py
     draftfunctions/heal.py
     draftfunctions/join.py
     draftfunctions/mirror.py    

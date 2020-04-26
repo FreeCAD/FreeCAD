@@ -179,6 +179,8 @@ from draftutils.gui_utils import load_texture
 # Draft functions
 #---------------------------------------------------------------------------
 
+from draftfunctions.fuse import fuse
+
 from draftfunctions.heal import heal
 
 from draftfunctions.move import move
@@ -509,45 +511,6 @@ def extrude(obj,vector,solid=False):
 
     return newobj
 
-
-def fuse(object1,object2):
-    """fuse(oject1,object2): returns an object made from
-    the union of the 2 given objects. If the objects are
-    coplanar, a special Draft Wire is used, otherwise we use
-    a standard Part fuse."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    import DraftGeomUtils, Part
-    # testing if we have holes:
-    holes = False
-    fshape = object1.Shape.fuse(object2.Shape)
-    fshape = fshape.removeSplitter()
-    for f in fshape.Faces:
-        if len(f.Wires) > 1:
-            holes = True
-    if DraftGeomUtils.isCoplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Fusion")
-        _Wire(obj)
-        if gui:
-            _ViewProviderWire(obj.ViewObject)
-        obj.Base = object1
-        obj.Tool = object2
-    elif holes:
-        # temporary hack, since Part::Fuse objects don't remove splitters
-        obj = FreeCAD.ActiveDocument.addObject("Part::Feature","Fusion")
-        obj.Shape = fshape
-    else:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Fuse","Fusion")
-        obj.Base = object1
-        obj.Tool = object2
-    if gui:
-        object1.ViewObject.Visibility = False
-        object2.ViewObject.Visibility = False
-        formatObject(obj,object1)
-        select(obj)
-
-    return obj
 
 def cut(object1,object2):
     """cut(oject1,object2): returns a cut object made from
