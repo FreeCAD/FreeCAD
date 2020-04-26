@@ -795,6 +795,11 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     return true;
 }
 
+void OverlayTabWidget::setOffset(const QSize &ofs)
+{
+    offset = ofs;
+}
+
 void OverlayTabWidget::setRect(QRect rect, bool overlay)
 {
     if(rect.width()<=0 || rect.height()<=0)
@@ -881,6 +886,15 @@ void OverlayTabWidget::setCurrent(QWidget *widget)
 
 void OverlayTabWidget::changeSize(int changes)
 {
+    auto modifier = QApplication::queryKeyboardModifiers();
+    if(modifier== Qt::ControlModifier) {
+        offset.rwidth() = offset.width()+changes;
+        return;
+    } else if (modifier == Qt::ShiftModifier) {
+        offset.rheight() = offset.height()-changes;
+        return;
+    }
+
     QRect rect = overlayed?rectOverlay:rectActive;
     switch(tabPosition()) {
     case West:
@@ -1015,6 +1029,8 @@ struct OverlayInfo {
         hGrp->SetBool("Transparent", tabWidget->isTransparent());
         hGrp->SetBool("EditHide", tabWidget->isEditHide());
         hGrp->SetBool("EditShow", tabWidget->isEditShow());
+        hGrp->SetInt("Offset1", tabWidget->getOffset().width());
+        hGrp->SetInt("Offset2", tabWidget->getOffset().height());
 
         std::ostringstream os;
         for(int i=0,c=tabWidget->count(); i<c; ++i)
@@ -1034,6 +1050,9 @@ struct OverlayInfo {
         }
         int width = hGrp->GetInt("Width", 0);
         int height = hGrp->GetInt("Height", 0);
+        int offset1 = hGrp->GetInt("Offset1", 0);
+        int offset2 = hGrp->GetInt("Offset2", 0);
+        tabWidget->setOffset(QSize(offset1,offset2));
         if(width && height) {
             QRect rect = tabWidget->geometry();
             tabWidget->setRect(QRect(rect.left(),rect.top(),width,height), true);
@@ -1312,32 +1331,36 @@ struct DockWindowManagerP
 
         QRect rectBottom(0,0,0,0);
         if(_bottom.geometry(rectBottom)) {
-            int bw = std::max(w-ViewParams::getNaviWidgetSize()-10, 10);
+            auto ofs = _bottom.tabWidget->getOffset();
+            int bw = std::max(w-ViewParams::getNaviWidgetSize()-10-ofs.width()-ofs.height(), 10);
             // Bottom width is maintain the same to reduce QTextEdit re-layout
             // which may be expensive if there are lots of text, e.g. for
             // ReportView or PythonConsole.
-            _bottom.setGeometry(0,h-rectBottom.height(),bw,rectBottom.height(),
-                                0,h-rectBottom.height(),bw,rectBottom.height());
+            _bottom.setGeometry(ofs.width(),h-rectBottom.height(),bw,rectBottom.height(),
+                                ofs.width(),h-rectBottom.height(),bw,rectBottom.height());
             _bottom.tabWidget->getAutoHideRect(rectBottom);
         }
         QRect rectLeft(0,0,0,0);
         if(_left.geometry(rectLeft)) {
-            int lh = std::max(h-rectBottom.height(),10);
-            _left.setGeometry(0,0,rectLeft.width(),lh, 0,0,rectLeft.width(),h);
+            auto ofs = _left.tabWidget->getOffset();
+            int lh = std::max(h-rectBottom.height()-ofs.width()-ofs.height(),10);
+            _left.setGeometry(0,ofs.width(),rectLeft.width(),lh, 0,ofs.width(),rectLeft.width(),h);
             _left.tabWidget->getAutoHideRect(rectLeft);
         }
         QRect rectRight(0,0,0,0);
         if(_right.geometry(rectRight)) {
+            auto ofs = _right.tabWidget->getOffset();
             int dh = std::max(rectBottom.height(), ViewParams::getNaviWidgetSize()-10);
-            int rh = std::max(h-dh, 10);
-            _right.setGeometry(w-rectRight.width(),0,rectRight.width(),rh,
-                                w-rectRight.width(),0,rectRight.width(),rh);
+            int rh = std::max(h-dh-ofs.width()-ofs.height(), 10);
+            _right.setGeometry(w-rectRight.width(),ofs.width(),rectRight.width(),rh,
+                                w-rectRight.width(),ofs.width(),rectRight.width(),rh);
             _right.tabWidget->getAutoHideRect(rectRight);
         }
         QRect rectTop(0,0,0,0);
         if(_top.geometry(rectTop)) {
-            int tw = std::max(w-rectLeft.width()-rectRight.width(),10);
-            _top.setGeometry(rectLeft.width(),0,tw,rectTop.height(),0,0,w,rectTop.height());
+            auto ofs = _right.tabWidget->getOffset();
+            int tw = std::max(w-rectLeft.width()-rectRight.width()-ofs.width()-ofs.height(),10);
+            _top.setGeometry(rectLeft.width()-ofs.width(),0,tw,rectTop.height(),ofs.width(),0,w,rectTop.height());
         }
     }
 
@@ -1483,12 +1506,12 @@ struct DockWindowManagerP
         auto tabWidget = findTabWidget(qApp->widgetAt(QCursor::pos()));
         if(tabWidget) {
             tabWidget->changeSize(changes);
-            _timer.start(500);
+            _timer.start(ViewParams::getDockOverlayDelay());
         }
     }
 
     void onFocusChanged(QWidget *, QWidget *) {
-        _timer.start(100);
+        _timer.start(ViewParams::getDockOverlayDelay());
     }
 
     void setupTitleBar(QDockWidget *dock)

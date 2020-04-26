@@ -195,6 +195,9 @@ public:
     void changeSize(int changes);
     void onAction(QAction *);
 
+    void setOffset(const QSize &ofs);
+    const QSize &getOffset() const {return offset;}
+
     OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
 
 protected:
@@ -206,6 +209,7 @@ protected:
     void retranslate();
 
 private:
+    QSize offset;
     QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
