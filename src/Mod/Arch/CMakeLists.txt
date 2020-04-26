@@ -56,6 +56,28 @@ SET(Arch_SRCS
     importSHP.py
 )
 
+SET(Arch_GUI_tools
+    archguitools/__init__.py
+    archguitools/gui_wall.py
+)
+
+SET(Arch_make
+    archmake/__init__.py
+    archmake/make_wall.py
+)
+
+SET(Arch_objects
+    archobjects/__init__.py
+    archobjects/wall.py
+    archobjects/wallsegment.py
+)
+
+SET(Arch_view_providers
+    archviewproviders/__init__.py
+    archviewproviders/view_wall.py
+    archviewproviders/view_wallsegment.py
+)
+
 SET(Dice3DS_SRCS
     Dice3DS/__init__.py
     Dice3DS/util.py
@@ -80,11 +102,15 @@ SET(ArchGuiIcon_SVG
 )
 
 ADD_CUSTOM_TARGET(Arch ALL
-    SOURCES ${Arch_SRCS} ${Arch_QRC_SRCS} ${Dice3DS_SRCS} ${Arch_presets} ${ArchGuiIcon_SVG}
+    SOURCES ${Arch_SRCS} ${Arch_QRC_SRCS} ${Dice3DS_SRCS} ${Arch_presets} ${ArchGuiIcon_SVG} ${Arch_GUI_tools} ${Arch_make} ${Arch_objects} ${Arch_view_providers}
 )
 
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_GUI_tools})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_make})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_objects})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_view_providers})
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${ArchGuiIcon_SVG})
 
 fc_target_copy_resource(Arch
@@ -105,6 +131,30 @@ INSTALL(
         ${Arch_SRCS}
         ${Arch_QRC_SRCS}
     DESTINATION Mod/Arch
+)
+
+INSTALL(
+    FILES
+        ${Arch_GUI_tools}
+    DESTINATION Mod/Arch/archguitools
+)
+
+INSTALL(
+    FILES
+        ${Arch_make}
+    DESTINATION Mod/Arch/archmake
+)
+
+INSTALL(
+    FILES
+        ${Arch_objects}
+    DESTINATION Mod/Arch/archobjects
+)
+
+INSTALL(
+    FILES
+        ${Arch_view_providers}
+    DESTINATION Mod/Arch/archviewproviders
 )
 
 INSTALL(
