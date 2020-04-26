@@ -177,6 +177,7 @@ from draftutils.gui_utils import load_texture
 #---------------------------------------------------------------------------
 
 from draftfunctions.move import move
+from draftfunctions.rotate import rotate
 
 #---------------------------------------------------------------------------
 # Draft objects
@@ -752,90 +753,6 @@ def rotateEdge(object, edge_index, angle, center, axis):
     else:
         rotateVertex(object, edge_index+1, angle, center, axis)
 
-def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
-    """rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
-    in objects (that can be a list of objects or an object) of the given angle
-    (in degrees) around the center, using axis as a rotation axis. If axis is
-    omitted, the rotation will be around the vertical Z axis.
-    If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned."""
-    import Part
-    typecheck([(copy,bool)], "rotate")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
-    objectslist.extend(getMovableChildren(objectslist))
-    newobjlist = []
-    newgroups = {}
-    objectslist = filter_objects_for_modifiers(objectslist, copy)
-    for obj in objectslist:
-        newobj = None
-        # real_center and real_axis are introduced to take into account
-        # the possibility that object is inside an App::Part
-        if hasattr(obj, "getGlobalPlacement"):
-            ci = obj.getGlobalPlacement().inverse().multVec(center)
-            real_center = obj.Placement.multVec(ci)
-            ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
-            real_axis = obj.Placement.Rotation.multVec(ai)
-        else:
-            real_center = center
-            real_axis = axis
-
-        if copy:
-            newobj = makeCopy(obj)
-        else:
-            newobj = obj
-        if obj.isDerivedFrom("App::Annotation"):
-            if axis.normalize() == Vector(1,0,0):
-                newobj.ViewObject.RotationAxis = "X"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == Vector(0,1,0):
-                newobj.ViewObject.RotationAxis = "Y"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == Vector(0,-1,0):
-                newobj.ViewObject.RotationAxis = "Y"
-                newobj.ViewObject.Rotation = -angle
-            elif axis.normalize() == Vector(0,0,1):
-                newobj.ViewObject.RotationAxis = "Z"
-                newobj.ViewObject.Rotation = angle
-            elif axis.normalize() == Vector(0,0,-1):
-                newobj.ViewObject.RotationAxis = "Z"
-                newobj.ViewObject.Rotation = -angle
-        elif getType(obj) == "Point":
-            v = Vector(obj.X,obj.Y,obj.Z)
-            rv = v.sub(real_center)
-            rv = DraftVecUtils.rotate(rv,math.radians(angle),real_axis)
-            v = real_center.add(rv)
-            newobj.X = v.x
-            newobj.Y = v.y
-            newobj.Z = v.z
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
-            pass
-        elif hasattr(obj,"Placement"):
-            #FreeCAD.Console.PrintMessage("placement rotation\n")
-            shape = Part.Shape()
-            shape.Placement = obj.Placement
-            shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
-            newobj.Placement = shape.Placement
-        elif hasattr(obj,'Shape') and (getType(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
-            #think it make more sense to try first to rotate placement and later to try with shape. no?
-            shape = obj.Shape.copy()
-            shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
-            newobj.Shape = shape
-        if copy:
-            formatObject(newobj,obj)
-        if newobj is not None:
-            newobjlist.append(newobj)
-        if copy:
-            for p in obj.InList:
-                if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
-                    g = newgroups.setdefault(p.Name,FreeCAD.ActiveDocument.addObject(p.TypeId,p.Name))
-                    g.addObject(newobj)
-                    break
-    if copy and getParam("selectBaseObjects",False):
-        select(objectslist)
-    else:
-        select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
-    return newobjlist
 
 def scaleVectorFromCenter(vector, scale, center):
     return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
