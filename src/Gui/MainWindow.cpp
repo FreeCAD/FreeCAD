@@ -288,6 +288,12 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // global access 
     instance = this;
 
+    // support for grouped dragging of dockwidgets
+    // https://woboq.com/blog/qdockwidget-changes-in-56.html
+#if QT_VERSION >= 0x050600
+    setDockOptions(dockOptions() | QMainWindow::GroupedDragging);
+#endif
+
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
     // Movable tabs
