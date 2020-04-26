@@ -166,7 +166,7 @@ class _Project(ArchIFC.IfcContext):
         """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
-class _viewproviderproject(ArchIFCView.IfcContextView):
+class _ViewProviderProject(ArchIFCView.IfcContextView):
     """A View Provider for the project object.
 
     Parameters
