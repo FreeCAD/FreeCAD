@@ -94,33 +94,18 @@ void ComboView::setShowModel(bool showModel)
         if(!prop)
             prop = new PropertyView(this);
 
-        if(modelIndex < 0)
-            modelIndex = tabs->addTab(splitter,trUtf8("Model"));
-        else {
-            tabs->removeTab(modelIndex);
-            tabs->insertTab(modelIndex, splitter,trUtf8("Model"));
-            tabs->setCurrentIndex(modelIndex);
-        }
+        modelIndex = tabs->insertTab(0, splitter,trUtf8("Model"));
+        modelIndex = 0;
+        taskIndex = 1;
 
         splitter->addWidget(prop);
         prop->show();
-
-    } else {
-        if(!prop)
-            prop = new PropertyView(this);
-        else if(!tree)
-            return;
-
-        if(modelIndex < 0)
-            modelIndex = tabs->addTab(prop,trUtf8("Properties"));
-        else {
-            QWidget *w = tabs->widget(modelIndex);
-            tabs->removeTab(modelIndex);
-            tabs->insertTab(modelIndex, prop, trUtf8("Propertyies"));
-            delete w;
-            tabs->setCurrentIndex(modelIndex);
-        }
-
+    } else if (modelIndex >= 0) {
+        tabs->removeTab(modelIndex);
+        modelIndex = -1;
+        delete prop;
+        prop = nullptr;
+        delete tree;
         tree = nullptr;
     }
 }
@@ -173,7 +158,7 @@ void ComboView::showTaskView()
 void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(modelIndex, tree?trUtf8("Model"):trUtf8("Properties"));
+        tabs->setTabText(modelIndex, trUtf8("Model"));
         tabs->setTabText(taskIndex, trUtf8("Tasks"));
         //tabs->setTabText(2, trUtf8("Project"));
     }

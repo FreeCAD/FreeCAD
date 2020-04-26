@@ -509,7 +509,7 @@ void MainWindow::initDockWindows(bool show)
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",false);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
-        treeView = true;
+        treeView = enabled;
         _checkDockWidget("Std_TreeView", enabled, show, Qt::RightDockWidgetArea,
             [](QWidget *widget) {
                 if(widget)
@@ -527,8 +527,8 @@ void MainWindow::initDockWindows(bool show)
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
-        bool enabled = group->GetBool("Enabled", false);
-        if (enabled != group->GetBool("Enabled", true)) {
+        bool enabled = treeView || group->GetBool("Enabled", false);
+        if (!treeView && enabled != group->GetBool("Enabled", true)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",false);
         }
