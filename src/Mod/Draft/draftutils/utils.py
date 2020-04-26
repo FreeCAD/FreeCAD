@@ -980,6 +980,13 @@ def filter_objects_for_modifiers(objects, isCopied=False):
 filterObjectsForModifiers = filter_objects_for_modifiers
 
 
+def is_closed_edge(edge_index, object):
+    return edge_index + 1 >= len(object.Points)
+
+
+isClosedEdge = is_closed_edge
+
+
 def utf8_decode(text):
     r"""Decode the input string and return a unicode string.
 
