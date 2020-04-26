@@ -169,6 +169,10 @@ class Wall(object):
                         list.remove(obj.Name)
                         target.IncomingTJoins = list
 
+        if prop == "Group":
+            # store the previous configuration of wall Group property
+            self.oldGroup = obj.Group
+
 
     def onChanged(self, obj, prop):
         """this method is activated when a property changes"""
@@ -182,10 +186,38 @@ class Wall(object):
                     t.Proxy.recompute_ends(t, 0)
                     t.Proxy.recompute_ends(t, 1)
 
-        # CHILDREN properties
+        # CHILDREN properties: remember to first assign basegeometry and then add the object to the group
         if prop == "BaseGeometry":
             if hasattr(obj, "BaseGeometry"):
                 self.format_base_geometry_object(obj, obj.BaseGeometry)
+            return
+
+        # Group property: an object is added or removed from the wall
+        if prop == "Group":
+            if hasattr(obj, "Group") and hasattr(obj, "BaseGeometry") and hasattr(obj, "Openings"):
+                if hasattr(self, "oldGroup"):
+                    # understand if the object was added or removed
+                    added_objs = [x for x in obj.Group if x not in self.oldGroup]
+                    removed_objs = [x for x in self.oldGroup if x not in obj.Group]
+                    del self.oldGroup
+                for o in removed_objs:
+                    # if it was removed, remove it from wall children linking
+                    print("Removing " + o.Label + " from " + obj.Label)
+                    if o == obj.BaseGeometry:
+                        obj.Base = None
+                    elif o in obj.Openings:
+                        openings = obj.Openings
+                        openings.remove(o)
+                        obj.Openings = openings
+                for o in added_objs:
+                    # if it was added, check if it is a window or ask if it has to be treated as an Opening
+                    print("Adding " + o.Name + " to " + obj.Label)
+                    if o == obj.BaseGeometry:
+                        continue
+                    # TODO: check if the object is a window and auto link it to the wall
+                    elif not o in obj.Openings:
+                        print("added a new object to the wall")
+                        self.add_new_children(obj, o)
 
         # WALL JOIN ENDS properties
         if (hasattr(obj, "JoinFirstEndTo") and hasattr(obj, "JoinLastEndTo") and
@@ -196,6 +228,25 @@ class Wall(object):
 
             elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
                 self.recompute_ends(obj, 1)
+
+    def add_new_children(self, obj, child):
+        """
+        This method is called when a new object is added to the wall.
+        It ask the user how the wall should treat it.
+        """
+        msgBox = QtGui.QMessageBox()
+        msgBox.setText("Object " + obj.Label + " has been added to the wall.")
+        msgBox.setInformativeText("Do you want to treat it as an opening?\n")
+        msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        msgBox.setDefaultButton(QtGui.QMessageBox.Yes)
+        ret = msgBox.exec_()
+
+        if ret == QtGui.QMessageBox.Yes:
+            openings = obj.Openings
+            openings.append(child)
+            obj.Openings = openings
+        elif ret == QtGui.QMessageBox.No:
+            return
 
 
     # FOLLOWING METHODS Concern computation of wall joinings
