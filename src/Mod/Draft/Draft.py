@@ -182,6 +182,11 @@ from draftutils.gui_utils import load_texture
 from draftfunctions.move import move
 from draftfunctions.rotate import rotate
 
+from draftfunctions.scale import scale
+from draftfunctions.scale import scale_vertex, scaleVertex
+from draftfunctions.scale import scale_edge, scaleEdge
+from draftfunctions.scale import copy_scaled_edges, copyScaledEdges
+
 from draftfunctions.join import join_wires
 from draftfunctions.join import join_wires as joinWires
 from draftfunctions.join import join_two_wires
@@ -711,106 +716,7 @@ def rotateEdge(object, edge_index, angle, center, axis):
         rotateVertex(object, edge_index+1, angle, center, axis)
 
 
-def scaleVectorFromCenter(vector, scale, center):
-    return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
 
-def scaleVertex(object, vertex_index, scale, center):
-    points = object.Points
-    points[vertex_index] = object.Placement.inverse().multVec(
-        scaleVectorFromCenter(
-            object.Placement.multVec(points[vertex_index]),
-            scale, center))
-    object.Points = points
-
-def scaleEdge(object, edge_index, scale, center):
-    scaleVertex(object, edge_index, scale, center)
-    if isClosedEdge(edge_index, object):
-        scaleVertex(object, 0, scale, center)
-    else:
-        scaleVertex(object, edge_index+1, scale, center)
-
-def copyScaledEdges(arguments):
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copyScaledEdge(argument[0], argument[1],
-            argument[2], argument[3]))
-    joinWires(copied_edges)
-
-def copyScaledEdge(object, edge_index, scale, center):
-    vertex1 = scaleVectorFromCenter(
-        object.Placement.multVec(object.Points[edge_index]),
-        scale, center)
-    if isClosedEdge(edge_index, object):
-        vertex2 = scaleVectorFromCenter(
-            object.Placement.multVec(object.Points[0]),
-            scale, center)
-    else:
-        vertex2 = scaleVectorFromCenter(
-            object.Placement.multVec(object.Points[edge_index+1]),
-            scale, center)
-    return makeLine(vertex1, vertex2)
-
-def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
-    """scale(objects,vector,[center,copy,legacy]): Scales the objects contained
-    in objects (that can be a list of objects or an object) of the given scale
-    factors defined by the given vector (in X, Y and Z directions) around
-    given center. If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned."""
-    if not isinstance(objectslist, list):
-        objectslist = [objectslist]
-    newobjlist = []
-    for obj in objectslist:
-        if copy:
-            newobj = makeCopy(obj)
-        else:
-            newobj = obj
-        if hasattr(obj,'Shape'):
-            scaled_shape = obj.Shape.copy()
-            m = FreeCAD.Matrix()
-            m.move(obj.Placement.Base.negative())
-            m.move(center.negative())
-            m.scale(scale.x,scale.y,scale.z)
-            m.move(center)
-            m.move(obj.Placement.Base)
-            scaled_shape = scaled_shape.transformGeometry(m)
-        if getType(obj) == "Rectangle":
-            p = []
-            for v in scaled_shape.Vertexes:
-                p.append(v.Point)
-            pl = obj.Placement.copy()
-            pl.Base = p[0]
-            diag = p[2].sub(p[0])
-            bb = p[1].sub(p[0])
-            bh = p[3].sub(p[0])
-            nb = DraftVecUtils.project(diag,bb)
-            nh = DraftVecUtils.project(diag,bh)
-            if obj.Length < 0: l = -nb.Length
-            else: l = nb.Length
-            if obj.Height < 0: h = -nh.Length
-            else: h = nh.Length
-            newobj.Length = l
-            newobj.Height = h
-            tr = p[0].sub(obj.Shape.Vertexes[0].Point)
-            newobj.Placement = pl
-        elif getType(obj) == "Wire" or getType(obj) == "BSpline":
-            for index, point in enumerate(newobj.Points):
-                scaleVertex(newobj, index, scale, center)
-        elif hasattr(obj,'Shape'):
-            newobj.Shape = scaled_shape
-        elif (obj.TypeId == "App::Annotation"):
-            factor = scale.y * obj.ViewObject.FontSize
-            newobj.ViewObject.FontSize = factor
-            d = obj.Position.sub(center)
-            newobj.Position = center.add(Vector(d.x*scale.x,d.y*scale.y,d.z*scale.z))
-        if copy:
-            formatObject(newobj,obj)
-        newobjlist.append(newobj)
-    if copy and getParam("selectBaseObjects",False):
-        select(objectslist)
-    else:
-        select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
-    return newobjlist
 
 def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     """offset(object,delta,[copymode],[bind]): offsets the given wire by
