@@ -179,6 +179,8 @@ from draftutils.gui_utils import load_texture
 # Draft functions
 #---------------------------------------------------------------------------
 
+from draftfunctions.cut import cut
+
 from draftfunctions.draftify import draftify
 
 from draftfunctions.fuse import fuse
@@ -515,22 +517,6 @@ def extrude(obj,vector,solid=False):
 
     return newobj
 
-
-def cut(object1,object2):
-    """cut(oject1,object2): returns a cut object made from
-    the difference of the 2 given objects."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Cut","Cut")
-    obj.Base = object1
-    obj.Tool = object2
-    object1.ViewObject.Visibility = False
-    object2.ViewObject.Visibility = False
-    formatObject(obj, object1)
-    select(obj)
-
-    return obj
 
 def moveVertex(object, vertex_index, vector):
     points = object.Points
