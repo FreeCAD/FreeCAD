@@ -347,52 +347,6 @@ def convertDraftTexts(textslist=[]):
         FreeCAD.ActiveDocument.removeObject(n)
 
 
-def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wire=False):
-    """makeWire(pointslist,[closed],[placement]): Creates a Wire object
-    from the given list of vectors. If closed is True or first
-    and last points are identical, the wire is closed. If face is
-    true (and wire is closed), the wire will appear filled. Instead of
-    a pointslist, you can also pass a Part Wire."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    import DraftGeomUtils, Part
-    if not isinstance(pointslist,list):
-        e = pointslist.Wires[0].Edges
-        pointslist = Part.Wire(Part.__sortEdges__(e))
-        nlist = []
-        for v in pointslist.Vertexes:
-            nlist.append(v.Point)
-        if DraftGeomUtils.isReallyClosed(pointslist):
-            closed = True
-        pointslist = nlist
-    if len(pointslist) == 0:
-        print("Invalid input points: ",pointslist)
-    #print(pointslist)
-    #print(closed)
-    if placement:
-        typecheck([(placement,FreeCAD.Placement)], "makeWire")
-        ipl = placement.inverse()
-        if not bs2wire:
-            pointslist = [ipl.multVec(p) for p in pointslist]
-    if len(pointslist) == 2: fname = "Line"
-    else: fname = "Wire"
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
-    _Wire(obj)
-    obj.Points = pointslist
-    obj.Closed = closed
-    obj.Support = support
-    if face != None:
-        obj.MakeFace = face
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderWire(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
-
-
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",use_link=False):
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
