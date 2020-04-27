@@ -39,6 +39,7 @@ public:
     virtual QIcon getIcon(void) const override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     virtual bool setEdit(int ModNum) override;
+    virtual bool canDelete(App::DocumentObject* obj) const override;
 };
 
 } // namespace PartDesignGui

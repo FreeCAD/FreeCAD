@@ -29,7 +29,7 @@
 #include "FeatureSolid.h"
 #include <App/Application.h>
 #include <App/Document.h>
-#include "FeatureSolid.h"
+#include "FeatureSplit.h"
 
 using namespace PartDesign;
 
@@ -46,8 +46,11 @@ Solid::Solid()
 void Solid::onChanged(const App::Property* prop) {
     if(!isRestoring()) {
         if(prop == &Active) {
-            if(Parent.getValue())
-                Parent.getValue()->touch();
+            if(Parent.getValue() && !Active.testStatus(App::Property::User3)) {
+                auto split = Base::freecad_dynamic_cast<Split>(Parent.getValue());
+                if(split)
+                    split->updateActiveSolid(this);
+            }
         }
     }
     inherited::onChanged(prop);

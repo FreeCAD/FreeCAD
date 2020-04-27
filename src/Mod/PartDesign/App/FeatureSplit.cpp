@@ -188,7 +188,10 @@ App::DocumentObjectExecReturn *Split::execute(void)
     }
     if(activeShapes.empty()) {
         activeShapes.push_back(solids[0]);
-        static_cast<Solid*>(children[0])->Active.setValue(true);
+        auto solid = static_cast<Solid*>(children[0]);
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+                App::Property::User3, &solid->Active);
+        solid->Active.setValue(true);
     }
 
     newSolidCount = children.size() - oldCount;
@@ -206,6 +209,70 @@ void Split::afterRecompute() {
         for(std::size_t i=count-newSolidCount;i<count;++i)
             solids[i]->purgeTouched();
     }
+}
+
+void Split::updateActiveSolid(Solid *caller) {
+    if(Shape.isTouched()) {
+        touch();
+        return;
+    }
+
+    std::vector<Part::TopoShape> activeShapes;
+    Solid *firstChild = nullptr;
+    for(auto obj : Solids.getValues()) {
+        auto child = Base::freecad_dynamic_cast<Solid>(obj);
+        if(!child || child->Shape.getShape().isNull())
+            continue;
+        if(child->Active.getValue()) {
+            auto shape = child->Shape.getShape();
+            shape.Tag = 0;
+            activeShapes.push_back(shape);
+        } else if(!firstChild && child!=caller)
+            firstChild = child;
+
+    }
+    if(activeShapes.empty()) {
+        if(firstChild) {
+            firstChild->Active.setValue(true);
+            return;
+        }
+        // No active shapes found, touch to trigger recompute
+        Solids.touch();
+        return;
+    }
+
+    Shape.setValue(TopoShape().makECompound(activeShapes,0,false));
+
+    if(Suppress.getValue()) {
+        updateSuppressedShape();
+        SuppressedShape.purgeTouched();
+    }
+
+    Shape.purgeTouched();
+}
+
+bool Split::isElementGenerated(const TopoShape &shape, const char *name) const
+{
+    bool res = false;
+    long tag = 0;
+    int depth = 2;
+    shape.traceElement(name,
+        [&] (const std::string &, size_t, long tag2) {
+            if(tag && tag2!=tag) {
+                if(--depth == 0)
+                    return true;
+            }
+            for(auto obj : this->Tools.getValues()) {
+                if(tag2 == obj->getID()) {
+                    res = true;
+                    return true;
+                }
+            }
+            tag = tag2;
+            return false;
+        });
+
+    return res;
 }
 
 bool Split::isToolAllowed(App::DocumentObject *obj, bool inside) const {

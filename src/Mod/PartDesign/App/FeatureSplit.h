@@ -31,6 +31,8 @@
 namespace PartDesign
 {
 
+class Solid;
+
 /**
  * Split previous features into multiple solids using optional tool features
  */
@@ -59,6 +61,10 @@ public:
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
 
     bool isToolAllowed(App::DocumentObject *, bool inside=false) const;
+
+    void updateActiveSolid(Solid *);
+
+    virtual bool isElementGenerated(const TopoShape &shape, const char *name) const override;
 
 private:
     std::size_t newSolidCount = 0;

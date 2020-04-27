@@ -71,8 +71,13 @@ bool ViewProviderSolid::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         FCMD_OBJ_CMD(owner,"Active = " << (owner->Active.getValue()?"False":"True"));
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Selection().clearSelection();
         return false;
     }
     return inherited::setEdit(ModNum);
 }
 
+bool ViewProviderSolid::canDelete(App::DocumentObject*) const
+{
+    return true;
+}

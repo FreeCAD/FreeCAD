@@ -275,48 +275,55 @@ bool Feature::isElementGenerated(const TopoShape &shape, const char *name) const
 
 App::DocumentObjectExecReturn *Feature::recompute(void)
 {
-    if(!Suppress.getValue()) {
-        SuppressedShape.setValue(TopoShape());
+    SuppressedShape.setValue(TopoShape());
+
+    if(!Suppress.getValue())
         return Part::Feature::recompute();
-    }
 
     bool failed = false;
     try {
         std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
         if(ret)
             throw Base::RuntimeError(ret->Why);
+    } catch (Base::AbortException &) {
+        throw;
     } catch (Base::Exception &e) {
         failed = true;
         e.ReportException();
         FC_ERR("Failed to recompute suppressed feature " << getFullName());
     }
 
+    if(!failed)
+        updateSuppressedShape();
+    else
+        Shape.setValue(getBaseShape(true));
+    return  App::DocumentObject::StdReturn;
+}
+
+void Feature::updateSuppressedShape()
+{
     auto baseShape = getBaseShape(true);
     TopoShape res(getID());
-    if(!failed) {
-        TopoShape shape;
-        shape = Shape.getShape();
-        shape.setPlacement(Base::Placement());
-        std::vector<TopoShape> generated;
-        if(!shape.isNull()) {
-            unsigned count = shape.countSubShapes(TopAbs_FACE);
-            std::string element("Face");
-            for(unsigned i=1; i<=count; ++i) {
-                element.resize(4);
-                element += std::to_string(i);
-                auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
-                if(mapped != element.c_str() && isElementGenerated(shape,mapped))
-                    generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
-            }
+    TopoShape shape = Shape.getShape();
+    shape.setPlacement(Base::Placement());
+    std::vector<TopoShape> generated;
+    if(!shape.isNull()) {
+        unsigned count = shape.countSubShapes(TopAbs_FACE);
+        std::string element("Face");
+        for(unsigned i=1; i<=count; ++i) {
+            element.resize(4);
+            element += std::to_string(i);
+            auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
+            if(mapped != element.c_str() && isElementGenerated(shape,mapped))
+                generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
         }
-        if(!generated.empty()) {
-            res.makECompound(generated);
-            res.setPlacement(Placement.getValue());
-        }
+    }
+    if(!generated.empty()) {
+        res.makECompound(generated);
+        res.setPlacement(Placement.getValue());
     }
     Shape.setValue(baseShape);
     SuppressedShape.setValue(res);
-    return  App::DocumentObject::StdReturn;
 }
 
 }//namespace PartDesign

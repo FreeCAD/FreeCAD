@@ -78,7 +78,7 @@ bool ViewProviderSplit::setEdit(int ModNum)
             body->addSolidBody(getObject());
         return false;
     }
-    return PartGui::ViewProviderPart::setEdit(ModNum);
+    return PartDesignGui::ViewProvider::setEdit(ModNum);
 }
 
 void ViewProviderSplit::attach(App::DocumentObject* obj) {
