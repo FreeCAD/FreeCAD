@@ -37,7 +37,9 @@ if App.GuiUp:
 
 
 class Wall(object):
-
+    """
+    A prototype for a new wall object for the Arch Workbench
+    """
     def __init__(self, obj=None):
         # print("runing wall object init method\n")
         self.Type = 'Arch_Wall'
@@ -105,7 +107,6 @@ class Wall(object):
         # print("running " + obj.Name + " execute() method\n")
 
         wall_shape = None
-        subtractive_geometries = []
 
         # get wall base shape from BaseGeometry object
         if hasattr(obj, "BaseGeometry"):
@@ -116,35 +117,62 @@ class Wall(object):
         if wall_shape is None:
             return
 
-        additive_geometries = [wall_shape]
-
-        # collect subtractive_geometries
+        # subtract openings
         if hasattr(obj, "Openings"):
             if obj.Openings is not None and obj.Openings != []:
                 for o in obj.Openings:
                     if hasattr(obj, "Shape"):
-                        subtractive_geometries.append(o)
+                        relative_placement = o.Placement
+                        if hasattr(o, "InList"):
+                            if o.InList[0] != obj:
+                                relative_placement = o.InList[0].Placement.multiply(o.Placement)
+                        cut_shape = o.Shape.copy()
+                        cut_shape.Placement = relative_placement
+                        wall_shape = wall_shape.cut(cut_shape)
 
-        # perform boolean cut of Windows openings (to be implemented)
         if hasattr(obj,"Windows"):
+            # objects marked as windows must have WallVoid PropertyLinkChild
             if obj.Windows and obj.Windows != []:
-                pass
+                for win in obj.Windows:
+                    # cut window void
+                    window_void = None
+                    cut_done = False
+                    if hasattr(win, "WallVoid"):
+                        if win.WallVoid:
+                            if hasattr(win.WallVoid, "Shape"):
+                                window_void = win.WallVoid
+                            if win.TypeId == 'App::Part' or win.TypeId == 'App::Link':
+                                container_placement = win.Placement
+                            else:
+                                container_placement = App.Placement()
 
-        # collect additive_geometries
-        for child in obj.Group:
-            if hasattr(child, "Shape") and child != obj.BaseGeometry and not child in subtractive_geometries:
-                additive_geometries.append(child.Shape)
+                            if window_void is not None:
+                                cut_shape = window_void.Shape.copy()
+                                cut_shape.Placement = container_placement.multiply(cut_shape.Placement)
+                                wall_shape = wall_shape.cut(cut_shape)
+                                cut_done = True
 
+                _compound = [wall_shape]
 
-        # Make a compound out of the wall BaseGeometry and other 
-        # additive_geometries, boolean cuts not implemented yet
-        shape = Part.Compound(additive_geometries)
+                for win in obj.Windows:
+                    # collect window shapes to be added to the wall shape
+                    for o in win.Group:
+                        if o == win.WallVoid:
+                            continue
+                        elif hasattr(o, "Shape"):
+                            if win.TypeId == 'App::Part' or win.TypeId == 'App::Link':
+                                container_placement = win.Placement
+                            else:
+                                container_placement = App.Placement()
+                            add_shape = o.Shape.copy()
+                            add_shape.Placement = container_placement.multiply(o.Placement)
+                            _compound.append(add_shape)
+                
+                # collect window shapes to be added to the wall shape
+                wall_shape = Part.Compound(_compound)
 
-        # perform boolean cuts of subtractive_geometries
-        for o in subtractive_geometries:
-            shape = shape.cut(o.Shape)
+        obj.Shape = wall_shape
 
-        obj.Shape = shape
 
     def onBeforeChange(self, obj, prop):
         """this method is activated before a property changes"""
@@ -156,21 +184,23 @@ class Wall(object):
             if prop == "JoinFirstEndTo" and obj.JoinFirstEnd:
                 target = App.ActiveDocument.getObject(obj.JoinFirstEndTo)
                 if hasattr(target, "IncomingTJoins"):
-                    list = target.IncomingTJoins
-                    if obj.Name in list:
-                        list.remove(obj.Name)
-                        target.IncomingTJoins = list
+                    lst = target.IncomingTJoins
+                    if obj.Name in lst:
+                        lst.remove(obj.Name)
+                        target.IncomingTJoins = lst
 
             elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
                 target = App.ActiveDocument.getObject(obj.JoinFirstEndTo)
                 if hasattr(target, "IncomingTJoins"):
-                    list = target.IncomingTJoins
-                    if obj.Name in list:
-                        list.remove(obj.Name)
-                        target.IncomingTJoins = list
+                    lst = target.IncomingTJoins
+                    if obj.Name in lst:
+                        lst.remove(obj.Name)
+                        target.IncomingTJoins = lst
 
         if prop == "Group":
             # store the previous configuration of wall Group property
+            # so the onChanged method can compare with the new configuration
+            # and understand if objects were added or removed
             self.oldGroup = obj.Group
 
 
@@ -185,12 +215,21 @@ class Wall(object):
                     t = App.ActiveDocument.getObject(t_name)
                     t.Proxy.recompute_ends(t, 0)
                     t.Proxy.recompute_ends(t, 1)
+                    
+        # WALL JOIN ENDS properties
+        if (hasattr(obj, "JoinFirstEndTo") and hasattr(obj, "JoinLastEndTo") and
+            hasattr(obj, "JoinFirstEnd")and hasattr(obj, "JoinLastEnd")):
+
+            if prop == "JoinFirstEndTo" and obj.JoinFirstEnd:
+                self.recompute_ends(obj, 0)
+
+            elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
+                self.recompute_ends(obj, 1)
 
         # CHILDREN properties: remember to first assign basegeometry and then add the object to the group
         if prop == "BaseGeometry":
             if hasattr(obj, "BaseGeometry"):
                 self.format_base_geometry_object(obj, obj.BaseGeometry)
-            return
 
         # Group property: an object is added or removed from the wall
         if prop == "Group":
@@ -205,34 +244,49 @@ class Wall(object):
                     print("Removing " + o.Label + " from " + obj.Label)
                     if o == obj.BaseGeometry:
                         obj.Base = None
+
                     elif o in obj.Openings:
                         openings = obj.Openings
                         openings.remove(o)
                         obj.Openings = openings
+
+                    elif o in obj.Windows:
+                        windows = obj.Windows
+                        windows.remove(o)
+                        obj.Windows = windows
+
                 for o in added_objs:
                     # if it was added, check if it is a window or ask if it has to be treated as an Opening
                     print("Adding " + o.Name + " to " + obj.Label)
                     if o == obj.BaseGeometry:
                         continue
-                    # TODO: check if the object is a window and auto link it to the wall
-                    elif not o in obj.Openings:
+
+                    if hasattr(o, "IfcType"):
+                        if o.IfcType == 'Window':
+                            windows = obj.Windows
+                            windows.append(o)
+                            obj.Windows = windows
+                            continue
+
+                    if not o in obj.Openings:
                         print("added a new object to the wall")
-                        self.add_new_children(obj, o)
+                        self.add_opening(obj, o)
 
-        # WALL JOIN ENDS properties
-        if (hasattr(obj, "JoinFirstEndTo") and hasattr(obj, "JoinLastEndTo") and
-            hasattr(obj, "JoinFirstEnd")and hasattr(obj, "JoinLastEnd")):
 
-            if prop == "JoinFirstEndTo" and obj.JoinFirstEnd:
-                self.recompute_ends(obj, 0)
+    def add_window(self, obj, child):
+        """
+        This method is called when a new object is added to the wall and
+        it has a IfcType property that is set to 'Window'.
+        """
+        pass
+        # TODO: not implemented yet
 
-            elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
-                self.recompute_ends(obj, 1)
 
-    def add_new_children(self, obj, child):
+    def add_opening(self, obj, child):
         """
         This method is called when a new object is added to the wall.
-        It ask the user how the wall should treat it.
+        It ask the user if the object has to be treated as an opening.
+        If so, it add the object to the Openings PropertyLinkListChild.
         """
         msgBox = QtGui.QMessageBox()
         msgBox.setText("Object " + obj.Label + " has been added to the wall.")
@@ -525,6 +579,7 @@ class Wall(object):
     def get_first_point(self, obj):
         """returns a part line representing the core axis of the wall"""
         return obj.BaseGeometry.Proxy.get_first_point(obj.BaseGeometry)
+
 
     def get_last_point(self, obj):
         """returns a part line representing the core axis of the wall"""
