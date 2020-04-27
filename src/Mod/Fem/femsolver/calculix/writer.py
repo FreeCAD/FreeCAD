@@ -187,11 +187,18 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # mesh
     def write_mesh(self, inpfile_split=None):
         # write mesh to file
+        element_param = 1  # hightest element order only
+        group_param = False  # do not write mesh group data
         if inpfile_split is True:
             write_name = "femesh"
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
             split_mesh_file_path = join(self.dir_name, file_name_splitt)
-            self.femmesh.writeABAQUS(split_mesh_file_path, 1, False)
+
+            self.femmesh.writeABAQUS(
+                split_mesh_file_path,
+                element_param,
+                group_param
+            )
 
             # Check to see if fluid sections are in analysis and use D network element type
             if self.fluidsection_objects:
@@ -203,7 +210,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
 
         else:
-            self.femmesh.writeABAQUS(self.file_name, 1, False)
+            self.femmesh.writeABAQUS(
+                self.file_name,
+                element_param,
+                group_param
+            )
 
             # Check to see if fluid sections are in analysis and use D network element type
             if self.fluidsection_objects:
