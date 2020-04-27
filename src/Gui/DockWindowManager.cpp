@@ -432,8 +432,15 @@ void OverlayTabWidget::retranslate()
     actAutoHide.setToolTip(tr("Toggle auto hide mode"));
     actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
     actEditShow.setToolTip(tr("Toggle auto show on edit mode"));
-    actIncrease.setToolTip(tr("Increase window size"));
-    actDecrease.setToolTip(tr("Decrease window size"));
+    actIncrease.setToolTip(tr("Increase window size, either width or height depending on the docking site.\n"
+                              "Hold ALT key while pressing the button to change size in the other dimension.\n"
+                              "Hold SHIFT key while pressing the button to move the window.\n"
+                              "Hold ALT + SHIFT key to move the window in the other direction."));
+    actDecrease.setToolTip(tr("Decrease window size, either width or height depending on the docking site.\n"
+                              "Hold ALT key while pressing to change size in the other dimension.\n"
+                              "Hold SHIFT key while pressing the button to move the window.\n"
+                              "Hold ALT + SHIFT key to move the window in the other direction."));
+    actOverlay.setToolTip(tr("Toggle overlay"));
 }
 
 void OverlayTabWidget::onAction(QAction *action)
@@ -873,6 +880,11 @@ void OverlayTabWidget::setOffset(const QSize &ofs)
     offset = ofs;
 }
 
+void OverlayTabWidget::setSizeDelta(int delta)
+{
+    sizeDelta = delta;
+}
+
 void OverlayTabWidget::setRect(QRect rect, bool overlay)
 {
     if(rect.width()<=0 || rect.height()<=0)
@@ -1035,11 +1047,14 @@ void OverlayTabWidget::onCurrentChanged(int index)
 void OverlayTabWidget::changeSize(int changes)
 {
     auto modifier = QApplication::queryKeyboardModifiers();
-    if(modifier== Qt::ControlModifier) {
-        offset.rwidth() = offset.width()+changes;
+    if(modifier== Qt::ShiftModifier) {
+        offset.rwidth() = std::max(offset.rwidth()+changes, 0);
         return;
-    } else if (modifier == Qt::ShiftModifier) {
-        offset.rheight() = offset.height()-changes;
+    } else if (modifier == (Qt::ShiftModifier | Qt::AltModifier)) {
+        offset.rheight() = std::max(offset.rheight()+changes, 0);
+        return;
+    } else if (modifier == Qt::ControlModifier || modifier == Qt::AltModifier) {
+        sizeDelta -= changes;
         return;
     }
 
@@ -1178,7 +1193,8 @@ struct OverlayInfo {
         hGrp->SetBool("EditHide", tabWidget->isEditHide());
         hGrp->SetBool("EditShow", tabWidget->isEditShow());
         hGrp->SetInt("Offset1", tabWidget->getOffset().width());
-        hGrp->SetInt("Offset2", tabWidget->getOffset().height());
+        hGrp->SetInt("Offset2", tabWidget->getSizeDelta());
+        hGrp->SetInt("Offset3", tabWidget->getOffset().height());
 
         std::ostringstream os;
         for(int i=0,c=tabWidget->count(); i<c; ++i)
@@ -1204,8 +1220,9 @@ struct OverlayInfo {
         int width = hGrp->GetInt("Width", 0);
         int height = hGrp->GetInt("Height", 0);
         int offset1 = hGrp->GetInt("Offset1", 0);
-        int offset2 = hGrp->GetInt("Offset2", 0);
+        int offset2 = hGrp->GetInt("Offset3", 0);
         tabWidget->setOffset(QSize(offset1,offset2));
+        tabWidget->setSizeDelta(hGrp->GetInt("Offset2", 0));
         if(width && height) {
             QRect rect = tabWidget->geometry();
             tabWidget->setRect(QRect(rect.left(),rect.top(),width,height), true);
@@ -1474,8 +1491,10 @@ struct DockWindowManagerP
 
         QRect rectBottom(0,0,0,0);
         if(_bottom.geometry(rectBottom)) {
-            auto ofs = _bottom.tabWidget->getOffset();
-            int bw = std::max(w-ViewParams::getNaviWidgetSize()-10-ofs.width()-ofs.height(), 10);
+            QSize ofs = _bottom.tabWidget->getOffset();
+            int delta = _bottom.tabWidget->getSizeDelta();
+            h -= ofs.height();
+            int bw = std::max(w-ViewParams::getNaviWidgetSize()-10-ofs.width()-delta, 10);
             // Bottom width is maintain the same to reduce QTextEdit re-layout
             // which may be expensive if there are lots of text, e.g. for
             // ReportView or PythonConsole.
@@ -1486,24 +1505,30 @@ struct DockWindowManagerP
         QRect rectLeft(0,0,0,0);
         if(_left.geometry(rectLeft)) {
             auto ofs = _left.tabWidget->getOffset();
-            int lh = std::max(h-rectBottom.height()-ofs.width()-ofs.height(),10);
-            _left.setGeometry(0,ofs.width(),rectLeft.width(),lh, 0,ofs.width(),rectLeft.width(),h);
+            int delta = _left.tabWidget->getSizeDelta();
+            int lh = std::max(h-rectBottom.height()-ofs.width()-delta,10);
+            _left.setGeometry(ofs.height(),ofs.width(),rectLeft.width(),lh,
+                              ofs.height(),ofs.width(),rectLeft.width(),h);
             _left.tabWidget->getAutoHideRect(rectLeft);
         }
         QRect rectRight(0,0,0,0);
         if(_right.geometry(rectRight)) {
             auto ofs = _right.tabWidget->getOffset();
+            int delta = _right.tabWidget->getSizeDelta();
             int dh = std::max(rectBottom.height(), ViewParams::getNaviWidgetSize()-10);
-            int rh = std::max(h-dh-ofs.width()-ofs.height(), 10);
+            int rh = std::max(h-dh-ofs.width()-delta, 10);
+            w -= ofs.height();
             _right.setGeometry(w-rectRight.width(),ofs.width(),rectRight.width(),rh,
-                                w-rectRight.width(),ofs.width(),rectRight.width(),rh);
+                               w-rectRight.width(),ofs.width(),rectRight.width(),rh);
             _right.tabWidget->getAutoHideRect(rectRight);
         }
         QRect rectTop(0,0,0,0);
         if(_top.geometry(rectTop)) {
-            auto ofs = _right.tabWidget->getOffset();
-            int tw = std::max(w-rectLeft.width()-rectRight.width()-ofs.width()-ofs.height(),10);
-            _top.setGeometry(rectLeft.width()-ofs.width(),0,tw,rectTop.height(),ofs.width(),0,w,rectTop.height());
+            auto ofs = _top.tabWidget->getOffset();
+            int delta = _top.tabWidget->getSizeDelta();
+            int tw = std::max(w-rectLeft.width()-rectRight.width()-ofs.width()-delta,10);
+            _top.setGeometry(rectLeft.width()-ofs.width(),ofs.height(),tw,rectTop.height(),
+                             ofs.width(),ofs.height(),w,rectTop.height());
         }
     }
 

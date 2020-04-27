@@ -199,6 +199,9 @@ public:
     void setOffset(const QSize &ofs);
     const QSize &getOffset() const {return offset;}
 
+    void setSizeDelta(int delta);
+    int getSizeDelta() const {return sizeDelta;}
+
     OverlayProxyWidget *getProxyWidget() {return proxyWidget;}
 
     QDockWidget *currentDockWidget() const;
@@ -227,6 +230,7 @@ protected Q_SLOTS:
 
 private:
     QSize offset;
+    int sizeDelta = 0;
     QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
