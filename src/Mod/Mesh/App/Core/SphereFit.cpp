@@ -107,7 +107,7 @@ float SphereFit::GetDistanceToSphere(const Base::Vector3f &rcPoint) const
 float SphereFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -126,7 +126,7 @@ float SphereFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()
