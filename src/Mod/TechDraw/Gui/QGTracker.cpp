@@ -257,11 +257,12 @@ void QGTracker::onMousePress(QPointF pos)
                 break;
         }
     } else if (m_points.size() == 1) {   //first point selected  
+        //just return pos to caller
         getPickedQGIV(pos);
-        setCursor(Qt::CrossCursor);
+        setCursor(Qt::CrossCursor);  //why cross??
 //        Q_EMIT qViewPicked(pos, m_qgParent);   //not in use yet.
         if (mode == TrackerMode::Point) {
-            setPoint(m_points);
+            setPoint(m_points);  //first point is mouse click scene pos
             terminateDrawing();
         }
     }
