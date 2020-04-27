@@ -101,6 +101,7 @@ App::DocumentObject *CoordinateSystem::getSubObject(const char *subname,
     PY_TRY {
         BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0,0,0), dir));
         Part::TopoShape ts(builder.Shape());
+        ts.Tag = getID();
         if(pmat)
             ts.transformShape(*pmat,false,true);
         *pyObj =  Py::new_reference_to(Part::shape2pyshape(ts));

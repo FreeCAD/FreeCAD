@@ -122,10 +122,16 @@ const TopoDS_Shape& PropertyPartShape::getValue(void)const
     return _Shape.getShape();
 }
 
-const TopoShape& PropertyPartShape::getShape() const
+TopoShape PropertyPartShape::getShape() const
 {
     _Shape.initCache(-1);
-    return this->_Shape;
+    auto res = _Shape;
+    if(!res.Tag) {
+        auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+        if(parent)
+            res.Tag = parent->getID();
+    }
+    return res;
 }
 
 const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
@@ -169,7 +175,7 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 
 PyObject *PropertyPartShape::getPyObject(void)
 {
-    auto prop = static_cast<Base::PyObjectBase*>(Py::new_reference_to(shape2pyshape(_Shape)));
+    auto prop = static_cast<Base::PyObjectBase*>(Py::new_reference_to(shape2pyshape(getShape())));
     if (prop) prop->setConst();
     return prop;
 }

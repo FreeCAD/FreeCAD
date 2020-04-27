@@ -802,16 +802,16 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
-        const Part::TopoShape* shape;
+        Part::TopoShape shape;
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
-            shape = &(static_cast<Part::Feature*>(geof)->Shape.getShape());
-            if (shape->isNull()){
+            shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
+            if (shape.isNull()){
                 FC_THROWM(AttachEngineException,"AttachEngine3D: Part has null shape " 
                         << objs[i]->getNameInDocument());
             }
             if (sub[i].length()>0){
                 try{
-                    storage.push_back(shape->getSubShape(sub[i].c_str()));
+                    storage.push_back(shape.getSubShape(sub[i].c_str()));
                 } catch (Standard_Failure &e){
                     FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
                             << objs[i]->getNameInDocument() << '.' << sub[i] 
@@ -824,10 +824,10 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
                 if(storage[storage.size()-1].IsNull())
                     FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
                             << objs[i]->getNameInDocument() << '.' << sub[i]);
-                shapes[i] = &(storage[storage.size()-1]);
             } else {
-                shapes[i] = &(shape->getShape());
+                storage.push_back(shape.getShape());
             }
+            shapes[i] = &(storage[storage.size()-1]);
         } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
             //obtain Z axis and origin of placement
             Base::Vector3d norm;

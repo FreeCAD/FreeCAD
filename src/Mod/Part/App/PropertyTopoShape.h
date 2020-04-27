@@ -36,6 +36,8 @@ class BRepBuilderAPI_MakeShape;
 namespace Part
 {
 
+class Feature;
+
 /** The part shape property class.
  * @author Werner Mayer
  */
@@ -55,7 +57,7 @@ public:
     void setValue(const TopoDS_Shape&, bool resetElementMap=true);
     /// get the part shape
     const TopoDS_Shape& getValue(void) const;
-    const TopoShape& getShape() const;
+    TopoShape getShape() const;
     virtual const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
@@ -95,6 +97,8 @@ public:
 
     virtual std::string getElementMapVersion(bool restored=false) const override;
     void resetElementMapVersion() {_Ver.clear();}
+
+    friend class Feature;
 
 private:
     TopoShape _Shape;
