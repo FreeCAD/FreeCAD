@@ -152,12 +152,14 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const App::any 
 
     if (value.type() == typeid(long))
         setValue(App::any_cast<long>(value));
-    else if (value.type() == typeid(double))
-        setValue(boost::math::round(App::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity))
-        setValue(boost::math::round(App::any_cast<const Quantity &>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(App::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::math::round(App::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(boost::math::round(App::any_cast<float>(value)));
+    else if (value.type() == typeid(Quantity))
+        setValue(boost::math::round(App::any_cast<const Quantity &>(value).getValue()));
     else
         throw bad_cast();
 }
@@ -1110,6 +1112,12 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const App::any &v
 
     if (value.type() == typeid(double))
         setValue(App::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        setValue(App::any_cast<float>(value));
+    else if (value.type() == typeid(long))
+        setValue(App::any_cast<long>(value));
+    else if (value.type() == typeid(int))
+        setValue(App::any_cast<int>(value));
     else if (value.type() == typeid(Quantity))
         setValue((App::any_cast<const Quantity&>(value)).getValue());
     else
@@ -1685,8 +1693,12 @@ void PropertyString::setPathValue(const ObjectIdentifier &path, const App::any &
         setValue(App::any_cast<bool>(value)?"True":"False");
     else if (value.type() == typeid(int))
         setValue(std::to_string(App::any_cast<int>(value)));
+    else if (value.type() == typeid(long))
+        setValue(std::to_string(App::any_cast<long>(value)));
     else if (value.type() == typeid(double))
-        setValue(std::to_string(boost::math::round(App::any_cast<double>(value))));
+        setValue(std::to_string(App::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(std::to_string(App::any_cast<float>(value)));
     else if (value.type() == typeid(Quantity))
         setValue(App::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))
