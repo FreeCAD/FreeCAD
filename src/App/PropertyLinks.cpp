@@ -953,6 +953,8 @@ DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const {
 }
 
 bool PropertyLinkList::isTouched() const {
+    if(PropertyLinkBase::isTouched())
+        return true;
     if(_pcScope == LinkScope::Hidden)
         return false;
     if(_lValueList.size() != _revisions.size())
