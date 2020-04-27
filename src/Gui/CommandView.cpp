@@ -3811,7 +3811,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
   sWhatsThis    = "Std_DockOverlayAll";
   sStatusTip    = sToolTipText;
   sAccel        = "F4";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayAll::activated(int iMsg)
@@ -3835,7 +3835,7 @@ StdCmdDockOverlayAutoHideAll::StdCmdDockOverlayAutoHideAll()
   sWhatsThis    = "Std_DockOverlayAutoHideAll";
   sStatusTip    = sToolTipText;
   sAccel        = "CTRL+F4";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayAutoHideAll::activated(int iMsg)
@@ -3860,7 +3860,7 @@ StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
   sWhatsThis    = "Std_DockOverlayTransparentAll";
   sStatusTip    = sToolTipText;
   sAccel        = "SHIFT+F4";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayTransparentAll::activated(int iMsg)
@@ -3884,7 +3884,7 @@ StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
   sWhatsThis    = "Std_DockOverlayToggle";
   sStatusTip    = sToolTipText;
   sAccel        = "F3";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayToggle::activated(int iMsg)
@@ -3908,7 +3908,7 @@ StdCmdDockOverlayToggleAutoHide::StdCmdDockOverlayToggleAutoHide()
     sWhatsThis    = "Std_DockOverlayToggleAutoHide";
     sStatusTip    = sToolTipText;
     sAccel        = "CTRL+F3";
-    eType         = Alter3DView;
+    eType         = 0;
 }
 
 void StdCmdDockOverlayToggleAutoHide::activated(int iMsg)
@@ -3933,7 +3933,7 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
     sWhatsThis    = "Std_DockOverlayToggleTransparent";
     sStatusTip    = sToolTipText;
     sAccel        = "SHIFT+F3";
-    eType         = Alter3DView;
+    eType         = 0;
 }
 
 void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
@@ -3957,7 +3957,7 @@ StdCmdDockOverlayIncrease::StdCmdDockOverlayIncrease()
   sWhatsThis    = "Std_DockOverlayIncrease";
   sStatusTip    = sToolTipText;
   sAccel        = "ALT+F3";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayIncrease::activated(int iMsg)
@@ -3981,7 +3981,7 @@ StdCmdDockOverlayDecrease::StdCmdDockOverlayDecrease()
   sWhatsThis    = "Std_DockOverlayDecrease";
   sStatusTip    = sToolTipText;
   sAccel        = "ALT+F2";
-  eType         = Alter3DView;
+  eType         = 0;
 }
 
 void StdCmdDockOverlayDecrease::activated(int iMsg)
@@ -4001,7 +4001,21 @@ VIEW_CMD_DEF(DockOverlayAutoView, DockOverlayAutoView)
     sToolTipText  = QT_TR_NOOP("Activate auto hide for non 3D view");
     sWhatsThis    = "Std_DockOverlayAutoView";
     sStatusTip    = sToolTipText;
-    eType         = Alter3DView;
+    eType         = 0;
+}
+
+//===========================================================================
+// Std_DockOverlayExtraState
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayExtraState, DockOverlayExtraState)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("More hiding in overlay");
+    sToolTipText  = QT_TR_NOOP("Hide more widgets when in overlay mode");
+    sWhatsThis    = "Std_DockOverlayExtraState";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
 }
 
 class StdCmdDockOverlay : public GroupCommand
@@ -4030,6 +4044,7 @@ public:
         addCommand(new StdCmdDockOverlayDecrease());
         addCommand();
         addCommand(new StdCmdDockOverlayAutoView());
+        addCommand(new StdCmdDockOverlayExtraState());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };

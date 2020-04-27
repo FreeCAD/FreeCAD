@@ -77,3 +77,7 @@ void ViewParams::onMapChildrenPlacementChanged() {
 void ViewParams::onDockOverlayAutoViewChanged() {
     DockWindowManager::instance()->refreshOverlay();
 }
+
+void ViewParams::onDockOverlayExtraStateChanged() {
+    DockWindowManager::instance()->refreshOverlay();
+}

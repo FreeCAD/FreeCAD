@@ -552,35 +552,38 @@ public:
         QString mainstyle = QString::fromLatin1(handle->GetASCII("StyleSheet").c_str());
 
         QLatin1String prefix("qss:");
-
-        QString name = QString::fromLatin1("%1.overlay").arg(mainstyle);
-        if(!QFile::exists(name)) {
-            name = prefix + name;
-            if(!QFile::exists(name)) {
-                name = QString::fromUtf8(handle->GetASCII("OverlayOnStyleSheet").c_str());
-                if(!QFile::exists(name))
-                    name = prefix + name;
-            }
-        }
+        QString name;
 
         onStyleSheet.clear();
-        if(QFile::exists(name)) {
-            QFile f(name);
-            if(f.open(QFile::ReadOnly)) {
-                QTextStream str(&f);
-                onStyleSheet = str.readAll();
+        if(ViewParams::getDockOverlayExtraState()) {
+            name = QString::fromLatin1("%1.overlay").arg(mainstyle);
+            if(!QFile::exists(name)) {
+                name = prefix + name;
+                if(!QFile::exists(name)) {
+                    name = QString::fromUtf8(handle->GetASCII("OverlayOnStyleSheet").c_str());
+                    if(!QFile::exists(name))
+                        name = prefix + name;
+                }
             }
-        }
-        if(onStyleSheet.isEmpty()) {
-            static QLatin1String _default(
-                "* { background-color: transparent; border: 1px solid palette(dark); alternate-background-color: transparent;}"
-                // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
-                // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
-                // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
-                "QTreeWidget, QListWidget {background: palette(base);}"
-                "QToolTip { background-color: palette(base); }"
-            );
-            onStyleSheet = _default;
+
+            if(QFile::exists(name)) {
+                QFile f(name);
+                if(f.open(QFile::ReadOnly)) {
+                    QTextStream str(&f);
+                    onStyleSheet = str.readAll();
+                }
+            }
+            if(onStyleSheet.isEmpty()) {
+                static QLatin1String _default(
+                    "* { background-color: transparent; border: 1px solid palette(dark); alternate-background-color: transparent;}"
+                    // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
+                    // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
+                    // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
+                    "QTreeWidget, QListWidget {background: palette(base);}"
+                    "QToolTip { background-color: palette(base); }"
+                );
+                onStyleSheet = _default;
+            }
         }
 
         name = QString::fromLatin1("%1.overlay2").arg(mainstyle);
@@ -611,10 +614,6 @@ public:
             );
             offStyleSheet = _default;
         }
-
-        hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
-        hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
-        hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
 
         name = QString::fromLatin1("%1.overlay3").arg(mainstyle);
         if(!QFile::exists(name)) {
@@ -668,6 +667,13 @@ public:
                 );
             activeStyleSheet = _default;
         }
+
+        if(onStyleSheet.isEmpty())
+            onStyleSheet = activeStyleSheet;
+
+        hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
+        hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
+        hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
     }
 
     ParameterGrp::handle handle;
