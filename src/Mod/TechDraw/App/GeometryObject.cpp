@@ -986,6 +986,14 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
 
 
 //!scales & mirrors a shape about a center
+TopoDS_Shape TechDraw::mirrorShapeVec(const TopoDS_Shape &input,
+                             const Base::Vector3d& inputCenter,
+                             double scale)
+{
+    gp_Pnt gInput(inputCenter.x, inputCenter.y, inputCenter.z);
+    return TechDraw::mirrorShape(input, gInput, scale);
+}
+
 TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
                              const gp_Pnt& inputCenter,
                              double scale)
