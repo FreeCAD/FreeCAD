@@ -1208,9 +1208,9 @@ def getNormal(shape):
         elif shape.ShapeType == "Edge":
                 if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
                         n = shape.Edges[0].Curve.Axis
-                elif geomType(edge) == "BSplineCurve" or \
-                     geomType(edge) == "BezierCurve":
-                        n = getSplineNormal(edge)
+                elif geomType(shape.Edges[0]) == "BSplineCurve" or \
+                     geomType(shape.Edges[0]) == "BezierCurve":
+                        n = getSplineNormal(shape.Edges[0])
         else:
                 for e in shape.Edges:
                         if geomType(e) in ["Circle","Ellipse"]:
