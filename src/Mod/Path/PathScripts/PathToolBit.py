@@ -44,8 +44,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule()
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
@@ -198,6 +198,7 @@ class ToolBit(object):
     def onDelete(self, obj, arg2=None):
         PathLog.track(obj.Label)
         self.unloadBitBody(obj)
+        obj.Document.removeObject(obj.Name)
 
     def _updateBitShape(self, obj, properties=None):
         if not obj.BitBody is None:
@@ -233,6 +234,7 @@ class ToolBit(object):
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
+        print('in _removebitbody')
         if obj.BitBody:
             obj.BitBody.removeObjectsFromDocument()
             obj.Document.removeObject(obj.BitBody.Name)
@@ -305,6 +307,7 @@ class ToolBit(object):
         return None
 
     def saveToFile(self, obj, path, setFile=True):
+        print('were saving now')
         try:
             with open(path, 'w') as fp:
                 json.dump(self.shapeAttrs(obj), fp, indent='  ')
@@ -329,7 +332,12 @@ class ToolBit(object):
         attrs['parameter'] = params
         params = {}
         for name in self.propertyNamesAttribute(obj):
-            params[name] = PathUtil.getPropertyValueString(obj, name)
+            #print(f"shapeattr {name}")
+            if name == "UserAttributes":
+                for key, value in obj.UserAttributes.items():
+                    params[key] = value
+            else:
+                params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['attribute'] = params
         return attrs
 
@@ -346,6 +354,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
         self.addProperty('App::PropertyDistance', 'LengthOffset', PropertyGroupAttribute, translate('PathToolBit', 'Length offset in Z direction'))
         self.addProperty('App::PropertyInteger',  'Flutes', PropertyGroupAttribute, translate('PathToolBit', 'The number of flutes'))
         self.addProperty('App::PropertyDistance', 'ChipLoad', PropertyGroupAttribute, translate('PathToolBit', 'Chipload as per manufacturer'))
+        self.addProperty('App::PropertyMap', 'UserAttributes', PropertyGroupAttribute, translate('PathTooolBit', 'User Defined Values'))
 
 
 class ToolBitFactory(object):
@@ -361,11 +370,25 @@ class ToolBitFactory(object):
         obj.Proxy.unloadBitBody(obj)
         params = attrs['attribute']
         proto = AttributePrototype()
+        uservals = {}
         for pname in params:
-            prop = proto.getProperty(pname)
-            val =  prop.valueFromString(params[pname])
-            print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
-            prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
+            #print(f"pname: {pname}")
+            try:
+                prop = proto.getProperty(pname)
+                val =  prop.valueFromString(params[pname])
+                prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
+            except:
+                # prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
+                # setattr(obj, pname, params[pname])
+                prop = proto.getProperty("UserAttributes")
+                uservals.update({pname: params[pname]})
+                #prop.setupProperty(obj, pname, "UserAttributes", prop.valueFromString(params[pname]))
+
+        if len(uservals.items()) > 0:
+            prop.setupProperty(obj, "UserAttributes", PropertyGroupAttribute, uservals)
+
+            # print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
+            #prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):
