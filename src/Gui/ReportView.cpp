@@ -258,30 +258,83 @@ void ReportOutputObserver::showReportView(){
     }
 }
 
+class ReportViewParams: public ParameterGrp::ObserverType {
+public:
+#define REPORT_VIEW_PARAMS \
+    REPORT_VIEW_PARAM(checkShowReportViewOnWarning, true) \
+    REPORT_VIEW_PARAM(checkShowReportViewOnError, true) \
+    REPORT_VIEW_PARAM(checkShowReportViewOnNormalMessage, false) \
+    REPORT_VIEW_PARAM(checkShowReportViewOnLogMessage, false) \
+
+    ReportViewParams() {
+        handle = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/OutputWindow");
+#undef REPORT_VIEW_PARAM
+#define REPORT_VIEW_PARAM(_name, _def) _##_name = handle->GetBool(#_name, _def);
+
+        REPORT_VIEW_PARAMS
+        handle->Attach(this);
+    }
+
+    static ReportViewParams *instance() {
+        static ReportViewParams *inst;
+        if(!inst)
+            inst = new ReportViewParams;
+        return inst;
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(!sReason)
+            return;
+#undef REPORT_VIEW_PARAM
+#define REPORT_VIEW_PARAM(_name, _def) \
+        if(strcmp(sReason, #_name)==0) {_##_name = handle->GetBool(#_name, _def); return;}
+
+        REPORT_VIEW_PARAMS
+    }
+
+#undef REPORT_VIEW_PARAM
+#define REPORT_VIEW_PARAM(_name, _def) \
+    static  bool _name() {return instance()->_##_name;}
+
+    REPORT_VIEW_PARAMS
+
+private:
+#undef REPORT_VIEW_PARAM
+#define REPORT_VIEW_PARAM(_name, _def) bool _##_name;
+
+    REPORT_VIEW_PARAMS
+
+#undef REPORT_VIEW_PARAM
+#undef REPORT_VIEW_PARAMS
+
+    ParameterGrp::handle handle;
+};
+
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::User && obj == reportView.data()) {
         CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
         if (cr) {
-            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-            ReportHighlighter::Paragraph msgType = cr->messageType();
-            if (msgType == ReportHighlighter::Warning){
-                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+            switch(cr->messageType()) {
+            case ReportHighlighter::Warning:
+                if(ReportViewParams::checkShowReportViewOnWarning())
                     showReportView();
-                }
-            } else if (msgType == ReportHighlighter::Error){
-                if (group->GetBool("checkShowReportViewOnError", true)) {
+                break;
+            case ReportHighlighter::Error:
+                if(ReportViewParams::checkShowReportViewOnError())
                     showReportView();
-                }
-            } else if (msgType == ReportHighlighter::Message){
-                if (group->GetBool("checkShowReportViewOnNormalMessage", false)) {
+                break;
+            case ReportHighlighter::Message:
+                if(ReportViewParams::checkShowReportViewOnNormalMessage())
                     showReportView();
-                }
-            } else if (msgType == ReportHighlighter::LogText){
-                if (group->GetBool("checkShowReportViewOnLogMessage", false)) {
+                break;
+            case ReportHighlighter::LogText:
+                if(ReportViewParams::checkShowReportViewOnLogMessage())
                     showReportView();
-                }
+                break;
+            default:
+                break;
             }
         }
         return false;  //true would prevent the messages reaching the report view
