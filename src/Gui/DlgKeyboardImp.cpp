@@ -357,6 +357,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && !cmd->getAction()) {
+        Base::Console().Warning("Command %s not in use yet\n", cmd->getName());
         ui->buttonAssign->setEnabled(false); // command not in use
         return;
     }
