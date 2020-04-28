@@ -540,6 +540,7 @@ void QuantitySpinBox::userInput(const QString & text)
     int pos = 0;
     QValidator::State state;
     Base::Quantity res = d->validateAndInterpret(tmp, pos, state);
+    res.setFormat(d->quantity.getFormat());
     if (state == QValidator::Acceptable) {
         d->validInput = true;
         d->validStr = text;
@@ -549,6 +550,7 @@ void QuantitySpinBox::userInput(const QString & text)
         tmp += QLatin1Char(' ');
         tmp += d->unitStr;
         Base::Quantity res2 = d->validateAndInterpret(tmp, pos, state);
+        res2.setFormat(d->quantity.getFormat());
         if (state == QValidator::Acceptable) {
             d->validInput = true;
             d->validStr = tmp;
