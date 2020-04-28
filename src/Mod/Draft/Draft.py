@@ -3009,11 +3009,17 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
         _ViewProviderDraft.__init__(self,vobj)
 
     def getIcon(self):
-        if hasattr(self.Object,"ArrayType"):
-            return ":/icons/Draft_Array.svg"
-        elif hasattr(self.Object,"PointList"):
+        if hasattr(self.Object, "ArrayType"):
+            if self.Object.ArrayType == 'ortho':
+                return ":/icons/Draft_Array.svg"
+            elif self.Object.ArrayType == 'polar':
+                return ":/icons/Draft_PolarArray.svg"
+            elif self.Object.ArrayType == 'circular':
+                return ":/icons/Draft_CircularArray.svg"
+        elif hasattr(self.Object, "PointList"):
             return ":/icons/Draft_PointArray.svg"
-        return ":/icons/Draft_PathArray.svg"
+        else:
+            return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
         colors = []
