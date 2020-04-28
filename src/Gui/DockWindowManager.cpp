@@ -33,7 +33,6 @@
 # include <QToolTip>
 # include <QAction>
 # include <QKeyEvent>
-# include <QTimer>
 # include <QMap>
 # include <QTextStream>
 # include <QComboBox>
@@ -520,7 +519,13 @@ void OverlayTabWidget::leaveEvent(QEvent*)
 
 void OverlayTabWidget::enterEvent(QEvent*)
 {
+    revealTime = QTime();
     DockWindowManager::instance()->refreshOverlay();
+}
+
+void OverlayTabWidget::setRevealTime(const QTime &time)
+{
+    revealTime = time;
 }
 
 class OverlayStyleSheet: public ParameterGrp::ObserverType {
@@ -987,13 +992,17 @@ void OverlayTabWidget::resizeEvent(QResizeEvent *ev)
 
 void OverlayTabWidget::setupLayout()
 {
-    int tsize;
-    if(dockArea==Qt::LeftDockWidgetArea || dockArea==Qt::RightDockWidgetArea)
-        tsize = tabBar()->width();
-    else
-        tsize = tabBar()->height();
-    if(tsize > tabSize)
-        tabSize = tsize;
+    if(count() == 1)
+        tabSize = 0;
+    else {
+        int tsize;
+        if(dockArea==Qt::LeftDockWidgetArea || dockArea==Qt::RightDockWidgetArea)
+            tsize = tabBar()->width();
+        else
+            tsize = tabBar()->height();
+        if(tsize > tabSize)
+            tabSize = tsize;
+    }
 
     QRect rect, rectTitle;
     switch(tabPosition()) {
@@ -1298,13 +1307,13 @@ struct DockWindowManagerP
         ,_actions({&_actOverlay,&_actFloat,&_actClose})
     {
         Application::Instance->signalActivateView.connect([this](const MDIView *) {
-            _timer.start(ViewParams::getDockOverlayDelay());
+            refreshOverlay();
         });
         Application::Instance->signalInEdit.connect([this](const ViewProviderDocumentObject &) {
-            _timer.start(ViewParams::getDockOverlayDelay());
+            refreshOverlay();
         });
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject &) {
-            _timer.start(ViewParams::getDockOverlayDelay());
+            refreshOverlay();
         });
 
         _actOverlay.setIcon(QPixmap(_PixmapOverlay));
@@ -1369,9 +1378,6 @@ struct DockWindowManagerP
         if(it != _overlays.end()) {
             auto o = it.value();
             switch(toggle) {
-            case OverlaySet:
-                o->tabWidget->setAutoHide(false);
-                break;
             case OverlayToggleAutoHide:
                 o->tabWidget->setAutoHide(!o->tabWidget->isAutoHide());
                 break;
@@ -1414,13 +1420,15 @@ struct DockWindowManagerP
         if(toggle == OverlayCheck && !o->tabWidget->count())
             return false;
         if(o->addWidget(dock)) {
-            o->tabWidget->setAutoHide(toggle == OverlayToggleAutoHide);
-            o->tabWidget->setTransparent(toggle == OverlayToggleTransparent);
+            if(toggle == OverlayToggleAutoHide)
+                o->tabWidget->setAutoHide(true);
+            else if(toggle == OverlayToggleTransparent)
+                o->tabWidget->setTransparent(true);
         }
         return true;
     }
 
-    void refreshOverlay(QWidget *widget, bool refreshStyle)
+    void refreshOverlay(QWidget *widget=nullptr, bool refreshStyle=false)
     {
         if(refreshStyle) {
             OverlayStyleSheet::instance()->update();
@@ -1455,7 +1463,7 @@ struct DockWindowManagerP
         _right.restore();
         _top.restore();
         _bottom.restore();
-        _timer.start(100);
+        refreshOverlay();
     }
 
     void onTimer()
@@ -1466,6 +1474,7 @@ struct DockWindowManagerP
 
         auto focus = findTabWidget(qApp->focusWidget());
         auto active = findTabWidget(qApp->widgetAt(QCursor::pos()));
+        OverlayTabWidget *reveal = nullptr;
 
         bool updateFocus = false;
         bool updateActive = false;
@@ -1479,23 +1488,39 @@ struct DockWindowManagerP
                 else 
                     o->tabWidget->setOverlayMode(true);
             }
+            if(!o->tabWidget->getRevealTime().isNull()) {
+                if(o->tabWidget->getRevealTime()<= QTime::currentTime())
+                    o->tabWidget->setRevealTime(QTime());
+                else
+                    reveal = o->tabWidget;
+            }
         }
         updateStyle = false;
 
         if(focus && (focus->isOverlayed() || updateFocus)) {
             focus->setOverlayMode(false);
             focus->raise();
+            if(reveal == focus)
+                reveal = nullptr;
         }
 
         if(active) {
             if(active != focus && (active->isOverlayed() || updateActive)) 
                 active->setOverlayMode(false);
             active->raise();
+            if(reveal == active)
+                reveal = nullptr;
+        }
+
+        if(reveal) {
+            reveal->setOverlayMode(false);
+            reveal->raise();
         }
 
         for(auto o : _overlayInfos) {
             if(o->tabWidget != focus 
                     && o->tabWidget != active
+                    && o->tabWidget != reveal
                     && o->tabWidget->count()
                     && !o->tabWidget->isOverlayed())
             {
@@ -1589,7 +1614,7 @@ struct DockWindowManagerP
         case DockWindowManager::AutoHideNone:
             for(auto o : _overlayInfos)
                 o->tabWidget->setAutoHide(mode == DockWindowManager::AutoHideAll);
-            _timer.start(500);
+            refreshOverlay();
             return;
         case DockWindowManager::ToggleAutoHideAll:
             for(auto o : _overlayInfos) {
@@ -1613,7 +1638,7 @@ struct DockWindowManagerP
         case DockWindowManager::TransparentNone:
             for(auto o : _overlayInfos)
                 o->tabWidget->setTransparent(mode == DockWindowManager::TransparentAll);
-            _timer.start(500);
+            refreshOverlay();
             return;
         case DockWindowManager::ToggleTransparentAll:
             for(auto o : _overlayInfos) {
@@ -1678,9 +1703,12 @@ struct DockWindowManagerP
 
         auto it = _overlays.find(dock);
         if(it == _overlays.end()) {
-            if(checked)
-                toggleOverlay(dock, OverlayCheck);
-            return;
+            if(!checked)
+                return;
+            toggleOverlay(dock, OverlayCheck);
+            it = _overlays.find(dock);
+            if(it == _overlays.end())
+                return;
         }
         if(checked) {
             int index = it.value()->tabWidget->dockWidgetIndex(dock);
@@ -1688,7 +1716,14 @@ struct DockWindowManagerP
                 auto sizes = it.value()->tabWidget->getSplitter()->sizes();
                 if(index >= sizes.size() || sizes[index]==0) 
                     it.value()->tabWidget->setCurrent(dock);
+                else {
+                    QSignalBlocker guard(it.value()->tabWidget);
+                    it.value()->tabWidget->setCurrent(dock);
+                }
             }
+            it.value()->tabWidget->setRevealTime(QTime::currentTime().addMSecs(
+                    ViewParams::getDockOverlayRevealDelay()));
+            refreshOverlay();
         } else {
             it.value()->tabWidget->removeWidget(dock);
             getMainWindow()->addDockWidget(it.value()->dockArea, dock);
@@ -1701,12 +1736,12 @@ struct DockWindowManagerP
         auto tabWidget = findTabWidget(qApp->widgetAt(QCursor::pos()));
         if(tabWidget) {
             tabWidget->changeSize(changes, false);
-            _timer.start(ViewParams::getDockOverlayDelay());
+            refreshOverlay();
         }
     }
 
     void onFocusChanged(QWidget *, QWidget *) {
-        _timer.start(ViewParams::getDockOverlayDelay());
+        refreshOverlay();
     }
 
     void setupTitleBar(QDockWidget *dock)
@@ -1790,7 +1825,7 @@ struct DockWindowManagerP
                         _overlays.erase(it);
                         dock->show();
                         dock->setFloating(true);
-                        refreshOverlay(nullptr, false);
+                        refreshOverlay();
                     } else 
                         dock->setFloating(!dock->isFloating());
                 }
@@ -2176,7 +2211,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
     switch(ev->type()) {
     case QEvent::Resize:
         if(qobject_cast<QMdiArea*>(o))
-            d->_timer.start(50);
+            refreshOverlay();
         return false;
     default:
         break;

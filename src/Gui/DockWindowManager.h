@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QTabWidget>
 #include <QTimer>
+#include <QTime>
 #include <QAction>
 #include <QToolButton>
 
@@ -214,6 +215,9 @@ public:
 
     Qt::DockWidgetArea getDockArea() const {return dockArea;}
 
+    const QTime &getRevealTime() const {return revealTime;}
+    void setRevealTime(const QTime &time);
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -249,6 +253,7 @@ private:
     bool touched = false;
     Qt::DockWidgetArea dockArea;
     int tabSize = 0;
+    QTime revealTime;
 };
 
 class OverlayToolButton: public QToolButton
