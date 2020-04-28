@@ -93,6 +93,7 @@ protected Q_SLOTS:
     void showColumns();
     void hideColumns();
     void cellProperties();
+    void cellAlias();
     void editMode(QAction *);
     void onRecompute();
     void onBind();
@@ -144,6 +145,7 @@ protected:
     QAction *actionCut;
     QAction *actionDel;
     QAction *actionBind;
+    QAction *actionAlias;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

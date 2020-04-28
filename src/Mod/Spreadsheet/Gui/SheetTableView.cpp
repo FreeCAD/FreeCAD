@@ -125,8 +125,11 @@ SheetTableView::SheetTableView(QWidget *parent)
 
     QAction * cellProperties = new QAction(tr("Properties..."), this);
     contextMenu->addAction(cellProperties);
-
     connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
+
+    actionAlias = new QAction(tr("Alias..."), this);
+    contextMenu->addAction(actionAlias);
+    connect(actionAlias, SIGNAL(triggered()), this, SLOT(cellAlias()));
 
     QActionGroup *editGroup = new QActionGroup(this);
     editGroup->setExclusive(true);
@@ -298,11 +301,25 @@ void SheetTableView::onConfSetup() {
 
 void SheetTableView::cellProperties()
 {
-    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    PropertiesDialog dialog(sheet, selectedRanges(), this);
 
-    if (dialog->exec() == QDialog::Accepted) {
-        dialog->apply();
+    if (dialog.exec() == QDialog::Accepted) {
+        dialog.apply();
     }
+}
+
+void SheetTableView::cellAlias()
+{
+    auto ranges = selectedRanges();
+    if(ranges.size() != 1
+            || ranges[0].rowCount()!=1 
+            || ranges[0].colCount()!=1)
+        return;
+
+    PropertiesDialog dialog(sheet, ranges, this);
+    dialog.selectAlias();
+    if (dialog.exec() == QDialog::Accepted)
+        dialog.apply();
 }
 
 std::vector<Range> SheetTableView::selectedRanges() const
@@ -870,7 +887,8 @@ void SheetTableView::edit ( const QModelIndex & index )
 void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     QAction *action = 0;
     bool persistent = false;
-    for(auto &range : selectedRanges()) {
+    auto ranges = selectedRanges();
+    for(auto &range : ranges) {
         do {
             auto cell = sheet->getCell(range.address());
             if(!cell) continue;
@@ -898,7 +916,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     actionEditPersistent->setChecked(persistent);
 
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-    if(!selectionModel()->hasSelection()) {
+    if(ranges.empty()) {
         actionCut->setEnabled(false);
         actionCopy->setEnabled(false);
         actionDel->setEnabled(false);
@@ -917,8 +935,10 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
         actionMerge->setEnabled(true);
     }
 
-    auto ranges = selectedRanges();
     actionBind->setEnabled(ranges.size()>=1 && ranges.size()<=2);
+
+    actionAlias->setEnabled(ranges.size()==1
+            && ranges[0].rowCount()==1 && ranges[0].colCount()==1);
 
     contextMenu->exec(QCursor::pos());
 }
