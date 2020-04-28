@@ -764,6 +764,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
                 "\tdel(visible_features)\n"
                 "tv.hide(dep_features)\n"
+                "tv.show(tvObj)\n"
                 "del(dep_features)\n"
                 "del(tvObj)"
                 ).arg(

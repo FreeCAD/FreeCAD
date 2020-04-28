@@ -125,7 +125,6 @@ private:
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
-    std::string ObjectName;
 
 private:
     QWidget* proxy;

@@ -957,6 +957,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
                 "\tdel(visible_features)\n"
                 "tv.hide(dep_features)\n"
+                "tv.show(tvObj)\n"
                 "del(dep_features)\n"
                 "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\t\tif len(tvObj.Support) > 0:\n"
@@ -969,9 +970,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
         else {
-            Base::Interpreter().runString(
-                    "tv.restore()\n"
-                    "tv.del(tv)");
+            Base::Interpreter().runString("del(tv)");
         }
     };
 
@@ -1006,7 +1005,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             e.ReportException();
         }
     }
-    else if(ObjectName.size()) {
+    else {
         try {
             visAutoFunc(opening_not_closing, nullptr, nullptr, std::string());
         }
