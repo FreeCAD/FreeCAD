@@ -332,7 +332,7 @@ class ToolBit(object):
         attrs['parameter'] = params
         params = {}
         for name in self.propertyNamesAttribute(obj):
-            print(f"shapeattr {name}")
+            #print(f"shapeattr {name}")
             if name == "UserAttributes":
                 for key, value in obj.UserAttributes.items():
                     params[key] = value
@@ -372,7 +372,7 @@ class ToolBitFactory(object):
         proto = AttributePrototype()
         uservals = {}
         for pname in params:
-            print(f"pname: {pname}")
+            #print(f"pname: {pname}")
             try:
                 prop = proto.getProperty(pname)
                 val =  prop.valueFromString(params[pname])
