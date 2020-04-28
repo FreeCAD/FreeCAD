@@ -1194,9 +1194,13 @@ void MainWindow::onDockWindowMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
-    for (QList<QDockWidget*>::Iterator it = dock.begin(); it != dock.end(); ++it) {
-        QAction* action = (*it)->toggleViewAction();
+    QMap<QString, QAction*> actions;
+    for(auto dock : this->findChildren<QDockWidget*>()) {
+        auto action = dock->toggleViewAction();
+        actions[action->text()] = action;
+    }
+    for(auto it=actions.begin(); it!=actions.end(); ++it) {
+        QAction* action = it.value();
         action->setToolTip(tr("Toggles this dockable window"));
         action->setStatusTip(tr("Toggles this dockable window"));
         action->setWhatsThis(tr("Toggles this dockable window"));
