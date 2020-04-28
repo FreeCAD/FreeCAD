@@ -575,8 +575,9 @@ StdCmdDrawStyle::StdCmdDrawStyle()
 {
     sGroup        = QT_TR_NOOP("Standard-View");
     sMenuText     = QT_TR_NOOP("Draw style");
-    sToolTipText  = QT_TR_NOOP("Draw style");
-    sStatusTip    = QT_TR_NOOP("Draw style");
+    sToolTipText  = QT_TR_NOOP("Change the draw style of the objects");
+    sStatusTip    = QT_TR_NOOP("Change the draw style of the objects");
+    sWhatsThis    = "Std_DrawStyle";
     sPixmap       = "DrawStyleAsIs";
     eType         = Alter3DView;
 
