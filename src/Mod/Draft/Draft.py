@@ -3297,7 +3297,12 @@ class _ViewProviderDraftLink:
     def getIcon(self):
         tp = self.Object.Proxy.Type
         if tp == 'Array':
-            return ":/icons/Draft_LinkArray.svg"
+            if self.Object.ArrayType == 'ortho':
+                return ":/icons/Draft_LinkArray.svg"
+            elif self.Object.ArrayType == 'polar':
+                return ":/icons/Draft_PolarLinkArray.svg"
+            elif self.Object.ArrayType == 'circular':
+                return ":/icons/Draft_CircularLinkArray.svg"
         elif tp == 'PathArray':
             return ":/icons/Draft_PathLinkArray.svg"
 
