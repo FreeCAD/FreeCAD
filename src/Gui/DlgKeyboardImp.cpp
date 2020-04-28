@@ -418,6 +418,9 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                 for (auto* cmd : ambiguousCommands) {
                     Action* action = cmd->getAction();
                     action->setShortcut(QString());
+
+                    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+                    hGrp->RemoveASCII(cmd->getName());
                 }
             }
             else {
