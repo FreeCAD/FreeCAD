@@ -79,5 +79,5 @@ void ViewParams::onDockOverlayAutoViewChanged() {
 }
 
 void ViewParams::onDockOverlayExtraStateChanged() {
-    DockWindowManager::instance()->refreshOverlay();
+    DockWindowManager::instance()->refreshOverlay(nullptr, true);
 }

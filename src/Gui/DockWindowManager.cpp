@@ -112,6 +112,8 @@ const QList<DockWindowItem>& DockWindowItems::dockWidgets() const
 
 // -----------------------------------------------------------
 
+#ifdef FC_HAS_DOCK_OVERLAY
+
 static const int _TitleButtonSize = 12;
 
 #define TITLE_BUTTON_COLOR "# c #101010"
@@ -131,14 +133,13 @@ static const char *_PixmapOverlay[]={
     "#........#",
     "##########",
 };
-// -----------------------------------------------------------
 
-#ifdef FC_HAS_DOCK_OVERLAY
+// -----------------------------------------------------------
 
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
     :QWidget(tabOverlay->parentWidget()), owner(tabOverlay)
 {
-    pos = owner->tabPosition();
+    pos = owner->getDockArea();
 }
 
 void OverlayProxyWidget::enterEvent(QEvent *)
@@ -170,16 +171,16 @@ void OverlayProxyWidget::paintEvent(QPaintEvent *)
     painter.setPen(QPen(Qt::black, 2));
     QSize s = this->size();
     switch(pos) {
-    case QTabWidget::West:
+    case Qt::LeftDockWidgetArea:
         painter.drawLine(s.width()-2, 0, s.width()-2, s.height());
         break;
-    case QTabWidget::East:
+    case Qt::RightDockWidgetArea:
         painter.drawLine(1, 0, 1, s.height()-2);
         break;
-    case QTabWidget::North:
+    case Qt::TopDockWidgetArea:
         painter.drawLine(0, s.height()-2, s.width(), s.height()-2);
         break;
-    case QTabWidget::South:
+    case Qt::BottomDockWidgetArea:
         painter.drawLine(0, 1, s.width(), 1);
         break;
     }
@@ -190,7 +191,7 @@ OverlayToolButton::OverlayToolButton(QWidget *parent)
 {}
 
 OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
-    :QTabWidget(parent)
+    :QTabWidget(parent), dockArea(pos)
 {
     // This is necessary to capture any focus lost from switching the tab,
     // otherwise the lost focus will leak to the parent, i.e. MdiArea, which may
@@ -271,18 +272,20 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         };
         pxAutoHide = QPixmap(bytes);
     }
-    switch(tabPosition()) {
-    case West:
+    switch(dockArea) {
+    case Qt::LeftDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide);
         break;
-    case East:
+    case Qt::RightDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide.transformed(QTransform().scale(-1,1)));
         break;
-    case North:
+    case Qt::TopDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide.transformed(QTransform().rotate(90)));
         break;
-    case South:
+    case Qt::BottomDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide.transformed(QTransform().rotate(-90)));
+        break;
+    default:
         break;
     }
     actAutoHide.setCheckable(true);
@@ -399,12 +402,15 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     connect(tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(onTabMoved(int,int)));
     tabBar()->installEventFilter(this);
     connect(splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved()));
+
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(setupLayout()));
 }
 
 bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
 {
     if(ev->type() == QEvent::Resize && o == tabBar())
-        setupLayout();
+        timer.start(10);
     return QTabWidget::eventFilter(o, ev);
 }
 
@@ -523,8 +529,8 @@ public:
     OverlayStyleSheet() {
         handle = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/MainWindow");
-        handle->Attach(this);
         update();
+        handle->Attach(this);
     }
 
     static OverlayStyleSheet *instance() {
@@ -542,9 +548,7 @@ public:
                 || strcmp(sReason, "OverlayOnStyleSheet")==0
                 || strcmp(sReason, "OverlayOffStyleSheet")==0)
         {
-            update();
-            updating = true;
-            DockWindowManager::instance()->refreshOverlay();
+            DockWindowManager::instance()->refreshOverlay(nullptr, true);
         }
     }
 
@@ -576,11 +580,12 @@ public:
             if(onStyleSheet.isEmpty()) {
                 static QLatin1String _default(
                     "* { background-color: transparent; border: 1px solid palette(dark); alternate-background-color: transparent;}"
-                    // "QTabBar {qproperty-drawBase: 0; qproperty-documentMode: 1;}"
-                    // "QTabBar::tab {background-color: transparent; border: 1px solid darkgray;}"
-                    // "QHeaderView::section { background-color: transparent; border: 1px solid darkgray;}"
-                    "QTreeWidget, QListWidget {background: palette(base);}"
-                    "QToolTip { background-color: palette(base); }"
+                    "QTreeWidget, QListWidget { background: palette(base) }"
+                    "QToolTip { background-color: palette(base) }"
+
+                    // Both background and border are necessary to make this work.
+                    // And this spare us to have to call QTabWidget::setDocumentMode(true).
+                    "QTabWidget:pane { background-color: transparent; border: transparent }"
                 );
                 onStyleSheet = _default;
             }
@@ -644,9 +649,10 @@ public:
                 "QComboBox:!editable { background : palette(base);}"
                 "QLineEdit { background : palette(base);}"
                 "QAbstractSpinBox { background : palette(base);}"
-                "QTabBar {border: none;}"
+                "QTabWidget:pane { background-color: transparent; border: transparent }"
+                "QTabBar { background: transparent; border: none;}"
                 "QTabBar::tab {color: #1a1a1a; background-color: transparent; border: 1px solid palette(dark);}"
-                "QTabBar::tab:selected {color: palette(text); background-color: palette(mid);}"
+                "QTabBar::tab:selected {color: palette(text); background-color: #aaaaaaaa;}"
                 "QTabBar::tab:hover {color: palette(text); background-color: palette(light);}"
                 "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
                 "QTreeWidget, QListWidget {background: palette(base)}" // necessary for checkable item to work in linux
@@ -668,22 +674,25 @@ public:
             activeStyleSheet = _default;
         }
 
-        if(onStyleSheet.isEmpty())
+        if(onStyleSheet.isEmpty()) {
             onStyleSheet = activeStyleSheet;
-
-        hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
-        hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
-        hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
+            hideTab = false;
+            hideScrollBar = false;
+            hideHeader = false;
+        } else {
+            hideTab = (onStyleSheet.indexOf(QLatin1String("QTabBar")) < 0);
+            hideScrollBar = (onStyleSheet.indexOf(QLatin1String("QAbstractScrollArea")) < 0);
+            hideHeader = (onStyleSheet.indexOf(QLatin1String("QHeaderView")) < 0);
+        }
     }
 
     ParameterGrp::handle handle;
     QString onStyleSheet;
     QString offStyleSheet;
     QString activeStyleSheet;
-    bool hideTab = true;
+    bool hideTab = false;
     bool hideHeader = false;
     bool hideScrollBar = false;
-    bool updating = false;
 };
 
 void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
@@ -701,14 +710,17 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
         widget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
 #endif
 
-    if(enable<0 || OverlayStyleSheet::instance()->hideTab) {
-        auto tabbar = qobject_cast<QTabBar*>(widget);
-        if(tabbar) {
-            tabbar->setDrawBase(enable>0);
-            // QTabWidget insist on drawing the base unless documentMode is set
-            // to true. This should be considered as a Qt bug.
-            tabbar->setDocumentMode(enable!=0);
-            if(!tabbar->autoHide() || tabbar->count()>1)
+    auto tabbar = qobject_cast<QTabBar*>(widget);
+    if(tabbar) {
+        // Stylesheet QTabWidget::pane make the following two calls unnecessary
+        //
+        // tabbar->setDrawBase(enable>0);
+        // tabbar->setDocumentMode(enable!=0);
+
+        if(!tabbar->autoHide() || tabbar->count()>1) {
+            if(!OverlayStyleSheet::instance()->hideTab)
+                tabbar->setVisible(true);
+            else
                 tabbar->setVisible(enable==0 || (enable<0 && tabbar->count()>1));
             return;
         }
@@ -721,25 +733,22 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
     widget->setAttribute(Qt::WA_NoSystemBackground, enable!=0);
     widget->setAttribute(Qt::WA_TranslucentBackground, enable!=0);
 
-    if(enable<0 || OverlayStyleSheet::instance()->hideScrollBar) {
-        auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
-        if(scrollarea) {
-            if(enable>0) {
-                scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-                scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-            } else {
-                scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-                scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-            }
+    auto scrollarea = qobject_cast<QAbstractScrollArea*>(widget);
+    if(scrollarea) {
+        if(enable>0 && OverlayStyleSheet::instance()->hideScrollBar) {
+            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        } else {
+            scrollarea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         }
     }
 
-    if(enable<0 || OverlayStyleSheet::instance()->hideHeader) {
-        auto treeview = qobject_cast<QTreeView*>(widget);
-        if(treeview) {
-            if(treeview->header()) 
-                treeview->header()->setVisible(enable<=0);
-        }
+    auto treeview = qobject_cast<QTreeView*>(widget);
+    if(treeview) {
+        if(treeview->header()) 
+            treeview->header()->setVisible(
+                    !OverlayStyleSheet::instance()->hideScrollBar || enable<=0);
     }
 }
 
@@ -844,19 +853,17 @@ void OverlayTabWidget::setOverlayMode(bool enable)
         setOverlayMode(this, enable?1:0);
     }
 
-    if(!enable)
-        tabBar()->setVisible(count()>1);
-    else
+    if(count() <= 1)
         tabBar()->hide();
+    else
+        tabBar()->setVisible(!enable || !OverlayStyleSheet::instance()->hideTab);
 
-    setRect(enable?rectOverlay:rectActive, enable);
+    setRect(rectOverlay);
 }
 
-const QRect &OverlayTabWidget::getRect(bool overlay)
+const QRect &OverlayTabWidget::getRect()
 {
-    if(overlay || rectActive.isNull())
-        return rectOverlay;
-    return rectActive;
+    return rectOverlay;
 }
 
 bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
@@ -864,18 +871,20 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
     if(!overlayed || !checkAutoHide())
         return false;
     rect = rectOverlay;
-    switch(tabPosition()) {
-    case East:
+    switch(dockArea) {
+    case Qt::RightDockWidgetArea:
         rect.setLeft(rect.left() + std::max(rect.width()-8,0));
         break;
-    case West:
+    case Qt::LeftDockWidgetArea:
         rect.setRight(rect.right() - std::max(rect.width()-8,0));
         break;
-    case North:
+    case Qt::TopDockWidgetArea:
         rect.setBottom(rect.bottom() - std::max(rect.height()-8,0));
         break;
-    case South:
+    case Qt::BottomDockWidgetArea:
         rect.setTop(rect.top() + std::max(rect.height()-8,0));
+        break;
+    default:
         break;
     }
     return true;
@@ -891,30 +900,23 @@ void OverlayTabWidget::setSizeDelta(int delta)
     sizeDelta = delta;
 }
 
-void OverlayTabWidget::setRect(QRect rect, bool overlay)
+void OverlayTabWidget::setRect(QRect rect)
 {
     if(rect.width()<=0 || rect.height()<=0)
         return;
 
-    if(!overlay)
-        rectActive = rect;
-    else
-        rectOverlay = rect;
+    rectOverlay = rect;
 
     if(getAutoHideRect(rect)) {
         proxyWidget->setGeometry(rect);
         proxyWidget->show();
         hide();
     } else {
-        if(overlay == overlayed) {
-            if(!overlay && !isTransparent())
-                setGeometry(rectActive);
-            else
-                setGeometry(rectOverlay);
+        setGeometry(rectOverlay);
 
-            for(int i=0, count=splitter->count(); i<count; ++i)
-                splitter->widget(i)->show();
-        }
+        for(int i=0, count=splitter->count(); i<count; ++i)
+            splitter->widget(i)->show();
+
         if(!isVisible() && count()) {
             proxyWidget->hide();
             show();
@@ -942,7 +944,7 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
     if(count() == 1)
-        setRect(rect, true);
+        setRect(rect);
 }
 
 int OverlayTabWidget::dockWidgetIndex(QDockWidget *dock) const
@@ -980,33 +982,40 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
 void OverlayTabWidget::resizeEvent(QResizeEvent *ev)
 {
     QTabWidget::resizeEvent(ev);
-    setupLayout();
+    timer.start(10);
 }
 
 void OverlayTabWidget::setupLayout()
 {
-    QRect rect = tabBar()->geometry();
-    QRect rectTitle;
+    int tsize;
+    if(dockArea==Qt::LeftDockWidgetArea || dockArea==Qt::RightDockWidgetArea)
+        tsize = tabBar()->width();
+    else
+        tsize = tabBar()->height();
+    if(tsize > tabSize)
+        tabSize = tsize;
+
+    QRect rect, rectTitle;
     switch(tabPosition()) {
     case West:
-        rectTitle = QRect(rect.right(), 0, this->width()-rect.width(), titleBar->height());
-        rect = QRect(rect.right(), rectTitle.bottom(),
-                     rectTitle.width(), this->height() - titleBar->height());
+        rectTitle = QRect(tabSize, 0, this->width()-tabSize, titleBar->height());
+        rect = QRect(rectTitle.left(), rectTitle.bottom(),
+                     rectTitle.width(), this->height()-rectTitle.height());
         break;
     case East:
-        rectTitle = QRect(0, 0, this->width()-rect.width(), titleBar->height());
-        rect = QRect(0, rectTitle.bottom(),
-                     rectTitle.width(), this->height() - titleBar->height());
+        rectTitle = QRect(0, 0, this->width()-tabSize, titleBar->height());
+        rect = QRect(rectTitle.left(), rectTitle.bottom(),
+                     rectTitle.width(), this->height()-rectTitle.height());
         break;
     case North:
-        rectTitle = QRect(0, rect.bottom(), this->width(), titleBar->height());
-        rect = QRect(0, rectTitle.bottom(),
-                     rectTitle.width(), this->height() - titleBar->height() - rect.height());
+        rectTitle = QRect(0, tabSize, titleBar->width(), this->height()-tabSize);
+        rect = QRect(rectTitle.right(), rectTitle.top(),
+                     this->width()-rectTitle.width(), rectTitle.height());
         break;
     case South:
-        rectTitle = QRect(0, 0, this->width(), titleBar->height());
-        rect = QRect(0, rectTitle.bottom(),
-                     rectTitle.width(), this->height() - titleBar->height() - rect.height());
+        rectTitle = QRect(0, 0, titleBar->width(), this->height()-tabSize);
+        rect = QRect(rectTitle.right(), rectTitle.top(),
+                     this->width()-rectTitle.width(), rectTitle.height());
         break;
     }
     splitter->setGeometry(rect);
@@ -1050,9 +1059,9 @@ void OverlayTabWidget::onCurrentChanged(int index)
     splitter->setSizes(sizes);
 }
 
-void OverlayTabWidget::changeSize(int changes)
+void OverlayTabWidget::changeSize(int changes, bool checkModify)
 {
-    auto modifier = QApplication::queryKeyboardModifiers();
+    auto modifier = checkModify ? QApplication::queryKeyboardModifiers() : Qt::NoModifier;
     if(modifier== Qt::ShiftModifier) {
         offset.rwidth() = std::max(offset.rwidth()+changes, 0);
         return;
@@ -1064,24 +1073,24 @@ void OverlayTabWidget::changeSize(int changes)
         return;
     }
 
-    QRect rect = overlayed?rectOverlay:rectActive;
-    switch(tabPosition()) {
-    case West:
+    QRect rect = rectOverlay;
+    switch(dockArea) {
+    case Qt::LeftDockWidgetArea:
         rect.setRight(rect.right() + changes);
         break;
-    case East:
+    case Qt::RightDockWidgetArea:
         rect.setLeft(rect.left() - changes);
         break;
-    case North:
+    case Qt::TopDockWidgetArea:
         rect.setBottom(rect.bottom() + changes);
         break;
-    case South:
+    case Qt::BottomDockWidgetArea:
         rect.setTop(rect.top() - changes);
         break;
     default:
         break;
     }
-    setRect(rect, overlayed);
+    setRect(rect);
 }
 
 // -----------------------------------------------------------
@@ -1176,22 +1185,20 @@ struct OverlayInfo {
     bool geometry(QRect &rect) {
         if(!tabWidget->count())
             return false;
-        rect = tabWidget->getRect(tabWidget->isOverlayed());
+        rect = tabWidget->getRect();
         return true;
     }
 
-    void setGeometry(int x, int y, int w, int h,
-            int activeX, int activeY, int activeW, int activeH)
+    void setGeometry(int x, int y, int w, int h)
     {
         if(!tabWidget->count())
             return;
-        tabWidget->setRect(QRect(x,y,w,h),true);
-        tabWidget->setRect(QRect(activeX,activeY,activeW,activeH),false);
+        tabWidget->setRect(QRect(x,y,w,h));
     }
 
     void save()
     {
-        QRect rect = tabWidget->getRect(true);
+        QRect rect = tabWidget->getRect();
         hGrp->SetInt("Width", rect.width());
         hGrp->SetInt("Height", rect.height());
         hGrp->SetBool("AutoHide", tabWidget->isAutoHide());
@@ -1231,7 +1238,7 @@ struct OverlayInfo {
         tabWidget->setSizeDelta(hGrp->GetInt("Offset2", 0));
         if(width && height) {
             QRect rect = tabWidget->geometry();
-            tabWidget->setRect(QRect(rect.left(),rect.top(),width,height), true);
+            tabWidget->setRect(QRect(rect.left(),rect.top(),width,height));
         }
         tabWidget->setAutoHide(hGrp->GetBool("AutoHide", false));
         tabWidget->setTransparent(hGrp->GetBool("Transparent", false));
@@ -1279,6 +1286,8 @@ struct DockWindowManagerP
     QAction _actFloat;
     QAction _actOverlay;
     std::array<QAction*, 3> _actions;
+
+    bool updateStyle = false;
 
     DockWindowManagerP(DockWindowManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlays)
@@ -1346,7 +1355,7 @@ struct DockWindowManagerP
             for(auto action : o->tabWidget->actions()) {
                 QObject::connect(action, SIGNAL(triggered(bool)), host, SLOT(onAction()));
             }
-            o->tabWidget->setTitleBar(createTitleBar(o->tabWidget, false));
+            o->tabWidget->setTitleBar(createTitleBar(o->tabWidget));
         }
     }
 
@@ -1411,8 +1420,13 @@ struct DockWindowManagerP
         return true;
     }
 
-    void refreshOverlay(QWidget *widget)
+    void refreshOverlay(QWidget *widget, bool refreshStyle)
     {
+        if(refreshStyle) {
+            OverlayStyleSheet::instance()->update();
+            updateStyle = true;
+        }
+
         if(widget) {
             auto tabWidget = findTabWidget(widget);
             if(tabWidget && tabWidget->count()) {
@@ -1457,7 +1471,7 @@ struct DockWindowManagerP
         bool updateActive = false;
 
         for(auto o : _overlayInfos) {
-            if(o->tabWidget->isTouched() || OverlayStyleSheet::instance()->updating) {
+            if(o->tabWidget->isTouched() || updateStyle) {
                 if(o->tabWidget == focus)
                     updateFocus = true;
                 else if(o->tabWidget == active)
@@ -1466,7 +1480,7 @@ struct DockWindowManagerP
                     o->tabWidget->setOverlayMode(true);
             }
         }
-        OverlayStyleSheet::instance()->updating = false;
+        updateStyle = false;
 
         if(focus && (focus->isOverlayed() || updateFocus)) {
             focus->setOverlayMode(false);
@@ -1504,8 +1518,7 @@ struct DockWindowManagerP
             // Bottom width is maintain the same to reduce QTextEdit re-layout
             // which may be expensive if there are lots of text, e.g. for
             // ReportView or PythonConsole.
-            _bottom.setGeometry(ofs.width(),h-rectBottom.height(),bw,rectBottom.height(),
-                                ofs.width(),h-rectBottom.height(),bw,rectBottom.height());
+            _bottom.setGeometry(ofs.width(),h-rectBottom.height(),bw,rectBottom.height());
             _bottom.tabWidget->getAutoHideRect(rectBottom);
         }
         QRect rectLeft(0,0,0,0);
@@ -1513,8 +1526,7 @@ struct DockWindowManagerP
             auto ofs = _left.tabWidget->getOffset();
             int delta = _left.tabWidget->getSizeDelta();
             int lh = std::max(h-rectBottom.height()-ofs.width()-delta,10);
-            _left.setGeometry(ofs.height(),ofs.width(),rectLeft.width(),lh,
-                              ofs.height(),ofs.width(),rectLeft.width(),h);
+            _left.setGeometry(ofs.height(),ofs.width(),rectLeft.width(),lh);
             _left.tabWidget->getAutoHideRect(rectLeft);
         }
         QRect rectRight(0,0,0,0);
@@ -1524,8 +1536,7 @@ struct DockWindowManagerP
             int dh = std::max(rectBottom.height(), ViewParams::getNaviWidgetSize()-10);
             int rh = std::max(h-dh-ofs.width()-delta, 10);
             w -= ofs.height();
-            _right.setGeometry(w-rectRight.width(),ofs.width(),rectRight.width(),rh,
-                               w-rectRight.width(),ofs.width(),rectRight.width(),rh);
+            _right.setGeometry(w-rectRight.width(),ofs.width(),rectRight.width(),rh);
             _right.tabWidget->getAutoHideRect(rectRight);
         }
         QRect rectTop(0,0,0,0);
@@ -1533,8 +1544,7 @@ struct DockWindowManagerP
             auto ofs = _top.tabWidget->getOffset();
             int delta = _top.tabWidget->getSizeDelta();
             int tw = std::max(w-rectLeft.width()-rectRight.width()-ofs.width()-delta,10);
-            _top.setGeometry(rectLeft.width()-ofs.width(),ofs.height(),tw,rectTop.height(),
-                             ofs.width(),ofs.height(),w,rectTop.height());
+            _top.setGeometry(rectLeft.width()-ofs.width(),ofs.height(),tw,rectTop.height());
         }
     }
 
@@ -1690,7 +1700,7 @@ struct DockWindowManagerP
     {
         auto tabWidget = findTabWidget(qApp->widgetAt(QCursor::pos()));
         if(tabWidget) {
-            tabWidget->changeSize(changes);
+            tabWidget->changeSize(changes, false);
             _timer.start(ViewParams::getDockOverlayDelay());
         }
     }
@@ -1702,20 +1712,41 @@ struct DockWindowManagerP
     void setupTitleBar(QDockWidget *dock)
     {
         if(!dock->titleBarWidget())
-            dock->setTitleBarWidget(createTitleBar(nullptr, false));
+            dock->setTitleBarWidget(createTitleBar(nullptr));
     }
 
-    QWidget *createTitleBar(QWidget *parent, bool vertical)
+    QWidget *createTitleBar(QWidget *parent)
     {
         auto widget = new QWidget(parent);
         widget->setObjectName(QLatin1String("OverlayTitle"));
 
-        auto layout = new QBoxLayout(vertical?QBoxLayout::BottomToTop:QBoxLayout::LeftToRight, widget); 
+        bool vertical = false;
+        QBoxLayout *layout = nullptr;
+        auto tabWidget = qobject_cast<OverlayTabWidget*>(parent);
+        if(!tabWidget) {
+           layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+        } else {
+            switch(tabWidget->getDockArea()) {
+            case Qt::LeftDockWidgetArea:
+                layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+                break;
+            case Qt::RightDockWidgetArea:
+                layout = new QBoxLayout(QBoxLayout::RightToLeft, widget); 
+                break;
+            case Qt::TopDockWidgetArea:
+                layout = new QBoxLayout(QBoxLayout::TopToBottom, widget); 
+                vertical = true;
+                break;
+            case Qt::BottomDockWidgetArea:
+                layout = new QBoxLayout(QBoxLayout::BottomToTop, widget); 
+                vertical = true;
+                break;
+            default:
+                break;
+            }
+        }
+        layout->addSpacing(5);
         layout->setContentsMargins(1,1,1,1);
-        layout->addSpacerItem(new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
-                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
-                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
-
         if(parent) {
             for(auto action : parent->actions())
                 layout->addWidget(createTitleButton(action));
@@ -1723,6 +1754,10 @@ struct DockWindowManagerP
             for(auto action : _actions)
                 layout->addWidget(createTitleButton(action));
         }
+        // layout->addStretch(2);
+        layout->addSpacerItem(new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
+                    vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
+                    vertical?QSizePolicy::Expanding:QSizePolicy::Minimum));
         return widget;
     }
 
@@ -1755,7 +1790,7 @@ struct DockWindowManagerP
                         _overlays.erase(it);
                         dock->show();
                         dock->setFloating(true);
-                        refreshOverlay(nullptr);
+                        refreshOverlay(nullptr, false);
                     } else 
                         dock->setFloating(!dock->isFloating());
                 }
@@ -1778,7 +1813,7 @@ struct DockWindowManagerP
 #else // FC_HAS_DOCK_OVERLAY
 
     DockWindowManagerP(DockWindowManager *, QWidget *) {}
-    void refreshOverlay(QWidget *) {}
+    void refreshOverlay(QWidget *, bool) {}
     void saveOverlay() {}
     void restoreOverlay() {}
     void onTimer() {}
@@ -2149,9 +2184,9 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
     return false;
 }
 
-void DockWindowManager::refreshOverlay(QWidget *widget)
+void DockWindowManager::refreshOverlay(QWidget *widget, bool refreshStyle)
 {
-    d->refreshOverlay(widget);
+    d->refreshOverlay(widget, refreshStyle);
 }
 
 void DockWindowManager::saveOverlay()

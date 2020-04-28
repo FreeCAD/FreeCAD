@@ -103,7 +103,7 @@ public:
     void saveState();
     void retranslate();
 
-    void refreshOverlay(QWidget *widget=nullptr);
+    void refreshOverlay(QWidget *widget=nullptr, bool refreshStyle=false);
 
     void setupTitleBar(QDockWidget *);
 
@@ -188,12 +188,12 @@ public:
     void touch() {touched = true;}
     bool isTouched() const {return touched;}
 
-    void setRect(QRect rect, bool overlay);
-    const QRect &getRect(bool overlay);
+    void setRect(QRect rect);
+    const QRect &getRect();
     bool isOverlayed() const {return overlayed;}
     bool checkAutoHide() const;
     bool getAutoHideRect(QRect &rect) const;
-    void changeSize(int changes);
+    void changeSize(int changes, bool checkModifier=true);
     void onAction(QAction *);
 
     void setOffset(const QSize &ofs);
@@ -212,6 +212,8 @@ public:
 
     QSplitter *getSplitter() const {return splitter;}
 
+    Qt::DockWidgetArea getDockArea() const {return dockArea;}
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -221,17 +223,16 @@ protected:
 
     static void _setOverlayMode(QWidget *widget, int enable);
     void retranslate();
-    void setupLayout();
 
 protected Q_SLOTS:
     void onCurrentChanged(int index);
     void onTabMoved(int from, int to);
     void onSplitterMoved();
+    void setupLayout();
 
 private:
     QSize offset;
     int sizeDelta = 0;
-    QRect rectActive;
     QRect rectOverlay;
     OverlayProxyWidget *proxyWidget;
     QSplitter *splitter = nullptr;
@@ -243,8 +244,11 @@ private:
     QAction actIncrease;
     QAction actDecrease;
     QAction actOverlay;
+    QTimer timer;
     bool overlayed = false;
     bool touched = false;
+    Qt::DockWidgetArea dockArea;
+    int tabSize = 0;
 };
 
 class OverlayToolButton: public QToolButton
