@@ -124,7 +124,7 @@ class DraftObject(object):
 
         By default it does nothing.
 
-        Paramaters
+        Parameters
         ----------
         obj : the scripted object.
             This commonly may be of types `Part::Part2DObjectPython`,
@@ -140,7 +140,7 @@ class DraftObject(object):
 
         By default it does nothing.
 
-        Paramaters
+        Parameters
         ----------
         obj : the scripted object.
             This commonly may be of types `Part::Part2DObjectPython`,

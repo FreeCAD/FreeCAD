@@ -30,7 +30,7 @@ that is displayed in a drawing page in the Drawing Workbench.
 This command should be considered obsolete as the Drawing Workbench
 is obsolete since 0.17.
 
-A similar command is not planed for the TechDraw Workbench because
+A similar command is not planned for the TechDraw Workbench because
 it is not really necessary. TechDraw has its own set of tools
 to create 2D projections of 2D and 3D objects.
 """
