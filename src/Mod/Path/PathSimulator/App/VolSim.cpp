@@ -780,24 +780,25 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	float radPos = std::abs(pos) * radius;
 	toolShapePoint test; test.radiusPos = radPos;
 	auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
-	//float diff = std::abs(radPos - it->radiusPos);
+	float diff = std::abs(radPos - it->radiusPos);
 	
-	//if (diff > 0.05){
-	//	Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
-	//}
+	if (diff > 0.05){
+		Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
+	}
 
 	return it->heightPos;
 }
 
-bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res)
+bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt)
 {
+    double tolerance = 0.011;
     bool checkFace = true;
     TopAbs_State stateIn = TopAbs_IN;
 
     try {
         BRepClass3d_SolidClassifier solidClassifier(toolShape);
         gp_Pnt vertex = gp_Pnt(pnt.x, pnt.y, pnt.z);
-        solidClassifier.Perform(vertex, res);
+        solidClassifier.Perform(vertex, tolerance);
         bool inside = (solidClassifier.State() == stateIn);
         if (checkFace && solidClassifier.IsOnAFace()){
             inside = true;
