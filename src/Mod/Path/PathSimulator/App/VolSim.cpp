@@ -21,6 +21,10 @@
 ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <Base/Console.h>
+
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <gp_Pnt.hxx>
 
 #ifndef _PreComp_
 # include <algorithm>
@@ -712,42 +716,103 @@ void Point3D::UpdateCmd(Path::Command & cmd)
 //************************************************************************************************************
 // Simulation tool
 //************************************************************************************************************
-float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
-{
-	switch (type)
-	{
-	case FLAT:
-		return 0;
+cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){ 
+	
+	Bnd_Box boundBox;
+    BRepBndLib::Add(toolShape, boundBox);
 
-	case CHAMFER:
+	boundBox.SetGap(0.0);
+	Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+	boundBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+	radius = (xMax - xMin) / 2;
+	length = zMax - zMin;
+	// Report the size of the bounding box
+	//Base::Console().Log("PathSim::SetToolShape: radius: %f  length: %f\n", radius, length);
+
+	Base::Vector3d pnt; 
+	pnt.x = 0; 
+	pnt.y = 0;
+	pnt.z = 0;
+	//float res = 0.025; // resolution
+	Base::Console().Log("PathSim::SetToolShape: res: %f\n", res);
+ 	
+	int radValue = (int)(radius / res) + 1;
+
+	// Measure the performance of the profile extraction
+	auto start = std::chrono::high_resolution_clock::now(); 
+
+	for (int x = 0; x < radValue; x++)
 	{
-		if (pos < 0) return -chamRatio * pos;
-		return chamRatio * pos;
+		// find the face of the tool by checking z points accross the 
+		// radius to see if the point is inside the shape
+		pnt.x =  x * res;
+		bool inside = isInside(toolShape, pnt);
+
+		// move down until the point is outside the shape
+		while(inside && std::abs(pnt.z) < length ){
+			//Base::Console().Log("PathSim::BeginSimulation: Pnt Inside: X Pos %f\n", pnt.x);
+			pnt.z -= res;
+			inside = isInside(toolShape, pnt);
+		}
+		
+		// move up until the point is first inside the shape and record the position
+		while (!inside && pnt.z < length)
+		{
+			pnt.z += res;
+			inside = isInside(toolShape, pnt);
+
+			if (inside){
+				toolShapePoint shapePoint;
+				shapePoint.radiusPos = pnt.x;
+				shapePoint.heightPos = pnt.z;
+				m_toolShape.push_back(shapePoint);
+				//Base::Console().Log("PathSim::BeginSimulation: Add height profile X: radius: %f height:  %f\n", pnt.x, pnt.z);
+				break;
+			}
+		}
 	}
 
-	case ROUND:
-		pos *= radius;
-		return radius - sqrt(dradius - pos * pos);
-		break;
-	}
-	return 0;
+	// Report the performance of the profile extraction
+	auto stop = std::chrono::high_resolution_clock::now(); 
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
+
 }
 
-void cSimTool::InitTool()  // pos is 0..1 location along the radius of the tool
+float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
 {
-	switch (type)
-	{
-	case CHAMFER:
-		chamRatio = radius * tan((90.0 - tipAngle / 2) * 3.1415926535 / 180);
-		break;
-
-	case ROUND:
-		dradius = radius * radius;
-		break;
-
-	case FLAT:
-		break;
+	float radPos = std::abs(pos) * radius;
+	toolShapePoint test; test.radiusPos = radPos;
+	auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
+	float diff = std::abs(radPos - it->radiusPos);
+	
+	if (diff > 0.05){
+		Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
 	}
+
+	return it->heightPos;
+}
+
+bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt)
+{
+    double tolerance = 0.011;
+    bool checkFace = true;
+    TopAbs_State stateIn = TopAbs_IN;
+
+    try {
+        BRepClass3d_SolidClassifier solidClassifier(toolShape);
+        gp_Pnt vertex = gp_Pnt(pnt.x, pnt.y, pnt.z);
+        solidClassifier.Perform(vertex, tolerance);
+        bool inside = (solidClassifier.State() == stateIn);
+        if (checkFace && solidClassifier.IsOnAFace()){
+            inside = true;
+			//Base::Console().Log("PathSim::isInside: Touching Face: True\n");
+		}
+    	return inside;
+   	 }catch (...) {
+        return false;
+    }	
+
 }
 
 cVolSim::cVolSim() : stock(nullptr)
