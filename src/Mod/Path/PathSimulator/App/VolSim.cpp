@@ -780,11 +780,11 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	float radPos = std::abs(pos) * radius;
 	toolShapePoint test; test.radiusPos = radPos;
 	auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
-	float diff = std::abs(radPos - it->radiusPos);
+	//float diff = std::abs(radPos - it->radiusPos);
 	
-	if (diff > 0.05){
-		Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
-	}
+	//if (diff > 0.05){
+	//	Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
+	//}
 
 	return it->heightPos;
 }
