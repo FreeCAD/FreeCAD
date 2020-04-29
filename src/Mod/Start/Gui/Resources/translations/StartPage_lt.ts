@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Activity</source>
-      <translation>Veiklų srautas</translation>
+      <translation>Veiklos</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
@@ -106,17 +106,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;„FreeCAD“ forumas&lt;/a&gt;yra puiki vieta gauti pagalbos iš kitų programos naudotojų ir kūrėjų. Forume rasite daug skilčių įvairiausioms bėdoms ar temoms aptrarti. Jei esate pasimetę, į kurią skiltį kreiptis, palikite įrašą bendresnėje skiltyje &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Pagalba, kaip naudoti „FreeCAD“&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>Jei tai pirmas kartas, kai skelbiate įrašą forume, pirmiausia primigtynai siūlome perskaityti &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;įrašų skelbimo patarimus&lt;/a&gt;!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>„FreeCAD“ taip pat prižiūri viešą &lt;a href="https://www.freecadweb.org/tracker"&gt;žinomų klaidų sąrašą&lt;/a&gt;, kur kiekvienas gali pranešti apie rastas klaidas ar pasiūlyti naujas programos ypatybes. Kad išvengtumėte papildomo darbo ir suteiktumėte geriausias galimybes pamatyti savo klaidą išspręstą, prieš pranešdami apie ją būtinai perskaitykite &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;patarimus, kaip pranešti apie klaidas&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -131,12 +131,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>Jei nepridėta kartu su jūsų „FreeCAD“ laida, įsidiekite programos žinyną, kad turėtumėte po ranka išsamų darbastalių ir paskirų komandų žinyną ir neprisijungus prie žiniatinklio.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>Negalima paimti duomenų iš „GitHub“. &lt;a href="EnableDownload.py"&gt;Suteikite „FreeCAD“ prieigą prie interneto&lt;/a&gt;ir iš naujo įkelkite Pradžios puslapį.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>Žemiau pateikti vėliausi atnaujinimai &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;„FreeCAD“ išeities tekstuose&lt;/a&gt;. Šie atnaujinimai gali dar neatsispindėti jūsų dabartinėje „FreeCAD“ programos laidoje. Patikrinkite &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;siūlomų laidų parinktis&lt;/a&gt;, jei norite gauti programos plėtros laidą.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Galite nustatyti kad pasirinktinis aplankas būtų rodomas čia. Tam eikite į Taisa-&gt;Nuostatos-&gt;Pradžia-&gt;Rodyti papildomą aplanką</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -186,12 +186,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>Naujausi &lt;a href="https://forum.freecadweb.org"&gt;„FreeCAD“ forumo&lt;/a&gt; įrašai:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+      <translation>Kad atverti bet kurią nuorodą jūsų naršyklėje, spauskite dešinį pelės mygtuką ir pasirinkite „Atverti išorinėje naršyklėje“</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Pasirinktinis HTML šablonas, kuris bus naudojamas vietoj įprastinio Pradžios puslapio.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <translation>Jei norite pavyzdžių, rodomų Pradžios puslapyje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>Jei tai pasirinkta, naujausi „FreeCAD“ forumo įrašai bus rodomi Veiklos skirtuke</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page</translation>
+      <translation>Pasirinktinis aplankas, rodomas Pradžios puslapio apačioje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+      <translation>Rodo užrašinės turinį šalia rinkmenos paveikslėlio, kur galite palikti pastabas tarp „FreeCAD“ sesijų</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Jei tai pasirinkta, esant nurodytam stiliui Pagrindinėse nuostatose, jis bus naudojamas pakeisti žemiau esančias spalvas</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
