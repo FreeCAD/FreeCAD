@@ -36,7 +36,10 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
-import Part
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
