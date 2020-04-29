@@ -726,15 +726,11 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 	boundBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 	radius = (xMax - xMin) / 2;
 	length = zMax - zMin;
-	// Report the size of the bounding box
-	//Base::Console().Log("PathSim::SetToolShape: radius: %f  length: %f\n", radius, length);
 
 	Base::Vector3d pnt; 
 	pnt.x = 0; 
 	pnt.y = 0;
 	pnt.z = 0;
-	//float res = 0.025; // resolution
-	Base::Console().Log("PathSim::SetToolShape: res: %f\n", res);
  	
 	int radValue = (int)(radius / res) + 1;
 
@@ -784,11 +780,11 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	float radPos = std::abs(pos) * radius;
 	toolShapePoint test; test.radiusPos = radPos;
 	auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
-	float diff = std::abs(radPos - it->radiusPos);
+	//float diff = std::abs(radPos - it->radiusPos);
 	
-	if (diff > 0.05){
-		Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
-	}
+	//if (diff > 0.05){
+	//	Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
+	//}
 
 	return it->heightPos;
 }
