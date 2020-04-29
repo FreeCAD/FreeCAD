@@ -39,6 +39,7 @@ import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
+# MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
 Part = LazyLoader('Part', globals(), 'Part')
 
 
@@ -1130,6 +1131,124 @@ def extractFaceOffset(fcShape, offset, wpc, makeComp=True):
             ofstFace = W
 
     return ofstFace  # offsetShape
+
+
+# Functions for making model STLs
+def _prepareModelSTLs(self, JOB, obj, m, ocl):
+    PathLog.debug('_prepareModelSTLs()')
+    import MeshPart
+
+    if self.modelSTLs[m] is True:
+        M = JOB.Model.Group[m]
+
+        # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
+        if self.modelTypes[m] == 'M':
+            # TODO: test if this works
+            facets = M.Mesh.Facets.Points
+        else:
+            facets = Part.getFacets(M.Shape)
+            # mesh = MeshPart.meshFromShape(Shape=M.Shape,
+            #                              LinearDeflection=obj.LinearDeflection.Value,
+            #                              AngularDeflection=obj.AngularDeflection.Value,
+            #                              Relative=False)
+
+        stl = ocl.STLSurf()
+        for tri in facets:
+            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                                ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                                ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+            stl.addTriangle(t)
+        self.modelSTLs[m] = stl
+    return
+
+def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
+    '''_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
+    Creates and OCL.stl object with combined data with waste stock,
+    model, and avoided faces.  Travel lines can be checked against this
+    STL object to determine minimum travel height to clear stock and model.'''
+    PathLog.debug('_makeSafeSTL()')
+    import MeshPart
+
+    fuseShapes = list()
+    Mdl = JOB.Model.Group[mdlIdx]
+    mBB = Mdl.Shape.BoundBox
+    sBB = JOB.Stock.Shape.BoundBox
+
+    # add Model shape to safeSTL shape
+    fuseShapes.append(Mdl.Shape)
+
+    if obj.BoundBox == 'BaseBoundBox':
+        cont = False
+        extFwd = (sBB.ZLength)
+        zmin = mBB.ZMin
+        zmax = mBB.ZMin + extFwd
+        stpDwn = (zmax - zmin) / 4.0
+        dep_par = PathUtils.depth_params(zmax + 5.0, zmax + 3.0, zmax, stpDwn, 0.0, zmin)
+
+        try:
+            envBB = PathUtils.getEnvelope(partshape=Mdl.Shape, depthparams=dep_par)  # Produces .Shape
+            cont = True
+        except Exception as ee:
+            PathLog.error(str(ee))
+            shell = Mdl.Shape.Shells[0]
+            solid = Part.makeSolid(shell)
+            try:
+                envBB = PathUtils.getEnvelope(partshape=solid, depthparams=dep_par)  # Produces .Shape
+                cont = True
+            except Exception as eee:
+                PathLog.error(str(eee))
+
+        if cont:
+            stckWst = JOB.Stock.Shape.cut(envBB)
+            if obj.BoundaryAdjustment > 0.0:
+                cmpndFS = Part.makeCompound(faceShapes)
+                baBB = PathUtils.getEnvelope(partshape=cmpndFS, depthparams=self.depthParams)  # Produces .Shape
+                adjStckWst = stckWst.cut(baBB)
+            else:
+                adjStckWst = stckWst
+            fuseShapes.append(adjStckWst)
+        else:
+            PathLog.warning('Path transitions might not avoid the model. Verify paths.')
+    else:
+        # If boundbox is Job.Stock, add hidden pad under stock as base plate
+        toolDiam = self.cutter.getDiameter()
+        zMin = JOB.Stock.Shape.BoundBox.ZMin
+        xMin = JOB.Stock.Shape.BoundBox.XMin - toolDiam
+        yMin = JOB.Stock.Shape.BoundBox.YMin - toolDiam
+        bL = JOB.Stock.Shape.BoundBox.XLength + (2 * toolDiam)
+        bW = JOB.Stock.Shape.BoundBox.YLength + (2 * toolDiam)
+        bH = 1.0
+        crnr = FreeCAD.Vector(xMin, yMin, zMin - 1.0)
+        B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
+        fuseShapes.append(B)
+
+    if voidShapes is not False:
+        voidComp = Part.makeCompound(voidShapes)
+        voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
+        fuseShapes.append(voidEnv)
+
+    fused = Part.makeCompound(fuseShapes)
+
+    if self.showDebugObjects:
+        T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
+        T.Shape = fused
+        T.purgeTouched()
+        self.tempGroup.addObject(T)
+
+    facets = Part.getFacets(fused)
+    # mesh = MeshPart.meshFromShape(Shape=fused,
+    #                                LinearDeflection=obj.LinearDeflection.Value,
+    #                                AngularDeflection=obj.AngularDeflection.Value,
+    #                                Relative=False)
+
+    stl = ocl.STLSurf()
+    for tri in facets:
+        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
+                            ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                            ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+        stl.addTriangle(t)
+
+    self.safeSTLs[mdlIdx] = stl
 
 
 # Functions to convert path geometry into line/arc segments for OCL input or directly to g-code

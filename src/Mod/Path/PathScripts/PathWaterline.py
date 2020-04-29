@@ -54,7 +54,6 @@ import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
 Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
@@ -536,13 +535,12 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
-            # Create OCL.stl model objects
-            if obj.Algorithm == 'OCL Dropcutter':
-                self._prepareModelSTLs(JOB, obj)
-                PathLog.debug('obj.LinearDeflection.Value: {}'.format(obj.LinearDeflection.Value))
-                PathLog.debug('obj.AngularDeflection.Value: {}'.format(obj.AngularDeflection.Value))
 
             for m in range(0, len(JOB.Model.Group)):
+                # Create OCL.stl model objects
+                if obj.Algorithm == 'OCL Dropcutter':
+                    PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, m, ocl)
+
                 Mdl = JOB.Model.Group[m]
                 if FACES[m] is False:
                     PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
@@ -554,7 +552,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
                     if obj.Algorithm == 'OCL Dropcutter':
-                        self._makeSafeSTL(JOB, obj, m, FACES[m], VOIDS[m])
+                        PathSurfaceSupport._makeSafeSTL(self, JOB, obj, m, FACES[m], VOIDS[m], ocl)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processWaterlineAreas(JOB, obj, m, FACES[m], VOIDS[m]))
 
@@ -627,114 +625,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return True
 
-    # Methods for constructing the cut area
-    def _prepareModelSTLs(self, JOB, obj):
-        PathLog.debug('_prepareModelSTLs()')
-        for m in range(0, len(JOB.Model.Group)):
-            M = JOB.Model.Group[m]
-
-            # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
-            if self.modelTypes[m] == 'M':
-                # TODO: test if this works
-                facets = M.Mesh.Facets.Points
-            else:
-                facets = Part.getFacets(M.Shape)
-
-            if self.modelSTLs[m] is True:
-                stl = ocl.STLSurf()
-
-                for tri in facets:
-                    t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                                     ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                                     ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-                    stl.addTriangle(t)
-                self.modelSTLs[m] = stl
-        return
-
-    def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes):
-        '''_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
-        Creates and OCL.stl object with combined data with waste stock,
-        model, and avoided faces.  Travel lines can be checked against this
-        STL object to determine minimum travel height to clear stock and model.'''
-        PathLog.debug('_makeSafeSTL()')
-
-        fuseShapes = list()
-        Mdl = JOB.Model.Group[mdlIdx]
-        mBB = Mdl.Shape.BoundBox
-        sBB = JOB.Stock.Shape.BoundBox
-
-        # add Model shape to safeSTL shape
-        fuseShapes.append(Mdl.Shape)
-
-        if obj.BoundBox == 'BaseBoundBox':
-            cont = False
-            extFwd = (sBB.ZLength)
-            zmin = mBB.ZMin
-            zmax = mBB.ZMin + extFwd
-            stpDwn = (zmax - zmin) / 4.0
-            dep_par = PathUtils.depth_params(zmax + 5.0, zmax + 3.0, zmax, stpDwn, 0.0, zmin)
-
-            try:
-                envBB = PathUtils.getEnvelope(partshape=Mdl.Shape, depthparams=dep_par)  # Produces .Shape
-                cont = True
-            except Exception as ee:
-                PathLog.error(str(ee))
-                shell = Mdl.Shape.Shells[0]
-                solid = Part.makeSolid(shell)
-                try:
-                    envBB = PathUtils.getEnvelope(partshape=solid, depthparams=dep_par)  # Produces .Shape
-                    cont = True
-                except Exception as eee:
-                    PathLog.error(str(eee))
-
-            if cont:
-                stckWst = JOB.Stock.Shape.cut(envBB)
-                if obj.BoundaryAdjustment > 0.0:
-                    cmpndFS = Part.makeCompound(faceShapes)
-                    baBB = PathUtils.getEnvelope(partshape=cmpndFS, depthparams=self.depthParams)  # Produces .Shape
-                    adjStckWst = stckWst.cut(baBB)
-                else:
-                    adjStckWst = stckWst
-                fuseShapes.append(adjStckWst)
-            else:
-                PathLog.warning('Path transitions might not avoid the model. Verify paths.')
-        else:
-            # If boundbox is Job.Stock, add hidden pad under stock as base plate
-            toolDiam = self.cutter.getDiameter()
-            zMin = JOB.Stock.Shape.BoundBox.ZMin
-            xMin = JOB.Stock.Shape.BoundBox.XMin - toolDiam
-            yMin = JOB.Stock.Shape.BoundBox.YMin - toolDiam
-            bL = JOB.Stock.Shape.BoundBox.XLength + (2 * toolDiam)
-            bW = JOB.Stock.Shape.BoundBox.YLength + (2 * toolDiam)
-            bH = 1.0
-            crnr = FreeCAD.Vector(xMin, yMin, zMin - 1.0)
-            B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
-            fuseShapes.append(B)
-
-        if voidShapes is not False:
-            voidComp = Part.makeCompound(voidShapes)
-            voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
-            fuseShapes.append(voidEnv)
-
-        fused = Part.makeCompound(fuseShapes)
-
-        if self.showDebugObjects is True:
-            T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
-            T.Shape = fused
-            T.purgeTouched()
-            self.tempGroup.addObject(T)
-
-        facets = Part.getFacets(fused)
-
-        stl = ocl.STLSurf()
-        for tri in facets:
-            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-            stl.addTriangle(t)
-
-        self.safeSTLs[mdlIdx] = stl
-
+    # Methods for constructing the cut area and creating path geometry
     def _processWaterlineAreas(self, JOB, obj, mdlIdx, FCS, VDS):
         '''_processWaterlineAreas(JOB, obj, mdlIdx, FCS, VDS)...
         This method applies any avoided faces or regions to the selected faces.
@@ -787,7 +678,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return final
 
-    # Methods for creating path geometry
     def _getExperimentalWaterlinePaths(self, PNTSET, csHght, cutPattern):
         '''_getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
         Switching function for calling the appropriate path-geometry to OCL points conversion function
@@ -1694,7 +1584,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return False
 
     def _getModelCrossSection(self, shape, csHght):
-        PathLog.debug('getCrossSection()')
+        PathLog.debug('_getModelCrossSection()')
         wires = list()
 
         def byArea(fc):
