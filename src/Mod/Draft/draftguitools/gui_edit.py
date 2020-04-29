@@ -996,7 +996,7 @@ class Edit:
             return self.getRectanglePts(obj)
         elif objectType == "Polygon":
             return self.getPolygonPts(obj)
-        elif objectType == "Dimension":
+        elif objectType == "LinearDimension":
             return self.getDimensionPts(obj)
         elif objectType == "Wall":
             return self.getWallPts(obj)
@@ -1035,7 +1035,7 @@ class Edit:
             self.updateRectangle(obj, nodeIndex, v)
         elif objectType == "Polygon":
             self.updatePolygon(obj, nodeIndex, v)
-        elif objectType == "Dimension":
+        elif objectType == "LinearDimension":
             self.updateDimension(obj, nodeIndex, v)
         elif objectType == "Sketch":
             self.updateSketch(obj, nodeIndex, v)
