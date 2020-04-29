@@ -69,13 +69,15 @@ PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 	return Py_None;
 }
 
-PyObject* PathSimPy::SetCurrentTool(PyObject * args)
+PyObject* PathSimPy::SetToolShape(PyObject * args)
 {
-	PyObject *pObjTool;
-	if (!PyArg_ParseTuple(args, "O!", &(Path::ToolPy::Type), &pObjTool))
+	PyObject *pObjToolShape;
+	float resolution;
+	if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjToolShape, &resolution))
 		return 0;
 	PathSim *sim = getPathSimPtr();
-	sim->SetCurrentTool(static_cast<Path::ToolPy*>(pObjTool)->getToolPtr());
+	const TopoDS_Shape& toolShape = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
+	sim->SetToolShape(toolShape, resolution);
 	Py_IncRef(Py_None);
 	return Py_None;
 }
