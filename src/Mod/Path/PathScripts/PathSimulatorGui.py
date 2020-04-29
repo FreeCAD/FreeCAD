@@ -125,13 +125,17 @@ class PathSimulation:
         except Exception:
             self.tool = None
 
-        # if hasattr(self.operation, "ToolController"):
-        #     self.tool = self.operation.ToolController.Tool
         if (self.tool is not None):
-            toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), float(self.tool.Diameter) / 2.0)
-            self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
+            if isinstance(self.tool, Path.Tool):
+                # handle legacy tools
+                toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), float(self.tool.Diameter) / 2.0)
+                self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
+            else:
+                # handle tool bits
+                self.cutTool.Shape = self.tool.Shape
+
             self.cutTool.ViewObject.show()
-            self.voxSim.SetCurrentTool(self.tool)
+            self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
         self.icmd = 0
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         # self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
