@@ -225,10 +225,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
     def attach(self, vobj):
         '''Setup the scene sub-graph of the view provider'''
-
-        # backwards compatibility
-        self.ScaleMultiplier = 1.00
-
         self.Object = vobj.Object
         self.color = coin.SoBaseColor()
         self.font = coin.SoFont()
@@ -345,8 +341,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                     self.p2 = self.p1
                     self.p3 = self.p4
             if proj:
-                if hasattr(obj.ViewObject,"ExtLines"):
-                    dmax = obj.ViewObject.ExtLines.Value * self.ScaleMultiplier
+                if hasattr(obj.ViewObject,"ExtLines") and hasattr(obj.ViewObject, "ScaleMultiplier"):
+                    dmax = obj.ViewObject.ExtLines.Value * obj.ViewObject.ScaleMultiplier
                     if dmax and (proj.Length > dmax):
                         if (dmax > 0):
                             self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
@@ -406,8 +402,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 rot3 = App.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
                 self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
                 self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
-            if hasattr(obj.ViewObject,"TextSpacing"):
-                ts = obj.ViewObject.TextSpacing.Value * self.ScaleMultiplier
+            if hasattr(obj.ViewObject,"TextSpacing")and hasattr(obj.ViewObject, "ScaleMultiplier"):
+                ts = obj.ViewObject.TextSpacing.Value * obj.ViewObject.ScaleMultiplier
                 offset = DraftVecUtils.scaleTo(v1,ts)
             else:
                 offset = DraftVecUtils.scaleTo(v1,0.05)
@@ -477,14 +473,12 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
     def onChanged(self, vobj, prop):
         """called when a view property has changed"""
-        if prop == "ScaleMultiplier" and hasattr(vobj,"ScaleMultiplier"):
-            if vobj.ScaleMultiplier: # don't set if zero
-                self.ScaleMultiplier = vobj.ScaleMultiplier
+        if prop == "ScaleMultiplier" and hasattr(vobj, "ScaleMultiplier"):
             # update all dimension values
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * self.ScaleMultiplier
+                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
             if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
@@ -497,11 +491,11 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             self.updateData(vobj.Object,"Start")
             vobj.Object.touch()
             
-        elif (prop == "FontSize") and hasattr(vobj,"FontSize"):
+        elif (prop == "FontSize") and hasattr(vobj,"FontSize") and hasattr(vobj, "ScaleMultiplier"):
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * self.ScaleMultiplier
+                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
             vobj.Object.touch()
             
         elif (prop == "FontName") and hasattr(vobj,"FontName"):
@@ -518,18 +512,18 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
                 
-        elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize"):
+        elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize") and hasattr(vobj, "ScaleMultiplier"):
             if hasattr(self,"node") and hasattr(self,"p2"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
                 vobj.Object.touch()
                 
-        elif (prop == "DimOvershoot") and hasattr(vobj,"DimOvershoot"):
+        elif (prop == "DimOvershoot") and hasattr(vobj,"DimOvershoot") and hasattr(vobj, "ScaleMultiplier"):
             self.remove_dim_overshoot()
             self.draw_dim_overshoot(vobj)
             vobj.Object.touch()
             
-        elif (prop == "ExtOvershoot") and hasattr(vobj,"ExtOvershoot"):
+        elif (prop == "ExtOvershoot") and hasattr(vobj,"ExtOvershoot") and hasattr(vobj, "ScaleMultiplier"):
             self.remove_ext_overshoot()
             self.draw_ext_overshoot(vobj)
             vobj.Object.touch()
@@ -562,7 +556,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         # set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
-        s = vobj.ArrowSize.Value * self.ScaleMultiplier
+        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
         self.trans1.scaleFactor.setValue((s,s,s))
         self.trans2.scaleFactor.setValue((s,s,s))
 
@@ -596,7 +590,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         from pivy import coin
 
         # set scale
-        s = vobj.DimOvershoot.Value * self.ScaleMultiplier
+        s = vobj.DimOvershoot.Value * vobj.ScaleMultiplier
         self.transDimOvershoot1.scaleFactor.setValue((s,s,s))
         self.transDimOvershoot2.scaleFactor.setValue((s,s,s))
 
@@ -627,7 +621,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         from pivy import coin
 
         # set scale
-        s = vobj.ExtOvershoot.Value * self.ScaleMultiplier
+        s = vobj.ExtOvershoot.Value * vobj.ScaleMultiplier
         self.transExtOvershoot1.scaleFactor.setValue((s,s,s))
         self.transExtOvershoot2.scaleFactor.setValue((s,s,s))
 
@@ -731,8 +725,6 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.onChanged(vobj,"FontName")
         self.onChanged(vobj,"ArrowType")
         self.onChanged(vobj,"LineColor")
-        # backwards compatibility
-        self.ScaleMultiplier = 1.00
 
     def updateData(self, obj, prop):
         if hasattr(self,"arc"):
@@ -857,24 +849,24 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 obj.Angle = a
 
     def onChanged(self, vobj, prop):
-        if prop == "ScaleMultiplier" and hasattr(vobj,"ScaleMultiplier"):
-            if vobj.ScaleMultiplier:
-                self.ScaleMultiplier = vobj.ScaleMultiplier
-            # update all dimension values
+        if hasattr(vobj, "ScaleMultiplier"):
+            if vobj.ScaleMultiplier == 0:
+                return
+        if prop == "ScaleMultiplier" and hasattr(vobj, "ScaleMultiplier"):
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * self.ScaleMultiplier
+                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
             if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
             self.updateData(vobj.Object,"Start")
             vobj.Object.touch()
-        elif prop == "FontSize":
+        elif prop == "FontSize" and hasattr(vobj, "ScaleMultiplier"):
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * self.ScaleMultiplier
+                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
             vobj.Object.touch()
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(self,"font3d"):
@@ -887,7 +879,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         elif prop == "LineWidth":
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["ArrowSize","ArrowType"]:
+        elif prop in ["ArrowSize","ArrowType"] and hasattr(vobj, "ScaleMultiplier"):
             if hasattr(self,"node") and hasattr(self,"p2"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
@@ -908,7 +900,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
         # set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
-        s = vobj.ArrowSize.Value * self.ScaleMultiplier
+        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
         self.trans1.scaleFactor.setValue((s,s,s))
         self.trans2.scaleFactor.setValue((s,s,s))
 
