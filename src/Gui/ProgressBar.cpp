@@ -498,17 +498,25 @@ void ProgressBar::enterControlEvents(bool grab)
 
     // Make sure that we get the key events, otherwise the Inventor viewer usurps the key events
     // This also disables accelerators.
+#if defined(Q_OS_LINUX)
+    Q_UNUSED(grab)
+#else
     if (grab)
         grabKeyboard();
+#endif
 }
 
 void ProgressBar::leaveControlEvents(bool release)
 {
     qApp->removeEventFilter(this);
 
+#if defined(Q_OS_LINUX)
+    Q_UNUSED(release)
+#else
     // release the keyboard again
     if (release)
         releaseKeyboard();
+#endif
 }
 
 #ifdef QT_WINEXTRAS_LIB
