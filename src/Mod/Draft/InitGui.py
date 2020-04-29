@@ -130,10 +130,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-        # Specifically for the Windows LP12.1.2 packaged build to allow Draft to start
-        # without the statusbar. Longterm fix being investigated
-        import PySide
-        if str(PySide.__version_info__) != "(5, 12, 2, 'a', '1')":
+        if str(FreeCADGui.Snapper.__class__) != "<class 'DraftSnap.Snapper'>":
             import draftutils.init_draft_statusbar as dsb
             dsb.show_draft_statusbar()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
@@ -144,8 +141,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-        import PySide
-        if str(PySide.__version_info__) != "(5, 12, 2, 'a', '1')":
+        if str(FreeCADGui.Snapper.__class__) != "<class 'DraftSnap.Snapper'>":
             import draftutils.init_draft_statusbar as dsb
             dsb.hide_draft_statusbar()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
