@@ -109,7 +109,6 @@ float SphereFit::GetStdDeviation() const
     // Mean: M=(1/N)*SUM Xi
     // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
-    // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
         return FLOAT_MAX;
 
