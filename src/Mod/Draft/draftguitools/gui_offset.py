@@ -22,14 +22,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for offseting objects with the Draft Workbench.
+"""Provides tools for offsetting objects with the Draft Workbench.
 
 It mostly works on lines, polylines, and similar objects with
 regular geometrical shapes, like rectangles.
 """
 ## @package gui_offset
 # \ingroup DRAFT
-# \brief Provides tools for offseting objects with the Draft Workbench.
+# \brief Provides tools for offsetting objects with the Draft Workbench.
 
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
