@@ -77,7 +77,7 @@ class TaskPanelOrthoArray:
 
     def __init__(self):
         self.name = "Orthogonal array"
-        _log(_tr("Task panel:") + "{}".format(_tr(self.name)))
+        _log(_tr("Task panel:") + " {}".format(_tr(self.name)))
 
         # The .ui file must be loaded into an attribute
         # called `self.form` so that it is displayed in the task panel.

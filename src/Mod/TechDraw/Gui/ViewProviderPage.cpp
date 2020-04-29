@@ -63,6 +63,7 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGITemplate.h"
@@ -71,6 +72,7 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 #define _SHOWDRAWING 10
 #define _TOGGLEUPDATE 11
@@ -406,10 +408,7 @@ void ViewProviderPage::finishRestoring()
     m_docReady = true;
     //control drawing opening on restore based on Preference
     //mantis #2967 ph2 - don't even show blank page
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
-    if (autoUpdate) {
+    if (Preferences::keepPagesUpToDate()) {
         static_cast<void>(showMDIViewPage());
     }
     Gui::ViewProviderDocumentObject::finishRestoring();

@@ -61,7 +61,7 @@ class Text(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         name = translate("draft", "Text")
-        super().Activated(name)
+        super(Text, self).Activated(name)
         if self.ui:
             self.dialog = None
             self.text = ''
@@ -76,7 +76,7 @@ class Text(gui_base_original.Creator):
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation."""
-        super().finish(self)
+        super(Text, self).finish(self)
         if self.ui:
             del self.dialog
             if self.ui.continueMode:

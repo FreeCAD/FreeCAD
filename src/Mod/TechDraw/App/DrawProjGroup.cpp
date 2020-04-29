@@ -46,6 +46,7 @@
 #include <Base/Parameter.h>
 
 #include "DrawUtil.h"
+#include "Preferences.h"
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
@@ -54,9 +55,9 @@
 
 using namespace TechDraw;
 
-const char* DrawProjGroup::ProjectionTypeEnums[] = {"Default",
-                                                    "First Angle",
+const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
                                                     "Third Angle",
+                                                    "Default",          //Use Page setting
                                                     NULL};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
@@ -778,7 +779,7 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
             Base::Console().Warning("DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
                                     getNameInDocument());
             int projConv = getDefProjConv();
-            projType = ProjectionTypeEnums[projConv + 1];
+            projType = ProjectionTypeEnums[projConv];
         }
     } else {
         projType = ProjectionType.getValueAsString();
@@ -1250,10 +1251,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
 
 int DrawProjGroup::getDefProjConv(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    int defProjConv = hGrp->GetInt("ProjectionAngle",0);
-    return defProjConv;
+    return Preferences::projectionAngle();
 }
 
 /*!

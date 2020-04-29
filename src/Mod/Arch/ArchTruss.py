@@ -44,7 +44,7 @@ else:
         return txt
     # \endcond
 
-## @package ArchSpace
+## @package ArchTruss
 #  \ingroup ARCH
 #  \brief The Truss object and tools
 #

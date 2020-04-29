@@ -50,7 +50,7 @@ class Line(gui_base_original.Creator):
     """Gui command for the Line tool."""
 
     def __init__(self, wiremode=False):
-        super().__init__()
+        super(Line, self).__init__()
         self.isWire = wiremode
 
     def GetResources(self):
@@ -64,7 +64,7 @@ class Line(gui_base_original.Creator):
 
     def Activated(self, name=translate("draft", "Line")):
         """Execute when the command is called."""
-        super().Activated(name)
+        super(Line, self).Activated(name)
 
         if not self.doc:
             return
@@ -142,7 +142,7 @@ class Line(gui_base_original.Creator):
         if len(self.node) > 1:
             Gui.addModule("Draft")
             # The command to run is built as a series of text strings
-            # to be commited through the `draftutils.todo.ToDo` class.
+            # to be committed through the `draftutils.todo.ToDo` class.
             if (len(self.node) == 2
                     and utils.getParam("UsePartPrimitives", False)):
                 # Insert a Part::Primitive object
@@ -184,7 +184,7 @@ class Line(gui_base_original.Creator):
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
-        super().finish()
+        super(Line, self).finish()
         if self.ui and self.ui.continueMode:
             self.Activated()
 
@@ -296,7 +296,7 @@ class Wire(Line):
     """
 
     def __init__(self):
-        super().__init__(wiremode=True)
+        super(Wire, self).__init__(wiremode=True)
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -344,7 +344,7 @@ class Wire(Line):
 
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
-                    # to be commited through the `draftutils.todo.ToDo` class
+                    # to be committed through the `draftutils.todo.ToDo` class
                     _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
@@ -357,7 +357,7 @@ class Wire(Line):
         # If there was no selection or the selection was just one object
         # then we proceed with the normal line creation functions,
         # only this time we will be able to input more than two points
-        super().Activated(name=translate("draft", "Polyline"))
+        super(Wire, self).Activated(name=translate("draft", "Polyline"))
 
 
 Gui.addCommand('Draft_Wire', Wire())

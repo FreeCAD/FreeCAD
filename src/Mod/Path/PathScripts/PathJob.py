@@ -352,32 +352,31 @@ class ObjectJob:
 
     def getCycleTime(self):
         seconds = 0
-        for op in self.obj.Operations.Group:
 
-            # Skip inactive operations
-            if PathUtil.opProperty(op, 'Active') is False:
-                continue
+        if len(self.obj.Operations.Group):
+            for op in self.obj.Operations.Group:
 
-            # Skip operations that don't have a cycletime attribute
-            if not PathUtil.opProperty(op, 'CycleTime') or PathUtil.opProperty(op, 'CycleTime') is None:
-                continue
+                # Skip inactive operations
+                if PathUtil.opProperty(op, 'Active') is False:
+                    continue
 
-            formattedCycleTime = PathUtil.opProperty(op, 'CycleTime')
-            try:
-                ## convert the formatted time from HH:MM:SS to just seconds
-                opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
-            except:
-                FreeCAD.Console.PrintWarning("Error converting the operations cycle time. Job Cycle time may be innacturate\n")
-                continue
+                # Skip operations that don't have a cycletime attribute
+                if PathUtil.opProperty(op, 'CycleTime') is None:
+                    continue
 
-            if opCycleTime > 0:
-                seconds = seconds + opCycleTime
+                formattedCycleTime = PathUtil.opProperty(op, 'CycleTime')
+                opCycleTime = 0
+                try:
+                    ## convert the formatted time from HH:MM:SS to just seconds
+                    opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
+                except:
+                    FreeCAD.Console.PrintWarning("Error converting the operations cycle time. Job Cycle time may be innacturate\n")
+                    continue
 
-        if seconds > 0:
-            cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds)) 
-        else:
-            cycleTimeString = translate('PathGui', 'Cycle Time Error')
+                if opCycleTime > 0:
+                    seconds = seconds + opCycleTime
 
+        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds)) 
         self.obj.CycleTime =  cycleTimeString
 
     def addOperation(self, op, before = None, removeBefore = False):

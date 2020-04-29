@@ -22,7 +22,7 @@
 #***************************************************************************
 
 """This module provides tools to build Project objects.  Project objects are
-objects specifically for better IFC compatability, allowing the user to tweak
+objects specifically for better IFC compatibility, allowing the user to tweak
 certain IFC relevant values.
 """
 
@@ -166,7 +166,7 @@ class _Project(ArchIFC.IfcContext):
         """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
-class _viewproviderproject(ArchIFCView.IfcContextView):
+class _ViewProviderProject(ArchIFCView.IfcContextView):
     """A View Provider for the project object.
 
     Parameters

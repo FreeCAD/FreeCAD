@@ -301,7 +301,7 @@ float PlaneFit::GetDistanceToPlane(const Base::Vector3f &rcPoint) const
 float PlaneFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -320,7 +320,7 @@ float PlaneFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 float PlaneFit::GetSignedStdDeviation() const
@@ -1086,6 +1086,7 @@ float CylinderFit::Fit()
     cylFit.AddPoints(_vPoints);
     //cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
 
+    // Do the cylinder fit
     float result = cylFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
@@ -1184,7 +1185,7 @@ float CylinderFit::GetDistanceToCylinder(const Base::Vector3f &rcPoint) const
 float CylinderFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -1203,7 +1204,7 @@ float CylinderFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void CylinderFit::GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const
@@ -1346,7 +1347,7 @@ float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
 float SphereFit::GetStdDeviation() const
 {
     // Mean: M=(1/N)*SUM Xi
-    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
     // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
@@ -1365,7 +1366,7 @@ float SphereFit::GetStdDeviation() const
     }
 
     fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 3.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
 }
 
 void SphereFit::ProjectToSphere()

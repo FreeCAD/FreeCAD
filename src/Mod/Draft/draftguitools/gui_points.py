@@ -62,7 +62,7 @@ class Point(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name=_tr("Point"))
+        super(Point, self).Activated(name=_tr("Point"))
         self.view = gui_utils.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()
@@ -116,7 +116,7 @@ class Point(gui_base_original.Creator):
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
                 # The command to run is built as a series of text strings
-                # to be commited through the `draftutils.todo.ToDo` class.
+                # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
@@ -150,7 +150,7 @@ class Point(gui_base_original.Creator):
 
     def finish(self, cont=False):
         """Terminate the operation and restart if needed."""
-        super().finish()
+        super(Point, self).finish()
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()

@@ -24,7 +24,7 @@
 """This module provides tools to build Floor objects. Floors are used to group
 different Arch objects situated at a same level.
 
-The _Floor object and this module as a whole is now obselete. It has been
+The _Floor object and this module as a whole is now obsolete. It has been
 superseded by the use of the BuildingPart class, set to the "Building Storey"
 IfcType.
 """
@@ -56,7 +56,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
-    """Obselete, superceeded by ArchBuildingPart.makeFloor.
+    """Obsolete, superseded by ArchBuildingPart.makeFloor.
 
     Create a floor.
 
@@ -170,7 +170,7 @@ Floor creation aborted.") + "\n"
 
 
 class _Floor(ArchIFC.IfcProduct):
-    """Obselete, superceeded by the BuildingPart class, with IfcType set to "Building Storey".
+    """Obsolete, superseded by the BuildingPart class, with IfcType set to "Building Storey".
 
     The Floor object.
 
@@ -311,7 +311,7 @@ class _Floor(ArchIFC.IfcProduct):
 
 
 class _ViewProviderFloor:
-    """Obselete, superceeded by the ViewProviderBuildingPart class.
+    """Obsolete, superseded by the ViewProviderBuildingPart class.
 
     A View Provider for the Floor object.
 

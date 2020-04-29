@@ -127,8 +127,11 @@ class Solve(run.Solve):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
             "App::TextDocument", self.solver.Name + "Output")
         self.solver.ElmerOutput.Label = self.solver.Label + "Output"
-        self.solver.ElmerOutput.ReadOnly = True
+        # App::TextDocument has no Attribute ReadOnly
+        # TODO check if the attribute has been removed from App::TextDocument
+        # self.solver.ElmerOutput.ReadOnly = True
         self.analysis.addObject(self.solver.ElmerOutput)
+        self.solver.Document.recompute()
 
 
 class Results(run.Results):

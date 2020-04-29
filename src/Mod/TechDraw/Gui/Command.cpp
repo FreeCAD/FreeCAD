@@ -77,6 +77,7 @@
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
@@ -85,8 +86,8 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 using namespace std;
-
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -109,15 +110,8 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault()
 void CmdTechDrawPageDefault::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
-    std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
-    QString templateFileName = QString::fromStdString(hGrp->GetASCII("TemplateFile",defaultFileName.c_str()));
-    if (templateFileName.isEmpty()) {
-        templateFileName = QString::fromStdString(defaultFileName);
-    }
+    QString templateFileName = Preferences::defaultTemplate();
 
     std::string PageName = getUniqueObjectName("Page");
     std::string TemplateName = getUniqueObjectName("Template");
@@ -179,11 +173,7 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate()
 void CmdTechDrawPageTemplate::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
-    QString templateDir = QString::fromStdString(hGrp->GetASCII("TemplateDir", defaultDir.c_str()));
+    QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Select a Template File")),
                                                    templateDir,

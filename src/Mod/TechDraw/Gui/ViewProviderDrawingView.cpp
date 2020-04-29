@@ -184,13 +184,15 @@ QGIView* ViewProviderDrawingView::getQView(void)
         TechDraw::DrawView* dv = getViewObject();
         if (dv) {
             Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-            Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-            ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-            if (dvp) {
-                if (dvp->getMDIViewPage()) {
-                    if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
-                                               getQGVPage()->findQViewForDocObj(getViewObject()));
+            if (guiDoc != nullptr) {
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+                ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+                if (dvp) {
+                    if (dvp->getMDIViewPage()) {
+                        if (dvp->getMDIViewPage()->getQGVPage()) {
+                            qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->
+                                                   getQGVPage()->findQViewForDocObj(getViewObject()));
+                        }
                     }
                 }
             }
@@ -249,10 +251,12 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
     MDIViewPage* result = nullptr;
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage()); //if not in page.views, !@#$%
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-    if (dvp) {
-        result = dvp->getMDIViewPage();
+    if (guiDoc != nullptr) {
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+        if (dvp) {
+            result = dvp->getMDIViewPage();
+        }
     }
     return result;
 }

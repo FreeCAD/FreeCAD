@@ -29,6 +29,7 @@
 #include <gp_Circ.hxx>
 #include <Geom_Circle.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
@@ -48,6 +49,7 @@
 
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
+#include "Geometry.h"
 #include "Cosmetic.h"
 #include "CosmeticExtension.h"
 #include "DrawUtil.h"
@@ -677,8 +679,16 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
         throw Py::TypeError("expected (edgeIndex)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
     TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
-    TopoDS_Edge outEdge = geom->occEdge;
+
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
+                                      Base::Vector3d(0.0, 0.0, 0.0),
+                                      1.0 / dvp->getScale());
+
+    TopoDS_Edge outEdge = TopoDS::Edge(temp);
     return new Part::TopoShapeEdgePy(new Part::TopoShape(outEdge));
 }
 
@@ -689,8 +699,15 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
         throw Py::TypeError("expected (vertIndex)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
+
+    //this is scaled and +Yup
+    //need unscaled and +Ydown
     TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
-    TopoDS_Vertex outVertex = vert->occVertex;
+    Base::Vector3d point = DrawUtil::invertY(vert->point()) / dvp->getScale();
+
+    gp_Pnt gPoint(point.x, point.y, point.z);
+    BRepBuilderAPI_MakeVertex mkVertex(gPoint);
+    TopoDS_Vertex outVertex = mkVertex.Vertex();
     return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
 }
 

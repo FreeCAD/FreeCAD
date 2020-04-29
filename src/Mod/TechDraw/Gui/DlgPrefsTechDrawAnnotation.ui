@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>460</width>
-    <height>460</height>
+    <height>478</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -221,7 +221,7 @@
            <cstring>AutoHorizontal</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/LeaderLines</cstring>
+           <cstring>Mod/TechDraw/LeaderLine</cstring>
           </property>
          </widget>
         </item>

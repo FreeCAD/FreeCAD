@@ -31,6 +31,7 @@
 #include <Base/Console.h>
 
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawDimensionsImp.h"
 
 
@@ -72,10 +73,11 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     //set defaults for Quantity widgets if property not found
     //Quantity widgets do not use preset value since they are based on
     //QAbstractSpinBox
-    double arrowDefault = 5.0;
-    plsb_ArrowSize->setValue(arrowDefault);
-    double fontDefault = 4.0;
+    double fontDefault = Preferences::dimFontSizeMM();
     plsb_FontSize->setValue(fontDefault);
+//    double arrowDefault = 5.0;
+//    plsb_ArrowSize->setValue(arrowDefault);
+    plsb_ArrowSize->setValue(fontDefault);
 
     cbGlobalDecimals->onRestore();
     cbHiddenLineStyle->onRestore();
@@ -109,11 +111,7 @@ void DlgPrefsTechDrawDimensionsImp::changeEvent(QEvent *e)
 
 int DlgPrefsTechDrawDimensionsImp::prefArrowStyle(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->
-        GetGroup("Mod/TechDraw/Dimensions");
-    int style = hGrp->GetInt("ArrowStyle", 0);
-    return style;
+    return PreferencesGui::dimArrowStyle();
 }
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawDimensionsImp.cpp>

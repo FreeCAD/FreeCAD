@@ -631,9 +631,9 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
     Creates an array of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, same for y direction with yvector and ynum,
-    same for z direction with zvector and znum. In case of polar array, center is a vector, 
-    totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
-    including the original. In case of a circular array, rdistance is the distance of the 
+    same for z direction with zvector and znum. In case of polar array, center is a vector,
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects,
+    including the original. In case of a circular array, rdistance is the distance of the
     circles, tdistance is the distance within circles, axis the rotation-axes, center the
     center of rotation, ncircles the number of circles and symmetry the number
     of symmetry-axis of the distribution. The result is a parametric Draft Array.
@@ -801,7 +801,16 @@ def joinWires(wires, joinAttempts = 0):
 
 def joinTwoWires(wire1, wire2):
     """joinTwoWires(object, object): joins two wires if they share a common
-    point as a start or an end"""
+    point as a start or an end.
+
+    BUG: it occasionally fails to join lines even if the lines
+    visually share a point.
+    This is a rounding error in the comparison of the shared point;
+    a small difference will result in the points being considered different
+    and thus the lines not joining.
+    Test properly using `DraftVecUtils.equals` because then it will consider
+    the precision set in the Draft preferences.
+    """
     wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
     wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
     if (wire1AbsPoints[0] == wire2AbsPoints[-1] and wire1AbsPoints[-1] == wire2AbsPoints[0]) \
@@ -2179,7 +2188,7 @@ def mirror(objlist, p1, p2):
         norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
     else:
         norm = FreeCAD.Vector(0,0,1)
-    
+
     pnorm = p2.sub(p1).cross(norm).normalize()
 
     result = []
@@ -4009,7 +4018,7 @@ class _BezCurve(_DraftObject):
             if hasattr(fp,"Area") and hasattr(w,"Area"):
                 fp.Area = w.Area
             if hasattr(fp,"Length") and hasattr(w,"Length"):
-                fp.Length = w.Length            
+                fp.Length = w.Length
         fp.Placement = plm
 
     @classmethod
@@ -4408,6 +4417,7 @@ class _Array(_DraftLink):
     def attach(self, obj):
         obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
         obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",QT_TRANSLATE_NOOP("App::Property","The type of array to create"))
+        obj.addProperty("App::PropertyLinkGlobal","AxisReference","Draft",QT_TRANSLATE_NOOP("App::Property","The axis (e.g. DatumLine) overriding Axis/Center"))
         obj.addProperty("App::PropertyVector","Axis","Draft",QT_TRANSLATE_NOOP("App::Property","The axis direction"))
         obj.addProperty("App::PropertyInteger","NumberX","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in X direction"))
         obj.addProperty("App::PropertyInteger","NumberY","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Y direction"))
@@ -4453,18 +4463,36 @@ class _Array(_DraftLink):
         obj.configLinkProperty(ElementCount='Count')
         obj.setPropertyStatus('Count','Hidden')
 
+    def onChanged(self,obj,prop):
+        _DraftLink.onChanged(self,obj,prop)
+        if prop == "AxisReference":
+            if obj.AxisReference:
+                obj.setEditorMode("Center", 1)
+                obj.setEditorMode("Axis", 1)
+            else:
+                obj.setEditorMode("Center", 0)
+                obj.setEditorMode("Axis", 0)
+
     def execute(self,obj):
         if obj.Base:
             pl = obj.Placement
+            axis = obj.Axis
+            center = obj.Center
+            if hasattr(obj,"AxisReference") and obj.AxisReference:
+                if hasattr(obj.AxisReference,"Placement"):
+                    axis = obj.AxisReference.Placement.Rotation * Vector(0,0,1)
+                    center = obj.AxisReference.Placement.Base
+                else:
+                    raise TypeError("AxisReference has no Placement attribute. Please select a different AxisReference.")
             if obj.ArrayType == "ortho":
                 pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             elif obj.ArrayType == "circular":
                 pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,
-                                     obj.Axis,obj.Center,obj.NumberCircles,obj.Symmetry)
+                                     axis,center,obj.NumberCircles,obj.Symmetry)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
-                pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
+                pls = self.polarArray(obj.Base.Placement,center,obj.Angle.Value,obj.NumberPolar,axis,av)
 
             return _DraftLink.buildShape(self,obj,pl,pls)
 

@@ -66,7 +66,7 @@ class Label(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         self.name = translate("draft", "Label")
-        super().Activated(self.name, noplanesetup=True)
+        super(Label, self).Activated(self.name, noplanesetup=True)
         self.ghost = None
         self.labeltype = utils.getParam("labeltype", "Custom")
         self.sel = Gui.Selection.getSelectionEx()
@@ -90,7 +90,7 @@ class Label(gui_base_original.Creator):
         """Finish the command."""
         if self.ghost:
             self.ghost.finalize()
-        super().finish()
+        super(Label, self).finish()
 
     def create(self):
         """Create the actual object."""

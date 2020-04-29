@@ -795,36 +795,21 @@ class ObjectWaterline(PathOp.ObjectOp):
         PathLog.debug('_getExperimentalWaterlinePaths()')
         SCANS = list()
 
-        if cutPattern in ['Line', 'Spiral']:
+        # PNTSET is list, by stepover.
+        if cutPattern in ['Line', 'Spiral', 'ZigZag']:
             stpOvr = list()
-            for D in PNTSET:
-                for SEG in D:
+            for STEP in PNTSET:
+                for SEG in STEP:
                     if SEG == 'BRK':
                         stpOvr.append(SEG)
                     else:
-                        # D format is ((p1, p2), (p3, p4))
-                        (A, B) = SEG
-                        P1 = FreeCAD.Vector(A[0], A[1], csHght)
-                        P2 = FreeCAD.Vector(B[0], B[1], csHght)
-                        stpOvr.append((P1, P2))
-                SCANS.append(stpOvr)
-                stpOvr = list()
-        elif cutPattern == 'ZigZag':
-            stpOvr = list()
-            for (dirFlg, LNS) in PNTSET:
-                for SEG in LNS:
-                    if SEG == 'BRK':
-                        stpOvr.append(SEG)
-                    else:
-                        # D format is ((p1, p2), (p3, p4))
-                        (A, B) = SEG
+                        (A, B) = SEG  # format is ((p1, p2), (p3, p4))
                         P1 = FreeCAD.Vector(A[0], A[1], csHght)
                         P2 = FreeCAD.Vector(B[0], B[1], csHght)
                         stpOvr.append((P1, P2))
                 SCANS.append(stpOvr)
                 stpOvr = list()
         elif cutPattern in ['Circular', 'CircularZigZag']:
-            # PNTSET is list, by stepover.
             # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
             for so in range(0, len(PNTSET)):
                 stpOvr = list()
@@ -868,22 +853,13 @@ class ObjectWaterline(PathOp.ObjectOp):
         if cutPattern in ['Line', 'Circular', 'Spiral']:
             if obj.OptimizeStepOverTransitions is True:
                 height = minSTH + 2.0
-            # if obj.LayerMode == 'Multi-pass':
-            #    rtpd = minSTH
         elif cutPattern in ['ZigZag', 'CircularZigZag']:
             if obj.OptimizeStepOverTransitions is True:
                 zChng = first.z - lstPnt.z
-                # PathLog.debug('first.z: {}'.format(first.z))
-                # PathLog.debug('lstPnt.z: {}'.format(lstPnt.z))
-                # PathLog.debug('zChng: {}'.format(zChng))
-                # PathLog.debug('minSTH: {}'.format(minSTH))
                 if abs(zChng) < tolrnc:  # transitions to same Z height
-                    # PathLog.debug('abs(zChng) < tolrnc')
                     if (minSTH - first.z) > tolrnc:
-                        # PathLog.debug('(minSTH - first.z) > tolrnc')
                         height = minSTH + 2.0
                     else:
-                        # PathLog.debug('ELSE (minSTH - first.z) > tolrnc')
                         horizGC = 'G1'
                         height = first.z
                 elif (minSTH + (2.0 * tolrnc)) >= max(first.z, lstPnt.z):
@@ -1302,8 +1278,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         commands = []
         t_begin = time.time()
         base = JOB.Model.Group[mdlIdx]
-        # bb = self.boundBoxes[mdlIdx]
-        # stl = self.modelSTLs[mdlIdx]
         # safeSTL = self.safeSTLs[mdlIdx]
         self.endVector = None
 

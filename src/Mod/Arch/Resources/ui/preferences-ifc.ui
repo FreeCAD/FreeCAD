@@ -388,10 +388,10 @@ FreeCAD object properties</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
-         <string>If this option is checked, the default Project, Site, Building and Storeys objects that are usually found in an IFC file are not imported, and all objects are placed in a Group. Buildins ans storeys are still imported if there is more than one.</string>
+         <string>If this option is checked, the default Project, Site, Building and Storeys objects that are usually found in an IFC file are not imported, and all objects are placed in a Group. Buildings and Storeys are still imported if there is more than one.</string>
         </property>
         <property name="text">
-         <string>Replace Project, Site, Buiding and Storey by Group</string>
+         <string>Replace Project, Site, Building and Storey by Group</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ifcReplaceProject</cstring>

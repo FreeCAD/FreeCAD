@@ -82,8 +82,8 @@ protected Q_SLOTS:
     void rotateButtonClicked(void);
 
 //    void onResetClicked(void);
-    
-    void projectionTypeChanged(int index);
+/*    void projectionTypeChanged(int index);*/
+    void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
     void scaleManuallyChanged(int i);
 

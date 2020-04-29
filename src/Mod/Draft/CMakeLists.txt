@@ -100,18 +100,42 @@ SET(Creator_tools
     draftguitools/gui_labels.py
 )
 
+SET(Modifier_tools
+    draftguitools/gui_subelements.py
+    draftguitools/gui_move.py
+    draftguitools/gui_styles.py
+    draftguitools/gui_rotate.py
+    draftguitools/gui_offset.py
+    draftguitools/gui_stretch.py
+    draftguitools/gui_join.py
+    draftguitools/gui_split.py
+    draftguitools/gui_upgrade.py
+    draftguitools/gui_downgrade.py
+    draftguitools/gui_trimex.py
+    draftguitools/gui_scale.py
+    draftguitools/gui_drawing.py
+    draftguitools/gui_wire2spline.py
+    draftguitools/gui_shape2dview.py
+    draftguitools/gui_draft2sketch.py
+    draftguitools/gui_arrays.py
+    draftguitools/gui_array_simple.py
+    draftguitools/gui_circulararray.py
+    draftguitools/gui_orthoarray.py
+    draftguitools/gui_patharray.py
+    draftguitools/gui_pointarray.py
+    draftguitools/gui_polararray.py
+    draftguitools/gui_clone.py
+    draftguitools/gui_mirror.py
+)
+
 SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_annotationstyleeditor.py
     draftguitools/gui_base.py
     draftguitools/gui_base_original.py
     draftguitools/gui_tool_utils.py
-    draftguitools/gui_circulararray.py
-    draftguitools/gui_orthoarray.py
-    draftguitools/gui_polararray.py
     draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
-    draftguitools/gui_arrays.py
     draftguitools/gui_snaps.py
     draftguitools/gui_snapper.py
     draftguitools/gui_trackers.py
@@ -124,6 +148,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
     ${Creator_tools}
+    ${Modifier_tools}
     draftguitools/README.md
 )
 

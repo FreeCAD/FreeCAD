@@ -61,7 +61,7 @@ class BaseMode(gui_base.GuiCommandSimplest):
             Indicates the type of mode to switch to.
             It can be `'construction'` or `'continue'`.
         """
-        super().Activated()
+        super(BaseMode, self).Activated()
 
         if hasattr(Gui, "draftToolBar"):
             _ui = Gui.draftToolBar
@@ -85,7 +85,7 @@ class ToggleConstructionMode(BaseMode):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Construction mode"))
+        super(ToggleConstructionMode, self).__init__(name=_tr("Construction mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -110,7 +110,7 @@ class ToggleConstructionMode(BaseMode):
         It calls the `toggle()` method of the construction button
         in the `DraftToolbar` class.
         """
-        super().Activated(mode="construction")
+        super(ToggleConstructionMode, self).Activated(mode="construction")
 
 
 Gui.addCommand('Draft_ToggleConstructionMode', ToggleConstructionMode())
@@ -125,7 +125,7 @@ class ToggleContinueMode(BaseMode):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Continue mode"))
+        super(ToggleContinueMode, self).__init__(name=_tr("Continue mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -148,7 +148,7 @@ class ToggleContinueMode(BaseMode):
 
         It calls the `toggleContinue()` method of the `DraftToolbar` class.
         """
-        super().Activated(mode="continue")
+        super(ToggleContinueMode, self).Activated(mode="continue")
 
 
 Gui.addCommand('Draft_ToggleContinueMode', ToggleContinueMode())
@@ -166,7 +166,7 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Toggle display mode"))
+        super(ToggleDisplayMode, self).__init__(name=_tr("Toggle display mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -193,7 +193,7 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
         and changes their `DisplayMode` from `'Wireframe'`
         to `'Flat Lines'`, and the other way around, if possible.
         """
-        super().Activated()
+        super(ToggleDisplayMode, self).Activated()
 
         for obj in Gui.Selection.getSelection():
             if obj.ViewObject.DisplayMode == "Flat Lines":

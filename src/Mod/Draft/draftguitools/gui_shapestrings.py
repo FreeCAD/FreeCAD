@@ -74,7 +74,7 @@ class ShapeString(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         name = translate("draft", "ShapeString")
-        super().Activated(name)
+        super(ShapeString, self).Activated(name)
         self.creator = gui_base_original.Creator
         if self.ui:
             self.ui.sourceCmd = self
@@ -222,7 +222,7 @@ class ShapeString(gui_base_original.Creator):
 
     def finish(self, finishbool=False):
         """Terminate the operation."""
-        super().finish()
+        super(ShapeString, self).finish()
         if self.ui:
             # del self.dialog  # what does this do??
             if self.ui.continueMode:

@@ -378,7 +378,7 @@ class _CommandWall:
             FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
                 # no existing wall snapped, just add a default wall
-                self.addDefault(l)
+                self.addDefault()
             else:
                 if self.JOIN_WALLS_SKETCHES:
                     # join existing subwalls first if possible, then add the new one
@@ -388,7 +388,7 @@ class _CommandWall:
                             FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
                         else:
                             # if not possible, add new wall as addition to the existing one
-                            self.addDefault(l)
+                            self.addDefault()
                             if self.AUTOJOIN:
                                 FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
@@ -427,7 +427,9 @@ class _CommandWall:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.doCommand("Draft.autogroup(wall)")
 
-    def update(self,point):
+    def update(self,point,info):
+        # info parameter is not used but needed for compatibility with the snapper
+
         """Callback for the mouse moving during the interactive mode.
 
         Update the active dialog box to show the coordinates of the location of

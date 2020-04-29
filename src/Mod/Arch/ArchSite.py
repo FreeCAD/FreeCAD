@@ -862,7 +862,7 @@ class _ViewProviderSite:
         Edit mode is entered when a user double clicks on an object in the tree
         view, or when they use the menu option [Edit -> Toggle Edit Mode].
 
-        Just dispay the standard Arch component task panel.
+        Just display the standard Arch component task panel.
 
         Parameters
         ----------
@@ -933,7 +933,7 @@ class _ViewProviderSite:
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
-        If the Longitude or Lattitude has changed, set the SolarDiagram to
+        If the Longitude or Latitude has changed, set the SolarDiagram to
         update.
 
         If Terrain or Placement has changed, move the compass to follow it.
