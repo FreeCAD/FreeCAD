@@ -36,3 +36,6 @@ class ViewProviderBezCurve(ViewProviderWire):
 
     def __init__(self, vobj):
         super(ViewProviderBezCurve, self).__init__(vobj)
+
+
+_ViewProviderBezCurve = ViewProviderBezCurve
