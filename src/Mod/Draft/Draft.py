@@ -222,15 +222,15 @@ if FreeCAD.GuiUp:
 from draftmake.make_bspline import make_bspline, makeBSpline
 from draftobjects.bspline import BSpline, _BSpline
 if FreeCAD.GuiUp:
-    # for compatibility with older versions
-    _ViewProviderBSpline = ViewProviderWire
+    from draftviewproviders.view_bspline import ViewProviderBSpline
+    from draftviewproviders.view_bspline import _ViewProviderBSpline
 
 # bezcurve
 from draftmake.make_bezcurve import make_bezcurve, makeBezCurve
 from draftobjects.bezcurve import BezCurve, _BezCurve
 if FreeCAD.GuiUp:
-    # for compatibility with older versions
-    _ViewProviderBezCurve = ViewProviderWire
+    from draftviewproviders.view_bezcurve import ViewProviderBezCurve
+    from draftviewproviders.view_bezcurve import _ViewProviderBezCurve
 
 # clone
 from draftmake.make_clone import make_clone, clone
