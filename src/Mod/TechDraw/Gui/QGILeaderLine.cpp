@@ -359,7 +359,12 @@ void QGILeaderLine::draw()
     if ( vp == nullptr ) {
         return;
     }
+
+    double scale = 1.0;
     TechDraw::DrawView* parent = featLeader->getBaseView();
+    if (parent != nullptr) {
+        scale = parent->getScale();
+    }
 
     if (m_editPath->inEdit()) {
         return;
@@ -373,7 +378,6 @@ void QGILeaderLine::draw()
     }
     m_lineStyle = (Qt::PenStyle) vp->LineStyle.getValue();
 
-    double scale = parent->getScale();
     double baseScale = featLeader->getBaseScale();
     double x = Rez::guiX(featLeader->X.getValue());
     double y = - Rez::guiX(featLeader->Y.getValue());
