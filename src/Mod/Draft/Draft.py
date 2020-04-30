@@ -2338,75 +2338,29 @@ def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal
     if not align:
         return placement
 
-    # unit +Z  Probably defined elsewhere?
-    z = FreeCAD.Vector(0, 0, 1)
-    # y = FreeCAD.Vector(0, 1, 0)               # unit +Y
-    x = FreeCAD.Vector(1, 0, 0)                 # unit +X
     nullv = FreeCAD.Vector(0, 0, 0)
 
-    # get local coord system - tangent, normal, binormal, if possible
+    # get a local coord system (tangent, normal, binormal) at parameter offset (normally length)
     t = edge.tangentAt(getParameterFromV0(edge, offset))
     t.normalize()
 
     try:
-        if normal:
-            n = normal
-        else:
-            n = edge.normalAt(getParameterFromV0(edge, offset))
-            n.normalize()
+        n = edge.normalAt(getParameterFromV0(edge, offset))
+        n.normalize()
         b = (t.cross(n))
         b.normalize()
     # no normal defined here
     except FreeCAD.Base.FreeCADError:
         n = nullv
         b = nullv
-        FreeCAD.Console.PrintLog(
+        FreeCAD.Console.PrintMessage(
             "Draft PathArray.orientShape - Cannot calculate Path normal.\n")
 
-    lnodes = z.cross(b)
+    priority = "ZXY"        #the default. Doesn't seem to affect results.
+    newRot = FreeCAD.Rotation(t, n, b, priority);
+    newGRot = newRot.multiply(globalRotation)
 
-    try:
-        # Can't normalize null vector.
-        lnodes.normalize()
-    except:
-        # pathological cases:
-        pass
-    # 1) can't determine normal, don't align.
-    if n == nullv:
-        psi = 0.0
-        theta = 0.0
-        phi = 0.0
-        FreeCAD.Console.PrintWarning(
-            "Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
-    elif abs(b.dot(z)) == 1.0:                                    # 2) binormal is || z
-        # align shape to tangent only
-        psi = math.degrees(DraftVecUtils.angle(x, t, z))
-        theta = 0.0
-        phi = 0.0
-        FreeCAD.Console.PrintWarning(
-            "Draft PathArray.orientShape - Gimbal lock. Infinite lnodes. Change Path or Base.\n")
-    else:                                                        # regular case
-        psi = math.degrees(DraftVecUtils.angle(x, lnodes, z))
-        theta = math.degrees(DraftVecUtils.angle(z, b, lnodes))
-        phi = math.degrees(DraftVecUtils.angle(lnodes, t, b))
-
-    rotations = [placement.Rotation]
-
-    if psi != 0.0:
-        rotations.insert(0, FreeCAD.Rotation(z, psi))
-    if theta != 0.0:
-        rotations.insert(0, FreeCAD.Rotation(lnodes, theta))
-    if phi != 0.0:
-        rotations.insert(0, FreeCAD.Rotation(b, phi))
-
-    if len(rotations) == 1:
-        finalRotation = rotations[0]
-    else:
-        finalRotation = functools.reduce(
-            lambda rot1, rot2: rot1.multiply(rot2), rotations)
-
-    placement.Rotation = finalRotation
-
+    placement.Rotation = newGRot
     return placement
 
 
@@ -2891,10 +2845,13 @@ class _PathArray(_DraftLink):
         obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
         obj.addProperty("App::PropertyVectorDistance","Xlate","Draft",QT_TRANSLATE_NOOP("App::Property","Optional translation vector"))
         obj.addProperty("App::PropertyBool","Align","Draft",QT_TRANSLATE_NOOP("App::Property","Orientation of Base along path"))
+        obj.addProperty("App::PropertyVector","TangentVector","Draft",QT_TRANSLATE_NOOP("App::Property","Alignment of copies"))
+
         obj.Count = 2
         obj.PathSubs = []
         obj.Xlate = FreeCAD.Vector(0,0,0)
         obj.Align = False
+        obj.TangentVector = FreeCAD.Vector(1.0, 0.0, 0.0)
 
         if self.use_link:
             obj.addProperty("App::PropertyBool","ExpandArray","Draft",
@@ -2923,8 +2880,17 @@ class _PathArray(_DraftLink):
             else:
                 FreeCAD.Console.PrintLog ("_PathArray.createGeometry: path " + obj.PathObj.Name + " has no edges\n")
                 return
-            base = calculatePlacementsOnPath(
-                    obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
+            if (hasattr(obj, "TangentVector")) and (obj.Align):
+                basePlacement = obj.Base.Shape.Placement
+                baseRotation = basePlacement.Rotation
+                stdX = FreeCAD.Vector(1.0, 0.0, 0.0)
+                preRotation = FreeCAD.Rotation(stdX, obj.TangentVector)   #make rotation from X to TangentVector
+                netRotation = baseRotation.multiply(preRotation)
+                base = calculatePlacementsOnPath(
+                        netRotation,w,obj.Count,obj.Xlate,obj.Align)
+            else:
+                base = calculatePlacementsOnPath(
+                        obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
             return _DraftLink.buildShape(self,obj,pl,base)
 
     def getWireFromSubs(self,obj):
