@@ -155,7 +155,7 @@ class ViewProviderDraft(object):
 
         Override this method to set up a custom scene.
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -196,7 +196,7 @@ class ViewProviderDraft(object):
 
         By default it returns an empty list.
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -232,7 +232,7 @@ class ViewProviderDraft(object):
         By default since they have the same names nothing needs to be done,
         and it just returns the input `mode`.
 
-        Paramaters
+        Parameters
         ----------
         str
             A string defining a display mode such as
@@ -252,7 +252,7 @@ class ViewProviderDraft(object):
         the properties `TextureImage`, `Pattern`, `DiffuseColor`,
         and `PatternSize` change.
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -341,7 +341,7 @@ class ViewProviderDraft(object):
 
         By default it does nothing.
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -361,7 +361,7 @@ class ViewProviderDraft(object):
         ::
             Gui.runCommand('Draft_Edit')
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -374,7 +374,7 @@ class ViewProviderDraft(object):
         Returns
         -------
         bool
-            It is `True` if `mode` is 0, and `Draft_Edit` ran succesfully.
+            It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
             It is `False` otherwise.
         """
         if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
@@ -401,7 +401,7 @@ class ViewProviderDraft(object):
             App.activeDraftCommand.finish()
             Gui.Control.closeDialog()
 
-        Paramaters
+        Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
@@ -487,7 +487,7 @@ _ViewProviderDraft = ViewProviderDraft
 class ViewProviderDraftAlt(ViewProviderDraft):
     """A view provider that doesn't absorb its base object in the tree view.
 
-    The `claimChildren` method is overriden to return an empty list.
+    The `claimChildren` method is overridden to return an empty list.
     """
 
     def __init__(self, vobj):
@@ -504,7 +504,7 @@ _ViewProviderDraftAlt = ViewProviderDraftAlt
 class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
-    The `getIcon` method is overriden to provide `Tree_Part.svg`.
+    The `getIcon` method is overridden to provide `Tree_Part.svg`.
     """
 
     def __init__(self, vobj):

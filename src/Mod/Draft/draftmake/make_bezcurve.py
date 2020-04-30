@@ -36,8 +36,7 @@ from draftutils.translate import translate
 
 from draftobjects.bezcurve import BezCurve
 if App.GuiUp:
-    # from draftviewproviders.view_bezcurve import ViewProviderBezCurve
-    from draftviewproviders.view_wire import ViewProviderWire
+    from draftviewproviders.view_bezcurve import ViewProviderBezCurve
 
 
 def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
