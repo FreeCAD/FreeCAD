@@ -104,7 +104,7 @@ public:
 	~cSimTool() {}
 
 	float GetToolProfileAt(float pos);
-	bool isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt);
+	bool isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res);
 
 	std::vector< toolShapePoint > m_toolShape;
 	float radius;
