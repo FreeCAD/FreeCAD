@@ -789,16 +789,15 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	return it->heightPos;
 }
 
-bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt)
+bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res)
 {
-    double tolerance = 0.011;
     bool checkFace = true;
     TopAbs_State stateIn = TopAbs_IN;
 
     try {
         BRepClass3d_SolidClassifier solidClassifier(toolShape);
         gp_Pnt vertex = gp_Pnt(pnt.x, pnt.y, pnt.z);
-        solidClassifier.Perform(vertex, tolerance);
+        solidClassifier.Perform(vertex, res);
         bool inside = (solidClassifier.State() == stateIn);
         if (checkFace && solidClassifier.IsOnAFace()){
             inside = true;
