@@ -742,20 +742,20 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 		// find the face of the tool by checking z points accross the 
 		// radius to see if the point is inside the shape
 		pnt.x =  x * res;
-		bool inside = isInside(toolShape, pnt);
+		bool inside = isInside(toolShape, pnt, res);
 
 		// move down until the point is outside the shape
 		while(inside && std::abs(pnt.z) < length ){
 			//Base::Console().Log("PathSim::BeginSimulation: Pnt Inside: X Pos %f\n", pnt.x);
 			pnt.z -= res;
-			inside = isInside(toolShape, pnt);
+			inside = isInside(toolShape, pnt, res);
 		}
 		
 		// move up until the point is first inside the shape and record the position
 		while (!inside && pnt.z < length)
 		{
 			pnt.z += res;
-			inside = isInside(toolShape, pnt);
+			inside = isInside(toolShape, pnt, res);
 
 			if (inside){
 				toolShapePoint shapePoint;
@@ -789,16 +789,15 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	return it->heightPos;
 }
 
-bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt)
+bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res)
 {
-    double tolerance = 0.011;
     bool checkFace = true;
     TopAbs_State stateIn = TopAbs_IN;
 
     try {
         BRepClass3d_SolidClassifier solidClassifier(toolShape);
         gp_Pnt vertex = gp_Pnt(pnt.x, pnt.y, pnt.z);
-        solidClassifier.Perform(vertex, tolerance);
+        solidClassifier.Perform(vertex, res);
         bool inside = (solidClassifier.State() == stateIn);
         if (checkFace && solidClassifier.IsOnAFace()){
             inside = true;
