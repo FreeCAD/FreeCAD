@@ -40,7 +40,7 @@ from PySide import QtCore
 
 import FreeCAD
 import FreeCADGui
-from draftutils.messages import _msg, _wrn, _log
+from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
@@ -136,6 +136,7 @@ class ToDo:
                         f()
                 except Exception:
                     _log(traceback.format_exc())
+                    _err(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
                            "in {1}({2})".format(sys.exc_info()[0], f, arg))
@@ -164,6 +165,7 @@ class ToDo:
                     FreeCAD.ActiveDocument.commitTransaction()
                 except Exception:
                     _log(traceback.format_exc())
+                    _err(traceback.format_exc())
                     wrn = ("ToDo.doTasks, Unexpected error:\n"
                            "{0}\n"
                            "in {1}".format(sys.exc_info()[0], func))
@@ -184,6 +186,7 @@ class ToDo:
                     f()
             except Exception:
                 _log(traceback.format_exc())
+                _err(traceback.format_exc())
                 wrn = ("ToDo.doTasks, Unexpected error:\n"
                        "{0}\n"
                        "in {1}({2})".format(sys.exc_info()[0], f, arg))
