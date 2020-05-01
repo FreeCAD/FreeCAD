@@ -38,7 +38,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 def get_draft_drawing_commands():
     """Return the drawing commands list."""
-    return ["Draft_Line", "Draft_Wire",  # "Draft_Fillet",
+    return ["Draft_Line", "Draft_Wire", "Draft_Fillet", "Draft_Fillet_new",
             "Draft_ArcTools",
             "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle",
             "Draft_Polygon", "Draft_BSpline", "Draft_BezierTools",
