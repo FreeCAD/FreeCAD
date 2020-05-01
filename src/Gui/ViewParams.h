@@ -80,6 +80,7 @@ public:
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
     FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
+    FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5) \
     FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false) \
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
     FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
@@ -106,6 +107,12 @@ public:
     FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000) \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
+    FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.5) \
+    FC_VIEW_PARAM(HiddenLineFaceColor,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(HiddenLineOverrideFaceColor,bool,Bool,true) \
+    FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff) \
+    FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true) \
+    FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

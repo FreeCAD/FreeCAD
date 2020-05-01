@@ -166,6 +166,11 @@ private:
     std::vector<int32_t> matIndex;
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;
+
+    float hiddenLineTransparency;
+    SbColor hiddenLineColor;
+    SoColorPacker packer;
+
     Gui::SoFCSelectionCounter selCounter;
     std::vector<SoNode*> siblings;
 

@@ -1027,6 +1027,26 @@ bool SoFCUnifiedSelection::getShowSelectionBoundingBox() {
         || _ShowBoundBox;
 }
 
+static FC_COIN_THREAD_LOCAL bool _ShowHiddenLines;
+
+bool SoFCUnifiedSelection::showHiddenLines()
+{
+    return _ShowHiddenLines;
+}
+
+void SoFCUnifiedSelection::setShowHiddenLines(bool enable)
+{
+    _showHiddenLines = enable;
+    SoUpdateVBOAction action;
+    action.apply(this);
+}
+
+void SoFCUnifiedSelection::GLRenderInPath(SoGLRenderAction * action)
+{
+    Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
+    inherited::GLRenderInPath(action);
+}
+
 void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
     SoState *state = action->getState();
@@ -1036,6 +1056,8 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
     bool bbox = _ShowBoundBox;
     if(this->selectAll)
         _ShowBoundBox = true;
+
+    Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
 
     inherited::GLRenderBelowPath(action);
 

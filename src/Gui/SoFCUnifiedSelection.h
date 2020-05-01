@@ -97,7 +97,7 @@ public:
 
     virtual void handleEvent(SoHandleEventAction * action);
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    //virtual void GLRenderInPath(SoGLRenderAction * action);
+    virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
     static bool hasHighlight();
@@ -105,6 +105,9 @@ public:
     static int getPriority(const SoPickedPoint* p);
 
     static bool getShowSelectionBoundingBox();
+
+    static bool showHiddenLines();
+    void setShowHiddenLines(bool enable);
 
     friend class View3DInventorViewer;
 
@@ -167,6 +170,8 @@ private:
     SbViewportRegion preselViewport;
 
     SoFCRayPickAction *pcRayPick;
+
+    bool _showHiddenLines = false;
 };
 
 

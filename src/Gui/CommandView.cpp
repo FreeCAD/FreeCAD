@@ -627,6 +627,11 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
     a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
+    QAction* a7 = pcAction->addAction(QString());
+    a7->setCheckable(true);
+    a7->setIcon(BitmapFactory().iconFromTheme("DrawStyleTessellation"));
+    a7->setObjectName(QString::fromLatin1("Std_DrawStyleTessellation"));
+    a7->setShortcut(QKeySequence(QString::fromUtf8("V,8")));
 
 
     pcAction->setIcon(a0->icon());
@@ -679,6 +684,11 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Flat lines"));
     a[6]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Flat lines mode"));
+
+    a[7]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Tessellation"));
+    a[7]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Show lines of tessellation"));
 }
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
@@ -724,6 +734,11 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
         actionGroup->setCheckedAction(6);
         return;
     }
+    if (mode == "Tessellation")
+    {
+        actionGroup->setCheckedAction(7);
+        return;
+    }
     actionGroup->setCheckedAction(0);
 }
 
@@ -761,6 +776,9 @@ void StdCmdDrawStyle::activated(int iMsg)
                     break;
                 case 6:
                     (oneChangedSignal) ? viewer->updateOverrideMode("Flat Lines") : viewer->setOverrideMode("Flat Lines");
+                    break;
+                case 7:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Tessellation") : viewer->setOverrideMode("Tessellation");
                     break;
                 default:
                     (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");

@@ -330,6 +330,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
             v.second.vboLoaded = false;
         }
         onPartIndexChange();
+        touch();
         return;
     }
 
@@ -694,7 +695,31 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     matIndex.clear();
 
     auto state = action->getState();
-    if(!selected && !ctx && !ctx2) {
+
+    float defaultTrans = Gui::ViewParams::getSelectionTransparency();
+
+    bool pushed = false;
+    if(Gui::SoFCUnifiedSelection::showHiddenLines()) {
+        pushed = true;
+        state->push();
+        defaultTrans = hiddenLineTransparency = Gui::ViewParams::getHiddenLineTransparency();
+        SoLazyElement::setTransparency(state,this,1,&hiddenLineTransparency,&packer);
+        SoOverrideElement::setTransparencyOverride(state, this, true);
+        if(Gui::ViewParams::getHiddenLineOverrideFaceColor()) {
+            float f;
+            hiddenLineColor.setPackedValue(Gui::ViewParams::getHiddenLineFaceColor(),f);
+            SoLazyElement::setDiffuse(state, this, 1, &hiddenLineColor, &packer);
+            SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+
+            // Emissive color in opengl increase objects color intensity, but
+            // only works in single color. Although we are single color here,
+            // but if there are any selection, we'll have to turn emssion off,
+            // and the user will experience color intensity change. So just
+            // turn it off here too.
+            SbColor c(0,0,0);
+            SoLazyElement::setEmissive(state, &c);
+        }
+    } else if(!selected && !ctx && !ctx2) {
         if(!(SoShapeStyleElement::get(state)->getFlags() 
                 & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL)))
         {
@@ -706,14 +731,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(
 
     auto element = SoLazyElement::getInstance(state);
     const SbColor *diffuse = element->getDiffusePointer();
-    if(!diffuse) return false;
+    if(!diffuse)
+        return false;
     int diffuse_size = element->getNumDiffuse();
-
-    float defaultTrans = Gui::ViewParams::getSelectionTransparency();
 
     const float *trans = element->getTransparencyPointer();
     int trans_size = element->getNumTransparencies();
-    if(!trans || !trans_size) return false;
+    if(!trans || !trans_size)
+        return false;
     float trans0=0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
@@ -756,7 +781,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         (trans0!=0.0 && ctx && (ctx->isSelected() || ctx->isHighlighted())) ||
         (ctx2 && ctx2->colors.size())))
     {
-        state->push();
+        if(!pushed)
+            state->push();
 
         if(selected && Gui::Selection().needPickedList()) {
             hasTransparency = true;
@@ -933,7 +959,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         SoTextureEnabledElement::set(state,this,false);
         return true;
     }
-    return false;
+    return pushed;
 }
 
 void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction * action)

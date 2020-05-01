@@ -244,8 +244,28 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         }
         if(ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
-        else
+        else {
+            bool pushed = false;
+            uint32_t color;
+            SoColorPacker packer;
+            float trans = 0.0;
+            if(Gui::SoFCUnifiedSelection::showHiddenLines()) {
+                pushed = true;
+                state->push();
+                SoLazyElement::setTransparency(state,this,1,&trans,&packer);
+                SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
+                if(Gui::ViewParams::getHiddenLineOverrideColor()) {
+                    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+                    color = Gui::ViewParams::getHiddenLineColor();
+                    SoLazyElement::setPacked(state, this, 1, &color, false);
+                }
+            }
+
             inherited::GLRender(action);
+
+            if(pushed)
+                state->pop();
+        }
 
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);

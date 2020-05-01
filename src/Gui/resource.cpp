@@ -33,6 +33,7 @@
 #include "DlgSettings3DViewImp.h"
 #include "DlgSettingsNavigation.h"
 #include "DlgSettingsViewColor.h"
+#include "DlgSettingsDrawStyles.h"
 #include "DlgGeneralImp.h"
 #include "DlgEditorImp.h"
 #include "DlgSettingsMacroImp.h"
@@ -73,6 +74,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettings3DViewImp>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation> ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsDrawStyles> ( QT_TRANSLATE_NOOP("QObject","Display") );
 
     // ADD YOUR CUSTOMIZE PAGES HERE
     //

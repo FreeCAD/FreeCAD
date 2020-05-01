@@ -506,11 +506,12 @@ void View3DInventorViewer::init()
     pcGroupOnTop->addChild(pickStyle);
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
-    auto pcOnTopMaterial = new SoMaterial;
-    pcOnTopMaterial->transparency = 0.5;
-    pcOnTopMaterial->diffuseColor.setIgnored(true);
-    pcOnTopMaterial->setOverride(true);
-    pcGroupOnTop->addChild(pcOnTopMaterial);
+    pcGroupOnTopMaterial = new SoMaterial;
+    pcGroupOnTopMaterial->ref();
+    pcGroupOnTopMaterial->transparency = ViewParams::getTransparencyOnTop();
+    pcGroupOnTopMaterial->diffuseColor.setIgnored(true);
+    pcGroupOnTopMaterial->setOverride(true);
+    pcGroupOnTop->addChild(pcGroupOnTopMaterial);
 
     pcGroupOnTopSel = new SoFCSelectionRoot;
     pcGroupOnTopSel->selectionStyle = SoFCSelectionRoot::PassThrough;
@@ -695,6 +696,7 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcGroupOnTopSwitch->unref();
     this->pcGroupOnTopPreSel->unref();
     this->pcGroupOnTopSel->unref();
+    this->pcGroupOnTopMaterial->unref();
 
     delete selAction;
     selAction = 0;
@@ -1567,6 +1569,11 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
     if (mode == overrideMode)
         return;
 
+    if(overrideMode == "Hidden Line") {
+        SoNode* root = getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(false);
+    }
+
     overrideMode = mode;
 
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
@@ -1577,12 +1584,21 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
             view->setOverrideMode(flatLines);
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
-    else if (mode == "Hidden Line") {
+    else if (mode == "Tessellation") {
         this->shading = true;
         std::string shaded = "Shaded";
         for (auto view : views)
             view->setOverrideMode(shaded);
         this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
+    }
+    else if (mode == "Hidden Line") {
+        this->shading = ViewParams::getHiddenLineShaded();
+        std::string flatLines = "Flat Lines";
+        for (auto view : views)
+            view->setOverrideMode(flatLines);
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+        SoNode* root = getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(true);
     }
     else {
         this->shading = true;

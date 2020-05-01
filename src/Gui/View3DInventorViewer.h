@@ -474,6 +474,7 @@ private:
     SoFCSelectionRoot * pcGroupOnTopPreSel;
     SoPath            * pcGroupOnTopPath;
     SoPath            * pCurrentHighlightPath;
+    SoMaterial        * pcGroupOnTopMaterial;
 
     struct OnTopInfo {
         SoFCPathAnnotation *node;
