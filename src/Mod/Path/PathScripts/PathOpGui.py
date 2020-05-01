@@ -506,6 +506,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
             # self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
+            self.updatePanelVisibility('Operation', self.obj)
             self.setDirty()
 
     def deleteBase(self):
@@ -513,6 +514,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         selected = self.form.baseList.selectedItems()
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
+            self.updatePanelVisibility('Operation', self.obj)
             self.setDirty()
         self.updateBase()
         # self.obj.Proxy.execute(self.obj)
@@ -535,6 +537,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def clearBase(self):
         self.obj.Base = []
+        self.updatePanelVisibility('Operation', self.obj)
         self.setDirty()
 
     def registerSignalHandlers(self, obj):
@@ -552,6 +555,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             self.form.addBase.setEnabled(True)
         else:
             self.form.addBase.setEnabled(False)
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
