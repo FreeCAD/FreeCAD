@@ -392,10 +392,10 @@ class _CommandWall:
                             if self.AUTOJOIN:
                                 FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
-                        self.addDefault(l)
+                        self.addDefault()
                 else:
                     # add new wall as addition to the first existing one
-                    self.addDefault(l)
+                    self.addDefault()
                     if self.AUTOJOIN:
                         FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
