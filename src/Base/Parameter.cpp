@@ -882,10 +882,12 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
     // if this or any of its children is referenced by an observer
     // it cannot be deleted
+#if 0
     if (!it->second->ShouldRemove()) {
         it->second->Clear();
     }
     else {
+#endif
         // check if Element in group
         DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
         // if not return
@@ -897,7 +899,9 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
         DOMNode* node = _pGroupNode->removeChild(pcElem);
         node->release();
+#if 0
     }
+#endif
 
     // trigger observer
     Notify(Name);
