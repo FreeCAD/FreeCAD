@@ -36,3 +36,6 @@ class ViewProviderBSpline(ViewProviderWire):
 
     def __init__(self, vobj):
         super(ViewProviderBSpline, self).__init__(vobj)
+
+
+_ViewProviderBSpline = ViewProviderBSpline

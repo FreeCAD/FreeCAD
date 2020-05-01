@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <QtGui>
+#include <QtWidgets>
 #if defined(Q_WS_X11)
 # include <QX11EmbedContainer>
 #endif
@@ -87,7 +88,7 @@ void MainWindow::loadFreeCAD()
             PyObject *ptype, *pvalue, *ptrace;
             PyErr_Fetch(&ptype, &pvalue, &ptrace);
             PyObject* pystring = PyObject_Str(pvalue);
-            const char* error = PyString_AsString(pystring);
+            const char* error = PyUnicode_AsUTF8(pystring);
             QMessageBox::warning(this, "Error", error);
             Py_DECREF(pystring);
         }
@@ -110,7 +111,7 @@ void MainWindow::newDocument()
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
         PyObject* pystring = PyObject_Str(pvalue);
-        const char* error = PyString_AsString(pystring);
+        const char* error = PyUnicode_AsUTF8(pystring);
         QMessageBox::warning(this, "Error", error);
         Py_DECREF(pystring);
     }
@@ -119,7 +120,6 @@ void MainWindow::newDocument()
 
 void MainWindow::embedWindow()
 {
-    WId hwnd = this->centralWidget()->winId();
     PyObject* main = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(main);
     std::stringstream cmd;
@@ -134,18 +134,41 @@ void MainWindow::embedWindow()
         << "\n"
         << "FreeCADGui.addWorkbench(BlankWorkbench)\n"
         << "FreeCADGui.activateWorkbench(\"BlankWorkbench\")\n"
-        << "FreeCADGui.embedToWindow(\"" << hwnd << "\")\n"
         << "\n";
+
+#if defined(Q_WS_X11) || defined(Q_OS_WIN)
+    WId hwnd = this->centralWidget()->winId();
+    cmd << "FreeCADGui.embedToWindow(\"" << hwnd << "\")\n"
+        << "\n";
+#endif
+
     PyObject* result = PyRun_String(cmd.str().c_str(), Py_file_input, dict, dict);
     if (result) {
         Py_DECREF(result);
+
+#if !defined(Q_WS_X11)
+        // This is a workaround for the lack of a replacement of QX11EmbedWidget with Qt5
+        QWidget* mw = nullptr;
+        for (auto it : qApp->topLevelWidgets()) {
+            if (it->inherits("Gui::MainWindow")) {
+              mw = it;
+              break;
+            }
+        }
+        if (mw) {
+            QVBoxLayout* vb = new QVBoxLayout();
+            centralWidget()->setLayout(vb);
+            vb->addWidget(mw);
+        }
+#endif
+
         embedAct->setDisabled(true);
     }
     else {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
         PyObject* pystring = PyObject_Str(pvalue);
-        const char* error = PyString_AsString(pystring);
+        const char* error = PyUnicode_AsUTF8(pystring);
         QMessageBox::warning(this, "Error", error);
         Py_DECREF(pystring);
     }
