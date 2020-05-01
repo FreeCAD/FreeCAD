@@ -42,8 +42,6 @@ class Wall(object):
     """
     def __init__(self, obj=None):
         # print("runing wall object init method\n")
-        self.Type = 'Arch_Wall'
-
         if obj:
             # print("runing obj init method")
 
@@ -52,13 +50,21 @@ class Wall(object):
             self.attach(obj)
             self.execute(obj)
 
+        self.Type = 'Arch_Wall'
 
-    def init_properties(self, obj):
+
+
+    def set_properties(self, obj):
         obj.addProperty('App::PropertyString', 'Description', 
                         'Base', 
                         'Wall description').Description = ""
 
-        # LEVEL Properties (not implemented yet)
+        # Ifc Properties ----------------------------------------------------
+        obj.addProperty('App::PropertyString', 'IfcType', 
+                'IFC', 
+                'Ifc class that describe the object').IfcType = "Wall"
+
+        # LEVEL Properties (not implemented yet) ----------------------------
         _tip = 'Constrain the wall base to the parent level'
         obj.addProperty('App::PropertyBool', 'BaseConstrain', 
                         'Level properties', 
@@ -79,43 +85,239 @@ class Wall(object):
                         'Level properties', 
                         _tip).TopOffset = '0'
 
-        # CHILDREN Properties (partially implemented at the moment)
-        obj.addProperty('App::PropertyLinkChild', 'BaseGeometry', 'Children', 'Link to the child representing the base geometry of the wall shape')
-        obj.addProperty('App::PropertyLinkListChild', 'Openings', 'Children', 'Link to the children that will be subtracted from the wall shape')
-        obj.addProperty('App::PropertyLinkListChild', 'Fusions', 'Children', 'Link to the children that will be fused with the wall shape')
-        obj.addProperty('App::PropertyLinkListChild', 'Components', 'Children', 'Link to the structural children members of the wall')
-        obj.addProperty('App::PropertyLinkListChild', 'Windows', 'Children', 'Link to the windows inserted into the wall ')
+        # CHILDREN Properties (partially implemented at the moment) ---------
+        _tip = 'Link to the child representing the base geometry of the wall shape'
+        obj.addProperty('App::PropertyLinkChild', 'BaseGeometry',
+                        'Children', _tip)
+        
+        _tip = 'Link to the children that will be subtracted from the wall shape'
+        obj.addProperty('App::PropertyLinkListChild', 'Openings',
+                        'Children', _tip)
+        
+        _tip = 'Link to the children that will be fused with the wall shape'
+        obj.addProperty('App::PropertyLinkListChild', 'Fusions',
+                        'Children', _tip)
+        
+        _tip = 'Link to the structural children members of the wall'
+        obj.addProperty('App::PropertyLinkListChild', 'Components',
+                        'Children', _tip)
+        
+        _tip = 'Link to the windows inserted into the wall'
+        obj.addProperty('App::PropertyLinkListChild', 'Windows',
+                        'Children', _tip)
 
-        # WALL ENDS Properties
-        obj.addProperty('App::PropertyBool', 'JoinFirstEnd', 'Wall connections', "Allow automatic compute of first end").JoinFirstEnd = False
-        obj.addProperty('App::PropertyString', 'JoinFirstEndTo', 'Wall connections', "Name of the object to join wall's first end").JoinFirstEndTo = ''
-        obj.addProperty('App::PropertyBool', 'JoinLastEnd', 'Wall connections', "Allow automatic compute of last end").JoinLastEnd = False
-        obj.addProperty('App::PropertyString', 'JoinLastEndTo', 'Wall connections', "Name of the object to join wall's last end").JoinLastEndTo = ''
-        obj.addProperty('App::PropertyStringList', 'IncomingTJoins', 'Wall connections', "Names of the objects that target current wall").IncomingTJoins = []
+        # WALL CONNECTIONS Properties ---------------------------------------
+        _tip = "Allow automatic compute of first end"
+        obj.addProperty('App::PropertyBool', 'JoinFirstEnd',
+                        'Wall connections', _tip).JoinFirstEnd = True
+
+        _tip = "Name of the object to join wall's first end"
+        obj.addProperty('App::PropertyString', 'JoinFirstEndTo',
+                        'Wall connections', _tip).JoinFirstEndTo = ''
+
+        _tip = "Allow automatic compute of last end"
+        obj.addProperty('App::PropertyBool', 'JoinLastEnd',
+                        'Wall connections', _tip).JoinLastEnd = True
+
+        _tip = "Name of the object to join wall's last end"
+        obj.addProperty('App::PropertyString', 'JoinLastEndTo',
+                        'Wall connections', _tip).JoinLastEndTo = ''
+
+        _tip = "Names of the objects that target current wall"
+        obj.addProperty('App::PropertyStringList', 'IncomingTJoins',
+                        'Wall connections', _tip).IncomingTJoins = []
+
+        # GEOMETRY Properties -----------------------------------------------
+        _tip = 'Start point of wall core axis'
+        obj.addProperty('App::PropertyVector', 'FirstPoint', #change to BaselineStart
+                        'Geometry', _tip).FirstPoint = App.Vector(0,0,0)
+
+        _tip = 'End point of wall core axis'
+        obj.addProperty('App::PropertyVector', 'LastPoint', #change to BaselineEnd
+                        'Geometry', _tip).LastPoint = App.Vector(4000,0,0)
+
+        _tip = 'Constrain to wall X axis'
+        obj.addProperty('App::PropertyBool', 'ConstrainToXAxis', #change to BaselineConstrain
+                        'Geometry', _tip).ConstrainToXAxis = True
+
+        obj.addProperty('App::PropertyLength', 'Length',
+                        'Geometry', 'Wall length',1).Length = '4 m'
+
+        obj.addProperty('App::PropertyLength', 'Width',
+                        'Geometry', 'Wall width').Width = '35 cm'
+
+        obj.addProperty('App::PropertyLength', 'Height',
+                        'Geometry', 'Wall height').Height = '2.7 m'
+
+        # WALL ENDS: All the angle properties are meant to be hidden and showed just on user demand
+        _tip = 'Angular cut of first wall end inner layer (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'FirstInnerLayerAngle',
+                        'Wall Ends', _tip, 4).FirstInnerLayerAngle = '90 deg'
+
+        _tip = 'Angular cut of first wall end outer layer (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'FirstOuterLayerAngle', 
+                        'Wall Ends', _tip, 4).FirstOuterLayerAngle = '90 deg'
+        
+        _tip = 'Angular cut of first wall end core inner half'
+        obj.addProperty('App::PropertyAngle', 'FirstCoreInnerAngle', 
+                        'Wall Ends', _tip, 4).FirstCoreInnerAngle = '90 deg'
+        
+        _tip = 'Angular cut of first wall end core outer half'
+        obj.addProperty('App::PropertyAngle', 'FirstCoreOuterAngle', 
+                        'Wall Ends', _tip, 4).FirstCoreOuterAngle = '90 deg'
+
+        _tip = 'Angular cut of first wall end (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'LastInnerLayerAngle', 
+                        'Wall Ends', _tip, 4).LastInnerLayerAngle = '90 deg'
+        
+        _tip = 'Angular cut of first wall end (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'LastOuterLayerAngle', 
+                        'Wall Ends', _tip, 4).LastOuterLayerAngle = '90 deg'
+        
+        _tip = 'Angular cut of first wall end (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'LastCoreInnerAngle', 
+                        'Wall Ends', _tip, 4).LastCoreInnerAngle = '90 deg'
+        
+        _tip = 'Angular cut of last wall end (to be implemented)'
+        obj.addProperty('App::PropertyAngle', 'LastCoreOuterAngle', 
+                        'Wall Ends', _tip,4).LastCoreOuterAngle = '90 deg'
 
 
     def attach(self,obj):
 
         # print("running" + obj.Name + "attach() method\n")
         obj.addExtension('App::OriginGroupExtensionPython', None)
+        # if we do not add the origin object, the wall works ok, but
+        # an error "origin not found" is triggered for every movement of the wall
         obj.Origin = App.ActiveDocument.addObject('App::Origin','Origin')
-        self.init_properties(obj)
+        self.set_properties(obj)
 
 
     def execute(self,obj):
         """ Compute the wall shape as boolean operations among the children objects """
         # print("running " + obj.Name + " execute() method\n")
-
+        # get wall base shape from BaseGeometry object
         wall_shape = None
 
-        # get wall base shape from BaseGeometry object
-        if hasattr(obj, "BaseGeometry"):
-            if obj.BaseGeometry:
-                if hasattr(obj.BaseGeometry, "Shape"):
-                    wall_shape = obj.BaseGeometry.Shape
+        if hasattr(obj, "BaseGeometry") and obj.BaseGeometry:
+            if hasattr(obj.BaseGeometry, "Shape"):
+                wall_shape = obj.BaseGeometry.Shape
+        else:
+            """
+            The wall default base shape is defined as 2 Part Wedge solids, fused together;
+            splays are controlled by obj.FirstCoreOuterAngle, obj.LastCoreOuterAngle
+                                    obj.FirstCoreInnerAngle, obj.LastCoreInnerAngle
 
+            TODO: For further development maybe we can add another 2 Part Wedges
+                to simulate inner layer and outer layer (ATM only core is represented)
+
+                    <--> first_splay                <--> last_splay
+                    ---------------------------------  outer surface
+                    \         Part Wedge 1          \ 
+                    \           core axis           \ 
+            first_point o-------------------------------o  last_point
+                        \                               \ 
+                        \       Part Wedge 2            \ 
+                        ---------------------------------  inner surface
+                        <--> first_splay                <--> last_splay
+            """
+            
+            if not hasattr(obj,"FirstPoint") or not hasattr(obj,"LastPoint") \
+                or not hasattr(obj,"ConstrainToXAxis") or not hasattr(obj,"Width") \
+                or not hasattr(obj,"Height"):
+                return
+
+            length = obj.Length
+
+            if obj.FirstPoint.x == obj.LastPoint.x or length < Draft.tolerance():
+                return
+
+            # swap first point and last point to have them in the right order
+            # TODO: Swap the points phisically and change end constraints!
+            if obj.FirstPoint.x < obj.LastPoint.x:
+                first_point = obj.FirstPoint
+            elif obj.FirstPoint.x > obj.LastPoint.x:
+                first_point = obj.LastPoint
+            
+            if obj.ConstrainToXAxis:
+                first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreInnerAngle))
+                last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreInnerAngle))
+                
+                Xmin = 0
+                Ymin = 0
+                Zmin = 0
+                Z2min = 0
+                X2min = first_splay
+                Xmax = length
+                Ymax = obj.Width/2
+                Zmax = obj.Height
+                Z2max = obj.Height
+                X2max = length - last_splay
+
+                # checking conditions that will break Part.makeWedge()
+                if first_splay >= length:
+                    print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
+                    X2min = 0
+                if last_splay >= length:
+                    print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+                    X2max = length
+                if ( first_splay + last_splay ) >= length:
+                    print("Wall is too short compared to the splays: removing angles of inner core layer\n")
+                    X2min = 0
+                    X2max = length
+
+                inner_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                                Xmax, Ymax, Zmax, Z2max, X2max)#, obj.FirstPoint, obj.LastPoint )
+                inner_core.Placement.Base.x = first_point.x
+
+                first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreOuterAngle))
+                last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreOuterAngle))          
+                
+                Xmin = first_splay
+                Ymin = 0
+                Zmin = 0
+                Z2min = 0
+                X2min = 0
+                Xmax = length - last_splay
+                Ymax = obj.Width/2
+                Zmax = obj.Height
+                Z2max = obj.Height
+                X2max = length
+
+                # checking conditions that will break Part.makeWedge()
+                if first_splay >= length:
+                    print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
+                    Xmin = 0
+                if last_splay >= length:
+                    print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+                    Xmax = length
+                if ( first_splay + last_splay ) >= length:
+                    print("Wall is too short compared to the splays: removing angles of outer core layer\n")
+                    Xmin = 0
+                    Xmax = length
+
+                outer_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                                Xmax, Ymax, Zmax, Z2max, X2max)#, obj.Start, obj.End)
+                        
+                outer_core.Placement.Base = App.Vector(first_point.x, - obj.Width/2)
+
+            else:
+                print("ConstrainToXAxis is set to false: Not implemented yet")
+            
+            core_layer = inner_core.fuse(outer_core)
+            
+            wall_shape = core_layer
+        
         if wall_shape is None:
             return
+
+        """
+        Perform boolean operations between the base shape and 
+        Additions, Subtractions, and windows.
+
+        Windows have to provide a proper shape to cut the wall as a 
+        WallVoid object or (TODO: a Part::PropertyPartShape)
+        """
 
         # subtract openings
         if hasattr(obj, "Openings"):
@@ -152,8 +354,8 @@ class Wall(object):
                                 wall_shape = wall_shape.cut(cut_shape)
                                 cut_done = True
 
-                _compound = [wall_shape]
-
+                '''_compound = [wall_shape]
+                # this was used to collect Wall Additions from each window object
                 for win in obj.Windows:
                     # collect window shapes to be added to the wall shape
                     for o in win.Group:
@@ -169,7 +371,7 @@ class Wall(object):
                             _compound.append(add_shape)
                 
                 # collect window shapes to be added to the wall shape
-                wall_shape = Part.Compound(_compound)
+                wall_shape = Part.Compound(_compound)'''
 
         obj.Shape = wall_shape
 
@@ -207,7 +409,7 @@ class Wall(object):
     def onChanged(self, obj, prop):
         """this method is activated when a property changes"""
         if prop == "Placement":
-            if hasattr(obj, "Placement"):
+            if hasattr(obj, "Placement"): # TODO: recompute only if end is set
                 # Recompute wall joinings
                 self.recompute_ends(obj, 0)
                 self.recompute_ends(obj, 1)
@@ -226,10 +428,17 @@ class Wall(object):
             elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
                 self.recompute_ends(obj, 1)
 
+        if prop == "FirstPoint" or prop == "LastPoint":
+            if hasattr(obj, "FirstPoint") and hasattr(obj, "LastPoint"):
+                #if obj.FirstPoint.x > obj.LastPoint.x:   circular
+                #    obj.FirstPoint, obj.LastPoint = obj.LastPoint, obj.FirstPoint
+                if hasattr(obj, "Length"):
+                    obj.Length = abs(obj.LastPoint.x - obj.FirstPoint.x)
+
         # CHILDREN properties: remember to first assign basegeometry and then add the object to the group
         if prop == "BaseGeometry":
             if hasattr(obj, "BaseGeometry"):
-                self.format_base_geometry_object(obj, obj.BaseGeometry)
+                pass
 
         # Group property: an object is added or removed from the wall
         if prop == "Group":
@@ -243,7 +452,7 @@ class Wall(object):
                     # if it was removed, remove it from wall children linking
                     print("Removing " + o.Label + " from " + obj.Label)
                     if o == obj.BaseGeometry:
-                        obj.Base = None
+                        obj.BaseGeometry = None
 
                     elif o in obj.Openings:
                         openings = obj.Openings
@@ -273,37 +482,7 @@ class Wall(object):
                         self.add_opening(obj, o)
 
 
-    def add_window(self, obj, child):
-        """
-        This method is called when a new object is added to the wall and
-        it has a IfcType property that is set to 'Window'.
-        """
-        pass
-        # TODO: not implemented yet
-
-
-    def add_opening(self, obj, child):
-        """
-        This method is called when a new object is added to the wall.
-        It ask the user if the object has to be treated as an opening.
-        If so, it add the object to the Openings PropertyLinkListChild.
-        """
-        msgBox = QtGui.QMessageBox()
-        msgBox.setText("Object " + obj.Label + " has been added to the wall.")
-        msgBox.setInformativeText("Do you want to treat it as an opening?\n")
-        msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        msgBox.setDefaultButton(QtGui.QMessageBox.Yes)
-        ret = msgBox.exec_()
-
-        if ret == QtGui.QMessageBox.Yes:
-            openings = obj.Openings
-            openings.append(child)
-            obj.Openings = openings
-        elif ret == QtGui.QMessageBox.No:
-            return
-
-
-    # FOLLOWING METHODS Concern computation of wall joinings
+    # Wall joinings methods +++++++++++++++++++++++++++++++++++++++++++++++++
 
 
     def recompute_ends(self, obj, end_idx):
@@ -321,12 +500,15 @@ class Wall(object):
                     1 for last end
                     2 for both ends
         """
+        if obj == None:
+            print("Cannot recompute ends of a None object")
+            return
         if obj.JoinFirstEndTo == obj.JoinLastEndTo and obj.JoinFirstEndTo != "":
             print("The wall cannot target the same wall on both JoinFirst and JoinLast properties")
             return
         if end_idx == 0:
             target = App.ActiveDocument.getObject(obj.JoinFirstEndTo)
-            if target == obj:
+            if target == obj or target == None:
                 return
             if self.is_wall_joinable(obj):
                 if self.is_wall_joinable(target):
@@ -336,7 +518,7 @@ class Wall(object):
 
         if end_idx == 1:
             target = App.ActiveDocument.getObject(obj.JoinLastEndTo)
-            if target == obj:
+            if target == obj or target == None:
                 return
             if self.is_wall_joinable(obj):
                 if self.is_wall_joinable(target):
@@ -353,10 +535,10 @@ class Wall(object):
         """
 
         if Draft.get_type(obj) != "Arch_Wall":
-            #print("Wall Joining only works on valid Arch_Wall objects")
+            print("Wall " + obj.Name + "is not a valid Arch_Wall objects")
             return False
-        if Draft.get_type(obj.BaseGeometry) != 'Arch_WallSegment':
-            #print("Wall Joining only works if Wall base geometry is an Arch_WallSegment object")
+        if obj.BaseGeometry is not None:
+            print("Wall Joining only works if base geometry is not set")
             return False
         return True
 
@@ -372,13 +554,13 @@ class Wall(object):
                     0 for first end
                     1 for last end
         """
-        # print("running reset_end() "+obj.Name+"_"+str(idx)+"\n")
+        print("running reset_end() "+obj.Name+"_"+str(idx)+"\n")
         if idx == 0:
-            obj.BaseGeometry.FirstCoreInnerAngle = 90
-            obj.BaseGeometry.FirstCoreOuterAngle = 90
+            obj.FirstCoreInnerAngle = 90
+            obj.FirstCoreOuterAngle = 90
         elif idx == 1:
-            obj.BaseGeometry.LastCoreInnerAngle = 90
-            obj.BaseGeometry.LastCoreOuterAngle = 90
+            obj.LastCoreInnerAngle = 90
+            obj.LastCoreOuterAngle = 90
 
 
     def remove_linked_walls_references(self, obj):
@@ -386,7 +568,7 @@ class Wall(object):
         Removes the reference to given wall to all the other 
         walls that target it to join
         """
-        # print("REMOVE ALL REFERENCES on DELETING")
+        print("REMOVE ALL REFERENCES on DELETING")
         references = obj.IncomingTJoins
         references.append(obj.JoinFirstEndTo)
         references.append(obj.JoinLastEndTo)
@@ -445,7 +627,7 @@ class Wall(object):
 
     def extend(self, wall, target, idx):
         """ Extend the given wall to the target wall """
-        # print("--------\n"+"Extend "+wall.Name + " to " +target.Name+ "\n")
+        print("--------\n"+"Extend "+wall.Name + " to " +target.Name+ "\n")
 
         wall_core_axis = wall.Proxy.get_core_axis(wall)#.toShape()
         target_core_axis = target.Proxy.get_core_axis(target)#.toShape()
@@ -462,16 +644,16 @@ class Wall(object):
             return False
 
         if idx == 0:
-            wall.BaseGeometry.Proxy.set_first_point(wall.BaseGeometry, intersection)
+            wall.Proxy.set_first_point(wall, intersection)
             return True
         elif idx == 1:
-            wall.BaseGeometry.Proxy.set_last_point(wall.BaseGeometry, intersection)
+            wall.Proxy.set_last_point(wall, intersection)
             return True
 
 
     def T_join(self, wall, target, idx): 
         """ Compute wall angles according to given parameters """
-        # print("--------\n"+"T_Join "+wall.Name + " with " +target.Name+ "\n")
+        print("--------\n"+"T_Join "+wall.Name + " with " +target.Name+ "\n")
 
         if idx == 0:
             w1 = wall.Proxy.get_first_point(wall)
@@ -488,11 +670,11 @@ class Wall(object):
 
         # identify if the function have to join the first or the end of the wall
         if idx == 0:
-            wall.BaseGeometry.FirstCoreInnerAngle = angle
-            wall.BaseGeometry.FirstCoreOuterAngle = -angle
+            wall.FirstCoreInnerAngle = angle
+            wall.FirstCoreOuterAngle = -angle
         elif idx == 1:
-            wall.BaseGeometry.LastCoreInnerAngle = -angle
-            wall.BaseGeometry.LastCoreOuterAngle = angle
+            wall.LastCoreInnerAngle = -angle
+            wall.LastCoreOuterAngle = angle
 
         if not wall.Name in target.IncomingTJoins:
             target_list = target.IncomingTJoins
@@ -511,7 +693,7 @@ class Wall(object):
                    /     /_wi__/______.__________________________         
                   /     /    ./       .
                  /  ti /  c. /        .
-                /     /  .  /ti       . target.BaseGeometry.Width        
+                /     /  .  /ti       . target.Width        
                /     / .   /          .
               /____ /_____/_____ _____._____ _____ _____ _____ __
              /    ./  wi /                    target
@@ -522,7 +704,7 @@ class Wall(object):
 
         """
         # TODO: correct the bug of two different size walls with big angle in between
-        # print("--------\n"+"L_Join "+wall.Name+"_"+str(idx) + " with " +target.Name+"_"+str(target_idx) + "\n")
+        print("--------\n"+"L_Join "+wall.Name+"_"+str(idx) + " with " +target.Name+"_"+str(target_idx) + "\n")
         
         if idx == 0:
             w1 = wall.Proxy.get_first_point(wall)
@@ -543,11 +725,11 @@ class Wall(object):
         # print("angle between walls: " + str(math.degrees(angle)) + "\n")
 
         if angle > 0:
-            w_i = wall.BaseGeometry.Width * math.cos(math.pi/2-angle)
-            t_i = target.BaseGeometry.Width * math.cos(math.pi/2-angle)
+            w_i = wall.Width * math.cos(math.pi/2-angle)
+            t_i = target.Width * math.cos(math.pi/2-angle)
         if angle < 0:
-            w_i = wall.BaseGeometry.Width * math.cos(-math.pi/2-angle)
-            t_i = target.BaseGeometry.Width * math.cos(-math.pi/2-angle)
+            w_i = wall.Width * math.cos(-math.pi/2-angle)
+            t_i = target.Width * math.cos(-math.pi/2-angle)
 
         c = math.sqrt( w_i**2 + t_i**2 - 2 * abs(w_i) * t_i * math.cos(math.pi-angle) )
         w_angle = math.asin( w_i / c * math.sin(math.pi-angle))
@@ -561,32 +743,107 @@ class Wall(object):
         # assign the angles to the correct wall end
         w_angle = math.degrees( w_angle )
         if idx == 0:
-            wall.BaseGeometry.FirstCoreInnerAngle = w_angle
-            wall.BaseGeometry.FirstCoreOuterAngle = -w_angle
+            wall.FirstCoreInnerAngle = w_angle
+            wall.FirstCoreOuterAngle = -w_angle
         elif idx == 1:
-            wall.BaseGeometry.LastCoreInnerAngle = -w_angle
-            wall.BaseGeometry.LastCoreOuterAngle = +w_angle
+            wall.LastCoreInnerAngle = -w_angle
+            wall.LastCoreOuterAngle = +w_angle
 
 
-    # FOLLOWING METHODS Are general getter functions
+    # Group objects handling methods ++++++++++++++++++++++++++++++++++++++++
+
+
+    def add_window(self, obj, child):
+        """
+        This method is called when a new object is added to the wall and
+        it has a IfcType property that is set to 'Window'.
+        """
+        pass
+        # TODO: not implemented yet
+
+
+    def add_opening(self, obj, child):
+        """
+        This method is called when a new object is added to the wall.
+        It ask the user if the object has to be treated as an opening.
+        If so, it add the object to the Openings PropertyLinkListChild.
+        """
+        msgBox = QtGui.QMessageBox()
+        msgBox.setText("Object " + obj.Label + " has been added to the wall.")
+        msgBox.setInformativeText("Do you want to treat it as an opening?\n")
+        msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        msgBox.setDefaultButton(QtGui.QMessageBox.Yes)
+        ret = msgBox.exec_()
+
+        if ret == QtGui.QMessageBox.Yes:
+            openings = obj.Openings
+            openings.append(child)
+            obj.Openings = openings
+        elif ret == QtGui.QMessageBox.No:
+            return
+
+
+    # General getter methods ++++++++++++++++++++++++++++++++++++++++++++++++
 
 
     def get_core_axis(self, obj):
-        """ returns a part line representing the core axis of the wall """
-        return obj.BaseGeometry.Proxy.get_core_axis(obj.BaseGeometry)
-
+        """returns a part line representing the core axis of the wall"""
+        p1 = self.get_first_point(obj)
+        p2 = self.get_last_point(obj)
+        if p1 == p2:
+            print("Points are equal, cannot get the axis")
+            return None
+        else:
+            core_axis= Part.Line(p1, p2)
+            return core_axis
 
     def get_first_point(self, obj):
         """returns a part line representing the core axis of the wall"""
-        return obj.BaseGeometry.Proxy.get_first_point(obj.BaseGeometry)
-
+        p1 = obj.getGlobalPlacement().multVec(obj.FirstPoint)
+        return p1
 
     def get_last_point(self, obj):
         """returns a part line representing the core axis of the wall"""
-        return obj.BaseGeometry.Proxy.get_last_point(obj.BaseGeometry)
+        p2 = obj.getGlobalPlacement().multVec(obj.LastPoint)
+        return p2
 
 
-    # FOLLOWING METHODS Are other tools
+    # General setter methods ++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+    def set_first_point(self, obj, first_point, local=False):
+        """returns a part line representing the core axis of the wall"""
+        if first_point != obj.LastPoint:
+            self.set_point(obj, first_point, 0, local)
+            return True
+        else:
+            print("You are trying to set the first point equal to the last point, this is not allowed.\n")
+            return False
+
+    def set_last_point(self, obj, last_point, local=False):
+        """returns a part line representing the core axis of the wall"""
+        if last_point != obj.FirstPoint:
+            self.set_point(obj, last_point, 1, local)
+            return True
+        else:
+            print("You are trying to set the last point equal to the first point, this is not allowed.\n")
+            return False
+
+    def set_point(self, obj, point, point_idx, local=False):
+        """returns a part line representing the core axis of the wall"""
+        if local:
+            np = point
+        else:
+            np = obj.getGlobalPlacement().inverse().multVec(point)
+
+        # assign the np to the first or end point of the wall
+        if point_idx == 0:
+            obj.FirstPoint = np
+        elif point_idx == 1:
+            obj.LastPoint = np
+
+
+    # Other methods +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
     def flip_wall(self, obj):
@@ -597,21 +854,6 @@ class Wall(object):
         #TODO: check what happens if the base geometry is far from origin
         obj.Placement.Rotation.Angle += math.pi
         obj.JoinFirstEndTo, obj.JoinLastEndTo = obj.JoinLastEndTo, obj.JoinFirstEndTo
-
-
-    def format_base_geometry_object(self, obj, base_geometry):
-        """
-        this method is called when a BaseGeometry object is assigned to the wall
-        """
-        if Draft.get_type(base_geometry) == 'Arch_WallSegment':
-            # if base_geometry is default Arch_WallSegment object, 
-            # enable auto computing of ends joints
-            obj.JoinFirstEnd = True
-            obj.JoinLastEnd = True
-        else:
-            # else disable it
-            obj.JoinFirstEnd = False
-            obj.JoinLastEnd = False
 
 
         if hasattr(base_geometry, "ViewObject"):
@@ -626,6 +868,8 @@ class Wall(object):
 
     def onDocumentRestored(self, obj):
         self.Object = obj
+        # obj.Proxy.Type needs to be re-setted every time the document is opened.
+        obj.Proxy.Type = "Arch_Wall"
 
 
     def __getstate__(self):

@@ -76,21 +76,12 @@ def make_wall_from_points(p1, p2, join_first=None, join_last=None,
     # Add a Wall object to the document
     obj = App.ActiveDocument.addObject('Part::FeaturePython', 'Wall', Wall(), ViewProviderWall(), True)
     
-    # Add a WallShape object to the document
-    shp = App.ActiveDocument.addObject('Part::FeaturePython', obj.Name + 'Segment')
-    WallSegment(shp)
-    ViewProviderWallSegment(shp.ViewObject)
-    
-    # Add the WallShape as the Wall BaseGeometry
-    obj.BaseGeometry = shp
-    obj.addObject(shp)
-
     # Align the wall to the given point
     obj.Placement.Base = p1
     length = p1.distanceToPoint(p2)
     angle = DraftVecUtils.angle(p2-p1,App.Vector(1,0,0))
     obj.Placement.Rotation.Angle = -angle
-    obj.BaseGeometry.LastPoint = App.Vector(length,0,0)
+    obj.LastPoint = App.Vector(length,0,0)
     
     # Apply end joining if present
     if join_first != join_last:

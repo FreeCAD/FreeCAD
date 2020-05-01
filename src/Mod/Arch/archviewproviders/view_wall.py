@@ -24,14 +24,21 @@
 # \ingroup ARCH
 # \brief Provide the viewprovider code for Arch Wall.
 
-import FreeCAD as App
 from PySide import QtCore,QtGui
+from pivy import coin
+
+import FreeCAD as App
+
+import Part
 
 
 class ViewProviderWall(object):
-
+    
     def __init__(self,vobj=None):
-
+        self.child_node = None
+        self.mode_node = None
+        self.shape_node = None
+        self.shape_mode = None
         if vobj:
             vobj.Proxy = self
             self.attach(vobj)
@@ -39,16 +46,93 @@ class ViewProviderWall(object):
             self.ViewObject = None
 
 
-    def updateData(self, obj, prop):
-
-        return
-
-
-    def attach(self,vobj):
-
+    def attach(self, vobj):
         vobj.addExtension('Gui::ViewProviderOriginGroupExtensionPython', None)
         self.ViewObject = vobj
-        print("running  " + vobj.Object.Name + " ViewObject attach() method\n")
+        self.setupShapeGroup()
+
+
+    def setupShapeGroup(self):
+        vobj = self.ViewObject
+        if getattr(self, 'shape_mode', None) or \
+                vobj.SwitchNode.getNumChildren() < 2:
+            return
+        self.child_node = vobj.SwitchNode.getChild(0)
+        self.shape_node = vobj.SwitchNode.getChild(1)
+        self.mode_node = coin.SoSeparator()
+        self.mode_node.addChild(self.child_node)
+        self.mode_node.addChild(self.shape_node)
+        self.shape_mode = vobj.SwitchNode.getNumChildren()
+        # TODO: overwrite existing display modes with the new ones so
+        #       when DisplayModes are set generally, the objects are
+        #       correctly displayed
+        vobj.addDisplayMode(self.mode_node, 'ShapeGroup')
+        try:
+            vobj.SwitchNode.defaultChild = self.shape_mode
+        except Exception:
+            pass
+
+
+    def getDisplayModes(self, _vobj):
+        return ["ShapeGroup"]
+
+
+    def getDefaultDisplayMode(self):
+        return "ShapeGroup"
+
+
+    def getDetailPath(self,subname,path,append):
+        if not subname or not getattr(self, 'shape_mode', None):
+            raise NotImplementedError
+        subs = Part.splitSubname(subname)
+        objs = subs[0].split('.')
+
+        vobj = self.ViewObject
+        mode = vobj.SwitchNode.whichChild.getValue()
+        if mode < 0:
+            raise NotImplementedError
+
+        if append:
+            path.append(vobj.RootNode)
+            path.append(vobj.SwitchNode)
+            path.append(vobj.SwitchNode.getChild(mode))
+            if mode == self.shape_mode:
+                if not objs[0]:
+                    path.append(self.shape_node)
+                else:
+                    path.append(self.child_node)
+            if not objs[0]:
+                return vobj.getDetailPath(subname,path,False)
+        for child in vobj.claimChildren():
+            if child.Name == objs[0]:
+                sub = Part.joinSubname('.'.join(objs[1:]),subs[1],subs[2])
+                return child.ViewObject.getDetailPath(sub,path,True)
+
+
+    def getElementPicked(self, pp):
+        if not getattr(self, 'shape_mode', None):
+            raise NotImplementedError
+        vobj = self.ViewObject
+        path = pp.getPath()
+        if path.findNode(self.child_node) < 0:
+            raise NotImplementedError
+        for child in vobj.claimChildren():
+            if path.findNode(child.ViewObject.RootNode) < 0:
+                continue
+            return child.Name + '.' + child.ViewObject.getElementPicked(pp)
+
+
+    def onChanged(self, _vobj,prop):
+        if prop == 'DisplayMode':
+            self.setupShapeGroup()
+
+
+    def __getstate__(self):
+        return None
+
+
+    def __setstate__(self, _state):
+        return None
 
 
     def onDelete(self, vobj, subelements): # subelements is a tuple of strings
@@ -82,48 +166,13 @@ class ViewProviderWall(object):
 
         # the object will be deleted
         return True
-
-
-    def __getstate__(self):
-        """ describe """        
-        return None
-
-
-    def __setstate__(self, _state):
-        """ describe """        
-        return None
-
-
-    def getDefaultDisplayMode(self):
-        """
-        Return the name of the default display mode. 
-        It must be defined in getDisplayModes.
-        """
-        return "Flat Lines"
-
+    
 
     def setupContextMenu(self, vobj, menu):
         """
         Setup context menu actions:
-        - Toggle display mode
         - Flip wall (this is not implemented yet)
         """
-        action1 = QtGui.QAction("Toggle display mode", menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),lambda f=self.toggle_display_mode, arg=vobj:f(arg))
+        action1 = QtGui.QAction("Flip wall", menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),lambda f=vobj.Object.Proxy.flip_wall, arg=vobj.Object:f(arg))
         menu.addAction(action1)
-
-        action2 = QtGui.QAction("Flip wall", menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),lambda f=vobj.Object.Proxy.flip_wall, arg=vobj.Object:f(arg))
-        menu.addAction(action2)
-
-
-    def toggle_display_mode(self, vobj):
-        """
-        Switches the visualization between the wall object as a compound
-        and its grouped children
-        TODO: Find a more appropriate name for the end user
-        """
-        if self.ViewObject.DisplayMode == "Group":
-            self.ViewObject.DisplayMode = "Flat Lines"
-        elif self.ViewObject.DisplayMode == "Flat Lines":
-            self.ViewObject.DisplayMode = "Group"
