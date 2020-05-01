@@ -679,8 +679,8 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         std::vector<std::pair<App::Document*,std::string> > objNames;
         for(auto obj : App::Document::getDependencyList(objs,App::Document::DepSort))
             objNames.emplace_back(obj->getDocument(),obj->getNameInDocument());
-        for(auto &v : objNames)
-            v.first->removeObject(v.second.c_str());
+        for(auto rit=objNames.rbegin(); rit!=objNames.rend(); ++rit)
+            rit->first->removeObject(rit->second.c_str());
         ret = feature;
         ret->recomputeFeature(true);
     }
