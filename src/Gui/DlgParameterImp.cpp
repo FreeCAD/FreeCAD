@@ -720,6 +720,20 @@ void ParameterValue::keyPressEvent (QKeyEvent* event)
   }
 }
 
+void ParameterValue::resizeEvent(QResizeEvent* event)
+{
+#if QT_VERSION >= 0x050000
+    QHeaderView* hv = header();
+    hv->setSectionResizeMode(QHeaderView::Stretch);
+#endif
+
+    QTreeWidget::resizeEvent(event);
+
+#if QT_VERSION >= 0x050000
+    hv->setSectionResizeMode(QHeaderView::Interactive);
+#endif
+}
+
 void ParameterValue::onChangeSelectedItem(QTreeWidgetItem* item, int col)
 {
     if (isItemSelected(item) && col > 0)

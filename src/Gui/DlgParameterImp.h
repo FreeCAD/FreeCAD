@@ -159,6 +159,7 @@ protected:
     void contextMenuEvent ( QContextMenuEvent* event );
     /** Invokes onDeleteSelectedItem() if the "Del" key was pressed. */
     void keyPressEvent (QKeyEvent* event);
+    void resizeEvent(QResizeEvent*);
 
 protected Q_SLOTS:
     /** Changes the value of the leaf of the selected item. */
