@@ -570,7 +570,7 @@ QVariant PropertyItem::data(int column, int role) const
     // property name
     if (column == 0) {
         if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0,0x80,0));
+            return QVariant::fromValue(QColor(0x20,0xaa,0x20));
 
         if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
             if(PropertyView::showAll()
