@@ -18,7 +18,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-"""Provide the object code for Arch Wall object."""
+"""Provide the object code for Arch Wall."""
 ## @package wall
 # \ingroup ARCH
 # \brief Provide the object code for Arch Wall.
@@ -55,9 +55,9 @@ class Wall(object):
 
 
     def set_properties(self, obj):
-        obj.addProperty('App::PropertyString', 'Description', 
-                        'Base', 
-                        'Wall description').Description = ""
+        # obj.addProperty('App::PropertyPlacement', 'GlobalPlacement', 
+        #                'Base', 
+        #                'Object global Placement', 1)
 
         # Ifc Properties ----------------------------------------------------
         obj.addProperty('App::PropertyString', 'IfcType', 
@@ -70,7 +70,8 @@ class Wall(object):
                         'Level properties', 
                         _tip).BaseConstrain = True
 
-        _tip = 'If the wall base is constrained to the parent level, set Z offset'
+        _tip = 'If the wall base is constrained to the parent level,\
+                set Z offset'
         obj.addProperty('App::PropertyLength', 'BaseOffset', 
                         'Level properties', 
                         _tip).BaseOffset = '0'
@@ -80,52 +81,34 @@ class Wall(object):
                         'Level properties', 
                         _tip).TopConstrain = True
 
-        _tip = 'If the wall top is constrained to the parent level, set Z offset'
+        _tip = 'If the wall top is constrained to the parent level,\
+                set Z offset'
         obj.addProperty('App::PropertyLength', 'TopOffset', 
                         'Level properties', 
                         _tip).TopOffset = '0'
 
-        # CHILDREN Properties (partially implemented at the moment) ---------
-        _tip = 'Link to the child representing the base geometry of the wall shape'
+        # COMPONENTS Properties (partially implemented at the moment) ---------
+        _tip = 'Optional object to use as base geometry for the wall shape'
         obj.addProperty('App::PropertyLinkChild', 'BaseGeometry',
-                        'Children', _tip)
+                        'Components', _tip) # TODO: better PropertyLinkListGlobal or PropertyLinkListChild?
         
-        _tip = 'Link to the children that will be subtracted from the wall shape'
-        obj.addProperty('App::PropertyLinkListChild', 'Openings',
-                        'Children', _tip)
+        _tip = 'List of objects to fuse with the wall shape'
+        obj.addProperty('App::PropertyLinkListGlobal', 'Fusions',
+                        'Components', _tip) # TODO: better PropertyLinkListGlobal or PropertyLinkListChild?
         
-        _tip = 'Link to the children that will be fused with the wall shape'
-        obj.addProperty('App::PropertyLinkListChild', 'Fusions',
-                        'Children', _tip)
-        
-        _tip = 'Link to the structural children members of the wall'
-        obj.addProperty('App::PropertyLinkListChild', 'Components',
-                        'Children', _tip)
-        
-        _tip = 'Link to the windows inserted into the wall'
+        _tip = 'List of wall subcomponent objects.\n\
+                Sub-Components have to be grouped into the wall object.'
+        obj.addProperty('App::PropertyLinkListChild', 'SubComponents',
+                        'Components', _tip)
+
+        _tip = 'List of objects to subtract from the wall shape'
+        obj.addProperty('App::PropertyLinkListGlobal', 'Subtractions',
+                        'Components', _tip)
+
+        _tip = 'List of windows inserted into the wall.\n\
+                Windows have to be grouped into the wall object.'
         obj.addProperty('App::PropertyLinkListChild', 'Windows',
-                        'Children', _tip)
-
-        # WALL CONNECTIONS Properties ---------------------------------------
-        _tip = "Allow automatic compute of first end"
-        obj.addProperty('App::PropertyBool', 'JoinFirstEnd',
-                        'Wall connections', _tip).JoinFirstEnd = True
-
-        _tip = "Name of the object to join wall's first end"
-        obj.addProperty('App::PropertyString', 'JoinFirstEndTo',
-                        'Wall connections', _tip).JoinFirstEndTo = ''
-
-        _tip = "Allow automatic compute of last end"
-        obj.addProperty('App::PropertyBool', 'JoinLastEnd',
-                        'Wall connections', _tip).JoinLastEnd = True
-
-        _tip = "Name of the object to join wall's last end"
-        obj.addProperty('App::PropertyString', 'JoinLastEndTo',
-                        'Wall connections', _tip).JoinLastEndTo = ''
-
-        _tip = "Names of the objects that target current wall"
-        obj.addProperty('App::PropertyStringList', 'IncomingTJoins',
-                        'Wall connections', _tip).IncomingTJoins = []
+                        'Components', _tip)
 
         # GEOMETRY Properties -----------------------------------------------
         _tip = 'Start point of wall core axis'
@@ -149,7 +132,29 @@ class Wall(object):
         obj.addProperty('App::PropertyLength', 'Height',
                         'Geometry', 'Wall height').Height = '2.7 m'
 
-        # WALL ENDS: All the angle properties are meant to be hidden and showed just on user demand
+        # WALL CONNECTIONS Properties ---------------------------------------
+        _tip = "Allow automatic compute of first end"
+        obj.addProperty('App::PropertyBool', 'JoinFirstEnd',# TODO: Transform to AutoJoinFirstEnd
+                        'Wall connections', _tip).JoinFirstEnd = True
+
+        _tip = "Allow automatic compute of last end"
+        obj.addProperty('App::PropertyBool', 'JoinLastEnd',# TODO: Transform to AutoJoinLastEnd
+                        'Wall connections', _tip).JoinLastEnd = True
+
+        _tip = "Names of the objects that target current wall"
+        obj.addProperty('App::PropertyStringList', 'IncomingTJoins',
+                        'Wall connections', _tip).IncomingTJoins = []
+
+        _tip = "Name of the object to join wall's first end"
+        obj.addProperty('App::PropertyString', 'JoinFirstEndTo',
+                        'Wall connections', _tip).JoinFirstEndTo = ''
+
+        _tip = "Name of the object to join wall's last end"
+        obj.addProperty('App::PropertyString', 'JoinLastEndTo',
+                        'Wall connections', _tip).JoinLastEndTo = ''
+
+        # WALL ENDS Properties ---------------------------------------------- 
+        # All the angle properties are meant to be hidden and showed just on user demand
         _tip = 'Angular cut of first wall end inner layer (to be implemented)'
         obj.addProperty('App::PropertyAngle', 'FirstInnerLayerAngle',
                         'Wall Ends', _tip, 4).FirstInnerLayerAngle = '90 deg'
@@ -193,7 +198,7 @@ class Wall(object):
         self.set_properties(obj)
 
 
-    def execute(self,obj):
+    def execute(self, obj):
         """ Compute the wall shape as boolean operations among the children objects """
         # print("running " + obj.Name + " execute() method\n")
         # get wall base shape from BaseGeometry object
@@ -203,110 +208,7 @@ class Wall(object):
             if hasattr(obj.BaseGeometry, "Shape"):
                 wall_shape = obj.BaseGeometry.Shape
         else:
-            """
-            The wall default base shape is defined as 2 Part Wedge solids, fused together;
-            splays are controlled by obj.FirstCoreOuterAngle, obj.LastCoreOuterAngle
-                                    obj.FirstCoreInnerAngle, obj.LastCoreInnerAngle
-
-            TODO: For further development maybe we can add another 2 Part Wedges
-                to simulate inner layer and outer layer (ATM only core is represented)
-
-                    <--> first_splay                <--> last_splay
-                    ---------------------------------  outer surface
-                    \         Part Wedge 1          \ 
-                    \           core axis           \ 
-            first_point o-------------------------------o  last_point
-                        \                               \ 
-                        \       Part Wedge 2            \ 
-                        ---------------------------------  inner surface
-                        <--> first_splay                <--> last_splay
-            """
-            
-            if not hasattr(obj,"FirstPoint") or not hasattr(obj,"LastPoint") \
-                or not hasattr(obj,"ConstrainToXAxis") or not hasattr(obj,"Width") \
-                or not hasattr(obj,"Height"):
-                return
-
-            length = obj.Length
-
-            if obj.FirstPoint.x == obj.LastPoint.x or length < Draft.tolerance():
-                return
-
-            # swap first point and last point to have them in the right order
-            # TODO: Swap the points phisically and change end constraints!
-            if obj.FirstPoint.x < obj.LastPoint.x:
-                first_point = obj.FirstPoint
-            elif obj.FirstPoint.x > obj.LastPoint.x:
-                first_point = obj.LastPoint
-            
-            if obj.ConstrainToXAxis:
-                first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreInnerAngle))
-                last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreInnerAngle))
-                
-                Xmin = 0
-                Ymin = 0
-                Zmin = 0
-                Z2min = 0
-                X2min = first_splay
-                Xmax = length
-                Ymax = obj.Width/2
-                Zmax = obj.Height
-                Z2max = obj.Height
-                X2max = length - last_splay
-
-                # checking conditions that will break Part.makeWedge()
-                if first_splay >= length:
-                    print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
-                    X2min = 0
-                if last_splay >= length:
-                    print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
-                    X2max = length
-                if ( first_splay + last_splay ) >= length:
-                    print("Wall is too short compared to the splays: removing angles of inner core layer\n")
-                    X2min = 0
-                    X2max = length
-
-                inner_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
-                                                Xmax, Ymax, Zmax, Z2max, X2max)#, obj.FirstPoint, obj.LastPoint )
-                inner_core.Placement.Base.x = first_point.x
-
-                first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreOuterAngle))
-                last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreOuterAngle))          
-                
-                Xmin = first_splay
-                Ymin = 0
-                Zmin = 0
-                Z2min = 0
-                X2min = 0
-                Xmax = length - last_splay
-                Ymax = obj.Width/2
-                Zmax = obj.Height
-                Z2max = obj.Height
-                X2max = length
-
-                # checking conditions that will break Part.makeWedge()
-                if first_splay >= length:
-                    print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
-                    Xmin = 0
-                if last_splay >= length:
-                    print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
-                    Xmax = length
-                if ( first_splay + last_splay ) >= length:
-                    print("Wall is too short compared to the splays: removing angles of outer core layer\n")
-                    Xmin = 0
-                    Xmax = length
-
-                outer_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
-                                                Xmax, Ymax, Zmax, Z2max, X2max)#, obj.Start, obj.End)
-                        
-                outer_core.Placement.Base = App.Vector(first_point.x, - obj.Width/2)
-
-            else:
-                print("ConstrainToXAxis is set to false: Not implemented yet")
-            
-            core_layer = inner_core.fuse(outer_core)
-            
-            wall_shape = core_layer
+            wall_shape = self.get_default_shape(obj)
         
         if wall_shape is None:
             return
@@ -319,15 +221,23 @@ class Wall(object):
         WallVoid object or (TODO: a Part::PropertyPartShape)
         """
 
-        # subtract openings
-        if hasattr(obj, "Openings"):
-            if obj.Openings is not None and obj.Openings != []:
-                for o in obj.Openings:
-                    if hasattr(obj, "Shape"):
+        # subtract Subtractions
+        if hasattr(obj, "Subtractions"):
+            if obj.Subtractions is not None and obj.Subtractions != []:
+                for o in obj.Subtractions:
+                    if o in obj.Group and hasattr(o, "Shape"):
+                        # subtraction object is inside the wall
                         relative_placement = o.Placement
                         if hasattr(o, "InList"):
                             if o.InList[0] != obj:
                                 relative_placement = o.InList[0].Placement.multiply(o.Placement)
+                        cut_shape = o.Shape.copy()
+                        cut_shape.Placement = relative_placement
+                        wall_shape = wall_shape.cut(cut_shape)
+                    elif hasattr(o, "Shape"):
+                        # subtraction object is not inside the wall
+                        global_placement = o.getGlobalPlacement()
+                        relative_placement = obj.getGlobalPlacement().inverse().multiply(global_placement)
                         cut_shape = o.Shape.copy()
                         cut_shape.Placement = relative_placement
                         wall_shape = wall_shape.cut(cut_shape)
@@ -404,6 +314,113 @@ class Wall(object):
             # so the onChanged method can compare with the new configuration
             # and understand if objects were added or removed
             self.oldGroup = obj.Group
+    
+
+    def get_default_shape(self, obj):
+        """
+        The wall default base shape is defined as 2 Part Wedge solids, fused together;
+        splays are controlled by obj.FirstCoreOuterAngle, obj.LastCoreOuterAngle
+                                obj.FirstCoreInnerAngle, obj.LastCoreInnerAngle
+
+        TODO: For further development maybe we can add another 2 Part Wedges
+            to simulate inner layer and outer layer (ATM only core is represented)
+
+                <--> first_splay                <--> last_splay
+                ---------------------------------  outer surface
+                \         Part Wedge 1          \ 
+                \           core axis           \ 
+        first_point o-------------------------------o  last_point
+                    \                               \ 
+                    \       Part Wedge 2            \ 
+                    ---------------------------------  inner surface
+                    <--> first_splay                <--> last_splay
+        """
+        
+        if not hasattr(obj,"FirstPoint") or not hasattr(obj,"LastPoint") \
+            or not hasattr(obj,"ConstrainToXAxis") or not hasattr(obj,"Width") \
+            or not hasattr(obj,"Height"):
+            return
+
+        length = obj.Length
+
+        if obj.FirstPoint.x == obj.LastPoint.x or length < Draft.tolerance():
+            return
+
+        # swap first point and last point to have them in the right order
+        # TODO: Swap the points phisically and change end constraints!
+        if obj.FirstPoint.x < obj.LastPoint.x:
+            first_point = obj.FirstPoint
+        elif obj.FirstPoint.x > obj.LastPoint.x:
+            first_point = obj.LastPoint
+        
+        if obj.ConstrainToXAxis:
+            first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreInnerAngle))
+            last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreInnerAngle))
+            
+            Xmin = 0
+            Ymin = 0
+            Zmin = 0
+            Z2min = 0
+            X2min = first_splay
+            Xmax = length
+            Ymax = obj.Width/2
+            Zmax = obj.Height
+            Z2max = obj.Height
+            X2max = length - last_splay
+
+            # checking conditions that will break Part.makeWedge()
+            if first_splay >= length:
+                print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
+                X2min = 0
+            if last_splay >= length:
+                print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+                X2max = length
+            if ( first_splay + last_splay ) >= length:
+                print("Wall is too short compared to the splays: removing angles of inner core layer\n")
+                X2min = 0
+                X2max = length
+
+            inner_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                            Xmax, Ymax, Zmax, Z2max, X2max)#, obj.FirstPoint, obj.LastPoint )
+            inner_core.Placement.Base.x = first_point.x
+
+            first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreOuterAngle))
+            last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreOuterAngle))          
+            
+            Xmin = first_splay
+            Ymin = 0
+            Zmin = 0
+            Z2min = 0
+            X2min = 0
+            Xmax = length - last_splay
+            Ymax = obj.Width/2
+            Zmax = obj.Height
+            Z2max = obj.Height
+            X2max = length
+
+            # checking conditions that will break Part.makeWedge()
+            if first_splay >= length:
+                print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
+                Xmin = 0
+            if last_splay >= length:
+                print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+                Xmax = length
+            if ( first_splay + last_splay ) >= length:
+                print("Wall is too short compared to the splays: removing angles of outer core layer\n")
+                Xmin = 0
+                Xmax = length
+
+            outer_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                            Xmax, Ymax, Zmax, Z2max, X2max)#, obj.Start, obj.End)
+                    
+            outer_core.Placement.Base = App.Vector(first_point.x, - obj.Width/2)
+
+        else:
+            print("ConstrainToXAxis is set to false: Not implemented yet")
+        
+        core_layer = inner_core.fuse(outer_core)
+        
+        return core_layer
 
 
     def onChanged(self, obj, prop):
@@ -417,7 +434,9 @@ class Wall(object):
                     t = App.ActiveDocument.getObject(t_name)
                     t.Proxy.recompute_ends(t, 0)
                     t.Proxy.recompute_ends(t, 1)
-                    
+                # Update global placement Property (not working so good)
+                # obj.GlobalPlacement = obj.getGlobalPlacement()
+
         # WALL JOIN ENDS properties
         if (hasattr(obj, "JoinFirstEndTo") and hasattr(obj, "JoinLastEndTo") and
             hasattr(obj, "JoinFirstEnd")and hasattr(obj, "JoinLastEnd")):
@@ -442,7 +461,7 @@ class Wall(object):
 
         # Group property: an object is added or removed from the wall
         if prop == "Group":
-            if hasattr(obj, "Group") and hasattr(obj, "BaseGeometry") and hasattr(obj, "Openings"):
+            if hasattr(obj, "Group") and hasattr(obj, "BaseGeometry") and hasattr(obj, "Subtractions"):
                 if hasattr(self, "oldGroup"):
                     # understand if the object was added or removed
                     added_objs = [x for x in obj.Group if x not in self.oldGroup]
@@ -454,10 +473,10 @@ class Wall(object):
                     if o == obj.BaseGeometry:
                         obj.BaseGeometry = None
 
-                    elif o in obj.Openings:
-                        openings = obj.Openings
+                    elif o in obj.Subtractions:
+                        openings = obj.Subtractions
                         openings.remove(o)
-                        obj.Openings = openings
+                        obj.Subtractions = openings
 
                     elif o in obj.Windows:
                         windows = obj.Windows
@@ -477,9 +496,9 @@ class Wall(object):
                             obj.Windows = windows
                             continue
 
-                    if not o in obj.Openings:
+                    if not o in obj.Subtractions:
                         print("added a new object to the wall")
-                        self.add_opening(obj, o)
+                        self.add_subtraction(obj, o)
 
 
     # Wall joinings methods +++++++++++++++++++++++++++++++++++++++++++++++++
@@ -762,11 +781,11 @@ class Wall(object):
         # TODO: not implemented yet
 
 
-    def add_opening(self, obj, child):
+    def add_subtraction(self, obj, child):
         """
         This method is called when a new object is added to the wall.
         It ask the user if the object has to be treated as an opening.
-        If so, it add the object to the Openings PropertyLinkListChild.
+        If so, it add the object to the Subtractions PropertyLinkListChild.
         """
         msgBox = QtGui.QMessageBox()
         msgBox.setText("Object " + obj.Label + " has been added to the wall.")
@@ -776,9 +795,10 @@ class Wall(object):
         ret = msgBox.exec_()
 
         if ret == QtGui.QMessageBox.Yes:
-            openings = obj.Openings
+            openings = obj.Subtractions
             openings.append(child)
-            obj.Openings = openings
+            obj.Subtractions = openings
+            child.Visibility = False
         elif ret == QtGui.QMessageBox.No:
             return
 
