@@ -346,12 +346,12 @@ void StdCmdFreezeViews::onSaveViews()
 
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QString viewPos;
-            if ( !data.isEmpty() ) {
+            if (!data.isEmpty()) {
                 QStringList lines = data.split(QString::fromLatin1("\n"));
-                if ( lines.size() > 1 ) {
+                if (lines.size() > 1) {
                     lines.pop_front();
-                    viewPos = lines.join(QString::fromLatin1(" "));
                 }
+                viewPos = lines.join(QString::fromLatin1(" "));
             }
 
             str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>" << endl;
