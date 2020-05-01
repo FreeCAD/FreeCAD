@@ -150,6 +150,7 @@ from draftguitools.gui_base_original import Creator
 
 from draftguitools.gui_lines import Line
 from draftguitools.gui_lines import Wire
+from draftguitools.gui_fillets import Fillet
 from draftguitools.gui_splines import BSpline
 from draftguitools.gui_beziers import BezCurve
 from draftguitools.gui_beziers import CubicBezCurve
