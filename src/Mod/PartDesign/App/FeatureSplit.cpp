@@ -338,3 +338,7 @@ App::DocumentObject *Split::getSubObject(const char *subname,
     return ret;
 }
 
+int Split::isElementVisible(const char *) const
+{
+    return 1;
+}
