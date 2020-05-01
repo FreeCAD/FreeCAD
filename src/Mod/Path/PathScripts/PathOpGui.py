@@ -204,6 +204,12 @@ class TaskPanelPage(object):
         self.setIcon(None)
         self.features = features
         self.isdirty = False
+        self.parent = None
+
+    def setParent(self, parent):
+        '''setParent() ... used to transfer parent object link to child class.
+        Do not overwrite.'''
+        self.parent = parent
 
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
@@ -882,6 +888,7 @@ class TaskPanel(object):
         for page in self.featurePages:
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
+            page.setParent(self)
 
         taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
 
