@@ -205,6 +205,7 @@ class TaskPanelPage(object):
         self.features = features
         self.isdirty = False
         self.parent = None
+        self.panelTitle = 'Operation'
 
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
@@ -393,10 +394,26 @@ class TaskPanelPage(object):
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
+    def updatePanelVisibility(self, panelTitle, obj):
+        if hasattr(self, 'parent'):
+            parent = getattr(self, 'parent')
+            if parent and hasattr(parent, 'featurePages'):
+                for page in parent.featurePages:
+                    if hasattr(page, 'panelTitle'):
+                        if page.panelTitle == panelTitle and hasattr(page, 'updateVisibility'):
+                            page.updateVisibility(obj)
+                            break
+
+
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
+
+    def __init__(self, obj, features):
+        super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
+
+        self.panelTitle = 'Base Geometry'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
@@ -476,7 +493,6 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 return False
         return True
 
-
     def addBaseGeometry(self, selection):
         PathLog.track(selection)
         if self.selectionSupportedAsBaseGeometry(selection, False):
@@ -547,6 +563,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
         # members initialized later
         self.editRow = None
+        self.panelTitle = 'Base Location'
 
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
@@ -662,6 +679,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         # members initialized later
         self.clearanceHeight = None
         self.safeHeight = None
+        self.panelTitle = 'Heights'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -703,6 +721,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finalDepth = None
         self.finishDepth = None
         self.stepDown = None
+        self.panelTitle = 'Depths'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
