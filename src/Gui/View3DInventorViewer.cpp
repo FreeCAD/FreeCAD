@@ -1248,6 +1248,19 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
         return;
 
     overrideMode = mode;
+
+    if (mode == "No Shading") {
+        this->shading = false;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
+    else if (mode == "Hidden Line") {
+        this->shading = true;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
+    }
+    else {
+        this->shading = true;
+        this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+    }
 }
 
 void View3DInventorViewer::setViewportCB(void*, SoAction* action)
