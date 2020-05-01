@@ -357,12 +357,12 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Skaičiuoklė nepalaiko kelių langelių pasirinkimo įdedant.
+Prašome pasirinkti tik vieną langelį.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopijavimas ir įdėjimas nepavyko</translation>
     </message>
   </context>
   <context>
@@ -449,6 +449,18 @@ Please select one cell only.</translation>
     <message>
       <source>&amp;Contents</source>
       <translation>&amp;Turinys</translation>
+    </message>
+    <message>
+      <source>&amp;Alias</source>
+      <translation type="unfinished">&amp;Alias</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </translation>
     </message>
   </context>
   <context>

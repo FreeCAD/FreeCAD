@@ -357,12 +357,12 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="26"/>
       <source>Mesh export settings</source>
-      <translation>Sarea esportatzeko ezarpenak</translation>
+      <translation>Amarauna esportatzeko ezarpenak</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation>Sarearen desbideratze maximoa:</translation>
+      <translation>Amaraunaren desbideratze maximoa:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
@@ -472,7 +472,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>POV-Ray exekutagarriaren bidea, %1 aplikaziotik errendatu nahi baduzu</translation>
     </message>
   </context>
   <context>

@@ -52,6 +52,7 @@ SET(Arch_SRCS
     OfflineRenderingUtils.py
     exportIFC.py
     ArchTruss.py
+    ArchCurtainWall.py
 )
 
 SET(Dice3DS_SRCS

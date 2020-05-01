@@ -37,7 +37,7 @@ namespace Mesh
 /*! The MeshTexture class.
   This algorithm is useful to update the material after a mesh has been modified
   by removing points or facets. If the coordinates of points have changed or if
-  new points have been added then a pre-defined color will be set.
+  new points have been added then a predefined color will be set.
   @author Werner Mayer
  */
 class MeshExport MeshTexture

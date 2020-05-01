@@ -357,12 +357,11 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>El full de càlcul no admet la selecció de rang en apegar. Seleccioneu només una cel·la.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>S'ha produït un error en copiar i apegar</translation>
     </message>
   </context>
   <context>
@@ -449,6 +448,18 @@ Please select one cell only.</translation>
     <message>
       <source>&amp;Contents</source>
       <translation>&amp;Contingut</translation>
+    </message>
+    <message>
+      <source>&amp;Alias</source>
+      <translation type="unfinished">&amp;Alias</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </translation>
     </message>
   </context>
   <context>

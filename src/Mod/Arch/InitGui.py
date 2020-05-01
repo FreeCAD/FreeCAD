@@ -58,7 +58,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
 
         # Set up command lists
         self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",
-                          "Arch_BuildingPart",
+                          "Arch_CurtainWall","Arch_BuildingPart",
                           "Arch_Project", "Arch_Site", "Arch_Building",
                           "Arch_Floor", "Arch_Reference",
                           "Arch_Window", "Arch_Roof", "Arch_AxisTools",

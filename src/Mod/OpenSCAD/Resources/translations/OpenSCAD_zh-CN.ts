@@ -11,17 +11,17 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="26"/>
       <source>General OpenSCAD Settings</source>
-      <translation>OpenSCAD常规设置</translation>
+      <translation>OpenSCAD 常规设置</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD执行程序</translation>
+      <translation>OpenSCAD 执行程序</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="65"/>
       <source>OpenSCAD import</source>
-      <translation>OpenSCAD导入</translation>
+      <translation>OpenSCAD 导入</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="93"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>如果fn大于多边形、 棱形或锥形面之最大数目，物件将认为是一圆形。设定0表示没有限制。</translation>
+      <translation>如果 fn 大于多边形、 棱形或锥形面之最大数目，物件将认为是一圆形。设定 0 表示没有限制</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="252"/>
       <source>Add OpenSCAD Element</source>
-      <translation>添加OpenSCAD元素</translation>
+      <translation>添加 OpenSCAD 元素</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="325"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="596"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>错误：所有形状必须是2D 或两者必须都是3D</translation>
+      <translation>错误：所有形状必须是 2D 或两者必须都是 3D</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>添加OpenSCAD元素...</translation>
+      <translation>添加 OpenSCAD 元素...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>通过输入OpenSCAD代码和执行OpenSCAD程序添加OpenSCAD元素</translation>
+      <translation>通过输入 OpenSCAD 代码和执行 OpenSCAD 程序添加 OpenSCAD 元素</translation>
     </message>
   </context>
   <context>
@@ -356,7 +356,7 @@
     <message>
       <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCADTools</source>
-      <translation>OpenSCAD工具</translation>
+      <translation>OpenSCAD 工具</translation>
     </message>
   </context>
 </TS>

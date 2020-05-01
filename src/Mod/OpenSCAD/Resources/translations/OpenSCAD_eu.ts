@@ -86,7 +86,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
-      <translation>Sarearen alternatiba</translation>
+      <translation>Amaraunaren ordezkoa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="383"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>as Mesh</source>
-      <translation>sare gisa</translation>
+      <translation>amaraun gisa</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="252"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="326"/>
       <source>Mesh Boolean</source>
-      <translation>Sare boolearra</translation>
+      <translation>Amaraun boolearra</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="596"/>
@@ -283,12 +283,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="379"/>
       <source>Mesh Boolean...</source>
-      <translation>Sare boolearra...</translation>
+      <translation>Amaraun boolearra...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="380"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Esportatu objektuak sare gisa eta erabili OpenSCAD eragiketa boolearra egiteko</translation>
+      <translation>Esportatu objektuak amaraun gisa eta erabili OpenSCAD eragiketa boolearra egiteko</translation>
     </message>
   </context>
   <context>

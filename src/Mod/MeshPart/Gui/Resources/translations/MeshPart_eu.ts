@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation>Sare-pieza</translation>
+      <translation>Amaraun-pieza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
-      <translation>Sarea</translation>
+      <translation>Amarauna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
       <source>Curve on mesh...</source>
-      <translation>Kurba sarean...</translation>
+      <translation>Kurba amaraunean...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Curve on mesh</source>
-      <translation>Kurba sarean</translation>
+      <translation>Kurba amaraunean</translation>
     </message>
   </context>
   <context>
@@ -42,12 +42,12 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation>Sarea</translation>
+      <translation>Amarauna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Create mesh from shape...</source>
-      <translation>Sortu sarea formatik...</translation>
+      <translation>Sortu amarauna formatik...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -60,12 +60,12 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation>Sarea</translation>
+      <translation>Amarauna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Create section from mesh and plane</source>
-      <translation>Sortu sekzioa saretik eta planotik</translation>
+      <translation>Sortu sekzioa amaraunetik eta planotik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -78,18 +78,18 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation>Sarea</translation>
+      <translation>Amarauna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim mesh with a plane</source>
-      <translation>Muxarratu sarea plano batekin</translation>
+      <translation>Muxarratu amarauna plano batekin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Sare bat muxarratzen du plano batekin</translation>
+      <translation>Amaraun bat muxarratzen du plano batekin</translation>
     </message>
   </context>
   <context>
@@ -152,12 +152,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Konektatu ertzak distantzia hau baino txikiagoa bada:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Hutsegitea</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh picked</source>
-      <translation>Sare okerra aukeratu da</translation>
+      <translation>Amaraun okerra aukeratu da</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
@@ -198,7 +198,7 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on mesh</source>
-      <translation>Kurba sarean</translation>
+      <translation>Kurba amaraunean</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="20"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
-      <translation>Sarearekiko tolerantzia</translation>
+      <translation>Amaraunarekiko tolerantzia</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="104"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing options</source>
-      <translation>Sare-aukerak</translation>
+      <translation>Amaraun-aukerak</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
@@ -281,12 +281,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Erabili amaraun-sortzaile estandarra</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Amaraun-sekzio baten makurdura lineal maimoa objektuaren gainazaletik</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,14 +296,15 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Amaraun-sekzio baten makurdura angeluar maximoa hurrengo sekziotik</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Amaraun-segmentu baten desbideratze lineal maximoa izango da zehaztutako
+gainazal-desbideratzea bidez uneko amaraun-segmentuaren (ertzaren) luzera.
+</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,21 +314,21 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Amaraunak objektuaren aurpegi-koloreak hartuko ditu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Aplikatu aurpegi-koloreak sareari</translation>
+      <translation>Aplikatu aurpegi-koloreak amaraunari</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Amaraun-segmentuak objektu-aurpegien kolorearen arabera taldekatuko dira.
+Talde horiek eginbide hau onartzen duten irteera-formatuetara esportatuko dira
+(adibidez, OBJ formatua).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -337,7 +338,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Erabili Mefisto amaraun-sortzailea</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,18 +349,18 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Zenbaki hau txikiagoa bada, amarauna meheagoa bihurtzen da.
+Baliorik txikiena 0 da.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Zenbatetsi</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Erabili Netgen amaraun-sortzailea</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -399,14 +400,14 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading:</source>
-      <translation>Sare-tamainaren graduazioa:</translation>
+      <translation>Amaraun-tamainaren graduazioa:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Parametro hau txikiagoa bada, amarauna meheagoa bihurtzen da.
+0.1-1 barrutiko balio bat.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -418,8 +419,8 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Parametro hau handiagoa bada, amarauna meheagoa bihurtzen da.
+0.2-10 barrutiko balio bat.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -429,7 +430,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Gainazal-formaren optimizazioa egingo den ala ez</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,7 +440,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Bigarren mailako elementuak sortuko diren ala ez</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -449,22 +450,22 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Amaraunak ahal bada lau aldeko aurpegiak erabilita antolatuko diren ala ez</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
       <source>Quad dominated</source>
-      <translation>Laukien mendekoa</translation>
+      <translation>Karratuen mendekoa</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Utzi panela irekita</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>
@@ -475,7 +476,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="247"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Hasteko, hautatu forma bat sarea sortzeko.</translation>
+      <translation>Hasteko, hautatu forma bat amarauna sortzeko.</translation>
     </message>
   </context>
   <context>
@@ -488,7 +489,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation>Hautatu sarea ebakitzeko erabiliko duzun planoa.</translation>
+      <translation>Hautatu amarauna ebakitzeko erabiliko den planoa.</translation>
     </message>
   </context>
   <context>
@@ -501,7 +502,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Hautatu sarea muxarratzeko erabiliko duzun planoa.</translation>
+      <translation>Hautatu amarauna muxarratzeko erabiliko den planoa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -516,12 +517,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Azpian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Gainean</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
@@ -534,7 +535,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Sare-pieza</translation>
+      <translation>Amaraun-pieza</translation>
     </message>
   </context>
 </TS>
