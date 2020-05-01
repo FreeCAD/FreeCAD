@@ -268,8 +268,20 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
             action->setStatusTip(statusTip);
         }
 
-        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-        hGrp->SetASCII(name.constData(), ui->accelLineEditShortcut->text().toUtf8());
+        // The shortcuts for macros are store in a different location,
+        // also override the command's shortcut directly
+        if (dynamic_cast<MacroCommand*>(cmd)) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Macro/Macros");
+            if (hGrp->HasGroup(cmd->getName())) {
+                hGrp = hGrp->GetGroup(cmd->getName());
+                hGrp->SetASCII("Accel", ui->accelLineEditShortcut->text().toUtf8());
+                cmd->setAccel(ui->accelLineEditShortcut->text().toUtf8());
+            }
+        }
+        else {
+            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+            hGrp->SetASCII(name.constData(), ui->accelLineEditShortcut->text().toUtf8());
+        }
         ui->buttonAssign->setEnabled(false);
         ui->buttonReset->setEnabled(true);
     }
