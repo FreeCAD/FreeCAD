@@ -153,6 +153,9 @@ class ViewProviderWall(object):
         Activated when object is deleted
         """
         # ask if the user is sure and wants to delete contained objects
+        if not vobj.Object.Group:
+            return True
+            
         msgBox = QtGui.QMessageBox()
         msgBox.setText("Deleting wall object " + vobj.Object.Label + ".")
         msgBox.setInformativeText("Do you want to delete also contained objects?")
