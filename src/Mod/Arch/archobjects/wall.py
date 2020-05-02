@@ -191,10 +191,7 @@ class Wall(object):
     def attach(self,obj):
 
         # print("running" + obj.Name + "attach() method\n")
-        obj.addExtension('App::OriginGroupExtensionPython', None)
-        # if we do not add the origin object, the wall works ok, but
-        # an error "origin not found" is triggered for every movement of the wall
-        obj.Origin = App.ActiveDocument.addObject('App::Origin','Origin')
+        obj.addExtension('App::GeoFeatureGroupExtensionPython', None)
         self.set_properties(obj)
 
 

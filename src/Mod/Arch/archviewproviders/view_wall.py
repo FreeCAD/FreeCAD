@@ -47,7 +47,7 @@ class ViewProviderWall(object):
 
 
     def attach(self, vobj):
-        vobj.addExtension('Gui::ViewProviderOriginGroupExtensionPython', None)
+        vobj.addExtension('Gui::ViewProviderGeoFeatureGroupExtensionPython', None)
         self.ViewObject = vobj
         self.setupShapeGroup()
 
