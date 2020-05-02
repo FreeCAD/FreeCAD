@@ -56,7 +56,7 @@ class ViewProviderWall(object):
         str
             Path to the appropriate icon .svg file.
         """ 
-        return ":/icons/Arch_Wall_Tree.svg"
+        return ":/icons/Arch_Wall_Tree_next.svg"
 
         
     def attach(self, vobj):
