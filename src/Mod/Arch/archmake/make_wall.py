@@ -81,7 +81,7 @@ def make_wall_from_points(p1, p2, join_first=None, join_last=None,
     length = p1.distanceToPoint(p2)
     angle = DraftVecUtils.angle(p2-p1,App.Vector(1,0,0))
     obj.Placement.Rotation.Angle = -angle
-    obj.LastPoint = App.Vector(length,0,0)
+    obj.AxisLastPointX = length
     
     # Apply end joining if present
     if join_first != join_last:

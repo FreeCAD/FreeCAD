@@ -96,8 +96,8 @@ class Wall(object):
         obj.addProperty('App::PropertyLinkListGlobal', 'Fusions',
                         'Components', _tip) # TODO: better PropertyLinkListGlobal or PropertyLinkListChild?
         
-        _tip = 'List of wall subcomponent objects.\n\
-                Sub-Components have to be grouped into the wall object.'
+        _tip = 'List of wall subcomponent objects.\n'\
+               'Sub-Components have to be grouped into the wall object.'
         obj.addProperty('App::PropertyLinkListChild', 'SubComponents',
                         'Components', _tip)
 
@@ -105,23 +105,21 @@ class Wall(object):
         obj.addProperty('App::PropertyLinkListGlobal', 'Subtractions',
                         'Components', _tip)
 
-        _tip = 'List of windows inserted into the wall.\n\
-                Windows have to be grouped into the wall object.'
+        _tip = 'List of windows inserted into the wall.\n'\
+               'Windows have to be grouped into the wall object.'
         obj.addProperty('App::PropertyLinkListChild', 'Windows',
                         'Components', _tip)
 
         # GEOMETRY Properties -----------------------------------------------
-        _tip = 'Start point of wall core axis'
-        obj.addProperty('App::PropertyVector', 'FirstPoint', #change to BaselineStart
-                        'Geometry', _tip).FirstPoint = App.Vector(0,0,0)
+        _tip = 'Define the X coorinate of the start point of the core axis.\n'\
+               'Value in millimeters'
+        obj.addProperty('App::PropertyFloat', 'AxisFirstPointX', #change to BaselineStart
+                        'Geometry', _tip).AxisFirstPointX = 0.0
 
-        _tip = 'End point of wall core axis'
-        obj.addProperty('App::PropertyVector', 'LastPoint', #change to BaselineEnd
-                        'Geometry', _tip).LastPoint = App.Vector(4000,0,0)
-
-        _tip = 'Constrain to wall X axis'
-        obj.addProperty('App::PropertyBool', 'ConstrainToXAxis', #change to BaselineConstrain
-                        'Geometry', _tip).ConstrainToXAxis = True
+        _tip = 'Define the X coorinate of the end point of the core axis.\n'\
+               'Value in millimeters'
+        obj.addProperty('App::PropertyFloat', 'AxisLastPointX', #change to BaselineEnd
+                        'Geometry', _tip).AxisLastPointX = 4000.0
 
         obj.addProperty('App::PropertyLength', 'Length',
                         'Geometry', 'Wall length',1).Length = '4 m'
@@ -333,90 +331,88 @@ class Wall(object):
                     <--> first_splay                <--> last_splay
         """
         
-        if not hasattr(obj,"FirstPoint") or not hasattr(obj,"LastPoint") \
-            or not hasattr(obj,"ConstrainToXAxis") or not hasattr(obj,"Width") \
-            or not hasattr(obj,"Height"):
+        if not hasattr(obj,"AxisFirstPointX") or not hasattr(obj,"AxisLastPointX") \
+            or not hasattr(obj,"Width") or not hasattr(obj,"Height"):
             return
 
         length = obj.Length
 
-        if obj.FirstPoint.x == obj.LastPoint.x or length < Draft.tolerance():
+        if obj.AxisFirstPointX == obj.AxisLastPointX or length < Draft.tolerance():
             return
 
         # swap first point and last point to have them in the right order
         # TODO: Swap the points phisically and change end constraints!
-        if obj.FirstPoint.x < obj.LastPoint.x:
-            first_point = obj.FirstPoint
-        elif obj.FirstPoint.x > obj.LastPoint.x:
-            first_point = obj.LastPoint
+        if obj.AxisFirstPointX < obj.AxisLastPointX:
+            first_point = obj.AxisFirstPointX
+        elif obj.AxisFirstPointX > obj.AxisLastPointX:
+            first_point = obj.AxisLastPointX
         
-        if obj.ConstrainToXAxis:
-            first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreInnerAngle))
-            last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreInnerAngle))
-            
-            Xmin = 0
-            Ymin = 0
-            Zmin = 0
-            Z2min = 0
-            X2min = first_splay
-            Xmax = length
-            Ymax = obj.Width/2
-            Zmax = obj.Height
-            Z2max = obj.Height
-            X2max = length - last_splay
+        first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreInnerAngle))
+        last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreInnerAngle))
+        
+        Xmin = 0
+        Ymin = 0
+        Zmin = 0
+        Z2min = 0
+        X2min = first_splay
+        Xmax = length
+        Ymax = obj.Width/2
+        Zmax = obj.Height
+        Z2max = obj.Height
+        X2max = length - last_splay
 
-            # checking conditions that will break Part.makeWedge()
-            if first_splay >= length:
-                print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
-                X2min = 0
-            if last_splay >= length:
-                print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
-                X2max = length
-            if ( first_splay + last_splay ) >= length:
-                print("Wall is too short compared to the splays: removing angles of inner core layer\n")
-                X2min = 0
-                X2max = length
-
-            inner_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
-                                            Xmax, Ymax, Zmax, Z2max, X2max)#, obj.FirstPoint, obj.LastPoint )
-            inner_core.Placement.Base.x = first_point.x
-
-            first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreOuterAngle))
-            last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreOuterAngle))          
-            
-            Xmin = first_splay
-            Ymin = 0
-            Zmin = 0
-            Z2min = 0
+        # checking conditions that will break Part.makeWedge()
+        if first_splay >= length:
+            print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
             X2min = 0
-            Xmax = length - last_splay
-            Ymax = obj.Width/2
-            Zmax = obj.Height
-            Z2max = obj.Height
+        if last_splay >= length:
+            print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+            X2max = length
+        if ( first_splay + last_splay ) >= length:
+            print("Wall is too short compared to the splays: removing angles of inner core layer\n")
+            X2min = 0
             X2max = length
 
-            # checking conditions that will break Part.makeWedge()
-            if first_splay >= length:
-                print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
-                Xmin = 0
-            if last_splay >= length:
-                print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
-                Xmax = length
-            if ( first_splay + last_splay ) >= length:
-                print("Wall is too short compared to the splays: removing angles of outer core layer\n")
-                Xmin = 0
-                Xmax = length
+        inner_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                        Xmax, Ymax, Zmax, Z2max, X2max)#, obj.AxisFirstPointX, obj.AxisLastPointX )
+        inner_core.Placement.Base.x = first_point
 
-            outer_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
-                                            Xmax, Ymax, Zmax, Z2max, X2max)#, obj.Start, obj.End)
-                    
-            outer_core.Placement.Base = App.Vector(first_point.x, - obj.Width/2)
+        first_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.FirstCoreOuterAngle))
+        last_splay = obj.Width/2 * math.tan(math.pi/2-math.radians(obj.LastCoreOuterAngle))          
+        
+        Xmin = first_splay
+        Ymin = 0
+        Zmin = 0
+        Z2min = 0
+        X2min = 0
+        Xmax = length - last_splay
+        Ymax = obj.Width/2
+        Zmax = obj.Height
+        Z2max = obj.Height
+        X2max = length
 
-        else:
-            print("ConstrainToXAxis is set to false: Not implemented yet")
+        # checking conditions that will break Part.makeWedge()
+        if first_splay >= length:
+            print("Wall is too short compared to the first splay: removing angles of outer core layer\n")
+            Xmin = 0
+        if last_splay >= length:
+            print("Wall is too short compared to the last splay: removing angles of outer core layer\n")
+            Xmax = length
+        if ( first_splay + last_splay ) >= length:
+            print("Wall is too short compared to the splays: removing angles of outer core layer\n")
+            Xmin = 0
+            Xmax = length
+
+        outer_core = Part.makeWedge( Xmin, Ymin, Zmin, Z2min, X2min,
+                                        Xmax, Ymax, Zmax, Z2max, X2max)#, obj.Start, obj.End)
+                
+        outer_core.Placement.Base = App.Vector(first_point, - obj.Width/2)
         
         core_layer = inner_core.fuse(outer_core)
         
+        # TODO: Add support for multiple wall layers.
+        #       I was thinking to just 3 layers in the representation, cause it's usually enough
+
         return core_layer
 
 
@@ -444,12 +440,12 @@ class Wall(object):
             elif prop == "JoinLastEndTo" and obj.JoinLastEnd:
                 self.recompute_ends(obj, 1)
 
-        if prop == "FirstPoint" or prop == "LastPoint":
-            if hasattr(obj, "FirstPoint") and hasattr(obj, "LastPoint"):
-                #if obj.FirstPoint.x > obj.LastPoint.x:   circular
-                #    obj.FirstPoint, obj.LastPoint = obj.LastPoint, obj.FirstPoint
+        if prop == "AxisFirstPointX" or prop == "AxisLastPointX":
+            if hasattr(obj, "AxisFirstPointX") and hasattr(obj, "AxisLastPointX"):
+                #if obj.AxisFirstPointX.x > obj.AxisLastPointX.x:   circular
+                #    obj.AxisFirstPointX, obj.AxisLastPointX = obj.AxisLastPointX, obj.AxisFirstPointX
                 if hasattr(obj, "Length"):
-                    obj.Length = abs(obj.LastPoint.x - obj.FirstPoint.x)
+                    obj.Length = abs(obj.AxisLastPointX - obj.AxisFirstPointX)
 
         # CHILDREN properties: remember to first assign basegeometry and then add the object to the group
         if prop == "BaseGeometry":
@@ -816,12 +812,16 @@ class Wall(object):
 
     def get_first_point(self, obj):
         """returns a part line representing the core axis of the wall"""
-        p1 = obj.getGlobalPlacement().multVec(obj.FirstPoint)
+        p1 = obj.getGlobalPlacement().multVec(App.Vector(obj.AxisFirstPointX,
+                                                         0,
+                                                         0))
         return p1
 
     def get_last_point(self, obj):
         """returns a part line representing the core axis of the wall"""
-        p2 = obj.getGlobalPlacement().multVec(obj.LastPoint)
+        p2 = obj.getGlobalPlacement().multVec(App.Vector(obj.AxisLastPointX,
+                                                         0,
+                                                         0))
         return p2
 
 
@@ -830,7 +830,7 @@ class Wall(object):
 
     def set_first_point(self, obj, first_point, local=False):
         """returns a part line representing the core axis of the wall"""
-        if first_point != obj.LastPoint:
+        if first_point.x != obj.AxisLastPointX:
             self.set_point(obj, first_point, 0, local)
             return True
         else:
@@ -839,7 +839,7 @@ class Wall(object):
 
     def set_last_point(self, obj, last_point, local=False):
         """returns a part line representing the core axis of the wall"""
-        if last_point != obj.FirstPoint:
+        if last_point.x != obj.AxisFirstPointX:
             self.set_point(obj, last_point, 1, local)
             return True
         else:
@@ -855,9 +855,9 @@ class Wall(object):
 
         # assign the np to the first or end point of the wall
         if point_idx == 0:
-            obj.FirstPoint = np
+            obj.AxisFirstPointX = np.x
         elif point_idx == 1:
-            obj.LastPoint = np
+            obj.AxisLastPointX = np.x
 
 
     # Other methods +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -867,20 +867,8 @@ class Wall(object):
         """
         describe
         """
-        #TODO: verify if it's needed to swap FirstEndJoinTo and LastEndJoinTo
-        #TODO: check what happens if the base geometry is far from origin
-        obj.Placement.Rotation.Angle += math.pi
-        obj.JoinFirstEndTo, obj.JoinLastEndTo = obj.JoinLastEndTo, obj.JoinFirstEndTo
-
-
-        if hasattr(base_geometry, "ViewObject"):
-            # format given object to wall base geometry visual settings
-            if hasattr(base_geometry.ViewObject, "Transparency"):
-                base_geometry.ViewObject.Transparency = 90
-            if hasattr(base_geometry.ViewObject, "DrawStyle"):
-                base_geometry.ViewObject.DrawStyle = "Dashed"
-            if hasattr(base_geometry.ViewObject, "LineWidth"):
-                base_geometry.ViewObject.LineWidth = 1
+        #TODO: To be implemented yet
+        pass
 
 
     def onDocumentRestored(self, obj):
