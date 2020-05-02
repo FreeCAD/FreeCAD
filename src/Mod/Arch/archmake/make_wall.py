@@ -27,12 +27,10 @@
 import FreeCAD as App
 import DraftVecUtils
 from archobjects.wall import Wall 
-from archobjects.wallsegment import WallSegment
 
 if App.GuiUp:
     import FreeCADGui as Gui
     from archviewproviders.view_wall import ViewProviderWall
-    from archviewproviders.view_wallsegment import ViewProviderWallSegment
 
 
 def make_wall_from_base(baseobj):
@@ -73,7 +71,9 @@ def make_wall_from_points(p1, p2, join_first=None, join_last=None,
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    # Add a Wall object to the document
+    # Add a Wall object to the docume
+    # TODO: verify if it's necessary to split this in 2 to have the 'if App.GuiUp:' 
+    # guard for the viewprovider
     obj = App.ActiveDocument.addObject('Part::FeaturePython', 'Wall', Wall(), ViewProviderWall(), True)
     
     # Align the wall to the given point

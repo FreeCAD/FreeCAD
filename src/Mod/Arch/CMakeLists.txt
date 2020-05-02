@@ -71,13 +71,11 @@ SET(Arch_make
 SET(Arch_objects
     archobjects/__init__.py
     archobjects/wall.py
-    archobjects/wallsegment.py
 )
 
 SET(Arch_view_providers
     archviewproviders/__init__.py
     archviewproviders/view_wall.py
-    archviewproviders/view_wallsegment.py
 )
 
 SET(Dice3DS_SRCS
