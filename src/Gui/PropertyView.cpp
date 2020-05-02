@@ -95,10 +95,16 @@ PropertyView::PropertyView(QWidget *parent)
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorView->setAutomaticDocumentUpdate(false);
+    propertyEditorView->header()->resizeSection(0, _GetParam()->GetInt("ViewSectionSize", 150));
+    connect(propertyEditorView->header(), SIGNAL(sectionResized(int,int,int)),
+            this, SLOT(sectionResized(int,int,int)));
     tabs->addTab(propertyEditorView, tr("View"));
 
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorData->setAutomaticDocumentUpdate(true);
+    propertyEditorData->header()->resizeSection(0, _GetParam()->GetInt("DataSectionSize", 150));
+    connect(propertyEditorData->header(), SIGNAL(sectionResized(int,int,int)),
+            this, SLOT(sectionResized(int,int,int)));
     tabs->addTab(propertyEditorData, tr("Data"));
 
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
@@ -179,6 +185,16 @@ void PropertyView::setShowAll(bool enable) {
                 view->onTimer();
         }
     }
+}
+
+void PropertyView::sectionResized(int index, int oldSize, int newSize)
+{
+    (void)oldSize;
+    if(index != 0)
+        return;
+
+    _GetParam()->SetInt(sender() == propertyEditorView->header() ?
+            "ViewSectionSize" : "DataSectionSize", newSize);
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {

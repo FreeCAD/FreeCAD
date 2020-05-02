@@ -72,6 +72,7 @@ public:
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
     void tabChanged(int index);
+    void sectionResized(int index, int oldSize, int newSize);
     void onTimer();
 
 protected:
