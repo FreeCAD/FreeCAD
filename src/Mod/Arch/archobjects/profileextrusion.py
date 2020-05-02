@@ -40,13 +40,11 @@ def make_profile_extrusion(obj, width, height):
     pass
 
 
-class ProfileExtrusion(ArchComponent.Component):
+class ProfileExtrusion:
 
     "The Profile Extrusion Arch object"
 
     def __init__(self, obj):
-
-        ArchComponent.Component.__init__(self, obj)
 
         self.setProperties(obj)
 
@@ -61,8 +59,6 @@ class ProfileExtrusion(ArchComponent.Component):
         if not "Width" in lp:
             obj.addProperty("App::PropertyLength","Width","Geometry",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
         
-        # TODO: Add an App::PropertyIntegerList to manage multiple layer extrusion
-
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Geometry",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
 
@@ -78,58 +74,38 @@ class ProfileExtrusion(ArchComponent.Component):
 
         if not "Area" in lp:
             obj.addProperty("App::PropertyArea","Area","Geometry",QT_TRANSLATE_NOOP("App::Property","The area of this wall as a simple Height * Length calculation"))
-            obj.setEditorMode("Area",1)
+            obj.setEditorMode("Area", 1)
 
         # Segment individual properties
         if not "OverrideWidth" in lp: # To be combined into Width when PropertyLengthList is available
-            obj.addProperty("App::PropertyFloatList","OverrideWidth","Segment individual properties",QT_TRANSLATE_NOOP("App::Property","This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)"))			# see DraftGeomUtils.offsetwire()
+            _tip = "Override Width attribute to set width for each segment of the extrusion.\n" \
+                   "Ignored if Base object provides Widths information, with getWidths() method.\n"\
+                   "(The 1st value override 'Width' attribute for 1st segment of wall;\n" \
+                   "if a value is zero, 1st value of 'OverrideWidth' will be followed)"
+            obj.addProperty("App::PropertyFloatList","OverrideWidth",
+                            "Segment individual properties",
+                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            # see DraftGeomUtils.offsetwire()
 
         if not "OverrideAlign" in lp:
-            obj.addProperty("App::PropertyStringList","OverrideAlign","Segment individual properties",QT_TRANSLATE_NOOP("App::Property","This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)"))			# see DraftGeomUtils.offsetwire()
-
-        # Block subdivision
-        if not "MakeBlocks" in lp:
-            obj.addProperty("App::PropertyBool","MakeBlocks","Blocks",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
-        
-        if not "BlockLength" in lp:
-            obj.addProperty("App::PropertyLength","BlockLength","Blocks",QT_TRANSLATE_NOOP("App::Property","The length of each block"))
-        
-        if not "BlockHeight" in lp:
-            obj.addProperty("App::PropertyLength","BlockHeight","Blocks",QT_TRANSLATE_NOOP("App::Property","The height of each block"))
-        
-        if not "OffsetFirst" in lp:
-            obj.addProperty("App::PropertyLength","OffsetFirst","Blocks",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the first line of blocks"))
-        
-        if not "OffsetSecond" in lp:
-            obj.addProperty("App::PropertyLength","OffsetSecond","Blocks",QT_TRANSLATE_NOOP("App::Property","The horizontal offset of the second line of blocks"))
-        
-        if not "Joint" in lp:
-            obj.addProperty("App::PropertyLength","Joint","Blocks",QT_TRANSLATE_NOOP("App::Property","The size of the joints between each block"))
-        
-        if not "CountEntire" in lp:
-            obj.addProperty("App::PropertyInteger","CountEntire","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of entire blocks"))
-            obj.setEditorMode("CountEntire",1)
-        
-        if not "CountBroken" in lp:
-            obj.addProperty("App::PropertyInteger","CountBroken","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
-            obj.setEditorMode("CountBroken",1)
-
-        # See getExtrusionData(), removeSplitters are no longer used
-        #if not "Refine" in lp:
-        #    obj.addProperty("App::PropertyEnumeration","Refine","Wall",QT_TRANSLATE_NOOP("App::Property","Select whether or not and the method to remove splitter of the Wall. Currently Draft removeSplitter and Part removeSplitter available but may not work on complex sketch."))
-        #    obj.Refine = ['No','DraftRemoveSplitter','PartRemoveSplitter']
-        # TODO - To implement in Arch Component ?
+            _tip = "Override Align attribute to set Align for each segment of the extrusion.\n"\
+                   "Ignored if Base object provides Aligns information, with getAligns() method.\n"\
+                   "(The 1st value override 'Align' attribute for 1st segment of wall;\n"\
+                   "if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign'\n"\
+                   "will be followed)"
+            obj.addProperty("App::PropertyStringList", "OverrideAlign",
+                            "Segment individual properties",
+                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            # see DraftGeomUtils.offsetwire()
 
         self.Type = "Wall"
 
 
-    def onDocumentRestored(self,obj):
-
-        ArchComponent.Component.onDocumentRestored(self,obj)
+    def onDocumentRestored(self, obj):
         self.setProperties(obj)
 
 
-    def execute(self,obj):
+    def execute(self, obj):
 
         "builds the wall shape"
 
