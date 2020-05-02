@@ -95,6 +95,7 @@ SET(Draft_make_functions
     draftmake/make_sketch.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
+    draftmake/README.md
 )
 
 SET(Draft_objects
