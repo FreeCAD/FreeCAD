@@ -46,33 +46,6 @@ class ViewProviderWall(object):
             self.ViewObject = None
 
 
-    def attach(self, vobj):
-        vobj.addExtension('Gui::ViewProviderGeoFeatureGroupExtensionPython', None)
-        self.ViewObject = vobj
-        self.setupShapeGroup()
-
-
-    def setupShapeGroup(self):
-        vobj = self.ViewObject
-        if getattr(self, 'shape_mode', None) or \
-                vobj.SwitchNode.getNumChildren() < 2:
-            return
-        self.child_node = vobj.SwitchNode.getChild(0)
-        self.shape_node = vobj.SwitchNode.getChild(1)
-        self.mode_node = coin.SoSeparator()
-        self.mode_node.addChild(self.child_node)
-        self.mode_node.addChild(self.shape_node)
-        self.shape_mode = vobj.SwitchNode.getNumChildren()
-        # TODO: overwrite existing display modes with the new ones so
-        #       when DisplayModes are set generally, the objects are
-        #       correctly displayed
-        vobj.addDisplayMode(self.mode_node, 'ShapeGroup')
-        try:
-            vobj.SwitchNode.defaultChild = self.shape_mode
-        except Exception:
-            pass
-
-
     def getIcon(self):
         """Return the path to the appropriate icon.
 
@@ -85,35 +58,53 @@ class ViewProviderWall(object):
         """ 
         return ":/icons/Arch_Wall_Tree.svg"
 
+        
+    def attach(self, vobj):
+        vobj.addExtension('Gui::ViewProviderGeoFeatureGroupExtensionPython', None)
+        self.ViewObject = vobj
+        self.setupShapeGroup()
 
-    def getDisplayModes(self, _vobj):
-        return ["ShapeGroup"]
 
+    def setupShapeGroup(self):
+        vobj = self.ViewObject
+        if getattr(self, 'group_node', None) or \
+                vobj.SwitchNode.getNumChildren() < 2:
+            return
+        self.group_node = vobj.SwitchNode.getChild(0)
+        for i in range(1, vobj.SwitchNode.getNumChildren()):
+            node = coin.SoSeparator()
+            node.addChild(self.group_node)
+            node.addChild(vobj.SwitchNode.getChild(i))
+            vobj.SwitchNode.replaceChild(i,node)
+        try:
+            vobj.SwitchNode.defaultChild = 1
+        except Exception:
+            pass
 
     def getDefaultDisplayMode(self):
-        return "ShapeGroup"
-
+        return "Flat Lines"
 
     def getDetailPath(self,subname,path,append):
-        if not subname or not getattr(self, 'shape_mode', None):
+        if not subname or not getattr(self, 'group_node', None):
             raise NotImplementedError
         subs = Part.splitSubname(subname)
         objs = subs[0].split('.')
 
         vobj = self.ViewObject
         mode = vobj.SwitchNode.whichChild.getValue()
-        if mode < 0:
+        if mode <= 0:
             raise NotImplementedError
 
         if append:
             path.append(vobj.RootNode)
             path.append(vobj.SwitchNode)
-            path.append(vobj.SwitchNode.getChild(mode))
-            if mode == self.shape_mode:
+            node = vobj.SwitchNode.getChild(mode);
+            path.append(node)
+            if mode > 0:
                 if not objs[0]:
-                    path.append(self.shape_node)
+                    path.append(node.getChild(1))
                 else:
-                    path.append(self.child_node)
+                    path.append(node.getChild(0))
             if not objs[0]:
                 return vobj.getDetailPath(subname,path,False)
         for child in vobj.claimChildren():
@@ -121,13 +112,12 @@ class ViewProviderWall(object):
                 sub = Part.joinSubname('.'.join(objs[1:]),subs[1],subs[2])
                 return child.ViewObject.getDetailPath(sub,path,True)
 
-
-    def getElementPicked(self, pp):
-        if not getattr(self, 'shape_mode', None):
+    def getElementPicked(self,pp):
+        if not getattr(self, 'group_node', None):
             raise NotImplementedError
         vobj = self.ViewObject
         path = pp.getPath()
-        if path.findNode(self.child_node) < 0:
+        if path.findNode(self.group_node) < 0:
             raise NotImplementedError
         for child in vobj.claimChildren():
             if path.findNode(child.ViewObject.RootNode) < 0:
@@ -155,7 +145,7 @@ class ViewProviderWall(object):
         # ask if the user is sure and wants to delete contained objects
         if not vobj.Object.Group:
             return True
-            
+
         msgBox = QtGui.QMessageBox()
         msgBox.setText("Deleting wall object " + vobj.Object.Label + ".")
         msgBox.setInformativeText("Do you want to delete also contained objects?")
