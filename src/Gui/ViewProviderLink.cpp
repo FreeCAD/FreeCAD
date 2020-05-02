@@ -137,12 +137,8 @@ public:
 
     static ViewProviderDocumentObject *getView(App::DocumentObject *obj) {
         if(obj && obj->getNameInDocument()) {
-            Document *pDoc = Application::Instance->getDocument(obj->getDocument());
-            if(pDoc) {
-                ViewProvider *vp = pDoc->getViewProvider(obj);
-                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-                    return static_cast<ViewProviderDocumentObject*>(vp);
-            }
+            return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(obj));
         }
         return 0;
     }
@@ -2481,7 +2477,7 @@ bool ViewProviderLink::getDetailPath(
         appendPath(pPath,pcRoot);
         appendPath(pPath,pcModeSwitch);
     }
-    if(childVpLink && !Data::ComplexGeoData::isElementName(subname)) {
+    if(childVpLink && Data::ComplexGeoData::isElementName(subname)) {
         if(childVpLink->getDetail(false,LinkView::SnapshotTransform,subname,det,pPath))
             return true;
         pPath->truncate(len);
