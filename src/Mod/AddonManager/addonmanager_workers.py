@@ -303,7 +303,6 @@ class FillMacroListWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'GitPython not installed! Cannot retrieve macros from git, fallback to using the Wiki')+"\n")
         if git:
             git_exe = utils.checkGitBinary()
-            import re
             try:
                 out = os.popen(git_exe + ' --version','r')
             except:
@@ -663,7 +662,6 @@ class InstallWorker(QtCore.QThread):
                 import io
         if git:
             git_exe = utils.checkGitBinary()
-            import re
             try:
                 out = os.popen(git_exe + ' --version','r')
             except:
