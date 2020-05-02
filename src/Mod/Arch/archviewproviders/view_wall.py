@@ -73,6 +73,19 @@ class ViewProviderWall(object):
             pass
 
 
+    def getIcon(self):
+        """Return the path to the appropriate icon.
+
+        Return the Arch wall icon.
+
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """ 
+        return ":/icons/Arch_Wall_Tree.svg"
+
+
     def getDisplayModes(self, _vobj):
         return ["ShapeGroup"]
 
