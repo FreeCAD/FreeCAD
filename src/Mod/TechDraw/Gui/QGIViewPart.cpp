@@ -84,6 +84,7 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using namespace std;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -407,7 +408,6 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
 void QGIViewPart::updateView(bool update)
 {
 //    Base::Console().Message("QGIVP::updateView()\n");
-    auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
@@ -421,11 +421,6 @@ void QGIViewPart::updateView(bool update)
         draw();
     }
     QGIView::updateView(update);
-
-    auto end   = std::chrono::high_resolution_clock::now();
-    auto diff  = end - start;
-    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - QGIVP::updateView - %s - total %.3f millisecs\n",getViewName(),diffOut);
 }
 
 void QGIViewPart::draw() {
@@ -458,7 +453,6 @@ void QGIViewPart::drawViewPart()
     if ( vp == nullptr ) {
         return;
     }
-
 
     float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
