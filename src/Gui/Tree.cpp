@@ -3348,10 +3348,10 @@ void TreeWidget::_selectLinkedObject(App::DocumentObject *linked) {
         linkedItem = *it->second->items.begin();
 
     if(linkedDoc->showItem(linkedItem,true)) {
-        scrollToItem(linkedItem);
         currentDocItem = linkedItem->myOwner;
         syncView(linkedVp);
         currentDocItem = 0;
+        scrollToItem(linkedItem);
     }
 }
 
@@ -4509,12 +4509,12 @@ void DocumentItem::selectItems(SelectionReason reason) {
         if(!newSelect)
             newSelect = oldSelect;
         if(newSelect) {
-            getTree()->scrollToItem(newSelect);
             if (reason == SR_FORCE_EXPAND) {
                 // If reason is not force expand, then the selection is most likely
                 // triggered from 3D view.
                 getTree()->syncView(newSelect->object());
             }
+            getTree()->scrollToItem(newSelect);
         }
     }
 }
