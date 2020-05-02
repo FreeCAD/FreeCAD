@@ -113,6 +113,7 @@
 #include "Document.h"
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
+#include "ViewParams.h"
 
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
@@ -1967,7 +1968,7 @@ void MainWindow::showMessage(const QString& message, int timeout) {
     }
     d->actionLabel->setText(message.simplified());
     if(timeout == 0)
-        timeout = 3000;
+        timeout = ViewParams::getStatusMessageTimeout();
     if(timeout > 0) {
         d->actionTimer->setSingleShot(true);
         d->actionTimer->start(timeout);

@@ -113,6 +113,7 @@ public:
     FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff) \
     FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, true) \
+    FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
