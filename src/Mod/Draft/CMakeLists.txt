@@ -67,13 +67,14 @@ SET(Draft_functions
     draftfunctions/fuse.py
     draftfunctions/heal.py
     draftfunctions/join.py
-    draftfunctions/mirror.py    
-    draftfunctions/move.py    
-    draftfunctions/offset.py    
-    draftfunctions/rotate.py    
-    draftfunctions/scale.py    
-    draftfunctions/split.py    
-    draftfunctions/upgrade.py    
+    draftfunctions/mirror.py
+    draftfunctions/move.py
+    draftfunctions/offset.py
+    draftfunctions/rotate.py
+    draftfunctions/scale.py
+    draftfunctions/split.py
+    draftfunctions/upgrade.py
+    draftfunctions/README.md
 )
 
 SET(Draft_make_functions
