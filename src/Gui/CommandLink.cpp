@@ -658,6 +658,8 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
     if(!vp)
         return 0;
 
+    const char *element = Data::ComplexGeoData::findElementName(sels[0].SubName);
+
     auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
     if(!linkedVp || linkedVp==vp) {
         if(sobj->getDocument()==sels[0].pObject->getDocument())
@@ -669,10 +671,13 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
                 break;
             obj = obj->getLinkedObject(true);
             if(obj->getDocument()!=sels[0].pObject->getDocument()) {
-                if(finalLink)
+                if(finalLink) {
+                    if(subname)
+                        *subname = element;
                     return sobj==obj?0:sobj;
+                }
                 if(subname) 
-                    *subname = std::string(dot+1);
+                    *subname = std::string(dot+1) + element;
                 return obj;
             }
         }
@@ -725,6 +730,8 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
         }
     }
 
+    if(subname)
+        *subname += element;
     return linked;
 }
 
