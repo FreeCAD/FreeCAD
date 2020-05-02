@@ -230,13 +230,12 @@ void DrawViewSection::onChanged(const App::Property* prop)
 void DrawViewSection::makeLineSets(void) 
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
-    if (!FileGeomPattern.isEmpty()) {
-        std::string fileSpec = FileGeomPattern.getValue();
+    if (!PatIncluded.isEmpty())  {
+        std::string fileSpec = PatIncluded.getValue();
         Base::FileInfo fi(fileSpec);
         std::string ext = fi.extension();
         if (!fi.isReadable()) {
             Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-            Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
         } else {
             if ( (ext == "pat") ||
                  (ext == "PAT") ) {
@@ -842,6 +841,7 @@ gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
+//    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
     result = DrawGeomHatch::getTrimmedLines(this,m_lineSets,i,HatchScale.getValue());
     return result;
@@ -919,26 +919,27 @@ int DrawViewSection::prefCutSurface(void) const
 void DrawViewSection::onDocumentRestored() 
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");
-    if (!FileHatchPattern.isEmpty()) {
-        std::string svgFileName = FileHatchPattern.getValue();
-        Base::FileInfo tfi(svgFileName);
-        if (tfi.isReadable()) {
-            if (SvgIncluded.isEmpty()) {
+    if (SvgIncluded.isEmpty()) {
+        if (!FileHatchPattern.isEmpty()) {
+            std::string svgFileName = FileHatchPattern.getValue();
+            Base::FileInfo tfi(svgFileName);
+            if (tfi.isReadable()) {
                 setupSvgIncluded();
             }
         }
     }
 
-    if (!FileGeomPattern.isEmpty()) {
-        std::string patFileName = FileGeomPattern.getValue();
-        Base::FileInfo tfi(patFileName);
-        if (tfi.isReadable()) {
-            if (PatIncluded.isEmpty()) {
-                setupPatIncluded();
+    if (PatIncluded.isEmpty()) {
+        if (!FileGeomPattern.isEmpty()) {
+            std::string patFileName = FileGeomPattern.getValue();
+            Base::FileInfo tfi(patFileName);
+            if (tfi.isReadable()) {
+                    setupPatIncluded();
             }
-        makeLineSets();
         }
     }
+
+    makeLineSets();
     DrawViewPart::onDocumentRestored();
 }
 
