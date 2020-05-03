@@ -55,6 +55,7 @@ OBSOLETE =         ["assembly2",
 PY2ONLY =          ["geodata",
                     "GDT",
                     "timber",
+                    "flamingo",
                     "animation"]
 
 # Minimum Git binary versions for installing/updating Wbs and loading the list of macros
