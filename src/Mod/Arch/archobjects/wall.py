@@ -121,6 +121,11 @@ class Wall(object):
         obj.addProperty('App::PropertyFloat', 'AxisLastPointX', #change to BaselineEnd
                         'Geometry', _tip).AxisLastPointX = 4000.0
 
+        _tip = 'Link to an edge subobject to bind the wall axis\n'\
+               'Not implemented yet' # TODO: implement external axis binding
+        obj.addProperty('App::PropertyLinkSubGlobal', 'AxisLink',
+                        'Geometryd', _tip)
+
         obj.addProperty('App::PropertyLength', 'Length',
                         'Geometry', 'Wall length',1).Length = '4 m'
 
