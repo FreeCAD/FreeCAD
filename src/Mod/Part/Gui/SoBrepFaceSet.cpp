@@ -753,7 +753,11 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     SoShapeHintsElement::ShapeType st;
     SoShapeHintsElement::FaceType ft;
     SoShapeHintsElement::get(state, vo, st, ft);
-    if(vo != SoShapeHintsElement::COUNTERCLOCKWISE) {
+    if(hasTransparency && vo != SoShapeHintsElement::COUNTERCLOCKWISE) {
+        if(!pushed) {
+            pushed = true;
+            state->push();
+        }
         vo = SoShapeHintsElement::COUNTERCLOCKWISE;
         SoShapeHintsElement::set(state, vo, st, ft);
         SoOverrideElement::setShapeHintsOverride(state, this, true);
