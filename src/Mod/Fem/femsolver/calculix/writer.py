@@ -187,7 +187,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     # mesh
     def write_mesh(self, inpfile_split=None):
         # write mesh to file
-        element_param = 1  # hightest element order only
+        element_param = 1  # highest element order only
         group_param = False  # do not write mesh group data
         if inpfile_split is True:
             write_name = "femesh"

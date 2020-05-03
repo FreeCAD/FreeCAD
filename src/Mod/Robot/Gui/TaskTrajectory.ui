@@ -282,7 +282,6 @@
     <widget class="QLabel" name="label_Pos">
      <property name="font">
       <font>
-       <family>Arial</family>
        <pointsize>7</pointsize>
        <weight>75</weight>
        <bold>true</bold>

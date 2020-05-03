@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Instalatutako kokapena</translation>
     </message>
   </context>
   <context>
@@ -224,22 +224,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Zerbait gaizki atera da Git makroak atzitzean, ziur aski Git exekutagarria ez dago bidean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Gehigarri hau zaharkituta dago</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Horrek esan nahi du ez dela mantentzen eta zerrenda honetako gehigarri aurreratuagoren batek funtzionaltasun bera eskaintzen duela.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Errorea: Ezin izan da ZIP fitxategia aurkitu</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
+      <translation>Itxi gehigarren kudeatzailea</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -339,41 +339,41 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Aukera hau hautatuta badago, gehigarrien kudeatzailea abiarazten
+denean gehigarrien eguneraketarik dagoen begiratuko da
+(GitPython paketeak instalatuta egon behar du zure sisteman)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Automatikoki egiaztatu abioan eguneraketarik dagoen (GitPython behar du)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>Leiho honetan biltegi gehiago zehaztu daitezke
+gehigarri erabilgarri gehiago bilatzeko</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Proxya </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Proxyrik ez</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Erabili sistemaren proxya</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Erabilitzaileak definitutako proxya:</translation>
     </message>
   </context>
   <context>

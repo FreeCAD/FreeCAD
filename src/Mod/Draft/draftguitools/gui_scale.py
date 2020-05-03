@@ -79,7 +79,7 @@ class Scale(gui_base_original.Modifier):
         self.get_object_selection()
 
     def get_object_selection(self):
-        """Get object selection and proceed if succesful."""
+        """Get object selection and proceed if successful."""
         if Gui.Selection.getSelection():
             return self.proceed()
         self.ui.selectUi()

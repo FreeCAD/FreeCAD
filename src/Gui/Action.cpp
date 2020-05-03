@@ -323,8 +323,11 @@ int ActionGroup::checkedAction() const
 
 void ActionGroup::setCheckedAction(int i)
 {
-    _group->actions()[i]->setChecked(true);
-    this->setIcon(_group->actions()[i]->icon());
+    QAction* a = _group->actions()[i];
+    a->setChecked(true);
+    this->setIcon(a->icon());
+    this->setToolTip(a->toolTip());
+    this->setProperty("defaultAction", QVariant(i));
 }
 
 /**

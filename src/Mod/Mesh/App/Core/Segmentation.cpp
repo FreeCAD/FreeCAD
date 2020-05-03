@@ -201,7 +201,7 @@ CylinderSurfaceFit::CylinderSurfaceFit()
 
 /*!
  * \brief CylinderSurfaceFit::CylinderSurfaceFit
- * Set a pre-defined cylinder. Internal cylinder fits are not done, then.
+ * Set a predefined cylinder. Internal cylinder fits are not done, then.
  */
 CylinderSurfaceFit::CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r)
     : basepoint(b)

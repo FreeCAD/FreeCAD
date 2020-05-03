@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>结构化点云</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>将点转换为结构化点云</translation>
     </message>
   </context>
   <context>
@@ -139,7 +139,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>导入ASCII点</translation>
+      <translation>导入 ASCII 点</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="88"/>
       <source>First line:</source>
-      <translation>第一行</translation>
+      <translation>第一行：</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="100"/>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>&amp;Points</source>
-      <translation>&amp;点</translation>
+      <translation>点 (&amp;P)</translation>
     </message>
   </context>
 </TS>

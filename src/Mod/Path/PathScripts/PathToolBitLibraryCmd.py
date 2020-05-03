@@ -25,6 +25,7 @@
 import FreeCAD
 import FreeCADGui
 import PySide.QtCore as QtCore
+import PathScripts.PathPreferences as PathPreferences
 
 class CommandToolBitLibraryOpen:
     '''
@@ -45,7 +46,13 @@ class CommandToolBitLibraryOpen:
     def Activated(self):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
         library = PathToolBitLibraryGui.ToolBitLibrary()
-        library.open()
+
+        lastlib = PathPreferences.lastPathToolLibrary()
+
+        if PathPreferences.toolsOpenLastLibrary():
+            library.open(lastlib)
+        else:
+            library.open()
 
 class CommandToolBitLibraryLoad:
     '''
@@ -83,7 +90,8 @@ class CommandToolBitLibraryLoad:
         import PathScripts.PathToolControllerGui as PathToolControllerGui
 
         library = PathToolBitLibraryGui.ToolBitLibrary()
-        if 1 == library.open(dialog=True) and job:
+
+        if 1 == library.open() and job:
             for nr, tool in library.selectedOrAllTools():
                 tc = PathToolControllerGui.Create("TC: {}".format(tool.Label), tool, nr)
                 job.Proxy.addToolController(tc)

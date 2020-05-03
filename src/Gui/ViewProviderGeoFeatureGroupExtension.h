@@ -47,6 +47,7 @@ public:
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
     virtual void extensionSetDisplayMode(const char* ModeName) override;
     virtual std::vector<std::string> extensionGetDisplayModes(void) const override;
+    virtual void extensionFinishRestoring() override;
 
     /// Show the object in the view: suppresses behavior of DocumentObjectGroup
     virtual void extensionShow(void) override {

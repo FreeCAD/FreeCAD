@@ -1191,7 +1191,15 @@ def getSplineNormal(edge):
     return n
 
 def getNormal(shape):
-        """Find the normal of a shape, if possible."""
+        """Find the normal of a shape or list of points, if possible."""
+        if isinstance(shape,(list,tuple)):
+            if len(shape) >= 3:
+                v1 = shape[1].sub(shape[0])
+                v2 = shape[2].sub(shape[0])
+                n = v2.cross(v1)
+                if n.Length:
+                    return n
+            return None
         n = Vector(0,0,1)
         if shape.isNull():
             return n
@@ -1200,9 +1208,9 @@ def getNormal(shape):
         elif shape.ShapeType == "Edge":
                 if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
                         n = shape.Edges[0].Curve.Axis
-                elif geomType(edge) == "BSplineCurve" or \
-                     geomType(edge) == "BezierCurve":
-                        n = getSplineNormal(edge)
+                elif geomType(shape.Edges[0]) == "BSplineCurve" or \
+                     geomType(shape.Edges[0]) == "BezierCurve":
+                        n = getSplineNormal(shape.Edges[0])
         else:
                 for e in shape.Edges:
                         if geomType(e) in ["Circle","Ellipse"]:
@@ -1709,15 +1717,27 @@ def isCoplanar(faces, tolerance=0):
 
 
 def isPlanar(shape):
-    """Check if the given shape is planar."""
-    if len(shape.Vertexes) <= 3:
-        return True
+    """Check if the given shape or list of points is planar."""
     n = getNormal(shape)
-    for p in shape.Vertexes[1:]:
-        pv = p.Point.sub(shape.Vertexes[0].Point)
-        rv = DraftVecUtils.project(pv,n)
-        if not DraftVecUtils.isNull(rv):
-            return False
+    if not n:
+        return False
+    if isinstance(shape,list):
+        if len(shape) <= 3:
+            return True
+        else:
+            for v in shape[3:]:
+                pv = v.sub(shape[0])
+                rv = DraftVecUtils.project(pv,n)
+                if not DraftVecUtils.isNull(rv):
+                    return False
+    else:
+        if len(shape.Vertexes) <= 3:
+            return True
+        for p in shape.Vertexes[1:]:
+            pv = p.Point.sub(shape.Vertexes[0].Point)
+            rv = DraftVecUtils.project(pv,n)
+            if not DraftVecUtils.isNull(rv):
+                return False
     return True
 
 

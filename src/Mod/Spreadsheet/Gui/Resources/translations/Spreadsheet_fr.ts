@@ -357,12 +357,12 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>La feuille de calcul ne prend pas en charge la sélection des plages lors du collage.
+Veuillez sélectionner une seule cellule.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Copier-coller a failli</translation>
     </message>
   </context>
   <context>
@@ -449,6 +449,18 @@ Please select one cell only.</translation>
     <message>
       <source>&amp;Contents</source>
       <translation>&amp;Contenu</translation>
+    </message>
+    <message>
+      <source>&amp;Alias</source>
+      <translation type="unfinished">&amp;Alias</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </translation>
     </message>
   </context>
   <context>

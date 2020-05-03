@@ -15,20 +15,12 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QToolBox" name="toolBox">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="page">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>559</width>
-        <height>626</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tabWidgetPage1">
+      <attribute name="title">
        <string>Shape</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -61,7 +53,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Type</string>
+             <string>Shape File</string>
             </property>
            </widget>
           </item>
@@ -180,16 +172,8 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>559</width>
-        <height>626</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tabWidgetPage2">
+      <attribute name="title">
        <string>Attributes</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -228,6 +212,8 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../../Gui/Icons/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

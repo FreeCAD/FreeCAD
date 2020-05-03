@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>Boundings info...</source>
-      <translation>Info Limiti Contenitore...</translation>
+      <translation>Info Limiti contenitore...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1516"/>
@@ -447,13 +447,13 @@
     <message>
       <location filename="../../Command.cpp" line="1272"/>
       <source>Refinement...</source>
-      <translation type="unfinished">Refinement...</translation>
+      <translation>Affinamento...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1273"/>
       <location filename="../../Command.cpp" line="1274"/>
       <source>Refine existing mesh</source>
-      <translation type="unfinished">Refine existing mesh</translation>
+      <translation>Affina le mesh esistenti</translation>
     </message>
   </context>
   <context>
@@ -1179,12 +1179,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
+      <translation>Deviazione massima tra la mesh e l'oggetto</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="50"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+      <translation>Deviazione della tessellazione della superficie attuale</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
@@ -1199,7 +1199,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation>La compressione ZIP viene utilizzata quando si scrive un file mesh in formato AMF</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
@@ -1239,7 +1239,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="76"/>
       <source>Default color for new meshes</source>
-      <translation type="unfinished">Default color for new meshes</translation>
+      <translation>Colore predefinito per le nuove mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="96"/>
@@ -1255,7 +1255,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="148"/>
       <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
+      <translation>Verrà visualizzato un contenitore di delimitazione</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="151"/>
@@ -1265,7 +1265,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="187"/>
       <source>Default line color for new meshes</source>
-      <translation type="unfinished">Default line color for new meshes</translation>
+      <translation>Colore predefinito della linea per le nuove mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="207"/>
@@ -1273,10 +1273,10 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>Il lato inferiore della superficie sarà reso allo stesso modo del lato superiore.
+Se non selezionato, dipende dall'opzione "Abilita il colore di retroilluminazione"
+(sezione preferenze Vista -&gt; Visualizzazione 3D). Sarà usato il colore della retroilluminazione
+o il nero.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="213"/>
@@ -1317,12 +1317,8 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
-
-With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
+      <translation>Se questa opzione è attivata, verrà utilizzata l'ombreggiatura Phong, altrimenti l'ombreggiatura piatta.
+Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate dai vertici, il che porta a una visualizzazione innaturale delle superfici curve, invece l'ombreggiatura Phong ad un aspetto più liscio.
 </translation>
     </message>
     <message>
@@ -1336,10 +1332,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+      <translation>L'angolo di creasi è un angolo di soglia tra due facce.
 
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+ Se l'angolo della faccia = angolo di creasi, viene utilizzata l'ombreggiatura della faccia
+ Se l'angolo della faccia &lt; piega creasi, viene utilizzata l'ombra uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
@@ -1415,17 +1411,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Frontale</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="102"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>Quad frontale</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Parallelogrammi</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="174"/>
@@ -1436,12 +1432,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="219"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Esecuzione di gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="241"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Avvio fallito</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="248"/>
@@ -1483,47 +1479,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="128"/>
+      <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
       <translation>Adattamento della superficie</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="135"/>
+      <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
       <translation>Parametri</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="140"/>
+      <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
       <translation>Selezione</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="148"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Region</source>
       <translation>Regione</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="154"/>
+      <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
       <translation>Triangolo</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="160"/>
+      <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
       <translation>Pulisci</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
       <translation>Calcola</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
       <translation>Nessuna selezione</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Prima di adattare la superficie selezionare un'area.</translation>
     </message>
@@ -1533,27 +1529,27 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
+      <translation>Ricostruisci con gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Parametri di ricostruzione della maglie</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Meshing:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Dimensione massima dell'elemento (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Dimensione minima dell'elemento (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1563,7 +1559,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1573,7 +1569,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Termina</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -1782,29 +1778,29 @@ to a smoother appearance.
       <translation>Cilindro</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
-      <location filename="../../SegmentationBestFit.cpp" line="331"/>
+      <location filename="../../SegmentationBestFit.cpp" line="337"/>
+      <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
       <translation>Base</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
       <translation>Normale</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="332"/>
+      <location filename="../../SegmentationBestFit.cpp" line="364"/>
       <source>Axis</source>
       <translation>Asse</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="333"/>
-      <location filename="../../SegmentationBestFit.cpp" line="360"/>
+      <location filename="../../SegmentationBestFit.cpp" line="365"/>
+      <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
       <translation>Raggio</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="359"/>
+      <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
       <translation>Centro</translation>
     </message>
@@ -1910,7 +1906,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="125"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Importa/Esporta</translation>
     </message>
@@ -2071,7 +2067,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="744"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Mostra i segmenti</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1575"/>

@@ -179,11 +179,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>清除(&amp;C)</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>恢复到最后一个计算值(为常量)</translation>
     </message>
   </context>
   <context>
@@ -416,6 +416,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>授权许可</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation type="unfinished">Collection</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -590,7 +594,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <source>Type</source>
@@ -610,11 +614,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation type="unfinished">Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</translation>
+      <translation>在属性名称前面按照'group'_'name'的形式附加组名以避免与现有属性冲突。 在属性编辑器中显示的预定组名将被自动隐藏。</translation>
     </message>
     <message>
       <source>Append group name</source>
-      <translation type="unfinished">Append group name</translation>
+      <translation>追加组名</translation>
     </message>
   </context>
   <context>
@@ -1261,39 +1265,39 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
+      <translation>代码行将被编号 </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>按下 &lt;Tab&gt; 将插入定义大小的缩进</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>制表符&lt;Tab&gt;转空格(空格数量)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>按下 &lt;Tab&gt; 将插入多少空格</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>按下 &lt;Tab&gt; 将插入一个定义大小的制表符</translation>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>显示项目</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>用于选定代码类型的字体大小</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>颜色和字体设置将应用于所选类型</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>用于选定代码类型的字体</translation>
     </message>
   </context>
   <context>
@@ -1352,11 +1356,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>应用程序用户界面语言</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>最近文件列表中应该列出多少个文件</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -1366,17 +1370,16 @@ See the FreeCAD Wiki for details about the image.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>用户界面的样式表</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>选择您对工具栏图标大小的偏好。您可以根据您的屏幕大小或个人品味来调整</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>树形视图模式：</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1384,31 +1387,28 @@ this according to your screen size or personal taste</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>在面板中显示自定义树形视图的方式(需要重启)。
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+'组合视图': 将树形视图和属性视图合并为一个面板。
+'树形视图和属性视图'：拆分树视图和属性视图为单独的面板。
+'全部'：保留所有三个面板，你可以有两组树形视图和属性视图。</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>Splash 屏幕是一个小的加载窗口，在FreeCAD 启动时显示
+。 如果选中此选项，FreeCAD 将显示初始屏幕</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>选择再FreeCAD启动以后显示的工作台</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>在 Python 控制台中自动换行</translation>
     </message>
   </context>
   <context>
@@ -1443,11 +1443,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>树状视图和属性视图</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>两者都是</translation>
     </message>
   </context>
   <context>
@@ -1524,7 +1524,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>工具栏</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1610,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>不再显示</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
@@ -1808,7 +1808,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>已排序</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation type="unfinished">Quick search</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation type="unfinished">Type in a group name to find it</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation type="unfinished">Search Group</translation>
     </message>
   </context>
   <context>
@@ -1887,6 +1899,10 @@ Specify another directory, please.</source>
     <message>
       <source>System parameter</source>
       <translation>系统参数</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation type="unfinished">Search Group</translation>
     </message>
   </context>
   <context>
@@ -2053,11 +2069,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>按类型筛选</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</translation>
+      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2132,25 +2148,54 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation type="unfinished">Log messages will be recorded</translation>
+      <translation>日志消息将被记录</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation type="unfinished">Warnings will be recorded</translation>
+      <translation>警告将被记录</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation type="unfinished">Error messages will be recorded</translation>
+      <translation>错误消息将被记录</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>发生错误时，错误对话框会在屏幕上显示</translation>
     </message>
     <message>
-      <source>Show report view on warning or error</source>
-      <translation type="unfinished">Show report view on warning or error</translation>
+      <source>Show report view on error</source>
+      <translation type="unfinished">Show report view on error</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation type="unfinished">Show report view on warning</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation type="unfinished">Show report view on normal message</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation type="unfinished">Show report view on log message</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2227,10 +2272,6 @@ from Python console to Report view panel</translation>
       <translation>三维视图</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>三维视图设置</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>坐标系统显示在边角</translation>
     </message>
@@ -2239,60 +2280,12 @@ from Python console to Report view panel</translation>
       <translation>显示每秒运行帧数</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>启用动画</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>立体模式的双眼距离:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>相机类型</translation>
     </message>
     <message>
       <source/>
       <translation>关于</translation>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>三维导航</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>鼠标...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>背光强度</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>启用背光颜色</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>环绕模式</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>转盘</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>轨迹球</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>反向缩放</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>以光标为中心缩放</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>缩放步长</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2327,46 +2320,24 @@ from Python console to Report view panel</translation>
       <translation>以透视渲染(&amp;g)</translation>
     </message>
     <message>
-      <source>Show navigation cube</source>
-      <translation>显示导航立方体</translation>
-    </message>
-    <message>
-      <source>Corner</source>
-      <translation>边角</translation>
-    </message>
-    <message>
-      <source>Top left</source>
-      <translation>左上</translation>
-    </message>
-    <message>
-      <source>Top right</source>
-      <translation>右上</translation>
-    </message>
-    <message>
-      <source>Bottom left</source>
-      <translation>左下</translation>
-    </message>
-    <message>
-      <source>Bottom right</source>
-      <translation>右下</translation>
-    </message>
-    <message>
-      <source>New Document Camera Orientation</source>
-      <translation>新建文档相机方向</translation>
-    </message>
-    <message>
-      <source>Disable touchscreen tilt gesture</source>
-      <translation>禁用触摸屏倾斜手势</translation>
-    </message>
-    <message>
       <source>Marker size:</source>
       <translation>标记大小：</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>常规</translation>
     </message>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
       <translation type="unfinished">Main coordinate system will always be shown in
 lower right corner within opened files</translation>
+    </message>
+    <message>
+      <source>Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</source>
+      <translation type="unfinished">Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
@@ -2377,26 +2348,8 @@ lower right corner within opened files</translation>
       <translation type="unfinished">Remember active workbench by tab</translation>
     </message>
     <message>
-      <source>Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
-    </message>
-    <message>
-      <source>Navigation cube will always be shown in opened files </source>
-      <translation type="unfinished">Navigation cube will always be shown in opened files </translation>
-    </message>
-    <message>
-      <source>Steps by turn</source>
-      <translation type="unfinished">Steps by turn</translation>
-    </message>
-    <message>
-      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
-    </message>
-    <message>
-      <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <source>Rendering</source>
+      <translation type="unfinished">Rendering</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2457,82 +2410,32 @@ but slower response to any scene changes.</translation>
       <translation type="unfinished">Centralized</translation>
     </message>
     <message>
-      <source>Enable animated rotations</source>
-      <translation type="unfinished">Enable animated rotations</translation>
-    </message>
-    <message>
-      <source>List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
-    </message>
-    <message>
-      <source>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
-    </message>
-    <message>
       <source>What kind of multisample anti-aliasing is used </source>
       <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
     </message>
     <message>
-      <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <source>Transparent objects:</source>
+      <translation type="unfinished">Transparent objects:</translation>
     </message>
     <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
+      <source>Render types of transparent objects</source>
+      <translation type="unfinished">Render types of transparent objects</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
+      <source>One pass</source>
+      <translation type="unfinished">One pass</translation>
     </message>
     <message>
-      <source>Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
-      <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
-    </message>
-    <message>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
+      <source>Backface pass</source>
+      <translation type="unfinished">Backface pass</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
       <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2543,16 +2446,20 @@ The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
-      <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <source>Backlight is enabled with the defined color</source>
+      <translation type="unfinished">Backlight is enabled with the defined color</translation>
     </message>
     <message>
       <source>Backlight color</source>
       <translation type="unfinished">Backlight color</translation>
     </message>
     <message>
-      <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
+      <source>Intensity</source>
+      <translation type="unfinished">Intensity</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation type="unfinished">Intensity of the backlight</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2596,46 +2503,6 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
-    </message>
-    <message>
-      <source>Isometric</source>
-      <translation>等轴测</translation>
-    </message>
-    <message>
-      <source>Dimetric</source>
-      <translation>二轴测</translation>
-    </message>
-    <message>
-      <source>Trimetric</source>
-      <translation>三轴测</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>俯视</translation>
-    </message>
-    <message>
-      <source>Front</source>
-      <translation>前视</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>左视</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>右视</translation>
-    </message>
-    <message>
-      <source>Rear</source>
-      <translation>后视</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>底视</translation>
-    </message>
-    <message>
-      <source>Custom</source>
-      <translation>自定义</translation>
     </message>
   </context>
   <context>
@@ -2852,20 +2719,20 @@ bounding box size of the 3D object that is currently displayed. </translation>
       <translation>将程序徽标添加到生成的缩略图</translation>
     </message>
     <message>
-      <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
-    </message>
-    <message>
-      <source>How many Undo/Redo steps should be recorded</source>
-      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
-    </message>
-    <message>
       <source>The application will create a new document when started</source>
       <translation type="unfinished">The application will create a new document when started</translation>
     </message>
     <message>
+      <source>Compression level for FCStd files</source>
+      <translation type="unfinished">Compression level for FCStd files</translation>
+    </message>
+    <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
       <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
@@ -2892,8 +2759,28 @@ automatically run a file recovery when it is started.</translation>
       <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
     </message>
     <message>
+      <source>Size</source>
+      <translation>大小</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+    </message>
+    <message>
       <source>How many backup files will be kept when saving document</source>
       <translation type="unfinished">How many backup files will be kept when saving document</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
@@ -2904,26 +2791,20 @@ automatically run a file recovery when it is started.</translation>
       <translation type="unfinished">Date format</translation>
     </message>
     <message>
-      <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
-    </message>
-    <message>
       <source>Allow objects to have same label/name</source>
       <translation type="unfinished">Allow objects to have same label/name</translation>
     </message>
     <message>
-      <source>Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </source>
-      <translation type="unfinished">Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+icon in the tree view to fully reload it.</source>
+      <translation type="unfinished">Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </translation>
+icon in the tree view to fully reload it.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -3278,6 +3159,203 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>导航栏</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation type="unfinished">Navigation cube</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation type="unfinished">Steps by turn</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>边角</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation type="unfinished">Corner where navigation cube is shown</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>左上</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>右上</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>左下</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>右下</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>三维导航</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>鼠标...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation type="unfinished">Navigation settings set</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>环绕模式</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation type="unfinished">Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>转盘</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>轨迹球</translation>
+    </message>
+    <message>
+      <source>New document camera orientation</source>
+      <translation type="unfinished">New document camera orientation</translation>
+    </message>
+    <message>
+      <source>Camera orientation for new documents</source>
+      <translation type="unfinished">Camera orientation for new documents</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation type="unfinished">New document scale</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation type="unfinished">Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation type="unfinished">Enable animated rotations</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>启用动画</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>以光标为中心缩放</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>缩放步长</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>反向缩放</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>禁用触摸屏倾斜手势</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+    </message>
+    <message>
+      <source>Rotate at cursor</source>
+      <translation type="unfinished">Rotate at cursor</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>等轴测</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>二轴测</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>三轴测</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>俯视</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>前视</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左视</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>右视</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>后视</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>底视</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>自定义</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
@@ -3441,16 +3519,28 @@ Larger value eases to pick things, but can make small features impossible to sel
 Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
+      <source>Background color for the model view</source>
+      <translation type="unfinished">Background color for the model view</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation type="unfinished">Background will have selected color</translation>
+    </message>
+    <message>
       <source>Color gradient will get selected color as middle color</source>
       <translation type="unfinished">Color gradient will get selected color as middle color</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color gradient</source>
-      <translation type="unfinished">Background for parts will have selected color gradient</translation>
+      <source>Bottom color</source>
+      <translation type="unfinished">Bottom color</translation>
     </message>
     <message>
-      <source>Background for parts will have selected color</source>
-      <translation type="unfinished">Background for parts will have selected color</translation>
+      <source>Background will have selected color gradient</source>
+      <translation type="unfinished">Background will have selected color gradient</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation type="unfinished">Top color</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -4516,7 +4606,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
     </message>
   </context>
   <context>
@@ -4998,7 +5088,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5405,6 +5495,10 @@ Do you want to specify another directory?</source>
       <source>If you don't save, your changes will be lost.</source>
       <translation>如果您现在退出的话，您的更改将会丢失。</translation>
     </message>
+    <message>
+      <source>Edit text</source>
+      <translation>编辑文本</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
@@ -5521,11 +5615,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Slovak</source>
-      <translation>斯洛伐克文</translation>
+      <translation>斯洛伐克语</translation>
     </message>
     <message>
       <source>Turkish</source>
-      <translation>土耳其文</translation>
+      <translation>土耳其语</translation>
     </message>
     <message>
       <source>Slovenian</source>
@@ -5721,7 +5815,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
     </message>
     <message>
       <source>Opening file failed</source>
@@ -6395,7 +6489,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6414,8 +6508,8 @@ underscore, and must not start with a digit.</translation>
       <translation type="unfinished">Failed to save document</translation>
     </message>
     <message>
-      <source>Documents contains cyclic dependices. Do you still want to save them?</source>
-      <translation type="unfinished">Documents contains cyclic dependices. Do you still want to save them?</translation>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
     </message>
     <message>
       <source>Undo</source>

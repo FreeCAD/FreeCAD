@@ -1483,47 +1483,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="128"/>
+      <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
       <translation>Proložení povrchu</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="135"/>
+      <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
       <translation>Parametry</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="140"/>
+      <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
       <translation>Výběr</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="148"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Region</source>
       <translation>Region</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="154"/>
+      <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
       <translation>Trojúhelník</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="160"/>
+      <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
       <translation>Vyčistit</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
       <translation>Vypočítat</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
       <translation>Žádný výběr</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Vyberte oblast před proložením plochy.</translation>
     </message>
@@ -1782,29 +1782,29 @@ to a smoother appearance.
       <translation>Válec</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
-      <location filename="../../SegmentationBestFit.cpp" line="331"/>
+      <location filename="../../SegmentationBestFit.cpp" line="337"/>
+      <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
       <translation>Základna</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
       <translation>Normála</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="332"/>
+      <location filename="../../SegmentationBestFit.cpp" line="364"/>
       <source>Axis</source>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="333"/>
-      <location filename="../../SegmentationBestFit.cpp" line="360"/>
+      <location filename="../../SegmentationBestFit.cpp" line="365"/>
+      <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="359"/>
+      <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
       <translation>Střed</translation>
     </message>
@@ -1911,7 +1911,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="125"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Import-Export</translation>
     </message>

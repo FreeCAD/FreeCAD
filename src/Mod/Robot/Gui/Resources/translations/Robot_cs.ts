@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="314"/>
+      <location filename="../../TaskRobot6Axis.ui" line="313"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="331"/>
+      <location filename="../../TaskRobot6Axis.ui" line="329"/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>Nástroj: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="347"/>
+      <location filename="../../TaskRobot6Axis.ui" line="345"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1 s</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="292"/>
+      <location filename="../../TaskTrajectory.ui" line="291"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Pozice: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="318"/>
+      <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="323"/>
+      <location filename="../../TaskTrajectory.ui" line="322"/>
       <source>Name</source>
       <translation>Jméno</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="328"/>
+      <location filename="../../TaskTrajectory.ui" line="327"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="333"/>
+      <location filename="../../TaskTrajectory.ui" line="332"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="338"/>
+      <location filename="../../TaskTrajectory.ui" line="337"/>
       <source>A</source>
       <translation>A</translation>
     </message>

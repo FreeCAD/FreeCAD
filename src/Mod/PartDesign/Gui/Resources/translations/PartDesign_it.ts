@@ -515,7 +515,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Lega-forme</translation>
+      <translation>Lega forme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -1956,7 +1956,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
       <location filename="../../TaskPocketParameters.cpp" line="439"/>
       <source>Dimension</source>
-      <translation>Quota</translation>
+      <translation>Dimensione</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="42"/>
@@ -3288,7 +3288,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
       <source>Dimension</source>
-      <translation>Quota</translation>
+      <translation>Dimensione</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="358"/>

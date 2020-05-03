@@ -58,28 +58,76 @@ SET(Draft_utilities
     draftutils/README.md
 )
 
+SET(Draft_functions
+    draftfunctions/__init__.py
+)
+
+SET(Draft_make_functions
+    draftmake/__init__.py
+    draftmake/make_bezcurve.py
+    draftmake/make_block.py
+    draftmake/make_bspline.py
+    draftmake/make_circle.py
+    draftmake/make_clone.py
+    draftmake/make_ellipse.py
+    draftmake/make_facebinder.py
+    draftmake/make_line.py
+    draftmake/make_polygon.py
+    draftmake/make_point.py
+    draftmake/make_rectangle.py
+    draftmake/make_shapestring.py
+    draftmake/make_shape2dview.py
+    draftmake/make_sketch.py
+    draftmake/make_wire.py
+    draftmake/make_wpproxy.py
+)
+
 SET(Draft_objects
     draftobjects/__init__.py
+    draftobjects/base.py
+    draftobjects/bezcurve.py
+    draftobjects/block.py
+    draftobjects/bspline.py
     draftobjects/circulararray.py
+    draftobjects/circle.py
+    draftobjects/clone.py
+    draftobjects/ellipse.py
+    draftobjects/facebinder.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
     draftobjects/draft_annotation.py
     draftobjects/label.py
     draftobjects/dimension.py
+    draftobjects/point.py
+    draftobjects/polygon.py
+    draftobjects/rectangle.py
+    draftobjects/shapestring.py
+    draftobjects/shape2dview.py
     draftobjects/text.py
+    draftobjects/wire.py
+    draftobjects/wpproxy.py
     draftobjects/README.md
 )
 
 SET(Draft_view_providers
     draftviewproviders/__init__.py
+    draftviewproviders/view_base.py
+    draftviewproviders/view_bezcurve.py
+    draftviewproviders/view_bspline.py
     draftviewproviders/view_circulararray.py
+    draftviewproviders/view_clone.py
+    draftviewproviders/view_facebinder.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
     draftviewproviders/view_draft_annotation.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
+    draftviewproviders/view_point.py
+    draftviewproviders/view_rectangle.py
     draftviewproviders/view_text.py
+    draftviewproviders/view_wire.py
+    draftviewproviders/view_wpproxy.py
     draftviewproviders/README.md
 )
 
@@ -168,6 +216,8 @@ SET(Draft_SRCS_all
     ${Draft_import}
     ${Draft_tests}
     ${Draft_utilities}
+    ${Draft_functions}
+    ${Draft_make_functions}
     ${Draft_objects}
     ${Draft_view_providers}
     ${Draft_GUI_tools}
@@ -211,6 +261,8 @@ INSTALL(
 
 INSTALL(FILES ${Draft_tests} DESTINATION Mod/Draft/drafttests)
 INSTALL(FILES ${Draft_utilities} DESTINATION Mod/Draft/draftutils)
+INSTALL(FILES ${Draft_functions} DESTINATION Mod/Draft/draftfunctions)
+INSTALL(FILES ${Draft_make_functions} DESTINATION Mod/Draft/draftmake)
 INSTALL(FILES ${Draft_objects} DESTINATION Mod/Draft/draftobjects)
 INSTALL(FILES ${Draft_view_providers} DESTINATION Mod/Draft/draftviewproviders)
 INSTALL(FILES ${Draft_GUI_tools} DESTINATION Mod/Draft/draftguitools)

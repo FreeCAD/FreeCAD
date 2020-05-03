@@ -1484,47 +1484,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="128"/>
+      <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
       <translation>Aanpassing van het oppervlak</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="135"/>
+      <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
       <translation>Parameters</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="140"/>
+      <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
       <translation>Selectie</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="148"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Region</source>
       <translation>Sectie</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="154"/>
+      <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
       <translation>Driehoek</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="160"/>
+      <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
       <translation>Berekenen</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
       <translation>Geen selectie</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Selecteer een gebied alvorens het oppervlak aan te brengen.</translation>
     </message>
@@ -1783,29 +1783,29 @@ to a smoother appearance.
       <translation>Cilinder</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
-      <location filename="../../SegmentationBestFit.cpp" line="331"/>
+      <location filename="../../SegmentationBestFit.cpp" line="337"/>
+      <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
       <translation>Basis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
       <translation>Normaal</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="332"/>
+      <location filename="../../SegmentationBestFit.cpp" line="364"/>
       <source>Axis</source>
       <translation>As</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="333"/>
-      <location filename="../../SegmentationBestFit.cpp" line="360"/>
+      <location filename="../../SegmentationBestFit.cpp" line="365"/>
+      <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
       <translation>Straal</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="359"/>
+      <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
       <translation>Middelpunt</translation>
     </message>
@@ -1912,7 +1912,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="125"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
       <translation>Importeren-Exporteren</translation>
     </message>

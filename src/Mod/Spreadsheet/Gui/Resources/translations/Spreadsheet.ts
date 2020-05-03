@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -331,10 +331,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cell contents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -352,6 +348,19 @@
     </message>
     <message>
         <source>Sets the Spreadsheet cell(s) background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp; Paste failed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -438,6 +447,16 @@
     </message>
     <message>
         <source>&amp;Contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

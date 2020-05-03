@@ -386,7 +386,7 @@ class AngularDimension(DimensionBase):
 
     def onChanged(self,obj,prop):
         '''Do something when a property has changed'''
-        super().onChanged(obj, prop)
+        super(AngularDimension, self).onChanged(obj, prop)
         if hasattr(obj,"Angle"):
             obj.setEditorMode('Angle',1)
         if hasattr(obj,"Normal"):

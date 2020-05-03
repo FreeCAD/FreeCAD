@@ -46,9 +46,10 @@
 // we need to stop the axis point from moving along the axis we need to fix one
 // of the ordinates in the solution. So from our initial approximations for the
 // axis direction (L0,M0,N0):
-//      if (L0 > M0) && (L0 > N0) then fix Xc = 0 and use L = sqrt(1 - M^2 - N^2)
-// else if (M0 > L0) && (M0 > N0) then fix Yc = 0 and use M = sqrt(1 - L^2 - N^2)
-// else if (N0 > L0) && (N0 > M0) then fix Zc = 0 and use N = sqrt(1 - L^2 - M^2)
+//      if (L0 > M0) && (L0 > N0) then fix Xc = Mx and use L = sqrt(1 - M^2 - N^2)
+// else if (M0 > L0) && (M0 > N0) then fix Yc = My and use M = sqrt(1 - L^2 - N^2)
+// else if (N0 > L0) && (N0 > M0) then fix Zc = Mz and use N = sqrt(1 - L^2 - M^2)
+// where (Mx,My,Mz) is the mean of the input points (centre of gravity)
 // We thus solve for 5 unknown parameters.
 // Thus for the solution to succeed the initial axis direction should be reasonable.
 
@@ -92,6 +93,25 @@ void CylinderFit::SetApproximations(double radius, const Base::Vector3d &base, c
 	_vBase = base;
 	_vAxis = axis;
 	_vAxis.Normalize();
+}
+
+// Set approximations before calling the fitting. This version computes the radius
+// using the given axis and the existing surface points (which must already be added!)
+void CylinderFit::SetApproximations(const Base::Vector3d &base, const Base::Vector3d &axis)
+{
+	_bIsFitted = false;
+	_fLastResult = FLOAT_MAX;
+	_numIter = 0;
+	_vBase = base;
+	_vAxis = axis;
+	_vAxis.Normalize();
+	_dRadius = 0.0;
+	if (_vPoints.size() > 0)
+	{
+		for (std::list< Base::Vector3f >::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
+			_dRadius += Base::Vector3d(cIt->x, cIt->y, cIt->z).DistanceToLine(_vBase, _vAxis);
+		_dRadius /= (double)_vPoints.size();
+	}
 }
 
 // Set iteration convergence criteria for the fit if special values are needed.
@@ -156,7 +176,6 @@ float CylinderFit::GetStdDeviation() const
     // Mean: M=(1/N)*SUM Xi
     // Variance: VAR=(N/N-1)*[(1/N)*SUM(Xi^2)-M^2]
     // Standard deviation: SD=SQRT(VAR)
-    // Standard error of the mean: SE=SD/SQRT(N)
     if (!_bIsFitted)
         return FLOAT_MAX;
 
@@ -314,11 +333,10 @@ float CylinderFit::Fit()
 
 // Checks initial parameter values and defines the best solution direction to use
 // Axis direction = (L,M,N)
-// solution L: L is biggest axis component and L = f(M,N) and X = 0 (we move the base point along axis so that x = 0)
-// solution M: M is biggest axis component and M = f(L,N) and Y = 0 (we move the base point along axis so that y = 0)
-// solution N: N is biggest axis component and N = f(L,M) and Z = 0 (we move the base point along axis so that z = 0)
-// IMPLEMENT: use fix X,Y,or Z to value of associated centre of gravity coordinate 
-// (because 0 could be along way away from cylinder points)
+// solution L: L is biggest axis component and L = f(M,N) and X = Mx (we move the base point along axis to this x-value)
+// solution M: M is biggest axis component and M = f(L,N) and Y = My (we move the base point along axis to this y-value)
+// solution N: N is biggest axis component and N = f(L,M) and Z = Mz (we move the base point along axis to this z-value)
+// where (Mx,My,Mz) is the mean of the input points (centre of gravity)
 void CylinderFit::findBestSolDirection(SolutionD &solDir)
 {
 	// Choose the best of the three solution 'directions' to use
@@ -346,25 +364,61 @@ void CylinderFit::findBestSolDirection(SolutionD &solDir)
 	{
 		case solL:
 			lambda = -pos.x / dir.x;
-			pos.x = 0.0;
+			pos.x = 0.0;//meanXObs();
 			pos.y = pos.y + lambda * dir.y;
 			pos.z = pos.z + lambda * dir.z;
 			break;
 		case solM:
 			lambda = -pos.y / dir.y;
 			pos.x = pos.x + lambda * dir.x;
-			pos.y = 0.0;
+			pos.y = 0.0;//meanYObs();
 			pos.z = pos.z + lambda * dir.z;
 			break;
 		case solN:
 			lambda = -pos.z / dir.z;
 			pos.x = pos.x + lambda * dir.x;
 			pos.y = pos.y + lambda * dir.y;
-			pos.z = 0.0;
+			pos.z = 0.0;//meanZObs();
 			break;
 	}
 	_vAxis = dir;
 	_vBase = pos;
+}
+
+double CylinderFit::meanXObs()
+{
+	double mx = 0.0;
+	if (_vPoints.size() > 0)
+	{
+		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
+			mx += cIt->x;
+		mx /= double(_vPoints.size());
+	}
+	return mx;
+}
+
+double CylinderFit::meanYObs()
+{
+	double my = 0.0;
+	if (_vPoints.size() > 0)
+	{
+		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
+			my += cIt->y;
+		my /= double(_vPoints.size());
+	}
+	return my;
+}
+
+double CylinderFit::meanZObs()
+{
+	double mz = 0.0;
+	if (_vPoints.size() > 0)
+	{
+		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
+			mz += cIt->z;
+		mz /= double(_vPoints.size());
+	}
+	return mz;
 }
 
 // Set up the normal equation matrices
@@ -632,21 +686,21 @@ bool CylinderFit::updateParameters(SolutionD solDir, const Eigen::VectorXd &x)
 			if (l2 <= 0.0)
 				return false;	// L*L <= 0 !
 			_vAxis.x = sqrt(l2);
-			//_vBase.x = 0.0;	// should already be 0
+			//_vBase.x is fixed
 			break;
 		case solM:
 			m2 = 1.0 - _vAxis.x * _vAxis.x - _vAxis.z * _vAxis.z;
 			if (m2 <= 0.0)
 				return false;	// M*M <= 0 !
 			_vAxis.y = sqrt(m2);
-			//_vBase.y = 0.0;	// should already be 0
+			//_vBase.y is fixed
 			break;
 		case solN:
 			n2 = 1.0 - _vAxis.x * _vAxis.x - _vAxis.y * _vAxis.y;
 			if (n2 <= 0.0)
 				return false;	// N*N <= 0 !
 			_vAxis.z = sqrt(n2);
-			//_vBase.z = 0.0;	// should already be 0
+			//_vBase.z is fixed
 			break;
 	}
 

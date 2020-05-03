@@ -152,12 +152,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Kanten verbinden, wenn die Distanz kleiner ist als</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Ein Fehler ist aufgetreten</translation>
     </message>
   </context>
   <context>
@@ -281,12 +281,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Standardmesher verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Maximale lineare Ablenkung eines Netzabschnitts von der Oberfläche des Objekts</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Maximale Winkelabweichung eines Netzabschnitts zu dem nächsten Abschnitt</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
@@ -354,7 +354,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Schätzung</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -516,12 +516,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Unter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Über</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

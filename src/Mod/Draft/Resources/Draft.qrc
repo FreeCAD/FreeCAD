@@ -19,6 +19,7 @@
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_Circle.svg</file>
         <file>icons/Draft_CircularArray.svg</file>
+        <file>icons/Draft_CircularLinkArray.svg</file>
         <file>icons/Draft_Clone.svg</file>
         <file>icons/Draft_Construction.svg</file>
         <file>icons/Draft_Continue.svg</file>
@@ -62,6 +63,7 @@
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
         <file>icons/Draft_PolarArray.svg</file>
+        <file>icons/Draft_PolarLinkArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>
         <file>icons/Draft_Rectangle.svg</file>
         <file>icons/Draft_Rotate.svg</file>
