@@ -41,14 +41,16 @@ import traceback
 import uuid as UUID
 from functools import partial
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
 
+
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class _TableView(PySide.QtGui.QTableView):
     '''Subclass of QTableView to support rearrange and copying of ToolBits'''
@@ -108,20 +110,20 @@ class _TableView(PySide.QtGui.QTableView):
             # pylint: disable=unused-variable
             row = stream.readInt32()
             srcRows.append(row)
-            col = stream.readInt32()
-            #PathLog.track(row, col)
-            cnt = stream.readInt32()
-            for i in range(cnt):
-                key = stream.readInt32()
-                val = stream.readQVariant()
-                #PathLog.track('    ', i, key, val, type(val))
+            # col = stream.readInt32()
+            # PathLog.track(row, col)
+            # cnt = stream.readInt32()
+            # for i in range(cnt):
+            #     key = stream.readInt32()
+            #     val = stream.readQVariant()
+            # PathLog.track('    ', i, key, val, type(val))
             # I have no idea what these three integers are,
             # or if they even are three integers,
             # but it seems to work out this way.
-            i0 = stream.readInt32()
-            i1 = stream.readInt32()
-            i2 = stream.readInt32()
-            #PathLog.track('  ', i0, i1, i2)
+            # i0 = stream.readInt32()
+            # i1 = stream.readInt32()
+            # i2 = stream.readInt32()
+            # PathLog.track('  ', i0, i1, i2)
 
         # get the uuids of all srcRows
         model = self.model()
@@ -132,6 +134,7 @@ class _TableView(PySide.QtGui.QTableView):
         if PySide.QtCore.Qt.DropAction.MoveAction == event.proposedAction():
             for uuid in srcUuids:
                 model.removeRow(self._rowWithUuid(uuid))
+
 
 class ToolBitLibrary(object):
     '''ToolBitLibrary is the controller for displaying/selecting/creating/editing a collection of ToolBits.'''
@@ -147,7 +150,7 @@ class ToolBitLibrary(object):
         self.LibFiles = []
         if path:
             self.libraryLoad(path)
-        
+
         self.form.addToolController.setEnabled(False)
         self.form.ButtonRemoveToolTable.setEnabled(False)
         self.form.ButtonRenameToolTable.setEnabled(False)
@@ -216,9 +219,9 @@ class ToolBitLibrary(object):
     def toolDelete(self):
         PathLog.track()
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
-        for row in sorted(list(selectedRows), key = lambda r: -r):
+        for row in sorted(list(selectedRows), key=lambda r: -r):
             self.model.removeRows(row, 1)
-    
+
     def libraryDelete(self):
         PathLog.track()
         reply = QtGui.QMessageBox.question(self.form, 'Warning', "Delete " + os.path.basename(self.path) + "?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
@@ -266,13 +269,13 @@ class ToolBitLibrary(object):
         else:
             self.form.librarySave.setEnabled(False)
 
-    def libraryOpen(self, path = None,  filedialog=True):
+    def libraryOpen(self, path=None,  filedialog=True):
         import glob
         PathLog.track()
-        
+
         # Load default search path
         path = PathPreferences.lastPathToolLibrary()
-        
+
         if filedialog or len(path) == 0:
             path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary())
             if len(path) > 0:
@@ -285,24 +288,23 @@ class ToolBitLibrary(object):
         self.LibFiles.clear()
         self.form.lineLibPath.clear()
         self.form.lineLibPath.insert(path)
-        
+
         # Find all tool tables in directory
         for file in glob.glob(path + '/*.fctl'):
             self.LibFiles.append(file)
-	    
+
         self.LibFiles.sort()
-        
+
         # Add all tables to list
         for table in self.LibFiles:
             listWidgetItem = QtGui.QListWidgetItem()
             listItem = ToolTableListWidgetItem()
             listItem.setTableName(os.path.basename(table))
             listItem.setIcon(QtGui.QPixmap(':/icons/Path-ToolTable.svg'))
-            #listItem.toolMoved.connect(self.reloadReset)
-            listWidgetItem.setSizeHint(QtCore.QSize(0,40))
+            listWidgetItem.setSizeHint(QtCore.QSize(0, 40))
             self.form.TableList.addItem(listWidgetItem)
             self.form.TableList.setItemWidget(listWidgetItem, listItem)
-        
+
         self.path = []
         self.form.ButtonRemoveToolTable.setEnabled(False)
         self.form.ButtonRenameToolTable.setEnabled(False)
@@ -312,7 +314,7 @@ class ToolBitLibrary(object):
         self.model.setHorizontalHeaderLabels(self.columnNames())
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.setUpdatesEnabled(True)
-        
+
         # Search last selected table
         if len(self.LibFiles) > 0:
             for idx in range(len(self.LibFiles)):
@@ -321,7 +323,7 @@ class ToolBitLibrary(object):
             # Not found, select first entry
             if idx >= len(self.LibFiles):
                 idx = 0
-            
+
             # Load selected table
             self.libraryLoad(self.LibFiles[idx])
             self.form.TableList.setCurrentRow(idx)
@@ -339,7 +341,7 @@ class ToolBitLibrary(object):
                 library = json.load(fp)
 
             for toolBit in library['tools']:
-                nr  = toolBit['nr']
+                nr = toolBit['nr']
                 bit = PathToolBit.findBit(toolBit['path'])
                 if bit:
                     PathLog.track(bit)
@@ -359,15 +361,17 @@ class ToolBitLibrary(object):
     def libraryNew(self):
         self.libraryLoad(None)
         self.librarySaveAs()
-    
+
     def renameLibrary(self):
         name = self.form.TableList.itemWidget(self.form.TableList.currentItem()).getTableName()
-        newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
+        newName, ok = QtGui.QInputDialog.getText(None, translate(
+            "TooltableEditor", "Rename Tooltable"), translate(
+                "TooltableEditor", "Enter Name:"), QtGui.QLineEdit.Normal, name)
         if ok and newName:
             os.rename(PathPreferences.lastPathToolLibrary() + '/' + name, PathPreferences.lastPathToolLibrary() + '/' + newName)
             self.libraryOpen(filedialog=False)
 
-    #def createToolBit(self):
+    # def createToolBit(self):
     #    tool = PathToolBit.ToolBitFactory().Create()
 
     #    #self.dialog = PySide.QtGui.QDialog(self.form)
@@ -388,7 +392,7 @@ class ToolBitLibrary(object):
         library['version'] = 1
         library['tools'] = tools
         for row in range(self.model.rowCount()):
-            toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
+            toolNr = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
             toolPath = self.model.data(self.model.index(row, 0), _PathRole)
             if PathPreferences.toolsStoreAbsolutePaths():
                 tools.append({'nr': toolNr, 'path': toolPath})
@@ -403,7 +407,7 @@ class ToolBitLibrary(object):
             fp.write(";\n")
 
             for row in range(self.model.rowCount()):
-                toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
+                toolNr = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
                 toolPath = self.model.data(self.model.index(row, 0), _PathRole)
 
                 bit = PathToolBit.Factory.CreateFrom(toolPath)
@@ -421,41 +425,42 @@ class ToolBitLibrary(object):
                     voffset = bit.Voffset if hasattr(bit, "Voffset") else "0"
                     woffset = bit.Woffset if hasattr(bit, "Woffset") else "0"
 
-                    diameter = bit.Diameter if hasattr(bit, "Diameter") else "0"
+                    diameter = bit.Diameter.getUserPreferred()[0].split()[0] if hasattr(bit, "Diameter") else "0"
                     frontangle = bit.FrontAngle if hasattr(bit, "FrontAngle") else "0"
                     backangle = bit.BackAngle if hasattr(bit, "BackAngle") else "0"
                     orientation = bit.Orientation if hasattr(bit, "Orientation") else "0"
                     remark = bit.Label
 
-                    fp.write(f"T{toolNr} "\
-                            f"P{pocket} "\
-                            f"X{xoffset} "\
-                            f"Y{yoffset} "\
-                            f"Z{zoffset} "\
-                            f"A{aoffset} "\
-                            f"B{boffset} "\
-                            f"C{coffset} "\
-                            f"U{uoffset} "\
-                            f"V{voffset} "\
-                            f"W{woffset} "\
-                            f"D{diameter} "\
-                            f"I{frontangle} "\
-                            f"J{backangle} "\
-                            f"Q{orientation} ;"\
-                            f"{remark}\n")
+                    fp.write("T%s P%s X%s Y%s Z%s A%s B%s C%s U%s V%s W%s D%s I%s J%s Q%s ; %s\n" %
+                        (toolNr,
+                        pocket,
+                        xoffset,
+                        yoffset,
+                        zoffset,
+                        aoffset,
+                        boffset,
+                        coffset,
+                        uoffset,
+                        voffset,
+                        woffset,
+                        diameter,
+                        frontangle,
+                        backangle,
+                        orientation,
+                        remark))
 
                     FreeCAD.ActiveDocument.removeObject(bit.Name)
 
                 else:
-                    PathLog.error("Could not find tool #{}: {}".format(nr, library['tools'][nr]))
+                    PathLog.error("Could not find tool #{} ".format(toolNr))
 
     def librarySaveAs(self):
-        TooltableTypeJSON     = translate("PathToolLibraryManager", "Tooltable JSON (*.fctl)")
+        TooltableTypeJSON = translate("PathToolLibraryManager", "Tooltable JSON (*.fctl)")
         TooltableTypeLinuxCNC = translate("PathToolLibraryManager", "LinuxCNC tooltable (*.tbl)")
 
-        filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
-                translate("TooltableEditor", "Save toolbit library", None), \
-                PathPreferences.lastPathToolLibrary(), "{};;{}".format(TooltableTypeJSON, \
+        filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form,
+                translate("TooltableEditor", "Save toolbit library", None),
+                PathPreferences.lastPathToolLibrary(), "{};;{}".format(TooltableTypeJSON,
                     TooltableTypeLinuxCNC))
         # filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
         #        'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
@@ -505,7 +510,7 @@ class ToolBitLibrary(object):
         self.form.ButtonRemoveToolTable.clicked.connect(self.libraryDelete)
         self.form.ButtonRenameToolTable.clicked.connect(self.renameLibrary)
 
-        #self.form.libraryNew.clicked.connect(self.libraryNew)
+        # self.form.libraryNew.clicked.connect(self.libraryNew)
         self.form.libraryOpen.clicked.connect(partial(self.libraryOpen, filedialog=True))
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
@@ -522,11 +527,10 @@ class ToolBitLibrary(object):
 
 class ToolTableListWidgetItem(QtGui.QWidget):
     toolMoved = QtCore.Signal()
-  
+
     def __init__(self):
         super(ToolTableListWidgetItem, self).__init__()
-        
-        #self.tlm = TLM   
+
         self.setAcceptDrops(True)
 
         self.mainLayout = QtGui.QHBoxLayout()
@@ -536,31 +540,20 @@ class ToolTableListWidgetItem(QtGui.QWidget):
         self.mainLayout.addWidget(self.tableNameLabel, 1)
         self.setLayout(self.mainLayout)
 
-    def setTableName (self, text):
+    def setTableName(self, text):
         self.tableNameLabel.setText(text)
 
     def getTableName(self):
         return self.tableNameLabel.text()
 
-    def setIcon (self, icon):
+    def setIcon(self, icon):
         icon = icon.scaled(22, 22)
         self.iconQLabel.setPixmap(icon)
 
-    def dragEnterEvent(self, e):
-        #currentToolTable = self.tlm.getCurrentTableName()
-        thisToolTable = self.getTableName()
-      
-        #if not currentToolTable == thisToolTable:
-        #    e.accept()
-        #else:
-        #    e.ignore() 
+    # def dragEnterEvent(self, e):
+    #    currentToolTable = self.tlm.getCurrentTableName()
+    #    thisToolTable = self.getTableName()
 
     def dropEvent(self, e):
         selectedTools = e.source().selectedIndexes()
         print("Drop: {}, {}".format(selectedTools, selectedTools[1].data()))
-        #if selectedTools:
-            #toolData = selectedTools[1].data()
-        
-            #if toolData:
-                #self.tlm.moveToTable(int(toolData), self.getTableName())
-                #self.toolMoved.emit()
