@@ -124,6 +124,7 @@ class Line:
 		obj.addProperty("App::PropertyVector","p1","Line","Start point")
 		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(1,0,0)
 		obj.Proxy = self
+		obj.recompute()
 
 	def execute(self, fp):
 		''' Print a short message when doing a recomputation, this method is mandatory '''
