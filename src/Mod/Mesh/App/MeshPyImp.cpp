@@ -1726,14 +1726,26 @@ PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 PyObject*  MeshPy::decimate(PyObject *args)
 {
     float fTol, fRed;
-    if (!PyArg_ParseTuple(args, "ff", &fTol,&fRed))
-        return NULL;
+    if (PyArg_ParseTuple(args, "ff", &fTol,&fRed)) {
+        PY_TRY {
+            getMeshObjectPtr()->decimate(fTol, fRed);
+        } PY_CATCH;
 
-    PY_TRY {
-        getMeshObjectPtr()->decimate(fTol, fRed);
-    } PY_CATCH;
+        Py_Return;
+    }
 
-    Py_Return;
+    PyErr_Clear();
+    int targetSize;
+    if (PyArg_ParseTuple(args, "i", &targetSize)) {
+        PY_TRY {
+            getMeshObjectPtr()->decimate(targetSize);
+        } PY_CATCH;
+
+        Py_Return;
+    }
+
+    PyErr_SetString(PyExc_ValueError, "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
+    return nullptr;
 }
 
 PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
