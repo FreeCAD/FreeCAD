@@ -66,6 +66,12 @@ class SoClipPlane;
 class SoTimerSensor;
 class SoSensor;
 class SbBox3f;
+class SoShadowGroup;
+class SoShadowDirectionalLight;
+class SoShadowSpotLight;
+class SoFaceSet;
+class SoSwitch;
+class SoCoordinate3;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -234,8 +240,9 @@ public:
      */
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
     /// display override mode
-    void setOverrideMode(const std::string &mode);
+    void setOverrideMode(const std::string &mode, bool updateViewProviders=true);
     void updateOverrideMode(const std::string &mode);
+    void applyOverrideMode(bool updateViewProviders);
     std::string getOverrideMode() const {return overrideMode;}
     //@}
 
@@ -427,8 +434,8 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
-
-    static void onViewFitTimer(void *, SoSensor *);
+    void updateShadowGround(const SbBox3f &box);
+    void slotChangeDocument(const App::Document &, const App::Property &);
 
     enum eWinGestureTuneState{
         ewgtsDisabled, //suppress tuning/re-tuning after errors
@@ -468,6 +475,14 @@ private:
 
     SoMaterial  * pcRootMaterial;
     SoSeparator * pcViewProviderRoot;
+
+    SoShadowGroup            * pcShadowGroup;
+    SoShadowDirectionalLight * pcShadowDirectionalLight;
+    SoShadowSpotLight        * pcShadowSpotLight;
+    SoSwitch                 * pcShadowGroundSwitch;
+    SoCoordinate3            * pcShadowGroundCoords;
+    SoFaceSet                * pcShadowGround;
+    SoMaterial               * pcShadowMaterial;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
@@ -526,16 +541,15 @@ private:
     SbBool redirected;
     SbBool allowredir;
 
-    bool viewFitting;
-    SbTime viewFitTime;
-    SoTimerSensor *viewFitTimer;
-
     std::string overrideMode;
+    std::string vpOverrideMode;
     Gui::Document* guiDocument = nullptr;
 
     ViewerEventFilter* viewerEventFilter;
     
     PyObject *_viewerPy;
+
+    bool _applyingOverride = false;
 
     // friends
     friend class NavigationStyle;

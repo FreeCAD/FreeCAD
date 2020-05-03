@@ -147,6 +147,7 @@
         <file>DrawStyleHiddenLine.svg</file>
         <file>DrawStyleNoShading.svg</file>
         <file>DrawStyleTessellation.svg</file>
+        <file>DrawStyleShadow.svg</file>
         <file>user.svg</file>
         <file>Std_CoordinateSystem.svg</file>
         <file>Std_CoordinateSystem_alt.svg</file>

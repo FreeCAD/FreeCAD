@@ -645,6 +645,12 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a7->setObjectName(QString::fromLatin1("Std_DrawStyleTessellation"));
     a7->setShortcut(QKeySequence(QString::fromUtf8("V,8")));
     a7->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    QAction* a8 = pcAction->addAction(QString());
+    a8->setCheckable(true);
+    a8->setIcon(BitmapFactory().iconFromTheme("DrawStyleShadow"));
+    a8->setObjectName(QString::fromLatin1("Std_DrawStyleShadow"));
+    a8->setShortcut(QKeySequence(QString::fromUtf8("V,9")));
+    a8->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
 
     pcAction->setIcon(a0->icon());
@@ -702,6 +708,11 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Tessellation"));
     a[7]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Show lines of tessellation"));
+
+    a[8]->setText(QCoreApplication::translate(
+        "Std_DrawStyle", "Shadow"));
+    a[8]->setToolTip(QCoreApplication::translate(
+        "Std_DrawStyle", "Drop shadows for the scene"));
 }
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
@@ -752,6 +763,11 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
         actionGroup->setCheckedAction(7);
         return;
     }
+    if (mode == "Shadow")
+    {
+        actionGroup->setCheckedAction(8);
+        return;
+    }
     actionGroup->setCheckedAction(0);
 }
 
@@ -792,6 +808,9 @@ void StdCmdDrawStyle::activated(int iMsg)
                     break;
                 case 7:
                     (oneChangedSignal) ? viewer->updateOverrideMode("Tessellation") : viewer->setOverrideMode("Tessellation");
+                    break;
+                case 8:
+                    (oneChangedSignal) ? viewer->updateOverrideMode("Shadow") : viewer->setOverrideMode("Shadow");
                     break;
                 default:
                     (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");
