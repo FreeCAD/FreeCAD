@@ -447,6 +447,11 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             queryChildExport(obj);
             _Conns.push_back(obj->Visibility.signalChanged.connect(boost::bind(
                             &GroupExtension::slotChildChanged,this,_1)));
+            auto groupTouched = Base::freecad_dynamic_cast<PropertyBool>(
+                    obj->getPropertyByName("_GroupTouched"));
+            if(groupTouched && groupTouched->getContainer() == obj)
+                _Conns.push_back(groupTouched->signalChanged.connect(boost::bind(
+                                &GroupExtension::slotChildChanged,this,_1)));
         }
     } else if(p == &owner->Visibility) {
         if(!_togglingVisibility 
@@ -539,18 +544,20 @@ void GroupExtension::slotChildChanged(const Property &prop) {
             _GroupTouched.touch();
         }
 
-        auto owner = getExtendedObject();
-        auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
-                                owner->getPropertyByName("HiddenChildren"));
-        if(hiddenChildren && hiddenChildren->getContainer()==owner) {
-            std::map<std::string,std::string> hc;
-            for(auto obj : Group.getValues()) {
-                if(!obj || !obj->getNameInDocument())
-                    continue;
-                if(!obj->Visibility.getValue()) 
-                    hc.emplace(obj->getNameInDocument(),"");
+        if(strcmp(prop.getName(), "Visibility")==0) {
+            auto owner = getExtendedObject();
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                                    owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren && hiddenChildren->getContainer()==owner) {
+                std::map<std::string,std::string> hc;
+                for(auto obj : Group.getValues()) {
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    if(!obj->Visibility.getValue()) 
+                        hc.emplace(obj->getNameInDocument(),"");
+                }
+                hiddenChildren->setValues(std::move(hc));
             }
-            hiddenChildren->setValues(std::move(hc));
         }
     }
 }
