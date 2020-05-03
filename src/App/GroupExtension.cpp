@@ -450,7 +450,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         }
     } else if(p == &owner->Visibility) {
         if(!_togglingVisibility 
-                && !owner->isRestoring() 
+                && !owner->getDocument()->testStatus(Document::Restoring)
                 && !owner->getDocument()->isPerformingTransaction())
         {
             bool touched = false;
@@ -524,7 +524,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 void GroupExtension::slotChildChanged(const Property &prop) {
     auto obj = static_cast<DocumentObject*>(prop.getContainer());
     if(obj && !_togglingVisibility 
-           && !obj->isRestoring() 
+           && !obj->getDocument()->testStatus(Document::Restoring) 
            && !obj->getDocument()->isPerformingTransaction())
     {
         if(ExportMode.getValue() == EXPORT_BY_VISIBILITY
