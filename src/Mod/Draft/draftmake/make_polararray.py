@@ -36,7 +36,7 @@ from draftutils.translate import _tr
 
 def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
-                     use_link=True):
+                     use_link=True, axis_reference=None):
     """Create a polar array from the given object.
 
     Parameters
@@ -75,6 +75,11 @@ def make_polar_array(base_object,
         If `use_link` is `False` the original shape is copied many times.
         In this case the `Fuse` property is able to fuse
         all copies into a single object, if they touch each other.
+
+    axis_reference: axis_object, optional
+        It defaults to `None`.
+        If it is set the resulting array will use the referenced axis
+        as center instead of the `center` argument to create the array.
 
     Returns
     -------
@@ -130,5 +135,5 @@ def make_polar_array(base_object,
 
     new_obj = make_array.make_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
-                                    use_link=use_link)
+                                    use_link=use_link, axis_reference=axis_reference)
     return new_obj

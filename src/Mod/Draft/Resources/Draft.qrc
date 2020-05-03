@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Draft_2DShapeView.svg</file>
         <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
@@ -170,4 +170,4 @@
         <file>ui/TaskShapeString.ui</file>
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
     </qresource>
-</RCC> 
+</RCC>

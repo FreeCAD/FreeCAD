@@ -25,6 +25,7 @@
 # \ingroup DRAFT
 # \brief This module provides the task panel code for the PolarArray tool.
 
+import types
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -108,6 +109,9 @@ class TaskPanelPolarArray:
 
         self.form.spinbox_number.setValue(self.number)
 
+        self.form.label_axis_name.setText("")
+        self.axis_reference = None
+
         start_point = U.Quantity(0.0, App.Units.Length)
         length_unit = start_point.getUserPreferred()[2]
 
@@ -148,6 +152,7 @@ class TaskPanelPolarArray:
     def set_widget_callbacks(self):
         """Set up the callbacks (slots) for the widget signals."""
         # New style for Qt5
+        self.form.button_axis.clicked.connect(self.select_axis)
         self.form.button_reset.clicked.connect(self.reset_point)
 
         # When the checkbox changes, change the internal value
@@ -244,11 +249,12 @@ class TaskPanelPolarArray:
         # that would crash Coin3D if done in the event callback.
         _cmd = "Draft.make_polar_array"
         _cmd += "("
-        _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
+        _cmd += "App.ActiveDocument." + sel_obj.Name + ","
         _cmd += "number=" + str(self.number) + ", "
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
-        _cmd += "use_link=" + str(self.use_link)
+        _cmd += "use_link=" + str(self.use_link) + ", "
+        _cmd += "axis_reference=" + str(self.axis_reference)
         _cmd += ")"
 
         Gui.addModule('Draft')
@@ -278,6 +284,84 @@ class TaskPanelPolarArray:
                             U.Quantity(c_y_str).Value,
                             U.Quantity(c_z_str).Value)
         return center
+
+    def select_axis(self):
+        """Execute as callback when the axis button is clicked."""
+        #TO DO: Add handling of actually linking the axis
+
+        if self.form.button_axis.text() == "select":
+            self.disable_point()
+            #self.enable_axis_selection_cb()
+            self.form.button_axis.setText("abort")
+            self.initiate_axis_selection()
+            return
+        elif self.form.button_axis.text() == "abort":
+            self.enable_point()
+            self.form.label_axis_name.setText("")
+            self.form.button_axis.setText("select")
+            return
+        else:
+            self.axis_reference = None
+            self.enable_point()
+            self.form.button_axis.setText("select")
+            #self.disable_axis_selection_cb()
+
+    def initiate_axis_selection(self):
+        """Initiate the selection of an axis."""
+        if Gui.Selection.getSelectionEx():
+            return self.proceed()
+        _msg("Select an axis")
+
+        class AxisSelectionObserver:
+            def __init__(self, display_axis):
+                self.display_axis = display_axis
+            def addSelection(self, doc, objName, sub, pnt):
+                print("addSelection")
+                Gui.Selection.clearSelection(App.ActiveDocument.Name)
+                Gui.Selection.removeObserver(self)
+                axis_view_provider = Gui.ActiveDocument.getObject(objName)
+                axis = axis_view_provider.Object
+                self.display_axis(axis)
+            def removeSelection(self,doc,obj,sub):
+                print("removeSelection")
+            def setSelection(self,doc):
+                print("setSelection")
+            def clearSelection(self,doc):
+                print("clearSelection")
+
+        axis_observer = AxisSelectionObserver(self.display_axis)
+        Gui.Selection.addObserver(axis_observer)
+
+    def display_axis(self, axis):
+        """Show the selected axis in the Gui"""
+        _msg("Selected: {}".format(axis.Name))
+        self.axis_reference = "Gui.ActiveDocument.getObject('{}').Object".format(axis.Name)
+        self.form.label_axis_name.setText(axis.Name)
+        self.form.button_axis.setText("discard")
+
+    def disable_point(self):
+        """Disable point selection Gui elements"""
+        _msg(_tr("Disabling point"))
+        self.source_command.view.removeEventCallbackPivy(self.source_command.location,
+                                          self.source_command.callback_move)
+        self.source_command.view.removeEventCallbackPivy(self.source_command.mouse_event,
+                                          self.source_command.callback_click)
+        _msg(_tr("Setting input to readonly"))
+        self.form.input_c_x.setProperty('readOnly', True)
+        self.form.input_c_y.setProperty('readOnly', True)
+        self.form.input_c_z.setProperty('readOnly', True)
+
+    def enable_point(self):
+        """Enable point selection Gui elements"""
+        _msg(_tr("enabling point"))
+        self.source_command.view.addEventCallbackPivy(self.source_command.location,
+                                          self.source_command.callback_move)
+        self.source_command.view.addEventCallbackPivy(self.source_command.mouse_event,
+                                          self.source_command.callback_click)
+        _msg(_tr("Setting input to read/write"))
+        self.form.input_c_x.setProperty('readOnly', False)
+        self.form.input_c_y.setProperty('readOnly', False)
+        self.form.input_c_z.setProperty('readOnly', False)
 
     def reset_point(self):
         """Reset the center point to the original distance."""

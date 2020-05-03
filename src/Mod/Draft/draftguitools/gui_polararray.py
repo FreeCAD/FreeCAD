@@ -36,7 +36,7 @@ import draftutils.todo as todo
 
 from draftutils.messages import _msg, _log
 from draftutils.translate import _tr
-from draftguitools import gui_base
+from draftguitools import gui_base, gui_tool_utils
 from drafttaskpanels import task_polararray
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -115,6 +115,7 @@ class PolarArray(gui_base.GuiCommandBase):
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
+        return
         if event_cb:
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN

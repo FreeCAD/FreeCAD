@@ -41,7 +41,7 @@ if App.GuiUp:
 def make_array(base_object,
                arg1, arg2, arg3,
                arg4=None, arg5=None, arg6=None,
-               use_link=True):
+               use_link=True, axis_reference=None):
     """Create a Draft Array of the given object.
 
     Rectangular array
@@ -99,6 +99,7 @@ def make_array(base_object,
             new_obj.Center = arg4
             new_obj.NumberCircles = arg5
             new_obj.Symmetry = arg6
+            new_obj.AxisReference = axis_reference
         else:
             new_obj.ArrayType = "ortho"
             new_obj.IntervalX = arg1
@@ -118,7 +119,7 @@ def make_array(base_object,
         new_obj.Center = arg1
         new_obj.Angle = arg2
         new_obj.NumberPolar = arg3
-
+        new_obj.AxisReference = axis_reference
     if App.GuiUp:
         if use_link:
             ViewProviderDraftLink(new_obj.ViewObject)
