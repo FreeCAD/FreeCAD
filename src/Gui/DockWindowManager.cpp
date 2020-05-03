@@ -656,7 +656,10 @@ public:
                 "QAbstractSpinBox { background : palette(base);}"
                 "QTabWidget:pane { background-color: transparent; border: transparent }"
                 "QTabBar { background: transparent; border: none;}"
-                "QTabBar::tab {color: #1a1a1a; background-color: transparent; border: 1px solid palette(dark);}"
+                "QTabBar::tab {color: #1a1a1a;"
+                              "background-color: transparent;"
+                              "border: 1px solid palette(dark);"
+                              "padding: 3px}"
                 "QTabBar::tab:selected {color: palette(text); background-color: #aaaaaaaa;}"
                 "QTabBar::tab:hover {color: palette(text); background-color: palette(light);}"
                 "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
@@ -674,7 +677,10 @@ public:
                 "QAbstractButton:checked { background: palette(dark); border: 1px inset palette(dark) }"
                 "QAbstractButton:checked:hover { background: palette(light); border: 1px inset palette(dark) }"
                 "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
-                "QMenu { background: palette(window) }"
+                "QMenu, QMenu::item { color: palette(text); background-color: palette(window) }"
+                "QMenu::item::selected,"
+                "QMenu::item::pressed { color: palette(highlighted-text); background-color: palette(highlight)}"
+                "QMenu::item::disabled { color: palette(mid) }"
                 );
             activeStyleSheet = _default;
         }
