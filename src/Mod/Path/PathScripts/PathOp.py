@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -32,6 +31,11 @@ import PathScripts.PathUtils as PathUtils
 
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
+import time
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -119,6 +123,8 @@ class ObjectOp(object):
         obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"))
         obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "An optional comment for this Operation"))
         obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "User Assigned Label"))
+        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+        obj.setEditorMode('CycleTime', 1)  # read-only
 
         features = self.opFeatures(obj)
 
@@ -186,7 +192,7 @@ class ObjectOp(object):
     def setEditorModes(self, obj, features):
         '''Editor modes are not preserved during document store/restore, set editor modes for all properties'''
 
-        for op in ['OpStartDepth', 'OpFinalDepth', 'OpToolDiameter']:
+        for op in ['OpStartDepth', 'OpFinalDepth', 'OpToolDiameter', 'CycleTime']:
             if hasattr(obj, op):
                 obj.setEditorMode(op, 1) # read-only
 
@@ -222,6 +228,9 @@ class ObjectOp(object):
         if not hasattr(obj, 'EnableRotation'):
             obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
             obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
+
+        if not hasattr(obj, 'CycleTime'):
+            obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -518,7 +527,40 @@ class ObjectOp(object):
 
         path = Path.Path(self.commandlist)
         obj.Path = path
+        obj.CycleTime = self.getCycleTimeEstimate(obj)
+        self.job.Proxy.getCycleTime()
         return result
+
+    def getCycleTimeEstimate(self, obj):
+
+        tc = obj.ToolController
+
+        if tc is None or tc.ToolNumber == 0:
+            FreeCAD.Console.PrintError("No Tool Controller is selected. Tool feed rates required to calculate the cycle time.\n")
+            return translate('PathGui', 'Tool Error')
+
+        hFeedrate = tc.HorizFeed.Value
+        vFeedrate = tc.VertFeed.Value
+        hRapidrate = tc.HorizRapid.Value
+        vRapidrate = tc.VertRapid.Value
+
+        if hFeedrate == 0 or vFeedrate == 0:
+            FreeCAD.Console.PrintError("Tool Controller requires feed rates. Tool feed rates required to calculate the cycle time.\n")
+            return translate('PathGui', 'Feedrate Error')
+
+        if hRapidrate == 0 or vRapidrate == 0:
+            FreeCAD.Console.PrintWarning("Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.\n")
+
+        ## get the cycle time in seconds
+        seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+        
+        if not seconds:
+            return translate('PathGui', 'Cycletime Error')
+            
+        ## convert the cycle time to a HH:MM:SS format
+        cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
+
+        return cycleTime
 
     def addBase(self, obj, base, sub):
         PathLog.track(obj, base, sub)

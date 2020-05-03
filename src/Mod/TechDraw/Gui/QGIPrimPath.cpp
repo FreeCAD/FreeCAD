@@ -35,10 +35,12 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 
+#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIView.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIPrimPath::QGIPrimPath():
     m_width(0),
@@ -164,10 +166,7 @@ QColor QGIPrimPath::getNormalColor()
     if (parent != nullptr) {
         result = parent->getNormalColor();
     } else {
-        Base::Reference<ParameterGrp> hGrp = getParmGroup();
-        App::Color fcColor;
-        fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-        result = fcColor.asValue<QColor>();
+        result = PreferencesGui::normalQColor();
     }
 
     return result;
@@ -187,10 +186,7 @@ QColor QGIPrimPath::getPreColor()
     if (parent != nullptr) {
         result = parent->getPreColor();
     } else {
-        Base::Reference<ParameterGrp> hGrp = getParmGroup();
-        App::Color fcColor;
-        fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
-        result = fcColor.asValue<QColor>();
+        result = PreferencesGui::preselectQColor();
     }
     return result;
 }
@@ -209,10 +205,7 @@ QColor QGIPrimPath::getSelectColor()
     if (parent != nullptr) {
         result = parent->getSelectColor();
     } else {
-        Base::Reference<ParameterGrp> hGrp = getParmGroup();
-        App::Color fcColor;
-        fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
-        result = fcColor.asValue<QColor>();
+        result = PreferencesGui::selectQColor();
     }
     return result;
 }

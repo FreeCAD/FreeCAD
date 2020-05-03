@@ -55,10 +55,12 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "TaskGeomHatch.h"
+#include "PreferencesGui.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderGeomHatch.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObject)
 
@@ -184,10 +186,7 @@ void ViewProviderGeomHatch::updateGraphic(void)
 
 void ViewProviderGeomHatch::getParameters(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                        GetGroup("BaseApp")->GetGroup("Preferences")->
-                                        GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
     delete lg;                                                    //Coverity CID 174667

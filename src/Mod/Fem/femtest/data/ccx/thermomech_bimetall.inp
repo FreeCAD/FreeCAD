@@ -6114,7 +6114,7 @@ Evolumes
 2930,
 
 ***********************************************************
-** Node sets for fixed constraint
+** constraints fixed node sets
 ** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
@@ -6161,7 +6161,7 @@ Evolumes
 1521,
 
 ***********************************************************
-** Node sets for temperature constraints
+** constraints temperature node sets
 ** written by write_node_sets_constraints_temperature function
 ** ConstraintTemperature
 *NSET,NSET=ConstraintTemperature

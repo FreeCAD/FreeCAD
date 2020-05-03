@@ -42,11 +42,11 @@ import draftutils.todo as todo
 bool(Draft_rc.__name__)
 
 
-class GuiCommandCircularArray(gui_base.GuiCommandBase):
+class CircularArray(gui_base.GuiCommandBase):
     """Gui command for the CircularArray tool."""
 
     def __init__(self):
-        super().__init__()
+        super(CircularArray, self).__init__()
         self.command_name = "Circular array"
         self.location = None
         self.mouse_event = None
@@ -136,7 +136,7 @@ class GuiCommandCircularArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super().finish()
+            super(CircularArray, self).finish()
 
 
-Gui.addCommand('Draft_CircularArray', GuiCommandCircularArray())
+Gui.addCommand('Draft_CircularArray', CircularArray())

@@ -1526,7 +1526,7 @@ class svgHandler(xml.sax.ContentHandler):
                 # see issue #2062
                 sh = sh.transformGeometry(transform)
             return sh
-        elif Draft.getType(sh) == "Dimension":
+        elif Draft.getType(sh) in ["Dimension","LinearDimension"]:
             pts = []
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)

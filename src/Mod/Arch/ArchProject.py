@@ -21,6 +21,11 @@
 #*                                                                         *
 #***************************************************************************
 
+"""This module provides tools to build Project objects.  Project objects are
+objects specifically for better IFC compatibility, allowing the user to tweak
+certain IFC relevant values.
+"""
+
 import FreeCAD,Draft,ArchComponent,ArchCommands,math,re,datetime,ArchIFC,ArchIFCView
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -44,8 +49,23 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 def makeProject(sites=None, name="Project"):
+    """Create an Arch project.
 
-    '''makeProject(sites): creates a project aggregating the list of sites.'''
+    If sites are provided, add them as children of the new project.
+
+    Parameters
+    ----------
+    sites: list of <Part::FeaturePython>, optional
+        Sites to add as children of the project. Ultimately this could be
+        anything, however.
+    name: str, optional
+        The label for the project.
+
+    Returns
+    -------
+    <Part::FeaturePython>
+        The created project.
+    """
 
     if not FreeCAD.ActiveDocument:
         return FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -61,19 +81,38 @@ def makeProject(sites=None, name="Project"):
     return obj
 
 class _CommandProject:
+    """The command definition for the Arch workbench's gui tool, Arch Project. 
 
-    "the Arch Project command definition"
+    A tool for creating Arch projects.
+
+    Creates a project from the objects selected by the user that have the Site
+    IfcType, if any. 
+
+    Find documentation on the end user usage of Arch Project here:
+    https://wiki.freecadweb.org/Arch_Project
+    """
 
     def GetResources(self):
+        """Return a dictionary with the visual aspects of the Arch Project tool."""
         return {'Pixmap'  : 'Arch_Project',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Project", "Project"),
                 'Accel': "P, O",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Project", "Creates a project entity aggregating the selected sites.")}
 
     def IsActive(self):
+        """Determine whether or not the Arch Project tool is active. 
+
+        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
+        """
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+        """Executed when Arch Project is called.
+
+        Create a project from the objects selected by the user that have the
+        Site IfcType, if any. 
+        """
+
         selection = FreeCADGui.Selection.getSelection()
         siteobj = []
 
@@ -94,6 +133,16 @@ class _CommandProject:
         FreeCAD.ActiveDocument.recompute()
 
 class _Project(ArchIFC.IfcContext):
+    """The project object.
+
+    Takes a <Part::FeaturePython>, and turns it into a Project. Then takes a
+    list of Arch sites to own as its children.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObjectGroupPython> or <App::FeaturePython>
+        The object to turn into a Project.
+    """
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -101,6 +150,12 @@ class _Project(ArchIFC.IfcContext):
         obj.IfcType = "Project"
 
     def setProperties(self, obj):
+        """Give the object properties unique to projects.
+
+        Add the IFC context properties, and the group extension if it does not
+        already exist.
+        """
+
         ArchIFC.IfcContext.setProperties(self, obj)
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
@@ -108,15 +163,31 @@ class _Project(ArchIFC.IfcContext):
         self.Type = "Project"
 
     def onDocumentRestored(self, obj):
+        """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
 class _ViewProviderProject(ArchIFCView.IfcContextView):
+    """A View Provider for the project object.
+
+    Parameters
+    ----------
+    vobj: <Gui.ViewProviderDocumentObject>
+        The view provider to turn into a project view provider.
+    """
 
     def __init__(self,vobj):
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
 
     def getIcon(self):
+        """Return the path to the appropriate icon.
+
+        Returns
+        -------
+        str
+            Path to the appropriate icon .svg file.
+        """
+
         import Arch_rc
         return ":/icons/Arch_Project_Tree.svg"
 

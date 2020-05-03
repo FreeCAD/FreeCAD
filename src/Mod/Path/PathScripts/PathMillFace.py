@@ -25,13 +25,16 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 import numpy
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"

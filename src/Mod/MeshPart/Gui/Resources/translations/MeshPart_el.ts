@@ -157,7 +157,7 @@
     <message>
       <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Αποτυχία</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Το πλέγμα θα πάρει τα χρώματα των όψεων του αντικειμένου</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>

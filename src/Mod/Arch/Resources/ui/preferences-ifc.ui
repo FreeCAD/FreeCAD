@@ -7,26 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>495</height>
+    <height>577</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC</string>
+   <string>IFC import</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -388,6 +379,22 @@ FreeCAD object properties</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>IfcImportFreeCADProperties</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>If this option is checked, the default Project, Site, Building and Storeys objects that are usually found in an IFC file are not imported, and all objects are placed in a Group. Buildings and Storeys are still imported if there is more than one.</string>
+        </property>
+        <property name="text">
+         <string>Replace Project, Site, Building and Storey by Group</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcReplaceProject</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>

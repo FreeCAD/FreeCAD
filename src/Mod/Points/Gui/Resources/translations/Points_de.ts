@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Strukturierte Punktwolke</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>

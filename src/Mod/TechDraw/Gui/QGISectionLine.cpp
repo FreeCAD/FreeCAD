@@ -32,10 +32,12 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include <qmath.h>
 #include "Rez.h"
+#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGISectionLine.h"
 
@@ -282,10 +284,7 @@ void QGISectionLine::setSectionColor(QColor c)
 
 QColor QGISectionLine::getSectionColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x00000000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::sectionLineQColor();
 }
 
 //SectionLineStyle
@@ -297,10 +296,7 @@ void QGISectionLine::setSectionStyle(int style)
 
 Qt::PenStyle QGISectionLine::getSectionStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine", 2));
-    return sectStyle;
+    return PreferencesGui::sectionLineStyle();
 }
 
 //ASME("traditional") vs ISO("reference arrow method") arrows

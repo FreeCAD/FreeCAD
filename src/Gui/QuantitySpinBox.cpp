@@ -264,6 +264,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
     lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
+    lineEdit()->setTextMargins(0, 2, 0, 2);
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -549,6 +551,7 @@ void QuantitySpinBox::userInput(const QString & text)
     int pos = 0;
     QValidator::State state;
     Base::Quantity res = d->validateAndInterpret(tmp, pos, state);
+    res.setFormat(d->quantity.getFormat());
     if (state == QValidator::Acceptable) {
         d->validInput = true;
         d->validStr = text;
@@ -558,6 +561,7 @@ void QuantitySpinBox::userInput(const QString & text)
         tmp += QLatin1Char(' ');
         tmp += d->unitStr;
         Base::Quantity res2 = d->validateAndInterpret(tmp, pos, state);
+        res2.setFormat(d->quantity.getFormat());
         if (state == QValidator::Acceptable) {
             d->validInput = true;
             d->validStr = tmp;

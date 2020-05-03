@@ -45,11 +45,12 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 
+#include "PreferencesGui.h"
 #include "TaskWeldingSymbol.h"
-
 #include "ViewProviderWeld.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderWeld, TechDrawGui::ViewProviderDrawingView)
 
@@ -163,20 +164,12 @@ bool ViewProviderWeld::doubleClicked(void)
 
 std::string ViewProviderWeld::prefFontName(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                          GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return fontName;
+    return Preferences::labelFont();
 }
 
 double ViewProviderWeld::prefFontSize(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                 GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
-    return fontSize;
+    return Preferences::labelFontSizeMM();
 }
 
 double ViewProviderWeld::prefTileTextAdjust(void)

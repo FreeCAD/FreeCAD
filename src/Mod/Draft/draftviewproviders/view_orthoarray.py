@@ -1,8 +1,3 @@
-"""Provide the view provider code for Draft Array."""
-## @package view_orthoarray
-# \ingroup DRAFT
-# \brief Provide the view provider code for Draft Array.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -25,19 +20,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the view provider code for the ortho array object.
 
-import Draft
+Currently unused.
+"""
+## @package view_orthoarray
+# \ingroup DRAFT
+# \brief Provides the view provider code for the ortho array object.
+
 import Draft_rc
-ViewProviderDraftArray = Draft._ViewProviderDraftArray
+from Draft import _ViewProviderDraftArray as ViewProviderDraftArray
 
-# So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc else False
+# The module is used to prevent complaints from code checkers (flake8)
+True if Draft_rc.__name__ else False
 
 
 class ViewProviderOrthoArray(ViewProviderDraftArray):
+    """View provider for the ortho array object, currently unused."""
 
     def __init__(self, vobj):
-        super().__init__(self, vobj)
+        super().__init__(vobj)
 
     def getIcon(self):
+        """Set the icon in the tree view."""
         return ":/icons/Draft_Array"

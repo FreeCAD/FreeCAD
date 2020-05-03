@@ -49,12 +49,23 @@ def get_draft_drawing_commands():
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
     return ["Draft_Text", "Draft_Dimension",
-            "Draft_Label"]
+            "Draft_Label","Draft_AnnotationStyleEditor"]
 
 
 def get_draft_array_commands():
     """Return the array commands list."""
     return ["Draft_ArrayTools"]
+
+
+def get_draft_small_commands():
+    """Return a list with only some utilities."""
+    return ["Draft_Layer",
+            "Draft_WorkingPlaneProxy",
+            "Draft_ToggleDisplayMode",
+            "Draft_AddToGroup",
+            "Draft_SelectGroup",
+            "Draft_AddConstruction",
+            "Draft_Heal"]
 
 
 def get_draft_modification_commands():
@@ -73,9 +84,9 @@ def get_draft_modification_commands():
             "Draft_Upgrade", "Draft_Downgrade",
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
+            "Draft_Slope", "Draft_FlipDimension",
             "Separator",
-            "Draft_Shape2DView", "Draft_Drawing",
-            "Draft_WorkingPlaneProxy"]
+            "Draft_Shape2DView"]
     return lst
 
 
@@ -104,15 +115,16 @@ def get_draft_utility_commands():
 
 def get_draft_snap_commands():
     """Return the snapping commands list."""
-    return ['Draft_Snap_Lock', 'Draft_Snap_Midpoint',
-            'Draft_Snap_Perpendicular',
-            'Draft_Snap_Grid', 'Draft_Snap_Intersection',
-            'Draft_Snap_Parallel',
-            'Draft_Snap_Endpoint', 'Draft_Snap_Angle',
-            'Draft_Snap_Center',
-            'Draft_Snap_Extension', 'Draft_Snap_Near',
-            'Draft_Snap_Ortho', 'Draft_Snap_Special',
-            'Draft_Snap_Dimensions', 'Draft_Snap_WorkingPlane']
+    return ['Draft_Snap_Lock',
+            'Draft_Snap_Endpoint', 'Draft_Snap_Midpoint',
+            'Draft_Snap_Center', 'Draft_Snap_Angle',
+            'Draft_Snap_Intersection', 'Draft_Snap_Perpendicular',
+            'Draft_Snap_Extension', 'Draft_Snap_Parallel',
+            'Draft_Snap_Special', 'Draft_Snap_Near',
+            'Draft_Snap_Ortho', 'Draft_Snap_Grid',
+            'Draft_Snap_WorkingPlane', 'Draft_Snap_Dimensions',
+            'Separator', 'Draft_ToggleGrid'
+            ]
 
 
 def init_draft_toolbars(workbench):

@@ -72,9 +72,11 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "PreferencesGui.h"
 #include "QGIView.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
@@ -96,7 +98,8 @@ QGIView::QGIView()
     m_pen.setColor(m_colCurrent);
 
     //Border/Label styling
-    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
 
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
@@ -437,7 +440,8 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -449,7 +453,8 @@ void QGIView::drawCaption()
     if (getFrameState() || vp->KeepLabel.getValue()) {            //place below label if label visible
         m_caption->setY(displayArea.bottom() + labelHeight);
     } else {
-        m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
+//        m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
+        m_caption->setY(displayArea.bottom() + labelCaptionFudge * Preferences::labelFontSizeMM());
     }
     m_caption->show();
 }
@@ -478,7 +483,8 @@ void QGIView::drawBorder()
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
+    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
 
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
@@ -668,29 +674,17 @@ void QGIView::addArbitraryItem(QGraphicsItem* qgi)
 //TODO: change name to prefNormalColor()
 QColor QGIView::getNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
-    return m_colNormal;
+    return PreferencesGui::normalQColor();
 }
 
 QColor QGIView::getPreColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
-    m_colPre = fcColor.asValue<QColor>();
-    return m_colPre;
+    return PreferencesGui::preselectQColor();
 }
 
 QColor QGIView::getSelectColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroupCol();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
-    m_colSel = fcColor.asValue<QColor>();
-    return m_colSel;
+    return PreferencesGui::selectQColor();
 }
 
 Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
@@ -702,24 +696,17 @@ Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
 
 QString QGIView::getPrefFont()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return QString::fromStdString(fontName);
+    return Preferences::labelFontQString();
 }
 
 double QGIView::getPrefFontSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    return hGrp->GetFloat("LabelSize", DefaultFontSizeInMM);
+    return Preferences::labelFontSizeMM();
 }
 
 double QGIView::getDimFontSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetFloat("FontSize", DefaultFontSizeInMM);
+    return Preferences::dimFontSizeMM();
 }
 
 int QGIView::calculateFontPixelSize(double sizeInMillimetres)

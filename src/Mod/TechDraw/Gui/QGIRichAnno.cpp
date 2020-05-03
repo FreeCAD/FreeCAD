@@ -58,12 +58,14 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "ViewProviderRichAnno.h"
 #include "MDIViewPage.h"
@@ -342,22 +344,13 @@ QPen QGIRichAnno::rectPen() const
 
 QFont QGIRichAnno::prefFont(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    QString family = Base::Tools::fromStdString(fontName);
-    QFont result;
-    result.setFamily(family);
-    return result;
+    return PreferencesGui::labelFontQFont();
 }
 
 double QGIRichAnno::prefPointSize(void)
 {
 //    Base::Console().Message("QGIRA::prefPointSize()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
-
+    double fontSize = Preferences::dimFontSizeMM();
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.

@@ -160,7 +160,7 @@ class Edit:
     editing: Int
         Index of the editTracker that has been clicked by the
         user. Tracker selection mechanism is based on it.
-        if self.editing == None :
+        if self.editing is None :
             the user didn't click any node, and next click will
             be processed as an attempt to start editing operation
         if self.editing == o or 1 or 2 or 3 etc :

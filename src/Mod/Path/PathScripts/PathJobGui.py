@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
-import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
@@ -41,6 +39,11 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import traceback
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
+DraftVecUtils = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
 
 from PySide import QtCore, QtGui
 from collections import Counter
@@ -401,6 +404,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.form.stockExtXpos.textChanged.connect(self.checkXpos)
         self.form.stockExtYpos.textChanged.connect(self.checkYpos)
         self.form.stockExtZpos.textChanged.connect(self.checkZpos)
+        self.form.linkStockAndModel.setChecked(True)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
@@ -967,15 +971,25 @@ class TaskPanel:
     def modelSet0(self, axis):
         with selectionEx() as selection:
             for sel in selection:
-                model = sel.Object
+                selObject = sel.Object
                 for name in sel.SubElementNames:
-                    feature = model.Shape.getElement(name)
+                    feature = selObject.Shape.getElement(name)
                     bb = feature.BoundBox
                     offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
                     PathLog.track(feature.BoundBox.ZMax, offset)
-                    p = model.Placement
+                    p = selObject.Placement
                     p.move(offset)
-                    model.Placement = p
+                    selObject.Placement = p
+
+                    if self.form.linkStockAndModel.isChecked():
+                        # Also move the objects not selected
+                        # if selection is not model, move the model too
+                        # if the selection is not stock and there is a stock, move the stock too
+                        for model in self.obj.Model.Group:
+                            if model != selObject: 
+                                Draft.move(model, offset)
+                            if selObject != self.obj.Stock and self.obj.Stock: 
+                                Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
         scale = self.form.modelMoveValue.value()

@@ -60,9 +60,11 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "QGIFace.h"
 #include "QGIEdge.h"
 #include "QGIVertex.h"
@@ -540,11 +542,7 @@ void QGIViewPart::drawViewPart()
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Edges
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcEdgeColor;
-    fcEdgeColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    QColor edgeColor = fcEdgeColor.asValue<QColor>();
+    QColor edgeColor = PreferencesGui::normalQColor();
 
     const std::vector<TechDraw::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
     std::vector<TechDraw::BaseGeom *>::const_iterator itGeom = geoms.begin();
@@ -623,14 +621,10 @@ void QGIViewPart::drawViewPart()
 
 
     // Draw Vertexs:
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
-    QColor vertexColor = fcColor.asValue<QColor>();
+    QColor vertexColor = PreferencesGui::vertexQColor();
 
     bool showVertices = true;
     bool showCenterMarks = true;
@@ -907,7 +901,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
 //        double fontSize = getPrefFontSize();
-        double fontSize = getDimFontSize();
+//        double fontSize = getDimFontSize();
+        double fontSize = Preferences::dimFontSizeMM();
         if (horiz)  {
             double width = Rez::guiX(viewPart->getBoxX());
             double height = Rez::guiX(viewPart->getBoxY());
@@ -1011,7 +1006,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     }
 
     if (b) {
-        double fontSize = getPrefFontSize();
+//        double fontSize = getPrefFontSize();
+        double fontSize = Preferences::labelFontSizeMM();
         QGIHighlight* highlight = new QGIHighlight();
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?

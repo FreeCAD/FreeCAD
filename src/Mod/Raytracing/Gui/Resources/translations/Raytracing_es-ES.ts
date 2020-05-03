@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>Export a Raytracing project to a file</source>
-      <translation>Exportar un proyecto Raytracing a un archivo</translation>
+      <translation>Exportar el proyecto Raytracing a un archivo</translation>
     </message>
   </context>
   <context>
@@ -39,12 +39,12 @@
     <message>
       <location filename="../../Command.cpp" line="810"/>
       <source>No template</source>
-      <translation>Ninguna plantilla</translation>
+      <translation>Sin plantilla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="811"/>
       <source>No template available</source>
-      <translation>Ninguna plantilla disponible</translation>
+      <translation>No hay plantilla disponible</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation>Insertar un nuevo objeto part en un proyecto Raytracing</translation>
+      <translation>Insertar un nuevo objeto parcial en el proyecto Raytracing</translation>
     </message>
   </context>
   <context>
@@ -80,17 +80,17 @@
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <source>Insert new POV-Ray project into the document</source>
-      <translation>Inserte el nuevo proyecto de POV-Ray en el documento</translation>
+      <translation>Insertar nuevo proyecto POV-Ray en el documento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>No template</source>
-      <translation>Ninguna plantilla</translation>
+      <translation>Sin plantilla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>No template available</source>
-      <translation>Ninguna plantilla disponible</translation>
+      <translation>No hay plantilla disponible</translation>
     </message>
   </context>
   <context>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../../Command.cpp" line="591"/>
       <source>Renders the current raytracing project with an external renderer</source>
-      <translation>Renderiza al actual proyecto raytracing con un procesador externo</translation>
+      <translation>Renderiza el actual proyecto raytracing con un renderizador externo</translation>
     </message>
   </context>
   <context>
@@ -202,7 +202,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="352"/>
       <location filename="../../Command.cpp" line="787"/>
       <source>No template</source>
-      <translation>Ninguna plantilla</translation>
+      <translation>Sin plantilla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="353"/>
@@ -470,7 +470,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>La ruta al ejecutable de POV-Ray, si quiere renderizar desde %1</translation>
     </message>
   </context>
   <context>

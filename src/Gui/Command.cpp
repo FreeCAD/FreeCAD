@@ -1013,6 +1013,7 @@ Action * GroupCommand::createAction(void) {
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
+    pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
     int idx = -1;
 

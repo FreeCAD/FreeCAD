@@ -48,7 +48,9 @@
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
+#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -56,6 +58,7 @@
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 // there are only 5 frame line styles
 App::PropertyIntegerConstraint::Constraints ViewProviderRichAnno::LineStyleRange = {0, 5, 1};
@@ -165,36 +168,23 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
 
 App::Color ViewProviderRichAnno::getDefLineColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
-    App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    return result;
+    return PreferencesGui::leaderColor();
 }
 
 std::string ViewProviderRichAnno::getDefFont(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    return fontName;
+    return Preferences::labelFont();
 }
 
 double ViewProviderRichAnno::getDefFontSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);
-    return fontSize;
+    return Preferences::dimFontSizeMM();
 }
 
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
     double result = 0.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     result = lg->getWeight("Graphics");
     delete lg;

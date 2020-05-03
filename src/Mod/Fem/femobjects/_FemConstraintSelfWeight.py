@@ -66,3 +66,9 @@ class _FemConstraintSelfWeight(FemConstraint.Proxy):
         obj.Gravity_x = 0.0
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0
+
+        # https://wiki.freecadweb.org/Scripted_objects#Property_Type
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=20#p109709
+        # https://forum.freecadweb.org/viewtopic.php?t=25524
+        # obj.setEditorMode("References", 1)  # read only in PropertyEditor, but writeable by Python
+        obj.setEditorMode("References", 2)  # do not show in Editor

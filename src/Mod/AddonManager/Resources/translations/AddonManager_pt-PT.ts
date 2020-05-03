@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Caminho de instalação</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../AddonManager.py" line="192"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</translation>
+      <translation>Reinicie o FreeCAD para que as alterações tenham efeito. Ok para reiniciar ou Cancelar para reiniciar mais tarde.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="233"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../AddonManager.py" line="253"/>
       <source>update(s)</source>
-      <translation type="unfinished">update(s)</translation>
+      <translation>atualizar(s)</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="256"/>
@@ -59,42 +59,42 @@
     <message>
       <location filename="../../AddonManager.py" line="431"/>
       <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
-      <translation type="unfinished">Macro successfully installed. The macro is now available from the Macros dialog.</translation>
+      <translation>Macro instalada com sucesso. A macro está disponível na caixa de diálogo das Macros.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="433"/>
       <source>Unable to install</source>
-      <translation type="unfinished">Unable to install</translation>
+      <translation>Impossível instalar</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="495"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
-      <translation type="unfinished">Addon successfully removed. Please restart FreeCAD</translation>
+      <translation>Extra removido com sucesso. Por favor, reinicie o FreeCAD</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="497"/>
       <source>Unable to remove this addon</source>
-      <translation type="unfinished">Unable to remove this addon</translation>
+      <translation>Não foi possível remover este extra</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="503"/>
       <source>Macro successfully removed.</source>
-      <translation type="unfinished">Macro successfully removed.</translation>
+      <translation>Macro removida com sucesso.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="505"/>
       <source>Macro could not be removed.</source>
-      <translation type="unfinished">Macro could not be removed.</translation>
+      <translation>A macro não pode ser removida.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="127"/>
       <source>Unable to download addon list.</source>
-      <translation type="unfinished">Unable to download addon list.</translation>
+      <translation>Incapaz de descarregar a lista de extras.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="132"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>A lista de Bancadas de Trabalho foi atualizada.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="619"/>
@@ -104,42 +104,42 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="254"/>
       <source>List of macros successfully retrieved.</source>
-      <translation type="unfinished">List of macros successfully retrieved.</translation>
+      <translation>Lista de macros atualizada com sucesso.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="529"/>
       <source>Retrieving description...</source>
-      <translation type="unfinished">Retrieving description...</translation>
+      <translation>Obtendo descrição...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="347"/>
       <source>Retrieving info from</source>
-      <translation type="unfinished">Retrieving info from</translation>
+      <translation>Obtendo informações de</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="434"/>
       <source>An update is available for this addon.</source>
-      <translation type="unfinished">An update is available for this addon.</translation>
+      <translation>Uma atualização está disponível para esse extra.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="430"/>
       <source>This addon is already installed.</source>
-      <translation type="unfinished">This addon is already installed.</translation>
+      <translation>Este extra já está instalado.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="531"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Obtendo informações do git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="534"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Obtendo informações da wiki</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="583"/>
       <source>GitPython not found. Using standard download instead.</source>
-      <translation type="unfinished">GitPython not found. Using standard download instead.</translation>
+      <translation>GitPython não foi encontrado. Em vez disso, será usado o descarregamento padrão.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="588"/>
@@ -149,12 +149,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully installed. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Bancada de trabalho instalada com sucesso. Por favor, reinicie o FreeCAD para aplicar as alterações.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="703"/>
       <source>Missing workbench</source>
-      <translation type="unfinished">Missing workbench</translation>
+      <translation>Bancada de trabalho em falta</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="712"/>
@@ -169,77 +169,77 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="722"/>
       <source>Some errors were found that prevent to install this workbench</source>
-      <translation type="unfinished">Some errors were found that prevent to install this workbench</translation>
+      <translation>Foram encontrados erros que impedem a instalação desta bancada de trabalho</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="723"/>
       <source>Please install the missing components first.</source>
-      <translation type="unfinished">Please install the missing components first.</translation>
+      <translation>Por favor, instale os componentes em falta primeiro.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="747"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>Erro: Não foi possível descarregar</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="766"/>
       <source>Successfully installed</source>
-      <translation type="unfinished">Successfully installed</translation>
+      <translation>Instalado com sucesso</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="270"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
-      <translation type="unfinished">GitPython not installed! Cannot retrieve macros from git</translation>
+      <translation>GitPython não está instalado! Não é possível descarregar macros do git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="159"/>
       <source>Unable to clean macro code</source>
-      <translation type="unfinished">Unable to clean macro code</translation>
+      <translation>Não foi possível limpar código macro</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="566"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Instalado</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="585"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Atualização disponível</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="544"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Reinicio necessário</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="541"/>
       <source>This macro is already installed.</source>
-      <translation type="unfinished">This macro is already installed.</translation>
+      <translation>Esta macro já está instalada.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="664"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
-      <translation type="unfinished">A macro has been installed and is available under Macro -&gt; Macros menu</translation>
+      <translation>Uma macro foi instalada e está disponível no menu Macro -&gt; Macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Algo correu mal com a descarga da Macro do Git, possivelmente o executável Git não está no caminho especificado</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Este extra está marcado como obsoleto</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Isto geralmente significa que já não é mantido, e algum extra mais atualizado nesta lista fornece a mesma funcionalidade.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Erro: Não foi possível localizar o zip de</translation>
     </message>
   </context>
   <context>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addons manager</source>
-      <translation type="unfinished">Addons manager</translation>
+      <translation>Gestor de extras</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
@@ -267,47 +267,47 @@
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Downloading info...</source>
-      <translation type="unfinished">Downloading info...</translation>
+      <translation>Descarregando informações...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="150"/>
       <source>Update all</source>
-      <translation type="unfinished">Update all</translation>
+      <translation>Atualizar tudo</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="56"/>
       <source>Executes the selected macro, if installed</source>
-      <translation type="unfinished">Executes the selected macro, if installed</translation>
+      <translation>Executa a macro selecionada, se instalada</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="127"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>Desinstala uma macro ou bancada de trabalho selecionada</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="137"/>
       <source>Installs or updates the selected macro or workbench</source>
-      <translation type="unfinished">Installs or updates the selected macro or workbench</translation>
+      <translation>Instala ou atualiza a macro selecionada ou a bancada de trabalho</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="147"/>
       <source>Download and apply all available updates</source>
-      <translation type="unfinished">Download and apply all available updates</translation>
+      <translation>Baixar e aplicar todas as atualizações disponíveis</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="35"/>
       <source>Custom repositories (one per line):</source>
-      <translation type="unfinished">Custom repositories (one per line):</translation>
+      <translation>Repositórios personalizados (um por linha):</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="89"/>
       <source>Sets configuration options for the Addon Manager</source>
-      <translation type="unfinished">Sets configuration options for the Addon Manager</translation>
+      <translation>Define as opções de configuração para o Gestor de extras</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="92"/>
       <source>Configure...</source>
-      <translation type="unfinished">Configure...</translation>
+      <translation>Configurar...</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
