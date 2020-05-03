@@ -218,6 +218,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_SegmentationBestFit"
           << "Separator"
           << "Mesh_Smoothing"
+          << "Mesh_Decimating"
           << "Mesh_Scale"
           << "Separator"
           << "Mesh_BuildRegularSolid"
