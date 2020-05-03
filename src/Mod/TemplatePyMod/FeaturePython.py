@@ -156,7 +156,8 @@ class Octahedron:
 		obj.addProperty("App::PropertyLength","Height","Octahedron", "Height of the octahedron").Height=1.0
 		obj.addProperty("Part::PropertyPartShape","Shape","Octahedron", "Shape of the octahedron")
 		obj.Proxy = self
- 
+		obj.recompute()
+
 	def execute(self, fp):
 		# Define six vetices for the shape
 		v1 = FreeCAD.Vector(0,0,0)
