@@ -624,7 +624,7 @@ def makeCircleSet():
 	for j in range (630):
 		y=0.5
 		for i in range (630):
-			c = Part.makeCircle(0.1, Base.Vector(x,y,0), Base.Vector(0,0,1))
+			c = Part.makeCircle(0.1, FreeCAD.Vector(x,y,0), FreeCAD.Vector(0,0,1))
 			#Part.show(c)
 			comp.add(c)
 			y=y+0.5
@@ -693,12 +693,12 @@ class DistanceBolt:
 		radius = fp.Radius
 		height = fp.Height
 
-		m=Base.Matrix()
+		m=FreeCAD.Matrix()
 		m.rotateZ(math.radians(360.0/edges))
 
 		# create polygon
 		polygon = []
-		v=Base.Vector(length,0,0)
+		v=FreeCAD.Vector(length,0,0)
 		for i in range(edges):
 			polygon.append(v)
 			v = m.multiply(v)
@@ -712,7 +712,7 @@ class DistanceBolt:
 		face=Part.Face([wire,Part.Wire(circ)])
 
 		# Extrude in z to create the final solid
-		extrude=face.extrude(Base.Vector(0,0,height))
+		extrude=face.extrude(FreeCAD.Vector(0,0,height))
 		fp.Shape = extrude
 
 def makeDistanceBolt():
