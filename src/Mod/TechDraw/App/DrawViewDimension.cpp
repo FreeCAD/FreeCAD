@@ -51,6 +51,7 @@
 
 #include <Mod/Measure/App/Measurement.h>
 
+#include "Preferences.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
@@ -1165,11 +1166,7 @@ bool DrawViewDimension::showUnits() const
 
 bool DrawViewDimension::useDecimals() const
 {
-    bool result = false;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    result = hGrp->GetBool("UseGlobalDecimals", true);
-    return result;
+    return Preferences::useGlobalDecimals();
 }
 
 std::string DrawViewDimension::getPrefix() const

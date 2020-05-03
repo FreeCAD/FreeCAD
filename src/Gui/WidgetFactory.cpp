@@ -91,7 +91,8 @@ PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
 // This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
 // compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
 
-# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, SHIBOKEN_MICRO_VERSION)
+// Do not use SHIBOKEN_MICRO_VERSION; it might contain a dot
+# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
 # if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
 # define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
 # endif

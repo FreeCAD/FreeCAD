@@ -22999,7 +22999,7 @@ Efaces
 Efaces
 
 ***********************************************************
-** Node sets for fixed constraint
+** constraints fixed node sets
 ** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
@@ -23069,7 +23069,7 @@ Efaces
 197,
 
 ***********************************************************
-** Surfaces for contact constraint
+** constraints contact surface sets
 ** written by write_surfaces_constraints_contact function
 ** ConstraintContact
 *SURFACE, NAME=DEPConstraintContact
@@ -38398,7 +38398,7 @@ ConstraintFixed,6
 
 
 ***********************************************************
-** Node loads Constraints
+** constraints force node loads
 ** written by write_constraints_force function
 *CLOAD
 ** ConstraintForce

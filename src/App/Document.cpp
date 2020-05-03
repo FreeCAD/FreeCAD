@@ -3953,7 +3953,8 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
             bool doRecompute = Feat->isError() || Feat->_enforceRecompute
-                                               || !DocumentParams::OptimizeRecompute();
+                                               || !DocumentParams::OptimizeRecompute()
+                                               || testStatus(Status::Restoring);
             if(!doRecompute) {
                 static unsigned long long mask = (1<<Property::Output)
                                                | (1<<Property::PropOutput)

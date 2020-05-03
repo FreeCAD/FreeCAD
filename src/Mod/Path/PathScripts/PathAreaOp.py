@@ -28,9 +28,12 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
-import Draft
 import math
-import Part
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
 
 # from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
@@ -473,8 +476,9 @@ class ObjectOp(PathOp.ObjectOp):
                 sims.append(sim)
             # Eif
 
-            if self.areaOpRetractTool(obj):
-                self.endVector = None # pylint: disable=attribute-defined-outside-init
+            if self.areaOpRetractTool(obj) and self.endVector is not None:
+                self.endVector[2] = obj.ClearanceHeight.Value
+                self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         # Raise cutter to safe height and rotate back to original orientation
         if self.rotateFlag is True:

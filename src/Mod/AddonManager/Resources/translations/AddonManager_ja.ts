@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>インストール場所</translation>
     </message>
   </context>
   <context>
@@ -224,22 +224,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Gitマクロ検索で問題が起きました。Git 実行ファイルにパスが通っていない可能性があります。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>このアドオンは非推奨に設定されています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>通常はすでにメンテナンスがされていないことを意味します。このリストにあるさらに高度なアドオンが同じ機能を提供している場合があります。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>エラー: ZIP ファイルを以下から配置できません。</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
+      <translation>アドオン・マネージャーを閉じる</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -339,41 +339,38 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>このオプションが選択されている場合、アドオン・マネージャーの起動時にインストールされているアドオンに利用可能な更新があるかがチェックされます（システムにGitPythonパッケージがインストールされている必要があります）</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>開始時に更新を自動確認 （GitPython が必要）</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>このウィンドウを使用して利用可能なアドオンとしてスキャンされる追加アドオン・レポジトリーを指定できます</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>プロキシ </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>プロキシを使用しない</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>ユーザーシステムプロキシ</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>ユーザー定義プロキシ:</translation>
     </message>
   </context>
   <context>

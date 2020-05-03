@@ -131,9 +131,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <property name="locale">
-         <locale language="English" country="Germany"/>
-        </property>
         <property name="currentText">
          <string notr="true">ZigZag</string>
         </property>

@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>本节包含对 freecad 用户普遍有用的文档: 所有工作台的列表、有关如何安装和使用 freecad 应用程序、教程的详细说明以及入门所需的所有内容。</translation>
+      <translation>本节包含对 FreeCAD 用户普遍有用的文档: 所有工作台的列表、有关如何安装和使用 FreeCAD 应用程序、教程的详细说明以及入门所需的所有内容。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>本节收集高级用户和对编写python脚本感兴趣的人员的文档。您还可以在那里找到宏的存储库、有关如何安装和使用它们的说明, 以及有关根据您的特定需求自定义 freecad 的详细信息。</translation>
+      <translation>本节收集高级用户和对编写 python 脚本感兴趣的人员的文档。您还可以在那里找到宏的存储库、有关如何安装和使用它们的说明, 以及有关根据您的特定需求自定义 FreeCAD 的详细信息。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>本节包含供开发人员使用的材料: 如何自己编译 FreeCAD, FreeCAD源代码的结构, 以及如何浏览代码, 如何开发新的工作台以及/或在您自己的应用程序中嵌入FreeCAD。</translation>
+      <translation>本节包含供开发人员使用的材料: 如何自己编译 FreeCAD, FreeCAD 源代码的结构, 以及如何浏览代码, 如何开发新的工作台以及/或在您自己的应用程序中嵌入 FreeCAD。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>Freecad 手册是以另一种更直接方式来呈现包含在此维基中的信息。它是为了能像一本书一样阅读而制作的, 并将温和地从上面的各个中心向您介绍许多其他页面。 &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;电子书版本&lt;/a&gt; 也可使用。</translation>
+      <translation>FreeCAD 手册是以另一种更直接方式来呈现包含在此维基中的信息。它是为了能像一本书一样阅读而制作的, 并将温和地从上面的各个中心向您介绍许多其他页面。 &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;电子书版本&lt;/a&gt; 也可使用。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt; FreeCAD 论坛&lt;/a&gt;是从其他 FreeCAD 用户和开发人员那里获得帮助的好地方。 该论坛有许多部分，讨论不同类型的问题和讨论主题。 如有疑问，请在更一般的&lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;使用 FreeCAD 的帮助&lt;/a&gt; 部分中发布。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD 也保持开放 &lt;a href="https://www.freecadweb.org/tracker"&gt;bug Tracker&lt;/a&gt; 任何人都可以提交bug 和提出新功能。为了避免造成额外的工作，并且提供最佳机会查看您的bug被解决，请确保您阅读了 &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;错误提交指南&lt;/a&gt; 之前。</translation>
+      <translation>FreeCAD 也保持开放 &lt;a href="https://www.freecadweb.org/tracker"&gt;bug Tracker&lt;/a&gt; 任何人都可以提交 bug 和提出新功能。为了避免造成额外的工作，并且提供最佳机会查看您的 bug 被解决，请确保您阅读了 &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;错误提交指南&lt;/a&gt; 之前。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>如果未与您的 FreeCAD 版本捆绑在一起，请安装 FreeCAD 文档包以获取文档中心，工作台帮助和单独的命令文档，而无需连接因特网。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation>&lt;a href="https://forum.freecadweb.org"&gt;FreeCAD论坛&lt;/a&gt;上的最新帖子</translation>
+      <translation>&lt;a href="https://forum.freecadweb.org"&gt;FreeCAD 论坛&lt;/a&gt;上的最新帖子：</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>一个可选的 HTML 模板，将代替默认的起始页面使用。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <translation>如果您希望示例显示在第一页上</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
       <source>Show notepad</source>
-      <translation type="unfinished">Show notepad</translation>
+      <translation>显示记事本</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+      <translation>在文件缩略图旁边显示一个记事本，您可以在其中保存整个 FreeCAD 会话的记事</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation>在 FreeCAD中</translation>
+      <translation>在 FreeCAD 中</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>如果选中此选项，则如果在“常规”首选项中指定了样式表，则将使用该样式表并覆盖下面的颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>在起始页上使用的字体系列。 可以是字体名称或逗号分隔的后备字体系列</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation type="unfinished">Close &amp; switch on file open</translation>
+      <translation>关闭并打开文件</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>

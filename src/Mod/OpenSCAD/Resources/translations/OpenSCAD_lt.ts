@@ -91,12 +91,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="383"/>
       <source>Deflection</source>
-      <translation>Įlinkis</translation>
+      <translation>Nuokrypis</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="386"/>
       <source>deflection</source>
-      <translation>įlinkis</translation>
+      <translation>nuokrypis</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="393"/>
@@ -309,12 +309,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="157"/>
       <source>Refine Shape Feature</source>
-      <translation>Pagerinti figūros formos savybes</translation>
+      <translation>Patobulinti figūros pavidalą</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Sukurti figūros formos savybių pagerinimą</translation>
+      <translation>Sukurti patobulintą pavidalą</translation>
     </message>
   </context>
   <context>

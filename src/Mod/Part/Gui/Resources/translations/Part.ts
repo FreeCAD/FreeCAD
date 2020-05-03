@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>AttachmentEditor</name>
     <message>
@@ -99,6 +99,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+        <source>Attachment Offset (in local coordinates):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
         <source>Attachment Offset (inactive - not attached):</source>
         <translation type="unfinished"></translation>
@@ -132,15 +137,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+        <source>Computing the result failed with an error: 
+
+{err}
+
+Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
         <source>Bad selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
         <source>Computing the result failed with an error: 
 
-{err}
+{errstr}
 
 Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
         <translation type="unfinished"></translation>
@@ -3838,7 +3852,7 @@ Please check one or more edge entities first.</source>
         <source>Maximum angular deflection</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
         <source> °</source>
         <translation type="unfinished"></translation>

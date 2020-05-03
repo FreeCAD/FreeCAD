@@ -19,6 +19,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
+
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Units
 from FreeCAD import Vector
@@ -771,7 +773,6 @@ class _CommandWindow:
         self.librarypresets = []
         librarypath = FreeCAD.ParamGet('User parameter:Plugins/parts_library').GetString('destination','')
         if librarypath:
-            import os
             if os.path.exists(librarypath):
                 for wtype in ["Windows","Doors"]:
                     wdir = os.path.join(librarypath,"Architectural Parts",wtype)

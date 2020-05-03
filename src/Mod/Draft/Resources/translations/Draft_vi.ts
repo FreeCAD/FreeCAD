@@ -4,209 +4,9 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../Draft.py" line="3179"/>
-      <source>Defines a hatch pattern</source>
-      <translation>Xác định mẫu hatch tô vật liệu</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3180"/>
-      <source>Sets the size of the pattern</source>
-      <translation>Thiết lập kích thước của mô hình</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3356"/>
-      <source>Startpoint of dimension</source>
-      <translation>Điểm bắt đầu của kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3357"/>
-      <source>Endpoint of dimension</source>
-      <translation>Điểm cuối của kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3876"/>
-      <source>Point through which the dimension line passes</source>
-      <translation>Điểm dòng kẻ kích thước đã thông qua</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3879"/>
-      <source>The object measured by this dimension</source>
-      <translation>Đối tượng được đo đạc bằng kích thước này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3880"/>
-      <source>The geometry this dimension is linked to</source>
-      <translation>Hình dạng kích thước này được liên kết với</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3881"/>
-      <source>The measurement of this dimension</source>
-      <translation>Đo lường kích thước này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3364"/>
-      <source>For arc/circle measurements, false = radius, true = diameter</source>
-      <translation>Đối với phép đo vòng cung / vòng tròn, Sai = bán kính, Đúng = đường kính</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3903"/>
-      <source>Font size</source>
-      <translation>Cỡ phông chữ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3904"/>
-      <source>The number of decimals to show</source>
-      <translation>Số lượng số thập phân được hiển thị</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4520"/>
-      <source>Arrow size</source>
-      <translation>Kích cỡ mũi tên</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3907"/>
-      <source>The spacing between the text and the dimension line</source>
-      <translation>Khoảng cách giữa các chữ và đường kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4521"/>
-      <source>Arrow type</source>
-      <translation>Loại mũi tên</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3905"/>
-      <source>Font name</source>
-      <translation>Tên phông chữ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6331"/>
-      <source>Line width</source>
-      <translation>Chiều rộng đường vẽ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6332"/>
-      <source>Line color</source>
-      <translation>Màu đường vẽ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3446"/>
-      <source>Length of the extension lines</source>
-      <translation>Chiều dài của đường mở rộng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3911"/>
-      <source>Rotate the dimension arrows 180 degrees</source>
-      <translation>Xoay mũi tên kích thước sang 180 độ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3450"/>
-      <source>Rotate the dimension text 180 degrees</source>
-      <translation>Xoay kích cỡ chữ sang 180 độ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3912"/>
-      <source>Show the unit suffix</source>
-      <translation>Hiển thị các đơn vị đi kèm</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3913"/>
-      <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation>Vị trí của văn bản. Đặt (0,0,0) là vị trí tự động</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3454"/>
-      <source>Text override. Use $dim to insert the dimension length</source>
-      <translation>Ghi đè văn bản. Sử dụng $dim để chèn chiều dài kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3455"/>
-      <source>A unit to express the measurement. Leave blank for system default</source>
-      <translation>Đơn vị để thực hiện các phép tính đo lường. Để trống nếu sử dụng mặc định của hệ thống</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3874"/>
-      <source>Start angle of the dimension</source>
-      <translation>Góc bắt đầu của kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3875"/>
-      <source>End angle of the dimension</source>
-      <translation>Góc cuối của kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3877"/>
-      <source>The center point of this dimension</source>
-      <translation>Trung điểm của kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3878"/>
-      <source>The normal direction of this dimension</source>
-      <translation>Phương pháp tuyến của kích thước này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3914"/>
-      <source>Text override. Use 'dim' to insert the dimension length</source>
-      <translation>Ghi đè văn bản. Sử dụng $dim để chèn chiều dài kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4192"/>
-      <source>Length of the rectangle</source>
-      <translation>Chiều dài của hình chữ nhật</translation>
-    </message>
-    <message>
       <location filename="../../DraftFillet.py" line="151"/>
       <source>Radius to use to fillet the corners</source>
       <translation>Bán kính để sử dụng để điền vào các góc</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4621"/>
-      <source>Size of the chamfer to give to the corners</source>
-      <translation>Kích thước của các mặt vát để cung cấp cho các góc</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4622"/>
-      <source>Create a face</source>
-      <translation>Tạo ra một bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4277"/>
-      <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation>Xác định một hình ảnh kết cấu (ghi đè lên các mẫu vạch chéo hatch)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4313"/>
-      <source>Start angle of the arc</source>
-      <translation>Góc bắt đầu của vòng cung</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4314"/>
-      <source>End angle of the arc (for a full circle, give it same value as First Angle)</source>
-      <translation>Góc kết thúc của vòng cung (cho một vòng tròn đầy đủ, có cùng giá trị như Góc đầu tiên)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4286"/>
-      <source>Radius of the circle</source>
-      <translation>Bán kính của hình tròn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4315"/>
-      <source>The minor radius of the ellipse</source>
-      <translation>Bán kính nhỏ của hình bầu dục (ellipse)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4316"/>
-      <source>The major radius of the ellipse</source>
-      <translation>Bán kính lớn của hình bầu dục (ellipse)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4353"/>
-      <source>The vertices of the wire</source>
-      <translation>Các đỉnh của dây dẫn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4354"/>
-      <source>If the wire is closed or not</source>
-      <translation>Nếu dây đóng hay mở</translation>
     </message>
     <message>
       <location filename="../../DraftFillet.py" line="148"/>
@@ -224,504 +24,154 @@
       <translation>Chiều dài của dòng này</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4362"/>
-      <source>Create a face if this object is closed</source>
-      <translation>Tạo bề mặt nếu đối tượng này bị đóng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4363"/>
-      <source>The number of subdivisions of each edge</source>
-      <translation>Số lượng phân vùng của mỗi cạnh</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4617"/>
-      <source>Number of faces</source>
-      <translation>Số lượng bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4618"/>
-      <source>Radius of the control circle</source>
-      <translation>Bán kính của vòng tròn điều khiển</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4619"/>
-      <source>How the polygon must be drawn from the control circle</source>
-      <translation>Làm sao để vẽ đa giác từ vòng tròn điều khiển</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4670"/>
+      <location filename="../../Draft.py" line="2525"/>
       <source>Projection direction</source>
       <translation>Hướng chiếu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4671"/>
+      <location filename="../../Draft.py" line="2526"/>
       <source>The width of the lines inside this object</source>
       <translation>Chiều rộng của các dòng bên trong bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4672"/>
+      <location filename="../../Draft.py" line="2527"/>
       <source>The size of the texts inside this object</source>
       <translation>Kích thước của các văn bản bên trong bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4673"/>
+      <location filename="../../Draft.py" line="2528"/>
       <source>The spacing between lines of text</source>
       <translation>Khoảng cách giữa các dòng chữ</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4674"/>
+      <location filename="../../Draft.py" line="2529"/>
       <source>The color of the projected objects</source>
       <translation>Màu sắc của các vật thể được chiếu</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4675"/>
+      <location filename="../../Draft.py" line="2530"/>
       <source>The linked object</source>
       <translation>Đối tượng được liên kết</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4676"/>
+      <location filename="../../Draft.py" line="2531"/>
       <source>Shape Fill Style</source>
       <translation>Lấp đầy hình khối</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4677"/>
+      <location filename="../../Draft.py" line="2532"/>
       <source>Line Style</source>
       <translation>Kiểu đường</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4678"/>
+      <location filename="../../Draft.py" line="2533"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Nếu được chọn, các đối tượng sẽ hiển thị bất kể chúng có hiển thị trong mô hình 3D hay không</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4735"/>
-      <source>Create a face if this spline is closed</source>
-      <translation>Tạo ra một bề mặt nếu đường cong spline bị đóng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4744"/>
-      <source>Parameterization factor</source>
-      <translation>Yếu tố tham số</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4813"/>
-      <source>The points of the Bezier curve</source>
-      <translation>Các điểm đường cong Bezier</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4814"/>
-      <source>The degree of the Bezier function</source>
-      <translation>Mức độ chức năng Bezier</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4815"/>
-      <source>Continuity</source>
-      <translation>Liên tục</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4816"/>
-      <source>If the Bezier curve should be closed or not</source>
-      <translation>Nếu đường cong Bezier nên đóng hay mở</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4817"/>
-      <source>Create a face if this curve is closed</source>
-      <translation>Tạo ra một bề mặt nếu đường cong bị đóng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4943"/>
-      <source>The components of this block</source>
-      <translation>Các thành phần của khối này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4961"/>
-      <source>The base object this 2D view must represent</source>
-      <translation>Đối tượng cơ sở mà chế độ 2D này đại diện</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4962"/>
-      <source>The projection vector of this object</source>
-      <translation>Các vector chiếu của đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4963"/>
-      <source>The way the viewed object must be projected</source>
-      <translation>Phương pháp chiếu được áp dụng cho các đối tượng quan sát</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4964"/>
-      <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation>Chỉ số bề mặt được chiếu trong chế độ từng bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4965"/>
-      <source>Show hidden lines</source>
-      <translation>Hiển thị những đường bị ẩn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5431"/>
+      <location filename="../../Draft.py" line="2888"/>
       <source>The base object that must be duplicated</source>
       <translation>Đối tượng cơ sở đó phải được nhân đôi</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5290"/>
+      <location filename="../../Draft.py" line="2728"/>
       <source>The type of array to create</source>
       <translation>Kiểu dãy được chọn</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5291"/>
+      <location filename="../../Draft.py" line="2730"/>
       <source>The axis direction</source>
       <translation>Hướng trục</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5292"/>
+      <location filename="../../Draft.py" line="2731"/>
       <source>Number of copies in X direction</source>
       <translation>Số lượng bản sao trong hướng X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5293"/>
+      <location filename="../../Draft.py" line="2732"/>
       <source>Number of copies in Y direction</source>
       <translation>Số lượng bản sao trong hướng Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5294"/>
+      <location filename="../../Draft.py" line="2733"/>
       <source>Number of copies in Z direction</source>
       <translation>Số lượng bản sao trong hướng Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5434"/>
+      <location filename="../../Draft.py" line="2891"/>
       <source>Number of copies</source>
       <translation>Số lượng bản sao</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5296"/>
+      <location filename="../../Draft.py" line="2735"/>
       <source>Distance and orientation of intervals in X direction</source>
       <translation>Khoảng cách và định hướng các khoảng theo hướng X</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5297"/>
+      <location filename="../../Draft.py" line="2736"/>
       <source>Distance and orientation of intervals in Y direction</source>
       <translation>Khoảng cách và định hướng các khoảng theo hướng Y</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5298"/>
+      <location filename="../../Draft.py" line="2737"/>
       <source>Distance and orientation of intervals in Z direction</source>
       <translation>Khoảng cách và định hướng các khoảng theo hướng Z</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5299"/>
+      <location filename="../../Draft.py" line="2738"/>
       <source>Distance and orientation of intervals in Axis direction</source>
       <translation>Khoảng cách và định hướng các khoảng theo hướng trục</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5300"/>
+      <location filename="../../Draft.py" line="2739"/>
       <source>Center point</source>
       <translation>Trung điểm</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5301"/>
+      <location filename="../../Draft.py" line="2740"/>
       <source>Angle to cover with copies</source>
       <translation>Bao phủ góc bằng bản sao</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5306"/>
+      <location filename="../../Draft.py" line="2745"/>
       <source>Specifies if copies must be fused (slower)</source>
       <translation>Chỉ định nếu bản sao phải được hợp nhất (chậm hơn)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5432"/>
+      <location filename="../../Draft.py" line="2889"/>
       <source>The path object along which to distribute objects</source>
       <translation>Dùng đối tượng phương tuyến để phân phối các đối tượng</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5433"/>
+      <location filename="../../Draft.py" line="2890"/>
       <source>Selected subobjects (edges) of PathObj</source>
       <translation>Chọn subobjects (cạnh) của PathObj</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5435"/>
+      <location filename="../../Draft.py" line="2892"/>
       <source>Optional translation vector</source>
       <translation>Tuỳ chọn dịch thuật vector</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5436"/>
+      <location filename="../../Draft.py" line="2893"/>
       <source>Orientation of Base along path</source>
       <translation>Định hướng cơ sở dọc theo phương tuyến</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5556"/>
-      <source>X Location</source>
-      <translation>Vị trí X</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5557"/>
-      <source>Y Location</source>
-      <translation>Vị trí Y</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5558"/>
-      <source>Z Location</source>
-      <translation>Vị trí Z</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5758"/>
-      <source>Text string</source>
-      <translation>Chuỗi văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5759"/>
-      <source>Font file name</source>
-      <translation>Tên tập phông</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5760"/>
-      <source>Height of text</source>
-      <translation>Chiều cao phông chữ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5761"/>
-      <source>Inter-character spacing</source>
-      <translation>Khoảng cách giữa các kí tự</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5906"/>
-      <source>Linked faces</source>
-      <translation>Liên kết bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5907"/>
-      <source>Specifies if splitter lines must be removed</source>
-      <translation>Xác định nếu dòng splitter cần phải loại bỏ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5908"/>
-      <source>An optional extrusion value to be applied to all faces</source>
-      <translation>Giá trị ép đùn tùy chọn sẽ được áp dụng cho tất cả các bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4193"/>
-      <source>Height of the rectangle</source>
-      <translation>Chiều dài của hình chữ nhật</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4197"/>
-      <source>Horizontal subdivisions of this rectangle</source>
-      <translation>Phân mục ngang của hình chữ nhật này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4198"/>
-      <source>Vertical subdivisions of this rectangle</source>
-      <translation>Phân mục dọc của hình chữ nhật này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6552"/>
-      <source>The placement of this object</source>
-      <translation>Vị trí của đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6042"/>
-      <source>The display length of this section plane</source>
-      <translation>Chiều dài hiển thị của mặt cắt này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6043"/>
-      <source>The size of the arrows of this section plane</source>
-      <translation>Kích thước mũi tên chỉ hướng của mặt cắt này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4968"/>
-      <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation>Đối với chế độ Cutline và Cutfaces, điều này có có nghĩa là Cắt ở các vị trí bề mặt</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4355"/>
-      <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation>Đối tượng cơ bản là dây, nó được hình thành từ 2 đối tượng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4356"/>
-      <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation>Các đối tượng công cụ là dây, nó được hình thành từ 2 đối tượng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6244"/>
-      <source>The length of the straight segment</source>
-      <translation>Chiều dài của đoạn thẳng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6245"/>
-      <source>The point indicated by this label</source>
-      <translation>Điểm chỉ định bởi nhãn hiệu này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6246"/>
-      <source>The points defining the label polyline</source>
-      <translation>Điểm xác định nhãn polyline</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6247"/>
-      <source>The direction of the straight segment</source>
-      <translation>Hướng của đoạn thẳng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6248"/>
-      <source>The type of information shown by this label</source>
-      <translation>Loại thông tin được hiển thị bởi nhãn này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6249"/>
-      <source>The target object of this label</source>
-      <translation>Đối tượng mục tiêu của nhãn này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6250"/>
-      <source>The text to display when type is set to custom</source>
-      <translation>Văn bản hiển thị khi phân loại được đặt thành tùy chỉnh</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6251"/>
-      <source>The text displayed by this label</source>
-      <translation>Văn bản được hiển thị bởi nhãn này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6564"/>
-      <source>The size of the text</source>
-      <translation>Cỡ chữ của văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6565"/>
-      <source>The font of the text</source>
-      <translation>Phông chữ của văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6326"/>
-      <source>The size of the arrow</source>
-      <translation>Kích thước của mũi tên</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6566"/>
-      <source>The vertical alignment of the text</source>
-      <translation>Sắp xếp văn bản theo chiều dọc</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6328"/>
-      <source>The type of arrow of this label</source>
-      <translation>Các loại mũi tên của nhãn này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6329"/>
-      <source>The type of frame around the text of this object</source>
-      <translation>Các loại viền xung quanh cho văn bản đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6567"/>
-      <source>Text color</source>
-      <translation>Màu chữ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6334"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation>Số lượng ký tự tối đa trên mỗi dòng trong hộp văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3447"/>
-      <source>The distance the dimension line is extended past the extension lines</source>
-      <translation>Khoảng cách đường đo kích thước mở rộng thông qua các đường dây tiện ích mở rộng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3448"/>
-      <source>Length of the extension line above the dimension line</source>
-      <translation>Chiều dài dòng mở rộng trên đường đo kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4733"/>
-      <source>The points of the B-spline</source>
-      <translation>Điểm B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4734"/>
-      <source>If the B-spline is closed or not</source>
-      <translation>Nếu B-spline đóng hay mở</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4967"/>
-      <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation>Lát hình Elip và B-splines thành các dây phân đoạn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4969"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation>Chiều của đường dây nếu lát elip hay B-spline thành các đường dây phân đoạn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4970"/>
-      <source>If this is True, this object will be recomputed only if it is visible</source>
-      <translation>Nếu nó là True, đối tượng này sẽ được xử lý lại nếu nó hữu hình</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5505"/>
+      <location filename="../../Draft.py" line="2962"/>
       <source>Base</source>
       <translation>Cơ bản</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5506"/>
+      <location filename="../../Draft.py" line="2963"/>
       <source>PointList</source>
       <translation type="unfinished">PointList</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5507"/>
+      <location filename="../../Draft.py" line="2964"/>
       <source>Count</source>
       <translation>Tổng số</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5595"/>
-      <source>The objects included in this clone</source>
-      <translation>Các đối tượng trong bản sao này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5596"/>
-      <source>The scale factor of this clone</source>
-      <translation>Các yếu tố tỷ lệ của bản sao này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5597"/>
-      <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
-      <translation>Nếu nhân bản thành nhiều đối tượng, kết quả sẽ được xác định xem là sự hoà nhập tổng hợp hoặc một hợp chất</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5909"/>
-      <source>This specifies if the shapes sew</source>
-      <translation>Xác định nếu hình dạng này là Chuyển từ surface kín sang Solid (SEW)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6330"/>
-      <source>Display a leader line or not</source>
-      <translation>Có hiển thị đường hướng dẫn hay không</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6553"/>
-      <source>The text displayed by this object</source>
-      <translation>Văn bản được hiển thị bởi đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6568"/>
-      <source>Line spacing (relative to font size)</source>
-      <translation>Giãn cách dòng (tương ứng với kích cỡ phông chữ)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4819"/>
-      <source>The area of this object</source>
-      <translation>Diện tích của đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4519"/>
-      <source>Displays a Dimension symbol at the end of the wire</source>
-      <translation>Hiển thị biểu tượng kích thước của đường kích thước ở phần cuối của dây dẫn</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4966"/>
-      <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
     </message>
     <message>
       <location filename="../../DraftLayer.py" line="110"/>
@@ -759,83 +209,231 @@
       <translation>Độ trong suốt của con của lớp này</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3452"/>
-      <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4818"/>
-      <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5443"/>
+      <location filename="../../Draft.py" line="2900"/>
       <source>Show array element as children object</source>
       <translation type="unfinished">Show array element as children object</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5302"/>
+      <location filename="../../Draft.py" line="2729"/>
+      <source>The axis (e.g. DatumLine) overriding Axis/Center</source>
+      <translation type="unfinished">The axis (e.g. DatumLine) overriding Axis/Center</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2741"/>
       <source>Distance between copies in a circle</source>
       <translation type="unfinished">Distance between copies in a circle</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5303"/>
+      <location filename="../../Draft.py" line="2742"/>
       <source>Distance between circles</source>
       <translation type="unfinished">Distance between circles</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5305"/>
+      <location filename="../../Draft.py" line="2744"/>
       <source>number of circles</source>
       <translation type="unfinished">number of circles</translation>
     </message>
   </context>
   <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
+      <source>Annotation Styles Editor</source>
+      <translation type="unfinished">Annotation Styles Editor</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
+      <source>Style name</source>
+      <translation type="unfinished">Style name</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
+      <source>The name of your style. Existing style names can be edited</source>
+      <translation type="unfinished">The name of your style. Existing style names can be edited</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <source>Add new...</source>
+      <translation type="unfinished">Add new...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="55"/>
+      <source>Renames the selected style</source>
+      <translation type="unfinished">Renames the selected style</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="58"/>
+      <source>Rename</source>
+      <translation>Đổi tên</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="74"/>
+      <source>Deletes the selected style</source>
+      <translation type="unfinished">Deletes the selected style</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="77"/>
+      <source>Delete</source>
+      <translation>Xóa</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="108"/>
+      <source>Text</source>
+      <translation>Văn bản</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="114"/>
+      <source>Font size</source>
+      <translation>Cỡ phông chữ</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="121"/>
+      <source>Line spacing</source>
+      <translation type="unfinished">Line spacing</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="128"/>
+      <source>Font name</source>
+      <translation>Tên phông chữ</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="135"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation type="unfinished">The font to use for texts and dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="159"/>
+      <source>Units</source>
+      <translation>Đơn vị</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="165"/>
+      <source>Scale multiplier</source>
+      <translation type="unfinished">Scale multiplier</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="172"/>
+      <source>Decimals</source>
+      <translation type="unfinished">Decimals</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="179"/>
+      <source>Unit override</source>
+      <translation type="unfinished">Unit override</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="186"/>
+      <source>Show unit</source>
+      <translation type="unfinished">Show unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
+      <source>A multiplier value that affects distances shown by dimensions</source>
+      <translation type="unfinished">A multiplier value that affects distances shown by dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="206"/>
+      <source>Forces dimensions to be shown in a specific unit</source>
+      <translation type="unfinished">Forces dimensions to be shown in a specific unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="213"/>
+      <source>The number of decimals to show on dimensions</source>
+      <translation type="unfinished">The number of decimals to show on dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="220"/>
+      <source>Shows the units suffix on dimensions or not</source>
+      <translation type="unfinished">Shows the units suffix on dimensions or not</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
+      <source>Line and arrows</source>
+      <translation type="unfinished">Line and arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
+      <source>Line width</source>
+      <translation>Chiều rộng đường vẽ</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
+      <source>Extension overshoot</source>
+      <translation type="unfinished">Extension overshoot</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
+      <source>Arrow size</source>
+      <translation>Kích cỡ mũi tên</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
+      <source>Show lines</source>
+      <translation type="unfinished">Show lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="270"/>
+      <source>Dimension overshoot</source>
+      <translation type="unfinished">Dimension overshoot</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="277"/>
+      <source>Extension lines</source>
+      <translation type="unfinished">Extension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
+      <source>Arrow type</source>
+      <translation>Loại mũi tên</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
+      <source>Line / text color</source>
+      <translation type="unfinished">Line / text color</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
+      <source>Shows the dimension line or not</source>
+      <translation type="unfinished">Shows the dimension line or not</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
+      <source>The width of the dimension lines</source>
+      <translation type="unfinished">The width of the dimension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="317"/>
+      <source>px</source>
+      <translation>điểm ảnh</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="327"/>
+      <source>The color of dimension lines, arrows and texts</source>
+      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="341"/>
+      <source>The typeof arrows to use for dimensions</source>
+      <translation type="unfinished">The typeof arrows to use for dimensions</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
+      <source>Dot</source>
+      <translation>Chấm</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <source>Arrow</source>
+      <translation>Mũi tên</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
+      <source>Tick</source>
+      <translation>Đánh dấu</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5130"/>
-      <source>Slope</source>
-      <translation>Độ dốc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2240"/>
-      <source>Scale</source>
-      <translation>Kích cỡ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6085"/>
-      <source>Writing camera position</source>
-      <translation>Viết vị trí camera</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6102"/>
-      <source>Writing objects shown/hidden state</source>
-      <translation>Viết các đối tượng được hiển thị / trạng thái ẩn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2241"/>
-      <source>X factor</source>
-      <translation>Nhân tố X</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2242"/>
-      <source>Y factor</source>
-      <translation>Nhân tố Y</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2243"/>
-      <source>Z factor</source>
-      <translation>Nhân tố Z</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2244"/>
-      <source>Uniform scaling</source>
-      <translation>Kích cỡ quy mô đồng nhất</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2245"/>
-      <source>Working plane orientation</source>
-      <translation>Hướng máy bay</translation>
-    </message>
     <message>
       <location filename="../../importDXF.py" line="126"/>
       <source>Download of dxf libraries failed.
@@ -846,54 +444,34 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
 đây Công cụ -&gt; Quản lý chương trình bổ trợ</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4610"/>
-      <source>This Wire is already flat</source>
-      <translation>Dây phẳng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2248"/>
-      <source>Pick from/to points</source>
-      <translation>Chọn từ/ đến điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5136"/>
-      <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
-      <translation>Độ dốc để cung cấp cho các Dây đã chọn/Dây: 0 = ngang, 1 = 45 độ lên, -1 = 45 độ xuống</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2249"/>
-      <source>Create a clone</source>
-      <translation>Tạo một bản sao</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1200"/>
+      <location filename="../../Draft.py" line="996"/>
       <source>%s cannot be modified because its placement is readonly.</source>
       <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2897"/>
+      <location filename="../../Draft.py" line="2235"/>
       <source>Upgrade: Unknown force method:</source>
       <translation type="unfinished">Upgrade: Unknown force method:</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4325"/>
-      <source>Error: Major radius is smaller than the minor radius</source>
-      <translation type="unfinished">Error: Major radius is smaller than the minor radius</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="105"/>
+      <location filename="../../InitGui.py" line="104"/>
       <source>Draft creation tools</source>
       <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="106"/>
+      <location filename="../../InitGui.py" line="105"/>
       <source>Draft annotation tools</source>
       <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="107"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Draft modification tools</source>
       <translation type="unfinished">Draft modification tools</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="107"/>
+      <source>Draft utility tools</source>
+      <translation type="unfinished">Draft utility tools</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -916,12 +494,12 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
       <translation type="unfinished">&amp;Utilities</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="122"/>
       <source>Draft</source>
       <translation>Mớn nước của tàu</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="174"/>
+      <location filename="../../InitGui.py" line="186"/>
       <source>Import-Export</source>
       <translation>Nhập-Xuất</translation>
     </message>
@@ -935,101 +513,111 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.</translation>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="60"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
       <source>Center of rotation</source>
       <translation type="unfinished">Center of rotation</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="68"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="69"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="75"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="82"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="83"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="130"/>
-      <source>Reset the coordinates of the center of rotation</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="133"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="134"/>
       <source>Reset point</source>
       <translation type="unfinished">Reset point</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="145"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="148"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
       <source>Fuse</source>
       <translation>Hợp nhất</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
-      <source>If checked, the resulting objects in the array will be Links instead of simple copies</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be Links instead of simple copies</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="158"/>
-      <source>Use Links</source>
-      <translation type="unfinished">Use Links</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation type="unfinished">Link array</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
+      <source>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</source>
+      <translation type="unfinished">Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="179"/>
-      <source>Distance from one element in the array to the next element in the same layer. It cannot be zero.</source>
-      <translation type="unfinished">Distance from one element in the array to the next element in the same layer. It cannot be zero.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="172"/>
       <source>Tangential distance</source>
       <translation type="unfinished">Tangential distance</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="202"/>
-      <source>Distance from the center of the array to the outer layers</source>
-      <translation type="unfinished">Distance from the center of the array to the outer layers</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="210"/>
+      <source>Distance from one layer of objects to the next layer of objects.</source>
+      <translation type="unfinished">Distance from one layer of objects to the next layer of objects.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="195"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
       <source>Radial distance</source>
       <translation type="unfinished">Radial distance</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="245"/>
-      <source>Number that controls how the objects will be distributed</source>
-      <translation type="unfinished">Number that controls how the objects will be distributed</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
+      <source>The number of symmetry lines in the circular array.</source>
+      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
-      <source>Number of circular arrays to create, including a copy of the original object. It must be at least 2.</source>
-      <translation type="unfinished">Number of circular arrays to create, including a copy of the original object. It must be at least 2.</translation>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
+      <source>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</source>
+      <translation type="unfinished">Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="238"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>Number of circular layers</source>
       <translation type="unfinished">Number of circular layers</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="248"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="264"/>
       <source>Symmetry</source>
       <translation>Đối xứng</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_CircularArray.ui" line="257"/>
+      <location filename="../ui/TaskPanel_CircularArray.ui" line="273"/>
       <source>(Placeholder for the icon)</source>
       <translation type="unfinished">(Placeholder for the icon)</translation>
     </message>
@@ -1043,103 +631,121 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
-      <source>Distance between the elements in the Z direction. Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.</source>
-      <translation type="unfinished">Distance between the elements in the Z direction. Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.</translation>
+      <source>Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the Z direction.
+Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="47"/>
-      <source>Interval Z</source>
-      <translation type="unfinished">Interval Z</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
+      <source>Z intervals</source>
+      <translation type="unfinished">Z intervals</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="358"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="351"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="392"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="344"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="378"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="409"/>
-      <source>Reset the distances</source>
-      <translation type="unfinished">Reset the distances</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
+      <source>Reset the distances.</source>
+      <translation type="unfinished">Reset the distances.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="123"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
       <source>Reset Z</source>
       <translation type="unfinished">Reset Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="135"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="138"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
       <source>Fuse</source>
       <translation>Hợp nhất</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="145"/>
-      <source>If checked, the resulting objects in the array will be Links instead of simple copies</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be Links instead of simple copies</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
-      <source>Use Links</source>
-      <translation type="unfinished">Use Links</translation>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="170"/>
-      <source>Number of elements in the array in the specified direction, including a copy of the original object. The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object. The number must be at least 1 in each direction.</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="152"/>
+      <source>Link array</source>
+      <translation type="unfinished">Link array</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
-      <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="237"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="177"/>
       <source>(Placeholder for the icon)</source>
       <translation type="unfinished">(Placeholder for the icon)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="244"/>
-      <source>Distance between the elements in the X direction. Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.</source>
-      <translation type="unfinished">Distance between the elements in the X direction. Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="184"/>
+      <source>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="247"/>
-      <source>Interval X</source>
-      <translation type="unfinished">Interval X</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
+      <source>X intervals</source>
+      <translation type="unfinished">X intervals</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="323"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
       <source>Reset X</source>
       <translation type="unfinished">Reset X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="333"/>
-      <source>Distance between the elements in the Y direction. Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction. Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
+      <source>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+      <translation type="unfinished">Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="336"/>
-      <source>Interval Y</source>
-      <translation type="unfinished">Interval Y</translation>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
+      <source>Y intervals</source>
+      <translation type="unfinished">Y intervals</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_OrthoArray.ui" line="412"/>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
       <source>Reset Y</source>
       <translation type="unfinished">Reset Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
+      <source>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</source>
+      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
+      <source>Number of elements</source>
+      <translation type="unfinished">Number of elements</translation>
     </message>
   </context>
   <context>
@@ -1151,81 +757,93 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
-      <source>The coordinates of the point through which the axis of rotation passes.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.</translation>
+      <source>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</source>
+      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="60"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
       <source>Center of rotation</source>
       <translation type="unfinished">Center of rotation</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="68"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="69"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="114"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="115"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="121"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="122"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="130"/>
-      <source>Reset the coordinates of the center of rotation</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="131"/>
+      <source>Reset the coordinates of the center of rotation.</source>
+      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="133"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="134"/>
       <source>Reset point</source>
       <translation type="unfinished">Reset point</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="145"/>
-      <source>If checked, the resulting objects in the array will be fused if they touch each other</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
+      <source>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</source>
+      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="148"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
       <source>Fuse</source>
       <translation>Hợp nhất</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="155"/>
-      <source>If checked, the resulting objects in the array will be Links instead of simple copies</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be Links instead of simple copies</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
+      <source>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
+      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="158"/>
-      <source>Use Links</source>
-      <translation type="unfinished">Use Links</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="161"/>
+      <source>Link array</source>
+      <translation type="unfinished">Link array</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="179"/>
-      <source>Sweeping angle of the polar distribution</source>
-      <translation type="unfinished">Sweeping angle of the polar distribution</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
+      <source>Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</source>
+      <translation type="unfinished">Sweeping angle of the polar distribution.
+A negative angle produces a polar pattern in the opposite direction.
+The maximum absolute value is 360 degrees.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="172"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
       <source>Polar angle</source>
       <translation type="unfinished">Polar angle</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
-      <source>Number of elements in the array, including a copy of the original object. It must be at least 2.</source>
-      <translation type="unfinished">Number of elements in the array, including a copy of the original object. It must be at least 2.</translation>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="219"/>
+      <source>Number of elements in the array, including a copy of the original object.
+It must be at least 2.</source>
+      <translation type="unfinished">Number of elements in the array, including a copy of the original object.
+It must be at least 2.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="195"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
       <source>Number of elements</source>
       <translation type="unfinished">Number of elements</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_PolarArray.ui" line="214"/>
+      <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
       <source>(Placeholder for the icon)</source>
       <translation type="unfinished">(Placeholder for the icon)</translation>
     </message>
@@ -1294,375 +912,6 @@ Xin vui lòng cài đặt chương trình bổ trợ thư viên dxf bằng cách
     </message>
   </context>
   <context>
-    <name>Draft_AddConstruction</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5361"/>
-      <source>Add to Construction group</source>
-      <translation>Thêm vào nhóm xây dựng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5362"/>
-      <source>Adds the selected objects to the Construction group</source>
-      <translation>Bổ sung các đối tượng vào nhóm xây dựng</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_AddPoint</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4412"/>
-      <source>Add Point</source>
-      <translation>Thêm điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4413"/>
-      <source>Adds a point to an existing Wire or B-spline</source>
-      <translation>Thệm điểm cho dây có sẵn hoặc B-spline</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_AddToGroup</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4365"/>
-      <source>Move to group...</source>
-      <translation>Di chuyển đến nhóm...</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4366"/>
-      <source>Moves the selected object(s) to an existing group</source>
-      <translation>Di chuyển (các) đối tượng đã chọn đến một nhóm hiện có</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ApplyStyle</name>
-    <message>
-      <location filename="../../DraftTools.py" line="2544"/>
-      <source>Apply Current Style</source>
-      <translation>Áp dụng kiểu hiện tại</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2545"/>
-      <source>Applies current line width and color to selected objects</source>
-      <translation>Áp dụng chiều rộng và màu đường hiện tại cho các đối tượng được chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Arc</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1151"/>
-      <source>Arc</source>
-      <translation>Vòng cung</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1152"/>
-      <source>Creates an arc by center point and radius. CTRL to snap, SHIFT to constrain</source>
-      <translation>Tạo một cung tròn dùng tâm và bán kính, CTRL để dính, SHIFT để ràng buộc</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ArcTools</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5642"/>
-      <source>Arc tools</source>
-      <translation>Các công cụ cung tròn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Arc_3Points</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5394"/>
-      <source>Arc 3 points</source>
-      <translation>Cung tròn 3 điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5395"/>
-      <source>Creates an arc by 3 points</source>
-      <translation>Tạo cung tròn dùng 3 điểm</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Array</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4644"/>
-      <source>Array</source>
-      <translation>Mảng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4645"/>
-      <source>Creates a polar or rectangular array from a selected object</source>
-      <translation>Tạo một mảng phân cực hoặc hình chữ nhật từ một đối tượng được chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_AutoGroup</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5171"/>
-      <source>AutoGroup</source>
-      <translation>Nhóm tự động</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5172"/>
-      <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
-      <translation>Chọn một nhóm để tự động thêm tất cả các đối tượng Nháp và Vòng cung vào</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_BSpline</name>
-    <message>
-      <location filename="../../DraftTools.py" line="585"/>
-      <source>B-spline</source>
-      <translation>Đường B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="586"/>
-      <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation>Tạo ra một đa điểm B-spline. CTRL để chụp, SHIFT để hạn chế</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_BezCurve</name>
-    <message>
-      <location filename="../../DraftTools.py" line="686"/>
-      <source>BezCurve</source>
-      <translation>Đường BezCurve</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="687"/>
-      <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
-      <translation>Tạo ra một đường cong Bezier. CTRL để chụp, SHIFT để hạn chế</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_BezierTools</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5659"/>
-      <source>Bezier tools</source>
-      <translation>Công cụ Bezier</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Circle</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1477"/>
-      <source>Circle</source>
-      <translation>Vòng tròn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1478"/>
-      <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
-      <translation>Tạo hình vòng tròn. CTRL để chụp, ALT để chọn đối tượng tiếp tuyến</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Clone</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4864"/>
-      <source>Clone</source>
-      <translation>Nhân bản</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4865"/>
-      <source>Clones the selected object(s)</source>
-      <translation>Nhân bản các đối tượng đã chọn(s)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_CloseLine</name>
-    <message>
-      <location filename="../../DraftTools.py" line="990"/>
-      <source>Close Line</source>
-      <translation>Đóng dòng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="991"/>
-      <source>Closes the line being drawn</source>
-      <translation>Đóng dòng đang được vẽ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_CubicBezCurve</name>
-    <message>
-      <location filename="../../DraftTools.py" line="805"/>
-      <source>CubicBezCurve</source>
-      <translation>CubicBezCurve</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="806"/>
-      <source>Creates a Cubic Bezier curve 
-Click and drag to define control points. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a Cubic Bezier curve 
-Click and drag to define control points. CTRL to snap, SHIFT to constrain</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_DelPoint</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4437"/>
-      <source>Remove Point</source>
-      <translation>Xoá điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4438"/>
-      <source>Removes a point from an existing Wire or B-spline</source>
-      <translation>Xoá điểm cho dây có sẵn hoặc B-spline</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Dimension</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1876"/>
-      <source>Dimension</source>
-      <translation>Kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1877"/>
-      <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
-      <translation>Tạo kích thước. CTRL để chụp, SHIFT để hạn chế, ALT để chọn phân đoạn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Downgrade</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3473"/>
-      <source>Downgrade</source>
-      <translation>Hạ cấp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3474"/>
-      <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
-      <translation>Phá tan các đối tượng đã chọn thành các đối tượng đơn giản hơn, hoặc để giảm bớt các bề mặt</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Draft2Sketch</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4582"/>
-      <source>Draft to Sketch</source>
-      <translation>Bảnh nháp thành bản vẽ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4583"/>
-      <source>Convert bidirectionally between Draft and Sketch objects</source>
-      <translation>Chuyển đổi hai chiều giữa các đối tượng bản nháp và bản vẽ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Drawing</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4182"/>
-      <source>Drawing</source>
-      <translation>Bản vẽ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4183"/>
-      <source>Puts the selected objects on a Drawing sheet</source>
-      <translation>Đặt các đối tượng đã chọn trên một bản vẽ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Edit</name>
-    <message>
-      <location filename="../../DraftEdit.py" line="258"/>
-      <source>Edit</source>
-      <translation>Chỉnh sửa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="259"/>
-      <source>Edits the active object</source>
-      <translation>Chỉnh sửa đối tượng đang hoạt động</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Ellipse</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1672"/>
-      <source>Ellipse</source>
-      <translation>Hình elíp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1673"/>
-      <source>Creates an ellipse. CTRL to snap</source>
-      <translation>Tạo một hình elip. CTRL để chụp</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Facebinder</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4946"/>
-      <source>Facebinder</source>
-      <translation>Facebinder</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4947"/>
-      <source>Creates a facebinder object from selected face(s)</source>
-      <translation>Tạo đối tượng facebinder từ (các) bề mặt đã được chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_FinishLine</name>
-    <message>
-      <location filename="../../DraftTools.py" line="970"/>
-      <source>Finish line</source>
-      <translation>Dòng kết thúc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="971"/>
-      <source>Finishes a line without closing it</source>
-      <translation>Kết thúc một dòng mà không đóng nó</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_FlipDimension</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4976"/>
-      <source>Flip Dimension</source>
-      <translation>Kích thước ngược</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4977"/>
-      <source>Flip the normal direction of a dimension</source>
-      <translation>Phương pháp tuyến của kích thước này</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Heal</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4927"/>
-      <source>Heal</source>
-      <translation>Chữa trị</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4928"/>
-      <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
-      <translation>Chữa lành các bản nháp bị lỗi đã được lưu từ phiên bản FreeCAD trước đó</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Join</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3377"/>
-      <source>Join</source>
-      <translation>Nối</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3378"/>
-      <source>Joins two wires together</source>
-      <translation>Nối hai dây vào nhau</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Label</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5229"/>
-      <source>Label</source>
-      <translation>Nhãn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5230"/>
-      <source>Creates a label, optionally attached to a selected object or element</source>
-      <translation>Tạo nhãn, tùy chọn được đính kèm với đối tượng hoặc phần tử đã chọn</translation>
-    </message>
-  </context>
-  <context>
     <name>Draft_Layer</name>
     <message>
       <location filename="../../DraftLayer.py" line="83"/>
@@ -1673,645 +922,6 @@ Click and drag to define control points. CTRL to snap, SHIFT to constrain</trans
       <location filename="../../DraftLayer.py" line="84"/>
       <source>Adds a layer</source>
       <translation>Thêm lớp</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Line</name>
-    <message>
-      <location filename="../../DraftTools.py" line="359"/>
-      <source>Line</source>
-      <translation>Đường thẳng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="360"/>
-      <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
-      <translation>Tạo một dòng 2 điểm. CTRL để chụp, SHIFT để hạn chế</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_LinkArray</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4677"/>
-      <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4678"/>
-      <source>Creates a polar or rectangular link array from a selected object</source>
-      <translation type="unfinished">Creates a polar or rectangular link array from a selected object</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Mirror</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4994"/>
-      <source>Mirror</source>
-      <translation>Đối xứng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4995"/>
-      <source>Mirrors the selected objects along a line defined by two points</source>
-      <translation>Lấy đối xứng các đối tượng được chọn qua một đường thẳng tạo bởi hai điểm</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Move</name>
-    <message>
-      <location filename="../../DraftTools.py" line="2362"/>
-      <source>Move</source>
-      <translation>Di chuyển</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2363"/>
-      <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Offset</name>
-    <message>
-      <location filename="../../DraftTools.py" line="2856"/>
-      <source>Offset</source>
-      <translation>Offset</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2857"/>
-      <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>Offset đối tượng đang hoạt động. Nhấn phím CTRL để bắt điểm, phím SHIFT để ghìm lại và phím ALT để sao chép</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_PathArray</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4689"/>
-      <source>PathArray</source>
-      <translation>Mảng đường dẫn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4690"/>
-      <source>Creates copies of a selected object along a selected path.</source>
-      <translation>Tạo bản sao của đối tượng được chọn dọc theo một đường dẫn đã chọn.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_PathLinkArray</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4728"/>
-      <source>PathLinkArray</source>
-      <translation type="unfinished">PathLinkArray</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4729"/>
-      <source>Creates links of a selected object along a selected path.</source>
-      <translation type="unfinished">Creates links of a selected object along a selected path.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Point</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4767"/>
-      <source>Point</source>
-      <translation>Điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4768"/>
-      <source>Creates a point object</source>
-      <translation>Tạo một điểm đối tượng</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_PointArray</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4736"/>
-      <source>PointArray</source>
-      <translation type="unfinished">PointArray</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4737"/>
-      <source>Creates copies of a selected object on the position of points.</source>
-      <translation type="unfinished">Creates copies of a selected object on the position of points.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Polygon</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1487"/>
-      <source>Polygon</source>
-      <translation>Đa giác</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1488"/>
-      <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
-      <translation>Tạo một đa giác thông thường. CTRL để chụp, SHIFT để hạn chế</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Rectangle</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1026"/>
-      <source>Rectangle</source>
-      <translation>Hình chữ nhật</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1027"/>
-      <source>Creates a 2-point rectangle. CTRL to snap</source>
-      <translation>Tạo hình chữ nhật 2 điểm. CTRL để chụp nhanh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Rotate</name>
-    <message>
-      <location filename="../../DraftTools.py" line="2582"/>
-      <source>Rotate</source>
-      <translation>Xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2583"/>
-      <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
-      <translation>Xoay các đối tượng đã chọn. CTRL để chụp, SHIFT để hạn chế, ALT để tạo một bản sao</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Scale</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3925"/>
-      <source>Scale</source>
-      <translation>Kích cỡ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3926"/>
-      <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>Cân chỉnh kích cỡ các đối tượng được chọn từ một điểm cơ bản. CTRL để chụp, SHIFT để hạn chế, ALT để sao chép</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_SelectGroup</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4506"/>
-      <source>Select group</source>
-      <translation>Chọn nhóm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4507"/>
-      <source>Selects all objects with the same parents as this group</source>
-      <translation>Chọn tất cả các đối tượng có cùng gốc với nhóm này</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_SelectPlane</name>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="53"/>
-      <source>SelectPlane</source>
-      <translation>Chọn mặt phẳng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="54"/>
-      <source>Select a working plane for geometry creation</source>
-      <translation>Chọn một mặt phẳng làm việc để tạo hình</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_SetWorkingPlaneProxy</name>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="477"/>
-      <source>Creates a proxy object from the current working plane</source>
-      <translation>Tạo một đối tượng proxy từ mặt phẳng đang làm việc hiện tại</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="476"/>
-      <source>Create Working Plane Proxy</source>
-      <translation>Tạo mặt phẳng Proxy làm việc</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Shape2DView</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4538"/>
-      <source>Shape 2D view</source>
-      <translation>Chế độ xem hình 2D</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4539"/>
-      <source>Creates Shape 2D views of selected objects</source>
-      <translation>Tạo các chế độ xem 2D của các đối tượng được chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ShapeString</name>
-    <message>
-      <location filename="../../DraftTools.py" line="2224"/>
-      <source>Shape from text...</source>
-      <translation>Hình dạng từ văn bản...</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2225"/>
-      <source>Creates text string in shapes.</source>
-      <translation>Tạo chuỗi văn bản theo hình dạng.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ShowSnapBar</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4846"/>
-      <source>Show Snap Bar</source>
-      <translation>Hiển thị thanh chụp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4847"/>
-      <source>Shows Draft snap toolbar</source>
-      <translation>Hiển thị thanh công cụ chụp nháp</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Slope</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5116"/>
-      <source>Set Slope</source>
-      <translation>Thiết lập độ dốc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5117"/>
-      <source>Sets the slope of a selected Line or Wire</source>
-      <translation>Đặt độ dốc của Đường hoặc Dây đã chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Angle</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5535"/>
-      <source>Angles</source>
-      <translation>Góc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5536"/>
-      <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
-      <translation>Khoá từ điểm 45 và 90 độ trên vòng cung và vòng tròn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Center</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5547"/>
-      <source>Center</source>
-      <translation>Trung tâm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5548"/>
-      <source>Snaps to center of circles and arcs</source>
-      <translation>Khoá trung điểm của vòng tròn và vòng cung</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Dimensions</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5607"/>
-      <source>Dimensions</source>
-      <translation>Kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5608"/>
-      <source>Shows temporary dimensions when snapping to Arch objects</source>
-      <translation>Hiển thị kích thước tạm thời khi chụp vào đối tượng Arch</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Endpoint</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5523"/>
-      <source>Endpoint</source>
-      <translation>Đầu cuối</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5524"/>
-      <source>Snaps to endpoints of edges</source>
-      <translation>Chụp đến điểm cuối của các cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Extension</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5559"/>
-      <source>Extension</source>
-      <translation>Phần mở rộng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5560"/>
-      <source>Snaps to extension of edges</source>
-      <translation>Chụp đến phần mở rộng của các cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Grid</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5487"/>
-      <source>Grid</source>
-      <translation>Lưới</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5488"/>
-      <source>Snaps to grid points</source>
-      <translation>Chụp các điểm trên lưới</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Intersection</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5499"/>
-      <source>Intersection</source>
-      <translation>Điểm giao nhau</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5500"/>
-      <source>Snaps to edges intersections</source>
-      <translation>Chụp các cạnh của giao điểm</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Lock</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5453"/>
-      <source>Toggle On/Off</source>
-      <translation>Bật / Tắt</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5454"/>
-      <source>Activates/deactivates all snap tools at once</source>
-      <translation>Kích hoạt / hủy kích hoạt tất cả các công cụ chụp cùng một lúc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSnap.py" line="1290"/>
-      <source>Lock</source>
-      <translation>Khoá</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Midpoint</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5463"/>
-      <source>Midpoint</source>
-      <translation>Trung điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5464"/>
-      <source>Snaps to midpoints of edges</source>
-      <translation>Chụp trung điểm của các cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Near</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5571"/>
-      <source>Nearest</source>
-      <translation>Gần nhất</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5572"/>
-      <source>Snaps to nearest point on edges</source>
-      <translation>Chụp đến các điểm gần nhất trên cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Ortho</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5583"/>
-      <source>Ortho</source>
-      <translation>Thẳng góc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5584"/>
-      <source>Snaps to orthogonal and 45 degrees directions</source>
-      <translation>Chụp vuông góc và góc hướng 45 độ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Parallel</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5511"/>
-      <source>Parallel</source>
-      <translation>Song song</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5512"/>
-      <source>Snaps to parallel directions of edges</source>
-      <translation>Chụp theo hướng song song của các cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Perpendicular</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5475"/>
-      <source>Perpendicular</source>
-      <translation>Vuông góc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5476"/>
-      <source>Snaps to perpendicular points on edges</source>
-      <translation>Bắt điểm vuông góc đến các điểm trên các cạnh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_Special</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5595"/>
-      <source>Special</source>
-      <translation>Đặc biệt</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5596"/>
-      <source>Snaps to special locations of objects</source>
-      <translation>Bắt điểm đến các vị trí đặc biệt của đối tượng</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap_WorkingPlane</name>
-    <message>
-      <location filename="../../DraftTools.py" line="5619"/>
-      <source>Working Plane</source>
-      <translation>Mặt phẳng làm việc</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5620"/>
-      <source>Restricts the snapped point to the current working plane</source>
-      <translation>Giới hạn điểm được bắt tới mặt phẳng làm việc hiện tại</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Split</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3407"/>
-      <source>Split</source>
-      <translation type="unfinished">Split</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3408"/>
-      <source>Splits a wire into two wires</source>
-      <translation type="unfinished">Splits a wire into two wires</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Stretch</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3047"/>
-      <source>Stretch</source>
-      <translation>Phác thảo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3048"/>
-      <source>Stretches the selected objects</source>
-      <translation>Kéo dài các đối tượng đã chọn</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_SubelementHighlight</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4282"/>
-      <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4283"/>
-      <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Text</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1791"/>
-      <source>Text</source>
-      <translation>Văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1792"/>
-      <source>Creates an annotation. CTRL to snap</source>
-      <translation>Tạo chú thích. Nhấn phím CTRL để bắt điểm nhanh</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ToggleConstructionMode</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4158"/>
-      <source>Toggles the Construction Mode for next objects.</source>
-      <translation>Bật/tắt chế độ xây dựng cho các đối tượng tiếp theo.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4156"/>
-      <source>Toggle Construction Mode</source>
-      <translation>Bật/tắt chế độ xây dựng</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ToggleContinueMode</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4169"/>
-      <source>Toggle Continue Mode</source>
-      <translation>Bật/tắt chế độ tiếp tục</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4170"/>
-      <source>Toggles the Continue Mode for next commands.</source>
-      <translation>Bật/tắt chế độ tiếp tụp cho các lệnh tiếp theo.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ToggleDisplayMode</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4253"/>
-      <source>Toggle display mode</source>
-      <translation>Bật/tắt chế độ hiển thị</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4254"/>
-      <source>Swaps display mode of selected objects between wireframe and flatlines</source>
-      <translation>Giao dịch hoán đổi chế độ hiển thị các đối tượng được lựa chọn giữa khung dây và đường mờ nhạt</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_ToggleGrid</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4908"/>
-      <source>Toggle Grid</source>
-      <translation>Bật/tắt Lưới</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4909"/>
-      <source>Toggles the Draft grid on/off</source>
-      <translation>Bật/tắt lưới sơ họa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSnap.py" line="1281"/>
-      <source>Grid</source>
-      <translation>Lưới</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSnap.py" line="1282"/>
-      <source>Toggles the Draft grid On/Off</source>
-      <translation>Bật/tắt lưới sơ họa</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Trimex</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3505"/>
-      <source>Trimex</source>
-      <translation>Trimex</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3506"/>
-      <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation>Cắt bớt hoặc mở rộng đối tượng đã chọn hoặc ép đẩy các mặt đơn lẻ. Nhấn phím CTRL để bắt điểm, nhấm phím SHIFT để ràng buộc với đoạn hiện tại hoặc với trực giao, nhấm phím ALT để đảo ngược</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_UndoLine</name>
-    <message>
-      <location filename="../../DraftTools.py" line="1010"/>
-      <source>Undo last segment</source>
-      <translation>Hoàn tác đoạn cuối cùng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1011"/>
-      <source>Undoes the last drawn segment of the line being drawn</source>
-      <translation>Hoàn tác đoạn được vẽ cuối cùng của đường đang được vẽ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Upgrade</name>
-    <message>
-      <location filename="../../DraftTools.py" line="3443"/>
-      <source>Upgrade</source>
-      <translation>Nâng cấp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3444"/>
-      <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
-      <translation>Ghép các đối tượng đã chọn thành một hoặc chuyển đổi các dây kín thành các bề mặt được lấp kín hoặc ghép các bề mặt</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Wire</name>
-    <message>
-      <location filename="../../DraftTools.py" line="544"/>
-      <source>Polyline</source>
-      <translation type="unfinished">Polyline</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="545"/>
-      <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_WireToBSpline</name>
-    <message>
-      <location filename="../../DraftTools.py" line="4462"/>
-      <source>Wire to B-spline</source>
-      <translation>Dây đến đường cong B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4463"/>
-      <source>Converts between Wire and B-spline</source>
-      <translation>Chuyển đổi giữa dây và đường cong B-spline</translation>
     </message>
   </context>
   <context>
@@ -2489,22 +1099,22 @@ value by using the [ and ] keys while drawing</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsDraft</name>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="41"/>
+      <location filename="../ui/preferences-draft.ui" line="32"/>
       <source>General Draft Settings</source>
       <translation>Cài đặt Sơ họa chung</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="409"/>
+      <location filename="../ui/preferences-draft.ui" line="427"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
       <translation>Đây là màu mặc định cho các đối tượng được vẽ trong khi ở chế độ xây dựng.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="369"/>
+      <location filename="../ui/preferences-draft.ui" line="387"/>
       <source>This is the default group name for construction geometry</source>
       <translation>Đây là tên nhóm mặc định cho hình học xây dựng</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="372"/>
+      <location filename="../ui/preferences-draft.ui" line="390"/>
       <source>Construction</source>
       <translation>Xây dựng</translation>
     </message>
@@ -2514,37 +1124,32 @@ value by using the [ and ] keys while drawing</translation>
       <translation>Lưu màu và độ rộng đường vẽ hiện tại qua các tác vụ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="47"/>
-      <source>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</source>
-      <translation>Nếu chọn ô này, chế độ sao chép sẽ được giữ trên lệnh, nếu không lệnh sẽ luôn bắt đầu ở chế độ không sao chép</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="50"/>
+      <location filename="../ui/preferences-draft.ui" line="304"/>
       <source>Global copy mode</source>
       <translation>Chế độ sao chép toàn bộ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="84"/>
+      <location filename="../ui/preferences-draft.ui" line="40"/>
       <source>Default working plane</source>
       <translation>Mặt phẳng làm việc mặc định</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="111"/>
+      <location filename="../ui/preferences-draft.ui" line="67"/>
       <source>None</source>
       <translation>Không</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="116"/>
+      <location filename="../ui/preferences-draft.ui" line="72"/>
       <source>XY (Top)</source>
       <translation>XY (Trên)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="121"/>
+      <location filename="../ui/preferences-draft.ui" line="77"/>
       <source>XZ (Front)</source>
       <translation>XZ (phía trước)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="126"/>
+      <location filename="../ui/preferences-draft.ui" line="82"/>
       <source>YZ (Side)</source>
       <translation>YZ (bên cạnh)</translation>
     </message>
@@ -2608,12 +1213,12 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Cài đặt chung</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="362"/>
+      <location filename="../ui/preferences-draft.ui" line="380"/>
       <source>Construction group name</source>
       <translation>Tên nhóm xây dựng</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="187"/>
+      <location filename="../ui/preferences-draft.ui" line="143"/>
       <source>Tolerance</source>
       <translation>Dung sai</translation>
     </message>
@@ -2633,72 +1238,67 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Ở đây bạn có thể chỉ định một thư mục chứa các tệp SVG bao gồm các định nghĩa &lt;pattern&gt; mà có thể được thêm vào các mẫu tô vật liệu sơ họa chuẩn</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="66"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
       <translation>Chế độ hạn chế</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="86"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="77"/>
       <source>The Constraining modifier key</source>
       <translation>Phím sửa đổi hạn chế</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="118"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="109"/>
       <source>Snap mod</source>
       <translation>Chế độ bắt điểm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="138"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="129"/>
       <source>The snap modifier key</source>
       <translation>Phím bổ trợ bắt điểm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="173"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="164"/>
       <source>Alt mod</source>
       <translation>Chế độ Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="66"/>
-      <source>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</source>
-      <translation>Thông thường, sau khi sao chép các đối tượng, các bản sao sẽ được chọn. Nếu tùy chọn này được chọn, các đối tượng cơ sở sẽ được chọn thay thế.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="69"/>
+      <location filename="../ui/preferences-draft.ui" line="287"/>
       <source>Select base objects after copying</source>
       <translation>Chọn đối tượng cơ sở sau khi sao chép</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="280"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="271"/>
       <source>If checked, a grid will appear when drawing</source>
       <translation>Nếu chọn ô này, một lưới sẽ xuất hiện khi đang vẽ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="283"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="274"/>
       <source>Use grid</source>
       <translation>Sử dụng lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="381"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>Grid spacing</source>
       <translation>Khoảng cách lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="404"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="395"/>
       <source>The spacing between each grid line</source>
       <translation>Khoảng cách giữa các đường mắt lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="323"/>
       <source>Main lines every</source>
       <translation>Phân chia đường lưới chính</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="649"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="346"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
       <translation>Các đường chính sẽ được vẽ dày hơn. Chỉ định ở đây có bao nhiêu ô vuông giữa các đường chính.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="138"/>
+      <location filename="../ui/preferences-draft.ui" line="94"/>
       <source>Internal precision level</source>
       <translation>Mức độ chính xác nội bộ</translation>
     </message>
@@ -2728,17 +1328,17 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Xuất các đối tượng 3D thành các lưới đa giác</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="228"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
       <translation>Nếu chọn ô này, thanh công cụ Bắt điểm sẽ được hiển thị bất cứ khi nào bạn sử dụng tính năng này</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="231"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
       <translation>Hiển thị thanh công cụ Bắt điểm sơ họa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="251"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="242"/>
       <source>Hide Draft snap toolbar after use</source>
       <translation>Ẩn thanh công cụ bắt điểm sơ họa sau khi sử dụng</translation>
     </message>
@@ -2748,7 +1348,7 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Hiển thị trình theo dõi mặt cắt làm việc</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="306"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="297"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
       <translation>Nếu chọn ô này, lưới Sơ họa sẽ luôn hiển thị khi Bàn làm việc Sơ họa đang hoạt động. Nếu không thì chỉ hiển thị khi sử dụng một lệnh</translation>
     </message>
@@ -2783,32 +1383,27 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Dịch đường màu trắng thành màu đen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="238"/>
-      <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
-      <translation>Khi chọn ô này, các công cụ Sơ họa sẽ tạo một các đối tượng Phần thay vì các đối tượng Sơ họa, khi có hiệu lực.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="241"/>
+      <location filename="../ui/preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
       <translation>Sử dụng các đối tượng Phần khi có thể</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="35"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>Snapping</source>
       <translation>Chế độ bắt điểm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="43"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
       <translation>Nếu chọn ô này, việc bắt điểm được kích hoạt mà không cần nhấn phím bắt điểm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="46"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
       <translation>Luôn bắt điểm (hủy chế độ bắt điểm)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="389"/>
+      <location filename="../ui/preferences-draft.ui" line="407"/>
       <source>Construction geometry color</source>
       <translation>Màu hình học xây dựng</translation>
     </message>
@@ -2878,12 +1473,12 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Độ phân giải các mẫu Hatch tô vật liệu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="272"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="263"/>
       <source>Grid</source>
       <translation>Lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="309"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="300"/>
       <source>Always show the grid</source>
       <translation>Luôn hiển thị lưới</translation>
     </message>
@@ -2933,7 +1528,7 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Chọn một tệp phông chữ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="257"/>
+      <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>Fill objects with faces whenever possible</source>
       <translation>Điền các đối tượng với các bề mặt bất cứ khi nào có thể</translation>
     </message>
@@ -2988,12 +1583,12 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="436"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="427"/>
       <source>Grid size</source>
       <translation>Kích thước lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="462"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="453"/>
       <source> lines</source>
       <translation> đường thẳng</translation>
     </message>
@@ -3173,7 +1768,7 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Cập nhật tự động (chỉ dành cho trình nhập cũ)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="304"/>
+      <location filename="../ui/preferences-draft.ui" line="341"/>
       <source>Prefix labels of Clones with:</source>
       <translation>Nhãn tiền tố của các bản sao với:</translation>
     </message>
@@ -3193,37 +1788,32 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Số chữ thập phân</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="254"/>
-      <source>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</source>
-      <translation>Nếu chọn ô này, các đối tượng sẽ xuất hiện dưới dạng được điền theo mặc định. Ngược lại, chúng sẽ xuất hiện dưới dạng khung lưới</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="206"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="211"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="216"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="193"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="184"/>
       <source>The Alt modifier key</source>
       <translation>Phím bổ trợ Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="456"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The number of horizontal or vertical lines of the grid</source>
       <translation>Số lượng các đường ngang hoặc dọc của lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="505"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="496"/>
       <source>The default color for new objects</source>
       <translation>Màu mặc định cho các đối tượng mới</translation>
     </message>
@@ -3246,11 +1836,6 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <location filename="../ui/preferences-draftvisual.ui" line="432"/>
       <source>An SVG linestyle definition</source>
       <translation>Một định nghĩa kiểu đường SVG</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="273"/>
-      <source>When drawing lines, set focus on Length instead of X coordinate</source>
-      <translation>Khi vẽ các đường, đặt tập trung vào các chiều dài thay vì tọa độ X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="201"/>
@@ -3323,12 +1908,12 @@ Nó có thể là tên phông chữ như "Arial", một kiểu mặc định nh�
       <translation>Đoạn Spline tối đa:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="164"/>
+      <location filename="../ui/preferences-draft.ui" line="120"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
       <translation type="unfinished">The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="213"/>
+      <location filename="../ui/preferences-draft.ui" line="169"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
       <translation type="unfinished">This is the value used by functions that use a tolerance.
@@ -3340,259 +1925,339 @@ Values with differences below this value will be treated as same. This value wil
       <translation>Sử dụng một trình xuất python cũ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="286"/>
+      <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
       <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="354"/>
+      <location filename="../ui/preferences-draft.ui" line="372"/>
       <source>Construction Geometry</source>
       <translation>Xây dựng hình học</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="434"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="26"/>
       <source>In-Command Shortcuts</source>
       <translation type="unfinished">In-Command Shortcuts</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="444"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="118"/>
       <source>Relative</source>
       <translation>Tương đối</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="466"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="140"/>
       <source>R</source>
       <translation type="unfinished">R</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="494"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="236"/>
       <source>Continue</source>
       <translation>Tiếp tục</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="516"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="214"/>
       <source>T</source>
       <translation type="unfinished">T</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="544"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="111"/>
       <source>Close</source>
       <translation>Đóng</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="566"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="177"/>
       <source>O</source>
       <translation type="unfinished">O</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="596"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="243"/>
       <source>Copy</source>
       <translation>Sao chép</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="618"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="469"/>
       <source>P</source>
       <translation type="unfinished">P</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="644"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="498"/>
       <source>Subelement Mode</source>
       <translation>Chế độ phần tử con</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="666"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="381"/>
       <source>D</source>
       <translation type="unfinished">D</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="692"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="491"/>
       <source>Fill</source>
       <translation>Điền vào</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="714"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="425"/>
       <source>L</source>
       <translation type="unfinished">L</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="744"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="447"/>
       <source>Exit</source>
       <translation>Thoát</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="766"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="638"/>
       <source>A</source>
       <translation>A</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="792"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="579"/>
       <source>Select Edge</source>
       <translation>Chọn cạnh</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="814"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="520"/>
       <source>E</source>
       <translation type="unfinished">E</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="840"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="403"/>
       <source>Add Hold</source>
       <translation>Thêm lỗ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="862"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="675"/>
       <source>Q</source>
       <translation type="unfinished">Q</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="892"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="352"/>
       <source>Length</source>
       <translation>Chiều dài</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="914"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="557"/>
       <source>H</source>
       <translation type="unfinished">H</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="940"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="359"/>
       <source>Wipe</source>
       <translation>Xóa dữ liệu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="962"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="601"/>
       <source>W</source>
       <translation type="unfinished">W</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="988"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="697"/>
       <source>Set WP</source>
       <translation>Thiết lập WP</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1010"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="719"/>
       <source>U</source>
       <translation type="unfinished">U</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1040"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="257"/>
       <source>Cycle Snap</source>
       <translation type="unfinished">Cycle Snap</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1062"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="52"/>
       <source>`</source>
       <translation type="unfinished">`</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1098"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="338"/>
       <source>Snap</source>
       <translation>Dính</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1120"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="89"/>
       <source>S</source>
       <translation type="unfinished">S</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1146"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="250"/>
       <source>Increase Radius</source>
       <translation>Tăng bán kính</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1168"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="279"/>
       <source>[</source>
       <translation type="unfinished">[</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1194"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="345"/>
       <source>Decrease Radius</source>
       <translation>Giảm bán kính</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1216"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="316"/>
       <source>]</source>
       <translation type="unfinished">]</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1246"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="741"/>
       <source>Restrict X</source>
       <translation>Giới hạn X</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1268"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="763"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1294"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="785"/>
       <source>Restrict Y</source>
       <translation>Giới hạn Y</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1316"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="807"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1342"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="829"/>
       <source>Restrict Z</source>
       <translation>Giới hạn Z</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="1364"/>
+      <location filename="../ui/preferences-draftinterface.ui" line="851"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="485"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="476"/>
       <source>Grid color</source>
       <translation>Màu lưới</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="289"/>
-      <source>Set the Support property when possible</source>
-      <translation type="unfinished">Set the Support property when possible</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="326"/>
+      <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
       <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="329"/>
+      <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
       <translation type="unfinished">Show groups in layers list drop-down button</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="530"/>
-      <source>Draft edit preferences</source>
-      <translation type="unfinished">Draft edit preferences</translation>
+      <location filename="../ui/preferences-draft.ui" line="216"/>
+      <source>Draft tools options</source>
+      <translation type="unfinished">Draft tools options</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="533"/>
+      <location filename="../ui/preferences-draft.ui" line="230"/>
+      <source>When drawing lines, set focus on Length instead of X coordinate.
+This allows to point the direction and type the distance.</source>
+      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
+This allows to point the direction and type the distance.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="234"/>
+      <source>Set focus on Length instead of X coordinate</source>
+      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="250"/>
+      <source>Set the Support property when possible</source>
+      <translation type="unfinished">Set the Support property when possible</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="263"/>
+      <source>If this is checked, objects will appear as filled by default.
+Otherwise, they will appear as wireframe</source>
+      <translation type="unfinished">If this is checked, objects will appear as filled by default.
+Otherwise, they will appear as wireframe</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="283"/>
+      <source>Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</source>
+      <translation type="unfinished">Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="300"/>
+      <source>If this is checked, copy mode will be kept across command,
+otherwise commands will always start in no-copy mode</source>
+      <translation type="unfinished">If this is checked, copy mode will be kept across command,
+otherwise commands will always start in no-copy mode</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="320"/>
+      <source>Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
+      <translation type="unfinished">Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="14"/>
+      <source>User interface settings</source>
+      <translation type="unfinished">User interface settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="884"/>
+      <source>Enable draft statusbar customization</source>
+      <translation type="unfinished">Enable draft statusbar customization</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="887"/>
+      <source>Draft Statusbar</source>
+      <translation type="unfinished">Draft Statusbar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="907"/>
+      <source>Enable snap statusbar widget</source>
+      <translation type="unfinished">Enable snap statusbar widget</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="910"/>
+      <source>Draft snap widget</source>
+      <translation type="unfinished">Draft snap widget</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="926"/>
+      <source>Enable draft statusbar annotation scale widget</source>
+      <translation type="unfinished">Enable draft statusbar annotation scale widget</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="929"/>
+      <source>Annotation scale widget</source>
+      <translation type="unfinished">Annotation scale widget</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="521"/>
+      <source>Draft Edit preferences</source>
+      <translation type="unfinished">Draft Edit preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="524"/>
       <source>Edit</source>
       <translation>Chỉnh sửa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="553"/>
-      <source>Sets the maximum number of objects Draft Edit can handle at the same time</source>
-      <translation type="unfinished">Sets the maximum number of objects Draft Edit can handle at the same time</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="556"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="538"/>
       <source>Maximum number of contemporary edited objects</source>
       <translation type="unfinished">Maximum number of contemporary edited objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="623"/>
-      <source>Controls pick radius of edit nodes</source>
-      <translation type="unfinished">Controls pick radius of edit nodes</translation>
+      <location filename="../ui/preferences-draftsnap.ui" line="561"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="626"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="599"/>
       <source>Draft edit pick radius</source>
       <translation type="unfinished">Draft edit pick radius</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="622"/>
+      <source>Controls pick radius of edit nodes</source>
+      <translation type="unfinished">Controls pick radius of edit nodes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
@@ -3797,565 +2462,362 @@ This value is the maximum segment length. </translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1801"/>
+      <location filename="../../importSVG.py" line="1799"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
     </message>
   </context>
   <context>
-    <name>Workbench</name>
-    <message>
-      <location filename="../../DraftSnap.py" line="1276"/>
-      <source>Draft Snap</source>
-      <translation>Bắt điểm Sơ họa</translation>
-    </message>
-  </context>
-  <context>
     <name>draft</name>
     <message>
-      <location filename="../../Draft.py" line="1841"/>
-      <source>not shape found</source>
-      <translation>hình dạng không tìm thấy</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1846"/>
-      <source>All Shapes must be co-planar</source>
-      <translation>Tất cả các hình dạng phải là đồng phẳng</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1979"/>
-      <source>The given object is not planar and cannot be converted into a sketch.</source>
-      <translation>Đối tượng đã cho không phải là phẳng và không thể chuyển đổi thành bản phác họa.</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1987"/>
-      <source>Unable to guess the normal direction of this object</source>
-      <translation>Không thể đoán hướng bình thường của đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="290"/>
+      <location filename="../../DraftGui.py" line="285"/>
       <source>Draft Command Bar</source>
       <translation>Thanh lệnh bản sơ họa</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="735"/>
       <source>Toggle construction mode</source>
       <translation>Bật/tắt chế độ xây dựng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="739"/>
+      <location filename="../../DraftGui.py" line="736"/>
       <source>Current line color</source>
       <translation>Màu đường vẽ hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="740"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Current face color</source>
       <translation>Màu mặt hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../DraftGui.py" line="738"/>
       <source>Current line width</source>
       <translation>Bề rộng đường vẽ hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="742"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Current font size</source>
       <translation>Kích thước phông chữ hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="743"/>
+      <location filename="../../DraftGui.py" line="740"/>
       <source>Apply to selected objects</source>
       <translation>Áp dụng cho các đối tượng được chọn</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1860"/>
+      <location filename="../../DraftGui.py" line="1872"/>
       <source>Autogroup off</source>
       <translation>Tự động tắt nhóm</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="654"/>
+      <location filename="../../DraftGui.py" line="651"/>
       <source>active command:</source>
       <translation>lệnh hoạt động:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5196"/>
+      <location filename="../../DraftGui.py" line="963"/>
       <source>None</source>
       <translation>Không</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="656"/>
+      <location filename="../../DraftGui.py" line="653"/>
       <source>Active Draft command</source>
       <translation>Lệnh nháp hoạt động</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="657"/>
+      <location filename="../../DraftGui.py" line="654"/>
       <source>X coordinate of next point</source>
       <translation>Tọa độ X của điểm tiếp theo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="960"/>
+      <location filename="../../DraftGui.py" line="964"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="659"/>
+      <location filename="../../DraftGui.py" line="656"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="660"/>
+      <location filename="../../DraftGui.py" line="657"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="661"/>
+      <location filename="../../DraftGui.py" line="658"/>
       <source>Y coordinate of next point</source>
       <translation>Tọa độ Y của điểm tiếp theo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="662"/>
+      <location filename="../../DraftGui.py" line="659"/>
       <source>Z coordinate of next point</source>
       <translation>Tọa độ Z của điểm tiếp theo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="663"/>
+      <location filename="../../DraftGui.py" line="660"/>
       <source>Enter point</source>
       <translation>Nhập điểm</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="664"/>
+      <location filename="../../DraftGui.py" line="661"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Nhập một điểm mới với tọa độ đã cho</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="665"/>
+      <location filename="../../DraftGui.py" line="662"/>
       <source>Length</source>
       <translation>Chiều dài</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3719"/>
+      <location filename="../../DraftGui.py" line="663"/>
       <source>Angle</source>
       <translation>Góc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="667"/>
+      <location filename="../../DraftGui.py" line="664"/>
       <source>Length of current segment</source>
       <translation>Độ dài của phân đoạn hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="668"/>
+      <location filename="../../DraftGui.py" line="665"/>
       <source>Angle of current segment</source>
       <translation>Góc của phân đoạn hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1007"/>
+      <location filename="../../DraftGui.py" line="1011"/>
       <source>Radius</source>
       <translation>Bán kính</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1008"/>
+      <location filename="../../DraftGui.py" line="1012"/>
       <source>Radius of Circle</source>
       <translation>Bán kính của đường tròn</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="679"/>
+      <location filename="../../DraftGui.py" line="676"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Nếu được chọn, lệnh sẽ không kết thúc cho đến khi bạn nhấn nút lệnh một lần nữa</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="681"/>
+      <location filename="../../DraftGui.py" line="678"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Nếu được chọn, một offset kiểu OCC sẽ được thực hiện thay vì offset cổ điển</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="682"/>
+      <location filename="../../DraftGui.py" line="679"/>
       <source>&amp;OCC-style offset</source>
       <translation>&amp;Offset kiểu OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="683"/>
-      <source>Add points to the current object</source>
-      <translation>Thêm điểm vào đối tượng hiện tại</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="684"/>
-      <source>Remove points from the current object</source>
-      <translation>Xóa điểm khỏi đối tượng hiện tại</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="685"/>
-      <source>Make Bezier node sharp</source>
-      <translation>Làm cho nút Bezier nhọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="686"/>
-      <source>Make Bezier node tangent</source>
-      <translation>Tạo nút Bezier tiếp tuyến</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="687"/>
-      <source>Make Bezier node symmetric</source>
-      <translation>Làm cho nút Bezier đối xứng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="696"/>
       <source>Sides</source>
       <translation>Các bên</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="697"/>
       <source>Number of sides</source>
       <translation>Số mặt bên</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3035"/>
+      <location filename="../../DraftGui.py" line="941"/>
       <source>Offset</source>
       <translation>Offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="605"/>
+      <location filename="../../DraftGui.py" line="602"/>
       <source>Auto</source>
       <translation>Tự động</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="703"/>
       <source>Text string to draw</source>
       <translation>Chuỗi văn bản để vẽ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="704"/>
       <source>String</source>
       <translation>Chuỗi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="705"/>
       <source>Height of text</source>
       <translation>Chiều cao phông chữ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="706"/>
       <source>Height</source>
       <translation>Chiều cao</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="710"/>
+      <location filename="../../DraftGui.py" line="707"/>
       <source>Intercharacter spacing</source>
       <translation>Khoảng cách giữa các ký tự</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="708"/>
       <source>Tracking</source>
       <translation>Theo dõi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="709"/>
       <source>Full path to font file:</source>
       <translation>Đường dẫn đầy đủ đến tệp phông chữ:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="710"/>
       <source>Open a FileChooser for font file</source>
       <translation>Mở một tệp phông chữ</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="153"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>Line</source>
       <translation>Đường thẳng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="858"/>
+      <location filename="../../DraftGui.py" line="862"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="875"/>
+      <location filename="../../DraftGui.py" line="879"/>
       <source>Circle</source>
       <translation>Vòng tròn</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="891"/>
+      <location filename="../../DraftGui.py" line="895"/>
       <source>Center X</source>
       <translation>Tâm X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="890"/>
+      <location filename="../../DraftGui.py" line="894"/>
       <source>Arc</source>
       <translation>Vòng cung</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="896"/>
+      <location filename="../../DraftGui.py" line="900"/>
       <source>Point</source>
       <translation>Điểm</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="921"/>
+      <location filename="../../DraftGui.py" line="925"/>
       <source>Label</source>
       <translation>Nhãn</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3705"/>
+      <location filename="../../DraftGui.py" line="1003"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="996"/>
+      <location filename="../../DraftGui.py" line="1000"/>
       <source>Trim</source>
       <translation>Cắt bỏ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
+      <location filename="../../DraftGui.py" line="1098"/>
       <source>Pick Object</source>
       <translation>Chọn đối tượng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1100"/>
+      <location filename="../../DraftGui.py" line="1104"/>
       <source>Edit</source>
       <translation>Chỉnh sửa</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1150"/>
+      <location filename="../../DraftGui.py" line="1154"/>
       <source>Global X</source>
       <translation>Tổng thể X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1151"/>
+      <location filename="../../DraftGui.py" line="1155"/>
       <source>Global Y</source>
       <translation>Tổng thể Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1152"/>
+      <location filename="../../DraftGui.py" line="1156"/>
       <source>Global Z</source>
       <translation>Tổng thể Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1155"/>
+      <location filename="../../DraftGui.py" line="1159"/>
       <source>Local X</source>
       <translation>Cục bộ X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1156"/>
+      <location filename="../../DraftGui.py" line="1160"/>
       <source>Local Y</source>
       <translation>Cục bộ Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1157"/>
+      <location filename="../../DraftGui.py" line="1161"/>
       <source>Local Z</source>
       <translation>Cục bộ Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1373"/>
+      <location filename="../../DraftGui.py" line="1380"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Giá trị Kích thước không hợp lệ. Sử dụng 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1381"/>
+      <location filename="../../DraftGui.py" line="1388"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Giá trị theo dõi không hợp lệ. Sử dụng 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1395"/>
+      <location filename="../../DraftGui.py" line="1402"/>
       <source>Please enter a text string.</source>
       <translation>Vui lòng nhập một chuỗi văn bản.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1403"/>
+      <location filename="../../DraftGui.py" line="1410"/>
       <source>Select a Font file</source>
       <translation>Chọn một tệp Phông chữ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1434"/>
+      <location filename="../../DraftGui.py" line="1441"/>
       <source>Please enter a font file.</source>
       <translation>Vui lòng nhập một tệp phông chữ.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1853"/>
+      <location filename="../../DraftGui.py" line="1865"/>
       <source>Autogroup: </source>
       <translation>Nhóm tự động: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2155"/>
+      <location filename="../../DraftGui.py" line="2166"/>
       <source>Faces</source>
       <translation>Bề mặt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2156"/>
+      <location filename="../../DraftGui.py" line="2167"/>
       <source>Remove</source>
       <translation>Xóa bỏ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2157"/>
+      <location filename="../../DraftGui.py" line="2168"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2158"/>
+      <location filename="../../DraftGui.py" line="2169"/>
       <source>Facebinder elements</source>
       <translation>Các thành phần của Facebinder</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="423"/>
-      <source>Create Line</source>
-      <translation>Tạo Đường vẽ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="568"/>
-      <source>Convert to Wire</source>
-      <translation>Chuyển đổi thành Dây</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="589"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>BSpline</source>
       <translation>Đường cong BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="690"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>BezCurve</source>
       <translation>Đường BezCurve</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="947"/>
-      <source>Create BezCurve</source>
-      <translation>Tạo BezCurve</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1030"/>
-      <source>Rectangle</source>
-      <translation>Hình chữ nhật</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1079"/>
-      <source>Create Plane</source>
-      <translation>Tạo mặt phẳng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1090"/>
-      <source>Create Rectangle</source>
-      <translation>Tạo hình chữ nhật</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1361"/>
-      <source>Create Circle</source>
-      <translation>Tạo đường tròn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1398"/>
-      <source>Create Arc</source>
-      <translation>Tạo Cung</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1491"/>
-      <source>Polygon</source>
-      <translation>Đa giác</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1628"/>
-      <source>Create Polygon</source>
-      <translation>Tạo đa giác</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1676"/>
-      <source>Ellipse</source>
-      <translation>Hình elíp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1734"/>
-      <source>Create Ellipse</source>
-      <translation>Tạo hình elip</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1795"/>
-      <source>Text</source>
-      <translation>Văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1830"/>
-      <source>Create Text</source>
-      <translation>Tạo văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1880"/>
-      <source>Dimension</source>
-      <translation>Kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2010"/>
-      <source>Create Dimension</source>
-      <translation>Tạo kích thước</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2228"/>
-      <source>ShapeString</source>
-      <translation>Chuỗi tạo hình</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2273"/>
-      <source>Create ShapeString</source>
-      <translation>Tạo Chuỗi tạo hình</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4026"/>
+      <location filename="../../DraftGui.py" line="699"/>
       <source>Copy</source>
       <translation>Sao chép</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2476"/>
-      <source>Move</source>
-      <translation>Di chuyển</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2565"/>
-      <source>Change Style</source>
-      <translation>Thay đổi Kiểu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2759"/>
-      <source>Rotate</source>
-      <translation>Xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3368"/>
-      <source>Stretch</source>
-      <translation>Phác thảo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3461"/>
-      <source>Upgrade</source>
-      <translation>Nâng cấp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3491"/>
-      <source>Downgrade</source>
-      <translation>Hạ cấp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4614"/>
-      <source>Convert to Sketch</source>
-      <translation>Chuyển sang Bản phác họa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4618"/>
-      <source>Convert to Draft</source>
-      <translation>Chuyển đổi sang Bản nháp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4630"/>
-      <source>Convert</source>
-      <translation>Chuyển đổi</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4663"/>
-      <source>Array</source>
-      <translation>Mảng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4827"/>
-      <source>Create Point</source>
-      <translation>Tạo điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5039"/>
-      <source>Mirror</source>
-      <translation>Đối xứng</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="138"/>
@@ -4377,581 +2839,329 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 Để cho phép FreeCAD tải xuống các thư viện này, hãy trả lời Có.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="471"/>
-      <source>Draft.makeBSpline: not enough points</source>
-      <translation>Draft.makeBSpline: không đủ điểm</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="477"/>
-      <source>Draft.makeBSpline: Equal endpoints forced Closed</source>
-      <translation>Draft.makeBSpline: Hai điểm cuối cùng bắt buộc phải kín</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="479"/>
-      <source>Draft.makeBSpline: Invalid pointslist</source>
-      <translation>Draft.makeBSpline: Danh sách điểm không hợp lệ</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2229"/>
-      <source>No object given</source>
-      <translation>Không có đối tượng nào được đưa ra</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2232"/>
-      <source>The two points are coincident</source>
-      <translation>Hay điểm này trùng nhau</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2642"/>
+      <location filename="../../Draft.py" line="1980"/>
       <source>Found groups: closing each open object inside</source>
       <translation>Các nhóm được tìm thấy: đóng mỗi cái và mở đối tượng bên trong</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2648"/>
+      <location filename="../../Draft.py" line="1986"/>
       <source>Found mesh(es): turning into Part shapes</source>
       <translation>(Các) lưới được tìm thấy: chuyển thành các hình Phần</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2657"/>
+      <location filename="../../Draft.py" line="1995"/>
       <source>Found 1 solidifiable object: solidifying it</source>
       <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2663"/>
+      <location filename="../../Draft.py" line="2001"/>
       <source>Found 2 objects: fusing them</source>
       <translation>Đã tìm thấy 2 đối tượng: đã hợp nhất</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2669"/>
+      <location filename="../../Draft.py" line="2007"/>
       <source>Found several objects: creating a shell</source>
       <translation>Đã tìm thấy các đối tượng khác nhau: tạo một vỏ</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2675"/>
+      <location filename="../../Draft.py" line="2013"/>
       <source>Found several coplanar objects or faces: creating one face</source>
       <translation>Tìm thấy một số đối tượng đồng phẳng hoặc khuôn mặt: tạo một khuôn mặt</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2681"/>
+      <location filename="../../Draft.py" line="2019"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
       <translation>Đã tìm thấy 1 đối tượng không có tham số: chỉnh lại nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2705"/>
+      <location filename="../../Draft.py" line="2043"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
       <translation>Tìm thấy 1 đối tượng phác họa kín: tạo một mặt từ nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2696"/>
+      <location filename="../../Draft.py" line="2034"/>
       <source>Found 1 linear object: converting to line</source>
       <translation>Đã tìm thấy 1 đối tượng tuyến tính: chuyển đổi thành đường</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2711"/>
+      <location filename="../../Draft.py" line="2049"/>
       <source>Found closed wires: creating faces</source>
       <translation>Tìm thấy các dây kín: tạo các mặt</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2717"/>
+      <location filename="../../Draft.py" line="2055"/>
       <source>Found 1 open wire: closing it</source>
       <translation>Tìm thấy 1 dây hở: làm kín nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2723"/>
+      <location filename="../../Draft.py" line="2061"/>
       <source>Found several open wires: joining them</source>
       <translation>Tìm thấy một số dây hở: hợp nhất các dây đó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2729"/>
+      <location filename="../../Draft.py" line="2067"/>
       <source>Found several edges: wiring them</source>
       <translation>Tìm thấy một số cạnh: nối chúng lại</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2735"/>
+      <location filename="../../Draft.py" line="2073"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Tìm thấy một số đối tượng không thể sửa: tạo ra thể hỗn hợp</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2739"/>
+      <location filename="../../Draft.py" line="2077"/>
       <source>Unable to upgrade these objects.</source>
       <translation>Không thể nâng cấp các đối tượng này.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2908"/>
+      <location filename="../../Draft.py" line="2246"/>
       <source>Found 1 block: exploding it</source>
       <translation>Đã tìm thấy 1 khối: làm nổ nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2915"/>
+      <location filename="../../Draft.py" line="2253"/>
       <source>Found 1 multi-solids compound: exploding it</source>
       <translation>Tìm thấy 1 hợp chất đa chất rắn: làm nổ nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2921"/>
+      <location filename="../../Draft.py" line="2259"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
       <translation>Tìm thấy 1 đối tượng tham số: phá vỡ các phụ thuộc của nó</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2929"/>
+      <location filename="../../Draft.py" line="2267"/>
       <source>Found 2 objects: subtracting them</source>
       <translation>Đã tìm thấy 2 đối tượng: khử chúng</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2937"/>
+      <location filename="../../Draft.py" line="2275"/>
       <source>Found several faces: splitting them</source>
       <translation>Tìm thấy một số mặt: tách chúng ra</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2943"/>
+      <location filename="../../Draft.py" line="2281"/>
       <source>Found several objects: subtracting them from the first one</source>
       <translation>Đã tìm thấy một số đối tượng: khử chúng ra khỏi đối tượng đầu tiên</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2949"/>
+      <location filename="../../Draft.py" line="2287"/>
       <source>Found 1 face: extracting its wires</source>
       <translation>Tìm thấy 1 mặt: Cởi dây của nó ra</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2955"/>
+      <location filename="../../Draft.py" line="2293"/>
       <source>Found only wires: extracting their edges</source>
       <translation>Chỉ tìm thấy dây: Gỡ rời các cạnh của chúng ra</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2959"/>
+      <location filename="../../Draft.py" line="2297"/>
       <source>No more downgrade possible</source>
       <translation>Không hạ cấp được nữa</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4776"/>
-      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation>_BSpline.createGeometry: Đóng cùng với điểm đầu tiên / cuối cùng. Hình học không được cập nhật.</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5549"/>
+      <location filename="../../Draft.py" line="3006"/>
       <source>No point found
 </source>
       <translation>Không thấy điểm nào
 </translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5778"/>
-      <source>ShapeString: string has no wires</source>
-      <translation>ShapeString: chuỗi không có dây</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="673"/>
+      <location filename="../../DraftGui.py" line="670"/>
       <source>Relative</source>
       <translation>Tương đối</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="680"/>
+      <location filename="../../DraftGui.py" line="677"/>
       <source>Continue</source>
       <translation>Tiếp tục</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="691"/>
+      <location filename="../../DraftGui.py" line="688"/>
       <source>Close</source>
       <translation>Đóng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="67"/>
+      <location filename="../../DraftGui.py" line="64"/>
       <source>Fill</source>
       <translation>Điền vào</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="68"/>
+      <location filename="../../DraftGui.py" line="65"/>
       <source>Exit</source>
       <translation>Thoát</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="69"/>
+      <location filename="../../DraftGui.py" line="66"/>
       <source>Snap On/Off</source>
       <translation>Chế độ Bật / tắt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="70"/>
+      <location filename="../../DraftGui.py" line="67"/>
       <source>Increase snap radius</source>
       <translation>Tăng chụp bán kính</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="71"/>
+      <location filename="../../DraftGui.py" line="68"/>
       <source>Decrease snap radius</source>
       <translation>Giảm chụp bán kính</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="72"/>
+      <location filename="../../DraftGui.py" line="69"/>
       <source>Restrict X</source>
       <translation>Giới hạn X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="73"/>
+      <location filename="../../DraftGui.py" line="70"/>
       <source>Restrict Y</source>
       <translation>Giới hạn Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="74"/>
+      <location filename="../../DraftGui.py" line="71"/>
       <source>Restrict Z</source>
       <translation>Giới hạn Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="694"/>
       <source>Select edge</source>
       <translation>Chọn cạnh</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="76"/>
+      <location filename="../../DraftGui.py" line="73"/>
       <source>Add custom snap point</source>
       <translation>Thêm tùy chỉnh bắt điểm</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="77"/>
+      <location filename="../../DraftGui.py" line="74"/>
       <source>Length mode</source>
       <translation>Chế độ dài</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="693"/>
+      <location filename="../../DraftGui.py" line="690"/>
       <source>Wipe</source>
       <translation>Xóa dữ liệu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="79"/>
+      <location filename="../../DraftGui.py" line="76"/>
       <source>Set Working Plane</source>
       <translation>Thiết lập mặt phẳng làm việc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="80"/>
+      <location filename="../../DraftGui.py" line="77"/>
       <source>Cycle snap object</source>
       <translation type="unfinished">Cycle snap object</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="670"/>
+      <location filename="../../DraftGui.py" line="667"/>
       <source>Check this to lock the current angle</source>
       <translation>Kiểm tra điều này để khóa góc hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="674"/>
+      <location filename="../../DraftGui.py" line="671"/>
       <source>Coordinates relative to last point or absolute</source>
       <translation>Tọa độ tương đối hoặc tuyệt đối so với điểm cuối cùng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="675"/>
+      <location filename="../../DraftGui.py" line="672"/>
       <source>Filled</source>
       <translation>Đã lấp đầy</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="677"/>
+      <location filename="../../DraftGui.py" line="674"/>
       <source>Finish</source>
       <translation>Hoàn tất</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="678"/>
+      <location filename="../../DraftGui.py" line="675"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Hoàn thành bản vẽ hoặc chỉnh sửa thao tác</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="689"/>
+      <location filename="../../DraftGui.py" line="686"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation>&amp;Hoàn tác (CTRL + Z)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="690"/>
+      <location filename="../../DraftGui.py" line="687"/>
       <source>Undo the last segment</source>
       <translation>Hoàn tác đoạn cuối cùng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="692"/>
+      <location filename="../../DraftGui.py" line="689"/>
       <source>Finishes and closes the current line</source>
       <translation>Kết thúc và làm kín đường vẽ hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="691"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Xóa các phân đoạn hiện tại của đường vẽ này và bắt đầu lại từ điểm cuối cùng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="695"/>
+      <location filename="../../DraftGui.py" line="692"/>
       <source>Set WP</source>
       <translation>Thiết lập WP</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="693"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Định hướng lại mặt phẳng làm việc trên đoạn cuối cùng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="698"/>
+      <location filename="../../DraftGui.py" line="695"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Chọn cạnh hiện tại được đo theo kích thước này</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="700"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation>Nếu được chọn, các đối tượng sẽ được sao chép thay vì di chuyển. Tùy thích -&gt; Nháp -&gt; Sao chép toàn bộ để giữ chế độ này cho các lệnh tiếp theo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2328"/>
-      <source>Default</source>
-      <translation>Mặc định</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="436"/>
-      <source>Create Wire</source>
-      <translation>Tạo dây dẫn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="562"/>
-      <source>Unable to create a Wire from selected objects</source>
-      <translation>Không thể tạo một Dây từ các đối tượng đã chọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="625"/>
-      <source>Spline has been closed</source>
-      <translation>Spline đã bị đóng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="888"/>
-      <source>Last point has been removed</source>
-      <translation>Điểm cuối cùng đã bị xóa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="664"/>
-      <source>Create B-spline</source>
-      <translation>Tạo đường cong B-spline</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="858"/>
-      <source>Bezier curve has been closed</source>
-      <translation>Đường cong Bezier đã bị đóng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2171"/>
-      <source>Edges don't intersect!</source>
-      <translation>Các cạnh không cắt nhau!</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2341"/>
-      <source>Pick ShapeString location point:</source>
-      <translation>Chọn điểm định vị chuỗi tạo hình:</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2378"/>
-      <source>Select an object to move</source>
-      <translation>Chọn một đối tượng để di chuyển</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2597"/>
-      <source>Select an object to rotate</source>
-      <translation>Chọn một đối tượng để xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2868"/>
-      <source>Select an object to offset</source>
-      <translation>Chọn một đối tượng để offset</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2871"/>
-      <source>Offset only works on one object at a time</source>
-      <translation>Offset chỉ hoạt động trên một đối tượng tại một thời điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2902"/>
-      <source>Sorry, offset of Bezier curves is currently still not supported</source>
-      <translation>Xin lỗi, offset đường cong Bezier hiện vẫn chưa được hỗ trợ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3055"/>
-      <source>Select an object to stretch</source>
-      <translation>Chọn một đối tượng để kéo dài</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3348"/>
-      <source>Turning one Rectangle into a Wire</source>
-      <translation>Chuyển một hình chữ nhật thành một dây</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3386"/>
-      <source>Select an object to join</source>
-      <translation>Chọn một đối tượng để nối</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3397"/>
-      <source>Join</source>
-      <translation>Nối</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3414"/>
-      <source>Select an object to split</source>
-      <translation>Chọn một đối tượng để chia tách</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3481"/>
-      <source>Select an object to upgrade</source>
-      <translation>Chọn một đối tượng để nâng cấp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3519"/>
-      <source>Select object(s) to trim/extend</source>
-      <translation>Chọn (các) đối tượng để cắt / mở rộng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3833"/>
-      <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
-      <translation>Không thể cắt các đối tượng này, chỉ hỗ trợ các dây và cung nháp</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3836"/>
-      <source>Unable to trim these objects, too many wires</source>
-      <translation>Không thể cắt các đối tượng này, quá nhiều dây</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3853"/>
-      <source>These objects don't intersect</source>
-      <translation>Các đối tượng này không giao nhau</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3856"/>
-      <source>Too many intersection points</source>
-      <translation>Quá nhiều điểm giao nhau</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3940"/>
-      <source>Select an object to scale</source>
-      <translation>Chọn một đối tượng để chia tỷ lệ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4546"/>
-      <source>Select an object to project</source>
-      <translation>Chọn một đối tượng cho dự án</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="284"/>
-      <source>Select a Draft object to edit</source>
-      <translation>Chọn một đối tượng Nháp để chỉnh sửa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="971"/>
-      <source>Active object must have more than two points/nodes</source>
-      <translation>Đối tượng hoạt động phải có nhiều hơn hai điểm / nút</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="1290"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Điểm cuối của BezCurve không thể được làm mượt</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4590"/>
-      <source>Select an object to convert</source>
-      <translation>Chọn một đối tượng để chuyển đổi</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4652"/>
-      <source>Select an object to array</source>
-      <translation>Chọn một đối tượng cho mảng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4697"/>
-      <source>Please select base and path objects</source>
-      <translation>Vui lòng chọn các đối tượng cơ sở và đường dẫn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4744"/>
-      <source>Please select base and pointlist objects
-</source>
-      <translation>Vui lòng chọn các đối tượng cơ sở và đường dẫn
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4872"/>
-      <source>Select an object to clone</source>
-      <translation>Chọn một đối tượng để sao chép</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4954"/>
-      <source>Select face(s) on existing object(s)</source>
-      <translation>Chọn (các) mặt trên (các) đối tượng hiện có</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5004"/>
-      <source>Select an object to mirror</source>
-      <translation>Chọn một đối tượng để lấy đối xứng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5124"/>
-      <source>This tool only works with Wires and Lines</source>
-      <translation>Công cụ này chỉ hoạt động với Dây và Đường</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1194"/>
+      <location filename="../../Draft.py" line="990"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="66"/>
+      <location filename="../../DraftGui.py" line="63"/>
       <source>Subelement mode</source>
       <translation type="unfinished">Subelement mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
-      <source>Toggle radius and angles arc editing</source>
-      <translation type="unfinished">Toggle radius and angles arc editing</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="2247"/>
+      <location filename="../../DraftGui.py" line="701"/>
       <source>Modify subelements</source>
       <translation>Sửa các phần tử con</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="702"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Nếu chọn, các phần tử con sẽ được sửa thay vì toàn bộ các đối tượng</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="809"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>CubicBezCurve</source>
       <translation>CubicBezCurve</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2761"/>
-      <source>Some subelements could not be moved.</source>
-      <translation>Một số phần tử con không thể di chuyển được.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4026"/>
-      <source>Scale</source>
-      <translation>Kích cỡ</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4019"/>
-      <source>Some subelements could not be scaled.</source>
-      <translation>Một số phần tử con không thể co dãn được.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="599"/>
+      <location filename="../../WorkingPlane.py" line="738"/>
       <source>Top</source>
       <translation>Đỉnh</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="601"/>
+      <location filename="../../WorkingPlane.py" line="749"/>
       <source>Front</source>
       <translation>Phía trước</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="603"/>
+      <location filename="../../WorkingPlane.py" line="760"/>
       <source>Side</source>
       <translation>Cạnh</translation>
     </message>
     <message>
-      <location filename="../../DraftSelectPlane.py" line="447"/>
+      <location filename="../../DraftGui.py" line="734"/>
       <source>Current working plane</source>
       <translation>Mặt phẳng làm việc hiện tại</translation>
     </message>
     <message>
-      <location filename="../../DraftEdit.py" line="673"/>
-      <source>No edit point found for selected object</source>
-      <translation>Không tìm thấy điểm sửa chữa nào cho đối tượng đã chọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="676"/>
+      <location filename="../../DraftGui.py" line="673"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
@@ -4971,219 +3181,14 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Lớp</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1911"/>
-      <source>Pick first point</source>
-      <translation>Chọn điểm đầu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="742"/>
-      <source>Pick next point</source>
-      <translation>Chọn điểm tiếp theo</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="573"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>Polyline</source>
       <translation type="unfinished">Polyline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="745"/>
-      <source>Pick next point, or Finish (shift-F) or close (o)</source>
-      <translation>Chọn điểm tiếp theo, hoặc Kết thúc (shift-F) hoặc đóng (o)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="896"/>
-      <source>Click and drag to define next knot</source>
-      <translation>Chọn và kéo thả để định nghĩa nút mới</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="899"/>
-      <source>Click and drag to define next knot: ESC to Finish or close (o)</source>
-      <translation>Chọn và kéo thả để định nghĩa nút kế tiếp: ESC để hoàn tất hoặc đóng (o)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1777"/>
-      <source>Pick opposite point</source>
-      <translation>Chọn điểm đối diện</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1507"/>
-      <source>Pick center point</source>
-      <translation>Chọn trung điểm</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1646"/>
-      <source>Pick radius</source>
-      <translation>Chọn bán kính</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1447"/>
-      <source>Pick start angle</source>
-      <translation>Chọn góc ban đầu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1336"/>
-      <source>Pick aperture</source>
-      <translation>Chọn độ mở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1459"/>
-      <source>Pick aperture angle</source>
-      <translation>Chọn góc độ mở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1806"/>
-      <source>Pick location point</source>
-      <translation>Chọn điểm vị trí đặt</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2252"/>
-      <source>Pick ShapeString location point</source>
-      <translation>Chọn điểm định vị chuỗi tạo hình</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2394"/>
-      <source>Pick start point</source>
-      <translation>Chọn điểm đầu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2531"/>
-      <source>Pick end point</source>
-      <translation>Chọn điểm cuối</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2613"/>
-      <source>Pick rotation center</source>
-      <translation>Chọn tâm xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2825"/>
-      <source>Base angle</source>
-      <translation>Góc cơ sở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2829"/>
-      <source>Pick base angle</source>
-      <translation>Chọn góc cơ sở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2834"/>
-      <source>Rotation</source>
-      <translation>Xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2843"/>
-      <source>Pick rotation angle</source>
-      <translation>Chọn góc xoay</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2879"/>
-      <source>Cannot offset this object type</source>
-      <translation>Không thể offset kiểu đối tượng này</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3590"/>
-      <source>Pick distance</source>
-      <translation>Chọn khoảng cách</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3100"/>
-      <source>Pick first point of selection rectangle</source>
-      <translation>Chọn điểm đầu tiên của hình chữ nhật đã chọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3124"/>
-      <source>Pick opposite point of selection rectangle</source>
-      <translation>Chọn điểm đối diện của hình chữ nhật đã chọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3133"/>
-      <source>Pick start point of displacement</source>
-      <translation>Chọn điểm bắt đầu để di chuyển</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3196"/>
-      <source>Pick end point of displacement</source>
-      <translation>Chọn điểm cuối để di chuyển</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3957"/>
-      <source>Pick base point</source>
-      <translation>Chọn điểm cơ sở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3976"/>
-      <source>Pick reference distance from base point</source>
-      <translation>Chọn khoảng cách tham chiếu từ điểm cơ sở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4132"/>
-      <source>Pick new distance from base point</source>
-      <translation>Chọn khoảng cách mới từ điểm cơ sở</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4316"/>
-      <source>Select an object to edit</source>
-      <translation>Chọn một đối tượng để sửa</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5018"/>
-      <source>Pick start point of mirror line</source>
-      <translation>Chọn điểm đầu của đường đối xứng gương</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5102"/>
-      <source>Pick end point of mirror line</source>
-      <translation>Chọn điểm cuối của đường đối xứng gương</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5245"/>
-      <source>Pick target point</source>
-      <translation>Chọn điểm mục tiêu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5340"/>
-      <source>Pick endpoint of leader line</source>
-      <translation>Chọn điểm cuối của đường dẫn hướng</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5350"/>
-      <source>Pick text position</source>
-      <translation>Chọn vị trí văn bản</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="43"/>
+      <location filename="../../InitGui.py" line="45"/>
       <source>Draft</source>
       <translation>Mớn nước của tàu</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="561"/>
-      <source>Too many objects selected, max number set to: </source>
-      <translation type="unfinished">Too many objects selected, max number set to: </translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="573"/>
-      <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="960"/>
-      <source>Node not found</source>
-      <translation type="unfinished">Node not found</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="1110"/>
-      <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="1263"/>
-      <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
-    </message>
-    <message>
-      <location filename="../../DraftEdit.py" line="1561"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
     </message>
     <message>
       <location filename="../../DraftFillet.py" line="264"/>
@@ -5276,37 +3281,37 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Tạo đường gờ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="81"/>
+      <location filename="../../DraftGui.py" line="78"/>
       <source>Toggle near snap on/off</source>
       <translation type="unfinished">Toggle near snap on/off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="711"/>
       <source>Create text</source>
       <translation>Tạo văn bản</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="715"/>
+      <location filename="../../DraftGui.py" line="712"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="892"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Center Y</source>
       <translation type="unfinished">Center Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="893"/>
+      <location filename="../../DraftGui.py" line="897"/>
       <source>Center Z</source>
       <translation type="unfinished">Center Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="944"/>
+      <location filename="../../DraftGui.py" line="948"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1000"/>
+      <location filename="../../DraftGui.py" line="1004"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
     </message>
@@ -5321,74 +3326,9 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Select contents</translation>
     </message>
     <message>
-      <location filename="../../DraftSelectPlane.py" line="75"/>
-      <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="436"/>
-      <source>Dir</source>
-      <translation type="unfinished">Dir</translation>
-    </message>
-    <message>
-      <location filename="../../DraftSelectPlane.py" line="446"/>
-      <source>Custom</source>
-      <translation>Tùy chọn</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1442"/>
-      <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1450"/>
-      <source>Aperture angle</source>
-      <translation type="unfinished">Aperture angle</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2826"/>
-      <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2835"/>
-      <source>The amount of rotation you wish to perform. The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform. The final angle will be the base angle plus this amount.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3706"/>
-      <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3720"/>
-      <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4088"/>
-      <source>Unable to scale object</source>
-      <translation type="unfinished">Unable to scale object</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4090"/>
-      <source>Unable to scale objects</source>
-      <translation type="unfinished">Unable to scale objects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4091"/>
-      <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4573"/>
-      <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5203"/>
-      <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <location filename="../../InitGui.py" line="158"/>
+      <source>Wire</source>
+      <translation>Dây</translation>
     </message>
   </context>
   <context>

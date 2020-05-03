@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="839"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="840"/>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1515"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1555"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="1062"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1063"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="132"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="133"/>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../../Command.cpp" line="1183"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
@@ -127,7 +127,7 @@
     <message>
       <location filename="../../Command.cpp" line="1347"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1348"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../Command.cpp" line="1141"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../Command.cpp" line="1586"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1587"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="1480"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1481"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="559"/>
@@ -260,7 +260,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../Command.cpp" line="618"/>
       <source>Tessellate shape</source>
-      <translation>Figūros mozaika</translation>
+      <translation>Versti paviršių į daugiasienį</translation>
     </message>
   </context>
   <context>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../Command.cpp" line="1446"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="437"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../Command.cpp" line="366"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="367"/>
@@ -329,7 +329,7 @@
     <message>
       <location filename="../../Command.cpp" line="1735"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1736"/>
@@ -347,7 +347,7 @@
     <message>
       <location filename="../../Command.cpp" line="885"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="886"/>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../Command.cpp" line="730"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../Command.cpp" line="786"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="787"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="1087"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1088"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Command.cpp" line="946"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
@@ -442,18 +442,18 @@
     <message>
       <location filename="../../Command.cpp" line="1271"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1272"/>
       <source>Refinement...</source>
-      <translation type="unfinished">Refinement...</translation>
+      <translation>Patobulinti...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1273"/>
       <location filename="../../Command.cpp" line="1274"/>
       <source>Refine existing mesh</source>
-      <translation type="unfinished">Refine existing mesh</translation>
+      <translation>Patobulinti esamą tinklą</translation>
     </message>
   </context>
   <context>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
@@ -480,7 +480,7 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
@@ -499,7 +499,7 @@
     <message>
       <location filename="../../Command.cpp" line="1777"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1778"/>
@@ -517,7 +517,7 @@
     <message>
       <location filename="../../Command.cpp" line="1034"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1035"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1666"/>
@@ -555,7 +555,7 @@
     <message>
       <location filename="../../Command.cpp" line="1700"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1701"/>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
@@ -593,7 +593,7 @@
     <message>
       <location filename="../../Command.cpp" line="171"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="172"/>
@@ -612,7 +612,7 @@
     <message>
       <location filename="../../Command.cpp" line="93"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="94"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="226"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="227"/>
@@ -663,7 +663,7 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
@@ -682,7 +682,7 @@
     <message>
       <location filename="../../Command.cpp" line="685"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
@@ -1038,7 +1038,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="53"/>
       <source>&amp;Create</source>
-      <translation type="unfinished">&amp;Create</translation>
+      <translation>&amp;Sukurti</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="56"/>
@@ -1093,25 +1093,25 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="175"/>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="211"/>
       <location filename="../../DlgRegularSolid.ui" line="301"/>
       <location filename="../../DlgRegularSolid.ui" line="418"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Ilgis:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="231"/>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="274"/>
       <location filename="../../DlgRegularSolid.ui" line="556"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Spindulys:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="328"/>
@@ -1156,7 +1156,7 @@ Please run the command to repair folds first</source>
       <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="220"/>
       <source>Create %1</source>
-      <translation type="unfinished">Create %1</translation>
+      <translation>Sukurti %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="127"/>
@@ -1174,22 +1174,22 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Eksportuoti</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
+      <translation>Didžiausias tinklo pavidalo nuokrypis nuo kūno pavidalo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="50"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+      <translation>Daugiasienio tinklo nuokrypis nuo tikrojo paviršiaus</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Išklotinė&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Apibrėžia didžiausią tinklo išklotinės ant paviršiaus nuokrypį. Mažesnė vertė sulėtina atvaizdavimo greitį, bet padidina detalumą/skyrą.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Išklotinė&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Apibrėžia didžiausią tinklo sienų nuokrypį nuo tikrojo paviršiaus. Mažesnė vertė sulėtina atvaizdavimo greitį, bet padidina detalumą/skyrą.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="56"/>
@@ -1199,7 +1199,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation>Yra naudojamas ZIP glaudinimas, kuomet tinklas išsaugomas AMF formatu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
@@ -1238,7 +1238,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="76"/>
       <source>Default color for new meshes</source>
-      <translation type="unfinished">Default color for new meshes</translation>
+      <translation>Numatytoji naujų tinklų spalva</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="96"/>
@@ -1254,7 +1254,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="148"/>
       <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
+      <translation>Bus atvaizduojami ribinių matmenų gretasienis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="151"/>
@@ -1264,7 +1264,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="187"/>
       <source>Default line color for new meshes</source>
-      <translation type="unfinished">Default line color for new meshes</translation>
+      <translation>Numatytoji naujų tinklų spalva</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="207"/>
@@ -1272,10 +1272,9 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>Apatinė paviršiaus pusė bus piešiama taip pat, kaip ir viršutinė pusė.
+Jei nepasirinkta, tai priklauso nuo parinkties „Įgalinti galinį pašvietimą“
+(Nuostatų skiltyje Rodymas -&gt; Erdvinis vaizdas). Tuomet bus naudojama galinio pašvietimo arba juoda spalva.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="213"/>
@@ -1316,13 +1315,10 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
+      <translation>Jei nustatyta ši parinktis, atvaizdavimui taikomas Fongo šešėliavimas, kitu atveju taikomas plokštuminis šelėliavimas.
+Šešėliavimas apibrėžia paviršių išvaizdą.
 
-With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
-</translation>
+Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuojamos kiekvienai viršūnei ir dėl to kreivi paviršiai atvaizduojami netikroviškai (paviršius atrodo žvynuotas), o naudojant Fongo šešėliavimą, kreivi paviršiai atrodo glotnūs.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="311"/>
@@ -1335,10 +1331,9 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation type="unfinished">Crease angle is a threshold angle between two faces.
-
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+      <translation>Klostės kampas yra slenkstinis kampas tarp dviejų daugiakampių.
+ Jei kampas ≥ už slenkstinį kampą, taikomas žvynelinis šešėliavimas
+ Jei kampas &lt; už slenkstinį kampą, taikomas tolydusis šešėliavimas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
@@ -1409,38 +1404,38 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <translation>Prisitaikantis</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Priekinis</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="102"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>Priekiniai keturkampiai</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Lygiagretainiai</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="174"/>
       <location filename="../../RemeshGmsh.cpp" line="230"/>
       <source>Time:</source>
-      <translation type="unfinished">Time:</translation>
+      <translation>Laikas:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="219"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Paleidžiamas „gmsh“...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="241"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Nepavyko pradėti</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="248"/>
@@ -1482,47 +1477,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="128"/>
+      <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
       <translation>Paviršiaus pritaikymas</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="135"/>
+      <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
       <translation>Dydžiai</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="140"/>
+      <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
       <translation>Atranka</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="148"/>
+      <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Region</source>
       <translation>Sritis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="154"/>
+      <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Triangle</source>
       <translation>Trikampis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="160"/>
+      <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="166"/>
+      <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
       <translation>Skaičiuoti</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
       <translation>Niekas nepasirinkta</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="253"/>
+      <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Prieš pritaikant prie paviršiaus, pažymėkite sritį.</translation>
     </message>
@@ -1532,27 +1527,27 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
+      <translation>Perkurti tinklą su „gmsh“</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Perkūrimo dydis</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Kuriamas tinklas:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Didžiausios akies dydis (0.0 = Apskaičiuojamas savaime):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Smulkiausios akies dydis (0.0 = Apskaičiuojamas savaime):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1562,22 +1557,22 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>„Gmsh“</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Kelias</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Nutraukti</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
       <source>Time:</source>
-      <translation type="unfinished">Time:</translation>
+      <translation>Laikas:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
@@ -1781,29 +1776,29 @@ to a smoother appearance.
       <translation>Ritinys</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
-      <location filename="../../SegmentationBestFit.cpp" line="331"/>
+      <location filename="../../SegmentationBestFit.cpp" line="337"/>
+      <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
       <translation>Pagrindas</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
       <translation>Įprastiniai</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="332"/>
+      <location filename="../../SegmentationBestFit.cpp" line="364"/>
       <source>Axis</source>
       <translation>Ašis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="333"/>
-      <location filename="../../SegmentationBestFit.cpp" line="360"/>
+      <location filename="../../SegmentationBestFit.cpp" line="365"/>
+      <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
       <translation>Spindulys</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="359"/>
+      <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
       <translation>Vidurys</translation>
     </message>
@@ -1910,9 +1905,9 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="125"/>
+      <location filename="../../AppMeshGui.cpp" line="160"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Importas-Eksportas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="448"/>
@@ -2071,7 +2066,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../ViewProvider.cpp" line="744"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Rodyti atkarpas</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1575"/>

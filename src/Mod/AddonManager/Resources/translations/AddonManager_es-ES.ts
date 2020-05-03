@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Ubicación de la instalación</translation>
     </message>
   </context>
   <context>
@@ -224,22 +224,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Algo salió mal con Git Macro Retieval, posiblemente el ejecutable Git no está en la ruta</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Este complemento está marcado como obsoleto</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Esto generalmente significa que ya no está mantenido, y algún complemento más avanzado en esta lista proporciona la misma funcionalidad.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Error: No se puede localizar zip desde</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
+      <translation>Cerrar el administrador de complementos</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -339,41 +339,39 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Si se selecciona esta opción, al iniciar el Administrador de Complementos, los complementos instalados serán revisados para ver si hay actualizaciones disponibles
+(esto requiere el paquete GitPython instalado en tu sistema)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Comprobar automáticamente actualizaciones al inicio (requiere GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>Puede usar esta ventana para especificar repositorios adicionales de complementos a ser escaneados para complementos disponibles</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Proxy </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Sin proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Proxy del usuario de sistema</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Proxy definido por el usuario :</translation>
     </message>
   </context>
   <context>

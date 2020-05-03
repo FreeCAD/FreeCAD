@@ -1,6 +1,4 @@
 import FreeCAD
-import Mesh
-import Part
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -12,6 +10,11 @@ import os
 from FreeCAD import Vector, Base
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Mesh = LazyLoader('Mesh', globals(), 'Mesh')
+Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
     import FreeCADGui

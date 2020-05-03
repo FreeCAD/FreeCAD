@@ -23,9 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
 import FreeCAD
-import Part
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
@@ -34,6 +32,11 @@ import PathScripts.PathUtils as PathUtils
 import numpy
 
 from PySide import QtCore
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Path Profile Faces Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"

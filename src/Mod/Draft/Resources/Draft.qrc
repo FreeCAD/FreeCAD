@@ -1,8 +1,10 @@
 <RCC>
     <qresource> 
         <file>icons/Draft_2DShapeView.svg</file>
+        <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
         <file>icons/Draft_AddToGroup.svg</file>
+        <file>icons/Draft_Annotation_Style.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
         <file>icons/Draft_Arc_3Points.svg</file>
@@ -17,8 +19,10 @@
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_Circle.svg</file>
         <file>icons/Draft_CircularArray.svg</file>
+        <file>icons/Draft_CircularLinkArray.svg</file>
         <file>icons/Draft_Clone.svg</file>
         <file>icons/Draft_Construction.svg</file>
+        <file>icons/Draft_Continue.svg</file>
         <file>icons/Draft_CubicBezCurve.svg</file>
         <file>icons/Draft_Cursor.svg</file>
         <file>icons/Draft_DelPoint.svg</file>
@@ -59,6 +63,7 @@
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
         <file>icons/Draft_PolarArray.svg</file>
+        <file>icons/Draft_PolarLinkArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>
         <file>icons/Draft_Rectangle.svg</file>
         <file>icons/Draft_Rotate.svg</file>
@@ -150,6 +155,7 @@
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_zh-TW.qm</file>
         <file>ui/preferences-draft.ui</file>
+        <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
         <file>ui/preferences-draftvisual.ui</file>
@@ -162,5 +168,6 @@
         <file>ui/TaskPanel_PolarArray.ui</file>
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
+        <file>ui/dialog_AnnotationStyleEditor.ui</file>
     </qresource>
 </RCC> 

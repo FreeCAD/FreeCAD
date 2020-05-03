@@ -55,9 +55,11 @@
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
+//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 #include "ViewProviderWeld.h"
 #include "MDIViewPage.h"
 #include "DrawGuiUtil.h"
@@ -252,7 +254,8 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround->setNormalColor(getCurrentColor());
 
     m_allAround->setFill(Qt::NoBrush);
-    m_allAround->setRadius(calculateFontPixelSize(getDimFontSize()));
+//    m_allAround->setRadius(calculateFontPixelSize(getDimFontSize()));
+    m_allAround->setRadius(PreferencesGui::dimFontSizePX());
     double width = m_qgLead->getLineWidth();
     m_allAround->setWidth(width);
     m_allAround->setZValue(ZVALUE::DIMENSION);
@@ -323,7 +326,8 @@ void QGIWeldSymbol::drawFieldFlag()
                                         QPointF(-2.0, -2.5),
                                         QPointF(0.0, -2.0) };
     //flag sb about 2x text?
-    double scale = calculateFontPixelSize(getDimFontSize()) / 2.0;
+//    double scale = calculateFontPixelSize(getDimFontSize()) / 2.0;
+    double scale = PreferencesGui::dimFontSizePX() / 2.0;
     QPainterPath path;
     path.moveTo(flagPoints.at(0) * scale);
     int i = 1;
@@ -510,29 +514,18 @@ TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
 //preference
 QColor QGIWeldSymbol::prefNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    m_colNormal = fcColor.asValue<QColor>();
+    m_colNormal = PreferencesGui::leaderQColor();
     return m_colNormal;
 }
 
 double QGIWeldSymbol::prefArrowSize()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double size = Rez::guiX(hGrp->GetFloat("ArrowSize", 3.5));
-    return size;
+    return PreferencesGui::dimArrowSize();
 }
 
 double QGIWeldSymbol::prefFontSize(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double sizeMM = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
-    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
-    return fontSize;
+    return Preferences::labelFontSizeMM();
 }
 
 QRectF QGIWeldSymbol::boundingRect() const

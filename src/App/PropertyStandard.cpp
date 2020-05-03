@@ -1120,6 +1120,10 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const App::any &v
         setValue(App::any_cast<int>(value));
     else if (value.type() == typeid(Quantity))
         setValue((App::any_cast<const Quantity&>(value)).getValue());
+    else if (value.type() == typeid(long))
+        setValue(App::any_cast<long>(value));
+    else if (value.type() == typeid(unsigned long))
+        setValue(App::any_cast<unsigned long>(value));
     else
         throw bad_cast();
 }

@@ -57,6 +57,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
 #include "DrawGuiStd.h"
+#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -74,15 +75,16 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                                TechDraw::DrawPage* page,
-                               std::string edgeName) :
+                               std::string edgeName,
+                               bool editMode) :
     ui(new Ui_TaskCenterLine),
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(false),
     m_edgeName(edgeName),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
-    m_mode(0)           //0 - vertical, 1 - horizontal, 2 - aligned
-
+    m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
+    m_editMode(editMode)
 {
 //    Base::Console().Message("TCL::TCL() - edit mode\n");
     ui->setupUi(this);
@@ -104,14 +106,16 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
 //ctor for creation
 TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                                TechDraw::DrawPage* page,
-                               std::vector<std::string> subNames) :
+                               std::vector<std::string> subNames,
+                               bool editMode) :
     ui(new Ui_TaskCenterLine),
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(true),
     m_subNames(subNames),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
-    m_mode(0)           //0 - vertical, 1 - horizontal, 2 - aligned
+    m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
+    m_editMode(editMode)
 {
 //    Base::Console().Message("TCL::TCL() - create mode\n");
     if ( (m_basePage == nullptr) ||
@@ -416,9 +420,7 @@ void TaskCenterLine::enableTaskButtons(bool b)
 
 double TaskCenterLine::getCenterWidth()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
 
     double width = lg->getWeight("Graphic");
@@ -441,10 +443,7 @@ Qt::PenStyle TaskCenterLine::getCenterStyle()
 
 QColor TaskCenterLine::getCenterColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x00000000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::centerQColor();
 }
 
 double TaskCenterLine::getExtendBy(void)
@@ -501,10 +500,11 @@ bool TaskCenterLine::reject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      TechDraw::DrawPage* page,
-                                     std::vector<std::string> subNames)
+                                     std::vector<std::string> subNames,
+                                     bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page,subNames);
+    widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
@@ -513,10 +513,11 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 
 TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      TechDraw::DrawPage* page,
-                                     std::string edgeName)
+                                     std::string edgeName,
+                                     bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page, edgeName);
+    widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);

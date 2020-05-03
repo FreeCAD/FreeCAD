@@ -4,71 +4,89 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Cylinder</source>
       <translation>Cylindre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Approximer un cylindre</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="109"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Planifier...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Approximate a plane</source>
       <translation>Approximer un plan</translation>
     </message>
   </context>
   <context>
-    <name>CmdApproxSphere</name>
+    <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="309"/>
+      <source>Polynomial surface</source>
+      <translation type="unfinished">Polynomial surface</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="310"/>
+      <source>Approximate a polynomial surface</source>
+      <translation type="unfinished">Approximate a polynomial surface</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <location filename="../../Command.cpp" line="261"/>
+      <source>Reverse Engineering</source>
+      <translation>Rétro-ingénierie</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="262"/>
       <source>Sphere</source>
       <translation>Sphère</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="263"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Approximer une sphère</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="73"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Approximate B-spline surface...</source>
       <translation>Approximation de la surface de la courbe B-Spline...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Approximate a B-spline surface</source>
       <translation>Approximer la surface d’une courbe B-Spline</translation>
     </message>
@@ -76,35 +94,35 @@
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="474"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Fil à partir de la limite du maillage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="476"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Créer un fil à partir des limites du maillage</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="540"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="541"/>
       <source>Poisson...</source>
       <translation>Poisson...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Poisson surface reconstruction</source>
       <translation>Reconstruction de surface Poisson</translation>
     </message>
@@ -112,17 +130,17 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Segmentation du maillage...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Create mesh segments</source>
       <translation>Diviser un maillage</translation>
     </message>
@@ -130,54 +148,54 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="425"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Depuis les composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="426"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Créer des segments de maillage à partir des composants</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Segmentation manuelle...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Créer des segments de maillage manuellement</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Reverse Engineering</source>
       <translation>Rétro-ingénierie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Structured point clouds</source>
       <translation>Nuages de points structurés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="577"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulation de nuages de points structurés</translation>
     </message>
@@ -256,21 +274,27 @@
       <source>User-defined u/v directions</source>
       <translation>Directions u/v personnalisés</translation>
     </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="359"/>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="146"/>
+      <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="147"/>
+      <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Veuillez sélectionner un objet de placement unique pour obtenir l'orientation locale.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="174"/>
+      <location filename="../../FitBSplineSurface.cpp" line="167"/>
+      <location filename="../../FitBSplineSurface.cpp" line="235"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -311,14 +335,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="553"/>
       <source>Wrong selection</source>
       <translation>Sélection invalide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="495"/>
+      <location filename="../../Command.cpp" line="89"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Please select a single point cloud.</source>
       <translation>Merci de sélectionner un point du nuage de points.</translation>
     </message>
@@ -326,7 +354,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="609"/>
       <source>View triangulation failed</source>
       <translation>Erreur de la vue en triangulation</translation>
     </message>
@@ -341,7 +369,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="27"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Créer un composé</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="34"/>
@@ -356,12 +384,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Tolérance de courbure</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Distance au plan</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
@@ -371,7 +399,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Créer un maillage à partir de triangles inutilisés</translation>
     </message>
   </context>
   <context>
@@ -379,7 +407,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Segmentation manuelle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>

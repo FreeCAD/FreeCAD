@@ -94,14 +94,14 @@
       <translation>Errore: {err}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Offset di associazione:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Offset di associazione (in coordinate locali):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Il calcolo del risultato è fallito con un errore: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annullare.</translation>
     </message>
   </context>
   <context>
@@ -1624,7 +1624,7 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
       <location filename="../../Command.cpp" line="2263"/>
       <location filename="../../Command.cpp" line="2264"/>
       <source>Toggle All</source>
-      <translation>Attiva/disattiva tutto</translation>
+      <translation>Attiva/disattiva tutte le misure</translation>
     </message>
   </context>
   <context>
@@ -2274,7 +2274,7 @@ fare clic su 'Continua' per creare comunque la funzione, o 'Annulla' per annulla
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Crea una superficie rigata da due spigoli o due polilinee</translation>
+      <translation>Crea una superficie rigata tra due spigoli o due polilinee, cioè una superficie di tipo mesh a maglie poligonali</translation>
     </message>
   </context>
   <context>
@@ -4870,7 +4870,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="121"/>
       <source>Enter tolerance for sewing shape:</source>
-      <translation>Inserisci la tolleranza per la forma di cucitura:</translation>
+      <translation>Inserire la tolleranza per cucire la forma:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="71"/>

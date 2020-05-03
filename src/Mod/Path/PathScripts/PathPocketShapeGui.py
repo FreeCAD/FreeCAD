@@ -24,7 +24,6 @@
 
 import FreeCAD
 import FreeCADGui
-import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
@@ -34,6 +33,10 @@ import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 
 from PySide import QtCore, QtGui
 from pivy import coin
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"

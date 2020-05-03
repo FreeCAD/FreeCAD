@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Можно настроить пользовательскую папку для отображения здесь в меню Правка-&gt; предпочтения-&gt; запуск-&gt; показывать дополнительную папку</translation>
+      <translation>Можно настроить пользовательскую папку для отображения здесь в меню Правка-&gt; Настройки-&gt; Start-&gt; Показать дополнительную папку</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
       <source>Show notepad</source>
-      <translation>Показывать Блокнот</translation>
+      <translation>Показать Блокнот</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation>Показывает блокнот рядом с эскизами файлов, где вы можете хранить заметки между сессиями FreeCAD</translation>
+      <translation>Показывает блокнот рядом с эскизами файлов, где Вы можете хранить заметки между сессиями FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>

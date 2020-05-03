@@ -7,26 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>421</height>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC-Export</string>
+   <string>IFC export</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>

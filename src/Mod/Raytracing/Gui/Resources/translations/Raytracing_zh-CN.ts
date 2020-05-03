@@ -75,7 +75,7 @@
     <message>
       <location filename="../../Command.cpp" line="322"/>
       <source>New POV-Ray project</source>
-      <translation>新的POV-Ray项目</translation>
+      <translation>新的 POV-Ray 项目</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="323"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="590"/>
       <source>&amp;Render</source>
-      <translation>&amp;渲染</translation>
+      <translation>渲染(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="591"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../Command.cpp" line="870"/>
       <source>&amp;Reset Camera</source>
-      <translation>&amp;复位摄像头</translation>
+      <translation>复位摄像头(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="871"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Export camera to POV-Ray...</source>
-      <translation>将相机输出到POV-Ray...</translation>
+      <translation>将相机输出到 POV-Ray...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>将活动3D 视图的相机位置以POV-Ray格式导出到文件</translation>
+      <translation>将活动 3D 视图的相机位置以 POV-Ray 格式导出到文件</translation>
     </message>
   </context>
   <context>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Export part to POV-Ray...</source>
-      <translation>将零件输出到POV-Ray...</translation>
+      <translation>将零件输出到 POV-Ray...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation>将所选部件 (对象) 写为POV-Ray文件</translation>
+      <translation>将所选部件 (对象) 写为 POV-Ray 文件</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>当前的视图照相机不是透视图, 因此POV-Ray图像的结果可能与您预期的不同。
+      <translation>当前的视图照相机不是透视图, 因此 POV-Ray 图像的结果可能与您预期的不同。
 要继续吗？</translation>
     </message>
     <message>
@@ -192,12 +192,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Export view to POV-Ray...</source>
-      <translation>导出视图到POV-Ray...</translation>
+      <translation>导出视图到 POV-Ray...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation>将活动的3D 视图与照相机及其所有内容一起写到一个POV-Ray文件中</translation>
+      <translation>将活动的 3D 视图与照相机及其所有内容一起写到一个 POV-Ray 文件中</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="352"/>
@@ -215,7 +215,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>当前的视图照相机不是透视图, 因此luxrender图像的结果可能与您预期的不同。
+      <translation>当前的视图照相机不是透视图, 因此 luxrender 图像的结果可能与您预期的不同。
 要继续吗？</translation>
     </message>
   </context>
@@ -291,17 +291,17 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="621"/>
       <location filename="../../Command.cpp" line="627"/>
       <source>POV-Ray not found</source>
-      <translation>未发现POV-Ray</translation>
+      <translation>未发现 POV-Ray</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>请在偏好设定中设置POV-Ray可执行程序的路径。</translation>
+      <translation>请在偏好设定中设置 POV-Ray 可执行程序的路径。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>请在偏好设定中更正POV-Ray可执行程序的路径。</translation>
+      <translation>请在偏好设定中更正 POV-Ray 可执行程序的路径。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -312,22 +312,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>请在偏好设定中设置luxrender 或 luxconsole可执行程序的路径。</translation>
+      <translation>请在偏好设定中设置 luxrender 或 luxconsole 可执行程序的路径。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>请在偏好设定中更正luxrender 或 luxconsole可执行程序的路径。</translation>
+      <translation>请在偏好设定中更正 luxrender 或 luxconsole 可执行程序的路径。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="654"/>
       <source>POV-Ray file missing</source>
-      <translation>缺少POV-Ray文件</translation>
+      <translation>缺少 POV-Ray 文件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="655"/>
       <source>The POV-Ray project file doesn't exist.</source>
-      <translation>POV-Ray项目文件不存在</translation>
+      <translation>POV-Ray 项目文件不存在。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -339,12 +339,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="723"/>
       <source>Lux project file missing</source>
-      <translation>Lux项目文件丢失</translation>
+      <translation>Lux 项目文件丢失</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
       <source>The Lux project file doesn't exist.</source>
-      <translation>Lux项目文件不存在</translation>
+      <translation>Lux 项目文件不存在。</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="93"/>
       <source>Write u,v coordinates</source>
-      <translation>写入U，V坐标</translation>
+      <translation>写入 U,V 坐标</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="109"/>
@@ -382,17 +382,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="127"/>
       <source>POV-Ray executable:</source>
-      <translation>POV-Ray可执行文件:</translation>
+      <translation>POV-Ray 可执行文件:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="134"/>
       <source>POV-Ray output parameters:</source>
-      <translation>POV-Ray输出参数:</translation>
+      <translation>POV-Ray 输出参数:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="143"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>要传递给渲染的POV-Ray参数。</translation>
+      <translation>要传递给渲染的 POV-Ray 参数。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="146"/>
@@ -472,7 +472,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>POV-Ray 可执行文件的路径（如果要从 %1 进行渲染）</translation>
     </message>
   </context>
   <context>
@@ -485,7 +485,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <source>LuxRender template</source>
-      <translation>光渲染模板</translation>
+      <translation>LuxRender 模板</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>

@@ -22,10 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
 
 from PySide import QtCore, QtGui
 from pivy import coin

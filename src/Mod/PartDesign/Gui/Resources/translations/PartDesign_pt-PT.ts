@@ -1679,7 +1679,7 @@
       <location filename="../../TaskPadParameters.cpp" line="124"/>
       <location filename="../../TaskPadParameters.cpp" line="412"/>
       <source>Dimension</source>
-      <translation>Cotagem</translation>
+      <translation>Dimensão</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="42"/>
@@ -1956,7 +1956,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
       <location filename="../../TaskPocketParameters.cpp" line="439"/>
       <source>Dimension</source>
-      <translation>Cotagem</translation>
+      <translation>Dimensão</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="42"/>
@@ -3288,7 +3288,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
       <source>Dimension</source>
-      <translation>Cotagem</translation>
+      <translation>Dimensão</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="358"/>

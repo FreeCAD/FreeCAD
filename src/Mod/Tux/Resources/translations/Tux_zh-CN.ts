@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>鼠标中键</translation>
+      <translation>鼠标中键。</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>鼠标中键或H键</translation>
+      <translation>鼠标中键或 H 键。</translation>
     </message>
   </context>
 </TS>

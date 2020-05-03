@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>安装位置</translation>
     </message>
   </context>
   <context>
@@ -224,22 +224,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Git 宏检索出现问题，可能是 Git 可执行文件不在路径中</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>该插件被标记为已过时</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>这通常意味着不再维护它，并且此列表中的一些更高级的插件提供了相同的功能。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>错误：无法从中找到邮政编码</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
+      <translation>关闭插件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -339,41 +339,41 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>如果选择此选项，则在启动插件管理器时，
+将检查已安装的加载项是否有可用的更新
+（这需要在系统上安装 GitPython 软件包）</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>在启动时自动检查更新（需要 GitPython）</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>您可以使用此窗口指定其他插件仓库
+扫描可用插件</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>代理 </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>无代理</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>使用系统代理</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>使用默认代理：</translation>
     </message>
   </context>
   <context>

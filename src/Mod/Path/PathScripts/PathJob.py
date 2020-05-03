@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import ArchPanel
-import Draft
 import FreeCAD
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
@@ -32,7 +30,12 @@ import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
-import json
+import json, time
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
+Draft = LazyLoader('Draft', globals(), 'Draft')
 
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
@@ -96,6 +99,8 @@ class ObjectJob:
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob","An optional description for this job"))
+        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+        obj.setEditorMode('CycleTime', 1)  # read-only
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("PathJob", "For computing Paths; smaller increases accuracy, but slows down computation"))
 
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
@@ -107,7 +112,7 @@ class ObjectJob:
         obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
         obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
         obj.Fixtures = ['G54']
-
+        
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         #obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
@@ -249,6 +254,10 @@ class ObjectJob:
         obj.setEditorMode('Operations', 2) # hide
         obj.setEditorMode('Placement', 2)
 
+        if not hasattr(obj, 'CycleTime'):
+            obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+            obj.setEditorMode('CycleTime', 1)  # read-only
+
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
@@ -339,6 +348,36 @@ class ObjectJob:
 
     def execute(self, obj):
         obj.Path = obj.Operations.Path
+        self.getCycleTime()
+
+    def getCycleTime(self):
+        seconds = 0
+
+        if len(self.obj.Operations.Group):
+            for op in self.obj.Operations.Group:
+
+                # Skip inactive operations
+                if PathUtil.opProperty(op, 'Active') is False:
+                    continue
+
+                # Skip operations that don't have a cycletime attribute
+                if PathUtil.opProperty(op, 'CycleTime') is None:
+                    continue
+
+                formattedCycleTime = PathUtil.opProperty(op, 'CycleTime')
+                opCycleTime = 0
+                try:
+                    ## convert the formatted time from HH:MM:SS to just seconds
+                    opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
+                except:
+                    FreeCAD.Console.PrintWarning("Error converting the operations cycle time. Job Cycle time may be innacturate\n")
+                    continue
+
+                if opCycleTime > 0:
+                    seconds = seconds + opCycleTime
+
+        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds)) 
+        self.obj.CycleTime =  cycleTimeString
 
     def addOperation(self, op, before = None, removeBefore = False):
         group = self.obj.Operations.Group
