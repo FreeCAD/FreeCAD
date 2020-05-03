@@ -144,6 +144,7 @@ def makeLine():
 	Line(a)
 	#ViewProviderLine(a.ViewObject)
 	a.ViewObject.Proxy=0 # just set it to something different from None
+	FreeCAD.ActiveDocument.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -155,7 +156,7 @@ class Octahedron:
 		obj.addProperty("App::PropertyLength","Height","Octahedron", "Height of the octahedron").Height=1.0
 		obj.addProperty("Part::PropertyPartShape","Shape","Octahedron", "Shape of the octahedron")
 		obj.Proxy = self
- 
+
 	def execute(self, fp):
 		# Define six vetices for the shape
 		v1 = FreeCAD.Vector(0,0,0)
@@ -323,6 +324,7 @@ def makeOctahedron():
 	a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Octahedron")
 	Octahedron(a)
 	ViewProviderOctahedron(a.ViewObject)
+	FreeCAD.ActiveDocument.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -523,7 +525,7 @@ class Molecule:
 	def __init__(self, obj):
 		''' Add two point properties '''
 		obj.addProperty("App::PropertyVector","p1","Line","Start point")
-		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(1,0,0)
+		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(5,0,0)
 
 		obj.Proxy = self
 
@@ -622,7 +624,7 @@ def makeCircleSet():
 	for j in range (630):
 		y=0.5
 		for i in range (630):
-			c = Part.makeCircle(0.1, Base.Vector(x,y,0), Base.Vector(0,0,1))
+			c = Part.makeCircle(0.1, FreeCAD.Vector(x,y,0), FreeCAD.Vector(0,0,1))
 			#Part.show(c)
 			comp.add(c)
 			y=y+0.5
@@ -669,6 +671,7 @@ def makeEnumTest():
 	ViewProviderEnumTest(a.ViewObject)
 
 # -----------------------------------------------------------------------------
+import math
 
 class DistanceBolt:
 	def __init__(self, obj):
@@ -691,12 +694,12 @@ class DistanceBolt:
 		radius = fp.Radius
 		height = fp.Height
 
-		m=Base.Matrix()
+		m=FreeCAD.Matrix()
 		m.rotateZ(math.radians(360.0/edges))
 
 		# create polygon
 		polygon = []
-		v=Base.Vector(length,0,0)
+		v=FreeCAD.Vector(length,0,0)
 		for i in range(edges):
 			polygon.append(v)
 			v = m.multiply(v)
@@ -710,7 +713,7 @@ class DistanceBolt:
 		face=Part.Face([wire,Part.Wire(circ)])
 
 		# Extrude in z to create the final solid
-		extrude=face.extrude(Base.Vector(0,0,height))
+		extrude=face.extrude(FreeCAD.Vector(0,0,height))
 		fp.Shape = extrude
 
 def makeDistanceBolt():
@@ -719,4 +722,4 @@ def makeDistanceBolt():
 	bolt.Label = "Distance bolt"
 	DistanceBolt(bolt)
 	bolt.ViewObject.Proxy=0
-
+	FreeCAD.ActiveDocument.recompute()
