@@ -70,6 +70,7 @@ TextDocumentEditorView::TextDocumentEditorView(
 TextDocumentEditorView::~TextDocumentEditorView()
 {
     textConnection.disconnect();
+    labelConnection.disconnect();
 }
 
 void TextDocumentEditorView::showEvent(QShowEvent* event)
