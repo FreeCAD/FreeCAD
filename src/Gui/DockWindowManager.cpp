@@ -893,6 +893,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
         rect.setBottom(rect.bottom() - std::max(rect.height()-8,0));
         break;
     case Qt::BottomDockWidgetArea:
+        rect.setLeft(rect.left() + autoHideOffset);
         rect.setTop(rect.top() + std::max(rect.height()-8,0));
         break;
     default:
@@ -909,6 +910,11 @@ void OverlayTabWidget::setOffset(const QSize &ofs)
 void OverlayTabWidget::setSizeDelta(int delta)
 {
     sizeDelta = delta;
+}
+
+void OverlayTabWidget::setAutoHideOffset(int offset)
+{
+    autoHideOffset = offset;
 }
 
 void OverlayTabWidget::setRect(QRect rect)
@@ -1559,7 +1565,11 @@ struct DockWindowManagerP
             int lh = std::max(h-rectBottom.height()-ofs.width()-delta,10);
             _left.setGeometry(ofs.height(),ofs.width(),rectLeft.width(),lh);
             _left.tabWidget->getAutoHideRect(rectLeft);
-        }
+
+            _bottom.tabWidget->setAutoHideOffset(rectLeft.width()-ofs.width());
+        } else 
+            _bottom.tabWidget->setAutoHideOffset(0);
+
         QRect rectRight(0,0,0,0);
         if(_right.geometry(rectRight)) {
             auto ofs = _right.tabWidget->getOffset();

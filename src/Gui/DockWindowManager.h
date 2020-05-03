@@ -190,6 +190,8 @@ public:
     bool isTouched() const {return touched;}
 
     void setRect(QRect rect);
+    void setAutoHideOffset(int offset);
+
     const QRect &getRect();
     bool isOverlayed() const {return overlayed;}
     bool checkAutoHide() const;
@@ -238,6 +240,7 @@ private:
     QSize offset;
     int sizeDelta = 0;
     QRect rectOverlay;
+    int autoHideOffset = 0;
     OverlayProxyWidget *proxyWidget;
     QSplitter *splitter = nullptr;
     QWidget *titleBar = nullptr;
