@@ -38,8 +38,6 @@ def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
                      use_link=True, axis_reference=None):
     """Create a polar array from the given object.
-
-    Parameters
     ----------
     base_object: Part::Feature or str
         Any of object that has a `Part::TopoShape` that can be duplicated.
