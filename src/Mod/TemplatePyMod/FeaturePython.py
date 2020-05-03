@@ -671,6 +671,7 @@ def makeEnumTest():
 	ViewProviderEnumTest(a.ViewObject)
 
 # -----------------------------------------------------------------------------
+import math
 
 class DistanceBolt:
 	def __init__(self, obj):
