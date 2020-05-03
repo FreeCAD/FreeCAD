@@ -681,6 +681,7 @@ class DistanceBolt:
 		obj.addProperty("App::PropertyLength","Radius","Bolt","Radius of the inner circle").Radius=4.0
 		obj.addProperty("App::PropertyLength","Height","Bolt","Height of the extrusion").Height=20.0
 		obj.Proxy = self
+		obj.recompute()
 
 	def onChanged(self, fp, prop):
 		if prop == "Edges" or prop == "Length" or prop == "Radius" or prop == "Height":
