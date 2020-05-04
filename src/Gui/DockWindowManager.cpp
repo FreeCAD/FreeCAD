@@ -413,10 +413,66 @@ bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
     return QTabWidget::eventFilter(o, ev);
 }
 
+void OverlayTabWidget::restore(ParameterGrp::handle handle)
+{
+    std::string widgets = handle->GetASCII("Widgets","");
+    for(auto &name : QString::fromLatin1(widgets.c_str()).split(QLatin1Char(','))) {
+        if(name.isEmpty())
+            continue;
+        auto dock = getMainWindow()->findChild<QDockWidget*>(name);
+        if(dock)
+            addWidget(dock, dock->windowTitle());
+    }
+    int width = handle->GetInt("Width", 0);
+    int height = handle->GetInt("Height", 0);
+    int offset1 = handle->GetInt("Offset1", 0);
+    int offset2 = handle->GetInt("Offset3", 0);
+    setOffset(QSize(offset1,offset2));
+    setSizeDelta(handle->GetInt("Offset2", 0));
+    if(width && height) {
+        QRect rect = geometry();
+        setRect(QRect(rect.left(),rect.top(),width,height));
+    }
+    setAutoHide(handle->GetBool("AutoHide", false));
+    setTransparent(handle->GetBool("Transparent", false));
+    setEditHide(handle->GetBool("EditHide", false));
+    setEditShow(handle->GetBool("EditShow", false));
+
+    std::string savedSizes = handle->GetASCII("Sizes","");
+    QList<int> sizes;
+    for(auto &size : QString::fromLatin1(savedSizes.c_str()).split(QLatin1Char(',')))
+        sizes.append(size.toInt());
+
+    getSplitter()->setSizes(sizes);
+    hGrp = handle;
+}
+
+void OverlayTabWidget::saveTabs()
+{
+    if(!hGrp)
+        return;
+
+    std::ostringstream os;
+    for(int i=0,c=count(); i<c; ++i) {
+        auto dock = dockWidget(i);
+        if(dock && dock->objectName().size())
+            os << dock->objectName().toLatin1().constData() << ",";
+    }
+    hGrp->SetASCII("Widgets", os.str().c_str());
+
+    if(splitter->isVisible()) {
+        os.str("");
+        for(int size : splitter->sizes())
+            os << size << ",";
+        hGrp->SetASCII("Sizes", os.str().c_str());
+    }
+}
+
 void OverlayTabWidget::onTabMoved(int from, int to)
 {
     QWidget *w = splitter->widget(from);
     splitter->insertWidget(to,w);
+    saveTabs();
 }
 
 void OverlayTabWidget::setTitleBar(QWidget *w)
@@ -659,10 +715,10 @@ public:
                 "QTabBar::tab {color: #1a1a1a;"
                               "background-color: transparent;"
                               "border: 1px solid palette(dark);"
-                              "padding: 3px}"
+                              "padding: 5px}"
                 "QTabBar::tab:selected {color: palette(text); background-color: #aaaaaaaa;}"
                 "QTabBar::tab:hover {color: palette(text); background-color: palette(light);}"
-                "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark);}"
+                "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark); padding: 1px}"
                 "QTreeWidget, QListWidget {background: palette(base)}" // necessary for checkable item to work in linux
                 "QToolTip {background-color: palette(base);}"
                 "Gui--CallTipsList::item { background-color: palette(base);}"
@@ -782,6 +838,8 @@ void OverlayTabWidget::setAutoHide(bool enable)
 {
     if(actAutoHide.isChecked() == enable)
         return;
+    if(hGrp)
+        hGrp->SetBool("AutoHide", enable);
     actAutoHide.setChecked(enable);
     if(enable) {
         setEditHide(false);
@@ -794,6 +852,8 @@ void OverlayTabWidget::setTransparent(bool enable)
 {
     if(actTransparent.isChecked() == enable)
         return;
+    if(hGrp)
+        hGrp->SetBool("Transparent", enable);
     actTransparent.setChecked(enable);
     DockWindowManager::instance()->refreshOverlay(this);
 }
@@ -802,6 +862,8 @@ void OverlayTabWidget::setEditHide(bool enable)
 {
     if(actEditHide.isChecked() == enable)
         return;
+    if(hGrp)
+        hGrp->SetBool("EditHide", enable);
     actEditHide.setChecked(enable);
     if(enable) {
         setAutoHide(false);
@@ -814,6 +876,8 @@ void OverlayTabWidget::setEditShow(bool enable)
 {
     if(actEditShow.isChecked() == enable)
         return;
+    if(hGrp)
+        hGrp->SetBool("EditShow", enable);
     actEditShow.setChecked(enable);
     if(enable) {
         setAutoHide(false);
@@ -904,12 +968,22 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
 
 void OverlayTabWidget::setOffset(const QSize &ofs)
 {
-    offset = ofs;
+    if(offset != ofs) {
+        offset = ofs;
+        if(hGrp) {
+            hGrp->SetInt("Offset1", ofs.width());
+            hGrp->SetInt("Offset3", ofs.height());
+        }
+    }
 }
 
 void OverlayTabWidget::setSizeDelta(int delta)
 {
-    sizeDelta = delta;
+    if(sizeDelta != delta) {
+        if(hGrp)
+            hGrp->SetInt("Offset2", delta);
+        sizeDelta = delta;
+    }
 }
 
 void OverlayTabWidget::setAutoHideOffset(int offset)
@@ -922,6 +996,10 @@ void OverlayTabWidget::setRect(QRect rect)
     if(rect.width()<=0 || rect.height()<=0)
         return;
 
+    if(hGrp && rect.size() != rectOverlay.size()) {
+        hGrp->SetInt("Width", rect.width());
+        hGrp->SetInt("Height", rect.height());
+    }
     rectOverlay = rect;
 
     if(getAutoHideRect(rect)) {
@@ -945,6 +1023,8 @@ void OverlayTabWidget::setRect(QRect rect)
 void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 {
     QRect rect = dock->geometry();
+
+    getMainWindow()->removeDockWidget(dock);
 
     auto titleWidget = dock->titleBarWidget();
     if(titleWidget && titleWidget->objectName()==QLatin1String("OverlayTitle")) {
@@ -1063,6 +1143,7 @@ void OverlayTabWidget::onSplitterMoved()
             break;
         }
     }
+    saveTabs();
 }
 
 void OverlayTabWidget::onCurrentChanged(int index)
@@ -1078,6 +1159,7 @@ void OverlayTabWidget::onCurrentChanged(int index)
             s = 0;
     }
     splitter->setSizes(sizes);
+    saveTabs();
 }
 
 void OverlayTabWidget::changeSize(int changes, bool checkModify)
@@ -1165,7 +1247,8 @@ struct OverlayInfo {
                 dock->show();
                 tabWidget->setCurrent(dock);
             }
-        }
+        } else
+            tabWidget->saveTabs();
         return true;
     }
 
@@ -1201,6 +1284,8 @@ struct OverlayInfo {
 
         if(focus)
             focus->setFocus();
+
+        tabWidget->saveTabs();
     }
 
     bool geometry(QRect &rect) {
@@ -1219,59 +1304,16 @@ struct OverlayInfo {
 
     void save()
     {
-        QRect rect = tabWidget->getRect();
-        hGrp->SetInt("Width", rect.width());
-        hGrp->SetInt("Height", rect.height());
-        hGrp->SetBool("AutoHide", tabWidget->isAutoHide());
-        hGrp->SetBool("Transparent", tabWidget->isTransparent());
-        hGrp->SetBool("EditHide", tabWidget->isEditHide());
-        hGrp->SetBool("EditShow", tabWidget->isEditShow());
-        hGrp->SetInt("Offset1", tabWidget->getOffset().width());
-        hGrp->SetInt("Offset2", tabWidget->getSizeDelta());
-        hGrp->SetInt("Offset3", tabWidget->getOffset().height());
-
-        std::ostringstream os;
-        for(int i=0,c=tabWidget->count(); i<c; ++i)
-            os << tabWidget->dockWidget(i)->objectName().toLatin1().constData() << ",";
-        hGrp->SetASCII("Widgets", os.str().c_str());
-
-        os.str("");
-        for(int size : tabWidget->getSplitter()->sizes())
-            os << size << ",";
-        hGrp->SetASCII("Sizes", os.str().c_str());
     }
 
     void restore()
     {
-        std::string widgets = hGrp->GetASCII("Widgets","");
-        for(auto &name : QString::fromLatin1(widgets.c_str()).split(QLatin1Char(','))) {
-            if(name.isEmpty())
-                continue;
-            auto dock = getMainWindow()->findChild<QDockWidget*>(name);
+        tabWidget->restore(hGrp);
+        for(int i=0,c=tabWidget->count();i<c;++i) {
+            auto dock = tabWidget->dockWidget(i);
             if(dock)
-                addWidget(dock);
+                overlayMap[dock] = this;
         }
-        int width = hGrp->GetInt("Width", 0);
-        int height = hGrp->GetInt("Height", 0);
-        int offset1 = hGrp->GetInt("Offset1", 0);
-        int offset2 = hGrp->GetInt("Offset3", 0);
-        tabWidget->setOffset(QSize(offset1,offset2));
-        tabWidget->setSizeDelta(hGrp->GetInt("Offset2", 0));
-        if(width && height) {
-            QRect rect = tabWidget->geometry();
-            tabWidget->setRect(QRect(rect.left(),rect.top(),width,height));
-        }
-        tabWidget->setAutoHide(hGrp->GetBool("AutoHide", false));
-        tabWidget->setTransparent(hGrp->GetBool("Transparent", false));
-        tabWidget->setEditHide(hGrp->GetBool("EditHide", false));
-        tabWidget->setEditShow(hGrp->GetBool("EditShow", false));
-
-        std::string savedSizes = hGrp->GetASCII("Sizes","");
-        QList<int> sizes;
-        for(auto &size : QString::fromLatin1(savedSizes.c_str()).split(QLatin1Char(',')))
-            sizes.append(size.toInt());
-
-        tabWidget->getSplitter()->setSizes(sizes);
     }
 
 };

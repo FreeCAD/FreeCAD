@@ -31,6 +31,8 @@
 #include <QAction>
 #include <QToolButton>
 
+#include <Base/Parameter.h>
+
 #if QT_VERSION  >= 0x050000
 #   define FC_HAS_DOCK_OVERLAY
 #endif
@@ -220,6 +222,9 @@ public:
     const QTime &getRevealTime() const {return revealTime;}
     void setRevealTime(const QTime &time);
 
+    void restore(ParameterGrp::handle handle);
+    void saveTabs();
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
@@ -257,6 +262,7 @@ private:
     Qt::DockWidgetArea dockArea;
     int tabSize = 0;
     QTime revealTime;
+    ParameterGrp::handle hGrp;
 };
 
 class OverlayToolButton: public QToolButton
