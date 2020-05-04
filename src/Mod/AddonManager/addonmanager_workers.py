@@ -51,6 +51,18 @@ OBSOLETE =         ["assembly2",
                     "drawing_dimensioning",
                     "cura_engine"]
 
+# These addons will print an additional message informing the user Python2 only
+PY2ONLY =          ["geodata",
+                    "GDT",
+                    "timber",
+                    "flamingo",
+                    "reconstruction",
+                    "animation"]
+
+# Minimum Git binary versions for installing/updating Wbs and loading the list of macros
+GITWBMIN = "2.14.99"
+GITMACMIN = "2.11.99"
+
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
@@ -130,6 +142,27 @@ class UpdateWorker(QtCore.QThread):
             for repo in repos:
                 self.addon_repo.emit(repo)
             self.info_label.emit(translate("AddonsInstaller", "Workbenches list was updated."))
+        git_exe = utils.checkGitBinary()
+        import platform
+        try:
+            out = os.popen(git_exe + ' --version','r')
+        except:
+            if platform.system() == 'Windows':
+                FreeCAD.Console.PrintLog(translate("AddonsInstaller","The Git executable has not been found in the path.")+"\n")
+            else:
+                FreeCAD.Console.PrintLog(translate("AddonsInstaller","The Git binary has not been found.")+"\n")
+        from distutils.version import StrictVersion
+        if 'out' in locals():
+            out_string = out.read()
+            out.close()
+            result = re.search('(\d+\.\d+\.\d+)',out_string)
+            git_version = StrictVersion(result.group(1))
+            if platform.system() == 'Windows':
+                FreeCAD.Console.PrintLog(translate("AddonsInstaller","Found Git executable version ")+str(git_version)+"\n")
+            else:
+                FreeCAD.Console.PrintLog(translate("AddonsInstaller","Found Git binary version ")+str(git_version)+"\n")
+        else:
+            git_version = StrictVersion("0.0.0")
         self.progressbar_show.emit(False)
         self.done.emit()
         self.stop = True
@@ -263,27 +296,57 @@ class FillMacroListWorker(QtCore.QThread):
         https://github.com/FreeCAD/FreeCAD-macros.git
         """
 
+        git = None
+        import os
         try:
             import git
         except ImportError:
             self.info_label_signal.emit("GitPython not installed! Cannot retrieve macros from Git")
-            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'GitPython not installed! Cannot retrieve macros from git')+"\n")
-            return
-
-        self.info_label_signal.emit('Downloading list of macros from git...')
-        try:
-            git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
-        except:
-            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path')+"\n")
-        for dirpath, _, filenames in os.walk(self.repo_dir):
-             if '.git' in dirpath:
-                 continue
-             for filename in filenames:
-                 if filename.lower().endswith('.fcmacro'):
-                    macro = Macro(filename[:-8])  # Remove ".FCMacro".
-                    macro.on_git = True
-                    macro.src_filename = os.path.join(dirpath, filename)
-                    self.macros.append(macro)
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'GitPython not installed! Cannot retrieve macros from git, fallback to using the Wiki')+"\n")
+        if git:
+            git_exe = utils.checkGitBinary()
+            try:
+                out = os.popen(git_exe + ' --version','r')
+            except:
+                pass
+            if 'out' in locals():
+                out_string = out.read()
+                out.close()
+                result = re.search('(\d+\.\d+\.\d+)',out_string)
+                from distutils.version import StrictVersion
+                git_version = StrictVersion(result.group(1))
+                git_version_min = StrictVersion(GITMACMIN)
+                if git_version < git_version_min:
+                    import platform
+                    if platform.system() == 'Windows':
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated Git executable detected, consider upgrading or ensure the path to the most recent version is the first one to be found. Cannot retrieve macros from git, fallback to using the Wiki")+"\n")
+                    else:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated Git binary detected, consider upgrading. Cannot retrieve macros from git, fallback to using the Wiki")+"\n")
+                    git = None
+            else:
+                self.info_label_signal.emit("Git binary not installed! Cannot retrieve macros from Git")
+                import platform
+                if platform.system() == 'Windows':
+                    FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Git exectuable not found. Cannot retrieve macros using git, fallback to using the Wiki')+"\n")
+                else:
+                    FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Git binary not found.  Cannot retrieve macros using git, fallback to using the Wiki')+"\n")
+                git = None
+        if git:
+            self.info_label_signal.emit('Downloading list of macros from git...')
+            try:
+                git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+            except:
+                FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro retrieval, fallback to using the Wiki')+"\n")
+                return
+            for dirpath, _, filenames in os.walk(self.repo_dir):
+                if '.git' in dirpath:
+                    continue
+                for filename in filenames:
+                    if filename.lower().endswith('.fcmacro'):
+                        macro = Macro(filename[:-8])  # Remove ".FCMacro".
+                        macro.on_git = True
+                        macro.src_filename = os.path.join(dirpath, filename)
+                        self.macros.append(macro)
 
     def retrieve_macros_from_wiki(self):
 
@@ -442,6 +505,11 @@ class ShowWorker(QtCore.QThread):
             message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
             message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + desc
 
+        # If the Addon is Python 2 only, let the user know through the Addon UI
+        if self.repos[self.idx][0] in PY2ONLY:
+            message = " <div style=\"width: 100%; text-align:center; background: #ffe9b3;\"><strong style=\"color: #FFFFFF; background: #ff8000;\">"+translate("AddonsInstaller","This addon is marked as Python 2 Only")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.")+"<br/></div><hr/>" + desc
+
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
         self.mustLoadImages = True
@@ -575,6 +643,9 @@ class InstallWorker(QtCore.QThread):
         "installs or updates the selected addon"
 
         git = None
+        if sys.version_info.major > 2 and self.repos[self.idx][0] in PY2ONLY:
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested installing/updating a Python 2 workbench on a system running Python 3 - ")+str(self.repos[self.idx][0])+"\n")
+        import os
         try:
             import git
         except Exception as e:
@@ -591,6 +662,43 @@ class InstallWorker(QtCore.QThread):
                 import StringIO as io
             except ImportError: # StringIO is not available with python3
                 import io
+        if git:
+            git_exe = utils.checkGitBinary()
+            try:
+                out = os.popen(git_exe + ' --version','r')
+            except:
+                pass
+            if 'out' in locals():
+                out_string = out.read()
+                out.close()
+                result = re.search('(\d+\.\d+\.\d+)',out_string)
+                from distutils.version import StrictVersion
+                git_version = StrictVersion(result.group(1))
+                git_version_min = StrictVersion(GITWBMIN)
+                if git_version < git_version_min:
+                    import platform
+                    if platform.system() == 'Windows':
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated Git executable detected, consider upgrading or ensure the path to the most recent version is the first one to be found.")+"\n")
+                    else:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Outdated Git binary detected, consider upgrading.")+"\n")
+                    git = None
+            else:
+                self.info_label.emit("Git binary not found.")
+                import platform
+                if platform.system() == 'Windows':
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Git executable not found. Using standard download instead.")+"\n")
+                else:
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Git binary not found. Using standard download instead.")+"\n")
+                try:
+                    import zipfile
+                except:
+                    self.info_label.emit("no zip support.")
+                    FreeCAD.Console.PrintError(translate("AddonsInstaller","Your version of python doesn't appear to support ZIP files. Unable to proceed.")+"\n")
+                    return
+                try:
+                    import StringIO as io
+                except ImportError: # StringIO is not available with python3
+                    import io
         if not isinstance(self.idx,list):
             self.idx = [self.idx]
         for idx in self.idx:
@@ -624,7 +732,7 @@ class InstallWorker(QtCore.QThread):
                         repo.head.reset('--hard')
                     repo = git.Git(clonedir)
                     try:
-                        answer = repo.pull()
+                        answer = repo.pull() + "\n\n" + translate("AddonsInstaller", "Workbench successfully updated. Please restart FreeCAD to apply the changes.")
                     except:
                         print("Error updating module",self.repos[idx][1]," - Please fix manually")
                         answer = repo.status()
@@ -635,7 +743,7 @@ class InstallWorker(QtCore.QThread):
                         for submodule in repo_sms.submodules:
                             submodule.update(init=True, recursive=True)
                 else:
-                    answer = self.download(self.repos[idx][1],clonedir)
+                    answer = self.download(self.repos[idx][1],clonedir) + "\n\n" + translate("AddonsInstaller", "Workbench successfully updated. Please restart FreeCAD to apply the changes.")
             else:
                 self.info_label.emit("Checking module dependencies...")
                 depsok,answer = self.checkDependencies(self.repos[idx][1])

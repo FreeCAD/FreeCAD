@@ -180,6 +180,8 @@ class Label(DraftAnnotation):
         obj.TargetPoint = App.Vector(2,-1,0)
         obj.CustomText = "Label"
 
+    def onDocumentRestored(self, obj):
+        super(Label, self).onDocumentRestored(obj)
 
     def execute(self,obj):
         '''Do something when recompute object'''

@@ -314,3 +314,16 @@ def getRepoUrl(text):
         return "https://framagit.org/freecad-france/mooc-workbench"
     print("Debug: addonmanager_utilities.getRepoUrl: Unkable to find repo:",text)
     return None
+
+
+def checkGitBinary():
+
+    "Checks if Git binary is available"
+
+    import platform
+    import distutils.spawn
+    if platform.system() == 'Windows':
+        git_exe = distutils.spawn.find_executable("git.exe")
+    else: #Linux or Mac
+        git_exe = 'git'
+    return git_exe
