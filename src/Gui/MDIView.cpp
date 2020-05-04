@@ -222,7 +222,7 @@ bool MDIView::onHasMsg(const char* pMsg) const
 
 bool MDIView::canClose(void)
 {
-    if (getAppDocument()->testStatus(App::Document::TempDoc))
+    if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
         return true;
 
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
