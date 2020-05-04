@@ -327,7 +327,7 @@ class FillMacroListWorker(QtCore.QThread):
                 self.info_label_signal.emit("Git binary not installed! Cannot retrieve macros from Git")
                 import platform
                 if platform.system() == 'Windows':
-                    FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Git exectuable not found. Cannot retrieve macros using git, fallback to using the Wiki')+"\n")
+                    FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Git executable not found. Cannot retrieve macros using git, fallback to using the Wiki')+"\n")
                 else:
                     FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Git binary not found.  Cannot retrieve macros using git, fallback to using the Wiki')+"\n")
                 git = None
