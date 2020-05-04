@@ -134,6 +134,10 @@ class PathSimulation:
                 # handle tool bits
                 self.cutTool.Shape = self.tool.Shape
 
+            if not self.cutTool.Shape.isValid() or self.cutTool.Shape.isNull():
+                self.EndSimulation()
+                raise RuntimeError("Path Simulation: Error in tool geometry - {}".format(self.tool.Name)) 
+
             self.cutTool.ViewObject.show()
             self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
         self.icmd = 0
