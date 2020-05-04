@@ -1075,12 +1075,12 @@ void SelectionSingleton::selStackPush(bool clearForward, bool overwrite) {
         _SelStackBack.pop_front();
     SelStackItem item;
     for(auto &sel : _SelList)
-        item.insert({sel.DocName,sel.FeatName,sel.SubName});
+        item.emplace(sel.DocName.c_str(),sel.FeatName.c_str(),sel.SubName.c_str());
     if(_SelStackBack.size() && _SelStackBack.back()==item)
         return;
     if(!overwrite || _SelStackBack.empty())
         _SelStackBack.emplace_back();
-    _SelStackBack.back().swap(item);
+    _SelStackBack.back() = std::move(item);
 }
 
 void SelectionSingleton::selStackGoBack(int count) {
@@ -1091,25 +1091,30 @@ void SelectionSingleton::selStackGoBack(int count) {
     if(_SelList.size()) {
         selStackPush(false,true);
         clearCompleteSelection();
-    }
+    } else 
+        --count;
     for(int i=0;i<count;++i) {
-        _SelStackForward.push_front(_SelStackBack.back());
+        _SelStackForward.push_front(std::move(_SelStackBack.back()));
         _SelStackBack.pop_back();
     }
     std::deque<SelStackItem> tmpStack;
     _SelStackForward.swap(tmpStack);
     while(_SelStackBack.size()) {
         bool found = false;
-        for(auto &n : _SelStackBack.back()) {
-            if(addSelection(n[0].c_str(), n[1].c_str(), n[2].c_str()))
+        for(auto &sobjT : _SelStackBack.back()) {
+            if(sobjT.getSubObject()) {
+                addSelection(sobjT.getDocumentName().c_str(),
+                             sobjT.getObjectName().c_str(),
+                             sobjT.getSubName().c_str());
                 found = true;
+            }
         }
         if(found)
             break;
-        tmpStack.push_front(_SelStackBack.back());
+        tmpStack.push_front(std::move(_SelStackBack.back()));
         _SelStackBack.pop_back();
     }
-    _SelStackForward.swap(tmpStack);
+    _SelStackForward = std::move(tmpStack);
     getMainWindow()->updateActions();
 }
 
@@ -1130,16 +1135,20 @@ void SelectionSingleton::selStackGoForward(int count) {
     _SelStackForward.swap(tmpStack);
     while(1) {
         bool found = false;
-        for(auto &n : _SelStackBack.back()) {
-            if(addSelection(n[0].c_str(), n[1].c_str(), n[2].c_str()))
+        for(auto &sobjT : _SelStackBack.back()) {
+            if(sobjT.getSubObject()) {
+                addSelection(sobjT.getDocumentName().c_str(),
+                             sobjT.getObjectName().c_str(),
+                             sobjT.getSubName().c_str());
                 found = true;
+            }
         }
         if(found || tmpStack.empty()) 
             break;
         _SelStackBack.push_back(tmpStack.front());
         tmpStack.pop_front();
     }
-    _SelStackForward.swap(tmpStack);
+    _SelStackForward = std::move(tmpStack);
     getMainWindow()->updateActions();
 }
 
@@ -1159,10 +1168,17 @@ std::vector<SelectionObject> SelectionSingleton::selStackGet(
     }
     
     std::list<_SelObj> selList;
-    for(auto &s : *item) {
+    for(auto &sobjT : *item) {
         _SelObj sel;
-        if(checkSelection(s[0].c_str(),s[1].c_str(),s[2].c_str(),0,sel,&selList)==0)
+        if(checkSelection(sobjT.getDocumentName().c_str(),
+                          sobjT.getObjectName().c_str(),
+                          sobjT.getSubName().c_str(),
+                          0,
+                          sel,
+                          &selList)==0)
+        {
             selList.push_back(sel);
+        }
     }
 
     return getObjectList(pDocName,App::DocumentObject::getClassTypeId(),selList,resolve);

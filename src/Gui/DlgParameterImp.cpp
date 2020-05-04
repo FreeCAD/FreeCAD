@@ -720,6 +720,20 @@ void ParameterValue::keyPressEvent (QKeyEvent* event)
   }
 }
 
+void ParameterValue::resizeEvent(QResizeEvent* event)
+{
+#if QT_VERSION >= 0x050000
+    QHeaderView* hv = header();
+    hv->setSectionResizeMode(QHeaderView::Stretch);
+#endif
+
+    QTreeWidget::resizeEvent(event);
+
+#if QT_VERSION >= 0x050000
+    hv->setSectionResizeMode(QHeaderView::Interactive);
+#endif
+}
+
 void ParameterValue::onChangeSelectedItem(QTreeWidgetItem* item, int col)
 {
     if (isItemSelected(item) && col > 0)
@@ -970,10 +984,8 @@ void ParameterGroupItem::setData ( int column, int role, const QVariant & value 
         else 
         {
             // rename the group by adding a new group, copy the content and remove the old group
-            Base::Reference<ParameterGrp> hOldGrp = item->_hcGrp->GetGroup( oldName.toLatin1() );
-            Base::Reference<ParameterGrp> hNewGrp = item->_hcGrp->GetGroup( newName.toLatin1() );
-            hOldGrp->copyTo( hNewGrp );
-            item->_hcGrp->RemoveGrp( oldName.toLatin1() );
+            if (!item->_hcGrp->RenameGrp(oldName.toLatin1(), newName.toLatin1()))
+                return;
         }
     }
 

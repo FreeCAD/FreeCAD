@@ -989,6 +989,12 @@ void MeshObject::decimate(float fTolerance, float fReduction)
     dm.simplify(fTolerance, fReduction);
 }
 
+void MeshObject::decimate(int targetSize)
+{
+    MeshCore::MeshSimplify dm(this->_kernel);
+    dm.simplify(targetSize);
+}
+
 Base::Vector3d MeshObject::getPointNormal(unsigned long index) const
 {
     std::vector<Base::Vector3f> temp = _kernel.CalcVertexNormals();
