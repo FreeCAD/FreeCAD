@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include <Base/Console.h>
 
+#include <BRepCheck_Analyzer.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <gp_Pnt.hxx>
 
@@ -717,7 +718,14 @@ void Point3D::UpdateCmd(Path::Command & cmd)
 // Simulation tool
 //************************************************************************************************************
 cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){ 
-	
+
+	BRepCheck_Analyzer aChecker(toolShape);
+    bool shapeIsValid = aChecker.IsValid() ? true : false;
+
+	if(!shapeIsValid){
+		throw Base::RuntimeError("Path Simulation: Error in tool geometry");
+	}
+
 	Bnd_Box boundBox;
     BRepBndLib::Add(toolShape, boundBox);
 
