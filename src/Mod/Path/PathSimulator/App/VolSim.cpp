@@ -743,7 +743,7 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 	int radValue = (int)(radius / res) + 1;
 
 	// Measure the performance of the profile extraction
-	auto start = std::chrono::high_resolution_clock::now(); 
+	//auto start = std::chrono::high_resolution_clock::now(); 
 
 	for (int x = 0; x < radValue; x++)
 	{
@@ -754,7 +754,6 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 
 		// move down until the point is outside the shape
 		while(inside && std::abs(pnt.z) < length ){
-			//Base::Console().Log("PathSim::BeginSimulation: Pnt Inside: X Pos %f\n", pnt.x);
 			pnt.z -= res;
 			inside = isInside(toolShape, pnt, res);
 		}
@@ -770,16 +769,15 @@ cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 				shapePoint.radiusPos = pnt.x;
 				shapePoint.heightPos = pnt.z;
 				m_toolShape.push_back(shapePoint);
-				//Base::Console().Log("PathSim::BeginSimulation: Add height profile X: radius: %f height:  %f\n", pnt.x, pnt.z);
 				break;
 			}
 		}
 	}
 
 	// Report the performance of the profile extraction
-	auto stop = std::chrono::high_resolution_clock::now(); 
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
+	//auto stop = std::chrono::high_resolution_clock::now(); 
+	//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	//Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
 
 }
 
@@ -788,11 +786,6 @@ float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the 
 	float radPos = std::abs(pos) * radius;
 	toolShapePoint test; test.radiusPos = radPos;
 	auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
-	//float diff = std::abs(radPos - it->radiusPos);
-	
-	//if (diff > 0.05){
-	//	Base::Console().Log("requested pos: %f rad: %f diff: %f\n", radPos, it->radiusPos, diff);
-	//}
 
 	return it->heightPos;
 }
@@ -809,11 +802,11 @@ bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float
         bool inside = (solidClassifier.State() == stateIn);
         if (checkFace && solidClassifier.IsOnAFace()){
             inside = true;
-			//Base::Console().Log("PathSim::isInside: Touching Face: True\n");
 		}
     	return inside;
    	 }catch (...) {
         return false;
+	}
 }
 
 cVolSim::cVolSim() : stock(nullptr)
