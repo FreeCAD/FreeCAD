@@ -197,6 +197,11 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         sdv = wBB.ZMax
         fdv = obj.FinalDepth.Value
         extLenFwd = sdv - fdv
+        if extLenFwd <= 0.0:
+            msg = translate('PathProfile',
+                            'For open edges, select top edge and set Final Depth manually.')
+            FreeCAD.Console.PrintError(msg + '\n')
+            return False
         WIRE = flatWire.Wires[0]
         numEdges = len(WIRE.Edges)
 
