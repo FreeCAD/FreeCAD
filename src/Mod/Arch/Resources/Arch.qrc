@@ -49,8 +49,14 @@
         <file>icons/Arch_Profile.svg</file>
         <file>icons/Arch_Project.svg</file>
         <file>icons/Arch_Project_Tree.svg</file>
+        <file>icons/Arch_RebarBase.svg</file>
         <file>icons/Arch_Rebar.svg</file>
         <file>icons/Arch_Rebar_Tree.svg</file>
+        <file>icons/Arch_ReinforcementCustom.svg</file>
+        <file>icons/Arch_ReinforcementGeneric.svg</file>
+        <file>icons/Arch_ReinforcementIndividual.svg</file>
+        <file>icons/Arch_ReinforcementLattice.svg</file>
+        <file>icons/Arch_ReinforcementLinear.svg</file>
         <file>icons/Arch_Reference.svg</file>
         <file>icons/Arch_Remove.svg</file>
         <file>icons/Arch_RemoveShape.svg</file>
