@@ -22,17 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for Draft array function."""
+"""Provides functions to create non-parametric arrayed copies."""
 ## @package array
-# \ingroup DRAFT
-# \brief Provides the object code for Draft array.
+# \ingroup draftfuctions
+# \brief Provides functions to create non-parametric arrayed copies.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
-
-from draftfunctions.move import move
-from draftfunctions.rotate import rotate
+import draftfunctions.move as move
+import draftfunctions.rotate as rotate
 
 
 def array(objectslist, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None):
@@ -77,12 +77,12 @@ def rectArray(objectslist,xvector,yvector,xnum,ynum):
     for xcount in range(xnum):
         currentxvector=App.Vector(xvector).multiply(xcount)
         if not xcount==0:
-            move(objectslist,currentxvector,True)
+            move.move(objectslist,currentxvector,True)
         for ycount in range(ynum):
             currentxvector=App.Vector(currentxvector)
             currentyvector=currentxvector.add(App.Vector(yvector).multiply(ycount))
             if not ycount==0:
-                move(objectslist,currentyvector,True)
+                move.move(objectslist,currentyvector,True)
 
 
 def rectArray2(objectslist,xvector,yvector,zvector,xnum,ynum,znum):
@@ -91,16 +91,16 @@ def rectArray2(objectslist,xvector,yvector,zvector,xnum,ynum,znum):
     for xcount in range(xnum):
         currentxvector=App.Vector(xvector).multiply(xcount)
         if not xcount==0:
-            move(objectslist,currentxvector,True)
+            move.move(objectslist,currentxvector,True)
         for ycount in range(ynum):
             currentxvector=App.Vector(currentxvector)
             currentyvector=currentxvector.add(App.Vector(yvector).multiply(ycount))
             if not ycount==0:
-                move(objectslist,currentyvector,True)
+                move.move(objectslist,currentyvector,True)
             for zcount in range(znum):
                 currentzvector=currentyvector.add(App.Vector(zvector).multiply(zcount))
                 if not zcount==0:
-                    move(objectslist,currentzvector,True)
+                    move.move(objectslist,currentzvector,True)
 
 
 def polarArray(objectslist,center,angle,num):
@@ -109,4 +109,6 @@ def polarArray(objectslist,center,angle,num):
     fraction = float(angle)/num
     for i in range(num):
         currangle = fraction + (i*fraction)
-        rotate(objectslist,currangle,center,copy=True)
+        rotate.rotate(objectslist,currangle,center,copy=True)
+
+## @}

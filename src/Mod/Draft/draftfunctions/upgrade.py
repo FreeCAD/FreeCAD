@@ -20,21 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the code for Draft upgrade function.
+"""Provides functions to upgrade objects by different methods.
 
 See also the `downgrade` function.
 """
 ## @package downgrade
-# \ingroup DRAFT
-# \brief Provides the code for Draft upgrade function.
+# \ingroup draftfuctions
+# \brief Provides functions to upgrade objects by different methods.
 
 import re
+import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-
-import lazy_loader.lazy_loader as lz
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 import draftfunctions.draftify as ext_draftify
 import draftfunctions.fuse as fuse
 import draftmake.make_line as make_line
@@ -48,7 +47,11 @@ from draftutils.translate import _tr
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Arch = lz.LazyLoader("Arch", globals(), "Arch")
+
 _DEBUG = False
+
+## \addtogroup draftfuctions
+# @{
 
 
 def upgrade(objects, delete=False, force=None):
@@ -505,3 +508,5 @@ def upgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
+## @}
