@@ -33,6 +33,7 @@ class SoMaterial;
 class SoDrawStyle;
 class SoNode;
 class SoType;
+class SoShadowStyle;
 
 namespace App
 {
@@ -64,6 +65,7 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
     App::PropertyBool Selectable;
+    App::PropertyEnumeration ShadowStyle;
 
     virtual bool isSelectable(void) const override {return Selectable.getValue();}
 
@@ -237,6 +239,8 @@ private:
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
+
+    CoinPtr<SoShadowStyle> pcShadowStyle;
 
 private:
     std::vector<const char*> aDisplayEnumsArray;

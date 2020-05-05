@@ -74,6 +74,7 @@
 
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -374,17 +375,26 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Copied from SoShape::shouldGLRender(). We are replacing it so that we
     // can do our own transparency sorting.
-    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
     const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
     unsigned int shapestyleflags = shapestyle->getFlags();
     if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
         return;
+
     if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
         if (getBoundingBoxCache()->isValid(state)) {
             if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
                 return;
             }
         }
+    }
+    if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
+        SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
+                                                 SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
+        if (transparent)
+            return;
+        int style = SoShadowStyleElement::get(state);
+        if (!(style & SoShadowStyleElement::CASTS_SHADOW))
+            return;
     }
     //////////////////////////////////////////////////////////////////////////////////////////////
 

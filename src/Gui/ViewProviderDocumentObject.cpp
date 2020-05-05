@@ -38,6 +38,8 @@
 # include <Inventor/details/SoDetail.h>
 #endif
 
+#include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -82,6 +84,14 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(SelectionStyle,((long)0));
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
+
+    static const char *ShadowStyleEnum[] = {"Cast shadow and shadowed","Cast shadow", "Shadowed", "No shadowing", 0};
+    ShadowStyle.setEnums(ShadowStyleEnum);
+    ADD_PROPERTY_TYPE(ShadowStyle,((long)0), "Base", App::Prop_None,
+            "Cast shadow and shadowed: Cast shadow and receive shadows.\n"
+            "Cast shadow: Only cast shadow, but not receive any shadow.\n"
+            "Shadowed: Only receive shadow, but not cast any shadow.\n"
+            "No shadowing: Neither cast nor receive any shadow.");
 
     ADD_PROPERTY(Selectable,(true));
     Selectable.setValue(ViewParams::instance()->getEnableSelection());
@@ -180,6 +190,27 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 {
     if (prop == &DisplayMode) {
         setActiveMode();
+    }
+    else if (prop == &ShadowStyle) {
+        if(!pcShadowStyle && ShadowStyle.getValue()!=0) {
+            pcShadowStyle = new SoShadowStyle();
+            pcRoot->insertChild(pcShadowStyle,0);
+        }
+        switch(ShadowStyle.getValue()) {
+        case 0:
+            if(pcShadowStyle)
+                pcShadowStyle->style = SoShadowStyle::CASTS_SHADOW_AND_SHADOWED;
+            break;
+        case 1:
+            pcShadowStyle->style = SoShadowStyle::CASTS_SHADOW;
+            break;
+        case 2:
+            pcShadowStyle->style = SoShadowStyle::SHADOWED;
+            break;
+        case 3:
+            pcShadowStyle->style = SoShadowStyle::NO_SHADOWING;
+            break;
+        }
     }
     else if (prop == &Visibility) {
         // use this bit to check whether show() or hide() must be called
