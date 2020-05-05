@@ -749,12 +749,36 @@ def buildGuiDocumentFromGuiData(document,guidata):
                         guidoc += "                        <Enum value=\""+v+"\"/>\n"
                     guidoc += "                    </CustomEnumList>\n"
             elif prop["type"] in ["App::PropertyColorList"]:
-                # number of colors
-                buf = binascii.unhexlify(hex(len(prop["value"]))[2:].zfill(2))
-                # fill 3 other bytes (the number of colors occupies 4 bytes)
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
-                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                # DiffuseColor: first 4 bytes of file tells number of Colors
+                # then rest of bytes represent colors value where each color
+                # is of 4 bytes in abgr order.
+
+                # convert number of colors into hexadecimal reprsentation
+                hex_repr = hex(len(prop["value"]))[2:]
+
+                # if len of `hex_repr` is odd, then add 0 padding.
+                # `hex_repr` must contain an even number of hex digits
+                # as `binascii.unhexlify` only works of even hex str.
+                if len(hex_repr) % 2 != 0:
+                    hex_repr = "0" + hex_repr
+                buf = binascii.unhexlify(hex_repr)
+
+                if len(hex_repr) > 8:
+                    raise NotImplementedError(
+                        f"Number of colors ({len(prop["value"])}) is greater than 4 bytes "
+                        "and in DiffuseColor file we only specify number of colors in 4 bytes."
+                    )
+                elif len(hex_repr) == 2:  # `hex_repr` == 1 byte
+                    # fill 3 other bytes (the number of colors occupies 4 bytes)
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                elif len(hex_repr) == 4:  # `hex_repr` == 2 bytes
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                elif len(hex_repr) == 6:  # `hex_repr` == 3 bytes
+                    buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+
                 # fill colors in abgr order
                 for color in prop["value"]:
                     if len(color) >= 4:
