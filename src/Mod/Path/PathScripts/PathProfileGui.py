@@ -26,7 +26,7 @@ import FreeCAD
 import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathProfileFaces as PathProfileFaces
+import PathScripts.PathProfile as PathProfile
 
 from PySide import QtCore
 
@@ -162,12 +162,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 # Eclass
 
 
-Command = PathOpGui.SetupOperation('Profile Faces',
-        PathProfileFaces.Create,
+Command = PathOpGui.SetupOperation('Profile',
+        PathProfile.Create,
         TaskPanelOpPage,
-        'Path-Profile-Face',
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces"),
-        PathProfileFaces.SetupProperties)
+        'Path-Contour',
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile"),
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile entire model, selected face(s) or selected edge(s)"),
+        PathProfile.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")
