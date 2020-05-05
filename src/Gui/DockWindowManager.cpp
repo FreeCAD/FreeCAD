@@ -147,7 +147,8 @@ void OverlayProxyWidget::enterEvent(QEvent *)
         return;
     drawLine = true;
     update();
-    DockWindowManager::instance()->refreshOverlay();
+    if(ViewParams::getDockOverlayActivateOnHover())
+        DockWindowManager::instance()->refreshOverlay();
 }
 
 void OverlayProxyWidget::leaveEvent(QEvent *)
@@ -160,6 +161,14 @@ void OverlayProxyWidget::hideEvent(QHideEvent *)
 {
     drawLine = false;
     update();
+}
+
+void OverlayProxyWidget::mousePressEvent(QMouseEvent *ev)
+{
+    if(!owner->count() || ev->button() != Qt::LeftButton)
+        return;
+
+    DockWindowManager::instance()->refreshOverlay(this);
 }
 
 void OverlayProxyWidget::paintEvent(QPaintEvent *)
@@ -1500,7 +1509,7 @@ struct DockWindowManagerP
                 }
             }
         }
-        _timer.start(ViewParams::getDockOverlayDelay());
+        _timer.start(widget?1:ViewParams::getDockOverlayDelay());
     }
 
     void saveOverlay()

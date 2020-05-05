@@ -285,6 +285,7 @@ protected:
     void leaveEvent(QEvent*);
     void hideEvent(QHideEvent*);
     void paintEvent(QPaintEvent*);
+    void mousePressEvent(QMouseEvent *);
 
 private:
     OverlayTabWidget* owner;

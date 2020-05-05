@@ -4068,6 +4068,21 @@ VIEW_CMD_DEF(DockOverlayExtraState, DockOverlayExtraState)
     eType         = 0;
 }
 
+//===========================================================================
+// Std_DockOverlayActivateOnHover
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Activate on hover");
+    sToolTipText  = QT_TR_NOOP("Activate auto hidden overlay on mouse hover.\n"
+                               "If disabled, then activate on mouse click");
+    sWhatsThis    = "Std_DockOverlayActivateOnHover";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
 class StdCmdDockOverlay : public GroupCommand
 {
 public:
@@ -4095,6 +4110,7 @@ public:
         addCommand();
         addCommand(new StdCmdDockOverlayAutoView());
         addCommand(new StdCmdDockOverlayExtraState());
+        addCommand(new StdCmdDockOverlayActivateOnHover());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };

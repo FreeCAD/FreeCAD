@@ -105,6 +105,7 @@ public:
     FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false) \
     FC_VIEW_PARAM(DockOverlayDelay,int,Int,200) \
     FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000) \
+    FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true) \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.5) \
