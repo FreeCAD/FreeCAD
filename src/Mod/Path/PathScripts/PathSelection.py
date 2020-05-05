@@ -209,7 +209,11 @@ def chamferselect():
 
 
 def profileselect():
-    FreeCADGui.Selection.addSelectionGate(PROFILEGate())
+    gate = False
+    if(PROFILEGate() or EGate()):
+        gate = True
+    FreeCADGui.Selection.addSelectionGate(gate)
+    # FreeCADGui.Selection.addSelectionGate(PROFILEGate())
     FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
 
 
@@ -249,6 +253,7 @@ def select(op):
     opsel['Pocket Shape'] = pocketselect
     opsel['Profile Edges'] = eselect
     opsel['Profile Faces'] = profileselect
+    opsel['Profile'] = profileselect
     opsel['Surface'] = surfaceselect
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect
