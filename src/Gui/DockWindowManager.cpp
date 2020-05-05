@@ -928,6 +928,9 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     {
         setStyleSheet(OverlayStyleSheet::instance()->activeStyleSheet);
         setOverlayMode(this, -1);
+    } else if (enable && !isTransparent() && (isEditShow() || isAutoHide())) {
+        setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
+        setOverlayMode(this, 0);
     } else {
         if(enable)
             setStyleSheet(OverlayStyleSheet::instance()->onStyleSheet);
