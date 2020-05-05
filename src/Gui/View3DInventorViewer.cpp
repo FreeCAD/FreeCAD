@@ -2403,6 +2403,36 @@ std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(SelectionRole* role) con
     return getGLPolygon(pnts);
 }
 
+// defined in SoFCDB.cpp
+extern SoNode* replaceSwitchesInSceneGraph(SoNode*);
+
+void View3DInventorViewer::dump(const char *filename, bool onlyVisible) const
+{
+    SoGetPrimitiveCountAction action;
+    action.setCanApproximate(true);
+
+    SoNode *node;
+    if(overrideMode == "Shadow")
+        node = pcShadowGroup;
+    else
+        node = pcViewProviderRoot;
+
+    action.apply(node);
+    if (onlyVisible) {
+        node = replaceSwitchesInSceneGraph(node);
+        node->ref();
+    }
+
+    if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
+        dumpToFile(node, filename, true);
+    else
+        dumpToFile(node, filename, false);
+
+    if (onlyVisible) {
+        node->unref();
+    }
+}
+
 bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool binary) const
 {
     bool ret = false;

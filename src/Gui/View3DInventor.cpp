@@ -802,29 +802,9 @@ void View3DInventor::restoreOverrideCursor()
     _viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
 }
 
-// defined in SoFCDB.cpp
-extern SoNode* replaceSwitchesInSceneGraph(SoNode*);
-
 void View3DInventor::dump(const char* filename, bool onlyVisible)
 {
-    SoGetPrimitiveCountAction action;
-    action.setCanApproximate(true);
-    action.apply(_viewer->getSceneGraph());
-
-    SoNode* node = _viewer->getSceneGraph();
-    if (onlyVisible) {
-        node = replaceSwitchesInSceneGraph(node);
-        node->ref();
-    }
-
-    if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
-        _viewer->dumpToFile(node, filename, true);
-    else
-        _viewer->dumpToFile(node, filename, false);
-
-    if (onlyVisible) {
-        node->unref();
-    }
+    _viewer->dump(filename, onlyVisible);
 }
 
 void View3DInventor::windowStateChanged(MDIView* view)

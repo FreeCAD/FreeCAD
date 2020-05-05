@@ -260,6 +260,8 @@ public:
      */
     bool dumpToFile(SoNode* node, const char* filename, bool binary) const;
 
+    void dump(const char *filename, bool onlyVisible) const;
+
     /** @name Selection methods */
     //@{
     void startSelection(SelectionMode = Lasso);
