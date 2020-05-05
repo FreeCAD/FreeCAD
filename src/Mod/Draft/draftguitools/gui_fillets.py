@@ -201,4 +201,4 @@ class Fillet(gui_base_original.Creator):
             self.doc.recompute()
 
 
-Gui.addCommand('Draft_Fillet_new', Fillet())
+Gui.addCommand('Draft_Fillet', Fillet())

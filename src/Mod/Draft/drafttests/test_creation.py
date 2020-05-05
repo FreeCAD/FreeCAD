@@ -88,16 +88,10 @@ class DraftCreation(unittest.TestCase):
         L2 = Draft.makeLine(b, c)
         self.doc.recompute()
 
-        if not App.GuiUp:
-            aux._no_gui("DraftFillet")
-            self.assertTrue(True)
-            return
-
-        import DraftFillet
         radius = 4
         _msg("  Fillet")
         _msg("  radius={}".format(radius))
-        obj = DraftFillet.makeFillet([L1, L2], radius)
+        obj = Draft.make_fillet([L1, L2], radius)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_circle(self):
