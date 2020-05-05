@@ -668,8 +668,11 @@ bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
         return setHighlight(0,0,0,0,0.0,0.0,0.0);
     }
     const auto &pt = info.pp->getPoint();
+    const SoDetail *det = info.pp->getDetail();
+    if(det && !Data::ComplexGeoData::hasElementName(info.subname.c_str()))
+        det = nullptr;
     return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()), 
-            info.pp->getDetail(), info.vpd, info.subname.c_str(), pt[0],pt[1],pt[2]);
+            det, info.vpd, info.subname.c_str(), pt[0],pt[1],pt[2]);
 }
 
 bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det, 
@@ -799,6 +802,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     bool hasNext = false;
     const SoPickedPoint * pp = info.pp;
     const SoDetail *det = pp->getDetail();
+    if(det && !Data::ComplexGeoData::hasElementName(info.subname.c_str()))
+        det = 0;
     SoDetail *detNext = 0;
     SoFullPath *pPath = static_cast<SoFullPath*>(pp->getPath());
     const auto &pt = pp->getPoint();
