@@ -20,19 +20,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the code for Draft downgrade function.
+"""Provides functions to downgrade objects by different methods.
 
 See also the `upgrade` function.
 """
 ## @package downgrade
-# \ingroup DRAFT
-# \brief Provides the code for Draft downgrade function.
+# \ingroup draftfuctions
+# \brief Provides functions to downgrade objects by different methods.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 import draftfunctions.cut as cut
+
 from draftutils.messages import _msg
 from draftutils.translate import _tr
 
@@ -297,3 +299,5 @@ def downgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
+## @}

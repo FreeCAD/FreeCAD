@@ -20,24 +20,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft rotate function.
-"""
+"""Provides functions to rotate shapes around a center and axis."""
 ## @package rotate
-# \ingroup DRAFT
-# \brief This module provides the code for Draft rotate function.
+# \ingroup draftfuctions
+# \brief Provides functions to rotate shapes around a center and axis.
 
+## \addtogroup draftfuctions
+# @{
 import math
 
 import FreeCAD as App
 import DraftVecUtils
-
 import draftutils.utils as utils
-import draftutils.groups as groups
 import draftutils.gui_utils as gui_utils
-
-from draftfunctions.join import join_wires
-from draftmake.make_line import make_line
-from draftmake.make_copy import make_copy
+import draftutils.groups as groups
+import draftfunctions.join as join
+import draftmake.make_line as make_line
+import draftmake.make_copy as make_copy
 
 
 def rotate(objectslist, angle, center=App.Vector(0,0,0),
@@ -91,7 +90,7 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
             real_axis = axis
 
         if copy:
-            newobj = make_copy(obj)
+            newobj = make_copy.make_copy(obj)
         else:
             newobj = obj
         if obj.isDerivedFrom("App::Annotation"):
@@ -207,7 +206,7 @@ def copy_rotated_edges(arguments):
     for argument in arguments:
         copied_edges.append(copy_rotated_edge(argument[0], argument[1],
             argument[2], argument[3], argument[4]))
-    join_wires(copied_edges)
+    join.join_wires(copied_edges)
 
 
 copyRotatedEdges = copy_rotated_edges
@@ -229,5 +228,6 @@ def copy_rotated_edge(object, edge_index, angle, center, axis):
         vertex2 = rotate_vector_from_center(
             object.Placement.multVec(object.Points[edge_index+1]),
             angle, axis, center)
-    return make_line(vertex1, vertex2)
-    
+    return make_line.make_line(vertex1, vertex2)
+
+## @}
