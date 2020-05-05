@@ -195,28 +195,33 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     SoColorPacker packer;
     float trans = 0.0;
-    int oldPattern = 0;
-    float oldWidth = 0.0;
 
     for(;pass<=2;++pass) {
+        bool pushed = false;
         if(pass==0) {
             int pattern = Gui::ViewParams::getSelectionLinePattern();
             if(pattern) {
-                oldPattern = SoLinePatternElement::get(state);
+                if(!pushed) {
+                    pushed = true;
+                    state->push();
+                }
                 SoLinePatternElement::set(state, pattern);
             }
             float width = Gui::ViewParams::getSelectionHiddenLineWidth();
             if(width>0.0) {
-                oldWidth = SoLineWidthElement::get(state);
+                if(!pushed) {
+                    pushed = true;
+                    state->push();
+                }
                 SoLineWidthElement::set(state,width);
             }
         } else if(pass==1) {
             depthGuard.set(GL_LEQUAL);
-            if(oldPattern)
-                SoLinePatternElement::set(state, oldPattern);
-            if(oldWidth>0.0)
-                SoLineWidthElement::set(state, oldWidth);
             if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
+                if(!pushed) {
+                    pushed = true;
+                    state->push();
+                }
                 // If we are visible, disable transparency to get a solid
                 // outline, or else on top rendering will have some default
                 // transprency, which will give a fainted appearance that is
@@ -239,19 +244,23 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 }else if(ctx->isSelectAll())
                     renderSelection(action,ctx); 
                 renderHighlight(action,ctx);
+
+                if(pushed)
+                    state->pop();
                 continue;
             }
         }
         if(ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
         else {
-            bool pushed = false;
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
             if(Gui::SoFCUnifiedSelection::showHiddenLines()) {
-                pushed = true;
-                state->push();
+                if(!pushed) {
+                    pushed = true;
+                    state->push();
+                }
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
                 SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
                 if(Gui::ViewParams::getHiddenLineOverrideColor()) {
@@ -262,10 +271,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             }
 
             inherited::GLRender(action);
-
-            if(pushed)
-                state->pop();
         }
+
+        if(pushed)
+            state->pop();
 
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);
