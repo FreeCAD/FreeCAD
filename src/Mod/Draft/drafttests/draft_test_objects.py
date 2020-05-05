@@ -35,11 +35,11 @@ import math
 
 import FreeCAD as App
 import Draft
-from FreeCAD import Vector
+
 from draftutils.messages import _msg, _wrn
+from FreeCAD import Vector
 
 if App.GuiUp:
-    import DraftFillet
     import FreeCADGui as Gui
 
 
@@ -141,13 +141,7 @@ def create_test_file(file_name="draft_test_objects",
         line_h_2.ViewObject.DrawStyle = "Dotted"
     App.ActiveDocument.recompute()
 
-    try:
-        DraftFillet.makeFillet([line_h_1, line_h_2], 400)
-    except Exception:
-        _wrn("Fillet could not be created")
-        _wrn("Possible cause: at this moment it may need the interface")
-        rect = Draft.makeRectangle(500, 100)
-        rect.Placement.Base = Vector(14000, 500)
+    Draft.make_fillet([line_h_1, line_h_2], 400)
 
     t_xpos += 900
     _t = Draft.makeText(["Fillet"], Vector(t_xpos, t_ypos, 0))
