@@ -503,13 +503,13 @@ void OverlayTabWidget::retranslate()
     actEditHide.setToolTip(tr("Toggle auto hide on edit mode"));
     actEditShow.setToolTip(tr("Toggle auto show on edit mode"));
     actIncrease.setToolTip(tr("Increase window size, either width or height depending on the docking site.\n"
-                              "Hold ALT key while pressing the button to change size in the other dimension.\n"
+                              "Hold CTRL key while pressing the button to change size in the other dimension.\n"
                               "Hold SHIFT key while pressing the button to move the window.\n"
-                              "Hold ALT + SHIFT key to move the window in the other direction."));
+                              "Hold CTRL + SHIFT key to move the window in the other direction."));
     actDecrease.setToolTip(tr("Decrease window size, either width or height depending on the docking site.\n"
-                              "Hold ALT key while pressing to change size in the other dimension.\n"
+                              "Hold CTRL key while pressing to change size in the other dimension.\n"
                               "Hold SHIFT key while pressing the button to move the window.\n"
-                              "Hold ALT + SHIFT key to move the window in the other direction."));
+                              "Hold CTRL + SHIFT key to move the window in the other direction."));
     actOverlay.setToolTip(tr("Toggle overlay"));
 }
 
@@ -1178,13 +1178,14 @@ void OverlayTabWidget::changeSize(int changes, bool checkModify)
 {
     auto modifier = checkModify ? QApplication::queryKeyboardModifiers() : Qt::NoModifier;
     if(modifier== Qt::ShiftModifier) {
-        offset.rwidth() = std::max(offset.rwidth()+changes, 0);
+        setOffset(QSize(std::max(offset.width()+changes, 0), offset.height()));
         return;
-    } else if (modifier == (Qt::ShiftModifier | Qt::AltModifier)) {
-        offset.rheight() = std::max(offset.rheight()+changes, 0);
+    } else if ((modifier == (Qt::ShiftModifier | Qt::AltModifier))
+            || (modifier == (Qt::ShiftModifier | Qt::ControlModifier))) {
+        setOffset(QSize(offset.width(), std::max(offset.height()+changes, 0)));
         return;
     } else if (modifier == Qt::ControlModifier || modifier == Qt::AltModifier) {
-        sizeDelta -= changes;
+        setSizeDelta(sizeDelta - changes);
         return;
     }
 
