@@ -1600,12 +1600,21 @@ struct DockWindowManagerP
         if(tabbar)
             h -= tabbar->height();
 
+        int naviCubeSize = ViewParams::getNaviWidgetSize()+10;
+        int naviCorner = ViewParams::getCornerNaviCube();
+
         QRect rectBottom(0,0,0,0);
         if(_bottom.geometry(rectBottom)) {
             QSize ofs = _bottom.tabWidget->getOffset();
             int delta = _bottom.tabWidget->getSizeDelta();
             h -= ofs.height();
-            int bw = std::max(w-ViewParams::getNaviWidgetSize()-10-ofs.width()-delta, 10);
+            if(naviCorner == 2)
+                ofs.setWidth(ofs.width()+naviCubeSize);
+            int bw = w-10-ofs.width()-delta;
+            if(naviCorner == 3)
+                bw -= naviCubeSize;
+            if(bw < 10)
+                bw = 10;
             // Bottom width is maintain the same to reduce QTextEdit re-layout
             // which may be expensive if there are lots of text, e.g. for
             // ReportView or PythonConsole.
@@ -1615,8 +1624,12 @@ struct DockWindowManagerP
         QRect rectLeft(0,0,0,0);
         if(_left.geometry(rectLeft)) {
             auto ofs = _left.tabWidget->getOffset();
-            int delta = _left.tabWidget->getSizeDelta();
-            int lh = std::max(h-rectBottom.height()-ofs.width()-delta,10);
+            if(naviCorner == 0)
+                ofs.setWidth(ofs.width()+naviCubeSize);
+            int delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
+            if(naviCorner == 2 && naviCubeSize > rectBottom.height())
+                delta += naviCubeSize - rectBottom.height();
+            int lh = std::max(h-ofs.width()-delta, 10);
             _left.setGeometry(ofs.height(),ofs.width(),rectLeft.width(),lh);
             _left.tabWidget->getAutoHideRect(rectLeft);
 
@@ -1627,9 +1640,12 @@ struct DockWindowManagerP
         QRect rectRight(0,0,0,0);
         if(_right.geometry(rectRight)) {
             auto ofs = _right.tabWidget->getOffset();
-            int delta = _right.tabWidget->getSizeDelta();
-            int dh = std::max(rectBottom.height(), ViewParams::getNaviWidgetSize()-10);
-            int rh = std::max(h-dh-ofs.width()-delta, 10);
+            if(naviCorner == 1)
+                ofs.setWidth(ofs.width()+naviCubeSize);
+            int delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
+            if(naviCorner == 3 && naviCubeSize > rectBottom.height())
+                delta += naviCubeSize - rectBottom.height();
+            int rh = std::max(h-ofs.width()-delta, 10);
             w -= ofs.height();
             _right.setGeometry(w-rectRight.width(),ofs.width(),rectRight.width(),rh);
             _right.tabWidget->getAutoHideRect(rectRight);
@@ -1638,7 +1654,11 @@ struct DockWindowManagerP
         if(_top.geometry(rectTop)) {
             auto ofs = _top.tabWidget->getOffset();
             int delta = _top.tabWidget->getSizeDelta();
-            int tw = std::max(w-rectLeft.width()-rectRight.width()-ofs.width()-delta,10);
+            if(naviCorner == 0)
+                rectLeft.setWidth(std::max(rectLeft.width(), naviCubeSize));
+            else if(naviCorner == 1)
+                rectRight.setWidth(std::max(rectRight.width(), naviCubeSize));
+            int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
             _top.setGeometry(rectLeft.width()-ofs.width(),ofs.height(),tw,rectTop.height());
         }
     }

@@ -101,6 +101,7 @@ public:
     FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20) \
     FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
     FC_VIEW_PARAM(NaviWidgetSize,int,Int,132) \
+    FC_VIEW_PARAM2(CornerNaviCube,int,Int,1) \
     FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true) \
     FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false) \
     FC_VIEW_PARAM(DockOverlayDelay,int,Int,200) \
