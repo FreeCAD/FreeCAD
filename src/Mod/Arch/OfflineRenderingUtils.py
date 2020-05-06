@@ -765,8 +765,8 @@ def buildGuiDocumentFromGuiData(document,guidata):
 
                 if len(hex_repr) > 8:
                     raise NotImplementedError(
-                        f"Number of colors ({len(prop["value"])}) is greater than 4 bytes "
-                        "and in DiffuseColor file we only specify number of colors in 4 bytes."
+                        "Number of colors ({}) is greater than 4 bytes and in DiffuseColor file we only "
+                        "specify number of colors in 4 bytes.".format(len(prop["value"]))
                     )
                 elif len(hex_repr) == 2:  # `hex_repr` == 1 byte
                     # fill 3 other bytes (the number of colors occupies 4 bytes)
