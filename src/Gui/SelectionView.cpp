@@ -523,9 +523,43 @@ void SelectionView::onEnablePickList() {
 
 ////////////////////////////////////////////////////////////////////////
 
+#if QT_VERSION  >= 0x050000
+static const char *_MenuStyle("QMenu {menu-scrollable:1;"
+                                     "color: palette(text);"
+                                     "background-color: rgba(255,255,255,130)}"
+                              "QMenu::item:selected, QMenu::item:pressed {"
+                                     "color: white;"
+                                     "background-color: rgba(0,0,130,130)}");
+#else
+static const char *_MenuStyle("QMenu {menu-scrollable:1}");
+#endif
+
 SelectionMenu::SelectionMenu(QWidget *parent)
     :QMenu(parent),pSelList(0)
-{}
+{
+#if QT_VERSION  >= 0x050000
+    setAttribute(Qt::WA_NoSystemBackground, true);
+    setAttribute(Qt::WA_TranslucentBackground, true);
+#endif
+    connect(this, SIGNAL(aboutToShow()), this, SLOT(beforeShow()));
+}
+
+void SelectionMenu::beforeShow()
+{
+    for(auto child : findChildren<QMenu*>()) {
+        child->setAttribute(Qt::WA_NoSystemBackground, true);
+        child->setAttribute(Qt::WA_TranslucentBackground, true);
+    }
+    
+#if QT_VERSION  >= 0x050000
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/MainWindow");
+    std::string stylesheet = hGrp->GetASCII("MenuStyleSheet");
+    setStyleSheet(QLatin1String(stylesheet.size()?stylesheet.c_str():_MenuStyle));
+#else
+    setStyleSheet(_MenuStyle);
+#endif
+}
 
 struct ElementInfo {
     QMenu *menu = nullptr;
@@ -544,7 +578,6 @@ struct SubMenuInfo {
 
 void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     clear();
-    setStyleSheet(QLatin1String("* { menu-scrollable: 1 }"));
 
     pSelList = &sels;
     std::ostringstream ss;

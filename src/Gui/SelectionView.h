@@ -123,6 +123,7 @@ public Q_SLOTS:
     void onSubMenu();
     void onTimer();
     void leaveEvent(QEvent *e);
+    void beforeShow();
 
 private:
     const std::vector<App::SubObjectT> *pSelList;

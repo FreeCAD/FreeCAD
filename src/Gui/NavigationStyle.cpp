@@ -1596,7 +1596,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     Gui::Application::Instance->setupContextMenu("View", &view);
 
     SelectionMenu contextMenu(viewer->getGLWidget());
-    QMenu subMenu;
+    QMenu subMenu(&contextMenu);
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
     subMenu.setTitle(QObject::tr("Navigation styles"));
@@ -1622,7 +1622,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     auto posAction = contextMenu.actions().front();
     auto selList = viewer->getPickedList(position, true);
 
-    QMenu objMenu;
+    QMenu objMenu(&contextMenu);
     if(TreeWidget::setupObjectMenu(objMenu, selList.size()?&selList.front():nullptr)) {
         separator = true;
         contextMenu.insertMenu(posAction, &objMenu);
