@@ -1704,9 +1704,9 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
         if(!pcShadowGroup) {
             pcShadowGroup = new SoShadowGroup;
             pcShadowGroup->ref();
-            pcShadowDirectionalLight = new SoShadowDirectionalLight;
+            pcShadowDirectionalLight = new SoDirectionalLight;
             pcShadowDirectionalLight->ref();
-            pcShadowSpotLight = new SoShadowSpotLight;
+            pcShadowSpotLight = new SoSpotLight;
             pcShadowSpotLight->ref();
 
             auto shadowStyle = new SoShadowStyle;

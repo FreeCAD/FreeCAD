@@ -67,8 +67,8 @@ class SoTimerSensor;
 class SoSensor;
 class SbBox3f;
 class SoShadowGroup;
-class SoShadowDirectionalLight;
-class SoShadowSpotLight;
+class SoDirectionalLight;
+class SoSpotLight;
 class SoFaceSet;
 class SoSwitch;
 class SoCoordinate3;
@@ -479,8 +479,8 @@ private:
     SoSeparator * pcViewProviderRoot;
 
     SoShadowGroup            * pcShadowGroup;
-    SoShadowDirectionalLight * pcShadowDirectionalLight;
-    SoShadowSpotLight        * pcShadowSpotLight;
+    SoDirectionalLight       * pcShadowDirectionalLight;
+    SoSpotLight              * pcShadowSpotLight;
     SoSwitch                 * pcShadowGroundSwitch;
     SoCoordinate3            * pcShadowGroundCoords;
     SoFaceSet                * pcShadowGround;
