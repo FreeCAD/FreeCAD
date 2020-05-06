@@ -101,8 +101,90 @@ class Fillet(base.DraftObject):
         _wrn("v0.19, {0}, '{1}' object ".format(obj.Label, _module)
              + "will be migrated to 'draftobjects.fillet.Fillet'")
 
+        # Save the old properties and delete them
+        old_dict = _save_properties0_19_to_0_19(obj)
+
+        # We assign the new class, which could have different properties
+        # from the older class. Since we removed the older properties
+        # we know the new properties will not collide with the old properties.
+        # The new class itself should handle some logic so that it does not
+        # add already existing properties of the same name and type.
         draftobjects.fillet.Fillet(obj)
 
+        # Assign the old properties
+        obj = _assign_properties0_19_to_0_19(obj, old_dict)
+
+        # The same is done for the viewprovider.
         if App.GuiUp:
             vobj = obj.ViewObject
+            old_dict = _save_vproperties0_19_to_0_19(vobj)
             view_fillet.ViewProviderFillet(vobj)
+            _assign_vproperties0_19_to_0_19(vobj, old_dict)
+
+
+def _save_properties0_19_to_0_19(obj):
+    """Save the old property values and remove the old properties.
+
+    Since we know the structure of the older Proxy class,
+    we can take its old values and store them before
+    we remove the property.
+
+    We do not need to save the old properties if these
+    can be recalculated from the new data.
+    """
+    _wrn("Old property values saved, old properties removed.")
+    old_dict = dict()
+    if hasattr(obj, "Length"):
+        old_dict["Length"] = obj.Length
+        obj.removeProperty("Length")
+    if hasattr(obj, "Start"):
+        old_dict["Start"] = obj.Start
+        obj.removeProperty("Start")
+    if hasattr(obj, "End"):
+        old_dict["End"] = obj.End
+        obj.removeProperty("End")
+    if hasattr(obj, "FilletRadius"):
+        old_dict["FilletRadius"] = obj.FilletRadius
+        obj.removeProperty("FilletRadius")
+    return old_dict
+
+
+def _assign_properties0_19_to_0_19(obj, old_dict):
+    """Assign the new properties from the old properties.
+
+    If new properties are named differently than the older properties
+    or if the old values need to be transformed because the class
+    now manages differently the data, this can be done here.
+    Otherwise simple assigning the old values is possible.
+    """
+    _wrn("New property values added.")
+    if hasattr(obj, "Length"):
+        obj.Length = old_dict["Length"]
+    if hasattr(obj, "Start"):
+        obj.Start = old_dict["Start"]
+    if hasattr(obj, "End"):
+        obj.End = old_dict["End"]
+    if hasattr(obj, "FilletRadius"):
+        obj.FilletRadius = old_dict["FilletRadius"]
+    return obj
+
+
+def _save_vproperties0_19_to_0_19(vobj):
+    """Save the old property values and remove the old properties.
+
+    The view provider didn't add new properties so this just returns
+    an empty element.
+    """
+    _wrn("Old view property values saved, old view properties removed. NONE.")
+    old_dict = dict()
+    return old_dict
+
+
+def _assign_vproperties0_19_to_0_19(vobj, old_dict):
+    """Assign the new properties from the old properties.
+
+    The view provider didn't add new properties so this just returns
+    the same viewprovider.
+    """
+    _wrn("New view property values added. NONE.")
+    return vobj
