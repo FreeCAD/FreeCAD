@@ -677,6 +677,38 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     return projectedFace;
 }
 
+
+//calculate the ends of the section line in BaseView's coords
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+
+    auto sNorm  = SectionNormal.getValue();
+    double angle = M_PI / 2.0;
+    auto axis   = getBaseDVP()->Direction.getValue();
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+    Base::Vector3d sLineDir = DrawUtil::vecRotate(sNorm, angle, axis, stdOrg);
+    sLineDir.Normalize();
+    Base::Vector3d sLineDir2 = - axis.Cross(sNorm);
+    sLineDir2.Normalize();
+    Base::Vector3d sLineOnBase = getBaseDVP()->projectPoint(sLineDir2);
+    sLineOnBase.Normalize();
+
+    auto sOrigin = SectionOrigin.getValue();
+    Base::Vector3d adjSectionOrg = sOrigin - getBaseDVP()->getOriginalCentroid();
+    Base::Vector3d sOrgOnBase = getBaseDVP()->projectPoint(adjSectionOrg);
+    sOrgOnBase /= getScale();
+
+    auto bbx = getBaseDVP()->getBoundingBox();
+    double xRange = bbx.MaxX - bbx.MinX;
+    xRange /= getScale();
+    double yRange = bbx.MaxY - bbx.MinY;
+    yRange /= getScale();
+    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);
+
+    return result;
+}
+
 //this should really be in BoundBox.h
 //!check if point is in box or on boundary of box
 //!compare to isInBox which doesn't allow on boundary

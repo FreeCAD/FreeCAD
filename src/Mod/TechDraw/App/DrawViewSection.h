@@ -119,6 +119,8 @@ public:
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
 
+    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds(void);
+
 protected:
     TopoDS_Compound sectionFaces;
     std::vector<TopoDS_Wire> sectionFaceWires;
