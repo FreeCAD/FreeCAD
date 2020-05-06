@@ -56,7 +56,13 @@ that is, in August 2020.
 # from August 2019 to February 2020. It will be removed definitely
 # in August 2020, as the new Fillet object should be available.
 
+import FreeCAD as App
 import draftobjects.fillet
+import draftobjects.base as base
+from draftutils.messages import _wrn
+
+if App.GuiUp:
+    import draftviewproviders.view_fillet as view_fillet
 
 # -----------------------------------------------------------------------------
 # Removed definitions
@@ -69,8 +75,34 @@ import draftobjects.fillet
 # class CommandFillet(DraftTools.Creator):
 # -----------------------------------------------------------------------------
 
-# When an old object is opened it will reconstruct the object
-# by searching for the class `DraftFillet.Fillet`.
-# So we redirect this class to the new class in the new module.
-# This migrates the old object to the new object.
-Fillet = draftobjects.fillet.Fillet
+
+class Fillet(base.DraftObject):
+    """The old Fillet object. DEPRECATED.
+
+    This class is solely defined to migrate older objects.
+
+    When an old object is opened it will reconstruct the object
+    by searching for this class. So we implement `onDocumentRestored`
+    to test that it is the old class and we migrate it,
+    by assigning the new proxy class, and the new viewprovider.
+    """
+
+    def onDocumentRestored(self, obj):
+        """Run when the document that is using this class is restored."""
+        if hasattr(obj, "Proxy") and obj.Proxy.Type == "Fillet":
+            _module = str(obj.Proxy.__class__)
+            _module = _module.lstrip("<class '").rstrip("'>")
+
+            if _module == "DraftFillet.Fillet":
+                self._migrate(obj, _module)
+
+    def _migrate(self, obj, _module):
+        """Migrate the object to the new object."""
+        _wrn("v0.19, {0}, '{1}' object ".format(obj.Label, _module)
+             + "will be migrated to 'draftobjects.fillet.Fillet'")
+
+        draftobjects.fillet.Fillet(obj)
+
+        if App.GuiUp:
+            vobj = obj.ViewObject
+            view_fillet.ViewProviderFillet(vobj)
