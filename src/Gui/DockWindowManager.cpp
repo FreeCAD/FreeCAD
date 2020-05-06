@@ -649,13 +649,15 @@ public:
             }
             if(onStyleSheet.isEmpty()) {
                 static QLatin1String _default(
-                    "* { background-color: transparent; border: 1px solid palette(dark); alternate-background-color: transparent;}"
-                    "QTreeWidget, QListWidget { background: palette(base) }"
+                    "* { background-color: transparent;"
+                        "border: 1px solid palette(dark);"
+                        "alternate-background-color: rgba(255,255,255,100)}"
+                    "QTreeView, QListView { background: rgba(255,255,255,50) }"
                     "QToolTip { background-color: palette(base) }"
 
                     // Both background and border are necessary to make this work.
                     // And this spare us to have to call QTabWidget::setDocumentMode(true).
-                    "QTabWidget:pane { background-color: transparent; border: transparent }"
+                    "QTabWidget:pane { background-color: rgba(255,255,255,50); border: transparent }"
                 );
                 onStyleSheet = _default;
             }
@@ -710,30 +712,33 @@ public:
         if(activeStyleSheet.isEmpty()) {
             static QLatin1String _default(
                 "* { background-color: transparent;"
-                    "color: palette(window-text);"
+                    "color: palette(text);"
                     "border: 1px solid palette(dark);"
-                    "alternate-background-color: transparent;}"
+                    "border-radius:2px;"
+                    "alternate-background-color: rgba(255,255,255,100)}"
                 "QComboBox { background : palette(base);"
                             "selection-background-color: palette(highlight);}"
                 "QComboBox:editable { background : palette(base);}"
                 "QComboBox:!editable { background : palette(base);}"
                 "QLineEdit { background : palette(base);}"
                 "QAbstractSpinBox { background : palette(base);}"
-                "QTabWidget:pane { background-color: transparent; border: transparent }"
+                "QTabWidget:pane { background-color: rgba(255,255,255,50); border: transparent }"
                 "QTabBar { background: transparent; border: none;}"
-                "QTabBar::tab {color: #1a1a1a;"
-                              "background-color: transparent;"
+                "QTabBar::tab {color: rgba(0,0,0,150);"
+                              "background-color: rgba(255,255,255,50);"
                               "border: 1px solid palette(dark);"
                               "padding: 5px}"
-                "QTabBar::tab:selected {color: palette(text); background-color: #aaaaaaaa;}"
+                "QTabBar::tab:selected {color: palette(text); background-color: rgba(255,255,255,100);}"
                 "QTabBar::tab:hover {color: palette(text); background-color: palette(light);}"
-                "QHeaderView::section {background-color: transparent; border: 1px solid palette(dark); padding: 1px}"
+                "QHeaderView::section {background-color: rgba(255,255,255,50);"
+                                      "border: 1px solid palette(dark);"
+                                      "padding: 1px}"
                 "QTreeWidget, QListWidget {background: palette(base)}" // necessary for checkable item to work in linux
                 "QToolTip {background-color: palette(base);}"
                 "Gui--CallTipsList::item { background-color: palette(base);}"
                 "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
                 "QDialog { background-color: palette(window); }"
-                "QAbstractButton { background: palette(window);"
+                "QAbstractButton { background: rgba(255,255,255,120);"
                                   "padding: 2px 4px;"
                                   "border: 1px solid palette(dark) }"
                 "QAbstractButton:hover { background: palette(light); border: 1px solid palette(dark) }"
