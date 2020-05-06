@@ -1646,11 +1646,15 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode, bool updateV
         SoNode* root = getSceneGraph();
         static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(false);
     } else if (overrideMode == "Shadow") {
-        auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
-        int index = superScene->findChild(pcShadowGroup);
-        if(index >= 0)
-            superScene->replaceChild(index, pcViewProviderRoot);
-        pcShadowGroundSwitch->whichChild = -1;
+        if(pcShadowGroup) {
+            auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
+            int index = superScene->findChild(pcShadowGroup);
+            if(index >= 0)
+                superScene->replaceChild(index, pcViewProviderRoot);
+            pcShadowGroup->unref();
+            pcShadowGroup = nullptr;
+            pcShadowGroundSwitch->whichChild = -1;
+        }
     }
 
     overrideMode = mode;
@@ -1710,20 +1714,43 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
                 doc,"Shaded",ViewParams::getShadowShaded());
         vpOverrideMode = shaded?"Shaded":"Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
+        bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", ViewParams::getShadowSpotLight());
+
+        if(pcShadowGroup) {
+            if((spotlight && pcShadowGroup->findChild(pcShadowSpotLight)<0)
+                || (!spotlight && pcShadowGroup->findChild(pcShadowDirectionalLight)<0))
+            {
+                auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
+                int index = superScene->findChild(pcShadowGroup);
+                if(index >= 0)
+                    superScene->replaceChild(index, pcViewProviderRoot);
+                pcShadowGroup->unref();
+                pcShadowGroup = nullptr;
+            }
+        }
         if(!pcShadowGroup) {
             pcShadowGroup = new SoShadowGroup;
+            // pcShadowGroup->renderCaching = SoSeparator::OFF;
+            // pcShadowGroup->boundingBoxCaching = SoSeparator::OFF;
             pcShadowGroup->ref();
-            pcShadowDirectionalLight = new SoDirectionalLight;
-            pcShadowDirectionalLight->ref();
-            pcShadowSpotLight = new SoSpotLight;
-            pcShadowSpotLight->ref();
+
+            if(!pcShadowDirectionalLight) {
+                pcShadowDirectionalLight = new SoShadowDirectionalLight;
+                pcShadowDirectionalLight->ref();
+            }
+            if(!pcShadowSpotLight) {
+                pcShadowSpotLight = new SoSpotLight;
+                pcShadowSpotLight->ref();
+            }
 
             auto shadowStyle = new SoShadowStyle;
             shadowStyle->style = SoShadowStyle::NO_SHADOWING;
             pcShadowGroup->addChild(shadowStyle);
 
-            pcShadowGroup->addChild(pcShadowSpotLight);
-            pcShadowGroup->addChild(pcShadowDirectionalLight);
+            if(spotlight)
+                pcShadowGroup->addChild(pcShadowSpotLight);
+            else
+                pcShadowGroup->addChild(pcShadowDirectionalLight);
 
             shadowStyle = new SoShadowStyle;
             shadowStyle->style = SoShadowStyle::CASTS_SHADOW_AND_SHADOWED;
@@ -1735,26 +1762,31 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
             shadowStyle->style = SoShadowStyle::SHADOWED;
             pcShadowGroup->addChild(shadowStyle);
 
-            pcShadowGroundSwitch = new SoSwitch;
-            pcShadowGroundSwitch->ref();
+            if(!pcShadowGroundSwitch) {
+                pcShadowGroundSwitch = new SoSwitch;
+                pcShadowGroundSwitch->ref();
 
-            pcShadowMaterial = new SoMaterial;
-            pcShadowMaterial->ref();
+                pcShadowMaterial = new SoMaterial;
+                pcShadowMaterial->ref();
 
-            pcShadowGroundCoords = new SoCoordinate3;
-            pcShadowGroundCoords->ref();
+                pcShadowGroundCoords = new SoCoordinate3;
+                pcShadowGroundCoords->ref();
 
-            pcShadowGround = new SoFaceSet;
-            pcShadowGround->ref();
+                pcShadowGround = new SoFaceSet;
+                pcShadowGround->ref();
 
-            auto grp = new SoSkipBoundingGroup;
-            grp->addChild(pcShadowMaterial);
-            grp->addChild(pcShadowGroundCoords);
-            grp->addChild(pcShadowGround);
+                auto grp = new SoSkipBoundingGroup;
+                grp->addChild(pcShadowMaterial);
+                grp->addChild(pcShadowGroundCoords);
+                grp->addChild(pcShadowGround);
 
-            auto sep = new SoSeparator;
-            sep->addChild(grp);
-            pcShadowGroundSwitch->addChild(sep);
+                auto sep = new SoSeparator;
+                // sep->renderCaching = SoSeparator::OFF;
+                // sep->boundingBoxCaching = SoSeparator::OFF;
+                sep->addChild(grp);
+                pcShadowGroundSwitch->addChild(sep);
+            }
+
             pcShadowGroup->addChild(pcShadowGroundSwitch);
         }
 
@@ -1779,12 +1811,19 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
                                ViewParams::getShadowLightDirectionZ()));
         SbVec3f dir(_dir.x,_dir.y,_dir.z);
 
-        if(_shadowParam<App::PropertyBool>(doc, "SpotLight", false)) {
-            pcShadowDirectionalLight->on = FALSE;
-            pcShadowSpotLight->on = TRUE;
+        SbBox3f bbox;
+        getSceneBoundBox(bbox);
+
+        if(spotlight) {
             light = pcShadowSpotLight;
             pcShadowSpotLight->direction = dir;
-            auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", Base::Vector3d());
+            Base::Vector3d initPos;
+            if(!bbox.isEmpty()) {
+                initPos.x = _dir.x < 0 ? bbox.getMax()[0]+10 : bbox.getMin()[0]-10;
+                initPos.y = _dir.y < 0 ? bbox.getMax()[1]+10 : bbox.getMin()[1]-10;
+                initPos.z = _dir.z < 0 ? bbox.getMax()[2]+10 : bbox.getMin()[2]-10;
+            }
+            auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", initPos);
             pcShadowSpotLight->location = SbVec3f(pos.x,pos.y,pos.z);
             pcShadowSpotLight->dropOffRate =
                 _shadowParam<App::PropertyFloatConstraint>(doc, "SpotLightDropOffRate",0.0,
@@ -1795,10 +1834,8 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
                 _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0);
 
         } else {
-            pcShadowDirectionalLight->on = TRUE;
-            pcShadowSpotLight->on = FALSE;
-            light = pcShadowDirectionalLight;
             pcShadowDirectionalLight->direction = dir;
+            light = pcShadowDirectionalLight;
         }
 
         light->intensity = _shadowParam<App::PropertyFloatConstraint>(
@@ -1830,9 +1867,8 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
         else
             pcShadowGroundSwitch->whichChild = -1;
 
-        SbBox3f box;
-        if(getSceneBoundBox(box))
-            updateShadowGround(box);
+        if(!bbox.isEmpty())
+            updateShadowGround(bbox);
 
         auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
         int index = superScene->findChild(pcViewProviderRoot);
