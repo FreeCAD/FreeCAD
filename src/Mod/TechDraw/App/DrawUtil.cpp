@@ -284,6 +284,62 @@ bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
     return result;
 }
 
+//brute force intersection points of line(point, dir) with box(xRange, yRange)
+std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3d point,
+                                                                   Base::Vector3d dirIn,
+                                                                   double xRange,
+                                                                   double yRange) 
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    Base::Vector3d p1, p2;
+    Base::Vector3d dir = dirIn;
+    dir.Normalize();
+    // y = mx + b
+    // m = (y1 - y0) / (x1 - x0)
+    if (DrawUtil::fpCompare(dir.x, 0.0) ) {
+        p1 = Base::Vector3d(0.0, - yRange / 2.0, 0.0);  
+        p2 = Base::Vector3d(0.0, yRange / 2.0, 0.0);
+    } else {
+        double slope = dir.y / dir.x;
+        double left = -xRange / 2.0;
+        double right = xRange / 2.0;
+        double top = yRange / 2.0;
+        double bottom = -yRange / 2.0;
+        double yLeft   = point.y - slope * (point.x - left) ;
+        double yRight  = point.y - slope * (point.x - right);
+        double xTop    = point.x - ( (point.y - top) / slope );
+        double xBottom = point.x - ( (point.y - bottom) / slope );
+
+        if ( (bottom < yLeft) &&
+             (top > yLeft) )  {
+            p1 = Base::Vector3d(left, yLeft);
+        } else if (yLeft <= bottom) {
+            p1 = Base::Vector3d(xBottom, bottom);
+        } else if (yLeft >= top) {
+            p1 = Base::Vector3d(xTop, top);
+        }
+
+        if ( (bottom < yRight) &&
+             (top > yRight) )  {
+            p2 = Base::Vector3d(right, yRight);
+        } else if (yRight <= bottom) {
+            p2 = Base::Vector3d(xBottom, bottom);
+        } else if (yRight >= top) {
+            p2 = Base::Vector3d(xTop, top);
+        }
+    }
+    result.first = p1;
+    result.second = p2;
+    Base::Vector3d dirCheck = p2 - p1;
+    dirCheck.Normalize();
+    if (!dir.IsEqual(dirCheck, 0.00001)) {
+        result.first = p2;
+        result.second = p1;
+    }
+
+    return result;
+}
+
 Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
 {
     gp_Pnt gp  = BRep_Tool::Pnt(v);
