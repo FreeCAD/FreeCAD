@@ -13,13 +13,7 @@
   <property name="windowTitle">
    <string>Draw styles</string>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>9</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxSelection">
      <property name="title">
@@ -78,7 +72,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Transparency:</string>
@@ -133,7 +127,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinTransparency">
           <property name="toolTip">
            <string>Area for picking elements in 3D view.
@@ -188,7 +182,7 @@ Larger value eases to pick things, but can make small features impossible to sel
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxShaded">
           <property name="text">
            <string>Shaded</string>
@@ -198,6 +192,48 @@ Larger value eases to pick things, but can make small features impossible to sel
           </property>
           <property name="prefEntry" stdset="0">
            <string>HiddenLineShaded</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxBackground">
+          <property name="text">
+           <string>Override background color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>HiddenLineOverrideBackground</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="BackgroundColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HiddenLineBackground</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>

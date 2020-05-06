@@ -108,12 +108,14 @@ public:
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true) \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
-    FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.5) \
+    FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4) \
     FC_VIEW_PARAM(HiddenLineFaceColor,unsigned long,Unsigned,0xffffffff) \
     FC_VIEW_PARAM(HiddenLineOverrideFaceColor,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff) \
     FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true) \
-    FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, true) \
+    FC_VIEW_PARAM(HiddenLineBackground,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,true) \
+    FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false) \
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
     FC_VIEW_PARAM(ShadowShaded, bool, Bool, false) \
     FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8) \

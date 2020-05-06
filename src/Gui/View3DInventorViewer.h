@@ -471,6 +471,7 @@ private:
     std::list<GLGraphicsItem*> graphicsItems;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient *pcBackGround;
+    SoSwitch               *pcBackGroundSwitch;
     SoSeparator * backgroundroot;
     SoSeparator * foregroundroot;
     SoDirectionalLight* backlight;
@@ -545,6 +546,7 @@ private:
 
     std::string overrideMode;
     std::string vpOverrideMode;
+    uint32_t overrideBGColor = 0;
     Gui::Document* guiDocument = nullptr;
 
     ViewerEventFilter* viewerEventFilter;

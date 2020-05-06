@@ -434,6 +434,10 @@ void View3DInventorViewer::init()
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
+    pcBackGroundSwitch = new SoSwitch;
+    pcBackGroundSwitch->ref();
+    pcBackGroundSwitch->addChild(pcBackGround);
+    backgroundroot->addChild(pcBackGroundSwitch);
 
     // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
@@ -692,6 +696,8 @@ View3DInventorViewer::~View3DInventorViewer()
     this->foregroundroot = 0;
     this->pcBackGround->unref();
     this->pcBackGround = 0;
+    this->pcBackGroundSwitch->unref();
+    this->pcBackGroundSwitch = 0;
 
     setSceneGraph(0);
     this->pEventCallback->unref();
@@ -1676,20 +1682,23 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def) {
 
 void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
 {
+    this->overrideBGColor = 0;
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (overrideMode == "No Shading") {
         this->shading = false;
-        vpOverrideMode = "Flat Lines";
+        this->vpOverrideMode = "Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
     else if (overrideMode == "Tessellation") {
         this->shading = true;
-        vpOverrideMode = "Shaded";
+        this->vpOverrideMode = "Shaded";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
     }
     else if (overrideMode == "Hidden Line") {
+        if(ViewParams::getHiddenLineOverrideBackground())
+            this->overrideBGColor = ViewParams::getHiddenLineBackground();
         this->shading = ViewParams::getHiddenLineShaded();
-        vpOverrideMode = "Flat Lines";
+        this->vpOverrideMode = "Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
         SoNode* root = getSceneGraph();
         static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(true);
@@ -1889,15 +1898,14 @@ void View3DInventorViewer::handleEventCB(void* ud, SoEventCallback* n)
 
 void View3DInventorViewer::setGradientBackground(bool on)
 {
-    if (on && backgroundroot->findChild(pcBackGround) == -1)
-        backgroundroot->addChild(pcBackGround);
-    else if (!on && backgroundroot->findChild(pcBackGround) != -1)
-        backgroundroot->removeChild(pcBackGround);
+    int whichChild = on?0:-1;
+    if(pcBackGroundSwitch->whichChild.getValue() != whichChild)
+        pcBackGroundSwitch->whichChild.setValue(whichChild);
 }
 
 bool View3DInventorViewer::hasGradientBackground() const
 {
-    return (backgroundroot->findChild(pcBackGround) != -1);
+    return pcBackGroundSwitch->whichChild.getValue() == 0;
 }
 
 void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
@@ -2136,7 +2144,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     // for an invalid color use the viewer's current background color
     QColor bgColor;
     if (!bg.isValid()) {
-        if (backgroundroot->findChild(pcBackGround) == -1) {
+        if (!hasGradientBackground()) {
             bgColor = this->backgroundColor();
         }
         else {
@@ -2929,7 +2937,16 @@ void View3DInventorViewer::renderScene(void)
     SbVec2s size = vp.getViewportSizePixels();
     glViewport(origin[0], origin[1], size[0], size[1]);
 
-    const QColor col = this->backgroundColor();
+    bool restoreGradient = false;
+    QColor col;
+    if(overrideBGColor) {
+        col = App::Color(overrideBGColor).asValue<QColor>();
+        if(hasGradientBackground()) {
+            setGradientBackground(false);
+            restoreGradient = true;
+        }
+    } else
+        col = this->backgroundColor();
     glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -3022,6 +3039,9 @@ void View3DInventorViewer::renderScene(void)
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
 #endif
+
+    if(restoreGradient)
+        setGradientBackground(true);
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
