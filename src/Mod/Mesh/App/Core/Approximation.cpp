@@ -1037,6 +1037,32 @@ CylinderFit::~CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
+    int nc = 0;
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    for (int i = 0; i < (int)n.size()-1; ++i) {
+        for (int j = i+1; j < (int)n.size(); ++j) {
+            Base::Vector3f cross = n[i] % n[j];
+            if (cross.Sqr() > 1.0e-6) {
+                cross.Normalize();
+                x += cross.x;
+                y += cross.y;
+                z += cross.z;
+                ++nc;
+            }
+        }
+    }
+
+    if (nc > 0) {
+        x /= (double)nc;
+        y /= (double)nc;
+        z /= (double)nc;
+        Base::Vector3f axis(x,y,z);
+        axis.Normalize();
+        return axis;
+    }
+
     PlaneFit planeFit;
     planeFit.AddPoints(n);
     planeFit.Fit();
@@ -1082,11 +1108,12 @@ float CylinderFit::Fit()
         _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
 #endif
 
+    // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
-    //cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
+    if (_fLastResult < FLOAT_MAX)
+        cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
 
-    // Do the cylinder fit
     float result = cylFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
