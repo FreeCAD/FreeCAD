@@ -25,7 +25,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
-from DraftTools import translate
+from draftutils.translate import translate
 
 
 def make_reinforcement_generic(

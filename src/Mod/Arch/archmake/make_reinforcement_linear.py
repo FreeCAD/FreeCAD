@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FreeCAD import Vector as vec
 
-from DraftTools import translate
+from draftutils.translate import translate
 
 # Does it makes sense to put OffsetEnd and OffsetStart in make too?
 # on ifc import they are 0, they will not be needed there

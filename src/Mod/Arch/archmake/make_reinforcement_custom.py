@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FreeCAD import Vector as vec
 
-from DraftTools import translate
+from draftutils.translate import translate
 
 # see linear
 
