@@ -170,7 +170,7 @@ class BaseRebar(ArchComponent.Component):
         self,
         obj
     ):
-        ArchComponent.Component.onDocumentRestored(self, obj)
+        super(BaseRebar, self).onDocumentRestored(obj)
         self.setProperties(obj)
 
     def execute(

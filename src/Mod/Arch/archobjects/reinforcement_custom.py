@@ -135,13 +135,8 @@ class ReinforcementCustom(ReinforcementGeneric):
 
     def execute(
         self,
-        obj  # why obj? self is the obj?
+        obj
     ):
-
-        # what should be used to access an attribute
-        # self.Attribute
-        # obj.Attribute
-        # same in onChanged()
 
         if self.clone(obj):
             return

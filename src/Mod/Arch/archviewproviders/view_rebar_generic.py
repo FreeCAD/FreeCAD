@@ -48,7 +48,7 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
         self,
         vobj
     ):
-        ArchComponent.ViewProviderComponent.__init__(self, vobj)
+        super(ViewProviderRebarCommon, self).__init__(obj)
 
         pl = vobj.PropertiesList
         if "RebarShape" not in pl:

@@ -84,6 +84,7 @@ class ReinforcementLattice(ReinforcementGeneric):
         self,
         obj
     ):
+
         if self.clone(obj):
             return
         if not obj.LatticePlacement:

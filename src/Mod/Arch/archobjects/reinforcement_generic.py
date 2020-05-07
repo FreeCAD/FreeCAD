@@ -60,7 +60,7 @@ class ReinforcementGeneric(ArchComponent.Component):
     list or group or whatever with all base rebars. TODO find out.
 
     Module separation?
-    -----------------_
+    ------------------
     Should ReinforcementLattice in a separate module?
 
     Additional Attributes
@@ -194,8 +194,13 @@ class ReinforcementGeneric(ArchComponent.Component):
 
     def execute(
         self,
-        obj  # why obj? self is the obj?
+        obj
     ):
+        # self is the Proxy class,
+        # obj is tha actual object which uses the Proxy
+        # self.SomeAttribute == obj.Proxy.SomeAttribute
+        # to access the actual object obj should be used
+
         if self.clone(obj):
             return
         if not obj.BaseRebar:
@@ -213,7 +218,7 @@ class ReinforcementGeneric(ArchComponent.Component):
         # if reinforcement shape is not a null shape
         # TODO may be use another color for base rebar
         if FreeCAD.GuiUp:
-            if obj.Shape.isNull() is not True:
+            if not obj.Shape.isNull():
                 obj.BaseRebar.ViewObject.Visibility = False
 
     def build_shape(
