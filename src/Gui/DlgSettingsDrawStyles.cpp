@@ -48,13 +48,14 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     , ui(new Ui_DlgSettingsDrawStyles)
 {
     ui->setupUi(this);
-    ui->LineColor->setEnabled(ui->checkBoxLineColor->isChecked());
-    ui->FaceColor->setEnabled(ui->checkBoxFaceColor->isChecked());
-
     ui->checkBoxShaded->setChecked(ViewParams::getHiddenLineShaded());
     ui->checkBoxLineColor->setChecked(ViewParams::getHiddenLineOverrideColor());
     ui->checkBoxFaceColor->setChecked(ViewParams::getHiddenLineOverrideFaceColor());
     ui->checkBoxBackground->setChecked(ViewParams::getHiddenLineOverrideBackground());
+
+    ui->LineColor->setEnabled(ui->checkBoxLineColor->isChecked());
+    ui->FaceColor->setEnabled(ui->checkBoxFaceColor->isChecked());
+    ui->BackgroundColor->setEnabled(ui->checkBoxBackground->isChecked());
 
     ui->LineColor->setColor(App::Color(
                 (uint32_t)ViewParams::getHiddenLineColor()).asValue<QColor>());
@@ -94,6 +95,8 @@ void DlgSettingsDrawStyles::saveSettings()
     ui->checkBoxShaded->onSave();
     ui->checkBoxFaceColor->onSave();
     ui->checkBoxLineColor->onSave();
+    ui->checkBoxBackground->onSave();
+    ui->BackgroundColor->onSave();
     ui->FaceColor->onSave();
     ui->LineColor->onSave();
     ui->spinTransparency->onSave();
@@ -126,6 +129,8 @@ void DlgSettingsDrawStyles::loadSettings()
     ui->checkBoxShaded->onRestore();
     ui->checkBoxFaceColor->onRestore();
     ui->checkBoxLineColor->onRestore();
+    ui->checkBoxBackground->onRestore();
+    ui->BackgroundColor->onRestore();
     ui->FaceColor->onRestore();
     ui->LineColor->onRestore();
     ui->spinTransparency->onRestore();

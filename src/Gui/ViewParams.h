@@ -115,7 +115,7 @@ public:
     FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff) \
     FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineBackground,unsigned long,Unsigned,0xffffffff) \
-    FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,true) \
+    FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,false) \
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false) \
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
     FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, false) \

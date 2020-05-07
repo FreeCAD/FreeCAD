@@ -497,5 +497,21 @@ Larger value eases to pick things, but can make small features impossible to sel
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>checkBoxBackground</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>BackgroundColor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>146</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>303</x>
+     <y>114</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>
