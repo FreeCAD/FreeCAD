@@ -70,7 +70,7 @@ ViewProvider2DObject::ViewProvider2DObject()
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
-    GridRoot = new SoAnnotation();
+    GridRoot = new SoSeparator();
     GridRoot->ref();
     GridRoot->setName("GridRoot");
     MinX = MinY = -100;
@@ -151,18 +151,9 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     carpet->vertexProperty = vts;
     parent->addChild(carpet);*/
 
-    // It seems that SoDepthBuffer will mess up with other object's
-    // pre-selection highlight. No idea why the setting can leak out of a
-    // separator.
-    //
-    // What's the purpose of using SoDepthBuffer here anyway? If the intention
-    // is to render grid always on top, shouldn't it be better to use
-    // SoAnnotation?
-#if 0
     SoDepthBuffer *depth = new SoDepthBuffer;
     depth->function = SoDepthBuffer::ALWAYS;
     parent->addChild(depth);
-#endif
 
     // gridlines
     mycolor = new SoBaseColor;
