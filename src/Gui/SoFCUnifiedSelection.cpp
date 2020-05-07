@@ -2030,9 +2030,9 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
         } else {
             if(!SoFCSwitch::testTraverseState(SoFCSwitch::TraverseInvisible)) {
                 if(inPath)
-                    SoSeparator::GLRenderInPath(action);
+                    inherited::GLRenderInPath(action);
                 else
-                    SoSeparator::GLRenderBelowPath(action);
+                    inherited::GLRenderBelowPath(action);
             }
 
             if(_ShowBoundBox || !ViewParams::instance()->getShowSelectionOnTop()) {
@@ -2089,9 +2089,9 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
 
     if(!ctx) {
         if(inPath)
-            SoSeparator::GLRenderInPath(action);
+            inherited::GLRenderInPath(action);
         else
-            SoSeparator::GLRenderBelowPath(action);
+            inherited::GLRenderBelowPath(action);
     } else {
         bool selPushed;
         bool hlPushed;
@@ -2122,9 +2122,9 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
         }
 
         if(inPath)
-            SoSeparator::GLRenderInPath(action);
+            inherited::GLRenderInPath(action);
         else
-            SoSeparator::GLRenderBelowPath(action);
+            inherited::GLRenderBelowPath(action);
 
         if(selPushed) 
             SelColorStack.pop_back();

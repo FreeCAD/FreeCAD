@@ -118,7 +118,7 @@ public:
     FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false) \
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
-    FC_VIEW_PARAM(ShadowShaded, bool, Bool, false) \
+    FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, false) \
     FC_VIEW_PARAM(ShadowSpotLight, bool, Bool, false) \
     FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8) \
     FC_VIEW_PARAM(ShadowLightDirectionX, double, Float, -1.0) \

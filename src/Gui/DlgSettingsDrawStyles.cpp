@@ -64,6 +64,21 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 
     ui->BackgroundColor->setColor(App::Color(
                 (uint32_t)ViewParams::getHiddenLineBackground()).asValue<QColor>());
+
+    ui->spinTransparency->setValue(ViewParams::getHiddenLineTransparency());
+
+    ui->checkBoxSpotLight->setChecked(ViewParams::getShadowSpotLight());
+    ui->checkBoxShowGround->setChecked(ViewParams::getShadowShowGround());
+    ui->checkBoxFlatLines->setChecked(ViewParams::getShadowFlatLines());
+
+    ui->spinBoxLightIntensity->setValue(ViewParams::getShadowLightIntensity());
+    ui->spinBoxGroundScale->setValue(ViewParams::getShadowGroundScale());
+
+    ui->LightColor->setColor(App::Color(
+                (uint32_t)ViewParams::getShadowLightColor()).asValue<QColor>());
+
+    ui->GroundColor->setColor(App::Color(
+                (uint32_t)ViewParams::getShadowGroundColor()).asValue<QColor>());
 }
 
 /** 
@@ -82,6 +97,14 @@ void DlgSettingsDrawStyles::saveSettings()
     ui->FaceColor->onSave();
     ui->LineColor->onSave();
     ui->spinTransparency->onSave();
+
+    ui->checkBoxSpotLight->onSave();
+    ui->checkBoxShowGround->onSave();
+    ui->checkBoxFlatLines->onSave();
+    ui->spinBoxLightIntensity->onSave();
+    ui->spinBoxGroundScale->onSave();
+    ui->LightColor->onSave();
+    ui->GroundColor->onSave();
 
     for(auto doc : App::GetApplication().getDocuments()) {
         for(auto v : Application::Instance->getDocument(doc)->getMDIViews()) {
@@ -106,6 +129,14 @@ void DlgSettingsDrawStyles::loadSettings()
     ui->FaceColor->onRestore();
     ui->LineColor->onRestore();
     ui->spinTransparency->onRestore();
+
+    ui->checkBoxSpotLight->onRestore();
+    ui->checkBoxShowGround->onRestore();
+    ui->checkBoxFlatLines->onRestore();
+    ui->spinBoxLightIntensity->onRestore();
+    ui->spinBoxGroundScale->onRestore();
+    ui->LightColor->onRestore();
+    ui->GroundColor->onRestore();
 }
 
 /**

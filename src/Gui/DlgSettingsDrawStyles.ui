@@ -243,6 +243,183 @@ Larger value eases to pick things, but can make small features impossible to sel
     </widget>
    </item>
    <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBoxSelection_2">
+     <property name="title">
+      <string>Shadow</string>
+     </property>
+     <layout class="QGridLayout" name="_2">
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="1">
+       <spacer name="spacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>183</width>
+          <height>23</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="_4">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="5" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxGroundScale">
+          <property name="prefEntry" stdset="0">
+           <string>ShadowGroundScale</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Light color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxFlatLines">
+          <property name="text">
+           <string>Flat lines</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowFlatLines</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxSpotLight">
+          <property name="text">
+           <string>Use spot light</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowSpotLight</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefColorButton" name="GroundColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShadowGroundColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Ground color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxShowGround">
+          <property name="text">
+           <string>Show ground</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowShowGround</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Light intensity                                         </string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="LightColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShadowLightColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxLightIntensity">
+          <property name="prefEntry" stdset="0">
+           <string>ShadowLightIntensity</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Ground scale</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <spacer name="spacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

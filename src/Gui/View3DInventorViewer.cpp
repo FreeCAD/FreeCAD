@@ -384,6 +384,14 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 
 void View3DInventorViewer::init()
 {
+    pcShadowGroup = nullptr;
+    pcShadowDirectionalLight = nullptr;
+    pcShadowSpotLight = nullptr;
+    pcShadowMaterial = nullptr;
+    pcShadowGroundSwitch = nullptr;
+    pcShadowGroundCoords = nullptr;
+    pcShadowGround = nullptr;
+
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
         _cacheModeInited = true;
@@ -403,14 +411,6 @@ void View3DInventorViewer::init()
 
     // setting up the defaults for the spin rotation
     initialize();
-
-    pcShadowGroup = nullptr;
-    pcShadowDirectionalLight = nullptr;
-    pcShadowSpotLight = nullptr;
-    pcShadowMaterial = nullptr;
-    pcShadowGroundSwitch = nullptr;
-    pcShadowGroundCoords = nullptr;
-    pcShadowGround = nullptr;
 
     SoOrthographicCamera* cam = new SoOrthographicCamera;
     cam->position = SbVec3f(0, 0, 1);
@@ -1710,8 +1710,8 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
     else if (overrideMode == "Shadow") {
         this->shading = true;
         App::Document *doc = guiDocument?guiDocument->getDocument():nullptr;
-        bool shaded = _shadowParam<App::PropertyBool>(
-                doc,"Shaded",ViewParams::getShadowShaded());
+        bool shaded = !_shadowParam<App::PropertyBool>(
+                doc,"FlatLines",ViewParams::getShadowFlatLines());
         vpOverrideMode = shaded?"Shaded":"Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
         bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", ViewParams::getShadowSpotLight());
@@ -1720,6 +1720,7 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
             if((spotlight && pcShadowGroup->findChild(pcShadowSpotLight)<0)
                 || (!spotlight && pcShadowGroup->findChild(pcShadowDirectionalLight)<0))
             {
+                coinRemoveAllChildren(pcShadowGroup);
                 auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
                 int index = superScene->findChild(pcShadowGroup);
                 if(index >= 0)
@@ -1780,9 +1781,7 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
                 grp->addChild(pcShadowGroundCoords);
                 grp->addChild(pcShadowGround);
 
-                auto sep = new SoSeparator;
-                // sep->renderCaching = SoSeparator::OFF;
-                // sep->boundingBoxCaching = SoSeparator::OFF;
+                auto sep = new SoFCSeparator;
                 sep->addChild(grp);
                 pcShadowGroundSwitch->addChild(sep);
             }
@@ -1975,10 +1974,7 @@ bool View3DInventorViewer::isEnabledVBO() const
 void View3DInventorViewer::setRenderCache(int mode)
 {
     if (mode<0) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/View");
-
-        int setting = hGrp->GetInt("RenderCache", 0);
+        int setting = ViewParams::getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;
@@ -1991,10 +1987,13 @@ void View3DInventorViewer::setRenderCache(int mode)
         }
     }
 
-    SoFCSeparator::setCacheMode(
-            mode == 0 ? SoSeparator::AUTO :
-           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF)
-    );
+    auto caching = mode == 0 ? SoSeparator::AUTO :
+           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
+
+    SoFCSeparator::setCacheMode(caching);
+
+    if(pcShadowGroup)
+        pcShadowGroup->renderCaching = caching;
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)
@@ -2974,6 +2973,7 @@ void View3DInventorViewer::renderScene(void)
     glViewport(origin[0], origin[1], size[0], size[1]);
 
     bool restoreGradient = false;
+
     QColor col;
     if(overrideBGColor) {
         col = App::Color(overrideBGColor).asValue<QColor>();
