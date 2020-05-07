@@ -268,7 +268,7 @@ Larger value eases to pick things, but can make small features impossible to sel
        </spacer>
       </item>
       <item row="0" column="0">
-       <layout class="QGridLayout" name="_4">
+       <layout class="QGridLayout" name="_4" columnstretch="1,0">
         <property name="margin">
          <number>0</number>
         </property>
@@ -302,19 +302,6 @@ Larger value eases to pick things, but can make small features impossible to sel
           </property>
           <property name="prefEntry" stdset="0">
            <string>ShadowFlatLines</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxSpotLight">
-          <property name="text">
-           <string>Use spot light</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowSpotLight</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
           </property>
          </widget>
         </item>
@@ -364,7 +351,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Light intensity                                         </string>
+           <string>Light intensity</string>
           </property>
          </widget>
         </item>
@@ -411,6 +398,19 @@ Larger value eases to pick things, but can make small features impossible to sel
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Ground scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxSpotLight">
+          <property name="text">
+           <string>Use spot light</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowSpotLight</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
           </property>
          </widget>
         </item>
