@@ -1037,6 +1037,7 @@ CylinderFit::~CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
+#if 0
     int nc = 0;
     double x = 0.0;
     double y = 0.0;
@@ -1067,6 +1068,31 @@ Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Ve
     planeFit.AddPoints(n);
     planeFit.Fit();
     return planeFit.GetNormal();
+#endif
+
+    // Like a plane fit where the base is at (0,0,0)
+    double sxx,sxy,sxz,syy,syz,szz;
+    sxx = sxy = sxz = syy = syz = szz = 0.0;
+
+    for (std::vector<Base::Vector3f>::const_iterator it = n.begin(); it != n.end(); ++it) {
+        sxx += double(it->x * it->x); sxy += double(it->x * it->y);
+        sxz += double(it->x * it->z); syy += double(it->y * it->y);
+        syz += double(it->y * it->z); szz += double(it->z * it->z);
+    }
+
+    Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
+    covMat(0,0) = sxx;
+    covMat(1,1) = syy;
+    covMat(2,2) = szz;
+    covMat(0,1) = sxy; covMat(1,0) = sxy;
+    covMat(0,2) = sxz; covMat(2,0) = sxz;
+    covMat(1,2) = syz; covMat(2,1) = syz;
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eig(covMat);
+    Eigen::Vector3d w = eig.eigenvectors().col(0);
+
+    Base::Vector3f normal;
+    normal.Set(w.x(), w.y(), w.z());
+    return normal;
 }
 
 void CylinderFit::SetInitialValues(const Base::Vector3f& b, const Base::Vector3f& n)
