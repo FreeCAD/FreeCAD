@@ -23,14 +23,13 @@ __title__ = "FreeCAD linear reinforcement object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD
 
 import ArchComponent
 import DraftVecUtils
 from .reinforcement_generic import ReinforcementGeneric
-
-if FreeCAD.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 class ReinforcementLinear(ReinforcementGeneric):

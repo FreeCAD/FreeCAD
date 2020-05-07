@@ -23,13 +23,12 @@ __title__ = "FreeCAD base rebar object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD
 
 import ArchComponent
 import Part
-
-if FreeCAD.GuiUp:
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 # ****************************************************************************
