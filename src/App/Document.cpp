@@ -1133,8 +1133,13 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                 const char *name = GetApplication().getActiveTransaction(&tid);
                 if(name && tid>0) {
                     bool ignore = false;
-                    if(What && What->testStatus(Property::NoModify))
-                        ignore = true;
+                    if(What) {
+                        if(What->testStatus(Property::NoModify))
+                            ignore = true;
+                        else if(!DocumentParams::ViewObjectTransaction()
+                                && !Base::freecad_dynamic_cast<DocumentObject>(What->getContainer()))
+                            ignore = true;
+                    }
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                         if(What) 
                             FC_LOG((ignore?"ignore":"auto") << " transaction (" 

@@ -63,6 +63,7 @@
 #include <Base/Tools.h>
 
 #include <App/Document.h>
+#include <App/DocumentParams.h>
 #include <App/DocumentObject.h>
 #include <App/AutoTransaction.h>
 #include <Gui/ViewProviderLink.h>
@@ -402,11 +403,9 @@ void Command::invoke(int i, TriggerSource trigger)
             displayText = getName();
     }
 
-    // Because Transaction now captures ViewObject changes, auto named
-    // transaction is disabled here to avoid too many unnecessary transactions.
-    //
-    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
-    App::AutoTransaction committer(0,true);
+    App::AutoTransaction committer(
+            (App::DocumentParams::ViewObjectTransaction()
+             || (eType&NoTransaction)) ? "" : displayText.c_str(), true);
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION

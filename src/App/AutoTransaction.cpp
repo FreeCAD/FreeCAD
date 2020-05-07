@@ -38,7 +38,7 @@ static int _TransactionClosed;
 
 AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     auto &app = GetApplication();
-    if(name && app._activeTransactionGuard>=0) {
+    if(name && name[0] && app._activeTransactionGuard>=0) {
         if(!app.getActiveTransaction()
                 || (!tmpName && app._activeTransactionTmpName))
         {
