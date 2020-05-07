@@ -28,14 +28,14 @@ import FreeCAD
 from DraftTools import translate
 
 
-def makeReinforcementLattice(
+def make_reinforcement_lattice(
     base_rebar,
     latice_obj,
     base_placement=FreeCAD.Placement(),
     name="ReinforcementLattice"
 ):
     """
-    makeReinforcementLattice(base_rebar, placements, [base_placement], [name])
+    make_reinforcement_lattice(base_rebar, placements, [base_placement], [name])
     Adds a lattice reinforcement object.
     """
     from lattice2BaseFeature import isObjectLattice as islattice

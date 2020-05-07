@@ -28,14 +28,14 @@ import FreeCAD
 from DraftTools import translate
 
 
-def makeReinforcementIndividual(
+def make_reinforcement_individual(
     base_rebar,
     vertieces,
     base_placement=FreeCAD.Placement(),
     name="ReinforcementIndividual"
 ):
     """
-    makeReinforcementIndividual(
+    make_reinforcement_individual(
         base_rebar,
         vertieces,
         [base_placement],

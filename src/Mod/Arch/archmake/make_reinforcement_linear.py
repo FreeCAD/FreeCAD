@@ -58,7 +58,7 @@ from DraftTools import translate
 #
 
 
-def makeReinforcementLinear(
+def make_reinforcement_linear(
     base_rebar,
     amount=None,
     spacing=None,
@@ -68,7 +68,7 @@ def makeReinforcementLinear(
     name="ReinforcementLinear"
 ):
     """
-    makeReinforcementLinear(
+    make_reinforcement_linear(
         base_rebar,
         [amount],
         [spacing],

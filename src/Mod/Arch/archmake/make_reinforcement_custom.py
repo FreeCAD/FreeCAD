@@ -31,7 +31,7 @@ from DraftTools import translate
 # see linear
 
 
-def makeReinforcementCustom(
+def make_reinforcement_custom(
     base_rebar,
     custom_spacing,
     direction=vec(0, 0, 1),
@@ -39,7 +39,7 @@ def makeReinforcementCustom(
     name="ReinforcementCustom"
 ):
     """
-    makeReinforcementCustom(
+    make_reinforcement_custom(
         base_rebar,
         customspacing,
         [base_placement],

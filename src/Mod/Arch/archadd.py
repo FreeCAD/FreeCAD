@@ -23,9 +23,9 @@ __title__ = "FreeCAD arch add objects methods"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-from archmake.make_base_rebar import makeBaseRebar as BaseRebar
-from archmake.make_reinforcement_custom import makeReinforcementCustom as ReinforcementCustom
-from archmake.make_reinforcement_generic import makeReinforcementGeneric as ReinforcementGeneric
-from archmake.make_reinforcement_lattice import makeReinforcementLattice as ReinforcementLattice
-from archmake.make_reinforcement_linear import makeReinforcementLinear as ReinforcementLinear
-from archmake.make_reinforcement_individual import makeReinforcementIndividual as ReinforcementIndividual
+from archmake.make_base_rebar import make_base_rebar as BaseRebar
+from archmake.make_reinforcement_custom import make_reinforcement_custom as ReinforcementCustom
+from archmake.make_reinforcement_generic import make_reinforcement_generic as ReinforcementGeneric
+from archmake.make_reinforcement_lattice import make_reinforcement_lattice as ReinforcementLattice
+from archmake.make_reinforcement_linear import make_reinforcement_linear as ReinforcementLinear
+from archmake.make_reinforcement_individual import make_reinforcement_individual as ReinforcementIndividual

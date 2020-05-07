@@ -28,14 +28,14 @@ import FreeCAD
 from DraftTools import translate
 
 
-def makeBaseRebar(
+def make_base_rebar(
     base,
     diameter=None,
     mark=None,
     name="BaseRebar"
 ):
     """
-    makeBaseRebar(base, [diameter, mark, name]):
+    make_base_rebar(base, [diameter, mark, name]):
     Adds a Reinforcement Bar object using the given base
     (sketch or wire) as sweep path.
     """
