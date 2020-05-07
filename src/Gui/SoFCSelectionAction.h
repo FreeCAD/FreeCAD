@@ -338,6 +338,8 @@ public:
     void setLineWidth(const float width);
     float getLineWidth(void) const;
 
+    void checkRootNode(SoNode *);
+
 protected:
     SbBool hlVisible;
 

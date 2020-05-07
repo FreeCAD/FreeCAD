@@ -3008,6 +3008,11 @@ void View3DInventorViewer::renderScene(void)
         SoOverrideElement::setLightModelOverride(state, selectionRoot, true);
     }
 
+    SoBoxSelectionRenderAction *glbra = nullptr;
+    if(glra->isOfType(SoBoxSelectionRenderAction::getClassTypeId())) {
+        glbra = static_cast<SoBoxSelectionRenderAction*>(glra);
+        glbra->checkRootNode(this->getSoRenderManager()->getSceneGraph());
+    }
     try {
         // Render normal scenegraph.
         inherited::actualRedraw();
@@ -3021,6 +3026,7 @@ void View3DInventorViewer::renderScene(void)
         QMessageBox::warning(parentWidget(), QObject::tr("Out of memory"),
                              QObject::tr("Not enough memory available to display the data."));
     }
+    glbra->checkRootNode(nullptr);
 
     if (!this->shading) {
         state->pop();

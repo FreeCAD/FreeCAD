@@ -994,6 +994,7 @@ public:
       , xform(0)
       , cube(0)
       , drawstyle(0)
+      , root(0)
     {
 
     }
@@ -1011,6 +1012,7 @@ public:
     SoCube * cube;
     SoDrawStyle * drawstyle;
     SoColorPacker colorpacker;
+    SoNode *root;
 
     void initBoxGraph();
     void updateBbox(const SoPath * path);
@@ -1291,9 +1293,37 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
 }
 
 void
+SoBoxSelectionRenderAction::checkRootNode(SoNode *node)
+{
+    PRIVATE(this)->root = node;
+}
+
+void
 SoBoxSelectionRenderAction::apply(const SoPathList & pathlist,
                                   SbBool obeysrules)
 {
+    // For working around Coin3D bug when rendering SoShadowGroup. If there is
+    // any SoAnnoation inside the shadow group, the delayed path is some how
+    // messed up. More sepecifically, the head of the path is the child node of
+    // the shadow group, instead of the root scene node.
+    if(obeysrules && PRIVATE(this)->root && pathlist.getLength()) {
+        int count = 0;
+        for(int i=0, c=pathlist.getLength(); i<c ;++i) {
+            if(((SoFullPath*)pathlist[i])->getHead() == PRIVATE(this)->root)
+                ++count;
+        }
+        if(count != pathlist.getLength()) {
+            if(!count)
+                return;
+            SoPathList plist(count);
+            for(int i=0, c=pathlist.getLength(); i<c ;++i) {
+                if(((SoFullPath*)pathlist[i])->getHead() == PRIVATE(this)->root)
+                    plist.append(pathlist[i]);
+            }
+            SoGLRenderAction::apply(plist, TRUE);
+            return;
+        }
+    }
     SoGLRenderAction::apply(pathlist, obeysrules);
 }
 
