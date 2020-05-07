@@ -129,6 +129,7 @@ public:
     FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0) \
     FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0xffffffff) \
     FC_VIEW_PARAM(ShadowGroundShininess, double, Float, 0.8) \
+    FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

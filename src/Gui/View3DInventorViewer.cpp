@@ -391,6 +391,7 @@ void View3DInventorViewer::init()
     pcShadowGroundSwitch = nullptr;
     pcShadowGroundCoords = nullptr;
     pcShadowGround = nullptr;
+    shadowNodeId = 0;
 
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
@@ -1645,16 +1646,15 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode, bool updateV
     if(overrideMode == "Hidden Line") {
         SoNode* root = getSceneGraph();
         static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(false);
-    } else if (overrideMode == "Shadow") {
-        if(pcShadowGroup) {
-            auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
-            int index = superScene->findChild(pcShadowGroup);
-            if(index >= 0)
-                superScene->replaceChild(index, pcViewProviderRoot);
-            pcShadowGroup->unref();
-            pcShadowGroup = nullptr;
-            pcShadowGroundSwitch->whichChild = -1;
-        }
+    }
+    if(pcShadowGroup) {
+        auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
+        int index = superScene->findChild(pcShadowGroup);
+        if(index >= 0)
+            superScene->replaceChild(index, pcViewProviderRoot);
+        pcShadowGroup->unref();
+        pcShadowGroup = nullptr;
+        pcShadowGroundSwitch->whichChild = -1;
     }
 
     overrideMode = mode;
@@ -3051,6 +3051,17 @@ void View3DInventorViewer::renderScene(void)
 
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
+        this->getSoRenderManager()->scheduleRedraw();
+    } else if (ViewParams::getShadowExtraRedraw()
+            && pcShadowGroup
+            && shadowNodeId != pcShadowGroup->getNodeId())
+    {
+        // Work around coin shadow rendering bug. On Windows, (and occasionally
+        // on Linux), when shadow group is touched, it renders nothing when the
+        // shadow cache is freshly built. We work around this issue using an
+        // extra redraw, and the node renders fine with the already built
+        // cache.
+        shadowNodeId = pcShadowGroup->getNodeId();
         this->getSoRenderManager()->scheduleRedraw();
     }
 

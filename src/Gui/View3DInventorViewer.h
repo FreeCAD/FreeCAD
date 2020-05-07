@@ -486,6 +486,7 @@ private:
     SoCoordinate3            * pcShadowGroundCoords;
     SoFaceSet                * pcShadowGround;
     SoMaterial               * pcShadowMaterial;
+    uint32_t                 shadowNodeId;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
