@@ -30,6 +30,9 @@ import FreeCAD
 import ArchComponent
 import Part
 
+from ArchRebar import getLengthOfRebar
+from DraftGeomUtils import filletWire
+
 
 # ****************************************************************************
 class BaseRebar(ArchComponent.Component):
@@ -234,14 +237,12 @@ class BaseRebar(ArchComponent.Component):
         if hasattr(obj, "Rounding"):
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
-                from DraftGeomUtils import filletWire
                 wire = filletWire(wire, radius)
 
         # is length allong the rounding or not?
         # in the users head and in material bill without rounding
         # but with sharp edges instead
         if hasattr(obj, "Length"):
-            from ArchRebar import getLengthOfRebar
             length = getLengthOfRebar(obj)
             if length:
                 obj.Length = length

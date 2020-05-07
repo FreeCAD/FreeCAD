@@ -23,7 +23,12 @@ __title__ = "FreeCAD custom reinforcement view object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+import Arch_rc
+
 from .view_reinforcement_generic import ViewProviderReinforcementGeneric
+
+
+False if Arch_rc.__name__ else True  # dummy usage
 
 
 class ViewProviderReinforcementCustom(ViewProviderReinforcementGeneric):
@@ -31,6 +36,4 @@ class ViewProviderReinforcementCustom(ViewProviderReinforcementGeneric):
     def getIcon(
         self
     ):
-        import Arch_rc
-        False if Arch_rc.__name__ else True  # dummy usage
         return ":/icons/Arch_ReinforcementCustom.svg"

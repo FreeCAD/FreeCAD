@@ -23,6 +23,9 @@ __title__ = "FreeCAD generic rebar ViewProvider"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+import re
+from pivy import coin
+
 import FreeCAD
 
 import Arch
@@ -96,8 +99,6 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
                     self.centerlinegroup.removeChild(self.centerline)
             if hasattr(obj.Proxy, "wires"):
                 if obj.Proxy.wires:
-                    from pivy import coin
-                    import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
                     pts = re.findall(
@@ -130,7 +131,6 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
     ):
         self.ViewObject = vobj
         self.Object = vobj.Object
-        from pivy import coin
         self.centerlinegroup = coin.SoSeparator()
         self.centerlinegroup.setName("Centerline")
         self.centerlinecolor = coin.SoBaseColor()

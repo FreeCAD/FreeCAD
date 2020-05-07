@@ -220,22 +220,21 @@ class ReinforcementGeneric(ArchComponent.Component):
         self,
         obj
     ):
-        from Part import Shape as sh
         """
         if obj has no attribute Shape
         a empty Shape can not be assigned :-)
         if not hasattr(obj, 'Shape'):
             print('{} has no Shape'.format(obj.Label))
-            obj.Shape = sh()
+            obj.Shape = Part.Shape()
             return
         """
         if hasattr(obj, "BaseRebar") and obj.BaseRebar is None:
             FreeCAD.Console.PrintMessage(
                 "BaseRebar property is not set for reinforcement: {}. "
-                "Shape the the reinforcement will be an empty shape.\n"
+                "Shape of the reinforcement will be an empty shape.\n"
                 .format(obj.Label)
             )
-            obj.Shape = sh()
+            obj.Shape = Part.Shape()
             return
 
         # build compound shape with base rebar

@@ -29,6 +29,9 @@ import FreeCAD
 
 import ArchRebar
 import DraftVecUtils
+from ArchRebar import CustomSpacingPlacement
+from ArchRebar import strprocessOfCustomSpacing
+
 from .reinforcement_generic import ReinforcementGeneric
 
 
@@ -145,9 +148,6 @@ class ReinforcementCustom(ReinforcementGeneric):
         if not obj.BaseRebar:
             return
         # should we check for more Attributes?
-
-        from ArchRebar import CustomSpacingPlacement
-        from ArchRebar import strprocessOfCustomSpacing
 
         if obj.CustomSpacing:
             spacinglist = strprocessOfCustomSpacing(obj.CustomSpacing)

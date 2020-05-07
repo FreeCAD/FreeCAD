@@ -26,9 +26,13 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 import ArchComponent
+import Arch_rc
 import Draft
 
 from .view_rebar_generic import ViewProviderRebarCommon
+
+
+False if Arch_rc.__name__ else True  # dummy usage
 
 
 class ViewProviderBaseRebar(ViewProviderRebarCommon):
@@ -36,8 +40,6 @@ class ViewProviderBaseRebar(ViewProviderRebarCommon):
     def getIcon(
         self
     ):
-        import Arch_rc
-        False if Arch_rc.__name__ else True  # dummy usage
         return ":/icons/Arch_RebarBase.svg"
 
     def onDelete(self, feature, subelements):

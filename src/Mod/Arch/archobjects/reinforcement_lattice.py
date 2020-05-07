@@ -27,6 +27,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD
 
+import lattice2BaseFeature as lattice2BF
+
 from . reinforcement_generic import ReinforcementGeneric
 
 
@@ -87,10 +89,9 @@ class ReinforcementLattice(ReinforcementGeneric):
         if not obj.LatticePlacement:
             return
 
-        from lattice2BaseFeature import isObjectLattice as islattice
-        if islattice(obj.LatticePlacement) is True:
-            from lattice2BaseFeature import getPlacementsList as getpl
-            obj.RebarPlacements = getpl(obj.LatticePlacement)
+        if lattice2BF.isObjectLattice(obj.LatticePlacement) is True:
+            pls = lattice2BF.getPlacementsList(obj.LatticePlacement)
+            obj.RebarPlacements = pls
             self.build_shape(obj)
             obj.Amount = len(obj.RebarPlacements)
             obj.TotalLength = obj.Amount * obj.BaseRebar.Length

@@ -25,7 +25,12 @@ __url__ = "http://www.freecadweb.org"
 
 # import FreeCAD
 
+import Arch_rc
+
 from .view_rebar_generic import ViewProviderRebarCommon
+
+
+False if Arch_rc.__name__ else True  # dummy usage
 
 
 class ViewProviderReinforcementGeneric(ViewProviderRebarCommon):

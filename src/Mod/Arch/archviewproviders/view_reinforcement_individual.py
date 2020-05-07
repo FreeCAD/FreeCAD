@@ -23,9 +23,13 @@ __title__ = "FreeCAD individual reinforcement view object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+import Arch_rc
 import ArchComponent
 
 from .view_reinforcement_generic import ViewProviderReinforcementGeneric
+
+
+False if Arch_rc.__name__ else True  # dummy usage
 
 
 class ViewProviderReinforcementIndividual(ViewProviderReinforcementGeneric):
@@ -33,8 +37,6 @@ class ViewProviderReinforcementIndividual(ViewProviderReinforcementGeneric):
     def getIcon(
         self
     ):
-        import Arch_rc
-        False if Arch_rc.__name__ else True  # dummy usage
         return ":/icons/Arch_ReinforcementIndividual.svg"
 
     def claimChildren(
