@@ -516,16 +516,22 @@ void OverlayTabWidget::retranslate()
 void OverlayTabWidget::onAction(QAction *action)
 {
     if(action == &actEditHide) {
+        if(hGrp)
+            hGrp->SetBool("EditHide", actEditHide.isChecked());
         if(action->isChecked()) {
             setAutoHide(false);
             setEditShow(false);
         }
     } else if(action == &actAutoHide) {
+        if(hGrp)
+            hGrp->SetBool("AutoHide", actAutoHide.isChecked());
         if(action->isChecked()) {
             setEditHide(false);
             setEditShow(false);
         }
     } else if(action == &actEditShow) {
+        if(hGrp)
+            hGrp->SetBool("EditShow", actEditShow.isChecked());
         if(action->isChecked()) {
             setEditHide(false);
             setAutoHide(false);
@@ -537,6 +543,9 @@ void OverlayTabWidget::onAction(QAction *action)
     else if(action == &actOverlay) {
         DockWindowManager::instance()->setOverlayMode(DockWindowManager::ToggleActive);
         return;
+    } else if(action == &actTransparent) {
+        if(hGrp)
+            hGrp->SetBool("Transparent", actTransparent.isChecked());
     }
     DockWindowManager::instance()->refreshOverlay(this);
 }
