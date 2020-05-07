@@ -557,7 +557,7 @@ void SelectionMenu::beforeShow()
     std::string stylesheet = hGrp->GetASCII("MenuStyleSheet");
     setStyleSheet(QLatin1String(stylesheet.size()?stylesheet.c_str():_MenuStyle));
 #else
-    setStyleSheet(_MenuStyle);
+    setStyleSheet(QLatin1String(_MenuStyle));
 #endif
 }
 
