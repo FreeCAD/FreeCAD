@@ -470,7 +470,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
         if len(selection) != 1:
             if not ignoreErrors:
-                PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+                msg = translate("PathProject", "Please select %s from a single solid" % self.featureName())
+                FreeCAD.Console.PrintError(msg + '\n')
+                PathLog.debug(msg)
             return False
         sel = selection[0]
         if sel.HasSubObjects:
@@ -506,16 +508,16 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
             # self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
-            self.updatePanelVisibility('Operation', self.obj)
             self.setDirty()
+            self.updatePanelVisibility('Operation', self.obj)
 
     def deleteBase(self):
         PathLog.track()
         selected = self.form.baseList.selectedItems()
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
-            self.updatePanelVisibility('Operation', self.obj)
             self.setDirty()
+            self.updatePanelVisibility('Operation', self.obj)
         self.updateBase()
         # self.obj.Proxy.execute(self.obj)
         # FreeCAD.ActiveDocument.recompute()
@@ -537,8 +539,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def clearBase(self):
         self.obj.Base = []
-        self.updatePanelVisibility('Operation', self.obj)
         self.setDirty()
+        self.updatePanelVisibility('Operation', self.obj)
 
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
@@ -975,8 +977,11 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path", "Uncreate AreaOp Operation"))
-            PathUtil.clearExpressionEngine(self.obj)
-            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            try:
+                PathUtil.clearExpressionEngine(self.obj)
+                FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            except Exception as ee:
+                PathLog.debug('{}\n'.format(ee))
             FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
         return True
