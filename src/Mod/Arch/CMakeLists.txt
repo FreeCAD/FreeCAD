@@ -5,7 +5,6 @@ ENDIF (BUILD_GUI)
 SET(Arch_SRCS
     Init.py
     InitGui.py
-    archadd.py
     ArchComponent.py
     ArchIFC.py
     ArchIFCView.py
