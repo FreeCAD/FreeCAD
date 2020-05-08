@@ -1,12 +1,3 @@
-"""Run this file to create a standard test document for Draft objects.
-
-Use as input to the freecad executable.
-    freecad draft_test_objects.py
-
-Or load it as a module and use the defined function.
-    import drafttests.draft_test_objects as dt
-    dt.create_test_file()
-"""
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -29,9 +20,27 @@ Or load it as a module and use the defined function.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import os
+"""Run this file to create a standard test document for Draft objects.
+
+Use it as input to the program executable.
+
+::
+
+    freecad draft_test_objects.py
+
+Or load it as a module and use the defined function.
+
+>>> import drafttests.draft_test_objects as dt
+>>> dt.create_test_file()
+"""
+## @package draft_test_objects
+# \ingroup DRAFT
+# \brief Run this file to create a standard test document for Draft objects.
+# @{
+
 import datetime
 import math
+import os
 
 import FreeCAD as App
 import Draft
@@ -49,7 +58,7 @@ def _set_text(obj):
         obj.ViewObject.FontSize = 75
 
 
-def create_frame():
+def _create_frame():
     """Draw a frame with information on the version of the software.
 
     It includes the date created, the version, the release type,
@@ -71,12 +80,13 @@ def create_frame():
 
     frame = Draft.makeRectangle(21000, 12000)
     frame.Placement.Base = Vector(-1000, -3500)
+    frame.MakeFace = False
 
 
 def create_test_file(file_name="draft_test_objects",
-                     font_file="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-                     file_path="",
-                     save=False):
+                     file_path=os.environ["HOME"],
+                     save=False,
+                     font_file="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
     """Create a complete test file of Draft objects.
 
     It draws a frame with information on the software used to create
@@ -86,33 +96,46 @@ def create_test_file(file_name="draft_test_objects",
     ----------
     file_name: str, optional
         It defaults to `'draft_test_objects'`.
-        It is the name of document that is created.
-
-    font_file: str, optional
-        It defaults to `"/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"`.
-        It is the full path of a font in the system to be used
-        with `Draft_ShapeString`.
-        If the font is not found, this object is not created.
-
-    file_path: str, optional
-        It defaults to the empty string `''`, in which case,
-        it will use the value returned by `App.getUserAppDataDir()`,
-        for example, `'/home/user/.FreeCAD/'`.
+        It is the name of the document that is created.
 
         The `file_name` will be appended to `file_path`
         to determine the actual path to save. The extension `.FCStd`
         will be added automatically.
 
+    file_path: str, optional
+        It defaults to the value of `os.environ['HOME']`
+        which in Linux is usually `'/home/user'`.
+
+        If it is the empty string `''` it will use the value
+        returned by `App.getUserAppDataDir()`,
+        for example, `'/home/user/.FreeCAD/'`.
+
     save: bool, optional
         It defaults to `False`. If it is `True` the new document
         will be saved to disk after creating all objects.
+
+    font_file: str, optional
+        It defaults to `'/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'`.
+        It is the full path of a font in the system to be used
+        to create a `Draft ShapeString`.
+        If the font is not found, this object is not created.
+
+    Returns
+    -------
+    App::Document
+        A reference to the test document that was created.
+
+    To Do
+    -----
+    Find a reliable way of getting a default font to be able to create
+    the `Draft ShapeString`.
     """
     doc = App.newDocument(file_name)
     _msg(16 * "-")
     _msg("Filename: {}".format(file_name))
     _msg("If the units tests fail, this script may fail as well")
 
-    create_frame()
+    _create_frame()
 
     # Line, wire, and fillet
     _msg(16 * "-")
@@ -142,7 +165,6 @@ def create_test_file(file_name="draft_test_objects",
     App.ActiveDocument.recompute()
 
     Draft.make_fillet([line_h_1, line_h_2], 400)
-
     t_xpos += 900
     _t = Draft.makeText(["Fillet"], Vector(t_xpos, t_ypos, 0))
     _set_text(_t)
@@ -585,6 +607,8 @@ def create_test_file(file_name="draft_test_objects",
         _msg("Saved: {}".format(out_name))
 
     return doc
+
+## @}
 
 
 if __name__ == "__main__":
