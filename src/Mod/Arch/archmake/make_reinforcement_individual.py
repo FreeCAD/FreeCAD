@@ -30,14 +30,14 @@ from draftutils.translate import translate
 
 def make_reinforcement_individual(
     base_rebar,
-    vertieces,
+    individuals,
     base_placement=FreeCAD.Placement(),
     name="ReinforcementIndividual"
 ):
     """
     make_reinforcement_individual(
         base_rebar,
-        vertieces,
+        individuals,
         [base_placement],
         [name]
     )
@@ -61,7 +61,7 @@ def make_reinforcement_individual(
         v_individual.ViewProviderReinforcementIndividual(obj.ViewObject)
 
     obj.BaseRebar = base_rebar
-    obj.Vertieces = vertieces
+    obj.Individuals = individuals
     obj.BasePlacement = base_placement
 
     # mark base_rebar obj for recompute to make it collect its new child

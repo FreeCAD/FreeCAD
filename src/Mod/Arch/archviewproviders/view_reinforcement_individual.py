@@ -50,7 +50,7 @@ class ViewProviderReinforcementIndividual(ViewProviderReinforcementGeneric):
 
         # reinforcement individual children
         if hasattr(self, "Object"):
-            return children + self.Object.Vertieces
+            return children + self.Object.Individuals
         else:
             return children
 

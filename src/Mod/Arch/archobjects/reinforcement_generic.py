@@ -39,9 +39,8 @@ class ReinforcementGeneric(ArchComponent.Component):
     Information
     -----------
     Placement list with the placements of each rebar is calculated.
-    A compound from all rebars is created. The compound it the reinforcement.
-    TODO: Create a reinforcement class especially for point reinforcement.
-    A list of vertieces will be given and the reinforcement will be created.
+    A compound from all rebars is created.
+    The shape of the compound is the reinforcement.
 
     Who is child of who?
     --------------------

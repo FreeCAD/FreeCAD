@@ -49,11 +49,12 @@ class ReinforcementIndividual(ReinforcementGeneric):
 
         # New properties
 
-        # linked vertieces
-        if "Vertieces" not in pl:
+        # Individuals
+        # linked placements, list of Vertices
+        if "Individuals" not in pl:
             obj.addProperty(
                 "App::PropertyLinkList",
-                "Vertieces",
+                "Individuals",
                 "ArrayOfRebars",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
@@ -70,12 +71,12 @@ class ReinforcementIndividual(ReinforcementGeneric):
             return
         if not obj.BaseRebar:
             return
-        if not obj.Vertieces:
+        if not obj.Individuals:
             return
 
         pl_list = []
         rot = FreeCAD.Rotation()
-        for v in obj.Vertieces:
+        for v in obj.Individuals:
             # Placment is not set for Part Vertex
             # built placement out of the coordinates attributes
             vertex_vec = vec(v.X, v.Y, v.Z)
