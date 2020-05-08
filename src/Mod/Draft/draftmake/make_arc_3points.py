@@ -110,6 +110,9 @@ def make_arc_3points(points, placement=None, face=False,
         The new arc object.
         Normally it returns a parametric Draft object (`Part::Part2DObject`).
         If `primitive` is `True`, it returns a basic `Part::Feature`.
+
+    None
+        Returns `None` if there is a problem and the object cannot be created.
     """
     _name = "make_arc_3points"
     utils.print_header(_name, "Arc by 3 points")

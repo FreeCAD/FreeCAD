@@ -79,6 +79,7 @@ SET(Draft_functions
 
 SET(Draft_make_functions
     draftmake/__init__.py
+    draftmake/make_arc_3points.py
     draftmake/make_bezcurve.py
     draftmake/make_block.py
     draftmake/make_bspline.py
@@ -112,7 +113,6 @@ SET(Draft_objects
     draftobjects/facebinder.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
-    draftobjects/arc_3points.py
     draftobjects/draft_annotation.py
     draftobjects/label.py
     draftobjects/dimension.py
