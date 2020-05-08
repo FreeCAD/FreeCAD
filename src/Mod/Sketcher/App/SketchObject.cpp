@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <iostream>
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -5608,6 +5609,7 @@ void SketchObject::rebuildExternalGeometry(void)
     Base::Placement Plm = Placement.getValue();
     Base::Vector3d Pos = Plm.getPosition();
     Base::Rotation Rot = Plm.getRotation();
+    Base::Rotation invRot = Rot.inverse();
     Base::Vector3d dN(0,0,1);
     Rot.multVec(dN,dN);
     Base::Vector3d dX(1,0,0);
@@ -5753,8 +5755,69 @@ void SketchObject::rebuildExternalGeometry(void)
                         }
                     }
                     else {
-                        // creates an ellipse
-                        throw Base::NotImplementedError("Not yet supported geometry for external geometry");
+                        // creates an ellipse or a segment
+
+                        if (!curve.IsClosed()) {
+                           throw Base::NotImplementedError("Non parallel arcs of circle not yet supported geometry for external geometry");
+                        }
+                        else {
+                            gp_Dir vec1 = sketchPlane.Axis().Direction();
+                            gp_Dir vec2 = curve.Circle().Axis().Direction();
+                            gp_Circ origCircle = curve.Circle();
+    
+                            if (vec1.IsNormal(vec2, Precision::Angular())) {  // circle's normal vector in plane:
+                                //   projection is a line
+                                //   define center by projection
+                                gp_Pnt cnt = origCircle.Location();
+                                GeomAPI_ProjectPointOnSurf proj(cnt,gPlane);
+                                cnt = proj.NearestPoint();
+                                // gp_Dir dirLine(vec1.Crossed(vec2));
+                                gp_Dir dirLine(vec1 ^ vec2);
+    
+                                Part::GeomLineSegment * projectedSegment = new Part::GeomLineSegment();
+                                Geom_Line ligne(cnt, dirLine);  // helper object to compute end points
+                                gp_Pnt P1, P2;  // end points of the segment, OCC style
+
+                                ligne.D0(-origCircle.Radius(), P1);
+                                ligne.D0( origCircle.Radius(), P2);
+
+                                Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());  // ends of segment FCAD style
+                                Base::Vector3d p2(P2.X(),P2.Y(),P2.Z());
+                                invPlm.multVec(p1,p1);
+                                invPlm.multVec(p2,p2);
+
+                                projectedSegment->setPoints(p1, p2);
+                                projectedSegment->Construction = true;
+                                ExternalGeo.push_back(projectedSegment);
+                            }
+                            else {  // general case, full circle
+                                gp_Pnt cnt = origCircle.Location();
+                                GeomAPI_ProjectPointOnSurf proj(cnt,gPlane);
+                                cnt = proj.NearestPoint();  // projection of circle center on sketch plane, 3D space
+                                Base::Vector3d p(cnt.X(),cnt.Y(),cnt.Z());  // converting to FCAD style vector
+                                invPlm.multVec(p,p);  // transforming towards sketch's (x,y) coordinates
+
+
+                                gp_Vec vecMajorAxis = vec1 ^ vec2;  // major axis in 3D space
+
+                                double minorRadius;  // TODO use data type of vectors around...
+                                double cosTheta;
+                                cosTheta = fabs(vec1.Dot(vec2));  // cos of angle between the two planes, assuming vectirs are normalized to 1
+                                minorRadius = origCircle.Radius() * cosTheta;
+
+                                Base::Vector3d vectorMajorAxis(vecMajorAxis.X(),vecMajorAxis.Y(),vecMajorAxis.Z());  // maj axis into FCAD style vector
+                                invRot.multVec(vectorMajorAxis, vectorMajorAxis);  // transforming to sketch's (x,y) coordinates
+                                vecMajorAxis.SetXYZ(gp_XYZ(vectorMajorAxis[0], vectorMajorAxis[1], vectorMajorAxis[2]));  // back to OCC
+
+                                gp_Ax2 refFrameEllipse(gp_Pnt(gp_XYZ(p[0], p[1], p[2])), gp_Vec(0, 0, 1), vecMajorAxis);  // NB: force normal of ellipse to be normal of sketch's plane.
+                                Handle(Geom_Ellipse) curve = new Geom_Ellipse(refFrameEllipse, origCircle.Radius(), minorRadius);
+                                Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                                ellipse->setHandle(curve);
+                                ellipse->Construction = true;
+
+                                ExternalGeo.push_back(ellipse);
+                            }
+                        }
                     }
                 }
                 else {
