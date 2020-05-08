@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>346</width>
-    <height>804</height>
+    <height>833</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -314,6 +314,19 @@
        <widget class="QCheckBox" name="checkBoxCutSegm">
         <property name="text">
          <string>Cut segment from mesh</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBoxHideSegm">
+        <property name="text">
+         <string>Hide segment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

@@ -251,7 +251,12 @@ void SegmentationManual::createSegment()
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(adoc->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
+            feaMesh->clearFacetSelection();
             feaSegm->Mesh.finishEditing();
+
+            if (ui->checkBoxHideSegm->isChecked()) {
+                feaSegm->Visibility.setValue(false);
+            }
 
             if (ui->checkBoxCutSegm->isChecked()) {
                 Mesh::MeshObject* editmesh = it->Mesh.startEditing();
