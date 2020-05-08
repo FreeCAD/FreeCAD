@@ -32,11 +32,11 @@ Or load it as a module and use the defined function.
 import os
 import datetime
 import math
+
 import FreeCAD as App
-from FreeCAD import Vector
 import Draft
+from FreeCAD import Vector
 from draftutils.messages import _msg, _wrn
-import draftobjects.arc_3points
 
 if App.GuiUp:
     import DraftFillet
@@ -172,9 +172,9 @@ def create_test_file(file_name="draft_test_objects",
 
     _msg(16 * "-")
     _msg("Circular arc 3 points")
-    draftobjects.arc_3points.make_arc_3points([Vector(4600, 0, 0),
-                                               Vector(4600, 800, 0),
-                                               Vector(4000, 1000, 0)])
+    Draft.make_arc_3points([Vector(4600, 0, 0),
+                            Vector(4600, 800, 0),
+                            Vector(4000, 1000, 0)])
     t_xpos += 600
     _t = Draft.makeText(["Circular arc 3 points"], Vector(t_xpos, t_ypos, 0))
     _set_text(_t)

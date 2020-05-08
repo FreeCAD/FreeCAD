@@ -232,6 +232,9 @@ from draftviewproviders.view_base import _ViewProviderDraftPart
 from draftmake.make_circle import make_circle, makeCircle
 from draftobjects.circle import Circle, _Circle
 
+# arcs
+from draftmake.make_arc_3points import make_arc_3points
+
 # ellipse
 from draftmake.make_ellipse import make_ellipse, makeEllipse
 from draftobjects.ellipse import Ellipse, _Ellipse
