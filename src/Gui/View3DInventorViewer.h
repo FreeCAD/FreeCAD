@@ -240,9 +240,8 @@ public:
      */
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
     /// display override mode
-    void setOverrideMode(const std::string &mode, bool updateViewProviders=true);
-    void updateOverrideMode(const std::string &mode);
-    void applyOverrideMode(bool updateViewProviders);
+    void setOverrideMode(const std::string &mode);
+    void applyOverrideMode();
     std::string getOverrideMode() const {return overrideMode;}
     //@}
 
@@ -546,7 +545,6 @@ private:
     SbBool allowredir;
 
     std::string overrideMode;
-    std::string vpOverrideMode;
     uint32_t overrideBGColor = 0;
     Gui::Document* guiDocument = nullptr;
 

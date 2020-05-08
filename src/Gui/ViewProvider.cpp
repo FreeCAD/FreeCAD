@@ -362,6 +362,9 @@ void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
             pcModeSwitch->removeChild(idx);
     }
     _sDisplayMaskModes[type] = pcModeSwitch->getNumChildren();
+    if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId()))
+        static_cast<SoFCSwitch*>(pcModeSwitch)->childNames.set1Value(
+                pcModeSwitch->getNumChildren(), type);
     pcModeSwitch->addChild(node);
     if(pcChildGroup)
         pcModeSwitch->addChild(pcChildGroup);

@@ -29,6 +29,8 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFName.h>
+#include <Inventor/fields/SoMFName.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/details/SoSubDetail.h>
@@ -91,6 +93,7 @@ public:
     SoSFEnum selectionMode;
     SoSFBool selectionRole;
     SoSFBool useNewSelection;
+    SoSFName overrideMode;
 
     virtual void doAction(SoAction *action);
     //virtual void GLRender(SoGLRenderAction * action);
@@ -100,7 +103,7 @@ public:
     virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
-    static bool hasHighlight();
+    bool hasHighlight();
 
     static int getPriority(const SoPickedPoint* p);
 
@@ -153,7 +156,7 @@ private:
     Gui::Document        *pcDocument;
     View3DInventorViewer *pcViewer;
 
-    static SoFullPath * currenthighlight;
+    SoFullPath * currentHighlight;
     SoFullPath * detailPath;
 
     SbBool setPreSelection;
@@ -170,7 +173,7 @@ private:
     SbViewportRegion preselViewport;
 
     SoFCRayPickAction *pcRayPick;
-
+    
     bool _showHiddenLines = false;
 };
 
@@ -267,6 +270,9 @@ public:
     /// If greater than zero, then any children change will trigger parent notify
     SoSFInt32 childNotify;
 
+    /// Stores children node names, for dynamic override children override
+    SoMFName childNames;
+
     enum OverrideSwitch {
         /// No switch override
         OverrideNone,
@@ -319,8 +325,12 @@ public:
         cb = f;
     }
 
+    static void setOverrideName(const SbName &name);
+    static const SbName &getOverrideName();
+
 private:
     void traverseTail(SoAction *action, int idx);
+    void traverseChild(SoAction *action, int idx);
 
 private:
     std::function<void(void)> cb;

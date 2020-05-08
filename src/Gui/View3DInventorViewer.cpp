@@ -832,7 +832,7 @@ void View3DInventorViewer::slotChangeDocument(const App::Document &, const App::
             && overrideMode == "Shadow")
     {
         Base::StateLocker guard(_applyingOverride);
-        applyOverrideMode(true);
+        applyOverrideMode();
     }
 }
 
@@ -997,9 +997,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             selectionRoot->selectAll = false;
         return;
     case SelectionChanges::SetPreselect:
-    case SelectionChanges::SetPreselectSignal:
     case SelectionChanges::RmvPreselect:
-    case SelectionChanges::RmvPreselectSignal:
         preselect = true;
         break;
     default:
@@ -1019,7 +1017,6 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         key.insert(key.end(),subname,element);
 
     switch(Reason.Type) {
-    case SelectionChanges::SetPreselectSignal:
     case SelectionChanges::SetPreselect:
         if(Reason.SubType!=2) {
             // 2 means it is triggered from tree view. If not from tree view
@@ -1030,7 +1027,6 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         break;
     case SelectionChanges::HideSelection:
     case SelectionChanges::RmvPreselect:
-    case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::RmvSelection: {
 
         auto &objs = preselect?objectsOnTopPreSel:objectsOnTopSel;
@@ -1323,7 +1319,6 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     case SelectionChanges::HideSelection:
     case SelectionChanges::SetPreselect:
     case SelectionChanges::RmvPreselect:
-    case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::SetSelection:
     case SelectionChanges::AddSelection:     
     case SelectionChanges::RmvSelection:
@@ -1334,21 +1329,24 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         return;
     }
 
-    if(Reason.Type == SelectionChanges::SetPreselectSignal && Reason.SubType != 2)
-        return;
-
     if(Reason.Type == SelectionChanges::HideSelection)
         Reason.Type = SelectionChanges::RmvSelection;
 
-    if(Reason.Type == SelectionChanges::RmvPreselect || 
-       Reason.Type == SelectionChanges::RmvPreselectSignal) 
-    {
+    switch(Reason.Type) {
+    case SelectionChanges::RmvPreselect: {
         SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
         cAct.apply(pcViewProviderRoot);
-    } else {
+        break;
+    }
+    case SelectionChanges::SetPreselect: {
+        SoFCHighlightAction cAct(Reason);
+        cAct.apply(pcViewProviderRoot);
+        break;
+    }
+    default: {
         SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
-    }
+    }}
 }
 /// @endcond
 
@@ -1397,8 +1395,6 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* back = pcProvider->getBackRoot();
     if (back)
         backgroundroot->addChild(back);
-
-    pcProvider->setOverrideMode(vpOverrideMode);
 }
 
 void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
@@ -1638,15 +1634,13 @@ SbBool View3DInventorViewer::isEditingViewProvider() const
 }
 
 /// display override mode
-void View3DInventorViewer::setOverrideMode(const std::string& mode, bool updateViewProviders)
+void View3DInventorViewer::setOverrideMode(const std::string& mode)
 {
     if (mode == overrideMode)
         return;
 
-    if(overrideMode == "Hidden Line") {
-        SoNode* root = getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(false);
-    }
+    if(overrideMode == "Hidden Line")
+        selectionRoot->setShowHiddenLines(false);
     if(pcShadowGroup) {
         auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
         int index = superScene->findChild(pcShadowGroup);
@@ -1658,7 +1652,7 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode, bool updateV
     }
 
     overrideMode = mode;
-    applyOverrideMode(updateViewProviders);
+    applyOverrideMode();
 }
 
 template<class PropT, class ValueT, class CallbackT>
@@ -1684,35 +1678,34 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def) {
     return _shadowParam<PropT, ValueT>(doc, _name, def, cb);
 }
 
-void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
+void View3DInventorViewer::applyOverrideMode()
 {
     this->overrideBGColor = 0;
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (overrideMode == "No Shading") {
         this->shading = false;
-        this->vpOverrideMode = "Flat Lines";
+        this->selectionRoot->overrideMode = "Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
     else if (overrideMode == "Tessellation") {
         this->shading = true;
-        this->vpOverrideMode = "Shaded";
+        this->selectionRoot->overrideMode = "Shaded";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::HIDDEN_LINE);
     }
     else if (overrideMode == "Hidden Line") {
         if(ViewParams::getHiddenLineOverrideBackground())
             this->overrideBGColor = ViewParams::getHiddenLineBackground();
         this->shading = ViewParams::getHiddenLineShaded();
-        this->vpOverrideMode = "Flat Lines";
+        this->selectionRoot->overrideMode = "Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
-        SoNode* root = getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->setShowHiddenLines(true);
+        this->selectionRoot->setShowHiddenLines(true);
     }
     else if (overrideMode == "Shadow") {
         this->shading = true;
         App::Document *doc = guiDocument?guiDocument->getDocument():nullptr;
         bool shaded = !_shadowParam<App::PropertyBool>(
                 doc,"FlatLines",ViewParams::getShadowFlatLines());
-        vpOverrideMode = shaded?"Shaded":"Flat Lines";
+        this->selectionRoot->overrideMode = shaded?"Shaded":"Flat Lines";
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
         bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", ViewParams::getShadowSpotLight());
 
@@ -1876,20 +1869,12 @@ void View3DInventorViewer::applyOverrideMode(bool updateViewProviders)
     }
     else {
         this->shading = true;
-        vpOverrideMode = overrideMode;
+        if(overrideMode == "As Is")
+            this->selectionRoot->overrideMode = SbName::empty();
+        else
+            this->selectionRoot->overrideMode = overrideMode.c_str();
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
-
-    if(updateViewProviders) {
-        for (auto view : views)
-            view->setOverrideMode(vpOverrideMode);
-    }
-}
-
-/// update override mode. doesn't affect providers
-void View3DInventorViewer::updateOverrideMode(const std::string& mode)
-{
-    setOverrideMode(mode, false);
 }
 
 void View3DInventorViewer::setViewportCB(void*, SoAction* action)
@@ -2347,14 +2332,12 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
 
 void View3DInventorViewer::setSelectionEnabled(const SbBool enable)
 {
-    SoNode* root = getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);
+    selectionRoot->selectionRole.setValue(enable);
 }
 
 SbBool View3DInventorViewer::isSelectionEnabled(void) const
 {
-    SoNode* root = getSceneGraph();
-    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();
+    return selectionRoot->selectionRole.getValue();
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const

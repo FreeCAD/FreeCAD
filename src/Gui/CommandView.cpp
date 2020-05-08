@@ -776,12 +776,14 @@ void StdCmdDrawStyle::activated(int iMsg)
     Gui::Document *doc = this->getActiveGuiDocument();
     std::list<MDIView*> views = doc->getMDIViews();
     std::list<MDIView*>::iterator viewIt;
-    bool oneChangedSignal(false);
+
+    auto activeView = doc->getActiveView();
+    bool applyAll = !activeView || QApplication::queryKeyboardModifiers() == Qt::ControlModifier;
+
     for (viewIt = views.begin(); viewIt != views.end(); ++viewIt)
     {
         View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
-        if (view)
-        {
+        if(applyAll || view == activeView) {
             View3DInventorViewer* viewer;
             viewer = view->getViewer();
             if (viewer)
@@ -789,34 +791,33 @@ void StdCmdDrawStyle::activated(int iMsg)
                 switch (iMsg)
                 {
                 case 1:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Point") : viewer->setOverrideMode("Point");
+                    viewer->setOverrideMode("Point");
                     break;
                 case 2:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Wireframe") : viewer->setOverrideMode("Wireframe");
+                    viewer->setOverrideMode("Wireframe");
                     break;
                 case 3:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Hidden Line") : viewer->setOverrideMode("Hidden Line");
+                    viewer->setOverrideMode("Hidden Line");
                     break;
                 case 4:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("No Shading") : viewer->setOverrideMode("No Shading");
+                    viewer->setOverrideMode("No Shading");
                     break;
                 case 5:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Shaded") : viewer->setOverrideMode("Shaded");
+                    viewer->setOverrideMode("Shaded");
                     break;
                 case 6:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Flat Lines") : viewer->setOverrideMode("Flat Lines");
+                    viewer->setOverrideMode("Flat Lines");
                     break;
                 case 7:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Tessellation") : viewer->setOverrideMode("Tessellation");
+                    viewer->setOverrideMode("Tessellation");
                     break;
                 case 8:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("Shadow") : viewer->setOverrideMode("Shadow");
+                    viewer->setOverrideMode("Shadow");
                     break;
                 default:
-                    (oneChangedSignal) ? viewer->updateOverrideMode("As Is") : viewer->setOverrideMode("As Is");
+                    viewer->setOverrideMode("As Is");
                     break;
                 }
-                oneChangedSignal = true;
             }
         }
     }

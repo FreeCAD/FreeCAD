@@ -104,8 +104,6 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
 using namespace Gui;
 
-SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCUnifiedSelection)
@@ -123,11 +121,15 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcRay
     SO_NODE_ADD_FIELD(selectionMode,  (ON));
     SO_NODE_ADD_FIELD(selectionRole,  (true));
     SO_NODE_ADD_FIELD(useNewSelection, (true));
+    SO_NODE_ADD_FIELD(overrideMode, (""));
 
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
+
+    currentHighlight = static_cast<SoFullPath*>(new SoPath(20));
+    currentHighlight->ref();
 
     detailPath = static_cast<SoFullPath*>(new SoPath(20));
     detailPath->ref();
@@ -151,17 +153,8 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcRay
 */
 SoFCUnifiedSelection::~SoFCUnifiedSelection()
 {
-    // If we're being deleted and we're the current highlight,
-    // NULL out that variable
-    if (currenthighlight != NULL) {
-        currenthighlight->unref();
-        currenthighlight = NULL;
-    }
-    if (detailPath) {
-        detailPath->unref();
-        detailPath = NULL;
-    }
-
+    currentHighlight->unref();
+    detailPath->unref();
     delete pcRayPick;
 }
 
@@ -178,7 +171,7 @@ void SoFCUnifiedSelection::finish()
 }
 
 bool SoFCUnifiedSelection::hasHighlight() {
-    return currenthighlight != NULL;
+    return currentHighlight->getLength();
 }
 
 void SoFCUnifiedSelection::applySettings()
@@ -353,6 +346,17 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
     return getPickedList(action->getEvent()->getPosition(),action->getViewportRegion(), singlePick);
 }
 
+struct OverrideSwitchName {
+    OverrideSwitchName(const SbName &name) {
+        oldName = SoFCSwitch::getOverrideName();
+        SoFCSwitch::setOverrideName(name);
+    }
+    ~OverrideSwitchName() {
+        SoFCSwitch::setOverrideName(oldName);
+    }
+    SbName oldName;
+};
+
 std::vector<SoFCUnifiedSelection::PickedInfo> 
 SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &viewport, bool singlePick) const
 {
@@ -374,6 +378,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     getPickedInfoOnTop(ret, singlePick, filter);
 
     if(ret.empty() || !singlePick) {
+        OverrideSwitchName switchGuard(overrideMode.getValue());
         SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,false);
         pcRayPick->apply(pcViewer->getSoRenderManager()->getSceneGraph());
 
@@ -486,6 +491,8 @@ SoPickedPoint *SoFCUnifiedSelection::getPickedPoint(SoHandleEventAction *action)
 
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
+    OverrideSwitchName switchGuard(overrideMode.getValue());
+
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
         SoFCEnableHighlightAction *preaction = (SoFCEnableHighlightAction*)action;
         if (preaction->highlight) {
@@ -520,35 +527,37 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
-            if (currenthighlight) {
+            if (hasHighlight()) {
                 SoHighlightElementAction action;
-                action.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = 0;
+                action.apply(currentHighlight);
+                currentHighlight->truncate(0);
             }
         } else if (highlightMode.getValue() != OFF 
-                    && hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
-            if (currenthighlight) {
+                    && !setPreSelection
+                    && hilaction->SelChange.Type == SelectionChanges::SetPreselect)
+        {
+            if (hasHighlight()) {
                 SoHighlightElementAction action;
-                action.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = 0;
+                action.apply(currentHighlight);
+                currentHighlight->truncate(0);
             }
             App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
-            SoDetail* detail = vp->getDetail(hilaction->SelChange.pSubName);
-            SoHighlightElementAction action;
-            action.setHighlighted(true);
-            action.setColor(this->colorHighlight.getValue());
-            action.setElement(detail);
-            action.apply(vp->getRoot());
-            delete detail;
-            SoSearchAction sa;
-            sa.setNode(vp->getRoot());
-            sa.apply(vp->getRoot());
-            currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
-            currenthighlight->ref();
+            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) &&
+                (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) 
+            {
+                detailPath->truncate(0);
+                SoDetail *det = 0;
+                if(vp->getDetailPath(hilaction->SelChange.pSubName,detailPath,true,det)) {
+                    setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
+                            hilaction->SelChange.pSubName, 
+                            hilaction->SelChange.x,
+                            hilaction->SelChange.y,
+                            hilaction->SelChange.z);
+                }
+                delete det;
+            }
         }
         if(useNewSelection.getValue())
             return;
@@ -617,25 +626,6 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                     action.apply(vpd->getRoot());
                 }
             }
-        } else if (selaction->SelChange.Type == SelectionChanges::SetPreselectSignal) {
-            // selection changes inside the 3d view are handled in handleEvent()
-            App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
-            App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
-            ViewProvider*vp = Application::Instance->getViewProvider(obj);
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) &&
-                (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) 
-            {
-                detailPath->truncate(0);
-                SoDetail *det = 0;
-                if(vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,det)) {
-                    setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
-                            selaction->SelChange.pSubName, 
-                            selaction->SelChange.x,
-                            selaction->SelChange.y,
-                            selaction->SelChange.z);
-                }
-                delete det;
-            }
         }
         if(useNewSelection.getValue())
             return;
@@ -658,7 +648,7 @@ void SoFCUnifiedSelection::onPreselectTimer() {
 }
 
 void SoFCUnifiedSelection::removeHighlight() {
-    if(this->preSelection == 1)
+    if(hasHighlight())
         setHighlight(0,0,0,0,0.0,0.0,0.0);
     pcRayPick->cleanup();
 }
@@ -713,19 +703,17 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         this->preSelection = 1;
 
         int ret = Gui::Selection().setPreselect(docname,objname,subname,x,y,z);
-        if(ret<0 && currenthighlight)
+        if(ret<0 && hasHighlight())
             return true;
 
         if(ret) {
-            if (currenthighlight) {
+            if (hasHighlight()) {
                 SoHighlightElementAction action;
                 action.setHighlighted(false);
-                action.apply(currenthighlight);
-                currenthighlight->unref();
-                currenthighlight = 0;
+                action.apply(currentHighlight);
+                currentHighlight->truncate(0);
             }
-            currenthighlight = static_cast<SoFullPath*>(path->copy());
-            currenthighlight->ref();
+            currentHighlight->append(path);
             highlighted = true;
         }
     }
@@ -733,15 +721,14 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     if(!highlighted)
         this->preSelection = 0;
 
-    if(currenthighlight) {
+    if(hasHighlight()) {
         SoHighlightElementAction action;
         action.setHighlighted(highlighted);
         action.setColor(this->colorHighlight.getValue());
         action.setElement(det);
-        action.apply(currenthighlight);
+        action.apply(currentHighlight);
         if(!highlighted) {
-            currenthighlight->unref();
-            currenthighlight = 0;
+            currentHighlight->truncate(0);
             Selection().rmvPreselect();
         }
         this->touch();
@@ -1049,6 +1036,7 @@ void SoFCUnifiedSelection::setShowHiddenLines(bool enable)
 void SoFCUnifiedSelection::GLRenderInPath(SoGLRenderAction * action)
 {
     Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
+    OverrideSwitchName switchGuard(overrideMode.getValue());
     inherited::GLRenderInPath(action);
 }
 
@@ -1063,6 +1051,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         _ShowBoundBox = true;
 
     Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
+    OverrideSwitchName switchGuard(overrideMode.getValue());
 
     inherited::GLRenderBelowPath(action);
 
@@ -1317,6 +1306,7 @@ SoFCSwitch::SoFCSwitch()
     SO_NODE_ADD_FIELD(tailChild,  (-1));
     SO_NODE_ADD_FIELD(childNotify, (0));
     SO_NODE_ADD_FIELD(overrideSwitch,(OverrideNone));
+    SO_NODE_ADD_FIELD(childNames,(""));
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideNone);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideDefault);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideVisible);
@@ -1374,6 +1364,17 @@ struct SwitchInfo {
 
 static FC_COIN_THREAD_LOCAL std::deque<SwitchInfo> _SwitchStack;
 static FC_COIN_THREAD_LOCAL std::deque<SoFCSwitch::TraverseState> _SwitchTraverseStack;
+static FC_COIN_THREAD_LOCAL SbName _SwitchName;
+
+void SoFCSwitch::setOverrideName(const SbName &name)
+{
+    _SwitchName = name;
+}
+
+const SbName &SoFCSwitch::getOverrideName()
+{
+    return _SwitchName;
+}
 
 bool SoFCSwitch::testTraverseState(TraverseStateFlag flag) {
     if(_SwitchTraverseStack.size())
@@ -1400,8 +1401,17 @@ void SoFCSwitch::doAction(SoAction *action) {
             || (action->isOfType(SoCallbackAction::getClassTypeId()) &&
                 ((SoCallbackAction *)action)->isCallbackAll()))
     {
+        if(this->whichChild.getValue()>=0 && _SwitchName!=SbName::empty()) {
+            for(int i=0, c=std::min(childNames.getNum(),this->getNumChildren()); i<c; ++i) {
+                if(childNames[i] == _SwitchName) {
+                    traverseChild(action, i);
+                    traverseTail(action, i);
+                    return;
+                }
+            }
+        }
         inherited::doAction(action);
-        traverseTail(action,whichChild.getValue());
+        traverseTail(action, whichChild.getValue());
         return;
     }
 
@@ -1531,23 +1541,30 @@ void SoFCSwitch::notify(SoNotList * nl)
         SoGroup::notify(nl);
 }
 
-void SoFCSwitch::traverseTail(SoAction *action, int idx) {
+void SoFCSwitch::traverseTail(SoAction *action, int idx)
+{
     int tail = tailChild.getValue();
     if(idx<0 || tail<0 || idx==tail || tail>=getNumChildren())
         return;
 
+    traverseChild(action, tail);
+}
+
+void SoFCSwitch::traverseChild(SoAction *action, int idx)
+{
+    SoSwitchElement::set(action->getState(), idx);
     int numindices = 0;
     const int * indices = 0;
     SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
     if(pathcode != SoAction::IN_PATH) {
-        this->children->traverse(action,tail);
+        this->children->traverse(action,idx);
         return;
     }
 
-    // If traverse in path, traverse if tailChild is in the path
+    // If traverse in path, traverse only if idx is in the path
     for (int i = 0; i < numindices; i++) {
-        if (indices[i] == tail) {
-            this->children->traverse(action, tail);
+        if (indices[i] == idx) {
+            this->children->traverse(action, idx);
             break;
         }
     }

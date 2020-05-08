@@ -1690,11 +1690,14 @@ MDIView *Document::createView(const Base::Type& typeId)
         }
 
         View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
-        if (!theViews.empty()) {
-            View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
-            std::string overrideMode = firstView->getViewer()->getOverrideMode();
-            view3D->getViewer()->setOverrideMode(overrideMode);
-        }
+
+        // Views can now have independent draw styles (i.e. override modes)
+        //
+        // if (!theViews.empty()) {
+        //     View3DInventor* firstView = static_cast<View3DInventor*>(theViews.front());
+        //     std::string overrideMode = firstView->getViewer()->getOverrideMode();
+        //     view3D->getViewer()->setOverrideMode(overrideMode);
+        // }
 
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
         for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {

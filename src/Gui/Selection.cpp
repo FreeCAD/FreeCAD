@@ -736,8 +736,7 @@ unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const 
 
 
 void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
-    if(msg.Type == SelectionChanges::SetPreselectSignal ||
-       msg.Type == SelectionChanges::ShowSelection ||
+    if(msg.Type == SelectionChanges::ShowSelection ||
        msg.Type == SelectionChanges::HideSelection)
         return;
     
@@ -845,23 +844,12 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     hz = z;
 
     // set up the change object
-    SelectionChanges Chng(signal==1?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
+    SelectionChanges Chng(SelectionChanges::SetPreselect,
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
-    if(Chng.Type==SelectionChanges::SetPreselect) {
-        CurrentPreselection = Chng;
-        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
-    }else
-        FC_TRACE("preselect signal "<<DocName<<'#'<<FeatName<<'.'<<SubName);
-
+    CurrentPreselection = Chng;
+    FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
     notify(Chng);
-
-    if(signal==1 && DocName.size()) {
-        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
-        Chng.Type = SelectionChanges::SetPreselect;
-        CurrentPreselection = Chng;
-        notify(std::move(Chng));
-    }
 
     // It is possible the preselect is removed during notification
     return DocName.empty()?0:1;
@@ -887,16 +875,10 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 }
 
-void SelectionSingleton::rmvPreselect(bool signal)
+void SelectionSingleton::rmvPreselect()
 {
     if (DocName == "")
         return;
-
-    if(signal) {
-        SelectionChanges Chng(SelectionChanges::RmvPreselectSignal,DocName,FeatName,SubName);
-        notify(std::move(Chng));
-        return;
-    }
 
     SelectionChanges Chng(SelectionChanges::RmvPreselect,DocName,FeatName,SubName);
 
@@ -1258,7 +1240,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     if(DocName==sel.DocName && FeatName==sel.FeatName && SubName==sel.SubName) {
         if(show) {
             FC_TRACE("preselect signal");
-            notify(SelectionChanges(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName));
+            notify(SelectionChanges(SelectionChanges::SetPreselect,DocName,FeatName,SubName));
         }else
             rmvPreselect();
     }

@@ -72,11 +72,9 @@ public:
         ClrSelection,
         SetPreselect, // to signal observer the preselect has changed
         RmvPreselect,
-        SetPreselectSignal, // to request 3D view to change preselect
         PickedListChanged,
         ShowSelection, // to show a selection
         HideSelection, // to hide a selection
-        RmvPreselectSignal, // to request 3D view to remove preselect
         MovePreselect, // to signal observer the mouse movement when preselect
     };
 
@@ -400,7 +398,7 @@ public:
     int setPreselect(const char* pDocName, const char* pObjectName, 
             const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
-    void rmvPreselect(bool signal=false);
+    void rmvPreselect();
     /// sets different coords for the preselection
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
