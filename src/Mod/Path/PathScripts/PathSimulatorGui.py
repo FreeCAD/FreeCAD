@@ -3,6 +3,7 @@ import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 import PathSimulator
 import math
 import os
@@ -454,11 +455,12 @@ class PathSimulation:
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
-            listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
-            listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
-            listItem.setCheckState(QtCore.Qt.CheckState.Checked)
-            self.operations.append(op)
-            form.listOperations.addItem(listItem)
+            if PathUtil.opProperty(op, 'Active'):
+                listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
+                listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
+                listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                self.operations.append(op)
+                form.listOperations.addItem(listItem)
         if  self.initdone:
           self.SetupSimulation()
 
