@@ -161,7 +161,8 @@ def getPreferences():
         'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties",False),
         'SPLIT_LAYERS': p.GetBool("ifcSplitLayers",False),
         'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False),
-        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid",False)
+        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid",False),
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject",False)
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:
@@ -299,23 +300,24 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
     # Create the base project object
-    if len(ifcfile.by_type("IfcProject")) > 0:
-        projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
-        projectImporter.execute()
-    else:
-        # https://forum.freecadweb.org/viewtopic.php?f=39&t=40624
-        print("No IfcProject found in the ifc file. Nothing imported")
-        return doc
+    if not preferences['REPLACE_PROJECT']:
+        if len(ifcfile.by_type("IfcProject")) > 0:
+            projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
+            projectImporter.execute()
+        else:
+            # https://forum.freecadweb.org/viewtopic.php?f=39&t=40624
+            print("No IfcProject found in the ifc file. Nothing imported")
+            return doc
 
     # handle IFC products
 
     for product in products:
 
         count += 1
-
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
+
         if preferences['DEBUG']: print(count,"/",len(products),"object #"+str(pid),":",ptype,end="")
 
         # build list of related property sets
@@ -382,6 +384,20 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         if ptype in preferences['SKIP']:  # preferences-set type skip list
             if preferences['DEBUG']: print(" skipped.")
             continue
+        if preferences['REPLACE_PROJECT']: # options-enabled project/site/building skip
+            if ptype in ['IfcProject','IfcSite']:
+                if preferences['DEBUG']: print(" skipped.")
+                continue
+            elif ptype in ['IfcBuilding']:
+                if len(ifcfile.by_type("IfcBuilding")) == 1:
+                    # let multiple buildings through...
+                    if preferences['DEBUG']: print(" skipped.")
+                    continue
+            elif ptype in ['IfcBuildingStorey']:
+                if len(ifcfile.by_type("IfcBuildingStorey")) == 1:
+                    # let multiple storeys through...
+                    if preferences['DEBUG']: print(" skipped.")
+                    continue
 
         # check if this object is sharing its shape (mapped representation)
         clone = None
@@ -1219,6 +1235,15 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         l = FreeCAD.ActiveDocument.getObject(p[2])
         if l:
             setattr(p[0],p[1],l)
+
+    # Grouping everything if required
+    if preferences['REPLACE_PROJECT']:
+        rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
+        rootgroup.Label = os.path.basename(filename)
+        for key,obj in objects.items():
+            # only add top-level objects
+            if not obj.InList:
+                rootgroup.addObject(obj)
 
     FreeCAD.ActiveDocument.recompute()
 

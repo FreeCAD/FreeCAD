@@ -45,6 +45,7 @@
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 #include "DrawLeaderLine.h"
+#include "Preferences.h"
 #include "DrawUtil.h"
 #include "Geometry.h"
 #include "Cosmetic.h"

@@ -430,7 +430,7 @@ Evolumes
 Evolumes
 
 ***********************************************************
-** Node sets for fixed constraint
+** constraints fixed node sets
 ** written by write_node_sets_constraints_fixed function
 ** FemConstraintFixed
 *NSET,NSET=FemConstraintFixed
@@ -509,7 +509,7 @@ FemConstraintFixed,3
 
 
 ***********************************************************
-** Node loads Constraints
+** constraints force node loads
 ** written by write_constraints_force function
 *CLOAD
 ** FemConstraintForce
@@ -559,7 +559,7 @@ FemConstraintFixed,3
 
 
 ***********************************************************
-** Element + CalculiX face + load in [MPa]
+** constraints pressure element face loads
 ** written by write_constraints_pressure function
 ** FemConstraintPressure
 *DLOAD

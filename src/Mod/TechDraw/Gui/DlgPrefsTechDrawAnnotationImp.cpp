@@ -31,6 +31,7 @@
 #include <Base/Console.h>
 
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 
 
@@ -113,11 +114,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
 
 int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 0);
-    return end;
+    return Preferences::balloonArrow();
 }
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>

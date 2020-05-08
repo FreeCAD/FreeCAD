@@ -96,9 +96,13 @@ Action * StdCmdLinkMakeGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     // add the action items
-    pcAction->addAction(QObject::tr("Simple group"));
-    pcAction->addAction(QObject::tr("Group with links"));
-    pcAction->addAction(QObject::tr("Group with transform links"));
+    QAction* action = nullptr;
+    action = pcAction->addAction(QObject::tr("Simple group"));
+    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action = pcAction->addAction(QObject::tr("Group with links"));
+    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action = pcAction->addAction(QObject::tr("Group with transform links"));
+    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
     return pcAction;
 }
 

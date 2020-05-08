@@ -94,14 +94,14 @@
       <translation>Ошибка: {err}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Смещение присоединения:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Смещение присоединения (в локальных координатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -143,7 +143,7 @@
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Результат вычисления завершился с ошибкой: 
+      <translation>Вычисление результата не удалось с ошибкой: 
 
 {err}
 
@@ -161,11 +161,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Вычисление результата не удалось с ошибкой: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Нажмите «Продолжить», чтобы создать элемент в любом случае, или «Отмена», чтобы отменить.</translation>
     </message>
   </context>
   <context>
@@ -239,7 +239,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Результат вычисления завершился с ошибкой: 
+      <translation>Вычисление результата не удалось с ошибкой: 
 
 {err}
 
@@ -293,7 +293,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Результат вычисления завершился с ошибкой: 
+      <translation>Вычисление результата не удалось с ошибкой: 
 
 {err}
 

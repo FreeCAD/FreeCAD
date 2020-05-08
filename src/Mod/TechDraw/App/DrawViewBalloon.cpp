@@ -50,6 +50,7 @@
 
 #include <Mod/Measure/App/Measurement.h>
 
+#include "Preferences.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewBalloon.h"
@@ -274,11 +275,7 @@ int DrawViewBalloon::prefShape(void) const
 
 int DrawViewBalloon::prefEnd(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 1);
-    return end;
+    return Preferences::balloonArrow();
 }
 
 Base::Vector3d DrawViewBalloon::getOriginOffset() const

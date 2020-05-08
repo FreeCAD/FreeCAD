@@ -151,7 +151,7 @@
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
-      <translation>打开浏览器视图(&amp;b)</translation>
+      <translation>打开浏览器视图(&amp;B)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="445"/>
@@ -232,7 +232,7 @@
       <location filename="../../Command.cpp" line="576"/>
       <location filename="../../Command.cpp" line="578"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>在当前图纸中将svg文件内容作为一个符号插入</translation>
+      <translation>在当前图纸中将 svg 文件内容作为一个符号插入</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="470"/>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="486"/>
@@ -449,41 +449,41 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="605"/>
       <location filename="../../TaskOrthoViews.ui" line="805"/>
       <source>X +ve</source>
-      <translation>X轴正向</translation>
+      <translation>X 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="610"/>
       <location filename="../../TaskOrthoViews.ui" line="685"/>
       <location filename="../../TaskOrthoViews.ui" line="810"/>
       <source>Y +ve</source>
-      <translation>Y轴正向</translation>
+      <translation>Y 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="615"/>
       <location filename="../../TaskOrthoViews.ui" line="690"/>
       <location filename="../../TaskOrthoViews.ui" line="815"/>
       <source>Z +ve</source>
-      <translation>Z轴正向</translation>
+      <translation>Z 轴正向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="620"/>
       <location filename="../../TaskOrthoViews.ui" line="820"/>
       <source>X -ve</source>
-      <translation>X轴负向</translation>
+      <translation>X 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="625"/>
       <location filename="../../TaskOrthoViews.ui" line="695"/>
       <location filename="../../TaskOrthoViews.ui" line="825"/>
       <source>Y -ve</source>
-      <translation>Y轴负向</translation>
+      <translation>Y 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="630"/>
       <location filename="../../TaskOrthoViews.ui" line="700"/>
       <location filename="../../TaskOrthoViews.ui" line="830"/>
       <source>Z -ve</source>
-      <translation>Z轴负向</translation>
+      <translation>Z 轴负向</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="642"/>
@@ -549,7 +549,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="838"/>
       <source>Axis aligned right:</source>
-      <translation>轴右对齐</translation>
+      <translation>轴右对齐：</translation>
     </message>
   </context>
   <context>
@@ -742,7 +742,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.cpp" line="53"/>
       <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make axonometric...</source>
-      <translation>创建轴测投影</translation>
+      <translation>创建轴测投影...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="54"/>

@@ -718,6 +718,13 @@
              </property>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="linkStockAndModel">
+             <property name="text">
+              <string>Link Stock and Model</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>

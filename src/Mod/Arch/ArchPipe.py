@@ -184,7 +184,13 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Pipe Segment"
+        # IfcPipeSegment is new in IFC4
+        from ArchIFC import IfcTypes
+        if "Pipe Segment" in IfcTypes:
+            obj.IfcType = "Pipe Segment"
+        else:
+            # IFC2x3 does not know a Pipe Segment
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 

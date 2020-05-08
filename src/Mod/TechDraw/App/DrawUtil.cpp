@@ -73,6 +73,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
+#include "Preferences.h"
 #include "GeometryObject.h"
 #include "DrawUtil.h"
 
@@ -499,9 +500,8 @@ double DrawUtil::sensibleScale(double working_scale)
 
 double DrawUtil::getDefaultLineWeight(std::string lineType)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
+ 
     auto lg = LineGroup::lineGroupFactory(lgName);
 
     double weight = lg->getWeight(lineType);

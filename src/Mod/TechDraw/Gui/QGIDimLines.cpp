@@ -36,9 +36,11 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 
+#include "PreferencesGui.h"
 #include "QGIDimLines.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIDimLines::QGIDimLines()
 {
@@ -65,10 +67,7 @@ QPainterPath QGIDimLines::shape() const
 
 double QGIDimLines::getEdgeFuzz(void) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("EdgeFuzz",10.0);
-    return result;
+    return PreferencesGui::edgeFuzz();
 }
 
 

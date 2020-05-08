@@ -974,8 +974,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
 			glColor3f(1, 0, 0);
 			glBegin(GL_LINES);
-			glVertex3f(-1.1 , -1.1, -1.1);
-			glVertex3f(+0.5 , -1.1, -1.1);
+			glVertex3f(-1.1f, -1.1f, -1.1f);
+			glVertex3f(+0.5f, -1.1f, -1.1f);
 			glEnd();
 			glRasterPos3d(a, -a, -a);
 			glBitmap(8, 7, 0, 0, 0, 0, xbmp);
@@ -983,8 +983,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			static GLubyte ybmp[] = { 0x04,0x04,0x04,0x04,0x0a,0x11,0x11 };
 			glColor3f(0, 1, 0);
 			glBegin(GL_LINES);
-			glVertex3f(-1.1 , -1.1, -1.1);
-			glVertex3f(-1.1 , +0.5, -1.1);
+			glVertex3f(-1.1f, -1.1f, -1.1f);
+			glVertex3f(-1.1f, +0.5f, -1.1f);
 			glEnd();
 			glRasterPos3d( -a, a, -a);
 			glBitmap(8, 7, 0, 0, 0, 0, ybmp);
@@ -992,8 +992,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			static GLubyte zbmp[] = { 0x1f,0x10,0x08,0x04,0x02,0x01,0x1f };
 			glColor3f(0, 0, 1);
 			glBegin(GL_LINES);
-			glVertex3f(-1.1 , -1.1, -1.1);
-			glVertex3f(-1.1 , -1.1, +0.5);
+			glVertex3f(-1.1f, -1.1f, -1.1f);
+			glVertex3f(-1.1f, -1.1f, +0.5f);
 			glEnd();
 			glRasterPos3d( -a, -a, a);
 			glBitmap(8, 7, 0, 0, 0, 0, zbmp);

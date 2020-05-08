@@ -94,14 +94,14 @@
       <translation>Error: {err}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Separació de l'adjunt:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Desplaçament de l'adjunt (en coordenades locals):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>El resultat del càlcul ha fallat amb un error: 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Feu clic en «Continua» per a crear la propietat de totes formes, o en «Interromp» per a cancel·lar.</translation>
     </message>
   </context>
   <context>

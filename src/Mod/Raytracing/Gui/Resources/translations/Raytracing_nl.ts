@@ -472,7 +472,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Het pad naar het uitvoerbare POV-Ray-bestand als u wilt renderen vanuit %1</translation>
     </message>
   </context>
   <context>

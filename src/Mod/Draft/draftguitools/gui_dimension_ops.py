@@ -49,7 +49,7 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Flip dimension"))
+        super(Draft_FlipDimension, self).__init__(name=_tr("Flip dimension"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -65,7 +65,7 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(Draft_FlipDimension, self).Activated()
 
         for o in Gui.Selection.getSelection():
             if utils.get_type(o) in ("Dimension", "AngularDimension"):

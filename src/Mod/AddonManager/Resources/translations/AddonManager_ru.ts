@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="436"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Место установки</translation>
     </message>
   </context>
   <context>
@@ -224,22 +224,22 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="277"/>
       <source>Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path</translation>
+      <translation>Что-то пошло не так при запросе Macro Retieval с сайта Git. Возможно исполняемый файл Git не находится в нужном пути</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="442"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Это дополнение помечено как устаревшее</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="443"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Это обычно означает, что оно больше не поддерживается, и некоторые более продвинутые дополнения в этом списке обеспечивают те же функции.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="740"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Ошибка: Не удается найти zip из</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the addons manager</source>
-      <translation type="unfinished">Close the addons manager</translation>
+      <translation>Закрыть менеджер дополнений</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -339,41 +339,38 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Если эта опция выбрана, при запуске менеджера дополнений, установленные дополнения будут проверены на наличие доступных обновлений (требуется пакет GitPython, установленный в вашей системе)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Автоматически проверять обновления при запуске (требуется GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 sto be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-sto be scanned for available addons</translation>
+      <translation>Вы можете использовать это окно для указания дополнительных репозиториев дополнений для сканирования доступных дополнений</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Прокси-сервер </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Нет</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Системный прокси-сервер пользователя</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Заданный пользователем прокси-сервер:</translation>
     </message>
   </context>
   <context>

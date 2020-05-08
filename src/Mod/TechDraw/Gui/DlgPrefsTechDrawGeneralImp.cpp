@@ -25,10 +25,15 @@
 
 #include "PreCompiled.h"
 
+#include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
+
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include <Gui/PrefWidgets.h>
 
+#include "PreferencesGui.h"
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
   : PreferencePage( parent )
@@ -64,8 +69,19 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
 {
-    double labelDefault = 8.0;
+//    double labelDefault = 8.0;
+    double labelDefault = Preferences::labelFontSizeMM();
     plsb_LabelSize->setValue(labelDefault);
+    QFont prefFont(Preferences::labelFontQString());
+    pfb_LabelFont->setCurrentFont(prefFont);
+//    pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
+
+    pfc_DefTemp->setFileName(Preferences::defaultTemplate());
+    pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
+    pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
+    pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
+    pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
+    pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
 
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();

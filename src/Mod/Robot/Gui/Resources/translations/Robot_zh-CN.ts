@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="52"/>
       <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>以精简KRL子程式导出轨迹</translation>
+      <translation>以精简 KRL 子程式导出轨迹。</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="176"/>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>将库卡IR125导入文档.</translation>
+      <translation>将库卡 IR125 导入文档.</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="95"/>
       <source>Insert a Kuka IR16 into the document.</source>
-      <translation>将库卡IR16导入文档.</translation>
+      <translation>将库卡 IR16 导入文档.</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="135"/>
       <source>Kuka IR210</source>
-      <translation>库卡IR210</translation>
+      <translation>库卡 IR210</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="136"/>
       <source>Insert a Kuka IR210 into the document.</source>
-      <translation>将库卡IR210导入文档.</translation>
+      <translation>将库卡 IR210 导入文档.</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="52"/>
       <source>Kuka IR500</source>
-      <translation>库卡IR500</translation>
+      <translation>库卡 IR500</translation>
     </message>
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="53"/>
       <source>Insert a Kuka IR500 into the document.</source>
-      <translation>将库卡IR500导入文档.</translation>
+      <translation>将库卡 IR500 导入文档.</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
-      <translation>修改轨迹</translation>
+      <translation>修改轨迹...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="235"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>选择一个机器人和一个形状或VRML对象.</translation>
+      <translation>选择一个机器人和一个形状或 VRML 对象.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="168"/>
@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="314"/>
+      <location filename="../../TaskRobot6Axis.ui" line="313"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="331"/>
+      <location filename="../../TaskRobot6Axis.ui" line="329"/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>工具：（0,0,400,0,0,0）</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="347"/>
+      <location filename="../../TaskRobot6Axis.ui" line="345"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1秒</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="292"/>
+      <location filename="../../TaskTrajectory.ui" line="291"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>位置：(200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="318"/>
+      <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="323"/>
+      <location filename="../../TaskTrajectory.ui" line="322"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="328"/>
+      <location filename="../../TaskTrajectory.ui" line="327"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="333"/>
+      <location filename="../../TaskTrajectory.ui" line="332"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="338"/>
+      <location filename="../../TaskTrajectory.ui" line="337"/>
       <source>A</source>
       <translation>A</translation>
     </message>

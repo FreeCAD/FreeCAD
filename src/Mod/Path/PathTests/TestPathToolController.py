@@ -24,6 +24,8 @@
 
 import FreeCAD
 import Path
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolController as PathToolController
 
 from PathTests.PathTestUtils import PathTestBase
@@ -37,7 +39,10 @@ class TestPathToolController(PathTestBase):
         FreeCAD.closeDocument(self.doc.Name)
 
     def createTool(self, name='t1', diameter=1.75):
-        return Path.Tool(name=name, diameter=diameter)
+        if PathPreferences.toolsReallyUseLegacyTools():
+            return Path.Tool(name=name, diameter=diameter)
+        attrs = {'shape': None, 'name': name, 'parameter': {'Diameter': diameter}, 'attribute': []}
+        return PathToolBit.Factory.CreateFromAttrs(attrs, name)
 
     def test00(self):
         '''Verify ToolController templateAttrs'''
@@ -65,7 +70,10 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs['hrapid'], '28.0 mm/s')
         self.assertEqual(attrs['dir'], 'Reverse')
         self.assertEqual(attrs['speed'], 12000)
-        self.assertEqual(attrs['tool'], t.templateAttrs())
+        if PathPreferences.toolsReallyUseLegacyTools():
+            self.assertEqual(attrs['tool'], t.templateAttrs())
+        else:
+            self.assertEqual(attrs['tool'], t.Proxy.templateAttrs(t))
 
         return tc
 
@@ -84,5 +92,8 @@ class TestPathToolController(PathTestBase):
         self.assertRoughly(tc0.HorizRapid, tc1.HorizRapid)
         self.assertEqual(tc0.SpindleDir, tc1.SpindleDir)
         self.assertRoughly(tc0.SpindleSpeed, tc1.SpindleSpeed)
-        self.assertEqual(tc0.Tool.Name, tc1.Tool.Name)
+        # These are not valid because the name & label get adjusted if there
+        # is a conflict. No idea how this could work with the C implementation
+        #self.assertEqual(tc0.Tool.Name, tc1.Tool.Name)
+        #self.assertEqual(tc0.Tool.Label, tc1.Tool.Label)
         self.assertRoughly(tc0.Tool.Diameter, tc1.Tool.Diameter)

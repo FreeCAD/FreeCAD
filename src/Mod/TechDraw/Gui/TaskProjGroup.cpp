@@ -109,7 +109,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     connect(ui->sbScaleDen,   SIGNAL(valueChanged(int)), this, SLOT(scaleManuallyChanged(int)));
 
     // Slot for Projection Type (layout)
-    connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
+//    connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
+    connect(ui->projection, SIGNAL(currentIndexChanged(QString)), this, SLOT(projectionTypeChanged(QString)));
 
     m_page = multiView->findParentPage();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
@@ -211,29 +212,23 @@ void TaskProjGroup::rotateButtonClicked(void)
     }
 }
 
-void TaskProjGroup::projectionTypeChanged(int index)
+//void TaskProjGroup::projectionTypeChanged(int index)
+void TaskProjGroup::projectionTypeChanged(QString qText)
 {
-    if(blockUpdate)
+    if(blockUpdate) {
         return;
+    }
 
-    if(index == 0) {
-        //layout per Page (Document)
+    if (qText == QString::fromUtf8("Page")) {
         multiView->ProjectionType.setValue("Default");
-
-    } else if(index == 1) {
-        // First Angle layout
-        multiView->ProjectionType.setValue("First Angle");
-    } else if(index == 2) {
-        // Third Angle layout
-        multiView->ProjectionType.setValue("Third Angle");
     } else {
-        Base::Console().Log("Error - TaskProjGroup::projectionTypeChanged - unknown projection layout: %d\n",
-                            index);
-        return;
+        std::string text = qText.toStdString();
+        multiView->ProjectionType.setValue(text.c_str());
     }
 
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
+    multiView->recomputeFeature();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)

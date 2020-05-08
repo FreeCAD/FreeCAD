@@ -58,7 +58,7 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super().__init__(name=_tr("Change slope"))
+        super(LineSlope, self).__init__(name=_tr("Change slope"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -78,7 +78,7 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        super(LineSlope, self).Activated()
 
         # for obj in Gui.Selection.getSelection():
         #     if utils.get_type(obj) != "Wire":

@@ -99,7 +99,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="540"/>
       <source>Constraint alignment...</source>
-      <translation>Murrizketaren lerrokatzea...</translation>
+      <translation>Murriztu lerrokatzea...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="541"/>
@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="472"/>
       <source>Constraint coincidence...</source>
-      <translation>Mugatu bat etortzea...</translation>
+      <translation>Murriztu bat etortzea...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="473"/>
@@ -304,8 +304,8 @@
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lehen geometriaren biraketa eta translazioa finkatzen ditu. Kontuan izan muntaketa guraso zuzenean soilik funtzionatzen duela. Muntaketak pilatzen badituzu, muntaketa gurasoa ez da finko egongo besteen barruan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

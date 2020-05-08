@@ -217,6 +217,9 @@ def init_draft_statusbar(sb):
         snap_gui_commands.remove('Draft_Snap_WorkingPlane')
     if 'Draft_Snap_Dimensions' in snap_gui_commands:
         snap_gui_commands.remove('Draft_Snap_Dimensions')
+    if 'Draft_ToggleGrid' in snap_gui_commands:
+        snap_gui_commands.remove('Draft_ToggleGrid')
+
     Gui.Snapper.init_draft_snap_buttons(snap_gui_commands,snaps_menu, "_Statusbutton")
     Gui.Snapper.restore_snap_buttons_state(snaps_menu, "_Statusbutton")
 

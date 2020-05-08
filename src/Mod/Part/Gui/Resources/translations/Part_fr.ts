@@ -94,14 +94,14 @@
       <translation>Erreur : {err}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Compensation d'accrochage :</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Décalage des pièces jointes (en coordonnées locales) :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -161,11 +161,11 @@ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Le calcul du résultat a échoué avec une erreur : 
 
 {errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Cliquez sur 'Continuer' pour créer la fonctionnalité de toute façon, ou 'Abandonner' pour annuler.</translation>
     </message>
   </context>
   <context>

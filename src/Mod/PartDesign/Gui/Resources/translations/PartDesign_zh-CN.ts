@@ -751,7 +751,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
       <source>Number of teeth:</source>
-      <translation>齿数</translation>
+      <translation>齿数：</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
@@ -766,7 +766,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="125"/>
       <source>High precision:</source>
-      <translation>高精度</translation>
+      <translation>高精度：</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
@@ -1078,7 +1078,7 @@
     <message>
       <location filename="../../ReferenceSelection.cpp" line="183"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>选择操作会导致循环引用</translation>
+      <translation>选择操作会导致循环引用。</translation>
     </message>
   </context>
   <context>
@@ -2607,12 +2607,12 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>选择一边，面或体</translation>
+      <translation>选择一边，面或体。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation>从一单一实体中选择一边，面或体</translation>
+      <translation>从一单一实体中选择一边，面或体。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>
@@ -2623,7 +2623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>从一激活状态的实体中选择一边，面或体</translation>
+      <translation>从一激活状态的实体中选择一边，面或体。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2633,7 +2633,7 @@
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>%1 works only on parts.</source>
-      <translation>%1 仅能运作于零件上</translation>
+      <translation>%1 仅能运作于零件上。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1544"/>
@@ -2653,7 +2653,7 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation>请先创建一个减料或增料特征</translation>
+      <translation>请先创建一个减料或增料特征。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
@@ -2663,7 +2663,7 @@
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation>请先选择唯一的减料或增料特征</translation>
+      <translation>请先选择唯一的减料或增料特征。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
@@ -2692,7 +2692,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="123"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>实体不能基于零件设计工作台特征</translation>
+      <translation>实体不能基于零件设计工作台特征。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
@@ -2750,7 +2750,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation>没有可迁移的对象。</translation>
+      <translation>没有可迁移的对象</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
@@ -2821,7 +2821,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Select one or more features from the same body.</source>
-      <translation>从同一实体上选择一个或多个特征</translation>
+      <translation>从同一实体上选择一个或多个特征。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="899"/>
@@ -2907,7 +2907,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="175"/>
       <source>Feature is not in a part</source>
-      <translation>特征不在零件内。</translation>
+      <translation>特征不在零件内</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="176"/>
@@ -3225,7 +3225,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="70"/>
       <source>Class</source>
-      <translation>种类：</translation>
+      <translation>种类</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="77"/>
@@ -3330,7 +3330,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation>&lt;b&gt; 杂项 &lt;/b&gt;</translation>
+      <translation>&lt;b&gt;杂项 &lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="466"/>
@@ -3340,7 +3340,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="473"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt; 螺纹和尺寸 &lt;/b&gt;</translation>
+      <translation>&lt;b&gt;螺纹和尺寸 &lt;/b&gt;</translation>
     </message>
   </context>
   <context>

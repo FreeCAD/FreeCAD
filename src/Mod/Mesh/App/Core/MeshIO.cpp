@@ -2699,7 +2699,7 @@ bool MeshOutput::SaveIDTF (std::ostream &str) const
     str << Base::tabs(3) << "}\n";
     str << Base::tabs(2) << "}\n";
     str << Base::tabs(1) << "}\n";
-    str << Base::tabs(1) << "RESOURCE_NAME \"FreeCAD\"\n";
+    str << Base::tabs(1) << "RESOURCE_NAME \"" << resource << "\"\n";
     str << Base::tabs(0) << "}\n\n";
 
     str << Base::tabs(0) << "RESOURCE_LIST \"MODEL\" {\n";

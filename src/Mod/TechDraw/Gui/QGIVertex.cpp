@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 
@@ -44,12 +45,7 @@ QGIVertex::QGIVertex(int index) :
     projIndex(index),
     m_radius(2)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
-    QColor vertexColor = fcColor.asValue<QColor>();
-
+    QColor vertexColor = PreferencesGui::vertexQColor();
     setFill(vertexColor, Qt::SolidPattern);
 
     setRadius(m_radius);

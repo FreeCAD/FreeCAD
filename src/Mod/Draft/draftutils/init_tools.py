@@ -49,7 +49,7 @@ def get_draft_drawing_commands():
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
     return ["Draft_Text", "Draft_Dimension",
-            "Draft_Label"]
+            "Draft_Label","Draft_AnnotationStyleEditor"]
 
 
 def get_draft_array_commands():
@@ -86,7 +86,7 @@ def get_draft_modification_commands():
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
             "Draft_Slope", "Draft_FlipDimension",
             "Separator",
-            "Draft_Shape2DView", "Draft_Drawing"]
+            "Draft_Shape2DView"]
     return lst
 
 
@@ -123,6 +123,7 @@ def get_draft_snap_commands():
             'Draft_Snap_Special', 'Draft_Snap_Near',
             'Draft_Snap_Ortho', 'Draft_Snap_Grid',
             'Draft_Snap_WorkingPlane', 'Draft_Snap_Dimensions',
+            'Separator', 'Draft_ToggleGrid'
             ]
 
 

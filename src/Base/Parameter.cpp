@@ -882,10 +882,12 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
     // if this or any of its children is referenced by an observer
     // it cannot be deleted
+#if 1
     if (!it->second->ShouldRemove()) {
         it->second->Clear();
     }
     else {
+#endif
         // check if Element in group
         DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
         // if not return
@@ -897,10 +899,34 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
         DOMNode* node = _pGroupNode->removeChild(pcElem);
         node->release();
+#if 1
     }
+#endif
 
     // trigger observer
     Notify(Name);
+}
+
+bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
+{
+    auto it = _GroupMap.find(OldName);
+    if (it == _GroupMap.end())
+        return false;
+    auto jt = _GroupMap.find(NewName);
+    if (jt != _GroupMap.end())
+        return false;
+
+    // rename group handle
+    _GroupMap[NewName] = _GroupMap[OldName];
+    _GroupMap.erase(OldName);
+    _GroupMap[NewName]->_cName = NewName;
+
+    // check if Element in group
+    DOMElement *pcElem = FindElement(_pGroupNode, "FCParamGroup", OldName);
+    if (pcElem)
+        pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(NewName).unicodeForm());
+
+    return true;
 }
 
 void ParameterGrp::Clear(void)

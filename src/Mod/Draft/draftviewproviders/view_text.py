@@ -54,10 +54,6 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def set_properties(self, vobj):
 
-        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
-                         "Dimension size overall multiplier"))
-
         vobj.addProperty("App::PropertyLength","FontSize",
                          "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The size of the text"))
@@ -93,6 +89,10 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def attach(self,vobj):
         '''Setup the scene sub-graph of the view provider'''
+
+        # backwards compatibility
+        self.ScaleMultiplier = 1.00
+
         self.mattext = coin.SoMaterial()
         textdrawstyle = coin.SoDrawStyle()
         textdrawstyle.style = coin.SoDrawStyle.FILLED
@@ -123,7 +123,6 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         self.onChanged(vobj,"Justification")
         self.onChanged(vobj,"LineSpacing")
 
-
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
 
@@ -148,8 +147,11 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def onChanged(self,vobj,prop):
         if prop == "ScaleMultiplier":
-            if "ScaleMultiplier" in vobj.PropertiesList and "FontSize" in vobj.PropertiesList:
-                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
+            if "ScaleMultiplier" in vobj.PropertiesList:
+                if vobj.ScaleMultiplier:
+                    self.ScaleMultiplier = vobj.ScaleMultiplier
+            if "FontSize" in vobj.PropertiesList:
+                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
         elif prop == "TextColor":
             if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
@@ -158,8 +160,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             if "FontName" in vobj.PropertiesList:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
-            if "FontSize" in vobj.PropertiesList and "ScaleMultiplier" in vobj.PropertiesList:
-                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
+            if "FontSize" in vobj.PropertiesList:
+                self.font.size = vobj.FontSize.Value * self.ScaleMultiplier
         elif prop == "Justification":
             try:
                 if getattr(vobj, "Justification", None) is not None:

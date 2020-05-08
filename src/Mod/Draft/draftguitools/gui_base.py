@@ -32,8 +32,10 @@ import FreeCADGui as Gui
 import draftutils.todo as todo
 from draftutils.messages import _msg, _log
 
+__metaclass__ = type  # to support Python 2 use of `super()`
 
-class GuiCommandSimplest(object):
+
+class GuiCommandSimplest:
     """Simplest base class for GuiCommands.
 
     This class only sets up the command name and the document object
@@ -126,7 +128,7 @@ class GuiCommandNeedsSelection(GuiCommandSimplest):
             return False
 
 
-class GuiCommandBase(object):
+class GuiCommandBase:
     """Generic class that is the basis of all Gui commands.
 
     This class should eventually replace `DraftTools.DraftTool`,

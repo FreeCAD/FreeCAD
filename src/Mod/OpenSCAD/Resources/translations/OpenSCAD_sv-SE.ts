@@ -340,7 +340,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="215"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Ersätter ett objekt i funktionsträdet. Vänligen välj gammalt, nytt och ägandeobjekt</translation>
+      <translation>Ersätt ett objekt i Funktionsträdet. Vänligen välj gamla, nya och överordnade objekt</translation>
     </message>
   </context>
   <context>

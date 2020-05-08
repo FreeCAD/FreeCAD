@@ -41,7 +41,10 @@ class Ui_SegmentationBestFit;
 class FitParameter
 {
 public:
-    typedef std::vector<Base::Vector3f> Points;
+    struct Points {
+        std::vector<Base::Vector3f> points;
+        std::vector<Base::Vector3f> normals;
+    };
     virtual ~FitParameter() {}
     virtual std::vector<float> getParameter(Points) const = 0;
 };

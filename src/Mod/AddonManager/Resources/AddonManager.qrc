@@ -34,6 +34,7 @@
         <file>icons/Lithophane_workbench_icon.svg</file>
         <file>icons/Manipulator_workbench_icon.svg</file>
         <file>icons/MeshRemodel_workbench_icon.svg</file>
+        <file>icons/ModernUI_workbench_icon.svg</file>
         <file>icons/MOOC_workbench_icon.svg</file>
         <file>icons/Part-o-magic_workbench_icon.svg</file>
         <file>icons/Plot_workbench_icon.svg</file>
@@ -50,6 +51,7 @@
         <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
+        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>

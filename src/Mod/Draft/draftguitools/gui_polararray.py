@@ -42,11 +42,11 @@ import draftutils.todo as todo
 bool(Draft_rc.__name__)
 
 
-class GuiCommandPolarArray(gui_base.GuiCommandBase):
+class PolarArray(gui_base.GuiCommandBase):
     """Gui command for the PolarArray tool."""
 
     def __init__(self):
-        super().__init__()
+        super(PolarArray, self).__init__()
         self.command_name = "Polar array"
         self.location = None
         self.mouse_event = None
@@ -136,7 +136,7 @@ class GuiCommandPolarArray(gui_base.GuiCommandBase):
                                           self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-            super().finish()
+            super(PolarArray, self).finish()
 
 
-Gui.addCommand('Draft_PolarArray', GuiCommandPolarArray())
+Gui.addCommand('Draft_PolarArray', PolarArray())

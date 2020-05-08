@@ -211,8 +211,7 @@ void DlgCustomKeyboardImp::on_categoryBox_activated(int index)
     }
 }
 
-/** Assigns a new accelerator to the selected command. */
-void DlgCustomKeyboardImp::on_buttonAssign_clicked()
+void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (!item)
@@ -224,20 +223,28 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && cmd->getAction()) {
+        QString nativeText;
         Action* action = cmd->getAction();
-        QKeySequence shortcut = ui->editShortcut->text();
-        action->setShortcut(shortcut.toString(QKeySequence::NativeText));
-        ui->accelLineEditShortcut->setText(ui->editShortcut->text());
-        ui->editShortcut->clear();
+        if (!accelText.isEmpty()) {
+            QKeySequence shortcut = accelText;
+            nativeText = shortcut.toString(QKeySequence::NativeText);
+            action->setShortcut(nativeText);
+            ui->accelLineEditShortcut->setText(accelText);
+            ui->editShortcut->clear();
+        }
+        else {
+            action->setShortcut(QString());
+            ui->accelLineEditShortcut->clear();
+            ui->editShortcut->clear();
+        }
 
         // update the tool tip
-        QString accel = shortcut.toString(QKeySequence::NativeText);
         QString toolTip = QCoreApplication::translate(cmd->className(),
             cmd->getToolTipText());
-        if (!accel.isEmpty()) {
+        if (!nativeText.isEmpty()) {
             if (!toolTip.isEmpty()) {
                 QString tip = QString::fromLatin1("%1 (%2)")
-                    .arg(toolTip, accel);
+                    .arg(toolTip, nativeText);
                 action->setToolTip(tip);
             }
         }
@@ -250,10 +257,10 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
             cmd->getStatusTip());
         if (statusTip.isEmpty())
             statusTip = toolTip;
-        if (!accel.isEmpty()) {
+        if (!nativeText.isEmpty()) {
             if (!statusTip.isEmpty()) {
                 QString tip = QString::fromLatin1("(%1)\t%2")
-                    .arg(accel, statusTip);
+                    .arg(nativeText, statusTip);
                 action->setStatusTip(tip);
             }
         }
@@ -261,48 +268,35 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
             action->setStatusTip(statusTip);
         }
 
-        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-        hGrp->SetASCII(name.constData(), ui->accelLineEditShortcut->text().toUtf8());
+        // The shortcuts for macros are store in a different location,
+        // also override the command's shortcut directly
+        if (dynamic_cast<MacroCommand*>(cmd)) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Macro/Macros");
+            if (hGrp->HasGroup(cmd->getName())) {
+                hGrp = hGrp->GetGroup(cmd->getName());
+                hGrp->SetASCII("Accel", ui->accelLineEditShortcut->text().toUtf8());
+                cmd->setAccel(ui->accelLineEditShortcut->text().toUtf8());
+            }
+        }
+        else {
+            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+            hGrp->SetASCII(name.constData(), ui->accelLineEditShortcut->text().toUtf8());
+        }
         ui->buttonAssign->setEnabled(false);
         ui->buttonReset->setEnabled(true);
     }
 }
 
+/** Assigns a new accelerator to the selected command. */
+void DlgCustomKeyboardImp::on_buttonAssign_clicked()
+{
+    setShortcutOfCurrentAction(ui->editShortcut->text());
+}
+
 /** Clears the accelerator of the selected command. */
 void DlgCustomKeyboardImp::on_buttonClear_clicked()
 {
-    QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
-    if (!item)
-        return;
-
-    QVariant data = item->data(1, Qt::UserRole);
-    QByteArray name = data.toByteArray(); // command name
-
-    CommandManager & cCmdMgr = Application::Instance->commandManager();
-    Command* cmd = cCmdMgr.getCommandByName(name.constData());
-    if (cmd && cmd->getAction()) {
-        Action* action = cmd->getAction();
-        action->setShortcut(QString());
-        ui->accelLineEditShortcut->clear();
-        ui->editShortcut->clear();
-
-        // update the tool tip
-        QString toolTip = QCoreApplication::translate(cmd->className(),
-            cmd->getToolTipText());
-        action->setToolTip(toolTip);
-
-        // update the status tip
-        QString statusTip = QCoreApplication::translate(cmd->className(),
-            cmd->getStatusTip());
-        if (statusTip.isEmpty())
-            statusTip = toolTip;
-        action->setStatusTip(statusTip);
-
-        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-        hGrp->SetASCII(name.constData(), ui->accelLineEditShortcut->text().toUtf8());
-        ui->buttonAssign->setEnabled(false);
-        ui->buttonReset->setEnabled(true);
-    }
+    setShortcutOfCurrentAction(QString());
 }
 
 /** Resets the accelerator of the selected command to the default. */
@@ -357,6 +351,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && !cmd->getAction()) {
+        Base::Console().Warning("Command %s not in use yet\n", cmd->getName());
         ui->buttonAssign->setEnabled(false); // command not in use
         return;
     }
@@ -418,6 +413,9 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                 for (auto* cmd : ambiguousCommands) {
                     Action* action = cmd->getAction();
                     action->setShortcut(QString());
+
+                    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
+                    hGrp->RemoveASCII(cmd->getName());
                 }
             }
             else {

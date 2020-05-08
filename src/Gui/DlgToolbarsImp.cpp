@@ -293,6 +293,14 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));
                 }
+                else {
+                    // If corresponding module is not yet loaded do not lose the entry
+                    QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
+                    item->setText(0, tr("%1 module not loaded").arg(QString::fromStdString(it2->second)));
+                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
+                    item->setData(0, Qt::WhatsThisPropertyRole, QByteArray(it2->second.c_str()));
+                    item->setSizeHint(0, QSize(32, 32));
+                }
             }
         }
     }
@@ -330,6 +338,10 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
                 Command* pCmd = rMgr.getCommandByName(commandName);
                 if (pCmd) {
                     hToolGrp->SetASCII(pCmd->getName(), pCmd->getAppModuleName());
+                }
+                else {
+                    QByteArray moduleName = child->data(0, Qt::WhatsThisPropertyRole).toByteArray();
+                    hToolGrp->SetASCII(commandName, moduleName);
                 }
             }
         }

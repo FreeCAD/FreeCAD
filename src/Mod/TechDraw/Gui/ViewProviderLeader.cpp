@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
+#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -62,6 +63,7 @@
 #include "ViewProviderLeader.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
 
@@ -198,8 +200,7 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
 double ViewProviderLeader::getDefLineWeight(void)
 {
     double result = 0.0;
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    std::string lgName = Preferences::lineGroup();
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     result = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
@@ -208,11 +209,7 @@ double ViewProviderLeader::getDefLineWeight(void)
 
 App::Color ViewProviderLeader::getDefLineColor(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
-    App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    return result;
+    return PreferencesGui::leaderColor();
 }
 
 void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)

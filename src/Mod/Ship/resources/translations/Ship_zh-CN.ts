@@ -519,12 +519,12 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="423"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation>流体力学工具最小吃水深度选择[m]</translation>
+      <translation>流体力学工具最小吃水深度选择 [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="436"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation>流体力学工具最大吃水深度选择[m]</translation>
+      <translation>流体力学工具最大吃水深度选择 [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="449"/>
@@ -598,17 +598,17 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="479"/>
       <source>Transversal section positions [m]</source>
-      <translation>横截面位置[m]</translation>
+      <translation>横截面位置 [m]</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="487"/>
       <source>Longitudinal section positions [m]</source>
-      <translation>纵断面位置[m]</translation>
+      <translation>纵断面位置 [m]</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="495"/>
       <source>Water line positions [m]</source>
-      <translation>水位线位置[m]</translation>
+      <translation>水位线位置 [m]</translation>
     </message>
   </context>
   <context>
@@ -659,7 +659,7 @@
     <message>
       <location filename="../../WeightInstance.py" line="55"/>
       <source>Mass [kg]</source>
-      <translation>质量[kg]</translation>
+      <translation>质量 [kg]</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="64"/>
