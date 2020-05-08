@@ -273,6 +273,9 @@ public:
     /// Stores children node names, for dynamic override children override
     SoMFName childNames;
 
+    /// Enable/disable named child switch override
+    SoSFBool allowNamedOverride;
+
     enum OverrideSwitch {
         /// No switch override
         OverrideNone,

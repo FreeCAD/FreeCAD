@@ -42,6 +42,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/ViewProviderOriginFeature.h>
+#include <Gui/SoFCUnifiedSelection.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -305,7 +306,12 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
         auto body = dynamic_cast<PartDesign::Body*>(getObject());
-    
+
+        if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
+            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->allowNamedOverride =
+                (DisplayModeBody.getValue() != 0);
+        }
+
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
             //otherwise the maskmode is blocked and won't go into "through"

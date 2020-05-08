@@ -1307,6 +1307,7 @@ SoFCSwitch::SoFCSwitch()
     SO_NODE_ADD_FIELD(childNotify, (0));
     SO_NODE_ADD_FIELD(overrideSwitch,(OverrideNone));
     SO_NODE_ADD_FIELD(childNames,(""));
+    SO_NODE_ADD_FIELD(allowNamedOverride,(TRUE));
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideNone);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideDefault);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideVisible);
@@ -1401,7 +1402,10 @@ void SoFCSwitch::doAction(SoAction *action) {
             || (action->isOfType(SoCallbackAction::getClassTypeId()) &&
                 ((SoCallbackAction *)action)->isCallbackAll()))
     {
-        if(this->whichChild.getValue()>=0 && _SwitchName!=SbName::empty()) {
+        if(this->whichChild.getValue()>=0 
+                && this->allowNamedOverride.getValue()
+                && _SwitchName!=SbName::empty())
+        {
             for(int i=0, c=std::min(childNames.getNum(),this->getNumChildren()); i<c; ++i) {
                 if(childNames[i] == _SwitchName) {
                     traverseChild(action, i);
