@@ -24,13 +24,20 @@
 #ifndef GUI_VIEW3DINVENTOR_H
 #define GUI_VIEW3DINVENTOR_H
 
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbRotation.h>
+
 #include "MDIView.h"
 
 #include <Base/Parameter.h>
 #include <QImage>
 #include <QtOpenGL.h>
+#include "InventorBase.h"
 
 class SoNode;
+class SoCamera;
+class SoNodeSensor;
 class QPrinter;
 class QStackedWidget;
 
@@ -83,6 +90,16 @@ public:
     virtual void viewAll();
     virtual const char *getName(void) const;
 
+    void bindCamera(SoCamera *camera);
+    void syncCamera(View3DInventor *view);
+    View3DInventor *bindView(const QString &title);
+    bool unbindView(const QString &title);
+    SoCamera *boundCamera() const;
+    View3DInventor *boundView() const;
+    std::set<View3DInventor*> boundViews(bool recursive=false) const;
+    void boundViews(std::set<View3DInventor*> &views, bool recursive=false) const;
+    SoCamera *getCamera() const;
+
     /// print function of the view
     virtual void print();
     virtual void printPdf();
@@ -131,6 +148,23 @@ protected:
     void customEvent      (QEvent          * e);
     void contextMenuEvent (QContextMenuEvent*e);
 
+    struct CameraInfo {
+        SoNodeSensor sensor;
+        SbVec3f position;
+        SbRotation orientation;
+        float focal;
+        float height;
+
+        bool sync(SoCamera *cam = 0);
+        void apply(SoCamera *cam = 0);
+
+        bool attached() const {
+            return sensor.getAttachedNode() != nullptr;
+        }
+    };
+
+    void onCameraChanged(CameraInfo &src, CameraInfo &dst);
+
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
 
@@ -139,6 +173,9 @@ private:
     PyObject *_viewerPy;
     QTimer * stopSpinTimer;
     QStackedWidget* stack;
+
+    CameraInfo camInfo;
+    CameraInfo boundCamInfo;
 
     // friends
     friend class View3DPy;

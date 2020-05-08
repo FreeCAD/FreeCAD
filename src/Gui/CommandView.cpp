@@ -4118,6 +4118,44 @@ public:
 #endif // FC_HAS_DOCK_OVERLAY
 
 //===========================================================================
+// Std_BindViewCamera
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdBindViewCamera)
+
+StdCmdBindViewCamera::StdCmdBindViewCamera()
+  : Command("Std_BindViewCamera")
+{
+    sGroup        = QT_TR_NOOP("View");
+    sMenuText     = QT_TR_NOOP("Bind view camera");
+    sToolTipText  = QT_TR_NOOP("Bind the camera position of the active view to another view");
+    sWhatsThis    = "Std_BindViewCamera";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
+void StdCmdBindViewCamera::activated(int iMsg)
+{
+    // Handled by the related QAction objects
+    Q_UNUSED(iMsg); 
+}
+
+bool StdCmdBindViewCamera::isActive(void)
+{
+    if(Base::freecad_dynamic_cast<View3DInventor>(Application::Instance->activeView()))
+        return true;
+    return false;
+}
+
+Action * StdCmdBindViewCamera::createAction(void)
+{
+    Action *pcAction;
+    pcAction = new ViewCameraBindingAction(this, getMainWindow());
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -4196,6 +4234,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+    rcCmdMgr.addCommand(new StdCmdBindViewCamera());
 
 #ifdef FC_HAS_DOCK_OVERLAY
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

@@ -526,6 +526,9 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         createLinkMenu(item);
         *item << "Separator";
 
+        if(Application::Instance->commandManager().getCommandByName("Std_BindViewCamera")->isActive())
+            *item << "Std_BindViewCamera";
+
         MenuItem* StdViews = new MenuItem;
         StdViews->setCommand( "Standard views" );
 

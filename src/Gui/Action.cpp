@@ -49,6 +49,8 @@
 #include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "View3DInventor.h"
+#include "Document.h"
 
 #include <Base/Exception.h>
 #include <App/Application.h>
@@ -994,6 +996,108 @@ void WindowAction::addTo ( QWidget * w )
         menu->addActions(_group->actions());
         connect(menu, SIGNAL(aboutToShow()),
                 getMainWindow(), SLOT(onWindowsMenuAboutToShow()));
+    }
+}
+
+// --------------------------------------------------------------------
+
+ViewCameraBindingAction::ViewCameraBindingAction ( Command* pcCmd, QObject * parent )
+  : Action(pcCmd, parent), _menu(0)
+{
+}
+
+ViewCameraBindingAction::~ViewCameraBindingAction()
+{
+}
+
+void ViewCameraBindingAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+        _menu = new QMenu();
+        _action->setMenu(_menu);
+        connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+        connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction*)));
+    }
+    w->addAction(_action);
+}
+
+void ViewCameraBindingAction::onShowMenu()
+{
+    _menu->clear();
+
+    auto activeView = Base::freecad_dynamic_cast<View3DInventor>(
+            Application::Instance->activeView());
+    if(!activeView)
+        return;
+
+    auto boundViews = activeView->boundViews();
+    if(boundViews.size()) {
+        if(boundViews.size() == 1) {
+            auto action = _menu->addAction(tr("Sync camera"));
+            action->setData(1);
+        }
+        auto action = _menu->addAction(tr("Unbind"));
+        action->setData(2);
+        _menu->addSeparator();
+    }
+    for(auto doc : App::GetApplication().getDocuments()) {
+        auto gdoc = Application::Instance->getDocument(doc);
+        if(!gdoc)
+            continue;
+        auto views = gdoc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+        for(auto it=views.begin();it!=views.end();) {
+            auto view = static_cast<View3DInventor*>(*it);
+            if(view == activeView ||
+                    (!boundViews.count(view) && view->boundViews(true).count(activeView)))
+                it = views.erase(it);
+            else
+                ++it;
+        }
+        if(views.empty())
+            continue;
+        if(views.size() == 1) {
+            auto view = static_cast<View3DInventor*>(views.front());
+            auto action = _menu->addAction(view->windowTitle());
+            action->setCheckable(true);
+            if(boundViews.count(view))
+                action->setChecked(true);
+            continue;
+        }
+        auto menu = _menu->addMenu(QString::fromUtf8(doc->Label.getValue()));
+        for(auto view : views) {
+            auto action = menu->addAction(view->windowTitle());
+            action->setCheckable(true);
+            if(boundViews.count(static_cast<View3DInventor*>(view)))
+                action->setChecked(true);
+        }
+    }
+}
+
+void ViewCameraBindingAction::onTriggered(QAction *action)
+{
+    auto activeView = Base::freecad_dynamic_cast<View3DInventor>(
+            Application::Instance->activeView());
+    if(!activeView)
+        return;
+
+    switch(action->data().toInt()) {
+    case 1: {
+        auto views = activeView->boundViews();
+        if(views.size())
+            activeView->syncCamera(*views.begin());
+        break;
+    }
+    case 2:
+        for(auto view : activeView->boundViews())
+            view->bindCamera(nullptr);
+        activeView->bindCamera(nullptr);
+        break;
+    default:
+        if (action->isChecked())
+            activeView->bindView(action->text());
+        else
+            activeView->unbindView(action->text());
+        break;
     }
 }
 

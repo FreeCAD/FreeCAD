@@ -316,6 +316,28 @@ private:
     QMenu* _menu;
 };
 
+// --------------------------------------------------------------------
+
+/**
+ * Special action for view camera binding.
+ */
+class GuiExport ViewCameraBindingAction : public Action
+{
+    Q_OBJECT
+
+public:
+    ViewCameraBindingAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~ViewCameraBindingAction();
+    void addTo (QWidget * w);
+
+protected Q_SLOTS:
+    void onShowMenu();
+    void onTriggered(QAction *);
+
+private:
+    QMenu* _menu;
+};
+
 } // namespace Gui
 
 #endif // GUI_ACTION_H
