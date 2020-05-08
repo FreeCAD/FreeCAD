@@ -21,8 +21,6 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui, QtCore
 
-# compiled with pyrcc4 -py3 Resources\CAM_Sim.qrc -o CAM_Sim_rc.py
-
 
 class CAMSimTaskUi:
     def __init__(self, parent):
@@ -143,14 +141,12 @@ class PathSimulation:
             self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
         self.icmd = 0
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
-        # self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
         self.cutTool.Placement = self.curpos
         self.opCommands =  self.operation.Path.Commands
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
         self.busy = False
-        # self.timer.start(100)
         self.height = 10
         self.skipStep = False
         self.initialPos = Vector(0, 0, self.job.Stock.Shape.BoundBox.ZMax)
@@ -183,10 +179,6 @@ class PathSimulation:
         self.resetSimulation = True
         FreeCAD.ActiveDocument.recompute()
 
-    # def SkipStep(self):
-    #     self.skipStep = True
-    #     self.PerformCut()
-
     def PerformCutBoolean(self):
         if self.resetSimulation:
             self.resetSimulation = False
@@ -197,7 +189,6 @@ class PathSimulation:
         self.busy = True
 
         cmd = self.operation.Path.Commands[self.icmd]
-        # for cmd in job.Path.Commands:
         pathSolid = None
 
         if cmd.Name in ['G0']:
@@ -235,7 +226,6 @@ class PathSimulation:
         self.iprogress += 1
         self.UpdateProgress()
         if self.icmd >= len(self.operation.Path.Commands):
-            # self.cutMaterial.Shape = self.stock.removeSplitter()
             self.ioperation += 1
             if self.ioperation >= len(self.activeOps):
                 self.EndSimulation()
@@ -260,7 +250,7 @@ class PathSimulation:
         if cmd.Name in ['G0', 'G1', 'G2', 'G3']:
             self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
-                self.cutTool.Placement = self.curpos  # FreeCAD.Placement(self.curpos, self.stdrot)
+                self.cutTool.Placement = self.curpos
                 (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
         if cmd.Name in ['G81', 'G82', 'G83']:
             extendcommands = []
@@ -273,13 +263,12 @@ class PathSimulation:
             for ecmd in extendcommands:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, ecmd)
                 if not self.disableAnim:
-                    self.cutTool.Placement = self.curpos  # FreeCAD.Placement(self.curpos, self.stdrot)
+                    self.cutTool.Placement = self.curpos
                     (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
         if self.icmd >= len(self.opCommands):
-            # self.cutMaterial.Shape = self.stock.removeSplitter()
             self.ioperation += 1
             if self.ioperation >= len(self.activeOps):
                 self.EndSimulation()
@@ -300,56 +289,9 @@ class PathSimulation:
             return curpos
         return path.valueAt(path.LastParameter)
 
-    # def GetPathSolidOld(self, tool, cmd, curpos):
-    #     e1 = PathGeom.edgeForCmd(cmd, curpos)
-    #     # curpos = e1.valueAt(e1.LastParameter)
-    #     n1 = e1.tangentAt(0)
-    #     n1[2] = 0.0
-    #     try:
-    #         n1.normalize()
-    #     except:
-    #         return (None, e1.valueAt(e1.LastParameter))
-    #     height = self.height
-    #     rad = float(tool.Diameter) / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
-    #     if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
-    #         rad = e1.Curve.Radius - 0.001
-    #         # return (None, e1.valueAt(e1.LastParameter))
-    #     xf = n1[0] * rad
-    #     yf = n1[1] * rad
-    #     xp = curpos[0]
-    #     yp = curpos[1]
-    #     zp = curpos[2]
-    #     v1 = Vector(yf + xp, -xf + yp, zp)
-    #     v2 = Vector(yf + xp, -xf + yp, zp + height)
-    #     v3 = Vector(-yf + xp, xf + yp, zp + height)
-    #     v4 = Vector(-yf + xp, xf + yp, zp)
-    #     # vc1 = Vector(xf + xp, yf + yp, zp)
-    #     # vc2 = Vector(xf + xp, yf + yp, zp + height)
-    #     l1 = Part.makeLine(v1, v2)
-    #     l2 = Part.makeLine(v2, v3)
-    #     # l2 = Part.Edge(Part.Arc(v2, vc2, v3))
-    #     l3 = Part.makeLine(v3, v4)
-    #     l4 = Part.makeLine(v4, v1)
-    #     # l4 = Part.Edge(Part.Arc(v4, vc1, v1))
-    #     w1 = Part.Wire([l1, l2, l3, l4])
-    #     w2 = Part.Wire(e1)
-    #     try:
-    #         ex1 = w2.makePipeShell([w1], True, True)
-    #     except:
-    #         # Part.show(w1)
-    #         # Part.show(w2)
-    #         return (None, e1.valueAt(e1.LastParameter))
-    #     cyl1 = Part.makeCylinder(rad, height, curpos)
-    #     curpos = e1.valueAt(e1.LastParameter)
-    #     cyl2 = Part.makeCylinder(rad, height, curpos)
-    #     ex1s = Part.Solid(ex1)
-    #     f1 = ex1s.fuse([cyl1, cyl2]).removeSplitter()
-    #     return (f1, curpos)
-
     # get a solid representation of a tool going along path
     def GetPathSolid(self, tool, cmd, pos):
         toolPath = PathGeom.edgeForCmd(cmd, pos)
-        # curpos = e1.valueAt(e1.LastParameter)
         startDir = toolPath.tangentAt(0)
         startDir[2] = 0.0
         endPos = toolPath.valueAt(toolPath.LastParameter)
@@ -359,11 +301,9 @@ class PathSimulation:
             endDir.normalize()
         except Exception:
             return (None, endPos)
-        # height = self.height
 
         # hack to overcome occ bugs
         rad = float(tool.Diameter) / 2.0 - 0.001 * pos[2]
-        # rad = rad + 0.001 * self.icmd
         if type(toolPath.Curve) is Part.Circle and toolPath.Curve.Radius <= rad:
             rad = toolPath.Curve.Radius - 0.01 * (pos[2] + 1)
             return (None, endPos)
@@ -398,7 +338,6 @@ class PathSimulation:
     # create radial profile of the tool (90 degrees to the direction of the path)
     def CreateToolProfile(self, tool, dir, pos, rad):
         type = tool.ToolType
-        # rad = float(tool.Diameter) / 2.0 - 0.001 * pos[2] # hack to overcome occ bug
         xf = dir[0] * rad
         yf = dir[1] * rad
         xp = pos[0]
@@ -468,7 +407,6 @@ class PathSimulation:
         form = self.taskForm.form
         self.simperiod = 1000 / form.sliderSpeed.value()
         form.labelGPerSec.setText(str(form.sliderSpeed.value()) + " G/s")
-        # if (self.timer.isActive()):
         self.timer.setInterval(self.simperiod)
 
     def onAccuracyBarChange(self):
@@ -478,7 +416,6 @@ class PathSimulation:
 
     def GuiBusy(self, isBusy):
         form = self.taskForm.form
-        # form.toolButtonStop.setEnabled()
         form.toolButtonPlay.setEnabled(not isBusy)
         form.toolButtonPause.setEnabled(isBusy)
         form.toolButtonStep.setEnabled(not isBusy)
@@ -567,7 +504,6 @@ class PathSimulation:
         self.EndSimulation()
         self.RemoveTool()
         self.RemoveMaterial()
-
 
 class CommandPathSimulate:
 
