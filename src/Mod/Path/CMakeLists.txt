@@ -88,8 +88,6 @@ SET(PathScripts_SRCS
 	PathScripts/PathProbe.py
 	PathScripts/PathProbeGui.py
     PathScripts/PathProfile.py
-    PathScripts/PathProfileBase.py
-    PathScripts/PathProfileBaseGui.py
     PathScripts/PathProfileContour.py
     PathScripts/PathProfileContourGui.py
     PathScripts/PathProfileEdges.py
