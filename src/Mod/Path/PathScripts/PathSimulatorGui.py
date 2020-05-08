@@ -10,8 +10,6 @@ import os
 
 from FreeCAD import Vector, Base
 
-_filePath = os.path.dirname(os.path.abspath(__file__))
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Mesh = LazyLoader('Mesh', globals(), 'Mesh')
@@ -20,6 +18,8 @@ Part = LazyLoader('Part', globals(), 'Part')
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui, QtCore
+
+_filePath = os.path.dirname(os.path.abspath(__file__))
 
 
 class CAMSimTaskUi:
@@ -135,14 +135,14 @@ class PathSimulation:
 
             if not self.cutTool.Shape.isValid() or self.cutTool.Shape.isNull():
                 self.EndSimulation()
-                raise RuntimeError("Path Simulation: Error in tool geometry - {}".format(self.tool.Name)) 
+                raise RuntimeError("Path Simulation: Error in tool geometry - {}".format(self.tool.Name))
 
             self.cutTool.ViewObject.show()
             self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
         self.icmd = 0
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         self.cutTool.Placement = self.curpos
-        self.opCommands =  self.operation.Path.Commands
+        self.opCommands = self.operation.Path.Commands
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
@@ -400,8 +400,8 @@ class PathSimulation:
                 listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
-        if  self.initdone:
-          self.SetupSimulation()
+        if self.initdone:
+            self.SetupSimulation()
 
     def onSpeedBarChange(self):
         form = self.taskForm.form
@@ -435,10 +435,10 @@ class PathSimulation:
 
     def InvalidOperation(self):
         if len(self.activeOps) == 0:
-          return True
+            return True
         if (self.tool is None):
-          TSError("No tool assigned for the operation")
-          return True
+            TSError("No tool assigned for the operation")
+            return True
         return False
 
     def SimFF(self):
@@ -505,6 +505,7 @@ class PathSimulation:
         self.RemoveTool()
         self.RemoveMaterial()
 
+
 class CommandPathSimulate:
 
     def GetResources(self):
@@ -517,13 +518,15 @@ class CommandPathSimulate:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
         pathSimulation.Activate()
 
+
 pathSimulation = PathSimulation()
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Simulator', CommandPathSimulate())
