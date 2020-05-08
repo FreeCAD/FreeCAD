@@ -39,7 +39,12 @@ def make_reinforcement_generic(
     name="ReinforcementGeneric"
 ):
     """
-    make_reinforcement_generic(base_rebar, placements, [base_placement], [name])
+    make_reinforcement_generic(
+        base_rebar,
+        placements,
+        [base_placement],
+        [name]
+    )
     Adds a generic reinforcement object.
     """
     if not FreeCAD.ActiveDocument:

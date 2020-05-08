@@ -37,9 +37,7 @@ False if Arch_rc.__name__ else True  # dummy usage
 
 class ViewProviderBaseRebar(ViewProviderRebarCommon):
 
-    def getIcon(
-        self
-    ):
+    def getIcon(self):
         return ":/icons/Arch_RebarBase.svg"
 
     def onDelete(self, feature, subelements):
@@ -50,9 +48,7 @@ class ViewProviderBaseRebar(ViewProviderRebarCommon):
             FreeCAD.Console.PrintError("Error in onDelete: ")
         return True
 
-    def claimChildren(
-        self
-    ):
+    def claimChildren(self):
         # collect the children for TreeView
 
         # children from Arch.Component

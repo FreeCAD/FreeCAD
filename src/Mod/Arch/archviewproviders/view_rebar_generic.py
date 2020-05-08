@@ -44,12 +44,8 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
     # inherite this class and only use a different icon
     # color may be not brown, may be depending on diameter
 
-    def __init__(
-        self,
-        vobj
-    ):
+    def __init__(self, vobj):
         super(ViewProviderRebarCommon, self).__init__(vobj)
-
         pl = vobj.PropertiesList
         if "RebarShape" not in pl:
             vobj.addProperty(
@@ -62,20 +58,12 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
                 )
             ).RebarShape
             vobj.setEditorMode("RebarShape", 2)
-
         vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
 
-    def onDocumentRestored(
-        self,
-        vobj
-    ):
+    def onDocumentRestored(self, vobj):
         self.setProperties(vobj)
 
-    def setEdit(
-        self,
-        vobj,
-        mode
-    ):
+    def setEdit(self, vobj, mode):
         if mode == 0:
             if vobj.RebarShape:
                 try:
@@ -88,11 +76,7 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
                     return
                 module.editDialog(vobj)
 
-    def updateData(
-        self,
-        obj,
-        prop
-    ):
+    def updateData(self, obj, prop):
         if prop == "Shape":
             if hasattr(self, "centerline"):
                 if self.centerline:
@@ -125,10 +109,7 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
                     self.centerlinegroup.addChild(self.centerline)
         ArchComponent.ViewProviderComponent.updateData(self, obj, prop)  # ???
 
-    def attach(
-        self,
-        vobj
-    ):
+    def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
         self.centerlinegroup = coin.SoSeparator()
@@ -140,11 +121,7 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
         vobj.addDisplayMode(self.centerlinegroup, "Centerline")
         ArchComponent.ViewProviderComponent.attach(self, vobj)  # ???
 
-    def onChanged(
-        self,
-        vobj,
-        prop
-    ):
+    def onChanged(self, vobj, prop):
         if (prop == "LineColor") and hasattr(vobj, "LineColor"):
             if hasattr(self, "centerlinecolor"):
                 c = vobj.LineColor
@@ -154,10 +131,7 @@ class ViewProviderRebarCommon(Arch.ArchComponent.ViewProviderComponent):
                 self.centerlinestyle.lineWidth = vobj.LineWidth
         ArchComponent.ViewProviderComponent.onChanged(self, vobj, prop)  # ???
 
-    def getDisplayModes(
-        self,
-        vobj
-    ):
+    def getDisplayModes(self, vobj):
         modes = ArchComponent.ViewProviderComponent.getDisplayModes(
             self, vobj
         )

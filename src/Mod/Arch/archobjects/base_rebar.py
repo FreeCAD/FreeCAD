@@ -36,7 +36,6 @@ from DraftGeomUtils import filletWire
 
 # ****************************************************************************
 class BaseRebar(ArchComponent.Component):
-
     """
     A base reinforcement bar (rebar) object for a rebar shape
 

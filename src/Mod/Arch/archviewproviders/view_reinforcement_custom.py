@@ -33,7 +33,5 @@ False if Arch_rc.__name__ else True  # dummy usage
 
 class ViewProviderReinforcementCustom(ViewProviderReinforcementGeneric):
 
-    def getIcon(
-        self
-    ):
+    def getIcon(self):
         return ":/icons/Arch_ReinforcementCustom.svg"

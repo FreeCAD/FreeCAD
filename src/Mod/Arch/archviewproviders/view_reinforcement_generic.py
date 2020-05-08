@@ -35,9 +35,5 @@ False if Arch_rc.__name__ else True  # dummy usage
 
 class ViewProviderReinforcementGeneric(ViewProviderRebarCommon):
 
-    def getIcon(
-        self
-    ):
-        import Arch_rc
-        False if Arch_rc.__name__ else True  # dummy usage
+    def getIcon(self):
         return ":/icons/Arch_ReinforcementGeneric.svg"

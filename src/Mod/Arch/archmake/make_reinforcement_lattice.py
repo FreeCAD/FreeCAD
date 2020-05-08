@@ -42,7 +42,12 @@ def make_reinforcement_lattice(
     name="ReinforcementLattice"
 ):
     """
-    make_reinforcement_lattice(base_rebar, placements, [base_placement], [name])
+    make_reinforcement_lattice(
+        base_rebar,
+        placements,
+        [base_placement],
+        [name]
+    )
     Adds a lattice reinforcement object.
     """
     if lattice2BF.isObjectLattice(latice_obj) is not True:

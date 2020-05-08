@@ -34,14 +34,10 @@ False if Arch_rc.__name__ else True  # dummy usage
 
 class ViewProviderReinforcementIndividual(ViewProviderReinforcementGeneric):
 
-    def getIcon(
-        self
-    ):
+    def getIcon(self):
         return ":/icons/Arch_ReinforcementIndividual.svg"
 
-    def claimChildren(
-        self
-    ):
+    def claimChildren(self):
         # collect the children for TreeView
 
         # children from Arch.Component
