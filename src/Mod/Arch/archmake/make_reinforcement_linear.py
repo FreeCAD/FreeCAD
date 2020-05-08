@@ -26,8 +26,14 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FreeCAD import Vector as vec
 
+from archobjects.reinforcement_linear import ReinforcementLinear
 from draftutils.translate import translate
 
+if FreeCAD.GuiUp:
+    import archviewproviders.view_reinforcement_linear as view_linear
+
+
+# TODO put this somewhere else where it makes sense
 # Does it makes sense to put OffsetEnd and OffsetStart in make too?
 # on ifc import they are 0, they will not be needed there
 # they would be needed it direction and distance will be set with and real edge
@@ -55,7 +61,6 @@ from draftutils.translate import translate
 #
 # If none of them is given:
 # ATM: print, not yet supported
-#
 
 
 def make_reinforcement_linear(
@@ -109,10 +114,8 @@ def make_reinforcement_linear(
     )
     obj.Label = translate("Arch", name)
 
-    from archobjects.reinforcement_linear import ReinforcementLinear
     ReinforcementLinear(obj)
     if FreeCAD.GuiUp:
-        import archviewproviders.view_reinforcement_linear as view_linear
         view_linear.ViewProviderReinforcementLinear(obj.ViewObject)
 
     obj.BaseRebar = base_rebar

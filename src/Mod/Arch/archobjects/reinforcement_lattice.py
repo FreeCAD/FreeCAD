@@ -27,6 +27,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD
 
+# TODO guard as it is an AddOn
 import lattice2BaseFeature as lattice2BF
 
 from . reinforcement_generic import ReinforcementGeneric

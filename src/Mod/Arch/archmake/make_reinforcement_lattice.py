@@ -25,7 +25,14 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
+from archobjects.reinforcement_lattice import ReinforcementLattice
 from draftutils.translate import translate
+
+# TODO guard as it is an AddOn
+import lattice2BaseFeature as lattice2BF
+
+if FreeCAD.GuiUp:
+    import archviewproviders.view_reinforcement_lattice as view_lattice
 
 
 def make_reinforcement_lattice(
@@ -38,8 +45,7 @@ def make_reinforcement_lattice(
     make_reinforcement_lattice(base_rebar, placements, [base_placement], [name])
     Adds a lattice reinforcement object.
     """
-    from lattice2BaseFeature import isObjectLattice as islattice
-    if islattice(latice_obj) is not True:
+    if lattice2BF.isObjectLattice(latice_obj) is not True:
         FreeCAD.Console.PrintError(
             "The object provided: {} is not a Lattice2 object\n"
             .format(latice_obj.Name)
@@ -55,10 +61,8 @@ def make_reinforcement_lattice(
     )
     obj.Label = translate("Arch", name)
 
-    from archobjects.reinforcement_lattice import ReinforcementLattice
     ReinforcementLattice(obj)
     if FreeCAD.GuiUp:
-        import archviewproviders.view_reinforcement_lattice as view_lattice
         view_lattice.ViewProviderReinforcementLattice(obj.ViewObject)
 
     obj.BaseRebar = base_rebar

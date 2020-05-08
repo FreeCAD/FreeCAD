@@ -25,7 +25,11 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
+from archobjects.base_rebar import BaseRebar
 from draftutils.translate import translate
+
+if FreeCAD.GuiUp:
+    from archviewproviders.view_base_rebar import ViewProviderBaseRebar
 
 
 def make_base_rebar(
@@ -50,10 +54,8 @@ def make_base_rebar(
     # may be set the label to the mark number
     # or even have an attribute which does it on any obj recompute
 
-    from archobjects.base_rebar import BaseRebar
     BaseRebar(obj)
     if FreeCAD.GuiUp:
-        from archviewproviders.view_base_rebar import ViewProviderBaseRebar
         ViewProviderBaseRebar(obj.ViewObject)
 
     obj.Base = base

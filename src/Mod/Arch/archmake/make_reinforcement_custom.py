@@ -26,9 +26,11 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FreeCAD import Vector as vec
 
+from archobjects.reinforcement_custom import ReinforcementCustom
 from draftutils.translate import translate
 
-# see linear
+if FreeCAD.GuiUp:
+    import archviewproviders.view_reinforcement_custom as view_custom
 
 
 def make_reinforcement_custom(
@@ -58,10 +60,8 @@ def make_reinforcement_custom(
     )
     obj.Label = translate("Arch", name)
 
-    from archobjects.reinforcement_custom import ReinforcementCustom
     ReinforcementCustom(obj)
     if FreeCAD.GuiUp:
-        import archviewproviders.view_reinforcement_custom as view_custom
         view_custom.ViewProviderReinforcementCustom(obj.ViewObject)
 
     obj.BaseRebar = base_rebar

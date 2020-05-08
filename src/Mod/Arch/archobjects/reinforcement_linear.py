@@ -27,7 +27,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD
 
-import ArchComponent
 import DraftVecUtils
 from .reinforcement_generic import ReinforcementGeneric
 

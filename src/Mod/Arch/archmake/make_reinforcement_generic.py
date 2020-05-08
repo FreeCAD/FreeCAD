@@ -25,7 +25,11 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
+from archobjects.reinforcement_generic import ReinforcementGeneric
 from draftutils.translate import translate
+
+if FreeCAD.GuiUp:
+    import archviewproviders.view_reinforcement_generic as view_generic
 
 
 def make_reinforcement_generic(
@@ -47,10 +51,8 @@ def make_reinforcement_generic(
     )
     obj.Label = translate("Arch", name)
 
-    from archobjects.reinforcement_generic import ReinforcementGeneric
     ReinforcementGeneric(obj)
     if FreeCAD.GuiUp:
-        import archviewproviders.view_reinforcement_generic as view_generic
         view_generic.ViewProviderReinforcementGeneric(obj.ViewObject)
 
     obj.BaseRebar = base_rebar
