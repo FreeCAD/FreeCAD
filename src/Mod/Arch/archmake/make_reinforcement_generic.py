@@ -59,7 +59,7 @@ def make_reinforcement_generic(
     obj.Amount = len(placements)
     obj.TotalLength = obj.Amount * base_rebar.Length
 
-    # mark base_rebar obj for recompute to make it collect its new child
+    # mark base_rebar obj to make it collect its new child
+    # TODO is touche really needed
     base_rebar.touch()
-    obj.Document.recompute()
     return obj

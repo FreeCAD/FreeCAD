@@ -48,7 +48,7 @@ def make_base_rebar(
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Rebar")
     obj.Label = translate("Arch", name)
     # may be set the label to the mark number
-    # or even have an attribute which does it on any recompute
+    # or even have an attribute which does it on any obj recompute
 
     from archobjects.base_rebar import BaseRebar
     BaseRebar(obj)
@@ -68,5 +68,4 @@ def make_base_rebar(
     else:
         obj.MarkNumber = 1
 
-    obj.Document.recompute()
     return obj

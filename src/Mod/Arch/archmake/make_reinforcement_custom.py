@@ -68,9 +68,7 @@ def make_reinforcement_custom(
     obj.CustomSpacing = custom_spacing
     obj.BasePlacement = base_placement
     obj.Direction = direction
-    obj.Document.recompute()
 
-    # mark base_rebar obj for recompute to make it collect its new child
+    # mark base_rebar obj to make it collect its new child
     base_rebar.touch()
-    obj.Document.recompute()
     return obj

@@ -65,7 +65,6 @@ def make_reinforcement_lattice(
     obj.LatticePlacement = latice_obj
     obj.BasePlacement = base_placement
 
-    # mark base_rebar obj for recompute to make it collect its new child
+    # mark base_rebar obj to make it collect its new child
     base_rebar.touch()
-    obj.Document.recompute()
     return obj

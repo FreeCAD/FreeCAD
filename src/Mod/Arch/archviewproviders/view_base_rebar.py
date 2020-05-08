@@ -121,8 +121,8 @@ class ViewProviderBaseRebar(ViewProviderRebarCommon):
         ):
             dragged_object.BaseRebar = None
             # mark the object we move out to recompute
+            # TODO is the touch() needed?
             selfvp.Object.touch()
-        FreeCAD.ActiveDocument.recompute()
 
     def dropObject(self, selfvp, incoming_object):
         if (
@@ -134,5 +134,5 @@ class ViewProviderBaseRebar(ViewProviderRebarCommon):
         ):
             incoming_object.BaseRebar = selfvp.Object
             # mark the object we move in to recompute
+            # TODO is the touch() needed?
             selfvp.Object.touch()
-        FreeCAD.ActiveDocument.recompute()

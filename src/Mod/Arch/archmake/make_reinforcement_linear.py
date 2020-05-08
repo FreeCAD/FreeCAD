@@ -118,7 +118,6 @@ def make_reinforcement_linear(
     obj.BaseRebar = base_rebar
     obj.BasePlacement = base_placement
     obj.Direction = direction
-    obj.Document.recompute()
 
     if distance is None:
         obj.FixedAttribut = "Amount"
@@ -135,11 +134,8 @@ def make_reinforcement_linear(
         obj.Distance = distance
         obj.Amount = amount
 
-    obj.Document.recompute()
-
-    # mark base_rebar obj for recompute to make it collect its new child
+    # mark base_rebar obj to make it collect its new child
     base_rebar.touch()
-    obj.Document.recompute()
     return obj
 
 
