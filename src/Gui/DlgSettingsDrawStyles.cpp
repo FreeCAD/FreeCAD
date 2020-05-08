@@ -115,11 +115,8 @@ void DlgSettingsDrawStyles::saveSettings()
             if(!view)
                 continue;
             auto viewer = view->getViewer();
-            std::string mode = viewer->getOverrideMode();
-            if(mode.size()) {
-                viewer->setOverrideMode(std::string());
-                viewer->setOverrideMode(mode);
-            }
+            if(viewer->getOverrideMode() != "As Is")
+                viewer->applyOverrideMode();
         }
     }
 }

@@ -140,7 +140,7 @@ Larger value eases to pick things, but can make small features impossible to sel
            <number>1</number>
           </property>
           <property name="minimum">
-           <double>0.100000000000000</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="maximum">
            <double>1.000000000000000</double>
@@ -277,6 +277,18 @@ Larger value eases to pick things, but can make small features impossible to sel
         </property>
         <item row="5" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinBoxGroundScale">
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>2.000000000000000</double>
+          </property>
           <property name="prefEntry" stdset="0">
            <string>ShadowGroundScale</string>
           </property>
@@ -386,6 +398,15 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="2" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinBoxLightIntensity">
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.800000000000000</double>
+          </property>
           <property name="prefEntry" stdset="0">
            <string>ShadowLightIntensity</string>
           </property>
