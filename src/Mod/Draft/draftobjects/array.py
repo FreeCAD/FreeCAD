@@ -46,25 +46,81 @@ class Array(DraftLink):
         super(Array, self).__init__(obj, "Array")
 
     def attach(self, obj):
-        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
-        obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",QT_TRANSLATE_NOOP("App::Property","The type of array to create"))
-        obj.addProperty("App::PropertyLinkGlobal","AxisReference","Draft",QT_TRANSLATE_NOOP("App::Property","The axis (e.g. DatumLine) overriding Axis/Center"))
-        obj.addProperty("App::PropertyVector","Axis","Draft",QT_TRANSLATE_NOOP("App::Property","The axis direction"))
-        obj.addProperty("App::PropertyInteger","NumberX","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in X direction"))
-        obj.addProperty("App::PropertyInteger","NumberY","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Y direction"))
-        obj.addProperty("App::PropertyInteger","NumberZ","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Z direction"))
-        obj.addProperty("App::PropertyInteger","NumberPolar","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
-        obj.addProperty("App::PropertyVectorDistance","IntervalX","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in X direction"))
-        obj.addProperty("App::PropertyVectorDistance","IntervalY","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Y direction"))
-        obj.addProperty("App::PropertyVectorDistance","IntervalZ","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Z direction"))
-        obj.addProperty("App::PropertyVectorDistance","IntervalAxis","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Axis direction"))
-        obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","Center point"))
-        obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","Angle to cover with copies"))
-        obj.addProperty("App::PropertyDistance","RadialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between copies in a circle"))
-        obj.addProperty("App::PropertyDistance","TangentialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between circles"))
-        obj.addProperty("App::PropertyInteger","NumberCircles","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
-        obj.addProperty("App::PropertyInteger","Symmetry","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
-        obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
+        _tip = "The base object that must be duplicated"
+        obj.addProperty("App::PropertyLink", "Base",
+                        "Objects", QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "The type of array to create"
+        obj.addProperty("App::PropertyEnumeration", "ArrayType",
+                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "The axis (e.g. DatumLine) overriding Axis/Center"
+        obj.addProperty("App::PropertyLinkGlobal", "AxisReference",
+                        "Objects", QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "The axis direction"
+        obj.addProperty("App::PropertyVector", "Axis",
+                        "Parameters", QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Number of copies in X direction"
+        obj.addProperty("App::PropertyInteger", "NumberX",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Number of copies in Y direction"
+        obj.addProperty("App::PropertyInteger", "NumberY",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Number of copies in Z direction"
+        obj.addProperty("App::PropertyInteger", "NumberZ",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Number of copies"
+        obj.addProperty("App::PropertyInteger", "NumberPolar",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance and orientation of intervals in X direction"
+        obj.addProperty("App::PropertyVectorDistance", "IntervalX",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance and orientation of intervals in Y direction"
+        obj.addProperty("App::PropertyVectorDistance", "IntervalY",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance and orientation of intervals in Z direction"
+        obj.addProperty("App::PropertyVectorDistance", "IntervalZ",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance and orientation of intervals in Axis direction"
+        obj.addProperty("App::PropertyVectorDistance", "IntervalAxis",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Center point"
+        obj.addProperty("App::PropertyVectorDistance", "Center",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Angle to cover with copies"
+        obj.addProperty("App::PropertyAngle", "Angle",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance between copies in a circle"
+        obj.addProperty("App::PropertyDistance", "RadialDistance",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Distance between circles"
+        obj.addProperty("App::PropertyDistance", "TangentialDistance",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "number of circles"
+        obj.addProperty("App::PropertyInteger", "NumberCircles",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "number of circles"
+        obj.addProperty("App::PropertyInteger", "Symmetry",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
+        
+        _tip = "Specifies if copies must be fused (slower)"
+        obj.addProperty("App::PropertyBool", "Fuse",
+                        "Parameters",QT_TRANSLATE_NOOP("App::Property", _tip))
         obj.Fuse = False
         if self.use_link:
             obj.addProperty("App::PropertyInteger","Count","Draft",'')
