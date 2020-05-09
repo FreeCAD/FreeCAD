@@ -116,6 +116,7 @@ SET(Draft_objects
     draftobjects/polararray.py
     draftobjects/draft_annotation.py
     draftobjects/fillet.py
+    draftobjects/draftlink.py
     draftobjects/label.py
     draftobjects/dimension.py
     draftobjects/point.py
@@ -141,6 +142,7 @@ SET(Draft_view_providers
     draftviewproviders/view_polararray.py
     draftviewproviders/view_draft_annotation.py
     draftviewproviders/view_fillet.py
+    draftviewproviders/view_draftlink.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
     draftviewproviders/view_point.py
