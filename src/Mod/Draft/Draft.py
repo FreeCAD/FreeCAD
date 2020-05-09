@@ -304,6 +304,13 @@ if FreeCAD.GuiUp:
     from draftviewproviders.view_point import ViewProviderPoint
     from draftviewproviders.view_point import _ViewProviderPoint
 
+# arrays
+from draftmake.make_patharray import make_path_array, makePathArray
+from draftobjects.patharray import PathArray, _PathArray
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_array import ViewProviderDraftArray
+    from draftviewproviders.view_array import _ViewProviderDraftArray
+
 # facebinder
 from draftmake.make_facebinder import make_facebinder, makeFacebinder
 from draftobjects.facebinder import Facebinder, _Facebinder
@@ -459,44 +466,6 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         obj.Center = arg1
         obj.Angle = arg2
         obj.NumberPolar = arg3
-    if gui:
-        if use_link:
-            _ViewProviderDraftLink(obj.ViewObject)
-        else:
-            _ViewProviderDraftArray(obj.ViewObject)
-            formatObject(obj,obj.Base)
-            if len(obj.Base.ViewObject.DiffuseColor) > 1:
-                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
-        baseobject.ViewObject.hide()
-        select(obj)
-    return obj
-
-def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs=[],use_link=False):
-    """makePathArray(docobj,path,count,xlate,align,pathobjsubs,use_link): distribute
-    count copies of a document baseobject along a pathobject or subobjects of a
-    pathobject. Optionally translates each copy by FreeCAD.Vector xlate direction
-    and distance to adjust for difference in shape centre vs shape reference point.
-    Optionally aligns baseobject to tangent/normal/binormal of path."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if use_link:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray",_PathArray(None),None,True)
-    else:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray")
-        _PathArray(obj)
-    obj.Base = baseobject
-    obj.PathObj = pathobject
-    if pathobjsubs:
-        sl = []
-        for sub in pathobjsubs:
-            sl.append((obj.PathObj,sub))
-        obj.PathSubs = list(sl)
-    if count > 1:
-        obj.Count = count
-    if xlate:
-        obj.Xlate = xlate
-    obj.Align = align
     if gui:
         if use_link:
             _ViewProviderDraftLink(obj.ViewObject)
@@ -667,124 +636,6 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
 
 
 
-def getParameterFromV0(edge, offset):
-    """return parameter at distance offset from edge.Vertexes[0]
-    sb method in Part.TopoShapeEdge???"""
-
-    lpt = edge.valueAt(edge.getParameterByLength(0))
-    vpt = edge.Vertexes[0].Point
-
-    if not DraftVecUtils.equals(vpt, lpt):
-        # this edge is flipped
-        length = edge.Length - offset
-    else:
-        # this edge is right way around
-        length = offset
-
-    return (edge.getParameterByLength(length))
-
-
-def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal=None):
-    """Orient shape to tangent at parm offset along edge."""
-    import functools
-    # http://en.wikipedia.org/wiki/Euler_angles
-    # start with null Placement point so translate goes to right place.
-    placement = FreeCAD.Placement()
-    # preserve global orientation
-    placement.Rotation = globalRotation
-
-    placement.move(RefPt + xlate)
-
-    if not align:
-        return placement
-
-    nullv = FreeCAD.Vector(0, 0, 0)
-
-    # get a local coord system (tangent, normal, binormal) at parameter offset (normally length)
-    t = edge.tangentAt(getParameterFromV0(edge, offset))
-    t.normalize()
-
-    try:
-        n = edge.normalAt(getParameterFromV0(edge, offset))
-        n.normalize()
-        b = (t.cross(n))
-        b.normalize()
-    # no normal defined here
-    except FreeCAD.Base.FreeCADError:
-        n = nullv
-        b = nullv
-        FreeCAD.Console.PrintMessage(
-            "Draft PathArray.orientShape - Cannot calculate Path normal.\n")
-
-    priority = "ZXY"        #the default. Doesn't seem to affect results.
-    newRot = FreeCAD.Rotation(t, n, b, priority);
-    newGRot = newRot.multiply(globalRotation)
-
-    placement.Rotation = newGRot
-    return placement
-
-
-def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
-    """Calculates the placements of a shape along a given path so that each copy will be distributed evenly"""
-    import Part
-    import DraftGeomUtils
-
-    closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-    normal = DraftGeomUtils.getNormal(pathwire)
-    path = Part.__sortEdges__(pathwire.Edges)
-    ends = []
-    cdist = 0
-
-    for e in path:                                                 # find cumulative edge end distance
-        cdist += e.Length
-        ends.append(cdist)
-
-    placements = []
-
-    # place the start shape
-    pt = path[0].Vertexes[0].Point
-    placements.append(calculatePlacement(
-        shapeRotation, path[0], 0, pt, xlate, align, normal))
-
-    # closed path doesn't need shape on last vertex
-    if not(closedpath):
-        # place the end shape
-        pt = path[-1].Vertexes[-1].Point
-        placements.append(calculatePlacement(
-            shapeRotation, path[-1], path[-1].Length, pt, xlate, align, normal))
-
-    if count < 3:
-        return placements
-
-    # place the middle shapes
-    if closedpath:
-        stop = count
-    else:
-        stop = count - 1
-    step = float(cdist) / stop
-    remains = 0
-    travel = step
-    for i in range(1, stop):
-        # which edge in path should contain this shape?
-        # avoids problems with float math travel > ends[-1]
-        iend = len(ends) - 1
-
-        for j in range(0, len(ends)):
-            if travel <= ends[j]:
-                iend = j
-                break
-
-        # place shape at proper spot on proper edge
-        remains = ends[iend] - travel
-        offset = path[iend].Length - remains
-        pt = path[iend].valueAt(getParameterFromV0(path[iend], offset))
-
-        placements.append(calculatePlacement(
-            shapeRotation, path[iend], offset, pt, xlate, align, normal))
-
-        travel += step
-
-    return placements
 
 #---------------------------------------------------------------------------
 # Python Features definitions
@@ -1016,95 +867,6 @@ class _Array(_DraftLink):
             base.append(npl)
         return base
 
-class _PathArray(_DraftLink):
-    """The Draft Path Array object"""
-
-    def __init__(self,obj):
-        _DraftLink.__init__(self,obj,"PathArray")
-
-    def attach(self,obj):
-        obj.addProperty("App::PropertyLinkGlobal","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
-        obj.addProperty("App::PropertyLinkGlobal","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
-        obj.addProperty("App::PropertyLinkSubListGlobal","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
-        obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
-        obj.addProperty("App::PropertyVectorDistance","Xlate","Draft",QT_TRANSLATE_NOOP("App::Property","Optional translation vector"))
-        obj.addProperty("App::PropertyBool","Align","Draft",QT_TRANSLATE_NOOP("App::Property","Orientation of Base along path"))
-        obj.addProperty("App::PropertyVector","TangentVector","Draft",QT_TRANSLATE_NOOP("App::Property","Alignment of copies"))
-
-        obj.Count = 2
-        obj.PathSubs = []
-        obj.Xlate = FreeCAD.Vector(0,0,0)
-        obj.Align = False
-        obj.TangentVector = FreeCAD.Vector(1.0, 0.0, 0.0)
-
-        if self.use_link:
-            obj.addProperty("App::PropertyBool","ExpandArray","Draft",
-                    QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
-            obj.ExpandArray = False
-            obj.setPropertyStatus('Shape','Transient')
-
-        _DraftLink.attach(self,obj)
-
-    def linkSetup(self,obj):
-        _DraftLink.linkSetup(self,obj)
-        obj.configLinkProperty(ElementCount='Count')
-
-    def execute(self,obj):
-        import FreeCAD
-        import Part
-        import DraftGeomUtils
-        if obj.Base and obj.PathObj:
-            pl = obj.Placement
-            if obj.PathSubs:
-                w = self.getWireFromSubs(obj)
-            elif (hasattr(obj.PathObj.Shape,'Wires') and obj.PathObj.Shape.Wires):
-                w = obj.PathObj.Shape.Wires[0]
-            elif obj.PathObj.Shape.Edges:
-                w = Part.Wire(obj.PathObj.Shape.Edges)
-            else:
-                FreeCAD.Console.PrintLog ("_PathArray.createGeometry: path " + obj.PathObj.Name + " has no edges\n")
-                return
-            if (hasattr(obj, "TangentVector")) and (obj.Align):
-                basePlacement = obj.Base.Shape.Placement
-                baseRotation = basePlacement.Rotation
-                stdX = FreeCAD.Vector(1.0, 0.0, 0.0)
-                preRotation = FreeCAD.Rotation(stdX, obj.TangentVector)   #make rotation from X to TangentVector
-                netRotation = baseRotation.multiply(preRotation)
-                base = calculatePlacementsOnPath(
-                        netRotation,w,obj.Count,obj.Xlate,obj.Align)
-            else:
-                base = calculatePlacementsOnPath(
-                        obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
-            return _DraftLink.buildShape(self,obj,pl,base)
-
-    def getWireFromSubs(self,obj):
-        '''Make a wire from PathObj subelements'''
-        import Part
-        sl = []
-        for sub in obj.PathSubs:
-            edgeNames = sub[1]
-            for n in edgeNames:
-                e = sub[0].Shape.getElement(n)
-                sl.append(e)
-        return Part.Wire(sl)
-
-    def pathArray(self,shape,pathwire,count,xlate,align):
-        '''Distribute shapes along a path.'''
-        import Part
-
-        placements = calculatePlacementsOnPath(
-            shape.Placement.Rotation, pathwire, count, xlate, align)
-
-        base = []
-
-        for placement in placements:
-            ns = shape.copy()
-            ns.Placement = placement
-
-            base.append(ns)
-
-        return (Part.makeCompound(base))
-
 class _PointArray(_DraftObject):
     """The Draft Point Array object"""
     def __init__(self, obj, bobj, ptlst):
@@ -1155,49 +917,6 @@ class _PointArray(_DraftObject):
         else:
             FreeCAD.Console.PrintError(translate("draft","No point found\n"))
             obj.Shape = obj.Base.Shape.copy()
-
-
-class _ViewProviderDraftArray(_ViewProviderDraft):
-    """a view provider that displays a Array icon instead of a Draft icon"""
-
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def getIcon(self):
-        if hasattr(self.Object, "ArrayType"):
-            if self.Object.ArrayType == 'ortho':
-                return ":/icons/Draft_Array.svg"
-            elif self.Object.ArrayType == 'polar':
-                return ":/icons/Draft_PolarArray.svg"
-            elif self.Object.ArrayType == 'circular':
-                return ":/icons/Draft_CircularArray.svg"
-        elif hasattr(self.Object, "PointList"):
-            return ":/icons/Draft_PointArray.svg"
-        else:
-            return ":/icons/Draft_PathArray.svg"
-
-    def resetColors(self, vobj):
-        colors = []
-        if vobj.Object.Base:
-            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
-                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
-                    colors = vobj.Object.Base.ViewObject.DiffuseColor
-                else:
-                    c = vobj.Object.Base.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    for f in vobj.Object.Base.Shape.Faces:
-                        colors.append(c)
-        if colors:
-            n = 1
-            if hasattr(vobj.Object,"ArrayType"):
-                if vobj.Object.ArrayType == "ortho":
-                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
-                else:
-                    n = vobj.Object.NumberPolar
-            elif hasattr(vobj.Object,"Count"):
-                n = vobj.Object.Count
-            colors = colors * n
-            vobj.DiffuseColor = colors
 
 
 ## @}
