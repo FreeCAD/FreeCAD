@@ -623,15 +623,6 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
             viewobj.LineColor = obj.ViewObject.TextColor
     return viewobj
 
-
-
-
-#---------------------------------------------------------------------------
-# Python Features definitions
-#---------------------------------------------------------------------------
-import draftobjects.base
-_DraftObject = draftobjects.base.DraftObject
-
 class _DrawingView(_DraftObject):
     """The Draft DrawingView object"""
     def __init__(self, obj):
@@ -693,7 +684,6 @@ class _DrawingView(_DraftObject):
     def getDXF(self,obj):
         "returns a DXF fragment"
         return getDXF(obj)
-
 
 class _Array(_DraftLink):
     "The Draft Array object"
