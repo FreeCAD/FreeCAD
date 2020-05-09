@@ -146,6 +146,9 @@ from draftutils.utils import filterObjectsForModifiers
 from draftutils.utils import is_closed_edge
 from draftutils.utils import isClosedEdge
 
+from draftutils.utils import get_rgb
+from draftutils.utils import getrgb
+
 from draftutils.gui_utils import get3DView
 from draftutils.gui_utils import get_3d_view
 
@@ -484,20 +487,6 @@ def getDXF(obj,direction=None):
 
     return result
 
-
-def getrgb(color,testbw=True):
-    """getRGB(color,[testbw]): returns a rgb value #000000 from a freecad color
-    if testwb = True (default), pure white will be converted into pure black"""
-    r = str(hex(int(color[0]*255)))[2:].zfill(2)
-    g = str(hex(int(color[1]*255)))[2:].zfill(2)
-    b = str(hex(int(color[2]*255)))[2:].zfill(2)
-    col = "#"+r+g+b
-    if testbw:
-        if col == "#ffffff":
-            #print(getParam('SvgLinesBlack'))
-            if getParam('SvgLinesBlack',True):
-                col = "#000000"
-    return col
 
 
 import getSVG as svg
