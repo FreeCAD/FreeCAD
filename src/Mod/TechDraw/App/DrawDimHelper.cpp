@@ -107,8 +107,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     std::pair<Base::Vector3d, Base::Vector3d> endPoints = minMax(dvp,
                                                                  edgeNames,
                                                                  direction);
-    Base::Vector3d refMin = endPoints.first;
-    Base::Vector3d refMax = endPoints.second;
+    Base::Vector3d refMin = endPoints.first / dvp->getScale();     //unscale from geometry
+    Base::Vector3d refMax = endPoints.second / dvp->getScale();
 
     //pause recomputes
     dvp->getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -326,11 +326,10 @@ gp_Pnt2d DrawDimHelper::findClosestPoint(std::vector<hTrimCurve> hTCurve2dList,
     return result;
 }
 
-//TODO: this needs to be exposed to Python
 DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
                                               std::string dimType,
-                                              Base::Vector3d inMin,
-                                              Base::Vector3d inMax,
+                                              Base::Vector3d inMin,      //is this scaled or unscaled??
+                                              Base::Vector3d inMax,      //expects scaled from makeExtentDim
                                               bool extent)
 {
 //    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
@@ -346,13 +345,11 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
-    double scale = dvp->getScale();
-
-    //regular dims will have trouble with geom indexes!
-    Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
+    Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
+    
+    Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
@@ -366,6 +363,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     ss.clear();
+    ss.str(std::string());
     ss << "Vertex" << iGV2;
     vertexName = ss.str();
     subs.push_back(vertexName);
