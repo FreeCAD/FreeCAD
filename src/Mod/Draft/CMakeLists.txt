@@ -88,6 +88,7 @@ SET(Draft_make_functions
     draftmake/make_circle.py
     draftmake/make_clone.py
     draftmake/make_copy.py
+    draftmake/make_drawingview.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
@@ -115,6 +116,7 @@ SET(Draft_objects
     draftobjects/circulararray.py
     draftobjects/circle.py
     draftobjects/clone.py
+    draftobjects/drawingview.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
     draftobjects/orthoarray.py
