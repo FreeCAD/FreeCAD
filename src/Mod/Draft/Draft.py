@@ -191,6 +191,10 @@ from draftfunctions.fuse import fuse
 from draftfunctions.heal import heal
 
 from draftfunctions.move import move
+from draftfunctions.move import move_vertex, moveVertex
+from draftfunctions.move import move_edge, moveEdge
+from draftfunctions.move import copy_moved_edges, copyMovedEdges
+
 from draftfunctions.rotate import rotate
 
 from draftfunctions.scale import scale
@@ -509,32 +513,6 @@ def makePointArray(base, ptlst):
         select(obj)
     return obj
 
-
-def moveVertex(object, vertex_index, vector):
-    points = object.Points
-    points[vertex_index] = points[vertex_index].add(vector)
-    object.Points = points
-
-def moveEdge(object, edge_index, vector):
-    moveVertex(object, edge_index, vector)
-    if isClosedEdge(edge_index, object):
-        moveVertex(object, 0, vector)
-    else:
-        moveVertex(object, edge_index+1, vector)
-
-def copyMovedEdges(arguments):
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copyMovedEdge(argument[0], argument[1], argument[2]))
-    joinWires(copied_edges)
-
-def copyMovedEdge(object, edge_index, vector):
-    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
-    if isClosedEdge(edge_index, object):
-        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
-    else:
-        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
-    return makeLine(vertex1, vertex2)
 
 def copyRotatedEdges(arguments):
     copied_edges = []
