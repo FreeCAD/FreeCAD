@@ -94,6 +94,7 @@ SET(Draft_make_functions
     draftmake/make_patharray.py
     draftmake/make_polygon.py
     draftmake/make_point.py
+    draftmake/make_pointarray.py
     draftmake/make_rectangle.py
     draftmake/make_shapestring.py
     draftmake/make_shape2dview.py
@@ -123,6 +124,7 @@ SET(Draft_objects
     draftobjects/dimension.py
     draftobjects/patharray.py
     draftobjects/point.py
+    draftobjects/pointarray.py
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/shapestring.py
