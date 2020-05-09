@@ -149,6 +149,12 @@ from draftutils.utils import isClosedEdge
 from draftutils.utils import get_rgb
 from draftutils.utils import getrgb
 
+from draftutils.utils import get_DXF
+from draftutils.utils import getDXF
+
+import getSVG as svg
+getSVG = svg.getSVG
+
 from draftutils.gui_utils import get3DView
 from draftutils.gui_utils import get_3d_view
 
@@ -422,79 +428,6 @@ def convertDraftTexts(textslist=[]):
     for n in todelete:
         FreeCAD.ActiveDocument.removeObject(n)
 
-
-
-def getDXF(obj,direction=None):
-    """getDXF(object,[direction]): returns a DXF entity from the given
-    object. If direction is given, the object is projected in 2D."""
-    plane = None
-    result = ""
-    if obj.isDerivedFrom("Drawing::View") or obj.isDerivedFrom("TechDraw::DrawView"):
-        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
-            for o in obj.Source.Group:
-                result += getDXF(o,obj.Direction)
-        else:
-            result += getDXF(obj.Source,obj.Direction)
-        return result
-    if direction:
-        if isinstance(direction,FreeCAD.Vector):
-            if direction != Vector(0,0,0):
-                plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis(Vector(0,0,0),direction)
-
-    def getProj(vec):
-        if not plane: return vec
-        nx = DraftVecUtils.project(vec,plane.u)
-        ny = DraftVecUtils.project(vec,plane.v)
-        return Vector(nx.Length,ny.Length,0)
-
-    if getType(obj) in ["Dimension","LinearDimension"]:
-        p1 = getProj(obj.Start)
-        p2 = getProj(obj.End)
-        p3 = getProj(obj.Dimline)
-        result += "0\nDIMENSION\n8\n0\n62\n0\n3\nStandard\n70\n1\n"
-        result += "10\n"+str(p3.x)+"\n20\n"+str(p3.y)+"\n30\n"+str(p3.z)+"\n"
-        result += "13\n"+str(p1.x)+"\n23\n"+str(p1.y)+"\n33\n"+str(p1.z)+"\n"
-        result += "14\n"+str(p2.x)+"\n24\n"+str(p2.y)+"\n34\n"+str(p2.z)+"\n"
-
-    elif getType(obj) == "Annotation":
-        p = getProj(obj.Position)
-        count = 0
-        for t in obj.LabeLtext:
-            result += "0\nTEXT\n8\n0\n62\n0\n"
-            result += "10\n"+str(p.x)+"\n20\n"+str(p.y+count)+"\n30\n"+str(p.z)+"\n"
-            result += "40\n1\n"
-            result += "1\n"+str(t)+"\n"
-            result += "7\nSTANDARD\n"
-            count += 1
-
-    elif hasattr(obj,'Shape'):
-        # TODO do this the Draft way, for ex. using polylines and rectangles
-        import Drawing
-        if not direction:
-            direction = FreeCAD.Vector(0,0,-1)
-        if DraftVecUtils.isNull(direction):
-            direction = FreeCAD.Vector(0,0,-1)
-        try:
-            d = Drawing.projectToDXF(obj.Shape,direction)
-        except:
-            print("Draft.getDXF: Unable to project ",obj.Label," to ",direction)
-        else:
-            result += d
-
-    else:
-        print("Draft.getDXF: Unsupported object: ",obj.Label)
-
-    return result
-
-
-
-import getSVG as svg
-
-
-getSVG = svg.getSVG
-
-
 def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     """
     makeDrawingView(object,page,[lwmod,tmod]) - adds a View of the given object to the
@@ -551,7 +484,11 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     return viewobj
 
 class _DrawingView(_DraftObject):
-    """The Draft DrawingView object"""
+    """The Draft DrawingView object
+    
+    TODO: this class is obsolete, since Drawing was substituted by TechDraw.
+    """
+
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"DrawingView")
         obj.addProperty("App::PropertyVector","Direction","Shape View",QT_TRANSLATE_NOOP("App::Property","Projection direction"))
