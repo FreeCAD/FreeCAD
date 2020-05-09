@@ -52,7 +52,11 @@ using namespace Gui;
 namespace Gui {
 bool dontUseNativeDialog()
 {
-#if defined(USE_QT_FILEDIALOG)
+// Use Qt file dialog in order to support of save into directory without
+// compression.
+//
+// #if defined(USE_QT_FILEDIALOG)
+#if 1
     bool notNativeDialog = true;
 #else
     bool notNativeDialog = false;
