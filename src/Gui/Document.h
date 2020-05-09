@@ -314,8 +314,8 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    const char *getCameraSettings() const;
-    bool saveCameraSettings(const char *) const;
+    const char *getCameraSettings(const std::string *settings=nullptr) const;
+    bool saveCameraSettings(const char *, std::string *dst=nullptr) const;
 
     /// check if a view provider is 3D claimed by other
     bool isClaimed3D(ViewProvider *) const;

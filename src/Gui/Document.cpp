@@ -79,6 +79,16 @@ using namespace Gui;
 
 namespace Gui {
 
+struct CameraInfo {
+    int id;
+    int binding;
+    std::string settings;
+
+    CameraInfo(int i, int b, std::string &&s)
+        :id(i), binding(b), settings(std::move(s))
+    {}
+};
+
 // Pimpl class
 struct DocumentP
 {
@@ -99,6 +109,8 @@ struct DocumentP
     Base::Matrix4D              _editingTransform;
     View3DInventorViewer*       _editingViewer;
     std::set<const App::DocumentObject*> _editObjs;
+
+    std::vector<CameraInfo>     _savedViews;
 
     Application*    _pcAppWnd;
     // the doc/Document
@@ -1344,11 +1356,17 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
         // read camera settings
         xmlReader.readElement("Camera");
+
+        int cameraExtra = xmlReader.getAttributeAsInteger("extra", "0");
+        int cameraBinding = xmlReader.getAttributeAsInteger("binding", "0");
+        int cameraId = xmlReader.getAttributeAsInteger("id", "0");
+
         cameraSettings.clear();
         if(xmlReader.hasAttribute("settings"))
             saveCameraSettings(xmlReader.getAttribute("settings"));
         else
             saveCameraSettings(xmlReader.readCharacters().c_str());
+
         if(cameraSettings.size()) {
             try {
                 const char** pReturnIgnore=0;
@@ -1360,6 +1378,47 @@ void Document::RestoreDocFile(Base::Reader &reader)
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
+            }
+        }
+
+        d->_savedViews.clear();
+        if(cameraExtra) {
+            d->_savedViews.emplace_back(cameraId, cameraBinding, std::string(cameraSettings));
+            for(int i=0; i<cameraExtra; ++i) {
+                xmlReader.readElement("CameraExtra");
+                int id = xmlReader.getAttributeAsInteger("id");
+                int binding = xmlReader.getAttributeAsInteger("binding", "0");
+                std::string settings;
+                saveCameraSettings(xmlReader.readCharacters().c_str(),&settings);
+                d->_savedViews.emplace_back(id, binding, std::move(settings));
+            }
+
+            auto views = getMDIViewsOfType(View3DInventor::getClassTypeId());
+            if(views.size()) {
+                while(views.size() < d->_savedViews.size())
+                    views.push_back(createView(View3DInventor::getClassTypeId()));
+
+                std::map<int,View3DInventor*> viewMap;
+                size_t i=0;
+                for(auto v : views) {
+                    if(i == d->_savedViews.size())
+                        break;
+                    auto &info = d->_savedViews[i++];
+                    auto view = static_cast<View3DInventor*>(v);
+                    const char *ppReturn = 0;
+                    view->onMsg(info.settings.c_str(), &ppReturn);
+                    viewMap[info.id] = view;
+                }
+                i=0;
+                for(auto v : views) {
+                    if(i == d->_savedViews.size())
+                        break;
+                    auto &info = d->_savedViews[i++];
+                    auto view = static_cast<View3DInventor*>(v);
+                    auto it = viewMap.find(info.binding);
+                    if(it != viewMap.end())
+                        view->bindCamera(it->second->getCamera());
+                }
             }
         }
     }
@@ -1518,23 +1577,53 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     // save camera settings
     std::list<MDIView*> mdi = getMDIViews();
+    std::vector<CameraInfo> cameraInfo;
+    bool first = true;
     for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
-        if ((*it)->onHasMsg("GetCamera")) {
+        auto v = *it;
+        if (v->onHasMsg("GetCamera")) {
             const char* ppReturn=0;
-            (*it)->onMsg("GetCamera",&ppReturn);
-            if(saveCameraSettings(ppReturn))
-                break;
+            v->onMsg("GetCamera",&ppReturn);
+
+            std::string settings;
+            if(!saveCameraSettings(ppReturn, &settings))
+                continue;
+            if(first) {
+                first = false;
+                cameraSettings = settings;
+            }
+
+            auto view = Base::freecad_dynamic_cast<View3DInventor>(v);
+            if(!view)
+                continue;
+            auto binding = view->boundView();
+            cameraInfo.emplace_back(view->getID(),
+                    binding?binding->getID():0, std::move(settings));
         }
     }
 
+    writer.Stream() << writer.ind() << "<Camera";
+    if(cameraInfo.size())
+        writer.Stream() << " extra=\"" << cameraInfo.size()-1 << "\" id=\""
+            << cameraInfo[0].id << "\" binding=\"" << cameraInfo[0].binding << "\"";
     if(writer.getFileVersion() > 1) {
-        writer.Stream() << writer.ind() << "<Camera>\n";
+        writer.Stream() << ">\n";
         writer.beginCharStream(false) << '\n' << getCameraSettings();
         writer.endCharStream() << '\n' << writer.ind() << "</Camera>\n";
     } else {
-        writer.Stream() << writer.ind() << "<Camera settings=\"" 
+        writer.Stream() << " settings=\"" 
             << encodeAttribute(getCameraSettings()) << "\"/>\n";
     }
+    if(cameraInfo.size()>1) {
+        for(size_t i=1; i<cameraInfo.size(); ++i) {
+            auto &info = cameraInfo[i];
+            writer.Stream() << writer.ind() << "<CameraExtra id=\""
+                << info.id << "\" binding=\"" << info.binding << "\">\n";
+            writer.beginCharStream(false) << '\n' << getCameraSettings(&info.settings);
+            writer.endCharStream() << '\n' << writer.ind() << "</CameraExtra>\n";
+        }
+    }
+    d->_savedViews = std::move(cameraInfo);
 
     writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>\n";
@@ -1766,13 +1855,18 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
     return 0;
 }
 
-const char *Document::getCameraSettings() const {
-    return cameraSettings.size()>10?cameraSettings.c_str()+10:cameraSettings.c_str();
+const char *Document::getCameraSettings(const std::string *settings) const {
+    if(!settings)
+        settings = &cameraSettings;
+    return settings->size()>10?settings->c_str()+10:settings->c_str();
 }
 
-bool Document::saveCameraSettings(const char *settings) const {
+bool Document::saveCameraSettings(const char *settings, std::string *dst) const {
     if(!settings)
         return false;
+
+    if(!dst)
+        dst = &cameraSettings;
 
     // skip starting comment lines
     bool skipping = false;
@@ -1790,7 +1884,7 @@ bool Document::saveCameraSettings(const char *settings) const {
     if(!c)
         return false;
 
-    cameraSettings = std::string("SetCamera ") + settings;
+    *dst = std::string("SetCamera ") + settings;
     return true;
 }
 

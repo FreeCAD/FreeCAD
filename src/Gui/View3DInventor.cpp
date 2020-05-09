@@ -113,6 +113,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
                                const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
+    static std::atomic<int> _nextID;
+    _id = ++_nextID;
+
     stack = new QStackedWidget(this);
     // important for highlighting
     setMouseTracking(true);
@@ -613,9 +616,9 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
         if (!Cam) return false;
         std::ostringstream ss;
+        ss << SoFCDB::writeNodesToString(Cam);
         if(_viewer->getOverrideMode() != "As Is")
-            ss << SoFCDB::writeNodesToString(Cam);
-        ss << _OverrideModePrefix << _viewer->getOverrideMode();
+            ss << _OverrideModePrefix << _viewer->getOverrideMode();
         static std::string ret;
         ret = ss.str();
         *ppReturn = ret.c_str();
