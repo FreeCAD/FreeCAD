@@ -536,7 +536,7 @@ class ObjectOp(object):
         tc = obj.ToolController
 
         if tc is None or tc.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller is selected. Tool feed rates required to calculate the cycle time.\n")
+            FreeCAD.Console.PrintError("No Tool Controller selected.\n")
             return translate('PathGui', 'Tool Error')
 
         hFeedrate = tc.HorizFeed.Value
