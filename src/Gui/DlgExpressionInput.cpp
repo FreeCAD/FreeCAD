@@ -62,11 +62,10 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
     }
-    else
-    {
-        QAbstractSpinBox *sb = dynamic_cast<QAbstractSpinBox*>(parent);
-        if (sb) {
-            ui->expression->setText(sb->text());
+    else {
+        QVariant text = parent->property("text");
+        if (text.canConvert(QMetaType::QString)) {
+            ui->expression->setText(text.toString());
         }
     }
 
