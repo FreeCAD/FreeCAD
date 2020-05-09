@@ -196,6 +196,9 @@ from draftfunctions.move import move_edge, moveEdge
 from draftfunctions.move import copy_moved_edges, copyMovedEdges
 
 from draftfunctions.rotate import rotate
+from draftfunctions.rotate import rotate_vertex, rotateVertex
+from draftfunctions.rotate import rotate_edge, rotateEdge
+from draftfunctions.rotate import copy_rotated_edges, copyRotatedEdges
 
 from draftfunctions.scale import scale
 from draftfunctions.scale import scale_vertex, scaleVertex
@@ -514,28 +517,6 @@ def makePointArray(base, ptlst):
     return obj
 
 
-def copyRotatedEdges(arguments):
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copyRotatedEdge(argument[0], argument[1],
-            argument[2], argument[3], argument[4]))
-    joinWires(copied_edges)
-
-def copyRotatedEdge(object, edge_index, angle, center, axis):
-    vertex1 = rotateVectorFromCenter(
-        object.Placement.multVec(object.Points[edge_index]),
-        angle, axis, center)
-    if isClosedEdge(edge_index, object):
-        vertex2 = rotateVectorFromCenter(
-            object.Placement.multVec(object.Points[0]),
-            angle, axis, center)
-    else:
-        vertex2 = rotateVectorFromCenter(
-            object.Placement.multVec(object.Points[edge_index+1]),
-            angle, axis, center)
-    return makeLine(vertex1, vertex2)
-
-
 def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     """array(objectslist,xvector,yvector,xnum,ynum) for rectangular array,
     array(objectslist,xvector,yvector,zvector,xnum,ynum,znum) for rectangular array,
@@ -591,27 +572,6 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
         rectArray(objectslist,arg1,arg2,arg3,arg4)
     else:
         polarArray(objectslist,arg1,arg2,arg3)
-
-
-def rotateVertex(object, vertex_index, angle, center, axis):
-    points = object.Points
-    points[vertex_index] = object.Placement.inverse().multVec(
-        rotateVectorFromCenter(
-            object.Placement.multVec(points[vertex_index]),
-            angle, axis, center))
-    object.Points = points
-
-def rotateVectorFromCenter(vector, angle, axis, center):
-    rv = vector.sub(center)
-    rv = DraftVecUtils.rotate(rv, math.radians(angle), axis)
-    return center.add(rv)
-
-def rotateEdge(object, edge_index, angle, center, axis):
-    rotateVertex(object, edge_index, angle, center, axis)
-    if isClosedEdge(edge_index, object):
-        rotateVertex(object, 0, angle, center, axis)
-    else:
-        rotateVertex(object, edge_index+1, angle, center, axis)
 
 
 def getDXF(obj,direction=None):
