@@ -81,6 +81,7 @@ SET(Draft_functions
 SET(Draft_make_functions
     draftmake/__init__.py
     draftmake/make_arc_3points.py
+    draftmake/make_array.py
     draftmake/make_bezcurve.py
     draftmake/make_block.py
     draftmake/make_bspline.py
@@ -106,6 +107,7 @@ SET(Draft_make_functions
 
 SET(Draft_objects
     draftobjects/__init__.py
+    draftobjects/array.py
     draftobjects/base.py
     draftobjects/bezcurve.py
     draftobjects/block.py
