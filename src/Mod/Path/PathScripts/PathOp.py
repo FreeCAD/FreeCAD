@@ -487,12 +487,12 @@ class ObjectOp(object):
 
         if FeatureCoolant & self.opFeatures(obj):
             if not hasattr(obj, 'CoolantMode'):
-                FreeCAD.Console.PrintError("No coolant property found. Please recreate operation.")
+                PathLog.error("No coolant property found. Please recreate operation.")
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
             if tc is None or tc.ToolNumber == 0:
-                FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
+                PathLog.error("No Tool Controller is selected. We need a tool to build a Path.")
                 return
             else:
                 self.vertFeed = tc.VertFeed.Value
@@ -501,7 +501,7 @@ class ObjectOp(object):
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
                 if not tool or float(tool.Diameter) == 0:
-                    FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                    PathLog.error("No Tool found or diameter is zero. We need a tool to build a Path.")
                     return
                 self.radius = float(tool.Diameter) / 2
                 self.tool = tool
@@ -534,7 +534,7 @@ class ObjectOp(object):
         tc = obj.ToolController
 
         if tc is None or tc.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller selected.\n")
+            PathLog.error("No Tool Controller selected.")
             return translate('PathGui', 'Tool Error')
 
         hFeedrate = tc.HorizFeed.Value
@@ -543,11 +543,11 @@ class ObjectOp(object):
         vRapidrate = tc.VertRapid.Value
 
         if hFeedrate == 0 or vFeedrate == 0:
-            FreeCAD.Console.PrintWarning("Tool Controller feedrate error: Tool feed rates required to calculate the cycle time.\n")
+            PathLog.warning("Tool Controller feedrates required to calculate the cycle time.")
             return translate('PathGui', 'Feedrate Error')
 
         if hRapidrate == 0 or vRapidrate == 0:
-            FreeCAD.Console.PrintWarning("Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.\n")
+            PathLog.warning("Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.")
 
         # Get the cycle time in seconds
         seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
