@@ -654,9 +654,8 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
         if (!Cam) return false;
         std::ostringstream ss;
-        ss << SoFCDB::writeNodesToString(Cam);
-        if(_viewer->getOverrideMode() != "As Is")
-            ss << _OverrideModePrefix << _viewer->getOverrideMode();
+        ss << SoFCDB::writeNodesToString(Cam)
+           << _OverrideModePrefix << _viewer->getOverrideMode();
         static std::string ret;
         ret = ss.str();
         *ppReturn = ret.c_str();
@@ -852,11 +851,10 @@ void View3DInventor::bindCamera(SoCamera *pcCamera, bool sync)
     SoCamera * cam = _viewer->getSoRenderManager()->getCamera();
     if(camInfo.sensor.getAttachedNode() != cam) {
         camInfo.sensor.detach();
-        if(cam) {
+        if(cam)
             camInfo.sensor.attach(cam);
-            camInfo.sync();
-        }
     }
+    camInfo.sync();
 
     if(pcCamera == getCamera())
         return;
