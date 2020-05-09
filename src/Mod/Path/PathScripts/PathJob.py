@@ -370,7 +370,6 @@ class ObjectJob:
                     ## convert the formatted time from HH:MM:SS to just seconds
                     opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
                 except:
-                    FreeCAD.Console.PrintWarning("Error converting the operations cycle time. Job Cycle time may be innacturate\n")
                     continue
 
                 if opCycleTime > 0:
