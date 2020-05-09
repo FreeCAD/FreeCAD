@@ -99,7 +99,7 @@ class ObjectJob:
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob","An optional description for this job"))
-        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Job Cycle Time Estimation"))
         obj.setEditorMode('CycleTime', 1)  # read-only
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("PathJob", "For computing Paths; smaller increases accuracy, but slows down computation"))
 
