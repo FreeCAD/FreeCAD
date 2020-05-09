@@ -524,12 +524,24 @@ void SelectionView::onEnablePickList() {
 ////////////////////////////////////////////////////////////////////////
 
 #if QT_VERSION  >= 0x050000
-static const char *_MenuStyle("QMenu {menu-scrollable:1;"
+static const char *_MenuStyle("*{ color: palette(text);"
+                                 "background-color: transparent;"
+                                 "border: none}"
+                              "QMenu {menu-scrollable:1;"
                                      "color: palette(text);"
-                                     "background-color: rgba(255,255,255,130)}"
+                                     "background-color: rgba(255,255,255,130);}"
+                              "QMenu::item {"
+                                     "color: palette(text);"
+                                     "background-color: transparent;}"
+                              "QMenu::separator {"
+                                     "height: 1px;"
+                                     "background-color: rgba(255,255,255,130);"
+                                     "margin: 6px 4px;}"
                               "QMenu::item:selected, QMenu::item:pressed {"
                                      "color: white;"
-                                     "background-color: rgba(0,0,130,130)}");
+                                     "background-color: rgba(0,0,130,130)}"
+                              "QMenu::item:disabled { color: palette(mid) }"
+                            );
 #else
 static const char *_MenuStyle("QMenu {menu-scrollable:1}");
 #endif
@@ -537,27 +549,28 @@ static const char *_MenuStyle("QMenu {menu-scrollable:1}");
 SelectionMenu::SelectionMenu(QWidget *parent)
     :QMenu(parent),pSelList(0)
 {
-#if QT_VERSION  >= 0x050000
-    setAttribute(Qt::WA_NoSystemBackground, true);
-    setAttribute(Qt::WA_TranslucentBackground, true);
-#endif
     connect(this, SIGNAL(aboutToShow()), this, SLOT(beforeShow()));
-}
-
-void SelectionMenu::beforeShow()
-{
-    for(auto child : findChildren<QMenu*>()) {
-        child->setAttribute(Qt::WA_NoSystemBackground, true);
-        child->setAttribute(Qt::WA_TranslucentBackground, true);
-    }
-    
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/MainWindow");
     std::string stylesheet = hGrp->GetASCII("MenuStyleSheet");
     setStyleSheet(QLatin1String(stylesheet.size()?stylesheet.c_str():_MenuStyle));
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_NoSystemBackground, true);
+    setAttribute(Qt::WA_TranslucentBackground, true);
 #else
     setStyleSheet(QLatin1String(_MenuStyle));
+#endif
+}
+
+void SelectionMenu::beforeShow()
+{
+#if QT_VERSION  >= 0x050000
+    for(auto child : findChildren<QMenu*>()) {
+        child->setWindowFlags(child->windowFlags() | Qt::FramelessWindowHint);
+        child->setAttribute(Qt::WA_NoSystemBackground, true);
+        child->setAttribute(Qt::WA_TranslucentBackground, true);
+    }
 #endif
 }
 
