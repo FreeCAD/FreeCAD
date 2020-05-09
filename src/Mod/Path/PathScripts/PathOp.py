@@ -545,7 +545,7 @@ class ObjectOp(object):
         vRapidrate = tc.VertRapid.Value
 
         if hFeedrate == 0 or vFeedrate == 0:
-            FreeCAD.Console.PrintError("Tool Controller requires feed rates. Tool feed rates required to calculate the cycle time.\n")
+            FreeCAD.Console.PrintWarning("Tool Controller feedrate error: Tool feed rates required to calculate the cycle time.\n")
             return translate('PathGui', 'Feedrate Error')
 
         if hRapidrate == 0 or vRapidrate == 0:
