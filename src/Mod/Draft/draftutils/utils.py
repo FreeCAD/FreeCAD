@@ -925,6 +925,31 @@ def svg_patterns():
 svgpatterns = svg_patterns
 
 
+def get_rgb(color, testbw=True):
+    """getRGB(color,[testbw])
+    
+    Return a rgb value #000000 from a freecad color
+    
+    Parameters
+    ----------
+    testwb : bool (default = True)
+        pure white will be converted into pure black
+    """
+    r = str(hex(int(color[0]*255)))[2:].zfill(2)
+    g = str(hex(int(color[1]*255)))[2:].zfill(2)
+    b = str(hex(int(color[2]*255)))[2:].zfill(2)
+    col = "#"+r+g+b
+    if testbw:
+        if col == "#ffffff":
+            #print(getParam('SvgLinesBlack'))
+            if getParam('SvgLinesBlack',True):
+                col = "#000000"
+    return col
+
+
+getrgb = get_rgb
+
+
 def get_movable_children(objectslist, recursive=True):
     """Return a list of objects with child objects that move with a host.
 
