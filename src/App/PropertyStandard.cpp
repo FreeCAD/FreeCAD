@@ -1030,6 +1030,8 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any 
 
     if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
+    else if (value.type() == typeid(unsigned long))
+        setValue(boost::any_cast<unsigned long>(value));
     else if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
     else if (value.type() == typeid(double))
@@ -1038,10 +1040,6 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any 
         setValue(boost::any_cast<float>(value));
     else if (value.type() == typeid(Quantity))
         setValue((boost::any_cast<Quantity>(value)).getValue());
-    else if (value.type() == typeid(long))
-        setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(unsigned long))
-        setValue(boost::any_cast<unsigned long>(value));
     else
         throw bad_cast();
 }
