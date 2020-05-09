@@ -2,6 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 FreeCAD Developers                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -69,12 +70,16 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Daniel Falck")
 __url__ = "https://www.freecadweb.org"
 
+
 # ---------------------------------------------------------------------------
 # Backwards compatibility
 # ---------------------------------------------------------------------------
 from DraftLayer import Layer as _VisGroup
 from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
 from DraftLayer import makeLayer
+
+from draftutils.utils import convert_draft_texts
+from draftutils.utils import convertDraftTexts
 
 # ---------------------------------------------------------------------------
 # General functions
@@ -183,6 +188,7 @@ from draftutils.gui_utils import select
 from draftutils.gui_utils import loadTexture
 from draftutils.gui_utils import load_texture
 
+
 #---------------------------------------------------------------------------
 # Draft functions
 #---------------------------------------------------------------------------
@@ -228,6 +234,7 @@ from draftfunctions.offset import offset
 from draftfunctions.mirror import mirror
 
 from draftfunctions.upgrade import upgrade
+
 
 #---------------------------------------------------------------------------
 # Draft objects
@@ -403,34 +410,5 @@ DraftText = Text
 if gui:
     from draftviewproviders.view_text import ViewProviderText
     ViewProviderDraftText = ViewProviderText
-
-def convertDraftTexts(textslist=[]):
-    """
-    converts the given Draft texts (or all that is found
-    in the active document) to the new object
-    This function was already present at splitting time during v 0.19
-    """
-    if not isinstance(textslist,list):
-        textslist = [textslist]
-    if not textslist:
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.TypeId == "App::Annotation":
-                textslist.append(o)
-    todelete = []
-    for o in textslist:
-        l = o.Label
-        o.Label = l+".old"
-        obj = makeText(o.LabelText,point=o.Position)
-        obj.Label = l
-        todelete.append(o.Name)
-        for p in o.InList:
-            if p.isDerivedFrom("App::DocumentObjectGroup"):
-                if o in p.Group:
-                    g = p.Group
-                    g.append(obj)
-                    p.Group = g
-    for n in todelete:
-        FreeCAD.ActiveDocument.removeObject(n)
-
 
 ## @}
