@@ -893,9 +893,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 #---------------------------------------------------------------------------
 # Python Features definitions
 #---------------------------------------------------------------------------
-import draftobjects.base
-_DraftObject = draftobjects.base.DraftObject
-
 class _ViewProviderDraftLink:
     "a view provider for link type object"
 
