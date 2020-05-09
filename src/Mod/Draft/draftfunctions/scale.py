@@ -124,6 +124,10 @@ def scale(objectslist, scale=App.Vector(1,1,1),
     return newobjlist
 
 
+#   Following functions are needed for SubObjects modifiers
+#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+
+
 def scale_vertex(obj, vertex_index, scale, center):
     points = obj.Points
     points[vertex_index] = obj.Placement.inverse().multVec(
@@ -141,9 +145,6 @@ def scale_vector_from_center(vector, scale, center):
 
 
 scaleVectorFromCenter = scale_vector_from_center
-
-
-# code needed for subobject modifiers
 
 
 def scale_edge(obj, edge_index, scale, center):
