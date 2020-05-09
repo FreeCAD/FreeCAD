@@ -41,8 +41,6 @@ from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -114,7 +112,6 @@ class ObjectJob:
         obj.Fixtures = ['G54']
         
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
-        #obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
         defaultPostProcessor = PathPreferences.defaultPostProcessor()
         # Check to see if default post processor hasn't been 'lost' (This can happen when Macro dir has changed)
@@ -367,7 +364,7 @@ class ObjectJob:
                 formattedCycleTime = PathUtil.opProperty(op, 'CycleTime')
                 opCycleTime = 0
                 try:
-                    ## convert the formatted time from HH:MM:SS to just seconds
+                    # Convert the formatted time from HH:MM:SS to just seconds
                     opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
                 except:
                     continue
