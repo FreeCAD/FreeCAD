@@ -703,7 +703,7 @@ protected:
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    typedef std::set<std::array<std::string,3> > SelStackItem;
+    typedef std::set<App::SubObjectT> SelStackItem;
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 

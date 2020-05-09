@@ -60,6 +60,21 @@ SET(Draft_utilities
 
 SET(Draft_functions
     draftfunctions/__init__.py
+    draftfunctions/cut.py
+    draftfunctions/downgrade.py
+    draftfunctions/draftify.py
+    draftfunctions/extrude.py
+    draftfunctions/fuse.py
+    draftfunctions/heal.py
+    draftfunctions/join.py
+    draftfunctions/mirror.py
+    draftfunctions/move.py
+    draftfunctions/offset.py
+    draftfunctions/rotate.py
+    draftfunctions/scale.py
+    draftfunctions/split.py
+    draftfunctions/upgrade.py
+    draftfunctions/README.md
 )
 
 SET(Draft_make_functions
@@ -69,6 +84,7 @@ SET(Draft_make_functions
     draftmake/make_bspline.py
     draftmake/make_circle.py
     draftmake/make_clone.py
+    draftmake/make_copy.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_line.py
@@ -80,6 +96,7 @@ SET(Draft_make_functions
     draftmake/make_sketch.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
+    draftmake/README.md
 )
 
 SET(Draft_objects

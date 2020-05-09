@@ -359,26 +359,30 @@ void CylinderFit::findBestSolDirection(SolutionD &solDir)
 	if (biggest < 0.0)
 		dir.Set(-dir.x, -dir.y, -dir.z);	// multiplies by -1
 
+	double fixedVal = 0.0;
 	double lambda;
 	switch (solDir)
 	{
 		case solL:
-			lambda = -pos.x / dir.x;
-			pos.x = 0.0;//meanXObs();
+			fixedVal = meanXObs();
+			lambda = (fixedVal - pos.x) / dir.x;
+			pos.x = fixedVal;
 			pos.y = pos.y + lambda * dir.y;
 			pos.z = pos.z + lambda * dir.z;
 			break;
 		case solM:
-			lambda = -pos.y / dir.y;
+			fixedVal = meanYObs();
+			lambda = (fixedVal - pos.y) / dir.y;
 			pos.x = pos.x + lambda * dir.x;
-			pos.y = 0.0;//meanYObs();
+			pos.y = fixedVal;
 			pos.z = pos.z + lambda * dir.z;
 			break;
 		case solN:
-			lambda = -pos.z / dir.z;
+			fixedVal = meanZObs();
+			lambda = (fixedVal - pos.z) / dir.z;
 			pos.x = pos.x + lambda * dir.x;
 			pos.y = pos.y + lambda * dir.y;
-			pos.z = 0.0;//meanZObs();
+			pos.z = fixedVal;
 			break;
 	}
 	_vAxis = dir;

@@ -100,11 +100,17 @@ class FemInputWriter():
                 self.theshape = self.mesh_object.Shape
             elif hasattr(self.mesh_object, "Part"):
                 self.theshape = self.mesh_object.Part
+            else:
+                FreeCAD.Console.PrintError(
+                    "A finite mesh without a link to a Shape was given. "
+                    "Happen on pure mesh objects. Some methods might be broken.\n"
+                )
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintError(
-                "No finite element mesh object was given to the writer class. "
-                "In rare cases this might not be an error.\n")
+            "No finite element mesh object was given to the writer class. "
+            "In rare cases this might not be an error. Some methods might be broken.\n"
+            )
         self.femnodes_mesh = {}
         self.femelement_table = {}
         self.constraint_conflict_nodes = []
