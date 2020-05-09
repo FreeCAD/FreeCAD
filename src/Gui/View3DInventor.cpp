@@ -63,6 +63,7 @@
 #endif
 
 #include <atomic>
+#include <cctype>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
