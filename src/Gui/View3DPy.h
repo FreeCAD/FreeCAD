@@ -130,12 +130,19 @@ public:
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
     Py::Object setName(const Py::Tuple&);
+    Py::Object getName(const Py::Tuple&);
     Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
     Py::Object hasClippingPlane(const Py::Tuple& args);
 
     Py::Object addObjectOnTop(const Py::Tuple &);
     Py::Object removeObjectOnTop(const Py::Tuple &);
     Py::Object isObjectOnTop(const Py::Tuple &);
+
+    Py::Object bindCamera(const Py::Tuple&);
+    Py::Object bindView(const Py::Tuple&);
+    Py::Object unbindView(const Py::Tuple&);
+    Py::Object boundViews(const Py::Tuple&);
+    Py::Object boundView(const Py::Tuple&);
 
     View3DInventor* getView3DIventorPtr() {return _view;}
 

@@ -194,6 +194,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
     add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
+    add_varargs_method("getName",&View3DInventorPy::getName,"getName() -> string: return the window Title of this view");
     add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
         "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
         "Toggle a global clipping plane\n\n"
@@ -212,6 +213,26 @@ void View3DInventorPy::init_type()
     add_varargs_method("isObjectOnTop",&View3DInventorPy::isObjectOnTop,
         "isObjectOnTop(obj,subname='')\n\n"
         "Check if a given object is in group on top");
+    add_varargs_method("bindCamera",&View3DInventorPy::bindCamera,
+        "bindCamera(node, sync=False)\n\n"
+        "Bind a camera node to the camera of this view. Pass 'None' to unbind.\n"
+        "'sync' determins whether to sync the camera setting up on binding.");
+    add_varargs_method("bindView",&View3DInventorPy::bindView,
+        "bindView(view|view_title)\n\n"
+        "Bind the camera of the given view to the camera of this view.\n"
+        "'sync' determins whether to sync the camera setting up on binding.");
+    add_varargs_method("unbindView",&View3DInventorPy::unbindView,
+        "unbindView(view|view_title|None)\n\n"
+        "Unbind the camera of the given view to the camera of this view.\n"
+        "Pass 'None' to unbind all views. To function works bi-directionally.");
+    add_varargs_method("boundView",&View3DInventorPy::boundView,
+        "boundView() -> view\n\n"
+        "Return the bound view. Note that view camera binding is bi-directional.\n"
+        "But this function only returns the view bound by calling bindView(). To\n"
+        "obtain all bound views, use boundViews()");
+    add_varargs_method("boundViews",&View3DInventorPy::boundViews,
+        "boundViews(recursive=False) -> list(view)\n\n"
+        "Return all views that are bound to this view.");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -1213,6 +1234,7 @@ Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
         _view->getViewer()->setCameraType(SoOrthographicCamera::getClassTypeId());
     else
         _view->getViewer()->setCameraType(SoPerspectiveCamera::getClassTypeId());
+    _view->bindCamera(_view->boundCamera());
     return Py::None();
 }
 
@@ -2576,6 +2598,22 @@ Py::Object View3DInventorPy::setName(const Py::Tuple& args)
     }
 }
 
+Py::Object View3DInventorPy::getName(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        App::PropertyString tmp;
+        tmp.setValue(_view->windowTitle().toUtf8().constData());
+        return Py::asObject(tmp.getPyObject());
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
+}
+
 Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
 {
     static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", NULL};
@@ -2666,4 +2704,88 @@ Py::Object View3DInventorPy::isObjectOnTop(const Py::Tuple &args) {
             return Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(subname));
     }
     return Py::None();
+}
+
+Py::Object View3DInventorPy::bindCamera(const Py::Tuple &args) {
+    PyObject *pyObj;
+    PyObject *sync = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O|O",&pyObj,&sync))
+        throw Py::Exception();
+    if(pyObj == Py_None) {
+        _view->bindCamera(nullptr);
+        return Py::None();
+    }
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoCamera", pyObj, &ptr, 0);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    _view->bindCamera(reinterpret_cast<SoCamera*>(ptr), PyObject_IsTrue(sync));
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::bindView(const Py::Tuple &args) {
+    PyObject *pyObj;
+    PyObject *sync = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O|O",&pyObj,&sync))
+        throw Py::Exception();
+    if(pyObj == Py_None) {
+        _view->bindView(QString());
+        return Py::None();
+    }
+    QString title;
+    if(PyObject_TypeCheck(pyObj, type_object()))
+        title = static_cast<View3DInventorPy*>(pyObj)->_view->windowTitle();
+    else {
+        const char *s;
+        if (!PyArg_ParseTuple(args.ptr(), "s|O",&s,&sync))
+            throw Py::Exception();
+        title = QString::fromUtf8(s);
+    }
+    _view->bindView(title, PyObject_IsTrue(sync));
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::unbindView(const Py::Tuple &args) {
+    PyObject *pyObj = Py_None;
+    if (!PyArg_ParseTuple(args.ptr(), "|O",&pyObj))
+        throw Py::Exception();
+    if(pyObj == Py_None) {
+        _view->unbindView();
+        return Py::None();
+    }
+    QString title;
+    if(PyObject_TypeCheck(pyObj, type_object()))
+        title = static_cast<View3DInventorPy*>(pyObj)->_view->windowTitle();
+    else {
+        const char *s;
+        if (!PyArg_ParseTuple(args.ptr(), "s",&s))
+            throw Py::Exception();
+        title = QString::fromUtf8(s);
+    }
+    _view->unbindView(title);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::boundView(const Py::Tuple &args) {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    auto view = _view->boundView();
+    if(!view)
+        return Py::None();
+    return Py::asObject(view->getPyObject());
+}
+
+Py::Object View3DInventorPy::boundViews(const Py::Tuple &args) {
+    PyObject *recursive = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "|O", &recursive))
+        throw Py::Exception();
+
+    Py::List list;
+    for(auto view : _view->boundViews(PyObject_IsTrue(recursive)))
+        list.append(Py::asObject(view->getPyObject()));
+    return list;
 }
