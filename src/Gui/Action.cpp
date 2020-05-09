@@ -1088,13 +1088,11 @@ void ViewCameraBindingAction::onTriggered(QAction *action)
         break;
     }
     case 2:
-        for(auto view : activeView->boundViews())
-            view->bindCamera(nullptr);
-        activeView->bindCamera(nullptr);
+        activeView->unbindView();
         break;
     default:
         if (action->isChecked())
-            activeView->bindView(action->text());
+            activeView->bindView(action->text(), true);
         else
             activeView->unbindView(action->text());
         break;

@@ -90,19 +90,21 @@ public:
     virtual void viewAll();
     virtual const char *getName(void) const;
 
-    void bindCamera(SoCamera *camera);
     /** ID of this view
      * Currently only used for saving and restoring view binding.
      */
     int getID() const {return _id;}
+
+    void bindCamera(SoCamera *camera, bool sync=false);
     void syncCamera(View3DInventor *view);
-    View3DInventor *bindView(const QString &title);
-    bool unbindView(const QString &title);
+    View3DInventor *bindView(const QString &title, bool sync=false);
+    bool unbindView(const QString &title = QString());
     SoCamera *boundCamera() const;
     View3DInventor *boundView() const;
     std::set<View3DInventor*> boundViews(bool recursive=false) const;
     void boundViews(std::set<View3DInventor*> &views, bool recursive=false) const;
     SoCamera *getCamera() const;
+    void syncBoundViews(const char *pMsg);
 
     /// print function of the view
     virtual void print();

@@ -62,9 +62,12 @@
 # include <QWindow>
 #endif
 
+#include <atomic>
+
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/Tools.h>
 
 #include <App/DocumentObject.h>
 
@@ -206,10 +209,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
         auto self = reinterpret_cast<View3DInventor*>(arg);
         self->onCameraChanged(self->camInfo, self->boundCamInfo);
     });
-
-    SoCamera * camera = _viewer->getSoRenderManager()->getCamera();
-    if(camera)
-        camInfo.sensor.attach(camera);
 
     boundCamInfo.sensor.setData(this);
     boundCamInfo.sensor.setFunction([](void *arg, SoSensor*) {
@@ -410,6 +409,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
         else
             _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+        bindCamera(boundCamera());
     }
     else if (strcmp(Reason, "DimensionsVisible") == 0) {
         if (rGrp.GetBool("DimensionsVisible", true))
@@ -554,11 +554,48 @@ bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
 // **********************************************************************************
 
 static const char *_OverrideModePrefix = "## overrideMode: ";
+static bool _ViewSyncing;
+
+void View3DInventor::syncBoundViews(const char *pMsg)
+{
+    if(_ViewSyncing || 
+            QApplication::queryKeyboardModifiers() == Qt::ControlModifier)
+    {
+        if (strcmp("ViewFit",pMsg) == 0) {
+            _viewer->viewAll();
+        } else if (strcmp("ViewSelection", pMsg) == 0) {
+            _viewer->viewSelection();
+        } else if (strcmp("ViewSelectionExtend", pMsg) == 0) {
+            _viewer->viewSelection(true);
+        }
+        return;
+    }
+
+    Base::StateLocker guard(_ViewSyncing);
+    auto views = boundViews();
+    if(views.empty()) {
+        const char *dummy;
+        onMsg(pMsg, &dummy);
+        return;
+    }
+    views.insert(this);
+    for(auto view : views) {
+        const char *dummy;
+        bool enabled = view->_viewer->isAnimationEnabled();
+        view->_viewer->setAnimationEnabled(false);
+        view->onMsg(pMsg, &dummy);
+        view->_viewer->setAnimationEnabled(enabled);
+    }
+    for(auto view : views) {
+        view->camInfo.sync();
+        view->boundCamInfo.sync();
+    }
+}
 
 bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 {
     if (strcmp("ViewFit",pMsg) == 0) {
-        _viewer->viewAll();
+        syncBoundViews(pMsg);
         return true;
     }
     else if (strcmp("ViewVR",pMsg) == 0) {
@@ -567,11 +604,11 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewSelection",pMsg) == 0) {
-        _viewer->viewSelection();
+        syncBoundViews(pMsg);
         return true;
     }
     else if(strcmp("ViewSelectionExtend",pMsg) == 0) {
-        _viewer->viewSelection(true);
+        syncBoundViews(pMsg);
         return true;
     }
     else if(strcmp("SetStereoRedGreen",pMsg) == 0 ) {
@@ -668,10 +705,12 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if(strcmp("OrthographicCamera",pMsg) == 0 ) {
         _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
+        bindCamera(boundCamera());
         return true;
     }
     else if(strcmp("PerspectiveCamera",pMsg) == 0 ) {
         _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
+        bindCamera(boundCamera());
         return true;
     }
     return MDIView::onMsg(pMsg,ppReturn);
@@ -758,8 +797,6 @@ bool View3DInventor::setCamera(const char* pCamera)
         CamViewer = _viewer->getSoRenderManager()->getCamera();
     }
 
-    camInfo.sensor.detach();
-
     SoPerspectiveCamera  * CamViewerP = 0;
     SoOrthographicCamera * CamViewerO = 0;
 
@@ -794,7 +831,7 @@ bool View3DInventor::setCamera(const char* pCamera)
         }
     }
 
-    camInfo.sensor.attach(CamViewer);
+    bindCamera(boundCamera());
 
     const char *pos = std::strstr(pCamera,_OverrideModePrefix);
     if(pos) {
@@ -809,16 +846,34 @@ bool View3DInventor::setCamera(const char* pCamera)
     return true;
 }
 
-void View3DInventor::bindCamera(SoCamera *pcCamera)
+void View3DInventor::bindCamera(SoCamera *pcCamera, bool sync)
 {
-    if(pcCamera) {
+    SoCamera * cam = _viewer->getSoRenderManager()->getCamera();
+    if(camInfo.sensor.getAttachedNode() != cam) {
+        camInfo.sensor.detach();
+        if(cam) {
+            camInfo.sensor.attach(cam);
+            camInfo.sync();
+        }
+    }
+
+    if(pcCamera == getCamera())
+        return;
+
+    if(!pcCamera) {
+        boundCamInfo.sensor.detach();
+        return;
+    }
+
+    if(pcCamera != boundCamInfo.sensor.getAttachedNode()) {
+        boundCamInfo.sensor.detach();
+        boundCamInfo.sensor.attach(pcCamera);
+    }
+    boundCamInfo.sync();
+
+    if(sync) {
         camInfo.sync(pcCamera);
         camInfo.apply();
-    }
-    boundCamInfo.sensor.detach();
-    if(pcCamera) {
-        boundCamInfo.sensor.attach(pcCamera);
-        boundCamInfo.sync();
     }
 }
 
@@ -858,7 +913,7 @@ void View3DInventor::syncCamera(View3DInventor *view)
         return;
     if(!view) {
         if(boundCamera())
-            bindCamera(boundCamera());
+            bindCamera(boundCamera(), true);
         return;
     }
     auto cam = view->getCamera();
@@ -875,6 +930,13 @@ void View3DInventor::syncCamera(View3DInventor *view)
 
 bool View3DInventor::unbindView(const QString &text)
 {
+    if(text.isEmpty()) {
+        for(auto view : boundViews())
+            view->bindCamera(nullptr);
+        bindCamera(nullptr);
+        return true;
+    }
+
     for(auto view : boundViews()) {
         if(view->windowTitle() == text) {
             if(boundCamera() == view->getCamera()) {
@@ -919,7 +981,7 @@ std::set<View3DInventor*> View3DInventor::boundViews(bool recursive) const
     return views;
 }
 
-View3DInventor *View3DInventor::bindView(const QString &title)
+View3DInventor *View3DInventor::bindView(const QString &title, bool sync)
 {
     bindCamera(nullptr);
     if(title.isEmpty())
@@ -937,7 +999,7 @@ View3DInventor *View3DInventor::bindView(const QString &title)
             if(view->boundViews(true).count(this))
                 return nullptr;
 
-            bindCamera(view->getCamera());
+            bindCamera(view->getCamera(), sync);
             return view;
         }
     }
@@ -946,8 +1008,9 @@ View3DInventor *View3DInventor::bindView(const QString &title)
 
 bool View3DInventor::CameraInfo::sync(SoCamera *camera)
 {
+    auto myCamera = static_cast<SoCamera*>(sensor.getAttachedNode());
     if(!camera)
-        camera = static_cast<SoCamera*>(sensor.getAttachedNode());
+        camera = myCamera;
     if(!camera)
         return false;
     bool touched = false;
@@ -959,16 +1022,25 @@ bool View3DInventor::CameraInfo::sync(SoCamera *camera)
         touched = true;
         orientation = camera->orientation.getValue();
     }
-    if(focal != camera->focalDistance.getValue()) {
+    if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
+        auto cam = static_cast<SoOrthographicCamera*>(camera);
+        if(myCamera->isOfType(SoOrthographicCamera::getClassTypeId())) {
+            if(height != cam->height.getValue()) {
+                touched = true;
+                height = cam->height.getValue();
+            }
+        } else if (focal != cam->height.getValue()) {
+            touched = true;
+            focal = cam->height.getValue();
+        }
+    } else if (myCamera->isOfType(SoOrthographicCamera::getClassTypeId())) {
+        if(height != camera->focalDistance.getValue()) {
+            touched = true;
+            height = camera->focalDistance.getValue();
+        }
+    } else if (focal != camera->focalDistance.getValue()) {
         touched = true;
         focal = camera->focalDistance.getValue();
-    }
-    if(camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
-        auto cam = static_cast<SoOrthographicCamera*>(camera);
-        if(height != cam->height.getValue()) {
-            touched = true;
-            height = cam->height.getValue();
-        }
     }
     return touched;
 }
@@ -981,9 +1053,10 @@ void View3DInventor::CameraInfo::apply(SoCamera *camera)
         return;
     camera->position = position;
     camera->orientation = orientation;
-    camera->focalDistance = focal;
     if(camera->isOfType(SoOrthographicCamera::getClassTypeId()))
         static_cast<SoOrthographicCamera*>(camera)->height = height;
+    else
+        camera->focalDistance = focal;
 }
 
 void View3DInventor::onCameraChanged(CameraInfo &src, CameraInfo &dst)
@@ -1012,8 +1085,32 @@ void View3DInventor::onCameraChanged(CameraInfo &src, CameraInfo &dst)
     mat3 *= mat.inverse() * mat2;
     SbRotation so;
     mat3.getTransform(dst.position,dst.orientation,s,so);
-    dst.focal += src.focal - focal;
-    dst.height += src.height - height;
+
+    if(src.sensor.getAttachedNode()->isOfType(
+                SoPerspectiveCamera::getClassTypeId()))
+    {
+        if(src.focal != focal && std::abs(focal) > 1e-10) {
+            float m = src.focal/focal;
+            dst.focal *= m;
+            dst.height *= m;
+        }
+    } else if (src.height != height && std::abs(height) > 1e-10) {
+        float m = src.height/height;
+        if (dst.sensor.getAttachedNode()->isOfType(
+                    SoOrthographicCamera::getClassTypeId()))
+        {
+            dst.height *= m;
+        } else {
+            float newfocal = dst.focal * m;
+            SbVec3f direction;
+            dst.orientation.multVec(SbVec3f(0, 0, -1), direction);
+            SbVec3f newpos = dst.position + (newfocal - dst.focal) * -direction;
+            if(newpos.length() <= float(sqrt(FLT_MAX))) {
+                dst.position = newpos;
+                dst.focal = newfocal;
+            }
+        }
+    }
     dst.apply();
 }
 
