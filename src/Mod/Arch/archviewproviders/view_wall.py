@@ -98,20 +98,22 @@ class ViewProviderWall(object):
         if append:
             path.append(vobj.RootNode)
             path.append(vobj.SwitchNode)
-            node = vobj.SwitchNode.getChild(mode);
-            path.append(node)
-            if mode > 0:
-                if not objs[0]:
-                    path.append(node.getChild(1))
-                else:
-                    path.append(node.getChild(0))
+
+        node = vobj.SwitchNode.getChild(mode);
+        path.append(node)
+        if mode > 0:
             if not objs[0]:
-                return vobj.getDetailPath(subname,path,False)
+                path.append(node.getChild(1))
+            else:
+                path.append(node.getChild(0))
+        if not objs[0]:
+            return vobj.getDetailPath(subname,path,False)
+
         for child in vobj.claimChildren():
             if child.Name == objs[0]:
                 sub = Part.joinSubname('.'.join(objs[1:]),subs[1],subs[2])
                 return child.ViewObject.getDetailPath(sub,path,True)
-
+                
     def getElementPicked(self,pp):
         if not getattr(self, 'group_node', None):
             raise NotImplementedError
