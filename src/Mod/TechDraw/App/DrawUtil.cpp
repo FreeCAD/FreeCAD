@@ -669,7 +669,7 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
 //    Base::Console().Message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, blue, green, alpha);
+    App::Color c(red, green, blue, alpha);
     if (PyTuple_Check(pColor)) {
         int tSize = (int) PyTuple_Size(pColor);
         if (tSize > 2) {
@@ -684,7 +684,7 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
             PyObject* pAlpha = PyTuple_GetItem(pColor,3);
             alpha = PyFloat_AsDouble(pAlpha);
         }
-        c = App::Color(red, blue, green, alpha);
+        c = App::Color(red, green, blue, alpha);
     }
     return c;
 }

@@ -45,7 +45,10 @@ using namespace TechDraw;
 // returns a string which represents the object e.g. when printed in python
 std::string CosmeticEdgePy::representation(void) const
 {
-    return "<CosmeticEdge object>";
+    std::stringstream ss;
+    ss << "<CosmeticEdge object> at " << std::hex << this;
+    return ss.str();
+//    return "<CosmeticEdge object>";
 }
 
 PyObject *CosmeticEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
