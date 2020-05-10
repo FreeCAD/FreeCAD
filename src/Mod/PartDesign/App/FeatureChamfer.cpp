@@ -41,6 +41,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureChamfer.h"
@@ -52,12 +53,16 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
+const App::PropertyAngle::Constraints floatAngle = {0.0,89.99,0.1};
 
 Chamfer::Chamfer()
 {
     ADD_PROPERTY(Size,(1.0));
     Size.setUnit(Base::Unit::Length);
     Size.setConstraints(&floatSize);
+    ADD_PROPERTY(Angle,(45.0));
+    Size.setUnit(Base::Unit::Angle);
+    Angle.setConstraints(&floatAngle);
 }
 
 short Chamfer::mustExecute() const
@@ -88,6 +93,10 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     if (size <= 0)
         return new App::DocumentObjectExecReturn("Size must be greater than zero");
 
+    double angle = Base::toRadians(Angle.getValue());
+    if (angle <= 0 || angle > 89.99)
+        return new App::DocumentObjectExecReturn("Angle must be between 0 and 89.99");
+
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape
     Part::TopoShape baseShape(TopShape);
@@ -103,11 +112,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-#if OCC_VERSION_HEX > 0x070300
-            mkChamfer.Add(size, size, edge, face);
-#else
-            mkChamfer.Add(size, edge, face);
-#endif
+            mkChamfer.AddDA(size, angle, edge, face);
         }
 
         mkChamfer.Build();
