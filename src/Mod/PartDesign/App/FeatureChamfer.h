@@ -40,6 +40,7 @@ public:
     Chamfer();
 
     App::PropertyQuantityConstraint Size;
+    App::PropertyAngle Angle;
 
     /** @name methods override feature */
     //@{
