@@ -62,18 +62,21 @@ class ArchWorkbench(FreeCADGui.Workbench):
         from archguitools import gui_joinwalls
 
         # Set up command lists
-        self.archtools = ["Arch_Wall", "Arch_Wall2","Arch_JoinWalls", "Arch_Structure", "Arch_Rebar",# added Arch_Wall2 for testing purpouses
+        self.archtools = ["Arch_Wall", "Arch_Structure", "Arch_Rebar",# added Arch_Wall2 for testing purpouses
                           "Arch_BuildingPart",
                           "Arch_Project", "Arch_Site", "Arch_Building",
                           "Arch_Floor", "Arch_Reference",
                           "Arch_Window", "Arch_Roof", "Arch_AxisTools",
-                          "Arch_SectionPlane","Arch_View", "Arch_Space", "Arch_Stairs",
+                          "Arch_SectionPlane", "Arch_Space", "Arch_Stairs",
                           "Arch_PanelTools", "Arch_Equipment",
                           "Arch_Frame", "Arch_Fence", "Arch_Truss",
                           "Arch_MaterialTools",
                           "Arch_Schedule", "Arch_PipeTools",
                           "Arch_CutPlane", "Arch_CutLine",
                           "Arch_Add", "Arch_Remove", "Arch_Survey"]
+
+        self.experimentaltools = ["Arch_Wall2","Arch_JoinWalls", "Arch_View"]
+
         self.utilities = ["Arch_Component", "Arch_CloneComponent",
                           "Arch_SplitMesh", "Arch_MeshToShape",
                           "Arch_SelectNonSolidMeshes", "Arch_RemoveShape",
@@ -116,6 +119,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.draft_drawing_commands)
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.draft_annotation_commands)
         self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.draft_modification_commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "EXPERIMENTAL"), self.experimentaltools)
 
         # Set up menus
         self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Arch"),
