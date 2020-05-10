@@ -753,7 +753,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
                 # then rest of bytes represent colors value where each color
                 # is of 4 bytes in abgr order.
 
-                # convert number of colors into hexadecimal reprsentation
+                # convert number of colors into hexadecimal representation
                 hex_repr = hex(len(prop["value"]))[2:]
 
                 # if len of `hex_repr` is odd, then add 0 padding.
