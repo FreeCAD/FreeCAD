@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -72,7 +73,20 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         from FreeCAD import Units
         self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
 
+        # Setup writing stream depending on Python version
+        self.mainInputFileStream = None
+        self.writeToInputFile = getattr(self, 'writeToMainInputPy3')
+        if 'Hello' == b'Hello':  # suggests Python major version < 3.0
+            self.writeToInputFile = getattr(self, 'writeToMainInputPy2')
+
     # ********************************************************************************************
+    # Write to mainInpuFileStream methods for Python 2 and 3
+    def writeToMainInputPy3(self, dataStr):
+        self.mainInputFileStream.write(dataStr)
+
+    def writeToMainInputPy2(self, dataStr):
+        self.mainInputFileStream.write(unicode(dataStr))
+
     # write calculix input
     def write_calculix_input_file(self):
         timestart = time.process_time()
@@ -114,24 +128,25 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.split_inpfile = False
 
         # mesh
-        inpfileMain = self.write_mesh(self.split_inpfile)
+        self.mainInputFileStream = self.write_mesh(self.split_inpfile)
+        writeToInpFile = self.writeToInputFile
 
         # element and material sets
-        self.write_element_sets_material_and_femelement_type(inpfileMain)
+        self.write_element_sets_material_and_femelement_type(writeToInpFile)
 
         # node sets and surface sets
-        self.write_node_sets_constraints_fixed(inpfileMain, self.split_inpfile)
-        self.write_node_sets_constraints_displacement(inpfileMain, self.split_inpfile)
-        self.write_node_sets_constraints_planerotation(inpfileMain, self.split_inpfile)
-        self.write_surfaces_constraints_contact(inpfileMain, self.split_inpfile)
-        self.write_surfaces_constraints_tie(inpfileMain, self.split_inpfile)
-        self.write_node_sets_constraints_transform(inpfileMain, self.split_inpfile)
-        self.write_node_sets_constraints_temperature(inpfileMain, self.split_inpfile)
+        self.write_node_sets_constraints_fixed(writeToInpFile, self.split_inpfile)
+        self.write_node_sets_constraints_displacement(writeToInpFile, self.split_inpfile)
+        self.write_node_sets_constraints_planerotation(writeToInpFile, self.split_inpfile)
+        self.write_surfaces_constraints_contact(writeToInpFile, self.split_inpfile)
+        self.write_surfaces_constraints_tie(writeToInpFile, self.split_inpfile)
+        self.write_node_sets_constraints_transform(writeToInpFile, self.split_inpfile)
+        self.write_node_sets_constraints_temperature(writeToInpFile, self.split_inpfile)
 
         # materials and fem element types
-        self.write_materials(inpfileMain)
-        self.write_constraints_initialtemperature(inpfileMain)
-        self.write_femelementsets(inpfileMain)
+        self.write_materials(writeToInpFile)
+        self.write_constraints_initialtemperature(writeToInpFile)
+        self.write_femelementsets(writeToInpFile)
 
         # Fluid sections:
         # Inlet and Outlet requires special element definition
@@ -148,40 +163,41 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         self.fluid_inout_nodes_file
                     )
                 else:
-                    inpfileMain.close()
+                    self.mainInputFileStream.close()
                     meshtools.use_correct_fluidinout_ele_def(
                         self.FluidInletoutlet_ele,
                         self.file_name,
                         self.fluid_inout_nodes_file
                     )
-                    inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
+                    self.mainInputFileStream = io.open(self.file_name, "a", encoding="utf-8")
+                    writeToInpFile = self.writeToInputFile
 
         # constraints independent from steps
-        self.write_constraints_planerotation(inpfileMain)
-        self.write_constraints_contact(inpfileMain)
-        self.write_constraints_tie(inpfileMain)
-        self.write_constraints_transform(inpfileMain)
+        self.write_constraints_planerotation(writeToInpFile)
+        self.write_constraints_contact(writeToInpFile)
+        self.write_constraints_tie(writeToInpFile)
+        self.write_constraints_transform(writeToInpFile)
 
         # step begin
-        self.write_step_begin(inpfileMain)
+        self.write_step_begin(writeToInpFile)
 
         # constraints dependent from steps
-        self.write_constraints_fixed(inpfileMain)
-        self.write_constraints_displacement(inpfileMain)
-        self.write_constraints_selfweight(inpfileMain)
-        self.write_constraints_force(inpfileMain, self.split_inpfile)
-        self.write_constraints_pressure(inpfileMain, self.split_inpfile)
-        self.write_constraints_temperature(inpfileMain)
-        self.write_constraints_heatflux(inpfileMain, self.split_inpfile)
-        self.write_constraints_fluidsection(inpfileMain)
+        self.write_constraints_fixed(writeToInpFile)
+        self.write_constraints_displacement(writeToInpFile)
+        self.write_constraints_selfweight(writeToInpFile)
+        self.write_constraints_force(writeToInpFile, self.split_inpfile)
+        self.write_constraints_pressure(writeToInpFile, self.split_inpfile)
+        self.write_constraints_temperature(writeToInpFile)
+        self.write_constraints_heatflux(writeToInpFile, self.split_inpfile)
+        self.write_constraints_fluidsection(writeToInpFile)
 
         # output and step end
-        self.write_outputs_types(inpfileMain)
-        self.write_step_end(inpfileMain)
+        self.write_outputs_types(writeToInpFile)
+        self.write_step_end(writeToInpFile)
 
         # footer
-        self.write_footer(inpfileMain)
-        inpfileMain.close()
+        self.write_footer(writeToInpFile)
+        self.mainInputFileStream.close()
 
     # ********************************************************************************************
     # mesh
@@ -205,9 +221,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 meshtools.write_D_network_element_to_inputfile(split_mesh_file_path)
 
             inpfile = io.open(self.file_name, "w", encoding="utf-8")
-            inpfile.write("***********************************************************\n")
-            inpfile.write("** {}\n".format(write_name))
-            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile.write(u"***********************************************************\n")
+            inpfile.write("** {}\n".format(write_name).decode('utf8'))
+            inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt).decode('utf8'))
 
         else:
             self.femmesh.writeABAQUS(
@@ -223,13 +239,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
             # reopen file with "append" to add all the rest
             inpfile = io.open(self.file_name, "a", encoding="utf-8")
-            inpfile.write("\n\n")
+            inpfile.write(u"\n\n")
 
         return inpfile
 
     # ********************************************************************************************
     # constraints fixed
-    def write_node_sets_constraints_fixed(self, f, inpfile_split=None):
+    def write_node_sets_constraints_fixed(self, wTIF, inpfile_split=None):
         if not self.fixed_objects:
             return
         # write for all analysis types
@@ -238,85 +254,85 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_fixed_nodes()
 
         write_name = "constraints_fixed_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_node_sets_nodes_constraints_fixed(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_node_sets_nodes_constraints_fixed(f)
+            self.write_node_sets_nodes_constraints_fixed(wTIF)
 
-    def write_node_sets_nodes_constraints_fixed(self, f):
+    def write_node_sets_nodes_constraints_fixed(self, wTIF):
         # write nodes to file
         for femobj in self.fixed_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             fix_obj = femobj["Object"]
-            f.write("** " + fix_obj.Label + "\n")
+            wTIF("** " + fix_obj.Label + "\n")
             if self.femmesh.Volumes \
                     and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
                 if len(femobj["NodesSolid"]) > 0:
-                    f.write("*NSET,NSET=" + fix_obj.Name + "Solid\n")
+                    wTIF("*NSET,NSET=" + fix_obj.Name + "Solid\n")
                     for n in femobj["NodesSolid"]:
-                        f.write(str(n) + ",\n")
+                        wTIF(str(n) + ",\n")
                 if len(femobj["NodesFaceEdge"]) > 0:
-                    f.write("*NSET,NSET=" + fix_obj.Name + "FaceEdge\n")
+                    wTIF("*NSET,NSET=" + fix_obj.Name + "FaceEdge\n")
                     for n in femobj["NodesFaceEdge"]:
-                        f.write(str(n) + ",\n")
+                        wTIF(str(n) + ",\n")
             else:
-                f.write("*NSET,NSET=" + fix_obj.Name + "\n")
+                wTIF("*NSET,NSET=" + fix_obj.Name + "\n")
                 for n in femobj["Nodes"]:
-                    f.write(str(n) + ",\n")
+                    wTIF(str(n) + ",\n")
 
-    def write_constraints_fixed(self, f):
+    def write_constraints_fixed(self, wTIF):
         if not self.fixed_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Fixed Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Fixed Constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
+            wTIF("** " + femobj["Object"].Label + "\n")
             fix_obj_name = femobj["Object"].Name
             if self.femmesh.Volumes \
                     and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
                 if len(femobj["NodesSolid"]) > 0:
-                    f.write("*BOUNDARY\n")
-                    f.write(fix_obj_name + "Solid" + ",1\n")
-                    f.write(fix_obj_name + "Solid" + ",2\n")
-                    f.write(fix_obj_name + "Solid" + ",3\n")
-                    f.write("\n")
+                    wTIF("*BOUNDARY\n")
+                    wTIF(fix_obj_name + "Solid" + ",1\n")
+                    wTIF(fix_obj_name + "Solid" + ",2\n")
+                    wTIF(fix_obj_name + "Solid" + ",3\n")
+                    wTIF("\n")
                 if len(femobj["NodesFaceEdge"]) > 0:
-                    f.write("*BOUNDARY\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",1\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",2\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",3\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",4\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",5\n")
-                    f.write(fix_obj_name + "FaceEdge" + ",6\n")
-                    f.write("\n")
+                    wTIF("*BOUNDARY\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",1\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",2\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",3\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",4\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",5\n")
+                    wTIF(fix_obj_name + "FaceEdge" + ",6\n")
+                    wTIF("\n")
             else:
-                f.write("*BOUNDARY\n")
-                f.write(fix_obj_name + ",1\n")
-                f.write(fix_obj_name + ",2\n")
-                f.write(fix_obj_name + ",3\n")
+                wTIF("*BOUNDARY\n")
+                wTIF(fix_obj_name + ",1\n")
+                wTIF(fix_obj_name + ",2\n")
+                wTIF(fix_obj_name + ",3\n")
                 if self.beamsection_objects or self.shellthickness_objects:
-                    f.write(fix_obj_name + ",4\n")
-                    f.write(fix_obj_name + ",5\n")
-                    f.write(fix_obj_name + ",6\n")
-                f.write("\n")
+                    wTIF(fix_obj_name + ",4\n")
+                    wTIF(fix_obj_name + ",5\n")
+                    wTIF(fix_obj_name + ",6\n")
+                wTIF("\n")
 
     # ********************************************************************************************
     # constraints displacement
-    def write_node_sets_constraints_displacement(self, f, inpfile_split=None):
+    def write_node_sets_constraints_displacement(self, wTIF, inpfile_split=None):
         if not self.displacement_objects:
             return
         # write for all analysis types
@@ -325,76 +341,76 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_displacement_nodes()
 
         write_name = "constraints_displacement_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_node_sets_nodes_constraints_displacement(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_node_sets_nodes_constraints_displacement(f)
+            self.write_node_sets_nodes_constraints_displacement(wTIF)
 
-    def write_node_sets_nodes_constraints_displacement(self, f):
+    def write_node_sets_nodes_constraints_displacement(self, wTIF):
         # write nodes to file
         for femobj in self.displacement_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             disp_obj = femobj["Object"]
-            f.write("** " + disp_obj.Label + "\n")
-            f.write("*NSET,NSET=" + disp_obj.Name + "\n")
+            wTIF("** " + disp_obj.Label + "\n")
+            wTIF("*NSET,NSET=" + disp_obj.Name + "\n")
             for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+                wTIF(str(n) + ",\n")
 
-    def write_constraints_displacement(self, f):
+    def write_constraints_displacement(self, wTIF):
         if not self.displacement_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Displacement constraint applied\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Displacement constraint applied\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.displacement_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
+            wTIF("** " + femobj["Object"].Label + "\n")
             disp_obj = femobj["Object"]
             disp_obj_name = disp_obj.Name
-            f.write("*BOUNDARY\n")
+            wTIF("*BOUNDARY\n")
             if disp_obj.xFix:
-                f.write(disp_obj_name + ",1\n")
+                wTIF(disp_obj_name + ",1\n")
             elif not disp_obj.xFree:
-                f.write(disp_obj_name + ",1,1," + str(disp_obj.xDisplacement) + "\n")
+                wTIF(disp_obj_name + ",1,1," + str(disp_obj.xDisplacement) + "\n")
             if disp_obj.yFix:
-                f.write(disp_obj_name + ",2\n")
+                wTIF(disp_obj_name + ",2\n")
             elif not disp_obj.yFree:
-                f.write(disp_obj_name + ",2,2," + str(disp_obj.yDisplacement) + "\n")
+                wTIF(disp_obj_name + ",2,2," + str(disp_obj.yDisplacement) + "\n")
             if disp_obj.zFix:
-                f.write(disp_obj_name + ",3\n")
+                wTIF(disp_obj_name + ",3\n")
             elif not disp_obj.zFree:
-                f.write(disp_obj_name + ",3,3," + str(disp_obj.zDisplacement) + "\n")
+                wTIF(disp_obj_name + ",3,3," + str(disp_obj.zDisplacement) + "\n")
 
             if self.beamsection_objects or self.shellthickness_objects:
                 if disp_obj.rotxFix:
-                    f.write(disp_obj_name + ",4\n")
+                    wTIF(disp_obj_name + ",4\n")
                 elif not disp_obj.rotxFree:
-                    f.write(disp_obj_name + ",4,4," + str(disp_obj.xRotation) + "\n")
+                    wTIF(disp_obj_name + ",4,4," + str(disp_obj.xRotation) + "\n")
                 if disp_obj.rotyFix:
-                    f.write(disp_obj_name + ",5\n")
+                    wTIF(disp_obj_name + ",5\n")
                 elif not disp_obj.rotyFree:
-                    f.write(disp_obj_name + ",5,5," + str(disp_obj.yRotation) + "\n")
+                    wTIF(disp_obj_name + ",5,5," + str(disp_obj.yRotation) + "\n")
                 if disp_obj.rotzFix:
-                    f.write(disp_obj_name + ",6\n")
+                    wTIF(disp_obj_name + ",6\n")
                 elif not disp_obj.rotzFree:
-                    f.write(disp_obj_name + ",6,6," + str(disp_obj.zRotation) + "\n")
-        f.write("\n")
+                    wTIF(disp_obj_name + ",6,6," + str(disp_obj.zRotation) + "\n")
+        wTIF("\n")
 
     # ********************************************************************************************
     # constraints planerotation
-    def write_node_sets_constraints_planerotation(self, f, inpfile_split=None):
+    def write_node_sets_constraints_planerotation(self, wTIF, inpfile_split=None):
         if not self.planerotation_objects:
             return
         # write for all analysis types
@@ -403,21 +419,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_planerotation_nodes()
 
         write_name = "constraints_planerotation_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_node_sets_nodes_constraints_planerotation(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_node_sets_nodes_constraints_planerotation(f)
+            self.write_node_sets_nodes_constraints_planerotation(wTIF)
 
-    def write_node_sets_nodes_constraints_planerotation(self, f):
+    def write_node_sets_nodes_constraints_planerotation(self, wTIF):
         # write nodes to file
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
@@ -432,8 +448,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             l_nodes = femobj["Nodes"]
             fric_obj = femobj["Object"]
-            f.write("** " + fric_obj.Label + "\n")
-            f.write("*NSET,NSET=" + fric_obj.Name + "\n")
+            wTIF("** " + fric_obj.Label + "\n")
+            wTIF("*NSET,NSET=" + fric_obj.Name + "\n")
             # Code to extract nodes and coordinates on the PlaneRotation support face
             nodes_coords = []
             for node in l_nodes:
@@ -457,27 +473,27 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     MPC = node_planerotation[i]
                     MPC_nodes.append(MPC)
             for i in range(len(MPC_nodes)):
-                f.write(str(MPC_nodes[i]) + ",\n")
+                wTIF(str(MPC_nodes[i]) + ",\n")
 
-    def write_constraints_planerotation(self, f):
+    def write_constraints_planerotation(self, wTIF):
         if not self.planerotation_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** PlaneRotation Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** PlaneRotation Constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.planerotation_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
+            wTIF("** " + femobj["Object"].Label + "\n")
             fric_obj_name = femobj["Object"].Name
-            f.write("*MPC\n")
-            f.write("PLANE," + fric_obj_name + "\n")
+            wTIF("*MPC\n")
+            wTIF("PLANE," + fric_obj_name + "\n")
 
     # ********************************************************************************************
     # constraints contact
-    def write_surfaces_constraints_contact(self, f, inpfile_split=None):
+    def write_surfaces_constraints_contact(self, wTIF, inpfile_split=None):
         if not self.contact_objects:
             return
         # write for all analysis types
@@ -486,68 +502,68 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_contact_faces()
 
         write_name = "constraints_contact_surface_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_surfacefaces_constraints_contact(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_surfacefaces_constraints_contact(f)
+            self.write_surfacefaces_constraints_contact(wTIF)
 
-    def write_surfacefaces_constraints_contact(self, f):
+    def write_surfacefaces_constraints_contact(self, wTIF):
         # write faces to file
         for femobj in self.contact_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             contact_obj = femobj["Object"]
-            f.write("** " + contact_obj.Label + "\n")
+            wTIF("** " + contact_obj.Label + "\n")
             # slave DEP
-            f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
+            wTIF("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
             for i in femobj["ContactSlaveFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+                wTIF("{},S{}\n".format(i[0], i[1]))
             # master IND
-            f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
+            wTIF("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
             for i in femobj["ContactMasterFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+                wTIF("{},S{}\n".format(i[0], i[1]))
 
-    def write_constraints_contact(self, f):
+    def write_constraints_contact(self, wTIF):
         if not self.contact_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Contact Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Contact Constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.contact_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             contact_obj = femobj["Object"]
-            f.write("** " + contact_obj.Label + "\n")
-            f.write(
+            wTIF("** " + contact_obj.Label + "\n")
+            wTIF(
                 "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
                 .format(contact_obj.Name)
             )
             ind_surf = "IND" + contact_obj.Name
             dep_surf = "DEP" + contact_obj.Name
-            f.write(dep_surf + "," + ind_surf + "\n")
-            f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
-            f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
+            wTIF(dep_surf + "," + ind_surf + "\n")
+            wTIF("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
+            wTIF("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
             slope = contact_obj.Slope
-            f.write(str(slope) + " \n")
+            wTIF(str(slope) + " \n")
             friction = contact_obj.Friction
             if friction > 0:
-                f.write("*FRICTION \n")
+                wTIF("*FRICTION \n")
                 stick = (slope / 10.0)
-                f.write(str(friction) + ", " + str(stick) + " \n")
+                wTIF(str(friction) + ", " + str(stick) + " \n")
 
     # ********************************************************************************************
     # constraints tie
-    def write_surfaces_constraints_tie(self, f, inpfile_split=None):
+    def write_surfaces_constraints_tie(self, wTIF, inpfile_split=None):
         if not self.tie_objects:
             return
         # write for all analysis types
@@ -556,60 +572,60 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_tie_faces()
 
         write_name = "constraints_tie_surface_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_surfacefaces_constraints_tie(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_surfacefaces_constraints_tie(f)
+            self.write_surfacefaces_constraints_tie(wTIF)
 
-    def write_surfacefaces_constraints_tie(self, f):
+    def write_surfacefaces_constraints_tie(self, wTIF):
         # write faces to file
         for femobj in self.tie_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             tie_obj = femobj["Object"]
-            f.write("** " + tie_obj.Label + "\n")
+            wTIF("** " + tie_obj.Label + "\n")
             # slave DEP
-            f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
+            wTIF("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
             for i in femobj["TieSlaveFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+                wTIF("{},S{}\n".format(i[0], i[1]))
             # master IND
-            f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
+            wTIF("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
             for i in femobj["TieMasterFaces"]:
-                f.write("{},S{}\n".format(i[0], i[1]))
+                wTIF("{},S{}\n".format(i[0], i[1]))
 
-    def write_constraints_tie(self, f):
+    def write_constraints_tie(self, wTIF):
         if not self.tie_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Tie Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Tie Constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.tie_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             tie_obj = femobj["Object"]
-            f.write("** {}\n".format(tie_obj.Label))
+            wTIF("** {}\n".format(tie_obj.Label))
             tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
-            f.write(
+            wTIF(
                 "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
                 .format(tolerance, tie_obj.Name)
             )
             ind_surf = "TIE_IND" + tie_obj.Name
             dep_surf = "TIE_DEP" + tie_obj.Name
-            f.write("{},{}\n".format(dep_surf, ind_surf))
+            wTIF("{},{}\n".format(dep_surf, ind_surf))
 
     # ********************************************************************************************
     # constraints transform
-    def write_node_sets_constraints_transform(self, f, inpfile_split=None):
+    def write_node_sets_constraints_transform(self, wTIF, inpfile_split=None):
         if not self.transform_objects:
             return
         # write for all analysis types
@@ -618,57 +634,57 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_transform_nodes()
 
         write_name = "constraints_transform_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_node_sets_nodes_constraints_transform(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_node_sets_nodes_constraints_transform(f)
+            self.write_node_sets_nodes_constraints_transform(wTIF)
 
-    def write_node_sets_nodes_constraints_transform(self, f):
+    def write_node_sets_nodes_constraints_transform(self, wTIF):
         # write nodes to file
         for femobj in self.transform_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             trans_obj = femobj["Object"]
-            f.write("** " + trans_obj.Label + "\n")
+            wTIF("** " + trans_obj.Label + "\n")
             if trans_obj.TransformType == "Rectangular":
-                f.write("*NSET,NSET=Rect" + trans_obj.Name + "\n")
+                wTIF("*NSET,NSET=Rect" + trans_obj.Name + "\n")
             elif trans_obj.TransformType == "Cylindrical":
-                f.write("*NSET,NSET=Cylin" + trans_obj.Name + "\n")
+                wTIF("*NSET,NSET=Cylin" + trans_obj.Name + "\n")
             for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+                wTIF(str(n) + ",\n")
 
-    def write_constraints_transform(self, f):
+    def write_constraints_transform(self, wTIF):
         if not self.transform_objects:
             return
         # write for all analysis types
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Transform Constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Transform Constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object["Object"]
-            f.write("** " + trans_obj.Label + "\n")
+            wTIF("** " + trans_obj.Label + "\n")
             if trans_obj.TransformType == "Rectangular":
-                f.write("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
+                wTIF("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
                 coords = geomtools.get_rectangular_coords(trans_obj)
-                f.write(coords + "\n")
+                wTIF(coords + "\n")
             elif trans_obj.TransformType == "Cylindrical":
-                f.write("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
+                wTIF("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
                 coords = geomtools.get_cylindrical_coords(trans_obj)
-                f.write(coords + "\n")
+                wTIF(coords + "\n")
 
     # ********************************************************************************************
     # constraints temperature
-    def write_node_sets_constraints_temperature(self, f, inpfile_split=None):
+    def write_node_sets_constraints_temperature(self, wTIF, inpfile_split=None):
         if not self.temperature_objects:
             return
         if not self.analysis_type == "thermomech":
@@ -678,92 +694,92 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_temperature_nodes()
 
         write_name = "constraints_temperature_node_sets"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_node_sets_nodes_constraints_temperature(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_node_sets_nodes_constraints_temperature(f)
+            self.write_node_sets_nodes_constraints_temperature(wTIF)
 
-    def write_node_sets_nodes_constraints_temperature(self, f):
+    def write_node_sets_nodes_constraints_temperature(self, wTIF):
         # write nodes to file
         for femobj in self.temperature_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             temp_obj = femobj["Object"]
-            f.write("** " + temp_obj.Label + "\n")
-            f.write("*NSET,NSET=" + temp_obj.Name + "\n")
+            wTIF("** " + temp_obj.Label + "\n")
+            wTIF("*NSET,NSET=" + temp_obj.Name + "\n")
             for n in femobj["Nodes"]:
-                f.write(str(n) + ",\n")
+                wTIF(str(n) + ",\n")
 
-    def write_constraints_temperature(self, f):
+    def write_constraints_temperature(self, wTIF):
         if not self.temperature_objects:
             return
         if not self.analysis_type == "thermomech":
             return
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Fixed temperature constraint applied\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Fixed temperature constraint applied\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for ftobj in self.temperature_objects:
             fixedtemp_obj = ftobj["Object"]
-            f.write("** " + fixedtemp_obj.Label + "\n")
+            wTIF("** " + fixedtemp_obj.Label + "\n")
             NumberOfNodes = len(ftobj["Nodes"])
             if fixedtemp_obj.ConstraintType == "Temperature":
-                f.write("*BOUNDARY\n")
-                f.write("{},11,11,{}\n".format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
-                f.write("\n")
+                wTIF("*BOUNDARY\n")
+                wTIF("{},11,11,{}\n".format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+                wTIF("\n")
             elif fixedtemp_obj.ConstraintType == "CFlux":
-                f.write("*CFLUX\n")
-                f.write("{},11,{}\n".format(
+                wTIF("*CFLUX\n")
+                wTIF("{},11,{}\n".format(
                     fixedtemp_obj.Name,
                     fixedtemp_obj.CFlux * 0.001 / NumberOfNodes
                 ))
-                f.write("\n")
+                wTIF("\n")
 
     # ********************************************************************************************
     # constraints initialtemperature
-    def write_constraints_initialtemperature(self, f):
+    def write_constraints_initialtemperature(self, wTIF):
         if not self.initialtemperature_objects:
             return
         if not self.analysis_type == "thermomech":
             return
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Initial temperature constraint\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        f.write("*INITIAL CONDITIONS,TYPE=TEMPERATURE\n")
+        wTIF("\n***********************************************************\n")
+        wTIF("** Initial temperature constraint\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("*INITIAL CONDITIONS,TYPE=TEMPERATURE\n")
         for itobj in self.initialtemperature_objects:  # Should only be one
             inittemp_obj = itobj["Object"]
             # OvG: Initial temperature
-            f.write("{0},{1}\n".format(self.ccx_nall, inittemp_obj.initialTemperature))
+            wTIF("{0},{1}\n".format(self.ccx_nall, inittemp_obj.initialTemperature))
 
     # ********************************************************************************************
     # constraints selfweight
-    def write_constraints_selfweight(self, f):
+    def write_constraints_selfweight(self, wTIF):
         if not self.selfweight_objects:
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
             return
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** Self weight Constraint\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** Self weight Constraint\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for femobj in self.selfweight_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             selwei_obj = femobj["Object"]
-            f.write("** " + selwei_obj.Label + "\n")
-            f.write("*DLOAD\n")
-            f.write(
+            wTIF("** " + selwei_obj.Label + "\n")
+            wTIF("*DLOAD\n")
+            wTIF(
                 # elset, GRAV, magnitude, direction x, dir y ,dir z
                 "{},GRAV,{},{},{},{}\n"
                 .format(
@@ -774,7 +790,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     selwei_obj.Gravity_z  # z
                 )
             )
-            f.write("\n")
+            wTIF("\n")
         # grav (erdbeschleunigung) is equal for all elements
         # should be only one constraint
         # different element sets for different density
@@ -782,7 +798,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     # constraints force
-    def write_constraints_force(self, f, inpfile_split=None):
+    def write_constraints_force(self, wTIF, inpfile_split=None):
         if not self.force_objects:
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
@@ -792,46 +808,46 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_force_nodeloads()
 
         write_name = "constraints_force_node_loads"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_nodeloads_constraints_force(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_nodeloads_constraints_force(f)
+            self.write_nodeloads_constraints_force(wTIF)
 
-    def write_nodeloads_constraints_force(self, f):
+    def write_nodeloads_constraints_force(self, wTIF):
         # write node loads to file
-        f.write("*CLOAD\n")
+        wTIF("*CLOAD\n")
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            f.write("** " + femobj["Object"].Label + "\n")
+            wTIF("** " + femobj["Object"].Label + "\n")
             direction_vec = femobj["Object"].DirectionVector
             for ref_shape in femobj["NodeLoadTable"]:
-                f.write("** " + ref_shape[0] + "\n")
+                wTIF("** " + ref_shape[0] + "\n")
                 for n in sorted(ref_shape[1]):
                     node_load = ref_shape[1][n]
                     if (direction_vec.x != 0.0):
                         v1 = "{:.13E}".format(direction_vec.x * node_load)
-                        f.write(str(n) + ",1," + v1 + "\n")
+                        wTIF(str(n) + ",1," + v1 + "\n")
                     if (direction_vec.y != 0.0):
                         v2 = "{:.13E}".format(direction_vec.y * node_load)
-                        f.write(str(n) + ",2," + v2 + "\n")
+                        wTIF(str(n) + ",2," + v2 + "\n")
                     if (direction_vec.z != 0.0):
                         v3 = "{:.13E}".format(direction_vec.z * node_load)
-                        f.write(str(n) + ",3," + v3 + "\n")
-                f.write("\n")
-            f.write("\n")
+                        wTIF(str(n) + ",3," + v3 + "\n")
+                wTIF("\n")
+            wTIF("\n")
 
     # ********************************************************************************************
     # constraints pressure
-    def write_constraints_pressure(self, f, inpfile_split=None):
+    def write_constraints_pressure(self, wTIF, inpfile_split=None):
         if not self.pressure_objects:
             return
         if not (self.analysis_type == "static" or self.analysis_type == "thermomech"):
@@ -841,100 +857,100 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.get_constraints_pressure_faces()
 
         write_name = "constraints_pressure_element_face_loads"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_faceloads_constraints_pressure(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_faceloads_constraints_pressure(f)
+            self.write_faceloads_constraints_pressure(wTIF)
 
-    def write_faceloads_constraints_pressure(self, f):
+    def write_faceloads_constraints_pressure(self, wTIF):
         # write face loads to file
         for femobj in self.pressure_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             prs_obj = femobj["Object"]
-            f.write("** " + prs_obj.Label + "\n")
+            wTIF("** " + prs_obj.Label + "\n")
             rev = -1 if prs_obj.Reversed else 1
-            f.write("*DLOAD\n")
+            wTIF("*DLOAD\n")
             for ref_shape in femobj["PressureFaces"]:
                 # the loop is needed for compatibility reason
                 # in deprecated method get_pressure_obj_faces_depreciated
                 # the face ids where per ref_shape
-                f.write("** " + ref_shape[0] + "\n")
+                wTIF("** " + ref_shape[0] + "\n")
                 for face, fno in ref_shape[1]:
                     if fno > 0:  # solid mesh face
-                        f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
+                        wTIF("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
                     # on shell mesh face: fno == 0
                     # normal of element face == face normal
                     elif fno == 0:
-                        f.write("{},P,{}\n".format(face, rev * prs_obj.Pressure))
+                        wTIF("{},P,{}\n".format(face, rev * prs_obj.Pressure))
                     # on shell mesh face: fno == -1
                     # normal of element face opposite direction face normal
                     elif fno == -1:
-                        f.write("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
+                        wTIF("{},P,{}\n".format(face, -1 * rev * prs_obj.Pressure))
 
     # ********************************************************************************************
     # constraints heatflux
-    def write_constraints_heatflux(self, f, inpfile_split=None):
+    def write_constraints_heatflux(self, wTIF, inpfile_split=None):
         if not self.heatflux_objects:
             return
         if not self.analysis_type == "thermomech":
             return
 
         write_name = "constraints_heatflux_element_face_heatflux"
-        f.write("\n***********************************************************\n")
-        f.write("** {}\n".format(write_name.replace("_", " ")))
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** {}\n".format(write_name.replace("_", " ")))
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         if inpfile_split is True:
             file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
-            f.write("** {}\n".format(write_name.replace("_", " ")))
-            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            wTIF("** {}\n".format(write_name.replace("_", " ")))
+            wTIF("*INCLUDE,INPUT={}\n".format(file_name_splitt))
             inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
             self.write_faceheatflux_constraints_heatflux(inpfile_splitt)
             inpfile_splitt.close()
         else:
-            self.write_faceheatflux_constraints_heatflux(f)
+            self.write_faceheatflux_constraints_heatflux(wTIF)
 
-    def write_faceheatflux_constraints_heatflux(self, f):
+    def write_faceheatflux_constraints_heatflux(self, wTIF):
         # write heat flux faces to file
         for hfobj in self.heatflux_objects:
             heatflux_obj = hfobj["Object"]
-            f.write("** " + heatflux_obj.Label + "\n")
+            wTIF("** " + heatflux_obj.Label + "\n")
             if heatflux_obj.ConstraintType == "Convection":
-                f.write("*FILM\n")
+                wTIF("*FILM\n")
                 for o, elem_tup in heatflux_obj.References:
                     for elem in elem_tup:
                         ho = o.Shape.getElement(elem)
                         if ho.ShapeType == "Face":
                             v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                            f.write("** Heat flux on face {}\n".format(elem))
+                            wTIF("** Heat flux on face {}\n".format(elem))
                             for i in v:
                                 # SvdW: add factor to force heatflux to units system of t/mm/s/K
                                 # OvG: Only write out the VolumeIDs linked to a particular face
-                                f.write("{},F{},{},{}\n".format(
+                                wTIF("{},F{},{},{}\n".format(
                                     i[0],
                                     i[1],
                                     heatflux_obj.AmbientTemp,
                                     heatflux_obj.FilmCoef * 0.001
                                 ))
             elif heatflux_obj.ConstraintType == "DFlux":
-                f.write("*DFLUX\n")
+                wTIF("*DFLUX\n")
                 for o, elem_tup in heatflux_obj.References:
                     for elem in elem_tup:
                         ho = o.Shape.getElement(elem)
                         if ho.ShapeType == "Face":
                             v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                            f.write("** Heat flux on face {}\n".format(elem))
+                            wTIF("** Heat flux on face {}\n".format(elem))
                             for i in v:
-                                f.write("{},S{},{}\n".format(
+                                wTIF("{},S{},{}\n".format(
                                     i[0],
                                     i[1],
                                     heatflux_obj.DFlux * 0.001
@@ -942,16 +958,16 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     # constraints fluidsection
-    def write_constraints_fluidsection(self, f):
+    def write_constraints_fluidsection(self, wTIF):
         if not self.fluidsection_objects:
             return
         if not self.analysis_type == "thermomech":
             return
 
         # write constraint to file
-        f.write("\n***********************************************************\n")
-        f.write("** FluidSection constraints\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("\n***********************************************************\n")
+        wTIF("** FluidSection constraints\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         if os.path.exists(self.fluid_inout_nodes_file):
             inout_nodes_file = open(self.fluid_inout_nodes_file, "r")
             lines = inout_nodes_file.readlines()
@@ -966,61 +982,61 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         for femobj in self.fluidsection_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             fluidsection_obj = femobj["Object"]
-            f.write("** " + fluidsection_obj.Label + "\n")
+            wTIF("** " + fluidsection_obj.Label + "\n")
             if fluidsection_obj.SectionType == "Liquid":
                 if fluidsection_obj.LiquidSectionType == "PIPE INLET":
-                    f.write("**Fluid Section Inlet \n")
+                    wTIF("**Fluid Section Inlet \n")
                     if fluidsection_obj.InletPressureActive is True:
-                        f.write("*BOUNDARY \n")
+                        wTIF("*BOUNDARY \n")
                         for n in femobj["Nodes"]:
                             for line in lines:
                                 b = line.split(",")
                                 if int(b[0]) == n and b[3] == "PIPE INLET\n":
                                     # degree of freedom 2 is for defining pressure
-                                    f.write("{},{},{},{}\n".format(
+                                    wTIF("{},{},{},{}\n".format(
                                         b[0],
                                         "2",
                                         "2",
                                         fluidsection_obj.InletPressure
                                     ))
                     if fluidsection_obj.InletFlowRateActive is True:
-                        f.write("*BOUNDARY,MASS FLOW \n")
+                        wTIF("*BOUNDARY,MASS FLOW \n")
                         for n in femobj["Nodes"]:
                             for line in lines:
                                 b = line.split(",")
                                 if int(b[0]) == n and b[3] == "PIPE INLET\n":
                                     # degree of freedom 1 is for defining flow rate
                                     # factor applied to convert unit from kg/s to t/s
-                                    f.write("{},{},{},{}\n".format(
+                                    wTIF("{},{},{},{}\n".format(
                                         b[1],
                                         "1",
                                         "1",
                                         fluidsection_obj.InletFlowRate * 0.001
                                     ))
                 elif fluidsection_obj.LiquidSectionType == "PIPE OUTLET":
-                    f.write("**Fluid Section Outlet \n")
+                    wTIF("**Fluid Section Outlet \n")
                     if fluidsection_obj.OutletPressureActive is True:
-                        f.write("*BOUNDARY \n")
+                        wTIF("*BOUNDARY \n")
                         for n in femobj["Nodes"]:
                             for line in lines:
                                 b = line.split(",")
                                 if int(b[0]) == n and b[3] == "PIPE OUTLET\n":
                                     # degree of freedom 2 is for defining pressure
-                                    f.write("{},{},{},{}\n".format(
+                                    wTIF("{},{},{},{}\n".format(
                                         b[0],
                                         "2",
                                         "2",
                                         fluidsection_obj.OutletPressure
                                     ))
                     if fluidsection_obj.OutletFlowRateActive is True:
-                        f.write("*BOUNDARY,MASS FLOW \n")
+                        wTIF("*BOUNDARY,MASS FLOW \n")
                         for n in femobj["Nodes"]:
                             for line in lines:
                                 b = line.split(",")
                                 if int(b[0]) == n and b[3] == "PIPE OUTLET\n":
                                     # degree of freedom 1 is for defining flow rate
                                     # factor applied to convert unit from kg/s to t/s
-                                    f.write("{},{},{},{}\n".format(
+                                    wTIF("{},{},{},{}\n".format(
                                         b[1],
                                         "1",
                                         "1",
@@ -1029,10 +1045,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
     # ********************************************************************************************
     # step begin and end
-    def write_step_begin(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** At least one step is needed to run an CalculiX analysis of FreeCAD\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+    def write_step_begin(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** At least one step is needed to run an CalculiX analysis of FreeCAD\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         # STEP line
         step = "*STEP"
         if self.solver_obj.GeometricalNonlinearity == "nonlinear":
@@ -1051,13 +1067,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 # parameter is for thermomechanical analysis only, see ccx manual *STEP
                 pass
         # write step line
-        f.write(step + "\n")
+        wTIF(step + "\n")
         # CONTROLS line
         # all analysis types, ... really in frequency too?!?
         if self.solver_obj.IterationsControlParameterTimeUse:
-            f.write("*CONTROLS, PARAMETERS=TIME INCREMENTATION\n")
-            f.write(self.solver_obj.IterationsControlParameterIter + "\n")
-            f.write(self.solver_obj.IterationsControlParameterCutb + "\n")
+            wTIF("*CONTROLS, PARAMETERS=TIME INCREMENTATION\n")
+            wTIF(self.solver_obj.IterationsControlParameterIter + "\n")
+            wTIF(self.solver_obj.IterationsControlParameterCutb + "\n")
         # ANALYSIS type line
         # analysis line --> analysis type
         if self.analysis_type == "static":
@@ -1127,102 +1143,102 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 self.solver_obj.TimeEnd
             )
         # write analysis type line, analysis parameter line
-        f.write(analysis_type + "\n")
-        f.write(analysis_parameter + "\n")
+        wTIF(analysis_type + "\n")
+        wTIF(analysis_parameter + "\n")
 
-    def write_step_end(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        f.write("*END STEP \n")
+    def write_step_end(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("*END STEP \n")
 
     # ********************************************************************************************
     # output types
-    def write_outputs_types(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** Outputs --> frd file\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+    def write_outputs_types(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** Outputs --> frd file\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         if self.beamsection_objects or self.shellthickness_objects or self.fluidsection_objects:
             if self.solver_obj.BeamShellResultOutput3D is False:
-                f.write("*NODE FILE, OUTPUT=2d\n")
+                wTIF("*NODE FILE, OUTPUT=2d\n")
             else:
-                f.write("*NODE FILE, OUTPUT=3d\n")
+                wTIF("*NODE FILE, OUTPUT=3d\n")
         else:
-            f.write("*NODE FILE\n")
+            wTIF("*NODE FILE\n")
         # MPH write out nodal temperatures if thermomechanical
         if self.analysis_type == "thermomech":
             if not self.fluidsection_objects:
-                f.write("U, NT\n")
+                wTIF("U, NT\n")
             else:
-                f.write("MF, PS\n")
+                wTIF("MF, PS\n")
         else:
-            f.write("U\n")
+            wTIF("U\n")
         if not self.fluidsection_objects:
-            f.write("*EL FILE\n")
+            wTIF("*EL FILE\n")
             if self.solver_obj.MaterialNonlinearity == "nonlinear":
-                f.write("S, E, PEEQ\n")
+                wTIF("S, E, PEEQ\n")
             else:
-                f.write("S, E\n")
+                wTIF("S, E\n")
 
             # dat file
             # reaction forces: freecadweb.org/tracker/view.php?id=2934
             if self.fixed_objects:
-                f.write("** outputs --> dat file\n")
+                wTIF("** outputs --> dat file\n")
                 # reaction forces for all Constraint fixed
-                f.write("** reaction forces for Constraint fixed\n")
+                wTIF("** reaction forces for Constraint fixed\n")
                 for femobj in self.fixed_objects:
                     # femobj --> dict, FreeCAD document object is femobj["Object"]
                     fix_obj_name = femobj["Object"].Name
-                    f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(fix_obj_name))
-                    f.write("RF\n")
+                    wTIF("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(fix_obj_name))
+                    wTIF("RF\n")
                 # TODO: add Constraint Displacement if nodes are restrained
-                f.write("\n")
+                wTIF("\n")
 
             # there is no need to write all integration point results
             # as long as there is no reader for them
             # see https://forum.freecadweb.org/viewtopic.php?f=18&t=29060
-            # f.write("*NODE PRINT , NSET=" + self.ccx_nall + "\n")
-            # f.write("U \n")
-            # f.write("*EL PRINT , ELSET=" + self.ccx_eall + "\n")
-            # f.write("S \n")
+            # wTIF("*NODE PRINT , NSET=" + self.ccx_nall + "\n")
+            # wTIF("U \n")
+            # wTIF("*EL PRINT , ELSET=" + self.ccx_eall + "\n")
+            # wTIF("S \n")
 
     # ********************************************************************************************
     # footer
-    def write_footer(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** CalculiX Input file\n")
-        f.write("** written by {} function\n".format(
+    def write_footer(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** CalculiX Input file\n")
+        wTIF("** written by {} function\n".format(
             sys._getframe().f_code.co_name
         ))
-        f.write("**   written by    --> FreeCAD {}.{}.{}\n".format(
+        wTIF("**   written by    --> FreeCAD {}.{}.{}\n".format(
             self.fc_ver[0],
             self.fc_ver[1],
             self.fc_ver[2]
         ))
-        f.write("**   written on    --> {}\n".format(
+        wTIF("**   written on    --> {}\n".format(
             time.ctime()
         ))
-        f.write("**   file name     --> {}\n".format(
+        wTIF("**   file name     --> {}\n".format(
             os.path.basename(self.document.FileName)
         ))
-        f.write("**   analysis name --> {}\n".format(
+        wTIF("**   analysis name --> {}\n".format(
             self.analysis.Name
         ))
-        f.write("**\n")
-        f.write("**\n")
-        f.write("**\n")
-        f.write("**   Units\n")
-        f.write("**\n")
-        f.write("**   Geometry (mesh data)        --> mm\n")
-        f.write("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
-        f.write("**   Loads (nodal loads)         --> N\n")
-        f.write("**\n")
+        wTIF("**\n")
+        wTIF("**\n")
+        wTIF("**\n")
+        wTIF("**   Units\n")
+        wTIF("**\n")
+        wTIF("**   Geometry (mesh data)        --> mm\n")
+        wTIF("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
+        wTIF("**   Loads (nodal loads)         --> N\n")
+        wTIF("**\n")
 
     # ********************************************************************************************
     # material and fem element type
-    def write_element_sets_material_and_femelement_type(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+    def write_element_sets_material_and_femelement_type(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** Element sets for materials and FEM element type (solid, shell, beam, fluid)\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
 
         # in any case if we have beams, we're going to need the element ids for the rotation elsets
         if self.beamsection_objects:
@@ -1318,13 +1334,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # write ccx_elsets to file
         for ccx_elset in self.ccx_elsets:
-            f.write("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
+            wTIF("*ELSET,ELSET=" + ccx_elset["ccx_elset_name"] + "\n")
             # use six to be sure to be Python 2.7 and 3.x compatible
             if isinstance(ccx_elset["ccx_elset"], six.string_types):
-                f.write(ccx_elset["ccx_elset"] + "\n")
+                wTIF(ccx_elset["ccx_elset"] + "\n")
             else:
                 for elid in ccx_elset["ccx_elset"]:
-                    f.write(str(elid) + ",\n")
+                    wTIF(str(elid) + ",\n")
 
     # self.ccx_elsets = [ {
     #                        "ccx_elset" : [e1, e2, e3, ... , en] or elements set name strings
@@ -1616,21 +1632,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             ccx_elset["ccx_mat_name"] = mat_obj.Material["Name"]
             self.ccx_elsets.append(ccx_elset)
 
-    def write_materials(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** Materials\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        f.write("** Young\'s modulus unit is MPa = N/mm2\n")
+    def write_materials(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** Materials\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        wTIF("** Young\'s modulus unit is MPa = N/mm2\n")
         if self.analysis_type == "frequency" \
                 or self.selfweight_objects \
                 or (
                     self.analysis_type == "thermomech"
                     and not self.solver_obj.ThermoMechSteadyState
                 ):
-            f.write("** Density\'s unit is t/mm^3\n")
+            wTIF("** Density\'s unit is t/mm^3\n")
         if self.analysis_type == "thermomech":
-            f.write("** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n")
-            f.write("** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n")
+            wTIF("** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n")
+            wTIF("** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n")
         for femobj in self.material_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             mat_obj = femobj["Object"]
@@ -1665,12 +1681,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     DV = FreeCAD.Units.Quantity(mat_obj.Material["DynamicViscosity"])
                     DV_in_tmms = float(DV.getValueAs("t/mm/s"))
             # write material properties
-            f.write("** FreeCAD material name: " + mat_info_name + "\n")
-            f.write("** " + mat_label + "\n")
-            f.write("*MATERIAL, NAME=" + mat_name + "\n")
+            wTIF("** FreeCAD material name: " + mat_info_name + "\n")
+            wTIF("** " + mat_label + "\n")
+            wTIF("*MATERIAL, NAME=" + mat_name + "\n")
             if mat_obj.Category == "Solid":
-                f.write("*ELASTIC\n")
-                f.write("{0:.0f}, {1:.3f}\n".format(YM_in_MPa, PR))
+                wTIF("*ELASTIC\n")
+                wTIF("{0:.0f}, {1:.3f}\n".format(YM_in_MPa, PR))
 
             if self.analysis_type == "frequency" \
                     or self.selfweight_objects \
@@ -1678,19 +1694,19 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         self.analysis_type == "thermomech"
                         and not self.solver_obj.ThermoMechSteadyState
                     ):
-                f.write("*DENSITY\n")
-                f.write("{0:.3e}\n".format(density_in_tonne_per_mm3))
+                wTIF("*DENSITY\n")
+                wTIF("{0:.3e}\n".format(density_in_tonne_per_mm3))
             if self.analysis_type == "thermomech":
                 if mat_obj.Category == "Solid":
-                    f.write("*CONDUCTIVITY\n")
-                    f.write("{0:.3f}\n".format(TC_in_WmK))
-                    f.write("*EXPANSION\n")
-                    f.write("{0:.3e}\n".format(TEC_in_mmK))
-                    f.write("*SPECIFIC HEAT\n")
-                    f.write("{0:.3e}\n".format(SH_in_JkgK))
+                    wTIF("*CONDUCTIVITY\n")
+                    wTIF("{0:.3f}\n".format(TC_in_WmK))
+                    wTIF("*EXPANSION\n")
+                    wTIF("{0:.3e}\n".format(TEC_in_mmK))
+                    wTIF("*SPECIFIC HEAT\n")
+                    wTIF("{0:.3e}\n".format(SH_in_JkgK))
                 elif mat_obj.Category == "Fluid":
-                    f.write("*FLUID CONSTANTS\n")
-                    f.write("{0:.3e}, {1:.3e}\n".format(SH_in_JkgK, DV_in_tmms))
+                    wTIF("*FLUID CONSTANTS\n")
+                    wTIF("{0:.3e}, {1:.3e}\n".format(SH_in_JkgK, DV_in_tmms))
 
             # nonlinear material properties
             if self.solver_obj.MaterialNonlinearity == "nonlinear":
@@ -1699,19 +1715,19 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     nl_mat_obj = nlfemobj["Object"]
                     if nl_mat_obj.LinearBaseMaterial == mat_obj:
                         if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
-                            f.write("*PLASTIC\n")
+                            wTIF("*PLASTIC\n")
                             if nl_mat_obj.YieldPoint1:
-                                f.write(nl_mat_obj.YieldPoint1 + "\n")
+                                wTIF(nl_mat_obj.YieldPoint1 + "\n")
                             if nl_mat_obj.YieldPoint2:
-                                f.write(nl_mat_obj.YieldPoint2 + "\n")
+                                wTIF(nl_mat_obj.YieldPoint2 + "\n")
                             if nl_mat_obj.YieldPoint3:
-                                f.write(nl_mat_obj.YieldPoint3 + "\n")
-                    f.write("\n")
+                                wTIF(nl_mat_obj.YieldPoint3 + "\n")
+                    wTIF("\n")
 
-    def write_femelementsets(self, f):
-        f.write("\n***********************************************************\n")
-        f.write("** Sections\n")
-        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+    def write_femelementsets(self, wTIF):
+        wTIF("\n***********************************************************\n")
+        wTIF("** Sections\n")
+        wTIF("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for ccx_elset in self.ccx_elsets:
             if ccx_elset["ccx_elset"]:
                 if "beamsection_obj"in ccx_elset:  # beam mesh
@@ -1763,9 +1779,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             normal[1],
                             normal[2]
                         )
-                    f.write(section_def)
-                    f.write(section_geo)
-                    f.write(section_nor)
+                    wTIF(section_def)
+                    wTIF(section_geo)
+                    wTIF(section_nor)
                 elif "fluidsection_obj"in ccx_elset:  # fluid mesh
                     fluidsec_obj = ccx_elset["fluidsection_obj"]
                     elsetdef = "ELSET=" + ccx_elset["ccx_elset_name"] + ", "
@@ -1788,21 +1804,21 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     elif fluidsec_obj.SectionType == "Open Channel":
                         section_type = fluidsec_obj.ChannelSectionType
                     """
-                    f.write(section_def)
-                    f.write(section_geo)
+                    wTIF(section_def)
+                    wTIF(section_geo)
                 elif "shellthickness_obj"in ccx_elset:  # shell mesh
                     shellth_obj = ccx_elset["shellthickness_obj"]
                     elsetdef = "ELSET=" + ccx_elset["ccx_elset_name"] + ", "
                     material = "MATERIAL=" + ccx_elset["mat_obj_name"]
                     section_def = "*SHELL SECTION, " + elsetdef + material + "\n"
                     section_geo = str(shellth_obj.Thickness.getValueAs("mm")) + "\n"
-                    f.write(section_def)
-                    f.write(section_geo)
+                    wTIF(section_def)
+                    wTIF(section_geo)
                 else:  # solid mesh
                     elsetdef = "ELSET=" + ccx_elset["ccx_elset_name"] + ", "
                     material = "MATERIAL=" + ccx_elset["mat_obj_name"]
                     section_def = "*SOLID SECTION, " + elsetdef + material + "\n"
-                    f.write(section_def)
+                    wTIF(section_def)
 
 # ************************************************************************************************
 # Helpers
