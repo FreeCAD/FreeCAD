@@ -275,20 +275,24 @@ public:
 
     void updateSwitch(SoSwitch *node=0) {
         if(!isLinked() || !pcLinkedSwitch) return;
-        int defIndex = -1;
-        int overrideSwitch = -1;
-        if(pcLinkedSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
-            defIndex = static_cast<SoFCSwitch*>(pcLinkedSwitch.get())->defaultChild.getValue();
-            overrideSwitch = static_cast<SoFCSwitch*>(pcLinkedSwitch.get())->overrideSwitch.getValue();
-        }
+        SoFCSwitch *linkedSwitch = nullptr;
+        if(pcLinkedSwitch->isOfType(SoFCSwitch::getClassTypeId()))
+            linkedSwitch = static_cast<SoFCSwitch*>(pcLinkedSwitch.get());
+
         for(size_t i=0;i<pcSwitches.size();++i) {
             if(!pcSwitches[i] || (node && node!=pcSwitches[i])) 
                 continue;
 
-            if(pcSwitches[i]->defaultChild.getValue() != defIndex)
-                pcSwitches[i]->defaultChild.setValue(defIndex);
-            if(pcSwitches[i]->overrideSwitch.getValue() != overrideSwitch)
-                pcSwitches[i]->overrideSwitch.setValue(overrideSwitch);
+            if(linkedSwitch) {
+                if(pcSwitches[i]->defaultChild != linkedSwitch->defaultChild)
+                    pcSwitches[i]->defaultChild == linkedSwitch->defaultChild;
+                if(pcSwitches[i]->overrideSwitch != linkedSwitch->overrideSwitch)
+                    pcSwitches[i]->overrideSwitch = linkedSwitch->overrideSwitch;
+                if(pcSwitches[i]->childNames != linkedSwitch->childNames)
+                    pcSwitches[i]->childNames = linkedSwitch->childNames;
+                if(pcSwitches[i]->allowNamedOverride != linkedSwitch->allowNamedOverride)
+                    pcSwitches[i]->allowNamedOverride = linkedSwitch->allowNamedOverride;
+            }
 
             int count = pcSwitches[i]->getNumChildren();
             if((!pcLinked->Visibility.getValue() && i==LinkView::SnapshotChild) || !count)
