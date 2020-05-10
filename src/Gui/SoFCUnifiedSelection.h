@@ -37,6 +37,7 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/elements/SoReplacedElement.h>
 #include "InventorBase.h"
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
@@ -93,7 +94,9 @@ public:
     SoSFEnum selectionMode;
     SoSFBool selectionRole;
     SoSFBool useNewSelection;
+
     SoSFName overrideMode;
+    SoSFBool showHiddenLines;
 
     virtual void doAction(SoAction *action);
     //virtual void GLRender(SoGLRenderAction * action);
@@ -109,9 +112,6 @@ public:
 
     static bool getShowSelectionBoundingBox();
 
-    static bool showHiddenLines();
-    void setShowHiddenLines(bool enable);
-
     friend class View3DInventorViewer;
 
 protected:
@@ -125,6 +125,8 @@ private:
     //SbBool isHighlighted(SoAction *action);
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
+
+    void setupDisplayMode(SoAction *);
 
     struct PickedInfo;
     bool setHighlight(const PickedInfo &);
@@ -173,8 +175,6 @@ private:
     SbViewportRegion preselViewport;
 
     SoFCRayPickAction *pcRayPick;
-    
-    bool _showHiddenLines = false;
 };
 
 
@@ -256,6 +256,40 @@ protected:
     bool det;
 };
 
+class GuiExport SoFCDisplayModeElement: public SoReplacedElement {
+    typedef SoReplacedElement inherited;
+
+    SO_ELEMENT_HEADER(SoFCDisplayModeElement);
+
+public:
+    static void initClass(void);
+protected:
+    virtual ~SoFCDisplayModeElement();
+
+public:
+    virtual void init(SoState *state);
+
+    static void set(SoState * const state, SoNode * const node,
+            const SbName &mode, SbBool hiddenLine);
+
+    static const SbName &get(SoState * const state);
+    static SbBool showHiddenLines(SoState * const state);
+    static const SbColor *getFaceColor(SoState * const state);
+    static const SbColor *getLineColor(SoState * const state);
+    static float getTransparency(SoState * const state);
+
+    virtual SbBool matches(const SoElement * element) const;
+    virtual SoElement *copyMatchInfo(void) const;
+
+protected:
+    SbName displayMode;
+    SbBool hiddenLines;
+    SbBool hasFaceColor;
+    SbBool hasLineColor;
+    SbColor faceColor;
+    SbColor lineColor;
+    float transp;
+};
 
 /// Switch node that support global visibility override
 class GuiExport SoFCSwitch : public SoSwitch {
@@ -327,9 +361,6 @@ public:
     void setBBoxCallback(F f) {
         cb = f;
     }
-
-    static void setOverrideName(const SbName &name);
-    static const SbName &getOverrideName();
 
 private:
     void traverseTail(SoAction *action, int idx);

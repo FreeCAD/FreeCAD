@@ -1639,8 +1639,6 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
     if (mode == overrideMode)
         return;
 
-    if(overrideMode == "Hidden Line")
-        selectionRoot->setShowHiddenLines(false);
     if(pcShadowGroup) {
         auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
         int index = superScene->findChild(pcShadowGroup);
@@ -1681,6 +1679,7 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def) {
 void View3DInventorViewer::applyOverrideMode()
 {
     this->overrideBGColor = 0;
+    this->selectionRoot->showHiddenLines = FALSE;
     auto views = getDocument()->getViewProvidersOfType(Gui::ViewProvider::getClassTypeId());
     if (overrideMode == "No Shading") {
         this->shading = false;
@@ -1697,8 +1696,8 @@ void View3DInventorViewer::applyOverrideMode()
             this->overrideBGColor = ViewParams::getHiddenLineBackground();
         this->shading = ViewParams::getHiddenLineShaded();
         this->selectionRoot->overrideMode = "Flat Lines";
+        this->selectionRoot->showHiddenLines = TRUE;
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
-        this->selectionRoot->setShowHiddenLines(true);
     }
     else if (overrideMode == "Shadow") {
         this->shading = true;

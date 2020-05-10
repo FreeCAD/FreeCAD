@@ -48,6 +48,7 @@
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoGLVBOElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/elements/SoLightModelElement.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
@@ -466,9 +467,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
-    bool pushed = overrideMaterialBinding(action,selected,ctx,ctx2);
+    int pushed = overrideMaterialBinding(action,selected,ctx,ctx2);
 
-    if(!pushed){
+    if(pushed <= 0) {
         // for non transparent cases, we still use the old selection rendering
         // code, because it can override emission color, which gives a more
         // distinguishable selection highlight. The above material binding
@@ -500,6 +501,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                 renderSelection(action,ctx2); 
             } else
                 renderHighlight(action,ctx);
+            if(pushed)
+                state->pop();
             return;
         }
 
@@ -514,6 +517,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                     renderSelection(action,ctx); 
                 if(action->isRenderingDelayedPaths())
                     renderHighlight(action,ctx);
+                if(pushed)
+                    state->pop();
                 return;
             }
             if(!action->isRenderingDelayedPaths())
@@ -525,6 +530,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                 renderSelection(action,ctx); 
                 renderHighlight(action,ctx);
             }
+            if(pushed)
+                state->pop();
             return;
         }
     }
@@ -698,7 +705,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
     }
 }
 
-bool SoBrepFaceSet::overrideMaterialBinding(
+int SoBrepFaceSet::overrideMaterialBinding(
         SoGLRenderAction *action, int selected, SelContextPtr ctx, SelContextPtr ctx2) 
 {
     packedColors.clear();
@@ -708,16 +715,33 @@ bool SoBrepFaceSet::overrideMaterialBinding(
 
     float defaultTrans = Gui::ViewParams::getSelectionTransparency();
 
-    bool pushed = false;
-    if(Gui::SoFCUnifiedSelection::showHiddenLines()) {
-        pushed = true;
+    int pushed = 0;
+    if(Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
         state->push();
-        defaultTrans = hiddenLineTransparency = Gui::ViewParams::getHiddenLineTransparency();
+
+        defaultTrans = hiddenLineTransparency = Gui::SoFCDisplayModeElement::getTransparency(state);
+        pushed = defaultTrans==0.0 ? -1 : 1;
+        const SbColor *color = Gui::SoFCDisplayModeElement::getFaceColor(state);
+
+        // Here the "Hidden Lines" mode wants to override transparency and
+        // color. SoLazyElement checks for the overriding node's ID to set the
+        // override, and refuse to override again if the node's ID remains the
+        // same. Since we may want to override the color again later because of
+        // selection highlight. Another thing is that, the color we used here
+        // does not come from any node's field. So we use the hash of the packed
+        // color with transparency to create a temporary node ID, which allow
+        // use the trace the color change as well.
+        auto oldId = this->uniqueId;
+        if(color)
+            this->uniqueId = std::hash<uint32_t>()(color->getPackedValue(defaultTrans));
+        else
+            this->uniqueId = std::hash<float>()(defaultTrans);
+
         SoLazyElement::setTransparency(state,this,1,&hiddenLineTransparency,&packer);
         SoOverrideElement::setTransparencyOverride(state, this, true);
-        if(Gui::ViewParams::getHiddenLineOverrideFaceColor()) {
-            float f;
-            hiddenLineColor.setPackedValue(Gui::ViewParams::getHiddenLineFaceColor(),f);
+
+        if(color) {
+            hiddenLineColor = *color;
             SoLazyElement::setDiffuse(state, this, 1, &hiddenLineColor, &packer);
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
 
@@ -729,11 +753,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             SbColor c(0,0,0);
             SoLazyElement::setEmissive(state, &c);
         }
+
+        this->uniqueId = oldId;
+
     } else if(!selected && !ctx && !ctx2) {
         if(!(SoShapeStyleElement::get(state)->getFlags() 
                 & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL)))
         {
-            return false;
+            return 0;
         }
     }
 
@@ -742,13 +769,13 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     auto element = SoLazyElement::getInstance(state);
     const SbColor *diffuse = element->getDiffusePointer();
     if(!diffuse)
-        return false;
+        return pushed;
     int diffuse_size = element->getNumDiffuse();
 
     const float *trans = element->getTransparencyPointer();
     int trans_size = element->getNumTransparencies();
     if(!trans || !trans_size)
-        return false;
+        return pushed;
     float trans0=0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
@@ -765,7 +792,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     SoShapeHintsElement::get(state, vo, st, ft);
     if(hasTransparency && vo != SoShapeHintsElement::COUNTERCLOCKWISE) {
         if(!pushed) {
-            pushed = true;
+            pushed = 1;
             state->push();
         }
         vo = SoShapeHintsElement::COUNTERCLOCKWISE;
@@ -797,6 +824,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     {
         if(!pushed)
             state->push();
+        pushed = 1;
 
         if(selected && Gui::Selection().needPickedList()) {
             hasTransparency = true;
@@ -971,7 +999,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
         SoLazyElement::setPacked(state, this, packedColors.size(), &packedColors[0], hasTransparency);
         SoTextureEnabledElement::set(state,this,false);
-        return true;
     }
     return pushed;
 }

@@ -38,6 +38,7 @@
 #include <Inventor/SoFullPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
@@ -119,9 +120,10 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcRay
     SO_NODE_ADD_FIELD(colorSelection, (SbColor(0.1f, 0.8f, 0.1f)));
     SO_NODE_ADD_FIELD(highlightMode,  (AUTO));
     SO_NODE_ADD_FIELD(selectionMode,  (ON));
-    SO_NODE_ADD_FIELD(selectionRole,  (true));
-    SO_NODE_ADD_FIELD(useNewSelection, (true));
+    SO_NODE_ADD_FIELD(selectionRole,  (TRUE));
+    SO_NODE_ADD_FIELD(useNewSelection, (TRUE));
     SO_NODE_ADD_FIELD(overrideMode, (""));
+    SO_NODE_ADD_FIELD(showHiddenLines, (FALSE));
 
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, AUTO);
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, ON);
@@ -346,17 +348,6 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
     return getPickedList(action->getEvent()->getPosition(),action->getViewportRegion(), singlePick);
 }
 
-struct OverrideSwitchName {
-    OverrideSwitchName(const SbName &name) {
-        oldName = SoFCSwitch::getOverrideName();
-        SoFCSwitch::setOverrideName(name);
-    }
-    ~OverrideSwitchName() {
-        SoFCSwitch::setOverrideName(oldName);
-    }
-    SbName oldName;
-};
-
 std::vector<SoFCUnifiedSelection::PickedInfo> 
 SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &viewport, bool singlePick) const
 {
@@ -378,7 +369,8 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     getPickedInfoOnTop(ret, singlePick, filter);
 
     if(ret.empty() || !singlePick) {
-        OverrideSwitchName switchGuard(overrideMode.getValue());
+        SoFCDisplayModeElement::set(pcRayPick->getState(),0,
+                overrideMode.getValue(), showHiddenLines.getValue());
         SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,false);
         pcRayPick->apply(pcViewer->getSoRenderManager()->getSceneGraph());
 
@@ -491,7 +483,8 @@ SoPickedPoint *SoFCUnifiedSelection::getPickedPoint(SoHandleEventAction *action)
 
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
-    OverrideSwitchName switchGuard(overrideMode.getValue());
+    SoFCDisplayModeElement::set(action->getState(), this,
+            overrideMode.getValue(), showHiddenLines.getValue());
 
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
         SoFCEnableHighlightAction *preaction = (SoFCEnableHighlightAction*)action;
@@ -1019,24 +1012,11 @@ bool SoFCUnifiedSelection::getShowSelectionBoundingBox() {
         || _ShowBoundBox;
 }
 
-static FC_COIN_THREAD_LOCAL bool _ShowHiddenLines;
-
-bool SoFCUnifiedSelection::showHiddenLines()
-{
-    return _ShowHiddenLines;
-}
-
-void SoFCUnifiedSelection::setShowHiddenLines(bool enable)
-{
-    _showHiddenLines = enable;
-    SoUpdateVBOAction action;
-    action.apply(this);
-}
-
 void SoFCUnifiedSelection::GLRenderInPath(SoGLRenderAction * action)
 {
-    Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
-    OverrideSwitchName switchGuard(overrideMode.getValue());
+    SoFCDisplayModeElement::set(action->getState(), this,
+            overrideMode.getValue(), showHiddenLines.getValue());
+
     inherited::GLRenderInPath(action);
 }
 
@@ -1050,8 +1030,8 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
     if(this->selectAll)
         _ShowBoundBox = true;
 
-    Base::StateLocker guard(_ShowHiddenLines, _showHiddenLines);
-    OverrideSwitchName switchGuard(overrideMode.getValue());
+    SoFCDisplayModeElement::set(action->getState(), this,
+            overrideMode.getValue(), showHiddenLines.getValue());
 
     inherited::GLRenderBelowPath(action);
 
@@ -1297,6 +1277,144 @@ bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) co
 }
 
 // ---------------------------------------------------------------------------------
+SO_ELEMENT_SOURCE(SoFCDisplayModeElement)
+
+void SoFCDisplayModeElement::initClass(void)
+{
+    SO_ELEMENT_INIT_CLASS(SoFCDisplayModeElement, inherited);
+
+    SO_ENABLE(SoGLRenderAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoGetBoundingBoxAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoAudioRenderAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoSearchAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoGetMatrixAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoPickAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoCallbackAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoGetPrimitiveCountAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoHandleEventAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoSelectionElementAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoHighlightElementAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCEnableSelectionAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCEnableHighlightAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCSelectionColorAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCHighlightColorAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCSelectionAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCHighlightAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCDocumentAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoFCDocumentObjectAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoGLSelectAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoVisibleFaceAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoUpdateVBOAction, SoFCDisplayModeElement);
+    SO_ENABLE(SoVRMLAction, SoFCDisplayModeElement);
+}
+
+SoFCDisplayModeElement::~SoFCDisplayModeElement()
+{
+}
+
+void SoFCDisplayModeElement::set(SoState * const state, SoNode * const node,
+                                const SbName &mode, SbBool hiddenLines)
+{
+    auto element = static_cast<SoFCDisplayModeElement*>(
+            inherited::getElement(state, classStackIndex, node));
+
+    if (element) {
+        element->displayMode = mode;
+        if((element->hiddenLines = hiddenLines)) {
+            float f;
+            if((element->hasFaceColor = ViewParams::getHiddenLineOverrideFaceColor()))
+                element->faceColor.setPackedValue(ViewParams::getHiddenLineFaceColor(),f);
+            if((element->hasLineColor = ViewParams::getHiddenLineOverrideColor()))
+                element->lineColor.setPackedValue(ViewParams::getHiddenLineColor(),f);
+            element->transp = ViewParams::getHiddenLineTransparency();
+        }
+    }
+}
+
+const SbName &SoFCDisplayModeElement::get(SoState * const state)
+{
+    auto element = static_cast<const SoFCDisplayModeElement*>(
+            inherited::getConstElement(state, classStackIndex));
+    return element->displayMode;
+}
+
+SbBool SoFCDisplayModeElement::showHiddenLines(SoState * const state)
+{
+    auto element = static_cast<const SoFCDisplayModeElement*>(
+            inherited::getConstElement(state, classStackIndex));
+    return element->hiddenLines;
+}
+
+const SbColor *SoFCDisplayModeElement::getFaceColor(SoState * const state)
+{
+    auto element = static_cast<const SoFCDisplayModeElement*>(
+            inherited::getConstElement(state, classStackIndex));
+    return element->hasFaceColor ? &element->faceColor : nullptr;
+}
+
+const SbColor *SoFCDisplayModeElement::getLineColor(SoState * const state)
+{
+    auto element = static_cast<const SoFCDisplayModeElement*>(
+            inherited::getConstElement(state, classStackIndex));
+    return element->hasLineColor ? &element->lineColor : nullptr;
+}
+
+float SoFCDisplayModeElement::getTransparency(SoState * const state)
+{
+    auto element = static_cast<const SoFCDisplayModeElement*>(
+            inherited::getConstElement(state, classStackIndex));
+    return element->transp;
+}
+
+SbBool SoFCDisplayModeElement::matches(const SoElement * element) const
+{
+    if (this == element)
+        return TRUE;
+    if (element->getTypeId() != SoFCDisplayModeElement::getClassTypeId())
+        return FALSE;
+    auto other = static_cast<const SoFCDisplayModeElement *>(element);
+    if (this->displayMode != other->displayMode || this->hiddenLines != other->hiddenLines)
+        return FALSE;
+    if(this->hiddenLines) {
+        if(this->hasFaceColor != other->hasFaceColor
+                || this->hasLineColor != other->hasLineColor
+                || this->transp != other->transp)
+            return FALSE;
+        if((this->hasFaceColor && this->faceColor != other->faceColor)
+                || (this->hasLineColor && this->lineColor != other->lineColor))
+            return FALSE;
+    }
+    return TRUE;
+}
+
+SoElement *SoFCDisplayModeElement::copyMatchInfo(void) const
+{
+    auto element = static_cast<SoFCDisplayModeElement *>(
+            SoFCDisplayModeElement::getClassTypeId().createInstance());
+
+    element->displayMode = this->displayMode;
+    element->hiddenLines = this->hiddenLines;
+    if(this->hiddenLines) {
+        element->hasFaceColor = this->hasFaceColor;
+        element->hasLineColor = this->hasLineColor;
+        element->transp = this->transp;
+        if(this->hasFaceColor)
+            element->faceColor = this->faceColor;
+        if(this->hasLineColor)
+            element->lineColor = this->lineColor;
+    }
+    element->nodeId = this->nodeId;
+    return element;
+}
+
+void SoFCDisplayModeElement::init(SoState * state)
+{
+    inherited::init(state);
+    this->displayMode = SbName::empty();
+    this->hiddenLines = FALSE;
+}
+
+// ---------------------------------------------------------------------------------
 SO_NODE_SOURCE(SoFCSwitch)
 
 SoFCSwitch::SoFCSwitch()
@@ -1313,6 +1431,9 @@ SoFCSwitch::SoFCSwitch()
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideVisible);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideReset);
     SO_NODE_SET_SF_ENUM_TYPE(overrideSwitch, OverrideSwitch);
+
+    SO_ENABLE(SoGLRenderAction, SoSwitchElement);
+    SO_ENABLE(SoGetBoundingBoxAction, SoSwitchElement);
 }
 
 // switch to defaultChild when invisible
@@ -1365,17 +1486,6 @@ struct SwitchInfo {
 
 static FC_COIN_THREAD_LOCAL std::deque<SwitchInfo> _SwitchStack;
 static FC_COIN_THREAD_LOCAL std::deque<SoFCSwitch::TraverseState> _SwitchTraverseStack;
-static FC_COIN_THREAD_LOCAL SbName _SwitchName;
-
-void SoFCSwitch::setOverrideName(const SbName &name)
-{
-    _SwitchName = name;
-}
-
-const SbName &SoFCSwitch::getOverrideName()
-{
-    return _SwitchName;
-}
 
 bool SoFCSwitch::testTraverseState(TraverseStateFlag flag) {
     if(_SwitchTraverseStack.size())
@@ -1402,12 +1512,14 @@ void SoFCSwitch::doAction(SoAction *action) {
             || (action->isOfType(SoCallbackAction::getClassTypeId()) &&
                 ((SoCallbackAction *)action)->isCallbackAll()))
     {
+        const SbName &name = SoFCDisplayModeElement::get(state);
+
         if(this->whichChild.getValue()>=0 
                 && this->allowNamedOverride.getValue()
-                && _SwitchName!=SbName::empty())
+                && name!=SbName::empty())
         {
             for(int i=0, c=std::min(childNames.getNum(),this->getNumChildren()); i<c; ++i) {
-                if(childNames[i] == _SwitchName) {
+                if(childNames[i] == name) {
                     traverseChild(action, i);
                     traverseTail(action, i);
                     return;
