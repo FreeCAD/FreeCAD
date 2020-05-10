@@ -30,7 +30,8 @@ import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
-import json, time
+import json
+import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -41,12 +42,12 @@ from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class JobTemplate:
     # pylint: disable=no-init
@@ -62,14 +63,17 @@ class JobTemplate:
     ToolController = 'ToolController'
     Version = 'Version'
 
+
 def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
+
 
 def isResourceClone(obj, propLink, resourceName):
     # pylint: disable=unused-argument
     if hasattr(propLink, 'PathResource') and (resourceName is None or resourceName == propLink.PathResource):
         return True
     return False
+
 
 def createResourceClone(obj, orig, name, icon):
     if isArchPanelSheet(orig):
@@ -84,22 +88,24 @@ def createResourceClone(obj, orig, name, icon):
         PathIconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.Transparency = 80
-    obj.Document.recompute() # necessary to create the clone shape
+    obj.Document.recompute()  # necessary to create the clone shape
     return clone
+
 
 def createModelResourceClone(obj, orig):
     return createResourceClone(obj, orig, 'Model', 'BaseGeometry')
 
+
 class ObjectJob:
 
-    def __init__(self, obj, models, templateFile = None):
+    def __init__(self, obj, models, templateFile=None):
         self.obj = obj
-        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","The NC output file for this project"))
-        obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","Select the Post Processor"))
+        obj.addProperty("App::PropertyFile", "PostProcessorOutputFile", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "The NC output file for this project"))
+        obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Post Processor"))
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
 
-        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob","An optional description for this job"))
-        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob", "An optional description for this job"))
+        obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Job Cycle Time Estimation"))
         obj.setEditorMode('CycleTime', 1)  # read-only
         obj.addProperty("App::PropertyDistance", "GeometryTolerance", "Geometry", QtCore.QT_TRANSLATE_NOOP("PathJob", "For computing Paths; smaller increases accuracy, but slows down computation"))
 
@@ -107,14 +113,13 @@ class ObjectJob:
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
         obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
 
-        obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob","Split output into multiple gcode files"))
+        obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
         obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
         obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
         obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
         obj.Fixtures = ['G54']
-        
+
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
-        #obj.setEditorMode("PostProcessorOutputFile", 0)  # set to default mode
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
         defaultPostProcessor = PathPreferences.defaultPostProcessor()
         # Check to see if default post processor hasn't been 'lost' (This can happen when Macro dir has changed)
@@ -131,7 +136,7 @@ class ObjectJob:
             ops.ViewObject.Visibility = False
 
         obj.Operations = ops
-        obj.setEditorMode('Operations', 2) # hide
+        obj.setEditorMode('Operations', 2)  # hide
         obj.setEditorMode('Placement', 2)
 
         self.setupSetupSheet(obj)
@@ -235,7 +240,7 @@ class ObjectJob:
         if obj.Operations.ViewObject:
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except Exception: # pylint: disable=broad-except
+            except Exception:  # pylint: disable=broad-except
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
@@ -246,12 +251,11 @@ class ObjectJob:
                 FreeCAD.ActiveDocument.removeObject(name)
                 ops.Label = label
 
-
     def onDocumentRestored(self, obj):
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
-        obj.setEditorMode('Operations', 2) # hide
+        obj.setEditorMode('Operations', 2)  # hide
         obj.setEditorMode('Placement', 2)
 
         if not hasattr(obj, 'CycleTime'):
@@ -327,13 +331,13 @@ class ObjectJob:
         attrs = {}
         attrs[JobTemplate.Version] = 1
         if obj.PostProcessor:
-            attrs[JobTemplate.PostProcessor]           = obj.PostProcessor
-            attrs[JobTemplate.PostProcessorArgs]       = obj.PostProcessorArgs
+            attrs[JobTemplate.PostProcessor] = obj.PostProcessor
+            attrs[JobTemplate.PostProcessorArgs] = obj.PostProcessorArgs
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
-        attrs[JobTemplate.GeometryTolerance]           = str(obj.GeometryTolerance.Value)
+        attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
-            attrs[JobTemplate.Description]             = obj.Description
+            attrs[JobTemplate.Description] = obj.Description
         return attrs
 
     def __getstate__(self):
@@ -367,19 +371,18 @@ class ObjectJob:
                 formattedCycleTime = PathUtil.opProperty(op, 'CycleTime')
                 opCycleTime = 0
                 try:
-                    ## convert the formatted time from HH:MM:SS to just seconds
+                    # Convert the formatted time from HH:MM:SS to just seconds
                     opCycleTime = sum(x * int(t) for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":"))))
                 except:
-                    FreeCAD.Console.PrintWarning("Error converting the operations cycle time. Job Cycle time may be innacturate\n")
                     continue
 
                 if opCycleTime > 0:
                     seconds = seconds + opCycleTime
 
-        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds)) 
-        self.obj.CycleTime =  cycleTimeString
+        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        self.obj.CycleTime = cycleTimeString
 
-    def addOperation(self, op, before = None, removeBefore = False):
+    def addOperation(self, op, before=None, removeBefore=False):
         group = self.obj.Operations.Group
         if op not in group:
             if before:
@@ -387,7 +390,7 @@ class ObjectJob:
                     group.insert(group.index(before), op)
                     if removeBefore:
                         group.remove(before)
-                except Exception as e: # pylint: disable=broad-except
+                except Exception as e:  # pylint: disable=broad-except
                     PathLog.error(e)
                     group.append(op)
             else:
@@ -399,13 +402,14 @@ class ObjectJob:
         group = self.obj.ToolController
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
-            tc.setExpression('VertRapid',  "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.VertRapid))
+            tc.setExpression('VertRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.VertRapid))
             tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.HorizRapid))
             group.append(tc)
             self.obj.ToolController = group
 
     def allOperations(self):
         ops = []
+
         def collectBaseOps(op):
             if hasattr(op, 'TypeId'):
                 if op.TypeId == 'Path::FeaturePython':
@@ -437,13 +441,15 @@ class ObjectJob:
         '''Answer true if the given object can be used as a Base for a job.'''
         return PathUtil.isValidBaseObject(obj) or isArchPanelSheet(obj)
 
+
 def Instances():
     '''Instances() ... Return all Jobs in the current active document.'''
     if FreeCAD.ActiveDocument:
         return [job for job in FreeCAD.ActiveDocument.Objects if hasattr(job, 'Proxy') and isinstance(job.Proxy, ObjectJob)]
     return []
 
-def Create(name, base, templateFile = None):
+
+def Create(name, base, templateFile=None):
     '''Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template.'''
     if str == type(base[0]):
@@ -455,4 +461,3 @@ def Create(name, base, templateFile = None):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectJob(obj, models, templateFile)
     return obj
-
