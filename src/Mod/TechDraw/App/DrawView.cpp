@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
     requestPaint();
     //documentobject::execute doesn't do anything useful for us.
     //documentObject::recompute causes an infinite loop.
-    //should not be neccessary to purgeTouched here, but it prevents a superflous feature recompute
+    //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
     purgeTouched();                           //this should not be necessary!
     return App::DocumentObject::StdReturn;
 }
