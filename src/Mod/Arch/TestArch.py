@@ -139,6 +139,15 @@ class ArchTest(unittest.TestCase):
         f = Arch.makeFrame(l,p)
         self.failUnless(f,"Arch Frame failed")
 
+    def testEquipment(self):
+        FreeCAD.Console.PrintLog ('Checking Arch Equipment...\n')
+        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        box.Length = 500
+        box.Width = 2000
+        box.Height = 600
+        equip = Arch.makeEquipment(box)
+        self.failUnless(equip,"Arch Equipment failed")
+
     def testAdd(self):
         FreeCAD.Console.PrintLog ('Checking Arch Add...\n')
         l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
