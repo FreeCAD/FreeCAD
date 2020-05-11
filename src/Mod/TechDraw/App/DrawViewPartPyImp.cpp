@@ -105,8 +105,16 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     return pEdgeList;
 }
 
-// remove all cosmetics
+PyObject* DrawViewPartPy::requestPaint(PyObject *args)
+{
+    (void) args;
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->requestPaint();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
 
+// remove all cosmetics
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
 {
     (void) args;
@@ -457,8 +465,8 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
     if (ce != nullptr) {
 //        result = new CosmeticEdgePy(new CosmeticEdge(ce));
-        result = new CosmeticEdgePy(ce->clone());
-//        result = ce->getPyObject();
+//        result = new CosmeticEdgePy(ce->clone());
+        result = ce->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCosmeticEdge - edge %s not found\n", tag);
     }
@@ -478,8 +486,8 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(name);
     if (ce != nullptr) {
-//        result = ce->getPyObject();
-        result = new CosmeticEdgePy(ce->clone());
+        result = ce->getPyObject();
+//        result = new CosmeticEdgePy(ce->clone());
     } else {
         Base::Console().Error("DVPPI::getCosmeticEdgebySelection - edge for name %s not found\n", name);
     }
@@ -489,6 +497,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
+    bool result = false;
     PyObject* pNewCE;
     if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CosmeticEdgePy::Type), &pNewCE)) {
         throw Py::TypeError("expected (CosmeticEdge)");
@@ -496,9 +505,11 @@ PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticEdgePy* cePy = static_cast<TechDraw::CosmeticEdgePy*>(pNewCE);
     TechDraw::CosmeticEdge* ce = cePy->getCosmeticEdgePtr();
-    bool result = dvp->replaceCosmeticEdge(ce);
-    dvp->refreshCEGeoms();
-    dvp->requestPaint();
+    if (ce != nullptr) {
+        result = dvp->replaceCosmeticEdge(ce);                 //<<<
+        dvp->refreshCEGeoms();
+        dvp->requestPaint();
+    }
     return PyBool_FromLong((long) result);
 }
 
