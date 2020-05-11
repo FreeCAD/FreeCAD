@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <array>
+
 #include <App/Material.h>
 #include "DlgSettingsDrawStyles.h"
 #include "ui_DlgSettingsDrawStyles.h"
@@ -38,6 +40,23 @@
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsDrawStyles */
+
+struct LinePattern {
+    Qt::PenStyle style;
+    int value;
+    const char *name;
+
+    LinePattern(Qt::PenStyle s, int v, const char *n)
+        :style(s), value(v), name(n)
+    {}
+};
+static const std::array<LinePattern, 5> _LinePatterns {{
+    {Qt::SolidLine, 0, "No change"},
+    {Qt::SolidLine, 0xffff, "Solid"},
+    {Qt::DashLine, 0xf0f0, "Dash"},
+    {Qt::DotLine, 0xaaaa, "Dot"},
+    {Qt::DashDotLine, 0x33ff, "Dash Dot"},
+}};
 
 /**
  *  Constructs a DlgSettingsDrawStyles which is a child of 'parent', with the 
@@ -68,6 +87,50 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 
     ui->spinTransparency->setValue(ViewParams::getHiddenLineTransparency());
 
+    ui->comboLinePattern->setIconSize (QSize(80,12));
+    for(auto &v : _LinePatterns) {
+        if(!v.value) {
+            ui->comboLinePattern->addItem(QString::fromLatin1(v.name),v.value);
+            continue;
+        }
+        QPixmap px(ui->comboLinePattern->iconSize());
+        px.fill(Qt::white);
+        QBrush brush(Qt::black);
+        QPen pen(v.style);
+        pen.setBrush(brush);
+        pen.setWidth(2);
+
+        QPainter painter(&px);
+        painter.setPen(pen);
+        double mid = ui->comboLinePattern->iconSize().height() / 2.0;
+        painter.drawLine(0, mid, ui->comboLinePattern->iconSize().width(), mid);
+        painter.end();
+
+        ui->comboLinePattern->addItem(QIcon(px),QString::fromLatin1(v.name),v.value);
+    }
+    ui->comboLinePattern->setEditable(true);
+    
+    int pattern = ViewParams::getSelectionLinePattern();
+    bool found = false;
+    int i=-1;
+    for(auto &v : _LinePatterns) {
+        ++i;
+        if(pattern == v.value) {
+            found = true;
+            ui->comboLinePattern->setCurrentIndex(i);
+            break;
+        }
+    }
+    if(!found) {
+        ui->comboLinePattern->setEditText(
+                QString::fromLatin1("0x%1").arg(pattern,0,16));
+    }
+
+    ui->checkBoxSelectionOnTop->setChecked(ViewParams::getShowSelectionOnTop());
+    ui->spinTransparencyOnTop->setValue(ViewParams::getTransparencyOnTop());
+    ui->spinLineWidthMultiplier->setValue(ViewParams::getSelectionLineThicken());
+    ui->spinSelectionHiddenLineWidth->setValue(ViewParams::getSelectionHiddenLineWidth());
+
     ui->checkBoxSpotLight->setChecked(ViewParams::getShadowSpotLight());
     ui->checkBoxShowGround->setChecked(ViewParams::getShadowShowGround());
     ui->checkBoxFlatLines->setChecked(ViewParams::getShadowFlatLines());
@@ -92,6 +155,24 @@ DlgSettingsDrawStyles::~DlgSettingsDrawStyles()
 
 void DlgSettingsDrawStyles::saveSettings()
 {
+    int idx = ui->comboLinePattern->currentIndex();
+    if(idx >= 0) {
+        ViewParams::setSelectionLinePattern(
+                ui->comboLinePattern->itemData(idx).toInt());
+    } else {
+        QString pattern = ui->comboLinePattern->currentText();
+        bool res;
+        ViewParams::setSelectionLinePattern(pattern.toInt(&res,0));
+        if(!res) {
+            Base::Console().Warning("Invalid line pattern: %s'\n",
+                    pattern.toLatin1().constData());
+        }
+    }
+    ui->checkBoxSelectionOnTop->onSave();
+    ui->spinTransparencyOnTop->onSave();
+    ui->spinLineWidthMultiplier->onSave();
+    ui->spinSelectionHiddenLineWidth->onSave();
+
     ui->checkBoxShaded->onSave();
     ui->checkBoxFaceColor->onSave();
     ui->checkBoxLineColor->onSave();
@@ -123,6 +204,25 @@ void DlgSettingsDrawStyles::saveSettings()
 
 void DlgSettingsDrawStyles::loadSettings()
 {
+    int pattern = ViewParams::getSelectionLinePattern();
+    bool found = false;
+    int i=-1;
+    for(auto &v : _LinePatterns) {
+        ++i;
+        if(pattern == v.value) {
+            ui->comboLinePattern->setCurrentIndex(i);
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        ui->comboLinePattern->setEditText(QString::fromLatin1("0x%1").arg(pattern));
+
+    ui->checkBoxSelectionOnTop->onRestore();
+    ui->spinTransparencyOnTop->onRestore();
+    ui->spinLineWidthMultiplier->onRestore();
+    ui->spinSelectionHiddenLineWidth->onRestore();
+
     ui->checkBoxShaded->onRestore();
     ui->checkBoxFaceColor->onRestore();
     ui->checkBoxLineColor->onRestore();

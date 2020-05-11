@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>598</height>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,181 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Selection</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0,0,0,0">
+        <property name="horizontalSpacing">
+         <number>6</number>
+        </property>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Selected hidden line pattern</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxSelectionOnTop">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Show selection on top</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShowSelectionOnTop</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinLineWidthMultiplier">
+          <property name="toolTip">
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectionLineThicken</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinSelectionHiddenLineWidth">
+          <property name="toolTip">
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectionHiddenLineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Line width multiplier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboLinePattern"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinTransparencyOnTop">
+          <property name="toolTip">
+           <string>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TransparencyOnTop</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Selected hidden line width</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxSelection">
      <property name="title">
       <string>Hidden Lines</string>
@@ -26,21 +201,8 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="spacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>183</width>
-          <height>23</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
-       <layout class="QGridLayout" name="_3">
+       <layout class="QGridLayout" name="_3" columnstretch="0,0">
         <property name="margin">
          <number>0</number>
         </property>
@@ -75,7 +237,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Transparency:</string>
+           <string>Transparency</string>
           </property>
          </widget>
         </item>
@@ -239,10 +401,23 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
        </layout>
       </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBoxSelection_2">
      <property name="title">
       <string>Shadow</string>
@@ -254,21 +429,11 @@ Larger value eases to pick things, but can make small features impossible to sel
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="spacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>183</width>
-          <height>23</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
-       <layout class="QGridLayout" name="_4" columnstretch="1,0">
+       <layout class="QGridLayout" name="_4" columnstretch="0,0" columnminimumwidth="0,0">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
         <property name="margin">
          <number>0</number>
         </property>
@@ -321,6 +486,12 @@ Larger value eases to pick things, but can make small features impossible to sel
          <widget class="Gui::PrefColorButton" name="GroundColor">
           <property name="enabled">
            <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
            <string/>
@@ -424,6 +595,12 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxSpotLight">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Use spot light</string>
           </property>
@@ -437,10 +614,23 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
        </layout>
       </item>
+      <item row="0" column="1">
+       <spacer name="spacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>183</width>
+          <height>23</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <spacer name="spacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
