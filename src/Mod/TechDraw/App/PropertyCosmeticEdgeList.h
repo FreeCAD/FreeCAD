@@ -64,7 +64,8 @@ public:
 
     /** Sets the property
      */
-    void setValue(const CosmeticEdge*);
+/*    void setValue(const CosmeticEdge*);*/
+    void setValue(CosmeticEdge*);
     void setValues(const std::vector<CosmeticEdge*>&);
 
     /// index operator

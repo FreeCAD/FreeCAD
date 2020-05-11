@@ -282,7 +282,9 @@ bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
     std::vector<CosmeticEdge*> newEdges;
     std::string tag = newCE->getTagAsString();
     for (auto& ce: cEdges) {
-        if (ce->getTagAsString() == tag)  {
+        Base::Console().Message("CX::replaceCosmeticEdge - newCE: %X/%s matching: %X/xxx \n",
+                                newCE, tag.c_str(), ce);
+        if (ce->getTagAsString() == tag)  {    //<<<<
             newEdges.push_back(newCE);
             result = true;
         } else { 
