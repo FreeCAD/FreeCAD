@@ -148,6 +148,11 @@ class ArchTest(unittest.TestCase):
         equip = Arch.makeEquipment(box)
         self.failUnless(equip,"Arch Equipment failed")
 
+    def testPipe(self):
+        FreeCAD.Console.PrintLog ('Checking Arch Pipe...\n')
+        pipe = Arch.makePipe(diameter=120, length=3000)
+        self.failUnless(pipe,"Arch Pipe failed")
+
     def testAdd(self):
         FreeCAD.Console.PrintLog ('Checking Arch Add...\n')
         l=Draft.makeLine(FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0))
