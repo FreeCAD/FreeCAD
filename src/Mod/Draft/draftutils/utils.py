@@ -524,6 +524,34 @@ def is_clone(obj, objtype, recursive=False):
 isClone = is_clone
 
 
+def get_clone_base(obj, strict=False):
+    """get_clone_base(obj, [strict])
+    
+    Returns the object cloned by this object, if any, or this object if 
+    it is no clone. 
+
+    Parameters
+    ----------
+    obj : 
+        TODO: describe
+
+    strict : bool (default = False)
+        If strict is True, if this object is not a clone, 
+        this function returns False
+    """
+    if hasattr(obj,"CloneOf"):
+        if obj.CloneOf:
+            return get_clone_base(obj.CloneOf)
+    if get_type(obj) == "Clone":
+        return obj.Objects[0]
+    if strict:
+        return False
+    return obj
+
+
+getCloneBase = get_clone_base
+
+
 def get_group_names():
     """Return a list of names of existing groups in the document.
 
