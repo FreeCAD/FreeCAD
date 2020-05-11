@@ -78,6 +78,7 @@
 
 #include <Inventor/SbDPLine.h>
 
+#include <QApplication>
 #include <QtOpenGL.h>
 
 #include <Base/Console.h>
@@ -361,16 +362,22 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     pcRayPick->setViewportRegion(viewport);
     pcRayPick->setPoint(pos);
     pcRayPick->setPickAll(!singlePick || !ViewParams::instance()->getUseNewRayPick());
+    pcRayPick->setPickBackFace(singlePick 
+            && QApplication::queryKeyboardModifiers()==Qt::ShiftModifier);
 
     SoPickStyleElement::set(pcRayPick->getState(),
-            singlePick ? SoPickStyleElement::SHAPE_FRONTFACES : SoPickStyleElement::SHAPE);
+            (!pcRayPick->pickBackFace() && singlePick) ?
+                SoPickStyleElement::SHAPE_FRONTFACES : SoPickStyleElement::SHAPE);
     SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,true);
+
+    SoFCDisplayModeElement::set(pcRayPick->getState(),0,SbName::empty(),false);
 
     getPickedInfoOnTop(ret, singlePick, filter);
 
     if(ret.empty() || !singlePick) {
         SoFCDisplayModeElement::set(pcRayPick->getState(),0,
                 overrideMode.getValue(), showHiddenLines.getValue());
+
         SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,false);
         pcRayPick->apply(pcViewer->getSoRenderManager()->getSceneGraph());
 

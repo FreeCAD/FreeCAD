@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #  include <cassert>
 #  include <float.h>
+#  include <limits.h>
 #  include <Inventor/actions/SoSearchAction.h>
 #  include <Inventor/actions/SoGetBoundingBoxAction.h>
 #  include <Inventor/nodes/SoCallback.h>
@@ -63,6 +64,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include "Selection.h"
+#include "ViewParams.h"
 
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
@@ -1470,41 +1472,96 @@ static inline float getDistance(SoAction *action, const SbVec3f &pos) {
     return -plane.getDistance(pos);
 }
 
-void SoFCRayPickAction::afterPick() {
-    if(isPickAll())
-        return;
-
-    if(!ppList->getLength()) {
-        auto pp = getPickedPoint();
-        if(pp) {
-            ppList->append(pp->copy());
-            lastPriority = SoFCUnifiedSelection::getPriority(pp);
-            lastDist = getDistance(this,pp->getPoint());
-            lastRoot = SoFCSelectionRoot::getCurrentActionRoot(this);
-            reset();
-        }
-        return;
-    }
-    auto curpp = getPickedPoint();
-    if(!curpp)
-        return;
-
-    const SbVec3f &pos = curpp->getPoint();
-    float dist = getDistance(this,pos);
-    int p = SoFCUnifiedSelection::getPriority(curpp);
-
-    bool update = false;
-    if(p > lastPriority && pos.equals((*ppList)[0]->getPoint(),0.01f))
-        update = true;
-     else
-        update = (dist < lastDist);
-    if(update) {
-        lastPriority = p;
-        lastDist = dist;
-        ppList->set(0,curpp->copy());
-    } 
-
-    reset();
+void SoFCRayPickAction::setPickBackFace(bool enable)
+{
+    backFace = enable;
+    if(enable)
+        setPickAll(true);
 }
 
+void SoFCRayPickAction::afterPick() {
+    SoPickedPoint *pp = nullptr;
 
+    if(isPickAll()) {
+        if(!backFace)
+            return;
+        const auto &pps = getPickedPointList();
+        SoPickedPoint *lastFace = nullptr;
+        for(int i=0,c=pps.getLength();i<c;++i) {
+            auto detail = pps[i]->getDetail();
+            if(!detail)
+                continue;
+            if(detail->isOfType(SoFaceDetail::getClassTypeId())) {
+                lastFace = pps[i];
+                continue;
+            }
+            if(detail->isOfType(SoPointDetail::getClassTypeId())) {
+                pp = pps[i];
+                break;
+            }
+            if(detail->isOfType(SoLineDetail::getClassTypeId())) {
+                const SbVec3f &pos = pps[i]->getPoint();
+                for(int j=i+1;j<c;++j) {
+                    if(!pos.equals(pps[j]->getPoint(),0.01f))
+                        break;
+                    if(pps[j]->getDetail()
+                            && pps[j]->getDetail()->isOfType(SoPointDetail::getClassTypeId()))
+                    {
+                        pp = pps[j];
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if(!pp)
+            pp = lastFace;
+    }
+
+    if(!pp) {
+        pp = getPickedPoint();
+        if(!pp) {
+            reset();
+            return;
+        }
+    }
+
+    const SbVec3f &pos = pp->getPoint();
+    float dist = getDistance(this,pos);
+    int p = SoFCUnifiedSelection::getPriority(pp);
+
+    if(!ppList->getLength()) {
+        ppList->append(pp->copy());
+        lastPriority = p;
+        if(backFace && pp->getDetail()
+                && pp->getDetail()->isOfType(SoFaceDetail::getClassTypeId()))
+        {
+            lastBackDist = dist;
+            lastDist = std::numeric_limits<float>::max();
+        } else {
+            lastDist = dist;
+            lastBackDist = std::numeric_limits<float>::max();
+        }
+        reset();
+        return;
+    }
+
+    if(backFace && pp->getDetail()
+        && pp->getDetail()->isOfType(SoFaceDetail::getClassTypeId()))
+    {
+        if(lastBackDist < dist) {
+            lastBackDist = dist;
+            ppList->set(0,pp->copy());
+        }
+    } else {
+        if((p > lastPriority && pos.equals((*ppList)[0]->getPoint(),0.01f))
+                || dist < lastDist)
+        {
+            lastBackDist = std::numeric_limits<float>::max();
+            lastPriority = p;
+            lastDist = dist;
+            ppList->set(0,pp->copy());
+        }
+    }
+    reset();
+}

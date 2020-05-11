@@ -396,6 +396,9 @@ public:
 
     const SoPickedPointList &getPrioPickedPointList() const;
 
+    bool pickBackFace() const {return backFace;}
+    void setPickBackFace(bool enable);
+
     void afterPick();
 
     void cleanup();
@@ -407,7 +410,8 @@ private:
     std::unique_ptr<SoPickedPointList> ppList;
     int lastPriority;
     float lastDist;
-    SoNode *lastRoot;
+    float lastBackDist;
+    bool backFace = false;
 };
 
 } // namespace Gui
