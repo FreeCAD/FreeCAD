@@ -67,18 +67,21 @@ SET(Arch_make
     archmake/__init__.py
     archmake/make_arch_view.py
     archmake/make_wall.py
+    archmake/make_opening.py
     archmake/joinwalls.py
 )
 
 SET(Arch_objects
     archobjects/__init__.py
     archobjects/archview.py
+    archobjects/opening.py
     archobjects/wall.py
 )
 
 SET(Arch_view_providers
     archviewproviders/__init__.py
     archviewproviders/view_archview.py
+    archviewproviders/view_opening.py
     archviewproviders/view_wall.py
 )
 
