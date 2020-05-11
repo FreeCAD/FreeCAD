@@ -156,6 +156,11 @@ public:
                                                                double tol = 1e-7,
                                                                double atol = 1e-10) const;
 
+
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const char * /*element*/) const
+    {return nullptr;}
+
 protected:
     virtual void onChanged(const Property* prop);
     virtual void onDocumentRestored();

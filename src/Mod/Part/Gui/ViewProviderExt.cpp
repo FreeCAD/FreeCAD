@@ -1400,6 +1400,8 @@ void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColor
             || UpdatingColor)
         return;
 
+    auto geoFeature = Base::freecad_dynamic_cast<App::GeoFeature>(pcObject);
+
     Base::FlagToggler<> flag(UpdatingColor);
     auto prop = getColoredElements(pcObject);
     if(prop && prop->getSubValues().size()!=(size_t)MappedColors.getSize()) {
@@ -1495,7 +1497,14 @@ void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColor
             auto mapped = shape.getElementName(element.c_str(),Data::ComplexGeoData::MapToNamed);
             if(mapped == element.c_str())
                 continue;
-            auto color = getElementColor(info.defaultColor, shape, sourceDoc,info.type,mapped,cache);
+
+            App::Document *doc = sourceDoc;
+            if(geoFeature) {
+                auto owner = geoFeature->getElementOwner(mapped);
+                if(owner)
+                    doc = owner->getDocument();
+            }
+            auto color = getElementColor(info.defaultColor, shape, doc,info.type,mapped,cache);
             if(!MapTransparency.getValue())
                 color.a = trans;
             if(color != colors[i]) {

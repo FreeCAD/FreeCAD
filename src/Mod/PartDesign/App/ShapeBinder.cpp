@@ -39,6 +39,10 @@
 
 #include <unordered_map>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/find.hpp>
+#include <boost/range.hpp>
+
+typedef boost::iterator_range<const char*> CharRange;
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -433,6 +437,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         result = Part::TopoShape(getID(), getDocument()->getStringHasher());
 
     std::vector<Part ::TopoShape> shapes;
+    std::vector<std::pair<int,int> > shapeOwners;
     std::vector<const Base::Matrix4D*> shapeMats;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
@@ -465,7 +470,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    int idx = -1;
     for(auto &l : Support.getSubListValues()) {
+        ++idx;
         auto obj = l.getValue();
         if(!obj || !obj->getNameInDocument())
             continue;
@@ -561,6 +568,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         const auto &subvals = copied?_CopiedLink.getSubValues():l.getSubValues();
+        int sidx = copied?-1:idx;
+        int subidx = -1;
         std::set<std::string> subs(subvals.begin(),subvals.end());
         static std::string none("");
         if(subs.empty())
@@ -568,10 +577,12 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else if(subs.size()>1)
             subs.erase(none);
         for(const auto &sub : subs) {
+            ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
                 if(!shape.isNull()) {
                     shapes.push_back(shape);
+                    shapeOwners.emplace_back(sidx, subidx);
                     shapeMats.push_back(&res.first->second);
                 }
             } catch(Base::Exception &e) {
@@ -625,6 +636,22 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             if(hit)
                 return;
         }
+
+        std::ostringstream ss;
+        idx = -1;
+        for(auto &shape : shapes) {
+            ++idx;
+            if(shape.Hasher
+                    && shape.getElementMapSize()
+                    && shape.Hasher != getDocument()->getStringHasher())
+            {
+                ss.str("");
+                ss << TOPOP_SHAPEBINDER << ':' << shapeOwners[idx].first
+                   << ':' << shapeOwners[idx].second;
+                shape.reTagElementMap(getID(),
+                        getDocument()->getStringHasher(),ss.str().c_str());
+            }
+        }
         
         if(shapes.size()==1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
@@ -632,13 +659,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             for(size_t i=0;i<shapes.size();++i) {
                 auto &shape = shapes[i];
                 shape = shape.makETransform(*shapeMats[i]);
-                if(shape.Hasher
-                        && shape.getElementMapSize()
-                        && shape.Hasher != getDocument()->getStringHasher())
-                {
-                    shape.reTagElementMap(getID(),
-                            getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
-                }
             }
         }
 
@@ -704,6 +724,45 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             removeDynamicProperty(name.c_str());
         } catch(...) {}
     }
+}
+
+App::DocumentObject *SubShapeBinder::getElementOwner(const char *element) const
+{
+    if(!element)
+        return nullptr;
+
+    CharRange range(element, element+strlen(element)+1);
+    static const char _op[] = TOPOP_SHAPEBINDER ":";
+    CharRange op(_op, _op+sizeof(_op)-1);
+    auto res = boost::find_last(range, op);
+    if(boost::begin(res) == boost::end(res))
+        return nullptr;
+    
+    int idx, subidx;
+    if(sscanf(boost::end(res), "%d:%d", &idx, &subidx) != 2 || subidx<0)
+        return nullptr;
+
+    const App::PropertyXLink *link = nullptr;
+    if(idx < 0)
+        link = &_CopiedLink;
+    else if (idx < Support.getSize()) {
+        int i=0;
+        for(auto &l : Support.getSubListValues()) {
+            if(i++ == idx)
+                link = &l;
+        }
+    }
+    if(!link || !link->getValue())
+        return nullptr;
+
+    const auto &subs = link->getSubValues();
+    if(subidx < (int)subs.size())
+        return link->getValue()->getSubObject(subs[subidx].c_str());
+
+    if(subidx == 0 && subs.empty())
+        return link->getValue();
+
+    return nullptr;
 }
 
 void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
