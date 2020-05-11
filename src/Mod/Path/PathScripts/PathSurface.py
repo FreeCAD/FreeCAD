@@ -907,7 +907,6 @@ class ObjectSurface(PathOp.ObjectOp):
         return SCANS
 
     def _planarDropCutScan(self, pdc, A, B):
-        #PNTS = list()
         (x1, y1) = A
         (x2, y2) = B
         path = ocl.Path()                   # create an empty path object
@@ -918,11 +917,10 @@ class ObjectSurface(PathOp.ObjectOp):
         pdc.setPath(path)
         pdc.run()  # run dropcutter algorithm on path
         CLP = pdc.getCLPoints()
-        PNTS = [FreeCAD.Vector(p.x, p.y, p.z) for p in CLP]
-        return PNTS  # pdc.getCLPoints()
+        # Convert OCL object data to FreeCAD vectors
+        return [FreeCAD.Vector(p.x, p.y, p.z) for p in CLP]
 
     def _planarCircularDropCutScan(self, pdc, Arc, cMode):
-        PNTS = list()
         path = ocl.Path()  # create an empty path object
         (sp, ep, cp) = Arc
 
@@ -1029,7 +1027,6 @@ class ObjectSurface(PathOp.ObjectOp):
         output = []
         optimize = obj.OptimizeLinearPaths
         lenPNTS = len(PNTS)
-        lop = None
         onLine = False
 
         # Initialize first three points

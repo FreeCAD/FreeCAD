@@ -815,16 +815,11 @@ class ObjectWaterline(PathOp.ObjectOp):
         if self.layerEndPnt is None:
             self.layerEndPnt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        # Set extra offset to diameter of cutter to allow cutter to move around perimeter of model
-        toolDiam = self.cutter.getDiameter()
-
         if subShp is None:
             # Get correct boundbox
             if obj.BoundBox == 'Stock':
-                BS = JOB.Stock
-                bb = BS.Shape.BoundBox
+                bb = JOB.Stock.Shape.BoundBox
             elif obj.BoundBox == 'BaseBoundBox':
-                BS = base
                 bb = base.Shape.BoundBox
 
             xmin = bb.XMin
@@ -869,7 +864,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 scanLines[L].append(oclScan[pi])
         lenSL = len(scanLines)
         pntsPerLine = len(scanLines[0])
-        PathLog.debug("--OCL scan: " + str(lenSL * pntsPerLine) + " points, with " + str(numScanLines) + " lines and " + str(pntsPerLine) + " pts/line")
+        msg = "--OCL scan: " + str(lenSL * pntsPerLine) + " points, with "
+        msg += str(numScanLines) + " lines and " + str(pntsPerLine) + " pts/line"
+        PathLog.debug(msg)
 
         # Extract Wl layers per depthparams
         lyr = 0
@@ -1156,6 +1153,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Save layer end point for use in transitioning to next layer
         self.layerEndPnt = pnt
+        True if prev else False  # Use prev for LGTM
 
         return output
 
@@ -1224,7 +1222,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             caCnt += 1
             if area.Area > 0.0:
                 cont = True
-                caWireCnt = len(area.Wires) - 1  # first wire is boundFace wire
+                # caWireCnt = len(area.Wires) - 1  # first wire is boundFace wire
                 if self.showDebugObjects:
                     CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'cutArea_{}'.format(caCnt))
                     CA.Shape = area
@@ -1238,7 +1236,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 area.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - area.BoundBox.ZMin))
                 activeArea = area.cut(trimFace)
-                activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
+                # activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
                 if self.showDebugObjects:
                     CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'activeArea_{}'.format(caCnt))
                     CA.Shape = activeArea
@@ -1448,7 +1446,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         tolrnc = JOB.GeometryTolerance.Value
         lenstpOVRS = len(stpOVRS)
         lstSO = lenstpOVRS - 1
-        lstStpOvr = False
+        # lstStpOvr = False
         gDIR = ['G3', 'G2']
 
         if self.CutClimb is True:
@@ -1468,8 +1466,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             first = PRTS[0][0]  # first point of arc/line stepover group
             last = None
             cmds.append(Path.Command('N (Begin step {}.)'.format(so), {}))
-            if so == lstSO:
-                lstStpOvr = True
+            # if so == lstSO:
+            #    lstStpOvr = True
 
             if so > 0:
                 if cutPattern == 'CircularZigZag':

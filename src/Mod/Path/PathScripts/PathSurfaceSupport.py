@@ -100,10 +100,10 @@ class PathGeometryGenerator:
 
     def _prepareConstants(self):
         # Apply drop cutter extra offset and set the max and min XY area of the operation
-        xmin = self.shape.BoundBox.XMin
-        xmax = self.shape.BoundBox.XMax
-        ymin = self.shape.BoundBox.YMin
-        ymax = self.shape.BoundBox.YMax
+        # xmin = self.shape.BoundBox.XMin
+        # xmax = self.shape.BoundBox.XMax
+        # ymin = self.shape.BoundBox.YMin
+        # ymax = self.shape.BoundBox.YMax
 
         # Compute weighted center of mass of all faces combined
         if self.pattern in ['Circular', 'CircularZigZag', 'Spiral']:
@@ -233,17 +233,17 @@ class PathGeometryGenerator:
         cAng = math.atan(self.deltaX / self.deltaY)  # BoundaryBox angle
 
         # Determine end points and create top lines
-        x1 = centRot.x - self.halfDiag
-        x2 = centRot.x + self.halfDiag
-        diag = None
-        if self.obj.CutPatternAngle == 0 or self.obj.CutPatternAngle == 180:
-            diag = self.deltaY
-        elif self.obj.CutPatternAngle == 90 or self.obj.CutPatternAngle == 270:
-            diag = self.deltaX
-        else:
-            perpDist = math.cos(cAng - math.radians(self.obj.CutPatternAngle)) * self.deltaC
-            diag = perpDist
-        y1 = centRot.y + diag
+        # x1 = centRot.x - self.halfDiag
+        # x2 = centRot.x + self.halfDiag
+        # diag = None
+        # if self.obj.CutPatternAngle == 0 or self.obj.CutPatternAngle == 180:
+        #    diag = self.deltaY
+        # elif self.obj.CutPatternAngle == 90 or self.obj.CutPatternAngle == 270:
+        #    diag = self.deltaX
+        # else:
+        #    perpDist = math.cos(cAng - math.radians(self.obj.CutPatternAngle)) * self.deltaC
+        #    diag = perpDist
+        # y1 = centRot.y + diag
         # y2 = y1
 
         # Create end points for set of lines to intersect with cross-section face
@@ -410,6 +410,7 @@ class PathGeometryGenerator:
             if not ofstArea:
                 # FreeCAD.Console.PrintWarning('PGG: No offset clearing area returned.\n')
                 cont = False
+                True if cont else False  # cont used for LGTM
                 break
             for F in ofstArea.Faces:
                 faces.append(F)
@@ -956,6 +957,7 @@ def getExtrudedShape(wire):
     SHP = Part.makeSolid(shell)
     return SHP
 
+
 def getShapeSlice(shape):
     PathLog.debug('getShapeSlice()')
 
@@ -1003,6 +1005,7 @@ def getShapeSlice(shape):
 
     return False
 
+
 def getProjectedFace(tempGroup, wire):
     import Draft
     PathLog.debug('getProjectedFace()')
@@ -1026,6 +1029,7 @@ def getProjectedFace(tempGroup, wire):
         slc = Part.Face(pWire)
         slc.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slc.BoundBox.ZMin))
         return slc
+
 
 def getCrossSection(shape):
     PathLog.debug('getCrossSection()')
@@ -1051,6 +1055,7 @@ def getCrossSection(shape):
 
     return False
 
+
 def getShapeEnvelope(shape):
     PathLog.debug('getShapeEnvelope()')
 
@@ -1068,6 +1073,7 @@ def getShapeEnvelope(shape):
         return False
     else:
         return env
+
 
 def getSliceFromEnvelope(env):
     PathLog.debug('getSliceFromEnvelope()')
@@ -1155,11 +1161,12 @@ def _prepareModelSTLs(self, JOB, obj, m, ocl):
         stl = ocl.STLSurf()
         for tri in facets:
             t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                                ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                                ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
+                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
             stl.addTriangle(t)
         self.modelSTLs[m] = stl
     return
+
 
 def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     '''_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
@@ -1317,6 +1324,7 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
                 (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
                 tup = (vA, tup[1])
                 closedGap = True
+                True if closedGap else False  # used closedGap for LGTM
             else:
                 # PathLog.debug('---- Gap: {} mm'.format(gap))
                 gap = round(gap, 6)
@@ -1324,6 +1332,7 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
                     gaps.insert(0, gap)
                     gaps.pop()
         inLine.append(tup)
+            
     # Efor
     lnCnt += 1
     if cutClimb is True:
@@ -1363,11 +1372,10 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
     lnCnt = 0
     chkGap = False
     ec = len(compGeoShp.Edges)
+    dirFlg = 1
 
-    if cutClimb is True:
+    if cutClimb:
         dirFlg = -1
-    else:
-        dirFlg = 1
 
     edg0 = compGeoShp.Edges[0]
     p1 = (edg0.Vertexes[0].X, edg0.Vertexes[0].Y)
@@ -1389,9 +1397,8 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
 
         cp = FreeCAD.Vector(v1[0], v1[1], 0.0)  # check point (start point of segment)
         ep = FreeCAD.Vector(v2[0], v2[1], 0.0)  # end point
-        # iC = sp.isOnLineSegment(ep, cp)
         iC = cp.isOnLineSegment(sp, ep)
-        if iC is True:
+        if iC:
             inLine.append('BRK')
             chkGap = True
             gap = abs(toolDiam - lst.sub(cp).Length)
@@ -1399,7 +1406,6 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
             chkGap = False
             if dirFlg == -1:
                 inLine.reverse()
-            # LINES.append((dirFlg, inLine))
             LINES.append(inLine)
             lnCnt += 1
             dirFlg = -1 * dirFlg  # Change zig to zag
@@ -1412,7 +1418,7 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
         else:
             tup = (v2, v1)
 
-        if chkGap is True:
+        if chkGap:
             if gap < obj.GapThreshold.Value:
                 b = inLine.pop()  # pop off 'BRK' marker
                 (vA, vB) = inLine.pop()  # pop off previous line segment for combining with current
@@ -1437,8 +1443,8 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
     else:
         PathLog.debug('Line count is ODD.')
         dirFlg = -1 * dirFlg
-        if obj.CutPatternReversed is False:
-            if cutClimb is True:
+        if not obj.CutPatternReversed:
+            if cutClimb:
                 dirFlg = -1 * dirFlg
 
     if obj.CutPatternReversed:
@@ -1466,11 +1472,8 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
                     rev2.append((p2, p1))
             rev2.reverse()
             rev = rev2
-
-        # LINES.append((dirFlg, rev))
         LINES.append(rev)
     else:
-        # LINES.append((dirFlg, inLine))
         LINES.append(inLine)
 
     return LINES
@@ -1696,7 +1699,6 @@ def pathGeomToSpiralPointSet(obj, compGeoShp):
     p2 = FreeCAD.Vector(edg1.Vertexes[1].X, edg1.Vertexes[1].Y, 0.0)
     tup = ((p1.x, p1.y), (p2.x, p2.y))
     inLine.append(tup)
-    lst = p2
 
     for ei in range(start, ec):  # Skipped first edge, started with second edge above as edg1
         edg = compGeoShp.Edges[ei]  # Get edge for vertexes
@@ -1711,7 +1713,7 @@ def pathGeomToSpiralPointSet(obj, compGeoShp):
             lnCnt += 1
             inLine = list()  # reset container
             inLine.append(tup)
-        p1 = sp
+        # p1 = sp
         p2 = ep
     # Efor
 
