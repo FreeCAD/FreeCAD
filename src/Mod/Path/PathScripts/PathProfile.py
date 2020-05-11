@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -38,13 +39,13 @@ from PySide import QtCore
 from lazy_loader.lazy_loader import LazyLoader
 ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
 Part = LazyLoader('Part', globals(), 'Part')
-DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 
 __title__ = "Path Profile Faces Operation"
-__author__ = "sliptonic (Brad Collette), Schildkroet"
+__author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
+__contributors__ = "Schildkroet"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -57,17 +58,14 @@ def translate(context, text, disambig=None):
 class ObjectProfile(PathAreaOp.ObjectOp):
     '''Proxy object for Profile operations based on faces.'''
 
-    def baseObject(self):
-        '''baseObject() ... returns super of receiver
-        Used to call base implementation in overwritten functions.'''
-        return super(self.__class__, self)
-
     def areaOpFeatures(self, obj):
-        '''areaOpFeatures(obj) ... returns features specific to the operation'''
-        return PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels | PathOp.FeatureBaseEdges
+        '''areaOpFeatures(obj) ... returns operation-specific features'''
+        return PathOp.FeatureBaseFaces | PathOp.FeatureBasePanels \
+            | PathOp.FeatureBaseEdges
 
     def initAreaOp(self, obj):
         '''initAreaOp(obj) ... creates all profile specific properties.'''
+        self.propertiesReady = False
         self.initAreaOpProperties(obj)
 
         obj.setEditorMode('MiterLimit', 2)
@@ -75,29 +73,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def initAreaOpProperties(self, obj, warn=False):
         '''initAreaOpProperties(obj) ... create operation specific properties'''
-        missing = list()
-        JOB = PathUtils.findParentJob(obj)
+        self.addNewProps = list()
 
         for (prtyp, nm, grp, tt) in self.areaOpProperties():
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
-                missing.append(nm)
-                if warn:
-                    newPropMsg = translate('PathProfile', 'New property added to') + ' "{}": '.format(obj.Label) + nm + '. '
-                    newPropMsg += translate('PathProfile', 'Check its default value.')
-                    PathLog.warning(newPropMsg)
+                self.addNewProps.append(nm)
 
-        if len(missing) > 0:
+        if len(self.addNewProps) > 0:
             # Set enumeration lists for enumeration properties
             ENUMS = self.areaOpPropertyEnumerations()
             for n in ENUMS:
-                if n in missing:
+                if n in self.addNewProps:
                     setattr(obj, n, ENUMS[n])
-            # Set default values
-            PROP_DFLTS = self.areaOpPropertyDefaults(obj, JOB)
-            for n in PROP_DFLTS:
-                if n in missing:
-                    setattr(obj, n, PROP_DFLTS[n])
+            if warn:
+                newPropMsg = translate('PathProfile', 'New property added to')
+                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + '. '
+                newPropMsg += translate('PathProfile', 'Check its default value.') + '\n'
+                FreeCAD.Console.PrintWarning(newPropMsg)
+
+        self.propertiesReady = True
 
     def areaOpProperties(self):
         '''areaOpProperties(obj) ... returns a tuples.
@@ -146,8 +141,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             'Side': ['Outside', 'Inside'],  # side of profile that cutter is on in relation to direction of profile
         }
 
-    def areaOpPropertyDefaults(self, obj=None, job=None):
-        '''areaOpPropertyDefaults(obj=None, job=None) ... returns a dictionary of default values
+    def areaOpPropertyDefaults(self, obj, job):
+        '''areaOpPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties.'''
         return {
             'AttemptInverseAngle': True,
@@ -166,39 +161,76 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             'processPerimeter': True
         }
 
-    def areaOpOnChanged(self, obj, prop):
-        '''areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties.'''
-        if prop in ['UseComp', 'JoinType', 'EnableRotation']:
-            self.setOpEditorProperties(obj)
+    def areaOpApplyPropertyDefaults(self, obj, job, propList):
+        # Set standard property defaults
+        PROP_DFLTS = self.areaOpPropertyDefaults(obj, job)
+        for n in PROP_DFLTS:
+            if n in propList:
+                prop = getattr(obj, n)
+                val = PROP_DFLTS[n]
+                setVal = False
+                if hasattr(prop, 'Value'):
+                    if isinstance(val, int) or isinstance(val, float):
+                        setVal = True
+                if setVal:
+                    propVal = getattr(prop, 'Value')
+                    setattr(prop, 'Value', val)
+                else:
+                    setattr(obj, n, val)
+
+    def areaOpSetDefaultValues(self, obj, job):
+        if self.addNewProps and self.addNewProps.__len__() > 0:
+            self.areaOpApplyPropertyDefaults(obj, job, self.addNewProps)
 
     def setOpEditorProperties(self, obj):
         '''setOpEditorProperties(obj, porp) ... Process operation-specific changes to properties visibility.'''
-        side = 2
-        if obj.UseComp:
-            if len(obj.Base) > 0:
-                side = 0
+        fc = 2
+        # ml = 0 if obj.JoinType == 'Miter' else 2
+        rotation = 2 if obj.EnableRotation == 'Off' else 0
+        side = 0 if obj.UseComp else 2
+        opType = self.getOperationType(obj)
+
+        if opType == 'Contour':
+            side = 2
+        elif opType == 'Face':
+            fc = 0
+        elif opType == 'Edge':
+            pass
+
+        obj.setEditorMode('JoinType', 2)
+        obj.setEditorMode('MiterLimit', 2)  # ml
+
         obj.setEditorMode('Side', side)
+        obj.setEditorMode('HandleMultipleFeatures', fc)
+        obj.setEditorMode('processCircles', fc)
+        obj.setEditorMode('processHoles', fc)
+        obj.setEditorMode('processPerimeter', fc)
 
-        if obj.JoinType == 'Miter':
-            obj.setEditorMode('MiterLimit', 0)
-        else:
-            obj.setEditorMode('MiterLimit', 2)
-
-        rotation = 2
-        if obj.EnableRotation != 'Off':
-            rotation = 0
         obj.setEditorMode('ReverseDirection', rotation)
         obj.setEditorMode('InverseAngle', rotation)
         obj.setEditorMode('AttemptInverseAngle', rotation)
         obj.setEditorMode('LimitDepthToFace', rotation)
 
+    def getOperationType(self, obj):
+        if len(obj.Base) == 0:
+            return 'Contour'
+
+        # return first geometry type selected
+        (base, subsList) = obj.Base[0]
+        return subsList[0][:4]
+
     def areaOpOnDocumentRestored(self, obj):
+        self.propertiesReady = False
+
         self.initAreaOpProperties(obj, warn=True)
-
-        for prop in ['UseComp', 'JoinType']:
-            self.areaOpOnChanged(obj, prop)
-
+        self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
+
+    def areaOpOnChanged(self, obj, prop):
+        '''areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties.'''
+        if prop in ['UseComp', 'JoinType', 'EnableRotation', 'Base']:
+            if hasattr(self, 'propertiesReady') and self.propertiesReady:
+                self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
@@ -499,6 +531,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     # Edges pre-processing
     def _processEdges(self, obj):
+        import DraftGeomUtils
         shapes = list()
         basewires = list()
         delPairs = list()

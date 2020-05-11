@@ -126,11 +126,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self, obj):
+    def updateVisibility(self, sentObj=None):
         hasFace = False
+        hasGeom = False
         fullModel = False
-        if len(obj.Base) > 0:
-            for (base, subsList) in obj.Base:
+        objBase = list()
+
+        if sentObj:
+            if hasattr(sentObj, 'Base'):
+                objBase = sentObj.Base
+        elif hasattr(self.obj, 'Base'):
+            objBase = self.obj.Base
+
+        if objBase.__len__() > 0:
+            for (base, subsList) in objBase:
                 for sub in subsList:
                     if sub[:4] == 'Face':
                         hasFace = True
@@ -147,7 +156,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processHoles.hide()
             self.form.processPerimeter.hide()
 
-        if self.form.useCompensation.isChecked() is True and not fullModel:
+        side = False
+        if self.form.useCompensation.isChecked() is True:
+            if not fullModel:
+                side = True
+
+        if side:
             self.form.cutSide.show()
             self.form.cutSideLabel.show()
         else:
