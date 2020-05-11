@@ -116,6 +116,9 @@ from draftutils.utils import get_objects_of_type
 from draftutils.utils import isClone
 from draftutils.utils import is_clone
 
+from draftutils.utils import getCloneBase
+from draftutils.utils import get_clone_base
+
 from draftutils.utils import getGroupNames
 from draftutils.utils import get_group_names
 

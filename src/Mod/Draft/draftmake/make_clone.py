@@ -30,11 +30,10 @@ import FreeCAD as App
 
 import DraftGeomUtils
 
+import draftutils.utils as utils
+
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
-from draftutils.utils import get_param
-from draftutils.utils import get_type
 
 from draftobjects.clone import Clone
 if App.GuiUp:
@@ -62,7 +61,7 @@ def make_clone(obj, delta=None, forcedraft=False):
     
     """
 
-    prefix = get_param("ClonePrefix","")
+    prefix = utils.get_param("ClonePrefix","")
 
     cl = None
 
@@ -76,10 +75,10 @@ def make_clone(obj, delta=None, forcedraft=False):
         cl = App.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
         cl.Label = prefix + obj[0].Label + " (2D)"
 
-    elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
+    elif (len(obj) == 1) and (hasattr(obj[0],"CloneOf") or (utils.get_type(obj[0]) == "BuildingPart")) and (not forcedraft):
         # arch objects can be clones
         import Arch
-        if get_type(obj[0]) == "BuildingPart":
+        if utils.get_type(obj[0]) == "BuildingPart":
             cl = Arch.makeComponent()
         else:
             try:
@@ -89,12 +88,12 @@ def make_clone(obj, delta=None, forcedraft=False):
             else:
                 cl = clonefunc()
         if cl:
-            base = getCloneBase(obj[0])
+            base = utils.get_clone_base(obj[0])
             cl.Label = prefix + base.Label
             cl.CloneOf = base
             if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
                 cl.Material = obj[0].Material
-            if get_type(obj[0]) != "BuildingPart":
+            if utils.get_type(obj[0]) != "BuildingPart":
                 cl.Placement = obj[0].Placement
             try:
                 cl.Role = base.Role
@@ -105,7 +104,7 @@ def make_clone(obj, delta=None, forcedraft=False):
             if App.GuiUp:
                 format_object(cl,base)
                 cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
-                if get_type(obj[0]) in ["Window","BuildingPart"]:
+                if utils.get_type(obj[0]) in ["Window","BuildingPart"]:
                     ToDo.delay(Arch.recolorize,cl)
             select(cl)
             return cl
@@ -129,31 +128,6 @@ def make_clone(obj, delta=None, forcedraft=False):
         cl.ViewObject.Proxy.resetColors(cl.ViewObject)
     select(cl)
     return cl
-
-
-def getCloneBase(obj, strict=False):
-    """getCloneBase(obj, [strict])
-    
-    Returns the object cloned by this object, if any, or this object if 
-    it is no clone. 
-
-    Parameters
-    ----------
-    obj : 
-        TODO: describe
-
-    strict : bool (default = False)
-        If strict is True, if this object is not a clone, 
-        this function returns False
-    """
-    if hasattr(obj,"CloneOf"):
-        if obj.CloneOf:
-            return getCloneBase(obj.CloneOf)
-    if get_type(obj) == "Clone":
-        return obj.Objects[0]
-    if strict:
-        return False
-    return obj
 
 
 clone = make_clone
