@@ -249,13 +249,19 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
             pointColor = lineColor;
             transparency = 0;
             linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
-
+#if 0
             static ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Mod/Part");
             mapFace = hPart->GetBool("MapFaceColor");
             mapLine = hPart->GetBool("MapLineColor");
             mapPoint = hPart->GetBool("MapPointColor");
             mapTrans = hPart->GetBool("MapTransparency");
+#else
+            mapFace = true;
+            mapLine = true;
+            mapPoint = true;
+            mapTrans = true;
+#endif
         }
 
         setProperty(LineColor, lineColor);
