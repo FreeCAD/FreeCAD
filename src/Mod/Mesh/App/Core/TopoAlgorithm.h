@@ -303,8 +303,7 @@ private:
     MeshKernel& _rclMesh;
     bool _needsCleanup;
 
-    struct Vertex_Less  : public std::binary_function<const Base::Vector3f&,
-                                                      const Base::Vector3f&, bool>
+    struct Vertex_Less
     {
         bool operator()(const Base::Vector3f& x, const Base::Vector3f& y) const;
     };
@@ -344,8 +343,7 @@ public:
 
 protected:
     // for sorting of elements
-    struct CNofFacetsCompare : public std::binary_function<const std::vector<unsigned long>&, 
-                                                           const std::vector<unsigned long>&, bool>
+    struct CNofFacetsCompare
     {
         bool operator () (const std::vector<unsigned long> &rclC1, 
                           const std::vector<unsigned long> &rclC2)

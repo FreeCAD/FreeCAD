@@ -67,7 +67,7 @@ protected:
   inline bool TriangleCutsSphere (const MeshFacet &rclF) const;
   bool ExpandRadius (unsigned long ulMinPoints);
 
-  struct CDistRad : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+  struct CDistRad
   {
     CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
     bool operator()(const Base::Vector3f &rclPt1, const Base::Vector3f &rclPt2) { return Base::DistanceP2(_clCenter, rclPt1) < Base::DistanceP2(_clCenter, rclPt2); }

@@ -119,8 +119,7 @@ struct QUAD {int iV[4];};
 
 namespace MeshCore {
 
-struct Color_Less  : public std::binary_function<const App::Color&,
-                                                 const App::Color&, bool>
+struct Color_Less
 {
     bool operator()(const App::Color& x,
                     const App::Color& y) const
@@ -759,9 +758,12 @@ namespace MeshCore {
         enum Number {
             int8, uint8, int16, uint16, int32, uint32, float32, float64
         };
-        struct Property : public std::binary_function<std::pair<std::string, Number>,
-                                                      std::string, bool>
+        struct Property
         {
+            typedef std::pair<std::string, int> first_argument_type;
+            typedef std::string second_argument_type;
+            typedef bool result_type;
+
             bool operator()(const std::pair<std::string, int>& x,
                             const std::string& y) const
             {
