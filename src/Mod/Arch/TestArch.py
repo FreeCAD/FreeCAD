@@ -23,7 +23,19 @@
 #*                                                                         *
 #***************************************************************************/
 
-import FreeCAD, os, unittest, FreeCADGui, Arch, Draft, Part, Sketcher
+import os
+import unittest
+
+import FreeCAD
+
+import Arch
+import Draft
+import Part
+import Sketcher
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
 
 class ArchTest(unittest.TestCase):
 
