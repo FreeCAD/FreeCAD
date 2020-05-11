@@ -869,6 +869,15 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     // add a submenu to active a document if two or more exist
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+    if(!showTempDocAction->isChecked()) {
+        for(auto it=docs.begin(); it!=docs.end();) {
+            auto doc = *it;
+            if(doc->testStatus(App::Document::TempDoc))
+                it = docs.erase(it);
+            else
+                ++it;
+        }
+    }
     if (docs.size() >= 2) {
         contextMenu.addSeparator();
         App::Document* activeDoc = App::GetApplication().getActiveDocument();
