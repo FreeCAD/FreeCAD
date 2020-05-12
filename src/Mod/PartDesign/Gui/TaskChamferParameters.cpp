@@ -76,7 +76,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     ui->chamferAngle->setUnit(Base::Unit::Angle);
     ui->chamferAngle->setValue(a);
     ui->chamferAngle->setMinimum(0.0);
-    ui->chamferAngle->setMaximum(89.99);
+    ui->chamferAngle->setMaximum(180.0);
     ui->chamferAngle->selectAll();
     ui->chamferAngle->bind(pcChamfer->Angle);
     QMetaObject::invokeMethod(ui->chamferAngle, "setFocus", Qt::QueuedConnection);
