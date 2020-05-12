@@ -184,7 +184,6 @@ class Array(DraftLink):
             return super(Array, self).buildShape(obj, pl, pls)
 
     def rectArray(self,pl,xvector,yvector,zvector,xnum,ynum,znum):
-        import Part
         base = [pl.copy()]
         for xcount in range(xnum):
             currentxvector=App.Vector(xvector).multiply(xcount)
@@ -209,7 +208,6 @@ class Array(DraftLink):
         return base
 
     def circArray(self,pl,rdist,tdist,axis,center,cnum,sym):
-        import Part
         sym = max(1, sym)
         lead = (0,1,0)
         if axis.x == 0 and axis.z == 0: lead = (1,0,0)
@@ -232,7 +230,6 @@ class Array(DraftLink):
 
     def polarArray(self,spl,center,angle,num,axis,axisvector):
         #print("angle ",angle," num ",num)
-        import Part
         spin = App.Placement(App.Vector(), spl.Rotation)
         pl = App.Placement(spl.Base, App.Rotation())
         center = center.sub(spl.Base)

@@ -169,6 +169,10 @@ def move(objectslist, vector, copy=False):
 
 
 def move_vertex(object, vertex_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     points = object.Points
     points[vertex_index] = points[vertex_index].add(vector)
     object.Points = points
@@ -178,6 +182,10 @@ moveVertex = move_vertex
 
 
 def move_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     moveVertex(object, edge_index, vector)
     if utils.isClosedEdge(edge_index, object):
         moveVertex(object, 0, vector)
@@ -189,6 +197,10 @@ moveEdge = move_edge
 
 
 def copy_moved_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     copied_edges = []
     for argument in arguments:
         copied_edges.append(copy_moved_edge(argument[0], argument[1], argument[2]))
@@ -199,6 +211,10 @@ copyMovedEdges = copy_moved_edges
 
 
 def copy_moved_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
     if utils.isClosedEdge(edge_index, object):
         vertex2 = object.Placement.multVec(object.Points[0]).add(vector)

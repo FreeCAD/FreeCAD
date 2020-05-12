@@ -38,9 +38,9 @@ from draftobjects.base import DraftObject
 class DraftLink(DraftObject):
     """
     Documentation needed.
-    I guess the DraftLink was introduced by Realthunder to allow
-    the use of new App::Link object into Draft Array objects during
-    the development of version 0.19.
+    DraftLink was introduced by Realthunder to allow the use of new 
+    App::Link object into Draft Array objects during version 0.19 development
+    cycle.
     """
 
     def __init__(self,obj,tp):

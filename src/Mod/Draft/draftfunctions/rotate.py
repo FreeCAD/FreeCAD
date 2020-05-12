@@ -154,6 +154,10 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
 
 
 def rotate_vertex(object, vertex_index, angle, center, axis):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     points = object.Points
     points[vertex_index] = object.Placement.inverse().multVec(
         rotate_vector_from_center(
@@ -166,6 +170,10 @@ rotateVertex = rotate_vertex
 
 
 def rotate_vector_from_center(vector, angle, axis, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     rv = vector.sub(center)
     rv = DraftVecUtils.rotate(rv, math.radians(angle), axis)
     return center.add(rv)
@@ -175,6 +183,10 @@ rotateVectorFromCenter = rotate_vector_from_center
 
 
 def rotate_edge(object, edge_index, angle, center, axis):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     rotateVertex(object, edge_index, angle, center, axis)
     if utils.isClosedEdge(edge_index, object):
         rotateVertex(object, 0, angle, center, axis)
@@ -186,6 +198,10 @@ rotateEdge = rotate_edge
 
 
 def copy_rotated_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     copied_edges = []
     for argument in arguments:
         copied_edges.append(copy_rotated_edge(argument[0], argument[1],
@@ -197,6 +213,10 @@ copyRotatedEdges = copy_rotated_edges
 
 
 def copy_rotated_edge(object, edge_index, angle, center, axis):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     vertex1 = rotate_vector_from_center(
         object.Placement.multVec(object.Points[edge_index]),
         angle, axis, center)
@@ -209,3 +229,4 @@ def copy_rotated_edge(object, edge_index, angle, center, axis):
             object.Placement.multVec(object.Points[edge_index+1]),
             angle, axis, center)
     return make_line(vertex1, vertex2)
+    

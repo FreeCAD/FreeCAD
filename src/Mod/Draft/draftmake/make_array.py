@@ -45,7 +45,7 @@ def make_array(baseobject, arg1, arg2, arg3, arg4=None,
 
 
     Rectangular array
-    ------
+    -----------------
     make_array(object,xvector,yvector,xnum,ynum,[name])
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name])
 
@@ -55,7 +55,7 @@ def make_array(baseobject, arg1, arg2, arg3, arg4=None,
 
 
     Polar array
-    ------
+    -----------
     makeArray(object,center,totalangle,totalnum,[name]) for polar array, or
 
     center is a vector, totalangle is the angle to cover (in degrees) and totalnum 
@@ -63,7 +63,7 @@ def make_array(baseobject, arg1, arg2, arg3, arg4=None,
     
 
     Circular array
-    ------
+    --------------
     makeArray(object,rdistance,tdistance,axis,center,ncircles,symmetry,[name])
 
     In case of a circular array, rdistance is the distance of the

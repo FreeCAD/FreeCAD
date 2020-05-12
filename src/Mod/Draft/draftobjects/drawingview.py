@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """This module provides the object code for the Draft DrawingView object.
+This module is obsolete, since Drawing was substituted by TechDraw.
 """
 ## @package drawingview
 # \ingroup DRAFT
@@ -34,8 +35,7 @@ import FreeCAD as App
 
 import DraftVecUtils
 
-import getSVG as svg
-getSVG = svg.getSVG
+from getSVG import getSVG
 
 import draftutils.utils as utils
 
@@ -45,7 +45,7 @@ from draftobjects.base import DraftObject
 class DrawingView(DraftObject):
     """The Draft DrawingView object
     
-    TODO: this class is obsolete, since Drawing was substituted by TechDraw.
+    OBSOLETE: this class is obsolete, since Drawing was substituted by TechDraw.
     """
 
     def __init__(self, obj):

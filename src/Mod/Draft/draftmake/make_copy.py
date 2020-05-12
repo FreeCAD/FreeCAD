@@ -209,3 +209,4 @@ def make_copy(obj, force=None, reparent=False):
 
     gui_utils.format_object(newobj, obj)
     return newobj
+    
