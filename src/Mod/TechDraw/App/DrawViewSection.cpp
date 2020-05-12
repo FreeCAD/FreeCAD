@@ -699,10 +699,10 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
 
     auto bbx = getBaseDVP()->getBoundingBox();
     double xRange = bbx.MaxX - bbx.MinX;
-    xRange /= getScale();
+    xRange /= getBaseDVP()->getScale();
     double yRange = bbx.MaxY - bbx.MinY;
-    yRange /= getScale();
-    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);
+    yRange /= getBaseDVP()->getScale();
+    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);  //unscaled
 
     return result;
 }
