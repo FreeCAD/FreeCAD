@@ -404,7 +404,8 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.form.stockExtXpos.textChanged.connect(self.checkXpos)
         self.form.stockExtYpos.textChanged.connect(self.checkYpos)
         self.form.stockExtZpos.textChanged.connect(self.checkZpos)
-        self.form.linkStockAndModel.setChecked(True)
+        if hasattr(self.form, 'linkStockAndModel'):
+            self.form.linkStockAndModel.setChecked(True)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
