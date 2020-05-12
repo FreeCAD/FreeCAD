@@ -74,7 +74,7 @@ click again to end selection</string>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="label3">
        <property name="text">
         <string>Angle</string>
        </property>
