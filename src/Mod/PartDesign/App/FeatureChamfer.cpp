@@ -53,7 +53,7 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
-const App::PropertyAngle::Constraints floatAngle = {0.0,89.99,0.1};
+const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,0.1};
 
 Chamfer::Chamfer()
 {
@@ -61,7 +61,7 @@ Chamfer::Chamfer()
     Size.setUnit(Base::Unit::Length);
     Size.setConstraints(&floatSize);
     ADD_PROPERTY(Angle,(45.0));
-    Size.setUnit(Base::Unit::Angle);
+    Angle.setUnit(Base::Unit::Angle);
     Angle.setConstraints(&floatAngle);
 }
 
@@ -94,8 +94,8 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         return new App::DocumentObjectExecReturn("Size must be greater than zero");
 
     double angle = Base::toRadians(Angle.getValue());
-    if (angle <= 0 || angle > 89.99)
-        return new App::DocumentObjectExecReturn("Angle must be between 0 and 89.99");
+    if (angle <= 0 || angle >= 180.0)
+        return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
 
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape
