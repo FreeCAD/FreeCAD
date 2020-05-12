@@ -129,6 +129,10 @@ def scale(objectslist, scale=App.Vector(1,1,1),
 
 
 def scale_vertex(obj, vertex_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     points = obj.Points
     points[vertex_index] = obj.Placement.inverse().multVec(
         scaleVectorFromCenter(
@@ -141,6 +145,10 @@ scaleVertex = scale_vertex
 
 
 def scale_vector_from_center(vector, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
 
 
@@ -148,6 +156,10 @@ scaleVectorFromCenter = scale_vector_from_center
 
 
 def scale_edge(obj, edge_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     scaleVertex(obj, edge_index, scale, center)
     if utils.isClosedEdge(edge_index, obj):
         scaleVertex(obj, 0, scale, center)
@@ -159,6 +171,10 @@ scaleEdge = scale_edge
 
 
 def copy_scaled_edge(obj, edge_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     import Part
     vertex1 = scaleVectorFromCenter(
         obj.Placement.multVec(obj.Points[edge_index]),
@@ -178,6 +194,10 @@ copyScaledEdge = copy_scaled_edge
 
 
 def copy_scaled_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     copied_edges = []
     for argument in arguments:
         copied_edges.append(copyScaledEdge(argument[0], argument[1],

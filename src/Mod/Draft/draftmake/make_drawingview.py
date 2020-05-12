@@ -21,10 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 """This module provides the code for Draft make_drawing_view function.
+OBSOLETE: Drawing Workbench was substituted by TechDraw.
 """
 ## @package make_drawingview
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_drawing_view function.
+# \brief This module provides the code for Draft make_drawing_view function
 
 import FreeCAD as App
 
@@ -37,6 +38,7 @@ def make_drawing_view(obj, page, lwmod=None, tmod=None, otherProjection=None):
     """
     make_drawing_view(object,page,[lwmod,tmod])
     
+    This function is OBSOLETE, since TechDraw substituted the Drawing Workbench.
     Add a View of the given object to the given page. 
 
     Parameters

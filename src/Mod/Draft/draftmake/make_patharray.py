@@ -110,4 +110,5 @@ def make_path_array(baseobject,pathobject,count,xlate=None,align=False,pathobjsu
         gui_utils.select(obj)
     return obj
 
+
 makePathArray = make_path_array
