@@ -297,8 +297,8 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
     // y = mx + b
     // m = (y1 - y0) / (x1 - x0)
     if (DrawUtil::fpCompare(dir.x, 0.0) ) {
-        p1 = Base::Vector3d(0.0, - yRange / 2.0, 0.0);  
-        p2 = Base::Vector3d(0.0, yRange / 2.0, 0.0);
+        p1 = Base::Vector3d(point.x, - yRange / 2.0, 0.0);  
+        p2 = Base::Vector3d(point.x, yRange / 2.0, 0.0);
     } else {
         double slope = dir.y / dir.x;
         double left = -xRange / 2.0;
