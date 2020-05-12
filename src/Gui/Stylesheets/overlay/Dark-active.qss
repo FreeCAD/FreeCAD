@@ -1,0 +1,41 @@
+* { background-color: transparent;
+    color: palette(bright-text);
+    border: 1px solid palette(dark);
+    border-radius:2px;
+    alternate-background-color: rgba(50,50,50,130)}
+QComboBox { background : #666666;
+            selection-background-color: palette(highlight);}
+QComboBox:editable { background : #666666;}
+QComboBox:!editable { background : #666666;}
+QLineEdit { background : #666666;}
+QAbstractSpinBox { background : #666666;}
+QTabWidget::pane { background-color: transparent; border: transparent }
+Gui--OverlayTabWidget::pane { background-color: rgba(50,50,50,100) }
+QTabBar {border : none;}
+QTabBar::tab {color: palette(bright-text);
+              background-color: rgba(100,100,100,80);
+              padding: 5px}
+QTabBar::tab:selected {background-color: rgba(50,50,50,100);}
+QTabBar::tab:hover {background-color: rgba(150,150,150,150);}
+QHeaderView::section {color: rgb(200,200,200);
+                      background-color: rgba(50,50,50,100);
+                      border: 1px solid rgb(100,100,100);
+                      padding: 2px}
+QTreeWidget, QListWidget {background: rgb(100,100,100) }
+QToolTip {background-color: rgba(100,100,100,180);}
+Gui--CallTipsList::item { background-color: rgba(100,100,100,180);}
+Gui--CallTipsList::item::selected { background-color: palette(highlight);}
+QDialog { background-color: palette(dark); }
+QAbstractButton { background: rgba(150,150,150,100);
+                  padding: 2px 4px;}
+QAbstractButton::hover { background: rgba(150,150,150,200); }
+QAbstractButton::focus { background: rgba(150,150,150,255); } 
+QAbstractButton::pressed { background: rgba(50,50,50,80); border: 1px inset palette(dark) }
+QAbstractButton::checked { background: rgba(50,50,50,80); border: 1px inset palette(dark) }
+QAbstractButton::checked:hover { background: rgba(150,150,150,200); border: 1px inset palette(dark) }
+Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }
+QMenu { color: palette(bright-text); background-color: rgba(100,100,100,180); border: none }
+QMenu::item { background-color: transparent }
+QMenu::item:selected,
+QMenu::item:pressed { color: palette(highlighted-text); background-color: palette(highlight)}
+QMenu::item:disabled { color: palette(dark) }

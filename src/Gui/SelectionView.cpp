@@ -34,6 +34,7 @@
 # include <QLabel>
 # include <QApplication>
 # include <QHeaderView>
+# include <QFile>
 #endif
 
 #include <QHelpEvent>
@@ -524,26 +525,17 @@ void SelectionView::onEnablePickList() {
 ////////////////////////////////////////////////////////////////////////
 
 #if QT_VERSION  >= 0x050000
-static const char *_MenuStyle("*{ color: palette(text);"
-                                 "background-color: transparent;"
-                                 "border: none}"
-                              "QMenu {menu-scrollable:1;"
-                                     "color: palette(text);"
-                                     "background-color: rgba(255,255,255,130);}"
-                              "QMenu::item {"
-                                     "color: palette(text);"
-                                     "background-color: transparent;}"
-                              "QMenu::separator {"
-                                     "height: 1px;"
-                                     "background-color: rgba(255,255,255,130);"
-                                     "margin: 6px 4px;}"
-                              "QMenu::item:selected, QMenu::item:pressed {"
-                                     "color: white;"
-                                     "background-color: rgba(0,0,130,130)}"
-                              "QMenu::item:disabled { color: palette(mid) }"
-                            );
+static QLatin1String _DefaultStyle(
+"*{ background-color: transparent;"
+   "border: none;}"
+"QMenu { background-color: rgba(255,255,255,130); menu-scrollable:1; }"
+"QMenu::item { color: palette(text); background-color: transparent; }"
+"QMenu::separator { height: 1px; margin: 6px 4px; }"
+"QMenu::item:selected, QMenu::item:pressed {"
+  "background-color: rgba(0,0,130,130);}"
+"QMenu::item:disabled { color: palette(mid); }");
 #else
-static const char *_MenuStyle("QMenu {menu-scrollable:1}");
+static QLatin1String _DefaultStyle("QMenu {menu-scrollable:1}");
 #endif
 
 SelectionMenu::SelectionMenu(QWidget *parent)
@@ -553,13 +545,33 @@ SelectionMenu::SelectionMenu(QWidget *parent)
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/MainWindow");
-    std::string stylesheet = hGrp->GetASCII("MenuStyleSheet");
-    setStyleSheet(QLatin1String(stylesheet.size()?stylesheet.c_str():_MenuStyle));
+    static QString _Name;
+    static QString _Stylesheet;
+    QString name = QString::fromUtf8(hGrp->GetASCII("MenuStyleSheet").c_str());
+    if(name.isEmpty()) {
+        QString mainstyle = QString::fromUtf8(hGrp->GetASCII("StyleSheet").c_str());
+        if(mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive)>=0)
+            name = QString::fromLatin1("overlay:Dark-menu.qss");
+    }
+    if(_Name != name) {
+        _Name = name;
+        _Stylesheet.clear();
+        if(QFile::exists(name)) {
+            QFile f(name);
+            if(f.open(QFile::ReadOnly)) {
+                QTextStream str(&f);
+                _Stylesheet = str.readAll();
+            }
+        }
+    }
+    if(_Stylesheet.isEmpty())
+        _Stylesheet = _DefaultStyle;
+    setStyleSheet(_Stylesheet);
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);
 #else
-    setStyleSheet(QLatin1String(_MenuStyle));
+    setStyleSheet(QLatin1String(_DefaultStyle));
 #endif
 }
 

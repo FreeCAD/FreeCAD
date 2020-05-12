@@ -553,22 +553,22 @@ QTabBar::tab:selected {
 
 QTabBar::tab:top:selected {
     border-top: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #5e90fa, stop:1 #3874f2); /* selection color */
-    border-bottom-color: #6e6e6e; /* same as tab content background color */
+    border-bottom-color: rgba(110,110,110,0); /* same as tab content background color, alpha value is for overlay style */
 }
 
 QTabBar::tab:bottom:selected {
     border-bottom: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #5e90fa, stop:1 #3874f2); /* selection color */
-    border-top-color: #6e6e6e; /* same as tab content background color */
+    border-top-color: rgba(110,110,110,0); /* same as tab content background color , alpha value is for overlay style*/
 }
 
 QTabBar::tab:right:selected {
     border-left: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #5e90fa, stop:1 #3874f2); /* selection color */
-    border-right-color: #6e6e6e; /* same as tab content background color */
+    border-right-color: rgba(110,110,110,0); /* same as tab content background color , alpha value is for overlay style*/
 }
 
 QTabBar::tab:left:selected {
     border-right: 4px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #5e90fa, stop:1 #3874f2); /* selection color */
-    border-left-color: #6e6e6e; /* same as tab content background color */
+    border-left-color: rgba(110,110,110,0); /* same as tab content background color , alpha value is for overlay style*/
 }
 
 QTabBar::tab:!selected {
