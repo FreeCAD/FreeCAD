@@ -1,0 +1,27 @@
+* {
+  background-color: transparent;
+  border: none;
+}
+
+QMenu {
+  background-color: rgba(255,255,255,130);
+  menu-scrollable:1;
+}
+
+QMenu::item {
+  color: palette(text);
+  background-color: transparent;
+}
+
+QMenu::separator {
+  height: 1px;
+  margin: 6px 4px;
+}
+
+QMenu::item:selected, QMenu::item:pressed {
+  background-color: rgba(0,0,130,130);
+}
+
+QMenu::item:disabled {
+  color: palette(mid);
+}

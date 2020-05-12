@@ -635,7 +635,7 @@ public:
         QString mainstyle = QString::fromLatin1(handle->GetASCII("StyleSheet").c_str());
         int dark = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive);
 
-        QString prefix = QString::fromLatin1("overlay:%1-").arg(
+        QString prefix = QString::fromLatin1("overlay:%1").arg(
                 dark<0 ? QLatin1String("Light") : QLatin1String("Dark"));
 
         QString name;
@@ -644,7 +644,9 @@ public:
         if(ViewParams::getDockOverlayExtraState()) {
             name = QString::fromUtf8(handle->GetASCII("OverlayOnStyleSheet").c_str());
             if(name.isEmpty())
-                name = prefix + QLatin1String("on.qss");
+                name = prefix + QLatin1String("-on.qss");
+            else if (!QFile::exists(name))
+                name = QString::fromLatin1("overlay:%1").arg(name);
             if(QFile::exists(name)) {
                 QFile f(name);
                 if(f.open(QFile::ReadOnly)) {
@@ -669,7 +671,9 @@ public:
 
         name = QString::fromUtf8(handle->GetASCII("OverlayOffStyleSheet").c_str());
         if(name.isEmpty())
-            name = prefix + QLatin1String("off.qss");
+            name = prefix + QLatin1String("-off.qss");
+        else if (!QFile::exists(name))
+            name = QString::fromLatin1("overlay:%1").arg(name);
         offStyleSheet.clear();
         if(QFile::exists(name)) {
             QFile f(name);
@@ -692,7 +696,9 @@ public:
 
         name = QString::fromUtf8(handle->GetASCII("OverlayActiveStyleSheet").c_str());
         if(name.isEmpty())
-            name = prefix + QLatin1String("active.qss");
+            name = prefix + QLatin1String(".qss");
+        else if (!QFile::exists(name))
+            name = QString::fromLatin1("overlay:%1").arg(name);
         activeStyleSheet.clear();
         if(QFile::exists(name)) {
             QFile f(name);

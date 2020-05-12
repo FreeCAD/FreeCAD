@@ -551,8 +551,11 @@ SelectionMenu::SelectionMenu(QWidget *parent)
     if(name.isEmpty()) {
         QString mainstyle = QString::fromUtf8(hGrp->GetASCII("StyleSheet").c_str());
         if(mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive)>=0)
-            name = QString::fromLatin1("overlay:Dark-menu.qss");
-    }
+            name = QString::fromLatin1("qssm:Dark.qss");
+        else
+            name = QString::fromLatin1("qssm:Light.qss");
+    } else if (!QFile::exists(name))
+        name = QString::fromLatin1("qssm:%1").arg(name);
     if(_Name != name) {
         _Name = name;
         _Stylesheet.clear();

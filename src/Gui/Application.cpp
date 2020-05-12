@@ -1889,6 +1889,14 @@ void Application::runApplication(void)
                         + "Gui/Stylesheets/overlay").c_str());
     QDir::setSearchPaths(QString::fromLatin1("overlay"), qssOverlayPaths);
 
+    // setup the search paths for view menu style sheets
+    QStringList qssMenuPaths;
+    qssMenuPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
+                        + "Gui/Stylesheets/menu").c_str())
+                 << QString::fromUtf8((App::Application::getResourceDir()
+                        + "Gui/Stylesheets/menu").c_str());
+    QDir::setSearchPaths(QString::fromLatin1("qssm"), qssMenuPaths);
+
     // set search paths for images
     QStringList imagePaths;
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())

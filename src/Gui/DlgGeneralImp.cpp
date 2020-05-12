@@ -175,6 +175,12 @@ void DlgGeneralImp::saveSettings()
     QVariant sheet = ui->StyleSheets->itemData(ui->StyleSheets->currentIndex());
     hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
     Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
+
+    sheet = ui->OverlayStyleSheets->itemData(ui->OverlayStyleSheets->currentIndex());
+    hGrp->SetASCII("OverlayActiveStyleSheet", (const char*)sheet.toByteArray());
+
+    sheet = ui->MenuStyleSheets->itemData(ui->MenuStyleSheets->currentIndex());
+    hGrp->SetASCII("MenuStyleSheet", (const char*)sheet.toByteArray());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -251,35 +257,42 @@ void DlgGeneralImp::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
-    // List all .qss/.css files
-    QMap<QString, QString> cssFiles;
-    QDir dir;
-    QStringList filter;
-    filter << QString::fromLatin1("*.qss");
-    filter << QString::fromLatin1("*.css");
-    QFileInfoList fileNames;
+    auto populateStylesheets = 
+    [hGrp](const char *key, const char *path, QComboBox *combo, const char *def) {
+        // List all .qss/.css files
+        QMap<QString, QString> cssFiles;
+        QDir dir;
+        QStringList filter;
+        filter << QString::fromLatin1("*.qss");
+        filter << QString::fromLatin1("*.css");
+        QFileInfoList fileNames;
 
-    // read from user, resource and built-in directory
-    QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
-    for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
-        dir.setPath(*it);
-        fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
-            if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
-                cssFiles[jt->baseName()] = jt->fileName();
+        // read from user, resource and built-in directory
+        QStringList qssPaths = QDir::searchPaths(QString::fromLatin1(path));
+        for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
+            dir.setPath(*it);
+            fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
+            for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
+                if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
+                    cssFiles[jt->baseName()] = jt->fileName();
+                }
             }
         }
-    }
 
-    // now add all unique items
-    ui->StyleSheets->addItem(tr("No style sheet"), QString::fromLatin1(""));
-    for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
-        ui->StyleSheets->addItem(it.key(), it.value());
-    }
+        // now add all unique items
+        combo->addItem(tr(def), QString::fromLatin1(""));
+        for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
+            combo->addItem(it.key(), it.value());
+        }
 
-    QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-    index = ui->StyleSheets->findData(selectedStyleSheet);
-    if (index > -1) ui->StyleSheets->setCurrentIndex(index);
+        QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII(key).c_str());
+        int index = combo->findData(selectedStyleSheet);
+        if (index > -1) combo->setCurrentIndex(index);
+    };
+
+    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
+    populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
+    populateStylesheets("MenuStyleSheet", "qssm", ui->MenuStyleSheets, "Auto");
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)
