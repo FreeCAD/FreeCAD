@@ -80,7 +80,7 @@ void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIGhostHighlight::mousePress() - %X\n", this);
     if ( (event->button() == Qt::LeftButton) && 
-        (flags() && QGraphicsItem::ItemIsMovable) ) {
+        (flags() & QGraphicsItem::ItemIsMovable) ) {
             m_dragging = true;
             event->accept();
     }
