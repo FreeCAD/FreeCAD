@@ -43,6 +43,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule()
 
 
 # Qt translation handling
@@ -179,6 +180,7 @@ class ObjectOp(object):
         self.tool = None
         self.vertFeed = None
         self.vertRapid = None
+        self.addNewProps = None
 
         self.initOperation(obj)
 
@@ -224,10 +226,6 @@ class ObjectOp(object):
 
         if not hasattr(obj, 'OpStockZMax'):
             self.addOpValues(obj, ['stockz'])
-
-        if not hasattr(obj, 'EnableRotation'):
-            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
-            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
@@ -503,7 +501,7 @@ class ObjectOp(object):
                 if not tool or float(tool.Diameter) == 0:
                     PathLog.error(translate("Path", "No Tool found or diameter is zero. We need a tool to build a Path."))
                     return
-                self.radius = float(tool.Diameter) / 2
+                self.radius = float(tool.Diameter) / 2.0
                 self.tool = tool
                 obj.OpToolDiameter = tool.Diameter
 
