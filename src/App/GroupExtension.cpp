@@ -645,8 +645,11 @@ void GroupExtension::initSetup() {
     if(!this->extensionIsDerivedFrom(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
         auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
         if(hGrp->GetBool("KeepHiddenChildren",true)) {
-            getExtendedObject()->addDynamicProperty("App::PropertyMap", 
-                    "HiddenChildren", "Group",0,Prop_Output,true,true);
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                    getExtendedObject()->getPropertyByName("HiddenChildren"));
+            if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
+                getExtendedObject()->addDynamicProperty("App::PropertyMap", 
+                        "HiddenChildren", "Group",0,Prop_Output,true,true);
         }
     }
 }
