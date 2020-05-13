@@ -550,6 +550,9 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
             return QProgressBar::eventFilter(o, e);
         }
 
+        if (d->isModalDialog(o))
+            return false;
+
         // main thread
         switch ( e->type() )
         {
@@ -601,8 +604,6 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         // do a system beep and ignore the event
         case QEvent::MouseButtonPress:
             {
-                if (d->isModalDialog(o))
-                    return false;
                 QApplication::beep();
                 return true;
             }   break;
