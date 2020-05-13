@@ -382,7 +382,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             buildElementMap = hGrp->GetBool("AutoElementMap",true)?1:0;
         }
         if(buildElementMap) {
-            FC_WARN("auto generate element map: " << owner->getFullName());
+            FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
             owner->getDocument()->addRecomputeObject(owner);
         }
     }
