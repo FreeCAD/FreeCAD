@@ -363,7 +363,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     pcRayPick->setPoint(pos);
     pcRayPick->setPickAll(!singlePick || !ViewParams::instance()->getUseNewRayPick());
     pcRayPick->setPickBackFace(singlePick 
-            && QApplication::queryKeyboardModifiers()==Qt::ShiftModifier);
+            && (QApplication::queryKeyboardModifiers() & Qt::ShiftModifier));
 
     SoPickStyleElement::set(pcRayPick->getState(),
             (!pcRayPick->pickBackFace() && singlePick) ?
@@ -740,6 +740,8 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, 
         bool ctrlDown, bool shiftDown, bool altDown) 
 {
+    (void)altDown;
+
     if(infos.empty() || !infos[0].vpd) return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
@@ -798,7 +800,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     char buf[513];
 
-    if (ctrlDown && !shiftDown) {
+    if (ctrlDown) {
         if(Gui::Selection().isSelected(docname,objname,info.subname.c_str(),0))
             Gui::Selection().rmvSelection(docname,objname,info.subname.c_str(),&sels);
         else {
@@ -839,7 +841,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
             objectName << ", " << subName);
     std::string newElement;
-    if(subSelected && ((ctrlDown && shiftDown && !altDown)
+    if(subSelected && ((ctrlDown && shiftDown)
                         || Data::ComplexGeoData::hasElementName(subSelected)))
     {
         newElement = Data::ComplexGeoData::newElementName(subSelected);
