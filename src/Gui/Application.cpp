@@ -316,6 +316,8 @@ Application::Application(bool GUIenabled)
             }
             if(docs.empty() || !App::DocumentParams::WarnRecomputeOnRestore())
                 return;
+            WaitCursor wc;
+            wc.restoreCursor();
             auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recompution required"),
                 QObject::tr("Some document(s) require recomputation for migration purpose. "
                             "It is highly recommended to perform a recomputation before "
