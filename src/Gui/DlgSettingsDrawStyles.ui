@@ -54,8 +54,7 @@
         <item row="2" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinLineWidthMultiplier">
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</string>
+           <string>Muplication factor to increase the width the selected line.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -64,7 +63,7 @@ Larger value eases to pick things, but can make small features impossible to sel
            <number>1</number>
           </property>
           <property name="minimum">
-           <double>0.100000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
            <double>10.000000000000000</double>
@@ -86,8 +85,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <item row="4" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinSelectionHiddenLineWidth">
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</string>
+           <string>Width of the hidden line.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -135,8 +133,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <item row="1" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinTransparencyOnTop">
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</string>
+           <string>Transparency for the selected object when being shown on top.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -292,8 +289,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <item row="4" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinTransparency">
           <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</string>
+           <string>Override transparency of all objects in the scene.</string>
           </property>
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -484,9 +480,6 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="4" column="1">
          <widget class="Gui::PrefColorButton" name="GroundColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -540,9 +533,6 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="LightColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
