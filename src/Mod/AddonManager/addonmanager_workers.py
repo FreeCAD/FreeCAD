@@ -588,8 +588,6 @@ class InstallWorker(QtCore.QThread):
         "installs or updates the selected addon"
 
         git = None
-        if sys.version_info.major > 2 and self.repos[self.idx][0] in PY2ONLY:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested installing/updating a Python 2 workbench on a system running Python 3 - ")+str(self.repos[self.idx][0])+"\n")
         try:
             import git
         except Exception as e:
@@ -623,6 +621,8 @@ class InstallWorker(QtCore.QThread):
             self.progressbar_show.emit(True)
             if os.path.exists(clonedir):
                 self.info_label.emit("Updating module...")
+                if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested updating a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                 if git:
                     if not os.path.exists(clonedir + os.sep + '.git'):
                         # Repair addon installed with raw download
@@ -655,6 +655,8 @@ class InstallWorker(QtCore.QThread):
                 self.info_label.emit("Checking module dependencies...")
                 depsok,answer = self.checkDependencies(self.repos[idx][1])
                 if depsok:
+                    if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested installing a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                     if git:
                         self.info_label.emit("Cloning module...")
                         repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch='master')
