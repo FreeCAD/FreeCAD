@@ -39,7 +39,9 @@ class PartDesignExport Chamfer : public DressUp
 public:
     Chamfer();
 
+    App::PropertyEnumeration ChamferType;
     App::PropertyQuantityConstraint Size;
+    App::PropertyQuantityConstraint Size2;
     App::PropertyAngle Angle;
 
     /** @name methods override feature */
