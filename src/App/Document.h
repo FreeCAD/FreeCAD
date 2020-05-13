@@ -78,6 +78,7 @@ public:
         PartialDoc = 7,
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
+        RecomputeOnRestore = 10, // Mark pending recompute on restore for migration purpose
     };
 
     /** @name Properties */

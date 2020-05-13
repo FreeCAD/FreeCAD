@@ -25,11 +25,13 @@
 #include <climits>
 #include <zlib.h>
 
+#include <App/DocumentParams.h>
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
 #include "PrefWidgets.h"
 #include "AutoSaver.h"
 
+using namespace App;
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsDocumentImp */
@@ -93,7 +95,9 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefRecovery->onSave();
     ui->prefAutoSaveEnabled->onSave();
     ui->prefAutoSaveTimeout->onSave();
-    ui->prefCanAbortRecompute->onSave();
+
+    DocumentParams::set_CanAbortRecompute(ui->prefCanAbortRecompute->isChecked());
+    DocumentParams::set_WarnRecomputeOnRestore(ui->prefRecomputeOnRestore->isChecked());
 
     int timeout = ui->prefAutoSaveTimeout->value();
     if (!ui->prefAutoSaveEnabled->isChecked())
@@ -127,7 +131,9 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefRecovery->onRestore();
     ui->prefAutoSaveEnabled->onRestore();
     ui->prefAutoSaveTimeout->onRestore();
-    ui->prefCanAbortRecompute->onRestore();
+
+    ui->prefCanAbortRecompute->setChecked(DocumentParams::CanAbortRecompute());
+    ui->prefRecomputeOnRestore->setChecked(DocumentParams::WarnRecomputeOnRestore());
 }
 
 /**

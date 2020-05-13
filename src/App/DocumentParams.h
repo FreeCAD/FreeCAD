@@ -77,6 +77,7 @@ public:
     FC_DOCUMENT_PARAM(CanAbortRecompute, bool, Bool, true) \
     FC_DOCUMENT_PARAM(UseHasher, bool, Bool, true) \
     FC_DOCUMENT_PARAM(ViewObjectTransaction, bool, Bool, false) \
+    FC_DOCUMENT_PARAM(WarnRecomputeOnRestore, bool, Bool, true) \
 
 #undef FC_DOCUMENT_PARAM
 #define FC_DOCUMENT_PARAM(_name,_ctype,_type,_def) \
