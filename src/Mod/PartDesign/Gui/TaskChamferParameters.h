@@ -28,6 +28,9 @@
 #include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
+namespace PartDesign {
+class Chamfer;
+}
 
 namespace PartDesignGui {
 
@@ -42,7 +45,9 @@ public:
     virtual void apply();
 
 private Q_SLOTS:
-    void onLengthChanged(double);
+    void onTypeChanged(int);
+    void onSizeChanged(double);
+    void onSize2Changed(double);
     void onAngleChanged(double);
     void onRefDeleted(void);
 
@@ -51,10 +56,15 @@ protected:
     bool event(QEvent *e);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    double getLength(void) const;
+
+    int getType(void) const;
+    double getSize(void) const;
+    double getSize2(void) const;
     double getAngle(void) const;
 
 private:
+    void setUpUI(PartDesign::Chamfer* pcChamfer);
+
     Ui_TaskChamferParameters* ui;
 };
 
