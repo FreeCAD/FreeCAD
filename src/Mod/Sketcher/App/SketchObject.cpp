@@ -7508,8 +7508,8 @@ void SketchObject::onDocumentRestored()
     Part::Part2DObject::onDocumentRestored();
 
     if(migrate && ExternalGeometry.getSize()+2!=ExternalGeo.getSize()) {
-        delConstraintsToExternal();
-        throw Base::RuntimeError("Failed to restore external geometry");
+        // delConstraintsToExternal();
+        FC_WARN("Failed to restore some external geometry in " << getFullName());
     }
 }
 
