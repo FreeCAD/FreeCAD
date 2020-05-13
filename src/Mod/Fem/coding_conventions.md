@@ -69,7 +69,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 ### Python code formatting tools
 - **flake8** in source code directory on Linux shell
 ```bash
-find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
+find src/Mod/Fem/ -name "*\.py" | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
 ```
 - [LGTM](https://lgtm.com/projects/g/FreeCAD/FreeCAD/latest/files/src/Mod/Fem/)
 - TODO: check pylint
