@@ -627,7 +627,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             PathLog.debug('Wire is not horizontally co-planar. Flattening it.')
 
             # Extrude non-horizontal wire
-            extFwdLen = wBB.ZLength * 2.2
+            extFwdLen = (wBB.ZLength + 2.0) * 2.0
             mbbEXT = wire.extrude(FreeCAD.Vector(0, 0, extFwdLen))
 
             # Create cross-section of shape and translate
