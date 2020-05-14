@@ -20,13 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the object code for Draft Array."""
-## @package orthoarray
+"""Provides functions for creating orthogonal arrays in 2D and 3D."""
+## @package make_orthoarray
 # \ingroup DRAFT
-# \brief Provide the object code for Draft Array.
+# \brief Provides functions for creating orthogonal arrays in 2D and 3D.
 
 import FreeCAD as App
 import Draft
+# import draftmake.make_array as make_array
 import draftutils.utils as utils
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr
@@ -179,6 +180,7 @@ def make_ortho_array(obj,
 
     _msg("use_link: {}".format(bool(use_link)))
 
+    # new_obj = make_array.make_array()
     new_obj = Draft.makeArray(obj,
                               arg1=v_x, arg2=v_y, arg3=v_z,
                               arg4=n_x, arg5=n_y, arg6=n_z,
@@ -273,6 +275,7 @@ def make_ortho_array2d(obj,
 
     _msg("use_link: {}".format(bool(use_link)))
 
+    # new_obj = make_array.make_array()
     new_obj = Draft.makeArray(obj,
                               arg1=v_x, arg2=v_y,
                               arg3=n_x, arg4=n_y,
