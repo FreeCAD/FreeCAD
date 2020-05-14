@@ -2602,7 +2602,7 @@ class _DraftLink(_DraftObject):
         This is done to comply with Python guidelines or fix small issues
         in older code.
         """
-        if hasattr(self, "useLink"):
+        if hasattr(self, "useLink") and not hasattr(self, 'use_link'):
             # This is only needed for some models created in 0.19
             # while it was in development. Afterwards,
             # all models should use 'use_link' by default
@@ -2611,7 +2611,8 @@ class _DraftLink(_DraftObject):
             FreeCAD.Console.PrintWarning("Migrating 'useLink' to 'use_link', "
                                          "{} ({})\n".format(obj.Label,
                                                             obj.TypeId))
-            del self.useLink
+            # Keep the old attribute to allow open the document in older version
+            #  del self.useLink
 
     def onDocumentRestored(self, obj):
         self.migrate_attributes(obj)
