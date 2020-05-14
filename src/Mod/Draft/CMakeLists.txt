@@ -86,6 +86,7 @@ SET(Draft_make_functions
     draftmake/make_block.py
     draftmake/make_bspline.py
     draftmake/make_circle.py
+    draftmake/make_circulararray.py
     draftmake/make_clone.py
     draftmake/make_copy.py
     draftmake/make_drawingview.py
@@ -93,13 +94,15 @@ SET(Draft_make_functions
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
     draftmake/make_line.py
+    draftmake/make_orthoarray.py
     draftmake/make_patharray.py
-    draftmake/make_polygon.py
     draftmake/make_point.py
     draftmake/make_pointarray.py
+    draftmake/make_polararray.py
+    draftmake/make_polygon.py
     draftmake/make_rectangle.py
-    draftmake/make_shapestring.py
     draftmake/make_shape2dview.py
+    draftmake/make_shapestring.py
     draftmake/make_sketch.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
@@ -113,14 +116,11 @@ SET(Draft_objects
     draftobjects/bezcurve.py
     draftobjects/block.py
     draftobjects/bspline.py
-    draftobjects/circulararray.py
     draftobjects/circle.py
     draftobjects/clone.py
     draftobjects/drawingview.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
-    draftobjects/orthoarray.py
-    draftobjects/polararray.py
     draftobjects/draft_annotation.py
     draftobjects/fillet.py
     draftobjects/draftlink.py
