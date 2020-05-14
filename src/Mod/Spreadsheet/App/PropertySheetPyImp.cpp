@@ -23,13 +23,30 @@
 
 #include "PreCompiled.h"
 
-#include "PropertySheet.h"
+#include "Mod/Spreadsheet/App/PropertySheet.h"
 
 // inclusion of the generated files (generated out of PropertySheetPy.xml)
 #include "PropertySheetPy.h"
 #include "PropertySheetPy.cpp"
 
 using namespace Spreadsheet;
+
+struct PropertySheetPyInit {
+
+    PyMappingMethods methods;
+
+    PropertySheetPyInit() {
+        methods.mp_length = 0;
+        methods.mp_ass_subscript = 0;
+        methods.mp_subscript = [](PyObject *o, PyObject *key) {
+            return static_cast<PropertySheetPy*>(o)->getPropertySheetPtr()->getPyValue(key);
+        };
+
+        PropertySheetPy::Type.tp_as_mapping = &methods;
+    }
+};
+
+static PropertySheetPyInit _PropertySheetPyInit;
 
 // returns a string which represents the object e.g. when printed in python
 std::string PropertySheetPy::representation(void) const

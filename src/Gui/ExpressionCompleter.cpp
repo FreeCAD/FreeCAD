@@ -30,22 +30,21 @@ using namespace Gui;
 
 class ExpressionCompleterModel: public QAbstractItemModel {
 public:
-    ExpressionCompleterModel(QObject *parent, const App::DocumentObject *obj, bool noProperty)
+    ExpressionCompleterModel(QObject *parent, bool noProperty)
         :QAbstractItemModel(parent), noProperty(noProperty)
     {
-        setDocumentObject(obj);
     }
 
     void setNoProperty(bool enabled) {
         noProperty = enabled;
     }
 
-    void setDocumentObject(const App::DocumentObject *obj) {
+    void setDocumentObject(const App::DocumentObject *obj, bool checkInList) {
         beginResetModel();
         if(obj) {
             currentDoc = obj->getDocument()->getName();
             currentObj = obj->getNameInDocument();
-            if(!noProperty)
+            if(!noProperty && checkInList)
                 inList = obj->getInListEx(true);
         } else {
             currentDoc.clear();
@@ -136,10 +135,10 @@ public:
         int docSize = (int)docs.size()*2;
         int objSize = 0;
         int propSize = 0;
-        std::vector<App::Property*> props;
+        std::vector<std::pair<const char*, App::Property*> > props;
         App::Document *doc = 0;
         App::DocumentObject *obj = 0;
-        App::Property *prop = 0;
+        const char *propName = 0;
         if(idx>=0 && idx<docSize) 
             doc = docs[idx/2];
         else {
@@ -161,13 +160,13 @@ public:
                     idx -= objSize;
                     if(info.d.doc<0)
                         row = idx;
-                    cobj->getPropertyList(props);
+                    cobj->getPropertyNamedList(props);
                     propSize = (int)props.size();
                     if(idx >= propSize)
                         return;
                     if(idx>=0) {
                         obj = cobj;
-                        prop = props[idx];
+                        propName = props[idx].first;
                     }
                 }
             }
@@ -177,8 +176,8 @@ public:
                 *count = docSize + objSize + propSize;
             if(idx>=0 && v) {
                 QString res;
-                if(prop)
-                    res = QString::fromLatin1(prop->getName());
+                if(propName)
+                    res = QString::fromLatin1(propName);
                 else if(obj) {
                     if(idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
@@ -225,18 +224,18 @@ public:
 
         if(noProperty)
             return;
-        if(!prop) {
+        if(!propName) {
             idx = row;
-            obj->getPropertyList(props);
+            obj->getPropertyNamedList(props);
             propSize = (int)props.size();
             if(idx<0 || idx>=propSize)
                 return;
-            prop = props[idx];
+            propName = props[idx].first;
             if(count)
                 *count = propSize;
         }
         if(v) 
-            *v = QString::fromLatin1(prop->getName());
+            *v = QString::fromLatin1(propName);
         return;
     }
 
@@ -317,8 +316,9 @@ private:
  */
 
 ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
-        QObject *parent, bool noProperty)
-    : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty)
+        QObject *parent, bool noProperty, bool checkInList)
+    : QCompleter(parent), currentObj(currentDocObj)
+    , noProperty(noProperty), checkInList(checkInList)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
 }
@@ -327,18 +327,21 @@ void ExpressionCompleter::init() {
     if(model())
         return;
 
-    setModel(new ExpressionCompleterModel(this,currentObj.getObject(),noProperty));
+    auto m = new ExpressionCompleterModel(this,noProperty);
+    m->setDocumentObject(currentObj.getObject(),checkInList);
+    setModel(m);
 }
 
-void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj) {
+void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj, bool _checkInList) {
     if(!obj || !obj->getNameInDocument())
         currentObj = App::DocumentObjectT();
     else
         currentObj = obj;
     setCompletionPrefix(QString());
+    checkInList = _checkInList;
     auto m = model();
     if(m)
-        static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj);
+        static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj, checkInList);
 }
 
 void ExpressionCompleter::setNoProperty(bool enabled) {
@@ -531,23 +534,30 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char checkPrefix, bool checkInList)
     : QLineEdit(parent)
     , completer(0)
     , block(true)
     , noProperty(noProperty)
+    , checkInList(checkInList)
+    , checkPrefix(checkPrefix)
 {
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
 
-void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
+void ExpressionLineEdit::setPrefix(char prefix) {
+    checkPrefix = prefix;
+}
+
+void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj, bool _checkInList)
 {
+    checkInList = _checkInList;
     if (completer) {
-        completer->setDocumentObject(currentDocObj);
+        completer->setDocumentObject(currentDocObj, checkInList);
         return;
     }
     if (currentDocObj != 0) {
-        completer = new ExpressionCompleter(currentDocObj, this, noProperty);
+        completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
@@ -576,6 +586,8 @@ void ExpressionLineEdit::hideCompleter()
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
     if (!block) {
+        if(!text.size() || (checkPrefix && text[0]!=QLatin1Char(checkPrefix)))
+            return;
         Q_EMIT textChanged2(text,cursorPosition());
     }
 }

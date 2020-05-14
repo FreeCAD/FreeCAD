@@ -1141,7 +1141,7 @@ void Document::saveAll() {
     for(auto doc : docs)
         dmap[doc] = doc->mustExecute();
     for(auto doc : docs) {
-        if(doc->testStatus(App::Document::PartialDoc))
+        if(doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
             continue;
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
@@ -1840,6 +1840,9 @@ bool Document::canClose (bool checkModify, bool checkLink)
     //}
 
     if (checkLink && App::PropertyXLink::getDocumentInList(getDocument()).size())
+        return true;
+
+    if (getDocument()->testStatus(App::Document::TempDoc))
         return true;
 
     bool ok = true;

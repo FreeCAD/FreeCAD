@@ -94,11 +94,13 @@ viewType (String): override the view provider type directly, only effective when
     <Methode Name="copyObject">
       <Documentation>
           <UserDocu>
-copyObject(object, with_dependencies=False)
+copyObject(object, with_dependencies=False, return_all=False)
 Copy an object or objects from another document to this document. 
 
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
+return_all: if True, return all copied objects, or else return only the copied
+            object corresponding to the input objects.
           </UserDocu>
       </Documentation>
     </Methode>
@@ -327,6 +329,12 @@ sort: whether to topologically sort the return list
             <UserDocu>Contains the old label before change</UserDocu>
         </Documentation>
         <Parameter Name="OldLabel" Type="String"/>
+    </Attribute>
+    <Attribute Name="Temporary" ReadOnly="true" >
+        <Documentation>
+            <UserDocu>Check if this is a temporary document</UserDocu>
+        </Documentation>
+        <Parameter Name="Temporary" Type="Boolean"/>
     </Attribute>
     <CustomAttributes />
   </PythonExport>

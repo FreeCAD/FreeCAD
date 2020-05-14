@@ -91,15 +91,41 @@ PyObject* SheetPy::set(PyObject *args)
 
 PyObject* SheetPy::get(PyObject *args)
 {
-    char *address;
+    const char *address;
+    const char *address2=0;
 
-    if (!PyArg_ParseTuple(args, "s:get", &address))
+    if (!PyArg_ParseTuple(args, "s|s:get", &address, &address2))
         return 0;
+
+    PY_TRY {
+        if(address2) {
+            auto a1 = getSheetPtr()->getAddressFromAlias(address);
+            if(a1.empty())
+                a1 = address;
+            auto a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+            Range range(a1.c_str(),a2.c_str());
+            Py::Tuple tuple(range.size());
+            int i=0;
+            do {
+                App::Property *prop = getSheetPtr()->getPropertyByName(range.address().c_str());
+                if(!prop) {
+                    PyErr_Format(PyExc_ValueError, "Invalid address '%s' in range %s:%s",
+                            range.address().c_str(), address, address2);
+                    return 0;
+                }
+                tuple.setItem(i++,Py::Object(prop->getPyObject(),true));
+            }while(range.next());
+            return Py::new_reference_to(tuple);
+        }
+    }PY_CATCH;
 
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
     if (prop == 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid address or property.");
+        PyErr_Format(PyExc_ValueError, 
+                "Invalid cell address or property: %s",address);
         return 0;
     }
     return prop->getPyObject();
@@ -113,21 +139,29 @@ PyObject* SheetPy::getContents(PyObject *args)
     if (!PyArg_ParseTuple(args, "s:getContents", &strAddress))
         return 0;
 
-    try {        
-        address = stringToAddress(strAddress);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
+    PY_TRY {
+        try {        
+            Sheet * sheet = getSheetPtr();
+            std::string addr = sheet->getAddressFromAlias(strAddress);
 
-    std::string contents;
-    const Cell * cell = this->getSheetPtr()->getCell(address);
+            if (addr.empty())
+                address = stringToAddress(strAddress);
+            else
+                address = stringToAddress(addr.c_str());
+        }
+        catch (const Base::Exception & e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return 0;
+        }
 
-    if (cell)
-        cell->getStringContent( contents );
+        std::string contents;
+        const Cell * cell = this->getSheetPtr()->getCell(address);
 
-    return Py::new_reference_to( Py::String( contents ) );
+        if (cell)
+            cell->getStringContent( contents );
+
+        return Py::new_reference_to( Py::String( contents ) );
+    } PY_CATCH
 }
 
 PyObject* SheetPy::clear(PyObject *args)
@@ -627,8 +661,10 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 #endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
-        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-            alignment = Cell::decodeAlignment(*i, alignment);
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
+            if(i->size())
+                alignment = Cell::decodeAlignment(*i, alignment);
+        }
     }
     else {
         std::string error = std::string("style must be either set or string, not ") + value->ob_type->tp_name;
@@ -963,15 +999,61 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     }
 }
 
+PyObject *SheetPy::touchCells(PyObject *args) {
+    const char *address;
+    const char *address2=0;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return 0;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->touchCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
+PyObject *SheetPy::recomputeCells(PyObject *args) {
+    const char *address;
+    const char *address2=0;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return 0;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->recomputeCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
-PyObject *SheetPy::getCustomAttributes(const char* attr) const
+PyObject *SheetPy::getCustomAttributes(const char*) const
 {
-    App::Property * prop = this->getSheetPtr()->getPropertyByName(attr);
-
-    if (prop == 0)
-        return 0;
-    return prop->getPyObject();
+    return 0;
 }
 
 int SheetPy::setCustomAttributes(const char* , PyObject* )

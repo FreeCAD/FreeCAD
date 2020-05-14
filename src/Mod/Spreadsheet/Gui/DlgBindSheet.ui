@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgBindSheet</class>
+ <widget class="QDialog" name="DlgBindSheet">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>387</width>
+    <height>176</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Bind Spreadsheet Cells</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>From cells:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditFromStart">
+     <property name="toolTip">
+      <string>Binding cell range start</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="lineEditFromEnd">
+     <property name="toolTip">
+      <string>Binding cell range end
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>To cells:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="Gui::ExpressionLineEdit" name="lineEditToStart">
+     <property name="toolTip">
+      <string>Starting cell address to bind to. Type '=' if you want to use expression.
+The expression must evaluates to a string of some cell address.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="Gui::ExpressionLineEdit" name="lineEditToEnd">
+     <property name="toolTip">
+      <string>Ending cell address to bind to. Type '=' if you want to use expression.
+The expression must evaluates to a string of some cell address.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Sheet:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <widget class="QCheckBox" name="checkBoxHREF">
+     <property name="toolTip">
+      <string>Use hidden reference not avoid creating a depdenecy with the referenced object. Use with caution!</string>
+     </property>
+     <property name="text">
+      <string>Use hidden reference</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="btnDiscard">
+       <property name="text">
+        <string>Unbind</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnOk">
+       <property name="text">
+        <string>OK</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QComboBox" name="comboBox">
+     <property name="toolTip">
+      <string>Select which spread sheet to bind to.</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ExpressionLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/ExpressionCompleter.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>lineEditFromStart</tabstop>
+  <tabstop>lineEditFromEnd</tabstop>
+  <tabstop>lineEditToStart</tabstop>
+  <tabstop>lineEditToEnd</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>checkBoxHREF</tabstop>
+  <tabstop>btnOk</tabstop>
+  <tabstop>btnCancel</tabstop>
+  <tabstop>btnDiscard</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnOk</sender>
+   <signal>clicked()</signal>
+   <receiver>DlgBindSheet</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>334</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>DlgBindSheet</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

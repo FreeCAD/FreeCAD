@@ -96,6 +96,18 @@ public:
 
     Cell *getNewCell(App::CellAddress address);
 
+    enum Border {
+        BorderTop = 1,
+        BorderLeft = 2,
+        BorderBottom = 4,
+        BorderRight = 8,
+        BorderAll = 15,
+    };
+    unsigned getCellBindingBorder(App::CellAddress address) const;
+
+    PropertySheet::BindingType getCellBinding(App::Range &range,
+            App::ExpressionPtr *pStart=0, App::ExpressionPtr *pEnd=0) const;
+
     void setCell(const char *address, const char *value);
 
     void setCell(App::CellAddress address, const char *value);
@@ -159,11 +171,19 @@ public:
 
     App::Property *getPropertyByName(const char *name) const;
 
+    App::Property *getDynamicPropertyByName(const char* name) const;
+
+    virtual void getPropertyNamedList(std::vector<std::pair<const char*,App::Property*> > &List) const;
+
     virtual short mustExecute(void) const;
 
     App::DocumentObjectExecReturn *execute(void);
 
     bool getCellAddress(const App::Property *prop, App::CellAddress &address);
+
+    App::CellAddress getCellAddress(const char *name, bool silent=false) const;
+
+    App::Range getRange(const char *name, bool silent=false) const;
 
     std::map<int, int> getColumnWidths() const;
 
@@ -175,9 +195,13 @@ public:
 
     void touchCells(App::Range range);
 
+    void recomputeCells(App::Range range);
+
     // Signals
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;
+
+    boost::signals2::signal<void (App::Range)> rangeUpdated;
 
     boost::signals2::signal<void (App::CellAddress)> cellSpanChanged;
 
@@ -189,7 +213,13 @@ public:
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
+    void setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy=true);
+    const std::vector<App::Range> &getCopyOrCutRange(bool copy=true) const;
+    unsigned getCopyOrCutBorder(App::CellAddress address, bool copy=true) const;
+
 protected:
+
+    virtual void onChanged(const App::Property *prop);
 
     void updateColumnsOrRows(bool horizontal, int section, int count) ;
 
@@ -203,8 +233,6 @@ protected:
 
     App::Property *getProperty(const char * addr) const;
 
-    void updateAlias(App::CellAddress key);
-
     void updateProperty(App::CellAddress key);
 
     App::Property *setStringProperty(App::CellAddress key, const std::string & value) ;
@@ -217,20 +245,15 @@ protected:
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
-    void aliasRemoved(App::CellAddress address, const std::string &alias);
-
-    void removeAliases();
-
     virtual void onSettingDocument();
+
+    void updateBindings();
 
     /* Properties for used cells */
     App::DynamicProperty &props;
 
     /* Mapping of properties to cell position */
     std::map<const App::Property*, App::CellAddress > propAddress;
-
-    /* Removed (unprocessed) aliases */
-    std::map<App::CellAddress, std::string> removedAliases;
 
     /* Set of cells with errors */
     std::set<App::CellAddress> cellErrors;
@@ -252,6 +275,11 @@ protected:
 
     int currentRow = -1;
     int currentCol = -1;
+
+    std::vector<App::Range> boundRanges;
+
+    std::vector<App::Range> copyCutRanges;
+    bool hasCopyRange = false;
 
     friend class SheetObserver;
 

@@ -118,6 +118,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::SubtractiveLoft             ::init();
     PartDesign::ShapeBinder                 ::init();
     PartDesign::SubShapeBinder              ::init();
+    PartDesign::SubShapeBinderPython        ::init();
     PartDesign::Plane                       ::init();
     PartDesign::Line                        ::init();
     PartDesign::Point                       ::init();

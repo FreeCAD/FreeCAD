@@ -81,6 +81,11 @@ public:
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
     virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _lValue; }
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 protected:
     long _lValue;
 };
@@ -107,7 +112,7 @@ public:
 
     /** This method returns a string representation of the property
      */
-    boost::filesystem::path getValue(void) const;
+    const boost::filesystem::path &getValue(void) const;
 
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyPathItem"; }
     
@@ -121,6 +126,11 @@ public:
     virtual void Paste(const Property &from);
     
     virtual unsigned int getMemSize (void) const;
+
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
 
 protected:
     boost::filesystem::path _cValue;
@@ -179,7 +189,7 @@ public:
     const char * getValueAsString(void) const;
 
     /// Returns Enumeration object
-    Enumeration getEnum(void) const;
+    const Enumeration &getEnum(void) const;
 
     /// get all possible enum values as vector of strings
     std::vector<std::string> getEnumVector(void) const;
@@ -204,7 +214,13 @@ public:
     virtual void Paste(const Property &from);
 
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _enum; }
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const;
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const;
+
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getEnum() == static_cast<decltype(this)>(&other)->getEnum();
+    }
 
 private:
     Enumeration _enum;
@@ -376,6 +392,10 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValues() == static_cast<decltype(this)>(&other)->getValues();
+    }
 private:
     std::set<long> _lValueSet;
 };
@@ -430,6 +450,10 @@ public:
     
     virtual unsigned int getMemSize (void) const;
     
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValues() == static_cast<decltype(this)>(&other)->getValues();
+    }
 
 private:
     std::map<std::string,std::string> _lValueList;
@@ -479,6 +503,11 @@ public:
     
     void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
 
 protected:
     double _dValue;
@@ -660,6 +689,11 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getStrValue() == static_cast<decltype(this)>(&other)->getStrValue();
+    }
+
 protected:
     std::string _cValue;
 };
@@ -703,6 +737,11 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && _uuid.getValue() == static_cast<decltype(this)>(&other)->_uuid.getValue();
+    }
+
 private:
     Base::Uuid _uuid;
 };
@@ -719,6 +758,11 @@ public:
     virtual ~PropertyFont();
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFontItem"; }
+
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
 };
 
 class AppExport PropertyStringList: public PropertyListsT<std::string>
@@ -800,6 +844,11 @@ public:
     void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 private:
     bool _lValue;
 };
@@ -874,6 +923,10 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(Color);}
     
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
 
 private:
     Color _cCol;
@@ -961,6 +1014,11 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(_cMat);}
     
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 private:
     Material _cMat;
 };

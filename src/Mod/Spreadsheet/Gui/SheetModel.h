@@ -50,8 +50,10 @@ public:
 
 private:
     void cellUpdated(App::CellAddress address);
+    void rangeUpdated(const App::Range &range);
 
     boost::signals2::scoped_connection cellUpdatedConnection;
+    boost::signals2::scoped_connection rangeUpdatedConnection;
     Spreadsheet::Sheet * sheet;
     QColor aliasBgColor;
     QColor textFgColor;

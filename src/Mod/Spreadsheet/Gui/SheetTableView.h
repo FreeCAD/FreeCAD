@@ -62,6 +62,10 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+
+public Q_SLOTS:
+    void mergeCells();
+    void splitCell();
     void deleteSelection();
     void copySelection();
     void cutSelection();
@@ -75,13 +79,31 @@ protected Q_SLOTS:
     void insertColumns();
     void removeColumns();
     void cellProperties();
+    void onRecompute();
+    void onBind();
+    void onConfSetup();
+
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 
+    void contextMenuEvent (QContextMenuEvent * e);
+
+    void _copySelection(const std::vector<App::Range> &ranges, bool copy);
+
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+
+    QMenu *contextMenu;
+
+    QAction *actionMerge;
+    QAction *actionSplit;
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionCut;
+    QAction *actionDel;
+    QAction *actionBind;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

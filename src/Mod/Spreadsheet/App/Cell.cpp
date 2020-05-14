@@ -38,7 +38,9 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <App/ExpressionParser.h>
+#include <App/Application.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -130,12 +132,12 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
-    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
 {
     setUsed(MARK_SET, false);
+    setAlias(other.alias);
     setDirty();
 }
 
@@ -246,7 +248,10 @@ const App::Expression *Cell::getExpression(bool withFormat) const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+        s.clear();
+        if(expression->hasComponent())
+            s = "=" + expression->toString(persistent);
+        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
             s = static_cast<App::StringExpression*>(expression.get())->getText();
             char * end;
             errno = 0;
@@ -279,7 +284,13 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::Expression * expr = 0;
+    ExpressionPtr expr;
+
+    static ParameterGrp::handle hGrp;
+    if(!hGrp) {
+       hGrp = GetApplication().GetParameterGroupByPath(
+               "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    }
 
     clearException();
     if (value != 0) {
@@ -290,36 +301,39 @@ void Cell::setContent(const char * value)
         }
         if (*value == '=') {
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr.reset(App::ExpressionParser::parse(owner->sheet(), value + 1));
             }
             catch (Base::Exception & e) {
-                expr = new App::StringExpression(owner->sheet(), value);
+                expr.reset(new App::StringExpression(owner->sheet(), value));
                 setParseException(e.what());
             }
         }
         else if (*value == '\'')
-            expr = new App::StringExpression(owner->sheet(), value + 1);
+            expr.reset(new App::StringExpression(owner->sheet(), value + 1));
         else if (*value != '\0') {
             char * end;
             errno = 0;
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
-                expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
-            else {
+                expr.reset(new App::NumberExpression(owner->sheet(), Quantity(float_value)));
+            else if (hGrp->GetBool("AutoParseContent", true)) {
                 try {
-                    expr = ExpressionParser::parse(owner->sheet(), value);
+                    expr.reset(ExpressionParser::parse(owner->sheet(), value));
                     if (expr)
                         delete expr->eval();
                 }
                 catch (Base::Exception &) {
-                    expr = new App::StringExpression(owner->sheet(), value);
+                    expr.reset();
                 }
             }
+
+            if(!expr)
+                expr.reset(new App::StringExpression(owner->sheet(), value));
         }
     }
 
     try {
-        setExpression(App::ExpressionPtr(expr));
+        setExpression(std::move(expr));
         signaller.tryInvoke();
     } catch (Base::Exception &e) {
         if(value) {
@@ -329,7 +343,7 @@ void Cell::setContent(const char * value)
                 _value += value;
                 value = _value.c_str();
             }
-            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), value)));
+            setExpression(ExpressionPtr(new App::StringExpression(owner->sheet(), value)));
             setParseException(e.what());
         }
     }

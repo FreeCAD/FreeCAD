@@ -118,10 +118,11 @@ private:
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool binding;
+    bool checkDocument;
+
     QColor groupColor;
     QBrush background;
-
-    bool binding;
 
     friend class Gui::PropertyView;
 };

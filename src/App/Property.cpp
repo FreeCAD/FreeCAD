@@ -32,6 +32,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include "Application.h"
 #include "DocumentObject.h"
 
@@ -212,8 +213,13 @@ void Property::setReadOnly(bool readOnly)
 void Property::hasSetValue(void)
 {
     PropertyCleaner guard(this);
-    if (father)
+    if (father) {
         father->onChanged(this);
+        if(!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            signalChanged(*this);
+        }
+    }
     StatusBits.set(Touched);
 }
 
@@ -248,7 +254,9 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropReadOnly)
         |(1<<PropTransient)
         |(1<<PropOutput)
-        |(1<<PropHidden);
+        |(1<<PropHidden)
+        |(1<<PropNoPersist)
+        |(1<<Busy);
 
     status &= ~mask;
     status |= StatusBits.to_ulong() & mask;
@@ -267,6 +275,17 @@ void Property::setStatus(Status pos, bool on) {
     bits.set(pos,on);
     setStatusValue(bits.to_ulong());
 }
+
+bool Property::isSame(const Property &other) const {
+    if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
+        return false;
+
+    Base::StringWriter writer,writer2;
+    Save(writer);
+    other.Save(writer2);
+    return writer.getString() == writer2.getString();
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyListsBase

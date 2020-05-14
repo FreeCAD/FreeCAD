@@ -346,7 +346,45 @@ public:
 
     bool relabeledDocument(ExpressionVisitor &v, const std::string &oldLabel, const std::string &newLabel);
 
-    std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
+    /** Type for storing dependency of an ObjectIdentifier
+     *
+     * The dependency is a map from document object to a set of property names.
+     * An object identifier may references multiple objects using syntax like
+     * 'Part.Group[0].Width'. 
+     *
+     * Also, we use set of string instead of set of Property pointer, because
+     * the property may not exist at the time this ObjectIdentifier is
+     * constructed.
+     */
+    typedef std::map<App::DocumentObject *, std::set<std::string> > Dependencies;
+
+    /** Get dependencies of this object identifier
+     *
+     * @param needProps: whether need property dependencies.
+     * @param labels: optional return of any label references.
+     *
+     * In case of multi-object references, like 'Part.Group[0].Width', if no
+     * property dependency is required, then this function will only return the
+     * first referred object dependency. Or else, all object and property
+     * dependencies will be returned.
+     */
+    Dependencies getDep(bool needProps, std::vector<std::string> *labels=0) const;
+
+    /** Get dependencies of this object identifier
+     *
+     * @param deps: returns the depdenencies.
+     * @param needProps: whether need property dependencies.
+     * @param labels: optional return of any label references.
+     *
+     * In case of multi-object references, like 'Part.Group[0].Width', if no
+     * property dependency is required, then this function will only return the
+     * first referred object dependency. Or else, all object and property
+     * dependencies will be returned.
+     */
+    void getDep(Dependencies &deps, bool needProps, std::vector<std::string> *labels=0) const;
+    
+    /// Returns all label references
+    void getDepLabels(std::vector<std::string> &labels) const;
 
     App::Document *getDocument(String name = String(), bool *ambiguous=0) const;
 
@@ -426,13 +464,16 @@ protected:
 
     void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
-    Py::Object access(const ResolveResults &rs, Py::Object *value=0) const;
+    Py::Object access(const ResolveResults &rs,
+            Py::Object *value=0, Dependencies *deps=0) const;
 
     void resolve(ResolveResults & results) const;
     void resolveAmbiguity(ResolveResults &results);
 
     static App::DocumentObject *getDocumentObject(
             const App::Document *doc, const String &name, std::bitset<32> &flags);
+
+    void getDepLabels(const ResolveResults &result, std::vector<std::string> &labels) const;
 
     App::DocumentObject * owner;
     String  documentName;

@@ -24,20 +24,25 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QItemDelegate>
-#include <QLineEdit>
+# include <QLineEdit>
+# include <QPainter>
 #endif
 
+#include <Base/Console.h>
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
 #include <App/DocumentObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/ExpressionCompleter.h>
+#include "DlgBindSheet.h"
 
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+
+using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
 SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet * _sheet, QWidget *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
     , sheet(_sheet)
 {
 }
@@ -46,6 +51,13 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
+    App::CellAddress addr(index.row(),index.column());
+    App::Range range(addr,addr);
+    if(sheet && sheet->getCellBinding(range)) {
+        FC_ERR("Bound cell " << addr.toString() << " cannot be edited");
+        return 0;
+    }
+
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
     editor->setIndex(index);
 
@@ -94,6 +106,43 @@ QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
     Q_UNUSED(option);
     Q_UNUSED(index);
     return QSize();
+}
+
+static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &option,
+        unsigned flags, QColor color, Qt::PenStyle style)
+{
+    if(!flags)
+        return;
+    QPen pen(color);
+    pen.setWidth(2);
+    pen.setStyle(style);
+    painter->setPen(pen);
+
+    QRect rect = option.rect.adjusted(1,1,0,0);
+    if(flags == Sheet::BorderAll) {
+        painter->drawRect(rect);
+        return;
+    }
+    if(flags & Sheet::BorderLeft) 
+        painter->drawLine(rect.topLeft(), rect.bottomLeft());
+    if(flags & Sheet::BorderTop) 
+        painter->drawLine(rect.topLeft(), rect.topRight());
+    if(flags & Sheet::BorderRight) 
+        painter->drawLine(rect.topRight(), rect.bottomRight());
+    if(flags & Sheet::BorderBottom) 
+        painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+}
+
+void SpreadsheetDelegate::paint(QPainter *painter,
+        const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+    if(!sheet)
+        return;
+    App::CellAddress addr(index.row(), index.column());
+    drawBorder(painter, option, sheet->getCellBindingBorder(addr), Qt::blue, Qt::SolidLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,true), Qt::green, Qt::DashLine);
+    drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,false), Qt::red, Qt::DashLine);
 }
 
 #include "moc_SpreadsheetDelegate.cpp"

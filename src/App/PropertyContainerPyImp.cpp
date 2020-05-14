@@ -198,6 +198,8 @@ static const std::map<std::string, int> &getStatusMap() {
         statusMap["LockDynamic"] = Property::LockDynamic;
         statusMap["NoModify"] = Property::NoModify;
         statusMap["PartialTrigger"] = Property::PartialTrigger;
+        statusMap["NoRecompute"] = Property::NoRecompute;
+        statusMap["CopyOnChange"] = Property::CopyOnChange;
     }
     return statusMap;
 }
@@ -340,6 +342,25 @@ PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
         return Py::new_reference_to(Py::String(""));
 }
 
+PyObject*  PropertyContainerPy::setGroupOfProperty(PyObject *args)
+{
+    char *pstr;
+    char *group;
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &group))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    PY_TRY {
+        Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
+        if (!prop) {
+            PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
+            return 0;
+        }
+        prop->getContainer()->changeDynamicProperty(prop,group,0);
+        Py_Return;
+    } PY_CATCH
+}
+
+
 PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
 {
     char *pstr;
@@ -357,6 +378,24 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
         return Py::new_reference_to(Py::String(Group));
     else
         return Py::new_reference_to(Py::String(""));
+}
+
+PyObject*  PropertyContainerPy::setDocumentationOfProperty(PyObject *args)
+{
+    char *pstr;
+    char *doc;
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &doc))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    PY_TRY {
+        Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
+        if (!prop) {
+            PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
+            return 0;
+        }
+        prop->getContainer()->changeDynamicProperty(prop,0,doc);
+        Py_Return;
+    } PY_CATCH
 }
 
 Py::List PropertyContainerPy::getPropertiesList(void) const
