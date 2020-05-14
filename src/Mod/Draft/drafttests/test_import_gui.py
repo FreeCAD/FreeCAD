@@ -33,28 +33,28 @@ class DraftGuiImport(unittest.TestCase):
     # No document is needed to test 'import DraftGui' or other modules
     # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
     def setUp(self):
-        aux._draw_header()
+        aux.draw_header()
 
     def test_import_gui_draftgui(self):
         """Import Draft TaskView GUI tools."""
         module = "DraftGui"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_snap(self):
         """Import Draft snapping."""
         module = "draftguitools.gui_snapper"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_tools(self):
         """Import Draft graphical commands."""
         module = "DraftTools"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_trackers(self):
         """Import Draft tracker utilities."""
         module = "draftguitools.gui_trackers"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
