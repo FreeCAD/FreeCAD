@@ -76,11 +76,29 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY(FlipDirection, (false));
+
+    updateProperties();
 }
 
 short Chamfer::mustExecute() const
 {
-    if (Placement.isTouched() || Size.isTouched())
+    bool touched = false;
+
+    auto chamferType = ChamferType.getValue();
+
+    switch (chamferType) {
+        case 0: // "Equal distance"
+            touched = Size.isTouched() || ChamferType.isTouched();
+            break;
+        case 1: // "Two distances"
+            touched = Size.isTouched() || ChamferType.isTouched() || Size2.isTouched();
+            break;
+        case 2: // "Distance and Angle"
+            touched = Size.isTouched() || ChamferType.isTouched() || Angle.isTouched();
+            break;
+    }
+
+    if (Placement.isTouched() || touched)
         return 1;
     return DressUp::mustExecute();
 }
@@ -212,6 +230,39 @@ void Chamfer::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
+void Chamfer::onChanged(const App::Property* prop)
+{
+    if (prop == &ChamferType) {
+        updateProperties();
+    }
+
+    DressUp::onChanged(prop);
+}
+
+void Chamfer::updateProperties()
+{
+    auto chamferType = ChamferType.getValue();
+
+    auto disableproperty = [](App::Property * prop, bool on) {
+        prop->setStatus(App::Property::ReadOnly, on);
+    };
+
+    switch (chamferType) {
+    case 0: // "Equal distance"
+        disableproperty(&this->Angle, true);
+        disableproperty(&this->Size2, true);
+        break;
+    case 1: // "Two distances"
+        disableproperty(&this->Angle, true);
+        disableproperty(&this->Size2, false);
+        break;
+    case 2: // "Distance and Angle"
+        disableproperty(&this->Angle, false);
+        disableproperty(&this->Size2, true);
+        break;
+    }
+}
+
 static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle)
 {
     // Size is common to all chamfer types.
@@ -237,3 +288,5 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
 
     return App::DocumentObject::StdReturn;
 }
+
+

@@ -320,9 +320,25 @@ void TaskChamferParameters::apply()
     std::string name = DressUpView->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Chamfer changed");
-    ui->chamferSize->apply();
-    ui->chamferSize2->apply();
-    ui->chamferAngle->apply();
+
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+
+    const int chamfertype = pcChamfer->ChamferType.getValue();
+
+    switch(chamfertype) {
+
+        case 0: // "Equal distance"
+            ui->chamferSize->apply();
+            break;
+        case 1: // "Two distances"
+            ui->chamferSize->apply();
+            ui->chamferSize2->apply();
+            break;
+        case 2: // "Distance and Angle"
+            ui->chamferSize->apply();
+            ui->chamferAngle->apply();
+            break;
+    }
 }
 
 //**************************************************************************
