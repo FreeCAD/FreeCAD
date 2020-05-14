@@ -40,7 +40,7 @@ class DraftDWG(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        aux._draw_header()
+        aux.draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -62,8 +62,8 @@ class DraftDWG(unittest.TestCase):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_DWG = aux._fake_function
-        obj = Draft.import_DWG(in_file)
+        Draft.import_dwg = aux.fake_function
+        obj = Draft.import_dwg(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_dwg(self):
@@ -76,8 +76,8 @@ class DraftDWG(unittest.TestCase):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_DWG = aux._fake_function
-        obj = Draft.export_DWG(out_file)
+        Draft.export_dwg = aux.fake_function
+        obj = Draft.export_dwg(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def tearDown(self):

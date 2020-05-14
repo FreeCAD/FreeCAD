@@ -40,7 +40,7 @@ class DraftDXF(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        aux._draw_header()
+        aux.draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -62,8 +62,8 @@ class DraftDXF(unittest.TestCase):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_DXF = aux._fake_function
-        obj = Draft.import_DXF(in_file)
+        Draft.import_dxf = aux.fake_function
+        obj = Draft.import_dxf(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_dxf(self):
@@ -76,8 +76,8 @@ class DraftDXF(unittest.TestCase):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_DXF = aux._fake_function
-        obj = Draft.export_DXF(out_file)
+        Draft.export_dxf = aux.fake_function
+        obj = Draft.export_dxf(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def tearDown(self):
