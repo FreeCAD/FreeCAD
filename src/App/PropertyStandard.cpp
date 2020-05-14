@@ -442,8 +442,14 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 PyObject * PropertyEnumeration::getPyObject(void)
 {
     if (!_enum.isValid()) {
-        PyErr_SetString(PyExc_AssertionError, "The enum is empty");
-        return 0;
+        // There is legimate use case of having an empty PropertyEnumeration and
+        // set its enumeration items later. Returning error here cause hasattr()
+        // to return False even though the property exists.
+        //
+        // PyErr_SetString(PyExc_AssertionError, "The enum is empty");
+        // return 0;
+        //
+        Py_Return;
     }
 
     return Py_BuildValue("s", getValueAsString());
