@@ -714,6 +714,7 @@ App::DocumentObjectExecReturn* Reverse::execute(void)
         TopoDS_Shape myShape = source->Shape.getValue();
         if (!myShape.IsNull())
             this->Shape.setValue(myShape.Reversed());
+        this->Placement.setValue(source->Placement.getValue());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure & e) {
