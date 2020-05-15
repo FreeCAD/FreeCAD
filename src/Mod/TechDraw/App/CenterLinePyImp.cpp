@@ -37,7 +37,9 @@ using namespace TechDraw;
 // returns a string which represents the object e.g. when printed in python
 std::string CenterLinePy::representation(void) const
 {
-    return "<CenterLine object>";
+    std::stringstream ss;
+    ss << "<CenterLine object> at " << std::hex << this;
+    return ss.str();
 }
 
 PyObject *CenterLinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -108,68 +110,8 @@ PyObject* CenterLinePy::copy(PyObject *args)
     return cpy;
 }
 
-//PyObject* CenterLinePy::setFormat(PyObject* args)
-//{
-////    Base::Console().Message("CLPI::setFormat()\n");
-//    PyObject* pTuple;
-//    int style = 1;
-//    double weight = 0.50;
-//    double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-//    App::Color c(red, blue, green, alpha);
-//    bool visible = 1; 
-//    if (!PyArg_ParseTuple(args, "O", &pTuple)) {
-//      return NULL;
-//    }
-//    
-//    TechDraw::CenterLine* cl = this->getCenterLinePtr();
-//    if (PyTuple_Check(pTuple)) {
-//        int tSize = (int) PyTuple_Size(pTuple);
-//        if (tSize > 3) {
-//            PyObject* pStyle = PyTuple_GetItem(pTuple,0);
-//            style = (int) PyLong_AsLong(pStyle);
-//            PyObject* pWeight = PyTuple_GetItem(pTuple,1);
-//            weight = PyFloat_AsDouble(pWeight);
-//            PyObject* pColor = PyTuple_GetItem(pTuple,2);
-//            c = DrawUtil::pyTupleToColor(pColor);
-//            PyObject* pVisible = PyTuple_GetItem(pTuple,3);
-//            visible = (bool) PyLong_AsLong(pVisible);
-
-//            cl->m_format.m_style = style;
-//            cl->m_format.m_weight = weight;
-//            cl->m_format.m_color = c;
-//            cl->m_format.m_visible = visible;
-//        }
-//    } else {
-//        Base::Console().Error("CLPI::setFormat - not a tuple!\n");
-//    }
-//    
-//    return Py_None;
-//}
-
-//PyObject* CenterLinePy::getFormat(PyObject *args)
-//{
-//    (void) args;
-////    Base::Console().Message("CLPI::getFormat()\n");
-//    TechDraw::CenterLine* cl = this->getCenterLinePtr();
-
-//    PyObject* pStyle = PyLong_FromLong((long) cl->m_format.m_style);
-//    PyObject* pWeight = PyFloat_FromDouble(cl->m_format.m_weight);
-//    PyObject* pColor = DrawUtil::colorToPyTuple(cl->m_format.m_color);
-//    PyObject* pVisible = PyBool_FromLong((long) cl->m_format.m_visible);
-
-//    PyObject* result = PyTuple_New(4);
-
-//    PyTuple_SET_ITEM(result, 0, pStyle);
-//    PyTuple_SET_ITEM(result, 1, pWeight);
-//    PyTuple_SET_ITEM(result, 2, pColor);
-//    PyTuple_SET_ITEM(result, 3, pVisible);
-
-//    return result;
-//}
-
 Py::Object CenterLinePy::getFormat(void) const
 {
-//    Base::Console().Message("CLP::getFormat()\n");
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
 
     PyObject* pStyle = PyLong_FromLong((long) cl->m_format.m_style);
@@ -189,7 +131,6 @@ Py::Object CenterLinePy::getFormat(void) const
 
 void CenterLinePy::setFormat(Py::Object arg)
 {
-//    Base::Console().Message("CLP::setFormat()\n");
     PyObject* pTuple = arg.ptr();
     int style = 1;
     double weight = 0.50;
@@ -209,7 +150,6 @@ void CenterLinePy::setFormat(Py::Object arg)
             c = DrawUtil::pyTupleToColor(pColor);
             PyObject* pVisible = PyTuple_GetItem(pTuple,3);
             visible = (bool) PyLong_AsLong(pVisible);
-
             cl->m_format.m_style = style;
             cl->m_format.m_weight = weight;
             cl->m_format.m_color = c;
