@@ -338,12 +338,12 @@ if FreeCAD.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
     from draftviewproviders.view_array import _ViewProviderDraftArray
 
-# from draftmake.make_circulararray import make_circular_array
-# from draftmake.make_orthoarray import make_ortho_array
-# from draftmake.make_orthoarray import make_ortho_array2d
-# from draftmake.make_orthoarray import make_rect_array
-# from draftmake.make_orthoarray import make_rect_array2d
-# from draftmake.make_polararray import make_polar_array
+from draftmake.make_circulararray import make_circular_array
+from draftmake.make_orthoarray import make_ortho_array
+from draftmake.make_orthoarray import make_ortho_array2d
+from draftmake.make_orthoarray import make_rect_array
+from draftmake.make_orthoarray import make_rect_array2d
+from draftmake.make_polararray import make_polar_array
 
 # facebinder
 from draftmake.make_facebinder import make_facebinder, makeFacebinder

@@ -278,7 +278,7 @@ class TaskPanelCircularArray:
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "DD.make_circular_array"
+        _cmd = "Draft.make_circular_array"
         _cmd += "("
         _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "r_distance=" + str(self.r_distance) + ", "
@@ -291,13 +291,10 @@ class TaskPanelCircularArray:
         _cmd += ")"
 
         Gui.addModule('Draft')
-        Gui.addModule('draftmake.make_circulararray')
 
-        _cmd_list = ["# DD = Draft  # in the future",
-                     "DD = draftmake.make_circulararray",
-                     "obj = " + _cmd,
-                     "obj.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(obj)",
+        _cmd_list = ["_obj_ = " + _cmd,
+                     "_obj_.Fuse = " + str(self.fuse),
+                     "Draft.autogroup(_obj_)",
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command

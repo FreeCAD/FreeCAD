@@ -248,7 +248,7 @@ class TaskPanelOrthoArray:
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "DD.make_ortho_array"
+        _cmd = "Draft.make_ortho_array"
         _cmd += "("
         _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "v_x=" + DraftVecUtils.toString(self.v_x) + ", "
@@ -261,13 +261,10 @@ class TaskPanelOrthoArray:
         _cmd += ")"
 
         Gui.addModule('Draft')
-        Gui.addModule('draftmake.make_orthoarray')
 
-        _cmd_list = ["# DD = Draft  # in the future",
-                     "DD = draftmake.make_orthoarray",
-                     "obj = " + _cmd,
-                     "obj.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(obj)",
+        _cmd_list = ["_obj_ = " + _cmd,
+                     "_obj_.Fuse = " + str(self.fuse),
+                     "Draft.autogroup(_obj_)",
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command

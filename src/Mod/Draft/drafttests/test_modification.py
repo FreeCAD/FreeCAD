@@ -370,7 +370,7 @@ class DraftModification(unittest.TestCase):
 
     def test_rectangular_array(self):
         """Create a rectangle, and a rectangular array."""
-        operation = "Draft Array"
+        operation = "Draft OrthoArray"
         _msg("  Test '{}'".format(operation))
         length = 4
         width = 2
@@ -381,15 +381,20 @@ class DraftModification(unittest.TestCase):
 
         dir_x = Vector(5, 0, 0)
         dir_y = Vector(0, 4, 0)
+        dir_z = Vector(0, 0, 6)
         number_x = 3
         number_y = 4
+        number_z = 6
         _msg("  Array")
         _msg("  direction_x={}".format(dir_x))
         _msg("  direction_y={}".format(dir_y))
-        _msg("  number_x={0}, number_y={1}".format(number_x, number_y))
-        obj = Draft.makeArray(rect,
-                              dir_x, dir_y,
-                              number_x, number_y)
+        _msg("  direction_z={}".format(dir_z))
+        _msg("  number_x={0}, number_y={1}, number_z={2}".format(number_x,
+                                                                 number_y,
+                                                                 number_z))
+        obj = Draft.make_ortho_array(rect,
+                                     dir_x, dir_y, dir_z,
+                                     number_x, number_y, number_z)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_polar_array(self):
@@ -407,10 +412,10 @@ class DraftModification(unittest.TestCase):
         angle = 180
         number = 5
         _msg("  Array")
+        _msg("  number={0}, polar_angle={1}".format(number, angle))
         _msg("  center={}".format(center))
-        _msg("  polar_angle={0}, number={1}".format(angle, number))
-        obj = Draft.makeArray(rect,
-                              center, angle, number)
+        obj = Draft.make_polar_array(rect,
+                                     number, angle, center)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_circular_array(self):
@@ -436,10 +441,10 @@ class DraftModification(unittest.TestCase):
         _msg("  number={0}, symmetry={1}".format(number, symmetry))
         _msg("  axis={}".format(axis))
         _msg("  center={}".format(center))
-        obj = Draft.makeArray(rect,
-                              rad_distance, tan_distance,
-                              axis, center,
-                              number, symmetry)
+        obj = Draft.make_circular_array(rect,
+                                        rad_distance, tan_distance,
+                                        number, symmetry,
+                                        axis, center)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_path_array(self):
@@ -467,7 +472,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Path Array")
         _msg("  number={}, translation={}".format(number, translation))
         _msg("  align={}".format(align))
-        obj = Draft.makePathArray(poly, wire, number, translation, align)
+        obj = Draft.make_path_array(poly, wire, number, translation, align)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_point_array(self):
@@ -497,7 +502,7 @@ class DraftModification(unittest.TestCase):
         poly = Draft.make_polygon(n_faces, radius)
 
         _msg("  Point Array")
-        obj = Draft.makePointArray(poly, compound)
+        obj = Draft.make_point_array(poly, compound)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_clone(self):
