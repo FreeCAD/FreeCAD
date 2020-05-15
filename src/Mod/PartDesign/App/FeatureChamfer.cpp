@@ -56,6 +56,8 @@ const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance a
 const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
 const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,0.1};
 
+static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
+
 Chamfer::Chamfer()
 {
     ADD_PROPERTY(ChamferType, ((long)0));
@@ -101,7 +103,12 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
     const double size2 = Size2.getValue();
-    const double angle = Base::toRadians(Angle.getValue());
+    const double angle = Angle.getValue();
+
+    auto res = validateParameters(chamferType, size, size2, angle);
+    if (res != App::DocumentObject::StdReturn) {
+        return res;
+    }
 
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape
@@ -119,26 +126,14 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             switch (chamferType) {
-                case 0:
-                    if (size <= 0) {
-                        return new App::DocumentObjectExecReturn("Size must be greater than zero");
-                    } else {
-                        mkChamfer.Add(size, size, edge, face);
-                    }
+                case 0: // Equal distance
+                    mkChamfer.Add(size, size, edge, face);
                     break;
-                case 1:
-                    if (size <= 0 || size2 <= 0) {
-                        return new App::DocumentObjectExecReturn("Sizes must be greater than zero");
-                    } else {
-                        mkChamfer.Add(size, size2, edge, face);
-                    }
+                case 1: // Two distances
+                    mkChamfer.Add(size, size2, edge, face);
                     break;
-                case 2:
-                    if (angle <= 0 || angle >= 180.0) {
-                        return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
-                    } else {
-                        mkChamfer.AddDA(size, angle, edge, face);
-                    }
+                case 2: // Distance and angle
+                    mkChamfer.AddDA(size, Base::toRadians(angle), edge, face);
                     break;
             }
         }
@@ -210,4 +205,30 @@ void Chamfer::Restore(Base::XMLReader &reader)
         reader.readEndElement("Property");
     }
     reader.readEndElement("Properties");
+}
+
+static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle)
+{
+    // Size is common to all chamfer types.
+    if (size <= 0) {
+        return new App::DocumentObjectExecReturn("Size must be greater than zero");
+    }
+
+    switch (chamferType) {
+        case 0: // Equal distance
+            // Nothing to do.
+            break;
+        case 1: // Two distances
+            if (size2 <= 0) {
+                return new App::DocumentObjectExecReturn("Size2 must be greater than zero");
+            }
+            break;
+        case 2: // Distance and angle
+            if (angle <= 0 || angle >= 180.0) {
+                return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
+            }
+            break;
+    }
+
+    return App::DocumentObject::StdReturn;
 }
