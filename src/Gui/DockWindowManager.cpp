@@ -2325,6 +2325,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
             refreshOverlay();
         return false;
     }
+#ifdef FC_HAS_DOCK_OVERLAY
     // case QEvent::MouseButtonDblClick:
     // case QEvent::NativeGesture:
     case QEvent::MouseButtonRelease:
@@ -2385,6 +2386,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         } else 
             d->_3dviews.clear();
         break;
+#endif
     default:
         break;
     }

@@ -55,9 +55,7 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/events/SoEvents.h>
 #include <Inventor/errors/SoDebugError.h>
-#if QT_VERSION >= 0x050000
 #include <Quarter/QuarterWidget.h>
-#endif
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
