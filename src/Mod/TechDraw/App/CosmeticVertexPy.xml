@@ -43,6 +43,23 @@
       </Documentation>
       <Parameter Name="Show" Type="Boolean"/>
     </Attribute>
-
+    <Attribute Name="Color" ReadOnly="false">
+      <Documentation>
+        <UserDocu>set/return the vertex's colour using a tuple (rgba).</UserDocu>
+      </Documentation>
+      <Parameter Name="Color" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Size" ReadOnly="false">
+      <Documentation>
+        <UserDocu>set/return the vertex's radius in mm.</UserDocu>
+      </Documentation>
+      <Parameter Name="Size" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Style" ReadOnly="false">
+      <Documentation>
+        <UserDocu>set/return the vertex's style as integer.</UserDocu>
+      </Documentation>
+      <Parameter Name="Style" Type="Object"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
