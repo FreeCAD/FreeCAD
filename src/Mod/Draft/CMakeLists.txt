@@ -60,6 +60,7 @@ SET(Draft_utilities
 
 SET(Draft_functions
     draftfunctions/__init__.py
+    draftfunctions/array.py
     draftfunctions/cut.py
     draftfunctions/downgrade.py
     draftfunctions/draftify.py
@@ -80,18 +81,22 @@ SET(Draft_functions
 SET(Draft_make_functions
     draftmake/__init__.py
     draftmake/make_arc_3points.py
+    draftmake/make_array.py
     draftmake/make_bezcurve.py
     draftmake/make_block.py
     draftmake/make_bspline.py
     draftmake/make_circle.py
     draftmake/make_clone.py
     draftmake/make_copy.py
+    draftmake/make_drawingview.py
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
     draftmake/make_line.py
+    draftmake/make_patharray.py
     draftmake/make_polygon.py
     draftmake/make_point.py
+    draftmake/make_pointarray.py
     draftmake/make_rectangle.py
     draftmake/make_shapestring.py
     draftmake/make_shape2dview.py
@@ -103,6 +108,7 @@ SET(Draft_make_functions
 
 SET(Draft_objects
     draftobjects/__init__.py
+    draftobjects/array.py
     draftobjects/base.py
     draftobjects/bezcurve.py
     draftobjects/block.py
@@ -110,15 +116,19 @@ SET(Draft_objects
     draftobjects/circulararray.py
     draftobjects/circle.py
     draftobjects/clone.py
+    draftobjects/drawingview.py
     draftobjects/ellipse.py
     draftobjects/facebinder.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/draft_annotation.py
     draftobjects/fillet.py
+    draftobjects/draftlink.py
     draftobjects/label.py
     draftobjects/dimension.py
+    draftobjects/patharray.py
     draftobjects/point.py
+    draftobjects/pointarray.py
     draftobjects/polygon.py
     draftobjects/rectangle.py
     draftobjects/shapestring.py
@@ -131,6 +141,7 @@ SET(Draft_objects
 
 SET(Draft_view_providers
     draftviewproviders/__init__.py
+    draftviewproviders/view_array.py
     draftviewproviders/view_base.py
     draftviewproviders/view_bezcurve.py
     draftviewproviders/view_bspline.py
@@ -141,6 +152,7 @@ SET(Draft_view_providers
     draftviewproviders/view_polararray.py
     draftviewproviders/view_draft_annotation.py
     draftviewproviders/view_fillet.py
+    draftviewproviders/view_draftlink.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
     draftviewproviders/view_point.py

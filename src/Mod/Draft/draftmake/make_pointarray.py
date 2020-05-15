@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2020 FreeCAD Developers                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,36 +20,47 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft Point.
+"""This module provides the code for Draft make_point_array function.
 """
-## @package view_point
+## @package make_pointarray
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Point.
+# \brief This module provides the code for Draft make_point_array function.
 
-from draftviewproviders.view_base import ViewProviderDraft
+import FreeCAD as App
 
+import draftutils.gui_utils as gui_utils
 
-class ViewProviderPoint(ViewProviderDraft):
-    """A viewprovider for the Draft Point object"""
-    def __init__(self, obj):
-        super(ViewProviderPoint, self).__init__(obj)
-
-    def onChanged(self, vobj, prop):
-        mode = 2
-        vobj.setEditorMode('LineColor', mode)
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Deviation', mode)
-        vobj.setEditorMode('DiffuseColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('Lighting', mode)
-        vobj.setEditorMode('LineMaterial', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('ShapeMaterial', mode)
-        vobj.setEditorMode('Transparency', mode)
-
-    def getIcon(self):
-        return ":/icons/Draft_Dot.svg"
+from draftobjects.pointarray import PointArray
+if App.GuiUp:
+    from draftviewproviders.view_array import ViewProviderDraftArray
 
 
-_ViewProviderPoint = ViewProviderPoint
+def make_point_array(base, ptlst):
+    """make_point_array(base,pointlist)
+
+    Make a Draft PointArray object.
+
+    Parameters
+    ----------
+    base :
+        TODO: describe
+
+    plist :
+        TODO: describe
+    
+    """
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", "PointArray")
+    PointArray(obj, base, ptlst)
+    obj.Base = base
+    obj.PointList = ptlst
+    if App.GuiUp:
+        ViewProviderDraftArray(obj.ViewObject)
+        base.ViewObject.hide()
+        gui_utils.formatObject(obj,obj.Base)
+        if len(obj.Base.ViewObject.DiffuseColor) > 1:
+            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
+        gui_utils.select(obj)
+    return obj
+
+
+makePointArray = make_point_array

@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2020 FreeCAD Developers                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,36 +20,52 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft Point.
+"""This module provides the view provider code for the Draft Link object.
 """
-## @package view_point
+## @package view_draftlink
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Point.
-
-from draftviewproviders.view_base import ViewProviderDraft
+# \brief This module provides the view provider code for the Draft Link object.
 
 
-class ViewProviderPoint(ViewProviderDraft):
-    """A viewprovider for the Draft Point object"""
-    def __init__(self, obj):
-        super(ViewProviderPoint, self).__init__(obj)
+class ViewProviderDraftLink:
+    """ A view provider for link type object.
+    """
 
-    def onChanged(self, vobj, prop):
-        mode = 2
-        vobj.setEditorMode('LineColor', mode)
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Deviation', mode)
-        vobj.setEditorMode('DiffuseColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('Lighting', mode)
-        vobj.setEditorMode('LineMaterial', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('ShapeMaterial', mode)
-        vobj.setEditorMode('Transparency', mode)
+    def __init__(self,vobj):
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
 
     def getIcon(self):
-        return ":/icons/Draft_Dot.svg"
+        tp = self.Object.Proxy.Type
+        if tp == 'Array':
+            if self.Object.ArrayType == 'ortho':
+                return ":/icons/Draft_LinkArray.svg"
+            elif self.Object.ArrayType == 'polar':
+                return ":/icons/Draft_PolarLinkArray.svg"
+            elif self.Object.ArrayType == 'circular':
+                return ":/icons/Draft_CircularLinkArray.svg"
+        elif tp == 'PathArray':
+            return ":/icons/Draft_PathLinkArray.svg"
 
+    def claimChildren(self):
+        obj = self.Object
+        if hasattr(obj,'ExpandArray'):
+            expand = obj.ExpandArray
+        else:
+            expand = obj.ShowElement
+        if not expand:
+            return [obj.Base]
+        else:
+            return obj.ElementList
+            
 
-_ViewProviderPoint = ViewProviderPoint
+_ViewProviderDraftLink = ViewProviderDraftLink

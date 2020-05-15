@@ -271,4 +271,3 @@ def downgrade(objects, delete=False, force=None):
             App.ActiveDocument.removeObject(n)
     gui_utils.select(addList)
     return [addList,deleteList]
-

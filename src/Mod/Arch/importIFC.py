@@ -381,6 +381,9 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         if pid in skip:  # user given id skip list
             if preferences['DEBUG']: print(" skipped.")
             continue
+        if ptype in skip:  # user given type skip list
+            if preferences['DEBUG']: print(" skipped.")
+            continue
         if ptype in preferences['SKIP']:  # preferences-set type skip list
             if preferences['DEBUG']: print(" skipped.")
             continue
