@@ -373,11 +373,12 @@ def _create_objects(doc=None,
     if App.GuiUp:
         rect_h.ViewObject.Visibility = False
 
-    Draft.makeArray(rect_h,
-                    Vector(600, 0, 0),
-                    Vector(0, 600, 0),
-                    Vector(0, 0, 0),
-                    3, 2, 1)
+    Draft.make_ortho_array(rect_h,
+                           Vector(600, 0, 0),
+                           Vector(0, 600, 0),
+                           Vector(0, 0, 0),
+                           3, 2, 1,
+                           use_link=False)
     t_xpos = 1700
     t_ypos = 2200
     _set_text(["Array"], Vector(t_xpos, t_ypos, 0))
@@ -389,12 +390,12 @@ def _create_objects(doc=None,
 
     _msg(16 * "-")
     _msg("Orthogonal link array")
-    Draft.makeArray(rect_h_2,
-                    Vector(800, 0, 0),
-                    Vector(0, 500, 0),
-                    Vector(0, 0, 0),
-                    2, 4, 1,
-                    use_link=True)
+    Draft.make_ortho_array(rect_h_2,
+                           Vector(800, 0, 0),
+                           Vector(0, 500, 0),
+                           Vector(0, 0, 0),
+                           2, 4, 1,
+                           use_link=True)
     t_ypos += 2600
     _set_text(["Link array"], Vector(t_xpos, t_ypos, 0))
 
@@ -408,10 +409,12 @@ def _create_objects(doc=None,
     if App.GuiUp:
         wire_h.ViewObject.Visibility = False
 
-    Draft.makeArray(wire_h,
-                    Vector(5000, 3000, 0),
-                    200,
-                    8)
+    Draft.make_polar_array(wire_h,
+                           8,
+                           200,
+                           Vector(5000, 3000, 0),
+                           use_link=False)
+
     t_xpos = 4600
     t_ypos = 2200
     _set_text(["Polar array"], Vector(t_xpos, t_ypos, 0))
@@ -425,11 +428,11 @@ def _create_objects(doc=None,
     if App.GuiUp:
         wire_h_2.ViewObject.Visibility = False
 
-    Draft.makeArray(wire_h_2,
-                    Vector(5000, 6000, 0),
-                    200,
-                    8,
-                    use_link=True)
+    Draft.make_polar_array(wire_h_2,
+                           8,
+                           200,
+                           Vector(5000, 6000, 0),
+                           use_link=True)
     t_ypos += 3200
     _set_text(["Polar link array"], Vector(t_xpos, t_ypos, 0))
 
@@ -441,12 +444,13 @@ def _create_objects(doc=None,
     if App.GuiUp:
         poly_h.ViewObject.Visibility = False
 
-    Draft.makeArray(poly_h,
-                    500, 600,
-                    Vector(0, 0, 1),
-                    Vector(0, 0, 0),
-                    3,
-                    1)
+    Draft.make_circular_array(poly_h,
+                              500, 600,
+                              3,
+                              1,
+                              Vector(0, 0, 1),
+                              Vector(0, 0, 0),
+                              use_link=False)
     t_xpos = 7700
     t_ypos = 1700
     _set_text(["Circular array"], Vector(t_xpos, t_ypos, 0))
@@ -458,13 +462,13 @@ def _create_objects(doc=None,
     if App.GuiUp:
         poly_h_2.ViewObject.Visibility = False
 
-    Draft.makeArray(poly_h_2,
-                    550, 450,
-                    Vector(0, 0, 1),
-                    Vector(0, 0, 0),
-                    3,
-                    1,
-                    use_link=True)
+    Draft.make_circular_array(poly_h_2,
+                              550, 450,
+                              3,
+                              1,
+                              Vector(0, 0, 1),
+                              Vector(0, 0, 0),
+                              use_link=True)
     t_ypos += 3100
     _set_text(["Circular link array"], Vector(t_xpos, t_ypos, 0))
 
@@ -481,7 +485,8 @@ def _create_objects(doc=None,
                                        Vector(11500, 3200, 0),
                                        Vector(12000, 4000, 0)])
 
-    Draft.makePathArray(poly_h, bspline_path, 5)
+    Draft.make_path_array(poly_h, bspline_path, 5,
+                          use_link=False)
     t_xpos = 10400
     t_ypos = 2200
     _set_text(["Path array"], Vector(t_xpos, t_ypos, 0))
@@ -498,8 +503,8 @@ def _create_objects(doc=None,
                                          Vector(11500, 6000, 0),
                                          Vector(12000, 5200, 0)])
 
-    Draft.makePathArray(poly_h_2, bspline_path_2, 6,
-                        use_link=True)
+    Draft.make_path_array(poly_h_2, bspline_path_2, 6,
+                          use_link=True)
     t_ypos += 2000
     _set_text(["Path link array"], Vector(t_xpos, t_ypos, 0))
 
@@ -519,7 +524,7 @@ def _create_objects(doc=None,
     if App.GuiUp:
         compound.ViewObject.PointSize = 5
 
-    Draft.makePointArray(poly_h, compound)
+    Draft.make_point_array(poly_h, compound)
     t_xpos = 13000
     t_ypos = 2200
     _set_text(["Point array"], Vector(t_xpos, t_ypos, 0))
@@ -532,7 +537,7 @@ def _create_objects(doc=None,
                               Vector(15500, 2500, 0),
                               Vector(15200, 2300, 0)])
 
-    Draft.clone(wire_h, Vector(0, 1000, 0))
+    Draft.make_clone(wire_h, Vector(0, 1000, 0))
     t_xpos = 15000
     t_ypos = 2100
     _set_text(["Clone"], Vector(t_xpos, t_ypos, 0))
