@@ -1264,7 +1264,7 @@ void DrawViewPart::clearCosmeticEdges(void)
 //add the cosmetic edges to geometry edge list
 void DrawViewPart::addCosmeticEdgesToGeom(void)
 {
-    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
+//    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce: cEdges) {
         TechDraw::BaseGeom* scaledGeom = ce->scaledGeometry(getScale());
@@ -1295,7 +1295,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
 //update Edge geometry with current CE's 
 void DrawViewPart::refreshCEGeoms(void)
 {
-    Base::Console().Message("DVP::refreshCEGeoms()\n");
+//    Base::Console().Message("DVP::refreshCEGeoms()\n");
     std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
     std::vector<TechDraw::BaseGeom *> oldGEdges;
     for (auto& ge :gEdges) {
