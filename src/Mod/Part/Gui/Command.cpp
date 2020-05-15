@@ -1239,18 +1239,25 @@ void CmdPartReverseShape::activated(int iMsg)
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
+            std::string name = (*it)->getNameInDocument();
+            name += "_rev";
+            name = getUniqueObjectName(name.c_str());
+
             QString str = QString::fromLatin1(
-                "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1_rev\")\n"
-                "__o__.Source=App.ActiveDocument.%1\n"
-                "__o__.Label=\"%2 (Rev)\"\n"
+                "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
+                "__o__.Source=App.ActiveDocument.%2\n"
+                "__o__.Label=\"%3 (Rev)\"\n"
                 "del __o__"
                 )
-                .arg(QLatin1String((*it)->getNameInDocument()))
-                .arg(QLatin1String((*it)->Label.getValue()));
+                .arg(QString::fromLatin1(name.c_str()),
+                     QString::fromLatin1((*it)->getNameInDocument()),
+                     QString::fromLatin1((*it)->Label.getValue()));
 
             try {
-                if (!str.isEmpty())
-                    runCommand(Doc, str.toLatin1());
+                runCommand(Doc, str.toLatin1());
+                copyVisual(name.c_str(), "ShapeColor", (*it)->getNameInDocument());
+                copyVisual(name.c_str(), "LineColor" , (*it)->getNameInDocument());
+                copyVisual(name.c_str(), "PointColor", (*it)->getNameInDocument());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",
