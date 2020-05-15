@@ -102,8 +102,7 @@ typedef MeshPointArray::_TConstIterator VertexIterator;
  * '==' operator of MeshPoint) we use the same operator when comparing the
  * points in the function object.
  */
-struct Vertex_EqualTo  : public std::binary_function<const VertexIterator&,
-                                                     const VertexIterator&, bool>
+struct Vertex_EqualTo
 {
     bool operator()(const VertexIterator& x,
                     const VertexIterator& y) const
@@ -116,8 +115,7 @@ struct Vertex_EqualTo  : public std::binary_function<const VertexIterator&,
     }
 };
 
-struct Vertex_Less  : public std::binary_function<const VertexIterator&,
-                                                  const VertexIterator&, bool>
+struct Vertex_Less
 {
     bool operator()(const VertexIterator& x,
                     const VertexIterator& y) const
@@ -277,8 +275,7 @@ typedef MeshFacetArray::_TConstIterator FaceIterator;
 /*
  * The facet with the lowset index is regarded as 'less'.
  */
-struct MeshFacet_Less  : public std::binary_function<const FaceIterator&, 
-                                                     const FaceIterator&, bool>
+struct MeshFacet_Less
 {
     bool operator()(const FaceIterator& x, 
                     const FaceIterator& y) const
@@ -319,8 +316,7 @@ struct MeshFacet_Less  : public std::binary_function<const FaceIterator&,
  * Two facets are equal if all its three point indices refer to the same
  * location in the point array of the mesh kernel they belong to.
  */
-struct MeshFacet_EqualTo  : public std::binary_function<const FaceIterator&, 
-                                                        const FaceIterator&, bool>
+struct MeshFacet_EqualTo
 {
     bool operator()(const FaceIterator& x,
                     const FaceIterator& y) const

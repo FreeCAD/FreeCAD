@@ -32,6 +32,8 @@ import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftmake.make_copy import make_copy
+from draftmake.make_line import make_line
+from draftfunctions.join import join_wires
 
 from draftobjects.dimension import LinearDimension
 from draftobjects.text import Text
@@ -63,7 +65,7 @@ def move(objectslist, vector, copy=False):
     The objects (or their copies) are returned.
     """
     utils.type_check([(vector, App.Vector), (copy,bool)], "move")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
+    if not isinstance(objectslist, list): objectslist = [objectslist]
     objectslist.extend(utils.get_movable_children(objectslist))
     newobjlist = []
     newgroups = {}
@@ -160,3 +162,62 @@ def move(objectslist, vector, copy=False):
         gui_utils.select(newobjlist)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
+
+
+#   Following functions are needed for SubObjects modifiers
+#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+
+
+def move_vertex(object, vertex_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    points = object.Points
+    points[vertex_index] = points[vertex_index].add(vector)
+    object.Points = points
+
+
+moveVertex = move_vertex
+
+
+def move_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    moveVertex(object, edge_index, vector)
+    if utils.isClosedEdge(edge_index, object):
+        moveVertex(object, 0, vector)
+    else:
+        moveVertex(object, edge_index+1, vector)
+
+
+moveEdge = move_edge
+
+
+def copy_moved_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    copied_edges = []
+    for argument in arguments:
+        copied_edges.append(copy_moved_edge(argument[0], argument[1], argument[2]))
+    join_wires(copied_edges)
+
+
+copyMovedEdges = copy_moved_edges
+
+
+def copy_moved_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
+    if utils.isClosedEdge(edge_index, object):
+        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
+    else:
+        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+    return make_line(vertex1, vertex2)

@@ -42,6 +42,16 @@ std::string DrawViewDimensionPy::representation(void) const
 {
     return std::string("<DrawViewDimension object>");
 }
+
+PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
+{
+    (void) args;
+    DrawViewDimension* dvd = getDrawViewDimensionPtr();
+    double val = dvd->getDimValue();
+    PyObject* pyVal = PyFloat_FromDouble(val);
+    return pyVal;
+}
+
 PyObject* DrawViewDimensionPy::getText(PyObject* args)
 {
     (void) args;

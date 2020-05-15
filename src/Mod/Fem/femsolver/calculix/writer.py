@@ -29,7 +29,8 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import io
+# import io
+import codecs
 import os
 import six
 import sys
@@ -154,7 +155,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         self.file_name,
                         self.fluid_inout_nodes_file
                     )
-                    inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
+                    # inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
+                    inpfileMain = codecs.open(self.file_name, "a", encoding="utf-8")
 
         # constraints independent from steps
         self.write_constraints_planerotation(inpfileMain)
@@ -204,7 +206,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             if self.fluidsection_objects:
                 meshtools.write_D_network_element_to_inputfile(split_mesh_file_path)
 
-            inpfile = io.open(self.file_name, "w", encoding="utf-8")
+            # inpfile = io.open(self.file_name, "w", encoding="utf-8")
+            inpfile = codecs.open(self.file_name, "w", encoding="utf-8")
             inpfile.write("***********************************************************\n")
             inpfile.write("** {}\n".format(write_name))
             inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
@@ -222,7 +225,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 meshtools.write_D_network_element_to_inputfile(self.file_name)
 
             # reopen file with "append" to add all the rest
-            inpfile = io.open(self.file_name, "a", encoding="utf-8")
+            # inpfile = io.open(self.file_name, "a", encoding="utf-8")
+            inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
             inpfile.write("\n\n")
 
         return inpfile
@@ -1803,6 +1807,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     material = "MATERIAL=" + ccx_elset["mat_obj_name"]
                     section_def = "*SOLID SECTION, " + elsetdef + material + "\n"
                     f.write(section_def)
+
 
 # ************************************************************************************************
 # Helpers

@@ -114,5 +114,3 @@ class ViewProviderDraftAnnotation(object):
         if hasattr(self.Object,"Group"):
             objs.extend(self.Object.Group)
         return objs
-
-

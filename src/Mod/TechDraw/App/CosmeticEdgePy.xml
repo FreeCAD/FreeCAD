@@ -57,7 +57,7 @@
 <!--    </Attribute> -->
     <Attribute Name="Format">
       <Documentation>
-        <UserDocu>The appearance attributes (style, color, weight, visible) for this CosmeticEdge.</UserDocu>
+        <UserDocu>The appearance attributes (style, weight, color, visible) for this CosmeticEdge.</UserDocu>
       </Documentation>
       <Parameter Name="Format" Type="Object"/>
     </Attribute>

@@ -20,13 +20,34 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+"""FEM module App init script
 
-# FreeCAD init script of the Fem module
+Gathering all the information to start FreeCAD.
+This is the first one of three init scripts.
+The third one runs when the gui is up.
 
+The script is executed using exec().
+This happens inside srd/Gui/FreeCADGuiInit.py
+All imports made there are available here too.
+Thus no need to import them here.
+But the import code line is used anyway to get flake8 quired.
+Since they are cached they will not be imported twice.
+"""
+
+__title__ = "FEM module App init script"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+# imports to get flake8 quired
 import FreeCAD
 
 
+# add FEM unit tests
+FreeCAD.__unit_test__ += ["TestFem"]
+
+
+# add import and export file types
 FreeCAD.addExportType("FEM mesh Python (*.meshpy)", "feminout.importPyMesh")
 
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
@@ -55,5 +76,3 @@ FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt)", "feminout.import
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
     FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
-
-FreeCAD.__unit_test__ += ["TestFem"]

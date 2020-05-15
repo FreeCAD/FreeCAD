@@ -275,7 +275,15 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcType = "Furniture"
+        from ArchIFC import IfcTypes
+        if "Furniture" in IfcTypes:
+            # IfcFurniture is new in IFC4
+            obj.IfcType = "Furniture"
+        elif "Furnishing Element" in IfcTypes:
+            # IFC2x3 does know a IfcFurnishingElement
+            obj.IfcType = "Furnishing Element"
+        else:
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 

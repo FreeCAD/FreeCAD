@@ -57,15 +57,49 @@ click again to end selection</string>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="Gui::QuantitySpinBox" name="chamferDistance" native="true"/>
+      <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="chamferDistance" native="true" />
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Size:</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label3">
+       <property name="text">
+        <string>Angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="chamferAngle" native="true">
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>180.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value" stdset="0">
+        <double>45.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

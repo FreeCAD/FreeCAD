@@ -40,7 +40,7 @@ class DraftAirfoilDAT(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        aux._draw_header()
+        aux.draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -62,8 +62,8 @@ class DraftAirfoilDAT(unittest.TestCase):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_AirfoilDAT = aux._fake_function
-        obj = Draft.import_AirfoilDAT(in_file)
+        Draft.import_airfoildat = aux.fake_function
+        obj = Draft.import_airfoildat(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_airfoildat(self):
@@ -76,8 +76,8 @@ class DraftAirfoilDAT(unittest.TestCase):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_importAirfoilDAT = aux._fake_function
-        obj = Draft.export_importAirfoilDAT(out_file)
+        Draft.export_airfoildat = aux.fake_function
+        obj = Draft.export_airfoildat(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def tearDown(self):

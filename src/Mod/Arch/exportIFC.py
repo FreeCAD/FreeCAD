@@ -1922,6 +1922,31 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 shapes.append(shape)
                                 solidType = "SweptSolid"
                                 shapetype = "extrusion"
+        if (not shapes) and obj.isDerivedFrom("Part::Extrusion"):
+            import ArchComponent
+            pstr = str([v.Point for v in obj.Base.Shape.Vertexes])
+            profile,pl = ArchComponent.Component.rebase(obj,obj.Base.Shape)
+            profile.scale(preferences['SCALE_FACTOR'])
+            pl.Base = pl.Base.multiply(preferences['SCALE_FACTOR'])
+            profile = getProfile(ifcfile,profile)
+            if profile:
+                profiledefs[pstr] = profile
+            ev = obj.Dir
+            l = obj.LengthFwd.Value
+            if l:
+                ev.multiply(l)
+                ev.multiply(preferences['SCALE_FACTOR'])
+            ev = pl.Rotation.inverted().multVec(ev)
+            xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+            zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+            ovc =       ifcbin.createIfcCartesianPoint(tuple(pl.Base))
+            lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(ev).normalize()))
+            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,ev.Length)
+            shapes.append(shape)
+            solidType = "SweptSolid"
+            shapetype = "extrusion"
+                    
 
     if (not shapes) and (not skipshape):
 

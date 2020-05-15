@@ -598,7 +598,7 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
 namespace MeshCore {
 namespace Triangulation {
-struct Vertex2d_Less  : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+struct Vertex2d_Less
 {
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
@@ -608,7 +608,7 @@ struct Vertex2d_Less  : public std::binary_function<const Base::Vector3f&, const
         } else return p.x < q.x;
     }
 };
-struct Vertex2d_EqualTo  : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+struct Vertex2d_EqualTo
 {
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {

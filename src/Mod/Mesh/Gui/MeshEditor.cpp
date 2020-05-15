@@ -415,8 +415,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
 
 namespace MeshGui {
     // for sorting of elements
-    struct NofFacetsCompare : public std::binary_function<const std::vector<unsigned long>&, 
-                                                          const std::vector<unsigned long>&, bool>
+    struct NofFacetsCompare
     {
         bool operator () (const std::vector<unsigned long> &rclC1, 
                           const std::vector<unsigned long> &rclC2)

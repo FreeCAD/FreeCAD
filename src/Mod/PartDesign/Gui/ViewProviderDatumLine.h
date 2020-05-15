@@ -43,7 +43,8 @@ public:
     virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
 
-    virtual void setExtents (Base::BoundBox3d bbox);
+    void setExtents (Base::BoundBox3d bbox);
+    void setExtents(double l);
 
 private:
     SoCoordinate3 *pCoords;

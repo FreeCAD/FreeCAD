@@ -63,14 +63,24 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    double r = pcChamfer->Size.getValue();
 
+    double r = pcChamfer->Size.getValue();
     ui->chamferDistance->setUnit(Base::Unit::Length);
     ui->chamferDistance->setValue(r);
     ui->chamferDistance->setMinimum(0);
     ui->chamferDistance->selectNumber();
     ui->chamferDistance->bind(pcChamfer->Size);
     QMetaObject::invokeMethod(ui->chamferDistance, "setFocus", Qt::QueuedConnection);
+
+    double a = pcChamfer->Angle.getValue();
+    ui->chamferAngle->setUnit(Base::Unit::Angle);
+    ui->chamferAngle->setValue(a);
+    ui->chamferAngle->setMinimum(0.0);
+    ui->chamferAngle->setMaximum(180.0);
+    ui->chamferAngle->selectAll();
+    ui->chamferAngle->bind(pcChamfer->Angle);
+    QMetaObject::invokeMethod(ui->chamferAngle, "setFocus", Qt::QueuedConnection);
+
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
     for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
     {
@@ -81,6 +91,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
 
     connect(ui->chamferDistance, SIGNAL(valueChanged(double)),
         this, SLOT(onLengthChanged(double)));
+    connect(ui->chamferAngle, SIGNAL(valueChanged(double)),
+        this, SLOT(onAngleChanged(double)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
@@ -179,7 +191,7 @@ void TaskChamferParameters::onRefDeleted(void)
         // erase the reference
         refs.erase(refs.begin() + rowNumber);
         // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);  
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
     }
 
     // update the object
@@ -207,6 +219,19 @@ void TaskChamferParameters::onLengthChanged(double len)
 double TaskChamferParameters::getLength(void) const
 {
     return ui->chamferDistance->value().getValue();
+}
+
+void TaskChamferParameters::onAngleChanged(double angle)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
+    pcChamfer->Angle.setValue(angle);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
+double TaskChamferParameters::getAngle(void) const
+{
+    return ui->chamferAngle->value().getValue();
 }
 
 TaskChamferParameters::~TaskChamferParameters()

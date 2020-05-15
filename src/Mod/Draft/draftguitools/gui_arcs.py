@@ -32,15 +32,16 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-from FreeCAD import Units as U
+import Draft
 import Draft_rc
 import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_base as gui_base
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
-import draftobjects.arc_3points as arc3
 import draftutils.utils as utils
+
+from FreeCAD import Units as U
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate, _tr
 
@@ -553,13 +554,13 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
             if utils.get_param("UsePartPrimitives", False):
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=True)
+                Draft.make_arc_3points([self.points[0],
+                                        self.points[1],
+                                        self.points[2]], primitive=True)
             else:
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=False)
+                Draft.make_arc_3points([self.points[0],
+                                        self.points[1],
+                                        self.points[2]], primitive=False)
             self.tracker.off()
             self.doc.recompute()
 

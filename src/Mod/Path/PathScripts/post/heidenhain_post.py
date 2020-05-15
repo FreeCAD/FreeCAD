@@ -926,7 +926,7 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
         for j in drill_Defs:
             STORED_CANNED_PARAMS[j] = drill_Defs[j]
         
-        # get the DEF template and replace the stings
+        # get the DEF template and replace the strings
         drill_CycleDef = MACHINE_CYCLE_DEF[1].format(
             DIST = str("{:.3f}".format(drill_Defs['DIST'])),
             DEPTH = str("{:.3f}".format(drill_Defs['DEPTH'])),

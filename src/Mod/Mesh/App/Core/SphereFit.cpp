@@ -72,7 +72,7 @@ void SphereFit::SetConvergenceCriteria(double posConvLimit, double vConvLimit, i
 
 double SphereFit::GetRadius() const
 {
-    if (_bIsFitted)
+	if (_bIsFitted)
 		return _dRadius;
 	else
 		return 0.0;
@@ -88,7 +88,7 @@ Base::Vector3d SphereFit::GetCenter() const
 
 int SphereFit::GetNumIterations() const
 {
-    if (_bIsFitted)
+	if (_bIsFitted)
 		return _numIter;
 	else
 		return 0;
@@ -96,12 +96,12 @@ int SphereFit::GetNumIterations() const
 
 float SphereFit::GetDistanceToSphere(const Base::Vector3f &rcPoint) const
 {
-    float fResult = FLOAT_MAX;
-    if (_bIsFitted)
+	float fResult = FLOAT_MAX;
+	if (_bIsFitted)
 	{
 		fResult = Base::Vector3d((double)rcPoint.x - _vCenter.x, (double)rcPoint.y - _vCenter.y, (double)rcPoint.z - _vCenter.z).Length() - _dRadius;
 	}
-    return fResult;
+	return fResult;
 }
 
 float SphereFit::GetStdDeviation() const
@@ -130,8 +130,8 @@ float SphereFit::GetStdDeviation() const
 
 void SphereFit::ProjectToSphere()
 {
-    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
-        Base::Vector3f& cPnt = *it;
+	for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
+		Base::Vector3f& cPnt = *it;
 
 		// Compute unit vector from sphere centre to point.
 		// Because this vector is orthogonal to the sphere's surface at the 
@@ -141,7 +141,7 @@ void SphereFit::ProjectToSphere()
 		double length = diff.Length();
 		if (length == 0.0)
 		{
-            // Point is exactly at the sphere center, so it can be projected in any direction onto the sphere!
+			// Point is exactly at the sphere center, so it can be projected in any direction onto the sphere!
 			// So here just project in +Z direction
 			cPnt.z += (float)_dRadius;
 		}
@@ -153,7 +153,7 @@ void SphereFit::ProjectToSphere()
 			cPnt.y = (float)proj.y;
 			cPnt.z = (float)proj.z;
 		}
-    }
+	}
 }
 
 // Compute approximations for the parameters using all points:
@@ -188,13 +188,13 @@ void SphereFit::ComputeApproximations()
 
 float SphereFit::Fit()
 {
-    _bIsFitted = false;
+	_bIsFitted = false;
 	_fLastResult = FLOAT_MAX;
 	_numIter = 0;
 
 	// A minimum of 4 surface points is needed to define a sphere
-    if (CountPoints() < 4)
-        return FLOAT_MAX;
+	if (CountPoints() < 4)
+		return FLOAT_MAX;
 
 	// If approximations have not been set/computed then compute some now
 	if (_dRadius == 0.0)
@@ -245,8 +245,8 @@ float SphereFit::Fit()
 	if (cont)
 		return FLOAT_MAX;
 
-    _bIsFitted = true;
-    _fLastResult = sigma0;
+	_bIsFitted = true;
+	_fLastResult = sigma0;
 
 	return _fLastResult;
 }
@@ -264,9 +264,9 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 	// contribution into the the normal equation matrices
 	double a[4], b[3];
 	double f0, qw;
-    std::vector< Base::Vector3d >::const_iterator vIt = residuals.begin();
-    std::list< Base::Vector3f >::const_iterator cIt;
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt)
+	std::vector< Base::Vector3d >::const_iterator vIt = residuals.begin();
+	std::list< Base::Vector3f >::const_iterator cIt;
+	for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt)
 	{
 		// if (using this point) { // currently all given points are used (could modify this if eliminating outliers, etc....
 		setupObservation(*cIt, *vIt, a, f0, qw, b);
@@ -292,7 +292,7 @@ void SphereFit::setupObservation(const Base::Vector3f &point, const Base::Vector
 	double xEstimate = (double)point.x + residual.x;
 	double yEstimate = (double)point.y + residual.y;
 	double zEstimate = (double)point.z + residual.z;
-	
+
 	// partials of the observations
 	double dx = xEstimate - _vCenter.x;
 	double dy = yEstimate - _vCenter.y;
@@ -309,7 +309,7 @@ void SphereFit::setupObservation(const Base::Vector3f &point, const Base::Vector
 
 	// free term
 	f0 = _dRadius * _dRadius - dx * dx - dy * dy - dz * dz + b[0] * residual.x + b[1] * residual.y + b[2] * residual.z;
-	
+
 	// quasi weight (using equal weights for sphere point coordinate observations)
 	//w[0] = 1.0;
 	//w[1] = 1.0;
@@ -347,8 +347,10 @@ void SphereFit::addObservationU(double a[4], double li, double pi, Matrix4x4 &at
 void SphereFit::setLowerPart(Matrix4x4 &atpa) const
 {
 	for (int i = 0; i < 4; ++i)
+	{
 		for (int j = i+1; j < 4; ++j)	// skip the diagonal elements
 			atpa(j, i) = atpa(i, j);
+	}
 }
 
 // Compute the residuals and sigma0 and check the residual convergence
@@ -363,9 +365,9 @@ bool SphereFit::computeResiduals(const Eigen::VectorXd &x, std::vector< Base::Ve
 	//double maxdVy = 0.0;
 	//double maxdVz = 0.0;
 	//double rmsVv = 0.0;
-    std::vector< Base::Vector3d >::iterator vIt = residuals.begin();
-    std::list< Base::Vector3f >::const_iterator cIt;
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt)
+	std::vector< Base::Vector3d >::iterator vIt = residuals.begin();
+	std::list< Base::Vector3f >::const_iterator cIt;
+	for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt)
 	{
 		// if (using this point) { // currently all given points are used (could modify this if eliminating outliers, etc....
 		++nPtsUsed;
