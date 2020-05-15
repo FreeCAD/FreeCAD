@@ -89,6 +89,7 @@ void DlgSettings3DViewImp::saveSettings()
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
     ui->CheckBox_CornerCoordSystem->onSave();
+    ui->CheckBox_ShowAxisCross->onSave();
     ui->CheckBox_WbByTab->onSave();
     ui->CheckBox_ShowFPS->onSave();
     ui->CheckBox_useVBO->onSave();
@@ -103,6 +104,7 @@ void DlgSettings3DViewImp::saveSettings()
 void DlgSettings3DViewImp::loadSettings()
 {
     ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->CheckBox_ShowAxisCross->onRestore();
     ui->CheckBox_WbByTab->onRestore();
     ui->CheckBox_ShowFPS->onRestore();
     ui->CheckBox_useVBO->onRestore();

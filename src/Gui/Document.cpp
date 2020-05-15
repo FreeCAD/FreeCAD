@@ -1648,6 +1648,10 @@ MDIView *Document::createView(const Base::Type& typeId)
             const char *ppReturn = 0;
             view3D->onMsg(cameraSettings.c_str(),&ppReturn);
         }
+        ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        if (hViewGrp->GetBool("ShowAxisCross",false)){
+            view3D->getViewer()->setAxisCross(true);
+        }
         getMainWindow()->addWindow(view3D);
         return view3D;
     }
@@ -1665,6 +1669,8 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
         std::string overrideMode = firstView->getViewer()->getOverrideMode();
         view3D->getViewer()->setOverrideMode(overrideMode);
+
+        view3D->getViewer()->setAxisCross(firstView->getViewer()->hasAxisCross());
 
         // attach the viewproviders. we need to make sure that we only attach the toplevel ones
         // and not viewproviders which are claimed by other providers. To ensure this we first
