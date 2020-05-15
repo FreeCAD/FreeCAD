@@ -397,7 +397,6 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_cl->m_type = m_type;
     m_cl->m_flip2Line = ui->cbFlip->isChecked();
-    m_partFeat->replaceCenterLine(m_cl);
     m_partFeat->refreshCLGeoms();
     m_partFeat->requestPaint();
 
