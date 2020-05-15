@@ -124,6 +124,10 @@ QMenu::item:pressed {
     background-color: #74831d;
 }
 
+QMenu::item:disabled {
+    color: palette(dark)
+}
+
 QMenu::right-arrow {
     width: 10px;
     height: 10px;
@@ -1218,10 +1222,11 @@ QSpinBox:disabled,
 QDoubleSpinBox:disabled,
 QLineEdit:disabled,
 QTextEdit:disabled,
+QPlainTextEdit:disabled,
 QTimeEdit:disabled,
 QDateEdit:disabled,
 QDateTimeEdit:disabled {
-    color: #545454;
+    color: palette(dark);
     background-color: #2a2a2a; /* same as enabled color */
     border-color: #2a2a2a; /* same as enabled color */
 }

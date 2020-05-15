@@ -1,32 +1,44 @@
 * {
-  background-color: transparent;
   color: palette(bright-text);
-  border: 1px solid palette(dark);
-  border-radius:2px;
-  alternate-background-color: rgba(50,50,50,150);
+  alternate-background-color: rgba(50,50,50,120);
 }
 
-QComboBox {
-  background : #666666;
-  selection-background-color: palette(highlight);
+QComboBox,
+QComboBox:editable,
+QComboBox:!editable,
+QLineEdit,
+QTextEdit,
+QPlainTextEdit,
+QAbstractSpinBox,
+QDateEdit,
+QDateTimeEdit,
+Gui--PropertyEditor--PropertyEditor QLabel {
+  background : #6e6e6e;
 }
 
-QComboBox:editable { background : #666666;}
-
-QComboBox:!editable { background : #666666;}
-
-QLineEdit { background : #666666;}
-
-QAbstractSpinBox { background : #666666;}
+QComboBox:disabled,
+QAbstractSpinBox:disabled,
+QLineEdit:disabled,
+QTextEdit:disabled,
+QPlainTextEdit:disabled,
+QTimeEdit:disabled,
+QDateEdit:disabled,
+QDateTimeEdit:disabled {
+  color: palette(dark);
+}
 
 QTabWidget::pane {
   background-color: transparent;
   border: transparent;
 }
 
-Gui--OverlayTabWidget::pane { background-color: rgba(100,100,100,150) }
+Gui--OverlayTabWidget::pane {
+  background-color: rgba(100,100,100,150)
+}
 
-QTabBar {border : none;}
+QTabBar {
+  border : none;
+}
 
 QTabBar::tab {
   color: palette(bright-text);
@@ -34,9 +46,13 @@ QTabBar::tab {
   padding: 5px;
 }
 
-QTabBar::tab:selected {background-color: rgba(100,100,100,150);}
+QTabBar::tab:selected {
+  background-color: rgba(100,100,100,150);
+}
 
-QTabBar::tab:hover {background-color: rgba(150,150,150,150);}
+QTabBar::tab:hover {
+  background-color: rgba(150,150,150,150);
+}
 
 QHeaderView::section {
   color: rgb(200,200,200);
@@ -45,38 +61,10 @@ QHeaderView::section {
   padding: 2px;
 }
 
-QTreeWidget, QListWidget {background: rgb(100,100,100) }
-
-QToolTip {background-color: rgba(100,100,100,180);}
-
-Gui--CallTipsList::item { background-color: rgba(100,100,100,180);}
-
-Gui--CallTipsList::item::selected { background-color: palette(highlight);}
-
-QDialog { background-color: palette(dark); }
-
-QAbstractButton {
-  background: rgba(150,150,150,100);
-  padding: 2px 4px;
-}
-
-QAbstractButton::hover { background: rgba(150,150,150,200); }
-
-QAbstractButton::focus { background: rgba(150,150,150,255); } 
-
-QAbstractButton::pressed {
-  background: rgba(50,50,50,80);
-  border: 1px inset palette(dark);
-}
-
-QAbstractButton::checked {
-  background: rgba(50,50,50,80);
-  border: 1px inset palette(dark);
-}
-
-QAbstractButton::checked:hover {
-  background: rgba(150,150,150,200);
-  border: 1px inset palette(dark);
+QToolTip {
+  background-color: rgba(100,100,100,180);
+  border: 1px solid palette(dark);
+  border-radius:2px;
 }
 
 Gui--OverlayToolButton {
@@ -85,18 +73,66 @@ Gui--OverlayToolButton {
   border: none;
 }
 
-QMenu {
-  color: palette(bright-text);
-  background-color: rgba(100,100,100,180);
-  border: none;
+Gui--OverlayToolButton::hover {
+  background: rgba(150,150,150,200);
 }
 
-QMenu::item { background-color: transparent }
-
-QMenu::item:selected,
-QMenu::item:pressed {
-  color: palette(highlighted-text);
-  background-color: palette(highlight);
+Gui--OverlayToolButton::focus {
+  background: rgba(150,150,150,155);
 }
 
-QMenu::item:disabled { color: palette(dark) }
+Gui--OverlayToolButton::pressed {
+  background: rgba(50,50,50,80);
+  border: 1px inset palette(dark);
+}
+
+Gui--OverlayToolButton::checked {
+  background: rgba(50,50,50,80);
+  border: 1px inset palette(dark);
+}
+
+Gui--OverlayToolButton::checked:hover {
+  background: rgba(150,150,150,200);
+  border: 1px inset palette(dark);
+}
+
+QTreeView,
+QListView,
+QTableView {
+  background: rgb(100,100,100);
+  selection-background-color: rgba(94, 144, 250, 0.7);
+}
+
+QListView::item:selected,
+QTreeView::item:selected  {
+  background-color: rgba(94, 144, 250, 0.7);
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-groupTextColor: rgb(50, 50, 50);
+  qproperty-groupBackground: rgba(140, 140, 140, 0.7);
+}
+
+Gui--CallTipsList::item {
+  background-color: rgba(100, 100, 100, 200);
+}
+
+Gui--CallTipsList::item::selected {
+  background-color: rgb(94, 144, 250);
+}
+
+/*==================================================================================================
+Tasks panel (custom FreeCAD class)
+==================================================================================================*/
+/* Panel header */
+QSint--ActionGroup QFrame[class="header"] {
+  background-color: rgba(80, 80, 80, 0.1); /* Task Panel Header background color */
+}
+
+QSint--ActionGroup QToolButton[class="header"] {
+  color: #e0e0e0; /* Task Panel Header text color */
+}
+
+QSint--ActionGroup QFrame[class="content"] {
+  background-color: rgba(255,255,255,0.05); /* Task Panel background color */
+}
