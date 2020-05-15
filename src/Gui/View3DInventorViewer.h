@@ -418,6 +418,8 @@ public:
     bool getSceneBoundBox(SbBox3f &box) const;
     bool getSceneBoundBox(Base::BoundBox3d &box) const;
 
+    void callEventFilter(QEvent *);
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();

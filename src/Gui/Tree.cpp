@@ -1441,6 +1441,11 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     return false;
 }
 
+bool TreeWidget::isDragging()
+{
+    return _DraggingActive;
+}
+
 void TreeWidget::keyPressEvent(QKeyEvent *event)
 {
 #if 0

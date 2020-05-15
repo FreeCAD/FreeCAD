@@ -148,7 +148,8 @@ MouseP::mouseMoveEvent(QMouseEvent * event)
   PUBLIC(this)->setModifiers(this->location2, event);
 
   assert(this->windowsize[1] != -1);
-  SbVec2s pos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
+  auto p = PUBLIC(this)->quarter->mapFromGlobal(event->globalPos());
+  SbVec2s pos(p.x(), this->windowsize[1] - p.y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
   pos *= publ->quarter->devicePixelRatio();
@@ -162,7 +163,8 @@ const SoEvent *
 MouseP::mouseWheelEvent(QWheelEvent * event)
 {
   PUBLIC(this)->setModifiers(this->mousebutton, event);
-  SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
+  auto p = PUBLIC(this)->quarter->mapFromGlobal(event->globalPos());
+  SbVec2s pos(p.x(), this->windowsize[1] - p.y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
   pos *= publ->quarter->devicePixelRatio();
@@ -187,7 +189,8 @@ const SoEvent *
 MouseP::mouseButtonEvent(QMouseEvent * event)
 {
   PUBLIC(this)->setModifiers(this->mousebutton, event);
-  SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
+  auto p = PUBLIC(this)->quarter->mapFromGlobal(event->globalPos());
+  SbVec2s pos(p.x(), this->windowsize[1] - p.y() - 1);
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
   pos *= publ->quarter->devicePixelRatio();

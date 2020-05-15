@@ -4468,3 +4468,7 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent *e)
     inherited::dragLeaveEvent(e);
 }
 
+void View3DInventorViewer::callEventFilter(QEvent *e)
+{
+    getEventFilter()->eventFilter(this, e);
+}

@@ -2073,6 +2073,11 @@ void MainWindow::customEvent(QEvent* e)
     }
 }
 
+QMdiArea *MainWindow::getMdiArea() const
+{
+    return d->mdiArea;
+}
+
 // ----------------------------------------------------------
 
 StatusBarObserver::StatusBarObserver()

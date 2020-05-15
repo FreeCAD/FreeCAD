@@ -4084,6 +4084,20 @@ VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
     eType         = 0;
 }
 
+//===========================================================================
+// Std_DockOverlayClickThrough
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayMouseThrough, DockOverlayMouseThrough)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Mouse event pass through");
+    sToolTipText  = QT_TR_NOOP("Allow mouse event to pass through transparent overlay when holding 'ALT' key");
+    sWhatsThis    = "Std_DockOverlayMouseThrough";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
 class StdCmdDockOverlay : public GroupCommand
 {
 public:
@@ -4112,6 +4126,7 @@ public:
         addCommand(new StdCmdDockOverlayAutoView());
         addCommand(new StdCmdDockOverlayExtraState());
         addCommand(new StdCmdDockOverlayActivateOnHover());
+        addCommand(new StdCmdDockOverlayMouseThrough());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };

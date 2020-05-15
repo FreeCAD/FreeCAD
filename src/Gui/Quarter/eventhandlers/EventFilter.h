@@ -55,7 +55,7 @@ public:
 
   const QPoint & globalMousePosition(void) const;
 
-protected:
+public:
   bool eventFilter(QObject * obj, QEvent * event);
 
 private:

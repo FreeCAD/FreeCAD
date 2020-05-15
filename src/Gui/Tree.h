@@ -93,6 +93,7 @@ public:
     static void selectAllLinks(App::DocumentObject *obj); 
     static void expandSelectedItems(TreeItemMode mode);
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
+    static bool isDragging();
 
     static int iconSize();
 

@@ -170,7 +170,7 @@ class OverlayTabWidget: public QTabWidget
 public:
     OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
 
-    static void setOverlayMode(QWidget *widget, int enable);
+    void setOverlayMode(QWidget *widget, int enable);
     void setOverlayMode(bool enable);
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget);

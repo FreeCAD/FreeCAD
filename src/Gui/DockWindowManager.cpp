@@ -39,6 +39,7 @@
 # include <QBoxLayout>
 # include <QSpacerItem>
 # include <QSplitter>
+# include <QStackedWidget>
 #endif
 
 #include <array>
@@ -49,9 +50,11 @@
 #include "MainWindow.h"
 #include "ViewParams.h"
 #include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 #include "SplitView3DInventor.h"
 #include "Application.h"
 #include "Control.h"
+#include "Tree.h"
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
 
@@ -840,6 +843,12 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
 {
     if(!widget)
         return;
+
+    if(widget != tabBar()) {
+        if(ViewParams::getDockOverlayMouseThrough() && enable == -1)
+            widget->setMouseTracking(true);
+    }
+
     _setOverlayMode(widget, enable);
 
     if(qobject_cast<QComboBox*>(widget)) {
@@ -1371,6 +1380,8 @@ struct DockWindowManagerP
     QAction _actOverlay;
     std::array<QAction*, 3> _actions;
 
+    QList<QPointer<View3DInventorViewer> > _3dviews;
+
     bool updateStyle = false;
 
     DockWindowManagerP(DockWindowManager *host, QWidget *parent)
@@ -1543,7 +1554,7 @@ struct DockWindowManagerP
 
     void onTimer()
     {
-        QMdiArea *mdi = getMainWindow()->findChild<QMdiArea*>();
+        auto mdi = getMainWindow()->getMdiArea();
         if(!mdi)
             return;
 
@@ -1987,15 +1998,16 @@ void DockWindowManager::destruct()
 
 DockWindowManager::DockWindowManager()
 {
-    auto mdi = getMainWindow()->findChild<QMdiArea*>();
+    auto mdi = getMainWindow()->getMdiArea();
     assert(mdi);
-    mdi->installEventFilter(this);
     d = new DockWindowManagerP(this,mdi);
     connect(&d->_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     d->_timer.setSingleShot(true);
 
     connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
             this, SLOT(onFocusChanged(QWidget*,QWidget*)));
+
+    qApp->installEventFilter(this);
 }
 
 DockWindowManager::~DockWindowManager()
@@ -2308,10 +2320,71 @@ void DockWindowManager::onTimer()
 bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
 {
     switch(ev->type()) {
-    case QEvent::Resize:
-        if(qobject_cast<QMdiArea*>(o))
+    case QEvent::Resize: {
+        if(o == getMainWindow()->getMdiArea())
             refreshOverlay();
         return false;
+    }
+    // case QEvent::MouseButtonDblClick:
+    // case QEvent::NativeGesture:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseMove:
+    case QEvent::Wheel:
+    case QEvent::ContextMenu:
+        if(ViewParams::getDockOverlayMouseThrough()
+                && !TreeWidget::isDragging()
+                && (QApplication::queryKeyboardModifiers() & Qt::AltModifier))
+        {
+            if(d->_3dviews.isEmpty()) {
+                for(auto w : getMainWindow()->windows(QMdiArea::StackingOrder)) {
+                    if(!w->isVisible())
+                        continue;
+                    // It is possible to support mouse through for all MDIView.
+                    // But then we would have to copy all types of intercepted
+                    // event and manually map the local position inside. For
+                    // View3DInventorViewer, we use its backdoor function
+                    // callEventFilter() to pass event directly to
+                    // Quarter::EventFilter, and subsequently to
+                    // Quarter::Mouse, which we have modified to use the global
+                    // position of the event instead of local one.
+                    for(auto view : w->findChildren<View3DInventorViewer*>()) {
+                        if(view->isVisible())
+                            d->_3dviews.insert(0,view);
+                    }
+                }
+                if(d->_3dviews.isEmpty())
+                    return false;
+            }
+            auto widget = qobject_cast<QWidget*>(o);
+            if(!widget)
+                return false;
+            auto tabWidget = findTabWidget(widget);
+            if(!tabWidget || tabWidget->isOverlayed() || !tabWidget->isTransparent())
+                return false;
+            if(o != tabWidget) {
+                ev->ignore();
+                return true;
+            }
+            ev->accept();
+            auto pos = QCursor::pos();
+            for(auto &view : d->_3dviews) {
+                if(!view || !view->isVisible())
+                    continue;
+                auto p = view->mapFromGlobal(pos);
+                if(p.x()<0 || p.y()<0 || p.x()>view->width() || p.y()>view->height())
+                    continue;
+                // We could have used sendEvent() here, but not for Wheel
+                // event. It is (probably) filtered out by some unknown Qt
+                // event filter if the target widget is not under focus.
+                // Calling setFocus() here does not seem to have any effect. So
+                // we have to use some kind of backdoor here.
+                view->callEventFilter(ev);
+                break;
+            }
+        } else 
+            d->_3dviews.clear();
+        break;
     default:
         break;
     }
