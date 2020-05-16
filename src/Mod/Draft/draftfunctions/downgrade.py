@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,160 +20,181 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft offset function.
+"""Provides the code for Draft downgrade function.
+
+See also the `upgrade` function.
 """
-## @package offset
+## @package downgrade
 # \ingroup DRAFT
-# \brief This module provides the code for Draft offset function.
+# \brief Provides the code for Draft downgrade function.
 
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-
+import draftfunctions.cut as cut
+from draftutils.messages import _msg
 from draftutils.translate import _tr
-
-from draftutils.utils import shapify
-from draftfunctions.cut import cut
 
 
 def downgrade(objects, delete=False, force=None):
-    """downgrade(objects,delete=False,force=None)
-    
-    Downgrade the given object(s) (can be an object or a list of objects).
+    """Downgrade the given objects.
+
+    This is a counterpart to `upgrade`.
 
     Parameters
     ----------
-    objects :
+    objects: Part::Feature or list
+        A single object to downgrade or a list
+        containing various such objects.
 
-    delete : bool
-        If delete is True, old objects are deleted.
+    delete: bool, optional
+        It defaults to `False`.
+        If it is `True`, the old objects are deleted, and only the resulting
+        object is kept.
 
-    force : string
-        The force attribute can be used to force a certain way of downgrading.
-        It can be: explode, shapify, subtr, splitFaces, cut2, getWire,
-        splitWires, splitCompounds.
-    
-    Return
-    ----------
-        Returns a dictionary containing two lists, a list of new objects and a
-        list of objects to be deleted
+    force: str, optional
+        It defaults to `None`.
+        Its value can be used to force a certain method of downgrading.
+        It can be any of: `'explode'`, `'shapify'`, `'subtr'`, `'splitFaces'`,
+        `'cut2'`, `'getWire'`, `'splitWires'`, or `'splitCompounds'`.
+
+    Returns
+    -------
+    tuple
+        A tuple containing two lists, a list of new objects
+        and a list of objects to be deleted.
+
+    None
+        If there is a problem it will return `None`.
+
+    See Also
+    --------
+    ugrade
     """
+    _name = "downgrade"
+    utils.print_header(_name, "Downgrade objects")
 
-    import Part
-    import DraftGeomUtils
-
-    if not isinstance(objects,list):
+    if not isinstance(objects, list):
         objects = [objects]
 
-    global deleteList, addList
-    deleteList = []
-    addList = []
+    delete_list = []
+    add_list = []
+    doc = App.ActiveDocument
 
     # actions definitions
-
     def explode(obj):
-        """explodes a Draft block"""
+        """Explode a Draft block."""
         pl = obj.Placement
         newobj = []
         for o in obj.Components:
-            o.ViewObject.Visibility = True
             o.Placement = o.Placement.multiply(pl)
+            if App.GuiUp:
+                o.ViewObject.Visibility = True
         if newobj:
-            deleteList(obj)
+            delete_list(obj)
             return newobj
         return None
 
     def cut2(objects):
-        """cuts first object from the last one"""
-        newobj = cut(objects[0],objects[1])
+        """Cut first object from the last one."""
+        newobj = cut.cut(objects[0], objects[1])
         if newobj:
-            addList.append(newobj)
+            add_list.append(newobj)
             return newobj
         return None
 
     def splitCompounds(objects):
-        """split solids contained in compound objects into new objects"""
+        """Split solids contained in compound objects into new objects."""
         result = False
         for o in objects:
             if o.Shape.Solids:
                 for s in o.Shape.Solids:
-                    newobj = App.ActiveDocument.addObject("Part::Feature","Solid")
+                    newobj = doc.addObject("Part::Feature", "Solid")
                     newobj.Shape = s
-                    addList.append(newobj)
+                    add_list.append(newobj)
                 result = True
-                deleteList.append(o)
+                delete_list.append(o)
         return result
 
     def splitFaces(objects):
-        """split faces contained in objects into new objects"""
+        """Split faces contained in objects into new objects."""
         result = False
         params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        preserveFaceColor = params.GetBool("preserveFaceColor") # True
-        preserveFaceNames = params.GetBool("preserveFaceNames") # True
+        preserveFaceColor = params.GetBool("preserveFaceColor")  # True
+        preserveFaceNames = params.GetBool("preserveFaceNames")  # True
         for o in objects:
-            voDColors = o.ViewObject.DiffuseColor if (preserveFaceColor and hasattr(o,'ViewObject')) else None
-            oLabel = o.Label if hasattr(o,'Label') else ""
+            if App.GuiUp and preserveFaceColor and o.ViewObject:
+                voDColors = o.ViewObject.DiffuseColor
+            else:
+                voDColors = None
+            oLabel = o.Label if hasattr(o, 'Label') else ""
             if o.Shape.Faces:
                 for ind, f in enumerate(o.Shape.Faces):
-                    newobj = App.ActiveDocument.addObject("Part::Feature","Face")
+                    newobj = doc.addObject("Part::Feature", "Face")
                     newobj.Shape = f
                     if preserveFaceNames:
                         newobj.Label = "{} {}".format(oLabel, newobj.Label)
-                    if preserveFaceColor:
-                        """ At this point, some single-color objects might have
-                        just a single entry in voDColors for all their faces; handle that"""
-                        tcolor = voDColors[ind] if ind<len(voDColors) else voDColors[0]
-                        newobj.ViewObject.DiffuseColor[0] = tcolor # does is not applied visually on its own; left just in case
-                        newobj.ViewObject.ShapeColor = tcolor # this gets applied, works by itself too
-                    addList.append(newobj)
+                    if App.GuiUp and preserveFaceColor and voDColors:
+                        # At this point, some single-color objects might have
+                        # just a single value in voDColors for all faces,
+                        # so we handle that
+                        if ind < len(voDColors):
+                            tcolor = voDColors[ind]
+                        else:
+                            tcolor = voDColors[0]
+                        # does is not applied visually on its own
+                        # just in case
+                        newobj.ViewObject.DiffuseColor[0] = tcolor
+                        # this gets applied, works by itself too
+                        newobj.ViewObject.ShapeColor = tcolor
+                    add_list.append(newobj)
                 result = True
-                deleteList.append(o)
+                delete_list.append(o)
         return result
 
     def subtr(objects):
-        """subtracts objects from the first one"""
+        """Subtract objects from the first one."""
         faces = []
         for o in objects:
             if o.Shape.Faces:
                 faces.extend(o.Shape.Faces)
-                deleteList.append(o)
+                delete_list.append(o)
         u = faces.pop(0)
         for f in faces:
             u = u.cut(f)
         if not u.isNull():
-            newobj = App.ActiveDocument.addObject("Part::Feature","Subtraction")
+            newobj = doc.addObject("Part::Feature", "Subtraction")
             newobj.Shape = u
-            addList.append(newobj)
+            add_list.append(newobj)
             return newobj
         return None
 
     def getWire(obj):
-        """gets the wire from a face object"""
+        """Get the wire from a face object."""
         result = False
         for w in obj.Shape.Faces[0].Wires:
-            newobj = App.ActiveDocument.addObject("Part::Feature","Wire")
+            newobj = doc.addObject("Part::Feature", "Wire")
             newobj.Shape = w
-            addList.append(newobj)
+            add_list.append(newobj)
             result = True
-        deleteList.append(obj)
+        delete_list.append(obj)
         return result
 
     def splitWires(objects):
-        """splits the wires contained in objects into edges"""
+        """Split the wires contained in objects into edges."""
         result = False
         for o in objects:
             if o.Shape.Edges:
                 for e in o.Shape.Edges:
-                    newobj = App.ActiveDocument.addObject("Part::Feature","Edge")
+                    newobj = doc.addObject("Part::Feature", "Edge")
                     newobj.Shape = e
-                    addList.append(newobj)
-                deleteList.append(o)
+                    add_list.append(newobj)
+                delete_list.append(o)
                 result = True
         return result
 
     # analyzing objects
-
     faces = []
     edges = []
     onlyedges = True
@@ -195,79 +216,84 @@ def downgrade(objects, delete=False, force=None):
     objects = parts
 
     if force:
-        if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
+        if force in ("explode", "shapify", "subtr", "splitFaces",
+                     "cut2", "getWire", "splitWires"):
+            # TODO: Using eval to evaluate a string is not ideal
+            # and potentially a security risk.
+            # How do we execute the function without calling eval?
+            # Best case, a series of if-then statements.
+            shapify = utils.shapify
             result = eval(force)(objects)
         else:
-            App.Console.PrintMessage(_tr("Upgrade: Unknown force method:")+" "+force)
+            _msg(_tr("Upgrade: Unknown force method:") + " " + force)
             result = None
-
     else:
-
         # applying transformation automatically
-
         # we have a block, we explode it
-        if (len(objects) == 1) and (utils.get_type(objects[0]) == "Block"):
+        if len(objects) == 1 and utils.get_type(objects[0]) == "Block":
             result = explode(objects[0])
             if result:
-                App.Console.PrintMessage(_tr("Found 1 block: exploding it")+"\n")
+                _msg(_tr("Found 1 block: exploding it"))
 
         # we have one multi-solids compound object: extract its solids
-        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and (len(solids) > 1):
+        elif (len(objects) == 1 and hasattr(objects[0], 'Shape')
+              and len(solids) > 1):
             result = splitCompounds(objects)
-            #print(result)
+            # print(result)
             if result:
-                App.Console.PrintMessage(_tr("Found 1 multi-solids compound: exploding it")+"\n")
+                _msg(_tr("Found 1 multi-solids compound: exploding it"))
 
         # special case, we have one parametric object: we "de-parametrize" it
-        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and hasattr(objects[0], 'Base'):
-            result = shapify(objects[0])
+        elif (len(objects) == 1 and hasattr(objects[0], 'Shape')
+              and hasattr(objects[0], 'Base')):
+            result = utils.shapify(objects[0])
             if result:
-                App.Console.PrintMessage(_tr("Found 1 parametric object: breaking its dependencies")+"\n")
-                addList.append(result)
-                #deleteList.append(objects[0])
+                _msg(_tr("Found 1 parametric object: "
+                         "breaking its dependencies"))
+                add_list.append(result)
+                # delete_list.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
             result = cut2(objects)
             if result:
-                App.Console.PrintMessage(_tr("Found 2 objects: subtracting them")+"\n")
+                _msg(_tr("Found 2 objects: subtracting them"))
 
-        elif (len(faces) > 1):
-
+        elif len(faces) > 1:
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
                 if result:
-                    App.Console.PrintMessage(_tr("Found several faces: splitting them")+"\n")
-
+                    _msg(_tr("Found several faces: splitting them"))
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
                 if result:
-                    App.Console.PrintMessage(_tr("Found several objects: subtracting them from the first one")+"\n")
-
+                    _msg(_tr("Found several objects: "
+                             "subtracting them from the first one"))
         # only one face: we extract its wires
-        elif (len(faces) > 0):
+        elif len(faces) > 0:
             result = getWire(objects[0])
             if result:
-                App.Console.PrintMessage(_tr("Found 1 face: extracting its wires")+"\n")
+                _msg(_tr("Found 1 face: extracting its wires"))
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
             if result:
-                App.Console.PrintMessage(_tr("Found only wires: extracting their edges")+"\n")
+                _msg(_tr("Found only wires: extracting their edges"))
 
         # no result has been obtained
         if not result:
-            App.Console.PrintMessage(_tr("No more downgrade possible")+"\n")
+            _msg(_tr("No more downgrade possible"))
 
     if delete:
         names = []
-        for o in deleteList:
+        for o in delete_list:
             names.append(o.Name)
-        deleteList = []
+        delete_list = []
         for n in names:
-            App.ActiveDocument.removeObject(n)
-    gui_utils.select(addList)
-    return [addList,deleteList]
+            doc.removeObject(n)
+
+    gui_utils.select(add_list)
+    return add_list, delete_list
