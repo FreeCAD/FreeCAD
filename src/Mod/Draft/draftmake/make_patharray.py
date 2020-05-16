@@ -27,10 +27,12 @@
 # \brief This module provides the code for Draft make_path_array function.
 
 import FreeCAD as App
+import FreeCADGui as Gui
 
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
+from draftutils.translate import _tr, translate
 from draftobjects.patharray import PathArray
 
 from draftviewproviders.view_draftlink import ViewProviderDraftLink

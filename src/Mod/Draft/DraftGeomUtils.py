@@ -1235,7 +1235,6 @@ def getNormal(shape):
             return None
         return n
 
-
 def getRotation(v1, v2=FreeCAD.Vector(0, 0, 1)):
     """Get the rotation Quaternion between 2 vectors."""
     if (v1.dot(v2) > 0.999999) or (v1.dot(v2) < -0.999999):
