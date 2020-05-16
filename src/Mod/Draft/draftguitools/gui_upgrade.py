@@ -88,7 +88,7 @@ class Upgrade(gui_base_original.Modifier):
             _cmd += 'FreeCADGui.Selection.getSelection(), '
             _cmd += 'delete=True'
             _cmd += ')'
-            _cmd_list = ['u = ' + _cmd,
+            _cmd_list = ['_objs_ = ' + _cmd,
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Upgrade"),
                         _cmd_list)
