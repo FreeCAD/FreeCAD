@@ -51,9 +51,17 @@ class ViewProxy(object):
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+        if not hasattr(self.Object, "Proxy"):
+            FreeCAD.Console.PrintMessage("{}, has no Proxy.\n".format(self.Object.Name))
+            return ""
+        if not hasattr(self.Object.Proxy, "Type"):
+            FreeCAD.Console.PrintMessage(
+                "{}: Proxy does has not have attribte Type.\n"
+                .format(self.Object.Name)
+            )
+            return ""
         if (
-            hasattr(self.Object.Proxy, "Type")
-            and isinstance(self.Object.Proxy.Type, string_types)
+            isinstance(self.Object.Proxy.Type, string_types)
             and self.Object.Proxy.Type.startswith("Fem::")
         ):
             icon_path = "/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
