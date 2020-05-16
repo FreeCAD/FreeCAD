@@ -25,11 +25,11 @@
 #include <climits>
 #include <zlib.h>
 
-#include <App/DocumentParams.h>
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
 #include "PrefWidgets.h"
 #include "AutoSaver.h"
+#include <App/DocumentParams.h>
 
 using namespace App;
 using namespace Gui::Dialog;

@@ -65,7 +65,6 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Document.h>
-#include <App/DocumentParams.h>
 #include <App/DocumentObjectPy.h>
 
 #include "Application.h"
@@ -137,7 +136,7 @@
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
 #include <Gui/GuiInitScript.h>
-
+#include <App/DocumentParams.h>
 
 using namespace Gui;
 using namespace Gui::DockWnd;
