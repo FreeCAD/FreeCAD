@@ -42,19 +42,28 @@ class _FemMaterial(FemConstraint.Proxy):
 
     def __init__(self, obj):
         super(_FemMaterial, self).__init__(obj)
+        self.add_properties(obj)
 
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "Material",
-            "List of material shapes"
-        )
+    def onDocumentRestored(self, obj):
+        self.add_properties(obj)
 
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Category",
-            "Material",
-            "Material type: fluid or solid"
-        )
-
+    def add_properties(self, obj):
+        # References
+        if not hasattr(obj, "References"):
+            obj.addProperty(
+                "App::PropertyLinkSubList",
+                "References",
+                "Material",
+                "List of material shapes"
+            )
+        # Category
+        # attribute Category was added in commit 61fb3d429a
+        if not hasattr(obj, "Category"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Category",
+                "Material",
+                "Material type: fluid or solid"
+            )
         obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
+        obj.Category = "Solid"
