@@ -49,6 +49,7 @@ private Q_SLOTS:
     void onSizeChanged(double);
     void onSize2Changed(double);
     void onAngleChanged(double);
+    void onFlipDirection(bool);
     void onRefDeleted(void);
 
 protected:
@@ -61,6 +62,7 @@ protected:
     double getSize(void) const;
     double getSize2(void) const;
     double getAngle(void) const;
+    bool getFlipDirection(void) const;
 
 private:
     void setUpUI(PartDesign::Chamfer* pcChamfer);

@@ -43,6 +43,7 @@ public:
     App::PropertyQuantityConstraint Size;
     App::PropertyQuantityConstraint Size2;
     App::PropertyAngle Angle;
+    App::PropertyBool FlipDirection;
 
     /** @name methods override feature */
     //@{

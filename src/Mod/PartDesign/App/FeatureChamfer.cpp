@@ -74,6 +74,8 @@ Chamfer::Chamfer()
     ADD_PROPERTY(Angle,(45.0));
     Angle.setUnit(Base::Unit::Angle);
     Angle.setConstraints(&floatAngle);
+
+    ADD_PROPERTY(FlipDirection, (false));
 }
 
 short Chamfer::mustExecute() const
@@ -104,6 +106,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     const double size = Size.getValue();
     const double size2 = Size2.getValue();
     const double angle = Angle.getValue();
+    const bool flipDirection = FlipDirection.getValue();
 
     auto res = validateParameters(chamferType, size, size2, angle);
     if (res != App::DocumentObject::StdReturn) {
@@ -124,7 +127,9 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
-            const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+            const TopoDS_Face& face = (chamferType != 0 && flipDirection) ?
+                TopoDS::Face(mapEdgeFace.FindFromKey(edge).Last()) :
+                TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
             switch (chamferType) {
                 case 0: // Equal distance
                     mkChamfer.Add(size, size, edge, face);
