@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <iostream>
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
@@ -48,6 +46,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <Geom_OffsetCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <ProjLib_Plane.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -5482,6 +5481,44 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
     return 0;
 }
 
+// Auxiliary Method: returns vector projection in UV space of plane
+static gp_Vec2d ProjVecOnPlane_UV( const gp_Vec& V, const gp_Pln& Pl)
+{
+  return gp_Vec2d( V.Dot(Pl.Position().XDirection()),
+	           V.Dot(Pl.Position().YDirection()));
+}
+
+// Auxiliary Method: returns vector projection in UVN space of plane
+static gp_Vec ProjVecOnPlane_UVN( const gp_Vec& V, const gp_Pln& Pl)
+{
+  gp_Vec2d vector = ProjVecOnPlane_UV(V, Pl);
+  return gp_Vec(vector.X(), vector.Y(), 0.0);
+}
+
+// Auxiliary Method: returns vector projection in XYZ space
+static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
+{
+  return V.Dot(Pl.Position().XDirection()) * Pl.Position().XDirection() +
+	           V.Dot(Pl.Position().YDirection()) * Pl.Position().YDirection();
+}
+
+// Auxiliary Method: returns point projection in UV space of plane
+static gp_Vec2d ProjPointOnPlane_UV( const gp_Pnt& P, const gp_Pln& Pl)
+{
+  gp_Vec OP = gp_Vec(gp_Pnt(), P);
+  return ProjVecOnPlane_UV(OP, Pl);
+}
+
+// Auxiliary Method: returns point projection in UVN space of plane
+static gp_Vec ProjPointOnPlane_UVN( const gp_Pnt& P, const gp_Pln& Pl)
+{
+  gp_Vec2d vec2 = ProjPointOnPlane_UV(P, Pl);
+  return gp_Vec(vec2.X(), vec2.Y(), 0.0);
+}
+
+
+
+
 // Auxiliary method
 Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Plane)& gPlane, const Base::Placement& invPlm)
 {
@@ -5819,6 +5856,55 @@ void SketchObject::rebuildExternalGeometry(void)
                             }
                         }
                     }
+                }
+                else if (curve.GetType() == GeomAbs_Ellipse) {
+                   // TODO : fill the gaps!
+                    gp_Dir vecSketchPlaneX = sketchPlane.Position().XDirection();
+                    gp_Dir vecSketchPlaneY = sketchPlane.Position().YDirection();
+
+                    gp_Elips elipsOrig = curve.Ellipse();
+
+                    gp_Pnt origCenter = elipsOrig.Location();
+                    gp_Dir origAxisMajorDir = elipsOrig.XAxis().Direction();
+                    gp_Vec origAxisMajor = elipsOrig.MajorRadius() * gp_Vec(origAxisMajorDir);
+                    gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
+                    gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMajorDir);
+
+                    double R = elipsOrig.MajorRadius();
+                    double r = elipsOrig.MinorRadius();
+
+                    gp_Pnt destCenter = ProjPointOnPlane_UVN(origCenter, sketchPlane).XYZ();
+
+                    // look for major axis of projected ellipse
+                    //
+                    // t is the parameter along the origin ellipse
+                    //   OM(t) = origCenter
+                    //           + majorRadius * cos(t) * origAxisMajorDir
+                    //           + minorRadius * sin(t) * origAxisMinorDir
+                    gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajorDir, sketchPlane);
+                    gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinorDir, sketchPlane);
+                    double t_max = 2.0 * R*r*PA.Dot(PB) / (R*R - r*r);
+                    t_max = 0.5 * atan(t_max);
+                    double t_min = t_max + 0.5 * M_PI;
+                    // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
+                    //     becomes the apoapse of the pojected ellipse.
+                    gp_Vec ON_max = origAxisMajor * R * cos(t_max) + origAxisMinor * r * sin(t_max);
+                    gp_Vec ON_min = origAxisMajor * R * cos(t_min) + origAxisMinor * r * sin(t_min);
+                    gp_Vec2d destAxisMajor = ProjVecOnPlane_UV(ON_max, sketchPlane);
+                    gp_Vec2d destAxisMinor = ProjVecOnPlane_UV(ON_min, sketchPlane);
+
+                    double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
+                    gp_Ax2 destElipsAx2(destCenter,
+                                  gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0),
+                                  gp_Dir(destAxisMajor.X(), destAxisMajor.Y(), 0.0));
+                    gp_Elips destElips(destElipsAx2, destAxisMajor.Magnitude(), destAxisMinor.Magnitude());
+
+                    Handle(Geom_Ellipse) curve = new Geom_Ellipse(destElips);
+                    Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                    ellipse->setHandle(curve);
+                    ellipse->Construction = true;
+
+                    ExternalGeo.push_back(ellipse);
                 }
                 else {
                     try {
