@@ -248,12 +248,29 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        propertyEditorData->updateEditorMode(prop);
+    Gui::PropertyEditor::PropertyEditor* editor = nullptr;
+
+    if (parent && propertyEditorData->propOwners.count(parent))
+        editor = propertyEditorData;
+    else if (parent && propertyEditorView->propOwners.count(parent))
+        editor = propertyEditorView;
+    else
+        return;
+
+    if(showAll() || isPropertyHidden(&prop)) {
+        editor->updateEditorMode(prop);
+        return;
     }
-    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
-        propertyEditorView->updateEditorMode(prop);
+    for(auto &v : editor->propList) {
+        for(auto p : v.second)
+            if(p == &prop) {
+                editor->updateEditorMode(prop);
+                return;
+            }
     }
+    // The property is not in the list, probably because it is hidden before.
+    // So perform a full update.
+    timer->start(50);
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
