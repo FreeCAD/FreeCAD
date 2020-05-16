@@ -11,12 +11,12 @@ SET(Stylesheets_Files
     "Light-orange.qss"
 )
 
-SET(Overlay_Stylesheet_Files
+SET(Overlay_Stylesheets_Files
     "overlay/Dark.qss"
     "overlay/Light.qss"
 )
 
-SET(Menu_Stylesheet_Files
+SET(Menu_Stylesheets_Files
     "menu/Dark.qss"
     "menu/Light.qss"
 )
@@ -29,14 +29,14 @@ SOURCE_GROUP("images_dark-light" FILES ${Images_Files})
 
 ADD_CUSTOM_TARGET(Stylesheets_data ALL
     SOURCES ${Stylesheets_Files} ${Images_Files}
-    ${Overlay_Stylesheet_Files} ${Menu_Stylesheet_Files}
+    ${Overlay_Stylesheets_Files} ${Menu_Stylesheets_Files}
 )
 
 fc_copy_sources(Stylesheets_data "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets"
                                   ${Stylesheets_Files} 
                                   ${Images_Files} 
-                                  ${Overlay_Stylesheet_Files}
-                                  ${Menu_Stylesheet_Files})
+                                  ${Overlay_Stylesheets_Files}
+                                  ${Menu_Stylesheets_Files})
 
 INSTALL(
     FILES
