@@ -83,6 +83,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(onSize2Changed(double)));
     connect(ui->chamferAngle, SIGNAL(valueChanged(double)),
         this, SLOT(onAngleChanged(double)));
+    connect(ui->flipDirection, SIGNAL(toggled(bool)),
+        this, SLOT(onFlipDirection(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
@@ -105,6 +107,9 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     const int index = pcChamfer->ChamferType.getValue();
     ui->chamferType->setCurrentIndex(index);
 
+    ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
+    ui->flipDirection->setChecked(pcChamfer->FlipDirection.getValue());
+
     ui->chamferSize->setUnit(Base::Unit::Length);
     ui->chamferSize->setMinimum(0);
     ui->chamferSize->setValue(pcChamfer->Size.getValue());
@@ -121,6 +126,8 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->chamferAngle->setMaximum(180.0);
     ui->chamferAngle->setValue(pcChamfer->Angle.getValue());
     ui->chamferAngle->bind(pcChamfer->Angle);
+
+    ui->stackedWidget->setFixedHeight(ui->chamferSize2->sizeHint().height());
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -226,7 +233,7 @@ void TaskChamferParameters::onTypeChanged(int index)
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     pcChamfer->ChamferType.setValue(index);
     ui->stackedWidget->setCurrentIndex(index);
-    ui->stackedWidget->setFixedHeight(ui->chamferSize2->sizeHint().height());
+    ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
@@ -254,6 +261,14 @@ void TaskChamferParameters::onAngleChanged(double angle)
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
+void TaskChamferParameters::onFlipDirection(bool flip)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
+    pcChamfer->FlipDirection.setValue(flip);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+}
+
 int TaskChamferParameters::getType(void) const
 {
     return ui->chamferType->currentIndex();
@@ -272,6 +287,11 @@ double TaskChamferParameters::getSize2(void) const
 double TaskChamferParameters::getAngle(void) const
 {
     return ui->chamferAngle->value().getValue();
+}
+
+bool TaskChamferParameters::getFlipDirection(void) const
+{
+    return ui->flipDirection->isChecked();
 }
 
 TaskChamferParameters::~TaskChamferParameters()
