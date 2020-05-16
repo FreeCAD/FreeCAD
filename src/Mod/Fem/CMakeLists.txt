@@ -229,6 +229,8 @@ SET(FemTools_SRCS
     femtools/femutils.py
     femtools/geomtools.py
     femtools/membertools.py
+    femtools/migrate_app.py
+    femtools/migrate_gui.py
     femtools/tokrules.py
 )
 

@@ -38,9 +38,17 @@ __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 # imports to get flake8 quired
+import sys
 import FreeCAD
 import FreeCADGui
 from FreeCADGui import Workbench
+
+# needed imports
+from femtools.migrate_gui import FemMigrateGui
+
+
+# migrate old FEM Gui objects
+sys.meta_path.append(FemMigrateGui())
 
 
 class FemWorkbench(Workbench):

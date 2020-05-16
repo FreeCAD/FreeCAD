@@ -40,7 +40,15 @@ __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 # imports to get flake8 quired
+import sys
 import FreeCAD
+
+# needed imports
+from femtools.migrate_app import FemMigrateApp
+
+
+# migrate old FEM App objects
+sys.meta_path.append(FemMigrateApp())
 
 
 # add FEM unit tests
