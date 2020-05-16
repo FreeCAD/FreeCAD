@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,32 +20,48 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft cut function.
-"""
+"""Provides provides the code for Draft cut function."""
 ## @package cut
 # \ingroup DRAFT
-# \brief This module provides the code for Draft cut function.
+# \brief Provides provides the code for Draft cut function.
 
 import FreeCAD as App
-
 import draftutils.gui_utils as gui_utils
+from draftutils.translate import _tr
+from draftutils.messages import _err
 
 
-def cut(object1,object2):
-    """cut(oject1,object2)
-    
-    Returns a cut object made from the difference of the 2 given objects.
+def cut(object1, object2):
+    """Return a cut object made from the difference of the 2 given objects.
+
+    Parameters
+    ----------
+    object1: Part::Feature
+        Any object with a `Part::TopoShape`.
+
+    object2: Part::Feature
+        Any object with a `Part::TopoShape`.
+
+    Returns
+    -------
+    Part::Cut
+        The resulting cut object.
+
+    None
+        If there is a problem and the new object can't be created.
     """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
+    if not App.activeDocument():
+        _err(_tr("No active document. Aborting."))
         return
-    obj = App.ActiveDocument.addObject("Part::Cut","Cut")
+
+    obj = App.activeDocument().addObject("Part::Cut", "Cut")
     obj.Base = object1
     obj.Tool = object2
-    object1.ViewObject.Visibility = False
-    object2.ViewObject.Visibility = False
+
     if App.GuiUp:
         gui_utils.format_object(obj, object1)
         gui_utils.select(obj)
+        object1.ViewObject.Visibility = False
+        object2.ViewObject.Visibility = False
 
     return obj
