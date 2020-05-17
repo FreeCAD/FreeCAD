@@ -106,8 +106,9 @@ def make_path_array(baseobject,pathobject,count,xlate=None,align=False,pathobjsu
         else:
             ViewProviderDraftArray(obj.ViewObject)
             gui_utils.formatObject(obj,obj.Base)
-            if len(obj.Base.ViewObject.DiffuseColor) > 1:
-                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
+            if hasattr(obj.Base.ViewObject, "DiffuseColor"):
+                if len(obj.Base.ViewObject.DiffuseColor) > 1:
+                    obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
         gui_utils.select(obj)
     return obj
