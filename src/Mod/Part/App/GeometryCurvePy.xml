@@ -90,6 +90,11 @@ parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 				<UserDocu>Get intersection points with another curve lying on a plane.</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="continuityWith" Const="true">
+            <Documentation>
+                <UserDocu>Computes the continuity of two curves</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="parameter" Const="true">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve

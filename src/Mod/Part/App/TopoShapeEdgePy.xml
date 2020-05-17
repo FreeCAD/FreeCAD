@@ -522,7 +522,13 @@ coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="PrincipalProperties" Type="Dict"/>
     </Attribute>
-		<ClassDeclarations>
+    <Attribute Name="Continuity" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Returns the continuity</UserDocu>
+        </Documentation>
+        <Parameter Name="Continuity" Type="String"/>
+    </Attribute>
+        <ClassDeclarations>
 		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

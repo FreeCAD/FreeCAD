@@ -43,6 +43,7 @@
 # include <Geom_Surface.hxx>
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomFill.hxx>
+# include <GeomLProp.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_BSplineSurface.hxx>
@@ -706,6 +707,84 @@ PyObject* GeometryCurvePy::approximateBSpline(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::continuityWith(PyObject *args)
+{
+    double u1 = -1.0, u2 = -1.0;
+    double tl = -1.0, ta = -1.0;
+    PyObject* curve;
+    PyObject* rev1 = Py_False;
+    PyObject* rev2 = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|ddO!O!dd",
+                          &GeometryCurvePy::Type, &curve,
+                          &u1, &u2,
+                          &PyBool_Type, &rev1,
+                          &PyBool_Type, &rev2,
+                          &tl, &ta))
+        return nullptr;
+
+    Handle(Geom_Geometry) g1 = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c1 = Handle(Geom_Curve)::DownCast(g1);
+    Handle(Geom_Geometry) g2 = static_cast<GeometryCurvePy*>(curve)->getGeomCurvePtr()->handle();
+    Handle(Geom_Curve) c2 = Handle(Geom_Curve)::DownCast(g2);
+
+    // if no parameter value is given then by default use the end of the parameter range
+    if (u1 < 0.0)
+        u1 = c1->LastParameter();
+
+    // if no parameter value is given then by default use the start of the parameter range
+    if (u2 < 0.0)
+        u2 = c2->FirstParameter();
+
+    Standard_Boolean r1 = PyObject_IsTrue(rev1) ? Standard_True : Standard_False;
+    Standard_Boolean r2 = PyObject_IsTrue(rev2) ? Standard_True : Standard_False;
+
+    try {
+        if (!c1.IsNull() && !c2.IsNull()) {
+            GeomAbs_Shape c;
+            if (tl >= 0.0 && ta >= 0.0)
+                c = GeomLProp::Continuity(c1, c2, u1, u2, r1, r2, tl, ta);
+            else
+                c = GeomLProp::Continuity(c1, c2, u1, u2, r1, r2);
+
+            std::string str;
+            switch (c) {
+            case GeomAbs_C0:
+                str = "C0";
+                break;
+            case GeomAbs_G1:
+                str = "G1";
+                break;
+            case GeomAbs_C1:
+                str = "C1";
+                break;
+            case GeomAbs_G2:
+                str = "G2";
+                break;
+            case GeomAbs_C2:
+                str = "C2";
+                break;
+            case GeomAbs_C3:
+                str = "C3";
+                break;
+            case GeomAbs_CN:
+                str = "CN";
+                break;
+            default:
+                str = "Unknown";
+                break;
+            }
+            return Py_BuildValue("s", str.c_str());
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
 }
 
 Py::String GeometryCurvePy::getContinuity(void) const
