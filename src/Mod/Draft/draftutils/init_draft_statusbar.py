@@ -165,13 +165,68 @@ def _set_scale(action):
 #----------------------------------------------------------------------------
 # MAIN DRAFT STATUSBAR FUNCTIONS
 #----------------------------------------------------------------------------
-
-def init_draft_statusbar(sb):
+def init_draft_statusbar_scale():
     """
-    this function initializes draft statusbar
+    this function initializes draft statusbar scale widget
     """
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
+    mw = Gui.getMainWindow()
+    if mw:
+        sb = mw.statusBar()
+        if sb is None:
+            return
+    else: 
+        return
+
+    scale_widget = QtGui.QToolBar()
+    scale_widget.setObjectName("draft_status_scale_widget")
+    
+    # get scales list according to system units
+    draft_scales = get_scales()
+
+    # get draft annotation scale
+    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+
+    # initializes scale widget
+    scale_widget.draft_scales = draft_scales
+    scaleLabel = QtGui.QPushButton("Scale")
+    scaleLabel.setObjectName("ScaleLabel")
+    scaleLabel.setFlat(True)
+    menu = QtGui.QMenu(scaleLabel)
+    gUnits = QtGui.QActionGroup(menu)
+    for u in draft_scales:
+        a = QtGui.QAction(gUnits)
+        a.setText(u)
+        menu.addAction(a)
+    scaleLabel.setMenu(menu)
+    gUnits.triggered.connect(_set_scale)
+    scale_label = scale_to_label(draft_annotation_scale)
+    scaleLabel.setText(scale_label)
+    tooltip = "Set the scale used by draft annotation tools"
+    scaleLabel.setToolTip(QT_TRANSLATE_NOOP("draft",tooltip))
+    scale_widget.addWidget(scaleLabel)
+    scale_widget.scaleLabel = scaleLabel
+    
+    # add scale widget to the statusbar
+    sb.insertPermanentWidget(3, scale_widget)
+    scale_widget.show()
+
+
+def init_draft_statusbar_snap():
+    """
+    this function initializes draft statusbar snap widget
+    """
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+    mw = Gui.getMainWindow()
+    if mw:
+        sb = mw.statusBar()
+        if sb is None:
+            return
+    else: 
+        return
+    
     # SNAP WIDGET - init ----------------------------------------------------
     
     snap_widget = QtGui.QToolBar()
@@ -286,40 +341,6 @@ def init_draft_statusbar(sb):
     snap_widget.show()
 
    
-    # SCALE WIDGET ----------------------------------------------------------
-    scale_widget = QtGui.QToolBar()
-    scale_widget.setObjectName("draft_status_scale_widget")
-    
-    # get scales list according to system units
-    draft_scales = get_scales()
-
-    # get draft annotation scale
-    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-
-    # initializes scale widget
-    scale_widget.draft_scales = draft_scales
-    scaleLabel = QtGui.QPushButton("Scale")
-    scaleLabel.setObjectName("ScaleLabel")
-    scaleLabel.setFlat(True)
-    menu = QtGui.QMenu(scaleLabel)
-    gUnits = QtGui.QActionGroup(menu)
-    for u in draft_scales:
-        a = QtGui.QAction(gUnits)
-        a.setText(u)
-        menu.addAction(a)
-    scaleLabel.setMenu(menu)
-    gUnits.triggered.connect(_set_scale)
-    scale_label = scale_to_label(draft_annotation_scale)
-    scaleLabel.setText(scale_label)
-    tooltip = "Set the scale used by draft annotation tools"
-    scaleLabel.setToolTip(QT_TRANSLATE_NOOP("draft",tooltip))
-    scale_widget.addWidget(scaleLabel)
-    scale_widget.scaleLabel = scaleLabel
-    
-    # add scale widget to the statusbar
-    sb.insertPermanentWidget(3, scale_widget)
-    scale_widget.show()
-
 def show_draft_statusbar():
     """
     shows draft statusbar if present or initializes it
@@ -338,14 +359,27 @@ def show_draft_statusbar():
                                     "draft_status_scale_widget")
         if scale_widget:
             scale_widget.show()
-        elif params.GetBool("DisplayStatusbarScaleWidget", True):
-            init_draft_statusbar(sb)
+        else:
+            scale_widget = mw.findChild(QtGui.QToolBar,
+                            "draft_status_scale_widget")
+            if scale_widget:
+                sb.insertPermanentWidget(3, scale_widget)
+                scale_widget.show()
+            elif params.GetBool("DisplayStatusbarScaleWidget", True):
+                t = QtCore.QTimer()
+                t.singleShot(500, init_draft_statusbar_scale)
             
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
             snap_widget.show()
-        elif params.GetBool("DisplayStatusbarSnapWidget", True):
-            init_draft_statusbar(sb)
+        else:
+            snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
+            if snap_widget:
+                sb.insertPermanentWidget(2, snap_widget)
+                snap_widget.show()
+            elif params.GetBool("DisplayStatusbarSnapWidget", True):
+                t = QtCore.QTimer()
+                t.singleShot(500, init_draft_statusbar_snap)
 
 
 def hide_draft_statusbar():
