@@ -357,6 +357,136 @@ PyObject* GeometryCurvePy::parameterAtDistance(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryCurvePy::getD0(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p;
+            c->D0(u, p);
+            return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD1(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p;
+            gp_Vec v;
+            c->D1(u, p, v);
+            Py::Tuple tuple(2);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v.X(),v.Y(),v.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD2(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p1;
+            gp_Vec v1, v2;
+            c->D2(u, p1, v1, v2);
+            Py::Tuple tuple(3);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p1.X(),p1.Y(),p1.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v1.X(),v1.Y(),v1.Z())));
+            tuple.setItem(2, Py::Vector(Base::Vector3d(v2.X(),v2.Y(),v2.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD3(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p1;
+            gp_Vec v1, v2, v3;
+            c->D3(u, p1, v1, v2, v3);
+            Py::Tuple tuple(4);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p1.X(),p1.Y(),p1.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v1.X(),v1.Y(),v1.Z())));
+            tuple.setItem(2, Py::Vector(Base::Vector3d(v2.X(),v2.Y(),v2.Z())));
+            tuple.setItem(3, Py::Vector(Base::Vector3d(v3.X(),v3.Y(),v3.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getDN(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            int n;
+            double u;
+            if (!PyArg_ParseTuple(args, "di", &u, &n))
+                return nullptr;
+            gp_Vec v = c->DN(u, n);
+            return new Base::VectorPy(Base::Vector3d(v.X(),v.Y(),v.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
 PyObject* GeometryCurvePy::value(PyObject *args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
