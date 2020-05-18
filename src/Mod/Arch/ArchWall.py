@@ -1109,7 +1109,9 @@ class _Wall(ArchComponent.Component):
             elif obj.Width:
                 widths = [obj.Width.Value]
             else:
-                print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
+                # having no width is valid for walls so the user doesn't need to be warned
+                # it just disables extrusions and return none
+                #print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
                 return None
 
         # Set 'default' width - for filling in any item in the list == 0 or None
