@@ -252,7 +252,7 @@ class _ArchPipe(ArchComponent.Component):
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
-        p.rotate(c,rot.Axis,math.degrees(rot.Angle))
+        p.rotate(w.Vertexes[0].Point,rot.Axis,math.degrees(rot.Angle))
         shapes = []
         try:
             if p.Faces:
