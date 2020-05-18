@@ -22,7 +22,8 @@
 # ***************************************************************************
 """ Class and methods to migrate old FEM Gui objects
 
-TODO more information
+see module end as well as forum topic
+https://forum.freecadweb.org/viewtopic.php?&t=46218
 """
 
 __title__ = "migrate gui"
@@ -106,13 +107,6 @@ class FemMigrateGui(object):
         if fullname == "ViewProviderFemResult":
             return self
         if fullname == "_ViewProviderMechanicalMaterial":
-            return self
-
-        if fullname == "FemBeamSection":
-            return self
-        if fullname == "FemShellThickness":
-            return self
-        if fullname == "MechanicalMaterial":
             return self
 
         return None
@@ -236,16 +230,6 @@ class FemMigrateGui(object):
             import femguiobjects._ViewProviderFemMaterial
             module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
 
-        if module.__name__ == "FemBeamSection":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
-        if module.__name__ == "FemShellThickness":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
-        if module.__name__ == "MechanicalMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
-
         return None
 
 
@@ -306,9 +290,10 @@ new obj class module names had a _
 following the parent commit of the first split commit
 https://github.com/berndhahnebach/FreeCAD_bhb/tree/c3328d6b4e/src/Mod/Fem
 in this modules there where object class and viewprovider class together
+# see migrate App
 module="FemBeamSection"
 module="FemShellThickness"
-module="MechanicalAnalysis"  # TODO
+module="MechanicalAnalysis"
 module="MechanicalMaterial"
 
 

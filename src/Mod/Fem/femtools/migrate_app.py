@@ -22,12 +22,15 @@
 # ***************************************************************************
 """ Class and methods to migrate old FEM App objects
 
-TODO more information
+see module end as well as forum topic
+https://forum.freecadweb.org/viewtopic.php?&t=46218
 """
 
 __title__ = "migrate app"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
+
+import FreeCAD
 
 
 class FemMigrateApp(object):
@@ -113,6 +116,8 @@ class FemMigrateApp(object):
         if fullname == "FemBeamSection":
             return self
         if fullname == "FemShellThickness":
+            return self
+        if fullname == "MechanicalAnalysis":
             return self
         if fullname == "MechanicalMaterial":
             return self
@@ -240,13 +245,27 @@ class FemMigrateApp(object):
         if module.__name__ == "FemBeamSection":
             import femobjects._FemElementGeometry1D
             module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            if FreeCAD.GuiUp:
+                import femguiobjects._ViewProviderFemElementGeometry1D
+                module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
         if module.__name__ == "FemShellThickness":
             import femobjects._FemElementGeometry2D
             module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
+            if FreeCAD.GuiUp:
+                import femguiobjects._ViewProviderFemElementGeometry2D
+                module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+        if module.__name__ == "MechanicalAnalysis":
+            import femobjects.FemConstraint
+            module._FemAnalysis = femobjects.FemConstraint.Proxy
+            if FreeCAD.GuiUp:
+                import femguiobjects.ViewProviderBaseObject
+                module._ViewProviderFemAnalysis = femguiobjects.ViewProviderBaseObject.ViewProxy
         if module.__name__ == "MechanicalMaterial":
             import femobjects._FemMaterial
             module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
-
+            if FreeCAD.GuiUp:
+                import femguiobjects._ViewProviderFemMaterial
+                module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
         return None
 
 
@@ -309,8 +328,6 @@ https://github.com/berndhahnebach/FreeCAD_bhb/tree/c3328d6b4e/src/Mod/Fem
 in this modules there where object class and viewprovider class together
 module="FemBeamSection"
 module="FemShellThickness"
-module="MechanicalAnalysis" # TODO
+module="MechanicalAnalysis"
 module="MechanicalMaterial"
-
-
 """
