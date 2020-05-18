@@ -327,7 +327,7 @@ def getSVG(source,
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","Annotation","Label","DraftText"]:
+        elif Draft.getType(o) in ["AngularDimension","LinearDimension","Annotation","Label","Text"]:
             if isOriented(o,cutplane):
                 drafts.append(o) 
         elif o.isDerivedFrom("Part::Part2DObject"):

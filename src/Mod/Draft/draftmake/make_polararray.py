@@ -20,13 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the object code for Draft PolarArray."""
-## @package polararray
+"""Provides functions for creating polar arrays in a plane."""
+## @package make_polararray
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft PolarArray.
+# \brief Provides functions for creating polar arrays in a plane.
 
 import FreeCAD as App
 import Draft
+# import draftmake.make_array as make_array
 import draftutils.utils as utils
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
@@ -106,6 +107,7 @@ def make_polar_array(obj,
 
     _msg("use_link: {}".format(bool(use_link)))
 
+    # new_obj = make_array.make_array()
     new_obj = Draft.makeArray(obj,
                               arg1=center, arg2=angle, arg3=number,
                               use_link=use_link)

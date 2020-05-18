@@ -928,8 +928,10 @@ class _Wall(ArchComponent.Component):
                             FreeCAD.Console.PrintWarning(translate("Arch","This mesh is an invalid solid")+"\n")
                             obj.Base.ViewObject.show()
         if not base:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
-            return
+            #FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
+            #return
+            # walls can be made of only a series of additions and have no base shape
+            base = Part.Shape()
 
         base = self.processSubShapes(obj,base,pl)
 
@@ -1109,7 +1111,9 @@ class _Wall(ArchComponent.Component):
             elif obj.Width:
                 widths = [obj.Width.Value]
             else:
-                print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
+                # having no width is valid for walls so the user doesn't need to be warned
+                # it just disables extrusions and return none
+                #print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
                 return None
 
         # Set 'default' width - for filling in any item in the list == 0 or None

@@ -401,7 +401,7 @@ class TaskPanelPage(object):
                 for page in parent.featurePages:
                     if hasattr(page, 'panelTitle'):
                         if page.panelTitle == panelTitle and hasattr(page, 'updateVisibility'):
-                            page.updateVisibility(obj)
+                            page.updateVisibility()
                             break
 
 
