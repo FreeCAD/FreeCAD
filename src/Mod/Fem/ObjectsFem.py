@@ -250,16 +250,6 @@ def makeConstraintTemperature(
     return obj
 
 
-def makeConstraintTransform(
-    doc,
-    name="ConstraintTransform"
-):
-    """makeConstraintTransform(document, [name]):
-    makes a Fem ConstraintTransform object"""
-    obj = doc.addObject("Fem::ConstraintTransform", name)
-    return obj
-
-
 def makeConstraintTie(
     doc,
     name="ConstraintTie"
@@ -274,6 +264,16 @@ def makeConstraintTie(
         _ViewProviderFemConstraintTie._ViewProviderFemConstraintTie(
             obj.ViewObject
         )
+    return obj
+
+
+def makeConstraintTransform(
+    doc,
+    name="ConstraintTransform"
+):
+    """makeConstraintTransform(document, [name]):
+    makes a Fem ConstraintTransform object"""
+    obj = doc.addObject("Fem::ConstraintTransform", name)
     return obj
 
 
