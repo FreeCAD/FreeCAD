@@ -12,7 +12,7 @@ fc_copy_sources(fc_cadquery_COPY_SOURCE
     "${CMAKE_BINARY_DIR}/Ext/freecad/fc_cadquery" ${FC_CADQUERY_SRCS})
 
 INSTALL(FILES ${FC_CADQUERY_SRCS} DESTINATION
-    "${CMAKE_INSTALL_DATADIR}/Ext/freecad/fc_cadquery")
+    "${SITE_PACKAGE_DIR}/fc_cadquery")
 
 SET(FC_CADQUERY_IMPL_SRCS
     freecad_impl/__init__.py
@@ -30,4 +30,4 @@ fc_copy_sources(fc_cadquery_impl_COPY_SOURCE
     "${CMAKE_BINARY_DIR}/Ext/freecad/fc_cadquery" ${FC_CADQUERY_IMPL_SRCS})
 
 INSTALL(FILES ${FC_CADQUERY_IMPL_SRCS} DESTINATION
-    "${CMAKE_INSTALL_DATADIR}/Ext/freecad/fc_cadquery/freecad_impl")
+    "${SITE_PACKAGE_DIR}/fc_cadquery/freecad_impl")
