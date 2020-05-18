@@ -1185,7 +1185,7 @@ static int foreachSubshape(const TopoDS_Shape &shape,
     }
     if(openShapes.empty())
         return res;
- 
+
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
@@ -1302,8 +1302,6 @@ int Area::project(TopoDS_Shape &shape_out,
         return -1;
     }
     FC_TIME_LOG(t1,"WireJoiner init");
-    joiner.splitEdges();
-    FC_TIME_LOG(t1,"WireJoiner splitEdges");
     for(const auto &v : joiner.edges) {
         // joiner.builder.Add(joiner.comp,BRepBuilderAPI_MakeWire(v.edge).Wire());
         showShape(v.edge,"split");
@@ -1311,6 +1309,14 @@ int Area::project(TopoDS_Shape &shape_out,
 
     int skips = joiner.findClosedWires();
     FC_TIME_LOG(t1,"WireJoiner findClosedWires");
+    if (skips == static_cast<int>(joiner.edges.size())) {
+        // Splitting edges can be a very expensive operation for complex
+        // shapes, so only split edges when no closed wires were found, and
+        // all edges were skipped.
+        joiner.splitEdges();
+        FC_TIME_LOG(t1,"WireJoiner splitEdges");
+        skips = joiner.findClosedWires();
+    }
 
     showShape(joiner.comp,"pre_project");
 
@@ -3300,7 +3306,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (p.*setter)(retraction);
         addGCode(false,path,plast,p,"G0");
     }
-    
+
 
     plast = p;
     bool first = true;
