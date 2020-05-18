@@ -51,7 +51,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''
 
     def initPage(self, obj):
-        self.updateVisibility(obj)
+        self.updateVisibility()
 
     def profileFeatures(self):
         '''profileFeatures() ... return which of the optional profile features are supported.
@@ -107,7 +107,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.processPerimeter.setChecked(obj.processPerimeter)
         self.form.processCircles.setChecked(obj.processCircles)
 
-        self.updateVisibility(obj)
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
@@ -126,16 +126,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self, sentObj=None):
+    def updateVisibility(self):
         hasFace = False
         hasGeom = False
         fullModel = False
         objBase = list()
 
-        if sentObj:
-            if hasattr(sentObj, 'Base'):
-                objBase = sentObj.Base
-        elif hasattr(self.obj, 'Base'):
+        if hasattr(self.obj, 'Base'):
             objBase = self.obj.Base
 
         if objBase.__len__() > 0:
