@@ -281,6 +281,52 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
     return 0;
 }
 
+PyObject* GeometrySurfacePy::getD0(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
+    try {
+        if (!s.IsNull()) {
+            double u,v;
+            if (!PyArg_ParseTuple(args, "dd", &u, &v))
+                return nullptr;
+            gp_Pnt p;
+            s->D0(u, v, p);
+            return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
+    return nullptr;
+}
+
+PyObject* GeometrySurfacePy::getDN(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(g);
+    try {
+        if (!s.IsNull()) {
+            int nu, nv;
+            double u,v;
+            if (!PyArg_ParseTuple(args, "ddii", &u, &v, &nu, &nv))
+                return nullptr;
+            gp_Vec v1 = s->DN(u, v, nu, nv);
+            return new Base::VectorPy(Base::Vector3d(v1.X(),v1.Y(),v1.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
+    return nullptr;
+}
+
 PyObject* GeometrySurfacePy::value(PyObject *args)
 {
     Handle(Geom_Geometry) g = getGeometryPtr()->handle();
