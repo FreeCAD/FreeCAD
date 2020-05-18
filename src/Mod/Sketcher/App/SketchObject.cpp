@@ -5505,7 +5505,7 @@ static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
 // Auxiliary Method: returns point projection in UV space of plane
 static gp_Vec2d ProjPointOnPlane_UV( const gp_Pnt& P, const gp_Pln& Pl)
 {
-  gp_Vec OP = gp_Vec(gp_Pnt(), P);
+  gp_Vec OP = gp_Vec(Pl.Location(), P);
   return ProjVecOnPlane_UV(OP, Pl);
 }
 
@@ -5858,53 +5858,107 @@ void SketchObject::rebuildExternalGeometry(void)
                     }
                 }
                 else if (curve.GetType() == GeomAbs_Ellipse) {
-                   // TODO : fill the gaps!
                     gp_Dir vecSketchPlaneX = sketchPlane.Position().XDirection();
                     gp_Dir vecSketchPlaneY = sketchPlane.Position().YDirection();
 
                     gp_Elips elipsOrig = curve.Ellipse();
-
+                    gp_Elips elipsDest;
                     gp_Pnt origCenter = elipsOrig.Location();
+                    gp_Pnt destCenter = ProjPointOnPlane_UVN(origCenter, sketchPlane).XYZ();
+
                     gp_Dir origAxisMajorDir = elipsOrig.XAxis().Direction();
                     gp_Vec origAxisMajor = elipsOrig.MajorRadius() * gp_Vec(origAxisMajorDir);
                     gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
-                    gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMajorDir);
+                    gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMinorDir);
 
                     double R = elipsOrig.MajorRadius();
                     double r = elipsOrig.MinorRadius();
 
-                    gp_Pnt destCenter = ProjPointOnPlane_UVN(origCenter, sketchPlane).XYZ();
+                    if (sketchPlane.Position().Direction().IsParallel(elipsOrig.Position().Direction(), Precision::Angular())) {
+                       elipsDest = elipsOrig.Translated(origCenter, destCenter);
+                       Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
+                       Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                       ellipse->setHandle(curve);
+                       ellipse->Construction = true;
 
-                    // look for major axis of projected ellipse
-                    //
-                    // t is the parameter along the origin ellipse
-                    //   OM(t) = origCenter
-                    //           + majorRadius * cos(t) * origAxisMajorDir
-                    //           + minorRadius * sin(t) * origAxisMinorDir
-                    gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajorDir, sketchPlane);
-                    gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinorDir, sketchPlane);
-                    double t_max = 2.0 * R*r*PA.Dot(PB) / (R*R - r*r);
-                    t_max = 0.5 * atan(t_max);
-                    double t_min = t_max + 0.5 * M_PI;
-                    // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
-                    //     becomes the apoapse of the pojected ellipse.
-                    gp_Vec ON_max = origAxisMajor * R * cos(t_max) + origAxisMinor * r * sin(t_max);
-                    gp_Vec ON_min = origAxisMajor * R * cos(t_min) + origAxisMinor * r * sin(t_min);
-                    gp_Vec2d destAxisMajor = ProjVecOnPlane_UV(ON_max, sketchPlane);
-                    gp_Vec2d destAxisMinor = ProjVecOnPlane_UV(ON_min, sketchPlane);
+                       ExternalGeo.push_back(ellipse);
+                    }
+                    else {
+    
+    
+                        // look for major axis of projected ellipse
+                        //
+                        // t is the parameter along the origin ellipse
+                        //   OM(t) = origCenter
+                        //           + majorRadius * cos(t) * origAxisMajorDir
+                        //           + minorRadius * sin(t) * origAxisMinorDir
+                        gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
+                        gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
+                        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+                        t_max = 0.5 * atan(t_max);  // gives new major axis is most cases, but not all
+                        double t_min = t_max + 0.5 * M_PI;
 
-                    double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
-                    gp_Ax2 destElipsAx2(destCenter,
-                                  gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0),
-                                  gp_Dir(destAxisMajor.X(), destAxisMajor.Y(), 0.0));
-                    gp_Elips destElips(destElipsAx2, destAxisMajor.Magnitude(), destAxisMinor.Magnitude());
+                        // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
+                        //     becomes the apoapse of the pojected ellipse.
+                        gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
+                        gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
+                        gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
+                        gp_Vec destAxisMinor = ProjVecOnPlane_UVN(ON_min, sketchPlane);
 
-                    Handle(Geom_Ellipse) curve = new Geom_Ellipse(destElips);
-                    Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                    ellipse->setHandle(curve);
-                    ellipse->Construction = true;
+                        double RDest = destAxisMajor.Magnitude();
+                        double rDest = destAxisMinor.Magnitude();
 
-                    ExternalGeo.push_back(ellipse);
+                        if (RDest < rDest) {
+                           double rTmp = rDest;
+                           rDest = RDest;
+                           RDest = rTmp;
+                           gp_Vec axisTmp = destAxisMajor;
+                           destAxisMajor = destAxisMinor;
+                           destAxisMinor = axisTmp;
+                        }
+
+                        double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
+                        gp_Ax2 destCurveAx2(destCenter,
+                              gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0),
+                              gp_Dir(destAxisMajor));
+
+                        if ((RDest - rDest) < (double) Precision::Confusion()) {  // projection is a circle
+                           Handle(Geom_Circle) curve = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
+                           Part::GeomCircle* circle = new Part::GeomCircle();
+                           circle->setHandle(curve);
+                           circle->Construction = true;
+
+                           ExternalGeo.push_back(circle);
+                        }
+                        else
+                        {
+                           if (sketchPlane.Position().Direction().IsNormal(elipsOrig.Position().Direction(), Precision::Angular())) {
+                              gp_Vec start = gp_Vec(destCenter.XYZ()) + destAxisMajor;
+                              gp_Vec end = gp_Vec(destCenter.XYZ()) - destAxisMajor;
+
+                              Part::GeomLineSegment * projectedSegment = new Part::GeomLineSegment();
+                              projectedSegment->setPoints(Base::Vector3d(start.X(), start.Y(), start.Z()),
+                                    Base::Vector3d(end.X(), end.Y(), end.Z()));
+                              projectedSegment->Construction = true;
+                              ExternalGeo.push_back(projectedSegment);
+                           }
+                           else
+                           {
+
+                              elipsDest.SetPosition(destCurveAx2);
+                              elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
+                              elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
+
+
+                              Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
+                              Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                              ellipse->setHandle(curve);
+                              ellipse->Construction = true;
+
+                              ExternalGeo.push_back(ellipse);
+                           }
+                        }
+                    }
                 }
                 else {
                     try {
