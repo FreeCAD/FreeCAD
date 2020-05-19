@@ -92,6 +92,9 @@ std::string PropertyFileIncluded::getDocTransientPath(void) const
     if (co->isDerivedFrom(DocumentObject::getClassTypeId())) {
         path = static_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
         std::replace(path.begin(), path.end(), '\\', '/');
+    } else if (co->isDerivedFrom(Document::getClassTypeId())) {
+        path = static_cast<Document*>(co)->TransientDir.getValue();
+        std::replace(path.begin(), path.end(), '\\', '/');
     }
     return path;
 }
@@ -235,6 +238,18 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             dst.setPermissions(Base::FileInfo::ReadOnly);
         }
 
+        hasSetValue();
+
+    } else if (_cValue.size()) {
+        aboutToSetValue();
+        // remove old file (if not moved by undo)
+        Base::FileInfo value(_cValue);
+        std::string pathAct = value.dirPath();
+        if (value.exists()) {
+            value.setPermissions(Base::FileInfo::ReadWrite);
+            value.deleteFile();
+        }
+        _cValue.clear();
         hasSetValue();
     }
 }
