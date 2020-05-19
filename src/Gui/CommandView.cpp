@@ -4085,7 +4085,7 @@ VIEW_CMD_DEF(DockOverlayActivateOnHover, DockOverlayActivateOnHover)
 }
 
 //===========================================================================
-// Std_DockOverlayClickThrough
+// Std_DockOverlayMouseThrough
 //===========================================================================
 
 VIEW_CMD_DEF(DockOverlayMouseThrough, DockOverlayMouseThrough)
@@ -4094,6 +4094,23 @@ VIEW_CMD_DEF(DockOverlayMouseThrough, DockOverlayMouseThrough)
     sMenuText     = QT_TR_NOOP("Mouse event pass through");
     sToolTipText  = QT_TR_NOOP("Allow mouse event to pass through transparent overlay when holding 'ALT' key");
     sWhatsThis    = "Std_DockOverlayMouseThrough";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
+//===========================================================================
+// Std_DockOverlayCheckNaviCube
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayCheckNaviCube, DockOverlayCheckNaviCube)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Make space for NaviCube");
+    sToolTipText  = QT_TR_NOOP("Adjust overlay size to make space for Navigation Cube\n"
+                               "Note that it only respects the cube position setting in\n"
+                               "the preference dialog, and will not work for custom\n"
+                               "position obtained through dragging the cube.");
+    sWhatsThis    = "Std_DockOverlayCheckNaviCube";
     sStatusTip    = sToolTipText;
     eType         = 0;
 }
@@ -4127,6 +4144,7 @@ public:
         addCommand(new StdCmdDockOverlayExtraState());
         addCommand(new StdCmdDockOverlayActivateOnHover());
         addCommand(new StdCmdDockOverlayMouseThrough());
+        addCommand(new StdCmdDockOverlayCheckNaviCube());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
 };

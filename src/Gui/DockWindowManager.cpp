@@ -1631,7 +1631,8 @@ struct DockWindowManagerP
             h -= tabbar->height();
 
         int naviCubeSize = ViewParams::getNaviWidgetSize()+10;
-        int naviCorner = ViewParams::getCornerNaviCube();
+        int naviCorner = ViewParams::getDockOverlayCheckNaviCube() ?
+            ViewParams::getCornerNaviCube() : -1;
 
         QRect rectBottom(0,0,0,0);
         if(_bottom.geometry(rectBottom)) {

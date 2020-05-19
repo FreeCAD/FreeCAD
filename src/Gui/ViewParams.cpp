@@ -85,3 +85,7 @@ void ViewParams::onDockOverlayExtraStateChanged() {
 void ViewParams::onCornerNaviCubeChanged() {
     DockWindowManager::instance()->refreshOverlay();
 }
+
+void ViewParams::onDockOverlayCheckNaviCubeChanged() {
+    DockWindowManager::instance()->refreshOverlay();
+}

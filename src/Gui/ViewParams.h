@@ -108,6 +108,7 @@ public:
     FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000) \
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true) \
     FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,true) \
+    FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true) \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
     FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4) \
