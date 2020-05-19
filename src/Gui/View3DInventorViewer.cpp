@@ -3177,6 +3177,13 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
         default:
             break;
         }
+    } else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId()) 
+                && ev->wasShiftDown()
+                && ev->wasCtrlDown())
+    {
+        if(static_cast<const SoMouseButtonEvent*>(ev)->getButton() == SoMouseButtonEvent::BUTTON4
+                || static_cast<const SoMouseButtonEvent*>(ev)->getButton() == SoMouseButtonEvent::BUTTON5)
+            return processSoEventBase(ev);
     }
 
     return navigation->processEvent(ev);

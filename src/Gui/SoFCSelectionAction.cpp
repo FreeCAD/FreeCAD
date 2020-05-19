@@ -1459,10 +1459,11 @@ const SoPickedPointList &SoFCRayPickAction::getPrioPickedPointList() const {
 void SoFCRayPickAction::cleanup() {
     reset();
     ppList->truncate(0);
+    faceDistances.clear();
 }
 
 void SoFCRayPickAction::beginTraversal(SoNode * node) {
-    cleanup();
+    // cleanup();
     inherited::beginTraversal(node);
 }
 
@@ -1472,7 +1473,7 @@ static inline float getDistance(SoAction *action, const SbVec3f &pos) {
     return -plane.getDistance(pos);
 }
 
-void SoFCRayPickAction::setPickBackFace(bool enable)
+void SoFCRayPickAction::setPickBackFace(int enable)
 {
     backFace = enable;
     if(enable)
@@ -1481,18 +1482,48 @@ void SoFCRayPickAction::setPickBackFace(bool enable)
 
 void SoFCRayPickAction::afterPick() {
     SoPickedPoint *pp = nullptr;
+    SoPickedPoint *ppFace = nullptr;
+    std::unique_ptr<SoPickedPoint> _ppFace;
 
     if(isPickAll()) {
         if(!backFace)
             return;
         const auto &pps = getPickedPointList();
-        SoPickedPoint *lastFace = nullptr;
         for(int i=0,c=pps.getLength();i<c;++i) {
             auto detail = pps[i]->getDetail();
             if(!detail)
                 continue;
             if(detail->isOfType(SoFaceDetail::getClassTypeId())) {
-                lastFace = pps[i];
+                if(backFace == 1) {
+                    ppFace = pps[i];
+                    continue;
+                }
+                float dist = getDistance(this,pps[i]->getPoint());
+                if(backFace > 1) {
+                    if(backFace == (int)faceDistances.size()) {
+                        if(dist <= faceDistances.begin()->first)
+                            continue;
+                        faceDistances.erase(faceDistances.begin());
+                    }
+                    faceDistances[dist].reset(pps[i]->copy());
+                    if(faceDistances.begin()->second) {
+                        _ppFace.reset(faceDistances.begin()->second.release());
+                        ppFace = _ppFace.get();
+                    }
+                } else {
+                    if(-backFace == (int)faceDistances.size()) {
+                        auto itLast = --faceDistances.end();
+                        if(dist >= itLast->first)
+                            continue;
+                        faceDistances.erase(itLast);
+                    }
+                    faceDistances[dist].reset(pps[i]->copy());
+                    auto itLast = --faceDistances.end();
+                    if(itLast->second) {
+                        _ppFace.reset(itLast->second.release());
+                        ppFace = _ppFace.get();
+                    }
+                }
                 continue;
             }
             if(detail->isOfType(SoPointDetail::getClassTypeId())) {
@@ -1515,7 +1546,7 @@ void SoFCRayPickAction::afterPick() {
             }
         }
         if(!pp)
-            pp = lastFace;
+            pp = ppFace;
     }
 
     if(!pp) {
@@ -1531,33 +1562,37 @@ void SoFCRayPickAction::afterPick() {
     int p = SoFCUnifiedSelection::getPriority(pp);
 
     if(!ppList->getLength()) {
-        ppList->append(pp->copy());
         lastPriority = p;
-        if(backFace && pp->getDetail()
-                && pp->getDetail()->isOfType(SoFaceDetail::getClassTypeId()))
-        {
+        if(backFace && pp == ppFace) {
+            if(pp == _ppFace.get())
+                ppList->append(_ppFace.release());
+            else
+                ppList->append(pp->copy());
+            skipFace = false;
             lastBackDist = dist;
             lastDist = std::numeric_limits<float>::max();
         } else {
+            ppList->append(pp->copy());
             lastDist = dist;
-            lastBackDist = std::numeric_limits<float>::max();
+            skipFace = true;
         }
         reset();
         return;
     }
 
-    if(backFace && pp->getDetail()
-        && pp->getDetail()->isOfType(SoFaceDetail::getClassTypeId()))
-    {
-        if(lastBackDist < dist) {
+    if(backFace && pp == ppFace) {
+        if(!skipFace && (backFace!=1 || lastBackDist < dist)) {
             lastBackDist = dist;
-            ppList->set(0,pp->copy());
+            if(pp == _ppFace.get())
+                ppList->set(0,_ppFace.release());
+            else
+                ppList->set(0,pp->copy());
         }
     } else {
         if((p > lastPriority && pos.equals((*ppList)[0]->getPoint(),0.01f))
                 || dist < lastDist)
         {
-            lastBackDist = std::numeric_limits<float>::max();
+            skipFace = true;
             lastPriority = p;
             lastDist = dist;
             ppList->set(0,pp->copy());

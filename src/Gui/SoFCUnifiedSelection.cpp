@@ -336,11 +336,8 @@ void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
         if(!child->isOfType(SoFCPathAnnotation::getClassTypeId()))
             continue;
         static_cast<SoFCPathAnnotation*>(child)->doPick(path,pcRayPick);
-        getPickedInfo(ret,pcRayPick->getPrioPickedPointList(),singlePick,true,filter);
-        pcRayPick->cleanup();
-        if(singlePick && ret.size()>=1)
-            break;
     }
+    getPickedInfo(ret,pcRayPick->getPrioPickedPointList(),singlePick,true,filter);
     path->truncate(pathLength);
 }
 
@@ -362,8 +359,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     pcRayPick->setViewportRegion(viewport);
     pcRayPick->setPoint(pos);
     pcRayPick->setPickAll(!singlePick || !ViewParams::instance()->getUseNewRayPick());
-    pcRayPick->setPickBackFace(singlePick 
-            && (QApplication::queryKeyboardModifiers() & Qt::ShiftModifier));
+    pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
 
     SoPickStyleElement::set(pcRayPick->getState(),
             (!pcRayPick->pickBackFace() && singlePick) ?
@@ -372,6 +368,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
 
     SoFCDisplayModeElement::set(pcRayPick->getState(),0,SbName::empty(),false);
 
+    pcRayPick->cleanup();
     getPickedInfoOnTop(ret, singlePick, filter);
 
     if(ret.empty() || !singlePick) {
@@ -382,6 +379,13 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
         pcRayPick->apply(pcViewer->getSoRenderManager()->getSceneGraph());
 
         getPickedInfo(ret,pcRayPick->getPrioPickedPointList(),singlePick,false,filter);
+    }
+
+    if(singlePick && pickBackFace) {
+        if(pickBackFace > 1 && pcRayPick->getBackFaceCount() < pickBackFace)
+            pickBackFace = std::max(1, pcRayPick->getBackFaceCount());
+        else if (pickBackFace < 0 && pcRayPick->getBackFaceCount() < -pickBackFace)
+            pickBackFace = std::min(-1, -pcRayPick->getBackFaceCount());
     }
 
     FC_TIME_TRACE(t,"pick radius " << radius << ", count " << ret.size() << ',');
@@ -965,6 +969,53 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
 
+    bool doPick = false;
+
+    bool shiftDown = event->wasShiftDown();
+    if(event->isOfType(SoKeyboardEvent::getClassTypeId())
+            && static_cast<const SoKeyboardEvent*>(event)->getKey() == SoKeyboardEvent::LEFT_SHIFT)
+    {
+        shiftDown = (static_cast<const SoKeyboardEvent*>(event)->getState() == SoKeyboardEvent::DOWN);
+    }
+    if (shiftDown) {
+        if(!pickBackFace) {
+            pickBackFace = 1;
+            doPick = true;
+        }
+    } else if (pickBackFace) {
+        pickBackFace = 0;
+        doPick = true;
+    }
+
+    // mouse press events for (de)selection
+    if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) && 
+             selectionMode.getValue() == SoFCUnifiedSelection::ON) {
+        const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
+        if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
+            // check to see if the mouse is over a geometry...
+            auto infos = this->getPickedList(action,!Selection().needPickedList());
+            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
+                action->setHandled();
+        } // mouse release
+        else if (shiftDown && event->wasCtrlDown()) {
+            if (SoMouseButtonEvent::isButtonPressEvent(e, SoMouseButtonEvent::BUTTON4)) {
+                if(pickBackFace == 1)
+                    pickBackFace = -1;
+                else
+                    --pickBackFace;
+                doPick = true;
+                FC_LOG("back face " << pickBackFace);
+            } else if (SoMouseButtonEvent::isButtonPressEvent(e, SoMouseButtonEvent::BUTTON5)) {
+                if(pickBackFace == -1)
+                    pickBackFace = 1;
+                else
+                    ++pickBackFace;
+                doPick = true;
+                FC_LOG("back face " << pickBackFace);
+            }
+        }
+    }
+
     // If we don't need to pick for locate highlighting,
     // then just behave as separator and return.
     // NOTE: we still have to pick for ON even though we don't have
@@ -978,7 +1029,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     //
     // If this is a mouseMotion event, then check for locate highlighting
     //
-    if (event->isOfType(SoLocation2Event::getClassTypeId())) {
+    if (doPick || event->isOfType(SoLocation2Event::getClassTypeId())) {
         // NOTE: If preselection is off then we do not check for a picked point because otherwise this search may slow
         // down extremely the system on really big data sets. In this case we just check for a picked point if the data
         // set has been selected.
@@ -998,17 +1049,6 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 onPreselectTimer();
             }
         }
-    }
-    // mouse press events for (de)selection
-    else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) && 
-             selectionMode.getValue() == SoFCUnifiedSelection::ON) {
-        const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
-        if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
-            // check to see if the mouse is over a geometry...
-            auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
-                action->setHandled();
-        } // mouse release
     }
 
     inherited::handleEvent(action);

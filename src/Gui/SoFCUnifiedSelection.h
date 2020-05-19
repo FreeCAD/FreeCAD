@@ -175,6 +175,8 @@ private:
     SbViewportRegion preselViewport;
 
     SoFCRayPickAction *pcRayPick;
+
+    mutable int pickBackFace = 0;
 };
 
 

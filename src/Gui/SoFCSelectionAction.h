@@ -33,6 +33,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <vector>
 #include <memory>
+#include <set>
 
 class SoSFString;
 class SoSFColor;
@@ -396,8 +397,12 @@ public:
 
     const SoPickedPointList &getPrioPickedPointList() const;
 
-    bool pickBackFace() const {return backFace;}
-    void setPickBackFace(bool enable);
+    int pickBackFace() const {return backFace;}
+    void setPickBackFace(int enable);
+
+    int getBackFaceCount() const {
+        return (int)faceDistances.size();
+    }
 
     void afterPick();
 
@@ -408,10 +413,12 @@ protected:
 
 private:
     std::unique_ptr<SoPickedPointList> ppList;
+    std::map<float, std::unique_ptr<SoPickedPoint> > faceDistances;
     int lastPriority;
     float lastDist;
     float lastBackDist;
-    bool backFace = false;
+    int backFace = 0;
+    bool skipFace;
 };
 
 } // namespace Gui
