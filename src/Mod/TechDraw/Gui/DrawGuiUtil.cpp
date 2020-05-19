@@ -167,6 +167,8 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
                         ss <<  (std::string)mod; 
                         if (ss.str().find("Draft") != std::string::npos) {
                             result = true;
+                        } else if (ss.str().find("draft") != std::string::npos) {
+                            result = true;
                         }
                     }
                 }

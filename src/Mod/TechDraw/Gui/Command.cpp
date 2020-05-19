@@ -1086,6 +1086,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
+    std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
     int draftItemsFound = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
         if (DrawGuiUtil::isDraftObject((*it)))  {
@@ -1098,6 +1099,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
                             FeatName.c_str(),SourceName.c_str());
             doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                             PageName.c_str(),FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                          FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
             updateActive();
             commitCommand();
         }
