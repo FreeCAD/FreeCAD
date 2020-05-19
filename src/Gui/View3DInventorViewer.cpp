@@ -3536,10 +3536,21 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
     }
 
     if(guiDocument && ViewParams::instance()->getUseTightBoundingBox()) {
+        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
         for(int i=0;i<pcViewProviderRoot->getNumChildren();++i) {
             auto node = pcViewProviderRoot->getChild(i);
             auto vp = guiDocument->getViewProvider(node);
-            if(!vp || !vp->isVisible())
+            if(!vp) {
+                action.apply(node);
+                auto bbox = action.getBoundingBox();
+                if(!bbox.isEmpty()) {
+                    float minx,miny,minz,maxx,maxy,maxz;
+                    bbox.getBounds(minx,miny,minz,maxx,maxy,maxz);
+                    box.Add(Base::BoundBox3d(minx,miny,minz,maxx,maxy,maxz));
+                }
+                continue;
+            }
+            if(!vp->isVisible())
                 continue;
             auto sbox = vp->getBoundingBox(0,0,true,this);
             if(sbox.IsValid())
