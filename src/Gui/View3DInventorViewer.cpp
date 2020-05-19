@@ -3733,7 +3733,7 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
         z = pla.getPosition().z;
         pla = Base::Placement();
     } else {
-        z = center[2]-z/2;
+        z = center[2]-z/2-1;
     }
     SbVec3f coords[4] = {
         {center[0]-width, center[1]-length, z},

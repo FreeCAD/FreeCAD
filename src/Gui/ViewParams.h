@@ -119,16 +119,16 @@ public:
     FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,false) \
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false) \
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
-    FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, false) \
+    FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowSpotLight, bool, Bool, false) \
     FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8) \
     FC_VIEW_PARAM(ShadowLightDirectionX, double, Float, -1.0) \
     FC_VIEW_PARAM(ShadowLightDirectionY, double, Float, -1.0) \
     FC_VIEW_PARAM(ShadowLightDirectionZ, double, Float, -1.0) \
-    FC_VIEW_PARAM(ShadowLightColor, unsigned long, Unsigned, 0xffffffff) \
+    FC_VIEW_PARAM(ShadowLightColor, unsigned long, Unsigned, 0xf0fdffff) \
     FC_VIEW_PARAM(ShadowShowGround, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0) \
-    FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0xffffffff) \
+    FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0x7d7d7dff) \
     FC_VIEW_PARAM(ShadowGroundShininess, double, Float, 0.8) \
     FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
 
