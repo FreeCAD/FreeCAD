@@ -135,7 +135,7 @@ def joinWalls(walls,delete=False):
     """Join the given list of walls into one sketch-based wall.
 
     Take the first wall in the list, and adds on the other walls in the list.
-    Return the modified first wall. 
+    Return the modified first wall.
 
     Setting delete to True, will delete the other walls. Only join walls
     if the walls have the same width, height and alignment.
@@ -188,7 +188,7 @@ def joinWalls(walls,delete=False):
     return base
 
 def mergeShapes(w1,w2):
-    """Not currently implemented. 
+    """Not currently implemented.
 
     Return a Shape built on two walls that share same properties and have a
     coincident endpoint.
@@ -270,7 +270,7 @@ class _CommandWall:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
 
     def IsActive(self):
-        """Determines whether or not the Arch Wall tool is active. 
+        """Determines whether or not the Arch Wall tool is active.
 
         Inactive commands are indicated by a greyed-out icon in the menus and
         toolbars.
@@ -579,7 +579,7 @@ class _CommandWall:
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetInt("WallAlignment",i)
 
     def setContinue(self,i):
-        """Simple callback to set if the interactive mode will restart when finished. 
+        """Simple callback to set if the interactive mode will restart when finished.
 
         This allows for several walls to be placed one after another.
         """
@@ -608,7 +608,7 @@ class _CommandWall:
 
 
 class _CommandMergeWalls:
-    """The command definition for the Arch workbench's gui tool, Arch MergeWalls. 
+    """The command definition for the Arch workbench's gui tool, Arch MergeWalls.
 
     A tool for merging walls.
 
@@ -626,7 +626,7 @@ class _CommandMergeWalls:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
-        """Determines whether or not the Arch MergeWalls tool is active. 
+        """Determines whether or not the Arch MergeWalls tool is active.
 
         Inactive commands are indicated by a greyed-out icon in the menus and
         toolbars.
@@ -674,7 +674,7 @@ class _CommandMergeWalls:
         FreeCAD.ActiveDocument.commitTransaction()
 
 class _Wall(ArchComponent.Component):
-    """The Wall object. 
+    """The Wall object.
 
     Turns a <App::FeaturePython> into a wall object, then uses a
     <Part::Feature> to create the wall's shape.
@@ -967,7 +967,7 @@ class _Wall(ArchComponent.Component):
         obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
-        """Method called before the object has a property changed. 
+        """Method called before the object has a property changed.
 
         Specifically, this method is called before the value changes.
 
@@ -1000,8 +1000,8 @@ class _Wall(ArchComponent.Component):
         """
 
         if prop == "Length":
-            if (obj.Base and obj.Length.Value 
-                    and hasattr(self,"oldLength") and (self.oldLength is not None) 
+            if (obj.Base and obj.Length.Value
+                    and hasattr(self,"oldLength") and (self.oldLength is not None)
                     and (self.oldLength != obj.Length.Value)):
 
                 if hasattr(obj.Base,'Shape'):
@@ -1030,7 +1030,7 @@ class _Wall(ArchComponent.Component):
 
     def getFootprint(self,obj):
         """Get the faces that make up the base/foot of the wall.
-        
+
         Returns
         -------
         list of <Part.Face>
@@ -1047,7 +1047,7 @@ class _Wall(ArchComponent.Component):
 
     def getExtrusionData(self,obj):
         """Get data needed to extrude the wall from a base object.
-        
+
         take the Base object, and find a base face to extrude
         out, a vector to define the extrusion direction and distance.
 
@@ -1086,7 +1086,7 @@ class _Wall(ArchComponent.Component):
                 if hasattr(obj.Base.Proxy, 'getWidths'):
                     # Return a list of Width corresponding to indexes of sorted
                     # edges of Sketch.
-                    widths = obj.Base.Proxy.getWidths(obj.Base)  
+                    widths = obj.Base.Proxy.getWidths(obj.Base)
 
         # Get width of each edge/wall segment from ArchWall.OverrideWidth if
         # Base Object does not provide it
@@ -1130,7 +1130,7 @@ class _Wall(ArchComponent.Component):
                 if hasattr(obj.Base.Proxy, 'getAligns'):
                     # Return a list of Align corresponds to indexes of sorted
                     # edges of Sketch.
-                    aligns = obj.Base.Proxy.getAligns(obj.Base)  
+                    aligns = obj.Base.Proxy.getAligns(obj.Base)
         # Get align of each edge/wall segment from ArchWall.OverrideAlign if
         # Base Object does not provide it
         if not aligns:
@@ -1270,7 +1270,7 @@ class _Wall(ArchComponent.Component):
                         # if not sketch, e.g. Dwire, can have wire which is 3d
                         # so not on the placement's working plane - below
                         # applied to Sketch not applicable here
-                        #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))  
+                        #normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
                         #normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     if self.basewires:
@@ -1325,10 +1325,12 @@ class _Wall(ArchComponent.Component):
                             if curAligns == "Left":
                                 off = obj.Offset.Value
                                 if layers:
+                                    curWidth = abs(layers[i])
                                     off = off+layeroffset
-                                    dvec.multiply(abs(layers[i]))
-                                    layeroffset += abs(layers[i])
+                                    dvec.multiply(curWidth)
+                                    layeroffset += abs(curWidth)
                                 else:
+                                    curWidth = widths
                                     dvec.multiply(width)
 
                                 # Now DraftGeomUtils.offsetWire() support
@@ -1344,7 +1346,7 @@ class _Wall(ArchComponent.Component):
                                 w2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
-                                                               widthList=widths,
+                                                               widthList=curWidth,
                                                                offsetMode=None,
                                                                alignList=aligns,
                                                                normal=normal,
@@ -1355,7 +1357,7 @@ class _Wall(ArchComponent.Component):
                                 w1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
-                                                               widthList=widths,
+                                                               widthList=curWidth,
                                                                offsetMode="BasewireMode",
                                                                alignList=aligns,
                                                                normal=normal,
@@ -1366,10 +1368,12 @@ class _Wall(ArchComponent.Component):
                                 dvec = dvec.negative()
                                 off = obj.Offset.Value
                                 if layers:
+                                    curWidth = abs(layers[i])
                                     off = off+layeroffset
-                                    dvec.multiply(abs(layers[i]))
-                                    layeroffset += abs(layers[i])
+                                    dvec.multiply(curWidth)
+                                    layeroffset += abs(curWidth)
                                 else:
+                                    curWidth = widths
                                     dvec.multiply(width)
 
                                 # Now DraftGeomUtils.offsetWire() support similar effect as ArchWall Offset
@@ -1381,7 +1385,7 @@ class _Wall(ArchComponent.Component):
                                 w2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
-                                                               widthList=widths,
+                                                               widthList=curWidth,
                                                                offsetMode=None,
                                                                alignList=aligns,
                                                                normal=normal,
@@ -1390,8 +1394,8 @@ class _Wall(ArchComponent.Component):
                                 w1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
-                                                               widthList=widths,
-                                                               offsetMode="BasewireMode",
+                                                               widthList=curWidth,
+                                                               offsetMode=None,
                                                                alignList=aligns,
                                                                normal=normal,
                                                                basewireOffset=off)
@@ -1402,13 +1406,15 @@ class _Wall(ArchComponent.Component):
                             #elif obj.Align == "Center":
                             elif curAligns == "Center":
                                 if layers:
-                                    off = width/2-layeroffset
+                                    totalwidth=sum([abs(l) for l in layers])
+                                    curWidth = abs(layers[i])
+                                    off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w1 = DraftGeomUtils.offsetWire(wire,d1)
-                                    layeroffset += abs(layers[i])
-                                    off = width/2-layeroffset
+                                    w1 = DraftGeomUtils.offsetWire(wire, d1)
+                                    layeroffset += curWidth
+                                    off = totalwidth/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
-                                    w2 = DraftGeomUtils.offsetWire(wire,d1)
+                                    w2 = DraftGeomUtils.offsetWire(wire, d1)
                                 else:
                                     dvec.multiply(width)
 
@@ -1427,13 +1433,17 @@ class _Wall(ArchComponent.Component):
                                                                    offsetMode="BasewireMode",
                                                                    alignList=aligns,
                                                                    normal=normal)
-                                        
+
 
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
                             if sh:
+
+                                if layers and (layers[i] < 0):
+                                    # layers with negative values are not drawn
+                                    continue
 
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
 
@@ -1538,7 +1548,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
-        provider. 
+        provider.
 
         Each display mode's node includes the data needed to display the object
         in that mode. This might include colors of faces, or the draw style of
