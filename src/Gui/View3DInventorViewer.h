@@ -72,6 +72,9 @@ class SoSpotLight;
 class SoFaceSet;
 class SoSwitch;
 class SoCoordinate3;
+class SoTexture2;
+class SoTextureCoordinate2;
+class SoBumpMap;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -483,10 +486,14 @@ private:
     SoShadowGroup            * pcShadowGroup;
     SoDirectionalLight       * pcShadowDirectionalLight;
     SoSpotLight              * pcShadowSpotLight;
+    SoGroup                  * pcShadowGroundGroup;
     SoSwitch                 * pcShadowGroundSwitch;
     SoCoordinate3            * pcShadowGroundCoords;
     SoFaceSet                * pcShadowGround;
     SoMaterial               * pcShadowMaterial;
+    SoTexture2               * pcShadowGroundTexture;
+    SoTextureCoordinate2     * pcShadowGroundTextureCoords;
+    SoBumpMap                * pcShadowGroundBumpMap;
     uint32_t                 shadowNodeId;
 
     SoFCSwitch        * pcGroupOnTopSwitch;

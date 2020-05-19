@@ -77,6 +77,8 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <Inventor/nodes/SoTexture2.h>
+# include <Inventor/nodes/SoTextureCoordinate2.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -93,6 +95,8 @@
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowDirectionalLight.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowSpotLight.h>
+#include <Inventor/nodes/SoBumpMap.h>
+#include <Inventor/nodes/SoTextureUnit.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>
@@ -112,6 +116,7 @@
 #include <Base/UnitsApi.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyUnits.h>
+#include <App/PropertyFile.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -391,6 +396,10 @@ void View3DInventorViewer::init()
     pcShadowGroundSwitch = nullptr;
     pcShadowGroundCoords = nullptr;
     pcShadowGround = nullptr;
+    pcShadowGroundGroup = nullptr;
+    pcShadowGroundBumpMap = nullptr;
+    pcShadowGroundTexture = nullptr;
+    pcShadowGroundTextureCoords = nullptr;
     shadowNodeId = 0;
 
     static bool _cacheModeInited;
@@ -733,9 +742,25 @@ View3DInventorViewer::~View3DInventorViewer()
         this->pcShadowMaterial->unref();
         this->pcShadowMaterial = nullptr;
     }
+    if(this->pcShadowGroundTexture) {
+        this->pcShadowGroundTexture->unref();
+        this->pcShadowGroundTexture = nullptr;
+    }
+    if(this->pcShadowGroundTextureCoords) {
+        this->pcShadowGroundTextureCoords->unref();
+        this->pcShadowGroundTextureCoords = nullptr;
+    }
+    if(this->pcShadowGroundBumpMap) {
+        this->pcShadowGroundBumpMap->unref();
+        this->pcShadowGroundBumpMap = nullptr;
+    }
     if(this->pcShadowGround) {
         this->pcShadowGround->unref();
         this->pcShadowGround = nullptr;
+    }
+    if(this->pcShadowGroundGroup) {
+        this->pcShadowGroundGroup->unref();
+        this->pcShadowGroundGroup = nullptr;
     }
     if(this->pcShadowGroundCoords) {
         this->pcShadowGroundCoords->unref();
@@ -1762,19 +1787,61 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowMaterial = new SoMaterial;
                 pcShadowMaterial->ref();
 
+                pcShadowGroundTextureCoords = new SoTextureCoordinate2;
+                pcShadowGroundTextureCoords->ref();
+
+                pcShadowGroundTexture = new SoTexture2;
+                pcShadowGroundTexture->ref();
+                pcShadowGroundTexture->model = SoMultiTextureImageElement::BLEND;
+
                 pcShadowGroundCoords = new SoCoordinate3;
                 pcShadowGroundCoords->ref();
 
                 pcShadowGround = new SoFaceSet;
                 pcShadowGround->ref();
 
-                auto grp = new SoSkipBoundingGroup;
-                grp->addChild(pcShadowMaterial);
-                grp->addChild(pcShadowGroundCoords);
-                grp->addChild(pcShadowGround);
+                auto shapeHints = new SoShapeHints;
+                // shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+                shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
 
-                auto sep = new SoFCSeparator;
-                sep->addChild(grp);
+                auto pickStyle = new SoPickStyle;
+                pickStyle->style = SoPickStyle::UNPICKABLE;
+
+                auto tu = new SoTextureUnit;
+                tu->unit = 1;
+
+                pcShadowGroundGroup = new SoSkipBoundingGroup;
+                pcShadowGroundGroup->ref();
+                pcShadowGroundGroup->addChild(pickStyle);
+                pcShadowGroundGroup->addChild(shapeHints);
+                pcShadowGroundGroup->addChild(pcShadowGroundTextureCoords);
+                pcShadowGroundGroup->addChild(tu);
+
+                // We deliberately insert the same SoTextureCoordinate2 twice.
+                // The first one with default texture unit 0, and the second
+                // one with unit 1. The reason for unit 1 is because unit 0
+                // texture does not work with bump map (Coin3D bug?). The
+                // reason for unit 0 texture coordinate is because Coin3D
+                // crashes if there is at least one texture coordinate node,
+                // but no unit 0 texture coordinate, with the following call
+                // stack.
+                //
+                // SoMultiTextureCoordinateelement::get4()
+                // SoMultiTextureCoordinateelement::get4()
+                // SoFaceSet::generatePrimitives()
+                // SoShape::validatePVCache()
+                // SoShape::shouldGLRender()
+                // ...
+                //
+                pcShadowGroundGroup->addChild(pcShadowGroundTextureCoords);
+
+                pcShadowGroundGroup->addChild(pcShadowGroundTexture);
+                pcShadowGroundGroup->addChild(pcShadowMaterial);
+                pcShadowGroundGroup->addChild(pcShadowGroundCoords);
+                pcShadowGroundGroup->addChild(pcShadowGround);
+
+                auto sep = new SoSeparator;
+                sep->addChild(pcShadowGroundGroup);
                 pcShadowGroundSwitch->addChild(sep);
             }
 
@@ -1847,11 +1914,11 @@ void View3DInventorViewer::applyOverrideMode()
         sbColor.setPackedValue(color.getPackedValue(),f);
         pcShadowMaterial->diffuseColor = sbColor;
 
-        pcShadowMaterial->shininess = _shadowParam<App::PropertyFloatConstraint>(
-                doc, "GroundShininess", ViewParams::getShadowGroundShininess(),
-                [](App::PropertyFloatConstraint &prop) {
-                    prop.setConstraints(&_cstr);
-                });
+        // pcShadowMaterial->shininess = _shadowParam<App::PropertyFloatConstraint>(
+        //         doc, "GroundShininess", ViewParams::getShadowGroundShininess(),
+        //         [](App::PropertyFloatConstraint &prop) {
+        //             prop.setConstraints(&_cstr);
+        //         });
 
         if(_shadowParam<App::PropertyBool>(doc, "ShowGround", ViewParams::getShadowShowGround()))
             pcShadowGroundSwitch->whichChild = 0;
@@ -1860,6 +1927,28 @@ void View3DInventorViewer::applyOverrideMode()
 
         if(!bbox.isEmpty())
             updateShadowGround(bbox);
+
+        pcShadowGroundTexture->filename = _shadowParam<App::PropertyFileIncluded>(
+                doc, "GroundTexture", ViewParams::getShadowGroundTexture().c_str());
+        
+        const char *bumpmap = _shadowParam<App::PropertyFileIncluded>(
+                doc, "GroundBumpMap", ViewParams::getShadowGroundBumpMap().c_str());
+        if(bumpmap && bumpmap[0]) {
+            if(!pcShadowGroundBumpMap) {
+                pcShadowGroundBumpMap = new SoBumpMap;
+                pcShadowGroundBumpMap->ref();
+            }
+            pcShadowGroundBumpMap->filename = bumpmap;
+            if (pcShadowGroundGroup->findChild(pcShadowGroundBumpMap) < 0) {
+                int idx = pcShadowGroundGroup->findChild(pcShadowMaterial);
+                if (idx >= 0)
+                    pcShadowGroundGroup->insertChild(pcShadowGroundBumpMap,idx);
+            }
+        } else if (pcShadowGroundBumpMap) {
+            int idx = pcShadowGroundGroup->findChild(pcShadowGroundBumpMap);
+            if (idx >= 0)
+                pcShadowGroundGroup->removeChild(idx);
+        }
 
         auto superScene = static_cast<SoGroup*>(getSoRenderManager()->getSceneGraph());
         int index = superScene->findChild(pcViewProviderRoot);
@@ -3747,6 +3836,16 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
             mat.multVecMatrix(coord,coord);
     }
     pcShadowGroundCoords->point.setValues(0, 4, coords);
+
+    float textureSize = _shadowParam<App::PropertyLength>(doc, "GroundTextureSize", 100.0); 
+    if(textureSize < 1e-5)
+        pcShadowGroundTextureCoords->point.setNum(0);
+    else {
+        float w = width*2.0/textureSize;
+        float l = length*2.0/textureSize;
+        SbVec2f points[4] = {{0,l}, {w,l}, {w,0}, {0,0}};
+        pcShadowGroundTextureCoords->point.setValues(0,4,points);
+    }
 }
 
 void View3DInventorViewer::viewAll(float factor)

@@ -131,18 +131,20 @@ public:
     FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0) \
     FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0x7d7d7dff) \
     FC_VIEW_PARAM(ShadowGroundShininess, double, Float, 0.8) \
+    FC_VIEW_PARAM(ShadowGroundBumpMap, std::string, ASCII, "") \
+    FC_VIEW_PARAM(ShadowGroundTexture, std::string, ASCII, "") \
     FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    static _ctype get##_name() { return instance()->_name; }\
-    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
+    static const _ctype &get##_name() { return instance()->_name; }\
+    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
-    static _ctype get##_name() { return instance()->_name; }\
-    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
+    static const _ctype &get##_name() { return instance()->_name; }\
+    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(ViewParams *self) { \
         self->_name = self->handle->Get##_type(#_name,_def); \
