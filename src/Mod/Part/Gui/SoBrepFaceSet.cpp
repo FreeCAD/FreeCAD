@@ -739,6 +739,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
         SoLazyElement::setTransparency(state,this,1,&hiddenLineTransparency,&packer);
         SoOverrideElement::setTransparencyOverride(state, this, true);
+        SoTextureEnabledElement::set(state,this,false);
 
         if(color) {
             hiddenLineColor = *color;
