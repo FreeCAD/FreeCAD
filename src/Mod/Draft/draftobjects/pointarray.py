@@ -27,14 +27,13 @@
 # \ingroup DRAFT
 # \brief Provides the object code for the Draft PointArray object.
 
-import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import draftutils.utils as utils
 import lazy_loader.lazy_loader as lz
 
-from draftutils.messages import _err
+from draftutils.messages import _wrn, _err
 from draftutils.translate import translate, _tr
 from draftobjects.base import DraftObject
 
@@ -85,6 +84,15 @@ class PointArray(DraftObject):
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
+        if "ExtraPlacement" not in properties:
+            _tip = ("Additional placement, shift and rotation, "
+                    "that will be applied to each copy")
+            obj.addProperty("App::PropertyPlacement",
+                            "ExtraPlacement",
+                            "Objects",
+                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            obj.ExtraPlacement = App.Placement()
+
     def execute(self, obj):
         """Run when the object is created or recomputed."""
         if not hasattr(obj.Base, 'Shape'):
@@ -94,10 +102,34 @@ class PointArray(DraftObject):
             return
 
         pt_list, count = get_point_list(obj.PointList)
-        shape = build_copies(obj.Base, pt_list)
+        shape = build_copies(obj.Base, pt_list, obj.ExtraPlacement)
 
         obj.Shape = shape
         obj.Count = count
+
+    def onDocumentRestored(self, obj):
+        """Execute code when the document is restored.
+
+        Add properties that don't exist.
+        """
+        # If the ExtraPlacement property has never been added before
+        # it will add it first, and set it to the base object's position
+        # in order to produce the same displacement as before.
+        # Then all the other properties will be processed.
+        properties = obj.PropertiesList
+
+        if "ExtraPlacement" not in properties:
+            _tip = ("Additional placement, shift and rotation, "
+                    "that will be applied to each copy")
+            obj.addProperty("App::PropertyPlacement",
+                            "ExtraPlacement",
+                            "Objects",
+                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            obj.ExtraPlacement.Base = obj.Base.Placement.Base
+            _info = "added property 'ExtraPlacement'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+
+        self.set_properties(obj)
 
 
 def get_point_list(point_object):
@@ -151,7 +183,7 @@ def get_point_list(point_object):
     return pt_list, count
 
 
-def build_copies(base_object, pt_list=None):
+def build_copies(base_object, pt_list=None, placement=App.Placement()):
     """Build a compound of copies from the base object and list of points.
 
     Returns
@@ -170,6 +202,13 @@ def build_copies(base_object, pt_list=None):
 
     for point in pt_list:
         new_shape = base_object.Shape.copy()
+        original_rotation = new_shape.Placement.Rotation
+
+        # Reset placement of the copy, and combine the original rotation
+        # with the provided placement. Two rotations (quaternions)
+        # are combined by multiplying them.
+        new_shape.Placement.Base = placement.Base
+        new_shape.Placement.Rotation = original_rotation * placement.Rotation
 
         # If the point object has a placement, use it
         # to displace the copy of the shape. Otherwise
@@ -177,9 +216,18 @@ def build_copies(base_object, pt_list=None):
         if hasattr(point, 'Placement'):
             place = point.Placement
             new_shape.translate(place.Base)
-            new_shape.rotate(place.Base,
-                             place.Rotation.Axis,
-                             place.Rotation.Angle * 180 / math.pi)
+
+            # The following old code doesn't make much sense because it uses
+            # the rotation value of the auxiliary point.
+            # Even if the point does have a rotation property as part of its
+            # placement, rotating a point by itself is a strange workflow.
+            # We want to use the position of the point but not its rotation,
+            # which will probably be zero anyway.
+
+            # Old code:
+            # new_shape.rotate(place.Base,
+            #                  place.Rotation.Axis,
+            #                  math.degrees(place.Rotation.Angle))
         else:
             new_shape.translate(App.Vector(point.X, point.Y, point.Z))
 
