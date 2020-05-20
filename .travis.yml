@@ -64,7 +64,7 @@ jobs:
         env:
           - CC=clang-10
           - CXX=clang++-10
-          - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON -DCMAKE_CXX_FLAGS=-Wno-deprecated-copy"
           - CACHE_NAME=JOB1
 
       - os: linux
