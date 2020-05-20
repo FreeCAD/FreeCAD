@@ -396,138 +396,150 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
-        aOS = self.areaOpShapes(obj) # pylint: disable=assignment-from-no-return
+        if obj.ProfileCount < 1:
+            obj.ProfileCount = 1
+        
+        OrigOffset = obj.OffsetExtra.Value
+        
+        for i in range(obj.ProfileCount):
+            print("Offset: {}".format(obj.OffsetExtra.Value))
+            aOS = self.areaOpShapes(obj) # pylint: disable=assignment-from-no-return
 
-        # Adjust tuples length received from other PathWB tools/operations beside PathPocketShape
-        shapes = []
-        for shp in aOS:
-            if len(shp) == 2:
-                (fc, iH) = shp
-                #     fc, iH,   sub,   angle, axis,      strtDep,             finDep
-                tup = fc, iH, 'otherOp', 0.0, 'S', obj.StartDepth.Value, obj.FinalDepth.Value
-                shapes.append(tup)
-            else:
-                shapes.append(shp)
-
-        if len(shapes) > 1:
-            jobs = [{
-                'x': s[0].BoundBox.XMax,
-                'y': s[0].BoundBox.YMax,
-                'shape': s
-            } for s in shapes]
-
-            jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
-
-            shapes = [j['shape'] for j in jobs]
-
-        sims = []
-        numShapes = len(shapes)
-        for ns in range(0, numShapes):
-            profileEdgesIsOpen = False
-            (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
-            if sub == 'OpenEdge':
-                profileEdgesIsOpen = True
-                if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-                    osp = obj.StartPoint
-                    self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
-
-            if ns < numShapes - 1:
-                nextAxis = shapes[ns + 1][4]
-            else:
-                nextAxis = 'L'
-
-            self.depthparams = self._customDepthParams(obj, strDep, finDep)
-
-            try:
-                if profileEdgesIsOpen:
-                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+            # Adjust tuples length received from other PathWB tools/operations beside PathPocketShape
+            shapes = []
+            for shp in aOS:
+                if len(shp) == 2:
+                    (fc, iH) = shp
+                    #     fc, iH,   sub,   angle, axis,      strtDep,             finDep
+                    tup = fc, iH, 'otherOp', 0.0, 'S', obj.StartDepth.Value, obj.FinalDepth.Value
+                    shapes.append(tup)
                 else:
-                    (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
-            except Exception as e: # pylint: disable=broad-except
-                FreeCAD.Console.PrintError(e)
-                FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
-            else:
-                if profileEdgesIsOpen:
-                    ppCmds = pp
+                    shapes.append(shp)
+
+            if len(shapes) > 1:
+                jobs = [{
+                    'x': s[0].BoundBox.XMax,
+                    'y': s[0].BoundBox.YMax,
+                    'shape': s
+                } for s in shapes]
+
+                jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
+
+                shapes = [j['shape'] for j in jobs]
+
+            sims = []
+            numShapes = len(shapes)
+            for ns in range(0, numShapes):
+                profileEdgesIsOpen = False
+                (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
+                if sub == 'OpenEdge':
+                    profileEdgesIsOpen = True
+                    if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                        osp = obj.StartPoint
+                        self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
+
+                if ns < numShapes - 1:
+                    nextAxis = shapes[ns + 1][4]
                 else:
-                    ppCmds = pp.Commands
-                if obj.EnableRotation != 'Off' and self.rotateFlag is True:
-                    # Rotate model to index for cut
-                    if axis == 'X':
-                        axisOfRot = 'A'
-                    elif axis == 'Y':
-                        axisOfRot = 'B'
-                    elif axis == 'Z':
-                        axisOfRot = 'C'
+                    nextAxis = 'L'
+
+                self.depthparams = self._customDepthParams(obj, strDep, finDep)
+
+                try:
+                    if profileEdgesIsOpen:
+                        (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
                     else:
-                        axisOfRot = 'A'
-                    # Rotate Model to correct angle
-                    ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
+                        (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
+                except Exception as e: # pylint: disable=broad-except
+                    FreeCAD.Console.PrintError(e)
+                    FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
+                else:
+                    if profileEdgesIsOpen:
+                        ppCmds = pp
+                    else:
+                        ppCmds = pp.Commands
+                    if obj.EnableRotation != 'Off' and self.rotateFlag is True:
+                        # Rotate model to index for cut
+                        if axis == 'X':
+                            axisOfRot = 'A'
+                        elif axis == 'Y':
+                            axisOfRot = 'B'
+                        elif axis == 'Z':
+                            axisOfRot = 'C'
+                        else:
+                            axisOfRot = 'A'
+                        # Rotate Model to correct angle
+                        ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
 
-                    # Raise cutter to safe height
-                    ppCmds.insert(0, Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+                        # Raise cutter to safe height
+                        ppCmds.insert(0, Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
 
-                    # Return index to starting position if axis of rotation changes.
-                    if numShapes > 1:
-                        if ns != numShapes - 1:
-                            if axis != nextAxis:
-                                ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
+                        # Return index to starting position if axis of rotation changes.
+                        if numShapes > 1:
+                            if ns != numShapes - 1:
+                                if axis != nextAxis:
+                                    ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
+                    # Eif
+
+                    # Save gcode commands to object command list
+                    self.commandlist.extend(ppCmds)
+                    sims.append(sim)
                 # Eif
 
-                # Save gcode commands to object command list
-                self.commandlist.extend(ppCmds)
-                sims.append(sim)
-            # Eif
+                if self.areaOpRetractTool(obj) and self.endVector is not None:
+                    self.endVector[2] = obj.ClearanceHeight.Value
+                    self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
-            if self.areaOpRetractTool(obj) and self.endVector is not None:
-                self.endVector[2] = obj.ClearanceHeight.Value
-                self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+            # Raise cutter to safe height and rotate back to original orientation
+            if self.rotateFlag is True:
+                resetAxis = False
+                lastJobOp = None
+                nextJobOp = None
+                opIdx = 0
+                JOB = PathUtils.findParentJob(obj)
+                jobOps = JOB.Operations.Group
+                numJobOps = len(jobOps)
 
-        # Raise cutter to safe height and rotate back to original orientation
-        if self.rotateFlag is True:
-            resetAxis = False
-            lastJobOp = None
-            nextJobOp = None
-            opIdx = 0
-            JOB = PathUtils.findParentJob(obj)
-            jobOps = JOB.Operations.Group
-            numJobOps = len(jobOps)
+                for joi in range(0, numJobOps):
+                    jo = jobOps[joi]
+                    if jo.Name == obj.Name:
+                        opIdx = joi
+                lastOpIdx = opIdx - 1
+                nextOpIdx = opIdx + 1
+                if lastOpIdx > -1:
+                    lastJobOp = jobOps[lastOpIdx]
+                if nextOpIdx < numJobOps:
+                    nextJobOp = jobOps[nextOpIdx]
 
-            for joi in range(0, numJobOps):
-                jo = jobOps[joi]
-                if jo.Name == obj.Name:
-                    opIdx = joi
-            lastOpIdx = opIdx - 1
-            nextOpIdx = opIdx + 1
-            if lastOpIdx > -1:
-                lastJobOp = jobOps[lastOpIdx]
-            if nextOpIdx < numJobOps:
-                nextJobOp = jobOps[nextOpIdx]
-
-            if lastJobOp is not None:
-                if hasattr(lastJobOp, 'EnableRotation'):
-                    PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
-                    if lastJobOp.EnableRotation != obj.EnableRotation:
-                        resetAxis = True
-            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
-                if nextJobOp is not None:
-                    if hasattr(nextJobOp, 'EnableRotation'):
-                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
-                        if nextJobOp.EnableRotation != obj.EnableRotation:
+                if lastJobOp is not None:
+                    if hasattr(lastJobOp, 'EnableRotation'):
+                        PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
+                        if lastJobOp.EnableRotation != obj.EnableRotation:
                             resetAxis = True
+                if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+                    if nextJobOp is not None:
+                        if hasattr(nextJobOp, 'EnableRotation'):
+                            PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                            if nextJobOp.EnableRotation != obj.EnableRotation:
+                                resetAxis = True
 
-            # Raise to safe height if rotation activated
-            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            # reset rotational axes if necessary
-            if resetAxis is True:
-                self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
-                self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
+                # Raise to safe height if rotation activated
+                self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+                # reset rotational axes if necessary
+                if resetAxis is True:
+                    self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
+                    self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
 
-        self.useTempJobClones('Delete')  # Delete temp job clone group and contents
-        self.guiMessage('title', None, show=True)  # Process GUI messages to user
-        for ton in self.tempObjectNames:  # remove temporary objects by name
-            FreeCAD.ActiveDocument.removeObject(ton)
-        PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
+            self.useTempJobClones('Delete')  # Delete temp job clone group and contents
+            self.guiMessage('title', None, show=True)  # Process GUI messages to user
+            for ton in self.tempObjectNames:  # remove temporary objects by name
+                FreeCAD.ActiveDocument.removeObject(ton)
+            PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
+
+            obj.OffsetExtra.Value += obj.MultipleOffsetExtra.Value
+        
+        obj.OffsetExtra.Value = OrigOffset
+        
         return sims
 
     def areaOpRetractTool(self, obj):
