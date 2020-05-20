@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -402,7 +404,7 @@ class ObjectOp(PathOp.ObjectOp):
         OrigOffset = obj.OffsetExtra.Value
         
         for i in range(obj.ProfileCount):
-            print("Offset: {}".format(obj.OffsetExtra.Value))
+            # Get Shape
             aOS = self.areaOpShapes(obj) # pylint: disable=assignment-from-no-return
 
             # Adjust tuples length received from other PathWB tools/operations beside PathPocketShape
@@ -536,8 +538,10 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.ActiveDocument.removeObject(ton)
             PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
 
+            # Increase offset for next pass
             obj.OffsetExtra.Value += obj.MultipleOffsetExtra.Value
         
+        # Reset Offset to its original value
         obj.OffsetExtra.Value = OrigOffset
         
         return sims
