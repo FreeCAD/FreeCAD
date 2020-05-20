@@ -78,7 +78,6 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <Inventor/nodes/SoTexture2.h>
-# include <Inventor/nodes/SoTextureCoordinate2.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -97,6 +96,7 @@
 #include <Inventor/annex/FXViz/nodes/SoShadowSpotLight.h>
 #include <Inventor/nodes/SoBumpMap.h>
 #include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>

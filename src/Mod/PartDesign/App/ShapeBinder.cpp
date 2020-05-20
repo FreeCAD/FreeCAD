@@ -314,7 +314,7 @@ SubShapeBinder::SubShapeBinder()
             "         Make internal copy of the object with any changed properties to obtain the\n"
             "         shape of an alternative configuration\n"
             "Mutated: indicate the binder has already mutated by changing any properties marked with\n"
-            "         'CopyOnChange'. Those properties will not longer be kept in sync between the\n"
+            "         'CopyOnChange'. Those properties will no longer be kept in sync between the\n"
             "         binder and the binding object");
 
     ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
