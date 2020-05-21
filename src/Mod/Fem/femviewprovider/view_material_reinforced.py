@@ -36,20 +36,20 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
 if sys.version_info.major >= 3:
     unicode = str
 
 
-class VPMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
+class VPMaterialReinforced(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MaterialReinforced object
     """
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

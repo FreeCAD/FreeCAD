@@ -26,16 +26,16 @@ __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _ConstraintViewProvider
+## @package view_base_femconstraint
 #  \ingroup FEM
-#  \brief FreeCAD _Base Constraint ViewProvider for FEM workbench
+#  \brief view provider for Python base constraint object
 
 from pivy import coin
 
 from femviewprovider import view_base_femobject
 
 
-class ViewProxy(view_base_femobject.VPBaseFemObject):
+class VPBaseFemConstraint(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Pythons base constraint."""
 
     def attach(self, vobj):

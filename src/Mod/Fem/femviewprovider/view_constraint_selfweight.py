@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for constraint self weight object
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
-class VPConstraintSelfWeight(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintSelfWeight(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the FemConstraintSelfWeight object
     """

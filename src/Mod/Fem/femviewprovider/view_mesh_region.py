@@ -35,16 +35,16 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
-class VPMeshRegion(ViewProviderFemConstraint.ViewProxy):
+class VPMeshRegion(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the FemMeshRegion object
     """
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

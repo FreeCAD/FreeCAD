@@ -41,14 +41,14 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 if sys.version_info.major >= 3:
     def unicode(text, *args):
         return str(text)
 
 
-class VPSolverCcxTools(ViewProviderFemConstraint.ViewProxy):
+class VPSolverCcxTools(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the SolverCalculix object
     """
@@ -57,7 +57,7 @@ class VPSolverCcxTools(ViewProviderFemConstraint.ViewProxy):
         return ":/icons/FEM_SolverStandard.svg"
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for material mechanical nonlinear object
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
-class VPMaterialMechanicalNonlinear(ViewProviderFemConstraint.ViewProxy):
+class VPMaterialMechanicalNonlinear(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MaterialMechanicalNonlinear object
     """

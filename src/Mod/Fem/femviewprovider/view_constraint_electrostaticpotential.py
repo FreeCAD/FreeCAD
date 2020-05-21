@@ -34,15 +34,15 @@ import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 from femtools import femutils
 from femtools import membertools
 
 
-class VPConstraintElectroStaticPotential(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintElectroStaticPotential(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

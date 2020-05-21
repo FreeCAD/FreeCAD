@@ -321,6 +321,7 @@ INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 # Python Gui packages and modules
 SET(FemGuiViewObjects_SRCS
     femviewprovider/__init__.py
+    femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femobject.py
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_electrostaticpotential.py
@@ -346,7 +347,6 @@ SET(FemGuiViewObjects_SRCS
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
-    femguiobjects/ViewProviderFemConstraint.py
 )
 
 SET(FemGuiUtils_SRCS

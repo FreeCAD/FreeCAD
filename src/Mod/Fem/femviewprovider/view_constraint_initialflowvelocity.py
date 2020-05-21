@@ -34,15 +34,15 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 from femtools import femutils
 from femtools import membertools
 
 
-class VPConstraintInitialFlowVelocity(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintInitialFlowVelocity(view_base_femconstraint.VPBaseFemConstraint):
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

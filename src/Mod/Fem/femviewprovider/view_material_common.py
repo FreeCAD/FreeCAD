@@ -40,14 +40,14 @@ import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
 if sys.version_info.major >= 3:
     unicode = str
 
 
-class VPMaterialCommon(ViewProviderFemConstraint.ViewProxy):
+class VPMaterialCommon(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MaterialCommon object
     """
@@ -65,7 +65,7 @@ class VPMaterialCommon(ViewProviderFemConstraint.ViewProxy):
             return ""
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

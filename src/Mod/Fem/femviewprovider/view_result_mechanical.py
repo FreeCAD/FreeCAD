@@ -41,17 +41,17 @@ from PySide.QtGui import QApplication
 import FreeCAD
 import FreeCADGui
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 import femresult.resulttools as resulttools
 
 
-class VPResultMechanical(ViewProviderFemConstraint.ViewProxy):
+class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the ResultObject Python derived FemResult class
     """
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

@@ -38,17 +38,17 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 from femobjects import element_fluid1D
 
 
-class VPElementFluid1D(ViewProviderFemConstraint.ViewProxy):
+class VPElementFluid1D(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the ElementFluid1D object
     """
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

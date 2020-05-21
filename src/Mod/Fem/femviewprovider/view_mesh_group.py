@@ -35,16 +35,16 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
-class VPMeshGroup(ViewProviderFemConstraint.ViewProxy):
+class VPMeshGroup(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MeshGroup object
     """
 
     def setEdit(self, vobj, mode=0):
-        ViewProviderFemConstraint.ViewProxy.setEdit(
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
             vobj,
             mode,

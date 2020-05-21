@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for the constraint body heat source object
 
-from femguiobjects import ViewProviderFemConstraint
+from . import view_base_femconstraint
 
 
-class VPConstraintBodyHeatSource(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintBodyHeatSource(view_base_femconstraint.VPBaseFemConstraint):
 
     def getIcon(self):
         return ":/icons/FEM_ConstraintHeatflux.svg"  # the heatflux icon is used
