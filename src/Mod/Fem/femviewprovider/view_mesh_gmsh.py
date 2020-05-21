@@ -41,13 +41,13 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-# from femguiobjects import ViewProviderBaseObject
+# from . import view_base_femobject
 from femobjects import mesh_gmsh
 from femtools.femutils import is_of_type
 
 
-# TODO use ViewProviderBaseObject see _ViewProviderFemMeshResult
-# class _ViewProviderFemMeshGmsh(ViewProviderBaseObject.ViewProxy):
+# TODO use VPBaseFemObject from view_base_femobject
+# class VPMeshGmsh(view_base_femobject.VPBaseFemObject):
 class VPMeshGmsh:
     """
     A View Provider for the MeshGmsh object

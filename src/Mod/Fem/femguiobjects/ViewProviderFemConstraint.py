@@ -32,10 +32,10 @@ __url__ = "http://www.freecadweb.org"
 
 from pivy import coin
 
-from . import ViewProviderBaseObject
+from femviewprovider import view_base_femobject
 
 
-class ViewProxy(ViewProviderBaseObject.ViewProxy):
+class ViewProxy(view_base_femobject.VPBaseFemObject):
     """Proxy View Provider for Pythons base constraint."""
 
     def attach(self, vobj):

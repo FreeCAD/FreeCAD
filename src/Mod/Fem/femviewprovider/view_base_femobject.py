@@ -26,9 +26,9 @@ __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _BaseViewProvider
+## @package view_base_femobject
 #  \ingroup FEM
-#  \brief FreeCAD _Base ViewProvider for FEM workbench
+#  \brief view provider as base for all FEM objects
 
 from six import string_types
 
@@ -40,8 +40,8 @@ import FemGui  # needed to display the icons in TreeView
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
-class ViewProxy(object):
-    """Proxy View Provider for Pythons base constraint."""
+class VPBaseFemObject(object):
+    """Proxy View Provider for FEM FeaturePythons base constraint."""
 
     def __init__(self, vobj):
         vobj.Proxy = self

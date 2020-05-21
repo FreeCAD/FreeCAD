@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \brief view provider for mesh result object
 
 
-from femguiobjects import ViewProviderBaseObject
+from . import view_base_femobject
 
 
-class VPFemMeshResult(ViewProviderBaseObject.ViewProxy):
+class VPFemMeshResult(view_base_femobject.VPBaseFemObject):
     """
     A View Provider for the MeshResult object
     """

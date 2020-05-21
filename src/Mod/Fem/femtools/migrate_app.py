@@ -364,8 +364,8 @@ class FemMigrateApp(object):
             import femobjects.base_fempythonobject
             module._FemAnalysis = femobjects.base_fempythonobject.BaseFemPythonObject
             if FreeCAD.GuiUp:
-                import femguiobjects.ViewProviderBaseObject
-                module._ViewProviderFemAnalysis = femguiobjects.ViewProviderBaseObject.ViewProxy
+                import femviewprovider.view_base_femobject
+                module._ViewProviderFemAnalysis = femviewprovider.view_base_femobject.VPBaseFemObject
         if module.__name__ == "MechanicalMaterial":
             import femobjects.material_common
             module._MechanicalMaterial = femobjects.material_common.MaterialCommon
