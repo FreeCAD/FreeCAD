@@ -45,7 +45,6 @@ def permittivity_of_vakuum():
     return "8.8542e-12 s^4*A^2 / (m^3*kg)"
 
 
-
 def boltzmann_constant():
     return "1.3807e-23 J/K"
 
