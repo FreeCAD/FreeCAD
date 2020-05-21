@@ -542,7 +542,7 @@ def makeMeshResult(
 # ********* post processing objects **************************************************************
 def makeResultMechanical(
     doc,
-    name="MechanicalResult"
+    name="ResultMechanical"
 ):
     """makeResultMechanical(document, [name]):
     creates an mechanical result object to hold FEM results"""
