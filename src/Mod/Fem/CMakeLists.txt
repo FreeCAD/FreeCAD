@@ -253,7 +253,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/material_reinforced.py
     femobjects/mesh_boundarylayer.py
     femobjects/mesh_gmsh.py
-    femobjects/_FemMeshGroup.py
+    femobjects/mesh_group.py
     femobjects/_FemMeshRegion.py
     femobjects/_FemMeshResult.py
     femobjects/_FemResultMechanical.py
@@ -335,12 +335,12 @@ SET(FemGuiViewObjects_SRCS
     femviewprovider/view_material_reinforced.py
     femviewprovider/view_mesh_boundarylayer.py
     femviewprovider/view_mesh_gmsh.py
+    femviewprovider/view_mesh_group.py
 )
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
     femguiobjects/_ViewProviderFemMaterial.py
-    femguiobjects/_ViewProviderFemMeshGroup.py
     femguiobjects/_ViewProviderFemMeshRegion.py
     femguiobjects/_ViewProviderFemMeshResult.py
     femguiobjects/_ViewProviderFemResultMechanical.py

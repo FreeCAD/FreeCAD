@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM mesh group document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMeshGroup
+## @package mesh_group
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemMeshGroup
+#  \brief mesh group object
 
 from . import FemConstraint
 
 
-class _FemMeshGroup(FemConstraint.Proxy):
+class MeshGroup(FemConstraint.Proxy):
     """
-    The FemMeshGroup object
+    The MeshGroup object
     """
 
     Type = "Fem::MeshGroup"
 
     def __init__(self, obj):
-        super(_FemMeshGroup, self).__init__(obj)
+        super(MeshGroup, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyBool",

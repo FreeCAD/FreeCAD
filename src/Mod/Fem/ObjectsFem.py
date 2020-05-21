@@ -474,8 +474,8 @@ def makeMeshGroup(
     """makeMeshGroup(document, base_mesh, [use_label], [name]):
     creates a FEM mesh region object to define properties for a region of a FEM mesh"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemMeshGroup
-    _FemMeshGroup._FemMeshGroup(obj)
+    from femobjects import mesh_group
+    mesh_group.MeshGroup(obj)
     obj.UseLabel = use_label
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
@@ -484,8 +484,8 @@ def makeMeshGroup(
     tmplist.append(obj)
     base_mesh.MeshGroupList = tmplist
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMeshGroup
-        _ViewProviderFemMeshGroup._ViewProviderFemMeshGroup(obj.ViewObject)
+        from femviewprovider import view_mesh_group
+        view_mesh_group.VPMeshGroup(obj.ViewObject)
     return obj
 
 

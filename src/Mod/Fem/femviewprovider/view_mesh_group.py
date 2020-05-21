@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM mesh group ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMeshGroup
+## @package view_mesh_group
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMeshGroup
+#  \brief view provider for mesh group object
 
 from PySide import QtCore
 
@@ -35,12 +35,12 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemMeshGroup(ViewProviderFemConstraint.ViewProxy):
+class VPMeshGroup(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemMeshGroup object
+    A View Provider for the MeshGroup object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -54,7 +54,7 @@ class _ViewProviderFemMeshGroup(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemMeshGroup objects
+    The TaskPanel for editing References property of MeshGroup objects
     """
 
     def __init__(self, obj):
