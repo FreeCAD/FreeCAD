@@ -476,7 +476,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Path array")
     poly_h = Draft.make_polygon(3, 250)
-    poly_h.Placement.Base = Vector(10500, 3000, 0)
+    poly_h.Placement.Base = Vector(10000, 3000, 0)
     if App.GuiUp:
         poly_h.ViewObject.Visibility = False
 
@@ -494,7 +494,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Path link array")
     poly_h_2 = Draft.make_polygon(4, 200)
-    poly_h_2.Placement.Base = Vector(10500, 5000, 0)
+    poly_h_2.Placement.Base = Vector(10000, 5000, 0)
     if App.GuiUp:
         poly_h_2.ViewObject.Visibility = False
 
@@ -512,6 +512,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Point array")
     poly_h = Draft.make_polygon(3, 250)
+    poly_h.Placement.Base = Vector(12500, 2500, 0)
 
     point_1 = Draft.make_point(13000, 3000, 0)
     point_2 = Draft.make_point(13000, 3500, 0)
