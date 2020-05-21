@@ -60,18 +60,17 @@ class PointArray(DraftObject):
                             QT_TRANSLATE_NOOP("App::Property", _tip))
             obj.Base = None
 
-        # TODO: this isn't a list, it should be renamed to PointObject
-        if "PointList" not in properties:
+        if "PointObject" not in properties:
             _tip = ("Object containing points used to distribute "
                     "the base object, for example, a sketch or "
                     "a Part compound.\n"
                     "The sketch or compound must contain at least "
                     "one explicit point or vertex object.")
             obj.addProperty("App::PropertyLink",
-                            "PointList",
+                            "PointObject",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            obj.PointList = None
+            obj.PointObject = None
 
         if "Count" not in properties:
             _tip = ("Total number of elements in the array.\n"
@@ -101,7 +100,7 @@ class PointArray(DraftObject):
             obj.Count = 0
             return
 
-        pt_list, count = get_point_list(obj.PointList)
+        pt_list, count = get_point_list(obj.PointObject)
         shape = build_copies(obj.Base, pt_list, obj.ExtraPlacement)
 
         obj.Shape = shape
@@ -110,7 +109,7 @@ class PointArray(DraftObject):
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
 
-        Add properties that don't exist.
+        Add properties that don't exist and migrate old properties.
         """
         # If the ExtraPlacement property has never been added before
         # it will add it first, and set it to the base object's position
@@ -130,6 +129,19 @@ class PointArray(DraftObject):
             _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
         self.set_properties(obj)
+        self.migrate_properties_0v19(obj)
+
+    def migrate_properties_0v19(self, obj):
+        """Migrate properties."""
+        # If the old name still exists, migrate it to the new
+        # name and delete the old property
+        properties = obj.PropertiesList
+
+        if "PointList" in properties:
+            obj.PointObject = obj.PointList
+            obj.removeProperty("PointList")
+            _info = "'PointList' property will be migrated to 'PointObject'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
 
 def get_point_list(point_object):
