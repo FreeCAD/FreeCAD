@@ -29,10 +29,10 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint tie object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ConstraintTie(FemConstraint.Proxy):
+class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
     """
     The ConstraintTie object
     """

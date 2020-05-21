@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,18 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM base constraint object"
-__author__ = "Markus Hovorka"
+__title__ = "FreeCAD FEM base python object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _BaseObject
+## @package base_fempythonobject
 #  \ingroup FEM
-#  \brief FreeCAD _Base Object for FEM workbench
+#  \brief base object for FEM Python Features
 
 
-class Proxy(object):
+class BaseFemPythonObject(object):
 
-    BaseType = "Fem::ConstraintPython"
+    BaseType = "Fem::BaseFemPythonObject"
 
     def __init__(self, obj):
         # self.Object = obj  # keep a ref to the DocObj for nonGui usage

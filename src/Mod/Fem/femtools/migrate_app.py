@@ -361,8 +361,8 @@ class FemMigrateApp(object):
                 import femviewprovider.view_element_geometry2D
                 module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "MechanicalAnalysis":
-            import femobjects.FemConstraint
-            module._FemAnalysis = femobjects.FemConstraint.Proxy
+            import femobjects.base_fempythonobject
+            module._FemAnalysis = femobjects.base_fempythonobject.BaseFemPythonObject
             if FreeCAD.GuiUp:
                 import femguiobjects.ViewProviderBaseObject
                 module._ViewProviderFemAnalysis = femguiobjects.ViewProviderBaseObject.ViewProxy

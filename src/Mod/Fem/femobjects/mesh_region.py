@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief mesh region object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MeshRegion(FemConstraint.Proxy):
+class MeshRegion(base_fempythonobject.BaseFemPythonObject):
     """
     The FemMeshRegion object
     """

@@ -29,10 +29,10 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief element geometry 2D object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ElementGeometry2D(FemConstraint.Proxy):
+class ElementGeometry2D(base_fempythonobject.BaseFemPythonObject):
     """
     The ElementGeometry2D object
     """

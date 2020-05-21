@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief nonlinear mechanical material object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MaterialMechanicalNonlinear(FemConstraint.Proxy):
+class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
     """
     The MaterialMechanicalNonlinear object
     """

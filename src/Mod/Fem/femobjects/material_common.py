@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief material common object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MaterialCommon(FemConstraint.Proxy):
+class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
     """
     The MaterialCommon object
     """

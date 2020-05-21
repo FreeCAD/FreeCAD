@@ -238,6 +238,7 @@ SET(FemTools_SRCS
 
 SET(FemObjectsScripts_SRCS
     femobjects/__init__.py
+    femobjects/base_fempythonobject.py
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
@@ -258,7 +259,6 @@ SET(FemObjectsScripts_SRCS
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
     femobjects/solver_ccxtools.py
-    femobjects/FemConstraint.py
 )
 
 SET(FemAllScripts

@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief mesh result object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MeshResult(FemConstraint.Proxy):
+class MeshResult(base_fempythonobject.BaseFemPythonObject):
     """
     The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """

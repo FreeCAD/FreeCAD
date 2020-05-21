@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief mesh gmsh object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MeshGmsh(FemConstraint.Proxy):
+class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
     """
     A Fem::FemMeshObject python type, add Gmsh specific properties
     """

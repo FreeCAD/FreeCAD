@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint flow velocity object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ConstraintFlowVelocity(FemConstraint.Proxy):
+class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
 
     Type = "Fem::ConstraintFlowVelocity"
 

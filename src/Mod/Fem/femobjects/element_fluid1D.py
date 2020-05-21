@@ -31,10 +31,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief element fluid 1D object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ElementFluid1D(FemConstraint.Proxy):
+class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
     """
     The element_fluid1D object
     """

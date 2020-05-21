@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief mechanical result object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ResultMechanical(FemConstraint.Proxy):
+class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
     """
     The Fem::ResultMechanical's Proxy python type, add result specific properties
     """

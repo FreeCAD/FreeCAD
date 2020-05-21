@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief reinforced object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MaterialReinforced(FemConstraint.Proxy):
+class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
     """
     The MaterialReinforced object
     """

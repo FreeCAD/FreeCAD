@@ -29,10 +29,10 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief element rotation 1D object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ElementRotation1D(FemConstraint.Proxy):
+class ElementRotation1D(base_fempythonobject.BaseFemPythonObject):
     """
     The ElementRotation1D object
     """

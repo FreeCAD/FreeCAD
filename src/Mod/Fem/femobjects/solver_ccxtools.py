@@ -31,11 +31,11 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
-from . import FemConstraint
+from . import base_fempythonobject
 from femsolver.calculix.solver import add_attributes
 
 
-class SolverCcxTools(FemConstraint.Proxy):
+class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 

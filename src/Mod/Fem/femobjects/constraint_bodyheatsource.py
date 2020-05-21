@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint body heat source object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ConstraintBodyHeatSource(FemConstraint.Proxy):
+class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
 
     Type = "Fem::ConstraintBodyHeatSource"
 

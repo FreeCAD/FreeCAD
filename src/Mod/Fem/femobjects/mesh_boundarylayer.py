@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief mesh boundary layer object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class MeshBoundaryLayer(FemConstraint.Proxy):
+class MeshBoundaryLayer(base_fempythonobject.BaseFemPythonObject):
     """
     The MeshBoundaryLayer object
     """

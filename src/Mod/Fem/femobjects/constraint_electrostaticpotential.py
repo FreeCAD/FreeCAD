@@ -30,10 +30,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint electrostatic potential object
 
-from . import FemConstraint
+from . import base_fempythonobject
 
 
-class ConstraintElectrostaticPotential(FemConstraint.Proxy):
+class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject):
 
     Type = "Fem::ConstraintElectrostaticPotential"
 
