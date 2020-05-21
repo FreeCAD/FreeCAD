@@ -162,6 +162,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromfem"
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromstd"
 ./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_head"
+./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_de9b3fb438"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_read_frd_massflow_networkpressure"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_von_mises"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_principal_std"
@@ -271,6 +272,9 @@ import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_open.TestObjectOpen.test_femobjects_open_head))
 
 import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_open.TestObjectOpen.test_femobjects_open_de9b3fb438))
+
+import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_result.TestResult.test_read_frd_massflow_networkpressure"))
 
 import unittest
@@ -322,5 +326,9 @@ doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D.FCStd")
 doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D_newSolver.FCStd")
 doc = FreeCAD.open(app_home + "data/examples/Fem.FCStd")
 doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
+
+# load all documents files
+app_home = FreeCAD.ConfigGet("AppHomePath")
+doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')
 
 """

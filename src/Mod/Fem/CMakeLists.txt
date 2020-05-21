@@ -222,6 +222,11 @@ SET(FemTestsMesh_SRCS
     femtest/data/mesh/tetra10_mesh.z88
 )
 
+SET(FemTestsOpen_SRCS
+    femtest/data/open/__init__.py
+    femtest/data/open/all_objects_de9b3fb438.FCStd
+)
+
 SET(FemTools_SRCS
     femtools/__init__.py
     femtools/ccxtools.py
@@ -281,6 +286,7 @@ SET(FemAllScripts
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
+    ${FemTestsOpen_SRCS}
     ${FemTools_SRCS}
     ${FemObjectsScripts_SRCS}
 )
@@ -313,6 +319,7 @@ INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
+INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 
