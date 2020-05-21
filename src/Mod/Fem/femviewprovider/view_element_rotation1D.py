@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM element rotation 1D ViewProvider for the document objec
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemElementRotation1D
+## @package view_element_rotation1D
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemElementRotation1D
+#  \brief view provider for element rotation 1D object
 
 from PySide import QtCore
 
@@ -35,12 +35,12 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
+class VPElementRotation1D(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemElementRotation1D object
+    A View Provider for the ElementRotation1D object
     """
 
     """
@@ -57,7 +57,7 @@ class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemElementRotation1D objects
+    The TaskPanel for editing References property of ElementRotation1D objects
     """
 
     def __init__(self, obj):

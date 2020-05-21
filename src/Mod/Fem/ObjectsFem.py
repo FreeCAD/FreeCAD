@@ -352,11 +352,11 @@ def makeElementRotation1D(
     """makeElementRotation1D(document, [name]):
     creates an 1D geometry rotation element object to rotate a 1D cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemElementRotation1D
-    _FemElementRotation1D._FemElementRotation1D(obj)
+    from femobjects import element_rotation1D
+    element_rotation1D.ElementRotation1D(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemElementRotation1D
-        _ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D(obj.ViewObject)
+        from femviewprovider import view_element_rotation1D
+        view_element_rotation1D.VPElementRotation1D(obj.ViewObject)
     return obj
 
 

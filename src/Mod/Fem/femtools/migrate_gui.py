@@ -55,6 +55,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemElementGeometry2D":
             return self
+        if fullname == "femguiobjects._ViewProviderFemElementRotation1D":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -169,6 +171,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry2D":
             import femviewprovider.view_element_geometry2D
             module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
+        if module.__name__ == "femguiobjects._ViewProviderFemElementRotation1D":
+            import femviewprovider.view_element_rotation1D
+            module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -197,8 +202,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_geometry2D
             module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "PyGui._ViewProviderFemElementRotation1D":
-            import femguiobjects._ViewProviderFemElementRotation1D
-            module._ViewProviderFemElementRotation1D = femguiobjects._ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D
+            import femviewprovider.view_element_rotation1D
+            module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
         if module.__name__ == "PyGui._ViewProviderFemMaterial":
             import femguiobjects._ViewProviderFemMaterial
             module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
@@ -300,6 +305,7 @@ module="femguiobjects._ViewProviderFemConstraintTie"
 module="femguiobjects._ViewProviderFemElementFluid1D"
 module="femguiobjects._ViewProviderFemElementGeometry1D"
 module="femguiobjects._ViewProviderFemElementGeometry2D"
+module="femguiobjects._ViewProviderFemElementRotation1D"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

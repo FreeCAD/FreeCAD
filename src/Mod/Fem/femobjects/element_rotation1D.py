@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM element rotation 1D document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-## @package FemElementRotation1D
+## @package element_rotation1D
 #  \ingroup FEM
-#  \brief FreeCAD FEM element rotation 1D object
+#  \brief element rotation 1D object
 
 from . import FemConstraint
 
 
-class _FemElementRotation1D(FemConstraint.Proxy):
+class ElementRotation1D(FemConstraint.Proxy):
     """
-    The FemElementRotation1D object
+    The ElementRotation1D object
     """
 
     Type = "Fem::ElementRotation1D"
 
     def __init__(self, obj):
-        super(_FemElementRotation1D, self).__init__(obj)
+        super(ElementRotation1D, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyAngle",

@@ -57,6 +57,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemElementGeometry2D":
             return self
+        if fullname == "femobjects._FemElementRotation1D":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -181,6 +183,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemElementGeometry2D":
             import femobjects.element_geometry2D
             module._FemElementGeometry2D = femobjects.element_geometry2D.ElementGeometry2D
+        if module.__name__ == "femobjects._FemElementRotation1D":
+            import femobjects.element_rotation1D
+            module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -209,8 +214,8 @@ class FemMigrateApp(object):
             import femobjects.element_geometry2D
             module._FemElementGeometry2D = femobjects.element_geometry2D.ElementGeometry2D
         if module.__name__ == "PyObjects._FemElementRotation1D":
-            import femobjects._FemElementRotation1D
-            module._FemElementRotation1D = femobjects._FemElementRotation1D._FemElementRotation1D
+            import femobjects.element_rotation1D
+            module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
         if module.__name__ == "PyObjects._FemMaterial":
             import femobjects._FemMaterial
             module._FemMaterial = femobjects._FemMaterial._FemMaterial
@@ -336,6 +341,7 @@ module="femobjects._FemConstraintTie"
 module="femobjects._FemElementFluid1D"
 module="femobjects._FemElementGeometry1D"
 module="femobjects._FemElementGeometry2D"
+module="femobjects._FemElementRotation1D"
 
 third big moving
 from PyObjects to femobjects, following the parent commit
