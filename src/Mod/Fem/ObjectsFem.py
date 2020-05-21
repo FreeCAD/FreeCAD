@@ -545,11 +545,11 @@ def makeResultMechanical(
     """makeResultMechanical(document, [name]):
     creates an mechanical result object to hold FEM results"""
     obj = doc.addObject("Fem::FemResultObjectPython", name)
-    from femobjects import _FemResultMechanical
-    _FemResultMechanical._FemResultMechanical(obj)
+    from femobjects import result_mechanical
+    result_mechanical.ResultMechanical(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemResultMechanical
-        _ViewProviderFemResultMechanical._ViewProviderFemResultMechanical(obj.ViewObject)
+        from femviewprovider import view_result_mechanical
+        view_result_mechanical.VPResultMechanical(obj.ViewObject)
     return obj
 
 

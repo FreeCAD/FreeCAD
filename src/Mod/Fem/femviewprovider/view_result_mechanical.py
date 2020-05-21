@@ -26,9 +26,9 @@ __title__ = "FreeCAD result mechanical ViewProvider for the document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _ViewProviderFemResultMechanical
+## @package view_result_mechanical
 #  \ingroup FEM
-#  \brief FreeCAD ViewProvider for mechanical ResultObjectPython in FEM workbench
+#  \brief view provider for mechanical ResultObjectPython
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -41,13 +41,13 @@ from PySide.QtGui import QApplication
 import FreeCAD
 import FreeCADGui
 
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 import femresult.resulttools as resulttools
 
 
-class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
+class VPResultMechanical(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemResultObject Python derived FemResult class
+    A View Provider for the ResultObject Python derived FemResult class
     """
 
     def setEdit(self, vobj, mode=0):

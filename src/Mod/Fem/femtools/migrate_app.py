@@ -73,6 +73,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemMeshResult":
             return self
+        if fullname == "femobjects._FemResultMechanical":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -221,6 +223,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemMeshResult":
             import femobjects.mesh_result
             module._FemMeshResult = femobjects.mesh_result.MeshResult
+        if module.__name__ == "femobjects._FemResultMechanical":
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -273,8 +278,8 @@ class FemMigrateApp(object):
             import femobjects.mesh_result
             module._FemMeshResult = femobjects.mesh_result.MeshResult
         if module.__name__ == "PyObjects._FemResultMechanical":
-            import femobjects._FemResultMechanical
-            module._FemResultMechanical = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "PyObjects._FemSolverCalculix":
             import femobjects._FemSolverCalculix
             module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
@@ -311,8 +316,8 @@ class FemMigrateApp(object):
             import femobjects.mesh_region
             module._FemMeshRegion = femobjects.mesh_region.MeshRegion
         if module.__name__ == "_FemResultMechanical":
-            import femobjects._FemResultMechanical
-            module._FemResultMechanical = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "_FemShellThickness":
             import femobjects.element_geometry2D
             module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
@@ -324,11 +329,11 @@ class FemMigrateApp(object):
             module._FemSolverZ88 = femsolver.z88.solver.Proxy
 
         if module.__name__ == "_FemMechanicalResult":
-            import femobjects._FemResultMechanical
-            module._FemMechanicalResult = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemMechanicalResult = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "FemResult":
-            import femobjects._FemResultMechanical
-            module.FemResult = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module.FemResult = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "_MechanicalMaterial":
             import femobjects._FemMaterial
             module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
@@ -384,6 +389,7 @@ module="femobjects._FemMeshGmsh"
 module="femobjects._FemMeshGroup"
 module="femobjects._FemMeshRegion"
 module="femobjects._FemMeshResult"
+module="femobjects._FemResultMechanical"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

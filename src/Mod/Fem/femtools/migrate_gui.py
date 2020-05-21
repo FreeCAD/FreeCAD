@@ -71,6 +71,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemMeshResult":
             return self
+        if fullname == "femguiobjects._ViewProviderFemResultMechanical":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -209,6 +211,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemMeshResult":
             import femviewprovider.view_mesh_result
             module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
+        if module.__name__ == "femguiobjects._ViewProviderFemResultMechanical":
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -261,8 +266,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_mesh_result
             module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
         if module.__name__ == "PyGui._ViewProviderFemResultMechanical":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "PyGui._ViewProviderFemSolverCalculix":
             import femguiobjects._ViewProviderFemSolverCalculix
             module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
@@ -299,8 +304,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_mesh_region
             module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "_ViewProviderFemResultMechanical":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "_ViewProviderFemShellThickness":
             import femviewprovider.view_element_geometry2D
             module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
@@ -312,11 +317,11 @@ class FemMigrateGui(object):
             module._ViewProviderFemSolverZ88 = femsolver.z88.solver.ViewProxy
 
         if module.__name__ == "_ViewProviderFemMechanicalResult":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemMechanicalResult = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemMechanicalResult = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "ViewProviderFemResult":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module.ViewProviderFemResult = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module.ViewProviderFemResult = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "_ViewProviderMechanicalMaterial":
             import femguiobjects._ViewProviderFemMaterial
             module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
@@ -348,6 +353,7 @@ module="femguiobjects._ViewProviderFemMeshGmsh"
 module="femguiobjects._ViewProviderFemMeshGroup"
 module="femguiobjects._ViewProviderFemMeshRegion"
 module="femguiobjects._ViewProviderFemMeshResult"
+module="femguiobjects._ViewProviderFemResultMechanical"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

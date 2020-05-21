@@ -26,22 +26,22 @@ __title__ = "FreeCAD FEM result mechanical document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemResultMechanical
+## @package result_mechanical
 #  \ingroup FEM
-#  \brief FreeCAD DocumentObject class to hold mechanical results in FEM workbench
+#  \brief mechanical result object
 
 from . import FemConstraint
 
 
-class _FemResultMechanical(FemConstraint.Proxy):
+class ResultMechanical(FemConstraint.Proxy):
     """
-    The Fem::_FemResultMechanical's Proxy python type, add result specific properties
+    The Fem::ResultMechanical's Proxy python type, add result specific properties
     """
 
     Type = "Fem::ResultMechanical"
 
     def __init__(self, obj):
-        super(_FemResultMechanical, self).__init__(obj)
+        super(ResultMechanical, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyString",
