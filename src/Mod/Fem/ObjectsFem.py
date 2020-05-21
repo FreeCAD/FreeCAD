@@ -705,7 +705,7 @@ def makeSolverCalculixCcxTools(
 
 def makeSolverCalculix(
     doc,
-    name="SolverCalculiX"
+    name="SolverCalculix"
 ):
     """makeSolverCalculix(document, [name]):
     makes a Calculix solver object"""
