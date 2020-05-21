@@ -42,7 +42,7 @@ def stefan_boltzmann():
 
 def permittivity_of_vakuum():
     # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m**3 * kg)"
+    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
 
 
 
