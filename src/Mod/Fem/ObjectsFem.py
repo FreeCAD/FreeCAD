@@ -616,7 +616,8 @@ def makePostVtkFilterWarp(
 
 
 def makePostVtkResult(
-    doc, base_result,
+    doc,
+    base_result,
     name="VtkResult"
 ):
     """makePostVtkResult(document, base_result [name]):
