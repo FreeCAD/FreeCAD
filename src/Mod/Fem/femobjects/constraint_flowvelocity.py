@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,19 +26,19 @@ __title__ = "FreeCAD FEM constraint flow velocity document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemConstraintFlowVelocity
+## @package constraint_flowvelocity
 #  \ingroup FEM
-#  \brief FreeCAD FEM constraint flow velocity object
+#  \brief constraint flow velocity object
 
 from . import FemConstraint
 
 
-class Proxy(FemConstraint.Proxy):
+class ConstraintFlowVelocity(FemConstraint.Proxy):
 
     Type = "Fem::ConstraintFlowVelocity"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super(ConstraintFlowVelocity, self).__init__(obj)
         obj.addProperty(
             "App::PropertyFloat",
             "VelocityX",

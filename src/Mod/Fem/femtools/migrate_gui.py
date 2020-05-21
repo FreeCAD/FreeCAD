@@ -41,6 +41,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemConstraintElectrostaticPotential":
             return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintFlowVelocity":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -134,6 +136,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemConstraintElectrostaticPotential":
             import femviewprovider.view_constraint_electrostaticpotential
             module.ViewProxy = femviewprovider.view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintFlowVelocity":
+            import femviewprovider.view_constraint_flowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_flowvelocity.VPConstraintFlowVelocity
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -144,8 +149,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_constraint_electrostaticpotential
             module.ViewProxy = femviewprovider.view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential
         if module.__name__ == "PyGui._ViewProviderFemConstraintFlowVelocity":
-            import femguiobjects._ViewProviderFemConstraintFlowVelocity
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintFlowVelocity.ViewProxy
+            import femviewprovider.view_constraint_flowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_flowvelocity.VPConstraintFlowVelocity
         if module.__name__ == "PyGui._ViewProviderFemConstraintInitialFlowVelocity":
             import femguiobjects._ViewProviderFemConstraintInitialFlowVelocity
             module.ViewProxy = femguiobjects._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy
@@ -258,6 +263,7 @@ renaming class and module names in femobjects
 TODO add link to commit before the first commit
 module="femguiobjects._ViewProviderFemConstraintBodyHeatSource"
 module="femguiobjects._ViewProviderFemConstraintElectrostaticPotential"
+module="femguiobjects._ViewProviderFemConstraintFlowVelocity"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

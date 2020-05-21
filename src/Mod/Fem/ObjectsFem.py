@@ -128,11 +128,11 @@ def makeConstraintFlowVelocity(
     """makeConstraintFlowVelocity(document, [name]):
     makes a Fem ConstraintFlowVelocity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintFlowVelocity
-    _FemConstraintFlowVelocity.Proxy(obj)
+    from femobjects import constraint_flowvelocity
+    constraint_flowvelocity.ConstraintFlowVelocity(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintFlowVelocity
-        _ViewProviderFemConstraintFlowVelocity.ViewProxy(obj.ViewObject)
+        from femviewprovider import view_constraint_flowvelocity
+        view_constraint_flowvelocity.VPConstraintFlowVelocity(obj.ViewObject)
     return obj
 
 

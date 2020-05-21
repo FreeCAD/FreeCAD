@@ -25,21 +25,21 @@ __title__ = "FreeCAD FEM constraint flow velocity ViewProvider for the document 
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintFlowVelocity
+## @package view_constraint_flowvelocity
 #  \ingroup FEM
-#  \brief FreeCAD FEM view provider for constraint flow velocity object
+#  \brief view provider for constraint flow velocity object
 
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 from femtools import femutils
 from femtools import membertools
 
 
-class ViewProxy(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintFlowVelocity(ViewProviderFemConstraint.ViewProxy):
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

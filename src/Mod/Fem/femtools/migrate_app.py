@@ -43,6 +43,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemConstraintElectrostaticPotential":
             return self
+        if fullname == "femobjects._FemConstraintFlowVelocity":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -146,6 +148,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
             import femobjects.constraint_electrostaticpotential
             module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
+        if module.__name__ == "femobjects._FemConstraintFlowVelocity":
+            import femobjects.constraint_flowvelocity
+            module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -156,8 +161,8 @@ class FemMigrateApp(object):
             import femobjects.constraint_electrostaticpotential
             module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
-            import femobjects._FemConstraintFlowVelocity
-            module.Proxy = femobjects._FemConstraintFlowVelocity.Proxy
+            import femobjects.constraint_flowvelocity
+            module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintInitialFlowVelocity":
             import femobjects._FemConstraintInitialFlowVelocity
             module.Proxy = femobjects._FemConstraintInitialFlowVelocity.Proxy
@@ -294,6 +299,7 @@ renaming class and module names in femobjects
 TODO add link to commit before the first commit
 module="femobjects._FemConstraintBodyHeatSource"
 module="femobjects._FemConstraintElectrostaticPotential"
+module="femobjects._FemConstraintFlowVelocity"
 
 third big moving
 from PyObjects to femobjects, following the parent commit
