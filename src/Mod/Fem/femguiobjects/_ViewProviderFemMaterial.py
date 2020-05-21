@@ -38,7 +38,7 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
-from . import FemSelectionWidgets
+from femguiutils import selection_widgets
 from . import ViewProviderFemConstraint
 
 
@@ -215,7 +215,7 @@ class _TaskPanel:
             self.choose_material(index)
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+        self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
             ["Solid", "Face", "Edge"],
             False

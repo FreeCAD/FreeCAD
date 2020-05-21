@@ -35,7 +35,7 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
-from . import FemSelectionWidgets
+from femguiutils import selection_widgets
 from . import ViewProviderFemConstraint
 
 
@@ -74,7 +74,7 @@ class _TaskPanel:
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+        self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
             ["Face"]
         )

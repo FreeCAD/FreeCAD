@@ -37,7 +37,7 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
-from . import FemSelectionWidgets
+from femguiutils import selection_widgets
 from . import ViewProviderFemConstraint
 from femobjects import _FemElementFluid1D
 
@@ -246,7 +246,7 @@ class _TaskPanel:
         self.updateParameterWidget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+        self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Edge"]
         )
 

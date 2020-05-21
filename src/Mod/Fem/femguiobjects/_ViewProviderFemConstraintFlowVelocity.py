@@ -33,7 +33,7 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
-from . import FemSelectionWidgets
+from femguiutils import selection_widgets
 from . import ViewProviderFemConstraint
 from femtools import femutils
 from femtools import membertools
@@ -54,7 +54,7 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
-        self._refWidget = FemSelectionWidgets.BoundarySelector()
+        self._refWidget = selection_widgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui"

@@ -34,7 +34,7 @@ from PySide import QtCore
 import FreeCAD
 import FreeCADGui
 
-from . import FemSelectionWidgets
+from femguiutils import selection_widgets
 from . import ViewProviderFemConstraint
 
 
@@ -79,7 +79,7 @@ class _TaskPanel:
 
         # geometry selection widget
         # start with Solid in list!
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+        self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
             ["Solid", "Face", "Edge", "Vertex"]
         )

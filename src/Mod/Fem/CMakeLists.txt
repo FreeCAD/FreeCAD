@@ -340,18 +340,26 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemMeshResult.py
     femguiobjects/_ViewProviderFemResultMechanical.py
     femguiobjects/_ViewProviderFemSolverCalculix.py
-    femguiobjects/FemSelectionWidgets.py
     femguiobjects/ViewProviderBaseObject.py
     femguiobjects/ViewProviderFemConstraint.py
 )
 
+SET(FemGuiUtils_SRCS
+    femguiutils/selection_widgets.py
+)
+
+SET(FemAllGuiScripts
+    ${FemGuiScripts_SRCS}
+    ${FemGuiUtils_SRCS}
+)
 
 if(BUILD_GUI)
     ADD_CUSTOM_TARGET(FemGuiScriptsTarget ALL
-        SOURCES ${FemGuiScripts_SRCS}
+        SOURCES ${FemAllGuiScripts}
     )
-    fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiScripts_SRCS})
+    fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllGuiScripts})
 
     # install Python packages (for make install)
     INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/femguiobjects)
+    INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
 endif(BUILD_GUI)
