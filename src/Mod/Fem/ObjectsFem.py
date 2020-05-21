@@ -103,11 +103,11 @@ def makeConstraintElectrostaticPotential(
     """makeConstraintElectrostaticPotential(document, [name]):
     makes a Fem ElectrostaticPotential object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintElectrostaticPotential
-    _FemConstraintElectrostaticPotential.Proxy(obj)
+    from femobjects import constraint_electrostaticpotential
+    constraint_electrostaticpotential.ConstraintElectrostaticPotential(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintElectrostaticPotential
-        _ViewProviderFemConstraintElectrostaticPotential.ViewProxy(obj.ViewObject)
+        from femviewprovider import view_constraint_electrostaticpotential
+        view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential(obj.ViewObject)
     return obj
 
 

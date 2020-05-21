@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,19 +26,19 @@ __title__ = "FreeCAD FEM constraint electrostatic potential document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemConstraintElectrostaticPotential
+## @package constraint_electrostaticpotential
 #  \ingroup FEM
-#  \brief FreeCAD FEM constraint electrostatic potential object
+#  \brief constraint electrostatic potential object
 
 from . import FemConstraint
 
 
-class Proxy(FemConstraint.Proxy):
+class ConstraintElectrostaticPotential(FemConstraint.Proxy):
 
     Type = "Fem::ConstraintElectrostaticPotential"
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super(ConstraintElectrostaticPotential, self).__init__(obj)
         obj.addProperty(
             "App::PropertyFloat",
             "Potential",

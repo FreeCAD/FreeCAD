@@ -25,21 +25,21 @@ __title__ = "FreeCAD FEM constraint electrostatic potential ViewProvider for the
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintElctrostaticPotential
+## @package view_constraint_electrostaticpotential
 #  \ingroup FEM
-#  \brief FreeCAD FEM view provider for constraint electrostatic potential object
+#  \brief view provider for constraint electrostatic potential object
 
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 from femtools import femutils
 from femtools import membertools
 
 
-class ViewProxy(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintElectroStaticPotential(ViewProviderFemConstraint.ViewProxy):
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

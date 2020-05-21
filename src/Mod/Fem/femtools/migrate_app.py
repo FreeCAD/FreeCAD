@@ -41,6 +41,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemConstraintBodyHeatSource":
             return self
+        if fullname == "femobjects._FemConstraintElectrostaticPotential":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -141,6 +143,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemConstraintBodyHeatSource":
             import femobjects.constraint_bodyheatsource
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
+        if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
+            import femobjects.constraint_electrostaticpotential
+            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -148,8 +153,8 @@ class FemMigrateApp(object):
             import femobjects.constraint_bodyheatsource
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
-            import femobjects._FemConstraintElectrostaticPotential
-            module.Proxy = femobjects._FemConstraintElectrostaticPotential.Proxy
+            import femobjects.constraint_electrostaticpotential
+            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
             import femobjects._FemConstraintFlowVelocity
             module.Proxy = femobjects._FemConstraintFlowVelocity.Proxy
@@ -288,6 +293,7 @@ fourth big moving
 renaming class and module names in femobjects
 TODO add link to commit before the first commit
 module="femobjects._FemConstraintBodyHeatSource"
+module="femobjects._FemConstraintElectrostaticPotential"
 
 third big moving
 from PyObjects to femobjects, following the parent commit
