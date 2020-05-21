@@ -31,6 +31,14 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 
+# PythonFeatures from package femobjects
+# standard object name == class name == type without 'Fem::'
+
+# PythonFeatures from package femsolver
+# standard object name == type without 'Fem::'
+# the class name is Proxy
+
+
 # ********* analysis objects *********************************************************************
 def makeAnalysis(
     doc,
