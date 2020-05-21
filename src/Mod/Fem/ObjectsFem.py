@@ -382,7 +382,7 @@ def makeMaterialFluid(
 def makeMaterialMechanicalNonlinear(
     doc,
     base_material,
-    name="MechanicalMaterialNonlinear"
+    name="MaterialMechanicalNonlinear"
 ):
     """makeMaterialMechanicalNonlinear(document, base_material, [name]):
     creates a nonlinear material object"""
