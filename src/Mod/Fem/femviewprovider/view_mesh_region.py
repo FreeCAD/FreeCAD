@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM mesh region ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMeshRegion
+## @package view_mesh_region
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMeshRegion
+#  \brief view provider for mesh region object
 
 from PySide import QtCore
 
@@ -35,10 +35,10 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemMeshRegion(ViewProviderFemConstraint.ViewProxy):
+class VPMeshRegion(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemMeshRegion object
     """

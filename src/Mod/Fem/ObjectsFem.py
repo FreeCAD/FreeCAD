@@ -508,8 +508,8 @@ def makeMeshRegion(
     """makeMeshRegion(document, base_mesh, [element_length], [name]):
     creates a FEM mesh region object to define properties for a region of a FEM mesh"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemMeshRegion
-    _FemMeshRegion._FemMeshRegion(obj)
+    from femobjects import mesh_region
+    mesh_region.MeshRegion(obj)
     obj.CharacteristicLength = element_length
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
@@ -518,8 +518,8 @@ def makeMeshRegion(
     tmplist.append(obj)
     base_mesh.MeshRegionList = tmplist
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMeshRegion
-        _ViewProviderFemMeshRegion._ViewProviderFemMeshRegion(obj.ViewObject)
+        from femviewprovider import view_mesh_region
+        view_mesh_region.VPMeshRegion(obj.ViewObject)
     return obj
 
 

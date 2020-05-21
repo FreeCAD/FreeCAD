@@ -25,14 +25,14 @@ __title__ = "FreeCAD FEM mesh region document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMeshRegion
+## @package mesh_region
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemMeshRegion
+#  \brief mesh region object
 
 from . import FemConstraint
 
 
-class _FemMeshRegion(FemConstraint.Proxy):
+class MeshRegion(FemConstraint.Proxy):
     """
     The FemMeshRegion object
     """
@@ -40,7 +40,7 @@ class _FemMeshRegion(FemConstraint.Proxy):
     Type = "Fem::MeshRegion"
 
     def __init__(self, obj):
-        super(_FemMeshRegion, self).__init__(obj)
+        super(MeshRegion, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",

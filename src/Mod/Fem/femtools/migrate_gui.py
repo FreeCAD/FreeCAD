@@ -67,6 +67,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemMeshGroup":
             return self
+        if fullname == "femguiobjects._ViewProviderFemMeshRegion":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -199,6 +201,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemMeshGroup":
             import femviewprovider.view_mesh_group
             module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshRegion":
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -245,8 +250,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_mesh_group
             module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
         if module.__name__ == "PyGui._ViewProviderFemMeshRegion":
-            import femguiobjects._ViewProviderFemMeshRegion
-            module._ViewProviderFemMeshRegion = femguiobjects._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "PyGui._ViewProviderFemMeshResult":
             import femguiobjects._ViewProviderFemMeshResult
             module._ViewProviderFemMeshResult = femguiobjects._ViewProviderFemMeshResult._ViewProviderFemMeshResult
@@ -286,8 +291,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_mesh_group
             module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
         if module.__name__ == "_ViewProviderFemMeshRegion":
-            import femguiobjects._ViewProviderFemMeshRegion
-            module._ViewProviderFemMeshRegion = femguiobjects._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "_ViewProviderFemResultMechanical":
             import femguiobjects._ViewProviderFemResultMechanical
             module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
@@ -336,6 +341,7 @@ module="femguiobjects._ViewProviderFemMaterialReinforced"
 module="femguiobjects._ViewProviderFemMeshBoundaryLayer"
 module="femguiobjects._ViewProviderFemMeshGmsh"
 module="femguiobjects._ViewProviderFemMeshGroup"
+module="femguiobjects._ViewProviderFemMeshRegion"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit
