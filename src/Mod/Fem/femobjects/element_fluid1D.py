@@ -27,16 +27,16 @@ __title__ = "FreeCAD FEM _element fluid 1D document object"
 __author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemElementFluid1D
+## @package element_fluid1D
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemElementFluid1D
+#  \brief element fluid 1D object
 
 from . import FemConstraint
 
 
-class _FemElementFluid1D(FemConstraint.Proxy):
+class ElementFluid1D(FemConstraint.Proxy):
     """
-    The FemElementFluid1D object
+    The element_fluid1D object
     """
 
     Type = "Fem::ElementFluid1D"
@@ -61,7 +61,7 @@ class _FemElementFluid1D(FemConstraint.Proxy):
     known_channel_types = ["NONE"]
 
     def __init__(self, obj):
-        super(_FemElementFluid1D, self).__init__(obj)
+        super(ElementFluid1D, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -315,13 +315,13 @@ class _FemElementFluid1D(FemConstraint.Proxy):
         )
 
         # set property default values
-        obj.SectionType = _FemElementFluid1D.known_fluid_types
+        obj.SectionType = ElementFluid1D.known_fluid_types
         obj.SectionType = "Liquid"
-        obj.LiquidSectionType = _FemElementFluid1D.known_liquid_types
+        obj.LiquidSectionType = ElementFluid1D.known_liquid_types
         obj.LiquidSectionType = "PIPE INLET"
-        obj.GasSectionType = _FemElementFluid1D.known_gas_types
+        obj.GasSectionType = ElementFluid1D.known_gas_types
         obj.GasSectionType = "NONE"
-        obj.ChannelSectionType = _FemElementFluid1D.known_channel_types
+        obj.ChannelSectionType = ElementFluid1D.known_channel_types
         obj.ChannelSectionType = "NONE"
         obj.ManningArea = 10.0
         obj.ManningRadius = 1.0

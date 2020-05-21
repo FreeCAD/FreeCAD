@@ -244,7 +244,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/constraint_initialflowvelocity.py
     femobjects/constraint_selfweight.py
     femobjects/constraint_tie.py
-    femobjects/_FemElementFluid1D.py
+    femobjects/element_fluid1D.py
     femobjects/_FemElementGeometry1D.py
     femobjects/_FemElementGeometry2D.py
     femobjects/_FemElementRotation1D.py
@@ -327,11 +327,11 @@ SET(FemGuiViewObjects_SRCS
     femviewprovider/view_constraint_initialflowvelocity.py
     femviewprovider/view_constraint_selfweight.py
     femviewprovider/view_constraint_tie.py
+    femviewprovider/view_element_fluid1D.py
 )
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
-    femguiobjects/_ViewProviderFemElementFluid1D.py
     femguiobjects/_ViewProviderFemElementGeometry1D.py
     femguiobjects/_ViewProviderFemElementGeometry2D.py
     femguiobjects/_ViewProviderFemElementRotation1D.py

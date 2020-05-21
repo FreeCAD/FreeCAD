@@ -49,6 +49,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemConstraintTie":
             return self
+        if fullname == "femguiobjects._ViewProviderFemElementFluid1D":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -154,7 +156,10 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemConstraintTie":
             import femviewprovider.view_constraint_tie
             module._ViewProviderFemConstraintTie = femviewprovider.view_constraint_tie.VPConstraintTie
-
+        if module.__name__ == "femguiobjects._ViewProviderFemElementFluid1D":
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
+ 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
@@ -173,8 +178,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_constraint_selfweight
             module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "PyGui._ViewProviderFemElementFluid1D":
-            import femguiobjects._ViewProviderFemElementFluid1D
-            module._ViewProviderFemElementFluid1D = femguiobjects._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry1D":
             import femguiobjects._ViewProviderFemElementGeometry1D
             module._ViewProviderFemElementGeometry1D = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
@@ -216,8 +221,8 @@ class FemMigrateGui(object):
             import femguiobjects._ViewProviderFemElementGeometry1D
             module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemFluidSection":
-            import femguiobjects._ViewProviderFemElementFluid1D
-            module._ViewProviderFemFluidSection = femguiobjects._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemFluidSection = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemShellThickness":
             import femguiobjects._ViewProviderFemElementGeometry2D
             module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
@@ -282,6 +287,7 @@ module="femguiobjects._ViewProviderFemConstraintFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintInitialFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintSelfWeight"
 module="femguiobjects._ViewProviderFemConstraintTie"
+module="femguiobjects._ViewProviderFemElementFluid1D"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

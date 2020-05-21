@@ -291,11 +291,11 @@ def makeElementFluid1D(
     """makeElementFluid1D(document, [name]):
     creates an 1D fluid element object to define 1D flow"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemElementFluid1D
-    _FemElementFluid1D._FemElementFluid1D(obj)
+    from femobjects import element_fluid1D
+    element_fluid1D.ElementFluid1D(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemElementFluid1D
-        _ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D(obj.ViewObject)
+        from femviewprovider import view_element_fluid1D
+        view_element_fluid1D.VPElementFluid1D(obj.ViewObject)
     return obj
 
 

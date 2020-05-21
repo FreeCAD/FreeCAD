@@ -27,9 +27,9 @@ __title__ = "FreeCAD FEM element fluid 1D ViewProvider for the document object"
 __author__ = "Ofentse Kgoa, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemElementFluid1D
+## @package view_element_fluid1D
 #  \ingroup FEM
-#  \brief FreeCAD ViewProviderFemElementFluid1D
+#  \brief view provider for element fluid 1D object
 
 from PySide import QtCore
 from PySide import QtGui
@@ -38,13 +38,13 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
-from femobjects import _FemElementFluid1D
+from femguiobjects import ViewProviderFemConstraint
+from femobjects import element_fluid1D
 
 
-class _ViewProviderFemElementFluid1D(ViewProviderFemConstraint.ViewProxy):
+class VPElementFluid1D(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemElementFluid1D object
+    A View Provider for the ElementFluid1D object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -58,7 +58,7 @@ class _ViewProviderFemElementFluid1D(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemElementFluid1D objects
+    The TaskPanel for editing References property of ElementFluid1D objects
     """
 
     def __init__(self, obj):
@@ -231,16 +231,16 @@ class _TaskPanel:
         )
         # some fluid types deactivated since they are not implemented in ccx writer
         self.parameterWidget.cb_section_type.addItems(
-            _FemElementFluid1D._FemElementFluid1D.known_fluid_types
+            element_fluid1D.ElementFluid1D.known_fluid_types
         )
         self.parameterWidget.cb_liquid_section_type.addItems(
-            _FemElementFluid1D._FemElementFluid1D.known_liquid_types
+            element_fluid1D.ElementFluid1D.known_liquid_types
         )
         self.parameterWidget.cb_gas_section_type.addItems(
-            _FemElementFluid1D._FemElementFluid1D.known_gas_types
+            element_fluid1D.ElementFluid1D.known_gas_types
         )
         self.parameterWidget.cb_channel_section_type.addItems(
-            _FemElementFluid1D._FemElementFluid1D.known_channel_types
+            element_fluid1D.ElementFluid1D.known_channel_types
         )
         self.get_fluidsection_props()
         self.updateParameterWidget()
