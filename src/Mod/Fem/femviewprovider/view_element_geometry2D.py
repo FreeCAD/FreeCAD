@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM element geometry 2D ViewProvider for the document objec
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemElementGeometry2D
+## @package view_element_geometry2D
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemElementGeometry2D
+#  \brief view provider for element geometry 2D object
 
 from PySide import QtCore
 
@@ -35,12 +35,12 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
+class VPElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemElementGeometry2D object
+    A View Provider for the ElementGeometry2D object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -54,7 +54,7 @@ class _ViewProviderFemElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemElementGeometry2D objects
+    The TaskPanel for editing References property of ElementGeometry2D objects
     """
 
     def __init__(self, obj):

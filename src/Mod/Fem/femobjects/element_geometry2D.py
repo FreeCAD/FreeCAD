@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM element geometry 2D document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-## @package FemElementGeometry2D
+## @package element_geometry2D
 #  \ingroup FEM
-#  \brief FreeCAD FEM element geometry 2D object
+#  \brief element geometry 2D object
 
 from . import FemConstraint
 
 
-class _FemElementGeometry2D(FemConstraint.Proxy):
+class ElementGeometry2D(FemConstraint.Proxy):
     """
-    The FemElementGeometry2D object
+    The ElementGeometry2D object
     """
 
     Type = "Fem::ElementGeometry2D"
 
     def __init__(self, obj):
-        super(_FemElementGeometry2D, self).__init__(obj)
+        super(ElementGeometry2D, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",

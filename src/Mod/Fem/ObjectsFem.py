@@ -336,12 +336,12 @@ def makeElementGeometry2D(
     """makeElementGeometry2D(document, [thickness], [name]):
     creates an 2D geometry element object to define a plate thickness"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemElementGeometry2D
-    _FemElementGeometry2D._FemElementGeometry2D(obj)
+    from femobjects import element_geometry2D
+    element_geometry2D.ElementGeometry2D(obj)
     obj.Thickness = thickness
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemElementGeometry2D
-        _ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D(obj.ViewObject)
+        from femviewprovider import view_element_geometry2D
+        view_element_geometry2D.VPElementGeometry2D(obj.ViewObject)
     return obj
 
 

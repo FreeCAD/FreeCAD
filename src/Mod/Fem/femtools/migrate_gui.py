@@ -53,6 +53,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemElementGeometry1D":
             return self
+        if fullname == "femguiobjects._ViewProviderFemElementGeometry2D":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -164,7 +166,10 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry1D":
             import femviewprovider.view_element_geometry1D
             module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
-  
+        if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry2D":
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
+
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
@@ -189,8 +194,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_geometry1D
             module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry2D":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemElementGeometry2D = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "PyGui._ViewProviderFemElementRotation1D":
             import femguiobjects._ViewProviderFemElementRotation1D
             module._ViewProviderFemElementRotation1D = femguiobjects._ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D
@@ -229,8 +234,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_fluid1D
             module._ViewProviderFemFluidSection = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemShellThickness":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
 
         if module.__name__ == "_ViewProviderFemBeamSection":
             import femviewprovider.view_element_geometry1D
@@ -257,8 +262,8 @@ class FemMigrateGui(object):
             import femguiobjects._ViewProviderFemResultMechanical
             module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
         if module.__name__ == "_ViewProviderFemShellThickness":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "_ViewProviderFemSolverCalculix":
             import femguiobjects._ViewProviderFemSolverCalculix
             module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
@@ -294,6 +299,7 @@ module="femguiobjects._ViewProviderFemConstraintSelfWeight"
 module="femguiobjects._ViewProviderFemConstraintTie"
 module="femguiobjects._ViewProviderFemElementFluid1D"
 module="femguiobjects._ViewProviderFemElementGeometry1D"
+module="femguiobjects._ViewProviderFemElementGeometry2D"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit
