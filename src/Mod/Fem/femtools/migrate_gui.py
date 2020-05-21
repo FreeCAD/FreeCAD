@@ -81,7 +81,7 @@ class FemMigrateGui(object):
 
         if fullname == "_ViewProviderFemBeamSection":
             return self
-        if fullname == "_FemConstraintSelfWeight":
+        if fullname == "_ViewProviderFemConstraintSelfWeight":
             return self
         if fullname == "_ViewProviderFemMaterial":
             return self
