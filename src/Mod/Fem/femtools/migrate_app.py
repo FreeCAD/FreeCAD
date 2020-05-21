@@ -47,6 +47,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemConstraintInitialFlowVelocity":
             return self
+        if fullname == "femobjects._FemConstraintSelfWeight":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -156,6 +158,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemConstraintInitialFlowVelocity":
             import femobjects.constraint_initialflowvelocity
             module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
+        if module.__name__ == "femobjects._FemConstraintSelfWeight":
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -172,8 +177,8 @@ class FemMigrateApp(object):
             import femobjects.constraint_initialflowvelocity
             module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintSelfWeight":
-            import femobjects._FemConstraintSelfWeight
-            module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
         if module.__name__ == "PyObjects._FemElementFluid1D":
             import femobjects._FemElementFluid1D
             module._FemElementFluid1D = femobjects._FemElementFluid1D._FemElementFluid1D
@@ -228,8 +233,8 @@ class FemMigrateApp(object):
             import femobjects._FemElementGeometry1D
             module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
         if module.__name__ == "_FemConstraintSelfWeight":
-            import femobjects._FemConstraintSelfWeight
-            module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
         if module.__name__ == "_FemMaterial":
             import femobjects._FemMaterial
             module._FemMaterial = femobjects._FemMaterial._FemMaterial
@@ -306,6 +311,7 @@ module="femobjects._FemConstraintBodyHeatSource"
 module="femobjects._FemConstraintElectrostaticPotential"
 module="femobjects._FemConstraintFlowVelocity"
 module="femobjects._FemConstraintInitialFlowVelocity"
+module="femobjects._FemConstraintSelfWeight"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

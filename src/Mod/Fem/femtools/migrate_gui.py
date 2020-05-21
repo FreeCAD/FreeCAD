@@ -45,6 +45,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity":
             return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintSelfWeight":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -144,6 +146,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity":
             import femviewprovider.view_constraint_initialflowvelocity
             module.ViewProxy = femviewprovider.view_constraint_initialflowvelocity.VPConstraintInitialFlowVelocity
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintSelfWeight":
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -160,8 +165,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_constraint_initialflowvelocity
             module.ViewProxy = femviewprovider.view_constraint_initialflowvelocity.VPConstraintInitialFlowVelocity
         if module.__name__ == "PyGui._ViewProviderFemConstraintSelfWeight":
-            import femguiobjects._ViewProviderFemConstraintSelfWeight
-            module._ViewProviderFemConstraintSelfWeight = femguiobjects._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "PyGui._ViewProviderFemElementFluid1D":
             import femguiobjects._ViewProviderFemElementFluid1D
             module._ViewProviderFemElementFluid1D = femguiobjects._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D
@@ -216,8 +221,8 @@ class FemMigrateGui(object):
             import femguiobjects._ViewProviderFemElementGeometry1D
             module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
         if module.__name__ == "_ViewProviderFemConstraintSelfWeight":
-            import femguiobjects._ViewProviderFemConstraintSelfWeight
-            module._ViewProviderFemConstraintSelfWeight = femguiobjects._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "_ViewProviderFemMaterial":
             import femguiobjects._ViewProviderFemMaterial
             module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
@@ -270,6 +275,7 @@ module="femguiobjects._ViewProviderFemConstraintBodyHeatSource"
 module="femguiobjects._ViewProviderFemConstraintElectrostaticPotential"
 module="femguiobjects._ViewProviderFemConstraintFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintInitialFlowVelocity"
+module="femguiobjects._ViewProviderFemConstraintSelfWeight"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

@@ -238,11 +238,11 @@ def makeConstraintSelfWeight(
     """makeConstraintSelfWeight(document, [name]):
     creates an self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintSelfWeight
-    _FemConstraintSelfWeight.ConstraintSelfWeight(obj)
+    from femobjects import constraint_selfweight
+    constraint_selfweight.ConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintSelfWeight
-        _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(
+        from femviewprovider import view_constraint_selfweight
+        view_constraint_selfweight.VPConstraintSelfWeight(
             obj.ViewObject
         )
     return obj

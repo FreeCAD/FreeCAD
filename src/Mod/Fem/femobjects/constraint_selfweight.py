@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM constraint self weight document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemConstraintSelfWeight
+## @package constraint_selfweight
 #  \ingroup FEM
-#  \brief FreeCAD FEM constraint self weight object
+#  \brief constraint self weight object
 
 from . import FemConstraint
 
 
-class _FemConstraintSelfWeight(FemConstraint.Proxy):
+class ConstraintSelfWeight(FemConstraint.Proxy):
     """
-    The FemConstraintSelfWeight object"
+    The ConstraintSelfWeight object"
     """
 
     Type = "Fem::ConstraintSelfWeight"
 
     def __init__(self, obj):
-        super(_FemConstraintSelfWeight, self).__init__(obj)
+        super(ConstraintSelfWeight, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyFloat",

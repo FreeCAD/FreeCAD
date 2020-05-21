@@ -25,14 +25,14 @@ __title__ = "FreeCAD FEM constraint self weight ViewProvider for the document ob
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintSelfWeight
+## @package view_constraint_selfweight
 #  \ingroup FEM
-#  \brief FreeCAD FEM Constraint SelfWeight ViewProvider
+#  \brief view provider for constraint self weight object
 
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemConstraintSelfWeight(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintSelfWeight(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemConstraintSelfWeight object
     """
