@@ -350,7 +350,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeSolverCalculix(doc))
         )
         self.assertEqual(
-            "Fem::FemSolverObjectElmer",
+            "Fem::SolverElmer",
             type_of_obj(solverelmer)
         )
         self.assertEqual(
@@ -550,7 +550,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             solverelmer,
-            "Fem::FemSolverObjectElmer"
+            "Fem::SolverElmer"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
@@ -1180,7 +1180,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_elmer,
-            "Fem::FemSolverObjectElmer"
+            "Fem::SolverElmer"
         ))
 
         # FemSolverObjectZ88

@@ -47,7 +47,7 @@ def create(doc, name="ElmerSolver"):
 class Proxy(solverbase.Proxy):
     """Proxy for FemSolverElmers Document Object."""
 
-    Type = "Fem::FemSolverObjectElmer"
+    Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
         "Heat": heat,
