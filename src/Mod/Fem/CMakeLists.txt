@@ -347,6 +347,7 @@ SET(FemGuiViewObjects_SRCS
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
+    femguiobjects/readme.md
 )
 
 SET(FemGuiUtils_SRCS
