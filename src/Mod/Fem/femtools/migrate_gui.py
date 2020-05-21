@@ -59,6 +59,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
             return self
+        if fullname == "femguiobjects._ViewProviderFemMaterialReinforced":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -179,6 +181,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
             import femviewprovider.view_material_mechanicalnonlinear
             module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
+        if module.__name__ == "femguiobjects._ViewProviderFemMaterialReinforced":
+            import femviewprovider.view_material_reinforced
+            module._ViewProviderFemMaterialReinforced = femviewprovider.view_material_reinforced.VPMaterialReinforced
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -312,6 +317,7 @@ module="femguiobjects._ViewProviderFemElementGeometry1D"
 module="femguiobjects._ViewProviderFemElementGeometry2D"
 module="femguiobjects._ViewProviderFemElementRotation1D"
 module="femguiobjects._ViewProviderFemMaterialMechanicalNonlinear"
+module="femguiobjects._ViewProviderFemMaterialReinforced"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

@@ -61,6 +61,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemMaterialMechanicalNonlinear":
             return self
+        if fullname == "femobjects._FemMaterialReinforced":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -191,6 +193,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
             module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
+        if module.__name__ == "femobjects._FemMaterialReinforced":
+            import femobjects.material_reinforced
+            module._FemMaterialReinforced = femobjects.material_reinforced.MaterialReinforced
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -348,6 +353,7 @@ module="femobjects._FemElementGeometry1D"
 module="femobjects._FemElementGeometry2D"
 module="femobjects._FemElementRotation1D"
 module="femobjects._FemMaterialMechanicalNonlinear"
+module="femobjects._FemMaterialReinforced"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

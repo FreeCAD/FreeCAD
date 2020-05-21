@@ -403,11 +403,11 @@ def makeMaterialReinforced(
     """makeMaterialReinforced(document, [matrix_material], [reinforcement_material], [name]):
     creates a reinforced material object"""
     obj = doc.addObject("App::MaterialObjectPython", name)
-    from femobjects import _FemMaterialReinforced
-    _FemMaterialReinforced._FemMaterialReinforced(obj)
+    from femobjects import material_reinforced
+    material_reinforced.MaterialReinforced(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMaterialReinforced
-        _ViewProviderFemMaterialReinforced._ViewProviderFemMaterialReinforced(obj.ViewObject)
+        from femviewprovider import view_material_reinforced
+        view_material_reinforced.VPMaterialReinforced(obj.ViewObject)
     return obj
 
 

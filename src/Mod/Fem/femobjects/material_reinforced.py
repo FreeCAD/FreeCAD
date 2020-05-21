@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM reinforced material"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMaterialReinforced
+## @package material_reinforced
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemMaterialReinforced
+#  \brief reinforced object
 
 from . import FemConstraint
 
 
-class _FemMaterialReinforced(FemConstraint.Proxy):
+class MaterialReinforced(FemConstraint.Proxy):
     """
-    The FemMaterialReinforced object
+    The MaterialReinforced object
     """
 
     Type = "Fem::MaterialReinforced"
 
     def __init__(self, obj):
-        super(_FemMaterialReinforced, self).__init__(obj)
+        super(MaterialReinforced, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLinkSubList",

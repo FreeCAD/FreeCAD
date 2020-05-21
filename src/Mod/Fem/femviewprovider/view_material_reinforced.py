@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM material reinforced ViewProvider for the document objec
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMaterialReinforced
+## @package view_material_reinforced
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMaterialReinforced
+#  \brief view provider for reinforced material object
 
 import sys
 from PySide import QtCore
@@ -36,16 +36,16 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
 if sys.version_info.major >= 3:
     unicode = str
 
 
-class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
+class VPMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemMaterialReinfocement object
+    A View Provider for the MaterialReinforced object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -59,7 +59,7 @@ class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The editmode TaskPanel for FemMaterialReinforced objects
+    The editmode TaskPanel for MaterialReinforced objects
     """
 
     if sys.version_info.major >= 3:
