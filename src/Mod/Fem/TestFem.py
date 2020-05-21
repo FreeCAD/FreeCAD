@@ -29,12 +29,13 @@ from femtest.app.test_femimport import TestFemImport as FemTest01
 from femtest.app.test_common import TestFemCommon as FemTest02
 from femtest.app.test_object import TestObjectCreate as FemTest03
 from femtest.app.test_object import TestObjectType as FemTest04
-from femtest.app.test_material import TestMaterialUnits as FemTest05
-from femtest.app.test_mesh import TestMeshCommon as FemTest06
-from femtest.app.test_mesh import TestMeshEleTetra10 as FemTest07
-from femtest.app.test_result import TestResult as FemTest08
-from femtest.app.test_ccxtools import TestCcxTools as FemTest09
-from femtest.app.test_solverframework import TestSolverFrameWork as FemTest10
+from femtest.app.test_open import TestObjectOpen as FemTest05
+from femtest.app.test_material import TestMaterialUnits as FemTest06
+from femtest.app.test_mesh import TestMeshCommon as FemTest07
+from femtest.app.test_mesh import TestMeshEleTetra10 as FemTest08
+from femtest.app.test_result import TestResult as FemTest09
+from femtest.app.test_ccxtools import TestCcxTools as FemTest10
+from femtest.app.test_solverframework import TestSolverFrameWork as FemTest11
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
@@ -47,6 +48,7 @@ False if FemTest07.__name__ else True
 False if FemTest08.__name__ else True
 False if FemTest09.__name__ else True
 False if FemTest10.__name__ else True
+False if FemTest11.__name__ else True
 
 
 # For more information on how to run a specific test class or a test method see
@@ -103,6 +105,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCAD --run-test "femtest.app.test_material"
 ./bin/FreeCAD --run-test "femtest.app.test_mesh"
 ./bin/FreeCAD --run-test "femtest.app.test_object"
+./bin/FreeCAD --run-test "femtest.app.test_open"
 ./bin/FreeCAD --run-test "femtest.app.test_result"
 ./bin/FreeCAD --run-test "femtest.app.test_solverframework"
 ./bin/FreeCADCmd --run-test "femtest.app.test_femimport"
@@ -111,6 +114,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test "femtest.app.test_material"
 ./bin/FreeCADCmd --run-test "femtest.app.test_mesh"
 ./bin/FreeCADCmd --run-test "femtest.app.test_object"
+./bin/FreeCADCmd --run-test "femtest.app.test_open"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result"
 ./bin/FreeCADCmd --run-test "femtest.app.test_solverframework"
 
@@ -157,6 +161,8 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_isoftype"
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromfem"
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromstd"
+./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_head"
+./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_10fdcf57b7"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_read_frd_massflow_networkpressure"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_von_mises"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_principal_std"
@@ -261,6 +267,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.a
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_object.TestObjectType.test_femobjects_derivedfromstd"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_open.TestObjectOpen.test_femobjects_open_head))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_result.TestResult.test_read_frd_massflow_networkpressure"))
