@@ -28,6 +28,11 @@ SET(Draft_import
     importSVG.py
 )
 
+SET (Draft_geoutils
+    draftgeoutils/__init__.py
+    draftgeoutils/general.py
+)
+
 SET(Draft_tests
     drafttests/__init__.py
     drafttests/auxiliary.py
@@ -247,6 +252,7 @@ SET(Draft_task_panels
 SET(Draft_SRCS_all
     ${Draft_SRCS_base}
     ${Draft_import}
+    ${Draft_geoutils}
     ${Draft_tests}
     ${Draft_utilities}
     ${Draft_functions}
@@ -293,6 +299,7 @@ INSTALL(
 )
 
 INSTALL(FILES ${Draft_tests} DESTINATION Mod/Draft/drafttests)
+INSTALL(FILES ${Draft_geoutils} DESTINATION Mod/Draft/draftgeoutils)
 INSTALL(FILES ${Draft_utilities} DESTINATION Mod/Draft/draftutils)
 INSTALL(FILES ${Draft_functions} DESTINATION Mod/Draft/draftfunctions)
 INSTALL(FILES ${Draft_make_functions} DESTINATION Mod/Draft/draftmake)

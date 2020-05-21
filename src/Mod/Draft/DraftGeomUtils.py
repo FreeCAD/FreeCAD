@@ -53,205 +53,47 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 # Generic functions *********************************************************
 
 
-def precision():
-    """precision(): returns the Draft precision setting"""
-    # Set precision level with a cap to avoid overspecification that:
-    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are coincident)
-    #      (not sure what it should be 10 or otherwise);
-    #  2 - but FreeCAD/OCC can handle 'internally' (e.g. otherwise user may set something like
-    #      15 that the code would never consider 2 points are coincident as internal float is not that precise);
-
-    precisionMax = 10
-    precisionInt = params.GetInt("precision",6)
-    precisionInt = (precisionInt if precisionInt <=10 else precisionMax)
-    return precisionInt	 # return params.GetInt("precision",6)
+from draftgeoutils.general import precision
 
 
-def vec(edge):
-    """vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"""
-    # if edge is not straight, you'll get strange results!
-    if isinstance(edge,Part.Shape):
-        return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
-    elif isinstance(edge,Part.LineSegment):
-        return edge.EndPoint.sub(edge.StartPoint)
-    else:
-        return None
+from draftgeoutils.general import vec
 
 
-def edg(p1, p2):
-    """edg(Vector,Vector): returns an edge from 2 vectors"""
-    if isinstance(p1,FreeCAD.Vector) and isinstance(p2,FreeCAD.Vector):
-        if DraftVecUtils.equals(p1,p2): return None
-        else: return Part.LineSegment(p1,p2).toShape()
+from draftgeoutils.general import edg
 
 
-def getVerts(shape):
-    """getVerts(shape): returns a list containing vectors of each vertex of the shape"""
-    if not hasattr(shape,"Vertexes"):
-        return []
-    p = []
-    for v in shape.Vertexes:
-            p.append(v.Point)
-    return p
+from draftgeoutils.general import getVerts
 
 
-def v1(edge):
-    """v1(edge): returns the first point of an edge"""
-    return edge.Vertexes[0].Point
+from draftgeoutils.general import v1
 
 
-def isNull(something):
-    """isNull(object): returns true if the given shape is null or the given placement is null or
-    if the given vector is (0,0,0)"""
-    if isinstance(something,Part.Shape):
-            return something.isNull()
-    elif isinstance(something,FreeCAD.Vector):
-            if something == Vector(0,0,0):
-                    return True
-            else:
-                    return False
-    elif isinstance(something,FreeCAD.Placement):
-            if (something.Base == Vector(0,0,0)) and (something.Rotation.Q == (0,0,0,1)):
-                    return True
-            else:
-                    return False
+from draftgeoutils.general import isNull
 
 
-def isPtOnEdge(pt, edge):
-    """isPtOnEdge(Vector,edge): Tests if a point is on an edge"""
-    v = Part.Vertex(pt)
-    try:
-        d = v.distToShape(edge)
-    except:
-        return False
-    else:
-        if d:
-            if round(d[0],precision()) == 0:
-                return True
-    return False
+from draftgeoutils.general import isPtOnEdge
 
 
-def hasCurves(shape):
-    """hasCurve(shape): checks if the given shape has curves"""
-    for e in shape.Edges:
-            if not isinstance(e.Curve,(Part.LineSegment,Part.Line)):
-                    return True
-    return False
+from draftgeoutils.general import hasCurves
 
 
-def isAligned(edge, axis="x"):
-    """isAligned(edge,axis): checks if the given edge or line is aligned to the given axis (x, y or z)"""
-    if axis == "x":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.x == edge.EndPoint.x:
-                    return True
-    elif axis == "y":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.y == edge.EndPoint.y:
-                    return True
-    elif axis == "z":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.z == edge.EndPoint.z:
-                    return True
-    return False
+from draftgeoutils.general import isAligned
 
 
-def getQuad(face):
-    """getQuad(face): returns a list of 3 vectors (basepoint, Xdir, Ydir) if the face
-    is a quad, or None if not."""
-    if len(face.Edges) != 4:
-        return None
-    v1 = vec(face.Edges[0])
-    v2 = vec(face.Edges[1])
-    v3 = vec(face.Edges[2])
-    v4 = vec(face.Edges[3])
-    angles90 = [round(math.pi*0.5,precision()),round(math.pi*1.5,precision())]
-    angles180 = [0,round(math.pi,precision()),round(math.pi*2,precision())]
-    for ov in [v2,v3,v4]:
-        if not (round(v1.getAngle(ov),precision()) in angles90+angles180):
-            return None
-    for ov in [v2,v3,v4]:
-        if round(v1.getAngle(ov),precision()) in angles90:
-            v1.normalize()
-            ov.normalize()
-            return [face.Edges[0].Vertexes[0].Point,v1,ov]
+from draftgeoutils.general import getQuad
 
 
-def areColinear(e1, e2):
-    """areColinear(e1,e2): returns True if both edges are colinear"""
-    if not isinstance(e1.Curve,(Part.LineSegment,Part.Line)):
-        return False
-    if not isinstance(e2.Curve,(Part.LineSegment,Part.Line)):
-        return False
-    v1 = vec(e1)
-    v2 = vec(e2)
-    a = round(v1.getAngle(v2),precision())
-    if (a == 0) or (a == round(math.pi,precision())):
-        v3 = e2.Vertexes[0].Point.sub(e1.Vertexes[0].Point)
-        if DraftVecUtils.isNull(v3):
-            return True
-        else:
-            a2 = round(v1.getAngle(v3),precision())
-            if (a2 == 0) or (a2 == round(math.pi,precision())):
-                return True
-    return False
+from draftgeoutils.general import areColinear
 
 
-def hasOnlyWires(shape):
-    """hasOnlyWires(shape): returns True if all the edges are inside a wire"""
-    ne = 0
-    for w in shape.Wires:
-        ne += len(w.Edges)
-    if ne == len(shape.Edges):
-        return True
-    return False
+from draftgeoutils.general import hasOnlyWires
 
 
-def geomType(edge):
-    """returns the type of geom this edge is based on"""
-    try:
-        if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
-            return "Line"
-        elif isinstance(edge.Curve,Part.Circle):
-            return "Circle"
-        elif isinstance(edge.Curve,Part.BSplineCurve):
-            return "BSplineCurve"
-        elif isinstance(edge.Curve,Part.BezierCurve):
-            return "BezierCurve"
-        elif isinstance(edge.Curve,Part.Ellipse):
-            return "Ellipse"
-        else:
-            return "Unknown"
-    except:
-        return "Unknown"
+from draftgeoutils.general import geomType
 
 
-def isValidPath(shape):
-    """isValidPath(shape): returns True if the shape can be used as an extrusion path"""
-    if shape.isNull():
-        return False
-    if shape.Faces:
-        return False
-    if len(shape.Wires) > 1:
-        return False
-    if shape.Wires:
-        if shape.Wires[0].isClosed():
-            return False
-    if shape.isClosed():
-        return False
-    return True
+from draftgeoutils.general import isValidPath
+
 
 # edge functions *************************************************************
 
