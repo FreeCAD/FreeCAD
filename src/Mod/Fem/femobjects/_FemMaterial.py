@@ -38,7 +38,7 @@ class _FemMaterial(FemConstraint.Proxy):
     The FEM Material object
     """
 
-    Type = "Fem::Material"
+    Type = "Fem::MaterialCommon"
 
     def __init__(self, obj):
         super(_FemMaterial, self).__init__(obj)

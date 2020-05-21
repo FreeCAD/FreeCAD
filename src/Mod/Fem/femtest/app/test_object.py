@@ -238,11 +238,11 @@ class TestObjectType(unittest.TestCase):
         )
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(ObjectsFem.makeMaterialFluid(doc))
         )
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(materialsolid))
         self.assertEqual(
             "Fem::MaterialMechanicalNonlinear",
@@ -436,11 +436,11 @@ class TestObjectType(unittest.TestCase):
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialFluid(doc),
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             materialsolid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid),
@@ -917,7 +917,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_fluid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # Material Solid
@@ -932,7 +932,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_solid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # MaterialMechanicalNonlinear
