@@ -162,7 +162,6 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromfem"
 ./bin/FreeCADCmd --run-test "femtest.app.test_object.TestObjectType.test_femobjects_derivedfromstd"
 ./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_head"
-./bin/FreeCADCmd --run-test "femtest.app.test_open.TestObjectOpen.test_femobjects_open_10fdcf57b7"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_read_frd_massflow_networkpressure"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_von_mises"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_principal_std"
