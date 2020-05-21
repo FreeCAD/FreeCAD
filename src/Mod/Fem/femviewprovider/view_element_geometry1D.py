@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM element geometry 1D ViewProvider for the document objec
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemElementGeometry1D
+## @package view_element_geometry1D
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemElementGeometry1D
+#  \brief view provider for element geometry 1D object
 
 from PySide import QtCore
 
@@ -35,13 +35,13 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
-from femobjects import _FemElementGeometry1D
+from femguiobjects import ViewProviderFemConstraint
+from femobjects import element_geometry1D
 
 
-class _ViewProviderFemElementGeometry1D(ViewProviderFemConstraint.ViewProxy):
+class VPElementGeometry1D(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemElementGeometry1D object
+    A View Provider for the ElementGeometry1D object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -55,7 +55,7 @@ class _ViewProviderFemElementGeometry1D(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemElementGeometry1D objects
+    The TaskPanel for editing References property of ElementGeometry1D objects
     """
 
     def __init__(self, obj):
@@ -97,9 +97,8 @@ class _TaskPanel:
             self.pipe_thickness_changed
         )
 
-        # it is inside the class thus double _FemElementGeometry1D
         self.parameterWidget.cb_crosssectiontype.addItems(
-            _FemElementGeometry1D._FemElementGeometry1D.known_beam_types
+            element_geometry1D.ElementGeometry1D.known_beam_types
         )
         self.get_beamsection_props()
         self.updateParameterWidget()

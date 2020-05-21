@@ -53,6 +53,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemElementFluid1D":
             return self
+        if fullname == "femobjects._FemElementGeometry1D":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -171,6 +173,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemElementFluid1D":
             import femobjects.element_fluid1D
             module._FemElementFluid1D = femobjects.element_fluid1D.ElementFluid1D
+        if module.__name__ == "femobjects._FemElementGeometry1D":
+            import femobjects.element_geometry1D
+            module._FemElementGeometry1D = femobjects.element_geometry1D.ElementGeometry1D
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -193,8 +198,8 @@ class FemMigrateApp(object):
             import femobjects.element_fluid1D
             module._FemElementFluid1D = femobjects.element_fluid1D.ElementFluid1D
         if module.__name__ == "PyObjects._FemElementGeometry1D":
-            import femobjects._FemElementGeometry1D
-            module._FemElementGeometry1D = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemElementGeometry1D = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "PyObjects._FemElementGeometry2D":
             import femobjects._FemElementGeometry2D
             module._FemElementGeometry2D = femobjects._FemElementGeometry2D._FemElementGeometry2D
@@ -230,8 +235,8 @@ class FemMigrateApp(object):
             module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
 
         if module.__name__ == "PyObjects._FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "PyObjects._FemFluidSection":
             import femobjects.element_fluid1D
             module._FemFluidSection = femobjects.element_fluid1D.ElementFluid1D
@@ -240,8 +245,8 @@ class FemMigrateApp(object):
             module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
 
         if module.__name__ == "_FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "_FemConstraintSelfWeight":
             import femobjects.constraint_selfweight
             module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
@@ -284,11 +289,11 @@ class FemMigrateApp(object):
             module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
 
         if module.__name__ == "FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
             if FreeCAD.GuiUp:
-                import femguiobjects._ViewProviderFemElementGeometry1D
-                module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+                import femviewprovider.view_element_geometry1D
+                module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "FemShellThickness":
             import femobjects._FemElementGeometry2D
             module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
@@ -324,6 +329,7 @@ module="femobjects._FemConstraintInitialFlowVelocity"
 module="femobjects._FemConstraintSelfWeight"
 module="femobjects._FemConstraintTie"
 module="femobjects._FemElementFluid1D"
+module="femobjects._FemElementGeometry1D"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

@@ -25,23 +25,23 @@ __title__ = "FreeCAD FEM element geometry 1D document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemElementGeometry1D
+## @package element_geometry1D
 #  \ingroup FEM
-#  \brief FreeCAD FEM element geometry 1D object
+#  \brief element geometry 1D object
 
 from . import FemConstraint
 
 
-class _FemElementGeometry1D(FemConstraint.Proxy):
+class ElementGeometry1D(FemConstraint.Proxy):
     """
-    The FemElementGeometry1D object
+    The ElementGeometry1D object
     """
 
     Type = "Fem::ElementGeometry1D"
     known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
-        super(_FemElementGeometry1D, self).__init__(obj)
+        super(ElementGeometry1D, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",
@@ -92,5 +92,5 @@ class _FemElementGeometry1D(FemConstraint.Proxy):
             "List of beam section shapes"
         )
 
-        obj.SectionType = _FemElementGeometry1D.known_beam_types
+        obj.SectionType = ElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"

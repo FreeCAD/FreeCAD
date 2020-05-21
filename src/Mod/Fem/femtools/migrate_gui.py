@@ -51,6 +51,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemElementFluid1D":
             return self
+        if fullname == "femguiobjects._ViewProviderFemElementGeometry1D":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -159,7 +161,10 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemElementFluid1D":
             import femviewprovider.view_element_fluid1D
             module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
- 
+        if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry1D":
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
+  
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
@@ -181,8 +186,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_fluid1D
             module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry1D":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemElementGeometry1D = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry2D":
             import femguiobjects._ViewProviderFemElementGeometry2D
             module._ViewProviderFemElementGeometry2D = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
@@ -218,8 +223,8 @@ class FemMigrateGui(object):
             module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
 
         if module.__name__ == "PyGui._ViewProviderFemBeamSection":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemFluidSection":
             import femviewprovider.view_element_fluid1D
             module._ViewProviderFemFluidSection = femviewprovider.view_element_fluid1D.VPElementFluid1D
@@ -228,8 +233,8 @@ class FemMigrateGui(object):
             module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
 
         if module.__name__ == "_ViewProviderFemBeamSection":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "_ViewProviderFemConstraintSelfWeight":
             import femviewprovider.view_constraint_selfweight
             module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
@@ -288,6 +293,7 @@ module="femguiobjects._ViewProviderFemConstraintInitialFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintSelfWeight"
 module="femguiobjects._ViewProviderFemConstraintTie"
 module="femguiobjects._ViewProviderFemElementFluid1D"
+module="femguiobjects._ViewProviderFemElementGeometry1D"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

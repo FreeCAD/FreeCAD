@@ -309,9 +309,9 @@ def makeElementGeometry1D(
     """makeElementGeometry1D(document, [width], [height], [name]):
     creates an 1D geometry element object to define a cross section"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemElementGeometry1D
-    _FemElementGeometry1D._FemElementGeometry1D(obj)
-    sec_types = _FemElementGeometry1D._FemElementGeometry1D.known_beam_types
+    from femobjects import element_geometry1D
+    element_geometry1D.ElementGeometry1D(obj)
+    sec_types = element_geometry1D.ElementGeometry1D.known_beam_types
     if sectiontype not in sec_types:
         FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
         obj.SectionType = sec_types[0]
@@ -323,8 +323,8 @@ def makeElementGeometry1D(
     obj.PipeDiameter = height
     obj.PipeThickness = width
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemElementGeometry1D
-        _ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D(obj.ViewObject)
+        from femviewprovider import view_element_geometry1D
+        view_element_geometry1D.VPElementGeometry1D(obj.ViewObject)
     return obj
 
 
