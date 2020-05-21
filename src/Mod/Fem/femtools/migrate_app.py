@@ -45,6 +45,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemConstraintFlowVelocity":
             return self
+        if fullname == "femobjects._FemConstraintInitialFlowVelocity":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -151,6 +153,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
             module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
+        if module.__name__ == "femobjects._FemConstraintInitialFlowVelocity":
+            import femobjects.constraint_initialflowvelocity
+            module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -164,8 +169,8 @@ class FemMigrateApp(object):
             import femobjects.constraint_flowvelocity
             module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintInitialFlowVelocity":
-            import femobjects._FemConstraintInitialFlowVelocity
-            module.Proxy = femobjects._FemConstraintInitialFlowVelocity.Proxy
+            import femobjects.constraint_initialflowvelocity
+            module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintSelfWeight":
             import femobjects._FemConstraintSelfWeight
             module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
@@ -300,6 +305,7 @@ TODO add link to commit before the first commit
 module="femobjects._FemConstraintBodyHeatSource"
 module="femobjects._FemConstraintElectrostaticPotential"
 module="femobjects._FemConstraintFlowVelocity"
+module="femobjects._FemConstraintInitialFlowVelocity"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

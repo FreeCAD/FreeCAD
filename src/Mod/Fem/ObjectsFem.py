@@ -183,11 +183,11 @@ def makeConstraintInitialFlowVelocity(
     """makeConstraintInitialFlowVelocity(document, [name]):
     makes a Fem ConstraintInitialFlowVelocity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintInitialFlowVelocity
-    _FemConstraintInitialFlowVelocity.Proxy(obj)
+    from femobjects import constraint_initialflowvelocity
+    constraint_initialflowvelocity.ConstraintInitialFlowVelocity(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintInitialFlowVelocity
-        _ViewProviderFemConstraintInitialFlowVelocity.ViewProxy(obj.ViewObject)
+        from femviewprovider import view_constraint_initialflowvelocity
+        view_constraint_initialflowvelocity.VPConstraintInitialFlowVelocity(obj.ViewObject)
     return obj
 
 
@@ -239,7 +239,7 @@ def makeConstraintSelfWeight(
     creates an self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import _FemConstraintSelfWeight
-    _FemConstraintSelfWeight._FemConstraintSelfWeight(obj)
+    _FemConstraintSelfWeight.ConstraintSelfWeight(obj)
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemConstraintSelfWeight
         _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(
@@ -265,8 +265,8 @@ def makeConstraintTie(
     """makeConstraintTie(document, [name]):
     creates an tie object to define bonded faces constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintTie
-    _FemConstraintTie._FemConstraintTie(obj)
+    from femobjects import constraint_tie
+    constraint_tie.ConstraintTie(obj)
     if FreeCAD.GuiUp:
         from femguiobjects import _ViewProviderFemConstraintTie
         _ViewProviderFemConstraintTie._ViewProviderFemConstraintTie(

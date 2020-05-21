@@ -241,7 +241,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
-    femobjects/_FemConstraintInitialFlowVelocity.py
+    femobjects/constraint_initialflowvelocity.py
     femobjects/_FemConstraintSelfWeight.py
     femobjects/_FemConstraintTie.py
     femobjects/_FemElementFluid1D.py
@@ -324,12 +324,12 @@ SET(FemGuiViewObjects_SRCS
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
+    femviewprovider/view_constraint_initialflowvelocity.py
 )
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
-    femguiobjects/_ViewProviderFemConstraintInitialFlowVelocity.py
-    femguiobjects/_ViewProviderFemConstraintSelfWeight.py
+   femguiobjects/_ViewProviderFemConstraintSelfWeight.py
     femguiobjects/_ViewProviderFemConstraintTie.py
     femguiobjects/_ViewProviderFemElementFluid1D.py
     femguiobjects/_ViewProviderFemElementGeometry1D.py

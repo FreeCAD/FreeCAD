@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,20 +26,20 @@ __title__ = "FreeCAD FEM constraint initial flow velocity ViewProvider for the d
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintInitialFlowVelocity
+## @package view_constraint_initialflowvelocity
 #  \ingroup FEM
-#  \brief FreeCAD FEM view provider for constraint initial flow velocity object
+#  \brief view provider for constraint initial flow velocity object
 
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 from femtools import femutils
 from femtools import membertools
 
 
-class ViewProxy(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintInitialFlowVelocity(ViewProviderFemConstraint.ViewProxy):
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
