@@ -77,19 +77,31 @@ class TestObjectOpen(unittest.TestCase):
     def test_femobjects_open_head(
         self
     ):
-        # FreeCAD --run-test "femtest.app.test_object.TestObjectCreate.test_femobjects_make"
         fcc_print("load master head document objects")
+        
+        # get a document with all FEM objects
         from .test_object import create_all_fem_objects_doc
         doc = create_all_fem_objects_doc(self.document)
 
-        # todo save and load the document
+        # save and load the document
         file_path = join(tempfile.gettempdir(), "all_objects_head.FCStd")
         doc.saveAs(file_path)
         self.document = FreeCAD.open(file_path)
 
+        # C++ objects
+        self.compare_cpp_objs(doc)
+        # FeaturePythons objects
+        self.compare_feature_pythons_class_app(doc)
+        # FeaturePythons view provider
+        self.compare_feature_pythons_class_gui(doc)
+
+    # ********************************************************************************************
+    def compare_cpp_objs(
+        self,
+        doc
+    ):
         from femtools.femutils import type_of_obj
 
-        # C++ objects
         self.assertEqual(
             "Fem::FemAnalysis",
             type_of_obj(doc.Analysis)
@@ -97,12 +109,6 @@ class TestObjectOpen(unittest.TestCase):
         # TODO other C++ objects and view provider
         # Is just checking the type sufficient?
         # If there is a type there is at least a object with correct type ;-)
-
-        # FeaturePythons
-        # objects
-        self.compare_feature_pythons_class_app(doc)
-        # view provider
-        self.compare_feature_pythons_class_gui(doc)
 
     # ********************************************************************************************
     def compare_feature_pythons_class_app(
