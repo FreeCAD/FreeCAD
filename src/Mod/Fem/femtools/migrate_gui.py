@@ -37,6 +37,8 @@ class FemMigrateGui(object):
 
         if fullname == "femguiobjects":
             return self
+       if fullname == "femguiobjects._ViewProviderFemConstraintBodyHeatSource":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -124,12 +126,15 @@ class FemMigrateGui(object):
 
         if module.__name__ == "femguiobjects":
             module.__path__ = "femguiobjects"
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintBodyHeatSource":
+            import femviewprovider.view_constraint_bodyheatsource
+            module.ViewProxy = femviewprovider.view_constraint_bodyheatsource.VPConstraintBodyHeatSource
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
-            import femguiobjects._ViewProviderFemConstraintBodyHeatSource
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintBodyHeatSource.ViewProxy
+            import femviewprovider.view_constraint_bodyheatsource
+            module.ViewProxy = femviewprovider.view_constraint_bodyheatsource.VPConstraintBodyHeatSource
         if module.__name__ == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
             import femguiobjects._ViewProviderFemConstraintElectrostaticPotential
             module.ViewProxy = femguiobjects._ViewProviderFemConstraintElectrostaticPotential.ViewProxy
@@ -246,6 +251,7 @@ possible entries in the old files:
 fourth big moving
 renaming class and module names in femobjects
 TODO add link to commit before the first commit
+module="femguiobjects._ViewProviderFemConstraintBodyHeatSource"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

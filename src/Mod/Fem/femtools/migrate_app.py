@@ -39,6 +39,8 @@ class FemMigrateApp(object):
 
         if fullname == "femobjects":
             return self
+        if fullname == "femobjects._FemConstraintBodyHeatSource":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -136,12 +138,15 @@ class FemMigrateApp(object):
 
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"
+        if module.__name__ == "femobjects._FemConstraintBodyHeatSource":
+            import femobjects.constraint_bodyheatsource
+            module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
         if module.__name__ == "PyObjects._FemConstraintBodyHeatSource":
-            import femobjects._FemConstraintBodyHeatSource
-            module.Proxy = femobjects._FemConstraintBodyHeatSource.Proxy
+            import femobjects.constraint_bodyheatsource
+            module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
             import femobjects._FemConstraintElectrostaticPotential
             module.Proxy = femobjects._FemConstraintElectrostaticPotential.Proxy
@@ -282,6 +287,7 @@ possible entries in the old files:
 fourth big moving
 renaming class and module names in femobjects
 TODO add link to commit before the first commit
+module="femobjects._FemConstraintBodyHeatSource"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,27 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint body heat source document object"
+__title__ = "FreeCAD FEM constraint body heat source ViewProvider for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemConstraintBodyHeatSource
+## @package view_constraint_bodyheatsource
 #  \ingroup FEM
-#  \brief FreeCAD FEM constraint body heat source object
+#  \brief view provider for the constraint body heat source object
 
-from . import FemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class Proxy(FemConstraint.Proxy):
+class VPConstraintBodyHeatSource(ViewProviderFemConstraint.ViewProxy):
 
-    Type = "Fem::ConstraintBodyHeatSource"
-
-    def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-
-        obj.addProperty(
-            "App::PropertyFloat",
-            "HeatSource",
-            "Base",
-            "Body heat source"
-        )
+    def getIcon(self):
+        return ":/icons/FEM_ConstraintHeatflux.svg"  # the heatflux icon is used

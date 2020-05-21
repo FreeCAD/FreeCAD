@@ -22,19 +22,27 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint body heat source ViewProvider for the document object"
+__title__ = "FreeCAD FEM constraint body heat source document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package constraint_bodyheatsource
+#  \ingroup FEM
+#  \brief constraint body heat source object
 
-from . import ViewProviderFemConstraint
+from . import FemConstraint
 
 
-class ViewProxy(ViewProviderFemConstraint.ViewProxy):
+class ConstraintBodyHeatSource(FemConstraint.Proxy):
 
-    def getIcon(self):
-        return ":/icons/FEM_ConstraintHeatflux.svg"  # the heatflux icon is used
+    Type = "Fem::ConstraintBodyHeatSource"
 
-##  @}
+    def __init__(self, obj):
+        super(ConstraintBodyHeatSource, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "HeatSource",
+            "Base",
+            "Body heat source"
+        )

@@ -68,11 +68,11 @@ def makeConstraintBodyHeatSource(
     """makeConstraintBodyHeatSource(document, [name]):
     makes a Fem ConstraintBodyHeatSource object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import _FemConstraintBodyHeatSource
-    _FemConstraintBodyHeatSource.Proxy(obj)
+    from femobjects import constraint_bodyheatsource
+    constraint_bodyheatsource.ConstraintBodyHeatSource(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintBodyHeatSource
-        _ViewProviderFemConstraintBodyHeatSource.ViewProxy(obj.ViewObject)
+        from femviewprovider import view_constraint_bodyheatsource as viewprov
+        viewprov.VPConstraintBodyHeatSource(obj.ViewObject)
     return obj
 
 

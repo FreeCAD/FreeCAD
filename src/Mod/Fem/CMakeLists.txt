@@ -238,7 +238,7 @@ SET(FemTools_SRCS
 
 SET(FemObjectsScripts_SRCS
     femobjects/__init__.py
-    femobjects/_FemConstraintBodyHeatSource.py
+    femobjects/constraint_bodyheatsource.py
     femobjects/_FemConstraintElectrostaticPotential.py
     femobjects/_FemConstraintFlowVelocity.py
     femobjects/_FemConstraintInitialFlowVelocity.py
@@ -321,11 +321,11 @@ INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 # Python Gui packages and modules
 SET(FemGuiViewObjects_SRCS
     femviewprovider/__init__.py
+    femviewprovider/view_constraint_bodyheatsource.py
 )
 
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
-    femguiobjects/_ViewProviderFemConstraintBodyHeatSource.py
     femguiobjects/_ViewProviderFemConstraintElectrostaticPotential.py
     femguiobjects/_ViewProviderFemConstraintFlowVelocity.py
     femguiobjects/_ViewProviderFemConstraintInitialFlowVelocity.py
