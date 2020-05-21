@@ -111,12 +111,14 @@ class PointArray(gui_base_original.Modifier):
         else:
             base_object = sel[0].Object
             point_object = sel[1].Object
+            extra = None
 
             Gui.addModule('Draft')
             _cmd = "Draft.make_point_array"
             _cmd += "("
             _cmd += "App.ActiveDocument." + base_object.Name + ", "
             _cmd += "App.ActiveDocument." + point_object.Name + ", "
+            _cmd += "extra=" + str(extra)
             _cmd += ")"
 
             _cmd_list = ["_obj_ = " + _cmd,
