@@ -27,7 +27,6 @@
 # \brief This module provides the code for Draft make_path_array function.
 
 import FreeCAD as App
-import FreeCADGui as Gui
 
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -73,6 +72,7 @@ def make_path_array(baseobject,pathobject,count,xlate=None,align=False,pathobjsu
     use_link :
         TODO: Complete documentation
     """
+
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
