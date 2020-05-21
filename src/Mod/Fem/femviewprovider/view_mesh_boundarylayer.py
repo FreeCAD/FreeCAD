@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM mesh boundary layer ViewProvider for the document objec
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMeshBoundaryLayer
+## @package view_mesh_boundarylayer
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMeshBoundaryLayer
+#  \brief view provider for mesh boundary object
 
 from PySide import QtCore
 
@@ -35,12 +35,12 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
+class VPMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemMeshBoundaryLayer object
+    A View Provider for the MeshBoundaryLayer object
     """
 
     def setEdit(self, vobj, mode=0):
@@ -54,7 +54,7 @@ class _ViewProviderFemMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
 
 class _TaskPanel:
     """
-    The TaskPanel for editing References property of FemMeshBoundaryLayer objects
+    The TaskPanel for editing References property of MeshBoundaryLayer objects
     """
 
     def __init__(self, obj):

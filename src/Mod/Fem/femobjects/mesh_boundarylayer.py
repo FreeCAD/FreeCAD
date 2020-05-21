@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM mesh boundary layer document object"
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMeshBoundaryLayer
+## @package mesh_boundarylayer
 #  \ingroup FEM
-#  \brief FEM mesh boundary layer object
+#  \brief mesh boundary layer object
 
 from . import FemConstraint
 
 
-class _FemMeshBoundaryLayer(FemConstraint.Proxy):
+class MeshBoundaryLayer(FemConstraint.Proxy):
     """
-    The FemMeshBoundaryLayer object
+    The MeshBoundaryLayer object
     """
 
     Type = "Fem::MeshBoundaryLayer"
 
     def __init__(self, obj):
-        super(_FemMeshBoundaryLayer, self).__init__(obj)
+        super(MeshBoundaryLayer, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyInteger",

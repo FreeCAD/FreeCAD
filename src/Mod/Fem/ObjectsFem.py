@@ -436,8 +436,8 @@ def makeMeshBoundaryLayer(
     """makeMeshBoundaryLayer(document, base_mesh, [name]):
     creates a FEM mesh BoundaryLayer object to define boundary layer properties"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemMeshBoundaryLayer
-    _FemMeshBoundaryLayer._FemMeshBoundaryLayer(obj)
+    from femobjects import mesh_boundarylayer
+    mesh_boundarylayer.MeshBoundaryLayer(obj)
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh BoundaryLayer obj. to the list
@@ -445,8 +445,8 @@ def makeMeshBoundaryLayer(
     tmplist.append(obj)
     base_mesh.MeshBoundaryLayerList = tmplist
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMeshBoundaryLayer
-        _ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer(obj.ViewObject)
+        from femviewprovider import view_mesh_boundarylayer
+        view_mesh_boundarylayer.VPMeshBoundaryLayer(obj.ViewObject)
     return obj
 
 
