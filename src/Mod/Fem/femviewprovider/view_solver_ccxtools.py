@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver calculix ViewProvider for the document object"
+__title__ = "FreeCAD FEM solver calculix ccx tools ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemSolverCalculix
+## @package view_solver_ccxtools
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemSolverCalculix
+#  \brief view provider for solver ccx tools object
 
 import os
 import sys
@@ -41,16 +41,16 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 if sys.version_info.major >= 3:
     def unicode(text, *args):
         return str(text)
 
 
-class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
+class VPSolverCcxTools(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemSolverCalculix object
+    A View Provider for the SolverCalculix object
     """
 
     def getIcon(self):

@@ -693,11 +693,11 @@ def makeSolverCalculixCcxTools(
     """makeSolverCalculixCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""
     obj = doc.addObject("Fem::FemSolverObjectPython", name)
-    from femobjects import _FemSolverCalculix
-    _FemSolverCalculix._FemSolverCalculix(obj)
+    from femobjects import solver_ccxtools
+    solver_ccxtools.SolverCcxTools(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemSolverCalculix
-        _ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
+        from femviewprovider import view_solver_ccxtools
+        view_solver_ccxtools.VPSolverCcxTools(obj.ViewObject)
     return obj
 
 

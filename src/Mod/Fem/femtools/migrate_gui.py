@@ -73,6 +73,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemResultMechanical":
             return self
+        if fullname == "femguiobjects._ViewProviderFemSolverCalculix":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -214,6 +216,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemResultMechanical":
             import femviewprovider.view_result_mechanical
             module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
+        if module.__name__ == "femguiobjects._ViewProviderFemSolverCalculix":
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -269,8 +274,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_result_mechanical
             module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "PyGui._ViewProviderFemSolverCalculix":
-            import femguiobjects._ViewProviderFemSolverCalculix
-            module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
 
         if module.__name__ == "PyGui._ViewProviderFemBeamSection":
             import femviewprovider.view_element_geometry1D
@@ -310,8 +315,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_geometry2D
             module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "_ViewProviderFemSolverCalculix":
-            import femguiobjects._ViewProviderFemSolverCalculix
-            module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
         if module.__name__ == "_ViewProviderFemSolverZ88":
             import femsolver.z88.solver
             module._ViewProviderFemSolverZ88 = femsolver.z88.solver.ViewProxy
@@ -354,6 +359,7 @@ module="femguiobjects._ViewProviderFemMeshGroup"
 module="femguiobjects._ViewProviderFemMeshRegion"
 module="femguiobjects._ViewProviderFemMeshResult"
 module="femguiobjects._ViewProviderFemResultMechanical"
+module="femguiobjects._ViewProviderFemSolverCalculix"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

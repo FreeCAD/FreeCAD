@@ -21,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver calculix document object"
+__title__ = "FreeCAD FEM solver calculix ccx tools document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemSolverCalculix
+## @package solver_ccxtools
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemSolverCalculix
+#  \brief solver calculix ccx tools object
 
 import FreeCAD
 
@@ -35,14 +35,14 @@ from . import FemConstraint
 from femsolver.calculix.solver import add_attributes
 
 
-class _FemSolverCalculix(FemConstraint.Proxy):
+class SolverCcxTools(FemConstraint.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
     Type = "Fem::SolverCcxTools"
 
     def __init__(self, obj):
-        super(_FemSolverCalculix, self).__init__(obj)
+        super(SolverCcxTools, self).__init__(obj)
 
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 

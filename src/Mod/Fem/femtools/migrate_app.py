@@ -75,6 +75,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemResultMechanical":
             return self
+        if fullname == "femobjects._FemSolverCalculix":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -226,6 +228,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemResultMechanical":
             import femobjects.result_mechanical
             module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
+        if module.__name__ == "femobjects._FemSolverCalculix":
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -281,8 +286,8 @@ class FemMigrateApp(object):
             import femobjects.result_mechanical
             module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "PyObjects._FemSolverCalculix":
-            import femobjects._FemSolverCalculix
-            module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
 
         if module.__name__ == "PyObjects._FemBeamSection":
             import femobjects.element_geometry1D
@@ -322,8 +327,8 @@ class FemMigrateApp(object):
             import femobjects.element_geometry2D
             module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
         if module.__name__ == "_FemSolverCalculix":
-            import femobjects._FemSolverCalculix
-            module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
         if module.__name__ == "_FemSolverZ88":
             import femsolver.z88.solver
             module._FemSolverZ88 = femsolver.z88.solver.Proxy
@@ -390,6 +395,7 @@ module="femobjects._FemMeshGroup"
 module="femobjects._FemMeshRegion"
 module="femobjects._FemMeshResult"
 module="femobjects._FemResultMechanical"
+module="femobjects._FemSolverCalculix"
 
 third big moving
 from PyObjects to femobjects, following the parent commit
