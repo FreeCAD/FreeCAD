@@ -384,7 +384,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # set solver attribute for nonlinearity for ccxtools
         # CalculiX solver or new frame work CalculiX solver
         if solver_object and (
-            is_of_type(solver_object, "Fem::FemSolverCalculixCcxTools")
+            is_of_type(solver_object, "Fem::SolverCcxTools")
             or is_of_type(solver_object, "Fem::FemSolverObjectCalculix")
         ):
             FreeCAD.Console.PrintMessage(

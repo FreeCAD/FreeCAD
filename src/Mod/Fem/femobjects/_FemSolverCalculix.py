@@ -39,7 +39,7 @@ class _FemSolverCalculix(FemConstraint.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::FemSolverCalculixCcxTools"
+    Type = "Fem::SolverCcxTools"
 
     def __init__(self, obj):
         super(_FemSolverCalculix, self).__init__(obj)

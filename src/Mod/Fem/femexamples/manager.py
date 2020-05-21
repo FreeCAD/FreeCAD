@@ -78,7 +78,7 @@ def run_analysis(doc, base_name, filepath=""):
         from femtools.femutils import is_derived_from
         if (
             is_derived_from(m, "Fem::FemSolverObjectPython")
-            and m.Proxy.Type != "Fem::FemSolverCalculixCcxTools"
+            and m.Proxy.Type != "Fem::SolverCcxTools"
         ):
             solver = m
             break
