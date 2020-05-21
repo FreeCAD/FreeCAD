@@ -365,7 +365,7 @@ def makeElementRotation1D(
 # ********* material objects *********************************************************************
 def makeMaterialFluid(
     doc,
-    name="FluidMaterial"
+    name="MaterialFluid"
 ):
     """makeMaterialFluid(document, [name]):
     makes a FEM Material for fluid"""
@@ -415,7 +415,7 @@ def makeMaterialReinforced(
 
 def makeMaterialSolid(
     doc,
-    name="MechanicalSolidMaterial"
+    name="MaterialSolid"
 ):
     """makeMaterialSolid(document, [name]):
     makes a FEM Material for solid"""

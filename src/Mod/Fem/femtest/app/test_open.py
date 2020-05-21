@@ -181,13 +181,13 @@ class TestObjectOpen(unittest.TestCase):
         from femobjects._FemMaterial import _FemMaterial
         self.assertEqual(
             _FemMaterial,
-            doc.MechanicalSolidMaterial.Proxy.__class__
+            doc.MaterialFluid.Proxy.__class__
         )
 
         from femobjects._FemMaterial import _FemMaterial
         self.assertEqual(
             _FemMaterial,
-            doc.FluidMaterial.Proxy.__class__
+            doc.MaterialSolid.Proxy.__class__
         )
 
         from femobjects._FemMaterialMechanicalNonlinear import _FemMaterialMechanicalNonlinear
@@ -365,13 +365,13 @@ class TestObjectOpen(unittest.TestCase):
         from femguiobjects._ViewProviderFemMaterial import _ViewProviderFemMaterial
         self.assertEqual(
             _ViewProviderFemMaterial,
-            doc.MechanicalSolidMaterial.ViewObject.Proxy.__class__
+            doc.MaterialFluid.ViewObject.Proxy.__class__
         )
 
         from femguiobjects._ViewProviderFemMaterial import _ViewProviderFemMaterial
         self.assertEqual(
             _ViewProviderFemMaterial,
-            doc.FluidMaterial.ViewObject.Proxy.__class__
+            doc.MaterialSolid.ViewObject.Proxy.__class__
         )
 
         from femguiobjects._ViewProviderFemMaterialMechanicalNonlinear import _ViewProviderFemMaterialMechanicalNonlinear
