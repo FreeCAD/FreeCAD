@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM constraint tie ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemConstraintTie
+## @package view_constraint_tie
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemConstraintTie
+#  \brief view provider for constraint tie object
 
 from PySide import QtCore
 from PySide import QtGui
@@ -36,12 +36,12 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
-class _ViewProviderFemConstraintTie(ViewProviderFemConstraint.ViewProxy):
+class VPConstraintTie(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemConstraintTie object
+    A View Provider for the ConstraintTie object
     """
 
     def setEdit(self, vobj, mode=0):

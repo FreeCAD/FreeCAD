@@ -25,22 +25,22 @@ __title__ = "FreeCAD FEM constraint tie document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-## @package FemConstraintTie
+## @package constraint_tie
 #  \ingroup FEM
-#  \brief FreeCAD FEM constraint tie object
+#  \brief constraint tie object
 
 from . import FemConstraint
 
 
-class _FemConstraintTie(FemConstraint.Proxy):
+class ConstraintTie(FemConstraint.Proxy):
     """
-    The FemConstraintTie object
+    The ConstraintTie object
     """
 
     Type = "Fem::ConstraintTie"
 
     def __init__(self, obj):
-        super(_FemConstraintTie, self).__init__(obj)
+        super(ConstraintTie, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",

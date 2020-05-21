@@ -268,10 +268,8 @@ def makeConstraintTie(
     from femobjects import constraint_tie
     constraint_tie.ConstraintTie(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemConstraintTie
-        _ViewProviderFemConstraintTie._ViewProviderFemConstraintTie(
-            obj.ViewObject
-        )
+        from femviewprovider import view_constraint_tie
+        view_constraint_tie.VPConstraintTie(obj.ViewObject)
     return obj
 
 

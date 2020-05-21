@@ -47,6 +47,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemConstraintSelfWeight":
             return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintTie":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -149,6 +151,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemConstraintSelfWeight":
             import femviewprovider.view_constraint_selfweight
             module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintTie":
+            import femviewprovider.view_constraint_tie
+            module._ViewProviderFemConstraintTie = femviewprovider.view_constraint_tie.VPConstraintTie
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -276,6 +281,7 @@ module="femguiobjects._ViewProviderFemConstraintElectrostaticPotential"
 module="femguiobjects._ViewProviderFemConstraintFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintInitialFlowVelocity"
 module="femguiobjects._ViewProviderFemConstraintSelfWeight"
+module="femguiobjects._ViewProviderFemConstraintTie"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

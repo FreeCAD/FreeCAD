@@ -49,6 +49,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemConstraintSelfWeight":
             return self
+        if fullname == "femobjects._FemConstraintTie":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -161,6 +163,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemConstraintSelfWeight":
             import femobjects.constraint_selfweight
             module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
+        if module.__name__ == "femobjects._FemConstraintTie":
+            import femobjects.constraint_tie
+            module._FemConstraintTie = femobjects.constraint_tie.ConstraintTie
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -312,6 +317,7 @@ module="femobjects._FemConstraintElectrostaticPotential"
 module="femobjects._FemConstraintFlowVelocity"
 module="femobjects._FemConstraintInitialFlowVelocity"
 module="femobjects._FemConstraintSelfWeight"
+module="femobjects._FemConstraintTie"
 
 third big moving
 from PyObjects to femobjects, following the parent commit
