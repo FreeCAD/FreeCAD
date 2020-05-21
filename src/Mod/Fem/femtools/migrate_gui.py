@@ -123,16 +123,16 @@ class FemMigrateGui(object):
 
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
             import femguiobjects._ViewProviderFemConstraintBodyHeatSource
-            module._ViewProviderFemConstraintBodyHeatSource = femguiobjects._ViewProviderFemConstraintBodyHeatSource.ViewProxy
+            module.ViewProxy = femguiobjects._ViewProviderFemConstraintBodyHeatSource.ViewProxy
         if module.__name__ == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
             import femguiobjects._ViewProviderFemConstraintElectrostaticPotential
-            module._ViewProviderFemConstraintElectrostaticPotential = femguiobjects._ViewProviderFemConstraintElectrostaticPotential.ViewProxy
+            module.ViewProxy = femguiobjects._ViewProviderFemConstraintElectrostaticPotential.ViewProxy
         if module.__name__ == "PyGui._ViewProviderFemConstraintFlowVelocity":
             import femguiobjects._ViewProviderFemConstraintFlowVelocity
-            module._ViewProviderFemConstraintFlowVelocity = femguiobjects._ViewProviderFemConstraintFlowVelocity.ViewProxy
+            module.ViewProxy = femguiobjects._ViewProviderFemConstraintFlowVelocity.ViewProxy
         if module.__name__ == "PyGui._ViewProviderFemConstraintInitialFlowVelocity":
             import femguiobjects._ViewProviderFemConstraintInitialFlowVelocity
-            module._ViewProviderFemConstraintInitialFlowVelocity = femguiobjects._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy
+            module.ViewProxy = femguiobjects._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy
         if module.__name__ == "PyGui._ViewProviderFemConstraintSelfWeight":
             import femguiobjects._ViewProviderFemConstraintSelfWeight
             module._ViewProviderFemConstraintSelfWeight = femguiobjects._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight

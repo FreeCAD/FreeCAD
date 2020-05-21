@@ -135,16 +135,16 @@ class FemMigrateApp(object):
 
         if module.__name__ == "PyObjects._FemConstraintBodyHeatSource":
             import femobjects._FemConstraintBodyHeatSource
-            module._FemConstraintBodyHeatSource = femobjects._FemConstraintBodyHeatSource.Proxy
+            module.Proxy = femobjects._FemConstraintBodyHeatSource.Proxy
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
             import femobjects._FemConstraintElectrostaticPotential
-            module._FemConstraintElectrostaticPotential = femobjects._FemConstraintElectrostaticPotential.Proxy
+            module.Proxy = femobjects._FemConstraintElectrostaticPotential.Proxy
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
             import femobjects._FemConstraintFlowVelocity
-            module._FemConstraintFlowVelocity = femobjects._FemConstraintFlowVelocity.Proxy
+            module.Proxy = femobjects._FemConstraintFlowVelocity.Proxy
         if module.__name__ == "PyObjects._FemConstraintInitialFlowVelocity":
             import femobjects._FemConstraintInitialFlowVelocity
-            module._FemConstraintInitialFlowVelocity = femobjects._FemConstraintInitialFlowVelocity.Proxy
+            module.Proxy = femobjects._FemConstraintInitialFlowVelocity.Proxy
         if module.__name__ == "PyObjects._FemConstraintSelfWeight":
             import femobjects._FemConstraintSelfWeight
             module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
