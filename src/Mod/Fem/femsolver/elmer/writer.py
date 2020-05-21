@@ -340,7 +340,8 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            getConstant("PermittivityOfVacuum", "T^4*I^2/(L*M)"))
+            getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)"))
+            # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
