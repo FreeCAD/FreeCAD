@@ -21,20 +21,64 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM material mechanical nonlinear ViewProvider for the document object"
+__title__ = "FreeCAD FEM material mechanical nonlinear document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMaterialMechanicalNonLinear
+## @package material_mechanicalnonlinear
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMaterialMechanicalNonlinear
+#  \brief nonlinear mechanical material object
 
-from . import ViewProviderFemConstraint
+from . import FemConstraint
 
 
-class _ViewProviderFemMaterialMechanicalNonlinear(ViewProviderFemConstraint.ViewProxy):
+class MaterialMechanicalNonlinear(FemConstraint.Proxy):
     """
-    A View Provider for the FemMaterialMechanicalNonlinear object
+    The MaterialMechanicalNonlinear object
     """
 
-    pass
+    Type = "Fem::MaterialMechanicalNonlinear"
+
+    def __init__(self, obj):
+        super(MaterialMechanicalNonlinear, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "LinearBaseMaterial",
+            "Base",
+            "Set the linear material the nonlinear builds upon."
+        )
+
+        choices_nonlinear_material_models = ["simple hardening"]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "MaterialModelNonlinearity",
+            "Fem",
+            "Set the type on nonlinear material model"
+        )
+        obj.MaterialModelNonlinearity = choices_nonlinear_material_models
+        obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
+
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint1",
+            "Fem",
+            "Set stress and strain for yield point one, separated by a comma."
+        )
+        obj.YieldPoint1 = "235.0, 0.0"
+
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint2",
+            "Fem",
+            "Set stress and strain for yield point two, separated by a comma."
+        )
+        obj.YieldPoint2 = "241.0, 0.025"
+
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint3",
+            "Fem",
+            "Set stress and strain for yield point three, separated by a comma."
+        )
+        obj.YieldPoint3 = ""

@@ -385,12 +385,12 @@ def makeMaterialMechanicalNonlinear(
     """makeMaterialMechanicalNonlinear(document, base_material, [name]):
     creates a nonlinear material object"""
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import _FemMaterialMechanicalNonlinear
-    _FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear(obj)
+    from femobjects import material_mechanicalnonlinear
+    material_mechanicalnonlinear.MaterialMechanicalNonlinear(obj)
     obj.LinearBaseMaterial = base_material
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMaterialMechanicalNonlinear
-        _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(
+        from femviewprovider import view_material_mechanicalnonlinear
+        view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear(
             obj.ViewObject
         )
     return obj
