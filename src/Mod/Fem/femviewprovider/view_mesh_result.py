@@ -25,17 +25,17 @@ __title__ = "FreeCAD FEM mesh result ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMeshResult
+## @package view_mesh_result
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMeshResult
+#  \brief view provider for mesh result object
 
 
-from . import ViewProviderBaseObject
+from femguiobjects import ViewProviderBaseObject
 
 
-class _ViewProviderFemMeshResult(ViewProviderBaseObject.ViewProxy):
+class VPFemMeshResult(ViewProviderBaseObject.ViewProxy):
     """
-    A View Provider for the FemMeshResult object
+    A View Provider for the MeshResult object
     """
 
     pass

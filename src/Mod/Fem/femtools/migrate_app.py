@@ -71,6 +71,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemMeshRegion":
             return self
+        if fullname == "femobjects._FemMeshResult":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -216,6 +218,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemMeshRegion":
             import femobjects.mesh_region
             module._FemMeshRegion = femobjects.mesh_region.MeshRegion
+        if module.__name__ == "femobjects._FemMeshResult":
+            import femobjects.mesh_result
+            module._FemMeshResult = femobjects.mesh_result.MeshResult
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -265,8 +270,8 @@ class FemMigrateApp(object):
             import femobjects.mesh_region
             module._FemMeshRegion = femobjects.mesh_region.MeshRegion
         if module.__name__ == "PyObjects._FemMeshResult":
-            import femobjects._FemMeshResult
-            module._FemMeshResult = femobjects._FemMeshResult._FemMeshResult
+            import femobjects.mesh_result
+            module._FemMeshResult = femobjects.mesh_result.MeshResult
         if module.__name__ == "PyObjects._FemResultMechanical":
             import femobjects._FemResultMechanical
             module._FemResultMechanical = femobjects._FemResultMechanical._FemResultMechanical
@@ -378,6 +383,7 @@ module="femobjects._FemMeshBoundaryLayer"
 module="femobjects._FemMeshGmsh"
 module="femobjects._FemMeshGroup"
 module="femobjects._FemMeshRegion"
+module="femobjects._FemMeshResult"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

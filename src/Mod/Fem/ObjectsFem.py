@@ -529,11 +529,11 @@ def makeMeshResult(
 ):
     """makeMeshResult(document, name): makes a Fem MeshResult object"""
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
-    from femobjects import _FemMeshResult
-    _FemMeshResult._FemMeshResult(obj)
+    from femobjects import mesh_result
+    mesh_result.MeshResult(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMeshResult
-        _ViewProviderFemMeshResult._ViewProviderFemMeshResult(obj.ViewObject)
+        from femviewprovider import view_mesh_result
+        view_mesh_result.VPFemMeshResult(obj.ViewObject)
     return obj
 
 

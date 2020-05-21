@@ -69,6 +69,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemMeshRegion":
             return self
+        if fullname == "femguiobjects._ViewProviderFemMeshResult":
+            return self
 
         if fullname == "PyGui":
             return self
@@ -204,6 +206,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemMeshRegion":
             import femviewprovider.view_mesh_region
             module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshResult":
+            import femviewprovider.view_mesh_result
+            module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
 
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
@@ -253,8 +258,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_mesh_region
             module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "PyGui._ViewProviderFemMeshResult":
-            import femguiobjects._ViewProviderFemMeshResult
-            module._ViewProviderFemMeshResult = femguiobjects._ViewProviderFemMeshResult._ViewProviderFemMeshResult
+            import femviewprovider.view_mesh_result
+            module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
         if module.__name__ == "PyGui._ViewProviderFemResultMechanical":
             import femguiobjects._ViewProviderFemResultMechanical
             module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
@@ -342,6 +347,7 @@ module="femguiobjects._ViewProviderFemMeshBoundaryLayer"
 module="femguiobjects._ViewProviderFemMeshGmsh"
 module="femguiobjects._ViewProviderFemMeshGroup"
 module="femguiobjects._ViewProviderFemMeshRegion"
+module="femguiobjects._ViewProviderFemMeshResult"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit

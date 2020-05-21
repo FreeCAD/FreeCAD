@@ -25,14 +25,14 @@ __title__ = "FreeCAD FEM mesh result document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMeshResult
+## @package mesh_result
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemMeshResult
+#  \brief mesh result object
 
 from . import FemConstraint
 
 
-class _FemMeshResult(FemConstraint.Proxy):
+class MeshResult(FemConstraint.Proxy):
     """
     The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """
@@ -40,4 +40,4 @@ class _FemMeshResult(FemConstraint.Proxy):
     Type = "Fem::MeshResult"
 
     def __init__(self, obj):
-        super(_FemMeshResult, self).__init__(obj)
+        super(MeshResult, self).__init__(obj)
