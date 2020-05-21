@@ -368,12 +368,12 @@ def makeMaterialFluid(
     """makeMaterialFluid(document, [name]):
     makes a FEM Material for fluid"""
     obj = doc.addObject("App::MaterialObjectPython", name)
-    from femobjects import _FemMaterial
-    _FemMaterial._FemMaterial(obj)
+    from femobjects import material_common
+    material_common.MaterialCommon(obj)
     obj.Category = "Fluid"
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMaterial
-        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+        from femviewprovider import view_material_common
+        view_material_common.VPMaterialCommon(obj.ViewObject)
     return obj
 
 
@@ -418,12 +418,12 @@ def makeMaterialSolid(
     """makeMaterialSolid(document, [name]):
     makes a FEM Material for solid"""
     obj = doc.addObject("App::MaterialObjectPython", name)
-    from femobjects import _FemMaterial
-    _FemMaterial._FemMaterial(obj)
+    from femobjects import material_common
+    material_common.MaterialCommon(obj)
     obj.Category = "Solid"
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMaterial
-        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+        from femviewprovider import view_material_common
+        view_material_common.VPMaterialCommon(obj.ViewObject)
     return obj
 
 

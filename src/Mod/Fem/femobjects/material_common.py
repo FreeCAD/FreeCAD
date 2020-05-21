@@ -26,22 +26,22 @@ __title__ = "FreeCAD FEM material document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMaterial
+## @package material_common
 #  \ingroup FEM
-#  \brief FEM material
+#  \brief material common object
 
 from . import FemConstraint
 
 
-class _FemMaterial(FemConstraint.Proxy):
+class MaterialCommon(FemConstraint.Proxy):
     """
-    The FEM Material object
+    The MaterialCommon object
     """
 
     Type = "Fem::MaterialCommon"
 
     def __init__(self, obj):
-        super(_FemMaterial, self).__init__(obj)
+        super(MaterialCommon, self).__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):

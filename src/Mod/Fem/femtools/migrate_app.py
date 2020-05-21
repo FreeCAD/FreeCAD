@@ -59,6 +59,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemElementRotation1D":
             return self
+        if fullname == "femobjects._FemMaterial":
+            return self
         if fullname == "femobjects._FemMaterialMechanicalNonlinear":
             return self
         if fullname == "femobjects._FemMaterialReinforced":
@@ -204,6 +206,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemElementRotation1D":
             import femobjects.element_rotation1D
             module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
+        if module.__name__ == "femobjects._FemMaterial":
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "femobjects._FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
             module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
@@ -262,8 +267,8 @@ class FemMigrateApp(object):
             import femobjects.element_rotation1D
             module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
         if module.__name__ == "PyObjects._FemMaterial":
-            import femobjects._FemMaterial
-            module._FemMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "PyObjects._FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
             module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
@@ -306,8 +311,8 @@ class FemMigrateApp(object):
             import femobjects.constraint_selfweight
             module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
         if module.__name__ == "_FemMaterial":
-            import femobjects._FemMaterial
-            module._FemMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "_FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
             module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
@@ -340,8 +345,8 @@ class FemMigrateApp(object):
             import femobjects.result_mechanical
             module.FemResult = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "_MechanicalMaterial":
-            import femobjects._FemMaterial
-            module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._MechanicalMaterial = femobjects.material_common.MaterialCommon
 
         if module.__name__ == "FemBeamSection":
             import femobjects.element_geometry1D
@@ -362,11 +367,11 @@ class FemMigrateApp(object):
                 import femguiobjects.ViewProviderBaseObject
                 module._ViewProviderFemAnalysis = femguiobjects.ViewProviderBaseObject.ViewProxy
         if module.__name__ == "MechanicalMaterial":
-            import femobjects._FemMaterial
-            module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._MechanicalMaterial = femobjects.material_common.MaterialCommon
             if FreeCAD.GuiUp:
-                import femguiobjects._ViewProviderFemMaterial
-                module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+                import femviewprovider.view_material_common
+                module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         return None
 
 
@@ -387,6 +392,7 @@ module="femobjects._FemElementFluid1D"
 module="femobjects._FemElementGeometry1D"
 module="femobjects._FemElementGeometry2D"
 module="femobjects._FemElementRotation1D"
+module="femobjects._FemMaterial"
 module="femobjects._FemMaterialMechanicalNonlinear"
 module="femobjects._FemMaterialReinforced"
 module="femobjects._FemMeshBoundaryLayer"

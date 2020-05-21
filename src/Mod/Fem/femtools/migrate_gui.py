@@ -57,6 +57,8 @@ class FemMigrateGui(object):
             return self
         if fullname == "femguiobjects._ViewProviderFemElementRotation1D":
             return self
+        if fullname == "femguiobjects._ViewProviderFemMaterial":
+            return self
         if fullname == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
             return self
         if fullname == "femguiobjects._ViewProviderFemMaterialReinforced":
@@ -192,6 +194,9 @@ class FemMigrateGui(object):
         if module.__name__ == "femguiobjects._ViewProviderFemElementRotation1D":
             import femviewprovider.view_element_rotation1D
             module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
+        if module.__name__ == "femguiobjects._ViewProviderFemMaterial":
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         if module.__name__ == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
             import femviewprovider.view_material_mechanicalnonlinear
             module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
@@ -250,8 +255,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_element_rotation1D
             module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
         if module.__name__ == "PyGui._ViewProviderFemMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         if module.__name__ == "PyGui._ViewProviderFemMaterialMechanicalNonlinear":
             import femviewprovider.view_material_mechanicalnonlinear
             module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
@@ -294,8 +299,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_constraint_selfweight
             module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "_ViewProviderFemMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         if module.__name__ == "_ViewProviderFemMaterialMechanicalNonlinear":
             import femviewprovider.view_material_mechanicalnonlinear
             module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
@@ -328,8 +333,8 @@ class FemMigrateGui(object):
             import femviewprovider.view_result_mechanical
             module.ViewProviderFemResult = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "_ViewProviderMechanicalMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderMechanicalMaterial = femviewprovider.view_material_common.VPMaterialCommon
 
         return None
 
@@ -351,6 +356,7 @@ module="femguiobjects._ViewProviderFemElementFluid1D"
 module="femguiobjects._ViewProviderFemElementGeometry1D"
 module="femguiobjects._ViewProviderFemElementGeometry2D"
 module="femguiobjects._ViewProviderFemElementRotation1D"
+module="femguiobjects._ViewProviderFemMaterial"
 module="femguiobjects._ViewProviderFemMaterialMechanicalNonlinear"
 module="femguiobjects._ViewProviderFemMaterialReinforced"
 module="femguiobjects._ViewProviderFemMeshBoundaryLayer"

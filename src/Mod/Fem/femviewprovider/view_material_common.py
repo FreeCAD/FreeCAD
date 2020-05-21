@@ -26,9 +26,10 @@ __title__ = "FreeCAD FEM material ViewProvider for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _ViewProviderFemMaterial
+## @package view_material_common
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMaterial
+#  \brief view provider for common material object
 
 import sys
 from PySide import QtCore
@@ -39,16 +40,16 @@ import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
-from . import ViewProviderFemConstraint
+from femguiobjects import ViewProviderFemConstraint
 
 
 if sys.version_info.major >= 3:
     unicode = str
 
 
-class _ViewProviderFemMaterial(ViewProviderFemConstraint.ViewProxy):
+class VPMaterialCommon(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemMaterial object
+    A View Provider for the MaterialCommon object
     """
 
     def getIcon(self):
