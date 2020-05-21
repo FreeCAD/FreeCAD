@@ -104,6 +104,7 @@ SET(FemSolver_SRCS
     femsolver/run.py
     femsolver/settings.py
     femsolver/signal.py
+    femsolver/solver_taskpanel.py
     femsolver/solverbase.py
     femsolver/task.py
     femsolver/writerbase.py
@@ -319,7 +320,6 @@ INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 # Python Gui packages and modules
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
-    femguiobjects/_TaskPanelFemSolverControl.py
     femguiobjects/_ViewProviderFemConstraintBodyHeatSource.py
     femguiobjects/_ViewProviderFemConstraintElectrostaticPotential.py
     femguiobjects/_ViewProviderFemConstraintFlowVelocity.py

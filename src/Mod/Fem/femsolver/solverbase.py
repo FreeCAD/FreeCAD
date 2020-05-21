@@ -39,7 +39,7 @@ from femtools.errors import DirectoryDoesNotExistError
 if App.GuiUp:
     from PySide import QtGui
     import FreeCADGui as Gui
-    from femguiobjects import _TaskPanelFemSolverControl
+    from . import solverbase
 
 
 class Proxy(object):
@@ -105,7 +105,7 @@ class ViewProxy(object):
                 error_message
             )
             return False
-        task = _TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        task = solverbase.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
 
