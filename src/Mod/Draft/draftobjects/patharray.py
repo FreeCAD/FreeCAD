@@ -26,8 +26,6 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for the Draft PathArray object.
 
-#from PySide.QtCore import _tr
-
 import FreeCAD as App
 import DraftVecUtils
 
@@ -38,9 +36,24 @@ from draftutils.translate import _tr, translate
 from draftobjects.draftlink import DraftLink
 
 class PathArray(DraftLink):
-    """The Draft Path Array object"""
-    def __init__(self, obj, use_link=False):
-        self.use_link = use_link
+    """The Draft Path Array object - distributes copies of an object along a path.
+    Original mode is the historic "Align" for old (v0.18) documents.  It is not 
+    really the Fernat alignment. Uses the normal parameter from getNormal (or the
+    default) as a constant - it does not calculate curve normal.
+    X is curve tangent, Y is normal parameter, Z is (X x Y)
+
+    Tangent mode is similar to Original, but includes a pre-rotation (in execute) to 
+    align the Base object's X to the TangentVector, then X follows curve tangent, 
+    normal input parameter is the Z component.
+
+    If the ForceVertical option is applied, the normal parameter from getNormal is 
+    ignored, and X is curve tangent, Z is VerticalVector, Y is (X x Z)
+
+    Frenet mode orients the copies to a coordinate system along the path.
+    X is tangent to curve, Y is curve normal, Z is curve binormal. 
+    if normal can not be computed (ex a straight line), the default is used."""
+    
+    def __init__(self, obj):
         super(PathArray, self).__init__(obj, "PathArray")
 
     #For PathLinkArray, DraftLink.attach creates the link to the Base object.
@@ -128,7 +141,7 @@ class PathArray(DraftLink):
             elif obj.PathObj.Shape.Edges:
                 w = Part.Wire(obj.PathObj.Shape.Edges)
             else:
-                Gui.Console.PrintLog ("PathArray.execute: path " + obj.PathObj.Name + " has no edges\n")
+                App.Console.PrintLog ("PathArray.execute: path " + obj.PathObj.Name + " has no edges\n")
                 return
             if (hasattr(obj, "TangentVector")) and (obj.AlignMode == "Tangent") and (obj.Align):
                 basePlacement = obj.Base.Shape.Placement
@@ -183,8 +196,7 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align,
     closedpath = DraftGeomUtils.isReallyClosed(pathwire)
 
     normal = DraftGeomUtils.getNormal(pathwire)
-    if (forceNormal):
-        if not normalOverride is None:
+    if forceNormal and normalOverride:
             normal = normalOverride
 
     path = Part.__sortEdges__(pathwire.Edges)
@@ -269,22 +281,6 @@ def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal
         _msg("Draft CalculatePlacement - Cannot calculate Path tangent. Copy not aligned\n")
         return placement
 
-#Original mode is the historic "Align" for old (v0.18) documents.  It is not 
-#really the Fernat alignment. Uses the normal parameter from getNormal (or the
-#default) as a constant - it does not calculate curve normal.
-#X is curve tangent, Y is normal parameter, Z is (X x Y)
-
-#Tangent mode is similar to Original, but includes a pre-rotation (in execute) to 
-#align the Base object's X to the TangentVector, then X follows curve tangent, 
-#normal input parameter is the Z component.
-
-#If the ForceVertical option is applied, the normal parameter from getNormal is 
-#ignored, and X is curve tangent, Z is VerticalVector, Y is (X x Z)
-
-#Frenet mode orients the copies to a coordinate system along the path.
-# X is tangent to curve, Y is curve normal, Z is curve binormal. 
-# if normal can not be computed (ex a straight line), the default is used.
-
     if (mode == 'Original') or (mode == 'Tangent'):
         if normal is None:
             n = defNormal 
@@ -308,7 +304,7 @@ def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal
         try:
             n = edge.normalAt(getParameterFromV0(edge, offset))
             n.normalize()
-        except Gui.Base.FreeCADError:   # no/infinite normals here
+        except App.Base.FreeCADError:   # no/infinite normals here
             n = defNormal
             _msg("PathArray computePlacement - Cannot calculate Path normal, using default\n")
         try:
