@@ -319,6 +319,10 @@ INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 
 
 # Python Gui packages and modules
+SET(FemGuiViewObjects_SRCS
+    femviewprovider/__init__.py
+)
+
 SET(FemGuiScripts_SRCS
     femguiobjects/__init__.py
     femguiobjects/_ViewProviderFemConstraintBodyHeatSource.py
@@ -350,6 +354,7 @@ SET(FemGuiUtils_SRCS
 )
 
 SET(FemAllGuiScripts
+    ${FemGuiViewObjects_SRCS}
     ${FemGuiScripts_SRCS}
     ${FemGuiUtils_SRCS}
 )
@@ -361,6 +366,7 @@ if(BUILD_GUI)
     fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllGuiScripts})
 
     # install Python packages (for make install)
-    INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/femguiobjects)
+    INSTALL(FILES ${FemGuiViewObjects_SRCS} DESTINATION Mod/Fem/femviewprovider/)
+    INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/femguiobjects/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
 endif(BUILD_GUI)

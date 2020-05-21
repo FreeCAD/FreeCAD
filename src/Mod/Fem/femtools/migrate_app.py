@@ -36,9 +36,12 @@ import FreeCAD
 class FemMigrateApp(object):
 
     def find_module(self, fullname, path):
-        if fullname == "PyObjects":
+
+        if fullname == "femobjects":
             return self
 
+        if fullname == "PyObjects":
+            return self
         if fullname == "PyObjects._FemConstraintBodyHeatSource":
             return self
         if fullname == "PyObjects._FemConstraintElectrostaticPotential":
@@ -130,9 +133,12 @@ class FemMigrateApp(object):
         return self.load_module(module)
 
     def load_module(self, module):
+
+        if module.__name__ == "femobjects":
+            module.__path__ = "femobjects"
+
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
-
         if module.__name__ == "PyObjects._FemConstraintBodyHeatSource":
             import femobjects._FemConstraintBodyHeatSource
             module.Proxy = femobjects._FemConstraintBodyHeatSource.Proxy
@@ -272,6 +278,10 @@ class FemMigrateApp(object):
 """
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
+
+fourth big moving
+renaming class and module names in femobjects
+TODO add link to commit before the first commit
 
 third big moving
 from PyObjects to femobjects, following the parent commit

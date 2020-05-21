@@ -34,9 +34,12 @@ __url__ = "http://www.freecadweb.org"
 class FemMigrateGui(object):
 
     def find_module(self, fullname, path):
-        if fullname == "PyGui":
+
+        if fullname == "femguiobjects":
             return self
 
+        if fullname == "PyGui":
+            return self
         if fullname == "PyGui._ViewProviderFemConstraintBodyHeatSource":
             return self
         if fullname == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
@@ -118,9 +121,12 @@ class FemMigrateGui(object):
         return self.load_module(module)
 
     def load_module(self, module):
+
+        if module.__name__ == "femguiobjects":
+            module.__path__ = "femguiobjects"
+
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
-
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
             import femguiobjects._ViewProviderFemConstraintBodyHeatSource
             module.ViewProxy = femguiobjects._ViewProviderFemConstraintBodyHeatSource.ViewProxy
@@ -237,6 +243,10 @@ class FemMigrateGui(object):
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
 
+fourth big moving
+renaming class and module names in femobjects
+TODO add link to commit before the first commit
+
 third big moving
 from PyGui to femguiobjects, following the parent commit
 https://github.com/berndhahnebach/FreeCAD_bhb/tree/07ae0e56c4/src/Mod/Fem/PyGui
@@ -295,6 +305,4 @@ module="FemBeamSection"
 module="FemShellThickness"
 module="MechanicalAnalysis"
 module="MechanicalMaterial"
-
-
 """
