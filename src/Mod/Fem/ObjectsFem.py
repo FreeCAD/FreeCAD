@@ -689,7 +689,7 @@ def makeEquationHeat(
 
 def makeSolverCalculixCcxTools(
     doc,
-    name="CalculiXccxTools"
+    name="SolverCcxTools"
 ):
     """makeSolverCalculixCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""
