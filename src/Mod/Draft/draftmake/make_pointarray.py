@@ -45,7 +45,7 @@ if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
 
 
-def make_point_array(base_object, point_object):
+def make_point_array(base_object, point_object, extra=None):
     """Make a Draft PointArray object.
 
     Distribute copies of a `base_object` in the points
@@ -80,6 +80,13 @@ def make_point_array(base_object, point_object):
         - A `Draft Block`, as it has a `Components` property. This `Block`
           behaves essentially the same as a `Part::Compound`. It must
           contain at least a point or vertex object.
+
+    extra: Base::Placement, Base::Vector3, or Base::Rotation, optional
+        It defaults to `None`.
+        If it is provided, it is an additional placement that is applied
+        to each copy of the array.
+        The input could be a full placement, just a vector indicating
+        the additional translation, or just a rotation.
 
     Returns
     -------
@@ -126,10 +133,30 @@ def make_point_array(base_object, point_object):
                  "'Geometry', 'Links', or 'Components'."))
         return None
 
+    _msg("extra: {}".format(extra))
+    if not extra:
+        extra = App.Placement()
+    try:
+        utils.type_check([(extra, (App.Placement,
+                                   App.Vector,
+                                   App.Rotation))],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a placement, a vector, "
+                 "or a rotation."))
+        return None
+
+    # Convert the vector or rotation to a full placement
+    if isinstance(extra, App.Vector):
+        extra = App.Placement(extra, App.Rotation())
+    elif isinstance(extra, App.Rotation):
+        extra = App.Placement(App.Vector(), extra)
+
     new_obj = doc.addObject("Part::FeaturePython", "PointArray")
     PointArray(new_obj)
     new_obj.Base = base_object
-    new_obj.PointList = point_object
+    new_obj.PointObject = point_object
+    new_obj.ExtraPlacement = extra
 
     if App.GuiUp:
         ViewProviderDraftArray(new_obj.ViewObject)
