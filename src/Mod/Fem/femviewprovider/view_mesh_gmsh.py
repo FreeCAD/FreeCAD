@@ -25,9 +25,9 @@ __title__ = "FreeCAD FEM mesh gmsh ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderFemMeshGmsh
+## @package view_mesh_gmsh
 #  \ingroup FEM
-#  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
+#  \brief view provider for mesh gmsh object
 
 import sys
 import time
@@ -41,16 +41,16 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-# from . import ViewProviderBaseObject
-from femobjects import _FemMeshGmsh
+# from femguiobjects import ViewProviderBaseObject
+from femobjects import mesh_gmsh
 from femtools.femutils import is_of_type
 
 
 # TODO use ViewProviderBaseObject see _ViewProviderFemMeshResult
 # class _ViewProviderFemMeshGmsh(ViewProviderBaseObject.ViewProxy):
-class _ViewProviderFemMeshGmsh:
+class VPMeshGmsh:
     """
-    A View Provider for the FemMeshGmsh object
+    A View Provider for the MeshGmsh object
     """
 
     def __init__(self, vobj):
@@ -272,7 +272,7 @@ class _ViewProviderFemMeshGmsh:
 class _TaskPanel:
     """
     The TaskPanel for editing References property of
-    FemMeshGmsh objects and creation of new FEM mesh
+    MeshGmsh objects and creation of new FEM mesh
     """
 
     def __init__(self, obj):
@@ -308,7 +308,7 @@ class _TaskPanel:
         )
 
         self.form.cb_dimension.addItems(
-            _FemMeshGmsh._FemMeshGmsh.known_element_dimensions
+            mesh_gmsh.MeshGmsh.known_element_dimensions
         )
 
         self.get_mesh_params()

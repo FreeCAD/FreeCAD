@@ -25,14 +25,14 @@ __title__ = "FreeCAD FEM mesh gmsh document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMeshGmsh
+## @package mesh_gmsh
 #  \ingroup FEM
-#  \brief FreeCAD FEM _FemMeshGmsh
+#  \brief mesh gmsh object
 
 from . import FemConstraint
 
 
-class _FemMeshGmsh(FemConstraint.Proxy):
+class MeshGmsh(FemConstraint.Proxy):
     """
     A Fem::FemMeshObject python type, add Gmsh specific properties
     """
@@ -62,7 +62,7 @@ class _FemMeshGmsh(FemConstraint.Proxy):
     ]
 
     def __init__(self, obj):
-        super(_FemMeshGmsh, self).__init__(obj)
+        super(MeshGmsh, self).__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
@@ -130,7 +130,7 @@ class _FemMeshGmsh(FemConstraint.Proxy):
                 "FEM Gmsh Mesh Params",
                 "Dimension of mesh elements (Auto = according ShapeType of part to mesh)"
             )
-            obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
+            obj.ElementDimension = MeshGmsh.known_element_dimensions
             obj.ElementDimension = "From Shape"  # according ShapeType of Part to mesh
 
         if not hasattr(obj, "ElementOrder"):
@@ -140,7 +140,7 @@ class _FemMeshGmsh(FemConstraint.Proxy):
                 "FEM Gmsh Mesh Params",
                 "Order of mesh elements"
             )
-            obj.ElementOrder = _FemMeshGmsh.known_element_orders
+            obj.ElementOrder = MeshGmsh.known_element_orders
             obj.ElementOrder = "2nd"
 
         if not hasattr(obj, "OptimizeStd"):
@@ -213,7 +213,7 @@ class _FemMeshGmsh(FemConstraint.Proxy):
                 "FEM Gmsh Mesh Params",
                 "mesh algorithm 2D"
             )
-            obj.Algorithm2D = _FemMeshGmsh.known_mesh_algorithm_2D
+            obj.Algorithm2D = MeshGmsh.known_mesh_algorithm_2D
             obj.Algorithm2D = "Automatic"  # ?
 
         if not hasattr(obj, "Algorithm3D"):
@@ -223,7 +223,7 @@ class _FemMeshGmsh(FemConstraint.Proxy):
                 "FEM Gmsh Mesh Params",
                 "mesh algorithm 3D"
             )
-            obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
+            obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
             obj.Algorithm3D = "Automatic"  # ?
 
         if not hasattr(obj, "GroupsOfNodes"):

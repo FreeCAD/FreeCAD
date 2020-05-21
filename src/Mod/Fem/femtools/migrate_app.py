@@ -65,6 +65,8 @@ class FemMigrateApp(object):
             return self
         if fullname == "femobjects._FemMeshBoundaryLayer":
             return self
+        if fullname == "femobjects._FemMeshGmsh":
+            return self
 
         if fullname == "PyObjects":
             return self
@@ -201,6 +203,9 @@ class FemMigrateApp(object):
         if module.__name__ == "femobjects._FemMeshBoundaryLayer":
             import femobjects.mesh_boundarylayer
             module._FemMeshBoundaryLayer = femobjects.mesh_boundarylayer.MeshBoundaryLayer
+        if module.__name__ == "femobjects._FemMeshGmsh":
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -241,8 +246,8 @@ class FemMigrateApp(object):
             import femobjects.mesh_boundarylayer
             module._FemMeshBoundaryLayer = femobjects.mesh_boundarylayer.MeshBoundaryLayer
         if module.__name__ == "PyObjects._FemMeshGmsh":
-            import femobjects._FemMeshGmsh
-            module._FemMeshGmsh = femobjects._FemMeshGmsh._FemMeshGmsh
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
         if module.__name__ == "PyObjects._FemMeshGroup":
             import femobjects._FemMeshGroup
             module._FemMeshGroup = femobjects._FemMeshGroup._FemMeshGroup
@@ -282,8 +287,8 @@ class FemMigrateApp(object):
             import femobjects.material_mechanicalnonlinear
             module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "_FemMeshGmsh":
-            import femobjects._FemMeshGmsh
-            module._FemMeshGmsh = femobjects._FemMeshGmsh._FemMeshGmsh
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
         if module.__name__ == "_FemMeshGroup":
             import femobjects._FemMeshGroup
             module._FemMeshGroup = femobjects._FemMeshGroup._FemMeshGroup
@@ -360,6 +365,7 @@ module="femobjects._FemElementRotation1D"
 module="femobjects._FemMaterialMechanicalNonlinear"
 module="femobjects._FemMaterialReinforced"
 module="femobjects._FemMeshBoundaryLayer"
+module="femobjects._FemMeshGmsh"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

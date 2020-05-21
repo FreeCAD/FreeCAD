@@ -457,11 +457,11 @@ def makeMeshGmsh(
     """makeMeshGmsh(document, [name]):
     makes a Gmsh FEM mesh object"""
     obj = doc.addObject("Fem::FemMeshObjectPython", name)
-    from femobjects import _FemMeshGmsh
-    _FemMeshGmsh._FemMeshGmsh(obj)
+    from femobjects import mesh_gmsh
+    mesh_gmsh.MeshGmsh(obj)
     if FreeCAD.GuiUp:
-        from femguiobjects import _ViewProviderFemMeshGmsh
-        _ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
+        from femviewprovider import view_mesh_gmsh
+        view_mesh_gmsh.VPMeshGmsh(obj.ViewObject)
     return obj
 
 
