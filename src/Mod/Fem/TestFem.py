@@ -25,6 +25,7 @@
 
 # Unit test for the FEM module
 # to get the right order import as is used
+"""
 from femtest.app.test_femimport import TestFemImport as FemTest01
 from femtest.app.test_common import TestFemCommon as FemTest02
 from femtest.app.test_object import TestObjectCreate as FemTest03
@@ -49,7 +50,7 @@ False if FemTest08.__name__ else True
 False if FemTest09.__name__ else True
 False if FemTest10.__name__ else True
 False if FemTest11.__name__ else True
-
+"""
 
 # For more information on how to run a specific test class or a test method see
 # file src/Mod/Test/__init__
