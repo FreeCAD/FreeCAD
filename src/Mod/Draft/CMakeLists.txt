@@ -35,6 +35,7 @@ SET (Draft_geoutils
     draftgeoutils/intersections.py
     draftgeoutils/sort_edges.py
     draftgeoutils/faces.py
+    draftgeoutils/geometry.py
 )
 
 SET(Draft_tests
