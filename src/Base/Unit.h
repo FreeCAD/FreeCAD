@@ -137,6 +137,7 @@ public:
     static Unit SpecificEnergy;
     static Unit ThermalConductivity;
     static Unit ThermalExpansionCoefficient;
+    static Unit VolumetricThermalExpansionCoefficient;
     static Unit SpecificHeat;
     static Unit ThermalTransferCoefficient;
     static Unit HeatFlux;
