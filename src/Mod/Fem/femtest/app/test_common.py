@@ -116,6 +116,9 @@ class TestFemCommon(unittest.TestCase):
             ) and sys.version_info.major < 3:
                 continue
 
+            if mod == "femsolver.solver_taskpanel" and not FreeCAD.GuiUp:
+                continue
+
             fcc_print("Try importing {0} ...".format(mod))
             try:
                 im = __import__("{0}".format(mod))
