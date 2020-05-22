@@ -396,6 +396,7 @@ void View3DInventorViewer::init()
     pcShadowGroundSwitch = nullptr;
     pcShadowGroundCoords = nullptr;
     pcShadowGround = nullptr;
+    pcShadowGroundStyle = nullptr;
     pcShadowGroundGroup = nullptr;
     pcShadowGroundBumpMap = nullptr;
     pcShadowGroundTexture = nullptr;
@@ -757,6 +758,10 @@ View3DInventorViewer::~View3DInventorViewer()
     if(this->pcShadowGround) {
         this->pcShadowGround->unref();
         this->pcShadowGround = nullptr;
+    }
+    if(this->pcShadowGroundStyle) {
+        this->pcShadowGroundStyle->unref();
+        this->pcShadowGroundStyle = nullptr;
     }
     if(this->pcShadowGroundGroup) {
         this->pcShadowGroundGroup->unref();
@@ -1753,7 +1758,9 @@ void View3DInventorViewer::applyOverrideMode()
             pcShadowGroup->ref();
 
             if(!pcShadowDirectionalLight) {
-                pcShadowDirectionalLight = new SoShadowDirectionalLight;
+                auto light = new SoShadowDirectionalLight;
+                light->maxShadowDistance = 10000;
+                pcShadowDirectionalLight = light;
                 pcShadowDirectionalLight->ref();
             }
             if(!pcShadowSpotLight) {
@@ -1776,13 +1783,12 @@ void View3DInventorViewer::applyOverrideMode()
 
             pcShadowGroup->addChild(pcViewProviderRoot);
 
-            shadowStyle = new SoShadowStyle;
-            shadowStyle->style = SoShadowStyle::SHADOWED;
-            pcShadowGroup->addChild(shadowStyle);
-
             if(!pcShadowGroundSwitch) {
                 pcShadowGroundSwitch = new SoSwitch;
                 pcShadowGroundSwitch->ref();
+
+                pcShadowGroundStyle = new SoShadowStyle;
+                pcShadowGroundStyle->style = SoShadowStyle::SHADOWED;
 
                 pcShadowMaterial = new SoMaterial;
                 pcShadowMaterial->ref();
@@ -1801,8 +1807,8 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowGround->ref();
 
                 auto shapeHints = new SoShapeHints;
-                // shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-                shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
+                shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+                // shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
 
                 auto pickStyle = new SoPickStyle;
                 pickStyle->style = SoPickStyle::UNPICKABLE;
@@ -1810,8 +1816,9 @@ void View3DInventorViewer::applyOverrideMode()
                 auto tu = new SoTextureUnit;
                 tu->unit = 1;
 
-                pcShadowGroundGroup = new SoSkipBoundingGroup;
+                pcShadowGroundGroup = new SoSeparator;
                 pcShadowGroundGroup->ref();
+                pcShadowGroundGroup->addChild(pcShadowGroundStyle);
                 pcShadowGroundGroup->addChild(pickStyle);
                 pcShadowGroundGroup->addChild(shapeHints);
                 pcShadowGroundGroup->addChild(pcShadowGroundTextureCoords);
@@ -1840,9 +1847,7 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowGroundGroup->addChild(pcShadowGroundCoords);
                 pcShadowGroundGroup->addChild(pcShadowGround);
 
-                auto sep = new SoSeparator;
-                sep->addChild(pcShadowGroundGroup);
-                pcShadowGroundSwitch->addChild(sep);
+                pcShadowGroundSwitch->addChild(pcShadowGroundGroup);
             }
 
             pcShadowGroup->addChild(pcShadowGroundSwitch);
@@ -1872,6 +1877,13 @@ void View3DInventorViewer::applyOverrideMode()
         SbBox3f bbox;
         getSceneBoundBox(bbox);
 
+        static const App::PropertyPrecision::Constraints _epsilon_cstr(0.0,1000.0,1e-5);
+        pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc,
+                "Epsilon", 1e-5,
+                    [](App::PropertyFloatConstraint &prop) {
+                        prop.setConstraints(&_epsilon_cstr);
+                    });
+
         if(spotlight) {
             light = pcShadowSpotLight;
             pcShadowSpotLight->direction = dir;
@@ -1891,9 +1903,21 @@ void View3DInventorViewer::applyOverrideMode()
             pcShadowSpotLight->cutOffAngle =
                 _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0);
 
+            // pcShadowGroup->visibilityFlag = SoShadowGroup::ABSOLUTE_RADIUS;
+            // pcShadowGroup->visibilityNearRadius = _shadowParam<App::PropertyFloat>(doc, "SpotLightRadiusNear", -1.0);
+            // pcShadowGroup->visibilityRadius = _shadowParam<App::PropertyFloat>(doc, "SpotLightRadius", -1.0);
         } else {
             pcShadowDirectionalLight->direction = dir;
+
             light = pcShadowDirectionalLight;
+            if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
+                static const App::PropertyFloatConstraint::Constraints _dist_cstr(0.0,DBL_MAX,100.0);
+                static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
+                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 1e5,
+                        [](App::PropertyFloatConstraint &prop) {
+                            prop.setConstraints(&_dist_cstr);
+                        });
+            }
         }
 
         light->intensity = _shadowParam<App::PropertyFloatConstraint>(
@@ -1913,6 +1937,11 @@ void View3DInventorViewer::applyOverrideMode()
                 App::Color((uint32_t)ViewParams::getShadowGroundColor()));
         sbColor.setPackedValue(color.getPackedValue(),f);
         pcShadowMaterial->diffuseColor = sbColor;
+        pcShadowMaterial->specularColor = SbColor(0,0,0);
+        int transp = _shadowParam<App::PropertyPercent>(doc, "GroundTransparency",0);
+        pcShadowMaterial->transparency = transp/100.0;
+
+        pcShadowGroundStyle->style = (transp == 100 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
 
         // pcShadowMaterial->shininess = _shadowParam<App::PropertyFloatConstraint>(
         //         doc, "GroundShininess", ViewParams::getShadowGroundShininess(),
@@ -3647,7 +3676,7 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
         }
     } else {
         SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
+        action.apply(pcViewProviderRoot);
         auto bbox = action.getBoundingBox();
         if(!bbox.isEmpty()) {
             float minx,miny,minz,maxx,maxy,maxz;

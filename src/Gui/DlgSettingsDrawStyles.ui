@@ -13,15 +13,15 @@
   <property name="windowTitle">
    <string>Draw styles</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Selection</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0,0,0,0">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0">
         <property name="horizontalSpacing">
          <number>6</number>
         </property>
@@ -186,7 +186,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxSelection">
      <property name="title">
       <string>Hidden Lines</string>
@@ -413,7 +413,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxSelection_2">
      <property name="title">
       <string>Shadow</string>
@@ -426,7 +426,7 @@
        <number>6</number>
       </property>
       <item row="0" column="0">
-       <layout class="QGridLayout" name="_4" columnstretch="0,0" columnminimumwidth="0,0">
+       <layout class="QGridLayout" name="_4" columnstretch="0,0">
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
@@ -436,6 +436,33 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Ground color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxShowGround">
+          <property name="text">
+           <string>Show ground</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowShowGround</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Light intensity</string>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinBoxGroundScale">
           <property name="minimum">
@@ -465,19 +492,6 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxFlatLines">
-          <property name="text">
-           <string>Flat lines</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowFlatLines</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="1">
          <widget class="Gui::PrefColorButton" name="GroundColor">
           <property name="sizePolicy">
@@ -504,30 +518,16 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_4">
+        <item row="7" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxFlatLines">
           <property name="text">
-           <string>Ground color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxShowGround">
-          <property name="text">
-           <string>Show ground</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowShowGround</string>
+           <string>Flat lines</string>
           </property>
           <property name="prefPath" stdset="0">
            <string>View</string>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Light intensity</string>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowFlatLines</string>
           </property>
          </widget>
         </item>
@@ -602,6 +602,44 @@
           </property>
          </widget>
         </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Ground transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinGroundTransparency">
+          <property name="toolTip">
+           <string>Override transparency of all objects in the scene.</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShadowGroundTransparency</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="0" column="1">
@@ -620,7 +658,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <spacer name="spacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
