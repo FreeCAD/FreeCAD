@@ -34,9 +34,52 @@ __url__ = "http://www.freecadweb.org"
 class FemMigrateGui(object):
 
     def find_module(self, fullname, path):
-        if fullname == "PyGui":
+
+        if fullname == "femguiobjects":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintBodyHeatSource":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintElectrostaticPotential":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintFlowVelocity":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintSelfWeight":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemConstraintTie":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemElementFluid1D":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemElementGeometry1D":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemElementGeometry2D":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemElementRotation1D":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMaterial":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMaterialReinforced":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMeshBoundaryLayer":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMeshGmsh":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMeshGroup":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMeshRegion":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemMeshResult":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemResultMechanical":
+            return self
+        if fullname == "femguiobjects._ViewProviderFemSolverCalculix":
             return self
 
+        if fullname == "PyGui":
+            return self
         if fullname == "PyGui._ViewProviderFemConstraintBodyHeatSource":
             return self
         if fullname == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
@@ -81,7 +124,7 @@ class FemMigrateGui(object):
 
         if fullname == "_ViewProviderFemBeamSection":
             return self
-        if fullname == "_FemConstraintSelfWeight":
+        if fullname == "_ViewProviderFemConstraintSelfWeight":
             return self
         if fullname == "_ViewProviderFemMaterial":
             return self
@@ -118,117 +161,180 @@ class FemMigrateGui(object):
         return self.load_module(module)
 
     def load_module(self, module):
+
+        if module.__name__ == "femguiobjects":
+            module.__path__ = "femguiobjects"
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintBodyHeatSource":
+            import femviewprovider.view_constraint_bodyheatsource
+            module.ViewProxy = femviewprovider.view_constraint_bodyheatsource.VPConstraintBodyHeatSource
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintElectrostaticPotential":
+            import femviewprovider.view_constraint_electrostaticpotential
+            module.ViewProxy = femviewprovider.view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintFlowVelocity":
+            import femviewprovider.view_constraint_flowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_flowvelocity.VPConstraintFlowVelocity
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity":
+            import femviewprovider.view_constraint_initialflowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_initialflowvelocity.VPConstraintInitialFlowVelocity
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintSelfWeight":
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
+        if module.__name__ == "femguiobjects._ViewProviderFemConstraintTie":
+            import femviewprovider.view_constraint_tie
+            module._ViewProviderFemConstraintTie = femviewprovider.view_constraint_tie.VPConstraintTie
+        if module.__name__ == "femguiobjects._ViewProviderFemElementFluid1D":
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
+        if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry1D":
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
+        if module.__name__ == "femguiobjects._ViewProviderFemElementGeometry2D":
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
+        if module.__name__ == "femguiobjects._ViewProviderFemElementRotation1D":
+            import femviewprovider.view_element_rotation1D
+            module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
+        if module.__name__ == "femguiobjects._ViewProviderFemMaterial":
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
+        if module.__name__ == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
+            import femviewprovider.view_material_mechanicalnonlinear
+            module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
+        if module.__name__ == "femguiobjects._ViewProviderFemMaterialReinforced":
+            import femviewprovider.view_material_reinforced
+            module._ViewProviderFemMaterialReinforced = femviewprovider.view_material_reinforced.VPMaterialReinforced
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshBoundaryLayer":
+            import femviewprovider.view_mesh_boundarylayer
+            module._ViewProviderFemMeshBoundaryLayer = femviewprovider.view_mesh_boundarylayer.VPMeshBoundaryLayer
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshGmsh":
+            import femviewprovider.view_mesh_gmsh
+            module._ViewProviderFemMeshGmsh = femviewprovider.view_mesh_gmsh.VPMeshGmsh
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshGroup":
+            import femviewprovider.view_mesh_group
+            module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshRegion":
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
+        if module.__name__ == "femguiobjects._ViewProviderFemMeshResult":
+            import femviewprovider.view_mesh_result
+            module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
+        if module.__name__ == "femguiobjects._ViewProviderFemResultMechanical":
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
+        if module.__name__ == "femguiobjects._ViewProviderFemSolverCalculix":
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
+
         if module.__name__ == "PyGui":
             module.__path__ = "PyGui"
-
         if module.__name__ == "PyGui._ViewProviderFemConstraintBodyHeatSource":
-            import femguiobjects._ViewProviderFemConstraintBodyHeatSource
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintBodyHeatSource.ViewProxy
+            import femviewprovider.view_constraint_bodyheatsource
+            module.ViewProxy = femviewprovider.view_constraint_bodyheatsource.VPConstraintBodyHeatSource
         if module.__name__ == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
-            import femguiobjects._ViewProviderFemConstraintElectrostaticPotential
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintElectrostaticPotential.ViewProxy
+            import femviewprovider.view_constraint_electrostaticpotential
+            module.ViewProxy = femviewprovider.view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential
         if module.__name__ == "PyGui._ViewProviderFemConstraintFlowVelocity":
-            import femguiobjects._ViewProviderFemConstraintFlowVelocity
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintFlowVelocity.ViewProxy
+            import femviewprovider.view_constraint_flowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_flowvelocity.VPConstraintFlowVelocity
         if module.__name__ == "PyGui._ViewProviderFemConstraintInitialFlowVelocity":
-            import femguiobjects._ViewProviderFemConstraintInitialFlowVelocity
-            module.ViewProxy = femguiobjects._ViewProviderFemConstraintInitialFlowVelocity.ViewProxy
+            import femviewprovider.view_constraint_initialflowvelocity
+            module.ViewProxy = femviewprovider.view_constraint_initialflowvelocity.VPConstraintInitialFlowVelocity
         if module.__name__ == "PyGui._ViewProviderFemConstraintSelfWeight":
-            import femguiobjects._ViewProviderFemConstraintSelfWeight
-            module._ViewProviderFemConstraintSelfWeight = femguiobjects._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "PyGui._ViewProviderFemElementFluid1D":
-            import femguiobjects._ViewProviderFemElementFluid1D
-            module._ViewProviderFemElementFluid1D = femguiobjects._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemElementFluid1D = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry1D":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemElementGeometry1D = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemElementGeometry1D = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemElementGeometry2D":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemElementGeometry2D = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemElementGeometry2D = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "PyGui._ViewProviderFemElementRotation1D":
-            import femguiobjects._ViewProviderFemElementRotation1D
-            module._ViewProviderFemElementRotation1D = femguiobjects._ViewProviderFemElementRotation1D._ViewProviderFemElementRotation1D
+            import femviewprovider.view_element_rotation1D
+            module._ViewProviderFemElementRotation1D = femviewprovider.view_element_rotation1D.VPElementRotation1D
         if module.__name__ == "PyGui._ViewProviderFemMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         if module.__name__ == "PyGui._ViewProviderFemMaterialMechanicalNonlinear":
-            import femguiobjects._ViewProviderFemMaterialMechanicalNonlinear
-            module._ViewProviderFemMaterialMechanicalNonlinear = femguiobjects._ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear
+            import femviewprovider.view_material_mechanicalnonlinear
+            module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
         if module.__name__ == "PyGui._ViewProviderFemMeshBoundaryLayer":
-            import femguiobjects._ViewProviderFemMeshBoundaryLayer
-            module._ViewProviderFemMeshBoundaryLayer = femguiobjects._ViewProviderFemMeshBoundaryLayer._ViewProviderFemMeshBoundaryLayer
+            import femviewprovider.view_mesh_boundarylayer
+            module._ViewProviderFemMeshBoundaryLayer = femviewprovider.view_mesh_boundarylayer.VPMeshBoundaryLayer
         if module.__name__ == "PyGui._ViewProviderFemMeshGmsh":
-            import femguiobjects._ViewProviderFemMeshGmsh
-            module._ViewProviderFemMeshGmsh = femguiobjects._ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh
+            import femviewprovider.view_mesh_gmsh
+            module._ViewProviderFemMeshGmsh = femviewprovider.view_mesh_gmsh.VPMeshGmsh
         if module.__name__ == "PyGui._ViewProviderFemMeshGroup":
-            import femguiobjects._ViewProviderFemMeshGroup
-            module._ViewProviderFemMeshGroup = femguiobjects._ViewProviderFemMeshGroup._ViewProviderFemMeshGroup
+            import femviewprovider.view_mesh_group
+            module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
         if module.__name__ == "PyGui._ViewProviderFemMeshRegion":
-            import femguiobjects._ViewProviderFemMeshRegion
-            module._ViewProviderFemMeshRegion = femguiobjects._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "PyGui._ViewProviderFemMeshResult":
-            import femguiobjects._ViewProviderFemMeshResult
-            module._ViewProviderFemMeshResult = femguiobjects._ViewProviderFemMeshResult._ViewProviderFemMeshResult
+            import femviewprovider.view_mesh_result
+            module._ViewProviderFemMeshResult = femviewprovider.view_mesh_result.VPFemMeshResult
         if module.__name__ == "PyGui._ViewProviderFemResultMechanical":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "PyGui._ViewProviderFemSolverCalculix":
-            import femguiobjects._ViewProviderFemSolverCalculix
-            module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
 
         if module.__name__ == "PyGui._ViewProviderFemBeamSection":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "PyGui._ViewProviderFemFluidSection":
-            import femguiobjects._ViewProviderFemElementFluid1D
-            module._ViewProviderFemFluidSection = femguiobjects._ViewProviderFemElementFluid1D._ViewProviderFemElementFluid1D
+            import femviewprovider.view_element_fluid1D
+            module._ViewProviderFemFluidSection = femviewprovider.view_element_fluid1D.VPElementFluid1D
         if module.__name__ == "PyGui._ViewProviderFemShellThickness":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
 
         if module.__name__ == "_ViewProviderFemBeamSection":
-            import femguiobjects._ViewProviderFemElementGeometry1D
-            module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+            import femviewprovider.view_element_geometry1D
+            module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "_ViewProviderFemConstraintSelfWeight":
-            import femguiobjects._ViewProviderFemConstraintSelfWeight
-            module._ViewProviderFemConstraintSelfWeight = femguiobjects._ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight
+            import femviewprovider.view_constraint_selfweight
+            module._ViewProviderFemConstraintSelfWeight = femviewprovider.view_constraint_selfweight.VPConstraintSelfWeight
         if module.__name__ == "_ViewProviderFemMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderFemMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         if module.__name__ == "_ViewProviderFemMaterialMechanicalNonlinear":
-            import femguiobjects._ViewProviderFemMaterialMechanicalNonlinear
-            module._ViewProviderFemMaterialMechanicalNonlinear = femguiobjects._ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear
+            import femviewprovider.view_material_mechanicalnonlinear
+            module._ViewProviderFemMaterialMechanicalNonlinear = femviewprovider.view_material_mechanicalnonlinear.VPMaterialMechanicalNonlinear
         if module.__name__ == "_ViewProviderFemMeshGmsh":
-            import femguiobjects._ViewProviderFemMeshGmsh
-            module._ViewProviderFemMeshGmsh = femguiobjects._ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh
+            import femviewprovider.view_mesh_gmsh
+            module._ViewProviderFemMeshGmsh = femviewprovider.view_mesh_gmsh.VPMeshGmsh
         if module.__name__ == "_ViewProviderFemMeshGroup":
-            import femguiobjects._ViewProviderFemMeshGroup
-            module._ViewProviderFemMeshGroup = femguiobjects._ViewProviderFemMeshGroup._ViewProviderFemMeshGroup
+            import femviewprovider.view_mesh_group
+            module._ViewProviderFemMeshGroup = femviewprovider.view_mesh_group.VPMeshGroup
         if module.__name__ == "_ViewProviderFemMeshRegion":
-            import femguiobjects._ViewProviderFemMeshRegion
-            module._ViewProviderFemMeshRegion = femguiobjects._ViewProviderFemMeshRegion._ViewProviderFemMeshRegion
+            import femviewprovider.view_mesh_region
+            module._ViewProviderFemMeshRegion = femviewprovider.view_mesh_region.VPMeshRegion
         if module.__name__ == "_ViewProviderFemResultMechanical":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemResultMechanical = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemResultMechanical = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "_ViewProviderFemShellThickness":
-            import femguiobjects._ViewProviderFemElementGeometry2D
-            module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+            import femviewprovider.view_element_geometry2D
+            module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "_ViewProviderFemSolverCalculix":
-            import femguiobjects._ViewProviderFemSolverCalculix
-            module._ViewProviderFemSolverCalculix = femguiobjects._ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix
+            import femviewprovider.view_solver_ccxtools
+            module._ViewProviderFemSolverCalculix = femviewprovider.view_solver_ccxtools.VPSolverCcxTools
         if module.__name__ == "_ViewProviderFemSolverZ88":
             import femsolver.z88.solver
             module._ViewProviderFemSolverZ88 = femsolver.z88.solver.ViewProxy
 
         if module.__name__ == "_ViewProviderFemMechanicalResult":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module._ViewProviderFemMechanicalResult = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module._ViewProviderFemMechanicalResult = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "ViewProviderFemResult":
-            import femguiobjects._ViewProviderFemResultMechanical
-            module.ViewProviderFemResult = femguiobjects._ViewProviderFemResultMechanical._ViewProviderFemResultMechanical
+            import femviewprovider.view_result_mechanical
+            module.ViewProviderFemResult = femviewprovider.view_result_mechanical.VPResultMechanical
         if module.__name__ == "_ViewProviderMechanicalMaterial":
-            import femguiobjects._ViewProviderFemMaterial
-            module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+            import femviewprovider.view_material_common
+            module._ViewProviderMechanicalMaterial = femviewprovider.view_material_common.VPMaterialCommon
 
         return None
 
@@ -236,6 +342,30 @@ class FemMigrateGui(object):
 """
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
+
+fourth big moving
+renaming class and module names in femobjects
+TODO add link to commit before the first commit
+module="femguiobjects._ViewProviderFemConstraintBodyHeatSource"
+module="femguiobjects._ViewProviderFemConstraintElectrostaticPotential"
+module="femguiobjects._ViewProviderFemConstraintFlowVelocity"
+module="femguiobjects._ViewProviderFemConstraintInitialFlowVelocity"
+module="femguiobjects._ViewProviderFemConstraintSelfWeight"
+module="femguiobjects._ViewProviderFemConstraintTie"
+module="femguiobjects._ViewProviderFemElementFluid1D"
+module="femguiobjects._ViewProviderFemElementGeometry1D"
+module="femguiobjects._ViewProviderFemElementGeometry2D"
+module="femguiobjects._ViewProviderFemElementRotation1D"
+module="femguiobjects._ViewProviderFemMaterial"
+module="femguiobjects._ViewProviderFemMaterialMechanicalNonlinear"
+module="femguiobjects._ViewProviderFemMaterialReinforced"
+module="femguiobjects._ViewProviderFemMeshBoundaryLayer"
+module="femguiobjects._ViewProviderFemMeshGmsh"
+module="femguiobjects._ViewProviderFemMeshGroup"
+module="femguiobjects._ViewProviderFemMeshRegion"
+module="femguiobjects._ViewProviderFemMeshResult"
+module="femguiobjects._ViewProviderFemResultMechanical"
+module="femguiobjects._ViewProviderFemSolverCalculix"
 
 third big moving
 from PyGui to femguiobjects, following the parent commit
@@ -295,6 +425,4 @@ module="FemBeamSection"
 module="FemShellThickness"
 module="MechanicalAnalysis"
 module="MechanicalMaterial"
-
-
 """

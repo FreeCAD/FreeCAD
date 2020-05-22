@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +20,55 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
+__title__ = "FreeCAD FEM mesh boundary layer document object"
+__author__ = "Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
+## @package mesh_boundarylayer
+#  \ingroup FEM
+#  \brief mesh boundary layer object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+from . import base_fempythonobject
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class MeshBoundaryLayer(base_fempythonobject.BaseFemPythonObject):
+    """
+    The MeshBoundaryLayer object
+    """
 
+    Type = "Fem::MeshBoundaryLayer"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+    def __init__(self, obj):
+        super(MeshBoundaryLayer, self).__init__(obj)
 
+        obj.addProperty(
+            "App::PropertyInteger",
+            "NumberOfLayers",
+            "MeshBoundaryLayerProperties",
+            "set number of inflation layers for this boundary"
+        )
+        obj.NumberOfLayers = 3
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+        obj.addProperty(
+            "App::PropertyLength",
+            "MinimumThickness",
+            "MeshBoundaryLayerProperties",
+            "set minimum thickness,usually the first inflation layer"
+        )
+        # default to zero, user must specify a proper value for this property
 
-"""
+        obj.addProperty(
+            "App::PropertyFloat",
+            "GrowthRate",
+            "MeshBoundaryLayerProperties",
+            "set growth rate of inflation layers for smooth transition"
+        )
+        obj.GrowthRate = 1.5
 
-# TODO: a unit test to be sure these values are returned!
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshBoundaryLayerShapes",
+            "List of FEM mesh region shapes"
+        )

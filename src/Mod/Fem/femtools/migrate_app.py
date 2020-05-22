@@ -36,9 +36,52 @@ import FreeCAD
 class FemMigrateApp(object):
 
     def find_module(self, fullname, path):
-        if fullname == "PyObjects":
+
+        if fullname == "femobjects":
+            return self
+        if fullname == "femobjects._FemConstraintBodyHeatSource":
+            return self
+        if fullname == "femobjects._FemConstraintElectrostaticPotential":
+            return self
+        if fullname == "femobjects._FemConstraintFlowVelocity":
+            return self
+        if fullname == "femobjects._FemConstraintInitialFlowVelocity":
+            return self
+        if fullname == "femobjects._FemConstraintSelfWeight":
+            return self
+        if fullname == "femobjects._FemConstraintTie":
+            return self
+        if fullname == "femobjects._FemElementFluid1D":
+            return self
+        if fullname == "femobjects._FemElementGeometry1D":
+            return self
+        if fullname == "femobjects._FemElementGeometry2D":
+            return self
+        if fullname == "femobjects._FemElementRotation1D":
+            return self
+        if fullname == "femobjects._FemMaterial":
+            return self
+        if fullname == "femobjects._FemMaterialMechanicalNonlinear":
+            return self
+        if fullname == "femobjects._FemMaterialReinforced":
+            return self
+        if fullname == "femobjects._FemMeshBoundaryLayer":
+            return self
+        if fullname == "femobjects._FemMeshGmsh":
+            return self
+        if fullname == "femobjects._FemMeshGroup":
+            return self
+        if fullname == "femobjects._FemMeshRegion":
+            return self
+        if fullname == "femobjects._FemMeshResult":
+            return self
+        if fullname == "femobjects._FemResultMechanical":
+            return self
+        if fullname == "femobjects._FemSolverCalculix":
             return self
 
+        if fullname == "PyObjects":
+            return self
         if fullname == "PyObjects._FemConstraintBodyHeatSource":
             return self
         if fullname == "PyObjects._FemConstraintElectrostaticPotential":
@@ -130,148 +173,235 @@ class FemMigrateApp(object):
         return self.load_module(module)
 
     def load_module(self, module):
+
+        if module.__name__ == "femobjects":
+            module.__path__ = "femobjects"
+        if module.__name__ == "femobjects._FemConstraintBodyHeatSource":
+            import femobjects.constraint_bodyheatsource
+            module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
+        if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
+            import femobjects.constraint_electrostaticpotential
+            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
+        if module.__name__ == "femobjects._FemConstraintFlowVelocity":
+            import femobjects.constraint_flowvelocity
+            module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
+        if module.__name__ == "femobjects._FemConstraintInitialFlowVelocity":
+            import femobjects.constraint_initialflowvelocity
+            module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
+        if module.__name__ == "femobjects._FemConstraintSelfWeight":
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
+        if module.__name__ == "femobjects._FemConstraintTie":
+            import femobjects.constraint_tie
+            module._FemConstraintTie = femobjects.constraint_tie.ConstraintTie
+        if module.__name__ == "femobjects._FemElementFluid1D":
+            import femobjects.element_fluid1D
+            module._FemElementFluid1D = femobjects.element_fluid1D.ElementFluid1D
+        if module.__name__ == "femobjects._FemElementGeometry1D":
+            import femobjects.element_geometry1D
+            module._FemElementGeometry1D = femobjects.element_geometry1D.ElementGeometry1D
+        if module.__name__ == "femobjects._FemElementGeometry2D":
+            import femobjects.element_geometry2D
+            module._FemElementGeometry2D = femobjects.element_geometry2D.ElementGeometry2D
+        if module.__name__ == "femobjects._FemElementRotation1D":
+            import femobjects.element_rotation1D
+            module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
+        if module.__name__ == "femobjects._FemMaterial":
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
+        if module.__name__ == "femobjects._FemMaterialMechanicalNonlinear":
+            import femobjects.material_mechanicalnonlinear
+            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
+        if module.__name__ == "femobjects._FemMaterialReinforced":
+            import femobjects.material_reinforced
+            module._FemMaterialReinforced = femobjects.material_reinforced.MaterialReinforced
+        if module.__name__ == "femobjects._FemMeshBoundaryLayer":
+            import femobjects.mesh_boundarylayer
+            module._FemMeshBoundaryLayer = femobjects.mesh_boundarylayer.MeshBoundaryLayer
+        if module.__name__ == "femobjects._FemMeshGmsh":
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
+        if module.__name__ == "femobjects._FemMeshGroup":
+            import femobjects.mesh_group
+            module._FemMeshGroup = femobjects.mesh_group.MeshGroup
+        if module.__name__ == "femobjects._FemMeshRegion":
+            import femobjects.mesh_region
+            module._FemMeshRegion = femobjects.mesh_region.MeshRegion
+        if module.__name__ == "femobjects._FemMeshResult":
+            import femobjects.mesh_result
+            module._FemMeshResult = femobjects.mesh_result.MeshResult
+        if module.__name__ == "femobjects._FemResultMechanical":
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
+        if module.__name__ == "femobjects._FemSolverCalculix":
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
+
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
-
         if module.__name__ == "PyObjects._FemConstraintBodyHeatSource":
-            import femobjects._FemConstraintBodyHeatSource
-            module.Proxy = femobjects._FemConstraintBodyHeatSource.Proxy
+            import femobjects.constraint_bodyheatsource
+            module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
-            import femobjects._FemConstraintElectrostaticPotential
-            module.Proxy = femobjects._FemConstraintElectrostaticPotential.Proxy
+            import femobjects.constraint_electrostaticpotential
+            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
-            import femobjects._FemConstraintFlowVelocity
-            module.Proxy = femobjects._FemConstraintFlowVelocity.Proxy
+            import femobjects.constraint_flowvelocity
+            module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintInitialFlowVelocity":
-            import femobjects._FemConstraintInitialFlowVelocity
-            module.Proxy = femobjects._FemConstraintInitialFlowVelocity.Proxy
+            import femobjects.constraint_initialflowvelocity
+            module.Proxy = femobjects.constraint_initialflowvelocity.ConstraintInitialFlowVelocity
         if module.__name__ == "PyObjects._FemConstraintSelfWeight":
-            import femobjects._FemConstraintSelfWeight
-            module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
         if module.__name__ == "PyObjects._FemElementFluid1D":
-            import femobjects._FemElementFluid1D
-            module._FemElementFluid1D = femobjects._FemElementFluid1D._FemElementFluid1D
+            import femobjects.element_fluid1D
+            module._FemElementFluid1D = femobjects.element_fluid1D.ElementFluid1D
         if module.__name__ == "PyObjects._FemElementGeometry1D":
-            import femobjects._FemElementGeometry1D
-            module._FemElementGeometry1D = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemElementGeometry1D = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "PyObjects._FemElementGeometry2D":
-            import femobjects._FemElementGeometry2D
-            module._FemElementGeometry2D = femobjects._FemElementGeometry2D._FemElementGeometry2D
+            import femobjects.element_geometry2D
+            module._FemElementGeometry2D = femobjects.element_geometry2D.ElementGeometry2D
         if module.__name__ == "PyObjects._FemElementRotation1D":
-            import femobjects._FemElementRotation1D
-            module._FemElementRotation1D = femobjects._FemElementRotation1D._FemElementRotation1D
+            import femobjects.element_rotation1D
+            module._FemElementRotation1D = femobjects.element_rotation1D.ElementRotation1D
         if module.__name__ == "PyObjects._FemMaterial":
-            import femobjects._FemMaterial
-            module._FemMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "PyObjects._FemMaterialMechanicalNonlinear":
-            import femobjects._FemMaterialMechanicalNonlinear
-            module._FemMaterialMechanicalNonlinear = femobjects._FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear
+            import femobjects.material_mechanicalnonlinear
+            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "PyObjects._FemMeshBoundaryLayer":
-            import femobjects._FemMeshBoundaryLayer
-            module._FemMeshBoundaryLayer = femobjects._FemMeshBoundaryLayer._FemMeshBoundaryLayer
+            import femobjects.mesh_boundarylayer
+            module._FemMeshBoundaryLayer = femobjects.mesh_boundarylayer.MeshBoundaryLayer
         if module.__name__ == "PyObjects._FemMeshGmsh":
-            import femobjects._FemMeshGmsh
-            module._FemMeshGmsh = femobjects._FemMeshGmsh._FemMeshGmsh
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
         if module.__name__ == "PyObjects._FemMeshGroup":
-            import femobjects._FemMeshGroup
-            module._FemMeshGroup = femobjects._FemMeshGroup._FemMeshGroup
+            import femobjects.mesh_group
+            module._FemMeshGroup = femobjects.mesh_group.MeshGroup
         if module.__name__ == "PyObjects._FemMeshRegion":
-            import femobjects._FemMeshRegion
-            module._FemMeshRegion = femobjects._FemMeshRegion._FemMeshRegion
+            import femobjects.mesh_region
+            module._FemMeshRegion = femobjects.mesh_region.MeshRegion
         if module.__name__ == "PyObjects._FemMeshResult":
-            import femobjects._FemMeshResult
-            module._FemMeshResult = femobjects._FemMeshResult._FemMeshResult
+            import femobjects.mesh_result
+            module._FemMeshResult = femobjects.mesh_result.MeshResult
         if module.__name__ == "PyObjects._FemResultMechanical":
-            import femobjects._FemResultMechanical
-            module._FemResultMechanical = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "PyObjects._FemSolverCalculix":
-            import femobjects._FemSolverCalculix
-            module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
 
         if module.__name__ == "PyObjects._FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "PyObjects._FemFluidSection":
-            import femobjects._FemElementFluid1D
-            module._FemFluidSection = femobjects._FemElementFluid1D._FemElementFluid1D
+            import femobjects.element_fluid1D
+            module._FemFluidSection = femobjects.element_fluid1D.ElementFluid1D
         if module.__name__ == "PyObjects._FemShellThickness":
-            import femobjects._FemElementGeometry2D
-            module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
+            import femobjects.element_geometry2D
+            module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
 
         if module.__name__ == "_FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
         if module.__name__ == "_FemConstraintSelfWeight":
-            import femobjects._FemConstraintSelfWeight
-            module._FemConstraintSelfWeight = femobjects._FemConstraintSelfWeight._FemConstraintSelfWeight
+            import femobjects.constraint_selfweight
+            module._FemConstraintSelfWeight = femobjects.constraint_selfweight.ConstraintSelfWeight
         if module.__name__ == "_FemMaterial":
-            import femobjects._FemMaterial
-            module._FemMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "_FemMaterialMechanicalNonlinear":
-            import femobjects._FemMaterialMechanicalNonlinear
-            module._FemMaterialMechanicalNonlinear = femobjects._FemMaterialMechanicalNonlinear._FemMaterialMechanicalNonlinear
+            import femobjects.material_mechanicalnonlinear
+            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "_FemMeshGmsh":
-            import femobjects._FemMeshGmsh
-            module._FemMeshGmsh = femobjects._FemMeshGmsh._FemMeshGmsh
+            import femobjects.mesh_gmsh
+            module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
         if module.__name__ == "_FemMeshGroup":
-            import femobjects._FemMeshGroup
-            module._FemMeshGroup = femobjects._FemMeshGroup._FemMeshGroup
+            import femobjects.mesh_group
+            module._FemMeshGroup = femobjects.mesh_group.MeshGroup
         if module.__name__ == "_FemMeshRegion":
-            import femobjects._FemMeshRegion
-            module._FemMeshRegion = femobjects._FemMeshRegion._FemMeshRegion
+            import femobjects.mesh_region
+            module._FemMeshRegion = femobjects.mesh_region.MeshRegion
         if module.__name__ == "_FemResultMechanical":
-            import femobjects._FemResultMechanical
-            module._FemResultMechanical = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemResultMechanical = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "_FemShellThickness":
-            import femobjects._FemElementGeometry2D
-            module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
+            import femobjects.element_geometry2D
+            module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
         if module.__name__ == "_FemSolverCalculix":
-            import femobjects._FemSolverCalculix
-            module._FemSolverCalculix = femobjects._FemSolverCalculix._FemSolverCalculix
+            import femobjects.solver_ccxtools
+            module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
         if module.__name__ == "_FemSolverZ88":
             import femsolver.z88.solver
             module._FemSolverZ88 = femsolver.z88.solver.Proxy
 
         if module.__name__ == "_FemMechanicalResult":
-            import femobjects._FemResultMechanical
-            module._FemMechanicalResult = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module._FemMechanicalResult = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "FemResult":
-            import femobjects._FemResultMechanical
-            module.FemResult = femobjects._FemResultMechanical._FemResultMechanical
+            import femobjects.result_mechanical
+            module.FemResult = femobjects.result_mechanical.ResultMechanical
         if module.__name__ == "_MechanicalMaterial":
-            import femobjects._FemMaterial
-            module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._MechanicalMaterial = femobjects.material_common.MaterialCommon
 
         if module.__name__ == "FemBeamSection":
-            import femobjects._FemElementGeometry1D
-            module._FemBeamSection = femobjects._FemElementGeometry1D._FemElementGeometry1D
+            import femobjects.element_geometry1D
+            module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
             if FreeCAD.GuiUp:
-                import femguiobjects._ViewProviderFemElementGeometry1D
-                module._ViewProviderFemBeamSection = femguiobjects._ViewProviderFemElementGeometry1D._ViewProviderFemElementGeometry1D
+                import femviewprovider.view_element_geometry1D
+                module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "FemShellThickness":
-            import femobjects._FemElementGeometry2D
-            module._FemShellThickness = femobjects._FemElementGeometry2D._FemElementGeometry2D
+            import femobjects.element_geometry2D
+            module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
             if FreeCAD.GuiUp:
-                import femguiobjects._ViewProviderFemElementGeometry2D
-                module._ViewProviderFemShellThickness = femguiobjects._ViewProviderFemElementGeometry2D._ViewProviderFemElementGeometry2D
+                import femviewprovider.view_element_geometry2D
+                module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "MechanicalAnalysis":
-            import femobjects.FemConstraint
-            module._FemAnalysis = femobjects.FemConstraint.Proxy
+            import femobjects.base_fempythonobject
+            module._FemAnalysis = femobjects.base_fempythonobject.BaseFemPythonObject
             if FreeCAD.GuiUp:
-                import femguiobjects.ViewProviderBaseObject
-                module._ViewProviderFemAnalysis = femguiobjects.ViewProviderBaseObject.ViewProxy
+                import femviewprovider.view_base_femobject
+                module._ViewProviderFemAnalysis = femviewprovider.view_base_femobject.VPBaseFemObject
         if module.__name__ == "MechanicalMaterial":
-            import femobjects._FemMaterial
-            module._MechanicalMaterial = femobjects._FemMaterial._FemMaterial
+            import femobjects.material_common
+            module._MechanicalMaterial = femobjects.material_common.MaterialCommon
             if FreeCAD.GuiUp:
-                import femguiobjects._ViewProviderFemMaterial
-                module._ViewProviderMechanicalMaterial = femguiobjects._ViewProviderFemMaterial._ViewProviderFemMaterial
+                import femviewprovider.view_material_common
+                module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
         return None
 
 
 """
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
+
+fourth big moving
+renaming class and module names in femobjects
+TODO add link to commit before the first commit
+module="femobjects._FemConstraintBodyHeatSource"
+module="femobjects._FemConstraintElectrostaticPotential"
+module="femobjects._FemConstraintFlowVelocity"
+module="femobjects._FemConstraintInitialFlowVelocity"
+module="femobjects._FemConstraintSelfWeight"
+module="femobjects._FemConstraintTie"
+module="femobjects._FemElementFluid1D"
+module="femobjects._FemElementGeometry1D"
+module="femobjects._FemElementGeometry2D"
+module="femobjects._FemElementRotation1D"
+module="femobjects._FemMaterial"
+module="femobjects._FemMaterialMechanicalNonlinear"
+module="femobjects._FemMaterialReinforced"
+module="femobjects._FemMeshBoundaryLayer"
+module="femobjects._FemMeshGmsh"
+module="femobjects._FemMeshGroup"
+module="femobjects._FemMeshRegion"
+module="femobjects._FemMeshResult"
+module="femobjects._FemResultMechanical"
+module="femobjects._FemSolverCalculix"
 
 third big moving
 from PyObjects to femobjects, following the parent commit

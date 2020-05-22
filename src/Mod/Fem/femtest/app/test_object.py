@@ -60,68 +60,7 @@ class TestObjectCreate(unittest.TestCase):
     def test_femobjects_make(
         self
     ):
-        doc = self.document
-        analysis = ObjectsFem.makeAnalysis(doc)
-
-        analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
-        analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
-        analysis.addObject(ObjectsFem.makeConstraintContact(doc))
-        analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
-        analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
-        analysis.addObject(ObjectsFem.makeConstraintForce(doc))
-        analysis.addObject(ObjectsFem.makeConstraintGear(doc))
-        analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
-        analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
-        analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
-        analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
-
-        analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
-        analysis.addObject(ObjectsFem.makeElementGeometry1D(doc))
-        analysis.addObject(ObjectsFem.makeElementGeometry2D(doc))
-        analysis.addObject(ObjectsFem.makeElementRotation1D(doc))
-
-        analysis.addObject(ObjectsFem.makeMaterialFluid(doc))
-        mat = analysis.addObject(ObjectsFem.makeMaterialSolid(doc))[0]
-        analysis.addObject(ObjectsFem.makeMaterialMechanicalNonlinear(doc, mat))
-        analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
-
-        msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
-        ObjectsFem.makeMeshBoundaryLayer(doc, msh)
-        ObjectsFem.makeMeshGroup(doc, msh)
-        ObjectsFem.makeMeshRegion(doc, msh)
-        analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
-        rm = ObjectsFem.makeMeshResult(doc)
-
-        res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
-        res.Mesh = rm
-        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-            vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
-            ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
-            ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
-            ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
-            ObjectsFem.makePostVtkFilterWarp(doc, vres)
-
-        analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
-        analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
-        sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc))
-
-        ObjectsFem.makeEquationElasticity(doc, sol)
-        ObjectsFem.makeEquationElectrostatic(doc, sol)
-        ObjectsFem.makeEquationFlow(doc, sol)
-        ObjectsFem.makeEquationFluxsolver(doc, sol)
-        ObjectsFem.makeEquationHeat(doc, sol)
-
-        doc.recompute()
+        doc = create_all_fem_objects_doc(self.document)
 
         # count the def make in ObjectsFem module
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
@@ -140,7 +79,7 @@ class TestObjectCreate(unittest.TestCase):
         # analysis itself is not in analysis group --> 1
         # thus: -14
 
-        self.assertEqual(len(analysis.Group), count_defmake - 14)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 14)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -194,6 +133,7 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         doc = self.document
+        create_all_fem_objects_doc
 
         from femtools.femutils import type_of_obj
         self.assertEqual(
@@ -298,11 +238,11 @@ class TestObjectType(unittest.TestCase):
         )
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(ObjectsFem.makeMaterialFluid(doc))
         )
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(materialsolid))
         self.assertEqual(
             "Fem::MaterialMechanicalNonlinear",
@@ -496,11 +436,11 @@ class TestObjectType(unittest.TestCase):
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialFluid(doc),
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             materialsolid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid),
@@ -977,7 +917,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_fluid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # Material Solid
@@ -992,7 +932,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_solid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # MaterialMechanicalNonlinear
@@ -1533,3 +1473,72 @@ class TestObjectType(unittest.TestCase):
     ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
+
+
+# helper
+def create_all_fem_objects_doc(
+    doc
+):
+    analysis = ObjectsFem.makeAnalysis(doc)
+
+    analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
+    analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
+    analysis.addObject(ObjectsFem.makeConstraintContact(doc))
+    analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
+    analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
+    analysis.addObject(ObjectsFem.makeConstraintForce(doc))
+    analysis.addObject(ObjectsFem.makeConstraintGear(doc))
+    analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
+    analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTie(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
+
+    analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
+    analysis.addObject(ObjectsFem.makeElementGeometry1D(doc))
+    analysis.addObject(ObjectsFem.makeElementGeometry2D(doc))
+    analysis.addObject(ObjectsFem.makeElementRotation1D(doc))
+
+    analysis.addObject(ObjectsFem.makeMaterialFluid(doc))
+    mat = analysis.addObject(ObjectsFem.makeMaterialSolid(doc))[0]
+    analysis.addObject(ObjectsFem.makeMaterialMechanicalNonlinear(doc, mat))
+    analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
+
+    msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
+    ObjectsFem.makeMeshBoundaryLayer(doc, msh)
+    ObjectsFem.makeMeshGroup(doc, msh)
+    ObjectsFem.makeMeshRegion(doc, msh)
+    analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
+    rm = ObjectsFem.makeMeshResult(doc)
+
+    res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+    res.Mesh = rm
+    if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+        vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
+        ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
+        ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
+        ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
+        ObjectsFem.makePostVtkFilterWarp(doc, vres)
+
+    analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
+    analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+    sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
+    analysis.addObject(ObjectsFem.makeSolverZ88(doc))
+
+    ObjectsFem.makeEquationElasticity(doc, sol)
+    ObjectsFem.makeEquationElectrostatic(doc, sol)
+    ObjectsFem.makeEquationFlow(doc, sol)
+    ObjectsFem.makeEquationFluxsolver(doc, sol)
+    ObjectsFem.makeEquationHeat(doc, sol)
+
+    doc.recompute()
+
+    return doc

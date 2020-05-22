@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +20,55 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM constraint self weight document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package constraint_selfweight
+#  \ingroup FEM
+#  \brief constraint self weight object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+from . import base_fempythonobject
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
+    """
+    The ConstraintSelfWeight object"
+    """
 
+    Type = "Fem::ConstraintSelfWeight"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+    def __init__(self, obj):
+        super(ConstraintSelfWeight, self).__init__(obj)
 
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_x",
+            "Gravity",
+            "Gravity direction: set the x-component of the normalized gravity vector"
+        )
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_y",
+            "Gravity",
+            "Gravity direction: set the y-component of the normalized gravity vector"
+        )
 
-"""
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Gravity_z",
+            "Gravity",
+            "Gravity direction: set the z-component of the normalized gravity vector"
+        )
 
-# TODO: a unit test to be sure these values are returned!
+        obj.Gravity_x = 0.0
+        obj.Gravity_y = 0.0
+        obj.Gravity_z = -1.0
+
+        # https://wiki.freecadweb.org/Scripted_objects#Property_Type
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=13460&start=20#p109709
+        # https://forum.freecadweb.org/viewtopic.php?t=25524
+        # obj.setEditorMode("References", 1)  # read only in PropertyEditor, but writeable by Python
+        obj.setEditorMode("References", 2)  # do not show in Editor

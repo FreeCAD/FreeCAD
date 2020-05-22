@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +21,49 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
+__title__ = "FreeCAD FEM material document object"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package material_common
+#  \ingroup FEM
+#  \brief material common object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+from . import base_fempythonobject
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
+    """
+    The MaterialCommon object
+    """
 
+    Type = "Fem::MaterialCommon"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+    def __init__(self, obj):
+        super(MaterialCommon, self).__init__(obj)
+        self.add_properties(obj)
 
+    def onDocumentRestored(self, obj):
+        self.add_properties(obj)
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+    def add_properties(self, obj):
+        # References
+        if not hasattr(obj, "References"):
+            obj.addProperty(
+                "App::PropertyLinkSubList",
+                "References",
+                "Material",
+                "List of material shapes"
+            )
+        # Category
+        # attribute Category was added in commit 61fb3d429a
+        if not hasattr(obj, "Category"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Category",
+                "Material",
+                "Material type: fluid or solid"
+            )
+        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
+        obj.Category = "Solid"

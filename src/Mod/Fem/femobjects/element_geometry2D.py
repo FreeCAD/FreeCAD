@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +20,38 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM element geometry 2D document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
+
+## @package element_geometry2D
+#  \ingroup FEM
+#  \brief element geometry 2D object
+
+from . import base_fempythonobject
 
 
-def gravity():
-    return "9.82 m/s^2"
+class ElementGeometry2D(base_fempythonobject.BaseFemPythonObject):
+    """
+    The ElementGeometry2D object
+    """
 
+    Type = "Fem::ElementGeometry2D"
 
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+    def __init__(self, obj):
+        super(ElementGeometry2D, self).__init__(obj)
 
+        obj.addProperty(
+            "App::PropertyLength",
+            "Thickness",
+            "ShellThickness",
+            "set thickness of the shell elements"
+        )
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
-
-
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "ShellThickness",
+            "List of shell thickness shapes"
+        )

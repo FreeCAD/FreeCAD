@@ -240,7 +240,7 @@ class AnalysisMember():
         # get member
         # materials
         std_mats = self.get_several_member(
-            "Fem::Material"
+            "Fem::MaterialCommon"
         )
         rei_mats = self.get_several_member(
             "Fem::MaterialReinforced"

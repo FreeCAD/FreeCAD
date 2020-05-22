@@ -20,40 +20,31 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM constraint tie document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
+
+## @package constraint_tie
+#  \ingroup FEM
+#  \brief constraint tie object
+
+from . import base_fempythonobject
 
 
-def gravity():
-    return "9.82 m/s^2"
+class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
+    """
+    The ConstraintTie object
+    """
 
+    Type = "Fem::ConstraintTie"
 
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+    def __init__(self, obj):
+        super(ConstraintTie, self).__init__(obj)
 
-
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
-
-
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+        obj.addProperty(
+            "App::PropertyLength",
+            "Tolerance",
+            "Geometry",
+            "set max gap between tied faces"
+        )

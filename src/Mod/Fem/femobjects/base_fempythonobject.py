@@ -1,4 +1,5 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,40 +21,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
+__title__ = "FreeCAD FEM base python object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+## @package base_fempythonobject
+#  \ingroup FEM
+#  \brief base object for FEM Python Features
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class BaseFemPythonObject(object):
 
+    BaseType = "Fem::BaseFemPythonObject"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+    def __init__(self, obj):
+        # self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        obj.Proxy = self  # link between App::DocumentObject to this object
 
+    # they are needed, see:
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+    def __getstate__(self):
+        return None
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+    def __setstate__(self, state):
+        return None

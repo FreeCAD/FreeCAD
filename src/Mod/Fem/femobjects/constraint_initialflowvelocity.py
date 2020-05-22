@@ -1,4 +1,5 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,40 +21,57 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
+__title__ = "FreeCAD FEM constraint initial flow velocity document object"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package constraint_initialflowvelocity
+#  \ingroup FEM
+#  \brief constraint initial flow velocity object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+from . import base_fempythonobject
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class ConstraintInitialFlowVelocity(base_fempythonobject.BaseFemPythonObject):
 
+    Type = "Fem::ConstraintInitialFlowVelocity"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+    def __init__(self, obj):
+        super(ConstraintInitialFlowVelocity, self).__init__(obj)
+        obj.addProperty(
+            "App::PropertyFloat",
+            "VelocityX",
+            "Parameter",
+            "Body heat flux"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "VelocityXEnabled",
+            "Parameter",
+            "Body heat flux"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "VelocityY",
+            "Parameter",
+            "Body heat flux"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "VelocityYEnabled",
+            "Parameter",
+            "Body heat flux"
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "VelocityZ",
+            "Parameter",
+            "Body heat flux"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "VelocityZEnabled",
+            "Parameter",
+            "Body heat flux"
+        )

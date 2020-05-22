@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +20,40 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM solver calculix ccx tools document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package solver_ccxtools
+#  \ingroup FEM
+#  \brief solver calculix ccx tools object
 
-def gravity():
-    return "9.82 m/s^2"
+import FreeCAD
 
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
-
-
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+from . import base_fempythonobject
+from femsolver.calculix.solver import add_attributes
 
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+class SolverCcxTools(base_fempythonobject.BaseFemPythonObject):
+    """The Fem::FemSolver's Proxy python type, add solver specific properties
+    """
 
+    Type = "Fem::SolverCcxTools"
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+    def __init__(self, obj):
+        super(SolverCcxTools, self).__init__(obj)
 
-"""
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 
-# TODO: a unit test to be sure these values are returned!
+        obj.addProperty(
+            "App::PropertyPath",
+            "WorkingDir",
+            "Fem",
+            "Working directory for calculations, will only be used it is left blank in preferences"
+        )
+        # the working directory is not set, the solver working directory is
+        # only used if the preferences working directory is left blank
+
+        # add attributes from framework calculix solver
+        add_attributes(obj, ccx_prefs)

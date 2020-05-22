@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +20,38 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM mesh region document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package mesh_region
+#  \ingroup FEM
+#  \brief mesh region object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+from . import base_fempythonobject
 
 
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+class MeshRegion(base_fempythonobject.BaseFemPythonObject):
+    """
+    The FemMeshRegion object
+    """
 
+    Type = "Fem::MeshRegion"
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+    def __init__(self, obj):
+        super(MeshRegion, self).__init__(obj)
 
+        obj.addProperty(
+            "App::PropertyLength",
+            "CharacteristicLength",
+            "MeshRegionProperties",
+            "set characteristic length of FEM elements for this region"
+        )
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshRegionShapes",
+            "List of FEM mesh region shapes"
+        )

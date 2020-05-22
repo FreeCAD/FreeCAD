@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +21,36 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
+__title__ = "FreeCAD FEM base constraint ViewProvider"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package view_base_femconstraint
+#  \ingroup FEM
+#  \brief view provider for Python base constraint object
 
-def gravity():
-    return "9.82 m/s^2"
+from pivy import coin
 
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
-
-
-def permittivity_of_vakuum():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+from femviewprovider import view_base_femobject
 
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+class VPBaseFemConstraint(view_base_femobject.VPBaseFemObject):
+    """Proxy View Provider for Pythons base constraint."""
 
+    def attach(self, vobj):
+        default = coin.SoGroup()
+        vobj.addDisplayMode(default, "Default")
+        self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
+        # self.ViewObject = vobj  # not used ATM
 
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+    def getDisplayModes(self, obj):
+        "Return a list of display modes."
+        modes = ["Default"]
+        return modes
 
-"""
+    def getDefaultDisplayMode(self):
+        return "Default"
 
-# TODO: a unit test to be sure these values are returned!
+    def setDisplayMode(self, mode):
+        return mode

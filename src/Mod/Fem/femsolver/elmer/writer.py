@@ -340,7 +340,9 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            getConstant("PermittivityOfVacuum", "T^4*I^2/(L*M)"))
+            getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+        )
+        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
@@ -353,7 +355,8 @@ class Writer(object):
                 if "RelativePermittivity" in m:
                     self._material(
                         name, "Relative Permittivity",
-                        float(m["RelativePermittivity"]))
+                        float(m["RelativePermittivity"])
+                    )
 
     def _handleElectrostaticBndConditions(self):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
@@ -527,20 +530,25 @@ class Writer(object):
             refs = (
                 obj.References[0][1]
                 if obj.References
-                else self._getAllBodies())
+                else self._getAllBodies()
+            )
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
-                    self._getDensity(m))
+                    self._getDensity(m)
+                )
                 self._material(
                     name, "Youngs Modulus",
-                    self._getYoungsModulus(m))
+                    self._getYoungsModulus(m)
+                )
                 self._material(
                     name, "Poisson ratio",
-                    float(m["PoissonRatio"]))
+                    float(m["PoissonRatio"])
+                )
                 self._material(
                     name, "Heat expansion Coefficient",
-                    convert(m["ThermalExpansionCoefficient"], "O^-1"))
+                    convert(m["ThermalExpansionCoefficient"], "O^-1")
+                )
 
     def _getDensity(self, m):
         density = convert(m["Density"], "M/L^3")
@@ -605,11 +613,13 @@ class Writer(object):
                 if "Density" in m:
                     self._material(
                         name, "Density",
-                        self._getDensity(m))
+                        self._getDensity(m)
+                    )
                 if "ThermalConductivity" in m:
                     self._material(
                         name, "Heat Conductivity",
-                        convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                        convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                    )
                 if "KinematicViscosity" in m:
                     density = self._getDensity(m)
                     kViscosity = convert(m["KinematicViscosity"], "L^2/T")
@@ -626,7 +636,8 @@ class Writer(object):
                 if "SpecificHeatRatio" in m:
                     self._material(
                         name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"]))
+                        float(m["SpecificHeatRatio"])
+                    )
                 if "CompressibilityModel" in m:
                     self._material(
                         name, "Compressibility Model",
