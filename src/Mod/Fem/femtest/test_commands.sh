@@ -26,6 +26,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_femimport.TestObjectExistance
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_material.TestMaterialUnits
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshCommon
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshEleTetra10
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshGroups
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectCreate
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectType
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
@@ -61,6 +62,9 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshEleTetra10.test_t
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshEleTetra10.test_tetra10_vkt
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshEleTetra10.test_tetra10_yml
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshEleTetra10.test_tetra10_z88
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshGroups.test_add_groups
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshGroups.test_delete_groups
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh.TestMeshGroups.test_add_group_elements
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectCreate.test_femobjects_make
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectType.test_femobjects_type
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectType.test_femobjects_isoftype
@@ -213,6 +217,21 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_mesh.TestMeshEleTetra10.test_tetra10_z88'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_mesh.TestMeshGroups.test_add_groups'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_mesh.TestMeshGroups.test_delete_groups'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_mesh.TestMeshGroups.test_add_group_elements'
 ))
 
 import unittest

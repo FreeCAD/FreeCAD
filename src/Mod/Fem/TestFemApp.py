@@ -32,9 +32,10 @@ from femtest.app.test_open import TestObjectOpen as FemTest05
 from femtest.app.test_material import TestMaterialUnits as FemTest06
 from femtest.app.test_mesh import TestMeshCommon as FemTest07
 from femtest.app.test_mesh import TestMeshEleTetra10 as FemTest08
-from femtest.app.test_result import TestResult as FemTest09
-from femtest.app.test_ccxtools import TestCcxTools as FemTest10
-from femtest.app.test_solverframework import TestSolverFrameWork as FemTest11
+from femtest.app.test_mesh import TestMeshGroups as FemTest09
+from femtest.app.test_result import TestResult as FemTest10
+from femtest.app.test_ccxtools import TestCcxTools as FemTest11
+from femtest.app.test_solverframework import TestSolverFrameWork as FemTest12
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
@@ -48,3 +49,4 @@ False if FemTest08.__name__ else True
 False if FemTest09.__name__ else True
 False if FemTest10.__name__ else True
 False if FemTest11.__name__ else True
+False if FemTest12.__name__ else True
