@@ -2936,9 +2936,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
         // fliping a SoSwitch sibling node. So we keep a SoNodeList (tmpPath)
         // around to try to restore the path.
         for(int i=path->getLength()-1;i<tmpPath.getLength()-1;++i) {
-            auto children = path->getNode(i)->getChildren();
-            if(children) {
-                int idx = children->find(tmpPath[i+1]);
+            auto node = path->getNode(i);
+            if(node->isOfType(SoGroup::getClassTypeId())) {
+                int idx = static_cast<SoGroup*>(node)->findChild(tmpPath[i+1]);
                 if(idx >= 0) {
                     path->append(idx);
                     continue;

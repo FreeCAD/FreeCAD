@@ -87,8 +87,8 @@ typedef boost::iterator_range<const char*> CharRange;
 static inline bool appendPathSafe(SoPath *path, SoNode *node) {
     if(path->getLength()) {
         SoNode * tail = path->getTail();
-        const SoChildList * children = tail->getChildren();
-        if(!children || children->find((void *)node)<0)
+        if(tail->isOfType(SoGroup::getClassTypeId())
+                && static_cast<SoGroup*>(tail)->findChild(node)<0)
             return false;
     }
     path->append(node);

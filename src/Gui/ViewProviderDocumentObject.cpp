@@ -672,8 +672,8 @@ bool ViewProviderDocumentObject::getDetailPath(
         }
         if(path->getLength()) {
             SoNode * tail = path->getTail();
-            const SoChildList * children = tail->getChildren();
-            if(children && children->find(vp->getRoot())>=0)
+            if(tail->isOfType(SoGroup::getClassTypeId())
+                        && static_cast<SoGroup*>(tail)->findChild(vp->getRoot())>=0)
                 return vp->getDetailPath(dot+1,path,true,det);
         }
         if(childRoot) {
