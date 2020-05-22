@@ -543,6 +543,22 @@ class _TaskPanel:
             self.material["SpecificHeat"] = "0 J/kg/K"
         FreeCAD.Console.PrintMessage("\n")
 
+    def update_material_property(self, input_field, matProperty, qUnit, variation=0.001):
+        # this update property works for all Gui::InputField widgets
+        value = Units.Quantity(input_field.text()).getValueAs(qUnit)
+        old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        if value:
+            if not (1 - variation < float(old_value) / value < 1 + variation):
+                material = self.material
+                material[matProperty] = unicode(value) + " " + qUnit  # unicode() is an alias to str for py3
+                self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
+        else:
+            pass  # some check or default value set can be done here
+
     # mechanical input fields
     def ym_changed(self):
         # FreeCADs standard unit for stress is kPa
