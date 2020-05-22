@@ -335,9 +335,18 @@ INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 # ****** Python Gui packages and modules *********************************************************
 # ************************************************************************************************
 
+SET(FemGuiBaseModules_SRCS
+    TestFemGui.py
+)
+
 SET(FemGuiObjects_SRCS
     femguiobjects/__init__.py
     femguiobjects/readme.md
+)
+
+SET(FemGuiTests_SRCS
+    femtest/gui/__init__.py
+    femtest/gui/test_open.py
 )
 
 SET(FemGuiUtils_SRCS
@@ -371,7 +380,9 @@ SET(FemGuiViewProvider_SRCS
 )
 
 SET(FemAllGuiScripts
+    ${FemGuiBaseModules_SRCS}
     ${FemGuiObjects_SRCS}
+    ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
     ${FemGuiViewProvider_SRCS}
 )
@@ -384,7 +395,9 @@ if(BUILD_GUI)
 
 
     # install directories for Python packages (for make install)
+    INSTALL(FILES ${FemGuiBaseModules_SRCS} DESTINATION Mod/Fem/)
     INSTALL(FILES ${FemGuiObjects_SRCS} DESTINATION Mod/Fem/femguiobjects/)
+    INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
     INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
 endif(BUILD_GUI)

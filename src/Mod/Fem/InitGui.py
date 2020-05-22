@@ -52,6 +52,10 @@ if sys.version_info.major >= 3:
     sys.meta_path.append(FemMigrateGui())
 
 
+# add FEM Gui unit tests
+FreeCAD.__unit_test__ += ["TestFemGui"]
+
+
 class FemWorkbench(Workbench):
     "Fem workbench object"
 
