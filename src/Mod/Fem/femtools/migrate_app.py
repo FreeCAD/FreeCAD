@@ -371,7 +371,7 @@ class FemMigrateApp(object):
             module._MechanicalMaterial = femobjects.material_common.MaterialCommon
             if FreeCAD.GuiUp:
                 import femviewprovider.view_material_common
-                module._ViewProviderFemMaterial = femviewprovider.view_material_common.VPMaterialCommon
+                module._ViewProviderMechanicalMaterial = femviewprovider.view_material_common.VPMaterialCommon
         return None
 
 
