@@ -58,6 +58,7 @@ False if FemTest11.__name__ else True
 # in tearDown method to not close the document
 
 
+"""
 # examples from within FreeCAD:
 
 # create all objects test
