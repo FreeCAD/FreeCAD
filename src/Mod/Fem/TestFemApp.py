@@ -66,8 +66,8 @@ import Test, femtest.app.test_object
 Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
 
 # all FEM tests
-import Test, TestFem
-Test.runTestsFromModule(TestFem)
+import Test, TestFemApp
+Test.runTestsFromModule(TestFemApp)
 
 # module
 import Test, femtest.app.test_common
@@ -90,8 +90,8 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test 0
 
 # all FEM tests
-./bin/FreeCAD --run-test "TestFem"
-./bin/FreeCADCmd --run-test "TestFem"
+./bin/FreeCAD --run-test "TestFemApp"
+./bin/FreeCADCmd --run-test "TestFemApp"
 
 # import Fem and FemGui
 ./bin/FreeCAD --run-test "femtest.app.test_femimport"

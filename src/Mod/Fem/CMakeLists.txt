@@ -31,7 +31,7 @@ SET(FemBaseModules_SRCS
     Init.py
     InitGui.py
     ObjectsFem.py
-    TestFem.py
+    TestFemApp.py
 )
 
 SET(FemCommands_SRCS
