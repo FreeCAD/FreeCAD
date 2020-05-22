@@ -1116,7 +1116,10 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                         results.resolvedProperty = prop;
                         results.propertyType = ptype;
                         results.subObjectName = std::move(tmpSub);
-                        results.propertyName = components[pindex].name.getString();
+                        if(pindex < (int)components.size())
+                            results.propertyName = components[pindex].name.getString();
+                        else
+                            results.propertyName.clear();
                         results.resolvedDocument = owner->getDocument();
                         results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
                         results.resolvedDocumentObjectName = String(owner->getNameInDocument(), false, true);
