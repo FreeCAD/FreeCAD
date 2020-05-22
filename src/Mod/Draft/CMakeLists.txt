@@ -31,6 +31,7 @@ SET(Draft_import
 SET (Draft_geoutils
     draftgeoutils/__init__.py
     draftgeoutils/general.py
+    draftgeoutils/edges.py
 )
 
 SET(Draft_tests

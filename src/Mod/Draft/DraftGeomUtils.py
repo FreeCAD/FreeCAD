@@ -98,14 +98,7 @@ from draftgeoutils.general import isValidPath
 # edge functions *************************************************************
 
 
-def findEdge(anEdge, aList):
-    """findEdge(anEdge,aList): returns True if anEdge is found in aList of edges"""
-    for e in range(len(aList)):
-        if str(anEdge.Curve) == str(aList[e].Curve):
-            if DraftVecUtils.equals(anEdge.Vertexes[0].Point,aList[e].Vertexes[0].Point):
-                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,aList[e].Vertexes[-1].Point):
-                    return(e)
-    return None
+from draftgeoutils.edges import findEdge
 
 
 def findIntersection(edge1, edge2,
@@ -424,35 +417,7 @@ def pocket2d(shape, offset):
     return offsetWires
 
 
-def orientEdge(edge, normal=None, make_arc=False):
-    """Re-orients 'edge' such that it is in the x-y plane. If 'normal' is passed, this
-    is used as the basis for the rotation, otherwise the Placement property of 'edge'
-    is used"""
-    import DraftVecUtils
-    # This 'normalizes' the placement to the xy plane
-    edge = edge.copy()
-    xyDir = FreeCAD.Vector(0, 0, 1)
-    base = FreeCAD.Vector(0,0,0)
-
-    if normal:
-        angle = DraftVecUtils.angle(normal, xyDir)*FreeCAD.Units.Radian
-        axis  = normal.cross(xyDir)
-    else:
-        axis = edge.Placement.Rotation.Axis
-        angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
-    if axis == Vector (0.0, 0.0, 0.0):
-        axis = Vector (0.0, 0.0, 1.0)
-    if angle:
-        edge.rotate(base, axis, angle)
-    if isinstance(edge.Curve,Part.Line):
-        return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
-    elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
-        return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
-                                    edge.LastParameter,edge.Curve.Axis.z>0)
-    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
-        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
-                                    edge.LastParameter,edge.Curve.Axis.z>0)
-    return edge.Curve
+from draftgeoutils.edges import orientEdge
 
 
 def mirror(point, edge):
@@ -489,20 +454,7 @@ def isClockwise(edge, ref=None):
     return True
 
 
-def isSameLine(e1, e2):
-    """isSameLine(e1,e2): return True if the 2 edges are lines and have the same
-    points"""
-    if not isinstance(e1.Curve,Part.LineSegment):
-        return False
-    if not isinstance(e2.Curve,Part.LineSegment):
-        return False
-    if (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point)) and \
-       (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point)):
-           return True
-    elif (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point)) and \
-       (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point)):
-           return True
-    return False
+from draftgeoutils.edges import isSameLine
 
 
 def isWideAngle(edge):
@@ -568,14 +520,7 @@ def getBoundary(shape):
     return bound
 
 
-def isLine(bsp):
-    """Return True if the given BSpline curve is a straight line."""
-    step = bsp.LastParameter/10
-    b = bsp.tangent(0)
-    for i in range(10):
-        if bsp.tangent(i*step) != b:
-            return False
-    return True
+from draftgeoutils.edges import isLine
 
 
 def sortEdges(edges):
@@ -746,28 +691,7 @@ def sortEdgesOld(lEdges, aVertex=None):
             return []
 
 
-def invert(shape):
-    """invert(edge): returns an inverted copy of this edge or wire"""
-    if shape.ShapeType == "Wire":
-        edges = [invert(edge) for edge in shape.OrderedEdges]
-        edges.reverse()
-        return Part.Wire(edges)
-    elif shape.ShapeType == "Edge":
-        if len(shape.Vertexes) == 1:
-            return shape
-        if geomType(shape) == "Line":
-            return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
-        elif geomType(shape) == "Circle":
-            mp = findMidpoint(shape)
-            return Part.Arc(shape.Vertexes[-1].Point,mp,shape.Vertexes[0].Point).toShape()
-        elif geomType(shape) in ["BSplineCurve","BezierCurve"]:
-            if isLine(shape.Curve):
-                return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
-        print("DraftGeomUtils.invert: unable to invert",shape.Curve)
-        return shape
-    else:
-        print("DraftGeomUtils.invert: unable to handle",shape.ShapeType)
-        return shape
+from draftgeoutils.edges import invert
 
 
 def flattenWire(wire):
@@ -907,35 +831,7 @@ def superWire(edgeslist, closed=False):
         return Part.Wire(newedges)
 
 
-def findMidpoint(edge):
-    """Calculate the midpoint of an edge."""
-    first = edge.Vertexes[0].Point
-    last = edge.Vertexes[-1].Point
-    if geomType(edge) == "Circle":
-        center = edge.Curve.Center
-        radius = edge.Curve.Radius
-        if len(edge.Vertexes) == 1:
-                # Circle
-                dv = first.sub(center)
-                dv = dv.negative()
-                return center.add(dv)
-        axis = edge.Curve.Axis
-        chord = last.sub(first)
-        perp = chord.cross(axis)
-        perp.normalize()
-        ray = first.sub(center)
-        apothem = ray.dot(perp)
-        sagitta = radius - apothem
-        startpoint = Vector.add(first, chord.multiply(0.5))
-        endpoint = DraftVecUtils.scaleTo(perp,sagitta)
-        return Vector.add(startpoint,endpoint)
-
-    elif geomType(edge) == "Line":
-        halfedge = (last.sub(first)).multiply(.5)
-        return Vector.add(first,halfedge)
-
-    else:
-        return None
+from draftgeoutils.edges import findMidpoint
 
 
 def findPerpendicular(point, edgeslist, force=None):
