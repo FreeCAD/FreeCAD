@@ -47,8 +47,13 @@ from FreeCADGui import Workbench
 from femtools.migrate_gui import FemMigrateGui
 
 
-# migrate old FEM Gui objects
-sys.meta_path.append(FemMigrateGui())
+if sys.version_info.major >= 3:
+    # migrate old FEM Gui objects
+    sys.meta_path.append(FemMigrateGui())
+
+
+# add FEM Gui unit tests
+FreeCAD.__unit_test__ += ["TestFemGui"]
 
 
 class FemWorkbench(Workbench):

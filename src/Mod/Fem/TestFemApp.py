@@ -25,7 +25,6 @@
 
 # Unit test for the FEM module
 # to get the right order import as is used
-"""
 from femtest.app.test_femimport import TestFemImport as FemTest01
 from femtest.app.test_common import TestFemCommon as FemTest02
 from femtest.app.test_object import TestObjectCreate as FemTest03
@@ -50,7 +49,6 @@ False if FemTest08.__name__ else True
 False if FemTest09.__name__ else True
 False if FemTest10.__name__ else True
 False if FemTest11.__name__ else True
-"""
 
 # For more information on how to run a specific test class or a test method see
 # file src/Mod/Test/__init__
@@ -68,8 +66,8 @@ import Test, femtest.app.test_object
 Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
 
 # all FEM tests
-import Test, TestFem
-Test.runTestsFromModule(TestFem)
+import Test, TestFemApp
+Test.runTestsFromModule(TestFemApp)
 
 # module
 import Test, femtest.app.test_common
@@ -92,8 +90,8 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test 0
 
 # all FEM tests
-./bin/FreeCAD --run-test "TestFem"
-./bin/FreeCADCmd --run-test "TestFem"
+./bin/FreeCAD --run-test "TestFemApp"
+./bin/FreeCADCmd --run-test "TestFemApp"
 
 # import Fem and FemGui
 ./bin/FreeCAD --run-test "femtest.app.test_femimport"

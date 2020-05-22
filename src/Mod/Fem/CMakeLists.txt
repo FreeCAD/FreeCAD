@@ -10,21 +10,28 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 endif()
 
 
-add_subdirectory(App)
+# ************************************************************************************************
+# ****** sub directories**************************************************************************
+# ************************************************************************************************
 
+add_subdirectory(App)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
 
-# Python non Gui packages and modules
-SET(FemScripts_SRCS
+
+# ************************************************************************************************
+# ****** Python non Gui packages and modules *****************************************************
+# ************************************************************************************************
+
+SET(FemBaseModules_SRCS
     coding_conventions.md
     Init.py
     InitGui.py
     ObjectsFem.py
-    TestFem.py
+    TestFemApp.py
 )
 
 SET(FemCommands_SRCS
@@ -89,6 +96,31 @@ SET(FemMesh_SRCS
     femmesh/femmesh2mesh.py
     femmesh/gmshtools.py
     femmesh/meshtools.py
+)
+
+SET(FemObjects_SRCS
+    femobjects/__init__.py
+    femobjects/base_fempythonobject.py
+    femobjects/constraint_bodyheatsource.py
+    femobjects/constraint_electrostaticpotential.py
+    femobjects/constraint_flowvelocity.py
+    femobjects/constraint_initialflowvelocity.py
+    femobjects/constraint_selfweight.py
+    femobjects/constraint_tie.py
+    femobjects/element_fluid1D.py
+    femobjects/element_geometry1D.py
+    femobjects/element_geometry2D.py
+    femobjects/element_rotation1D.py
+    femobjects/material_common.py
+    femobjects/material_mechanicalnonlinear.py
+    femobjects/material_reinforced.py
+    femobjects/mesh_boundarylayer.py
+    femobjects/mesh_gmsh.py
+    femobjects/mesh_group.py
+    femobjects/mesh_region.py
+    femobjects/mesh_result.py
+    femobjects/result_mechanical.py
+    femobjects/solver_ccxtools.py
 )
 
 SET(FemResult_SRCS
@@ -241,38 +273,14 @@ SET(FemTools_SRCS
     femtools/tokrules.py
 )
 
-SET(FemObjectsScripts_SRCS
-    femobjects/__init__.py
-    femobjects/base_fempythonobject.py
-    femobjects/constraint_bodyheatsource.py
-    femobjects/constraint_electrostaticpotential.py
-    femobjects/constraint_flowvelocity.py
-    femobjects/constraint_initialflowvelocity.py
-    femobjects/constraint_selfweight.py
-    femobjects/constraint_tie.py
-    femobjects/element_fluid1D.py
-    femobjects/element_geometry1D.py
-    femobjects/element_geometry2D.py
-    femobjects/element_rotation1D.py
-    femobjects/material_common.py
-    femobjects/material_mechanicalnonlinear.py
-    femobjects/material_reinforced.py
-    femobjects/mesh_boundarylayer.py
-    femobjects/mesh_gmsh.py
-    femobjects/mesh_group.py
-    femobjects/mesh_region.py
-    femobjects/mesh_result.py
-    femobjects/result_mechanical.py
-    femobjects/solver_ccxtools.py
-)
-
 SET(FemAllScripts
-    ${FemScripts_SRCS}
+    ${FemBaseModules_SRCS}
     ${FemCommands_SRCS}
     ${FemExamples_SRCS}
     ${FemExampleMeshes_SRCS}
     ${FemInOut_SRCS}
     ${FemMesh_SRCS}
+    ${FemObjects_SRCS}
     ${FemResult_SRCS}
     ${FemSolver_SRCS}
     ${FemSolverCalculix_SRCS}
@@ -288,24 +296,23 @@ SET(FemAllScripts
     ${FemTestsMesh_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTools_SRCS}
-    ${FemObjectsScripts_SRCS}
 )
 
 
 ADD_CUSTOM_TARGET(FemScriptsTarget ALL
     SOURCES ${FemAllScripts}
 )
-
 fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 
 
-# install Python packages (for make install)
-INSTALL(FILES ${FemScripts_SRCS} DESTINATION Mod/Fem)
+# install directories for Python packages (for make install)
+INSTALL(FILES ${FemBaseModules_SRCS} DESTINATION Mod/Fem)
 INSTALL(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
 INSTALL(FILES ${FemExamples_SRCS} DESTINATION Mod/Fem/femexamples)
 INSTALL(FILES ${FemExampleMeshes_SRCS} DESTINATION Mod/Fem/femexamples/meshes)
 INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
 INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
+INSTALL(FILES ${FemObjects_SRCS} DESTINATION Mod/Fem/femobjects)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
 INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
 INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
@@ -321,12 +328,32 @@ INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
-INSTALL(FILES ${FemObjectsScripts_SRCS} DESTINATION Mod/Fem/femobjects)
 
 
 
-# Python Gui packages and modules
-SET(FemGuiViewObjects_SRCS
+# ************************************************************************************************
+# ****** Python Gui packages and modules *********************************************************
+# ************************************************************************************************
+
+SET(FemGuiBaseModules_SRCS
+    TestFemGui.py
+)
+
+SET(FemGuiObjects_SRCS
+    femguiobjects/__init__.py
+    femguiobjects/readme.md
+)
+
+SET(FemGuiTests_SRCS
+    femtest/gui/__init__.py
+    femtest/gui/test_open.py
+)
+
+SET(FemGuiUtils_SRCS
+    femguiutils/selection_widgets.py
+)
+
+SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
     femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femobject.py
@@ -352,19 +379,12 @@ SET(FemGuiViewObjects_SRCS
     femviewprovider/view_solver_ccxtools.py
 )
 
-SET(FemGuiScripts_SRCS
-    femguiobjects/__init__.py
-    femguiobjects/readme.md
-)
-
-SET(FemGuiUtils_SRCS
-    femguiutils/selection_widgets.py
-)
-
 SET(FemAllGuiScripts
-    ${FemGuiViewObjects_SRCS}
-    ${FemGuiScripts_SRCS}
+    ${FemGuiBaseModules_SRCS}
+    ${FemGuiObjects_SRCS}
+    ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
+    ${FemGuiViewProvider_SRCS}
 )
 
 if(BUILD_GUI)
@@ -373,8 +393,11 @@ if(BUILD_GUI)
     )
     fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllGuiScripts})
 
-    # install Python packages (for make install)
-    INSTALL(FILES ${FemGuiViewObjects_SRCS} DESTINATION Mod/Fem/femviewprovider/)
-    INSTALL(FILES ${FemGuiScripts_SRCS} DESTINATION Mod/Fem/femguiobjects/)
+
+    # install directories for Python packages (for make install)
+    INSTALL(FILES ${FemGuiBaseModules_SRCS} DESTINATION Mod/Fem/)
+    INSTALL(FILES ${FemGuiObjects_SRCS} DESTINATION Mod/Fem/femguiobjects/)
+    INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
+    INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
 endif(BUILD_GUI)
