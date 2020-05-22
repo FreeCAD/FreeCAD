@@ -70,6 +70,7 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  python3-pivy
 BuildRequires:  mesa-libEGL-devel
+BuildRequires:  openmpi-devel
 BuildRequires:  pcl-devel
 BuildRequires:  pyside2-tools
 BuildRequires:  python3
