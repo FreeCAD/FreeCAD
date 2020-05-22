@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM material ViewProvider for the document object"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 ## @package view_material_common
@@ -490,13 +490,13 @@ class _TaskPanel:
                         "seems to have no unit or a wrong unit (reset the value): {}\n"
                         .format(self.material["Name"])
                     )
-                    self.material["VolumetricThermalExpansionCoefficient"] = "0 m/m/K"
+                    self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
             else:
                 FreeCAD.Console.PrintMessage(
                     "VolumetricThermalExpansionCoefficient not found in material data of: {}\n"
                     .format(self.material["Name"])
                 )
-                self.material["VolumetricThermalExpansionCoefficient"] = "0 m/m/K"
+                self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:
             if "ThermalConductivity" not in str(Units.Unit(self.material["ThermalConductivity"])):
@@ -664,7 +664,7 @@ class _TaskPanel:
             if not (1 - variation < float(old_vtec) / value < 1 + variation):
                 # VolumetricThermalExpansionCoefficient has changed
                 material = self.material
-                value_in_one_per_K = unicode(value) + " m/m/K"
+                value_in_one_per_K = unicode(value) + " m^3/m^3/K"
                 material["VolumetricThermalExpansionCoefficient"] = value_in_one_per_K
                 self.material = material
                 if self.has_transient_mat is False:
@@ -704,10 +704,10 @@ class _TaskPanel:
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
             self.parameterWidget.input_fd_kinematic_viscosity.setText(q.UserString)
-        # For isotropic materials the volumetric thermal expansion coefficient
-        # is three times the linear coefficient:
-        if "VolumetricThermalExpansionCoefficient" in matmap:  # linear, only for solid
-            vtec_new_unit = "m/m/K"
+        # For isotropic materials and fluidic material, use the volumetric thermal expansion coefficient
+        # is approximately three times the linear coefficient for solids
+        if "VolumetricThermalExpansionCoefficient" in matmap:
+            vtec_new_unit = "m^3/m^3/K"
             vtec = FreeCAD.Units.Quantity(matmap["VolumetricThermalExpansionCoefficient"])
             vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
