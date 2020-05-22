@@ -188,7 +188,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # ml = 0 if obj.JoinType == 'Miter' else 2
         rotation = 2 if obj.EnableRotation == 'Off' else 0
         side = 0 if obj.UseComp else 2
-        opType = self.getOperationType(obj)
+        opType = self._getOperationType(obj)
 
         if opType == 'Contour':
             side = 2
@@ -211,7 +211,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode('AttemptInverseAngle', rotation)
         obj.setEditorMode('LimitDepthToFace', rotation)
 
-    def getOperationType(self, obj):
+    def _getOperationType(self, obj):
         if len(obj.Base) == 0:
             return 'Contour'
 
@@ -286,23 +286,29 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return True
 
     def opUpdateDepths(self, obj):
-        obj.OpStartDepth = obj.OpStockZMax
-        obj.OpFinalDepth = obj.OpStockZMin
+        if hasattr(obj, 'Base') and obj.Base.__len__() == 0:
+            obj.OpStartDepth = obj.OpStockZMax
+            obj.OpFinalDepth = obj.OpStockZMin
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
         PathLog.track()
 
         shapes = []
-        inaccessible = translate('PathProfileEdges', 'The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.')
         baseSubsTuples = list()
         allTuples = list()
         edgeFaces = list()
         subCount = 0
+        self.inaccessibleMsg = translate('PathProfile', 'The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.')
         self.profileshape = list() # pylint: disable=attribute-defined-outside-init
-        self.offsetExtra = abs(obj.OffsetExtra.Value)
+        self.offsetExtra = obj.OffsetExtra.Value  # abs(obj.OffsetExtra.Value)
 
         if PathLog.getLevel(PathLog.thisModule()) == 4:
+            for grpNm in ['tmpDebugGrp', 'tmpDebugGrp001']:
+                if hasattr(FreeCAD.ActiveDocument, grpNm):
+                    for go in FreeCAD.ActiveDocument.getObject(grpNm).Group:
+                        FreeCAD.ActiveDocument.removeObject(go.Name)
+                    FreeCAD.ActiveDocument.removeObject(grpNm)
             self.tmpGrp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
             tmpGrpNm = self.tmpGrp.Name
         self.JOB = PathUtils.findParentJob(obj)
@@ -321,8 +327,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             shapes.extend(self._processEdges(obj))
 
         if obj.Base and len(obj.Base) > 0:  # The user has selected subobjects from the base.  Process each.
-            isFace = False
-            isEdge = False
             if obj.EnableRotation != 'Off':
                 for p in range(0, len(obj.Base)):
                     (base, subsList) = obj.Base[p]
@@ -332,12 +336,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         if isinstance(shape, Part.Face):
                             tup = self._analyzeFace(obj, base, sub, shape, subCount)
                             allTuples.append(tup)
-                        # Eif
-                    # Efor
+
                 if subCount > 1:
                     msg = translate('PathProfile', "Multiple faces in Base Geometry.") + "  "
                     msg += translate('PathProfile', "Depth settings will be applied to all faces.")
-                    PathLog.warning(msg)
+                    FreeCAD.Console.PrintWarning(msg)
 
                 (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
                 subList = []
@@ -366,6 +369,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
                 for sub in subsList:
                     shape = getattr(base.Shape, sub)
+                    # only process faces here
                     if isinstance(shape, Part.Face):
                         faces.append(shape)
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
@@ -382,8 +386,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # Set initial Start and Final Depths and recalculate depthparams
                 finDep = obj.FinalDepth.Value
                 strDep = obj.StartDepth.Value
-                # if strDep > stock.Shape.BoundBox.ZMax:
-                #     strDep = stock.Shape.BoundBox.ZMax
 
                 startDepths.append(strDep)
                 self.depthparams = self._customDepthParams(obj, strDep, finDep)
@@ -409,18 +411,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 finDep = profileshape.BoundBox.ZMin
                                 envDepthparams = self._customDepthParams(obj, strDep + 0.5, finDep)  # only an envelope
                         try:
-                            # env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=envDepthparams)
                             env = PathUtils.getEnvelope(profileshape, depthparams=envDepthparams)
                         except Exception as ee: # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
-                            PathLog.error(translate('Path', 'Unable to create path for face(s).') + '\n{}'.format(ee))
+                            msg = translate('Path', 'Unable to create path for face(s).')
+                            PathLog.error(msg + '\n{}'.format(ee))
                         else:
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
                             shapes.append(tup)
 
                     elif obj.HandleMultipleFeatures == 'Individually':
                         for shape in faces:
-                            # profShape = Part.makeCompound([shape])
                             finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
                             if obj.Side == 'Inside':
@@ -429,7 +430,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                     finalDep = shape.BoundBox.ZMin
                                     custDepthparams = self._customDepthParams(obj, strDep + 0.5, finalDep)
 
-                            # env = PathUtils.getEnvelope(base.Shape, subshape=profShape, depthparams=custDepthparams)
                             env = PathUtils.getEnvelope(shape, depthparams=custDepthparams)
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
                             shapes.append(tup)
@@ -572,15 +572,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         f.Placement = newPlace
                         env = PathUtils.getEnvelope(base.Shape, subshape=f, depthparams=self.depthparams)
                         # shapes.append((env, False))
-                        tup = env, False, 'ProfileEdges', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                        tup = env, False, 'Profile', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                         shapes.append(tup)
                     else:
-                        PathLog.error(inaccessible)
+                        PathLog.error(self.inaccessibleMsg)
                 else:
                     # Attempt open-edges profile
                     if self.JOB.GeometryTolerance.Value == 0.0:
                         msg = self.JOB.Label + '.GeometryTolerance = 0.0.'
-                        msg += translate('PathProfileEdges', 'Please set to an acceptable value greater than zero.')
+                        msg += translate('PathProfile', 'Please set to an acceptable value greater than zero.')
                         PathLog.error(msg)
                     else:
                         cutWireObjs = False
@@ -592,6 +592,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 os.Shape = flatWire
                                 os.purgeTouched()
                                 self.tmpGrp.addObject(os)
+
                             cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
                             if cutShp:
                                 cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
@@ -603,9 +604,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                     tup = cW, False, 'OpenEdge', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                     shapes.append(tup)
                             else:
-                                PathLog.error(inaccessible)
+                                PathLog.error(self.inaccessibleMsg)
                         else:
-                            PathLog.error(inaccessible)
+                            PathLog.error(self.inaccessibleMsg)
                     # Eif
                 # Eif
             # Efor
@@ -664,9 +665,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         extLenFwd = sdv - fdv
         if extLenFwd <= 0.0:
             msg = translate('PathProfile',
-                            'For open edges, select top edge and set Final Depth manually.')
+                            'For open edges, verify Final Depth for this operation.')
             FreeCAD.Console.PrintError(msg + '\n')
-            return False
+            # return False
+            extLenFwd = 0.1
         WIRE = flatWire.Wires[0]
         numEdges = len(WIRE.Edges)
 
@@ -685,10 +687,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         diam = vectDist.Length
         cntr = vectDist.multiply(0.5).add(pb)
         R = diam / 2
-
-        pl = FreeCAD.Placement()
-        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        pl.Base = FreeCAD.Vector(0, 0, 0)
 
         # Obtain beginning point perpendicular points
         if blen > 0.1:
@@ -738,7 +736,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         topComp = Part.makeCompound([cutArea.Faces[f] for f in topFc])
         topComp.translate(FreeCAD.Vector(0, 0, fdv - topComp.BoundBox.ZMin))  # Translate face to final depth
         if len(botFc) > 1:
-            PathLog.debug('len(botFc) > 1')
+            # PathLog.debug('len(botFc) > 1')
             bndboxFace = Part.Face(extBndbox.Wires[0])
             tmpFace = Part.Face(extBndbox.Wires[0])
             for f in botFc:
@@ -840,9 +838,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Add path stops at ends of wire
         cutShp = workShp.cut(pathStops)
+        if PathLog.getLevel(PathLog.thisModule()) == 4:
+            cs = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCutShape')
+            cs.Shape = cutShp
+            cs.recompute()
+            cs.purgeTouched()
+            self.tmpGrp.addObject(cs)
+
         return cutShp
 
     def _checkTagIntersection(self, iTAG, eTAG, cutSide, tstObj):
+        PathLog.debug('_checkTagIntersection()')
         # Identify intersection of Common area and Interior Tags
         intCmn = tstObj.common(iTAG)
 
@@ -880,10 +886,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         cent0 = FreeCAD.Vector(frstVrt.X, frstVrt.Y, fdv)
         cent1 = FreeCAD.Vector(lstVrt.X, lstVrt.Y, fdv)
 
-        pl = FreeCAD.Placement()
-        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        pl.Base = FreeCAD.Vector(0, 0, 0)
-
         # Calculate offset shape, containing cut region
         ofstShp = self._extractFaceOffset(obj, cutShp, False)
 
@@ -891,7 +893,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         try:
             osArea = ofstShp.Area
         except Exception as ee:
-            PathLog.error('No area to offset shape returned.')
+            PathLog.error('No area to offset shape returned.\n{}'.format(ee))
             return False
 
         if PathLog.getLevel(PathLog.thisModule()) == 4:
@@ -941,7 +943,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if w0 != w1:
             PathLog.warning('Offset wire endpoint indexes are not equal - w0, w1: {}, {}'.format(w0, w1))
 
-        if PathLog.getLevel(PathLog.thisModule()) == 4:
+        if False and PathLog.getLevel(PathLog.thisModule()) == 4:
             PathLog.debug('min0i is {}.'.format(min0i))
             PathLog.debug('min1i is {}.'.format(min1i))
             PathLog.debug('NEAR0[{}] is {}.'.format(w0, NEAR0[w0]))
@@ -978,7 +980,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # Eif
 
         # Break offset loop into two wires - one of which is the desired profile path wire.
-        (edgeIdxs0, edgeIdxs1) = self._separateWireAtVertexes(mainWire, mainWire.Vertexes[vi0], mainWire.Vertexes[vi1])
+        try:
+            (edgeIdxs0, edgeIdxs1) = self._separateWireAtVertexes(mainWire, mainWire.Vertexes[vi0], mainWire.Vertexes[vi1])
+        except Exception as ee:
+            PathLog.error('Failed to identify offset edge.\n{}'.format(ee))
+            return False
         edgs0 = list()
         edgs1 = list()
         for e in edgeIdxs0:
@@ -1105,7 +1111,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     chk4 = True
             FLGS[e] += v
         # Efor
-        PathLog.debug('_separateWireAtVertexes() FLGS: \n{}'.format(FLGS))
+
+        # PathLog.debug('_separateWireAtVertexes() FLGS: {}'.format(FLGS))
 
         PRE = list()
         POST = list()
@@ -1152,7 +1159,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             for e in range(0, lenFULL):
                 f = PRE[e]
                 if f == 1:
-                    if begFlg is False:
+                    if not begFlg:
                         begFlg = True
                     else:
                         begIdx = e
@@ -1184,7 +1191,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # Efor
         # Eif
 
-        if PathLog.getLevel(PathLog.thisModule()) != 4:
+        if False and PathLog.getLevel(PathLog.thisModule()) == 4:
             PathLog.debug('grps[0]: {}'.format(grps[0]))
             PathLog.debug('grps[1]: {}'.format(grps[1]))
             PathLog.debug('wireIdxs[0]: {}'.format(wireIdxs[0]))
@@ -1198,6 +1205,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         '''_makeCrossSection(shape, sliceZ, zHghtTrgt=None)... 
         Creates cross-section objectc from shape.  Translates cross-section to zHghtTrgt if available.
         Makes face shape from cross-section object. Returns face shape at zHghtTrgt.'''
+        PathLog.debug('_makeCrossSection()')
         # Create cross-section of shape and translate
         wires = list()
         slcs = shape.slice(FreeCAD.Vector(0, 0, 1), sliceZ)
@@ -1212,6 +1220,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return False
 
     def _makeExtendedBoundBox(self, wBB, bbBfr, zDep):
+        PathLog.debug('_makeExtendedBoundBox()')
         p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
         p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
         p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
@@ -1225,6 +1234,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return Part.Face(Part.Wire([L1, L2, L3, L4]))
 
     def _makeIntersectionTags(self, useWire, numOrigEdges, fdv):
+        PathLog.debug('_makeIntersectionTags()')
         # Create circular probe tags around perimiter of wire
         extTags = list()
         intTags = list()
@@ -1270,6 +1280,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return (begInt, begExt, iTAG, eTAG)
 
     def _makeOffsetCircleTag(self, p1, p2, cutterRad, depth, lbl, reverse=False):
+        # PathLog.debug('_makeOffsetCircleTag()')
         pb = FreeCAD.Vector(p1.x, p1.y, 0.0)
         pe = FreeCAD.Vector(p2.x, p2.y, 0.0)
 
@@ -1283,8 +1294,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         perpE = FreeCAD.Vector(-1 * toMid.y, toMid.x, 0.0).multiply(-1 * cutFactor)  # exterior tag
         extPnt = pb.add(toMid.add(perpE))
 
-        pl = FreeCAD.Placement()
-        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
         # make exterior tag
         eCntr = extPnt.add(FreeCAD.Vector(0, 0, depth))
         ecw = Part.Wire(Part.makeCircle((cutterRad / 2), eCntr).Edges[0])
@@ -1300,20 +1309,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return (intTag, extTag)
 
     def _makeStop(self, sType, pA, pB, lbl):
+        # PathLog.debug('_makeStop()')
         rad = self.radius
         ofstRad = self.ofstRadius
         extra = self.radius / 10
-
-        pl = FreeCAD.Placement()
-        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        pl.Base = FreeCAD.Vector(0, 0, 0)
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
         lenEC = E.sub(C).Length
 
         if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
-            # 'L' stop shape and edge legend
+            # 'L' stop shape and edge map
             # --1--
             # |   |
             # 2   6
@@ -1325,15 +1331,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             p1 = E
             if sType == 'BEG':
                 p2 = self._makePerp2DVector(C, E, -0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, ofstRad + 1 + extra)  # E2
+                p3 = self._makePerp2DVector(p1, p2, ofstRad + 1.0 + extra)  # E2
                 p4 = self._makePerp2DVector(p2, p3, 0.25 + ofstRad + extra)  # E3
-                p5 = self._makePerp2DVector(p3, p4, 1 + extra)  # E4
+                p5 = self._makePerp2DVector(p3, p4, 1.0 + extra)  # E4
                 p6 = self._makePerp2DVector(p4, p5, ofstRad + extra)  # E5
             elif sType == 'END':
                 p2 = self._makePerp2DVector(C, E, 0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + 1 + extra))  # E2
+                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + 1.0 + extra))  # E2
                 p4 = self._makePerp2DVector(p2, p3, -1 * (0.25 + ofstRad + extra))  # E3
-                p5 = self._makePerp2DVector(p3, p4, -1 * (1 + extra))  # E4
+                p5 = self._makePerp2DVector(p3, p4, -1 * (1.0 + extra))  # E4
                 p6 = self._makePerp2DVector(p4, p5, -1 * (ofstRad + extra))  # E5
             p7 = E  # E6
             L1 = Part.makeLine(p1, p2)
@@ -1344,7 +1350,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             L6 = Part.makeLine(p6, p7)
             wire = Part.Wire([L1, L2, L3, L4, L5, L6])
         else:
-            # 'L' stop shape and edge legend
+            # 'L' stop shape and edge map
             # :
             # |----2-------|
             # 3            1
