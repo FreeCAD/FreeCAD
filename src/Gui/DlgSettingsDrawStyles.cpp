@@ -143,6 +143,8 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 
     ui->GroundColor->setColor(App::Color(
                 (uint32_t)ViewParams::getShadowGroundColor()).asValue<QColor>());
+
+    ui->spinGroundTransparency->setValue(ViewParams::getShadowGroundTransparency());
 }
 
 /** 
@@ -189,6 +191,7 @@ void DlgSettingsDrawStyles::saveSettings()
     ui->spinBoxGroundScale->onSave();
     ui->LightColor->onSave();
     ui->GroundColor->onSave();
+    ui->spinGroundTransparency->onSave();
 
     for(auto doc : App::GetApplication().getDocuments()) {
         for(auto v : Application::Instance->getDocument(doc)->getMDIViews()) {
@@ -239,6 +242,7 @@ void DlgSettingsDrawStyles::loadSettings()
     ui->spinBoxGroundScale->onRestore();
     ui->LightColor->onRestore();
     ui->GroundColor->onRestore();
+    ui->spinGroundTransparency->onRestore();
 }
 
 /**

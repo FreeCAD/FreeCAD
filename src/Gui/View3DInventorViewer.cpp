@@ -1938,10 +1938,16 @@ void View3DInventorViewer::applyOverrideMode()
         sbColor.setPackedValue(color.getPackedValue(),f);
         pcShadowMaterial->diffuseColor = sbColor;
         pcShadowMaterial->specularColor = SbColor(0,0,0);
-        int transp = _shadowParam<App::PropertyPercent>(doc, "GroundTransparency",0);
-        pcShadowMaterial->transparency = transp/100.0;
 
-        pcShadowGroundStyle->style = (transp == 100 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
+        static const App::PropertyFloatConstraint::Constraints _transp_cstr(0.0,1.0,0.1);
+        double transp = _shadowParam<App::PropertyFloatConstraint>(
+                doc, "GroundTransparency", ViewParams::getShadowGroundTransparency(),
+                [](App::PropertyFloatConstraint &prop) {
+                    prop.setConstraints(&_transp_cstr);
+                });
+
+        pcShadowMaterial->transparency = transp;
+        pcShadowGroundStyle->style = (transp == 1.0 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
 
         // pcShadowMaterial->shininess = _shadowParam<App::PropertyFloatConstraint>(
         //         doc, "GroundShininess", ViewParams::getShadowGroundShininess(),
