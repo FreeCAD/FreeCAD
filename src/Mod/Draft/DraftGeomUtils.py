@@ -402,36 +402,7 @@ def superWire(edgeslist, closed=False):
 from draftgeoutils.edges import findMidpoint
 
 
-def findPerpendicular(point, edgeslist, force=None):
-    """
-    findPerpendicular(vector,wire,[force]):
-    finds the shortest perpendicular distance between a point and an edgeslist.
-    If force is specified, only the edge[force] will be considered, and it will be
-    considered infinite.
-    The function will return a list [vector_from_point_to_closest_edge,edge_index]
-    or None if no perpendicular vector could be found.
-    """
-    if not isinstance(edgeslist,list):
-        try:
-            edgeslist = edgeslist.Edges
-        except:
-            return None
-    if (force is None):
-        valid = None
-        for edge in edgeslist:
-            dist = findDistance(point,edge,strict=True)
-            if dist:
-                if not valid: valid = [dist,edgeslist.index(edge)]
-                else:
-                    if (dist.Length < valid[0].Length):
-                        valid = [dist,edgeslist.index(edge)]
-        return valid
-    else:
-        edge = edgeslist[force]
-        dist = findDistance(point,edge)
-        if dist: return [dist,force]
-        else: return None
-        return None
+from draftgeoutils.geometry import findPerpendicular
 
 
 def offset(edge, vector, trim=False):
@@ -484,89 +455,17 @@ def isReallyClosed(wire):
     if DraftVecUtils.equals(v1,v2): return True
     return False
 
-def getSplineNormal(edge):
-    """Find the normal of a BSpline edge"""
-    startPoint = edge.valueAt(edge.FirstParameter)
-    endPoint = edge.valueAt(edge.LastParameter)
-    midParameter = edge.FirstParameter + (edge.LastParameter - edge.FirstParameter)/2
-    midPoint = edge.valueAt(midParameter)
-    v1 = midPoint - startPoint
-    v2 = midPoint - endPoint
-    n = v1.cross(v2)
-    n.normalize()
-    return n
 
-def getNormal(shape):
-        """Find the normal of a shape or list of points, if possible."""
-        if isinstance(shape,(list,tuple)):
-            if len(shape) >= 3:
-                v1 = shape[1].sub(shape[0])
-                v2 = shape[2].sub(shape[0])
-                n = v2.cross(v1)
-                if n.Length:
-                    return n
-            return None
-        n = Vector(0,0,1)
-        if shape.isNull():
-            return n
-        if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
-                n = shape.copy().normalAt(0.5,0.5)
-        elif shape.ShapeType == "Edge":
-                if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
-                        n = shape.Edges[0].Curve.Axis
-                elif geomType(shape.Edges[0]) == "BSplineCurve" or \
-                     geomType(shape.Edges[0]) == "BezierCurve":
-                        n = getSplineNormal(shape.Edges[0])
-        else:
-                for e in shape.Edges:
-                        if geomType(e) in ["Circle","Ellipse"]:
-                                n = e.Curve.Axis
-                                break
-                        elif geomType(e) == "BSplineCurve" or \
-                             geomType(e) == "BezierCurve":
-                                n = getSplineNormal(e)
-                                break
-                        e1 = vec(shape.Edges[0])
-                        for i in range(1,len(shape.Edges)):
-                                e2 = vec(shape.Edges[i])
-                                if 0.1 < abs(e1.getAngle(e2)) < 3.14:
-                                        n = e1.cross(e2).normalize()
-                                        break
-        if FreeCAD.GuiUp:
-            import Draft
-            vdir = Draft.get3DView().getViewDirection()
-            if n.getAngle(vdir) < 0.78:
-                n = n.negative()
-        if not n.Length:
-            return None
-        return n
-
-def getRotation(v1, v2=FreeCAD.Vector(0, 0, 1)):
-    """Get the rotation Quaternion between 2 vectors."""
-    if (v1.dot(v2) > 0.999999) or (v1.dot(v2) < -0.999999):
-        # vectors are opposite
-        return None
-    axis = v1.cross(v2)
-    axis.normalize()
-    #angle = math.degrees(math.sqrt((v1.Length ^ 2) * (v2.Length ^ 2)) + v1.dot(v2))
-    angle = math.degrees(DraftVecUtils.angle(v1,v2,axis))
-    return FreeCAD.Rotation(axis,angle)
+from draftgeoutils.geometry import getSplineNormal
 
 
-def calculatePlacement(shape):
-    """calculatePlacement(shape): if the given shape is planar, this function
-    returns a placement located at the center of gravity of the shape, and oriented
-    towards the shape's normal. Otherwise, it returns a null placement."""
-    if not isPlanar(shape):
-        return FreeCAD.Placement()
-    pos = shape.BoundBox.Center
-    norm = getNormal(shape)
-    pla = FreeCAD.Placement()
-    pla.Base = pos
-    r =  getRotation(norm)
-    if r:
-        pla.Rotation = r
-    return pla
+from draftgeoutils.geometry import getNormal
+
+
+from draftgeoutils.geometry import getRotation
+
+
+from draftgeoutils.geometry import calculatePlacement
 
 
 def offsetWire(wire, dvec, bind=False, occ=False,
@@ -823,91 +722,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
 from draftgeoutils.intersections import connect
 
 
-def findDistance(point, edge, strict=False):
-    """
-    findDistance(vector,edge,[strict]) - Returns a vector from the point to its
-    closest point on the edge. If strict is True, the vector will be returned
-    only if its endpoint lies on the edge. Edge can also be a list of 2 points.
-    """
-    if isinstance(point, FreeCAD.Vector):
-        if isinstance(edge,list):
-            segment = edge[1].sub(edge[0])
-            chord = edge[0].sub(point)
-            norm = segment.cross(chord)
-            perp = segment.cross(norm)
-            dist = DraftVecUtils.project(chord,perp)
-            if not dist: return None
-            newpoint = point.add(dist)
-            if (dist.Length == 0):
-                return None
-            if strict:
-                s1 = newpoint.sub(edge[0])
-                s2 = newpoint.sub(edge[1])
-                if (s1.Length <= segment.Length) and (s2.Length <= segment.Length):
-                    return dist
-                else:
-                    return None
-            else: return dist
-        elif geomType(edge) == "Line":
-            segment = vec(edge)
-            chord = edge.Vertexes[0].Point.sub(point)
-            norm = segment.cross(chord)
-            perp = segment.cross(norm)
-            dist = DraftVecUtils.project(chord,perp)
-            if not dist: return None
-            newpoint = point.add(dist)
-            if (dist.Length == 0):
-                return None
-            if strict:
-                s1 = newpoint.sub(edge.Vertexes[0].Point)
-                s2 = newpoint.sub(edge.Vertexes[-1].Point)
-                if (s1.Length <= segment.Length) and (s2.Length <= segment.Length):
-                    return dist
-                else:
-                    return None
-            else: return dist
-        elif geomType(edge) == "Circle":
-            ve1 = edge.Vertexes[0].Point
-            if (len(edge.Vertexes) > 1):
-                ve2 = edge.Vertexes[-1].Point
-            else:
-                ve2 = None
-            center = edge.Curve.Center
-            segment = center.sub(point)
-            if segment.Length == 0:
-                return None
-            ratio = (segment.Length - edge.Curve.Radius) / segment.Length
-            dist = segment.multiply(ratio)
-            newpoint = Vector.add(point, dist)
-            if (dist.Length == 0):
-                return None
-            if strict and ve2:
-                ang1 = DraftVecUtils.angle(ve1.sub(center))
-                ang2 = DraftVecUtils.angle(ve2.sub(center))
-                angpt = DraftVecUtils.angle(newpoint.sub(center))
-                if ((angpt <= ang2 and angpt >= ang1) or (angpt <= ang1 and angpt >= ang2)):
-                    return dist
-                else:
-                    return None
-            else:
-                return dist
-        elif geomType(edge) == "BSplineCurve" or \
-            geomType(edge) == "BezierCurve":
-            try:
-                    pr = edge.Curve.parameter(point)
-                    np = edge.Curve.value(pr)
-                    dist = np.sub(point)
-            except:
-                    print("DraftGeomUtils: Unable to get curve parameter for point ",point)
-                    return None
-            else:
-                    return dist
-        else:
-            print("DraftGeomUtils: Couldn't project point")
-            return None
-    else:
-        print("DraftGeomUtils: Couldn't project point")
-        return None
+from draftgeoutils.geometry import findDistance
 
 
 def angleBisection(edge1, edge2):
@@ -948,29 +763,7 @@ def findClosestCircle(point, circles):
 from draftgeoutils.faces import isCoplanar
 
 
-def isPlanar(shape):
-    """Check if the given shape or list of points is planar."""
-    n = getNormal(shape)
-    if not n:
-        return False
-    if isinstance(shape,list):
-        if len(shape) <= 3:
-            return True
-        else:
-            for v in shape[3:]:
-                pv = v.sub(shape[0])
-                rv = DraftVecUtils.project(pv,n)
-                if not DraftVecUtils.isNull(rv):
-                    return False
-    else:
-        if len(shape.Vertexes) <= 3:
-            return True
-        for p in shape.Vertexes[1:]:
-            pv = p.Point.sub(shape.Vertexes[0].Point)
-            rv = DraftVecUtils.project(pv,n)
-            if not DraftVecUtils.isNull(rv):
-                return False
-    return True
+from draftgeoutils.geometry import isPlanar
 
 
 def findWiresOld(edges):
