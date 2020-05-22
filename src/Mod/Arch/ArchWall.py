@@ -1395,13 +1395,12 @@ class _Wall(ArchComponent.Component):
                                                                bind=False,
                                                                occ=False,
                                                                widthList=curWidth,
-                                                               offsetMode=None,
+                                                               offsetMode="BasewireMode",
                                                                alignList=aligns,
                                                                normal=normal,
                                                                basewireOffset=off)
 
                                 sh = DraftGeomUtils.bind(w1,w2)
-
 
                             #elif obj.Align == "Center":
                             elif curAligns == "Center":
