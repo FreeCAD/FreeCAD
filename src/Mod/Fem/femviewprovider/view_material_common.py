@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM material ViewProvider for the document object"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 ## @package view_material_common
@@ -490,13 +490,13 @@ class _TaskPanel:
                         "seems to have no unit or a wrong unit (reset the value): {}\n"
                         .format(self.material["Name"])
                     )
-                    self.material["VolumetricThermalExpansionCoefficient"] = "0 m/m/K"
+                    self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
             else:
                 FreeCAD.Console.PrintMessage(
                     "VolumetricThermalExpansionCoefficient not found in material data of: {}\n"
                     .format(self.material["Name"])
                 )
-                self.material["VolumetricThermalExpansionCoefficient"] = "0 m/m/K"
+                self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:
             if "ThermalConductivity" not in str(Units.Unit(self.material["ThermalConductivity"])):
@@ -543,55 +543,41 @@ class _TaskPanel:
             self.material["SpecificHeat"] = "0 J/kg/K"
         FreeCAD.Console.PrintMessage("\n")
 
+    def update_material_property(self, input_field, matProperty, qUnit, variation=0.001):
+        # this update property works for all Gui::InputField widgets
+        value = Units.Quantity(input_field.text()).getValueAs(qUnit)
+        old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        if value:
+            if not (1 - variation < float(old_value) / value < 1 + variation):
+                material = self.material
+                material[matProperty] = unicode(value) + " " + qUnit  # unicode() is an alias to str for py3
+                self.material = material
+                if self.has_transient_mat is False:
+                    self.add_transient_material()
+                else:
+                    self.set_transient_material()
+        else:
+            pass  # some check or default value set can be done here
+
     # mechanical input fields
     def ym_changed(self):
-        # FreeCADs standard unit for stress is kPa
-        value = self.parameterWidget.input_fd_young_modulus.property("rawValue")
-        old_ym = Units.Quantity(self.material["YoungsModulus"]).getValueAs("kPa")
+        # FreeCADs standard unit for stress is kPa for UnitsSchemeInternal, but MPa can be used
+        input_field = self.parameterWidget.input_fd_young_modulus
         variation = 0.001
-        if value:
-            if not (1 - variation < float(old_ym) / value < 1 + variation):
-                # YoungsModulus has changed
-                material = self.material
-                material["YoungsModulus"] = unicode(value) + " kPa"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        self.update_material_property(input_field, "YoungsModulus", "kPa", variation)
 
     def density_changed(self):
-        # FreeCADs standard unit for density is kg/mm^3
-        value = self.parameterWidget.input_fd_density.property("rawValue")
-        old_density = Units.Quantity(self.material["Density"]).getValueAs("kg/m^3")
+        # FreeCADs standard unit for density is kg/mm^3 for UnitsSchemeInternal
+        input_field = self.parameterWidget.input_fd_density
         variation = 0.001
-        if value:
-            if not (1 - variation < float(old_density) / value < 1 + variation):
-                # density has changed
-                material = self.material
-                value_in_kg_per_m3 = value * 1e9
-                # SvdW:Keep density in SI units for easier readability
-                material["Density"] = unicode(value_in_kg_per_m3) + " kg/m^3"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        self.update_material_property(input_field, "Density", "kg/m^3", variation)
 
     def pr_changed(self):
         value = self.parameterWidget.spinBox_poisson_ratio.value()
-        old_pr = Units.Quantity(self.material["PoissonRatio"])
-        variation = 0.001
+        input_field = self.parameterWidget.spinBox_poisson_ratio
         if value:
-            if not (1 - variation < float(old_pr) / value < 1 + variation):
-                # PoissonRatio has changed
-                material = self.material
-                material["PoissonRatio"] = unicode(value)
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+            variation = 0.001
+            self.update_material_property(input_field, "PoissonRatio", "", variation)
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
             material = self.material
@@ -604,89 +590,28 @@ class _TaskPanel:
 
     # thermal input fields
     def tc_changed(self):
-        value = self.parameterWidget.input_fd_thermal_conductivity.property("rawValue")
-        old_tc = Units.Quantity(self.material["ThermalConductivity"]).getValueAs("W/m/K")
+        input_field = self.parameterWidget.input_fd_thermal_conductivity
         variation = 0.001
-        if value:
-            if not (1 - variation < float(old_tc) / value < 1 + variation):
-                # ThermalConductivity has changed
-                material = self.material
-                value_in_W_per_mK = value * 1e-3  # To compensate for use of SI units
-                material["ThermalConductivity"] = unicode(value_in_W_per_mK) + " W/m/K"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        self.update_material_property(input_field, "ThermalConductivity", "W/m/K", variation)
 
     def tec_changed(self):
-        value = self.parameterWidget.input_fd_expansion_coefficient.property("rawValue")
-        old_tec = Units.Quantity(
-            self.material["ThermalExpansionCoefficient"]
-        ).getValueAs("um/m/K")
+        input_field = self.parameterWidget.input_fd_expansion_coefficient
         variation = 0.001
-        if value:
-            if not (1 - variation < float(old_tec) / value < 1 + variation):
-                # ThermalExpansionCoefficient has changed
-                material = self.material
-                value_in_um_per_mK = value * 1e6  # To compensate for use of SI units
-                material["ThermalExpansionCoefficient"] = unicode(value_in_um_per_mK) + " um/m/K"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        self.update_material_property(input_field, "ThermalExpansionCoefficient", "um/m/K", variation)
 
     def sh_changed(self):
-        value = self.parameterWidget.input_fd_specific_heat.property("rawValue")
-        old_sh = Units.Quantity(self.material["SpecificHeat"]).getValueAs("J/kg/K")
+        input_field = self.parameterWidget.input_fd_specific_heat
         variation = 0.001
-        if value:
-            if not (1 - variation < float(old_sh) / value < 1 + variation):
-                # SpecificHeat has changed
-                material = self.material
-                value_in_J_per_kgK = value * 1e-6  # To compensate for use of SI units
-                material["SpecificHeat"] = unicode(value_in_J_per_kgK) + " J/kg/K"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        self.update_material_property(input_field, "SpecificHeat", "J/kg/K", variation)
 
     # fluidic input fields
     def vtec_changed(self):
-        value = self.parameterWidget.input_fd_vol_expansion_coefficient.property("rawValue")
-        old_vtec = Units.Quantity(
-            self.material["VolumetricThermalExpansionCoefficient"]
-        ).getValueAs("m/m/K")
-        variation = 0.001
-        if value:
-            if not (1 - variation < float(old_vtec) / value < 1 + variation):
-                # VolumetricThermalExpansionCoefficient has changed
-                material = self.material
-                value_in_one_per_K = unicode(value) + " m/m/K"
-                material["VolumetricThermalExpansionCoefficient"] = value_in_one_per_K
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        input_field = self.parameterWidget.input_fd_vol_expansion_coefficient
+        self.update_material_property(input_field, "VolumetricThermalExpansionCoefficient", "m^3/m^3/K")
 
     def kinematic_viscosity_changed(self):
-        value = self.parameterWidget.input_fd_kinematic_viscosity.property("rawValue")
-        old_nu = Units.Quantity(self.material["KinematicViscosity"]).getValueAs("m^2/s")
-        variation = 0.000001
-        if value:
-            if not (1 - variation < float(old_nu) / value < 1 + variation):
-                # KinematicViscosity has changed
-                material = self.material
-                value_in_m2_per_second = value
-                material["KinematicViscosity"] = unicode(value_in_m2_per_second) + " m^2/s"
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
+        input_field = self.parameterWidget.input_fd_kinematic_viscosity
+        self.update_material_property(input_field, "KinematicViscosity", "m^2/s")
 
     def set_mat_params_in_input_fields(self, matmap):
         if "YoungsModulus" in matmap:
@@ -704,10 +629,10 @@ class _TaskPanel:
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
             self.parameterWidget.input_fd_kinematic_viscosity.setText(q.UserString)
-        # For isotropic materials the volumetric thermal expansion coefficient
-        # is three times the linear coefficient:
-        if "VolumetricThermalExpansionCoefficient" in matmap:  # linear, only for solid
-            vtec_new_unit = "m/m/K"
+        # For isotropic materials and fluidic material, use the volumetric thermal expansion coefficient
+        # is approximately three times the linear coefficient for solids
+        if "VolumetricThermalExpansionCoefficient" in matmap:
+            vtec_new_unit = "m^3/m^3/K"
             vtec = FreeCAD.Units.Quantity(matmap["VolumetricThermalExpansionCoefficient"])
             vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
