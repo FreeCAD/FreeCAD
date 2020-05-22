@@ -64,7 +64,7 @@ jobs:
         env:
           - CC=clang-10
           - CXX=clang++-10
-          - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON -DCMAKE_CXX_FLAGS=-Wno-deprecated-copy"
+          - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB1
 
       - os: linux
@@ -187,6 +187,11 @@ before_install:
                                libspnav-dev
        # Runtime deps
        sudo apt-get install -y --no-install-recommends freecad-daily-python3 python-pivy python3-pivy python-ply python3-ply
+
+       # Use newer Eigen to suppress warnings
+       # https://github.com/FreeCAD/FreeCAD/pull/3485
+       wget http://mirrors.kernel.org/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.7-2_all.deb
+       sudo dpkg -i libeigen3-dev_3.3.7-2_all.deb
 
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
