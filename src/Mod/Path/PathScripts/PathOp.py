@@ -137,6 +137,7 @@ class ObjectOp(object):
 
         if FeatureTool & features:
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "The tool controller that will be used to calculate the path"))
+            obj.addProperty('App::PropertyFloat', 'FeedRateFactor', 'Path', QtCore.QT_TRANSLATE_NOOP("PathOp", "Feed rate adjustment factor for the assigned Tool Controller."))
             self.addOpValues(obj, ['tooldia'])
 
         if FeatureCoolant & features:
@@ -229,6 +230,10 @@ class ObjectOp(object):
 
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
+
+        if not hasattr(obj, 'FeedRateFactor'):
+            obj.addProperty('App::PropertyFloat', 'FeedRateFactor', 'Path', QtCore.QT_TRANSLATE_NOOP("PathOp", "Feed rate adjustment factor for the assigned Tool Controller."))
+            obj.FeedRateFactor = 1.0
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -324,6 +329,7 @@ class ObjectOp(object):
             if not obj.ToolController:
                 return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
+            obj.FeedRateFactor = 1.0
 
         if FeatureCoolant & features:
             obj.CoolantMode = job.SetupSheet.CoolantMode
@@ -493,8 +499,8 @@ class ObjectOp(object):
                 PathLog.error(translate("Path", "No Tool Controller is selected. We need a tool to build a Path."))
                 return
             else:
-                self.vertFeed = tc.VertFeed.Value
-                self.horizFeed = tc.HorizFeed.Value
+                self.vertFeed = tc.VertFeed.Value * abs(obj.FeedRateFactor) if hasattr(obj, 'FeedRateFactor') else tc.VertFeed.Value
+                self.horizFeed = tc.HorizFeed.Value * abs(obj.FeedRateFactor) if hasattr(obj, 'FeedRateFactor') else tc.HorizFeed.Value
                 self.vertRapid = tc.VertRapid.Value
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
