@@ -25,6 +25,7 @@ __title__ = "Common FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+import sys
 import unittest
 
 import FreeCAD
@@ -108,6 +109,13 @@ class TestFemCommon(unittest.TestCase):
         # import all collected modules
         # fcc_print(pymodules)
         for mod in pymodules:
+            # migrate modules do not import on Python 2
+            if (
+                mod == "femtools.migrate_app"
+                or mod == "femtools.migrate_gui"
+            ) and sys.version_info.major < 3:
+                continue
+
             fcc_print("Try importing {0} ...".format(mod))
             try:
                 im = __import__("{0}".format(mod))
