@@ -244,38 +244,10 @@ def findClosest(basepoint, pointslist):
     return npoint
 
 
-def concatenate(shape):
-    """concatenate(shape) -- turns several faces into one"""
-    edges = getBoundary(shape)
-    edges = Part.__sortEdges__(edges)
-    try:
-        wire=Part.Wire(edges)
-        face=Part.Face(wire)
-    except:
-        print("DraftGeomUtils: Couldn't join faces into one")
-        return(shape)
-    else:
-        if not wire.isClosed(): return(wire)
-        else: return(face)
+from draftgeoutils.faces import concatenate
 
 
-def getBoundary(shape):
-    """getBoundary(shape) -- this function returns the boundary edges of a group of faces"""
-    # make a lookup-table where we get the number of occurrences
-    # to each edge in the fused face
-    if isinstance(shape,list):
-            shape = Part.makeCompound(shape)
-    lut={}
-    for f in shape.Faces:
-        for e in f.Edges:
-            hc= e.hashCode()
-            if hc in lut: lut[hc]=lut[hc]+1
-            else: lut[hc]=1
-    # filter out the edges shared by more than one sub-face
-    bound=[]
-    for e in shape.Edges:
-        if lut[e.hashCode()] == 1: bound.append(e)
-    return bound
+from draftgeoutils.faces import getBoundary
 
 
 from draftgeoutils.edges import isLine
@@ -973,18 +945,7 @@ def findClosestCircle(point, circles):
     return closest
 
 
-def isCoplanar(faces, tolerance=0):
-    """isCoplanar(faces,[tolerance]): checks if all faces in the given list are coplanar. Tolerance is the max deviation to be considered coplanar"""
-    if len(faces) < 2:
-        return True
-    base =faces[0].normalAt(0,0)
-    for i in range(1,len(faces)):
-        for v in faces[i].Vertexes:
-            chord = v.Point.sub(faces[0].Vertexes[0].Point)
-            dist = DraftVecUtils.project(chord,base)
-            if round(dist.Length,precision()) > tolerance:
-                return False
-    return True
+from draftgeoutils.faces import isCoplanar
 
 
 def isPlanar(shape):
@@ -1067,128 +1028,10 @@ def getTangent(edge, frompoint=None):
         return None
 
 
-def bind(w1, w2):
-    """bind(wire1,wire2): binds 2 wires by their endpoints and
-    returns a face"""
-    if (not w1) or (not w2):
-        print("DraftGeomUtils: unable to bind wires")
-        return None
-    if w1.isClosed() and w2.isClosed():
-        d1 = w1.BoundBox.DiagonalLength
-        d2 = w2.BoundBox.DiagonalLength
-        if d1 > d2:
-            #w2.reverse()
-            return Part.Face([w1,w2])
-        else:
-            #w1.reverse()
-            return Part.Face([w2,w1])
-    else:
-        try:
-            w3 = Part.LineSegment(w1.Vertexes[0].Point,w2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(w1.Vertexes[-1].Point,w2.Vertexes[-1].Point).toShape()
-            return Part.Face(Part.Wire(w1.Edges+[w3]+w2.Edges+[w4]))
-        except:
-            print("DraftGeomUtils: unable to bind wires")
-            return None
+from draftgeoutils.faces import bind
 
-def cleanFaces(shape):
-        """Remove inner edges from coplanar faces."""
-        faceset = shape.Faces
-        def find(hc):
-                """finds a face with the given hashcode"""
-                for f in faceset:
-                        if f.hashCode() == hc:
-                                return f
 
-        def findNeighbour(hface,hfacelist):
-                """finds the first neighbour of a face in a list, and returns its index"""
-                eset = []
-                for e in find(hface).Edges:
-                        eset.append(e.hashCode())
-                for i in range(len(hfacelist)):
-                        for ee in find(hfacelist[i]).Edges:
-                                if ee.hashCode() in eset:
-                                        return i
-                return None
-
-        # build lookup table
-        lut = {}
-        for face in faceset:
-                for edge in face.Edges:
-                        if edge.hashCode() in lut:
-                                lut[edge.hashCode()].append(face.hashCode())
-                        else:
-                                lut[edge.hashCode()] = [face.hashCode()]
-        # print("lut:",lut)
-        # take edges shared by 2 faces
-        sharedhedges = []
-        for k,v in lut.items():
-                if len(v) == 2:
-                        sharedhedges.append(k)
-        # print(len(sharedhedges)," shared edges:",sharedhedges)
-        # find those with same normals
-        targethedges = []
-        for hedge in sharedhedges:
-                faces = lut[hedge]
-                n1 = find(faces[0]).normalAt(0.5,0.5)
-                n2 = find(faces[1]).normalAt(0.5,0.5)
-                if n1 == n2:
-                        targethedges.append(hedge)
-        # print(len(targethedges)," target edges:",targethedges)
-        # get target faces
-        hfaces = []
-        for hedge in targethedges:
-                for f in lut[hedge]:
-                        if not f in hfaces:
-                                hfaces.append(f)
-
-        # print(len(hfaces)," target faces:",hfaces)
-        # sort islands
-        islands = [[hfaces.pop(0)]]
-        currentisle = 0
-        currentface = 0
-        found = True
-        while hfaces:
-                if not found:
-                        if len(islands[currentisle]) > (currentface + 1):
-                                currentface += 1
-                                found = True
-                        else:
-                                islands.append([hfaces.pop(0)])
-                                currentisle += 1
-                                currentface = 0
-                                found = True
-                else:
-                        f = findNeighbour(islands[currentisle][currentface],hfaces)
-                        if f != None:
-                                islands[currentisle].append(hfaces.pop(f))
-                        else:
-                                found = False
-        # print(len(islands)," islands:",islands)
-        # make new faces from islands
-        newfaces = []
-        treated = []
-        for isle in islands:
-                treated.extend(isle)
-                fset = []
-                for i in isle: fset.append(find(i))
-                bounds = getBoundary(fset)
-                shp = Part.Wire(Part.__sortEdges__(bounds))
-                shp = Part.Face(shp)
-                if shp.normalAt(0.5,0.5) != find(isle[0]).normalAt(0.5,0.5):
-                        shp.reverse()
-                newfaces.append(shp)
-        # print("new faces:",newfaces)
-        # add remaining faces
-        for f in faceset:
-                if not f.hashCode() in treated:
-                        newfaces.append(f)
-        # print("final faces")
-        # finishing
-        fshape = Part.makeShell(newfaces)
-        if shape.isClosed():
-                fshape = Part.makeSolid(fshape)
-        return fshape
+from draftgeoutils.faces import cleanFaces
 
 
 def isCubic(shape):
