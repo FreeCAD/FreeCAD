@@ -116,7 +116,10 @@ class TestFemCommon(unittest.TestCase):
             ) and sys.version_info.major < 3:
                 continue
 
-            if mod == "femsolver.solver_taskpanel" and not FreeCAD.GuiUp:
+            if (
+                mod == "femsolver.solver_taskpanel"
+                or mod == "TestFemGui"
+            ) and not FreeCAD.GuiUp:
                 continue
 
             fcc_print("Try importing {0} ...".format(mod))
