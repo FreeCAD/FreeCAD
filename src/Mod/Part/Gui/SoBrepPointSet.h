@@ -70,7 +70,7 @@ private:
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
-    void _renderSelection(SoGLRenderAction *action, const SbColor &color, bool push);
+    void _renderSelection(SoGLRenderAction *action, bool checkColor, SbColor color, bool push);
 
     bool isSelected(SelContextPtr ctx);
 

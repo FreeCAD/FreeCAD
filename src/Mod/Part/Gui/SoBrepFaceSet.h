@@ -90,6 +90,9 @@ public:
     SoMFInt32 highlightIndices;
     SoSFColor highlightColor;
 
+    static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other);
+    static bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other);
+
 protected:
     virtual ~SoBrepFaceSet();
     virtual void GLRender(SoGLRenderAction *action);

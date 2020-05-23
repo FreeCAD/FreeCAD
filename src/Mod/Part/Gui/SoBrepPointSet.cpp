@@ -66,6 +66,7 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SoBrepPointSet.h"
+#include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/ViewParams.h>
@@ -273,19 +274,22 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
         return;
 
     RenderIndices.clear();
+    bool checkColor = true;
     SbColor color = ctx->highlightColor;
 
     if(ctx->isHighlightAll()) {
         if(highlightIndices.getNum()) {
-            if(highlightColor.getValue().getPackedValue(1.0f))
+            if(highlightColor.getValue().getPackedValue(1.0f)) {
+                checkColor = false;
                 color = highlightColor.getValue();
+            }
             auto indices = highlightIndices.getValues(0);
             RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
         }
     } else
         RenderIndices.insert(RenderIndices.end(), ctx->highlightIndex.begin(), ctx->highlightIndex.end());
 
-    _renderSelection(action, color, true);
+    _renderSelection(action, checkColor, color, true);
 }
 
 void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
@@ -293,6 +297,7 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     if(!ctx || !ctx->isSelected())
         return;
 
+    bool checkColor = true;
     SbColor color = ctx->selectionColor;
 
     RenderIndices.clear();
@@ -302,21 +307,33 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     } else if(Gui::ViewParams::highlightIndicesOnFullSelect()
                 && highlightIndices.getNum())
     {
-        if(highlightColor.getValue().getPackedValue(1.0f))
+        if(highlightColor.getValue().getPackedValue(1.0f)) {
+            checkColor = false;
             color = highlightColor.getValue();
+        }
         auto indices = highlightIndices.getValues(0);
         RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
     }
-    _renderSelection(action, color, push);
+    _renderSelection(action, checkColor, color, push);
 }
 
-void SoBrepPointSet::_renderSelection(SoGLRenderAction *action, const SbColor &selectionColor, bool push)
+void SoBrepPointSet::_renderSelection(SoGLRenderAction *action, 
+        bool checkColor, SbColor _color, bool push)
 {
     SoState * state = action->getState();
     uint32_t color;
     if(push) {
         state->push();
-        color = selectionColor.getPackedValue(0.0);
+        if(checkColor && !RenderIndices.empty()) {
+            int idx = -1;
+            if(SoMaterialBindingElement::get(state) == SoMaterialBindingElement::OVERALL)
+                idx = 0;
+            else if (RenderIndices.size() == 1)
+                idx = startIndex.getValue() + RenderIndices[0];
+            if(idx >= 0 && idx < SoLazyElement::getInstance(state)->getNumDiffuse())
+                SoBrepFaceSet::makeDistinctColor(_color, _color, SoLazyElement::getDiffuse(state, idx));
+        }
+        color = _color.getPackedValue(0.0);
         setupRendering(state,this,&color);
     }
 
@@ -355,4 +372,3 @@ void SoBrepPointSet::doAction(SoAction* action)
 
     inherited::doAction(action);
 }
-

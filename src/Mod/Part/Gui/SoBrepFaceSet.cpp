@@ -97,7 +97,7 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepFaceSet)
 
-static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other) {
+bool SoBrepFaceSet::makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other) {
     float h,s,v;
     color.getHSVValue(h,s,v);
     float h2,s2,v2;
@@ -112,7 +112,7 @@ static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor 
     return true;
 }
 
-static inline bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
+bool SoBrepFaceSet::makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
     SbColor r, c, o;
     float t;
     o.setPackedValue(other,t);
