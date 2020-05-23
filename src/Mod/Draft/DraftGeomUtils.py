@@ -262,141 +262,16 @@ from draftgeoutils.sort_edges import sortEdgesOld
 from draftgeoutils.edges import invert
 
 
-def flattenWire(wire):
-    """flattenWire(wire): forces a wire to get completely flat
-    along its normal."""
-    import WorkingPlane
-    n = getNormal(wire)
-    if not n:
-        return
-    o = wire.Vertexes[0].Point
-    plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(o,n,0)
-    verts = [o]
-    for v in wire.Vertexes[1:]:
-        verts.append(plane.projectPoint(v.Point))
-    if wire.isClosed():
-        verts.append(o)
-    w = Part.makePolygon(verts)
-    return w
+from draftgeoutils.wires import flattenWire
 
 
-def findWires(edgeslist):
-    return [ Part.Wire(e) for e in Part.sortEdges(edgeslist)]
+from draftgeoutils.wires import findWires
 
 
-def findWiresOld2(edgeslist):
-    """Find connected wires in the given list of edges."""
-
-    def touches(e1,e2):
-        if len(e1.Vertexes) < 2:
-            return False
-        if len(e2.Vertexes) < 2:
-            return False
-        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
-            return True
-        return False
-
-    edges = edgeslist[:]
-    wires = []
-    lost = []
-    while edges:
-        e = edges[0]
-        if not wires:
-            # create first group
-            edges.remove(e)
-            wires.append([e])
-        else:
-            found = False
-            for w in wires:
-                if not found:
-                    for we in w:
-                        if touches(e,we):
-                            edges.remove(e)
-                            w.append(e)
-                            found = True
-                            break
-            if not found:
-                if e in lost:
-                    # we already tried this edge, and still nothing
-                    edges.remove(e)
-                    wires.append([e])
-                    lost = []
-                else:
-                    # put to the end of the list
-                    edges.remove(e)
-                    edges.append(e)
-                    lost.append(e)
-    nwires = []
-    for w in wires:
-        try:
-            wi = Part.Wire(w)
-        except:
-            print("couldn't join some edges")
-        else:
-            nwires.append(wi)
-    return nwires
+from draftgeoutils.wires import findWiresOld2
 
 
-def superWire(edgeslist, closed=False):
-        """superWire(edges,[closed]): forces a wire between edges that don't necessarily
-        have coincident endpoints. If closed=True, wire will always be closed"""
-        def median(v1,v2):
-                vd = v2.sub(v1)
-                vd.scale(.5,.5,.5)
-                return v1.add(vd)
-        edges = Part.__sortEdges__(edgeslist)
-        print(edges)
-        newedges = []
-        for i in range(len(edges)):
-                curr = edges[i]
-                if i == 0:
-                        if closed:
-                                prev = edges[-1]
-                        else:
-                                prev = None
-                else:
-                        prev = edges[i-1]
-                if i == (len(edges)-1):
-                        if closed:
-                                next = edges[0]
-                        else:
-                                next = None
-                else:
-                        next = edges[i+1]
-                print(i,prev,curr,next)
-                if prev:
-                        if curr.Vertexes[0].Point == prev.Vertexes[-1].Point:
-                                p1 = curr.Vertexes[0].Point
-                        else:
-                                p1 = median(curr.Vertexes[0].Point,prev.Vertexes[-1].Point)
-                else:
-                        p1 = curr.Vertexes[0].Point
-                if next:
-                        if curr.Vertexes[-1].Point == next.Vertexes[0].Point:
-                                p2 = next.Vertexes[0].Point
-                        else:
-                                p2 = median(curr.Vertexes[-1].Point,next.Vertexes[0].Point)
-                else:
-                        p2 = curr.Vertexes[-1].Point
-                if geomType(curr) == "Line":
-                        print("line",p1,p2)
-                        newedges.append(Part.LineSegment(p1,p2).toShape())
-                elif geomType(curr) == "Circle":
-                        p3 = findMidpoint(curr)
-                        print("arc",p1,p3,p2)
-                        newedges.append(Part.Arc(p1,p3,p2).toShape())
-                else:
-                        print("Cannot superWire edges that are not lines or arcs")
-                        return None
-        print(newedges)
-        return Part.Wire(newedges)
+from draftgeoutils.wires import superWire
 
 
 from draftgeoutils.edges import findMidpoint
@@ -430,30 +305,7 @@ def offset(edge, vector, trim=False):
         return None
 
 
-def isReallyClosed(wire):
-    """Check if a wire is really closed."""
-    ## TODO yet to find out why not use wire.isClosed() direct, in isReallyClosed(wire)
-
-    # Remark out below - Found not true if a vertex is used again in a wire in sketch ( e.g. wire with shape like 'd', 'b', 'g'... )
-    #if len(wire.Edges) == len(wire.Vertexes): return True
-
-    # Found cases where Wire[-1] are not 'last' vertexes (e.g. Part.Wire( Part.__sortEdges__( <Rectangle Geometries>.toShape() ) )
-    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
-    # - use Edges[i].Vertexes[0/1] instead
-    length = len(wire.Edges)
-
-    # Test if it is full circle / ellipse first
-    if length == 1:
-        if len(wire.Edges[0].Vertexes) == 1:
-            return True # This is a closed wire - full circle / ellipse
-        else:
-            return False # TODO Should be False if 1 edge but not single vertex, correct?  No need to test further below.
-
-    # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1,v2): return True
-    return False
+from draftgeoutils.wires import isReallyClosed
 
 
 from draftgeoutils.geometry import getSplineNormal
@@ -766,37 +618,7 @@ from draftgeoutils.faces import isCoplanar
 from draftgeoutils.geometry import isPlanar
 
 
-def findWiresOld(edges):
-        """finds connected edges in the list, and returns a list of lists containing edges
-        that can be connected"""
-        raise DeprecationWarning("This function shouldn't be called anymore - use findWires() instead")
-        def verts(shape):
-                return [shape.Vertexes[0].Point,shape.Vertexes[-1].Point]
-        def group(shapes):
-                shapesIn = shapes[:]
-                shapesOut = [shapesIn.pop()]
-                changed = False
-                for s in shapesIn:
-                        if len(s.Vertexes) < 2:
-                                continue
-                        else:
-                                clean = True
-                                for v in verts(s):
-                                        for i in range(len(shapesOut)):
-                                                if clean and (v in verts(shapesOut[i])):
-                                                        shapesOut[i] = Part.Wire(shapesOut[i].Edges+s.Edges)
-                                                        changed = True
-                                                        clean = False
-                                if clean:
-                                        shapesOut.append(s)
-                return(changed,shapesOut)
-        working = True
-        edgeSet = edges
-        while working:
-                result = group(edgeSet)
-                working = result[0]
-                edgeSet = result[1]
-        return result[1]
+from draftgeoutils.wires import findWiresOld
 
 
 def getTangent(edge, frompoint=None):
@@ -1277,15 +1099,7 @@ def getCircleFromSpline(edge):
     return circle
 
 
-def curvetowire(obj, steps):
-    points = obj.copy().discretize(steps)
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
+from draftgeoutils.wires import curvetowire
 
 
 def cleanProjection(shape, tessellate=True, seglength=0.05):
@@ -1333,15 +1147,7 @@ def cleanProjection(shape, tessellate=True, seglength=0.05):
     return Part.makeCompound(newedges)
 
 
-def curvetosegment(curve, seglen):
-    points = curve.discretize(seglen)
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
+from draftgeoutils.wires import curvetosegment
 
 
 def tessellateProjection(shape, seglen):
@@ -1366,18 +1172,7 @@ def tessellateProjection(shape, seglen):
     return Part.makeCompound(newedges)
 
 
-def rebaseWire(wire, vidx):
-    """rebaseWire(wire,vidx): returns a new wire which is a copy of the
-    current wire, but where the first vertex is the vertex indicated by the given
-    index vidx, starting from 1. 0 will return an exact copy of the wire."""
-
-    if vidx < 1:
-        return wire
-    if vidx > len(wire.Vertexes):
-        #print("Vertex index above maximum\n")
-        return wire
-    #This can be done in one step
-    return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+from draftgeoutils.wires import rebaseWire
 
 
 def removeSplitter(shape):
