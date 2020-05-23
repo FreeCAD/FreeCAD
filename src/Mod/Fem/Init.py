@@ -55,6 +55,7 @@ if sys.version_info.major >= 3:
 
 # add FEM App unit tests
 FreeCAD.__unit_test__ += ["TestFemApp"]
+FreeCAD.__unit_test__ += ["femtest"]
 
 
 # add import and export file types
