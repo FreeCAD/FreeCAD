@@ -40,6 +40,7 @@ SET (Draft_geoutils
     draftgeoutils/arcs.py
     draftgeoutils/fillets.py
     draftgeoutils/offsets.py
+    draftgeoutils/linear_algebra.py
 )
 
 SET(Draft_tests

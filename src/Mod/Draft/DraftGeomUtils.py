@@ -1004,53 +1004,10 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
         return None
 
 
-def linearFromPoints(p1, p2):
-    """Calculate linear equation from points.
-
-    Calculate the slope and offset parameters of the linear equation of a line defined by two points.
-
-    Linear equation:
-    y = m * x + b
-    m = dy / dx
-    m ... Slope
-    b ... Offset (point where the line intersects the y axis)
-    dx/dy ... Delta x and y. Using both as a vector results in a non-offset direction vector.
-    """
-    if isinstance(p1, Vector) and isinstance(p2, Vector):
-        line = {}
-        line['dx'] = (p2.x - p1.x)
-        line['dy'] = (p2.y - p1.y)
-        line['slope'] = line['dy'] / line['dx']
-        line['offset'] = p1.y - slope * p1.x
-        return line
-    else:
-        return None
+from draftgeoutils.linear_algebra import linearFromPoints
 
 
-def determinant(mat, n):
-    """
-    determinant(matrix,int) - Determinat function. Returns the determinant
-    of a n-matrix. It recursively expands the minors.
-    """
-    matTemp = [[0.0,0.0,0.0],[0.0,0.0,0.0],[0.0,0.0,0.0]]
-    if (n > 1):
-        if n == 2:
-            d = mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]
-        else:
-            d = 0.0
-            for j1 in range(n):
-                # Create minor
-                for i in range(1, n):
-                    j2 = 0
-                    for j in range(n):
-                        if j == j1:
-                            continue
-                        matTemp[i-1][j2] = mat[i][j]
-                        j2 += 1
-                d += (-1.0)**(1.0 + j1 + 1.0) * mat[0][j1] * determinant(matTemp, n-1)
-        return d
-    else:
-        return 0
+from draftgeoutils.linear_algebra import determinant
 
 
 def findHomotheticCenterOfCircles(circle1, circle2):
