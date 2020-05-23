@@ -550,7 +550,8 @@ class _TaskPanel:
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
-                material[matProperty] = unicode(value) + " " + qUnit  # unicode() is an alias to str for py3
+                # unicode() is an alias to str for py3
+                material[matProperty] = unicode(value) + " " + qUnit
                 self.material = material
                 if self.has_transient_mat is False:
                     self.add_transient_material()
@@ -564,20 +565,35 @@ class _TaskPanel:
         # FreeCADs standard unit for stress is kPa for UnitsSchemeInternal, but MPa can be used
         input_field = self.parameterWidget.input_fd_young_modulus
         variation = 0.001
-        self.update_material_property(input_field, "YoungsModulus", "kPa", variation)
+        self.update_material_property(
+            input_field,
+            "YoungsModulus",
+            "kPa",
+            variation
+        )
 
     def density_changed(self):
         # FreeCADs standard unit for density is kg/mm^3 for UnitsSchemeInternal
         input_field = self.parameterWidget.input_fd_density
         variation = 0.001
-        self.update_material_property(input_field, "Density", "kg/m^3", variation)
+        self.update_material_property(
+            input_field,
+            "Density",
+            "kg/m^3",
+            variation
+        )
 
     def pr_changed(self):
         value = self.parameterWidget.spinBox_poisson_ratio.value()
         input_field = self.parameterWidget.spinBox_poisson_ratio
         if value:
             variation = 0.001
-            self.update_material_property(input_field, "PoissonRatio", "", variation)
+            self.update_material_property(
+                input_field,
+                "PoissonRatio",
+                "",
+                variation
+            )
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
             material = self.material
@@ -592,26 +608,49 @@ class _TaskPanel:
     def tc_changed(self):
         input_field = self.parameterWidget.input_fd_thermal_conductivity
         variation = 0.001
-        self.update_material_property(input_field, "ThermalConductivity", "W/m/K", variation)
+        self.update_material_property(
+            input_field,
+            "ThermalConductivity",
+            "W/m/K",
+            variation
+        )
 
     def tec_changed(self):
         input_field = self.parameterWidget.input_fd_expansion_coefficient
         variation = 0.001
-        self.update_material_property(input_field, "ThermalExpansionCoefficient", "um/m/K", variation)
+        self.update_material_property(
+            input_field,
+            "ThermalExpansionCoefficient",
+            "um/m/K",
+            variation
+        )
 
     def sh_changed(self):
         input_field = self.parameterWidget.input_fd_specific_heat
         variation = 0.001
-        self.update_material_property(input_field, "SpecificHeat", "J/kg/K", variation)
+        self.update_material_property(
+            input_field,
+            "SpecificHeat",
+            "J/kg/K",
+            variation
+        )
 
     # fluidic input fields
     def vtec_changed(self):
         input_field = self.parameterWidget.input_fd_vol_expansion_coefficient
-        self.update_material_property(input_field, "VolumetricThermalExpansionCoefficient", "m^3/m^3/K")
+        self.update_material_property(
+            input_field,
+            "VolumetricThermalExpansionCoefficient",
+            "m^3/m^3/K"
+        )
 
     def kinematic_viscosity_changed(self):
         input_field = self.parameterWidget.input_fd_kinematic_viscosity
-        self.update_material_property(input_field, "KinematicViscosity", "m^2/s")
+        self.update_material_property(
+            input_field,
+            "KinematicViscosity",
+            "m^2/s"
+        )
 
     def set_mat_params_in_input_fields(self, matmap):
         if "YoungsModulus" in matmap:
@@ -629,7 +668,8 @@ class _TaskPanel:
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
             q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
             self.parameterWidget.input_fd_kinematic_viscosity.setText(q.UserString)
-        # For isotropic materials and fluidic material, use the volumetric thermal expansion coefficient
+        # For isotropic materials and fluidic material
+        # use the volumetric thermal expansion coefficient
         # is approximately three times the linear coefficient for solids
         if "VolumetricThermalExpansionCoefficient" in matmap:
             vtec_new_unit = "m^3/m^3/K"
