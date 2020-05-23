@@ -37,6 +37,7 @@ import AppTestSupport
 import ObjectsFem
 from femsolver.elmer import solver
 from femtools import femutils
+from femtools import membertools
 
 
 class TestCreateObject(AppTestSupport.DocumentTest):
@@ -88,7 +89,7 @@ class TestFindAnalysisOfMember(AppTestSupport.DocumentTest):
         self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         a.addObject(member)
-        result = femutils.findAnalysisOfMember(member)
+        result = member.getParentGroup()
         self.assertEqual(a, result)
 
     def testMemberInLastAnalysis(self):
@@ -97,14 +98,14 @@ class TestFindAnalysisOfMember(AppTestSupport.DocumentTest):
         c = self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         c.addObject(member)
-        result = femutils.findAnalysisOfMember(member)
+        result = member.getParentGroup()
         self.assertEqual(c, result)
 
     def testMemberInOnlyAnalysis(self):
         a = self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         a.addObject(member)
-        result = femutils.findAnalysisOfMember(member)
+        result = member.getParentGroup()
         self.assertEqual(a, result)
 
     def testMemberInNoAnalysis(self):
@@ -112,24 +113,32 @@ class TestFindAnalysisOfMember(AppTestSupport.DocumentTest):
         self.doc.addObject("Fem::FemAnalysis")
         self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
-        result = femutils.findAnalysisOfMember(member)
+        result = member.getParentGroup()
         self.assertIsNone(result)
 
+    """ findAnalysisOfMember was removed in commit b7d8e98bf4
+    https://github.com/FreeCAD/FreeCAD/commit/b7d8e98bf4
+    getParentGroup() is used instead. Works great accept it
+    the Parent is just a normal group and not a Analysis group
+    """
+    # will fail
+    """
     def testMemberInGroup(self):
         a = self.doc.addObject("App::DocumentObjectGroup")
         self.doc.addObject("Fem::FemAnalysis")
         self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         a.addObject(member)
-        result = femutils.findAnalysisOfMember(member)
+        result = member.getParentGroup()
         self.assertIsNone(result)
+    """
 
 
 class TestGetMember(AppTestSupport.DocumentTest):
 
     def testEmptyAnalysis(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
-        result = femutils.get_member(analysis, "Fem::FemSolverObjectElmer")
+        result = membertools.get_member(analysis, "Fem::SolverElmer")
         self.assertListEqual(result, [])
 
     def testFemTypesystem(self):
@@ -140,7 +149,7 @@ class TestGetMember(AppTestSupport.DocumentTest):
         d = ObjectsFem.makeConstraintFixed(self.doc)
         e = self.doc.addObject("Fem::FemPostPipeline")
         analysis.addObjects([a, b, c, d, e])
-        result = femutils.get_member(analysis, "Fem::FemSolverObjectElmer")
+        result = membertools.get_member(analysis, "Fem::SolverElmer")
         self.assertSameElements(result, [a, c])
 
     def testFCTypesystem(self):
@@ -151,7 +160,7 @@ class TestGetMember(AppTestSupport.DocumentTest):
         d = ObjectsFem.makeConstraintFixed(self.doc)
         e = self.doc.addObject("Fem::FemPostPipeline")
         analysis.addObjects([a, b, c, d, e])
-        result = femutils.get_member(analysis, "Fem::FemPostPipeline")
+        result = membertools.get_member(analysis, "Fem::FemPostPipeline")
         self.assertSameElements(result, [e])
 
     def testFCTypesystemWithInheritance(self):
@@ -162,7 +171,7 @@ class TestGetMember(AppTestSupport.DocumentTest):
         d = ObjectsFem.makeConstraintFixed(self.doc)
         e = self.doc.addObject("Fem::FemPostPipeline")
         analysis.addObjects([a, b, c, d, e])
-        result = femutils.get_member(analysis, "Fem::FemPostObject")
+        result = membertools.get_member(analysis, "Fem::FemPostObject")
         self.assertSameElements(result, [e])
 
     def testWithMultipleAnalysisObjects(self):
@@ -171,9 +180,9 @@ class TestGetMember(AppTestSupport.DocumentTest):
         a.addObject(ObjectsFem.makeSolverElmer(self.doc))
         a.addObject(ObjectsFem.makeSolverElmer(self.doc))
         b.addObject(ObjectsFem.makeSolverElmer(self.doc))
-        result = femutils.get_member(a, "Fem::FemSolverObjectElmer")
+        result = membertools.get_member(a, "Fem::SolverElmer")
         self.assertEqual(len(result), 2)
-        result = femutils.get_member(b, "Fem::FemSolverObjectElmer")
+        result = membertools.get_member(b, "Fem::SolverElmer")
         self.assertEqual(len(result), 1)
 
 
@@ -182,13 +191,13 @@ class TestIsDerivedFrom(AppTestSupport.DocumentTest):
     def testFemTypesystemObject(self):
         a = ObjectsFem.makeSolverElmer(self.doc)
         self.assertTrue(
-            femutils.is_derived_from(a, "Fem::FemSolverObjectElmer"))
+            femutils.is_derived_from(a, "Fem::SolverElmer"))
         self.assertTrue(
             femutils.is_derived_from(a, "Fem::FemSolverObjectPython"))
         self.assertTrue(
             femutils.is_derived_from(a, "App::DocumentObject"))
         self.assertFalse(
-            femutils.is_derived_from(a, "Fem::FemSolverObjectCalculix"))
+            femutils.is_derived_from(a, "Fem::SolverCalculix"))
         self.assertFalse(
             femutils.is_derived_from(a, "Fem::Constraint"))
 
@@ -201,7 +210,7 @@ class TestIsDerivedFrom(AppTestSupport.DocumentTest):
         self.assertTrue(
             femutils.is_derived_from(a, "App::DocumentObject"))
         self.assertFalse(
-            femutils.is_derived_from(a, "Fem::FemSolverObjectCalculix"))
+            femutils.is_derived_from(a, "Fem::SolverCalculix"))
         self.assertFalse(
             femutils.is_derived_from(a, "Fem::Constraint"))
 
@@ -218,14 +227,14 @@ class TestGetSingleMember(AppTestSupport.DocumentTest):
     def testWithNoMatch(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         self.assertIsNone(
-            femutils.get_single_member(analysis, "Fem::FemSolverObjectElmer"))
+            membertools.get_single_member(analysis, "Fem::SolverElmer"))
 
     def testWithSingleMatch(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         obj = ObjectsFem.makeSolverElmer(self.doc)
         analysis.addObject(obj)
-        result = femutils.get_single_member(
-            analysis, "Fem::FemSolverObjectElmer")
+        result = membertools.get_single_member(
+            analysis, "Fem::SolverElmer")
         self.assertEqual(result, obj)
 
     def testWithMultipleMatches(self):
@@ -235,8 +244,8 @@ class TestGetSingleMember(AppTestSupport.DocumentTest):
         analysis.addObject(a)
         analysis.addObject(ObjectsFem.makeSolverCalculix(self.doc))
         analysis.addObject(b)
-        result = femutils.get_single_member(
-            analysis, "Fem::FemSolverObjectElmer")
+        result = membertools.get_single_member(
+            analysis, "Fem::SolverElmer")
         self.assertTrue(result == a or result == b)
 
 
@@ -244,13 +253,13 @@ class TestGetSeveralMember(AppTestSupport.DocumentTest):
 
     def testWithEmptyAnalysis(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
-        y = femutils.get_several_member(analysis, "Fem::FemSolverObjectElmer")
+        y = membertools.get_several_member(analysis, "Fem::SolverElmer")
         self.assertEqual(y, [])
 
     def testWithoutMatch(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         analysis.addObject(ObjectsFem.makeSolverCalculix(self.doc))
-        y = femutils.get_several_member(analysis, "Fem::FemSolverObjectElmer")
+        y = membertools.get_several_member(analysis, "Fem::SolverElmer")
         self.assertEqual(y, [])
 
     def testVertexSubtype(self):
@@ -260,7 +269,7 @@ class TestGetSeveralMember(AppTestSupport.DocumentTest):
         constraint = ObjectsFem.makeConstraintFixed(self.doc)
         constraint.References = [(cube, ("Vertex1", "Vertex2"))]
         analysis.addObject(constraint)
-        y = femutils.get_several_member(analysis, "Fem::ConstraintFixed")
+        y = membertools.get_several_member(analysis, "Fem::ConstraintFixed")
         self.assertEqual(len(y), 1)
         self.assertEqual(y[0]["Object"], constraint)
         self.assertEqual(y[0]["RefShapeType"], "Vertex")
@@ -270,31 +279,31 @@ class TestGetMeshToSolve(AppTestSupport.DocumentTest):
 
     def testWithEmptyAnalysis(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
-        self.assertIsNone(femutils.get_mesh_to_solve(analysis)[0])
+        self.assertIsNone(membertools.get_mesh_to_solve(analysis)[0])
 
     def testWithoutMesh(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         analysis.addObject(ObjectsFem.makeSolverCalculix(self.doc))
-        self.assertIsNone(femutils.get_mesh_to_solve(analysis)[0])
+        self.assertIsNone(membertools.get_mesh_to_solve(analysis)[0])
 
     def testMultipleMeshes(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         analysis.addObject(ObjectsFem.makeMeshGmsh(self.doc))
         analysis.addObject(ObjectsFem.makeMeshGmsh(self.doc))
-        self.assertIsNone(femutils.get_mesh_to_solve(analysis)[0])
+        self.assertIsNone(membertools.get_mesh_to_solve(analysis)[0])
 
     def testSingleMesh(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         mesh = ObjectsFem.makeMeshGmsh(self.doc)
         analysis.addObject(mesh)
-        self.assertEqual(femutils.get_mesh_to_solve(analysis)[0], mesh)
+        self.assertEqual(membertools.get_mesh_to_solve(analysis)[0], mesh)
 
 
 class TestTypeOfObj(AppTestSupport.DocumentTest):
 
     def testFemTypesystem(self):
         a = ObjectsFem.makeSolverElmer(self.doc)
-        self.assertEqual(femutils.type_of_obj(a), "Fem::FemSolverObjectElmer")
+        self.assertEqual(femutils.type_of_obj(a), "Fem::SolverElmer")
 
     def testFCTypesystem(self):
         a = self.doc.addObject("Fem::FemPostPipeline")
@@ -305,7 +314,7 @@ class TestIsOfType(AppTestSupport.DocumentTest):
 
     def testFemTypesystem(self):
         a = ObjectsFem.makeSolverElmer(self.doc)
-        self.assertTrue(femutils.is_of_type(a, "Fem::FemSolverObjectElmer"))
+        self.assertTrue(femutils.is_of_type(a, "Fem::SolverElmer"))
 
     def testFCTypesystem(self):
         a = self.doc.addObject("Fem::FemPostPipeline")
