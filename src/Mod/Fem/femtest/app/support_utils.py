@@ -91,6 +91,7 @@ def get_fem_test_defs(
 ):
 
     test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "app")
+    print("Modules, classe, methods taken from: {}".format(test_path))
 
     collected_test_module_paths = []
     for tfile in sorted(os.listdir(test_path)):
