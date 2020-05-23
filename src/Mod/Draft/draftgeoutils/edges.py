@@ -31,7 +31,7 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD
 import DraftVecUtils
 
-from draftgeoutils.general import geomType
+from draftgeoutils.general import geomType, vec
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -179,3 +179,29 @@ def findMidpoint(edge):
 
     else:
         return None
+
+
+def getTangent(edge, from_point=None):
+    """Return the tangent to an edge, including BSpline and circular arcs.
+
+    If from_point is given, it is used to calculate the tangent,
+    only useful for a circular arc.
+    """
+    if geomType(edge) == "Line":
+        return vec(edge)
+
+    elif (geomType(edge) == "BSplineCurve"
+          or geomType(edge) == "BezierCurve"):
+        if not from_point:
+            return None
+        cp = edge.Curve.parameter(from_point)
+        return edge.Curve.tangent(cp)[0]
+
+    elif geomType(edge) == "Circle":
+        if not from_point:
+            v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
+        else:
+            v1 = from_point.sub(edge.Curve.Center)
+        return v1.cross(edge.Curve.Axis)
+
+    return None
