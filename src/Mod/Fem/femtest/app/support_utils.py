@@ -88,18 +88,25 @@ def get_defmake_count(
 
 
 def get_fem_test_defs(
-    inout="out"
 ):
-    test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest")
-    collected_test_modules = []
-    collected_test_methods = []
+
+    test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "app")
+
+    collected_test_module_paths = []
     for tfile in sorted(os.listdir(test_path)):
         if tfile.startswith("test") and tfile.endswith(".py"):
-            collected_test_modules.append(join(test_path, tfile))
-    for f in collected_test_modules:
-        tfile = open(f, "r")
+            collected_test_module_paths.append(join(test_path, tfile))
+
+    collected_test_modules = []
+    collected_test_classes = []
+    collected_test_methods = []
+    for f in collected_test_module_paths:
         module_name = os.path.splitext(os.path.basename(f))[0]
+        module_path = "femtest.app.{}".format(module_name)
+        if module_path not in collected_test_modules:
+            collected_test_modules.append(module_path)
         class_name = ""
+        tfile = open(f, "r")
         for ln in tfile:
             ln = ln.lstrip()
             ln = ln.rstrip()
@@ -107,25 +114,42 @@ def get_fem_test_defs(
                 ln = ln.lstrip("class ")
                 ln = ln.split("(")[0]
                 class_name = ln
+                class_path = "femtest.app.{}.{}".format(module_name, class_name)
+                if class_path not in collected_test_classes:
+                    collected_test_classes.append(class_path)
             if ln.startswith("def test"):
                 ln = ln.lstrip("def ")
                 ln = ln.split("(")[0]
-                collected_test_methods.append(
-                    "femtest.{}.{}.{}".format(module_name, class_name, ln)
-                )
+                method_path = "femtest.app.{}.{}.{}".format(module_name, class_name, ln)
+                collected_test_methods.append(method_path)
         tfile.close()
+
+    # output prints
     print("")
+    print("")
+    print("# modules")
+    for m in collected_test_modules:
+        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
+    print("")
+    print("")
+    print("# classes")
+    for m in collected_test_classes:
+        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
+    print("")
+    print("")
+    print("# methods")
     for m in collected_test_methods:
-        run_outside_fc = './bin/FreeCADCmd --run-test "{}"'.format(m)
-        run_inside_fc = (
-            "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName('{}'))"
+        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
+    print("")
+    print("")
+    print("# methods in FreeCAD")
+    for m in collected_test_methods:
+        print(
+            "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(\n"
+            "    '{}'\n"
+            "))\n"
             .format(m)
         )
-        if inout == "in":
-            print("\nimport unittest")
-            print(run_inside_fc)
-        else:
-            print(run_outside_fc)
 
 
 def compare_inp_files(
