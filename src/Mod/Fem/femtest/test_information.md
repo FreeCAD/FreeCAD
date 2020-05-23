@@ -15,11 +15,12 @@
 ## unit test command to copy
 - to run a specific FEM unit test to copy for fast tests :-)
 - they can be found in file test_commands_to_copy.md
-- greate them by
+- create them by
 
 ```python
 from femtest.app.support_utils import get_fem_test_defs
 get_fem_test_defs()
+
 ```
 
 ## examples from within FreeCAD:
@@ -27,26 +28,31 @@ get_fem_test_defs()
 ```python
 import Test, femtest.app.test_object
 Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
+
 ```
 
 ### all FEM tests
 ```python
 import Test, TestFemApp
 Test.runTestsFromModule(TestFemApp)
+
 import Test, TestFemGui
 Test.runTestsFromModule(TestFemGui)
+
 ```
 
 ### module
 ```python
 import Test, femtest.app.test_common
 Test.runTestsFromModule(femtest.app.test_common)
+
 ```
 
 ### class
 ```python
 import Test, femtest.app.test_common
 Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
+
 ```
 
 ### method
@@ -55,6 +61,7 @@ import unittest
 thetest = "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 alltest = unittest.TestLoader().loadTestsFromName(thetest)
 unittest.TextTestRunner().run(alltest)
+
 ```
 
 ## examples from shell in build dir:
