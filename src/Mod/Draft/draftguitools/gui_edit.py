@@ -25,21 +25,31 @@
 # \ingroup DRAFT
 # \brief Provide the Draft_Edit command used by the Draft workbench
 
+__title__ = "FreeCAD Draft Edit Tool"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin, Carlo Pavan")
+__url__ = "https://www.freecadweb.org"
+
+
 import math
 from pivy import coin
 from PySide import QtCore, QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
-import DraftTools
+
+import draftutils.utils as utils
+
+import draftguitools.gui_base_original as gui_base_original
+import draftguitools.gui_tool_utils as gui_tool_utils
+import draftutils.gui_utils as gui_utils
+
+import DraftVecUtils
+import DraftGeomUtils
+
 from draftutils.translate import translate
 import draftguitools.gui_trackers as trackers
 
-__title__ = "FreeCAD Draft Edit Tool"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin, Carlo Pavan")
-__url__ = "https://www.freecadweb.org"
 
 COLORS = {
     "default": Gui.draftToolBar.getDefaultColor("snap"),
@@ -55,7 +65,7 @@ COLORS = {
 }
 
 
-class Edit:
+class Edit(gui_base_original.Modifier):
     """The Draft_Edit FreeCAD command definition.
 
     A tool to graphically edit FreeCAD objects.
@@ -195,12 +205,12 @@ class Edit:
 
     supportedObjs: List
         List of supported Draft Objects.
-        The tool use Draft.getType(obj) to compare object type
+        The tool use utils.get_type(obj) to compare object type
         to the list.
 
     supportedPartObjs: List
         List of supported Part Objects.
-        The tool use Draft.getType(obj) and obj.TypeId to compare
+        The tool use utils.get_type(obj) and obj.TypeId to compare
         object type to the list.
     """
 
@@ -269,12 +279,12 @@ class Edit:
         """
         if self.running:
             self.finish()
-        DraftTools.Modifier.Activated(self, "Edit")
+        super(Edit, self).Activated("Edit")
         if not App.ActiveDocument:
             self.finish()
 
         self.ui = Gui.draftToolBar
-        self.view = Draft.get3DView()
+        self.view = gui_utils.get_3d_view()
 
         if Gui.Selection.getSelection():
             self.proceed()
@@ -327,7 +337,7 @@ class Edit:
         if self.ui:
             self.removeTrackers()
         self.restoreSelectState(self.obj)
-        if Draft.getType(self.obj) == "Structure":
+        if utils.get_type(self.obj) == "Structure":
             if self.originalDisplayMode is not None:
                 self.obj.ViewObject.DisplayMode = self.originalDisplayMode
             if self.originalPoints is not None:
@@ -338,7 +348,7 @@ class Edit:
         self.originalDisplayMode = None
         self.originalPoints = None
         self.originalNodes = None
-        DraftTools.Modifier.finish(self)
+        super(Edit, self).finish()
         App.DraftWorkingPlane.restore()
         if Gui.Snapper.grid:
             Gui.Snapper.grid.set()
@@ -354,7 +364,7 @@ class Edit:
     def register_selection_callback(self):
         """Register callback for selection when command is launched."""
         self.unregister_selection_callback()
-        self.selection_callback = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
+        self.selection_callback = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
 
     def unregister_selection_callback(self):
         """
@@ -420,8 +430,11 @@ class Edit:
             if key == 101:  # "e"
                 self.display_tracker_menu(event)
             if key == 105:  # "i"
-                if Draft.getType(self.obj) == "Circle":
+                if utils.get_type(self.obj) == "Circle":
                     self.arcInvert(self.obj)
+            #if key == 65535: # BUG: delete key activate Std::Delete command at the same time!
+            #    print("DELETE PRESSED\n")
+            #    self.delPoint(event)
 
     def mousePressed(self, event_callback):
         """
@@ -520,7 +533,7 @@ class Edit:
         self.node = []
         self.editing = None
         self.showTrackers()
-        DraftTools.redraw3DView()
+        gui_tool_utils.redraw_3d_view()
 
     # -------------------------------------------------------------------------
     # UTILS
@@ -536,10 +549,10 @@ class Edit:
                                      + str(self.maxObjects) + "\n")
             return None
         for obj in selection:
-            if Draft.getType(obj) in self.supportedObjs:
+            if utils.get_type(obj) in self.supportedObjs:
                 self.edited_objects.append(obj)
                 continue
-            elif Draft.getType(obj) in self.supportedPartObjs:
+            elif utils.get_type(obj) in self.supportedPartObjs:
                 if obj.TypeId in self.supportedPartObjs:
                     self.edited_objects.append(obj)
                     continue
@@ -603,8 +616,9 @@ class Edit:
     def alignWorkingPlane(self):
         """Align working plane to self.obj."""
         if "Shape" in self.obj.PropertiesList:
-            if DraftTools.plane.weak:
-                DraftTools.plane.alignToFace(self.obj.Shape)
+            pass
+            #if DraftTools.plane.weak: TODO Use App.DraftWorkingPlane instead of DraftTools.plane
+            #    DraftTools.plane.alignToFace(self.obj.Shape)
         if self.planetrack:
             self.planetrack.set(self.editpoints[0])
 
@@ -658,7 +672,7 @@ class Edit:
                 self.finish()
             return
         self.trackers[obj.Name] = []
-        if Draft.getType(obj) == "BezCurve":
+        if utils.get_type(obj) == "BezCurve":
             self.resetTrackersBezier(obj)
         else:
             if obj.Name in self.trackers:
@@ -725,36 +739,36 @@ class Edit:
 
     def initGhost(self, obj):
         """Initialize preview ghost."""
-        if Draft.getType(obj) == "Wire":
+        if utils.get_type(obj) == "Wire":
             return trackers.wireTracker(obj.Shape)
-        elif Draft.getType(obj) == "BSpline":
+        elif utils.get_type(obj) == "BSpline":
             return trackers.bsplineTracker()
-        elif Draft.getType(obj) == "BezCurve":
+        elif utils.get_type(obj) == "BezCurve":
             return trackers.bezcurveTracker()
-        elif Draft.getType(obj) == "Circle":
+        elif utils.get_type(obj) == "Circle":
             return trackers.arcTracker()
 
     def updateGhost(self, obj, idx, pt):
-        if Draft.getType(obj) in ["Wire"]:
+        if utils.get_type(obj) in ["Wire"]:
             self.ghost.on()
             pointList = self.applyPlacement(obj.Points)
             pointList[idx] = pt
             if obj.Closed:
                 pointList.append(pointList[0])
             self.ghost.updateFromPointlist(pointList)
-        elif Draft.getType(obj) == "BSpline":
+        elif utils.get_type(obj) == "BSpline":
             self.ghost.on()
             pointList = self.applyPlacement(obj.Points)
             pointList[idx] = pt
             if obj.Closed:
                 pointList.append(pointList[0])
             self.ghost.update(pointList)
-        elif Draft.getType(obj) == "BezCurve":
+        elif utils.get_type(obj) == "BezCurve":
             self.ghost.on()
             plist = self.applyPlacement(obj.Points)
             pointList = self.recomputePointsBezier(obj,plist,idx,pt,obj.Degree,moveTrackers=True)
             self.ghost.update(pointList,obj.Degree)
-        elif Draft.getType(obj) == "Circle":
+        elif utils.get_type(obj) == "Circle":
             self.ghost.on()
             self.ghost.setCenter(obj.getGlobalPlacement().Base)
             self.ghost.setRadius(obj.Radius)
@@ -804,7 +818,7 @@ class Edit:
                         self.ghost.setEndPoint(pt)
                     elif self.editing == 3:
                         self.ghost.setRadius(self.invpl.multVec(pt).Length)
-        DraftTools.redraw3DView()
+        gui_tool_utils.redraw_3d_view()
 
     def applyPlacement(self, pointList):
         if self.pl:
@@ -828,7 +842,8 @@ class Edit:
     # -------------------------------------------------------------------------
 
     def addPoint(self, event):
-        """Execute callback, add point to obj and reset trackers."""
+        """Add point to obj and reset trackers.
+        """
         pos = event.getPosition()
         # self.setSelectState(self.obj, True)
         selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
@@ -843,10 +858,10 @@ class Edit:
                 self.obj = o
                 break
             self.setPlacement(self.obj)
-            if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
+            if utils.get_type(self.obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = App.Vector(info["x"], info["y"], info["z"])
                 self.addPointToWire(self.obj, pt, int(info["Component"][4:]))
-            elif Draft.getType(self.obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
+            elif utils.get_type(self.obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
                 # pt = self.point
                 if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
                     pt = App.Vector(info["x"], info["y"], info["z"])
@@ -861,7 +876,6 @@ class Edit:
 
     def addPointToWire(self, obj, newPoint, edgeIndex):
         newPoints = []
-        hasAddedPoint = False
         if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
             if obj.ChamferSize > 0 and obj.FilletRadius > 0:
                 edgeIndex = (edgeIndex + 3) / 4
@@ -870,7 +884,6 @@ class Edit:
 
         for index, point in enumerate(self.obj.Points):
             if index == edgeIndex:
-                hasAddedPoint = True
                 newPoints.append(self.invpl.multVec(newPoint))
             newPoints.append(point)
         if obj.Closed and edgeIndex == len(obj.Points):
@@ -880,10 +893,10 @@ class Edit:
 
     def addPointToCurve(self, point, info=None):
         import Part
-        if not (Draft.getType(self.obj) in ["BSpline", "BezCurve"]):
+        if not (utils.get_type(self.obj) in ["BSpline", "BezCurve"]):
             return
         pts = self.obj.Points
-        if Draft.getType(self.obj) == "BezCurve":
+        if utils.get_type(self.obj) == "BezCurve":
             if not info['Component'].startswith('Edge'):
                 return  # clicked control point
             edgeindex = int(info['Component'].lstrip('Edge')) - 1
@@ -912,7 +925,7 @@ class Edit:
             cont = 1 if (self.obj.Degree >= 2) else 0
             self.obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
         else:
-            if (Draft.getType(self.obj) in ["BSpline"]):
+            if (utils.get_type(self.obj) in ["BSpline"]):
                 if (self.obj.Closed == True):
                     curve = self.obj.Shape.Edges[0].Curve
                 else:
@@ -936,26 +949,25 @@ class Edit:
         ep = self.getEditNodeIndex(node)
 
         if ep is None:
-            return App.Console.PrintWarning(translate("draft",
-                                                      "Node not found")
-                                                      + "\n")
+            _msg = translate("draft", "Node not found")
+            App.Console.PrintWarning(_msg + "\n")
+            return 
 
         doc = App.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
         if self.obj is None:
             return
-        if not (Draft.getType(self.obj) in ["Wire", "BSpline", "BezCurve"]):
+        if not (utils.get_type(self.obj) in ["Wire", "BSpline", "BezCurve"]):
             return
         if len(self.obj.Points) <= 2:
-            App.Console.PrintWarning(translate("draft", 
-                                               "Active object must have more than two points/nodes") 
-                                               + "\n")
+            _msg = translate("draft", "Active object must have more than two points/nodes") 
+            App.Console.PrintWarning(_msg + "\n")
             return
 
         pts = self.obj.Points
         pts.pop(ep)
         self.obj.Points = pts
-        if Draft.getType(self.obj) == "BezCurve":
+        if utils.get_type(self.obj) == "BezCurve":
             self.obj.Proxy.resetcontinuity(self.obj)
         self.obj.recompute()
 
@@ -977,10 +989,8 @@ class Edit:
 
     def getEditPoints(self, obj):
         """Return a list of App.Vectors relative to object edit nodes.
-
-        (object)
         """
-        objectType = Draft.getType(obj)
+        objectType = utils.get_type(obj)
 
         if objectType in ["Wire", "BSpline"]:
             self.ui.editUi("Wire")
@@ -1022,7 +1032,7 @@ class Edit:
     def update(self, obj, nodeIndex, v):
         """Apply the App.Vector to the modified point and update self.obj."""
 
-        objectType = Draft.getType(obj)
+        objectType = utils.get_type(obj)
         App.ActiveDocument.openTransaction("Edit")
 
         if objectType in ["Wire", "BSpline"]:
@@ -1060,7 +1070,7 @@ class Edit:
         App.ActiveDocument.commitTransaction()
 
         try:
-            Gui.ActiveDocument.ActiveView.redraw()
+            gui_tool_utils.redraw_3d_view()
         except AttributeError as err:
             pass
 
@@ -1089,13 +1099,13 @@ class Edit:
                                                "This object does not support possible "
                                                "coincident points, please try again.")
                                      + "\n")
-            if Draft.getType(obj) in ["BezCurve"]:
+            if utils.get_type(obj) in ["BezCurve"]:
                 self.resetTrackers(obj)
             else:
                 self.trackers[obj.Name][nodeIndex].set(obj.getGlobalPlacement().
                     multVec(obj.Points[nodeIndex]))
             return
-        if Draft.getType(obj) in ["BezCurve"]:
+        if utils.get_type(obj) in ["BezCurve"]:
             pts = self.recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
 
         if obj.Closed:
@@ -1201,7 +1211,7 @@ class Edit:
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
         if point is None:
             return
-        if not (Draft.getType(obj) == "BezCurve"):
+        if not (utils.get_type(obj) == "BezCurve"):
             return
         pts = obj.Points
         deg = obj.Degree
@@ -1438,15 +1448,15 @@ class Edit:
 
 
     def getArcStart(self, obj, global_placement=False):#Returns object midpoint
-        if Draft.getType(obj) == "Circle":
+        if utils.get_type(obj) == "Circle":
             return self.pointOnCircle(obj, obj.FirstAngle, global_placement)
 
     def getArcEnd(self, obj, global_placement=False):#Returns object midpoint
-        if Draft.getType(obj) == "Circle":
+        if utils.get_type(obj) == "Circle":
             return self.pointOnCircle(obj, obj.LastAngle, global_placement)
 
     def getArcMid(self, obj, global_placement=False):#Returns object midpoint
-        if Draft.getType(obj) == "Circle":
+        if utils.get_type(obj) == "Circle":
             if obj.LastAngle > obj.FirstAngle:
                 midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
             else:
@@ -1455,7 +1465,7 @@ class Edit:
             return self.pointOnCircle(obj, midAngle, global_placement)
 
     def pointOnCircle(self, obj, angle, global_placement=False):
-        if Draft.getType(obj) == "Circle":
+        if utils.get_type(obj) == "Circle":
             px = obj.Radius * math.cos(math.radians(angle))
             py = obj.Radius * math.sin(math.radians(angle))
             p = App.Vector(px, py, 0.0)
@@ -1573,7 +1583,7 @@ class Edit:
         if obj.Base:
             # base points are added to self.trackers under wall-name key
             basepoints = []
-            if Draft.getType(obj.Base) in ["Wire","Circle","Rectangle",
+            if utils.get_type(obj.Base) in ["Wire","Circle","Rectangle",
                                             "Polygon", "Sketch"]:
                 basepoints = self.getEditPoints(obj.Base)
                 for point in basepoints:
@@ -1585,7 +1595,6 @@ class Edit:
         pass
 
     def updateWall(self, obj, nodeIndex, v):
-        import DraftVecUtils
         if nodeIndex == 0:
             delta= obj.getGlobalPlacement().inverse().multVec(v)
             vz=DraftVecUtils.project(delta,App.Vector(0, 0, 1))
@@ -1593,7 +1602,7 @@ class Edit:
                 obj.Height = vz.Length
         elif nodeIndex > 0:
             if obj.Base:
-                if Draft.getType(obj.Base) in ["Wire", "Circle", "Rectangle",
+                if utils.get_type(obj.Base) in ["Wire", "Circle", "Rectangle",
                                                "Polygon", "Sketch"]:
                     self.update(obj.Base, nodeIndex - 1, 
                         obj.Placement.inverse().multVec(v))
@@ -1602,7 +1611,6 @@ class Edit:
     # WINDOW-------------------------------------------------------------------
 
     def getWindowPts(self, obj):
-        import DraftGeomUtils
         editpoints = []
         pos = obj.Base.Placement.Base
         h = float(obj.Height) + pos.z
@@ -1726,20 +1734,19 @@ class Edit:
         return editpoints
 
     def updatePartBox(self, obj, nodeIndex, v):
-        import DraftVecUtils
         delta = self.invpl.multVec(v)
         if self.editing == 0:
             self.obj.Placement.Base = v
             self.setPlacement(self.obj)
         elif self.editing == 1:
-            xApp.Vector = DraftVecUtils.project(delta, App.Vector(1, 0, 0))
-            self.obj.Length = xApp.Vector.Length
+            _vector = DraftVecUtils.project(delta, App.Vector(1, 0, 0))
+            self.obj.Length = _vector.Length
         elif self.editing == 2:
-            xApp.Vector = DraftVecUtils.project(delta, App.Vector(0, 1, 0))
-            self.obj.Width = xApp.Vector.Length
+            _vector = DraftVecUtils.project(delta, App.Vector(0, 1, 0))
+            self.obj.Width = _vector.Length
         elif self.editing == 3:
-            xApp.Vector = DraftVecUtils.project(delta, App.Vector(0, 0, 1))
-            self.obj.Height = xApp.Vector.Length
+            _vector = DraftVecUtils.project(delta, App.Vector(0, 0, 1))
+            self.obj.Height = _vector.Length
         self.trackers[self.obj.Name][0].set(self.obj.Placement.Base)
         self.trackers[self.obj.Name][1].set(self.pl.multVec(App.Vector(self.obj.Length,0,0)))
         self.trackers[self.obj.Name][2].set(self.pl.multVec(App.Vector(0,self.obj.Width,0)))
@@ -1758,9 +1765,9 @@ class Edit:
             doc = self.overNode.get_doc_name()
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             ep = self.overNode.get_subelement_index()
-            if Draft.getType(obj) in ["Line", "Wire"]:
+            if utils.get_type(obj) in ["Line", "Wire"]:
                 actions = ["delete point"]
-            elif Draft.getType(obj) in ["Circle"]:
+            elif utils.get_type(obj) in ["Circle"]:
                 if obj.FirstAngle != obj.LastAngle:
                     if ep == 0:  # user is over arc start point
                         actions = ["move arc"]
@@ -1770,7 +1777,7 @@ class Edit:
                         actions = ["set last angle"]
                     elif ep == 3:  # user is over arc mid point
                         actions = ["set radius"]
-            elif Draft.getType(obj) in ["BezCurve"]:
+            elif utils.get_type(obj) in ["BezCurve"]:
                 actions = ["make sharp", "make tangent",
                            "make symmetric", "delete point"]
             else:
@@ -1779,9 +1786,9 @@ class Edit:
             # if user is over an edited object
             pos = self.event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
-            if Draft.getType(obj) in ["Line", "Wire", "BSpline", "BezCurve"]:
+            if utils.get_type(obj) in ["Line", "Wire", "BSpline", "BezCurve"]:
                 actions = ["add point"]
-            elif Draft.getType(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
+            elif utils.get_type(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
                 actions = ["invert arc"]
         if actions is None:
             return
