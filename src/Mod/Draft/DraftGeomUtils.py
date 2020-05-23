@@ -190,40 +190,13 @@ def mirror(point, edge):
         return None
 
 
-def isClockwise(edge, ref=None):
-    """Return True if a circle-based edge has a clockwise direction."""
-    if not geomType(edge) == "Circle":
-        return True
-    v1 = edge.Curve.tangent(edge.ParameterRange[0])[0]
-    if DraftVecUtils.isNull(v1):
-        return True
-    # we take an arbitrary other point on the edge that has little chances to be aligned with the first one...
-    v2 = edge.Curve.tangent(edge.ParameterRange[0]+0.01)[0]
-    n = edge.Curve.Axis
-    # if that axis points "the wrong way" from the reference, we invert it
-    if not ref:
-        ref = Vector(0,0,1)
-    if n.getAngle(ref) > math.pi/2:
-        n = n.negative()
-    if DraftVecUtils.angle(v1,v2,n) < 0:
-        return False
-    if n.z < 0:
-        return False
-    return True
+from draftgeoutils.arcs import isClockwise
 
 
 from draftgeoutils.edges import isSameLine
 
 
-def isWideAngle(edge):
-    """returns True if the given edge is an arc with angle > 180 degrees"""
-    if geomType(edge) != "Circle":
-        return False
-    r = edge.Curve.Radius
-    total = 2*r*math.pi
-    if edge.Length > total/2:
-        return True
-    return False
+from draftgeoutils.arcs import isWideAngle
 
 
 def findClosest(basepoint, pointslist):
@@ -1485,25 +1458,7 @@ def circleFrom2PointsRadius(p1, p2, radius):
     else: return None
 
 
-def arcFrom2Pts(firstPt, lastPt, center, axis=None):
-    """Build an arc with center and 2 points, can be oriented with axis."""
-
-    radius1  = firstPt.sub(center).Length
-    radius2  = lastPt.sub(center).Length
-    if round(radius1-radius2,4) != 0 : # (PREC = 4 = same as Part Module),  Is it possible ?
-        return None
-
-    thirdPt = Vector(firstPt.sub(center).add(lastPt).sub(center))
-    thirdPt.normalize()
-    thirdPt.scale(radius1,radius1,radius1)
-    thirdPt = thirdPt.add(center)
-    newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
-    if not axis is None and newArc.Curve.Axis.dot(axis) < 0 :
-        thirdPt = thirdPt.sub(center)
-        thirdPt.scale(-1,-1,-1)
-        thirdPt = thirdPt.add(center)
-        newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
-    return newArc
+from draftgeoutils.arcs import arcFrom2Pts
 
 
 #############################33 to include

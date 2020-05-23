@@ -37,6 +37,7 @@ SET (Draft_geoutils
     draftgeoutils/faces.py
     draftgeoutils/geometry.py
     draftgeoutils/wires.py
+    draftgeoutils/arcs.py
 )
 
 SET(Draft_tests
