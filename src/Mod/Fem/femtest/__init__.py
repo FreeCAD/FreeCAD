@@ -36,5 +36,5 @@ def load_tests(loader, tests, pattern):
 
 def cover_tests():
     return (
-        femtest.app.cover_tests() +
-        femtest.gui.cover_tests())
+        femtest.app.cover_tests() + femtest.gui.cover_tests()
+    )

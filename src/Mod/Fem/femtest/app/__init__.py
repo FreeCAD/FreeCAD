@@ -36,4 +36,5 @@ def cover_tests():
         "femobjects",
         "femresult",
         "femsolver",
-        "femtools"]
+        "femtools"
+    ]
