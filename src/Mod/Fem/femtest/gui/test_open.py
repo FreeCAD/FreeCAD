@@ -77,9 +77,20 @@ class TestObjectOpen(unittest.TestCase):
             "open"
         )
 
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestObjectOpen tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -93,15 +104,17 @@ class TestObjectOpen(unittest.TestCase):
         fcc_print("load master head document objects")
 
         # get a document with all FEM objects
-        doc = create_all_fem_objects_doc(self.document)
+        from femtest.app.test_object import create_all_fem_objects_doc
+        self.document = create_all_fem_objects_doc(self.document)
 
         # save and load the document
         file_path = join(tempfile.gettempdir(), "all_objects_head.FCStd")
-        doc.saveAs(file_path)
+        self.document.saveAs(file_path)
+        FreeCAD.closeDocument(self.document.Name)
         self.document = FreeCAD.open(file_path)
 
         # FeaturePythons view provider
-        self.compare_feature_pythons_class_gui(doc)
+        self.compare_feature_pythons_class_gui(self.document)
 
     # ********************************************************************************************
     def test_femobjects_open_de9b3fb438(
@@ -116,11 +129,11 @@ class TestObjectOpen(unittest.TestCase):
         # the document was created by running the object create unit test
         # FreeCAD --run-test "femtest.app.test_object.TestObjectCreate.test_femobjects_make"
         fcc_print("load old document objects")
+        FreeCAD.closeDocument(self.document.Name)  # close the empty document from setUp first
         self.document = FreeCAD.open(join(self.test_file_dir, "all_objects_de9b3fb438.FCStd"))
-        doc = self.document
 
         # FeaturePythons view provider
-        self.compare_feature_pythons_class_gui(doc)
+        self.compare_feature_pythons_class_gui(self.document)
 
     # ********************************************************************************************
     def compare_feature_pythons_class_gui(
@@ -302,14 +315,6 @@ class TestObjectOpen(unittest.TestCase):
             ViewProxy,
             doc.Heat.ViewObject.Proxy.__class__
         )
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # setUp is executed after every test
-        # FreeCAD.closeDocument(self.document.Name)
-        pass
 
 
 """
