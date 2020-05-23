@@ -120,36 +120,49 @@ def get_fem_test_defs(
             if ln.startswith("def test"):
                 ln = ln.lstrip("def ")
                 ln = ln.split("(")[0]
+                if ln == "test_00print":
+                    continue
                 method_path = "femtest.app.{}.{}.{}".format(module_name, class_name, ln)
                 collected_test_methods.append(method_path)
         tfile.close()
 
-    # output prints
-    print("")
-    print("")
-    print("# modules")
+    # write to file
+    file_path = join(tempfile.gettempdir(), "test_commands.sh")
+    cf = open(file_path, "w")
+    cf.write("# created by Python\n")
+    cf.write("'''\n")
+    cf.write("from femtest.app.support_utils import get_fem_test_defs\n")
+    cf.write("get_fem_test_defs()\n")
+    cf.write("\n")
+    cf.write("\n")
+    cf.write("'''\n")
+    cf.write("\n")
+    cf.write("# modules\n")
     for m in collected_test_modules:
-        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
-    print("")
-    print("")
-    print("# classes")
+        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+    cf.write("\n")
+    cf.write("\n")
+    cf.write("# classes\n")
     for m in collected_test_classes:
-        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
-    print("")
-    print("")
-    print("# methods")
+        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+    cf.write("\n")
+    cf.write("\n")
+    cf.write("# methods\n")
     for m in collected_test_methods:
-        print("make -j 4 && ./bin/FreeCADCmd -t {}".format(m))
-    print("")
-    print("")
-    print("# methods in FreeCAD")
+        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
+    cf.write("\n")
+    cf.write("\n")
+    cf.write("# methods in FreeCAD\n")
     for m in collected_test_methods:
-        print(
+        cf.write(
+            "\nimport unittest\n"
             "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(\n"
             "    '{}'\n"
             "))\n"
             .format(m)
         )
+    cf.close()
+    print("The file was saved in:{}".format(file_path))
 
 
 def compare_inp_files(
