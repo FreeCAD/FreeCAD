@@ -39,6 +39,7 @@ SET (Draft_geoutils
     draftgeoutils/wires.py
     draftgeoutils/arcs.py
     draftgeoutils/fillets.py
+    draftgeoutils/offsets.py
 )
 
 SET(Draft_tests
