@@ -35,18 +35,17 @@ from femtest.app.test_mesh import TestMeshEleTetra10 as FemTest08
 from femtest.app.test_result import TestResult as FemTest09
 from femtest.app.test_ccxtools import TestCcxTools as FemTest10
 from femtest.app.test_solverframework import TestSolverFrameWork as FemTest11
-
-from femtest.app.test_tools import TestCreateObject
-from femtest.app.test_tools import TestFindAnalysisOfMember
-from femtest.app.test_tools import TestGetMember
-from femtest.app.test_tools import TestIsDerivedFrom
-from femtest.app.test_tools import TestGetSingleMember
-from femtest.app.test_tools import TestGetSeveralMember
-from femtest.app.test_tools import TestGetMeshToSolve
-from femtest.app.test_tools import TestTypeOfObj
-from femtest.app.test_tools import TestIsOfType
-from femtest.app.test_tools import TestGetBoundBoxOfAllDocumentShapes
-from femtest.app.test_tools import TestGetRefshapeType
+from femtest.app.test_tools import TestCreateObject as FemTest12
+from femtest.app.test_tools import TestFindAnalysisOfMember as FemTest13
+from femtest.app.test_tools import TestGetMember as FemTest14
+from femtest.app.test_tools import TestIsDerivedFrom as FemTest15
+from femtest.app.test_tools import TestGetSingleMember as FemTest16
+from femtest.app.test_tools import TestGetSeveralMember as FemTest17
+from femtest.app.test_tools import TestGetMeshToSolve as FemTest18
+from femtest.app.test_tools import TestTypeOfObj as FemTest19
+from femtest.app.test_tools import TestIsOfType as FemTest20
+from femtest.app.test_tools import TestGetBoundBoxOfAllDocumentShapes as FemTest21
+from femtest.app.test_tools import TestGetRefshapeType as FemTest22
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
@@ -60,3 +59,14 @@ False if FemTest08.__name__ else True
 False if FemTest09.__name__ else True
 False if FemTest10.__name__ else True
 False if FemTest11.__name__ else True
+False if FemTest12.__name__ else True
+False if FemTest13.__name__ else True
+False if FemTest14.__name__ else True
+False if FemTest15.__name__ else True
+False if FemTest16.__name__ else True
+False if FemTest17.__name__ else True
+False if FemTest18.__name__ else True
+False if FemTest19.__name__ else True
+False if FemTest20.__name__ else True
+False if FemTest21.__name__ else True
+False if FemTest22.__name__ else True

@@ -41,7 +41,7 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import unittest
+# import unittest
 import os.path
 
 import FreeCAD
@@ -147,7 +147,7 @@ class SolverTest(AppTestSupport.BaseTest):
 
     def addSolver(self, proxy):
         """ Add solver to the simulations analysis.
-        
+
         Same as :py:func:`femtest.app.support_solver.addMember` but tells the
         system that the newly created object is the one and only solver of the
         simulation.
@@ -163,7 +163,7 @@ class SolverTest(AppTestSupport.BaseTest):
 
     def addEquation(self, eqId):
         """ Add equation to the solver of the simulation.
-        
+
         :param eqId:
             The string id of the equation to add to the solver. Equation ids
             are interpreted by the solver. The same id should be interpreted
@@ -199,7 +199,7 @@ class SolverTest(AppTestSupport.BaseTest):
 
     def runSimulation(self):
         """ Run the simulation under test.
-        
+
         Run the simulation previously but together with the facilities of this
         class. At least :py:func:`femtest.app.support_solver.addSolver` must have
         been called before calling this function. This method blocks till the
@@ -269,7 +269,7 @@ class SolverTest(AppTestSupport.BaseTest):
             obj.load(r)
 
     def _isclose(self, a, b, rel_tol=1e-09, abs_tol=0.0):
-        return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+        return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
     def _addFilter(self, f):
         self.pipe.Filter += [f]

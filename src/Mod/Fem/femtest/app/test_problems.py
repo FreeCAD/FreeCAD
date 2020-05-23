@@ -33,12 +33,13 @@ __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
 
-import unittest
+# import unittest
 
-import FreeCAD
+# import FreeCAD
+
 from . import support_solver
-import femsolver.elmer.solver
 import femsolver.calculix.solver
+import femsolver.elmer.solver
 
 
 class TestCantileverEndLoad(support_solver.SolverTest):
@@ -68,11 +69,11 @@ class TestCantileverEndLoad(support_solver.SolverTest):
 
     def assertResult(self, variable, error):
         t = 0.0793 * error
-        self.assertDataAtPoint(variable, (  0, 0, 0), 0.0000, abs_tol=t)
+        self.assertDataAtPoint(variable, (0, 0, 0), 0.0000, abs_tol=t)
         self.assertDataAtPoint(variable, (2.5, 0, 0), 0.0068, abs_tol=t)
-        self.assertDataAtPoint(variable, (  5, 0, 0), 0.0248, abs_tol=t)
+        self.assertDataAtPoint(variable, (5, 0, 0), 0.0248, abs_tol=t)
         self.assertDataAtPoint(variable, (7.5, 0, 0), 0.0502, abs_tol=t)
-        self.assertDataAtPoint(variable, ( 10, 0, 0), 0.0793, abs_tol=t)
+        self.assertDataAtPoint(variable, (10, 0, 0), 0.0793, abs_tol=t)
 
     def testWithElmer(self):
         self.addSolver(femsolver.elmer.solver.Proxy)
@@ -115,11 +116,11 @@ class TestCantileverUniformLoad(support_solver.SolverTest):
 
     def assertResult(self, variable, error):
         t = 0.1488 * error
-        self.assertDataAtPoint(variable, (  0, 0, 0), 0.0000, abs_tol=t)
+        self.assertDataAtPoint(variable, (0, 0, 0), 0.0000, abs_tol=t)
         self.assertDataAtPoint(variable, (2.5, 0, 0), 0.0157, abs_tol=t)
-        self.assertDataAtPoint(variable, (  5, 0, 0), 0.0527, abs_tol=t)
+        self.assertDataAtPoint(variable, (5, 0, 0), 0.0527, abs_tol=t)
         self.assertDataAtPoint(variable, (7.5, 0, 0), 0.0994, abs_tol=t)
-        self.assertDataAtPoint(variable, ( 10, 0, 0), 0.1488, abs_tol=t)
+        self.assertDataAtPoint(variable, (0, 0, 0), 0.1488, abs_tol=t)
 
     def testWithElmer(self):
         self.addSolver(femsolver.elmer.solver.Proxy)

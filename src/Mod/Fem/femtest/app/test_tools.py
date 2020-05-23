@@ -24,51 +24,53 @@ Contains test cases for all kinds of utility/helper methods of the Fem module.
 Those methods are all contained within the :py:mod:`femtools` package.
 """
 
-
 __title__ = "Test module for solver"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+# import unittest
 
-import unittest
 import AppTestSupport
-
 import ObjectsFem
-import femtools.femutils as femutils
-import femsolver.elmer.solver as solver
+from femsolver.elmer import solver
+from femtools import femutils
 
 
 class TestCreateObject(AppTestSupport.DocumentTest):
 
     def testSimpleCreateObject(self):
         femutils.createObject(
-            self.doc, "Solver", solver.Proxy, solver.ViewProxy);
+            self.doc, "Solver", solver.Proxy, solver.ViewProxy
+        )
         self.assertIsNotNone(self.doc.getObject("Solver"))
 
     def testNameConflictOnCreation(self):
         femutils.createObject(
-            self.doc, "Solver", solver.Proxy, solver.ViewProxy);
+            self.doc, "Solver", solver.Proxy, solver.ViewProxy
+        )
         self.assertEqual(len(self.doc.Objects), 1)
         femutils.createObject(
-            self.doc, "Solver", solver.Proxy, solver.ViewProxy);
+            self.doc, "Solver", solver.Proxy, solver.ViewProxy
+        )
         self.assertEqual(len(self.doc.Objects), 2)
 
     def testAutomaticNameGeneration(self):
         femutils.createObject(
-            self.doc, "", solver.Proxy, solver.ViewProxy);
+            self.doc, "", solver.Proxy, solver.ViewProxy
+        )
         self.assertEqual(len(self.doc.Objects), 1)
 
     def testDocArgumentNone(self):
         with self.assertRaises(Exception) as cm:
-            femutils.createObject(None, "", solver.Proxy, solver.ViewProxy);
+            femutils.createObject(None, "", solver.Proxy, solver.ViewProxy)
 
     def testNameArgumentNone(self):
         with self.assertRaises(Exception) as cm:
-            femutils.createObject(self.doc, None, solver.Proxy, solver.ViewProxy);
+            femutils.createObject(self.doc, None, solver.Proxy, solver.ViewProxy)
 
     def testProxyArgumentNone(self):
         with self.assertRaises(Exception) as cm:
-            femutils.createObject(self.doc, "", None, solver.ViewProxy);
+            femutils.createObject(self.doc, "", None, solver.ViewProxy)
 
 #    def testViewProxyArgumentNone(self):
 #        with self.assertRaises(Exception) as cm:
@@ -79,16 +81,16 @@ class TestFindAnalysisOfMember(AppTestSupport.DocumentTest):
 
     def testMemberInFirstAnalysis(self):
         a = self.doc.addObject("Fem::FemAnalysis")
-        b = self.doc.addObject("Fem::FemAnalysis")
-        c = self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         a.addObject(member)
         result = femutils.findAnalysisOfMember(member)
         self.assertEqual(a, result)
 
     def testMemberInLastAnalysis(self):
-        a = self.doc.addObject("Fem::FemAnalysis")
-        b = self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
         c = self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         c.addObject(member)
@@ -103,22 +105,22 @@ class TestFindAnalysisOfMember(AppTestSupport.DocumentTest):
         self.assertEqual(a, result)
 
     def testMemberInNoAnalysis(self):
-        a = self.doc.addObject("Fem::FemAnalysis")
-        b = self.doc.addObject("Fem::FemAnalysis")
-        c = self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         result = femutils.findAnalysisOfMember(member)
         self.assertIsNone(result)
 
     def testMemberInGroup(self):
         a = self.doc.addObject("App::DocumentObjectGroup")
-        b = self.doc.addObject("Fem::FemAnalysis")
-        c = self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
+        self.doc.addObject("Fem::FemAnalysis")
         member = solver.create(self.doc)
         a.addObject(member)
         result = femutils.findAnalysisOfMember(member)
         self.assertIsNone(result)
-        
+
 
 class TestGetMember(AppTestSupport.DocumentTest):
 
@@ -250,7 +252,7 @@ class TestGetSeveralMember(AppTestSupport.DocumentTest):
 
     def testVertexSubtype(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
-        cube = self.doc.addObject("Part::Box","Box")
+        cube = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         constraint = ObjectsFem.makeConstraintFixed(self.doc)
         constraint.References = [(cube, ("Vertex1", "Vertex2"))]
@@ -271,7 +273,7 @@ class TestGetMeshToSolve(AppTestSupport.DocumentTest):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         analysis.addObject(ObjectsFem.makeSolverCalculix(self.doc))
         self.assertIsNone(femutils.get_mesh_to_solve(analysis)[0])
-        
+
     def testMultipleMeshes(self):
         analysis = self.doc.addObject("Fem::FemAnalysis")
         analysis.addObject(ObjectsFem.makeMeshGmsh(self.doc))
@@ -314,15 +316,15 @@ class TestGetBoundBoxOfAllDocumentShapes(AppTestSupport.DocumentTest):
         self.assertIsNone(box)
 
     def testSingleShape(self):
-        obj = self.doc.addObject("Part::Box","Box")
+        obj = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         box = femutils.getBoundBoxOfAllDocumentShapes(self.doc)
         box.isInside(obj.Shape.BoundBox)
 
     def testMultipleShapes(self):
-        a = self.doc.addObject("Part::Box","Box")
-        b = self.doc.addObject("Part::Box","Box")
-        c = self.doc.addObject("Part::Box","Box")
+        a = self.doc.addObject("Part::Box", "Box")
+        b = self.doc.addObject("Part::Box", "Box")
+        c = self.doc.addObject("Part::Box", "Box")
         b.Width = 20
         c.Height = 5
         self.doc.recompute()
@@ -335,7 +337,7 @@ class TestGetBoundBoxOfAllDocumentShapes(AppTestSupport.DocumentTest):
 class TestGetRefshapeType(AppTestSupport.DocumentTest):
 
     def testVertexSubtype(self):
-        cube = self.doc.addObject("Part::Box","Box")
+        cube = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         constraint = ObjectsFem.makeConstraintFixed(self.doc)
         constraint.References = [(cube, ("Vertex1", "Vertex2"))]
@@ -343,7 +345,7 @@ class TestGetRefshapeType(AppTestSupport.DocumentTest):
         self.assertEqual(y, "Vertex")
 
     def testEdgeSubtype(self):
-        cube = self.doc.addObject("Part::Box","Box")
+        cube = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         constraint = ObjectsFem.makeConstraintFixed(self.doc)
         constraint.References = [(cube, ("Edge1", "Edge2"))]
@@ -351,7 +353,7 @@ class TestGetRefshapeType(AppTestSupport.DocumentTest):
         self.assertEqual(y, "Edge")
 
     def testFaceSubtype(self):
-        cube = self.doc.addObject("Part::Box","Box")
+        cube = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         constraint = ObjectsFem.makeConstraintFixed(self.doc)
         constraint.References = [(cube, ("Face1", "Face2"))]
@@ -359,7 +361,7 @@ class TestGetRefshapeType(AppTestSupport.DocumentTest):
         self.assertEqual(y, "Face")
 
     def testSolidSubtype(self):
-        cube = self.doc.addObject("Part::Box","Box")
+        cube = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         constraint = ObjectsFem.makeMaterialSolid(self.doc)
         constraint.References = [(cube, ("Solid1",))]
@@ -367,7 +369,9 @@ class TestGetRefshapeType(AppTestSupport.DocumentTest):
         self.assertEqual(y, "Solid")
 
 
-#class TestPydecode(unittest.TestCase):
-#
-#    def testConvertString(self):
-#        str(femutils.pydecode("Hello, World!"))
+"""
+class TestPydecode(unittest.TestCase):
+
+    def testConvertString(self):
+         str(femutils.pydecode("Hello, World!"))
+"""

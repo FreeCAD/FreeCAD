@@ -1,9 +1,10 @@
-from PySide import QtCore
+# from PySide import QtCore
 from PySide import QtGui
 from PySide.QtTest import QTest
 
-import FreeCAD
-import FreeCADGui
+# import FreeCAD
+# import FreeCADGui
+
 import GuiTestSupport
 import ObjectsFem
 
