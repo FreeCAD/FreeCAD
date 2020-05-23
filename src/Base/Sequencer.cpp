@@ -237,7 +237,8 @@ ConsoleSequencer::~ConsoleSequencer ()
 
 void ConsoleSequencer::setText (const char* pszTxt)
 {
-    printf("%s...\n", pszTxt);
+    if (Base::Console().Get("Console")->bMsg)
+        printf("%s...\n", pszTxt);
 }
 
 void ConsoleSequencer::startStep()
@@ -246,14 +247,16 @@ void ConsoleSequencer::startStep()
 
 void ConsoleSequencer::nextStep( bool )
 {
-    if (this->nTotalSteps != 0)
+    if (Base::Console().Get("Console")->bMsg && (this->nTotalSteps != 0))
         printf("\t\t\t\t\t\t(%2.1f %%)\t\r", (float)progressInPercent());
 }
 
 void ConsoleSequencer::resetData()
 {
-    SequencerBase::resetData();
-    printf("\t\t\t\t\t\t\t\t\r");
+    if (Base::Console().Get("Console")->bMsg) {
+        SequencerBase::resetData();
+        printf("\t\t\t\t\t\t\t\t\r");
+    }
 }
 
 // ---------------------------------------------------------
