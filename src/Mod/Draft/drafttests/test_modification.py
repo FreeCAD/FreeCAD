@@ -468,11 +468,13 @@ class DraftModification(unittest.TestCase):
 
         number = 4
         translation = Vector(0, 1, 0)
+        subelements = "Edge1"
         align = False
         _msg("  Path Array")
         _msg("  number={}, translation={}".format(number, translation))
-        _msg("  align={}".format(align))
-        obj = Draft.make_path_array(poly, wire, number, translation, align)
+        _msg("  subelements={}, align={}".format(subelements, align))
+        obj = Draft.make_path_array(poly, wire, number,
+                                    translation, subelements, align)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_point_array(self):
