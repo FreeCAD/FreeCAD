@@ -26,7 +26,7 @@ analytic calculation to the approximation of the integrated solvers. See the
 documentation for :py:class:`SolverTest` for more information.
 
 Textbook simulations refere to simple simulations whose results can be
-calcualted on paper. The advantage of running such simulations when testing is
+calculated on paper. The advantage of running such simulations when testing is
 that we know what the results are supposed to be. After running the simulation
 with an integrated solver like Elmer or Calculix we can compare the results
 with the results calculated on paper.
@@ -124,7 +124,7 @@ class SolverTest(AppTestSupport.BaseTest):
 
         :param proxy:
             The python proxy object for the DocumentObject that shall become a
-            new member of the documentation. It must be suported by the fem
+            new member of the documentation. It must be supported by the fem
             object creation mechanism (must have a BaseType member).
 
         :raises TestSetupError:
@@ -154,7 +154,7 @@ class SolverTest(AppTestSupport.BaseTest):
 
         :param proxy:
             The python proxy object for the solver DocumentObject that shall
-            become a new member of the documentation. It must be suported by
+            become a new member of the documentation. It must be supported by
             the fem object creation mechanism (must have a BaseType member).
 
         :returns: The newly created solver DocumentObject.

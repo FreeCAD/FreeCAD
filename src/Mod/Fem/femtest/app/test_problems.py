@@ -46,7 +46,7 @@ class TestCantileverEndLoad(support_solver.SolverTest):
 
     A beam that is fixed on one side and has a downwards load applied to it on
     the opposite side. No other forces (like gravity) are considered. The
-    dimensions (LxWxH) of the beam are 10x3x2 mm. A force of 100 N is appied on
+    dimensions (LxWxH) of the beam are 10x3x2 mm. A force of 100 N is applied on
     the end of the beam that is not fixed. The displacement can be calculated
     with the following formular: d = (F*x^2)/(6*E*I) * (3*L-x) where E is the
     elastic modulus of the material and I = (w*h^3)/12 where w and h are the
@@ -91,7 +91,7 @@ class TestCantileverUniformLoad(support_solver.SolverTest):
 
     A beam that is fixed on one side and has a uniform load it on the top. No
     other forces (like gravity) are considered. The dimensions (LxWxH) of the
-    beam are 10x3x2 mm. A force of 500 N is appied on the top surface of the
+    beam are 10x3x2 mm. A force of 500 N is applied on the top surface of the
     beam pressind downwards. The displacement can be calculated with the
     following formular: d = (qx^2)/(24EI)*(6L^2 - 4Lx + x^2) where E is the
     elastic modulus of the material and I = (w*h^3)/12 where w and h are the
