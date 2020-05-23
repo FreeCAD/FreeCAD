@@ -109,8 +109,6 @@ ViewProviderDatum::ViewProviderDatum()
 
     oldWb = "";
     oldTip = NULL;
-
-    ShadowStyle.setValue("No shadowing");
 }
 
 ViewProviderDatum::~ViewProviderDatum()

@@ -28,10 +28,12 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
 #include "ViewProviderDatumPoint.h"
-// #include <Mod/Part/Gui/SoBrepPointSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <App/Application.h>
@@ -56,6 +58,28 @@ ViewProviderDatumPoint::~ViewProviderDatumPoint()
 void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
     ViewProviderDatum::attach ( obj );
 
+    int pointSize = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9);
+
+#if 1
+    // The advantage of using SoBrepPointSet
+    // *) highlight (with auto highlight color change)
+    // *) no shadow
+    // *) hidden line pattern
+
+    auto pCoords = new SoCoordinate3();
+    pCoords->point.set1Value(0,SbVec3f(0,0,0));
+
+    auto pcPointStyle = new SoDrawStyle();
+    pcPointStyle->style = SoDrawStyle::POINTS;
+    pcPointStyle->pointSize = pointSize;
+
+    auto pointSet = new PartGui::SoBrepPointSet;
+
+    getShapeRoot ()->addChild(pcPointStyle);
+    getShapeRoot ()->addChild(pCoords);
+    getShapeRoot ()->addChild(pointSet);
+#else
     SoMFVec3f v;
     v.setNum(1);
     v.set1Value(0, 0,0,0);
@@ -68,9 +92,9 @@ void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
     SoMarkerSet* marker = new SoMarkerSet();
     marker->vertexProperty = vprop;
     marker->numPoints = 1;
-    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
-
+    marker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", pointSize);
     getShapeRoot ()->addChild(marker);
+#endif
 }
 
 void ViewProviderDatumPoint::onChanged (const App::Property* prop) {

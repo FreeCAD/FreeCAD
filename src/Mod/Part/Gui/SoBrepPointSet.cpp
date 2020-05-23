@@ -119,10 +119,10 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Copied from SoShape::shouldGLRender(). Put here for early render skipping
-    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
     const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
     unsigned int shapestyleflags = shapestyle->getFlags();
-    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+    if ((shapestyleflags & SoShapeStyleElement::INVISIBLE)
+            || (shapestyleflags & SoShapeStyleElement::SHADOWMAP))
         return;
     if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
         if (getBoundingBoxCache()->isValid(state)) {
