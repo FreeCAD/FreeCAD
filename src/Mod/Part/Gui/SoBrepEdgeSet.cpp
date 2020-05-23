@@ -256,11 +256,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
-            if(Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
-                if(!pushed) {
-                    pushed = true;
-                    state->push();
-                }
+            if(!Gui::SoFCDisplayModeElement::showHiddenLines(state))
+                inherited::GLRender(action);
+            else {
+                state->push();
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
                 SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
                 auto lineColor = Gui::SoFCDisplayModeElement::getLineColor(state);
@@ -269,17 +268,18 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
                     SoLazyElement::setPacked(state, this, 1, &color, false);
                 }
+                inherited::GLRender(action);
+                state->pop();
             }
 
-            inherited::GLRender(action);
         }
-
-        if(pushed)
-            state->pop();
 
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);
         renderHighlight(action,ctx);
+
+        if(pushed)
+            state->pop();
     }
 }
 
