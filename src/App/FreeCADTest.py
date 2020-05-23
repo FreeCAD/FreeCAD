@@ -60,8 +60,11 @@ supposted to cover/test. This information is used to produce a meaningful
 test coverage report.
 """
 
+import os
 import sys
 import importlib
+
+import yaml
 
 try:
     import coverage
@@ -150,6 +153,14 @@ def createCoverageObj(*args, **kwargs):
         return coverage.Coverage(*args, **kwargs)
 
 
+if (FreeCAD.ConfigGet("ConsoleLog") == ""):
+    FreeCAD.Console.SetStatus("Console", "Log", 0)
+    FreeCAD.Console.SetStatus("Console", "Msg", 0)
+    FreeCAD.Console.SetStatus("Console", "Wrn", 0)
+    FreeCAD.Console.SetStatus("Console", "Err", 1)
+
+if hasattr(yaml, "warnings"):
+    yaml.warnings({'YAMLLoadWarning': False})
 path = FreeCAD.ConfigGet("TestCase")
 cov = None
 if doCoverage():
