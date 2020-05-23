@@ -322,28 +322,7 @@ def getCubicDimensions(shape):
     return [FreeCAD.Placement(mat),round(vx.Length,precision()),round(vy.Length,precision()),round(vz.Length,precision())]
 
 
-def removeInterVertices(wire):
-        """removeInterVertices(wire) - remove unneeded vertices (those that
-        are in the middle of a straight line) from a wire, returns a new wire."""
-        edges = Part.__sortEdges__(wire.Edges)
-        nverts = []
-        def getvec(v1,v2):
-                if not abs(round(v1.getAngle(v2),precision()) in [0,round(math.pi,precision())]):
-                        nverts.append(edges[i].Vertexes[-1].Point)
-        for i in range(len(edges)-1):
-                vA = vec(edges[i])
-                vB = vec(edges[i+1])
-                getvec(vA,vB)
-        vA = vec(edges[-1])
-        vB = vec(edges[0])
-        getvec(vA,vB)
-        if nverts:
-                if wire.isClosed():
-                        nverts.append(nverts[0])
-                w = Part.makePolygon(nverts)
-                return w
-        else:
-                return wire
+from draftgeoutils.wires import removeInterVertices
 
 
 def arcFromSpline(edge):
@@ -419,74 +398,13 @@ def getCircleFromSpline(edge):
 from draftgeoutils.wires import curvetowire
 
 
-def cleanProjection(shape, tessellate=True, seglength=0.05):
-    """Return a valid compound of edges, by recreating them."""
-    # this is because the projection algorithm somehow creates wrong shapes.
-    # they display fine, but on loading the file the shape is invalid
-    # Now with tanderson's fix to ProjectionAlgos, that isn't the case, but this
-    # can be used for tessellating ellipses and splines for DXF output-DF
-    oldedges = shape.Edges
-    newedges = []
-    for e in oldedges:
-        try:
-            if geomType(e) == "Line":
-                newedges.append(e.Curve.toShape())
-            elif geomType(e) == "Circle":
-                if len(e.Vertexes) > 1:
-                    mp = findMidpoint(e)
-                    a = Part.Arc(e.Vertexes[0].Point,mp,e.Vertexes[-1].Point).toShape()
-                    newedges.append(a)
-                else:
-                    newedges.append(e.Curve.toShape())
-            elif geomType(e) == "Ellipse":
-                if tessellate:
-                    newedges.append(Part.Wire(curvetowire(e, seglength)))
-                else:
-                    if len(e.Vertexes) > 1:
-                        a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
-                        newedges.append(a)
-                    else:
-                        newedges.append(e.Curve.toShape())
-            elif geomType(e) == "BSplineCurve" or \
-                 geomType(e) == "BezierCurve":
-                if tessellate:
-                    newedges.append(Part.Wire(curvetowire(e,seglength)))
-                else:
-                    if isLine(e.Curve):
-                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
-                        newedges.append(l)
-                    else:
-                        newedges.append(e.Curve.toShape(e.FirstParameter,e.LastParameter))
-            else:
-                newedges.append(e)
-        except:
-            print("Debug: error cleaning edge ",e)
-    return Part.makeCompound(newedges)
+from draftgeoutils.wires import cleanProjection
 
 
 from draftgeoutils.wires import curvetosegment
 
 
-def tessellateProjection(shape, seglen):
-    """Returns projection with BSplines and Ellipses broken into line segments.
-        Useful for exporting projected views to *dxf files."""
-    oldedges = shape.Edges
-    newedges = []
-    for e in oldedges:
-        try:
-            if geomType(e) == "Line":
-                newedges.append(e.Curve.toShape())
-            elif geomType(e) == "Circle":
-                newedges.append(e.Curve.toShape())
-            elif geomType(e) == "Ellipse":
-                newedges.append(Part.Wire(curvetosegment(e,seglen)))
-            elif geomType(e) == "BSplineCurve":
-                newedges.append(Part.Wire(curvetosegment(e,seglen)))
-            else:
-                newedges.append(e)
-        except:
-            print("Debug: error cleaning edge ",e)
-    return Part.makeCompound(newedges)
+from draftgeoutils.wires import tessellateProjection
 
 
 from draftgeoutils.wires import rebaseWire
