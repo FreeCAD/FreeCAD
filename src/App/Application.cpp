@@ -2413,6 +2413,8 @@ void Application::ParseOptions(int ac, char ** av)
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
+    ("run-test-collection",   value<string>()   ,"Test case - or 0 for all")
+    ("cov", value<string>()->implicit_value(""), "Modules to check for test coverage")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -2633,6 +2635,19 @@ void Application::ParseOptions(int ac, char ** av)
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         //sScriptName = FreeCADTest;
+    }
+
+    if (vm.count("run-test-collection")) {
+        string testCase = vm["run-test-collection"].as<string>();
+        mConfig["TestCaseCollection"] = testCase;
+        mConfig["RunMode"] = "Internal";
+        mConfig["ScriptFileName"] = "FreeCADTest";
+        //sScriptName = FreeCADTest;
+    }
+
+    if (vm.count("cov")) {
+        mConfig["TestCoverage"] = "1";
+        mConfig["TestSource"] = vm["cov"].as<string>();
     }
 
     if (vm.count("single-instance")) {
