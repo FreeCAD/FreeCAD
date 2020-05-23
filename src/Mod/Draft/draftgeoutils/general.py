@@ -35,7 +35,10 @@ import DraftVecUtils
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+PARAMGRP = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
+# Default normal direction for all geometry operations
+NORM = FreeCAD.Vector(0, 0, 1)
 
 
 def precision():
@@ -49,9 +52,9 @@ def precision():
     #      15 that the code would never consider 2 points are coincident
     #      as internal float is not that precise)
     precisionMax = 10
-    precisionInt = params.GetInt("precision", 6)
+    precisionInt = PARAMGRP.GetInt("precision", 6)
     precisionInt = (precisionInt if precisionInt <= 10 else precisionMax)
-    return precisionInt	 # return params.GetInt("precision",6)
+    return precisionInt  # return PARAMGRP.GetInt("precision", 6)
 
 
 def vec(edge):
@@ -265,3 +268,28 @@ def isValidPath(shape):
     if shape.isClosed():
         return False
     return True
+
+
+def findClosest(base_point, point_list):
+    """Find closest point in a list of points to the base point.
+
+    Returns
+    -------
+    int
+        An index from the list of points is returned.
+
+    None
+        If point_list is empty.
+    """
+    npoint = None
+    if not point_list:
+        return None
+
+    smallest = 1000000
+    for n in range(len(point_list)):
+        new = base_point.sub(point_list[n]).Length
+        if new < smallest:
+            smallest = new
+            npoint = n
+
+    return npoint
