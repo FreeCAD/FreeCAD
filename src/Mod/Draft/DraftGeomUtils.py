@@ -244,26 +244,7 @@ from draftgeoutils.geometry import isPlanar
 from draftgeoutils.wires import findWiresOld
 
 
-def getTangent(edge, frompoint=None):
-        """
-        returns the tangent to an edge. If from point is given, it is used to
-        calculate the tangent (only useful for an arc of course).
-        """
-        if geomType(edge) == "Line":
-                return vec(edge)
-        elif geomType(edge) == "BSplineCurve" or \
-            geomType(edge) == "BezierCurve":
-                if not frompoint:
-                        return None
-                cp = edge.Curve.parameter(frompoint)
-                return edge.Curve.tangent(cp)[0]
-        elif geomType(edge) == "Circle":
-                if not frompoint:
-                        v1 = edge.Vertexes[0].Point.sub(edge.Curve.Center)
-                else:
-                        v1 = frompoint.sub(edge.Curve.Center)
-                return v1.cross(edge.Curve.Axis)
-        return None
+from draftgeoutils.edges import getTangent
 
 
 from draftgeoutils.faces import bind
