@@ -23,7 +23,7 @@ get_fem_test_defs()
 ```
 
 ## examples from within FreeCAD:
-### create all objects test
+### create test command file in temp directory
 ```python
 import Test, femtest.app.test_object
 Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
@@ -33,6 +33,8 @@ Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
 ```python
 import Test, TestFemApp
 Test.runTestsFromModule(TestFemApp)
+import Test, TestFemGui
+Test.runTestsFromModule(TestFemGui)
 ```
 
 ### module
