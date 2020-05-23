@@ -46,9 +46,9 @@ __title__ = "FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
 __url__ = ["https://www.freecadweb.org"]
 
-NORM = Vector(0, 0, 1)  # provisory normal direction for all geometry ops.
+from draftgeoutils.general import PARAMGRP as params
 
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+from draftgeoutils.general import NORM
 
 # Generic functions *********************************************************
 
@@ -134,22 +134,7 @@ from draftgeoutils.edges import isSameLine
 from draftgeoutils.arcs import isWideAngle
 
 
-def findClosest(basepoint, pointslist):
-    """
-    findClosest(vector,list)
-    in a list of 3d points, finds the closest point to the base point.
-    an index from the list is returned.
-    """
-    npoint = None
-    if not pointslist:
-        return None
-    smallest = 1000000
-    for n in range(len(pointslist)):
-        new = basepoint.sub(pointslist[n]).Length
-        if new < smallest:
-            smallest = new
-            npoint = n
-    return npoint
+from draftgeoutils.general import findClosest
 
 
 from draftgeoutils.faces import concatenate
