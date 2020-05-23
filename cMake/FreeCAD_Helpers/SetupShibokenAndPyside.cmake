@@ -86,6 +86,7 @@ macro(SetupShibokenAndPyside)
                                                             "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide2.QtUiTools import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtTest.py  "from PySide2.QtTest import *\n")
 
         if(APPLE AND NOT BUILD_WITH_CONDA)
             install(
