@@ -1,5 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2019 Markus Hovorka <m.hovorka@live.de>                 *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -18,6 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 """ Support for textbook simulation tests.
 
 The TestCase derived base class :py:class:`SolverTest` should make it very easy
