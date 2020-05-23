@@ -183,8 +183,8 @@ SET(FemSolverZ88_SRCS
 
 SET(FemTests_SRCS
     femtest/__init__.py
-    test_commands.sh
-    test_information.md
+    femtest/test_commands.sh
+    femtest/test_information.md
 )
 
 SET(FemTestsApp_SRCS
