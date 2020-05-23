@@ -21,6 +21,14 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""
+ATM these test classes are not activated in TestFemGui
+But they run on femtest if not explicit skipped
+they can be run with the appropriate commands (see test_commands file)
+TODO get the tests activated
+methods which test if a gmsh binary is available, only than the test can be run
+"""
+
 # from PySide import QtCore
 from PySide import QtGui
 from PySide.QtTest import QTest

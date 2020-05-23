@@ -28,8 +28,16 @@ the work is done in the support module :py:mod:`femtest.support_solver`. There
 is one test class per textbook example. Each test method inside the test class
 executes the same problem with a different solver. The calculation for the
 analytic resulsts are written down in the test class docstring.
-"""
 
+ATM these test classes are not activated in TestFemApp
+But they run on femtest if not explicit skipped
+they can be run with the appropriate commands (see test_commands file)
+TODO
+- get the tests activated
+- methods which test if a solver binary is available, only than the test can be run
+- fix the uniform load for calculix
+- set up the test files by python not as FreeCAD documents
+"""
 
 __title__ = "Test module for solver"
 __author__ = "Markus Hovorka"
