@@ -190,6 +190,7 @@ SET(FemTests_SRCS
 SET(FemTestsApp_SRCS
     femtest/app/__init__.py
     femtest/app/support_utils.py
+    femtest/app/support_solver.py
     femtest/app/test_ccxtools.py
     femtest/app/test_common.py
     femtest/app/test_femimport.py
@@ -199,10 +200,17 @@ SET(FemTestsApp_SRCS
     femtest/app/test_open.py
     femtest/app/test_result.py
     femtest/app/test_solverframework.py
+    femtest/app/test_tools.py
+    femtest/app/test_problems.py
 )
 
 SET(FemTestsFiles_SRCS
     femtest/data/__init__.py
+)
+
+SET(FemTestsProblems_SRCS
+    femtest/data/problems/cantilever_end_load.FCStd
+    femtest/data/problems/cantilever_uniform_load.FCStd
 )
 
 SET(FemTestsCcx_SRCS
@@ -293,6 +301,7 @@ SET(FemAllScripts
     ${FemTests_SRCS}
     ${FemTestsApp_SRCS}
     ${FemTestsFiles_SRCS}
+    ${FemTestsProblems_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
@@ -329,6 +338,7 @@ INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/ccx)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
+INSTALL(FILES ${FemTestsProblems_SRCS} DESTINATION Mod/Fem/femtest/data/problems)
 INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 
 
@@ -348,6 +358,7 @@ SET(FemGuiObjects_SRCS
 
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
+    femtest/gui/test_gmsh.py
     femtest/gui/test_open.py
 )
 

@@ -147,3 +147,33 @@ app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')
 ```
 
+## GSoC workbench testing
+### Information
+- read commits and the documentation in the test modules
+    - app.supported_solver
+    - app.test_problems
+    - app.test_tools
+    - gui.test_gmsh
+- app.test_problems is not added to the TestFemApp
+- the Python test modules are normal test modules
+
+### the inits
+- in all __init__.py in femtest is code from new test/coverage
+- in there is a discover method which finds all tests and returns a TestSuite
+- https://docs.python.org/3/library/unittest.html#unittest.TestLoader.discover
+- thus manuall activating test is no longer needed
+- setting up a document is no longer needed (means not setUp, tearDown methods for every class)
+- thus the new test modules are not retrieved from unittest.TestCase but from AppTestSupport.DocumentTest
+
+### skipped tests
+- they are skipped with skipped method to exclude them form femtest run
+- the skipped method needs to be commented
+- https://stackoverflow.com/questions/39984865/run-skipped-python-tests
+- this is the down side of not using TestFemApp
+
+### command to run
+```bash
+make -j 4 && ./bin/FreeCADCmd -t femtest
+make -j 4 && ./bin/FreeCAD -t femtest
+
+```
