@@ -1935,6 +1935,28 @@ void Application::initConfig(int argc, char ** argv)
     else
         _pConsoleObserverFile = 0;
 
+    if (mConfig["ConsoleLog"] == "Log") {
+        Base::Console().Get("Console")->bLog = true;
+        Base::Console().Get("Console")->bMsg = true;
+        Base::Console().Get("Console")->bWrn = true;
+        Base::Console().Get("Console")->bErr = true;
+    } else if (mConfig["ConsoleLog"] == "Msg") {
+        Base::Console().Get("Console")->bLog = false;
+        Base::Console().Get("Console")->bMsg = true;
+        Base::Console().Get("Console")->bWrn = true;
+        Base::Console().Get("Console")->bErr = true;
+    } else if (mConfig["ConsoleLog"] == "Wrn") {
+        Base::Console().Get("Console")->bLog = false;
+        Base::Console().Get("Console")->bMsg = false;
+        Base::Console().Get("Console")->bWrn = true;
+        Base::Console().Get("Console")->bErr = true;
+    } else if (mConfig["ConsoleLog"] == "Err") {
+        Base::Console().Get("Console")->bLog = false;
+        Base::Console().Get("Console")->bMsg = false;
+        Base::Console().Get("Console")->bWrn = false;
+        Base::Console().Get("Console")->bErr = true;
+    }
+
     // Banner ===========================================================
     if (!(mConfig["RunMode"] == "Cmd")) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
@@ -2414,6 +2436,7 @@ void Application::ParseOptions(int ac, char ** av)
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
     ("run-test-collection",   value<string>()   ,"Test case - or 0 for all")
+    ("log", value<string>()->implicit_value(""), "Set log level for console (Log, Msg, Wrn or Err")
     ("cov", value<string>()->implicit_value(""), "Modules to check for test coverage")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
@@ -2648,6 +2671,11 @@ void Application::ParseOptions(int ac, char ** av)
     if (vm.count("cov")) {
         mConfig["TestCoverage"] = "1";
         mConfig["TestSource"] = vm["cov"].as<string>();
+    }
+
+    mConfig["ConsoleLog"] = "";
+    if (vm.count("log")) {
+        mConfig["ConsoleLog"] = vm["log"].as<string>();
     }
 
     if (vm.count("single-instance")) {
