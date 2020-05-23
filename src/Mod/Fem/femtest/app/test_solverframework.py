@@ -44,8 +44,9 @@ class TestSolverFrameWork(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
+
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         # more inits
         self.mesh_name = "Mesh"
@@ -54,9 +55,20 @@ class TestSolverFrameWork(unittest.TestCase):
             "FEM_solverframework"
         )
 
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestSolverFrameWork tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -185,10 +197,3 @@ class TestSolverFrameWork(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
         fcc_print("--------------- End of FEM tests solver framework solver Elmer -----------")
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)

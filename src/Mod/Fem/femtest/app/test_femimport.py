@@ -88,12 +88,23 @@ class TestObjectExistance(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
         fcc_print("\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -190,9 +201,3 @@ class TestObjectExistance(unittest.TestCase):
             expected_obj_types,
             obj_types
         )
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        FreeCAD.closeDocument(self.doc_name)

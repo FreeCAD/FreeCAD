@@ -68,8 +68,9 @@ class TestObjectOpen(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(doc_name)
+
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         self.test_file_dir = join(
             testtools.get_fem_test_home_dir(),

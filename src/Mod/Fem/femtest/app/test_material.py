@@ -41,12 +41,24 @@ class TestMaterialUnits(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestMaterialUnits tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -105,10 +117,3 @@ class TestMaterialUnits(unittest.TestCase):
                         "Unit of quantity {} from material parameter {} is wrong."
                         .format(value, param)
                     )
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)

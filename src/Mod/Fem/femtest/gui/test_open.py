@@ -104,7 +104,6 @@ class TestObjectOpen(unittest.TestCase):
         fcc_print("load master head document objects")
 
         # get a document with all FEM objects
-        from femtest.app.test_object import create_all_fem_objects_doc
         self.document = create_all_fem_objects_doc(self.document)
 
         # save and load the document

@@ -44,12 +44,24 @@ class TestObjectCreate(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestObjectCreate tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -99,12 +111,6 @@ class TestObjectCreate(unittest.TestCase):
         )
         self.document.saveAs(save_fc_file)
 
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        FreeCAD.closeDocument(self.doc_name)
-
 
 # ************************************************************************************************
 # ************************************************************************************************
@@ -116,12 +122,24 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestObjectType tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -1466,13 +1484,6 @@ class TestObjectType(unittest.TestCase):
         )
         # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
         self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)
 
 
 # helper

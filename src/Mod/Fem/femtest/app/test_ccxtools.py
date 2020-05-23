@@ -45,8 +45,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
+
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         # more inits
         self.mesh_name = "Mesh"
@@ -56,9 +57,20 @@ class TestCcxTools(unittest.TestCase):
             "ccx"
         )
 
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestCcxTools tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -486,13 +498,6 @@ class TestCcxTools(unittest.TestCase):
         self.document.saveAs(save_fc_file)
 
         fcc_print("--------------- End of {} -------------------".format(test_name))
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)
 
 
 # ************************************************************************************************
