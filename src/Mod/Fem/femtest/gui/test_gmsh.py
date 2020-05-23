@@ -42,6 +42,9 @@ import ObjectsFem
 
 class TestGmshTaskPanel(GuiTestSupport.TaskPanelTest):
 
+    def setUp(self):
+        self.skipTest("See comment in test_problems module")
+
     def openTaskPanel(self, mesh):
         vDoc = mesh.ViewObject.Document
         vDoc.setEdit(mesh.Name)

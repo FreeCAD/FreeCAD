@@ -76,6 +76,7 @@ class TestCantileverEndLoad(support_solver.SolverTest):
     """
 
     def setUp(self):
+        self.skipTest("See comment in test_problems module")
         self.loadSimulation("cantilever_end_load")
 
     def assertResult(self, variable, error):
@@ -123,6 +124,7 @@ class TestCantileverUniformLoad(support_solver.SolverTest):
     """
 
     def setUp(self):
+        self.skipTest("See comment in test_problems module")
         self.loadSimulation("cantilever_uniform_load")
 
     def assertResult(self, variable, error):
