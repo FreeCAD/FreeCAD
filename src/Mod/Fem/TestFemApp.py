@@ -36,6 +36,18 @@ from femtest.app.test_result import TestResult as FemTest09
 from femtest.app.test_ccxtools import TestCcxTools as FemTest10
 from femtest.app.test_solverframework import TestSolverFrameWork as FemTest11
 
+from femtest.app.test_tools import TestCreateObject
+from femtest.app.test_tools import TestFindAnalysisOfMember
+from femtest.app.test_tools import TestGetMember
+from femtest.app.test_tools import TestIsDerivedFrom
+from femtest.app.test_tools import TestGetSingleMember
+from femtest.app.test_tools import TestGetSeveralMember
+from femtest.app.test_tools import TestGetMeshToSolve
+from femtest.app.test_tools import TestTypeOfObj
+from femtest.app.test_tools import TestIsOfType
+from femtest.app.test_tools import TestGetBoundBoxOfAllDocumentShapes
+from femtest.app.test_tools import TestGetRefshapeType
+
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
 False if FemTest02.__name__ else True
