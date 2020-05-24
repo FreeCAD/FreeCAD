@@ -51,8 +51,8 @@ from draftutils.translate import translate
 import draftutils.utils as utils
 
 def get_supported_draft_objects():
-    return ["BezCurve", "Wire", "BSpline", "Rectangle", 
-            "Circle", "Ellipse", "Polygon", 
+    return ["Wire", "BSpline", "Rectangle", "Circle", "Ellipse", "Polygon",
+            "BezCurve",
             "Dimension", "LinearDimension"]
 
 
@@ -98,6 +98,238 @@ def updateWire(obj, nodeIndex, v):
 
     pts[nodeIndex] = v
     obj.Points = pts
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Rectangle
+# -------------------------------------------------------------------------
+
+def getRectanglePts(obj):
+    """Return the list of edipoints for the given Draft Rectangle.
+
+    0 : Placement.Base
+    1 : Length
+    2 : Height
+    """
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.Length, 0, 0))
+    editpoints.append(App.Vector(0, obj.Height, 0))
+    return editpoints
+
+def updateRectangle(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.multVec(v)
+    elif nodeIndex == 1:
+        obj.Length = DraftVecUtils.project(v, App.Vector(1,0,0)).Length
+    elif nodeIndex == 2:
+        obj.Height = DraftVecUtils.project(v, App.Vector(0,1,0)).Length
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Circle/Arc
+# -------------------------------------------------------------------------
+
+def getCirclePts(obj):
+    """Return the list of edipoints for the given Draft Arc or Circle.
+
+    circle:
+    0 : Placement.Base or center
+    1 : radius
+
+    arc:
+    0 : Placement.Base or center
+    1 : first endpoint
+    2 : second endpoint
+    3 : midpoint
+    """
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    if obj.FirstAngle == obj.LastAngle:
+        # obj is a circle
+        editpoints.append(App.Vector(obj.Radius,0,0))
+    else:
+        # obj is an arc
+        editpoints.append(getArcStart(obj))#First endpoint
+        editpoints.append(getArcEnd(obj))#Second endpoint
+        editpoints.append(getArcMid(obj))#Midpoint
+    return editpoints
+
+
+def updateCircle(obj, nodeIndex, v, alt_edit_mode=0):
+    if obj.FirstAngle == obj.LastAngle:
+        # object is a circle
+        if nodeIndex == 0:
+            obj.Placement.Base = obj.Placement.multVec(v)
+        elif nodeIndex == 1:
+            obj.Radius = v.Length
+
+    else:
+        # obj is an arc
+        if alt_edit_mode == 0:
+            import Part
+            if nodeIndex == 0:
+                # center point
+                p1 = getArcStart(obj)
+                p2 = getArcEnd(obj)
+                p0 = DraftVecUtils.project(v, getArcMid(obj))
+                obj.Radius = p1.sub(p0).Length
+                obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
+                obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
+                obj.Placement.Base = obj.Placement.multVec(p0)
+
+            else:
+                """ Edit arc by 3 points.
+                """
+                v= obj.Placement.multVec(v)
+                p1 = obj.Placement.multVec(getArcStart(obj))
+                p2 = obj.Placement.multVec(getArcMid(obj))
+                p3 = obj.Placement.multVec(getArcEnd(obj))
+                
+                if nodeIndex == 1:  # first point
+                    p1 = v
+                elif nodeIndex == 3:  # midpoint
+                    p2 = v
+                elif nodeIndex == 2:  # second point
+                    p3 = v
+
+                arc=Part.ArcOfCircle(p1, p2, p3)
+                import Part
+                s = arc.toShape()
+                # Part.show(s) DEBUG
+                p0 = arc.Location
+                obj.Placement.Base = p0
+                obj.Radius = arc.Radius
+                
+                delta = s.Vertexes[0].Point
+                obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
+                delta = s.Vertexes[1].Point
+                obj.LastAngle = -math.degrees(DraftVecUtils.angle(p3.sub(p0)))
+
+        elif alt_edit_mode == 1:
+            # edit arc by center radius FirstAngle LastAngle
+            if nodeIndex == 0:
+                obj.Placement.Base = obj.Placement.multVec(v)
+            else:
+                dangle = math.degrees(math.atan2(v[1],v[0]))
+                if nodeIndex == 1:
+                    obj.FirstAngle = dangle
+                elif nodeIndex == 2:
+                    obj.LastAngle = dangle
+                elif nodeIndex == 3:
+                    obj.Radius = v.Length
+
+    obj.recompute()
+
+
+def getArcStart(obj, global_placement=False):#Returns object midpoint
+    if utils.get_type(obj) == "Circle":
+        return pointOnCircle(obj, obj.FirstAngle, global_placement)
+
+
+def getArcEnd(obj, global_placement=False):#Returns object midpoint
+    if utils.get_type(obj) == "Circle":
+        return pointOnCircle(obj, obj.LastAngle, global_placement)
+
+
+def getArcMid(obj, global_placement=False):#Returns object midpoint
+    if utils.get_type(obj) == "Circle":
+        if obj.LastAngle > obj.FirstAngle:
+            midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
+        else:
+            midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
+            midAngle += App.Units.Quantity(180,App.Units.Angle)
+        return pointOnCircle(obj, midAngle, global_placement)
+
+
+def pointOnCircle(obj, angle, global_placement=False):
+    if utils.get_type(obj) == "Circle":
+        px = obj.Radius * math.cos(math.radians(angle))
+        py = obj.Radius * math.sin(math.radians(angle))
+        p = App.Vector(px, py, 0.0)
+        if global_placement == True:
+            p = obj.getGlobalPlacement().multVec(p)
+        return p
+    return None
+
+
+def arcInvert(obj):
+    obj.FirstAngle, obj.LastAngle = obj.LastAngle, obj.FirstAngle
+    obj.recompute()
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Ellipse
+# -------------------------------------------------------------------------
+
+def getEllipsePts(obj):
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.MajorRadius, 0, 0))
+    editpoints.append(App.Vector(0, obj.MinorRadius, 0))
+    return editpoints
+
+def updateEllipse(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.multVec(v)
+    elif nodeIndex == 1:
+        if v.Length >= obj.MinorRadius:
+            obj.MajorRadius = v.Length
+        else:
+            obj.MajorRadius = obj.MinorRadius
+    elif nodeIndex == 2:
+        if v.Length <= obj.MajorRadius:
+            obj.MinorRadius = v.Length
+        else:
+            obj.MinorRadius = obj.MajorRadius
+    obj.recompute()
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Polygon 
+# -------------------------------------------------------------------------
+
+def getPolygonPts(obj):
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    if obj.DrawMode == 'inscribed':
+        editpoints.append(obj.Placement.inverse().multVec(obj.Shape.Vertexes[0].Point))
+    else:
+        editpoints.append(obj.Placement.inverse().multVec((obj.Shape.Vertexes[0].Point + 
+                                                          obj.Shape.Vertexes[1].Point) / 2
+                                                         ))
+    return editpoints
+
+def updatePolygon(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.multVec(v)
+    elif nodeIndex == 1:
+        obj.Radius = v.Length
+    obj.recompute()
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Dimension (point on dimension line is not clickable)
+# -------------------------------------------------------------------------
+
+def getDimensionPts(obj):
+    editpoints = []
+    p = obj.ViewObject.Proxy.textpos.translation.getValue()
+    editpoints.append(obj.Start)
+    editpoints.append(obj.End)
+    editpoints.append(obj.Dimline)
+    editpoints.append(App.Vector(p[0], p[1], p[2]))
+    return editpoints
+
+def updateDimension(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Start = v
+    elif nodeIndex == 1:
+        obj.End = v
+    elif nodeIndex == 2:
+        obj.Dimline = v
+    elif nodeIndex == 3:
+        obj.ViewObject.TextPosition = v
 
 
 # -------------------------------------------------------------------------
@@ -278,234 +510,4 @@ def smoothBezPoint(obj, point, style='Symmetric'):
                                         len(obj.Continuity)))
     obj.Points = pts
     obj.Continuity = newcont
-
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Rectangle
-# -------------------------------------------------------------------------
-
-def getRectanglePts(obj):
-    """Return the list of edipoints for the given Draft Rectangle.
-
-    0 : Placement.Base
-    1 : Length
-    2 : Height
-    """
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.Length, 0, 0))
-    editpoints.append(App.Vector(0, obj.Height, 0))
-    return editpoints
-
-def updateRectangle(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.multVec(v)
-    elif nodeIndex == 1:
-        obj.Length = DraftVecUtils.project(v, App.Vector(1,0,0)).Length
-    elif nodeIndex == 2:
-        obj.Height = DraftVecUtils.project(v, App.Vector(0,1,0)).Length
-
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Circle/Arc
-# -------------------------------------------------------------------------
-
-def getCirclePts(obj):
-    """Return the list of edipoints for the given Draft Arc or Circle.
-
-    circle:
-    0 : Placement.Base or center
-    1 : radius
-
-    arc:
-    0 : Placement.Base or center
-    1 : first endpoint
-    2 : second endpoint
-    3 : midpoint
-    """
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    if obj.FirstAngle == obj.LastAngle:
-        # obj is a circle
-        editpoints.append(App.Vector(obj.Radius,0,0))
-    else:
-        # obj is an arc
-        editpoints.append(getArcStart(obj))#First endpoint
-        editpoints.append(getArcEnd(obj))#Second endpoint
-        editpoints.append(getArcMid(obj))#Midpoint
-    return editpoints
-
-
-def updateCircle(obj, nodeIndex, v, alt_edit_mode=0):
-    if obj.FirstAngle == obj.LastAngle:
-        # object is a circle
-        if nodeIndex == 0:
-            obj.Placement.Base = obj.Placement.multVec(v)
-        elif nodeIndex == 1:
-            obj.Radius = v.Length
-
-    else:
-        # obj is an arc
-        if alt_edit_mode == 0:
-            # edit arc by 3 points
-            import Part
-            if nodeIndex == 0:
-                # center point
-                p1 = getArcStart(obj)
-                p2 = getArcEnd(obj)
-                p0 = DraftVecUtils.project(v, getArcMid(obj))
-                obj.Radius = p1.sub(p0).Length
-                obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
-                obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
-                obj.Placement.Base = obj.Placement.multVec(p0)
-
-            else:
-                if nodeIndex == 1:  # first point
-                    p1 = v
-                    p2 = getArcMid(obj)
-                    p3 = getArcEnd(obj)
-                elif nodeIndex == 3:  # midpoint
-                    p1 = getArcStart(obj)
-                    p2 = v
-                    p3 = getArcEnd(obj)
-                elif nodeIndex == 2:  # second point
-                    p1 = getArcStart(obj)
-                    p2 = getArcMid(obj)
-                    p3 = v
-                arc=Part.ArcOfCircle(p1,p2,p3)
-                obj.Placement.Base = arc.Center
-                obj.Radius = arc.Radius
-
-                '''obj.Placement.Base = obj.Placement.multVec(obj.getGlobalPlacement().inverse().multVec(arc.Location))
-                obj.Radius = arc.Radius
-                delta = obj.Placement.inverse().multVec(p1)
-                obj.FirstAngle = math.degrees(math.atan2(delta[1],delta[0]))
-                delta = obj.Placement.inverse().multVec(p3)
-                obj.LastAngle = math.degrees(math.atan2(delta[1],delta[0]))'''
-
-        elif alt_edit_mode == 1:
-            # edit arc by center radius FirstAngle LastAngle
-            if nodeIndex == 0:
-                obj.Placement.Base = obj.Placement.multVec(v)
-            else:
-                dangle = math.degrees(math.atan2(v[1],v[0]))
-                if nodeIndex == 1:
-                    obj.FirstAngle = dangle
-                elif nodeIndex == 2:
-                    obj.LastAngle = dangle
-                elif nodeIndex == 3:
-                    obj.Radius = v.Length
-
-    obj.recompute()
-
-
-def getArcStart(obj, global_placement=False):#Returns object midpoint
-    if utils.get_type(obj) == "Circle":
-        return pointOnCircle(obj, obj.FirstAngle, global_placement)
-
-
-def getArcEnd(obj, global_placement=False):#Returns object midpoint
-    if utils.get_type(obj) == "Circle":
-        return pointOnCircle(obj, obj.LastAngle, global_placement)
-
-
-def getArcMid(obj, global_placement=False):#Returns object midpoint
-    if utils.get_type(obj) == "Circle":
-        if obj.LastAngle > obj.FirstAngle:
-            midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
-        else:
-            midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
-            midAngle += App.Units.Quantity(180,App.Units.Angle)
-        return pointOnCircle(obj, midAngle, global_placement)
-
-
-def pointOnCircle(obj, angle, global_placement=False):
-    if utils.get_type(obj) == "Circle":
-        px = obj.Radius * math.cos(math.radians(angle))
-        py = obj.Radius * math.sin(math.radians(angle))
-        p = App.Vector(px, py, 0.0)
-        if global_placement == True:
-            p = obj.getGlobalPlacement().multVec(p)
-        return p
-    return None
-
-
-def arcInvert(obj):
-    obj.FirstAngle, obj.LastAngle = obj.LastAngle, obj.FirstAngle
-    obj.recompute()
-
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Ellipse
-# -------------------------------------------------------------------------
-
-def getEllipsePts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    editpoints.append(App.Vector(obj.MajorRadius, 0, 0))
-    editpoints.append(App.Vector(0, obj.MinorRadius, 0))
-    return editpoints
-
-def updateEllipse(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.multVec(v)
-    elif nodeIndex == 1:
-        if v.Length >= obj.MinorRadius:
-            obj.MajorRadius = v.Length
-        else:
-            obj.MajorRadius = obj.MinorRadius
-    elif nodeIndex == 2:
-        if v.Length <= obj.MajorRadius:
-            obj.MinorRadius = v.Length
-        else:
-            obj.MinorRadius = obj.MajorRadius
-    obj.recompute()
-
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Polygon 
-# -------------------------------------------------------------------------
-
-def getPolygonPts(obj):
-    editpoints = []
-    editpoints.append(App.Vector(0, 0, 0))
-    if obj.DrawMode == 'inscribed':
-        editpoints.append(obj.Placement.inverse().multVec(obj.Shape.Vertexes[0].Point))
-    else:
-        editpoints.append(obj.Placement.inverse().multVec((obj.Shape.Vertexes[0].Point + 
-                                                          obj.Shape.Vertexes[1].Point) / 2
-                                                         ))
-    return editpoints
-
-def updatePolygon(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Placement.Base = obj.Placement.multVec(v)
-    elif nodeIndex == 1:
-        obj.Radius = v.Length
-    obj.recompute()
-
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Dimension (point on dimension line is not clickable)
-# -------------------------------------------------------------------------
-
-def getDimensionPts(obj):
-    editpoints = []
-    p = obj.ViewObject.Proxy.textpos.translation.getValue()
-    editpoints.append(obj.Start)
-    editpoints.append(obj.End)
-    editpoints.append(obj.Dimline)
-    editpoints.append(App.Vector(p[0], p[1], p[2]))
-    return editpoints
-
-def updateDimension(obj, nodeIndex, v):
-    if nodeIndex == 0:
-        obj.Start = v
-    elif nodeIndex == 1:
-        obj.End = v
-    elif nodeIndex == 2:
-        obj.Dimline = v
-    elif nodeIndex == 3:
-        obj.ViewObject.TextPosition = v
-
 
