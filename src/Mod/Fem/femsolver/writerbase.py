@@ -103,13 +103,16 @@ class FemInputWriter():
             else:
                 FreeCAD.Console.PrintWarning(
                     "A finite mesh without a link to a Shape was given. "
-                    "Happen on pure mesh objects. Not all methods do work without this link.\n"
+                    "Happen on pure mesh objects. "
+                    "Not all methods do work without this link.\n"
                 )
+                # ATM only used in meshtools.get_femelement_direction1D_set
+                # TODO somehow this is not smart, rare meshes might be used often
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintWarning(
                 "No finite element mesh object was given to the writer class. "
-                "In rare cases this might not be an error. Not all methods do work without this link.\n"
+                "In rare cases this might not be an error. "
             )
         self.femnodes_mesh = {}
         self.femelement_table = {}
