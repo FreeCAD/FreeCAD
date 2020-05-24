@@ -209,7 +209,7 @@ class Edit(gui_base_original.Modifier):
         The tool use utils.get_type(obj) to compare object type
         to the list.
 
-    supportedPartObjs: List
+    supportedCppObjs: List
         List of supported Part Objects.
         The tool use utils.get_type(obj) and obj.TypeId to compare
         object type to the list.
@@ -246,7 +246,7 @@ class Edit(gui_base_original.Modifier):
         #list of supported objects
         self.supportedObjs = edit_draft.get_supported_draft_objects() + \
                              edit_arch.get_supported_arch_objects()
-        self.supportedPartObjs = edit_part.get_supported_part_objects() + \
+        self.supportedCppObjs = edit_part.get_supported_part_objects() + \
                                  edit_sketcher.get_supported_sketcher_objects()
 
 
@@ -538,27 +538,49 @@ class Edit(gui_base_original.Modifier):
 
     def setTrackers(self, obj, points=None):
         """Set Edit Trackers for editpoints collected from self.obj."""
+        if utils.get_type(obj) == "BezCurve":
+            return self.resetTrackersBezier(obj)
         if points is None or len(points) == 0:
-            App.Console.PrintWarning(translate("draft", 
-                                               "No edit point found for selected object")
-                                               + "\n")
+            _wrn = translate("draft", "No edit point found for selected object")
+            App.Console.PrintWarning(_wrn + "\n")
             # do not finish if some trackers are still present
             if self.trackers == {'object': []}:
                 self.finish()
             return
         self.trackers[obj.Name] = []
-        if utils.get_type(obj) == "BezCurve":
-            edit_draft.resetTrackersBezier(obj)
-        else:
-            if obj.Name in self.trackers:
-                self.removeTrackers(obj)
-            for ep in range(len(points)):
-                self.trackers[obj.Name].append(trackers.editTracker(pos=points[ep],name=obj.Name,idx=ep))
+        if obj.Name in self.trackers:
+            self.removeTrackers(obj)
+        for ep in range(len(points)):
+            self.trackers[obj.Name].append(trackers.editTracker(pos=points[ep], name=obj.Name, idx=ep))
 
     def resetTrackers(self, obj):
         """Reset Edit Trackers and set them again."""
         self.removeTrackers(obj)
         self.setTrackers(obj, self.getEditPoints(obj))
+
+    def resetTrackersBezier(self, obj):
+        # in future move tracker definition to DraftTrackers
+        from pivy import coin
+        knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
+                coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
+                coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
+        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
+        self.trackers[obj.Name] = []
+        cont = obj.Continuity
+        firstknotcont = cont[-1] if (obj.Closed and cont) else 0
+        pointswithmarkers = [(obj.Shape.Edges[0].Curve.
+                getPole(1),knotmarkers[firstknotcont])]
+        for edgeindex, edge in enumerate(obj.Shape.Edges):
+            poles = edge.Curve.getPoles()
+            pointswithmarkers.extend([(point,polemarker) for point in poles[1:-1]])
+            if not obj.Closed or len(obj.Shape.Edges) > edgeindex +1:
+                knotmarkeri = cont[edgeindex] if len(cont) > edgeindex else 0
+                pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
+        for index, pwm in enumerate(pointswithmarkers):
+            p, marker = pwm
+            p = obj.getGlobalPlacement().multVec(p)
+            self.trackers[obj.Name].append(trackers.editTracker(p, obj.Name,
+                index, obj.ViewObject.LineColor, marker=marker))
 
     def removeTrackers(self, obj=None):
         """Remove Edit Trackers."""
@@ -641,7 +663,7 @@ class Edit(gui_base_original.Modifier):
         elif utils.get_type(obj) == "BezCurve":
             self.ghost.on()
             plist = self.globalize_vectors(obj, obj.Points)
-            pointList = edit_draft.recomputePointsBezier(obj,plist,idx,pt,obj.Degree,moveTrackers=True)
+            pointList = edit_draft.recomputePointsBezier(obj,plist,idx,pt,obj.Degree,moveTrackers=False)
             self.ghost.update(pointList,obj.Degree)
         elif utils.get_type(obj) == "Circle":
             self.ghost.on()
@@ -852,6 +874,9 @@ class Edit(gui_base_original.Modifier):
             ep = self.overNode.get_subelement_index()
             if utils.get_type(obj) in ["Line", "Wire", "BSpline"]:
                 actions = ["delete point"]
+            elif utils.get_type(obj) in ["BezCurve"]:
+                actions = ["make sharp", "make tangent",
+                           "make symmetric", "delete point"]
             elif utils.get_type(obj) in ["Circle"]:
                 if obj.FirstAngle != obj.LastAngle:
                     if ep == 0:  # user is over arc start point
@@ -862,9 +887,6 @@ class Edit(gui_base_original.Modifier):
                         actions = ["set last angle"]
                     elif ep == 3:  # user is over arc mid point
                         actions = ["set radius"]
-            elif utils.get_type(obj) in ["BezCurve"]:
-                actions = ["make sharp", "make tangent",
-                           "make symmetric", "delete point"]
             else:
                 return
         else:
@@ -880,13 +902,20 @@ class Edit(gui_base_original.Modifier):
         for a in actions:
             self.tracker_menu.addAction(a)
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
-        QtCore.QObject.connect(self.tracker_menu,QtCore.SIGNAL("triggered(QAction *)"),self.evaluate_menu_action)
+        QtCore.QObject.connect(self.tracker_menu,
+                               QtCore.SIGNAL("triggered(QAction *)"),
+                               self.evaluate_menu_action)
 
 
     def evaluate_menu_action(self, labelname):
         action_label = str(labelname.text())
+        # addPoint and deletePoint menu
+        if action_label == "delete point":
+            self.delPoint(self.event)
+        elif action_label == "add point":
+            self.addPoint(self.event)
         # Bezier curve menu
-        if action_label in ["make sharp", "make tangent", "make symmetric"]:
+        elif action_label in ["make sharp", "make tangent", "make symmetric"]:
             doc = self.overNode.get_doc_name()
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             idx = self.overNode.get_subelement_index()
@@ -896,11 +925,7 @@ class Edit(gui_base_original.Modifier):
                 edit_draft.smoothBezPoint(obj, idx, 'Tangent')
             elif action_label == "make symmetric":
                 edit_draft.smoothBezPoint(obj, idx, 'Symmetric')
-        # addPoint and deletePoint menu
-        elif action_label == "delete point":
-            self.delPoint(self.event)
-        elif action_label == "add point":
-            self.addPoint(self.event)
+            self.resetTrackers(obj)
         # arc tools
         elif action_label in ("move arc", "set radius",
                               "set first angle", "set last angle"):
@@ -930,8 +955,6 @@ class Edit(gui_base_original.Modifier):
             eps = edit_draft.getWirePts(obj)
 
         elif objectType == "BezCurve":
-            self.ui.editUi("BezCurve")
-            edit_draft.resetTrackersBezier(obj)
             return
 
         elif objectType == "Circle":
@@ -999,15 +1022,11 @@ class Edit(gui_base_original.Modifier):
 
     def update(self, obj, nodeIndex, v):
         """Apply the App.Vector to the modified point and update obj."""
-
         v = self.relativize_vector(obj, v)
-
         App.ActiveDocument.openTransaction("Edit")
         self.update_object(obj, nodeIndex, v)
         App.ActiveDocument.commitTransaction()
-
         self.resetTrackers(obj)
-
         try:
             gui_tool_utils.redraw_3d_view()
         except AttributeError as err:
@@ -1096,26 +1115,22 @@ class Edit(gui_base_original.Modifier):
                 obj = selobj.Object
                 obj_matrix = selobj.Object.getSubObject(sub, retType=4)
         """
-
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.maxObjects:
-            App.Console.PrintMessage(translate("draft", 
-                                               "Too many objects selected, max number set to: ")
-                                     + str(self.maxObjects) + "\n")
+            _err = translate("draft", "Too many objects selected, max number set to: ")
+            App.Console.PrintMessage(_err + str(self.maxObjects) + "\n")
             return None
         for obj in selection:
             if utils.get_type(obj) in self.supportedObjs:
                 self.edited_objects.append(obj)
                 continue
-            elif utils.get_type(obj) in self.supportedPartObjs:
-                if obj.TypeId in self.supportedPartObjs:
+            elif utils.get_type(obj) in self.supportedCppObjs:
+                if obj.TypeId in self.supportedCppObjs:
                     self.edited_objects.append(obj)
                     continue
-            App.Console.PrintWarning(obj.Name 
-                                     + translate("draft",
-                                                 ": this object is not editable")
-                                     + "\n")
+            _wrn = translate("draft", ": this object is not editable")
+            App.Console.PrintWarning(obj.Name + _wrn + "\n")
         return self.edited_objects
 
 
