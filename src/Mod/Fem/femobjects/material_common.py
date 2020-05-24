@@ -67,3 +67,22 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
             )
         obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
         obj.Category = "Solid"
+        """
+        Some remarks to the category. Not finished, thus to be continued.
+
+        Following question need to be answered:
+        Why use a attribute to split the object? If a new fem object is needed,
+        a new fem object should be created. A new object will have an own Type
+        and will be collected for the writer by this type.
+
+        The category should not be used in writer! This would be the border.
+        If an fem object has to be distinguished in writer it should be an own
+        fem object.
+
+        The category is just some helper to make it easier for the user to
+        distinguish between different material categories.
+        It can have own command, own icon, own make method. In material TaskPanel
+        it can be distinguished which materials will be shown.
+
+        ATM in calculix writer the Category is used. See comments in CalculiX Solver.
+        """
