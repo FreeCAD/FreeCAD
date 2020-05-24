@@ -57,7 +57,7 @@ def get_supported_draft_objects():
 
 
 # -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Line/Wire/Bspline
+# EDIT OBJECT TOOLS : Line/Wire/BSpline
 # -------------------------------------------------------------------------
 
 def getWirePts(obj):
@@ -106,48 +106,43 @@ def updateWire(obj, nodeIndex, v):
 
 def updateBezCurve(obj, nodeIndex, v): #TODO: Fix it
     pts = obj.Points
-    editPnt = v
     # DNC: check for coincident startpoint/endpoint to auto close the curve
     tol = 0.001
-    if ( ( nodeIndex == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( 
-            nodeIndex == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
+    if ( ( nodeIndex == 0 ) and ( (v - pts[-1]).Length < tol) ) or ( 
+            nodeIndex == len(pts) - 1 ) and ( (v - pts[0]).Length < tol):
         obj.Closed = True
     # DNC: checks if point enter is equal to other, this could cause a OCC problem
-    if editPnt in pts:
+    if v in pts:
         _err = translate("draft", "This object does not support possible "
                                   "coincident points, please try again.")
         App.Console.PrintMessage(_err + "\n")
         return
     
-    pts = recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
+    pts = recomputePointsBezier(obj, pts, nodeIndex, v, obj.Degree, moveTrackers=False)
 
     if obj.Closed:
         # check that the new point lies on the plane of the wire
         if hasattr(obj.Shape,"normalAt"):
             normal = obj.Shape.normalAt(0,0)
             point_on_plane = obj.Shape.Vertexes[0].Point
-            print(v)
             v.projectToPlane(point_on_plane, normal)
-            print(v)
-            editPnt = obj.getGlobalPlacement().inverse().multVec(v)
-    pts[nodeIndex] = editPnt
+    pts[nodeIndex] = v
     obj.Points = pts
 
 
 def recomputePointsBezier(obj, pts, idx, v,
-                            degree, moveTrackers=True):
+                            degree, moveTrackers=False):
     """
     (object, Points as list, nodeIndex as Int, App.Vector of new point, moveTrackers as Bool)
     return the new point list, applying the App.Vector to the given index point
     """
-    editPnt = v
     # DNC: allows to close the curve by placing ends close to each other
     tol = 0.001
-    if ( ( idx == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or (
-            idx == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
+    if ( ( idx == 0 ) and ( (v - pts[-1]).Length < tol) ) or (
+            idx == len(pts) - 1 ) and ( (v - pts[0]).Length < tol):
         obj.Closed = True
     # DNC: fix error message if edited point coincides with one of the existing points
-    #if ( editPnt in pts ) == False:
+    #if ( v in pts ) == False:
     knot = None
     ispole = idx % degree
 
@@ -155,17 +150,17 @@ def recomputePointsBezier(obj, pts, idx, v,
         if degree >= 3:
             if idx >= 1: #move left pole
                 knotidx = idx if idx < len(pts) else 0
-                pts[idx-1] = pts[idx-1] + editPnt - pts[knotidx]
-                if moveTrackers:
-                    self.trackers[obj.Name][idx-1].set(pts[idx-1]) # TODO: Remove code to recompute trackers
+                pts[idx-1] = pts[idx-1] + v - pts[knotidx]
+                #if moveTrackers: # trackers are reseted after editing
+                #    self.trackers[obj.Name][idx-1].set(pts[idx-1])
             if idx < len(pts)-1: #move right pole
-                pts[idx+1] = pts[idx+1] + editPnt - pts[idx]
-                if moveTrackers:
-                    self.trackers[obj.Name][idx+1].set(pts[idx+1])
+                pts[idx+1] = pts[idx+1] + v - pts[idx]
+                #if moveTrackers:
+                #    self.trackers[obj.Name][idx+1].set(pts[idx+1])
             if idx == 0 and obj.Closed: # move last pole
-                pts[-1] = pts [-1] + editPnt -pts[idx]
-                if moveTrackers:
-                    self.trackers[obj.Name][-1].set(pts[-1])
+                pts[-1] = pts [-1] + v -pts[idx]
+                #if moveTrackers:
+                #    self.trackers[obj.Name][-1].set(pts[-1])
 
     elif ispole == 1 and (idx >=2 or obj.Closed): #right pole
         knot = idx -1
@@ -184,40 +179,17 @@ def recomputePointsBezier(obj, pts, idx, v,
         cont = obj.Continuity[segment] if len(obj.Continuity) > segment else 0
         if cont == 1: #tangent
             pts[changep] = obj.Proxy.modifytangentpole(pts[knot],
-                editPnt,pts[changep])
-            if moveTrackers:
-                self.trackers[obj.Name][changep].set(pts[changep])
+                v,pts[changep])
+            #if moveTrackers:
+            #    self.trackers[obj.Name][changep].set(pts[changep])
         elif cont == 2: #symmetric
-            pts[changep] = obj.Proxy.modifysymmetricpole(pts[knot],editPnt)
-            if moveTrackers:
-                self.trackers[obj.Name][changep].set(pts[changep])
+            pts[changep] = obj.Proxy.modifysymmetricpole(pts[knot],v)
+            #if moveTrackers:
+            #    self.trackers[obj.Name][changep].set(pts[changep])
     pts[idx] = v
 
     return pts  # returns the list of new points, taking into account knot continuity
 
-def resetTrackersBezier(obj):
-    # in future move tracker definition to DraftTrackers
-    from pivy import coin
-    knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
-            coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
-            coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
-    polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
-    self.trackers[obj.Name] = []
-    cont = obj.Continuity
-    firstknotcont = cont[-1] if (obj.Closed and cont) else 0
-    pointswithmarkers = [(obj.Shape.Edges[0].Curve.
-            getPole(1),knotmarkers[firstknotcont])]
-    for edgeindex, edge in enumerate(obj.Shape.Edges):
-        poles = edge.Curve.getPoles()
-        pointswithmarkers.extend([(point,polemarker) for point in poles[1:-1]])
-        if not obj.Closed or len(obj.Shape.Edges) > edgeindex +1:
-            knotmarkeri = cont[edgeindex] if len(cont) > edgeindex else 0
-            pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
-    for index, pwm in enumerate(pointswithmarkers):
-        p, marker = pwm
-        # if self.pl: p = self.pl.multVec(p)
-        self.trackers[obj.Name].append(trackers.editTracker(p,obj.Name,
-            index,obj.ViewObject.LineColor,marker=marker))
 
 def smoothBezPoint(obj, point, style='Symmetric'):
     "called when changing the continuity of a knot"
