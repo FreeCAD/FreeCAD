@@ -246,51 +246,58 @@ class PathArray(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if obj.Base and obj.PathObj:
-            pl = obj.Placement  # placement of entire PathArray object
-            if obj.PathSubs:
-                w = self.getWireFromSubs(obj)
-            elif (hasattr(obj.PathObj.Shape, 'Wires')
-                  and obj.PathObj.Shape.Wires):
-                w = obj.PathObj.Shape.Wires[0]
-            elif obj.PathObj.Shape.Edges:
-                w = Part.Wire(obj.PathObj.Shape.Edges)
-            else:
-                _err(obj.PathObj.Name
-                     + _tr(", path object doesn't have 'Edges'."))
-                return
+        if not obj.Base or not obj.PathObj:
+            return
 
-            if (hasattr(obj, "TangentVector")
-                    and obj.AlignMode == "Tangent" and obj.Align):
-                basePlacement = obj.Base.Shape.Placement
-                baseRotation = basePlacement.Rotation
-                stdX = App.Vector(1.0, 0.0, 0.0)  # default TangentVector
+        # placement of entire PathArray object
+        array_placement = obj.Placement
 
-                if not DraftVecUtils.equals(stdX, obj.TangentVector):
-                    # make rotation from TangentVector to X
-                    preRotation = App.Rotation(obj.TangentVector, stdX)
-                    netRotation = baseRotation.multiply(preRotation)
-                else:
-                    netRotation = baseRotation
+        w = self.get_wires(obj.PathObj, obj.PathSubs)
+        if not w:
+            _err(obj.PathObj.Label
+                 + _tr(", path object doesn't have 'Edges'."))
+            return
 
-                base = placements_on_path(netRotation,
-                                          w, obj.Count, obj.Xlate,
-                                          obj.Align, obj.AlignMode,
-                                          obj.ForceVertical,
-                                          obj.VerticalVector)
-            else:
-                base = placements_on_path(obj.Base.Shape.Placement.Rotation,
-                                          w, obj.Count, obj.Xlate,
-                                          obj.Align, obj.AlignMode,
-                                          obj.ForceVertical,
-                                          obj.VerticalVector)
+        base_rotation = obj.Base.Shape.Placement.Rotation
+        final_rotation = base_rotation
 
-            return super(PathArray, self).buildShape(obj, pl, base)
+        if (obj.Align and obj.AlignMode == "Tangent"
+                and hasattr(obj, "TangentVector")):
+            Xaxis = App.Vector(1.0, 0.0, 0.0)  # default TangentVector
 
-    def getWireFromSubs(self, obj):
+            if not DraftVecUtils.equals(Xaxis, obj.TangentVector):
+                # make rotation from TangentVector to X
+                pre_rotation = App.Rotation(obj.TangentVector, Xaxis)
+                final_rotation = base_rotation.multiply(pre_rotation)
+
+        copy_placements = placements_on_path(final_rotation,
+                                             w, obj.Count,
+                                             obj.Xlate,
+                                             obj.Align, obj.AlignMode,
+                                             obj.ForceVertical,
+                                             obj.VerticalVector)
+
+        return super(PathArray, self).buildShape(obj,
+                                                 array_placement,
+                                                 copy_placements)
+
+    def get_wires(self, path_object, subelements):
+        """Get wires from the path object."""
+        if subelements:
+            w = self.get_wire_from_subelements(subelements)
+        elif (hasattr(path_object.Shape, 'Wires')
+              and path_object.Shape.Wires):
+            w = path_object.Shape.Wires[0]
+        elif path_object.Shape.Edges:
+            w = Part.Wire(path_object.Shape.Edges)
+        else:
+            w = None
+        return w
+
+    def get_wire_from_subelements(self, subelements):
         """Make a wire from PathObj subelements."""
         sl = []
-        for sub in obj.PathSubs:
+        for sub in subelements:
             edgeNames = sub[1]
             for n in edgeNames:
                 e = sub[0].Shape.getElement(n)
