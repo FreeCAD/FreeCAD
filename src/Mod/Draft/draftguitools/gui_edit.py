@@ -220,6 +220,7 @@ class Edit(gui_base_original.Modifier):
         self.running = False
         self.trackers = {'object': []}
         self.overNode = None  # preselected node with mouseover
+        self.edited_objects = []
         self.obj = None
         self.editing = None
 
@@ -340,7 +341,8 @@ class Edit(gui_base_original.Modifier):
         if self.ui:
             self.removeTrackers()
 
-        self.deformat_objects_after_editing(self.edited_objects)
+        if self.edited_objects:
+            self.deformat_objects_after_editing(self.edited_objects)
         
         super(Edit, self).finish()
         App.DraftWorkingPlane.restore()
@@ -848,7 +850,7 @@ class Edit(gui_base_original.Modifier):
             doc = self.overNode.get_doc_name()
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             ep = self.overNode.get_subelement_index()
-            if utils.get_type(obj) in ["Line", "Wire"]:
+            if utils.get_type(obj) in ["Line", "Wire", "BSpline"]:
                 actions = ["delete point"]
             elif utils.get_type(obj) in ["Circle"]:
                 if obj.FirstAngle != obj.LastAngle:
@@ -1004,8 +1006,7 @@ class Edit(gui_base_original.Modifier):
         self.update_object(obj, nodeIndex, v)
         App.ActiveDocument.commitTransaction()
 
-        if not utils.get_type(obj) in ["Wire", "BSpline"]:
-            self.resetTrackers(obj)
+        self.resetTrackers(obj)
 
         try:
             gui_tool_utils.redraw_3d_view()
@@ -1019,7 +1020,7 @@ class Edit(gui_base_original.Modifier):
             edit_draft.updateWire(obj, nodeIndex, v)
 
         elif objectType == "BezCurve":
-            edit_draft.updateWire(obj, nodeIndex, v)
+            edit_draft.updateBezCurve(obj, nodeIndex, v)
 
         elif objectType == "Circle":
             edit_draft.updateCircle(obj, nodeIndex, v, self.alt_edit_mode)

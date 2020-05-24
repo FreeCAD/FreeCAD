@@ -25,7 +25,7 @@
 All functions in this module work with Object coordinate space.
 No conversion to global coordinate system is needed.
 
-To support an new Object Draft_Edit needs at least two functions:
+To support an new Object, Draft_Edit needs at least two functions:
 getObjectPts(obj): returns a list of points on which Draft_Edit will display
     edit trackers
 updateObject(obj, nodeIndex, v): update the give object according to the
@@ -57,7 +57,7 @@ def get_supported_draft_objects():
 
 
 # -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
+# EDIT OBJECT TOOLS : Line/Wire/Bspline
 # -------------------------------------------------------------------------
 
 def getWirePts(obj):
@@ -66,28 +66,60 @@ def getWirePts(obj):
         editpoints.append(p)
     return editpoints
 
-def updateWire(obj, nodeIndex, v): #TODO: Fix it
+def updateWire(obj, nodeIndex, v):
+    pts = obj.Points
+    tol = 0.001 # TODO : Use default precision
+    if (nodeIndex == 0 and (v - pts[-1]).Length < tol ):
+        # DNC: user moved first point over last point -> Close curve
+        obj.Closed = True
+        pts[0] = v
+        del pts[-1]
+        obj.Points = pts
+        return
+    elif nodeIndex == len(pts) - 1 and (v - pts[0]).Length < tol:
+        # DNC: user moved last point over first point -> Close curve
+        obj.Closed = True
+        del pts[-1]
+        obj.Points = pts
+        return
+    elif v in pts:
+        # DNC: checks if point enter is equal to other, this could cause a OCC problem
+        _err = translate("draft", "This object does not support possible "
+                                  "coincident points, please try again.")
+        App.Console.PrintMessage(_err + "\n")
+        return
+
+    if obj.Closed:
+        # DNC: project the new point to the plane of the face if present
+        if hasattr(obj.Shape, "normalAt"):
+            normal = obj.Shape.normalAt(0,0)
+            point_on_plane = obj.Shape.Vertexes[0].Point
+            v.projectToPlane(point_on_plane, normal)
+
+    pts[nodeIndex] = v
+    obj.Points = pts
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : BezCurve
+# -------------------------------------------------------------------------
+
+def updateBezCurve(obj, nodeIndex, v): #TODO: Fix it
     pts = obj.Points
     editPnt = v
-    # DNC: allows to close the curve by placing ends close to each other
+    # DNC: check for coincident startpoint/endpoint to auto close the curve
     tol = 0.001
     if ( ( nodeIndex == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( 
             nodeIndex == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
         obj.Closed = True
-    # DNC: fix error message if edited point coincides with one of the existing points
-    if ( editPnt in pts ) == True: # checks if point enter is equal to other, this could cause a OCC problem
-        App.Console.PrintMessage(translate("draft", 
-                                            "This object does not support possible "
-                                            "coincident points, please try again.")
-                                    + "\n")
-        if utils.get_type(obj) in ["BezCurve"]: # TODO: Remove code to recompute trackers
-            self.resetTrackers(obj)
-        else:
-            self.trackers[obj.Name][nodeIndex].set(obj.getGlobalPlacement().
-                multVec(obj.Points[nodeIndex]))
+    # DNC: checks if point enter is equal to other, this could cause a OCC problem
+    if editPnt in pts:
+        _err = translate("draft", "This object does not support possible "
+                                  "coincident points, please try again.")
+        App.Console.PrintMessage(_err + "\n")
         return
-    if utils.get_type(obj) in ["BezCurve"]:
-        pts = recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
+    
+    pts = recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
 
     if obj.Closed:
         # check that the new point lies on the plane of the wire
