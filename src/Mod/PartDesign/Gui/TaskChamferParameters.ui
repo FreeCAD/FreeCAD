@@ -123,7 +123,7 @@ click again to end selection</string>
      <item row="0" column="1">
       <widget class="Gui::QuantitySpinBox" name="chamferSize" native="true">
        <property name="value">
-        <number>1.000000000000000</number>
+        <double>1.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -159,7 +159,7 @@ click again to end selection</string>
        <item row="0" column="1">
         <widget class="Gui::QuantitySpinBox" name="chamferSize2" native="true">
          <property name="value">
-          <number>1.000000000000000</number>
+          <double>1.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -189,16 +189,16 @@ click again to end selection</string>
        <item row="0" column="1">
         <widget class="Gui::QuantitySpinBox" name="chamferAngle" native="true">
          <property name="minimum">
-          <number>0.000000000000000</number>
+          <double>0.000000000000000</double>
          </property>
          <property name="maximum">
-          <number>180.000000000000000</number>
+          <double>180.000000000000000</double>
          </property>
          <property name="singleStep">
-          <number>1.000000000000000</number>
+          <double>1.000000000000000</double>
          </property>
          <property name="value">
-          <number>45.000000000000000</number>
+          <double>45.000000000000000</double>
          </property>
         </widget>
        </item>

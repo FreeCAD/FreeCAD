@@ -54,7 +54,7 @@ PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", NULL};
 const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
-const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,0.1};
+const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,1.0};
 
 static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
 
