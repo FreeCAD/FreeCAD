@@ -50,6 +50,11 @@ import DraftVecUtils
 from draftutils.translate import translate
 import draftutils.utils as utils
 
+def get_supported_draft_objects():
+    return ["BezCurve", "Wire", "BSpline", "Rectangle", 
+            "Circle", "Ellipse", "Polygon", 
+            "Dimension", "LinearDimension"]
+
 
 # -------------------------------------------------------------------------
 # EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
@@ -315,28 +320,25 @@ def getCirclePts(obj):
     3 : midpoint
     """
     editpoints = []
-    editpoints.append(obj.getGlobalPlacement().Base)
+    editpoints.append(App.Vector(0, 0, 0))
     if obj.FirstAngle == obj.LastAngle:
         # obj is a circle
-        editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(obj.Radius,0,0)))
+        editpoints.append(App.Vector(obj.Radius,0,0))
     else:
         # obj is an arc
-        editpoints.append(getArcStart(obj, global_placement=True))#First endpoint
-        editpoints.append(getArcEnd(obj, global_placement=True))#Second endpoint
-        editpoints.append(getArcMid(obj, global_placement=True))#Midpoint
+        editpoints.append(getArcStart(obj))#First endpoint
+        editpoints.append(getArcEnd(obj))#Second endpoint
+        editpoints.append(getArcMid(obj))#Midpoint
     return editpoints
 
 
 def updateCircle(obj, nodeIndex, v, alt_edit_mode=0):
-    delta = obj.getGlobalPlacement().inverse().multVec(v)
-    local_v = obj.Placement.multVec(delta)
-
     if obj.FirstAngle == obj.LastAngle:
         # object is a circle
         if nodeIndex == 0:
-            obj.Placement.Base = local_v
+            obj.Placement.Base = obj.Placement.multVec(v)
         elif nodeIndex == 1:
-            obj.Radius = delta.Length
+            obj.Radius = v.Length
 
     else:
         # obj is an arc
@@ -347,7 +349,7 @@ def updateCircle(obj, nodeIndex, v, alt_edit_mode=0):
                 # center point
                 p1 = getArcStart(obj)
                 p2 = getArcEnd(obj)
-                p0 = DraftVecUtils.project(delta, getArcMid(obj))
+                p0 = DraftVecUtils.project(v, getArcMid(obj))
                 obj.Radius = p1.sub(p0).Length
                 obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
                 obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
@@ -356,36 +358,39 @@ def updateCircle(obj, nodeIndex, v, alt_edit_mode=0):
             else:
                 if nodeIndex == 1:  # first point
                     p1 = v
-                    p2 = getArcMid(obj, global_placement=True)
-                    p3 = getArcEnd(obj, global_placement=True)
+                    p2 = getArcMid(obj)
+                    p3 = getArcEnd(obj)
                 elif nodeIndex == 3:  # midpoint
-                    p1 = getArcStart(obj, global_placement=True)
+                    p1 = getArcStart(obj)
                     p2 = v
-                    p3 = getArcEnd(obj, global_placement=True)
+                    p3 = getArcEnd(obj)
                 elif nodeIndex == 2:  # second point
-                    p1 = getArcStart(obj, global_placement=True)
-                    p2 = getArcMid(obj, global_placement=True)
+                    p1 = getArcStart(obj)
+                    p2 = getArcMid(obj)
                     p3 = v
                 arc=Part.ArcOfCircle(p1,p2,p3)
-                obj.Placement.Base = obj.Placement.multVec(obj.getGlobalPlacement().inverse().multVec(arc.Location))
+                obj.Placement.Base = arc.Center
+                obj.Radius = arc.Radius
+
+                '''obj.Placement.Base = obj.Placement.multVec(obj.getGlobalPlacement().inverse().multVec(arc.Location))
                 obj.Radius = arc.Radius
                 delta = obj.Placement.inverse().multVec(p1)
                 obj.FirstAngle = math.degrees(math.atan2(delta[1],delta[0]))
                 delta = obj.Placement.inverse().multVec(p3)
-                obj.LastAngle = math.degrees(math.atan2(delta[1],delta[0]))
+                obj.LastAngle = math.degrees(math.atan2(delta[1],delta[0]))'''
 
         elif alt_edit_mode == 1:
             # edit arc by center radius FirstAngle LastAngle
             if nodeIndex == 0:
-                obj.Placement.Base = local_v
+                obj.Placement.Base = obj.Placement.multVec(v)
             else:
-                dangle = math.degrees(math.atan2(delta[1],delta[0]))
+                dangle = math.degrees(math.atan2(v[1],v[0]))
                 if nodeIndex == 1:
                     obj.FirstAngle = dangle
                 elif nodeIndex == 2:
                     obj.LastAngle = dangle
                 elif nodeIndex == 3:
-                    obj.Radius = delta.Length
+                    obj.Radius = v.Length
 
     obj.recompute()
 
@@ -441,7 +446,10 @@ def updateEllipse(obj, nodeIndex, v):
     if nodeIndex == 0:
         obj.Placement.Base = obj.Placement.multVec(v)
     elif nodeIndex == 1:
-        obj.MajorRadius = v.Length
+        if v.Length >= obj.MinorRadius:
+            obj.MajorRadius = v.Length
+        else:
+            obj.MajorRadius = obj.MinorRadius
     elif nodeIndex == 2:
         if v.Length <= obj.MajorRadius:
             obj.MinorRadius = v.Length

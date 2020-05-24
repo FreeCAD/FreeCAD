@@ -53,6 +53,7 @@ import draftguitools.gui_trackers as trackers
 import draftguitools.gui_edit_draft_objects as edit_draft
 import draftguitools.gui_edit_arch_objects as edit_arch
 import draftguitools.gui_edit_part_objects as edit_part
+import draftguitools.gui_edit_sketcher_objects as edit_sketcher
 
 
 COLORS = {
@@ -241,22 +242,17 @@ class Edit(gui_base_original.Modifier):
         # preview
         self.ghost = None
 
-        #list of supported Draft and Arch objects
-        self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
-                            "Polygon","Ellipse","Dimension","LinearDimension","Space",
-                            "Structure","PanelCut","PanelSheet","Wall", "Window"]
+        #list of supported objects
+        self.supportedObjs = edit_draft.get_supported_draft_objects() + \
+                             edit_arch.get_supported_arch_objects()
+        self.supportedPartObjs = edit_part.get_supported_part_objects() + \
+                                 edit_sketcher.get_supported_sketcher_objects()
 
-        #list of supported Part objects (they don't have a proxy)
-        #TODO: Add support for "Part::Circle" "Part::RegularPolygon" "Part::Plane" "Part::Ellipse" "Part::Vertex" "Part::Spiral"
-        self.supportedPartObjs = ["Sketch", "Sketcher::SketchObject",
-                                "Part", "Part::Line", "Part::Box"]
 
     def GetResources(self):
-        
         tooltip = ("Edits the active object.\n"
                    "Press E or ALT+LeftClick to display context menu\n"
                    "on supported nodes and on supported objects.")
-                  
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
@@ -649,8 +645,8 @@ class Edit(gui_base_original.Modifier):
             self.ghost.on()
             self.ghost.setCenter(obj.getGlobalPlacement().Base)
             self.ghost.setRadius(obj.Radius)
-            if self.obj.FirstAngle == self.obj.LastAngle:
-                # self.obj is a circle
+            if obj.FirstAngle == obj.LastAngle:
+                # obj is a circle
                 self.ghost.circle = True
                 if self.editing == 0:
                     self.ghost.setCenter(pt)
@@ -662,15 +658,15 @@ class Edit(gui_base_original.Modifier):
                     # edit by 3 points
                     if self.editing == 0:
                         # center point
-                        p1 = self.relativize_vector(self.obj, self.obj.Shape.Vertexes[0].Point)
-                        p2 = self.relativize_vector(self.obj, self.obj.Shape.Vertexes[1].Point)
-                        p0 = DraftVecUtils.project(self.relativize_vector(self.obj, pt),
-                                                   self.relativize_vector(self.obj, (edit_draft.getArcMid(obj, global_placement=True))))
+                        p1 = self.relativize_vector(obj, obj.Shape.Vertexes[0].Point)
+                        p2 = self.relativize_vector(obj, obj.Shape.Vertexes[1].Point)
+                        p0 = DraftVecUtils.project(self.relativize_vector(obj, pt),
+                                                   self.relativize_vector(obj, (edit_draft.getArcMid(obj, global_placement=True))))
                         self.ghost.autoinvert=False
                         self.ghost.setRadius(p1.sub(p0).Length)
-                        self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
-                        self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
-                        self.ghost.setCenter(self.globalize_vector(self.obj, p0))
+                        self.ghost.setStartPoint(obj.Shape.Vertexes[1].Point)
+                        self.ghost.setEndPoint(obj.Shape.Vertexes[0].Point)
+                        self.ghost.setCenter(self.globalize_vector(obj, p0))
                         return
                     else:
                         p1 = edit_draft.getArcStart(obj, global_placement=True)
@@ -694,7 +690,7 @@ class Edit(gui_base_original.Modifier):
                     elif self.editing == 2:
                         self.ghost.setEndPoint(pt)
                     elif self.editing == 3:
-                        self.ghost.setRadius(self.relativize_vector(self.obj, pt).Length)
+                        self.ghost.setRadius(self.relativize_vector(obj, pt).Length)
         gui_tool_utils.redraw_3d_view()
 
     def finalizeGhost(self):
@@ -712,7 +708,7 @@ class Edit(gui_base_original.Modifier):
         """Add point to obj and reset trackers.
         """
         pos = event.getPosition()
-        # self.setSelectState(self.obj, True)
+        # self.setSelectState(obj, True)
         selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
@@ -722,20 +718,20 @@ class Edit(gui_base_original.Modifier):
             for o in self.edited_objects:
                 if o.Name != info["Object"]:
                     continue
-                self.obj = o
+                obj = o
                 break
-            if utils.get_type(self.obj) == "Wire" and 'Edge' in info["Component"]:
+            if utils.get_type(obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = App.Vector(info["x"], info["y"], info["z"])
-                self.addPointToWire(self.obj, pt, int(info["Component"][4:]))
-            elif utils.get_type(self.obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
+                self.addPointToWire(obj, pt, int(info["Component"][4:]))
+            elif utils.get_type(obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
                 # pt = self.point
                 if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
                     pt = App.Vector(info["x"], info["y"], info["z"])
                 else:
                     continue
-                self.addPointToCurve(pt, info)
-        self.obj.recompute()
-        self.resetTrackers(self.obj)
+                self.addPointToCurve(pt, obj, info)
+        obj.recompute()
+        self.resetTrackers(obj)
         return
 
     def addPointToWire(self, obj, newPoint, edgeIndex):
@@ -746,25 +742,25 @@ class Edit(gui_base_original.Modifier):
             elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
                 edgeIndex = (edgeIndex + 1) / 2
 
-        for index, point in enumerate(self.obj.Points):
+        for index, point in enumerate(obj.Points):
             if index == edgeIndex:
-                newPoints.append(self.relativize_vector(self.obj, newPoint))
+                newPoints.append(self.relativize_vector(obj, newPoint))
             newPoints.append(point)
         if obj.Closed and edgeIndex == len(obj.Points):
             # last segment when object is closed
-            newPoints.append(self.relativize_vector(self.obj, newPoint))
+            newPoints.append(self.relativize_vector(obj, newPoint))
         obj.Points = newPoints
 
-    def addPointToCurve(self, point, info=None):
+    def addPointToCurve(self, point, obj, info=None):
         import Part
-        if not (utils.get_type(self.obj) in ["BSpline", "BezCurve"]):
+        if not (utils.get_type(obj) in ["BSpline", "BezCurve"]):
             return
-        pts = self.obj.Points
-        if utils.get_type(self.obj) == "BezCurve":
+        pts = obj.Points
+        if utils.get_type(obj) == "BezCurve":
             if not info['Component'].startswith('Edge'):
                 return  # clicked control point
             edgeindex = int(info['Component'].lstrip('Edge')) - 1
-            wire = self.obj.Shape.Wires[0]
+            wire = obj.Shape.Wires[0]
             bz = wire.Edges[edgeindex].Curve
             param = bz.parameter(point)
             seg1 = wire.Edges[edgeindex].copy().Curve
@@ -781,31 +777,31 @@ class Edit(gui_base_original.Modifier):
             pts = edges[0].Curve.getPoles()[0:1]
             for edge in edges:
                 pts.extend(edge.Curve.getPoles()[1:])
-            if self.obj.Closed:
+            if obj.Closed:
                 pts.pop()
-            c = self.obj.Continuity
+            c = obj.Continuity
             # assume we have a tangent continuity for an arbitrarily split
             # segment, unless it's linear
-            cont = 1 if (self.obj.Degree >= 2) else 0
-            self.obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
+            cont = 1 if (obj.Degree >= 2) else 0
+            obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
         else:
-            if (utils.get_type(self.obj) in ["BSpline"]):
-                if (self.obj.Closed == True):
-                    curve = self.obj.Shape.Edges[0].Curve
+            if (utils.get_type(obj) in ["BSpline"]):
+                if (obj.Closed == True):
+                    curve = obj.Shape.Edges[0].Curve
                 else:
-                    curve = self.obj.Shape.Curve
+                    curve = obj.Shape.Curve
             uNewPoint = curve.parameter(point)
             uPoints = []
-            for p in self.obj.Points:
+            for p in obj.Points:
                 uPoints.append(curve.parameter(p))
             for i in range(len(uPoints) - 1):
                 if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                    pts.insert(i + 1, self.relativize_vector(self.obj, point))
+                    pts.insert(i + 1, self.relativize_vector(obj, point))
                     break
             # DNC: fix: add points to last segment if curve is closed
-            if self.obj.Closed and (uNewPoint > uPoints[-1]):
-                pts.append(self.relativize_vector(self.obj, point))
-        self.obj.Points = pts
+            if obj.Closed and (uNewPoint > uPoints[-1]):
+                pts.append(self.relativize_vector(obj, point))
+        obj.Points = pts
 
     def delPoint(self, event):
         pos = event.getPosition()
@@ -818,25 +814,25 @@ class Edit(gui_base_original.Modifier):
             return 
 
         doc = App.getDocument(str(node.documentName.getValue()))
-        self.obj = doc.getObject(str(node.objectName.getValue()))
-        if self.obj is None:
+        obj = doc.getObject(str(node.objectName.getValue()))
+        if obj is None:
             return
-        if not (utils.get_type(self.obj) in ["Wire", "BSpline", "BezCurve"]):
+        if not (utils.get_type(obj) in ["Wire", "BSpline", "BezCurve"]):
             return
-        if len(self.obj.Points) <= 2:
+        if len(obj.Points) <= 2:
             _msg = translate("draft", "Active object must have more than two points/nodes") 
             App.Console.PrintWarning(_msg + "\n")
             return
 
-        pts = self.obj.Points
+        pts = obj.Points
         pts.pop(ep)
-        self.obj.Points = pts
-        if utils.get_type(self.obj) == "BezCurve":
-            self.obj.Proxy.resetcontinuity(self.obj)
-        self.obj.recompute()
+        obj.Points = pts
+        if utils.get_type(obj) == "BezCurve":
+            obj.Proxy.resetcontinuity(obj)
+        obj.recompute()
 
         # don't do tan/sym on DWire/BSpline!
-        self.resetTrackers(self.obj)
+        self.resetTrackers(obj)
 
 
     # ------------------------------------------------------------------------
@@ -911,7 +907,7 @@ class Edit(gui_base_original.Modifier):
         elif action_label == "invert arc":
             pos = self.event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
-            self.arcInvert(obj)
+            edit_draft.arcInvert(obj)
         del self.event
 
 
@@ -975,14 +971,17 @@ class Edit(gui_base_original.Modifier):
         elif objectType == "PanelSheet":
             eps = edit_arch.getPanelSheetPts(obj)
 
-        elif objectType == "Part" and obj.TypeId == "Part::Box":
-            eps = edit_part.getPartBoxPts(obj)
-
         elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
             eps = edit_part.getPartLinePts(obj)
 
+        elif objectType == "Part" and obj.TypeId == "Part::Box":
+            eps = edit_part.getPartBoxPts(obj)
+
+        elif objectType == "Part" and obj.TypeId == "Part::Cylinder":
+            eps = edit_part.getPartCylinderPts(obj)
+
         elif objectType == "Sketch":
-            eps = edit_arch.getSketchPts(obj)
+            eps = edit_sketcher.getSketchPts(obj)
         
         if eps:
             return self.globalize_vectors(obj, eps)
@@ -991,7 +990,7 @@ class Edit(gui_base_original.Modifier):
 
 
     def update(self, obj, nodeIndex, v):
-        """Apply the App.Vector to the modified point and update self.obj."""
+        """Apply the App.Vector to the modified point and update obj."""
 
         v = self.relativize_vector(obj, v)
 
@@ -1032,7 +1031,7 @@ class Edit(gui_base_original.Modifier):
             edit_draft.updateDimension(obj, nodeIndex, v)
 
         elif objectType == "Sketch":
-            edit_arch.updateSketch(obj, nodeIndex, v)
+            edit_sketcher.updateSketch(obj, nodeIndex, v)
 
         elif objectType == "Wall":
             if nodeIndex == 0:
@@ -1058,11 +1057,14 @@ class Edit(gui_base_original.Modifier):
         elif objectType == "PanelSheet":
             edit_arch.updatePanelSheet(obj, nodeIndex, v)
 
-        elif objectType == "Part::Line" and self.obj.TypeId == "Part::Line":
+        elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
             edit_part.updatePartLine(obj, nodeIndex, v)
 
-        elif objectType == "Part" and self.obj.TypeId == "Part::Box":
+        elif objectType == "Part" and obj.TypeId == "Part::Box":
             edit_part.updatePartBox(obj, nodeIndex, v)
+
+        elif objectType == "Part" and obj.TypeId == "Part::Cylinder":
+            edit_part.updatePartCylinder(obj, nodeIndex, v)
 
         obj.recompute()
 
