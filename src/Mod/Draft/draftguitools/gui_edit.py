@@ -980,6 +980,9 @@ class Edit(gui_base_original.Modifier):
         elif objectType == "Part" and obj.TypeId == "Part::Cylinder":
             eps = edit_part.getPartCylinderPts(obj)
 
+        elif objectType == "Part" and obj.TypeId == "Part::Cone":
+            eps = edit_part.getPartConePts(obj)
+
         elif objectType == "Sketch":
             eps = edit_sketcher.getSketchPts(obj)
         
@@ -1065,6 +1068,9 @@ class Edit(gui_base_original.Modifier):
 
         elif objectType == "Part" and obj.TypeId == "Part::Cylinder":
             edit_part.updatePartCylinder(obj, nodeIndex, v)
+
+        elif objectType == "Part" and obj.TypeId == "Part::Cone":
+            edit_part.updatePartCone(obj, nodeIndex, v)
 
         obj.recompute()
 
