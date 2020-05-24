@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QFontMetrics>
 # include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
@@ -128,6 +129,17 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->chamferAngle->bind(pcChamfer->Angle);
 
     ui->stackedWidget->setFixedHeight(ui->chamferSize2->sizeHint().height());
+
+    QFontMetrics fm(ui->typeLabel->font());
+    int minWidth = fm.width(ui->typeLabel->text());
+    minWidth = std::max<int>(minWidth, fm.width(ui->sizeLabel->text()));
+    minWidth = std::max<int>(minWidth, fm.width(ui->size2Label->text()));
+    minWidth = std::max<int>(minWidth, fm.width(ui->angleLabel->text()));
+    minWidth = minWidth + 5; //spacing
+    ui->typeLabel->setMinimumWidth(minWidth);
+    ui->sizeLabel->setMinimumWidth(minWidth);
+    ui->size2Label->setMinimumWidth(minWidth);
+    ui->angleLabel->setMinimumWidth(minWidth);
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
