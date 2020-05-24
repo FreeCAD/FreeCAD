@@ -38,41 +38,8 @@ import DraftVecUtils
 from draftutils.translate import translate
 import draftutils.utils as utils
 
-
-# SKETCH: just if it's composed by a single segment-----------------------
-
-def getSketchPts(obj):
-    """Return the list of edipoints for the given single line sketch.
-
-    (WallTrace)
-    0 : startpoint
-    1 : endpoint
-    """
-    editpoints = []
-    if obj.GeometryCount == 1:
-        editpoints.append(obj.getPoint(0,1))
-        editpoints.append(obj.getPoint(0,2))
-        return editpoints
-    else:
-        _wrn = translate("draft", "Sketch is too complex to edit: "
-                                  "it is suggested to use sketcher default editor")
-        App.Console.PrintWarning(_wrn + "\n")
-        return None
-
-
-def updateSketch(obj, nodeIndex, v):
-    """Move a single line sketch vertex a certain displacement.
-
-    (single segment sketch object, node index as Int, App.Vector)
-    move a single line sketch (WallTrace) vertex according to a given App.Vector
-    0 : startpoint
-    1 : endpoint
-    """
-    if nodeIndex == 0:
-        obj.movePoint(0, 1, v)
-    elif nodeIndex == 1:
-        obj.movePoint(0, 2, v)
-    obj.recompute()
+def get_supported_arch_objects():
+    return ["Wall", "Window", "Structure", "Space", "PanelCut", "PanelSheet"]
 
 
 # WALL---------------------------------------------------------------------

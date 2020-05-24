@@ -32,6 +32,9 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD as App
 import DraftVecUtils
 
+def get_supported_part_objects():
+    return ["Part", "Part::Line", "Part::Box", "Part::Cylinder"
+            ]
 
 # PART::LINE--------------------------------------------------------------
 
@@ -72,5 +75,23 @@ def updatePartBox(obj, nodeIndex, v):
         _vector = DraftVecUtils.project(v, App.Vector(0, 1, 0))
         obj.Width = _vector.Length
     elif nodeIndex == 3:
+        _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
+        obj.Height = _vector.Length
+
+# Part::Cylinder --------------------------------------------------------------
+
+def getPartCylinderPts(obj):
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.Radius, 0, 0))
+    editpoints.append(App.Vector(0, 0, obj.Height))
+    return editpoints
+
+def updatePartCylinder(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.Base + v
+    elif nodeIndex == 1:
+        obj.Radius = v.Length
+    elif nodeIndex == 2:
         _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         obj.Height = _vector.Length
