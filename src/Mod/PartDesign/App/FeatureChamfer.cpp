@@ -60,22 +60,22 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
 
 Chamfer::Chamfer()
 {
-    ADD_PROPERTY(ChamferType, ((long)0));
+    ADD_PROPERTY_TYPE(ChamferType, (0L), "Chamfer", App::Prop_None, "Type of chamfer");
     ChamferType.setEnums(ChamferTypeEnums);
 
-    ADD_PROPERTY(Size,(1.0));
+    ADD_PROPERTY_TYPE(Size, (1.0), "Chamfer", App::Prop_None, "Size of chamfer");
     Size.setUnit(Base::Unit::Length);
     Size.setConstraints(&floatSize);
 
-    ADD_PROPERTY(Size2,(1.0));
+    ADD_PROPERTY_TYPE(Size2, (1.0), "Chamfer", App::Prop_None, "Second size of chamfer");
     Size2.setUnit(Base::Unit::Length);
     Size2.setConstraints(&floatSize);
 
-    ADD_PROPERTY(Angle,(45.0));
+    ADD_PROPERTY_TYPE(Angle, (45.0), "Chamfer", App::Prop_None, "Angle of chamfer");
     Angle.setUnit(Base::Unit::Angle);
     Angle.setConstraints(&floatAngle);
 
-    ADD_PROPERTY(FlipDirection, (false));
+    ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
 
     updateProperties();
 }
