@@ -983,6 +983,9 @@ class Edit(gui_base_original.Modifier):
         elif objectType == "Part" and obj.TypeId == "Part::Cone":
             eps = edit_part.getPartConePts(obj)
 
+        elif objectType == "Part" and obj.TypeId == "Part::Sphere":
+            eps = edit_part.getPartSpherePts(obj)
+
         elif objectType == "Sketch":
             eps = edit_sketcher.getSketchPts(obj)
         
@@ -1071,6 +1074,9 @@ class Edit(gui_base_original.Modifier):
 
         elif objectType == "Part" and obj.TypeId == "Part::Cone":
             edit_part.updatePartCone(obj, nodeIndex, v)
+
+        elif objectType == "Part" and obj.TypeId == "Part::Sphere":
+            edit_part.updatePartSphere(obj, nodeIndex, v)
 
         obj.recompute()
 

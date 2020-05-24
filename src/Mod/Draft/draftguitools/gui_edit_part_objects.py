@@ -33,7 +33,8 @@ import FreeCAD as App
 import DraftVecUtils
 
 def get_supported_part_objects():
-    return ["Part", "Part::Line", "Part::Box", "Part::Cylinder", "Part::Cone"
+    return ["Part", "Part::Line", "Part::Box", 
+            "Part::Sphere", "Part::Cylinder", "Part::Cone"
             ]
 
 # PART::LINE--------------------------------------------------------------
@@ -91,10 +92,12 @@ def updatePartCylinder(obj, nodeIndex, v):
     if nodeIndex == 0:
         obj.Placement.Base = obj.Placement.Base + v
     elif nodeIndex == 1:
-        obj.Radius = v.Length
+        if v.Length > 0.0:
+            obj.Radius = v.Length
     elif nodeIndex == 2:
         _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         obj.Height = _vector.Length
+
 
 # Part::Cone --------------------------------------------------------------
 
@@ -117,3 +120,19 @@ def updatePartCone(obj, nodeIndex, v):
     elif nodeIndex == 3: # Height is last to have the priority on the radius
         _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         obj.Height = _vector.Length
+
+
+# Part::Sphere --------------------------------------------------------------
+
+def getPartSpherePts(obj):
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.Radius, 0, 0))
+    return editpoints
+
+def updatePartSphere(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.Base + v
+    elif nodeIndex == 1:
+        if v.Length > 0.0:
+            obj.Radius = v.Length # TODO: Perhaps better to project on the face?
