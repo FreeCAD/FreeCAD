@@ -20,10 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft_Edit command used by the Draft workbench."""
+"""Provide the support functions to Draft_Edit for Draft objects.
+
+All functions in this module work with Object coordinate space.
+No conversion to global coordinate system is needed.
+
+To support an new Object Draft_Edit needs at least two functions:
+getObjectPts(obj): returns a list of points on which Draft_Edit will display
+    edit trackers
+updateObject(obj, nodeIndex, v): update the give object according to the
+    index of a moved edit tracker and the vector of the displacement
+TODO: Abstract the code that handles the preview and move the object specific
+    code to this module from main Draft_Edit module
+"""
 ## @package gui_edit_draft_objects
 # \ingroup DRAFT
-# \brief Provide the Draft_Edit command used by the Draft workbench
+# \brief Provide the support functions to Draft_Edit for Draft objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
@@ -46,13 +58,12 @@ import draftutils.utils as utils
 def getWirePts(obj):
     editpoints = []
     for p in obj.Points:
-        p = obj.getGlobalPlacement().multVec(p)
         editpoints.append(p)
     return editpoints
 
 def updateWire(obj, nodeIndex, v): #TODO: Fix it
     pts = obj.Points
-    editPnt = obj.getGlobalPlacement().inverse().multVec(v)
+    editPnt = v
     # DNC: allows to close the curve by placing ends close to each other
     tol = 0.001
     if ( ( nodeIndex == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( 
@@ -272,33 +283,19 @@ def getRectanglePts(obj):
     2 : Height
     """
     editpoints = []
-    editpoints.append(obj.getGlobalPlacement().Base)
-    editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(obj.Length,0,0)))
-    editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(0,obj.Height,0)))
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.Length, 0, 0))
+    editpoints.append(App.Vector(0, obj.Height, 0))
     return editpoints
 
-
 def updateRectangle(obj, nodeIndex, v):
-    delta = obj.getGlobalPlacement().inverse().multVec(v)
     if nodeIndex == 0:
-        # p = obj.getGlobalPlacement()
-        # p.move(delta)
-        obj.Placement.move(delta)
+        obj.Placement.Base = obj.Placement.multVec(v)
     elif nodeIndex == 1:
-        obj.Length = DraftVecUtils.project(delta,App.Vector(1,0,0)).Length
+        obj.Length = DraftVecUtils.project(v, App.Vector(1,0,0)).Length
     elif nodeIndex == 2:
-        obj.Height = DraftVecUtils.project(delta,App.Vector(0,1,0)).Length
+        obj.Height = DraftVecUtils.project(v, App.Vector(0,1,0)).Length
 
-
-# -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Ellipse (# TODO: yet to be implemented)
-# -------------------------------------------------------------------------
-
-def setEllipsePts(obj):
-    return
-
-def updateEllipse(obj, nodeIndex, v):
-    return
 
 # -------------------------------------------------------------------------
 # EDIT OBJECT TOOLS : Circle/Arc
@@ -430,30 +427,50 @@ def arcInvert(obj):
 
 
 # -------------------------------------------------------------------------
-# EDIT OBJECT TOOLS : Polygon (maybe could also rotate the polygon)
+# EDIT OBJECT TOOLS : Ellipse
+# -------------------------------------------------------------------------
+
+def getEllipsePts(obj):
+    editpoints = []
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.MajorRadius, 0, 0))
+    editpoints.append(App.Vector(0, obj.MinorRadius, 0))
+    return editpoints
+
+def updateEllipse(obj, nodeIndex, v):
+    if nodeIndex == 0:
+        obj.Placement.Base = obj.Placement.multVec(v)
+    elif nodeIndex == 1:
+        obj.MajorRadius = v.Length
+    elif nodeIndex == 2:
+        if v.Length <= obj.MajorRadius:
+            obj.MinorRadius = v.Length
+        else:
+            obj.MinorRadius = obj.MajorRadius
+    obj.recompute()
+
+
+# -------------------------------------------------------------------------
+# EDIT OBJECT TOOLS : Polygon 
 # -------------------------------------------------------------------------
 
 def getPolygonPts(obj):
     editpoints = []
-    editpoints.append(obj.Placement.Base)
-    editpoints.append(obj.Shape.Vertexes[0].Point)
+    editpoints.append(App.Vector(0, 0, 0))
+    if obj.DrawMode == 'inscribed':
+        editpoints.append(obj.Placement.inverse().multVec(obj.Shape.Vertexes[0].Point))
+    else:
+        editpoints.append(obj.Placement.inverse().multVec((obj.Shape.Vertexes[0].Point + 
+                                                          obj.Shape.Vertexes[1].Point) / 2
+                                                         ))
     return editpoints
 
-
 def updatePolygon(obj, nodeIndex, v):
-    delta = v.sub(obj.Placement.Base)
     if nodeIndex == 0:
-        p = obj.Placement
-        p.move(delta)
-        obj.Placement = p
+        obj.Placement.Base = obj.Placement.multVec(v)
     elif nodeIndex == 1:
-        if obj.DrawMode == 'inscribed':
-            obj.Radius = delta.Length
-        else:
-            halfangle = ((math.pi*2)/obj.FacesNumber)/2
-            rad = math.cos(halfangle)*delta.Length
-            obj.Radius = rad
-        obj.recompute()
+        obj.Radius = v.Length
+    obj.recompute()
 
 
 # -------------------------------------------------------------------------

@@ -181,10 +181,6 @@ class Edit(gui_base_original.Modifier):
             the user is editing corresponding node, so next click
             will be processed as an attempt to end editing operation
 
-    editpoints: List [FreeCAD::App.Vector]
-        List of editpoints collected from the edited object,
-        on whick editTrackers will be placed.
-
     trackers: Dictionary {object.Name : [editTrackers]}
         It records the list of DraftTrackers.editTracker.
         {object.Name as String : [editTrackers for the object]}
@@ -233,10 +229,7 @@ class Edit(gui_base_original.Modifier):
         self._mousePressedCB = None
 
         # this are used to edit structure objects, it's a bit buggy i think
-        self.selectstate = None
-        self.originalDisplayMode = None
-        self.originalPoints = None
-        self.originalNodes = None
+        self.objs_formats = {}
 
         # settings
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -250,7 +243,7 @@ class Edit(gui_base_original.Modifier):
 
         #list of supported Draft and Arch objects
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
-                            "Polygon","Dimension","LinearDimension","Space",
+                            "Polygon","Ellipse","Dimension","LinearDimension","Space",
                             "Structure","PanelCut","PanelSheet","Wall", "Window"]
 
         #list of supported Part objects (they don't have a proxy)
@@ -299,17 +292,15 @@ class Edit(gui_base_original.Modifier):
                                                + "\n")
             self.register_selection_callback()
 
+
     def proceed(self):
-        """this method defines editpoints and set the editTrackers"""
+        """this method set the editTrackers"""
         self.unregister_selection_callback()
         self.edited_objects = self.getObjsFromSelection()
         if not self.edited_objects:
             return self.finish()
 
-        # Save selectstate and turn selectable false.
-        # Object can remain selectable commenting following lines:
-        # self.saveSelectState(self.obj)
-        # self.setSelectState(self.obj, False)
+        self.format_objects_for_editing(self.edited_objects)
 
         # start object editing
         Gui.Selection.clearSelection()
@@ -318,13 +309,25 @@ class Edit(gui_base_original.Modifier):
         self.ui.editUi()
 
         for obj in self.edited_objects:
-            self.setEditPoints(obj)
+            self.setTrackers(obj, self.getEditPoints(obj))
 
         self.register_editing_callbacks()
 
         # TODO: align working plane when editing starts
         # App.DraftWorkingPlane.save()
         # self.alignWorkingPlane()
+
+
+    def numericInput(self, v, numy=None, numz=None):
+        """Execute callback by the toolbar to activate the update function.
+
+        This function gets called by the toolbar
+        or by the mouse click and activate the update function.
+        """
+        if numy:
+            v = App.Vector(v, numy, numz)
+        self.endEditing(self.obj, self.editing, v)
+        App.ActiveDocument.recompute()
 
 
     def finish(self, closed=False):
@@ -340,18 +343,9 @@ class Edit(gui_base_original.Modifier):
                     self.obj.Closed = True
         if self.ui:
             self.removeTrackers()
-        self.restoreSelectState(self.obj)
-        if utils.get_type(self.obj) == "Structure":
-            if self.originalDisplayMode is not None:
-                self.obj.ViewObject.DisplayMode = self.originalDisplayMode
-            if self.originalPoints is not None:
-                self.obj.ViewObject.NodeSize = self.originalPoints
-            if self.originalNodes is not None:
-                self.obj.ViewObject.ShowNodes = self.originalNodes
-        self.selectstate = None
-        self.originalDisplayMode = None
-        self.originalPoints = None
-        self.originalNodes = None
+
+        self.deformat_objects_after_editing(self.edited_objects)
+        
         super(Edit, self).finish()
         App.DraftWorkingPlane.restore()
         if Gui.Snapper.grid:
@@ -360,6 +354,7 @@ class Edit(gui_base_original.Modifier):
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
         QtCore.QTimer.singleShot(0, Gui.ActiveDocument.resetEdit)
+
 
     # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
@@ -491,7 +486,6 @@ class Edit(gui_base_original.Modifier):
         self.obj = doc.getObject(str(node.objectName.getValue()))
         if self.obj is None:
             return
-        self.setPlacement(self.obj)
 
         App.Console.PrintMessage(self.obj.Name
                                  + ": editing node number "
@@ -539,127 +533,6 @@ class Edit(gui_base_original.Modifier):
         self.showTrackers()
         gui_tool_utils.redraw_3d_view()
 
-    # -------------------------------------------------------------------------
-    # UTILS
-    # -------------------------------------------------------------------------
-
-    def getObjsFromSelection(self):
-        """Evaluate selection and return a valid object to edit."""
-        selection = Gui.Selection.getSelection()
-        self.edited_objects = []
-        if len(selection) > self.maxObjects:
-            App.Console.PrintMessage(translate("draft", 
-                                               "Too many objects selected, max number set to: ")
-                                     + str(self.maxObjects) + "\n")
-            return None
-        for obj in selection:
-            if utils.get_type(obj) in self.supportedObjs:
-                self.edited_objects.append(obj)
-                continue
-            elif utils.get_type(obj) in self.supportedPartObjs:
-                if obj.TypeId in self.supportedPartObjs:
-                    self.edited_objects.append(obj)
-                    continue
-            App.Console.PrintWarning(obj.Name 
-                                     + translate("draft",
-                                                 ": this object is not editable")
-                                     + "\n")
-        return self.edited_objects
-
-    def get_selected_obj_at_position(self, pos):
-        """Return object at given position.
-
-        If object is one of the edited objects (self.edited_objects).
-        """
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
-        if not selobjs:
-            return
-        for info in selobjs:
-            if not info:
-                return
-            for obj in self.edited_objects:
-                if obj.Name == info["Object"]:
-                    return obj
-
-    def numericInput(self, v, numy=None, numz=None):
-        """Execute callback by the toolbar to activate the update function.
-
-        This function gets called by the toolbar
-        or by the mouse click and activate the update function.
-        """
-        if numy:
-            v = App.Vector(v, numy, numz)
-        self.endEditing(self.obj, self.editing, v)
-        App.ActiveDocument.recompute()
-
-    def setSelectState(self, obj, selState=False):
-        if hasattr(obj.ViewObject, "Selectable"):
-            obj.ViewObject.Selectable = selState
-
-    def saveSelectState(self, obj):
-        if hasattr(obj.ViewObject, "Selectable"):
-            self.selectstate = obj.ViewObject.Selectable
-
-    def restoreSelectState(self,obj):
-        if obj:
-            if hasattr(obj.ViewObject,"Selectable") and (self.selectstate is not None):
-                obj.ViewObject.Selectable = self.selectstate
-
-    def setPlacement(self, obj):
-        """Set placement of object.
-
-        Set self.pl and self.invpl to self.obj placement
-        and inverse placement.
-        """
-        if not obj:
-            return
-        if "Placement" in obj.PropertiesList:
-            self.pl = obj.getGlobalPlacement()
-            self.invpl = self.pl.inverse()
-
-    def alignWorkingPlane(self):
-        """Align working plane to self.obj."""
-        if "Shape" in self.obj.PropertiesList:
-            pass
-            #if DraftTools.plane.weak: TODO Use App.DraftWorkingPlane instead of DraftTools.plane
-            #    DraftTools.plane.alignToFace(self.obj.Shape)
-        if self.planetrack:
-            self.planetrack.set(self.editpoints[0])
-
-    def getEditNode(self, pos):
-        """Get edit node from given screen position."""
-        node = self.sendRay(pos)
-        return node
-    
-    def sendRay(self, mouse_pos):
-        """Send a ray through the scene and return the nearest entity."""
-        ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
-        ray_pick.setPoint(coin.SbVec2s(*mouse_pos))
-        ray_pick.setRadius(self.pick_radius)
-        ray_pick.setPickAll(True)
-        ray_pick.apply(self.render_manager.getSceneGraph())
-        picked_point = ray_pick.getPickedPointList()
-        return self.searchEditNode(picked_point)
-
-    def searchEditNode(self, picked_point):
-        """Search edit node inside picked point list and return node number."""
-        for point in picked_point:
-            path = point.getPath()
-            length = path.getLength()
-            point = path.getNode(length - 2)
-            #import DraftTrackers
-            if hasattr(point,"subElementName") and 'EditNode' in str(point.subElementName.getValue()):
-                return point
-        return None
-
-    def getEditNodeIndex(self, point):
-        """Get edit node index from given screen position."""
-        if point:
-            subElement = str(point.subElementName.getValue())
-            ep = int(subElement[8:])
-            return ep
-        else:
-            return None
 
     # -------------------------------------------------------------------------
     # EDIT TRACKERS functions
@@ -755,21 +628,21 @@ class Edit(gui_base_original.Modifier):
     def updateGhost(self, obj, idx, pt):
         if utils.get_type(obj) in ["Wire"]:
             self.ghost.on()
-            pointList = self.applyPlacement(obj.Points)
+            pointList = self.globalize_vectors(obj, obj.Points)
             pointList[idx] = pt
             if obj.Closed:
                 pointList.append(pointList[0])
             self.ghost.updateFromPointlist(pointList)
         elif utils.get_type(obj) == "BSpline":
             self.ghost.on()
-            pointList = self.applyPlacement(obj.Points)
+            pointList = self.globalize_vectors(obj, obj.Points)
             pointList[idx] = pt
             if obj.Closed:
                 pointList.append(pointList[0])
             self.ghost.update(pointList)
         elif utils.get_type(obj) == "BezCurve":
             self.ghost.on()
-            plist = self.applyPlacement(obj.Points)
+            plist = self.globalize_vectors(obj, obj.Points)
             pointList = edit_draft.recomputePointsBezier(obj,plist,idx,pt,obj.Degree,moveTrackers=True)
             self.ghost.update(pointList,obj.Degree)
         elif utils.get_type(obj) == "Circle":
@@ -789,14 +662,15 @@ class Edit(gui_base_original.Modifier):
                     # edit by 3 points
                     if self.editing == 0:
                         # center point
-                        p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
-                        p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(edit_draft.getArcMid(obj, global_placement=True)))
+                        p1 = self.relativize_vector(self.obj, self.obj.Shape.Vertexes[0].Point)
+                        p2 = self.relativize_vector(self.obj, self.obj.Shape.Vertexes[1].Point)
+                        p0 = DraftVecUtils.project(self.relativize_vector(self.obj, pt),
+                                                   self.relativize_vector(self.obj, (edit_draft.getArcMid(obj, global_placement=True))))
                         self.ghost.autoinvert=False
                         self.ghost.setRadius(p1.sub(p0).Length)
                         self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
                         self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
-                        self.ghost.setCenter(self.pl.multVec(p0))
+                        self.ghost.setCenter(self.globalize_vector(self.obj, p0))
                         return
                     else:
                         p1 = edit_draft.getArcStart(obj, global_placement=True)
@@ -820,18 +694,8 @@ class Edit(gui_base_original.Modifier):
                     elif self.editing == 2:
                         self.ghost.setEndPoint(pt)
                     elif self.editing == 3:
-                        self.ghost.setRadius(self.invpl.multVec(pt).Length)
+                        self.ghost.setRadius(self.relativize_vector(self.obj, pt).Length)
         gui_tool_utils.redraw_3d_view()
-
-    def applyPlacement(self, pointList):
-        if self.pl:
-            plist = []
-            for p in pointList:
-                point = self.pl.multVec(p)
-                plist.append(point)
-            return plist
-        else:
-            return pointList
 
     def finalizeGhost(self):
         try:
@@ -860,7 +724,6 @@ class Edit(gui_base_original.Modifier):
                     continue
                 self.obj = o
                 break
-            self.setPlacement(self.obj)
             if utils.get_type(self.obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = App.Vector(info["x"], info["y"], info["z"])
                 self.addPointToWire(self.obj, pt, int(info["Component"][4:]))
@@ -872,9 +735,7 @@ class Edit(gui_base_original.Modifier):
                     continue
                 self.addPointToCurve(pt, info)
         self.obj.recompute()
-        self.removeTrackers(self.obj)
-        self.setEditPoints(self.obj)
-        # self.setSelectState(self.obj, False)
+        self.resetTrackers(self.obj)
         return
 
     def addPointToWire(self, obj, newPoint, edgeIndex):
@@ -887,11 +748,11 @@ class Edit(gui_base_original.Modifier):
 
         for index, point in enumerate(self.obj.Points):
             if index == edgeIndex:
-                newPoints.append(self.invpl.multVec(newPoint))
+                newPoints.append(self.relativize_vector(self.obj, newPoint))
             newPoints.append(point)
         if obj.Closed and edgeIndex == len(obj.Points):
             # last segment when object is closed
-            newPoints.append(self.invpl.multVec(newPoint))
+            newPoints.append(self.relativize_vector(self.obj, newPoint))
         obj.Points = newPoints
 
     def addPointToCurve(self, point, info=None):
@@ -939,11 +800,11 @@ class Edit(gui_base_original.Modifier):
                 uPoints.append(curve.parameter(p))
             for i in range(len(uPoints) - 1):
                 if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                    pts.insert(i + 1, self.invpl.multVec(point))
+                    pts.insert(i + 1, self.relativize_vector(self.obj, point))
                     break
             # DNC: fix: add points to last segment if curve is closed
             if self.obj.Closed and (uNewPoint > uPoints[-1]):
-                pts.append(self.invpl.multVec(point))
+                pts.append(self.relativize_vector(self.obj, point))
         self.obj.Points = pts
 
     def delPoint(self, event):
@@ -975,112 +836,11 @@ class Edit(gui_base_original.Modifier):
         self.obj.recompute()
 
         # don't do tan/sym on DWire/BSpline!
-        self.removeTrackers(self.obj)
-        self.setEditPoints(self.obj)
-
-    # -------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS : GENERAL
-    # -------------------------------------------------------------------------
-
-    def setEditPoints(self, obj):
-        """Append given object's editpoints to self.edipoints and set EditTrackers
-        """
-        self.setPlacement(obj)
-        self.editpoints = self.getEditPoints(obj)
-        if self.editpoints:  # set trackers and align plane
-            self.setTrackers(obj, self.editpoints)
-            self.editpoints = []
-
-    def getEditPoints(self, obj):
-        """Return a list of App.Vectors according to the given object edit nodes.
-        """
-        objectType = utils.get_type(obj)
-
-        if objectType in ["Wire", "BSpline"]:
-            self.ui.editUi("Wire")
-            return edit_draft.getWirePts(obj)
-        elif objectType == "BezCurve":
-            self.ui.editUi("BezCurve")
-            edit_draft.resetTrackersBezier(obj)
-            self.editpoints = []
-            return
-        elif objectType == "Circle":
-            return edit_draft.getCirclePts(obj)
-        elif objectType == "Rectangle":
-            return edit_draft.getRectanglePts(obj)
-        elif objectType == "Polygon":
-            return edit_draft.getPolygonPts(obj)
-        elif objectType in ("Dimension","LinearDimension"):
-            return edit_draft.getDimensionPts(obj)
-        elif objectType == "Wall":
-            return edit_arch.getWallPts(obj)
-        elif objectType == "Window":
-            return edit_arch.getWindowPts(obj)
-        elif objectType == "Space":
-            return edit_arch.getSpacePts(obj)
-        elif objectType == "Structure":
-            return edit_arch.getStructurePts(obj)
-        elif objectType == "PanelCut":
-            return edit_arch.getPanelCutPts(obj)
-        elif objectType == "PanelSheet":
-            return edit_arch.getPanelSheetPts(obj)
-        elif objectType == "Part" and obj.TypeId == "Part::Box":
-            return edit_part.getPartBoxPts(obj)
-        elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
-            return edit_part.getPartLinePts(obj)
-        elif objectType == "Sketch":
-            return edit_arch.getSketchPts(obj)
-        else:
-            return None
-
-    def update(self, obj, nodeIndex, v):
-        """Apply the App.Vector to the modified point and update self.obj."""
-
-        objectType = utils.get_type(obj)
-        App.ActiveDocument.openTransaction("Edit")
-
-        if objectType in ["Wire", "BSpline"]:
-            edit_draft.updateWire(obj, nodeIndex, v)
-        elif objectType == "BezCurve":
-            edit_draft.updateWire(obj, nodeIndex, v)
-        elif objectType == "Circle":
-            edit_draft.updateCircle(obj, nodeIndex, v, self.alt_edit_mode)
-        elif objectType == "Rectangle":
-            edit_draft.updateRectangle(obj, nodeIndex, v)
-        elif objectType == "Polygon":
-            edit_draft.updatePolygon(obj, nodeIndex, v)
-        elif objectType in ("Dimension","LinearDimension"):
-            edit_draft.updateDimension(obj, nodeIndex, v)
-        elif objectType == "Sketch":
-            edit_arch.updateSketch(obj, nodeIndex, v)
-        elif objectType == "Wall":
-            edit_arch.updateWall(obj, nodeIndex, v)
-        elif objectType == "Window":
-            edit_arch.updateWindow(obj, nodeIndex, v)
-        elif objectType == "Space":
-            edit_arch.updateSpace(obj, nodeIndex, v)
-        elif objectType == "Structure":
-            edit_arch.updateStructure(obj, nodeIndex, v)
-        elif objectType == "PanelCut":
-            edit_arch.updatePanelCut(obj, nodeIndex, v)
-        elif objectType == "PanelSheet":
-            edit_arch.updatePanelSheet(obj, nodeIndex, v)
-        elif objectType == "Part::Line" and self.obj.TypeId == "Part::Line":
-            edit_arch.updatePartLine(obj, nodeIndex, v)
-        elif objectType == "Part" and self.obj.TypeId == "Part::Box":
-            edit_arch.updatePartBox(obj, nodeIndex, v)
-        obj.recompute()
-
-        App.ActiveDocument.commitTransaction()
-
-        try:
-            gui_tool_utils.redraw_3d_view()
-        except AttributeError as err:
-            pass
+        self.resetTrackers(self.obj)
 
 
     # ------------------------------------------------------------------------
-    # Context menu
+    # DRAFT EDIT Context menu
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
@@ -1124,6 +884,7 @@ class Edit(gui_base_original.Modifier):
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
         QtCore.QObject.connect(self.tracker_menu,QtCore.SIGNAL("triggered(QAction *)"),self.evaluate_menu_action)
 
+
     def evaluate_menu_action(self, labelname):
         action_label = str(labelname.text())
         # Bezier curve menu
@@ -1152,6 +913,295 @@ class Edit(gui_base_original.Modifier):
             obj = self.get_selected_obj_at_position(pos)
             self.arcInvert(obj)
         del self.event
+
+
+    # -------------------------------------------------------------------------
+    # EDIT OBJECT TOOLS 
+    #
+    # This section contains the code to retrieve the object points and update them
+    #
+    # -------------------------------------------------------------------------
+
+    def getEditPoints(self, obj):
+        """Return a list of App.Vectors according to the given object edit nodes.
+        """
+        eps = None
+        objectType = utils.get_type(obj)
+
+        if objectType in ["Wire", "BSpline"]:
+            eps = edit_draft.getWirePts(obj)
+
+        elif objectType == "BezCurve":
+            self.ui.editUi("BezCurve")
+            edit_draft.resetTrackersBezier(obj)
+            return
+
+        elif objectType == "Circle":
+            eps = edit_draft.getCirclePts(obj)
+
+        elif objectType == "Rectangle":
+            eps = edit_draft.getRectanglePts(obj)
+
+        elif objectType == "Polygon":
+            eps = edit_draft.getPolygonPts(obj)
+
+        elif objectType == "Ellipse":
+            eps = edit_draft.getEllipsePts(obj)
+
+        elif objectType in ("Dimension","LinearDimension"):
+            eps = edit_draft.getDimensionPts(obj)
+
+        elif objectType == "Wall":
+            eps = self.globalize_vectors(obj, edit_arch.getWallPts(obj))
+            if obj.Base and utils.get_type(obj.Base) in ["Wire","Circle",
+                "Rectangle", "Polygon", "Sketch"]:
+                basepoints = self.getEditPoints(obj.Base)
+                for point in basepoints:
+                    eps.append(obj.Placement.multVec(point)) #works ok except if App::Part is rotated... why?
+            return eps
+        
+        elif objectType == "Window":
+            eps = edit_arch.getWindowPts(obj)
+
+        elif objectType == "Space":
+            eps = edit_arch.getSpacePts(obj)
+
+        elif objectType == "Structure":
+            eps = edit_arch.getStructurePts(obj)
+
+        elif objectType == "PanelCut":
+            eps = edit_arch.getPanelCutPts(obj)
+
+        elif objectType == "PanelSheet":
+            eps = edit_arch.getPanelSheetPts(obj)
+
+        elif objectType == "Part" and obj.TypeId == "Part::Box":
+            eps = edit_part.getPartBoxPts(obj)
+
+        elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
+            eps = edit_part.getPartLinePts(obj)
+
+        elif objectType == "Sketch":
+            eps = edit_arch.getSketchPts(obj)
+        
+        if eps:
+            return self.globalize_vectors(obj, eps)
+        else:
+            return None
+
+
+    def update(self, obj, nodeIndex, v):
+        """Apply the App.Vector to the modified point and update self.obj."""
+
+        v = self.relativize_vector(obj, v)
+
+        App.ActiveDocument.openTransaction("Edit")
+        self.update_object(obj, nodeIndex, v)
+        App.ActiveDocument.commitTransaction()
+
+        if not utils.get_type(obj) in ["Wire", "BSpline"]:
+            self.resetTrackers(obj)
+
+        try:
+            gui_tool_utils.redraw_3d_view()
+        except AttributeError as err:
+            pass
+
+
+    def update_object(self, obj, nodeIndex, v):
+        objectType = utils.get_type(obj)
+        if objectType in ["Wire", "BSpline"]:
+            edit_draft.updateWire(obj, nodeIndex, v)
+
+        elif objectType == "BezCurve":
+            edit_draft.updateWire(obj, nodeIndex, v)
+
+        elif objectType == "Circle":
+            edit_draft.updateCircle(obj, nodeIndex, v, self.alt_edit_mode)
+
+        elif objectType == "Rectangle":
+            edit_draft.updateRectangle(obj, nodeIndex, v)
+
+        elif objectType == "Polygon":
+            edit_draft.updatePolygon(obj, nodeIndex, v)
+
+        elif objectType == "Ellipse":
+            edit_draft.updateEllipse(obj, nodeIndex, v)
+
+        elif objectType in ("Dimension","LinearDimension"):
+            edit_draft.updateDimension(obj, nodeIndex, v)
+
+        elif objectType == "Sketch":
+            edit_arch.updateSketch(obj, nodeIndex, v)
+
+        elif objectType == "Wall":
+            if nodeIndex == 0:
+                edit_arch.updateWall(obj, nodeIndex, v)
+            elif nodeIndex > 0:
+                if obj.Base:
+                    if utils.get_type(obj.Base) in ["Wire", "Circle", "Rectangle",
+                                                    "Polygon", "Sketch"]:
+                        self.update(obj.Base, nodeIndex - 1, v)
+
+        elif objectType == "Window":
+            edit_arch.updateWindow(obj, nodeIndex, v)
+
+        elif objectType == "Space":
+            edit_arch.updateSpace(obj, nodeIndex, v)
+
+        elif objectType == "Structure":
+            edit_arch.updateStructure(obj, nodeIndex, v)
+
+        elif objectType == "PanelCut":
+            edit_arch.updatePanelCut(obj, nodeIndex, v)
+
+        elif objectType == "PanelSheet":
+            edit_arch.updatePanelSheet(obj, nodeIndex, v)
+
+        elif objectType == "Part::Line" and self.obj.TypeId == "Part::Line":
+            edit_part.updatePartLine(obj, nodeIndex, v)
+
+        elif objectType == "Part" and self.obj.TypeId == "Part::Box":
+            edit_part.updatePartBox(obj, nodeIndex, v)
+
+        obj.recompute()
+
+
+    # -------------------------------------------------------------------------
+    # UTILS
+    # -------------------------------------------------------------------------
+
+    def getObjsFromSelection(self):
+        """Evaluate selection and return a valid object to edit.
+
+        #to be used for app link support
+
+        for selobj in Gui.Selection.getSelectionEx('', 0): 
+    	    for sub in selobj.SubElementNames:
+                obj = selobj.Object
+                obj_matrix = selobj.Object.getSubObject(sub, retType=4)
+        """
+
+        selection = Gui.Selection.getSelection()
+        self.edited_objects = []
+        if len(selection) > self.maxObjects:
+            App.Console.PrintMessage(translate("draft", 
+                                               "Too many objects selected, max number set to: ")
+                                     + str(self.maxObjects) + "\n")
+            return None
+        for obj in selection:
+            if utils.get_type(obj) in self.supportedObjs:
+                self.edited_objects.append(obj)
+                continue
+            elif utils.get_type(obj) in self.supportedPartObjs:
+                if obj.TypeId in self.supportedPartObjs:
+                    self.edited_objects.append(obj)
+                    continue
+            App.Console.PrintWarning(obj.Name 
+                                     + translate("draft",
+                                                 ": this object is not editable")
+                                     + "\n")
+        return self.edited_objects
+
+
+    def format_objects_for_editing(self, objs):
+        """Change objects style during editing mode.
+        """
+        for obj in objs:
+            # TODO: Placeholder for changing the Selectable property of obj ViewProvide
+            if utils.get_type(obj) == "Structure":
+                self.objs_formats[obj.Name] = edit_arch.get_structure_format(obj)
+                edit_arch.set_structure_editing_format(obj)
+                
+
+    def deformat_objects_after_editing(self, objs):
+        """Restore objects style during editing mode.
+        """
+        for obj in objs:
+            # TODO: Placeholder for changing the Selectable property of obj ViewProvide
+            if utils.get_type(obj) == "Structure":
+                edit_arch.restore_structure_format(obj, self.objs_formats[obj.Name])
+
+
+    def get_selected_obj_at_position(self, pos):
+        """Return object at given position.
+
+        If object is one of the edited objects (self.edited_objects).
+        """
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                return
+            for obj in self.edited_objects:
+                if obj.Name == info["Object"]:
+                    return obj
+
+    def globalize_vectors(self, obj, pointList):
+        """Return the given point list in the global coordinate system."""
+        plist = []
+        for p in pointList:
+            point = self.globalize_vector(obj, p)
+            plist.append(point)
+        return plist
+
+    def globalize_vector(self, obj, point):
+        """Return the given point in the global coordinate system."""
+        if hasattr(obj, "getGlobalPlacement"):
+            return obj.getGlobalPlacement().multVec(point)
+        else:
+            return point
+
+    def relativize_vectors(self, obj, pointList):
+        """Return the given point list in the given object coordinate system."""
+        plist = []
+        for p in pointList:
+            point = self.relativize_vector(obj, p)
+            plist.append(point)
+        return plist
+
+    def relativize_vector(self, obj, point):
+        """Return the given point in the given object coordinate system."""
+        if hasattr(obj, "getGlobalPlacement"):
+            return obj.getGlobalPlacement().inverse().multVec(point)
+        else:
+            return point
+
+    def getEditNode(self, pos):
+        """Get edit node from given screen position."""
+        node = self.sendRay(pos)
+        return node
+    
+    def sendRay(self, mouse_pos):
+        """Send a ray through the scene and return the nearest entity."""
+        ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
+        ray_pick.setPoint(coin.SbVec2s(*mouse_pos))
+        ray_pick.setRadius(self.pick_radius)
+        ray_pick.setPickAll(True)
+        ray_pick.apply(self.render_manager.getSceneGraph())
+        picked_point = ray_pick.getPickedPointList()
+        return self.searchEditNode(picked_point)
+
+    def searchEditNode(self, picked_point):
+        """Search edit node inside picked point list and return node number."""
+        for point in picked_point:
+            path = point.getPath()
+            length = path.getLength()
+            point = path.getNode(length - 2)
+            #import DraftTrackers
+            if hasattr(point,"subElementName") and 'EditNode' in str(point.subElementName.getValue()):
+                return point
+        return None
+
+    def getEditNodeIndex(self, point):
+        """Get edit node index from given screen position."""
+        if point:
+            subElement = str(point.subElementName.getValue())
+            ep = int(subElement[8:])
+            return ep
+        else:
+            return None
 
 
 Gui.addCommand('Draft_Edit', Edit())

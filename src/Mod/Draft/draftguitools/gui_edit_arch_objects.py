@@ -23,7 +23,7 @@
 """Provide the support functions to Draft_Edit for Arch objects."""
 ## @package gui_edit_arch_objects
 # \ingroup DRAFT
-# \brief Provide the support functions to Draft_Edit for Arch objects
+# \brief Provide the support functions to Draft_Edit for Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
@@ -50,8 +50,8 @@ def getSketchPts(obj):
     """
     editpoints = []
     if obj.GeometryCount == 1:
-        editpoints.append(obj.getGlobalPlacement().multVec(obj.getPoint(0,1)))
-        editpoints.append(obj.getGlobalPlacement().multVec(obj.getPoint(0,2)))
+        editpoints.append(obj.getPoint(0,1))
+        editpoints.append(obj.getPoint(0,2))
         return editpoints
     else:
         _wrn = translate("draft", "Sketch is too complex to edit: "
@@ -69,9 +69,9 @@ def updateSketch(obj, nodeIndex, v):
     1 : endpoint
     """
     if nodeIndex == 0:
-        obj.movePoint(0,1,obj.getGlobalPlacement().inverse().multVec(v))
+        obj.movePoint(0, 1, v)
     elif nodeIndex == 1:
-        obj.movePoint(0,2,obj.getGlobalPlacement().inverse().multVec(v))
+        obj.movePoint(0, 2, v)
     obj.recompute()
 
 
@@ -85,38 +85,15 @@ def getWallPts(obj):
     """
     editpoints = []
     # height of the wall
-    editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(0,0,obj.Height)))
-    # try to add here an editpoint based on wall height (maybe should be good to associate it with a circular tracker)
-    if obj.Base:
-        # base points are added to self.trackers under wall-name key
-        basepoints = []
-        if utils.get_type(obj.Base) in ["Wire","Circle","Rectangle",
-                                        "Polygon", "Sketch"]:
-            pass # TODO: make it work again
-            #basepoints = self.getEditPoints(obj.Base)
-            #for point in basepoints:
-            #    editpoints.append(obj.Placement.multVec(point)) #works ok except if App::Part is rotated... why?
+    editpoints.append(App.Vector(0, 0, obj.Height))
     return editpoints
-
-
-def updateWallTrackers(obj):
-    """Update self.trackers[obj.Name][0] to match with given object."""
-    pass
 
 
 def updateWall(obj, nodeIndex, v):
     if nodeIndex == 0:
-        delta= obj.getGlobalPlacement().inverse().multVec(v)
-        vz = DraftVecUtils.project(delta, App.Vector(0, 0, 1))
+        vz = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         if vz.Length > 0:
             obj.Height = vz.Length
-    elif nodeIndex > 0:
-        if obj.Base:
-            if utils.get_type(obj.Base) in ["Wire", "Circle", "Rectangle",
-                                            "Polygon", "Sketch"]:
-                pass #TODO: make it work again
-                #self.update(obj.Base, nodeIndex - 1, 
-                #    obj.Placement.inverse().multVec(v))
     obj.recompute()
 
 
@@ -153,29 +130,34 @@ def updateWindow(obj, nodeIndex, v):
 
 
 # STRUCTURE----------------------------------------------------------------
+def get_structure_format(obj):
+    return (obj.ViewObject.DisplayMode,
+            obj.ViewObject.NodeSize,
+            obj.ViewObject.ShowNodes)
+
+def set_structure_editing_format(obj):
+    obj.ViewObject.DisplayMode = "Wireframe"
+    obj.ViewObject.NodeSize = 1
+    obj.ViewObject.ShowNodes = True
+
+def restore_structure_format(obj, modes):
+    obj.ViewObject.DisplayMode = modes[0]
+    obj.ViewObject.NodeSize = modes[1]
+    obj.ViewObject.ShowNodes = modes[2]
 
 def getStructurePts(obj):
     if obj.Nodes:
         editpoints = []
-        # TODO: make it work again
-        #self.originalDisplayMode = obj.ViewObject.DisplayMode
-        #self.originalPoints = obj.ViewObject.NodeSize
-        #self.originalNodes = obj.ViewObject.ShowNodes
-        #self.obj.ViewObject.DisplayMode = "Wireframe"
-        #self.obj.ViewObject.NodeSize = 1
-        ## self.obj.ViewObject.ShowNodes = True
-        #for p in obj.Nodes:
-        #    if self.pl:
-        #        p = self.pl.multVec(p)
-        #    editpoints.append(p)
-        #return editpoints
+        for p in obj.Nodes:
+            editpoints.append(p)
+        return editpoints
     else:
         return None
 
 
 def updateStructure(obj, nodeIndex, v):
     nodes = obj.Nodes
-    nodes[nodeIndex] = obj.Placement.inverse().multVec(v)
+    nodes[nodeIndex] = v
     obj.Nodes = nodes
 
 
@@ -202,26 +184,26 @@ def getPanelCutPts(obj):
     if obj.TagPosition.Length == 0:
         pos = obj.Shape.BoundBox.Center
     else:
-        pos = obj.Placement.multVec(obj.TagPosition)
+        pos = obj.TagPosition
     editpoints.append(pos)
     return editpoints
 
 
 def updatePanelCut(obj, nodeIndex, v):
     if nodeIndex == 0:
-        obj.TagPosition = obj.Placement.inverse().multVec(v)
+        obj.TagPosition = v
 
 
 def getPanelSheetPts(obj):
     editpoints = []
-    editpoints.append(obj.Placement.multVec(obj.TagPosition))
+    editpoints.append(obj.TagPosition)
     for o in obj.Group:
-        editpoints.append(obj.Placement.multVec(o.Placement.Base))
+        editpoints.append(o.Placement.Base)
     return editpoints
 
 
 def updatePanelSheet(obj, nodeIndex, v):
     if nodeIndex == 0:
-        obj.TagPosition = obj.Placement.inverse().multVec(v)
+        obj.TagPosition = v
     else:
-        obj.Group[nodeIndex-1].Placement.Base = obj.Placement.inverse().multVec(v)
+        obj.Group[nodeIndex-1].Placement.Base = v

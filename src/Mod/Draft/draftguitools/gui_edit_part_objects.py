@@ -21,7 +21,7 @@
 """Provide the support functions to Draft_Edit for Part objects."""
 ## @package gui_edit_part_objects
 # \ingroup DRAFT
-# \brief Provide the support functions to Draft_Edit for Part objects
+# \brief Provide the support functions to Draft_Edit for Part objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
@@ -37,43 +37,40 @@ import DraftVecUtils
 
 def getPartLinePts(obj):
     editpoints = []
-    editpoints.append(obj.Placement.multVec(App.Vector(obj.X1,obj.Y1,obj.Z1)))
-    editpoints.append(obj.Placement.pl.multVec(App.Vector(obj.X2,obj.Y2,obj.Z2)))
+    editpoints.append(App.Vector(obj.X1,obj.Y1,obj.Z1))
+    editpoints.append(App.Vector(obj.X2,obj.Y2,obj.Z2))
     return editpoints
 
-
 def updatePartLine(obj, nodeIndex, v):
-    pt=obj.Placement.inverse().multVec(v)
     if nodeIndex == 0:
-        obj.X1 = pt.x
-        obj.Y1 = pt.y
-        obj.Z1 = pt.z
+        obj.X1 = v.x
+        obj.Y1 = v.y
+        obj.Z1 = v.z
     elif nodeIndex == 1:
-        obj.X2 = pt.x
-        obj.Y2 = pt.y
-        obj.Z2 = pt.z
+        obj.X2 = v.x
+        obj.Y2 = v.y
+        obj.Z2 = v.z
+
 
 # PART::BOX---------------------------------------------------------------
 
-def getPartBoxPts(self, obj):
+def getPartBoxPts(obj):
     editpoints = []
-    editpoints.append(obj.Placement.Base)
-    editpoints.append(obj.Placement.multVec(App.Vector(obj.Length, 0, 0)))
-    editpoints.append(obj.Placement.multVec(App.Vector(0, obj.Width, 0)))
-    editpoints.append(obj.Placement.multVec(App.Vector(0, 0, obj.Height)))
+    editpoints.append(App.Vector(0, 0, 0))
+    editpoints.append(App.Vector(obj.Length, 0, 0))
+    editpoints.append(App.Vector(0, obj.Width, 0))
+    editpoints.append(App.Vector(0, 0, obj.Height))
     return editpoints
 
-
-def updatePartBox(self, obj, nodeIndex, v):
-    delta = obj.Placement.inverse().multVec(v)
+def updatePartBox(obj, nodeIndex, v):
     if nodeIndex == 0:
-        obj.Placement.Base = v
+        obj.Placement.Base = obj.Placement.Base + v
     elif nodeIndex == 1:
-        _vector = DraftVecUtils.project(delta, App.Vector(1, 0, 0))
+        _vector = DraftVecUtils.project(v, App.Vector(1, 0, 0))
         obj.Length = _vector.Length
     elif nodeIndex == 2:
-        _vector = DraftVecUtils.project(delta, App.Vector(0, 1, 0))
+        _vector = DraftVecUtils.project(v, App.Vector(0, 1, 0))
         obj.Width = _vector.Length
     elif nodeIndex == 3:
-        _vector = DraftVecUtils.project(delta, App.Vector(0, 0, 1))
+        _vector = DraftVecUtils.project(v, App.Vector(0, 0, 1))
         obj.Height = _vector.Length
