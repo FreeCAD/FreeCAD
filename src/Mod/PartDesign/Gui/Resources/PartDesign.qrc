@@ -12,6 +12,7 @@
         <file>icons/PartDesign_Additive_Wedge.svg</file>
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
+        <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
         <file>icons/PartDesign_Body_old.svg</file>
         <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
