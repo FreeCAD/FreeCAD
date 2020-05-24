@@ -1939,16 +1939,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             secondPos = constr->FirstPos;
         }
     };
-    
+
     auto isPointAtPosition = [this] (int GeoId1, PointPos pos1, Base::Vector3d point) {
-       
+
         Base::Vector3d pp = getPoint(GeoId1,pos1);
 
         if( (point-pp).Length() < Precision::Confusion() )
             return true;
-        
+
         return false;
-        
+
     };
 
     Part::Geometry *geo = geomlist[GeoId];
@@ -2139,7 +2139,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
-            
+
             // check first if start and end points are within a confusion tolerance
             if(isPointAtPosition(GeoId1, Sketcher::start, point1)) {
                     constrType1 = Sketcher::Coincident;
@@ -2149,7 +2149,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     constrType1 = Sketcher::Coincident;
                     secondPos1 = Sketcher::end;
             }
-            
+
             if(isPointAtPosition(GeoId2, Sketcher::start, point2)) {
                     constrType2 = Sketcher::Coincident;
                     secondPos2 = Sketcher::start;
@@ -2157,8 +2157,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             else if(isPointAtPosition(GeoId2, Sketcher::end, point2)) {
                     constrType2 = Sketcher::Coincident;
                     secondPos2 = Sketcher::end;
-            }            
-            
+            }
+
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
                  it != constraints.end(); ++it) {
                 Constraint *constr = *(it);
@@ -5496,11 +5496,11 @@ static gp_Vec ProjVecOnPlane_UVN( const gp_Vec& V, const gp_Pln& Pl)
 }
 
 // Auxiliary Method: returns vector projection in XYZ space
-static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
+/*static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
 {
   return V.Dot(Pl.Position().XDirection()) * Pl.Position().XDirection() +
 	           V.Dot(Pl.Position().YDirection()) * Pl.Position().YDirection();
-}
+}*/
 
 // Auxiliary Method: returns point projection in UV space of plane
 static gp_Vec2d ProjPointOnPlane_UV( const gp_Pnt& P, const gp_Pln& Pl)
@@ -5801,7 +5801,7 @@ void SketchObject::rebuildExternalGeometry(void)
                             gp_Dir vec1 = sketchPlane.Axis().Direction();
                             gp_Dir vec2 = curve.Circle().Axis().Direction();
                             gp_Circ origCircle = curve.Circle();
-    
+
                             if (vec1.IsNormal(vec2, Precision::Angular())) {  // circle's normal vector in plane:
                                 //   projection is a line
                                 //   define center by projection
@@ -5810,7 +5810,7 @@ void SketchObject::rebuildExternalGeometry(void)
                                 cnt = proj.NearestPoint();
                                 // gp_Dir dirLine(vec1.Crossed(vec2));
                                 gp_Dir dirLine(vec1 ^ vec2);
-    
+
                                 Part::GeomLineSegment * projectedSegment = new Part::GeomLineSegment();
                                 Geom_Line ligne(cnt, dirLine);  // helper object to compute end points
                                 gp_Pnt P1, P2;  // end points of the segment, OCC style
@@ -5858,8 +5858,6 @@ void SketchObject::rebuildExternalGeometry(void)
                     }
                 }
                 else if (curve.GetType() == GeomAbs_Ellipse) {
-                    gp_Dir vecSketchPlaneX = sketchPlane.Position().XDirection();
-                    gp_Dir vecSketchPlaneY = sketchPlane.Position().YDirection();
 
                     gp_Elips elipsOrig = curve.Ellipse();
                     gp_Elips elipsDest;
@@ -5871,9 +5869,6 @@ void SketchObject::rebuildExternalGeometry(void)
                     gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
                     gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMinorDir);
 
-                    double R = elipsOrig.MajorRadius();
-                    double r = elipsOrig.MinorRadius();
-
                     if (sketchPlane.Position().Direction().IsParallel(elipsOrig.Position().Direction(), Precision::Angular())) {
                        elipsDest = elipsOrig.Translated(origCenter, destCenter);
                        Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
@@ -5884,8 +5879,8 @@ void SketchObject::rebuildExternalGeometry(void)
                        ExternalGeo.push_back(ellipse);
                     }
                     else {
-    
-    
+
+
                         // look for major axis of projected ellipse
                         //
                         // t is the parameter along the origin ellipse
