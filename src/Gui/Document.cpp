@@ -1091,18 +1091,22 @@ bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
         try {
-            std::vector<std::pair<App::Document*,bool> > docs;
+            std::vector<std::pair<Gui::Document*,bool> > docs;
+            int mcount = 0;
             try {
                 for(auto doc : getDocument()->getDependentDocuments()) {
                     auto gdoc = Application::Instance->getDocument(doc);
-                    if(gdoc && (gdoc==this || gdoc->isModified()))
-                        docs.emplace_back(doc,doc->mustExecute());
+                    if(!gdoc)
+                        continue;
+                    if(gdoc!=this && gdoc->isModified())
+                        ++mcount;
+                     docs.emplace_back(gdoc,doc->mustExecute());
                 }
             }catch(const Base::RuntimeError &e) {
                 FC_ERR(e.what());
-                docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                docs.emplace_back(this, getDocument()->mustExecute());
             }
-            if(docs.size()>1) {
+            if(mcount > 0) {
                 int ret = QMessageBox::question(getMainWindow(),
                         QObject::tr("Save dependent files"),
                         QObject::tr("The file contains external dependencies. "
@@ -1110,21 +1114,22 @@ bool Document::save(void)
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
                     docs.clear();
-                    docs.emplace_back(getDocument(),getDocument()->mustExecute());
+                    docs.emplace_back(this, getDocument()->mustExecute());
                 }
             }
             Gui::WaitCursor wc;
             // save all documents
             for(auto v : docs) {
-                auto doc = v.first;
+                if(v.first != this && !v.first->isModified())
+                    continue;
+                auto doc = v.first->getDocument();
                 // Changed 'mustExecute' status may be triggered by saving external document
                 if(!v.second && doc->mustExecute()) {
                     App::AutoTransaction trans("Recompute");
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
                 }
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
-                auto gdoc = Application::Instance->getDocument(doc);
-                if(gdoc) gdoc->setModified(false);
+                v.first->setModified(false);
             }
         }
         catch (const Base::Exception& e) {
