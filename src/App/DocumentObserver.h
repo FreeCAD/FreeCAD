@@ -60,6 +60,14 @@ public:
     /*! Assignment operator */
     void operator=(const std::string&);
 
+    bool operator==(const DocumentT &other) const {
+        return document == other.document;
+    }
+
+    bool operator<(const DocumentT &other) const {
+        return document < other.document;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */

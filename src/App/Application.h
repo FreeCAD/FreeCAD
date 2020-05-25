@@ -120,6 +120,8 @@ public:
     App::Document* getActiveDocument(void) const;
     /// Retrieve a named document
     App::Document* getDocument(const char *Name) const;
+    /// Retrieve a document based on file path
+    App::Document* getDocumentByPath(const char *path) const;
     /// gets the (internal) name of the document
     const char * getDocumentName(const App::Document* ) const;
     /// get a list of all documents in the application
@@ -190,6 +192,8 @@ public:
     boost::signals2::signal<void (const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
     boost::signals2::signal<void (const Document&)> signalFinishRestoreDocument;
+    /// signal on pending reloading of a partial Document
+    boost::signals2::signal<void (const Document&)> signalPendingReloadDocument;
     /// signal on starting to save Document
     boost::signals2::signal<void (const Document&, const std::string&)> signalStartSaveDocument;
     /// signal on saved Document
@@ -453,7 +457,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, const std::set<std::string> &objNames);
+            const char *label, bool isMainDoc, bool createView, std::set<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -573,12 +577,13 @@ private:
     std::vector<FileTypeItem> _mImportTypes;
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
+    mutable std::map<std::string,Document*> DocFileMap;
     std::map<std::string,ParameterManager *> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
 
-    std::deque<const char *> _pendingDocs;
-    std::deque<const char *> _pendingDocsReopen;
+    std::deque<std::string> _pendingDocs;
+    std::deque<std::string> _pendingDocsReopen;
     std::map<std::string,std::set<std::string> > _pendingDocMap;
     bool _isRestoring;
     bool _allowPartial;

@@ -79,6 +79,7 @@ public:
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
         RecomputeOnRestore = 10, // Mark pending recompute on restore for migration purpose
+        LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
     };
 
     /** @name Properties */
@@ -215,8 +216,6 @@ public:
     /// Restore the document from a pre-constructed xml reader
     void restore (Base::XMLReader &xmlReader,
             bool delaySignal=false, const std::set<std::string> &objNames={});
-    void afterRestore(bool checkPartial=false);
-    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
     enum ExportStatus {
         NotExporting,
         Exporting,
@@ -568,6 +567,9 @@ public:
 protected:
     /// Construction
     Document(const char *name = "");
+
+    bool afterRestore(bool checkPartial=false);
+    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
 
     void readObject(Base::XMLReader &reader);
     void writeObject(Base::Writer &writer, App::DocumentObject *obj) const;

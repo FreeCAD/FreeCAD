@@ -2765,6 +2765,7 @@ class App::DocInfo :
 public:
     typedef boost::signals2::scoped_connection Connection;
     Connection connFinishRestoreDocument;
+    Connection connPendingReloadDocument;
     Connection connDeleteDocument;
     Connection connSaveDocument;
     Connection connDeletedObject;
@@ -2872,6 +2873,7 @@ public:
         FC_LOG("deinit " << (pcDoc?pcDoc->getName():filePath()));
         assert(links.empty());
         connFinishRestoreDocument.disconnect();
+        connPendingReloadDocument.disconnect();
         connDeleteDocument.disconnect();
         connSaveDocument.disconnect();
         connDeletedObject.disconnect();
@@ -2889,6 +2891,8 @@ public:
         App::Application &app = App::GetApplication();
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
             boost::bind(&DocInfo::slotFinishRestoreDocument,this,_1));
+        connPendingReloadDocument = app.signalPendingReloadDocument.connect(
+            boost::bind(&DocInfo::slotFinishRestoreDocument,this,_1));
         connDeleteDocument = app.signalDeleteDocument.connect(
             boost::bind(&DocInfo::slotDeleteDocument,this,_1));
         connSaveDocument = app.signalSaveDocument.connect(
@@ -2900,6 +2904,8 @@ public:
         else{
             for(App::Document *doc : App::GetApplication().getDocuments()) {
                 if(getFullPath(doc->getFileName()) == fullpath) {
+                    if(doc->testStatus(App::Document::PartialDoc) && !doc->getObject(objName))
+                        break;
                     attach(doc);
                     return;
                 }
@@ -3005,16 +3011,17 @@ public:
             }
         }
 
-        // time stamp changed, touch the linking document. Unfortunately, there
-        // is no way to setModfied() for an App::Document. We don't want to touch
-        // all PropertyXLink for a document, because the linked object is
-        // potentially unchanged. So we just touch at most one.
+        // time stamp changed, touch the linking document.
         std::set<Document*> docs;
         for(auto link : links) {
             auto doc = static_cast<DocumentObject*>(link->getContainer())->getDocument();
             auto ret = docs.insert(doc);
-            if(ret.second && !doc->isTouched())
-                link->touch();
+            if(ret.second) {
+                // This will signal the Gui::Document to call setModified();
+                FC_LOG("touch document " << doc->getName() 
+                        << " on time stamp change of " << link->getFullName());
+                doc->Comment.touch();
+            }
         }
     }
 
@@ -4795,12 +4802,12 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
 }
 
 int PropertyXLinkContainer::checkRestore(std::string *msg) const {
-    if(_LinkRestored)
-        return 1;
-    for(auto &v : _XLinks) {
-        int res = v.second->checkRestore(msg);
-        if(res)
-            return res;
+    if(_LinkRestored) {
+        for(auto &v : _XLinks) {
+            int res = v.second->checkRestore(msg);
+            if(res)
+                return res;
+        }
     }
     return 0;
 }
