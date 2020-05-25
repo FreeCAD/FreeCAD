@@ -634,6 +634,10 @@ def get2DShape(representation,scaling=1000):
             elts = ent.Elements
         elif ent.is_a() in ["IfcLine","IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
             elts = [ent]
+        else:
+            print("getCurveSet: unhandled entity: ", ent)
+            return []
+
         for el in elts:
             if el.is_a("IfcPolyline"):
                 result.append(getPolyline(el))
