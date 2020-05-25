@@ -135,6 +135,8 @@ public:
     mutable boost::signals2::signal<void (const Gui::Document& doc)> signalRedoDocument;
     /// signal on deleting Document
     mutable boost::signals2::signal<void (const Gui::Document& doc)> signalDeleteDocument;
+    /// signal on change of document's modified status
+    mutable boost::signals2::signal<void (const Gui::Document& doc)> signalChangedModified;
     //@}
 
     /** @name I/O of the document */

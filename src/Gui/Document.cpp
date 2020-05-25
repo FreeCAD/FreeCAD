@@ -153,7 +153,9 @@ struct DocumentP
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
+    Connection connectPurgeTouchedObject;
     Connection connectChangePropertyEditor;
+    Connection connectChanged;
 
     typedef boost::signals2::shared_connection_block ConnectionBlock;
     ConnectionBlock connectActObjectBlocker;
@@ -230,11 +232,20 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotSkipRecompute, this, _1, _2));
     d->connectTouchedObject = pcDocument->signalTouchedObject.connect
         (boost::bind(&Gui::Document::slotTouchedObject, this, _1));
+    d->connectPurgeTouchedObject = pcDocument->signalPurgeTouchedObject.connect
+        (boost::bind(&Gui::Document::slotTouchedObject, this, _1));
 
     d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
         (boost::bind(&Gui::Document::slotTransactionAppend, this, _1, _2));
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
         (boost::bind(&Gui::Document::slotTransactionRemove, this, _1, _2));
+
+    d->connectChanged = pcDocument->signalChanged.connect(
+        [this](const App::Document &, const App::Property &Prop) {
+            FC_LOG(Prop.getFullName() << " modified");
+            setModified(true);
+        });
+
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
@@ -275,7 +286,9 @@ Document::~Document()
     d->connectTransactionAppend.disconnect();
     d->connectTransactionRemove.disconnect();
     d->connectTouchedObject.disconnect();
+    d->connectPurgeTouchedObject.disconnect();
     d->connectChangePropertyEditor.disconnect();
+    d->connectChanged.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -978,7 +991,7 @@ void Document::slotTouchedObject(const App::DocumentObject &Obj)
 {
     getMainWindow()->updateActions(true);
     if(!isModified()) {
-        FC_LOG(Obj.getFullName() << " touched");
+        FC_LOG(Obj.getFullName() << (Obj.isTouched()?" touched":" purged"));
         setModified(true);
     }
 }
@@ -1006,6 +1019,8 @@ void Document::setModified(bool b)
     for (std::list<MDIView*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
         (*it)->setWindowModified(b);
     }
+
+    signalChangedModified(*this);
 }
 
 bool Document::isModified() const
@@ -1479,8 +1494,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         }
     }
 
-    // reset modified flag
-    setModified(false);
+    setModified(doc.testStatus(App::Document::LinkStampChanged));
 }
 
 void Document::slotShowHidden(const App::Document& doc)

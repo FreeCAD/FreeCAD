@@ -364,6 +364,7 @@ protected:
             App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
 
     void populateParents(const ViewProviderDocumentObject *vp);
+    void setDocumentLabel();
 
 private:
     const char *treeName; // for debugging purpose
@@ -386,6 +387,7 @@ private:
     Connection connectScrObject;
     Connection connectRecomputed;
     Connection connectRecomputedObj;
+    Connection connectChangedModified;
 
     friend class TreeWidget;
     friend class DocumentObjectData;

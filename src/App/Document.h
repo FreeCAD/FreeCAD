@@ -149,6 +149,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
     /// signal on manually called DocumentObject::touch()
     boost::signals2::signal<void (const App::DocumentObject&)> signalTouchedObject;
+    /// signal on DocumentObject::purgeTouched()
+    boost::signals2::signal<void (const App::DocumentObject&)> signalPurgeTouchedObject;
     /// signal on relabeled Object
     boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object

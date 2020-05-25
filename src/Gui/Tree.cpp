@@ -2448,7 +2448,7 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
         item->setIcon(0, documentTempPixmap);
     else
         item->setIcon(0, documentPixmap);
-    item->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
+    item->setDocumentLabel();
     DocumentMap[ &Doc ] = item;
 }
 
@@ -2530,9 +2530,8 @@ void TreeWidget::slotShowHidden(const Gui::Document& Doc)
 void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
 {
     auto it = DocumentMap.find(&Doc);
-    if (it != DocumentMap.end()) {
-        it->second->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
-    }
+    if (it != DocumentMap.end())
+        it->second->setDocumentLabel();
 }
 
 void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
@@ -3398,6 +3397,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
     connectRecomputedObj = adoc->signalRecomputedObject.connect(
             boost::bind(&DocumentItem::slotRecomputedObject, this, _1));
+    connectChangedModified = doc->signalChangedModified.connect([this](const Document &) { setDocumentLabel(); });
 
     setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable/*|Qt::ItemIsEditable*/);
 
@@ -3420,6 +3420,7 @@ DocumentItem::~DocumentItem()
     connectScrObject.disconnect();
     connectRecomputed.disconnect();
     connectRecomputedObj.disconnect();
+    connectChangedModified.disconnect();
 }
 
 TreeWidget *DocumentItem::getTree() const{
@@ -3428,6 +3429,15 @@ TreeWidget *DocumentItem::getTree() const{
 
 const char *DocumentItem::getTreeName() const {
     return treeName;
+}
+
+void DocumentItem::setDocumentLabel() {
+    auto doc = document()->getDocument();
+    if(!doc)
+        return;
+    setText(0, QString::fromLatin1("%1%2").arg(
+                QString::fromUtf8(doc->Label.getValue()),
+                QString::fromLatin1(document()->isModified()?" *":"")));
 }
 
 #define FOREACH_ITEM(_item, _obj) \
