@@ -40,7 +40,7 @@ def create(doc, name="Electricforce"):
 
 class Proxy(linear.Proxy, equationbase.ElectricforceProxy):
 
-    Type = "Fem::EquationElectricforce"
+    Type = "Fem::EquationElmerElectricforce"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

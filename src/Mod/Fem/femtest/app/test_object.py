@@ -320,7 +320,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeEquationElasticity(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::EquationElectricforce",
+            "Fem::EquationElmerElectricforce",
             type_of_obj(ObjectsFem.makeEquationElectricforce(doc, solverelmer))
         )
         self.assertEqual(
@@ -524,7 +524,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElectricforce(doc, solverelmer),
-            "Fem::EquationElectricforce"
+            "Fem::EquationElmerElectricforce"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElectrostatic(doc, solverelmer),
@@ -1195,7 +1195,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_elasticity,
-            "Fem::EquationElectricforce"
+            "Fem::EquationElmerElectricforce"
         ))
 
         # FemEquationElmerElectrostatic

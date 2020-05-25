@@ -403,7 +403,7 @@ class Writer(object):
     def _handleElectricforce(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElectricforce"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
