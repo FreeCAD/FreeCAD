@@ -285,7 +285,7 @@ public:
 
             if(linkedSwitch) {
                 if(pcSwitches[i]->defaultChild != linkedSwitch->defaultChild)
-                    pcSwitches[i]->defaultChild == linkedSwitch->defaultChild;
+                    pcSwitches[i]->defaultChild = linkedSwitch->defaultChild;
                 if(pcSwitches[i]->overrideSwitch != linkedSwitch->overrideSwitch)
                     pcSwitches[i]->overrideSwitch = linkedSwitch->overrideSwitch;
                 if(pcSwitches[i]->childNames != linkedSwitch->childNames)
@@ -392,10 +392,12 @@ public:
                 pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
                 pcSnapshot->renderCaching = SoSeparator::OFF;
             }
+#ifdef FC_LINK_SET_NODE_NAME
             std::ostringstream ss;
             ss << pcLinked->getObject()->getNameInDocument() 
                 << "(" << type << ')';
             pcSnapshot->setName(ss.str().c_str());
+#endif
             pcModeSwitch = new SoFCSwitch;
         }
 
@@ -957,7 +959,9 @@ public:
                 pcRoot = new SoFCSelectionRoot(true);
             else
                 coinRemoveAllChildren(pcRoot);
+#ifdef FC_LINK_SET_NODE_NAME
             pcRoot->setName(obj->getFullName().c_str());
+#endif
         }
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
@@ -1845,13 +1849,25 @@ bool ViewProviderLink::isSelectable() const {
 
 void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     SoNode *node = linkView->getLinkRoot();
+#ifdef FC_LINK_SET_NODE_NAME
     node->setName(pcObj->getFullName().c_str());
+#endif
     addDisplayMaskMode(node,"Link");
     if(childVp) {
         childVpLink = LinkInfo::get(childVp,0);
         node = childVpLink->getSnapshot(LinkView::SnapshotTransform);
     }
     addDisplayMaskMode(node,"ChildView");
+
+    if(this->pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+        auto group = new SoGroup();
+        group->addChild(linkView->getLinkRoot());
+        if(childVp)
+            group->addChild(node);
+        addDisplayMaskMode(group,"ComboView");
+        static_cast<SoFCSwitch*>(this->pcModeSwitch)->defaultChild = 2;
+    }
+
     setDisplayMaskMode("Link");
     inherited::attach(pcObj);
     checkIcon();
@@ -1873,6 +1889,7 @@ std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
     std::vector<std::string> StrList = inherited::getDisplayModes();
     StrList.push_back("Link");
     StrList.push_back("ChildView");
+    StrList.push_back("ComboView");
     return StrList;
 }
 
@@ -1921,7 +1938,17 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
                 childVp->setActiveMode();
                 if(pcModeSwitch->getNumChildren()>1){
                     childVpLink = LinkInfo::get(childVp,0);
-                    pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+                    auto node = childVpLink->getSnapshot(LinkView::SnapshotTransform);
+                    pcModeSwitch->replaceChild(1,node);
+                    if(pcModeSwitch->getNumChildren() > 1
+                            && pcModeSwitch->getChild(2)->isOfType(SoGroup::getClassTypeId()))
+                    {
+                        auto group = static_cast<SoGroup*>(pcModeSwitch->getChild(2));
+                        if(group->getNumChildren() > 1)
+                            group->replaceChild(1,node);
+                        else
+                            group->addChild(node);
+                    }
                 }
             }
         }
@@ -3332,6 +3359,13 @@ void ViewProviderLink::onBeforeChange(const App::Property *prop) {
             pcModeSwitch->replaceChild(1,linkView->getLinkRoot());
             childVpLink.reset();
             childVp = 0;
+            if(pcModeSwitch->getNumChildren() > 1
+                    && pcModeSwitch->getChild(2)->isOfType(SoGroup::getClassTypeId()))
+            {
+                auto group = static_cast<SoGroup*>(pcModeSwitch->getChild(2));
+                if(group->getNumChildren() > 1)
+                    group->removeChild(1);
+            }
         }
     }
     inherited::onBeforeChange(prop);
