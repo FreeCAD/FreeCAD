@@ -373,7 +373,7 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
 unsigned long TopoShape::countSubShapes(const char* Type) const
 {
     if(!Type) return 0;
-    if(strcmp(Type,"SubShape")==0) 
+    if(strcmp(Type,"SubShape")==0)
         return countSubShapes(TopAbs_SHAPE);
     auto type = shapeType(Type,true);
     if(type == TopAbs_SHAPE)
@@ -424,7 +424,7 @@ static inline std::vector<T> _getSubShapes(const TopoDS_Shape &s, TopAbs_ShapeEn
     TopExp::MapShapes(s, type, anIndices);
     int count = anIndices.Extent();
     shapes.reserve(count);
-    for(int i=1;i<=count;++i) 
+    for(int i=1;i<=count;++i)
         shapes.emplace_back(anIndices.FindKey(i));
     return shapes;
 }
@@ -969,7 +969,10 @@ void TopoShape::exportStl(const char *filename, double deflection) const
         writer.SetDeflection(deflection);
     }
 #else
-    BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection);
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection,
+                                   /*isRelative*/ Standard_False,
+                                   /*theAngDeflection*/ 0.5,
+                                   /*isInParallel*/ true);
 #endif
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
@@ -988,7 +991,10 @@ void TopoShape::exportFaceSet(double dev, double ca,
     bool supportFaceColors = (numFaces == colors.size());
 
     std::size_t index=0;
-    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    BRepMesh_IncrementalMesh MESH(this->_Shape, dev,
+                                  /*isRelative*/ Standard_False,
+                                  /*theAngDeflection*/ 0.5,
+                                  /*isInParallel*/ true);
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
@@ -3311,7 +3317,10 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
         return;
 
     // get the meshes of all faces and then merge them
-    BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy);
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy,
+                                   /*isRelative*/ Standard_False,
+                                   /*theAngDeflection*/ 0.5,
+                                   /*isInParallel*/ true);
     std::vector<Domain> domains;
     getDomains(domains);
 
@@ -3643,7 +3652,7 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                     vertices.emplace_back(V.X(),V.Y(),V.Z());
                 }
             }
-            
+
             if(line_start+1 < vertices.size()) {
                 lines.emplace_back();
                 lines.back().I1 = line_start;
@@ -3855,7 +3864,7 @@ TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
 #define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
 #define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
-TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol) 
+TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol)
 {
     _Shape.Nullify();
 
@@ -3931,7 +3940,7 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     (void)op;
     _Shape.Nullify();
 
-    if(shapes.empty()) 
+    if(shapes.empty())
         HANDLE_NULL_INPUT;
 
     if(!force && shapes.size()==1) {
@@ -3949,9 +3958,9 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
             continue;
         }
         builder.Add(comp,s.getShape());
-        ++count; 
+        ++count;
     }
-    if(!count) 
+    if(!count)
         HANDLE_NULL_SHAPE;
     _Shape = comp;
     return *this;
@@ -3990,7 +3999,7 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
     (void)op;
     _Shape.Nullify();
     if(shape.isNull()) {
-        if(!no_fail) 
+        if(!no_fail)
             HANDLE_NULL_SHAPE;
         return *this;
     }
@@ -4039,7 +4048,7 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         return true;
     }catch (Standard_Failure &e) {
         // For some reason the above BRepBuilderAPI_Copy failed to copy
-        // the geometry of some edge, causing exception with message 
+        // the geometry of some edge, causing exception with message
         // BRepAdaptor_Curve::No geometry. However, without the above
         // copy, circular edges often have the wrong transformation!
         FC_LOG("failed to find surface: " << e.GetMessageString());
@@ -4050,7 +4059,7 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
 bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     if(isNull() || other.isNull())
         return false;
-    if(_Shape.IsEqual(other._Shape)) 
+    if(_Shape.IsEqual(other._Shape))
         return true;
     gp_Pln pln1,pln2;
     if(!findPlane(pln1,tol) || !other.findPlane(pln2,tol))
@@ -4060,7 +4069,7 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
 
-bool TopoShape::_makETransform(const TopoShape &shape, 
+bool TopoShape::_makETransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
@@ -4075,7 +4084,7 @@ bool TopoShape::_makETransform(const TopoShape &shape,
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
     // resetElementMap();
-    
+
     if(!copy) {
         // OCCT checks the ScaleFactor against gp::Resolution() which is DBL_MIN!!!
         copy = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
@@ -4102,7 +4111,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
     return *this;
 }
 
-TopoShape &TopoShape::makEGTransform(const TopoShape &shape, 
+TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
     (void)op;
