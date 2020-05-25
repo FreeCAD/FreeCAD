@@ -28,6 +28,12 @@
 #ifndef _PreComp_
 #endif
 
+#if defined(__clang__) && defined(__has_warning)
+#if __has_warning("-Wdeprecated-copy")
+# pragma clang diagnostic ignored "-Wdeprecated-copy"
+#endif
+#endif
+
 #include "KDTree.h"
 #include <kdtree++/kdtree.hpp>
 

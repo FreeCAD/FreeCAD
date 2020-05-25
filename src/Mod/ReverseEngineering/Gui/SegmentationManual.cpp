@@ -151,7 +151,7 @@ static void findGeometry(int minFaces, double tolerance,
 
                 for (auto segmIt : segm) {
                     const std::vector<MeshCore::MeshSegment>& data = segmIt->GetSegments();
-                    for (const auto dataIt : data) {
+                    for (const auto& dataIt : data) {
                         vpm->addSelection(dataIt);
                     }
                 }

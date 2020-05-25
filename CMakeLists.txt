@@ -27,6 +27,7 @@ set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
 # include local modules
+include(CheckCXXCompilerFlag)
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 # include helper functions/macros
