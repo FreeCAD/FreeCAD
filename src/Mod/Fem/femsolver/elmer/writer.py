@@ -115,6 +115,7 @@ class Writer(object):
         self._handleElasticity()
         self._handleElectrostatic()
         self._handleFluxsolver()
+        self._handleElectricforce()
         self._handleFlow()
         self._addOutputSolver()
 
@@ -371,6 +372,8 @@ class Writer(object):
                         self._boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
                         self._boundary(name, "Electric Infinity BC", True)
+                    if obj.ElectricForcecalculation:
+                        self._boundary(name, "Calculate Electric Force", True)
                     if obj.CapacitanceBodyEnabled:
                         if hasattr(obj, "CapacitanceBody"):
                             self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
@@ -395,6 +398,24 @@ class Writer(object):
         s["Flux Variable"] = equation.FluxVariable
         s["Calculate Flux"] = equation.CalculateFlux
         s["Calculate Grad"] = equation.CalculateGrad
+        return s
+
+    def _handleElectricforce(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElectricforce"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getElectricforceSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+
+    def _getElectricforceSolver(self, equation):
+        s = self._createEmptySolver(equation)
+        s["Equation"] = "Electric Force"  # equation.Name
+        s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
         return s
 
     def _handleElasticity(self):
@@ -678,6 +699,10 @@ class Writer(object):
     def _handleFlowEquation(self, bodies):
         for b in bodies:
             self._equation(b, "Convection", "Computed")
+
+    def _createEmptySolver(self, equation):
+        s = sifio.createSection(sifio.SOLVER)
+        return s
 
     def _createLinearSolver(self, equation):
         s = sifio.createSection(sifio.SOLVER)
