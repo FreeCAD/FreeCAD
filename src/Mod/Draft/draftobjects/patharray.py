@@ -119,7 +119,7 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector","VerticalVector","Alignment", _tip)
             obj.VerticalVector = App.Vector(0,0,1)
 
-        if self.use_link:
+        if hasattr(obj, "use_link"):
             _tip = _tr("Show array element as children object")
             obj.addProperty("App::PropertyBool","ExpandArray", "Parameters", _tip)
             obj.ExpandArray = False
