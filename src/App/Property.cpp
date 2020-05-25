@@ -225,7 +225,7 @@ void Property::touch()
 {
     PropertyCleaner guard(this);
     _StatusBits.set(Touched);
-    if (father && !Transaction::isApplying(this)) {
+    if (getName() && father && !Transaction::isApplying(this)) {
         father->onChanged(this);
         if(!testStatus(Busy)) {
             Base::BitsetLocker<StatusBits> guard(_StatusBits,Busy);
