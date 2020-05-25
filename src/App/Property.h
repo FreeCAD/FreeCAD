@@ -138,7 +138,7 @@ public:
     /** Return a full quanlified property name that include its own's name
      * @param python: if true, then return an expression for accessing this property in Python
      */
-    std::string getFullName(bool python=false) const;
+    virtual std::string getFullName(bool python=false) const;
 
     /// Get the class name of the associated property editor item
     virtual const char* getEditorName(void) const { return ""; }
@@ -215,7 +215,7 @@ public:
      */
     //@{
     /// Set the property touched
-    void touch();
+    virtual void touch();
     /// Test if this property is touched
     virtual bool isTouched(void) const {
         return _StatusBits.test(Touched);

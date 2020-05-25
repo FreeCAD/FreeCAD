@@ -3165,18 +3165,34 @@ void PropertyXLink::detach() {
     }
 }
 
+void PropertyXLink::touch() {
+    if(parentProp)
+        parentProp->touch();
+    else
+        inherited::touch();
+}
+
+std::string PropertyXLink::getFullName(bool python) const {
+    if(getName() || python || !parentProp)
+        return inherited::getFullName(python);
+
+    std::ostringstream ss;
+    ss << parentProp->getFullName() << ":" << this;
+    return ss.str();
+}
+
 void PropertyXLink::aboutToSetValue() {
     if(parentProp)
         parentProp->aboutToSetChildValue(*this);
     else
-        PropertyLinkBase::aboutToSetValue();
+        inherited::aboutToSetValue();
 }
 
 void PropertyXLink::hasSetValue() {
     if(parentProp)
         parentProp->hasSetChildValue(*this);
     else
-        PropertyLinkBase::hasSetValue();
+        inherited::hasSetValue();
 }
 
 void PropertyXLink::setSubName(const char *subname) 

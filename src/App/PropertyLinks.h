@@ -1069,6 +1069,7 @@ class PropertyXLinkSubList;
 class AppExport PropertyXLink : public PropertyLinkGlobal
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    typedef PropertyLinkGlobal inherited;
 
 public:
     PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=0);
@@ -1153,6 +1154,9 @@ public:
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
     virtual void setAllowPartial(bool enable) override;
+
+    virtual void touch() override;
+    virtual std::string getFullName(bool python=false) const override;
 
     const char *getFilePath() const {
         return filePath.c_str();
