@@ -33,6 +33,7 @@ from .equations import elasticity
 from .equations import electrostatic
 from .equations import flow
 from .equations import fluxsolver
+from .equations import electricforce
 from .equations import heat
 from .. import run
 from .. import solverbase
@@ -54,6 +55,7 @@ class Proxy(solverbase.Proxy):
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
         "Fluxsolver": fluxsolver,
+        "Electricforce": electricforce,
         "Flow": flow,
     }
 

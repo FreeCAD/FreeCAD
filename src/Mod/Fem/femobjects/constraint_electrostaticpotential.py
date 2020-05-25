@@ -62,13 +62,19 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             "ElectricInfinity",
             "Parameter",
             "Electric Infinity"
-        )
+        ),
+        obj.addProperty(
+            "App::PropertyBool",
+            "ElectricForcecalculation",
+            "Parameter",
+            "Electric Force Calculation"
+        ),
         obj.addProperty(
             "App::PropertyInteger",
             "CapacitanceBody",
             "Parameter",
             "Capacitance Body"
-        )
+        ),
         obj.addProperty(
             "App::PropertyBool",
             "CapacitanceBodyEnabled",

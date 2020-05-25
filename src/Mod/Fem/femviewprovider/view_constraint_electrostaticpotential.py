@@ -114,6 +114,9 @@ class _TaskPanel(object):
         self._paramWidget.electricInfinityBox.setChecked(
             self._obj.ElectricInfinity)
 
+        self._paramWidget.electricForcecalculationBox.setChecked(
+            self._obj.ElectricForcecalculation)
+
         self._paramWidget.capacitanceBodyBox.setChecked(
             not self._obj.CapacitanceBodyEnabled)
         self._paramWidget.capacitanceBody_spinBox.setValue(
@@ -141,6 +144,8 @@ class _TaskPanel(object):
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
         self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()
+
+        self._obj.ElectricForcecalculation = self._paramWidget.electricForcecalculationBox.isChecked()
 
         self._obj.CapacitanceBodyEnabled = \
             not self._paramWidget.capacitanceBodyBox.isChecked()

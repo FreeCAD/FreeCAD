@@ -109,6 +109,16 @@ class FluxsolverProxy(BaseProxy):
     pass
 
 
+class ElectricforceViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationElectricforce.svg"
+
+
+class ElectricforceProxy(BaseProxy):
+    pass
+
+
 class FlowProxy(BaseProxy):
     pass
 

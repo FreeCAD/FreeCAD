@@ -638,6 +638,18 @@ def makeEquationElasticity(
     return obj
 
 
+def makeEquationElectricforce(
+    doc,
+    base_solver
+):
+    """makeEquationElectricforce(document, base_solver):
+    creates a FEM Electricforce equation for a solver"""
+    obj = doc.SolverElmer.addObject(
+        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Electricforce")
+    )[0]
+    return obj
+
+
 def makeEquationElectrostatic(
     doc,
     base_solver
