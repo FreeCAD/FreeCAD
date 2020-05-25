@@ -134,6 +134,7 @@ public:
     FC_VIEW_PARAM(ShadowGroundBumpMap, std::string, ASCII, "") \
     FC_VIEW_PARAM(ShadowGroundTexture, std::string, ASCII, "") \
     FC_VIEW_PARAM(ShadowGroundTransparency, double, Float, 0.0) \
+    FC_VIEW_PARAM(ShadowGroundShading, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
 
 #undef FC_VIEW_PARAM

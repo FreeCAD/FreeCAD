@@ -44,6 +44,7 @@
 #include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/Namespace.h>
+#include <Gui/InventorBase.h>
 
 class SoTranslation;
 class SoTransform;
@@ -76,6 +77,7 @@ class SoTexture2;
 class SoTextureCoordinate2;
 class SoBumpMap;
 class SoShadowStyle;
+class SoLightModel;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -484,19 +486,20 @@ private:
     SoMaterial  * pcRootMaterial;
     SoSeparator * pcViewProviderRoot;
 
-    SoShadowGroup            * pcShadowGroup;
-    SoDirectionalLight       * pcShadowDirectionalLight;
-    SoSpotLight              * pcShadowSpotLight;
-    SoGroup                  * pcShadowGroundGroup;
-    SoSwitch                 * pcShadowGroundSwitch;
-    SoCoordinate3            * pcShadowGroundCoords;
-    SoFaceSet                * pcShadowGround;
-    SoShadowStyle            * pcShadowGroundStyle;
-    SoMaterial               * pcShadowMaterial;
-    SoTexture2               * pcShadowGroundTexture;
-    SoTextureCoordinate2     * pcShadowGroundTextureCoords;
-    SoBumpMap                * pcShadowGroundBumpMap;
-    uint32_t                 shadowNodeId;
+    CoinPtr<SoShadowGroup>            pcShadowGroup;
+    CoinPtr<SoDirectionalLight>       pcShadowDirectionalLight;
+    CoinPtr<SoSpotLight>              pcShadowSpotLight;
+    CoinPtr<SoGroup>                  pcShadowGroundGroup;
+    CoinPtr<SoSwitch>                 pcShadowGroundSwitch;
+    CoinPtr<SoCoordinate3>            pcShadowGroundCoords;
+    CoinPtr<SoFaceSet>                pcShadowGround;
+    CoinPtr<SoShadowStyle>            pcShadowGroundStyle;
+    CoinPtr<SoMaterial>               pcShadowMaterial;
+    CoinPtr<SoTexture2>               pcShadowGroundTexture;
+    CoinPtr<SoTextureCoordinate2>     pcShadowGroundTextureCoords;
+    CoinPtr<SoBumpMap>                pcShadowGroundBumpMap;
+    CoinPtr<SoLightModel>             pcShadowGroundLightModel;
+    uint32_t                          shadowNodeId;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
