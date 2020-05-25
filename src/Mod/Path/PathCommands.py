@@ -150,7 +150,10 @@ class _ToggleOperation:
 
     def Activated(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
-            PathScripts.PathDressup.baseOp(sel.Object).Active = not(PathScripts.PathDressup.baseOp(sel.Object).Active)
+            op = PathScripts.PathDressup.baseOp(sel.Object)
+            op.Active = not op.Active
+            op.ViewObject.Visibility = op.Active
+
         FreeCAD.ActiveDocument.recompute()
 
 

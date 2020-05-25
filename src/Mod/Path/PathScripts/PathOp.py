@@ -472,9 +472,6 @@ class ObjectOp(object):
         '''
         PathLog.track()
 
-        if obj.ViewObject:
-            obj.ViewObject.Visibility = obj.Active
-
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
