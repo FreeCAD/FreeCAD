@@ -84,14 +84,14 @@ class TestObjectCreate(unittest.TestCase):
         # thus they are not added to the analysis group ATM
         # https://forum.freecadweb.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 5
+        # solver children: equations --> 6
         # gmsh mesh children: group, region, boundary layer --> 3
         # resule children: mesh result --> 1
         # post pipeline childeren: region, scalar, cut, wrap --> 4
         # analysis itself is not in analysis group --> 1
         # thus: -14
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 14)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 15)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -320,6 +320,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeEquationElasticity(doc, solverelmer))
         )
         self.assertEqual(
+            "Fem::EquationElectricforce",
+            type_of_obj(ObjectsFem.makeEquationElectricforce(doc, solverelmer))
+        )
+        self.assertEqual(
             "Fem::EquationElmerElectrostatic",
             type_of_obj(ObjectsFem.makeEquationElectrostatic(doc, solverelmer))
         )
@@ -517,6 +521,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
             "Fem::EquationElmerElasticity"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeEquationElectricforce(doc, solverelmer),
+            "Fem::EquationElectricforce"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElectrostatic(doc, solverelmer),
@@ -1175,6 +1183,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElasticity"
         ))
 
+        # FemEquationElmerElectricforce
+        equation_elasticity = ObjectsFem.makeEquationElectricforce(doc, solver_elmer)
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "App::FeaturePython"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "Fem::EquationElectricforce"
+        ))
+
         # FemEquationElmerElectrostatic
         equation_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_elmer)
         self.assertTrue(is_derived_from(
@@ -1454,6 +1477,12 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("App::FeaturePython")
         )
         self.assertTrue(
+            ObjectsFem.makeEquationElectricforce(
+                doc,
+                solverelmer
+            ).isDerivedFrom("App::FeaturePython")
+        )
+        self.assertTrue(
             ObjectsFem.makeEquationElectrostatic(
                 doc,
                 solverelmer
@@ -1545,6 +1574,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationElasticity(doc, sol)
+    ObjectsFem.makeEquationElectricforce(doc, sol)
     ObjectsFem.makeEquationElectrostatic(doc, sol)
     ObjectsFem.makeEquationFlow(doc, sol)
     ObjectsFem.makeEquationFluxsolver(doc, sol)
