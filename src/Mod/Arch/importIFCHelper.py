@@ -668,6 +668,24 @@ def get2DShape(representation,scaling=1000):
                         a = -DraftVecUtils.angle(v)
                         e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
                         result.append(e)
+            elif el.is_a("IfcIndexedPolyCurve"):
+                coords = el.Points.CoordList
+                for s in el.Segments:
+                    if s.is_a("IfcLineIndex"):
+                        pts = []
+                        for i in s.wrappedValue:
+                            c = coords[i-1]
+                            c = FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0)
+                            c.multiply(scaling)
+                            pts.append(c)
+                        result.append(Part.makePolygon(pts))
+                    elif s.is_a("IfcArcIndex"):
+                        # TODO: Don't know how to best handle this
+                        pass
+                    else:
+                        raise RuntimeError("Illegal IfcIndexedPolyCurve segment")
+            else:
+                print("getCurveSet: unhandled element: ", el)
 
         return result
 
