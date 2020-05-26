@@ -704,7 +704,7 @@ BOPCheck.Perform();
 
       /*log BOPCheck errors to report view*/
       if (logErrors){
-          std::cerr << faultyEntry->parent->name.toStdString().c_str() << " : "
+          std::clog << faultyEntry->parent->name.toStdString().c_str() << " : "
                     << faultyEntry->name.toStdString().c_str() << " : "
                     << faultyEntry->type.toStdString().c_str() << " : "
                     << faultyEntry->error.toStdString().c_str()
@@ -737,7 +737,7 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
 
     /*log BRepCheck errors to report view*/
     if (logErrors){
-        std::cerr << entry->parent->name.toStdString().c_str() << " : "
+        std::clog << entry->parent->name.toStdString().c_str() << " : "
                   << entry->name.toStdString().c_str() << " : "
                   << entry->type.toStdString().c_str() << " : "
                   << entry->error.toStdString().c_str() << " (BRepCheck)"
