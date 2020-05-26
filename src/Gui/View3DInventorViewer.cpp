@@ -1692,14 +1692,11 @@ void View3DInventorViewer::applyOverrideMode()
             // pcShadowGroup->renderCaching = SoSeparator::OFF;
             // pcShadowGroup->boundingBoxCaching = SoSeparator::OFF;
 
-            if(!pcShadowDirectionalLight) {
-                auto light = new SoShadowDirectionalLight;
-                light->maxShadowDistance = 10000;
-                pcShadowDirectionalLight = light;
-            }
-            if(!pcShadowSpotLight) {
+            if(!pcShadowDirectionalLight)
+                pcShadowDirectionalLight = new SoShadowDirectionalLight;
+
+            if(!pcShadowSpotLight)
                 pcShadowSpotLight = new SoSpotLight;
-            }
 
             auto shadowStyle = new SoShadowStyle;
             shadowStyle->style = SoShadowStyle::NO_SHADOWING;
@@ -1803,6 +1800,7 @@ void View3DInventorViewer::applyOverrideMode()
                 Base::Vector3d(ViewParams::getShadowLightDirectionX(),
                                ViewParams::getShadowLightDirectionY(),
                                ViewParams::getShadowLightDirectionZ()));
+        _dir.Normalize();
         SbVec3f dir(_dir.x,_dir.y,_dir.z);
 
         SbBox3f bbox;
@@ -1827,14 +1825,15 @@ void View3DInventorViewer::applyOverrideMode()
             }
             auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", initPos);
             pcShadowSpotLight->location = SbVec3f(pos.x,pos.y,pos.z);
+            static const App::PropertyFloatConstraint::Constraints _drop_cstr(-0.01,1.0,0.01);
             pcShadowSpotLight->dropOffRate =
                 _shadowParam<App::PropertyFloatConstraint>(doc, "SpotLightDropOffRate",0.0,
                     [](App::PropertyFloatConstraint &prop) {
                         if(!prop.getConstraints())
-                            prop.setConstraints(&_cstr);
+                            prop.setConstraints(&_drop_cstr);
                     });
             pcShadowSpotLight->cutOffAngle =
-                _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0);
+                M_PI * _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0) / 180.0;
 
             // pcShadowGroup->visibilityFlag = SoShadowGroup::ABSOLUTE_RADIUS;
             // pcShadowGroup->visibilityNearRadius = _shadowParam<App::PropertyFloat>(doc, "SpotLightRadiusNear", -1.0);
