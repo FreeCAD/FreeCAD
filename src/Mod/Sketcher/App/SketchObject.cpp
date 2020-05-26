@@ -1951,6 +1951,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     };
 
+    auto creategeometryundopoint = [this, geomlist]() {
+        Geometry.setValues(geomlist);
+    };
+
     Part::Geometry *geo = geomlist[GeoId];
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
@@ -2047,7 +2051,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if (GeoId1 >= 0) {
             double x1 = (point1 - startPnt)*dir;
             if (x1 >= 0.001*length && x1 <= 0.999*length) {
-
+                creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
                 ConstraintType constrType = Sketcher::PointOnObject;
                 PointPos secondPos = Sketcher::none;
                 for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2444,7 +2448,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
 
         if (GeoId1 >= 0) {
-
+            creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
             ConstraintType constrType = Sketcher::PointOnObject;
             PointPos secondPos = Sketcher::none;
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2620,7 +2624,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
 
         if (GeoId1 >= 0) {
+            double theta1 = Base::fmod(
+                        atan2(-aoe->getMajorRadius()*((point1.x-center.x)*aoe->getMajorAxisDir().y-(point1.y-center.y)*aoe->getMajorAxisDir().x),
+                              aoe->getMinorRadius()*((point1.x-center.x)*aoe->getMajorAxisDir().x+(point1.y-center.y)*aoe->getMajorAxisDir().y)
+                             )- startAngle, 2.f*M_PI) * dir; // x1
 
+            creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
             ConstraintType constrType = Sketcher::PointOnObject;
             PointPos secondPos = Sketcher::none;
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2633,11 +2642,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     break;
                 }
             }
-
-            double theta1 = Base::fmod(
-                        atan2(-aoe->getMajorRadius()*((point1.x-center.x)*aoe->getMajorAxisDir().y-(point1.y-center.y)*aoe->getMajorAxisDir().x),
-                              aoe->getMinorRadius()*((point1.x-center.x)*aoe->getMajorAxisDir().x+(point1.y-center.y)*aoe->getMajorAxisDir().y)
-                             )- startAngle, 2.f*M_PI) * dir; // x1
 
             if (theta1 >= 0.001*arcLength && theta1 <= 0.999*arcLength) {
                 if (theta1 > theta0) { // trim arc start
@@ -2799,6 +2803,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
         if (GeoId1 >= 0) {
 
+            double theta1 = Base::fmod(
+                        atan2(-aoh->getMajorRadius()*((point1.x-center.x)*sin(aoh->getAngleXU())-(point1.y-center.y)*cos(aoh->getAngleXU())),
+                              aoh->getMinorRadius()*((point1.x-center.x)*cos(aoh->getAngleXU())+(point1.y-center.y)*sin(aoh->getAngleXU()))
+                             )- startAngle, 2.f*M_PI) * dir; // x1
+
+            creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
             ConstraintType constrType = Sketcher::PointOnObject;
             PointPos secondPos = Sketcher::none;
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2811,11 +2821,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     break;
                 }
             }
-
-            double theta1 = Base::fmod(
-                        atan2(-aoh->getMajorRadius()*((point1.x-center.x)*sin(aoh->getAngleXU())-(point1.y-center.y)*cos(aoh->getAngleXU())),
-                              aoh->getMinorRadius()*((point1.x-center.x)*cos(aoh->getAngleXU())+(point1.y-center.y)*sin(aoh->getAngleXU()))
-                             )- startAngle, 2.f*M_PI) * dir; // x1
 
             if (theta1 >= 0.001*arcLength && theta1 <= 0.999*arcLength) {
                 if (theta1 > theta0) { // trim arc start
