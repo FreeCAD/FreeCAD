@@ -134,6 +134,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     ui->checkBoxSpotLight->setChecked(ViewParams::getShadowSpotLight());
     ui->checkBoxShowGround->setChecked(ViewParams::getShadowShowGround());
     ui->checkBoxFlatLines->setChecked(ViewParams::getShadowFlatLines());
+    ui->checkBoxGroundShading->setChecked(ViewParams::getShadowGroundShading());
 
     ui->spinBoxLightIntensity->setValue(ViewParams::getShadowLightIntensity());
     ui->spinBoxGroundScale->setValue(ViewParams::getShadowGroundScale());
@@ -192,6 +193,7 @@ void DlgSettingsDrawStyles::saveSettings()
     ui->LightColor->onSave();
     ui->GroundColor->onSave();
     ui->spinGroundTransparency->onSave();
+    ui->checkBoxGroundShading->onSave();
 
     for(auto doc : App::GetApplication().getDocuments()) {
         for(auto v : Application::Instance->getDocument(doc)->getMDIViews()) {
@@ -243,6 +245,7 @@ void DlgSettingsDrawStyles::loadSettings()
     ui->LightColor->onRestore();
     ui->GroundColor->onRestore();
     ui->spinGroundTransparency->onRestore();
+    ui->checkBoxGroundShading->onRestore();
 }
 
 /**
