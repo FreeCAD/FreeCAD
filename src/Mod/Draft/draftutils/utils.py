@@ -1249,3 +1249,89 @@ def print_header(name, description, debug=True):
     if debug:
         _msg(16 * "-")
         _msg(description)
+
+
+def find_doc(doc=None):
+    """Return the active document or find a document by name.
+
+    Parameters
+    ----------
+    doc: App::Document or str, optional
+        The document that will be searched in the session.
+        It defaults to `None`, in which case it tries to find
+        the active document.
+        If `doc` is a string, it will try to get the document by `Name`.
+
+    Returns
+    -------
+    bool, App::Document
+        A tuple containing the information on whether the search
+        was successful. In this case, the boolean is `True`,
+        and the second value is the document instance.
+
+    False, None
+        If there is no active document, or the string in `doc`
+        doesn't correspond to an open document in the session.
+    """
+    FOUND = True
+
+    if not doc:
+        doc = App.activeDocument()
+    if not doc:
+        return not FOUND, None
+
+    if isinstance(doc, str):
+        try:
+            doc = App.getDocument(doc)
+        except NameError:
+            _msg("document: {}".format(doc))
+            _err(_tr("Wrong input: unknown document."))
+            return not FOUND, None
+
+    return FOUND, doc
+
+
+def find_object(obj, doc=None):
+    """Find object in the document, inclusive by Label.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject or str
+        The object to search in `doc`.
+        Or if the `obj` is a string, it will search the object by `Label`.
+        Since Labels are not guaranteed to be unique, it will get the first
+        object with that label in the document.
+
+    doc: App::Document or str, optional
+        The document in which the object will be searched.
+        It defaults to `None`, in which case it tries to search in the
+        active document.
+        If `doc` is a string, it will search the document by `Name`.
+
+    Returns
+    -------
+    bool, App::DocumentObject
+        A tuple containing the information on whether the search
+        was successful. In this case, the boolean is `True`,
+        and the second value is the object found.
+
+    False, None
+        If the object doesn't exist in the document.
+    """
+    FOUND = True
+
+    found, doc = find_doc(doc)
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return not FOUND, None
+
+    if isinstance(obj, str):
+        try:
+            obj = doc.getObjectsByLabel(obj)[0]
+        except IndexError:
+            return not FOUND, None
+
+    if obj not in doc.Objects:
+        return not FOUND, None
+
+    return FOUND, obj
