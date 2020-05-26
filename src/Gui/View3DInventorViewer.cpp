@@ -1632,8 +1632,8 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def, Ca
     if(!prop) {
         prop = doc->addDynamicProperty(PropT::getClassTypeId().getName(), name, "Shadow");
         static_cast<PropT*>(prop)->setValue(def);
-        cb(*static_cast<PropT*>(prop));
     }
+    cb(*static_cast<PropT*>(prop));
     return static_cast<PropT*>(prop)->getValue();
 }
 
@@ -1727,7 +1727,7 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowGroundTextureCoords = new SoTextureCoordinate2;
 
                 pcShadowGroundTexture = new SoTexture2;
-                pcShadowGroundTexture->model = SoMultiTextureImageElement::BLEND;
+                // pcShadowGroundTexture->model = SoMultiTextureImageElement::BLEND;
 
                 pcShadowGroundCoords = new SoCoordinate3;
 
@@ -1747,7 +1747,6 @@ void View3DInventorViewer::applyOverrideMode()
 
                 pcShadowGroundGroup = new SoSeparator;
                 pcShadowGroundGroup->addChild(pcShadowGroundLightModel);
-                pcShadowGroundGroup->addChild(pcShadowGroundStyle);
                 pcShadowGroundGroup->addChild(pickStyle);
                 pcShadowGroundGroup->addChild(shapeHints);
                 pcShadowGroundGroup->addChild(pcShadowGroundTextureCoords);
@@ -1774,6 +1773,7 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowGroundGroup->addChild(pcShadowGroundTexture);
                 pcShadowGroundGroup->addChild(pcShadowMaterial);
                 pcShadowGroundGroup->addChild(pcShadowGroundCoords);
+                pcShadowGroundGroup->addChild(pcShadowGroundStyle);
                 pcShadowGroundGroup->addChild(pcShadowGround);
 
                 pcShadowGroundSwitch->addChild(pcShadowGroundGroup);
@@ -1786,13 +1786,15 @@ void View3DInventorViewer::applyOverrideMode()
         pcShadowGroup->quality = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "Quality", 1.0f,
                 [](App::PropertyFloatConstraint &prop) {
-                    prop.setConstraints(&_cstr);
+                    if(!prop.getConstraints())
+                        prop.setConstraints(&_cstr);
                 });
 
         pcShadowGroup->precision = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "Precision", 1.0f,
                 [](App::PropertyFloatConstraint &prop) {
-                    prop.setConstraints(&_cstr);
+                    if(!prop.getConstraints())
+                        prop.setConstraints(&_cstr);
                 });
 
         SoLight *light;
@@ -1810,7 +1812,8 @@ void View3DInventorViewer::applyOverrideMode()
         pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc,
                 "Epsilon", 1e-5,
                     [](App::PropertyFloatConstraint &prop) {
-                        prop.setConstraints(&_epsilon_cstr);
+                        if(!prop.getConstraints())
+                            prop.setConstraints(&_epsilon_cstr);
                     });
 
         if(spotlight) {
@@ -1827,7 +1830,8 @@ void View3DInventorViewer::applyOverrideMode()
             pcShadowSpotLight->dropOffRate =
                 _shadowParam<App::PropertyFloatConstraint>(doc, "SpotLightDropOffRate",0.0,
                     [](App::PropertyFloatConstraint &prop) {
-                        prop.setConstraints(&_cstr);
+                        if(!prop.getConstraints())
+                            prop.setConstraints(&_cstr);
                     });
             pcShadowSpotLight->cutOffAngle =
                 _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0);
@@ -1842,9 +1846,10 @@ void View3DInventorViewer::applyOverrideMode()
             if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
                 static const App::PropertyFloatConstraint::Constraints _dist_cstr(-1.0,DBL_MAX,10.0);
                 static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
-                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", -1.0,
+                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 1e4,
                         [](App::PropertyFloatConstraint &prop) {
-                            prop.setConstraints(&_dist_cstr);
+                            if(!prop.getConstraints())
+                                prop.setConstraints(&_dist_cstr);
                         });
             }
         }
@@ -1852,7 +1857,8 @@ void View3DInventorViewer::applyOverrideMode()
         light->intensity = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "LightIntensity", ViewParams::getShadowLightIntensity(),
                 [](App::PropertyFloatConstraint &prop) {
-                    prop.setConstraints(&_cstr);
+                    if(!prop.getConstraints())
+                        prop.setConstraints(&_cstr);
                 });
 
         App::Color color = _shadowParam<App::PropertyColor>(
@@ -1872,7 +1878,8 @@ void View3DInventorViewer::applyOverrideMode()
         double transp = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "GroundTransparency", ViewParams::getShadowGroundTransparency(),
                 [](App::PropertyFloatConstraint &prop) {
-                    prop.setConstraints(&_transp_cstr);
+                    if(!prop.getConstraints())
+                        prop.setConstraints(&_transp_cstr);
                 });
 
         pcShadowMaterial->transparency = transp;
