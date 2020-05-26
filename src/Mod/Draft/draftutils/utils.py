@@ -1335,3 +1335,39 @@ def find_object(obj, doc=None):
         return not FOUND, None
 
     return FOUND, obj
+
+
+def use_instead(function, version=""):
+    """Print a deprecation message and suggest another function.
+
+    This function must be used inside the definition of a function
+    that has been considered for deprecation, so we must provide
+    an alternative.
+    ::
+        def old_function():
+            use_instead('new_function', 1.0)
+
+        def someFunction():
+            use_instead('some_function')
+
+    Parameters
+    ----------
+    function: str
+        The name of the function to use instead of the current one.
+
+    version: float or str, optional
+        It defaults to the empty string `''`.
+        The version where this command is to be deprecated, if it is known.
+        If we don't know when this command will be deprecated
+        then we should not give a version.
+    """
+    text = "This function will be deprected in "
+    text2 = "This function will be deprected. "
+    text3 = "Please use "
+
+    if version:
+        _wrn(_tr(text) + "{}. ".format(version)
+             + _tr(text3) + "'{}'.".format(function))
+    else:
+        _wrn(_tr(text2)
+             + _tr(text3) + "'{}'.".format(function))
