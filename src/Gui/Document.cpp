@@ -242,8 +242,10 @@ Document::Document(App::Document* pcDocument,Application * app)
 
     d->connectChanged = pcDocument->signalChanged.connect(
         [this](const App::Document &, const App::Property &Prop) {
-            FC_LOG(Prop.getFullName() << " modified");
-            setModified(true);
+            if(!d->_isModified) {
+                FC_LOG(Prop.getFullName() << " modified");
+                setModified(true);
+            }
         });
 
     // pointer to the python class
