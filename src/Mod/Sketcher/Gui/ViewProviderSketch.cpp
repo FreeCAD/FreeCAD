@@ -1180,7 +1180,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_DragConstraint:
             if (edit->DragConstraintSet.empty() == false) {
                 auto idset = edit->DragConstraintSet;
-                for(int id : idset) 
+                for(int id : idset)
                     moveConstraint(id, Base::Vector2d(x,y));
             }
             return true;
@@ -4279,15 +4279,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     float dMagF = exp(ceil(log(std::abs(dMg))));
 
-    MinX = -dMagF;
-    MaxX = dMagF;
-    MinY = -dMagF;
-    MaxY = dMagF;
-
-    if (ShowGrid.getValue())
-        createGrid();
-    else
-        Gui::coinRemoveAllChildren(GridRoot);
+    updateGridExtent(-dMagF, dMagF, -dMagF, dMagF);
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
@@ -4327,10 +4319,10 @@ Restart:
             SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
             const Constraint *Constr = *it;
 
-            if(Constr->First < -extGeoCount || Constr->First >= intGeoCount 
-                    || (Constr->Second!=Constraint::GeoUndef 
+            if(Constr->First < -extGeoCount || Constr->First >= intGeoCount
+                    || (Constr->Second!=Constraint::GeoUndef
                         && (Constr->Second < -extGeoCount || Constr->Second >= intGeoCount))
-                    || (Constr->Third!=Constraint::GeoUndef 
+                    || (Constr->Third!=Constraint::GeoUndef
                         && (Constr->Third < -extGeoCount || Constr->Third >= intGeoCount)))
             {
                 // Constraint can refer to non-existent geometry during undo/redo
@@ -5594,8 +5586,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -5639,7 +5629,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
-    
+
     this->attachSelection();
 
     // create the container for the additional edit data
@@ -5697,6 +5687,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     TightGrid.setValue(false);
+
+    ViewProvider2DObject::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     float transparency;
 
@@ -6129,6 +6121,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
         e.ReportException();
     }
+
+    ViewProvider2DObject::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
