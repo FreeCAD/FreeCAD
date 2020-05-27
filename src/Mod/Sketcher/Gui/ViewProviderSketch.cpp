@@ -1175,7 +1175,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_DragConstraint:
             if (edit->DragConstraintSet.empty() == false) {
                 auto idset = edit->DragConstraintSet;
-                for(int id : idset) 
+                for(int id : idset)
                     moveConstraint(id, Base::Vector2d(x,y));
             }
             return true;
@@ -2771,11 +2771,16 @@ void ViewProviderSketch::updateColor(void)
             } else if (hasMaterial) {
                 m->diffuseColor = SelectColor;
             } else if (type == Sketcher::Coincident) {
-                int index;
-                index = getSketchObject()->getSolvedSketch().getPointId(constraint->First, constraint->FirstPos) + 1;
-                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
-                index = getSketchObject()->getSolvedSketch().getPointId(constraint->Second, constraint->SecondPos) + 1;
-                if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
+                auto selectpoint = [this, pcolor, PtNum](int geoid, Sketcher::PointPos pos){
+                    if(geoid >= 0) {
+                        int index = getSketchObject()->getSolvedSketch().getPointId(geoid, pos) + 1;
+                        if (index >= 0 && index < PtNum)
+                            pcolor[index] = SelectColor;
+                    }
+                };
+
+                selectpoint(constraint->First, constraint->FirstPos);
+                selectpoint(constraint->Second, constraint->SecondPos);
             } else if (type == Sketcher::InternalAlignment) {
                 switch(constraint->AlignmentType) {
                     case EllipseMajorDiameter:
@@ -4322,10 +4327,10 @@ Restart:
             SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
             const Constraint *Constr = *it;
 
-            if(Constr->First < -extGeoCount || Constr->First >= intGeoCount 
-                    || (Constr->Second!=Constraint::GeoUndef 
+            if(Constr->First < -extGeoCount || Constr->First >= intGeoCount
+                    || (Constr->Second!=Constraint::GeoUndef
                         && (Constr->Second < -extGeoCount || Constr->Second >= intGeoCount))
-                    || (Constr->Third!=Constraint::GeoUndef 
+                    || (Constr->Third!=Constraint::GeoUndef
                         && (Constr->Third < -extGeoCount || Constr->Third >= intGeoCount)))
             {
                 // Constraint can refer to non-existent geometry during undo/redo
@@ -5634,7 +5639,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
-    
+
     this->attachSelection();
 
     // create the container for the additional edit data

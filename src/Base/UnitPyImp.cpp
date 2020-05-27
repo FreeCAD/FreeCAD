@@ -52,8 +52,14 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i7=0;
     int i8=0;
     if (PyArg_ParseTuple(args, "|iiiiiiii", &i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-        *self = Unit(i1,i2,i3,i4,i5,i6,i7,i8);
-        return 0;
+        try {
+            *self = Unit(i1,i2,i3,i4,i5,i6,i7,i8);
+            return 0;
+        }
+        catch (const Base::OverflowError& e) {
+            PyErr_SetString(PyExc_OverflowError, e.what());
+            return -1;
+        }
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
 

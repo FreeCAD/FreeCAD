@@ -65,8 +65,8 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 "Material",
                 "Material type: fluid or solid"
             )
-        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
-        obj.Category = "Solid"
+            obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
+            obj.Category = "Solid"
         """
         Some remarks to the category. Not finished, thus to be continued.
 

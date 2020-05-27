@@ -72,6 +72,10 @@ namespace nglib {
 #undef NETGEN_PYTHON
 #endif
 
+#ifndef WIN32
+#undef DLL_HEADER
+#endif
+
 #include <occgeom.hpp>
 #include <meshing.hpp>
 //#include <meshing/meshtype.hpp>
