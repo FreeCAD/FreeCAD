@@ -125,6 +125,12 @@ class PathArray(DraftLink):
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape','Transient')
 
+        if self.use_link and "ExpandArray" not in pl:
+            _tip = _tr("Show array element as children object")
+            obj.addProperty("App::PropertyBool","ExpandArray", "Parameters", _tip)
+            obj.ExpandArray = False
+            obj.setPropertyStatus('Shape','Transient')
+
     def linkSetup(self,obj):
         super(PathArray, self).linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
@@ -173,6 +179,7 @@ class PathArray(DraftLink):
         return Part.Wire(sl)
 
     def onDocumentRestored(self, obj):
+        self.migrate_attributes(obj)
         self.setProperties(obj)
 
         self.migrate_attributes(obj)
