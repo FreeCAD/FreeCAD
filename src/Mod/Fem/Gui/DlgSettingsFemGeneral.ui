@@ -272,8 +272,11 @@
          <layout class="QGridLayout" name="gl_2">
           <item row="0" column="0">
            <widget class="Gui::PrefCheckBox" name="cb_analysis_group_meshing">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
-             <string>Create mesh groups for analysis reference shapes</string>
+             <string>Create mesh groups for analysis reference shapes (highly experimental)</string>
             </property>
             <property name="checked">
              <bool>true</bool>
