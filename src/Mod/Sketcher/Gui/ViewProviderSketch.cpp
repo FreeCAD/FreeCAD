@@ -4284,15 +4284,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     float dMagF = exp(ceil(log(std::abs(dMg))));
 
-    MinX = -dMagF;
-    MaxX = dMagF;
-    MinY = -dMagF;
-    MaxY = dMagF;
-
-    if (ShowGrid.getValue())
-        createGrid();
-    else
-        Gui::coinRemoveAllChildren(GridRoot);
+    updateGridExtent(-dMagF, dMagF, -dMagF, dMagF);
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
@@ -5599,8 +5591,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -5702,6 +5692,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     TightGrid.setValue(false);
+
+    ViewProvider2DObject::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     float transparency;
 
@@ -6134,6 +6126,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
         e.ReportException();
     }
+
+    ViewProvider2DObject::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
