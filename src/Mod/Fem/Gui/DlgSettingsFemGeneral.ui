@@ -240,6 +240,9 @@
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
            <widget class="Gui::PrefCheckBox" name="cb_overwrite_solver_working_directory">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
             </property>
