@@ -291,6 +291,7 @@ ViewProviderSketch::ViewProviderSketch()
     listener(0)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
+    ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
     ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects that depend on the sketch are hidden when opening editing.");
     ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
@@ -306,7 +307,11 @@ ViewProviderSketch::ViewProviderSketch()
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
 
         // well it is not visibility automation but a good place nevertheless
+        this->ShowGrid.setValue(hGrp->GetBool("ShowGrid", false));
+        this->GridSize.setValue(Base::Quantity::parse(QString::fromLatin1(hGrp->GetGroup("GridSize")->GetASCII("Hist0", "10.0").c_str())).getValue());
+        this->GridSnap.setValue(hGrp->GetBool("GridSnap", false));
         this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints", true));
+        this->AvoidRedundant.setValue(hGrp->GetBool("AvoidRedundantAutoconstraints", true));
     }
 
     sPixmap = "Sketcher_Sketch";
@@ -500,7 +505,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
 
 void ViewProviderSketch::snapToGrid(double &x, double &y)
 {
-    if (GridSnap.getValue() != false) {
+    if (GridSnap.getValue() && ShowGrid.getValue()) {
         // Snap Tolerance in pixels
         const double snapTol = GridSize.getValue() / 5;
 
@@ -2599,7 +2604,7 @@ void ViewProviderSketch::updateColor(void)
   //int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
-    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
     // 1->Normal Geometry, 2->Construction, 3->External
     int topid = hGrpp->GetInt("TopRenderGeometryId",1);
@@ -4279,15 +4284,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     float dMagF = exp(ceil(log(std::abs(dMg))));
 
-    MinX = -dMagF;
-    MaxX = dMagF;
-    MinY = -dMagF;
-    MaxY = dMagF;
-
-    if (ShowGrid.getValue())
-        createGrid();
-    else
-        Gui::coinRemoveAllChildren(GridRoot);
+    updateGridExtent(-dMagF, dMagF, -dMagF, dMagF);
 
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
@@ -5594,8 +5591,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -5696,9 +5691,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Base::Console().Warning("ViewProviderSketch::setEdit: could not import Show module. Visibility automation will not work.\n");
     }
 
-
-    ShowGrid.setValue(true);
     TightGrid.setValue(false);
+
+    ViewProvider2DObject::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     float transparency;
 
@@ -6075,7 +6070,6 @@ void ViewProviderSketch::createEditInventorNodes(void)
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
-    ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
     if(listener) {
@@ -6132,6 +6126,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
         e.ReportException();
     }
+
+    ViewProvider2DObject::unsetEdit(ModNum); // notify grid that edit mode is being left
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
