@@ -119,7 +119,7 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector","VerticalVector","Alignment", _tip)
             obj.VerticalVector = App.Vector(0,0,1)
 
-        if self.use_link:
+        if self.use_link and "ExpandArray" not in pl:
             _tip = _tr("Show array element as children object")
             obj.addProperty("App::PropertyBool","ExpandArray", "Parameters", _tip)
             obj.ExpandArray = False
@@ -173,9 +173,9 @@ class PathArray(DraftLink):
         return Part.Wire(sl)
 
     def onDocumentRestored(self, obj):
+        self.migrate_attributes(obj)
         self.setProperties(obj)
 
-        self.migrate_attributes(obj)
         if self.use_link:
             self.linkSetup(obj)
         else:
