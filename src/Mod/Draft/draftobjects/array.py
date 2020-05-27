@@ -65,6 +65,8 @@ class Array(DraftLink):
         self.set_polar_properties(obj)
         self.set_circular_properties(obj)
 
+        # The ArrayType property (general) must be attached
+        # after the other array properties so that onChanged works properly
         self.set_general_properties(obj)
         self.set_link_properties(obj)
 
@@ -293,7 +295,11 @@ class Array(DraftLink):
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
         super(Array, self).onChanged(obj, prop)
-        print(prop, ": ", getattr(obj, prop))
+        # print(prop, ": ", getattr(obj, prop))
+        self.show_and_hide(obj, prop)
+
+    def show_and_hide(self, obj, prop):
+        """Show and hide the properties depending on the touched property."""
         if prop == "AxisReference":
             if obj.AxisReference:
                 obj.setEditorMode("Center", 1)
@@ -301,6 +307,40 @@ class Array(DraftLink):
             else:
                 obj.setEditorMode("Center", 0)
                 obj.setEditorMode("Axis", 0)
+
+        if prop == "ArrayType":
+            if obj.ArrayType == "ortho":
+                for pr in ("NumberX", "NumberY", "NumberZ",
+                           "IntervalX", "IntervalY", "IntervalZ"):
+                    obj.setPropertyStatus(pr, "-Hidden")
+
+                for pr in ("Axis", "Center", "NumberPolar", "Angle",
+                           "IntervalAxis", "NumberCircles",
+                           "RadialDistance", "TangentialDistance",
+                           "Symmetry"):
+                    obj.setPropertyStatus(pr, "Hidden")
+
+            if obj.ArrayType == "polar":
+                for pr in ("Axis", "Center", "NumberPolar",
+                           "Angle", "IntervalAxis"):
+                    obj.setPropertyStatus(pr, "-Hidden")
+
+                for pr in ("NumberX", "NumberY", "NumberZ",
+                           "IntervalX", "IntervalY", "IntervalZ",
+                           "NumberCircles", "RadialDistance",
+                           "TangentialDistance", "Symmetry"):
+                    obj.setPropertyStatus(pr, "Hidden")
+
+            if obj.ArrayType == "circular":
+                for pr in ("Axis", "Center", "NumberCircles",
+                           "RadialDistance", "TangentialDistance",
+                           "Symmetry"):
+                    obj.setPropertyStatus(pr, "-Hidden")
+
+                for pr in ("NumberX", "NumberY", "NumberZ",
+                           "IntervalX", "IntervalY", "IntervalZ",
+                           "NumberPolar", "Angle", "IntervalAxis"):
+                    obj.setPropertyStatus(pr, "Hidden")
 
     def execute(self, obj):
         """Execture when the object is created or recomputed."""
