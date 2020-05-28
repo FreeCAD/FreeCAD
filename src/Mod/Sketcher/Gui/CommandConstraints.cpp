@@ -2420,7 +2420,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-            
+
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                  "setDriving(%i,%s)",
                  ConStr.size()-1,"False");
@@ -2483,12 +2483,12 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             openCommand("add length constraint");
             Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
                 GeoId1,ActLength);
-            
+
             // it is a constraint on a external line, make it non-driving
             if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt ||
                 isConstructionPoint(Obj,GeoId1) || constraintCreationMode==Reference) {
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                
+
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
                      ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
@@ -3022,11 +3022,11 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         openCommand("add fixed x-coordinate constraint");
         Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
              GeoId1,PosId1,ActX);
-        
+
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-            
+
             Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)",
                  ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
@@ -4576,7 +4576,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             openCommand("add tangent constraint");
-            Gui::cmdAppObjectArgs(selection[0].getObject(), 
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
                 "addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
                 GeoId1,GeoId2);
             commitCommand();
@@ -4972,7 +4972,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
             constrSize=ConStr.size();
-            
+
             Gui::cmdAppObjectArgs(selection[0].getObject(),"setDriving(%i,%s)", constrSize-1,"False");
         }
 
@@ -5022,7 +5022,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             if(!commandopened)
                 openCommand("Add radius constraint");
-            
+
             Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 refGeoId,radius);
 
@@ -5193,6 +5193,8 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
         if(fixed || constraintCreationMode==Reference) {
             Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
                                   ConStr.size()-1, "False");
+
+            updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
         }
 
         // Guess some reasonable distance for placing the datum text
@@ -5648,6 +5650,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
                 Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size()-1, "False");
+                updateNeeded=true; // We do need to update the solver DoF after setting the constraint driving.
             }
 
             // Guess some reasonable distance for placing the datum text
@@ -5993,7 +5996,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
                 GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
-            
+
             if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
@@ -7182,7 +7185,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction) 
+                    if(!geo->Construction)
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                 }
