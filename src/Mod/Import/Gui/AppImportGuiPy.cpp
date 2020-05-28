@@ -524,9 +524,9 @@ private:
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
             FC_DURATION_PLUS(d2,t);
-            FC_DURATION_MSG(d1,"file read");
-            FC_DURATION_MSG(d2,"import");
-            FC_DURATION_MSG((d1+d2),"total");
+            FC_DURATION_LOG(d1,"file read");
+            FC_DURATION_LOG(d2,"import");
+            FC_DURATION_LOG((d1+d2),"total");
 
             if(ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
