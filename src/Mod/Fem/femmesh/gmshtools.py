@@ -338,7 +338,10 @@ class GmshTools():
             "User parameter:BaseApp/Preferences/Mod/Fem/General"
         ).GetBool("AnalysisGroupMeshing", False)
         if self.analysis and analysis_group_meshing:
-            Console.PrintMessage("  Group meshing for analysis.\n")
+            Console.PrintWarning(
+                "  Group meshing for analysis is set to true in FEM General Preferences. "
+                "Are you really sure about this? You could run into trouble!\n"
+            )
             self.group_nodes_export = True
             new_group_elements = meshtools.get_analysis_group_elements(
                 self.analysis,

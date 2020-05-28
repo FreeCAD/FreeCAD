@@ -2000,7 +2000,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences['SCALE_FACTOR']) # to meters
-                            p = geom.serialise(sh.exportBrepToString())
+                            try:
+                                p = geom.serialise(sh.exportBrepToString())
+                            except TypeError:
+                                # IfcOpenShell v0.6.0
+                                # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
+                                p = geom.serialise(preferences['SCHEMA'],sh.exportBrepToString())
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:

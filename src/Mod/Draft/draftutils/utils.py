@@ -158,7 +158,7 @@ def get_param_type(param):
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
                    "DiscretizeEllipses", "showUnit",
-                   "Draft_array_fuse", "Draft_array_Link"):
+                   "Draft_array_fuse", "Draft_array_Link","gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",
                    "snapcolor", "gridColor"):

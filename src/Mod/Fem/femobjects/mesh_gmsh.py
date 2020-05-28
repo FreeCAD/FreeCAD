@@ -204,7 +204,13 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "FEM Gmsh Mesh Params",
                 "Second order nodes are created by linear interpolation"
             )
-            obj.SecondOrderLinear = True
+            obj.SecondOrderLinear = False
+            # gives much better meshes in the regard of nonpositive jacobians
+            # but
+            # on curved faces the constraint nodes will no longer found
+            # thus standard will be False
+            # https://forum.freecadweb.org/viewtopic.php?t=41738
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=45260&start=20#p389494
 
         if not hasattr(obj, "Algorithm2D"):
             obj.addProperty(

@@ -159,7 +159,7 @@
         <item row="4" column="1">
          <widget class="Gui::InputField" name="input_fd_density">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -225,7 +225,7 @@
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_young_modulus">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -269,7 +269,7 @@
         <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="spinBox_poisson_ratio">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -329,7 +329,7 @@
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_kinematic_viscosity">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -395,7 +395,7 @@
         <item row="0" column="1">
          <widget class="Gui::InputField" name="input_fd_thermal_conductivity">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -439,7 +439,7 @@
         <item row="1" column="1">
          <widget class="Gui::InputField" name="input_fd_expansion_coefficient">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -483,7 +483,7 @@
         <item row="2" column="1">
          <widget class="Gui::InputField" name="input_fd_specific_heat">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -527,7 +527,7 @@
         <item row="3" column="1">
          <widget class="Gui::InputField" name="input_fd_vol_expansion_coefficient">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
