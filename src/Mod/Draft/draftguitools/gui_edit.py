@@ -560,7 +560,6 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        from pivy import coin
         knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
                 coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
                 coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
@@ -777,7 +776,7 @@ class Edit(gui_base_original.Modifier):
 
     def addPointToCurve(self, point, obj, info=None):
         import Part
-        if not (utils.get_type(obj) in ["BSpline", "BezCurve"]):
+        if  utils.get_type(obj) not in ["BSpline", "BezCurve"]:
             return
         pts = obj.Points
         if utils.get_type(obj) == "BezCurve":
@@ -841,7 +840,7 @@ class Edit(gui_base_original.Modifier):
         obj = doc.getObject(str(node.objectName.getValue()))
         if obj is None:
             return
-        if not (utils.get_type(obj) in ["Wire", "BSpline", "BezCurve"]):
+        if utils.get_type(obj) not in ["Wire", "BSpline", "BezCurve"]:
             return
         if len(obj.Points) <= 2:
             _msg = translate("draft", "Active object must have more than two points/nodes") 
