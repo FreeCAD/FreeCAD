@@ -424,7 +424,6 @@ void QGIViewPart::updateView(bool update)
 }
 
 void QGIViewPart::draw() {
-//    Base::Console().Message("QGIVP::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -507,22 +506,20 @@ void QGIViewPart::drawViewPart()
                 if (!fHatch->SvgIncluded.isEmpty()) {
                     if (getExporting()) {
                         newFace->hideSvg(true);
-                        newFace->isHatched(false);
-                        newFace->setFillMode(QGIFace::PlainFill);
                     } else {
                         newFace->hideSvg(false);
-                        newFace->isHatched(true);
-                        newFace->setFillMode(QGIFace::FromFile);
-                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
-                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                        if (hatchVp != nullptr) {
-                            double hatchScale = hatchVp->HatchScale.getValue();
-                            if (hatchScale > 0.0) {
-                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
-                            }
-                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                    }
+                    newFace->isHatched(true);
+                    newFace->setFillMode(QGIFace::SvgFill);
+                    newFace->setHatchFile(fHatch->SvgIncluded.getValue());
+                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                    if (hatchVp != nullptr) {
+                        double hatchScale = hatchVp->HatchScale.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
                         }
+                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
             }
