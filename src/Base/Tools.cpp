@@ -34,8 +34,7 @@
 #include "Tools.h"
 
 namespace Base {
-struct string_comp  : public std::binary_function<std::string, 
-                                                  std::string, bool>
+struct string_comp
 {
     // s1 and s2 must be numbers represented as string
     bool operator()(const std::string& s1, const std::string& s2)

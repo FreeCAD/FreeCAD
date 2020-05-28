@@ -49,10 +49,12 @@ public:
 
     /// Property to switch the grid on and off
     App::PropertyBool ShowGrid;
+    App::PropertyBool ShowOnlyInEditMode;
     App::PropertyLength GridSize;
     App::PropertyEnumeration GridStyle;
     App::PropertyBool TightGrid;
     App::PropertyBool GridSnap;
+    App::PropertyInteger maxNumberOfLines;
 
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
@@ -60,7 +62,7 @@ public:
     virtual const char* getDefaultDisplayMode() const;
 
     /// creates the grid
-    SoSeparator* createGrid(void); 
+    SoSeparator* createGrid(void);
 
 protected:
     virtual bool setEdit(int ModNum);
@@ -72,12 +74,16 @@ protected:
 
     SoSeparator  *GridRoot;
 
+    void updateGridExtent(float minx, float maxx, float miny, float maxy);
+
+    static const char* GridStyleEnums[];
+    static App::PropertyQuantityConstraint::Constraints GridSizeRange;
+
+private:
     float MinX;
     float MaxX;
     float MinY;
     float MaxY;
-    static const char* GridStyleEnums[];
-    static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;

@@ -310,7 +310,7 @@ class ToolBit(object):
         print('were saving now')
         try:
             with open(path, 'w') as fp:
-                json.dump(self.shapeAttrs(obj), fp, indent='  ')
+                json.dump(self.templateAttrs(obj), fp, indent='  ')
             if setFile:
                 obj.File = path
             return True
@@ -318,7 +318,7 @@ class ToolBit(object):
             PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
             raise
 
-    def shapeAttrs(self, obj):
+    def templateAttrs(self, obj):
         attrs = {}
         attrs['version'] = 2 # Path.Tool is version 1
         attrs['name'] = obj.Label

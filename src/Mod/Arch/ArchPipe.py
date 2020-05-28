@@ -184,7 +184,13 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcType = "Pipe Segment"
+        # IfcPipeSegment is new in IFC4
+        from ArchIFC import IfcTypes
+        if "Pipe Segment" in IfcTypes:
+            obj.IfcType = "Pipe Segment"
+        else:
+            # IFC2x3 does not know a Pipe Segment
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 
@@ -246,7 +252,7 @@ class _ArchPipe(ArchComponent.Component):
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
-        p.rotate(c,rot.Axis,math.degrees(rot.Angle))
+        p.rotate(w.Vertexes[0].Point,rot.Axis,math.degrees(rot.Angle))
         shapes = []
         try:
             if p.Faces:

@@ -963,8 +963,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 }
 
 namespace PartDesign {
-struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
-                                                  const gp_Pnt&, bool>
+struct gp_Pnt_Less
 {
     bool operator()(const gp_Pnt& p1,
                     const gp_Pnt& p2) const

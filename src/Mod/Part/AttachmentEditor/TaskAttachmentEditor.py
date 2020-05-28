@@ -602,7 +602,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                                               .format(  mode=   self.attacher.getModeInfo(self.getCurrentMode())['UserFriendlyName']  )    )
                 if PlacementsFuzzyCompare(self.obj.Placement, new_plm) == False:
                     # assign only if placement changed. this avoids touching the object
-                    # when entering and extiting dialog without changing anything
+                    # when entering and exiting dialog without changing anything
                     self.obj.Placement = new_plm
         except Exception as err:
             self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))

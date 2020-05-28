@@ -148,6 +148,11 @@
         <UserDocu>getVertexByIndex(vertexIndex). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="requestPaint">
+      <Documentation>
+        <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

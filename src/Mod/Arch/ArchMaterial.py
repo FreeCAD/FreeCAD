@@ -871,7 +871,7 @@ class _ArchMultiMaterialTaskPanel:
                 thick = FreeCAD.Units.Quantity(d).Value
             else:
                 thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value
-            th += thick
+            th += abs(thick)
             if not thick:
                 suffix = " ("+translate("Arch","depends on the object")+")"
         val = FreeCAD.Units.Quantity(th,FreeCAD.Units.Length).UserString

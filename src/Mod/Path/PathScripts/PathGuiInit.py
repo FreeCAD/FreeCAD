@@ -64,9 +64,10 @@ def Startup():
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
         from PathScripts import PathProbeGui
-        from PathScripts import PathProfileContourGui
-        from PathScripts import PathProfileEdgesGui
-        from PathScripts import PathProfileFacesGui
+        # from PathScripts import PathProfileContourGui
+        # from PathScripts import PathProfileEdgesGui
+        # from PathScripts import PathProfileFacesGui
+        from PathScripts import PathProfileGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy

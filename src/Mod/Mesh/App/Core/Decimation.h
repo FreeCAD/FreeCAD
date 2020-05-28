@@ -35,6 +35,7 @@ public:
     MeshSimplify(MeshKernel&);
     ~MeshSimplify();
     void simplify(float tolerance, float reduction);
+    void simplify(int targetSize);
 
 private:
     MeshKernel& myKernel;

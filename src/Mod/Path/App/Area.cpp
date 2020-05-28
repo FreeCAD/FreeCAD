@@ -3165,24 +3165,13 @@ static inline void addG1(bool verbose,Toolpath &path, const gp_Pnt &last,
 
 static void addG0(bool verbose, Toolpath &path,
         gp_Pnt last, const gp_Pnt &next,
-        AxisGetter getter, AxisSetter setter,
-        double resume_height, double f, double &last_f)
+        AxisSetter setter, double height)
 {
-    gp_Pnt pt(last);
-    if(resume_height>Precision::Confusion()) {
-        if((next.*getter)() < resume_height) {
-            (pt.*setter)(resume_height);
-            if(!last.IsEqual(pt, Precision::Confusion()))
-                addGCode(verbose,path,last,pt,"G0");
-            last = pt;
-            pt = next;
-            (pt.*setter)(resume_height);
-            if(!last.IsEqual(pt, Precision::Confusion()))
-                addGCode(verbose,path,last,pt,"G0");
-        }
-        addG1(verbose,path,pt,next,f,last_f);
-    }else
-        addGCode(verbose,path,pt,next,"G0");
+    gp_Pnt pt(next);
+    (pt.*setter)(height);
+    if(!last.IsEqual(pt, Precision::Confusion())){
+        addGCode(verbose,path,last,pt,"G0");
+    }
 }
 
 static void addGArc(bool verbose,bool abs_center, Toolpath &path,
@@ -3310,8 +3299,6 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         }
         (p.*setter)(retraction);
         addGCode(false,path,plast,p,"G0");
-        plast = p;
-        p = pstart;
     }
     
 
@@ -3337,12 +3324,19 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (plastTmp.*setter)(0.0);
 
         if(first) {
-            addG0(verbose,path,plast,p,getter,setter,resume_height,vf,cur_f);
+            // G0 to initial at retraction to handle if start point was set
+            addG0(false,path,plast,p,setter, retraction);
+            // rapid to plunge height
+            addG0(false,path,plast,p,setter, resume_height);
         }else if(pTmp.SquareDistance(plastTmp)>threshold){
-            addG0(verbose,path,plast,p,getter,setter,resume_height,vf,cur_f);
-        }else{
-            addG1(verbose,path,plast,p,vf,cur_f);
+            // raise to retraction height
+            addG0(false,path,plast,plast,setter, retraction);
+            // move to new location
+            addG0(false,path,plast,p,setter, retraction);
+            // lower to plunge height
+            addG0(false,path,plast,p,setter, resume_height);
         }
+        addG1(verbose,path,plast,p,vf,cur_f);
         plast = p;
         first = false;
         for(;xp.More();xp.Next(),plast=p) {

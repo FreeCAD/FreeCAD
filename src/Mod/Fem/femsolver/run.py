@@ -99,7 +99,7 @@ def run_fem_solver(solver, working_dir=None):
         :class:`Machine`.
     """
 
-    if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
+    if solver.Proxy.Type == "Fem::SolverCcxTools":
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
         from femtools.ccxtools import CcxTools as ccx
         fea = ccx(solver)

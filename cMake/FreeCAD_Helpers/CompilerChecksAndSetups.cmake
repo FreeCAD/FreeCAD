@@ -1,3 +1,7 @@
+# Some resources
+# https://github.com/dev-cafe/cmake-cookbook
+# https://cmake.org/cmake/help/v3.8/manual/cmake-compile-features.7.html
+
 macro(CompilerChecksAndSetups)
     if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
         set(CMAKE_COMPILER_IS_CLANGXX TRUE)

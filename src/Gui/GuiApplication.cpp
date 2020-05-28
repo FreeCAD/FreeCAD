@@ -27,6 +27,7 @@
 # include <sstream>
 # include <stdexcept>
 # include <QByteArray>
+# include <QComboBox>
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
@@ -312,5 +313,20 @@ void GUISingleApplication::processMessages()
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
 }
+
+// ----------------------------------------------------------------------------
+
+WheelEventFilter::WheelEventFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
+        return true;
+    return false;
+}
+
 
 #include "moc_GuiApplication.cpp"

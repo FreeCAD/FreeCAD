@@ -79,6 +79,10 @@ class TechDrawExport DrawUtil {
         static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
+        static std::pair<Base::Vector3d, Base::Vector3d> boxIntersect2d(Base::Vector3d point,
+                                                                        Base::Vector3d dir,
+                                                                        double xRange,
+                                                                        double yRange) ;
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const gp_Dir& v);

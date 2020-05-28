@@ -65,10 +65,12 @@ PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
-    ADD_PROPERTY_TYPE(GridSize,(10),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
+    ADD_PROPERTY_TYPE(ShowOnlyInEditMode,(true),"Grid",(App::PropertyType)(App::Prop_None),"Show only while in edit mode");
+    ADD_PROPERTY_TYPE(GridSize,(10.0),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
     ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
+    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum Number of Lines in grid");
 
     GridRoot = new SoSeparator();
     GridRoot->ref();
@@ -190,6 +192,13 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     int lines = vlines + hlines;
 
+    if( lines > maxNumberOfLines.getValue() ) { // If
+        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n.", lines, maxNumberOfLines.getValue());
+        parent->addChild(vts);
+        parent->addChild(grid);
+        return GridRoot;
+    }
+
     // set the grid indices
     grid->numVertices.setNum(lines);
     int32_t* vertices = grid->numVertices.startEditing();
@@ -238,8 +247,11 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
         this->MaxX = bbox2d.MaxX;
         this->MinY = bbox2d.MinY;
         this->MaxY = bbox2d.MaxY;
-        if (ShowGrid.getValue()) {
+        if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()) ) {
             createGrid();
+        }
+        else {
+            Gui::coinRemoveAllChildren(GridRoot);
         }
     }
 }
@@ -249,15 +261,14 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
     // call father
     ViewProviderPart::onChanged(prop);
 
-    if (prop == &ShowGrid) {
-        if (ShowGrid.getValue())
+    if (prop == &ShowGrid || prop == &ShowOnlyInEditMode || prop == &Visibility) {
+        if (ShowGrid.getValue() && Visibility.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
             createGrid();
         else
             Gui::coinRemoveAllChildren(GridRoot);
     }
     if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
-        if (ShowGrid.getValue()) {
-            Gui::coinRemoveAllChildren(GridRoot);
+        if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing())) {
             createGrid();
         }
     }
@@ -287,18 +298,22 @@ void ViewProvider2DObject::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderPart::attach(pcFeat);
 
-    if (ShowGrid.getValue())
+    if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
         createGrid();
 }
 
 bool ViewProvider2DObject::setEdit(int)
 {
+    if (ShowGrid.getValue())
+        createGrid();
+
     return false;
 }
 
 void ViewProvider2DObject::unsetEdit(int)
 {
-
+    if (ShowGrid.getValue() && ShowOnlyInEditMode.getValue())
+        Gui::coinRemoveAllChildren(GridRoot);
 }
 
 std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
@@ -318,6 +333,22 @@ std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
 const char* ViewProvider2DObject::getDefaultDisplayMode() const
 {
   return "Wireframe";
+}
+
+void ViewProvider2DObject::updateGridExtent(float minx, float maxx, float miny, float maxy)
+{
+    bool redraw = false;
+
+    if( minx < MinX || maxx > MaxX || miny < MinY || maxy > MaxY)
+        redraw = true;
+
+    MinX = minx;
+    MaxX = maxx;
+    MinY = miny;
+    MaxY = maxy;
+
+    if(redraw && ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
+        createGrid();
 }
 
 // -----------------------------------------------------------------------

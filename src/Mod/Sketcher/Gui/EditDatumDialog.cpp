@@ -136,8 +136,17 @@ void EditDatumDialog::exec(bool atCursor)
         connect(&dlg, SIGNAL(accepted()), this, SLOT(accepted()));
         connect(&dlg, SIGNAL(rejected()), this, SLOT(rejected()));
 
-        if (atCursor)
-            dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
+        if (atCursor) {
+            dlg.show(); // Need to show the dialog so geometry is computed
+            QRect pg = dlg.parentWidget()->geometry();
+            int Xmin = pg.x() + 10;
+            int Ymin = pg.y() + 10;
+            int Xmax = pg.x() + pg.width() - dlg.geometry().width() - 10;
+            int Ymax = pg.y() + pg.height() - dlg.geometry().height() - 10;
+            int x = Xmax < Xmin ? (Xmin + Xmax)/2 :  std::min(std::max(QCursor::pos().x(), Xmin), Xmax);
+            int y = Ymax < Ymin ? (Ymin + Ymax)/2 :  std::min(std::max(QCursor::pos().y(), Ymin), Ymax);
+            dlg.setGeometry(x, y, dlg.geometry().width(), dlg.geometry().height());
+        }
 
         dlg.exec();
     }

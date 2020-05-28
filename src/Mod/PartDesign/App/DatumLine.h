@@ -36,19 +36,22 @@ class PartDesignExport Line : public Part::Datum
     PROPERTY_HEADER(PartDesign::Line);
 
 public:
-    App::PropertyEnumeration ResizeMode;
-    App::PropertyLength Length;
 
     Line();
     virtual ~Line();
 
+    App::PropertyEnumeration ResizeMode;
+    App::PropertyLength Length;
+    virtual void onChanged(const App::Property *prop);
+    
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
-    virtual void onChanged(const App::Property *prop);
-
     Base::Vector3d getDirection() const;
+    
+private:
+    static const char* ResizeModeEnums[];
 };
 
 } //namespace PartDesign

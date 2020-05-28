@@ -115,6 +115,7 @@ class Writer(object):
         self._handleElasticity()
         self._handleElectrostatic()
         self._handleFluxsolver()
+        self._handleElectricforce()
         self._handleFlow()
         self._addOutputSolver()
 
@@ -340,7 +341,9 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            getConstant("PermittivityOfVacuum", "T^4*I^2/(L*M)"))
+            getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+        )
+        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
@@ -353,7 +356,8 @@ class Writer(object):
                 if "RelativePermittivity" in m:
                     self._material(
                         name, "Relative Permittivity",
-                        float(m["RelativePermittivity"]))
+                        float(m["RelativePermittivity"])
+                    )
 
     def _handleElectrostaticBndConditions(self):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
@@ -368,6 +372,8 @@ class Writer(object):
                         self._boundary(name, "Potential Constant", True)
                     if obj.ElectricInfinity:
                         self._boundary(name, "Electric Infinity BC", True)
+                    if obj.ElectricForcecalculation:
+                        self._boundary(name, "Calculate Electric Force", True)
                     if obj.CapacitanceBodyEnabled:
                         if hasattr(obj, "CapacitanceBody"):
                             self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
@@ -392,6 +398,24 @@ class Writer(object):
         s["Flux Variable"] = equation.FluxVariable
         s["Calculate Flux"] = equation.CalculateFlux
         s["Calculate Grad"] = equation.CalculateGrad
+        return s
+
+    def _handleElectricforce(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getElectricforceSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+
+    def _getElectricforceSolver(self, equation):
+        s = self._createEmptySolver(equation)
+        s["Equation"] = "Electric Force"  # equation.Name
+        s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
         return s
 
     def _handleElasticity(self):
@@ -527,20 +551,25 @@ class Writer(object):
             refs = (
                 obj.References[0][1]
                 if obj.References
-                else self._getAllBodies())
+                else self._getAllBodies()
+            )
             for name in (n for n in refs if n in bodies):
                 self._material(
                     name, "Density",
-                    self._getDensity(m))
+                    self._getDensity(m)
+                )
                 self._material(
                     name, "Youngs Modulus",
-                    self._getYoungsModulus(m))
+                    self._getYoungsModulus(m)
+                )
                 self._material(
                     name, "Poisson ratio",
-                    float(m["PoissonRatio"]))
+                    float(m["PoissonRatio"])
+                )
                 self._material(
                     name, "Heat expansion Coefficient",
-                    convert(m["ThermalExpansionCoefficient"], "O^-1"))
+                    convert(m["ThermalExpansionCoefficient"], "O^-1")
+                )
 
     def _getDensity(self, m):
         density = convert(m["Density"], "M/L^3")
@@ -605,11 +634,13 @@ class Writer(object):
                 if "Density" in m:
                     self._material(
                         name, "Density",
-                        self._getDensity(m))
+                        self._getDensity(m)
+                    )
                 if "ThermalConductivity" in m:
                     self._material(
                         name, "Heat Conductivity",
-                        convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                        convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                    )
                 if "KinematicViscosity" in m:
                     density = self._getDensity(m)
                     kViscosity = convert(m["KinematicViscosity"], "L^2/T")
@@ -626,7 +657,8 @@ class Writer(object):
                 if "SpecificHeatRatio" in m:
                     self._material(
                         name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"]))
+                        float(m["SpecificHeatRatio"])
+                    )
                 if "CompressibilityModel" in m:
                     self._material(
                         name, "Compressibility Model",
@@ -667,6 +699,10 @@ class Writer(object):
     def _handleFlowEquation(self, bodies):
         for b in bodies:
             self._equation(b, "Convection", "Computed")
+
+    def _createEmptySolver(self, equation):
+        s = sifio.createSection(sifio.SOLVER)
+        return s
 
     def _createLinearSolver(self, equation):
         s = sifio.createSection(sifio.SOLVER)

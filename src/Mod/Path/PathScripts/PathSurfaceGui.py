@@ -141,11 +141,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self):
+    def updateVisibility(self, sentObj=None):
+        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
         if self.form.scanType.currentText() == 'Planar':
             self.form.cutPattern.show()
             self.form.cutPattern_label.show()
             self.form.optimizeStepOverTransitions.show()
+            if hasattr(self.form, 'profileEdges'):
+                self.form.profileEdges.show()
+                self.form.profileEdges_label.show()
+                self.form.avoidLastX_Faces.show()
+                self.form.avoidLastX_Faces_label.show()
 
             self.form.boundBoxExtraOffsetX.hide()
             self.form.boundBoxExtraOffsetY.hide()
@@ -156,6 +162,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.optimizeStepOverTransitions.hide()
+            if hasattr(self.form, 'profileEdges'):
+                self.form.profileEdges.hide()
+                self.form.profileEdges_label.hide()
+                self.form.avoidLastX_Faces.hide()
+                self.form.avoidLastX_Faces_label.hide()
 
             self.form.boundBoxExtraOffsetX.show()
             self.form.boundBoxExtraOffsetY.show()

@@ -66,7 +66,7 @@ public:
 
     /** Sets the property
      */
-    void setValue(const CosmeticVertex*);
+    void setValue(CosmeticVertex*);
     void setValues(const std::vector<CosmeticVertex*>&);
 
     /// index operator

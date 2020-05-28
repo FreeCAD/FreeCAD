@@ -204,6 +204,13 @@ class TaskPanelPage(object):
         self.setIcon(None)
         self.features = features
         self.isdirty = False
+        self.parent = None
+        self.panelTitle = 'Operation'
+
+    def setParent(self, parent):
+        '''setParent() ... used to transfer parent object link to child class.
+        Do not overwrite.'''
+        self.parent = parent
 
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
@@ -387,10 +394,26 @@ class TaskPanelPage(object):
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
+    def updatePanelVisibility(self, panelTitle, obj):
+        if hasattr(self, 'parent'):
+            parent = getattr(self, 'parent')
+            if parent and hasattr(parent, 'featurePages'):
+                for page in parent.featurePages:
+                    if hasattr(page, 'panelTitle'):
+                        if page.panelTitle == panelTitle and hasattr(page, 'updateVisibility'):
+                            page.updateVisibility()
+                            break
+
+
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
     DataObject = QtCore.Qt.ItemDataRole.UserRole
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 1
+
+    def __init__(self, obj, features):
+        super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
+
+        self.panelTitle = 'Base Geometry'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
@@ -447,7 +470,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
         if len(selection) != 1:
             if not ignoreErrors:
-                PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+                msg = translate("PathProject", "Please select %s from a single solid" % self.featureName())
+                FreeCAD.Console.PrintError(msg + '\n')
+                PathLog.debug(msg)
             return False
         sel = selection[0]
         if sel.HasSubObjects:
@@ -470,7 +495,6 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 return False
         return True
 
-
     def addBaseGeometry(self, selection):
         PathLog.track(selection)
         if self.selectionSupportedAsBaseGeometry(selection, False):
@@ -485,6 +509,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             # self.obj.Proxy.execute(self.obj)
             self.setFields(self.obj)
             self.setDirty()
+            self.updatePanelVisibility('Operation', self.obj)
 
     def deleteBase(self):
         PathLog.track()
@@ -492,6 +517,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
             self.setDirty()
+            self.updatePanelVisibility('Operation', self.obj)
         self.updateBase()
         # self.obj.Proxy.execute(self.obj)
         # FreeCAD.ActiveDocument.recompute()
@@ -514,6 +540,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def clearBase(self):
         self.obj.Base = []
         self.setDirty()
+        self.updatePanelVisibility('Operation', self.obj)
 
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
@@ -531,6 +558,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         else:
             self.form.addBase.setEnabled(False)
 
+
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
 
@@ -541,6 +569,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
         # members initialized later
         self.editRow = None
+        self.panelTitle = 'Base Location'
 
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
@@ -656,6 +685,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         # members initialized later
         self.clearanceHeight = None
         self.safeHeight = None
+        self.panelTitle = 'Heights'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -697,6 +727,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finalDepth = None
         self.finishDepth = None
         self.stepDown = None
+        self.panelTitle = 'Depths'
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
@@ -882,6 +913,7 @@ class TaskPanel(object):
         for page in self.featurePages:
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
+            page.setParent(self)
 
         taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
 
@@ -945,8 +977,11 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(translate("Path", "Uncreate AreaOp Operation"))
-            PathUtil.clearExpressionEngine(self.obj)
-            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            try:
+                PathUtil.clearExpressionEngine(self.obj)
+                FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            except Exception as ee:
+                PathLog.debug('{}\n'.format(ee))
             FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(resetEdit)
         return True

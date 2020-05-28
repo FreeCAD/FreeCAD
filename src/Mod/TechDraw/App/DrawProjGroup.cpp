@@ -461,10 +461,10 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             } else {  //Front
                 Anchor.setValue(view);
                 Anchor.purgeTouched();
+                requestPaint();   //make sure the group object is on the Gui page
                 view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
                 view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
                 view->LockPosition.purgeTouched();
-                requestPaint();   //make sure the group object is on the Gui page
             }
         //        addView(view);                            //from DrawViewCollection
         //        if (view != getAnchor()) {                //anchor is done elsewhere
@@ -1007,6 +1007,8 @@ void DrawProjGroup::updateChildrenLock(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
+            view->requestPaint();
         }
     }
 }

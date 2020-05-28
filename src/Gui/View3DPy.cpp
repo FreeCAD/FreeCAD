@@ -444,7 +444,7 @@ SbRotation Camera::rotation(Camera::Orientation view)
     case Top:
         return SbRotation(0, 0, 0, 1);
     case Bottom:
-        return SbRotation(0, 1, 0, 0);
+        return SbRotation(1, 0, 0, 0);
     case Front: {
         float root = (float)(sqrt(2.0)/2.0);
         return SbRotation(root, 0, 0, root);

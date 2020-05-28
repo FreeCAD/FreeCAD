@@ -636,7 +636,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    Base::Console().Message("GO::addCosmeticEdge(%X)\n", ce);
+//    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
     e->cosmetic = true;
@@ -652,7 +652,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 int GeometryObject::addCosmeticEdge(Base::Vector3d start,
                                     Base::Vector3d end)
 {
-    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+//    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -670,7 +670,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
                                     Base::Vector3d end,
                                     std::string tagString)
 {
-    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+//    Base::Console().Message("GO::addCosmeticEdge() 2\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -687,6 +687,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
                                     std::string tagString)
 {
+//    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->cosmetic = true;
     base->hlrVisible = true;
     base->source(1);           //1-CosmeticEdge, 2-CenterLine

@@ -68,7 +68,7 @@ class TestHole(unittest.TestCase):
     def testTaperedHole(self):
         self.Hole.Diameter = 6
         self.Hole.Depth = 5
-        self.Hole.TaperedAngle = 45
+        self.Hole.TaperedAngle = 60
         self.Hole.ThreadType = 0
         self.Hole.HoleCutType = 0
         self.Hole.DepthType = 0

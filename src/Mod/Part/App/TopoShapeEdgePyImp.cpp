@@ -747,6 +747,37 @@ PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
 
 // ====== Attributes ======================================================================
 
+Py::String TopoShapeEdgePy::getContinuity() const
+{
+    BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
+    std::string cont;
+    switch (adapt.Continuity()) {
+    case GeomAbs_C0:
+        cont = "C0";
+        break;
+    case GeomAbs_G1:
+        cont = "G1";
+        break;
+    case GeomAbs_C1:
+        cont = "C1";
+        break;
+    case GeomAbs_G2:
+        cont = "G2";
+        break;
+    case GeomAbs_C2:
+        cont = "C2";
+        break;
+    case GeomAbs_C3:
+        cont = "C3";
+        break;
+    case GeomAbs_CN:
+        cont = "CN";
+        break;
+    }
+
+    return Py::String(cont);
+}
+
 Py::Float TopoShapeEdgePy::getTolerance(void) const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());

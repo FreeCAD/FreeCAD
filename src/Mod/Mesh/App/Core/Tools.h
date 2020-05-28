@@ -67,7 +67,7 @@ protected:
   inline bool TriangleCutsSphere (const MeshFacet &rclF) const;
   bool ExpandRadius (unsigned long ulMinPoints);
 
-  struct CDistRad : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+  struct CDistRad
   {
     CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
     bool operator()(const Base::Vector3f &rclPt1, const Base::Vector3f &rclPt2) { return Base::DistanceP2(_clCenter, rclPt1) < Base::DistanceP2(_clCenter, rclPt2); }
@@ -141,7 +141,7 @@ inline bool MeshSearchNeighbours::TriangleCutsSphere (const MeshFacet &rclF) con
   return fSqrDist < fRSqr;
 }
 
-class MeshFaceIterator : public std::unary_function<unsigned long, Base::Vector3f>
+class MeshFaceIterator
 {
 public:
     MeshFaceIterator(const MeshKernel& mesh)
@@ -156,7 +156,7 @@ private:
     MeshFacetIterator it;
 };
 
-class MeshVertexIterator : public std::unary_function<unsigned long, Base::Vector3f>
+class MeshVertexIterator
 {
 public:
     MeshVertexIterator(const MeshKernel& mesh)
@@ -172,7 +172,7 @@ private:
 };
 
 template <class T>
-class MeshNearestIndexToPlane : public std::unary_function<unsigned long, void>
+class MeshNearestIndexToPlane
 {
 public:
     MeshNearestIndexToPlane(const MeshKernel& mesh, const Base::Vector3f& b, const Base::Vector3f& n)

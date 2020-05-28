@@ -47,16 +47,7 @@ class TechDrawExport PropertyCenterLineList: public App::PropertyLists
     TYPESYSTEM_HEADER();
 
 public:
-    /**
-     * A constructor.
-     * A more elaborate description of the constructor.
-     */
     PropertyCenterLineList();
-
-    /**
-     * A destructor.
-     * A more elaborate description of the destructor.
-     */
     virtual ~PropertyCenterLineList();
 
     virtual void setSize(int newSize);
@@ -66,7 +57,7 @@ public:
 
     /** Sets the property
      */
-    void setValue(const CenterLine*);
+    void setValue(CenterLine*);
     void setValues(const std::vector<CenterLine*>&);
 
     /// index operator

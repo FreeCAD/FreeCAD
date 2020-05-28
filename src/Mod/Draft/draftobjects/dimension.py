@@ -199,6 +199,8 @@ class DimensionBase(DraftAnnotation):
         obj.Dimline = App.Vector(0,1,0)
         obj.Normal = App.Vector(0,0,1)
 
+    def onDocumentRestored(self, obj):
+        super(DimensionBase, self).onDocumentRestored(obj)
 
     def execute(self, obj):
         '''Do something when recompute object'''
@@ -262,6 +264,10 @@ class LinearDimension(DimensionBase):
 
         obj.Start = App.Vector(0,0,0)
         obj.End = App.Vector(1,0,0)
+
+
+    def onDocumentRestored(self, obj):
+        super(LinearDimension, self).onDocumentRestored(obj)
 
     def onChanged(self,obj,prop):
         '''Do something when a property has changed'''
@@ -377,6 +383,8 @@ class AngularDimension(DimensionBase):
         obj.Center = App.Vector(0,0,0)
         obj.Normal = App.Vector(0,0,1)
 
+    def onDocumentRestored(self, obj):
+        super(AngularDimension, self).onDocumentRestored(obj)
 
     def execute(self, fp):
         '''Do something when recompute object'''
@@ -393,5 +401,3 @@ class AngularDimension(DimensionBase):
             obj.setEditorMode('Normal',2)
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
-
-

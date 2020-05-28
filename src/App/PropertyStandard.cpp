@@ -432,7 +432,9 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     }
 
     if (val < 0) {
-        Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+        // If the enum is empty at this stage do not print a warning
+        if (_enum.getEnums())
+            Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
         val = getValue();
     }
 

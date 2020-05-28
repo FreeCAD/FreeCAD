@@ -3085,7 +3085,7 @@ TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoS
 }
 
 TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges,
-        double radius1, double radius2, const char *op)
+        double radius1, double radius2, const char *op, bool flipDirection, bool asAngle)
 {
     if(!op) op = TOPOP_CHAMFER;
     resetElementMap();
@@ -3104,8 +3104,15 @@ TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<Topo
         if(!shape.findShape(edge))
             FC_THROWM(Base::CADKernelError,"edge does not belong to the shape");
         //Add edge to fillet algorithm
-        auto face = TopoDS::Face(shape.findAncestorShape(edge,TopAbs_FACE));
-        mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
+        TopoDS_Shape face;
+        if(flipDirection)
+            face = shape.findAncestorsShapes(edge,TopAbs_FACE).back();
+        else
+            face = shape.findAncestorShape(edge,TopAbs_FACE);
+        if(asAngle)
+            mkChamfer.AddDA(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        else
+            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
     }
     return makEShape(mkChamfer,shape,op);
 }

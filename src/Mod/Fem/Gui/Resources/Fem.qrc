@@ -35,6 +35,7 @@
         <file>icons/FEM_ElementGeometry2D.svg</file>
         <file>icons/FEM_ElementRotation1D.svg</file>
         <file>icons/FEM_EquationElasticity.svg</file>
+        <file>icons/FEM_EquationElectricforce.svg</file>
         <file>icons/FEM_EquationElectrostatic.svg</file>
         <file>icons/FEM_EquationFlow.svg</file>
         <file>icons/FEM_EquationFluxsolver.svg</file>

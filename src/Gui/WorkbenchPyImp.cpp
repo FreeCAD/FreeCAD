@@ -117,9 +117,9 @@ PyObject* WorkbenchPy::getToolbarItems(PyObject *args)
         std::list<std::pair<std::string, std::list<std::string>>> bars = getWorkbenchPtr()->getToolbarItems();
 
         Py::Dict dict;
-        for (const auto it : bars) {
+        for (const auto& it : bars) {
             Py::List list;
-            for (const auto jt : it.second) {
+            for (const auto& jt : it.second) {
                 list.append(Py::String(jt));
             }
             dict.setItem(it.first, list);

@@ -34,28 +34,35 @@ namespace PartDesign
 
 class PartDesignExport Chamfer : public DressUp
 {
-    PROPERTY_HEADER(PartDesign::Chamfer);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Chamfer);
 
 public:
     Chamfer();
 
+    App::PropertyEnumeration ChamferType;
     App::PropertyQuantityConstraint Size;
+    App::PropertyQuantityConstraint Size2;
+    App::PropertyAngle Angle;
+    App::PropertyBool FlipDirection;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderChamfer";
     }
     //@}
 
+    virtual void onChanged(const App::Property* /*prop*/) override;
+
+    void updateProperties();
+
 protected:
     virtual void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-
 };
 
 } //namespace Part

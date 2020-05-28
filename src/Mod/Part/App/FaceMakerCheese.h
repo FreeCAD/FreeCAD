@@ -50,8 +50,7 @@ public: //in Extrusion, they used to be private. but they are also used by PartD
     /**
      * @brief The Wire_Compare class is for sorting wires by bounding box diagonal length
      */
-    class Wire_Compare : public std::binary_function<const TopoDS_Wire&,
-            const TopoDS_Wire&, bool>
+    class Wire_Compare
     {
     public:
         bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2);

@@ -34,12 +34,14 @@ import PathScripts.PathUtils as PathUtils
 from PySide import QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 def _vstr(v):
     if v:
         return "(%.2f, %.2f, %.2f)" % (v.x, v.y, v.z)
     return '-'
+
 
 class DressupPathBoundary(object):
 
@@ -57,6 +59,7 @@ class DressupPathBoundary(object):
 
     def __getstate__(self):
         return None
+
     def __setstate__(self, state):
         return None
 
@@ -111,71 +114,77 @@ class DressupPathBoundary(object):
             for cmd in obj.Base.Path.Commands[1:]:
                 if cmd.Name in PathGeom.CmdMoveAll:
                     edge = PathGeom.edgeForCmd(cmd, pos)
-                    inside  = edge.common(boundary).Edges
-                    outside = edge.cut(boundary).Edges
-                    if not obj.Inside:
-                        t = inside
-                        inside = outside
-                        outside = t
-                    # it's really a shame that one cannot trust the sequence and/or
-                    # orientation of edges
-                    if 1 == len(inside) and 0 == len(outside):
-                        PathLog.track(_vstr(pos), _vstr(lastExit), ' + ', cmd)
-                        # cmd fully included by boundary
-                        if lastExit:
-                            commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
-                            lastExit = None
-                        commands.append(cmd)
-                        pos = PathGeom.commandEndPoint(cmd, pos)
-                    elif 0 == len(inside) and 1 == len(outside):
-                        PathLog.track(_vstr(pos), _vstr(lastExit), ' - ', cmd)
-                        # cmd fully excluded by boundary
-                        if not lastExit:
-                            lastExit = pos
-                        pos = PathGeom.commandEndPoint(cmd, pos)
-                    else:
-                        PathLog.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
-                        # cmd pierces boundary
-                        while inside or outside:
-                            ie = [e for e in inside if PathGeom.edgeConnectsTo(e, pos)]
-                            PathLog.track(ie)
-                            if ie:
-                                e = ie[0]
-                                ptL = e.valueAt(e.LastParameter)
-                                flip = PathGeom.pointsCoincide(pos, ptL)
-                                newPos = e.valueAt(e.FirstParameter) if flip else ptL
-                                # inside edges are taken at this point (see swap of inside/outside
-                                # above - so we can just connect the dots ...
-                                if lastExit:
-                                    commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
-                                    lastExit = None
-                                PathLog.track(e, flip)
-                                commands.extend(PathGeom.cmdsForEdge(e, flip, False,50,tc.HorizFeed.Value,tc.VertFeed.Value)) # add missing HorizFeed to G2 paths
-                                inside.remove(e)
-                                pos = newPos
-                                lastExit = newPos
-                            else:
-                                oe = [e for e in outside if PathGeom.edgeConnectsTo(e, pos)]
-                                PathLog.track(oe)
-                                if oe:
-                                    e = oe[0]
+                    if edge:
+                        inside = edge.common(boundary).Edges
+                        outside = edge.cut(boundary).Edges
+                        if not obj.Inside:
+                            t = inside
+                            inside = outside
+                            outside = t
+                        # it's really a shame that one cannot trust the sequence and/or
+                        # orientation of edges
+                        if 1 == len(inside) and 0 == len(outside):
+                            PathLog.track(_vstr(pos), _vstr(lastExit), ' + ', cmd)
+                            # cmd fully included by boundary
+                            if lastExit:
+                                commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
+                                lastExit = None
+                            commands.append(cmd)
+                            pos = PathGeom.commandEndPoint(cmd, pos)
+                        elif 0 == len(inside) and 1 == len(outside):
+                            PathLog.track(_vstr(pos), _vstr(lastExit), ' - ', cmd)
+                            # cmd fully excluded by boundary
+                            if not lastExit:
+                                lastExit = pos
+                            pos = PathGeom.commandEndPoint(cmd, pos)
+                        else:
+                            PathLog.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
+                            # cmd pierces boundary
+                            while inside or outside:
+                                ie = [e for e in inside if PathGeom.edgeConnectsTo(e, pos)]
+                                PathLog.track(ie)
+                                if ie:
+                                    e = ie[0]
                                     ptL = e.valueAt(e.LastParameter)
                                     flip = PathGeom.pointsCoincide(pos, ptL)
                                     newPos = e.valueAt(e.FirstParameter) if flip else ptL
-                                    # outside edges are never taken at this point (see swap of
-                                    # inside/outside above) - so just move along ...
-                                    outside.remove(e)
+                                    # inside edges are taken at this point (see swap of inside/outside
+                                    # above - so we can just connect the dots ...
+                                    if lastExit:
+                                        commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
+                                        lastExit = None
+                                    PathLog.track(e, flip)
+                                    commands.extend(PathGeom.cmdsForEdge(e, flip, False, 50, tc.HorizFeed.Value, tc.VertFeed.Value))  # add missing HorizFeed to G2 paths
+                                    inside.remove(e)
                                     pos = newPos
+                                    lastExit = newPos
                                 else:
-                                    PathLog.error('huh?')
-                                    import Part
-                                    Part.show(Part.Vertex(pos), 'pos')
-                                    for e in inside:
-                                        Part.show(e, 'ei')
-                                    for e in outside:
-                                        Part.show(e, 'eo')
-                                    raise Exception('This is not supposed to happen')
-                    #pos = PathGeom.commandEndPoint(cmd, pos)
+                                    oe = [e for e in outside if PathGeom.edgeConnectsTo(e, pos)]
+                                    PathLog.track(oe)
+                                    if oe:
+                                        e = oe[0]
+                                        ptL = e.valueAt(e.LastParameter)
+                                        flip = PathGeom.pointsCoincide(pos, ptL)
+                                        newPos = e.valueAt(e.FirstParameter) if flip else ptL
+                                        # outside edges are never taken at this point (see swap of
+                                        # inside/outside above) - so just move along ...
+                                        outside.remove(e)
+                                        pos = newPos
+                                    else:
+                                        PathLog.error('huh?')
+                                        import Part
+                                        Part.show(Part.Vertex(pos), 'pos')
+                                        for e in inside:
+                                            Part.show(e, 'ei')
+                                        for e in outside:
+                                            Part.show(e, 'eo')
+                                        raise Exception('This is not supposed to happen')
+                                    # Eif
+                                # Eif
+                            # Ewhile
+                        # Eif
+                        # pos = PathGeom.commandEndPoint(cmd, pos)
+                    # Eif
                 else:
                     PathLog.track('no-move', cmd)
                     commands.append(cmd)

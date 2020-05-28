@@ -55,6 +55,7 @@
 #include <Base/Builder3D.h>
 #include <Base/CoordinateSystem.h>
 #include <Base/Converter.h>
+#include <Base/Tools.h>
 
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"
@@ -223,8 +224,22 @@ void CmdApproxCylinder::activated(int)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
         MeshCore::CylinderFit fit;
         fit.AddPoints(kernel.GetPoints());
+
+        // get normals
+        {
+            std::vector<unsigned long> facets(kernel.CountFacets());
+            std::generate(facets.begin(), facets.end(), Base::iotaGen<unsigned long>(0));
+            std::vector<Base::Vector3f> normals = kernel.GetFacetNormals(facets);
+            Base::Vector3f base = fit.GetGravity();
+            Base::Vector3f axis = fit.GetInitialAxisFromNormals(normals);
+            fit.SetInitialValues(base, axis);
+        }
+
         if (fit.Fit() < FLOAT_MAX) {
-            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f base, top;
+            fit.GetBounding(base, top);
+            float height = Base::Distance(base, top);
+
             Base::Rotation rot;
             rot.setValue(Base::Vector3d(0,0,1), Base::convertTo<Base::Vector3d>(fit.GetAxis()));
             double q0, q1, q2, q3;
@@ -234,6 +249,7 @@ void CmdApproxCylinder::activated(int)
             str << "from FreeCAD import Base" << std::endl;
             str << "App.ActiveDocument.addObject('Part::Cylinder','Cylinder_fit')" << std::endl;
             str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Height = " << height << std::endl;
             str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
                 << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;

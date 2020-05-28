@@ -68,8 +68,7 @@ struct SketchAnalysis::VertexIds {
     Sketcher::PointPos PosId;
 };
 
-struct SketchAnalysis::Vertex_Less : public std::binary_function<const VertexIds&,
-                                                                   const VertexIds&, bool>
+struct SketchAnalysis::Vertex_Less
 {
     Vertex_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -87,8 +86,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Vertex_EqualTo : public std::binary_function<const VertexIds&,
-                                                                        const VertexIds&, bool>
+struct SketchAnalysis::Vertex_EqualTo
 {
     Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -112,8 +110,7 @@ struct SketchAnalysis::EdgeIds {
     int GeoId;
 };
 
-struct SketchAnalysis::Edge_Less : public std::binary_function<const EdgeIds&,
-const EdgeIds&, bool>
+struct SketchAnalysis::Edge_Less
 {
     Edge_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
@@ -127,8 +124,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Edge_EqualTo : public std::binary_function<const EdgeIds&,
-const EdgeIds&, bool>
+struct SketchAnalysis::Edge_EqualTo
 {
     Edge_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,

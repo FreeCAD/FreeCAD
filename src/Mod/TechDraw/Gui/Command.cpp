@@ -348,13 +348,14 @@ void CmdTechDrawView::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("View",page);
     Gui::cmdAppDocument(page,std::ostringstream() << "addObject('TechDraw::DrawViewPart','" << FeatName << "')");
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+    Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(docObj) << ")");
+
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart *>(docObj);
     if (!dvp) {
         throw Base::TypeError("CmdTechDrawView DVP not found\n");
     }
     dvp->Source.setValues(shapes);
     dvp->XSource.setValues(xShapes);
-    Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(docObj) << ")");
     auto dirs = faceName.size() ? DrawGuiUtil::getProjDirFromFace(partObj,faceName)
                                 : DrawGuiUtil::get3DDirAndRot();
     projDir = dirs.first;
@@ -1054,6 +1055,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
 
     openCommand("Create DraftView");
 
+    std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
+
     int draftItemsFound = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
         if (DrawGuiUtil::isDraftObject((*it)))  {
@@ -1063,6 +1066,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
             auto feat = page->getDocument()->getObject(FeatName.c_str());
             Gui::cmdAppObject(feat, std::ostringstream() << "Source = " << getObjectCmd(*it));
             Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(feat) << ")");
+            Gui::cmdAppObjectArgs(feat, "Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                    dirs.first.x, dirs.first.y, dirs.first.z);
         }
     }
 

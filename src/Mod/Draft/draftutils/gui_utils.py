@@ -147,7 +147,7 @@ def autogroup(obj):
                 obj.X = real_point.x
                 obj.Y = real_point.y
                 obj.Z = real_point.z
-            elif get_type(obj) in ["Dimension"]:
+            elif get_type(obj) in ["Dimension", "LinearDimension"]:
                 obj.Start = inverse_placement.multVec(obj.Start)
                 obj.End = inverse_placement.multVec(obj.End)
                 obj.Dimline = inverse_placement.multVec(obj.Dimline)

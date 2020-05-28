@@ -59,7 +59,10 @@ TYPESYSTEM_SOURCE(Sketcher::PropertyConstraintList, App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyConstraintList::PropertyConstraintList() : validGeometryKeys(0), invalidGeometry(true)
+PropertyConstraintList::PropertyConstraintList()
+  : validGeometryKeys(0)
+  , invalidGeometry(true)
+  , restoreFromTransaction(false)
 {
 
 }
@@ -227,11 +230,11 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     valueMap = std::move(newValueMap);
 
     /* Signal removes first, in case renamed values below have the same names as some of the removed ones. */
-    if (removed.size() > 0)
+    if (removed.size() > 0 && !restoreFromTransaction)
         signalConstraintsRemoved(removed);
 
     /* Signal renames */
-    if (renamed.size() > 0)
+    if (renamed.size() > 0 && !restoreFromTransaction)
         signalConstraintsRenamed(renamed);
     
     _lValueList = std::move(lValue);
@@ -357,6 +360,7 @@ Property *PropertyConstraintList::Copy(void) const
 
 void PropertyConstraintList::Paste(const Property &from)
 {
+    Base::StateLocker lock(restoreFromTransaction, true);
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
     setValues(FromList._lValueList);
 }

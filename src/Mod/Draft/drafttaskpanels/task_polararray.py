@@ -242,7 +242,7 @@ class TaskPanelPolarArray:
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "draftobjects.polararray.make_polar_array"
+        _cmd = "Draft.make_polar_array"
         _cmd += "("
         _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "number=" + str(self.number) + ", "
@@ -251,11 +251,12 @@ class TaskPanelPolarArray:
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        _cmd_list = ["Gui.addModule('Draft')",
-                     "Gui.addModule('draftobjects.polararray')",
-                     "obj = " + _cmd,
-                     "obj.Fuse = " + str(self.fuse),
-                     "Draft.autogroup(obj)",
+        Gui.addModule('Draft')
+        Gui.addModule('draftmake.make_polararray')
+
+        _cmd_list = ["_obj_ = " + _cmd,
+                     "_obj_.Fuse = " + str(self.fuse),
+                     "Draft.autogroup(_obj_)",
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command

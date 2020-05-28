@@ -389,6 +389,7 @@
 #include <GeomFill_SectionGenerator.hxx>
 #include <GeomLib.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <GeomLProp.hxx>
 #include <GeomLProp_SLProps.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <GeomPlate_MakeApprox.hxx>

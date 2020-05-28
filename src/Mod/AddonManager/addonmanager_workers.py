@@ -51,6 +51,14 @@ OBSOLETE =         ["assembly2",
                     "drawing_dimensioning",
                     "cura_engine"]
 
+# These addons will print an additional message informing the user Python2 only
+PY2ONLY =          ["geodata",
+                    "GDT",
+                    "timber",
+                    "flamingo",
+                    "reconstruction",
+                    "animation"]
+
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
@@ -274,7 +282,7 @@ class FillMacroListWorker(QtCore.QThread):
         try:
             git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
         except:
-            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path')+"\n")
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path')+"\n")
         for dirpath, _, filenames in os.walk(self.repo_dir):
              if '.git' in dirpath:
                  continue
@@ -442,6 +450,11 @@ class ShowWorker(QtCore.QThread):
             message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
             message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + desc
 
+        # If the Addon is Python 2 only, let the user know through the Addon UI
+        if self.repos[self.idx][0] in PY2ONLY:
+            message = " <div style=\"width: 100%; text-align:center; background: #ffe9b3;\"><strong style=\"color: #FFFFFF; background: #ff8000;\">"+translate("AddonsInstaller","This addon is marked as Python 2 Only")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.")+"<br/></div><hr/>" + desc
+
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
         self.mustLoadImages = True
@@ -608,6 +621,8 @@ class InstallWorker(QtCore.QThread):
             self.progressbar_show.emit(True)
             if os.path.exists(clonedir):
                 self.info_label.emit("Updating module...")
+                if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested updating a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                 if git:
                     if not os.path.exists(clonedir + os.sep + '.git'):
                         # Repair addon installed with raw download
@@ -624,7 +639,7 @@ class InstallWorker(QtCore.QThread):
                         repo.head.reset('--hard')
                     repo = git.Git(clonedir)
                     try:
-                        answer = repo.pull()
+                        answer = repo.pull() + "\n\n" + translate("AddonsInstaller", "Workbench successfully updated. Please restart FreeCAD to apply the changes.")
                     except:
                         print("Error updating module",self.repos[idx][1]," - Please fix manually")
                         answer = repo.status()
@@ -635,11 +650,13 @@ class InstallWorker(QtCore.QThread):
                         for submodule in repo_sms.submodules:
                             submodule.update(init=True, recursive=True)
                 else:
-                    answer = self.download(self.repos[idx][1],clonedir)
+                    answer = self.download(self.repos[idx][1],clonedir) + "\n\n" + translate("AddonsInstaller", "Workbench successfully updated. Please restart FreeCAD to apply the changes.")
             else:
                 self.info_label.emit("Checking module dependencies...")
                 depsok,answer = self.checkDependencies(self.repos[idx][1])
                 if depsok:
+                    if sys.version_info.major > 2 and str(self.repos[idx][0]) in PY2ONLY:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "User requested installing a Python 2 workbench on a system running Python 3 - ")+str(self.repos[idx][0])+"\n")
                     if git:
                         self.info_label.emit("Cloning module...")
                         repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch='master')

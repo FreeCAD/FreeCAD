@@ -534,10 +534,10 @@ public:
     }
 
     TopoShape &makEChamfer(const TopoShape &shape, const std::vector<TopoShape> &edges, 
-            double radius1, double radius2, const char *op=0);
+            double radius1, double radius2, const char *op=0, bool flipDirection=false, bool asAngle=false);
     TopoShape makEChamfer(const std::vector<TopoShape> &edges, 
-            double radius1, double radius2, const char *op=0) const {
-        return TopoShape(0,Hasher).makEChamfer(*this,edges,radius1,radius2,op);
+            double radius1, double radius2, const char *op=0, bool flipDirection=false, bool asAngle=false) const {
+        return TopoShape(0,Hasher).makEChamfer(*this,edges,radius1,radius2,op,flipDirection,asAngle);
     }
 
     TopoShape &makEDraft(const TopoShape &shape, const std::vector<TopoShape> &faces, 

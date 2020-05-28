@@ -43,6 +43,7 @@ import traceback
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader('Draft', globals(), 'Draft')
+Part = LazyLoader('Part', globals(), 'Part')
 DraftVecUtils = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
 
 from PySide import QtCore, QtGui
@@ -404,7 +405,8 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.form.stockExtXpos.textChanged.connect(self.checkXpos)
         self.form.stockExtYpos.textChanged.connect(self.checkYpos)
         self.form.stockExtZpos.textChanged.connect(self.checkZpos)
-        self.form.linkStockAndModel.setChecked(True)
+        if hasattr(self.form, 'linkStockAndModel'):
+            self.form.linkStockAndModel.setChecked(True)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
@@ -1034,7 +1036,14 @@ class TaskPanel:
                 sub = sel.Object.Shape.getElement(feature)
                 if 'Vertex' == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.Point
+                if 'Edge' == sub.ShapeType:
+                    p = FreeCAD.Vector() - sub.Curve.Location
+                if 'Face' == sub.ShapeType:
+                    p = FreeCAD.Vector() - sub.BoundBox.Center
+                    
+                if p:
                     Draft.move(sel.Object, p)
+                
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
@@ -1116,6 +1125,15 @@ class TaskPanel:
             by.z = 0
             Draft.move(sel.Object, by)
 
+    def isValidDatumSelection(self, sel):
+        if sel.ShapeType in ['Vertex', 'Edge', 'Face']:
+            if hasattr(sel, 'Curve') and type(sel.Curve) not in [Part.Circle]:
+                return False
+            return True
+
+        # no valid selection
+        return False
+
     def updateSelection(self):
         # Remove Job object if present in Selection: source of phantom paths
         if self.obj in FreeCADGui.Selection.getSelection():
@@ -1124,7 +1142,8 @@ class TaskPanel:
         sel = FreeCADGui.Selection.getSelectionEx()
 
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
-            if 'Vertex' == sel[0].SubObjects[0].ShapeType:
+            subObj = sel[0].SubObjects[0]
+            if self.isValidDatumSelection(subObj):
                 self.form.modelSetXAxis.setEnabled(False)
                 self.form.modelSetYAxis.setEnabled(False)
                 self.form.modelSetZAxis.setEnabled(False)

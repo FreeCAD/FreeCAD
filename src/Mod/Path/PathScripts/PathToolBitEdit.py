@@ -33,12 +33,14 @@ import re
 
 from PySide import QtCore, QtGui
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ToolBitEditor(object):
     '''UI and controller for editing a ToolBit.
@@ -70,8 +72,6 @@ class ToolBitEditor(object):
                 qsb = ui.createWidget('Gui::QuantitySpinBox')
                 editor[name] = PathGui.QuantitySpinBox(qsb, tool, name)
                 label = QtGui.QLabel(re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1', name)))
-                #if parameter.get('Desc'):
-                #    qsb.setToolTip(parameter['Desc'])
                 layout.addRow(label, qsb)
         self.bitEditor = editor
         img = tool.Proxy.getBitThumbnail(tool)
@@ -87,9 +87,8 @@ class ToolBitEditor(object):
         self.model = QtGui.QStandardItemModel(len(self.props)-1, 3, self.form)
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
-
         for i, name in enumerate(self.props):
-            print(f"propname: {name}")
+            print("propname: %s " % name)
 
             prop = self.proto.getProperty(name)
             isset = hasattr(tool, name)
@@ -135,8 +134,6 @@ class ToolBitEditor(object):
                 c3.setEditable(False)
 
                 self.model.appendRow([c1, c2, c3])
-                #QtGui.QStandardItem([True, key, value]))
-
 
         self.form.attrTable.setModel(self.model)
         self.form.attrTable.setItemDelegateForColumn(2, self.delegate)

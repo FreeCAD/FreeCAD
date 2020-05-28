@@ -54,7 +54,6 @@ import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
 Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
@@ -72,18 +71,18 @@ def translate(context, text, disambig=None):
 class ObjectSurface(PathOp.ObjectOp):
     '''Proxy object for Surfacing operation.'''
 
-    def baseObject(self):
-        '''baseObject() ... returns super of receiver
-        Used to call base implementation in overwritten functions.'''
-        return super(self.__class__, self)
-
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features and edges based geometries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureCoolant | PathOp.FeatureBaseFaces
+        '''opFeatures(obj) ... return all standard features'''
+        return PathOp.FeatureTool | PathOp.FeatureDepths \
+            | PathOp.FeatureHeights | PathOp.FeatureStepDown \
+            | PathOp.FeatureCoolant | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
-        '''initPocketOp(obj) ... create operation specific properties'''
-        self.initOpProperties(obj)
+        '''initOperation(obj) ... Initialize the operation by
+        managing property creation and property editor status.'''
+        self.propertiesReady = False
+
+        self.initOpProperties(obj)  # Initialize operation-specific properties
 
         # For debugging
         if PathLog.getLevel(PathLog.thisModule()) != 4:
@@ -94,28 +93,30 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def initOpProperties(self, obj, warn=False):
         '''initOpProperties(obj) ... create operation specific properties'''
-        missing = list()
+        self.addNewProps = list()
 
-        for (prtyp, nm, grp, tt) in self.opProperties():
+        for (prtyp, nm, grp, tt) in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
-                missing.append(nm)
-                if warn:
-                    newPropMsg = translate('PathSurface', 'New property added to') + ' "{}": '.format(obj.Label) + nm + '. '
-                    newPropMsg += translate('PathSurface', 'Check its default value.')
-                    PathLog.warning(newPropMsg)
+                self.addNewProps.append(nm)
 
         # Set enumeration lists for enumeration properties
-        if len(missing) > 0:
-            ENUMS = self.propertyEnumerations()
+        if len(self.addNewProps) > 0:
+            ENUMS = self.opPropertyEnumerations()
             for n in ENUMS:
-                if n in missing:
+                if n in self.addNewProps:
                     setattr(obj, n, ENUMS[n])
 
-        self.addedAllProperties = True
+            if warn:
+                newPropMsg = translate('PathSurface', 'New property added to')
+                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + '. '
+                newPropMsg += translate('PathSurface', 'Check default value(s).')
+                FreeCAD.Console.PrintWarning(newPropMsg + '\n')
 
-    def opProperties(self):
-        '''opProperties(obj) ... Store operation specific properties'''
+        self.propertiesReady = True
+
+    def opPropertyDefinitions(self):
+        '''opPropertyDefinitions(obj) ... Store operation specific properties'''
 
         return [
             ("App::PropertyBool", "ShowTempObjects", "Debug",
@@ -179,7 +180,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the edges of the selection.")),
             ("App::PropertyDistance", "SampleInterval", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the sampling resolution. Smaller values quickly increase processing time.")),
-            ("App::PropertyPercent", "StepOver", "Clearing Options",
+            ("App::PropertyFloat", "StepOver", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the stepover percentage, based on the tool's diameter.")),
 
             ("App::PropertyBool", "OptimizeLinearPaths", "Optimization",
@@ -199,7 +200,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"))
         ]
 
-    def propertyEnumerations(self):
+    def opPropertyEnumerations(self):
         # Enumeration lists for App::PropertyEnumeration properties
         return {
             'BoundBox': ['BaseBoundBox', 'Stock'],
@@ -213,6 +214,59 @@ class ObjectSurface(PathOp.ObjectOp):
             'RotationAxis': ['X', 'Y'],
             'ScanType': ['Planar', 'Rotational']
         }
+
+    def opPropertyDefaults(self, obj, job):
+        '''opPropertyDefaults(obj, job) ... returns a dictionary of default values
+        for the operation's properties.'''
+        defaults = {
+            'OptimizeLinearPaths': True,
+            'InternalFeaturesCut': True,
+            'OptimizeStepOverTransitions': False,
+            'CircularUseG2G3': False,
+            'BoundaryEnforcement': True,
+            'UseStartPoint': False,
+            'AvoidLastX_InternalFeatures': True,
+            'CutPatternReversed': False,
+            'StartPoint': FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
+            'ProfileEdges': 'None',
+            'LayerMode': 'Single-pass',
+            'ScanType': 'Planar',
+            'RotationAxis': 'X',
+            'CutMode': 'Conventional',
+            'CutPattern': 'Line',
+            'HandleMultipleFeatures': 'Collectively',
+            'PatternCenterAt': 'CenterOfMass',
+            'GapSizes': 'No gaps identified.',
+            'StepOver': 100.0,
+            'CutPatternAngle': 0.0,
+            'CutterTilt': 0.0,
+            'StartIndex': 0.0,
+            'StopIndex': 360.0,
+            'SampleInterval': 1.0,
+            'BoundaryAdjustment': 0.0,
+            'InternalFeaturesAdjustment': 0.0,
+            'AvoidLastX_Faces': 0,
+            'PatternCenterCustom': FreeCAD.Vector(0.0, 0.0, 0.0),
+            'GapThreshold': 0.005,
+            'AngularDeflection': 0.25,
+            'LinearDeflection': 0.0001,
+            # For debugging
+            'ShowTempObjects': False
+        }
+
+        warn = True
+        if hasattr(job, 'GeometryTolerance'):
+            if job.GeometryTolerance.Value != 0.0:
+                warn = False
+                defaults['LinearDeflection'] = job.GeometryTolerance.Value
+        if warn:
+            msg = translate('PathSurface',
+                            'The GeometryTolerance for this Job is 0.0.')
+            msg += translate('PathSurface',
+                             'Initializing LinearDeflection to 0.0001 mm.')
+            FreeCAD.Console.PrintWarning(msg + '\n')
+
+        return defaults
 
     def setEditorProperties(self, obj):
         # Used to hide inputs in properties list
@@ -241,23 +295,23 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode('PatternCenterCustom', P2)
 
     def onChanged(self, obj, prop):
-        if hasattr(self, 'addedAllProperties'):
-            if self.addedAllProperties is True:
-                if prop == 'ScanType':
-                    self.setEditorProperties(obj)
-                if prop == 'CutPattern':
+        if hasattr(self, 'propertiesReady'):
+            if self.propertiesReady:
+                if prop in ['ScanType', 'CutPattern']:
                     self.setEditorProperties(obj)
 
     def opOnDocumentRestored(self, obj):
-        self.initOpProperties(obj, warn=True)
+        self.propertiesReady = False
+        job = PathUtils.findParentJob(obj)
 
-        if PathLog.getLevel(PathLog.thisModule()) != 4:
-            obj.setEditorMode('ShowTempObjects', 2)  # hide
-        else:
-            obj.setEditorMode('ShowTempObjects', 0)  # show
+        self.initOpProperties(obj, warn=True)
+        self.opApplyPropertyDefaults(obj, job, self.addNewProps)
+
+        mode = 2 if PathLog.getLevel(PathLog.thisModule()) != 4 else 0
+        obj.setEditorMode('ShowTempObjects', mode)
 
         # Repopulate enumerations in case of changes
-        ENUMS = self.propertyEnumerations()
+        ENUMS = self.opPropertyEnumerations()
         for n in ENUMS:
             restore = False
             if hasattr(obj, n):
@@ -269,51 +323,28 @@ class ObjectSurface(PathOp.ObjectOp):
 
         self.setEditorProperties(obj)
 
+    def opApplyPropertyDefaults(self, obj, job, propList):
+        # Set standard property defaults
+        PROP_DFLTS = self.opPropertyDefaults(obj, job)
+        for n in PROP_DFLTS:
+            if n in propList:
+                prop = getattr(obj, n)
+                val = PROP_DFLTS[n]
+                setVal = False
+                if hasattr(prop, 'Value'):
+                    if isinstance(val, int) or isinstance(val, float):
+                        setVal = True
+                if setVal:
+                    propVal = getattr(prop, 'Value')
+                    setattr(prop, 'Value', val)
+                else:
+                    setattr(obj, n, val)
+
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... initialize defaults'''
         job = PathUtils.findParentJob(obj)
 
-        obj.OptimizeLinearPaths = True
-        obj.InternalFeaturesCut = True
-        obj.OptimizeStepOverTransitions = False
-        obj.CircularUseG2G3 = False
-        obj.BoundaryEnforcement = True
-        obj.UseStartPoint = False
-        obj.AvoidLastX_InternalFeatures = True
-        obj.CutPatternReversed = False
-        obj.StartPoint.x = 0.0
-        obj.StartPoint.y = 0.0
-        obj.StartPoint.z = obj.ClearanceHeight.Value
-        obj.ProfileEdges = 'None'
-        obj.LayerMode = 'Single-pass'
-        obj.ScanType = 'Planar'
-        obj.RotationAxis = 'X'
-        obj.CutMode = 'Conventional'
-        obj.CutPattern = 'Line'
-        obj.HandleMultipleFeatures = 'Collectively'  # 'Individually'
-        obj.PatternCenterAt = 'CenterOfMass'  # 'CenterOfBoundBox', 'XminYmin', 'Custom'
-        obj.GapSizes = 'No gaps identified.'
-        obj.StepOver = 100
-        obj.CutPatternAngle = 0.0
-        obj.CutterTilt = 0.0
-        obj.StartIndex = 0.0
-        obj.StopIndex = 360.0
-        obj.SampleInterval.Value = 1.0
-        obj.BoundaryAdjustment.Value = 0.0
-        obj.InternalFeaturesAdjustment.Value = 0.0
-        obj.AvoidLastX_Faces = 0
-        obj.PatternCenterCustom.x = 0.0
-        obj.PatternCenterCustom.y = 0.0
-        obj.PatternCenterCustom.z = 0.0
-        obj.GapThreshold.Value = 0.005
-        obj.AngularDeflection.Value = 0.25
-        obj.LinearDeflection.Value = job.GeometryTolerance.Value
-        # For debugging
-        obj.ShowTempObjects = False
-
-        if job.GeometryTolerance.Value == 0.0:
-            PathLog.warning(translate('PathSurface', 'The GeometryTolerance for this Job is 0.0.  Initializing LinearDeflection to 0.0001 mm.'))
-            obj.LinearDeflection.Value = 0.0001
+        self.opApplyPropertyDefaults(obj, job, self.addNewProps)
 
         # need to overwrite the default depth calculations for facing
         d = None
@@ -373,10 +404,10 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.error(translate('PathSurface', 'Cut pattern angle limits are +- 360 degrees.'))
 
         # Limit StepOver to natural number percentage
-        if obj.StepOver > 100:
-            obj.StepOver = 100
-        if obj.StepOver < 1:
-            obj.StepOver = 1
+        if obj.StepOver > 100.0:
+            obj.StepOver = 100.0
+        if obj.StepOver < 1.0:
+            obj.StepOver = 1.0
 
         # Limit AvoidLastX_Faces to zero and positive values
         if obj.AvoidLastX_Faces < 0:
@@ -403,6 +434,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.closedGap = False
         self.tmpCOM = None
         self.gaps = [0.1, 0.2, 0.3]
+        self.cancelOperation = False
         CMDS = list()
         modelVisibility = list()
         FCAD = FreeCAD.ActiveDocument
@@ -423,7 +455,6 @@ class ObjectSurface(PathOp.ObjectOp):
             self.showDebugObjects = False
 
         # mark beginning of operation and identify parent Job
-        PathLog.info('\nBegin 3D Surface operation...')
         startTime = time.time()
 
         # Identify parent Job
@@ -531,18 +562,18 @@ class ObjectSurface(PathOp.ObjectOp):
         PSF.radius = self.radius
         PSF.depthParams = self.depthParams
         pPM = PSF.preProcessModel(self.module)
+
         # Process selected faces, if available
-        if pPM is False:
-            PathLog.error('Unable to pre-process obj.Base.')
-        else:
+        if pPM:
+            self.cancelOperation = False
             (FACES, VOIDS) = pPM
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
-            # Create OCL.stl model objects
-            self._prepareModelSTLs(JOB, obj)
-
             for m in range(0, len(JOB.Model.Group)):
+                # Create OCL.stl model objects
+                PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, m, ocl)
+
                 Mdl = JOB.Model.Group[m]
                 if FACES[m] is False:
                     PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
@@ -553,7 +584,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
-                    self._makeSafeSTL(JOB, obj, m, FACES[m], VOIDS[m])
+                    PathSurfaceSupport._makeSafeSTL(self, JOB, obj, m, FACES[m], VOIDS[m], ocl)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processCutAreas(JOB, obj, m, FACES[m], VOIDS[m]))
 
@@ -622,118 +653,22 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.midDep
 
         execTime = time.time() - startTime
-        PathLog.info('Operation time: {} sec.'.format(execTime))
+        if execTime > 60.0:
+            tMins = math.floor(execTime / 60.0)
+            tSecs = execTime - (tMins * 60.0)
+            exTime = str(tMins) + ' min. ' + str(round(tSecs, 5)) + ' sec.'
+        else:
+            exTime = str(round(execTime, 5)) + ' sec.'
+        FreeCAD.Console.PrintMessage('3D Surface operation time is {}\n'.format(exTime))
+
+        if self.cancelOperation:
+            FreeCAD.ActiveDocument.openTransaction(translate("PathSurface", "Canceled 3D Surface operation."))
+            FreeCAD.ActiveDocument.removeObject(obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
 
         return True
 
-    # Methods for constructing the cut area
-    def _prepareModelSTLs(self, JOB, obj):
-        PathLog.debug('_prepareModelSTLs()')
-        for m in range(0, len(JOB.Model.Group)):
-            M = JOB.Model.Group[m]
-
-            # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
-            if self.modelTypes[m] == 'M':
-                # TODO: test if this works
-                facets = M.Mesh.Facets.Points
-            else:
-                facets = Part.getFacets(M.Shape)
-
-            if self.modelSTLs[m] is True:
-                stl = ocl.STLSurf()
-
-                for tri in facets:
-                    t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                                     ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                                     ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-                    stl.addTriangle(t)
-                self.modelSTLs[m] = stl
-        return
-
-    def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes):
-        '''_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
-        Creates and OCL.stl object with combined data with waste stock,
-        model, and avoided faces.  Travel lines can be checked against this
-        STL object to determine minimum travel height to clear stock and model.'''
-        PathLog.debug('_makeSafeSTL()')
-
-        fuseShapes = list()
-        Mdl = JOB.Model.Group[mdlIdx]
-        mBB = Mdl.Shape.BoundBox
-        sBB = JOB.Stock.Shape.BoundBox
-
-        # add Model shape to safeSTL shape
-        fuseShapes.append(Mdl.Shape)
-
-        if obj.BoundBox == 'BaseBoundBox':
-            cont = False
-            extFwd = (sBB.ZLength)
-            zmin = mBB.ZMin
-            zmax = mBB.ZMin + extFwd
-            stpDwn = (zmax - zmin) / 4.0
-            dep_par = PathUtils.depth_params(zmax + 5.0, zmax + 3.0, zmax, stpDwn, 0.0, zmin)
-
-            try:
-                envBB = PathUtils.getEnvelope(partshape=Mdl.Shape, depthparams=dep_par)  # Produces .Shape
-                cont = True
-            except Exception as ee:
-                PathLog.error(str(ee))
-                shell = Mdl.Shape.Shells[0]
-                solid = Part.makeSolid(shell)
-                try:
-                    envBB = PathUtils.getEnvelope(partshape=solid, depthparams=dep_par)  # Produces .Shape
-                    cont = True
-                except Exception as eee:
-                    PathLog.error(str(eee))
-
-            if cont:
-                stckWst = JOB.Stock.Shape.cut(envBB)
-                if obj.BoundaryAdjustment > 0.0:
-                    cmpndFS = Part.makeCompound(faceShapes)
-                    baBB = PathUtils.getEnvelope(partshape=cmpndFS, depthparams=self.depthParams)  # Produces .Shape
-                    adjStckWst = stckWst.cut(baBB)
-                else:
-                    adjStckWst = stckWst
-                fuseShapes.append(adjStckWst)
-            else:
-                PathLog.warning('Path transitions might not avoid the model. Verify paths.')
-        else:
-            # If boundbox is Job.Stock, add hidden pad under stock as base plate
-            toolDiam = self.cutter.getDiameter()
-            zMin = JOB.Stock.Shape.BoundBox.ZMin
-            xMin = JOB.Stock.Shape.BoundBox.XMin - toolDiam
-            yMin = JOB.Stock.Shape.BoundBox.YMin - toolDiam
-            bL = JOB.Stock.Shape.BoundBox.XLength + (2 * toolDiam)
-            bW = JOB.Stock.Shape.BoundBox.YLength + (2 * toolDiam)
-            bH = 1.0
-            crnr = FreeCAD.Vector(xMin, yMin, zMin - 1.0)
-            B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
-            fuseShapes.append(B)
-
-        if voidShapes is not False:
-            voidComp = Part.makeCompound(voidShapes)
-            voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
-            fuseShapes.append(voidEnv)
-
-        fused = Part.makeCompound(fuseShapes)
-
-        if self.showDebugObjects:
-            T = FreeCAD.ActiveDocument.addObject('Part::Feature', 'safeSTLShape')
-            T.Shape = fused
-            T.purgeTouched()
-            self.tempGroup.addObject(T)
-
-        facets = Part.getFacets(fused)
-
-        stl = ocl.STLSurf()
-        for tri in facets:
-            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-            stl.addTriangle(t)
-
-        self.safeSTLs[mdlIdx] = stl
-
+    # Methods for constructing the cut area and creating path geometry
     def _processCutAreas(self, JOB, obj, mdlIdx, FCS, VDS):
         '''_processCutAreas(JOB, obj, mdlIdx, FCS, VDS)...
         This method applies any avoided faces or regions to the selected faces.
@@ -784,10 +719,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return final
 
-    # Methods for creating path geometry
     def _processPlanarOp(self, JOB, obj, mdlIdx, cmpdShp, fsi):
-        '''_processPlanarOp(JOB, obj, mdlIdx, cmpdShp)... 
-        This method compiles the main components for the procedural portion of a planar operation (non-rotational).  
+        '''_processPlanarOp(JOB, obj, mdlIdx, cmpdShp)...
+        This method compiles the main components for the procedural portion of a planar operation (non-rotational).
         It creates the OCL PathDropCutter objects: model and safeTravel.
         It makes the necessary facial geometries for the actual cut area.
         It calls the correct Single or Multi-pass method as needed.

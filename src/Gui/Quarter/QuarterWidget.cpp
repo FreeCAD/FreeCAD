@@ -1046,11 +1046,11 @@ QuarterWidget::redraw(void)
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
 
-  // For some reason, there is recursive repaint warning caused by repaint()
-  // here. It happens when switching active documents. Based on call stacks, it
-  // happens like this, the repaint event first triggers a series calls of
-  // QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of the
-  // QuarterWidget. From its paintEvent(), it calls
+  // When stylesheet is used, there is recursive repaint warning caused by
+  // repaint() here. It happens when switching active documents. Based on call
+  // stacks, it happens like this, the repaint event first triggers a series
+  // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
+  // the QuarterWidget. From its paintEvent(), it calls
   // SoSensorManager::processDelayQueue(), which triggers redraw() of another
   // QuarterWidget. And if repaint() is called here, it will trigger another
   // series call of QWidgetPrivate::paintSiblingRecursive(), and eventually
@@ -1059,7 +1059,7 @@ QuarterWidget::redraw(void)
   //
   // Note that, the recursive repaint is not infinite due to setting
   // 'processdelayqueue = false' above. However, it does cause annoying
-  // flickering, and it seem to crash on Windows.
+  // flickering, and actually crash on Windows.
 #if 1
   this->viewport()->update();
 #else

@@ -735,7 +735,7 @@ def get_elset_short_name(
     i
 ):
     from femtools.femutils import is_of_type
-    if is_of_type(obj, "Fem::Material"):
+    if is_of_type(obj, "Fem::MaterialCommon"):
         return "M" + str(i)
     elif is_of_type(obj, "Fem::ElementGeometry1D"):
         return "B" + str(i)
@@ -1877,7 +1877,7 @@ def get_analysis_group_elements(
             elif (
                 len(m.References) == 0
                 and (
-                    is_of_type(m, "Fem::Material")
+                    is_of_type(m, "Fem::MaterialCommon")
                     # TODO test and implement ElementGeometry1D and ElementGeometry2D
                     # or is_of_type(m, "Fem::ElementGeometry1D")
                     # or is_of_type(m, "Fem::ElementGeometry2D")

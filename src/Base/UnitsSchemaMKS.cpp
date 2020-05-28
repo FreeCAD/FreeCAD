@@ -203,6 +203,16 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1.0;
         }
     }
+    else if (unit == Unit::VolumetricThermalExpansionCoefficient) {
+        if (UnitValue < 0.001) {
+            unitString = QString::fromUtf8("mm^3/m^3/K");
+            factor = 1e-9;
+        }
+        else {
+            unitString = QString::fromLatin1("m^3/m^3/K");
+            factor = 1.0;
+        }
+    }
     else if (unit == Unit::SpecificHeat) {
         unitString = QString::fromLatin1("J/kg/K");
         factor = 1000000.0;
@@ -422,6 +432,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
     else if (unit == Unit::DynamicViscosity) {
         unitString = QString::fromLatin1("kg/(m*s)");
         factor = 0.001;
+    }
+    else if (unit == Unit::KinematicViscosity) {
+        unitString = QString::fromLatin1("m^2/s)");
+        factor = 1e6;
     }
     else {
         // default action for all cases without special treatment:

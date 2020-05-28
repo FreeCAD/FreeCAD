@@ -164,6 +164,7 @@ private:
 
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
+    bool restoreFromTransaction;
 
     void applyValues(std::vector<Constraint*>&&);
     void applyValidGeometryKeys(const std::vector<unsigned int> &keys);

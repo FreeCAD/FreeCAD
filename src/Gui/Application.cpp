@@ -2047,6 +2047,12 @@ void Application::runApplication(void)
     if (size >= 16) // must not be lower than this
         mw.setIconSize(QSize(size,size));
 
+    // filter wheel events for combo boxes
+    if (hGrp->GetBool("ComboBoxWheelEventFilter", false)) {
+        WheelEventFilter* filter = new WheelEventFilter(&mainApp);
+        mainApp.installEventFilter(filter);
+    }
+
 #if defined(HAVE_QT5_OPENGL)
     {
         QWindow window;

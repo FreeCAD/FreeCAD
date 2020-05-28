@@ -53,466 +53,59 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 # Generic functions *********************************************************
 
 
-def precision():
-    """precision(): returns the Draft precision setting"""
-    # Set precision level with a cap to avoid overspecification that:
-    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are coincident)
-    #      (not sure what it should be 10 or otherwise);
-    #  2 - but FreeCAD/OCC can handle 'internally' (e.g. otherwise user may set something like
-    #      15 that the code would never consider 2 points are coincident as internal float is not that precise);
-
-    precisionMax = 10
-    precisionInt = params.GetInt("precision",6)
-    precisionInt = (precisionInt if precisionInt <=10 else precisionMax)
-    return precisionInt	 # return params.GetInt("precision",6)
+from draftgeoutils.general import precision
 
 
-def vec(edge):
-    """vec(edge) or vec(line): returns a vector from an edge or a Part.LineSegment"""
-    # if edge is not straight, you'll get strange results!
-    if isinstance(edge,Part.Shape):
-        return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
-    elif isinstance(edge,Part.LineSegment):
-        return edge.EndPoint.sub(edge.StartPoint)
-    else:
-        return None
+from draftgeoutils.general import vec
 
 
-def edg(p1, p2):
-    """edg(Vector,Vector): returns an edge from 2 vectors"""
-    if isinstance(p1,FreeCAD.Vector) and isinstance(p2,FreeCAD.Vector):
-        if DraftVecUtils.equals(p1,p2): return None
-        else: return Part.LineSegment(p1,p2).toShape()
+from draftgeoutils.general import edg
 
 
-def getVerts(shape):
-    """getVerts(shape): returns a list containing vectors of each vertex of the shape"""
-    if not hasattr(shape,"Vertexes"):
-        return []
-    p = []
-    for v in shape.Vertexes:
-            p.append(v.Point)
-    return p
+from draftgeoutils.general import getVerts
 
 
-def v1(edge):
-    """v1(edge): returns the first point of an edge"""
-    return edge.Vertexes[0].Point
+from draftgeoutils.general import v1
 
 
-def isNull(something):
-    """isNull(object): returns true if the given shape is null or the given placement is null or
-    if the given vector is (0,0,0)"""
-    if isinstance(something,Part.Shape):
-            return something.isNull()
-    elif isinstance(something,FreeCAD.Vector):
-            if something == Vector(0,0,0):
-                    return True
-            else:
-                    return False
-    elif isinstance(something,FreeCAD.Placement):
-            if (something.Base == Vector(0,0,0)) and (something.Rotation.Q == (0,0,0,1)):
-                    return True
-            else:
-                    return False
+from draftgeoutils.general import isNull
 
 
-def isPtOnEdge(pt, edge):
-    """isPtOnEdge(Vector,edge): Tests if a point is on an edge"""
-    v = Part.Vertex(pt)
-    try:
-        d = v.distToShape(edge)
-    except:
-        return False
-    else:
-        if d:
-            if round(d[0],precision()) == 0:
-                return True
-    return False
+from draftgeoutils.general import isPtOnEdge
 
 
-def hasCurves(shape):
-    """hasCurve(shape): checks if the given shape has curves"""
-    for e in shape.Edges:
-            if not isinstance(e.Curve,(Part.LineSegment,Part.Line)):
-                    return True
-    return False
+from draftgeoutils.general import hasCurves
 
 
-def isAligned(edge, axis="x"):
-    """isAligned(edge,axis): checks if the given edge or line is aligned to the given axis (x, y or z)"""
-    if axis == "x":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.x == edge.EndPoint.x:
-                    return True
-    elif axis == "y":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.y == edge.EndPoint.y:
-                    return True
-    elif axis == "z":
-        if isinstance(edge,Part.Edge):
-            if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
-                    return True
-        elif isinstance(edge,Part.LineSegment):
-            if edge.StartPoint.z == edge.EndPoint.z:
-                    return True
-    return False
+from draftgeoutils.general import isAligned
 
 
-def getQuad(face):
-    """getQuad(face): returns a list of 3 vectors (basepoint, Xdir, Ydir) if the face
-    is a quad, or None if not."""
-    if len(face.Edges) != 4:
-        return None
-    v1 = vec(face.Edges[0])
-    v2 = vec(face.Edges[1])
-    v3 = vec(face.Edges[2])
-    v4 = vec(face.Edges[3])
-    angles90 = [round(math.pi*0.5,precision()),round(math.pi*1.5,precision())]
-    angles180 = [0,round(math.pi,precision()),round(math.pi*2,precision())]
-    for ov in [v2,v3,v4]:
-        if not (round(v1.getAngle(ov),precision()) in angles90+angles180):
-            return None
-    for ov in [v2,v3,v4]:
-        if round(v1.getAngle(ov),precision()) in angles90:
-            v1.normalize()
-            ov.normalize()
-            return [face.Edges[0].Vertexes[0].Point,v1,ov]
+from draftgeoutils.general import getQuad
 
 
-def areColinear(e1, e2):
-    """areColinear(e1,e2): returns True if both edges are colinear"""
-    if not isinstance(e1.Curve,(Part.LineSegment,Part.Line)):
-        return False
-    if not isinstance(e2.Curve,(Part.LineSegment,Part.Line)):
-        return False
-    v1 = vec(e1)
-    v2 = vec(e2)
-    a = round(v1.getAngle(v2),precision())
-    if (a == 0) or (a == round(math.pi,precision())):
-        v3 = e2.Vertexes[0].Point.sub(e1.Vertexes[0].Point)
-        if DraftVecUtils.isNull(v3):
-            return True
-        else:
-            a2 = round(v1.getAngle(v3),precision())
-            if (a2 == 0) or (a2 == round(math.pi,precision())):
-                return True
-    return False
+from draftgeoutils.general import areColinear
 
 
-def hasOnlyWires(shape):
-    """hasOnlyWires(shape): returns True if all the edges are inside a wire"""
-    ne = 0
-    for w in shape.Wires:
-        ne += len(w.Edges)
-    if ne == len(shape.Edges):
-        return True
-    return False
+from draftgeoutils.general import hasOnlyWires
 
 
-def geomType(edge):
-    """returns the type of geom this edge is based on"""
-    try:
-        if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
-            return "Line"
-        elif isinstance(edge.Curve,Part.Circle):
-            return "Circle"
-        elif isinstance(edge.Curve,Part.BSplineCurve):
-            return "BSplineCurve"
-        elif isinstance(edge.Curve,Part.BezierCurve):
-            return "BezierCurve"
-        elif isinstance(edge.Curve,Part.Ellipse):
-            return "Ellipse"
-        else:
-            return "Unknown"
-    except:
-        return "Unknown"
+from draftgeoutils.general import geomType
 
 
-def isValidPath(shape):
-    """isValidPath(shape): returns True if the shape can be used as an extrusion path"""
-    if shape.isNull():
-        return False
-    if shape.Faces:
-        return False
-    if len(shape.Wires) > 1:
-        return False
-    if shape.Wires:
-        if shape.Wires[0].isClosed():
-            return False
-    if shape.isClosed():
-        return False
-    return True
+from draftgeoutils.general import isValidPath
+
 
 # edge functions *************************************************************
 
 
-def findEdge(anEdge, aList):
-    """findEdge(anEdge,aList): returns True if anEdge is found in aList of edges"""
-    for e in range(len(aList)):
-        if str(anEdge.Curve) == str(aList[e].Curve):
-            if DraftVecUtils.equals(anEdge.Vertexes[0].Point,aList[e].Vertexes[0].Point):
-                if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,aList[e].Vertexes[-1].Point):
-                    return(e)
-    return None
+from draftgeoutils.edges import findEdge
 
 
-def findIntersection(edge1, edge2,
-                     infinite1=False, infinite2=False,
-                     ex1=False, ex2=False,
-                     dts=True, findAll=False):
-    """findIntersection(edge1,edge2,infinite1=False,infinite2=False,dts=True):
-    returns a list containing the intersection point(s) of 2 edges.
-    You can also feed 4 points instead of edge1 and edge2. If dts is used,
-    Shape.distToShape() is used, which can be buggy"""
-
-    def getLineIntersections(pt1, pt2, pt3, pt4, infinite1, infinite2):
-        if pt1:
-            # first check if we don't already have coincident endpoints
-            if (pt1 in [pt3,pt4]):
-                    return [pt1]
-            elif (pt2 in [pt3,pt4]):
-                    return [pt2]
-        norm1 = pt2.sub(pt1).cross(pt3.sub(pt1))
-        norm2 = pt2.sub(pt4).cross(pt3.sub(pt4))
-        if not DraftVecUtils.isNull(norm1):
-            try:
-                norm1.normalize()
-            except:
-                return []
-        if not DraftVecUtils.isNull(norm2):
-            try:
-                norm2.normalize()
-            except:
-                return []
-        if DraftVecUtils.isNull(norm1.cross(norm2)):
-            vec1 = pt2.sub(pt1)
-            vec2 = pt4.sub(pt3)
-            if DraftVecUtils.isNull(vec1) or DraftVecUtils.isNull(vec2):
-                return [] # One of the line has zero-length
-            try:
-                vec1.normalize()
-                vec2.normalize()
-            except:
-                return []
-            norm3 = vec1.cross(vec2)
-            if not DraftVecUtils.isNull(norm3) and (norm3.x+norm3.y+norm3.z != 0):
-                k = ((pt3.z-pt1.z)*(vec2.x-vec2.y)+(pt3.y-pt1.y)*(vec2.z-vec2.x)+ \
-                     (pt3.x-pt1.x)*(vec2.y-vec2.z))/(norm3.x+norm3.y+norm3.z)
-                vec1.scale(k,k,k)
-                intp = pt1.add(vec1)
-
-                if  infinite1 == False and not isPtOnEdge(intp,edge1) :
-                    return []
-
-                if  infinite2 == False and not isPtOnEdge(intp,edge2) :
-                    return []
-
-                return [intp]
-            else :
-                return [] # Lines have same direction
-        else :
-            return [] # Lines aren't on same plane
-
-    # First, check bound boxes
-    if isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) \
-        and (not infinite1) and (not infinite2):
-        if not edge1.BoundBox.intersect(edge2.BoundBox):
-            return [] # bound boxes don't intersect
-
-    # First, try to use distToShape if possible
-    if dts and isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) \
-            and (not infinite1) and (not infinite2):
-        dist, pts, geom = edge1.distToShape(edge2)
-        sol = []
-        if round(dist,precision()) == 0:
-            for p in pts:
-                if not p in sol:
-                    sol.append(p[0])
-        return sol
-
-    pt1 = None
-
-    if isinstance(edge1,FreeCAD.Vector) and isinstance(edge2,FreeCAD.Vector):
-        # we got points directly
-        pt1 = edge1
-        pt2 = edge2
-        pt3 = infinite1
-        pt4 = infinite2
-        infinite1 = ex1
-        infinite2 = ex2
-        return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
-
-    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :
-        # we have 2 straight lines
-        pt1, pt2, pt3, pt4 = [edge1.Vertexes[0].Point,
-                                      edge1.Vertexes[1].Point,
-                                      edge2.Vertexes[0].Point,
-                                      edge2.Vertexes[1].Point]
-        return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
-
-    elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Line") \
-      or (geomType(edge1) == "Line") and (geomType(edge2) == "Circle") :
-
-        # deals with an arc or circle and a line
-
-        edges = [edge1,edge2]
-        for edge in edges :
-            if geomType(edge) == "Line":
-                line = edge
-            else :
-                arc  = edge
-
-        dirVec = vec(line) ; dirVec.normalize()
-        pt1    = line.Vertexes[0].Point
-        pt2    = line.Vertexes[1].Point
-        pt3    = arc.Vertexes[0].Point
-        pt4    = arc.Vertexes[-1].Point
-        center = arc.Curve.Center
-
-        int = []
-        # first check for coincident endpoints
-        if DraftVecUtils.equals(pt1,pt3) or DraftVecUtils.equals(pt1,pt4):
-            if findAll:
-                int.append(pt1)
-            else:
-                return [pt1]
-        elif (pt2 in [pt3,pt4]):
-            if findAll:
-                int.append(pt2)
-            else:
-                return [pt2]
-
-        if DraftVecUtils.isNull(pt1.sub(center).cross(pt2.sub(center)).cross(arc.Curve.Axis)) :
-            # Line and Arc are on same plane
-
-            dOnLine = center.sub(pt1).dot(dirVec)
-            onLine  = Vector(dirVec)
-            onLine.scale(dOnLine,dOnLine,dOnLine)
-            toLine  = pt1.sub(center).add(onLine)
-
-            if toLine.Length < arc.Curve.Radius :
-                dOnLine = (arc.Curve.Radius**2 - toLine.Length**2)**(0.5)
-                onLine  = Vector(dirVec)
-                onLine.scale(dOnLine,dOnLine,dOnLine)
-                int += [center.add(toLine).add(onLine)]
-                onLine  = Vector(dirVec)
-                onLine.scale(-dOnLine,-dOnLine,-dOnLine)
-                int += [center.add(toLine).add(onLine)]
-            elif round(toLine.Length-arc.Curve.Radius,precision()) == 0 :
-                int = [center.add(toLine)]
-            else :
-                return []
-
-        else :
-            # Line isn't on Arc's plane
-            if dirVec.dot(arc.Curve.Axis) != 0 :
-                toPlane  = Vector(arc.Curve.Axis) ; toPlane.normalize()
-                d = pt1.dot(toPlane)
-                if not d:
-                    return []
-                dToPlane = center.sub(pt1).dot(toPlane)
-                toPlane = Vector(pt1)
-                toPlane.scale(dToPlane/d,dToPlane/d,dToPlane/d)
-                ptOnPlane = toPlane.add(pt1)
-                if round(ptOnPlane.sub(center).Length - arc.Curve.Radius,precision()) == 0 :
-                    int = [ptOnPlane]
-                else :
-                    return []
-            else :
-                return []
-
-        if infinite1 == False :
-            for i in range(len(int)-1,-1,-1) :
-                if not isPtOnEdge(int[i],edge1) :
-                    del int[i]
-        if infinite2 == False :
-            for i in range(len(int)-1,-1,-1) :
-                if not isPtOnEdge(int[i],edge2) :
-                    del int[i]
-        return int
-
-    elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Circle") :
-        # deals with 2 arcs or circles
-        cent1, cent2 = edge1.Curve.Center, edge2.Curve.Center
-        rad1 , rad2  = edge1.Curve.Radius, edge2.Curve.Radius
-        axis1, axis2 = edge1.Curve.Axis  , edge2.Curve.Axis
-        c2c          = cent2.sub(cent1)
-
-        if cent1.sub(cent2).Length == 0:
-            # circles are concentric
-            return []
-
-        if DraftVecUtils.isNull(axis1.cross(axis2)) :
-            if round(c2c.dot(axis1),precision()) == 0 :
-                # circles are on same plane
-                dc2c = c2c.Length ;
-                if not DraftVecUtils.isNull(c2c): c2c.normalize()
-                if round(rad1+rad2-dc2c,precision()) < 0 \
-                or round(rad1-dc2c-rad2,precision()) > 0 or round(rad2-dc2c-rad1,precision()) > 0 :
-                    return []
-                else :
-                    norm = c2c.cross(axis1)
-                    if not DraftVecUtils.isNull(norm): norm.normalize()
-                    if DraftVecUtils.isNull(norm): x = 0
-                    else: x = (dc2c**2 + rad1**2 - rad2**2)/(2*dc2c)
-                    y = abs(rad1**2 - x**2)**(0.5)
-                    c2c.scale(x,x,x)
-                    if round(y,precision()) != 0 :
-                        norm.scale(y,y,y)
-                        int =  [cent1.add(c2c).add(norm)]
-                        int += [cent1.add(c2c).sub(norm)]
-                    else :
-                        int = [cent1.add(c2c)]
-            else :
-                return []  # circles are on parallel planes
-        else :
-            # circles aren't on same plane
-            axis1.normalize() ; axis2.normalize()
-            U = axis1.cross(axis2)
-            V = axis1.cross(U)
-            dToPlane = c2c.dot(axis2)
-            d        = V.add(cent1).dot(axis2)
-            V.scale(dToPlane/d,dToPlane/d,dToPlane/d)
-            PtOn2Planes = V.add(cent1)
-            planeIntersectionVector = U.add(PtOn2Planes)
-            intTemp = findIntersection(planeIntersectionVector,edge1,True,True)
-            int = []
-            for pt in intTemp :
-                if round(pt.sub(cent2).Length-rad2,precision()) == 0 :
-                    int += [pt]
-
-        if infinite1 == False :
-            for i in range(len(int)-1,-1,-1) :
-                if not isPtOnEdge(int[i],edge1) :
-                    del int[i]
-        if infinite2 == False :
-            for i in range(len(int)-1,-1,-1) :
-                if not isPtOnEdge(int[i],edge2) :
-                    del int[i]
-
-        return int
-    else:
-        print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
-        return []
+from draftgeoutils.intersections import findIntersection
 
 
-def wiresIntersect(wire1, wire2):
-    """wiresIntersect(wire1,wire2): returns True if some of the edges of the wires are intersecting otherwise False"""
-    for e1 in wire1.Edges:
-        for e2 in wire2.Edges:
-            if findIntersection(e1,e2,dts=False):
-                return True
-    return False
+from draftgeoutils.intersections import wiresIntersect
+
 
 
 def pocket2d(shape, offset):
@@ -582,35 +175,7 @@ def pocket2d(shape, offset):
     return offsetWires
 
 
-def orientEdge(edge, normal=None, make_arc=False):
-    """Re-orients 'edge' such that it is in the x-y plane. If 'normal' is passed, this
-    is used as the basis for the rotation, otherwise the Placement property of 'edge'
-    is used"""
-    import DraftVecUtils
-    # This 'normalizes' the placement to the xy plane
-    edge = edge.copy()
-    xyDir = FreeCAD.Vector(0, 0, 1)
-    base = FreeCAD.Vector(0,0,0)
-
-    if normal:
-        angle = DraftVecUtils.angle(normal, xyDir)*FreeCAD.Units.Radian
-        axis  = normal.cross(xyDir)
-    else:
-        axis = edge.Placement.Rotation.Axis
-        angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
-    if axis == Vector (0.0, 0.0, 0.0):
-        axis = Vector (0.0, 0.0, 1.0)
-    if angle:
-        edge.rotate(base, axis, angle)
-    if isinstance(edge.Curve,Part.Line):
-        return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
-    elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
-        return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
-                                    edge.LastParameter,edge.Curve.Axis.z>0)
-    elif make_arc and isinstance(edge.Curve,Part.Ellipse) and not edge.Closed:
-        return Part.ArcOfEllipse(edge.Curve, edge.FirstParameter,
-                                    edge.LastParameter,edge.Curve.Axis.z>0)
-    return edge.Curve
+from draftgeoutils.edges import orientEdge
 
 
 def mirror(point, edge):
@@ -647,20 +212,7 @@ def isClockwise(edge, ref=None):
     return True
 
 
-def isSameLine(e1, e2):
-    """isSameLine(e1,e2): return True if the 2 edges are lines and have the same
-    points"""
-    if not isinstance(e1.Curve,Part.LineSegment):
-        return False
-    if not isinstance(e2.Curve,Part.LineSegment):
-        return False
-    if (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point)) and \
-       (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point)):
-           return True
-    elif (DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point)) and \
-       (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point)):
-           return True
-    return False
+from draftgeoutils.edges import isSameLine
 
 
 def isWideAngle(edge):
@@ -692,240 +244,22 @@ def findClosest(basepoint, pointslist):
     return npoint
 
 
-def concatenate(shape):
-    """concatenate(shape) -- turns several faces into one"""
-    edges = getBoundary(shape)
-    edges = Part.__sortEdges__(edges)
-    try:
-        wire=Part.Wire(edges)
-        face=Part.Face(wire)
-    except:
-        print("DraftGeomUtils: Couldn't join faces into one")
-        return(shape)
-    else:
-        if not wire.isClosed(): return(wire)
-        else: return(face)
+from draftgeoutils.faces import concatenate
 
 
-def getBoundary(shape):
-    """getBoundary(shape) -- this function returns the boundary edges of a group of faces"""
-    # make a lookup-table where we get the number of occurrences
-    # to each edge in the fused face
-    if isinstance(shape,list):
-            shape = Part.makeCompound(shape)
-    lut={}
-    for f in shape.Faces:
-        for e in f.Edges:
-            hc= e.hashCode()
-            if hc in lut: lut[hc]=lut[hc]+1
-            else: lut[hc]=1
-    # filter out the edges shared by more than one sub-face
-    bound=[]
-    for e in shape.Edges:
-        if lut[e.hashCode()] == 1: bound.append(e)
-    return bound
+from draftgeoutils.faces import getBoundary
 
 
-def isLine(bsp):
-    """Return True if the given BSpline curve is a straight line."""
-    step = bsp.LastParameter/10
-    b = bsp.tangent(0)
-    for i in range(10):
-        if bsp.tangent(i*step) != b:
-            return False
-    return True
+from draftgeoutils.edges import isLine
 
 
-def sortEdges(edges):
-    """Deprecated. Use Part.__sortEdges__ instead."""
-    raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
-
-    # Build a dictionary of edges according to their end points.
-    # Each entry is a set of edges that starts, or ends, at the
-    # given vertex hash.
-    if len(edges) < 2:
-        return edges
-    sdict = dict()
-    edict = dict()
-    nedges = []
-    for e in edges:
-        if hasattr(e,"Length"):
-            if e.Length != 0:
-                sdict.setdefault( e.Vertexes[0].hashCode(), [] ).append(e)
-                edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
-                nedges.append(e)
-    if not nedges:
-        print("DraftGeomUtils.sortEdges: zero-length edges")
-        return edges
-    # Find the start of the path.  The start is the vertex that appears
-    # in the sdict dictionary but not in the edict dictionary, and has
-    # only one edge ending there.
-    startedge = None
-    for v, se in sdict.items():
-        if v not in edict and len(se) == 1:
-            startedge = se
-            break
-    # The above may not find a start vertex; if the start edge is reversed,
-    # the start vertex will appear in edict (and not sdict).
-    if not startedge:
-        for v, se in edict.items():
-            if v not in sdict and len(se) == 1:
-                startedge = se
-                break
-    # If we still have no start vertex, it was a closed path.  If so, start
-    # with the first edge in the supplied list
-    if not startedge:
-        startedge = nedges[0]
-        v = startedge.Vertexes[0].hashCode()
-    # Now build the return list by walking the edges starting at the start
-    # vertex we found.  We're done when we've visited each edge, so the
-    # end check is simply the count of input elements (that works for closed
-    # as well as open paths).
-    ret = list()
-    # store the hash code of the last edge, to avoid picking the same edge back
-    eh = None
-    for i in range(len(nedges)):
-        try:
-            eset = sdict[v]
-            e = eset.pop()
-            if not eset:
-                del sdict[v]
-            if e.hashCode() == eh:
-                raise KeyError
-            v = e.Vertexes[-1].hashCode()
-            eh = e.hashCode()
-        except KeyError:
-            try:
-                eset = edict[v]
-                e = eset.pop()
-                if not eset:
-                    del edict[v]
-                if e.hashCode() == eh:
-                    raise KeyError
-                v = e.Vertexes[0].hashCode()
-                eh = e.hashCode()
-                e = invert(e)
-            except KeyError:
-                print("DraftGeomUtils.sortEdges failed - running old version")
-                return sortEdgesOld(edges)
-        ret.append(e)
-    # All done.
-    return ret
+from draftgeoutils.sort_edges import sortEdges
 
 
-def sortEdgesOld(lEdges, aVertex=None):
-    """Deprecated. Use Part.__sortEdges__ instead."""
-    raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
-
-    #There is no reason to limit this to lines only because every non-closed edge always
-    #has exactly two vertices (wmayer)
-    #for e in lEdges:
-    #        if not isinstance(e.Curve,Part.LineSegment):
-    #                print("Warning: sortedges cannot treat wired containing curves yet.")
-    #                return lEdges
-
-    def lookfor(aVertex, inEdges):
-        """Look for (aVertex, inEdges) returns count, the position of the instance
-        the position in the instance and the instance of the Edge"""
-        count = 0
-        linstances = [] #lists the instances of aVertex
-        for i in range(len(inEdges)) :
-            for j in range(2) :
-                if aVertex.Point == inEdges[i].Vertexes[j-1].Point:
-                        instance = inEdges[i]
-                        count += 1
-                        linstances += [i,j-1,instance]
-        return [count]+linstances
-
-    if (len(lEdges) < 2):
-        if aVertex is None:
-            return lEdges
-        else:
-            result = lookfor(aVertex,lEdges)
-            if result[0] != 0:
-                if aVertex.Point == result[3].Vertexes[0].Point:
-                    return lEdges
-                else:
-                    if geomType(result[3]) == "Line":
-                        return [Part.LineSegment(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
-                    elif geomType(result[3]) == "Circle":
-                        mp = findMidpoint(result[3])
-                        return [Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()]
-                    elif geomType(result[3]) == "BSplineCurve" or\
-                        geomType(result[3]) == "BezierCurve":
-                        if isLine(result[3].Curve):
-                            return [Part.LineSegment(aVertex.Point,result[3].Vertexes[0].Point).toShape()]
-                        else:
-                            return lEdges
-                    else:
-                        return lEdges
-
-    olEdges = [] # ol stands for ordered list
-    if aVertex is None:
-        for i in range(len(lEdges)*2) :
-            if len(lEdges[i/2].Vertexes) > 1:
-                result = lookfor(lEdges[i/2].Vertexes[i%2],lEdges)
-                if result[0] == 1 :  # Have we found an end ?
-                    olEdges = sortEdgesOld(lEdges, result[3].Vertexes[result[2]])
-                    return olEdges
-        # if the wire is closed there is no end so choose 1st Vertex
-        # print("closed wire, starting from ",lEdges[0].Vertexes[0].Point)
-        return sortEdgesOld(lEdges, lEdges[0].Vertexes[0])
-    else :
-        #print("looking ",aVertex.Point)
-        result = lookfor(aVertex,lEdges)
-        if result[0] != 0 :
-            del lEdges[result[1]]
-            next = sortEdgesOld(lEdges, result[3].Vertexes[-((-result[2])^1)])
-            #print("result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point)
-            if aVertex.Point == result[3].Vertexes[0].Point:
-                #print("keeping")
-                olEdges += [result[3]] + next
-            else:
-                #print("inverting", result[3].Curve)
-                if geomType(result[3]) == "Line":
-                    newedge = Part.LineSegment(aVertex.Point,result[3].Vertexes[0].Point).toShape()
-                    olEdges += [newedge] + next
-                elif geomType(result[3]) == "Circle":
-                    mp = findMidpoint(result[3])
-                    newedge = Part.Arc(aVertex.Point,mp,result[3].Vertexes[0].Point).toShape()
-                    olEdges += [newedge] + next
-                elif geomType(result[3]) == "BSplineCurve" or \
-                    geomType(result[3]) == "BezierCurve":
-                    if isLine(result[3].Curve):
-                        newedge = Part.LineSegment(aVertex.Point,result[3].Vertexes[0].Point).toShape()
-                        olEdges += [newedge] + next
-                    else:
-                        olEdges += [result[3]] + next
-                else:
-                    olEdges += [result[3]] + next
-            return olEdges
-        else :
-            return []
+from draftgeoutils.sort_edges import sortEdgesOld
 
 
-def invert(shape):
-    """invert(edge): returns an inverted copy of this edge or wire"""
-    if shape.ShapeType == "Wire":
-        edges = [invert(edge) for edge in shape.OrderedEdges]
-        edges.reverse()
-        return Part.Wire(edges)
-    elif shape.ShapeType == "Edge":
-        if len(shape.Vertexes) == 1:
-            return shape
-        if geomType(shape) == "Line":
-            return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
-        elif geomType(shape) == "Circle":
-            mp = findMidpoint(shape)
-            return Part.Arc(shape.Vertexes[-1].Point,mp,shape.Vertexes[0].Point).toShape()
-        elif geomType(shape) in ["BSplineCurve","BezierCurve"]:
-            if isLine(shape.Curve):
-                return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
-        print("DraftGeomUtils.invert: unable to invert",shape.Curve)
-        return shape
-    else:
-        print("DraftGeomUtils.invert: unable to handle",shape.ShapeType)
-        return shape
+from draftgeoutils.edges import invert
 
 
 def flattenWire(wire):
@@ -1065,67 +399,10 @@ def superWire(edgeslist, closed=False):
         return Part.Wire(newedges)
 
 
-def findMidpoint(edge):
-    """Calculate the midpoint of an edge."""
-    first = edge.Vertexes[0].Point
-    last = edge.Vertexes[-1].Point
-    if geomType(edge) == "Circle":
-        center = edge.Curve.Center
-        radius = edge.Curve.Radius
-        if len(edge.Vertexes) == 1:
-                # Circle
-                dv = first.sub(center)
-                dv = dv.negative()
-                return center.add(dv)
-        axis = edge.Curve.Axis
-        chord = last.sub(first)
-        perp = chord.cross(axis)
-        perp.normalize()
-        ray = first.sub(center)
-        apothem = ray.dot(perp)
-        sagitta = radius - apothem
-        startpoint = Vector.add(first, chord.multiply(0.5))
-        endpoint = DraftVecUtils.scaleTo(perp,sagitta)
-        return Vector.add(startpoint,endpoint)
-
-    elif geomType(edge) == "Line":
-        halfedge = (last.sub(first)).multiply(.5)
-        return Vector.add(first,halfedge)
-
-    else:
-        return None
+from draftgeoutils.edges import findMidpoint
 
 
-def findPerpendicular(point, edgeslist, force=None):
-    """
-    findPerpendicular(vector,wire,[force]):
-    finds the shortest perpendicular distance between a point and an edgeslist.
-    If force is specified, only the edge[force] will be considered, and it will be
-    considered infinite.
-    The function will return a list [vector_from_point_to_closest_edge,edge_index]
-    or None if no perpendicular vector could be found.
-    """
-    if not isinstance(edgeslist,list):
-        try:
-            edgeslist = edgeslist.Edges
-        except:
-            return None
-    if (force is None):
-        valid = None
-        for edge in edgeslist:
-            dist = findDistance(point,edge,strict=True)
-            if dist:
-                if not valid: valid = [dist,edgeslist.index(edge)]
-                else:
-                    if (dist.Length < valid[0].Length):
-                        valid = [dist,edgeslist.index(edge)]
-        return valid
-    else:
-        edge = edgeslist[force]
-        dist = findDistance(point,edge)
-        if dist: return [dist,force]
-        else: return None
-        return None
+from draftgeoutils.geometry import findPerpendicular
 
 
 def offset(edge, vector, trim=False):
@@ -1178,90 +455,17 @@ def isReallyClosed(wire):
     if DraftVecUtils.equals(v1,v2): return True
     return False
 
-def getSplineNormal(edge):
-    """Find the normal of a BSpline edge"""
-    startPoint = edge.valueAt(edge.FirstParameter)
-    endPoint = edge.valueAt(edge.LastParameter)
-    midParameter = edge.FirstParameter + (edge.LastParameter - edge.FirstParameter)/2
-    midPoint = edge.valueAt(midParameter)
-    v1 = midPoint - startPoint
-    v2 = midPoint - endPoint
-    n = v1.cross(v2)
-    n.normalize()
-    return n
 
-def getNormal(shape):
-        """Find the normal of a shape or list of points, if possible."""
-        if isinstance(shape,(list,tuple)):
-            if len(shape) >= 3:
-                v1 = shape[1].sub(shape[0])
-                v2 = shape[2].sub(shape[0])
-                n = v2.cross(v1)
-                if n.Length:
-                    return n
-            return None
-        n = Vector(0,0,1)
-        if shape.isNull():
-            return n
-        if (shape.ShapeType == "Face") and hasattr(shape,"normalAt"):
-                n = shape.copy().normalAt(0.5,0.5)
-        elif shape.ShapeType == "Edge":
-                if geomType(shape.Edges[0]) in ["Circle","Ellipse"]:
-                        n = shape.Edges[0].Curve.Axis
-                elif geomType(shape.Edges[0]) == "BSplineCurve" or \
-                     geomType(shape.Edges[0]) == "BezierCurve":
-                        n = getSplineNormal(shape.Edges[0])
-        else:
-                for e in shape.Edges:
-                        if geomType(e) in ["Circle","Ellipse"]:
-                                n = e.Curve.Axis
-                                break
-                        elif geomType(e) == "BSplineCurve" or \
-                             geomType(e) == "BezierCurve":
-                                n = getSplineNormal(e)
-                                break
-                        e1 = vec(shape.Edges[0])
-                        for i in range(1,len(shape.Edges)):
-                                e2 = vec(shape.Edges[i])
-                                if 0.1 < abs(e1.getAngle(e2)) < 3.14:
-                                        n = e1.cross(e2).normalize()
-                                        break
-        if FreeCAD.GuiUp:
-            import Draft
-            vdir = Draft.get3DView().getViewDirection()
-            if n.getAngle(vdir) < 0.78:
-                n = n.negative()
-        if not n.Length:
-            return None
-        return n
+from draftgeoutils.geometry import getSplineNormal
 
 
-def getRotation(v1, v2=FreeCAD.Vector(0, 0, 1)):
-    """Get the rotation Quaternion between 2 vectors."""
-    if (v1.dot(v2) > 0.999999) or (v1.dot(v2) < -0.999999):
-        # vectors are opposite
-        return None
-    axis = v1.cross(v2)
-    axis.normalize()
-    #angle = math.degrees(math.sqrt((v1.Length ^ 2) * (v2.Length ^ 2)) + v1.dot(v2))
-    angle = math.degrees(DraftVecUtils.angle(v1,v2,axis))
-    return FreeCAD.Rotation(axis,angle)
+from draftgeoutils.geometry import getNormal
 
 
-def calculatePlacement(shape):
-    """calculatePlacement(shape): if the given shape is planar, this function
-    returns a placement located at the center of gravity of the shape, and oriented
-    towards the shape's normal. Otherwise, it returns a null placement."""
-    if not isPlanar(shape):
-        return FreeCAD.Placement()
-    pos = shape.BoundBox.Center
-    norm = getNormal(shape)
-    pla = FreeCAD.Placement()
-    pla.Base = pos
-    r =  getRotation(norm)
-    if r:
-        pla.Rotation = r
-    return pla
+from draftgeoutils.geometry import getRotation
+
+
+from draftgeoutils.geometry import calculatePlacement
 
 
 def offsetWire(wire, dvec, bind=False, occ=False,
@@ -1514,157 +718,11 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     else:
         return nedges
 
-def connect(edges, closed=False):
-        """Connect the edges in the given list by their intersections."""
-        nedges = []
-        v2 = None
 
-        for i in range(len(edges)):
-            curr = edges[i]
-            #print("debug: DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point)
-            if i > 0:
-                prev = edges[i-1]
-            else:
-                if closed:
-                    prev = edges[-1]
-                else:
-                    prev = None
-            if i < (len(edges)-1):
-                next = edges[i+1]
-            else:
-                if closed: next = edges[0]
-                else:
-                    next = None
-            if prev:
-              #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
+from draftgeoutils.intersections import connect
 
-              # If the edge pairs has intersection 
-              # ... and if there is prev v2 (prev v2 was calculated intersection), do not calculate again, just use it as current v1 - avoid chance of slight difference in result
-              # And, if edge pairs has no intersection (parallel edges, line - arc do no intersect, etc.), so just just current edge endpoints as v1
-              # ... and connect these 2 non-intersecting edges
 
-              # seem have chance that 2 parallel edges offset same width, result in 2 colinear edges - Wall / DraftGeomUtils seem make them 1 edge and thus 1 vertical plane
-              i = findIntersection(curr,prev,True,True)
-              if i:
-                  if v2:
-                    v1 = v2
-                  else:
-                    v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point,i)]
-              else:
-                    v1 = curr.Vertexes[0].Point
-
-                    nedges.append(Part.LineSegment(v2,v1).toShape())
-
-            else:
-                v1 = curr.Vertexes[0].Point
-            if next:
-                #print("debug: DraftGeomUtils.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point)
-                i = findIntersection(curr,next,True,True)
-                if i:
-                    v2 = i[DraftVecUtils.closest(curr.Vertexes[-1].Point,i)]
-                else:
-                    v2 = curr.Vertexes[-1].Point
-            else:
-                v2 = curr.Vertexes[-1].Point
-            if geomType(curr) == "Line":
-                if v1 != v2:
-                    nedges.append(Part.LineSegment(v1,v2).toShape())
-            elif geomType(curr) == "Circle":
-                if v1 != v2:
-                    nedges.append(Part.Arc(v1,findMidpoint(curr),v2).toShape())
-        try:
-            return Part.Wire(nedges)
-        except:
-            print("DraftGeomUtils.connect: unable to connect edges")
-            for e in nedges:
-                print(e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point)
-            return None
-
-def findDistance(point, edge, strict=False):
-    """
-    findDistance(vector,edge,[strict]) - Returns a vector from the point to its
-    closest point on the edge. If strict is True, the vector will be returned
-    only if its endpoint lies on the edge. Edge can also be a list of 2 points.
-    """
-    if isinstance(point, FreeCAD.Vector):
-        if isinstance(edge,list):
-            segment = edge[1].sub(edge[0])
-            chord = edge[0].sub(point)
-            norm = segment.cross(chord)
-            perp = segment.cross(norm)
-            dist = DraftVecUtils.project(chord,perp)
-            if not dist: return None
-            newpoint = point.add(dist)
-            if (dist.Length == 0):
-                return None
-            if strict:
-                s1 = newpoint.sub(edge[0])
-                s2 = newpoint.sub(edge[1])
-                if (s1.Length <= segment.Length) and (s2.Length <= segment.Length):
-                    return dist
-                else:
-                    return None
-            else: return dist
-        elif geomType(edge) == "Line":
-            segment = vec(edge)
-            chord = edge.Vertexes[0].Point.sub(point)
-            norm = segment.cross(chord)
-            perp = segment.cross(norm)
-            dist = DraftVecUtils.project(chord,perp)
-            if not dist: return None
-            newpoint = point.add(dist)
-            if (dist.Length == 0):
-                return None
-            if strict:
-                s1 = newpoint.sub(edge.Vertexes[0].Point)
-                s2 = newpoint.sub(edge.Vertexes[-1].Point)
-                if (s1.Length <= segment.Length) and (s2.Length <= segment.Length):
-                    return dist
-                else:
-                    return None
-            else: return dist
-        elif geomType(edge) == "Circle":
-            ve1 = edge.Vertexes[0].Point
-            if (len(edge.Vertexes) > 1):
-                ve2 = edge.Vertexes[-1].Point
-            else:
-                ve2 = None
-            center = edge.Curve.Center
-            segment = center.sub(point)
-            if segment.Length == 0:
-                return None
-            ratio = (segment.Length - edge.Curve.Radius) / segment.Length
-            dist = segment.multiply(ratio)
-            newpoint = Vector.add(point, dist)
-            if (dist.Length == 0):
-                return None
-            if strict and ve2:
-                ang1 = DraftVecUtils.angle(ve1.sub(center))
-                ang2 = DraftVecUtils.angle(ve2.sub(center))
-                angpt = DraftVecUtils.angle(newpoint.sub(center))
-                if ((angpt <= ang2 and angpt >= ang1) or (angpt <= ang1 and angpt >= ang2)):
-                    return dist
-                else:
-                    return None
-            else:
-                return dist
-        elif geomType(edge) == "BSplineCurve" or \
-            geomType(edge) == "BezierCurve":
-            try:
-                    pr = edge.Curve.parameter(point)
-                    np = edge.Curve.value(pr)
-                    dist = np.sub(point)
-            except:
-                    print("DraftGeomUtils: Unable to get curve parameter for point ",point)
-                    return None
-            else:
-                    return dist
-        else:
-            print("DraftGeomUtils: Couldn't project point")
-            return None
-    else:
-        print("DraftGeomUtils: Couldn't project point")
-        return None
+from draftgeoutils.geometry import findDistance
 
 
 def angleBisection(edge1, edge2):
@@ -1702,43 +760,10 @@ def findClosestCircle(point, circles):
     return closest
 
 
-def isCoplanar(faces, tolerance=0):
-    """isCoplanar(faces,[tolerance]): checks if all faces in the given list are coplanar. Tolerance is the max deviation to be considered coplanar"""
-    if len(faces) < 2:
-        return True
-    base =faces[0].normalAt(0,0)
-    for i in range(1,len(faces)):
-        for v in faces[i].Vertexes:
-            chord = v.Point.sub(faces[0].Vertexes[0].Point)
-            dist = DraftVecUtils.project(chord,base)
-            if round(dist.Length,precision()) > tolerance:
-                return False
-    return True
+from draftgeoutils.faces import isCoplanar
 
 
-def isPlanar(shape):
-    """Check if the given shape or list of points is planar."""
-    n = getNormal(shape)
-    if not n:
-        return False
-    if isinstance(shape,list):
-        if len(shape) <= 3:
-            return True
-        else:
-            for v in shape[3:]:
-                pv = v.sub(shape[0])
-                rv = DraftVecUtils.project(pv,n)
-                if not DraftVecUtils.isNull(rv):
-                    return False
-    else:
-        if len(shape.Vertexes) <= 3:
-            return True
-        for p in shape.Vertexes[1:]:
-            pv = p.Point.sub(shape.Vertexes[0].Point)
-            rv = DraftVecUtils.project(pv,n)
-            if not DraftVecUtils.isNull(rv):
-                return False
-    return True
+from draftgeoutils.geometry import isPlanar
 
 
 def findWiresOld(edges):
@@ -1796,128 +821,10 @@ def getTangent(edge, frompoint=None):
         return None
 
 
-def bind(w1, w2):
-    """bind(wire1,wire2): binds 2 wires by their endpoints and
-    returns a face"""
-    if (not w1) or (not w2):
-        print("DraftGeomUtils: unable to bind wires")
-        return None
-    if w1.isClosed() and w2.isClosed():
-        d1 = w1.BoundBox.DiagonalLength
-        d2 = w2.BoundBox.DiagonalLength
-        if d1 > d2:
-            #w2.reverse()
-            return Part.Face([w1,w2])
-        else:
-            #w1.reverse()
-            return Part.Face([w2,w1])
-    else:
-        try:
-            w3 = Part.LineSegment(w1.Vertexes[0].Point,w2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(w1.Vertexes[-1].Point,w2.Vertexes[-1].Point).toShape()
-            return Part.Face(Part.Wire(w1.Edges+[w3]+w2.Edges+[w4]))
-        except:
-            print("DraftGeomUtils: unable to bind wires")
-            return None
+from draftgeoutils.faces import bind
 
-def cleanFaces(shape):
-        """Remove inner edges from coplanar faces."""
-        faceset = shape.Faces
-        def find(hc):
-                """finds a face with the given hashcode"""
-                for f in faceset:
-                        if f.hashCode() == hc:
-                                return f
 
-        def findNeighbour(hface,hfacelist):
-                """finds the first neighbour of a face in a list, and returns its index"""
-                eset = []
-                for e in find(hface).Edges:
-                        eset.append(e.hashCode())
-                for i in range(len(hfacelist)):
-                        for ee in find(hfacelist[i]).Edges:
-                                if ee.hashCode() in eset:
-                                        return i
-                return None
-
-        # build lookup table
-        lut = {}
-        for face in faceset:
-                for edge in face.Edges:
-                        if edge.hashCode() in lut:
-                                lut[edge.hashCode()].append(face.hashCode())
-                        else:
-                                lut[edge.hashCode()] = [face.hashCode()]
-        # print("lut:",lut)
-        # take edges shared by 2 faces
-        sharedhedges = []
-        for k,v in lut.items():
-                if len(v) == 2:
-                        sharedhedges.append(k)
-        # print(len(sharedhedges)," shared edges:",sharedhedges)
-        # find those with same normals
-        targethedges = []
-        for hedge in sharedhedges:
-                faces = lut[hedge]
-                n1 = find(faces[0]).normalAt(0.5,0.5)
-                n2 = find(faces[1]).normalAt(0.5,0.5)
-                if n1 == n2:
-                        targethedges.append(hedge)
-        # print(len(targethedges)," target edges:",targethedges)
-        # get target faces
-        hfaces = []
-        for hedge in targethedges:
-                for f in lut[hedge]:
-                        if not f in hfaces:
-                                hfaces.append(f)
-
-        # print(len(hfaces)," target faces:",hfaces)
-        # sort islands
-        islands = [[hfaces.pop(0)]]
-        currentisle = 0
-        currentface = 0
-        found = True
-        while hfaces:
-                if not found:
-                        if len(islands[currentisle]) > (currentface + 1):
-                                currentface += 1
-                                found = True
-                        else:
-                                islands.append([hfaces.pop(0)])
-                                currentisle += 1
-                                currentface = 0
-                                found = True
-                else:
-                        f = findNeighbour(islands[currentisle][currentface],hfaces)
-                        if f != None:
-                                islands[currentisle].append(hfaces.pop(f))
-                        else:
-                                found = False
-        # print(len(islands)," islands:",islands)
-        # make new faces from islands
-        newfaces = []
-        treated = []
-        for isle in islands:
-                treated.extend(isle)
-                fset = []
-                for i in isle: fset.append(find(i))
-                bounds = getBoundary(fset)
-                shp = Part.Wire(Part.__sortEdges__(bounds))
-                shp = Part.Face(shp)
-                if shp.normalAt(0.5,0.5) != find(isle[0]).normalAt(0.5,0.5):
-                        shp.reverse()
-                newfaces.append(shp)
-        # print("new faces:",newfaces)
-        # add remaining faces
-        for f in faceset:
-                if not f.hashCode() in treated:
-                        newfaces.append(f)
-        # print("final faces")
-        # finishing
-        fshape = Part.makeShell(newfaces)
-        if shape.isClosed():
-                fshape = Part.makeSolid(fshape)
-        return fshape
+from draftgeoutils.faces import cleanFaces
 
 
 def isCubic(shape):

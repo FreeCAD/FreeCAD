@@ -90,7 +90,6 @@ def make_text(stringslist, point=App.Vector(0,0,0), screen=False):
     return obj
 
 
-
 class Text(DraftAnnotation):
     """The Draft Text object"""
 
@@ -118,6 +117,8 @@ class Text(DraftAnnotation):
                         QT_TRANSLATE_NOOP("App::Property",
                                           "The text displayed by this object"))
 
+    def onDocumentRestored(self, obj):
+        super(Text, self).onDocumentRestored(obj)
 
     def execute(self,obj):
         '''Do something when recompute object'''

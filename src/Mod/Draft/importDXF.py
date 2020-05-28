@@ -129,7 +129,7 @@ from menu Tools -> Addon Manager""")
                     QtGui.QMessageBox.information(None, "", message)
                 else:
                     FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -160,7 +160,7 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
             _maj = _ver[0]
             _min = _ver[1]
             if float(_maj + "." + _min) >= 0.17:
-                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
+                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
             else:
                 FCC.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 

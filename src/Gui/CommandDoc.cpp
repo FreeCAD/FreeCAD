@@ -370,33 +370,33 @@ bool StdCmdMergeProjects::isActive(void)
 }
 
 //===========================================================================
-// Std_ExportGraphviz
+// Std_DependencyGraph
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdExportGraphviz)
+DEF_STD_CMD_A(StdCmdDependencyGraph)
 
-StdCmdExportGraphviz::StdCmdExportGraphviz()
-  : Command("Std_ExportGraphviz")
+StdCmdDependencyGraph::StdCmdDependencyGraph()
+  : Command("Std_DependencyGraph")
 {
     // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
-    sWhatsThis    = "Std_ExportGraphviz";
+    sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
 }
 
-void StdCmdExportGraphviz::activated(int iMsg)
+void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
-    view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+    view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
 
-bool StdCmdExportGraphviz::isActive(void)
+bool StdCmdDependencyGraph::isActive(void)
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -1773,7 +1773,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
-    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
+    rcCmdMgr.addCommand(new StdCmdDependencyGraph());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());

@@ -361,7 +361,7 @@ class Snapper:
             parent = obj
             subname = self.snapInfo['Component']
         if not obj:
-            self.spoint = cstr(point)
+            self.spoint = self.cstr(point)
             self.running = False
             return self.spoint
 
@@ -943,9 +943,9 @@ class Snapper:
                       210, 225, 240, 270,
                       300, 315, 330):
                 ang = math.radians(i)
-                cur = Vector(math.sin(ang) * rad + pos.x,
-                             math.cos(ang) * rad + pos.y,
-                             pos.z)
+                cur = App.Vector(math.sin(ang) * rad + pos.x,
+                                 math.cos(ang) * rad + pos.y,
+                                 pos.z)
                 snaps.append([cur, 'angle', self.toWP(cur)])
         return snaps
 
@@ -1587,7 +1587,7 @@ class Snapper:
             self.makeSnapToolBar()
         bt = self.get_snap_toolbar()
         if not bt:
-            mw = FreeCADGui.getMainWindow()
+            mw = Gui.getMainWindow()
             mw.addToolBar(self.toolbar)
             self.toolbar.setParent(mw)
         self.toolbar.show()

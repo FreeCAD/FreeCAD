@@ -6803,8 +6803,8 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
     case 8: // {SelVertex, SelVertex, SelVertexOrRoot}
     case 9: // {SelVertexOrRoot, SelVertex, SelVertex}
     {
-        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
-        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId; PosId3 = selSeq.at(1).PosId;
+        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId; GeoId3 = selSeq.at(2).GeoId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId; PosId3 = selSeq.at(2).PosId;
 
         if ( areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3) ) {
             showNoConstraintBetweenFixedGeometry();

@@ -57,33 +57,33 @@ jobs:
           apt:
             sources:
               - sourceline: 'ppa:ubuntu-toolchain-r/test'
-              - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+              - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
                 key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
             packages:
-              - clang-9
+              - clang-10
         env:
-          - CC=clang-9
-          - CXX=clang++-9
+          - CC=clang-10
+          - CXX=clang++-10
           - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB1
 
       - os: linux
         dist: bionic
         language: cpp
-        compiler: gcc-9
+        compiler: gcc-10
         cache: ccache
         addons:
           apt:
             sources:
               - sourceline: 'ppa:ubuntu-toolchain-r/test'
             packages:
-              - gcc-9
-              - g++-9
+              - gcc-10
+              - g++-10
         env:
-          - CC=gcc-9
-          - CXX=g++-9
-          - CC_FOR_BUILD=gcc-9
-          - CXX_FOR_BUILD=g++-9
+          - CC=gcc-10
+          - CXX=g++-10
+          - CC_FOR_BUILD=gcc-10
+          - CXX_FOR_BUILD=g++-10
           - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB2
 
@@ -187,6 +187,11 @@ before_install:
                                libspnav-dev
        # Runtime deps
        sudo apt-get install -y --no-install-recommends freecad-daily-python3 python-pivy python3-pivy python-ply python3-ply
+
+       # Use newer Eigen to suppress warnings
+       # https://github.com/FreeCAD/FreeCAD/pull/3485
+       wget http://mirrors.kernel.org/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.7-2_all.deb
+       sudo dpkg -i libeigen3-dev_3.3.7-2_all.deb
 
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start

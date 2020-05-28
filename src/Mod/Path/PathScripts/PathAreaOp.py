@@ -354,7 +354,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.tempObjectNames = []  # pylint: disable=attribute-defined-outside-init
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
-        self.profileEdgesIsOpen = False
+        self.rotStartDepth = None  # pylint: disable=attribute-defined-outside-init
 
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
@@ -371,6 +371,7 @@ class ObjectOp(PathOp.ObjectOp):
                 strDep = max(self.xRotRad, self.yRotRad)
             finDep = -1 * strDep
 
+            self.rotStartDepth = strDep
             obj.ClearanceHeight.Value = strDep + self.clrOfset
             obj.SafeHeight.Value = strDep + self.safOfst
 
@@ -419,15 +420,17 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = [j['shape'] for j in jobs]
 
-        if self.profileEdgesIsOpen is True:
-            if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-                osp = obj.StartPoint
-                self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
-
         sims = []
         numShapes = len(shapes)
         for ns in range(0, numShapes):
+            profileEdgesIsOpen = False
             (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
+            if sub == 'OpenEdge':
+                profileEdgesIsOpen = True
+                if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                    osp = obj.StartPoint
+                    self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
+
             if ns < numShapes - 1:
                 nextAxis = shapes[ns + 1][4]
             else:
@@ -436,7 +439,7 @@ class ObjectOp(PathOp.ObjectOp):
             self.depthparams = self._customDepthParams(obj, strDep, finDep)
 
             try:
-                if self.profileEdgesIsOpen is True:
+                if profileEdgesIsOpen:
                     (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
                 else:
                     (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
@@ -444,7 +447,7 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
             else:
-                if self.profileEdgesIsOpen is True:
+                if profileEdgesIsOpen:
                     ppCmds = pp
                 else:
                     ppCmds = pp.Commands

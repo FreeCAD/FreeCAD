@@ -22,6 +22,16 @@
 				<UserDocu>Return the shape for the geometry.</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="getD0" Const="true">
+            <Documentation>
+                <UserDocu>Returns the point of given parameter</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getDN" Const="true">
+            <Documentation>
+                <UserDocu>Returns the n-th derivative</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="value" Const="true">
 			<Documentation>
                 <UserDocu>value(u,v) -> Point

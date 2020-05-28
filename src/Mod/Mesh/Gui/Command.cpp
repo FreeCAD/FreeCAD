@@ -74,6 +74,7 @@
 #include "RemoveComponents.h"
 #include "RemeshGmsh.h"
 #include "DlgSmoothing.h"
+#include "DlgDecimating.h"
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
 #include "MeshEditor.h"
@@ -1437,6 +1438,36 @@ bool CmdMeshSmoothing::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdMeshDecimating)
+
+CmdMeshDecimating::CmdMeshDecimating()
+  :Command("Mesh_Decimating")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Decimation...");
+    sToolTipText  = QT_TR_NOOP("Decimates a mesh");
+    sWhatsThis    = QT_TR_NOOP("Decimates a mesh");
+    sStatusTip    = QT_TR_NOOP("Decimates a mesh");
+}
+
+void CmdMeshDecimating::activated(int)
+{
+    Gui::Control().showDialog(new MeshGui::TaskDecimating());
+}
+
+bool CmdMeshDecimating::isActive(void)
+{
+#if 1
+    if (Gui::Control().activeDialog())
+        return false;
+#endif
+    // Check for the selected mesh feature (all Mesh types)
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdMeshHarmonizeNormals)
 
 CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
@@ -1842,6 +1873,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshHarmonizeNormals());
     rcCmdMgr.addCommand(new CmdMeshFlipNormals());
     rcCmdMgr.addCommand(new CmdMeshSmoothing());
+    rcCmdMgr.addCommand(new CmdMeshDecimating());
     rcCmdMgr.addCommand(new CmdMeshBoundingBox());
     rcCmdMgr.addCommand(new CmdMeshBuildRegularSolid());
     rcCmdMgr.addCommand(new CmdMeshFillupHoles());

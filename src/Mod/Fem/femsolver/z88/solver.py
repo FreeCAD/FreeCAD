@@ -53,7 +53,7 @@ class Proxy(solverbase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::FemSolverObjectZ88"
+    Type = "Fem::FemSolverZ88"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

@@ -487,6 +487,7 @@ const std::vector<std::pair<Unit, const char *> > &Unit::unitTypes() {
         units.emplace_back(Unit::SpecificEnergy,"SpecificEnergy");
         units.emplace_back(Unit::ThermalConductivity,"ThermalConductivity");
         units.emplace_back(Unit::ThermalExpansionCoefficient,"ThermalExpansionCoefficient");
+        units.emplace_back(Unit::VolumetricThermalExpansionCoefficient, "VolumetricThermalExpansionCoefficient");
         units.emplace_back(Unit::SpecificHeat,"SpecificHeat");
         units.emplace_back(Unit::ThermalTransferCoefficient,"ThermalTransferCoefficient");
         units.emplace_back(Unit::HeatFlux,"HeatFlux");
@@ -556,6 +557,7 @@ Unit Unit::Power   (2,1,-3);
 Unit Unit::SpecificEnergy              (2,0,-2);
 Unit Unit::ThermalConductivity         (1,1,-3,0,-1);
 Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
+Unit Unit::VolumetricThermalExpansionCoefficient (0,0,0,0,-1);
 Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);

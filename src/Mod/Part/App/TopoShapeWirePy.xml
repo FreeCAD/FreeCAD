@@ -158,6 +158,12 @@ coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="OrderedEdges" Type="List"/>
    </Attribute>
+   <Attribute Name="Continuity" ReadOnly="true">
+       <Documentation>
+           <UserDocu>Returns the continuity</UserDocu>
+       </Documentation>
+       <Parameter Name="Continuity" Type="String"/>
+   </Attribute>
    <Attribute Name="OrderedVertexes" ReadOnly="true">
      <Documentation>
       <UserDocu>List of ordered vertexes in this shape.</UserDocu>

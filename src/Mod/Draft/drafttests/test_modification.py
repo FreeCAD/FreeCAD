@@ -40,7 +40,7 @@ class DraftModification(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        aux._draw_header()
+        aux.draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -59,7 +59,7 @@ class DraftModification(unittest.TestCase):
         b = Vector(2, 2, 0)
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        obj = Draft.makeLine(a, b)
+        obj = Draft.make_line(a, b)
 
         c = Vector(3, 1, 0)
         _msg("  Translation vector")
@@ -76,7 +76,7 @@ class DraftModification(unittest.TestCase):
         b = Vector(2, 3, 0)
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        line = Draft.makeLine(a, b)
+        line = Draft.make_line(a, b)
 
         c = Vector(2, 2, 0)
         _msg("  Translation vector (copy)")
@@ -92,7 +92,7 @@ class DraftModification(unittest.TestCase):
         b = Vector(3, 1, 0)
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        obj = Draft.makeLine(a, b)
+        obj = Draft.make_line(a, b)
         App.ActiveDocument.recompute()
 
         c = Vector(-1, 1, 0)
@@ -113,7 +113,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}".format(c))
-        wire = Draft.makeWire([a, b, c])
+        wire = Draft.make_wire([a, b, c])
         App.ActiveDocument.recompute()
 
         offset = Vector(-1, 1, 0)
@@ -130,7 +130,7 @@ class DraftModification(unittest.TestCase):
         width = 2
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
-        rect = Draft.makeRectangle(length, width)
+        rect = Draft.make_rectangle(length, width)
         App.ActiveDocument.recompute()
 
         offset = Vector(-1, -1, 0)
@@ -148,16 +148,16 @@ class DraftModification(unittest.TestCase):
 
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        line = Draft.makeLine(a, b)
+        line = Draft.make_line(a, b)
 
         c = Vector(2, 2, 0)
         d = Vector(4, 2, 0)
         _msg("  Line 2")
         _msg("  c={0}, d={1}".format(c, d))
-        line2 = Draft.makeLine(c, d)
+        line2 = Draft.make_line(c, d)
         App.ActiveDocument.recompute()
 
-        Draft.trim_objects = aux._fake_function
+        Draft.trim_objects = aux.fake_function
         obj = Draft.trim_objects(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -169,16 +169,16 @@ class DraftModification(unittest.TestCase):
         b = Vector(1, 1, 0)
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        line = Draft.makeLine(a, b)
+        line = Draft.make_line(a, b)
 
         c = Vector(2, 2, 0)
         d = Vector(4, 2, 0)
         _msg("  Line 2")
         _msg("  c={0}, d={1}".format(c, d))
-        line2 = Draft.makeLine(c, d)
+        line2 = Draft.make_line(c, d)
         App.ActiveDocument.recompute()
 
-        Draft.extrude = aux._fake_function
+        Draft.extrude = aux.fake_function
         obj = Draft.extrude(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -193,11 +193,11 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  Line 2")
         _msg("  b={0}, c={1}".format(b, c))
-        line_1 = Draft.makeLine(a, b)
-        line_2 = Draft.makeLine(b, c)
+        line_1 = Draft.make_line(a, b)
+        line_2 = Draft.make_line(b, c)
 
-        # obj = Draft.joinWires([line_1, line_2])  # Multiple wires
-        obj = Draft.joinTwoWires(line_1, line_2)
+        # obj = Draft.join_wires([line_1, line_2])  # Multiple wires
+        obj = Draft.join_two_wires(line_1, line_2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_split(self):
@@ -211,7 +211,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
-        wire = Draft.makeWire([a, b, c, d])
+        wire = Draft.make_wire([a, b, c, d])
 
         index = 1
         _msg("  Split at")
@@ -234,8 +234,8 @@ class DraftModification(unittest.TestCase):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  Line 2")
         _msg("  b={0}, c={1}".format(b, c))
-        line_1 = Draft.makeLine(a, b)
-        line_2 = Draft.makeLine(b, c)
+        line_1 = Draft.make_line(a, b)
+        line_2 = Draft.make_line(b, c)
         App.ActiveDocument.recompute()
 
         obj = Draft.upgrade([line_1, line_2], delete=True)
@@ -274,7 +274,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Closed wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, a={1}".format(c, a))
-        wire = Draft.makeWire([a, b, c, a])
+        wire = Draft.make_wire([a, b, c, a])
         App.ActiveDocument.recompute()
 
         obj = Draft.downgrade(wire, delete=True)
@@ -313,14 +313,14 @@ class DraftModification(unittest.TestCase):
         _msg("  Wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        wire = Draft.makeWire([a, b, c])
+        wire = Draft.make_wire([a, b, c])
 
-        obj = Draft.makeBSpline(wire.Points)
+        obj = Draft.make_bspline(wire.Points)
         App.ActiveDocument.recompute()
         _msg("  1: Result '{0}' ({1})".format(obj.Proxy.Type, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-        obj2 = Draft.makeWire(obj.Points)
+        obj2 = Draft.make_wire(obj.Points)
         _msg("  2: Result '{0}' ({1})".format(obj2.Proxy.Type, obj2.TypeId))
         self.assertTrue(obj2, "'{}' failed".format(operation))
 
@@ -340,7 +340,7 @@ class DraftModification(unittest.TestCase):
         direction = Vector(0, 0, 1)
         _msg("  Projection 2D view")
         _msg("  direction={}".format(direction))
-        obj = Draft.makeShape2DView(prism, direction)
+        obj = Draft.make_shape2dview(prism, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_draft_to_sketch(self):
@@ -353,10 +353,10 @@ class DraftModification(unittest.TestCase):
         _msg("  Wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        wire = Draft.makeWire([a, b, c])
+        wire = Draft.make_wire([a, b, c])
         App.ActiveDocument.recompute()
 
-        obj = Draft.makeSketch(wire, autoconstraints=True)
+        obj = Draft.make_sketch(wire, autoconstraints=True)
         App.ActiveDocument.recompute()
         _msg("  1: Result '{0}' ({1})".format(obj.Shape.ShapeType,
                                               obj.TypeId))
@@ -370,26 +370,31 @@ class DraftModification(unittest.TestCase):
 
     def test_rectangular_array(self):
         """Create a rectangle, and a rectangular array."""
-        operation = "Draft Array"
+        operation = "Draft OrthoArray"
         _msg("  Test '{}'".format(operation))
         length = 4
         width = 2
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
-        rect = Draft.makeRectangle(length, width)
+        rect = Draft.make_rectangle(length, width)
         App.ActiveDocument.recompute()
 
         dir_x = Vector(5, 0, 0)
         dir_y = Vector(0, 4, 0)
+        dir_z = Vector(0, 0, 6)
         number_x = 3
         number_y = 4
+        number_z = 6
         _msg("  Array")
         _msg("  direction_x={}".format(dir_x))
         _msg("  direction_y={}".format(dir_y))
-        _msg("  number_x={0}, number_y={1}".format(number_x, number_y))
-        obj = Draft.makeArray(rect,
-                              dir_x, dir_y,
-                              number_x, number_y)
+        _msg("  direction_z={}".format(dir_z))
+        _msg("  number_x={0}, number_y={1}, number_z={2}".format(number_x,
+                                                                 number_y,
+                                                                 number_z))
+        obj = Draft.make_ortho_array(rect,
+                                     dir_x, dir_y, dir_z,
+                                     number_x, number_y, number_z)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_polar_array(self):
@@ -400,17 +405,17 @@ class DraftModification(unittest.TestCase):
         width = 2
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
-        rect = Draft.makeRectangle(length, width)
+        rect = Draft.make_rectangle(length, width)
         App.ActiveDocument.recompute()
 
         center = Vector(-4, 0, 0)
         angle = 180
         number = 5
         _msg("  Array")
+        _msg("  number={0}, polar_angle={1}".format(number, angle))
         _msg("  center={}".format(center))
-        _msg("  polar_angle={0}, number={1}".format(angle, number))
-        obj = Draft.makeArray(rect,
-                              center, angle, number)
+        obj = Draft.make_polar_array(rect,
+                                     number, angle, center)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_circular_array(self):
@@ -421,7 +426,7 @@ class DraftModification(unittest.TestCase):
         width = 2
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
-        rect = Draft.makeRectangle(length, width)
+        rect = Draft.make_rectangle(length, width)
         App.ActiveDocument.recompute()
 
         rad_distance = 10
@@ -436,10 +441,10 @@ class DraftModification(unittest.TestCase):
         _msg("  number={0}, symmetry={1}".format(number, symmetry))
         _msg("  axis={}".format(axis))
         _msg("  center={}".format(center))
-        obj = Draft.makeArray(rect,
-                              rad_distance, tan_distance,
-                              axis, center,
-                              number, symmetry)
+        obj = Draft.make_circular_array(rect,
+                                        rad_distance, tan_distance,
+                                        number, symmetry,
+                                        axis, center)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_path_array(self):
@@ -453,13 +458,13 @@ class DraftModification(unittest.TestCase):
         _msg("  Wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
-        wire = Draft.makeWire([a, b, c, d])
+        wire = Draft.make_wire([a, b, c, d])
 
         n_faces = 3
         radius = 1
         _msg("  Polygon")
         _msg("  n_faces={0}, radius={1}".format(n_faces, radius))
-        poly = Draft.makePolygon(n_faces, radius)
+        poly = Draft.make_polygon(n_faces, radius)
 
         number = 4
         translation = Vector(0, 1, 0)
@@ -467,7 +472,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Path Array")
         _msg("  number={}, translation={}".format(number, translation))
         _msg("  align={}".format(align))
-        obj = Draft.makePathArray(poly, wire, number, translation, align)
+        obj = Draft.make_path_array(poly, wire, number, translation, align)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_point_array(self):
@@ -481,10 +486,10 @@ class DraftModification(unittest.TestCase):
         _msg("  Points")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
-        points = [Draft.makePoint(a),
-                  Draft.makePoint(b),
-                  Draft.makePoint(c),
-                  Draft.makePoint(d)]
+        points = [Draft.make_point(a),
+                  Draft.make_point(b),
+                  Draft.make_point(c),
+                  Draft.make_point(d)]
 
         _msg("  Upgrade")
         add, delete = Draft.upgrade(points)
@@ -494,10 +499,10 @@ class DraftModification(unittest.TestCase):
         radius = 1
         _msg("  Polygon")
         _msg("  n_faces={0}, radius={1}".format(n_faces, radius))
-        poly = Draft.makePolygon(n_faces, radius)
+        poly = Draft.make_polygon(n_faces, radius)
 
         _msg("  Point Array")
-        obj = Draft.makePointArray(poly, compound)
+        obj = Draft.make_point_array(poly, compound)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_clone(self):
@@ -511,7 +516,7 @@ class DraftModification(unittest.TestCase):
         App.ActiveDocument.recompute()
         _msg("  object: '{0}' ({1})".format(box.Shape.ShapeType, box.TypeId))
 
-        obj = Draft.clone(box)
+        obj = Draft.make_clone(box)
         _msg("  clone: '{0}' ({1})".format(obj.Proxy.Type, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
         self.assertTrue(obj.hasExtension("Part::AttachExtension"),
@@ -533,8 +538,8 @@ class DraftModification(unittest.TestCase):
         _msg("  placement={}".format(prism.Placement))
 
         svg_template = 'Mod/Drawing/Templates/A3_Landscape.svg'
-        template = Draft.getParam("template",
-                                  App.getResourceDir() + svg_template)
+        template = Draft.get_param("template",
+                                   App.getResourceDir() + svg_template)
         page = App.ActiveDocument.addObject('Drawing::FeaturePage')
         page.Template = template
         _msg("  Drawing view")
@@ -551,7 +556,7 @@ class DraftModification(unittest.TestCase):
         width = 2
         _msg("  Rectangle")
         _msg("  length={0}, width={1}".format(length, width))
-        rect = Draft.makeRectangle(length, width)
+        rect = Draft.make_rectangle(length, width)
         # App.ActiveDocument.recompute()
 
         p1 = Vector(6, -2, 0)
@@ -571,10 +576,10 @@ class DraftModification(unittest.TestCase):
         b = Vector(1, 1, 0)
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
-        line = Draft.makeLine(a, b)
+        line = Draft.make_line(a, b)
         direction = Vector(4, 1, 0)
 
-        Draft.stretch = aux._fake_function
+        Draft.stretch = aux.fake_function
         obj = Draft.stretch(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
