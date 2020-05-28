@@ -2237,6 +2237,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
 
                 commitCommand();
+                Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
                 tryAutoRecomputeIfNotSolve(Obj);
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -4432,6 +4433,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", first, firstpos);
 
                     commitCommand();
+                    Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
                     tryAutoRecomputeIfNotSolve(Obj);
 
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
