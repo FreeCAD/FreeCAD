@@ -625,8 +625,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ( ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) && 
-             (!(*it)->isRemoving()) ) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()))   {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
         }
