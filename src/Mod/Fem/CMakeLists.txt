@@ -353,6 +353,7 @@ SET(FemGuiTests_SRCS
 )
 
 SET(FemGuiUtils_SRCS
+    femguiutils/__init__.py
     femguiutils/selection_widgets.py
 )
 
