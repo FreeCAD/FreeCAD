@@ -31,7 +31,10 @@ if cfolder:
     if not os.path.isdir(cfolder):
         cfolder = os.path.dirname(cfolder)
     f = unquote(filename).replace("+"," ")
-    FreeCAD.open(os.path.join(cfolder,f))
+    if f.lower().endswith(".fcstd"):
+        FreeCAD.open(os.path.join(cfolder,f))
+    else:
+        FreeCAD.loadFile(os.path.join(cfolder,f))
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
