@@ -1256,6 +1256,7 @@ def getExtrusionData(shape,sortmethod="area"):
 
     "area" = Of the faces with the smallest area, the one with the lowest z coordinate.
     "z" = The face with the lowest z coordinate.
+    a 3D vector = the face which center is closest to the given 3D point
 
     Parameters
     ----------
@@ -1314,9 +1315,11 @@ def getExtrusionData(shape,sortmethod="area"):
     if valids:
         if sortmethod == "z":
             valids.sort(key=lambda v: v[0].CenterOfMass.z)
-        else:
+        elif sortmethod == "area":
             # sort by smallest area
             valids.sort(key=lambda v: v[0].Area)
+        else:
+            valids.sort(key=lambda v: (v[0].CenterOfMass.sub(sortmethod)).Length)
         return valids[0]
     return None
 

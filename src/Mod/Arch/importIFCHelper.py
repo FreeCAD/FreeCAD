@@ -607,6 +607,9 @@ def get2DShape(representation,scaling=1000):
             pts.append(c)
         return Part.makePolygon(pts)
 
+    def getRectangle(ent):
+        return Part.makePlane(ent.XDim,ent.YDim)
+
     def getLine(ent):
         pts = []
         p1 = getVector(ent.Pnt)
@@ -629,11 +632,13 @@ def get2DShape(representation,scaling=1000):
         result = []
         if ent.is_a() in ["IfcGeometricCurveSet","IfcGeometricSet"]:
             elts = ent.Elements
-        elif ent.is_a() in ["IfcLine","IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
+        elif ent.is_a() in ["IfcLine","IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
             elts = [ent]
         for el in elts:
             if el.is_a("IfcPolyline"):
                 result.append(getPolyline(el))
+            if el.is_a("IfcRectangleProfileDef"):
+                result.append(getRectangle(el))
             elif el.is_a("IfcLine"):
                 result.append(getLine(el))
             elif el.is_a("IfcCircle"):
@@ -691,6 +696,40 @@ def get2DShape(representation,scaling=1000):
             elif item.is_a("IfcTextLiteral"):
                 t = Draft.makeText([item.Literal],point=getPlacement(item.Placement,scaling).Base)
                 return t  # dirty hack... Object creation should not be done here
-    elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
+    elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
         result = getCurveSet(representation)
     return result
+
+
+def getProfileCenterPoint(sweptsolid):
+    """returns the center point of the profile of an extrusion"""
+    v = FreeCAD.Vector(0,0,0)
+    if hasattr(sweptsolid,"SweptArea"):
+        profile = get2DShape(sweptsolid.SweptArea)
+        if profile:
+            profile = profile[0]
+            if hasattr(profile,"CenterOfMass"):
+                v = profile.CenterOfMass
+            elif hasattr(profile,"BoundBox"):
+                v = profile.BoundBox.Center
+    if hasattr(sweptsolid,"Position"):
+        pos = getPlacement(sweptsolid.Position)
+        v = pos.multVec(v)
+    return v
+
+
+def isRectangle(verts):
+    """returns True if the given 4 vertices form a rectangle"""
+    if len(verts) != 4:
+        return False
+    v1 = verts[1].sub(verts[0])
+    v2 = verts[2].sub(verts[1])
+    v3 = verts[3].sub(verts[2])
+    v4 = verts[0].sub(verts[3])
+    if abs(v2.getAngle(v1)-math.pi/2) > 0.01:
+        return False
+    if abs(v3.getAngle(v2)-math.pi/2) > 0.01:
+        return False
+    if abs(v4.getAngle(v3)-math.pi/2) > 0.01:
+        return False
+    return True

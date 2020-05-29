@@ -1746,16 +1746,18 @@ def getProfile(ifcfile,p):
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         if isinstance(p.Edges[0].Curve,Part.Circle):
             # extruded circle
-            profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
+            profile = ifcbin.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
-            profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+            profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        # profile must be located at (0,0) because placement gets added later
+        #povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -1763,7 +1765,7 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
-        profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+        profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
