@@ -120,13 +120,10 @@ public:
 
         add_varargs_method("Restore",&Module::sCloudRestore,
             "Restore(string) -- Restore to the active document from the Cloud."
-<<<<<<< HEAD
         );
 
 	add_varargs_method("ProtocolVersion",&Module::sCloudProtocolVersion,
             "ProtocolVersion(string) -- Specify Amazon s3 protocol version (2 or 4)"
-=======
->>>>>>> origin/cloud
         );
 
         initialize("This module is the Cloud module."); // register with Python
@@ -138,10 +135,7 @@ public:
     App::PropertyString TCPPort;
     App::PropertyString TokenAuth;
     App::PropertyString TokenSecret;
-<<<<<<< HEAD
     App::PropertyString ProtocolVersion;
-=======
->>>>>>> origin/cloud
     bool cloudSave(const char* BucketName);
     bool cloudRestore(const char* BucketName);
 
