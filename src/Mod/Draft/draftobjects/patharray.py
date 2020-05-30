@@ -236,6 +236,8 @@ class PathArray(DraftLink):
             obj.AlignMode = ['Original', 'Frenet', 'Tangent']
             obj.AlignMode = 'Original'
 
+        # The Align property must be attached after other align properties
+        # so that onChanged works properly
         if "Align" not in properties:
             _tip = _tr("Orient the copies along the path depending "
                        "on the 'Align Mode'.\n"
@@ -311,6 +313,41 @@ class PathArray(DraftLink):
                 e = sub[0].Shape.getElement(n)
                 sl.append(e)
         return Part.Wire(sl)
+
+    def onChanged(self, obj, prop):
+        """Execute when a property is changed."""
+        super(PathArray, self).onChanged(obj, prop)
+        self.show_and_hide(obj, prop)
+
+    def show_and_hide(self, obj, prop):
+        """Show and hide the properties depending on the touched property."""
+        # The minus sign removes the Hidden property (show)
+        if prop == "Align":
+            if obj.Align:
+                for pr in ("AlignMode", "ForceVertical", "VerticalVector",
+                           "TangentVector"):
+                    obj.setPropertyStatus(pr, "-Hidden")
+            else:
+                for pr in ("AlignMode", "ForceVertical", "VerticalVector",
+                           "TangentVector"):
+                    obj.setPropertyStatus(pr, "Hidden")
+
+        if prop == "AlignMode":
+            if obj.AlignMode == "Original":
+                for pr in ("ForceVertical", "VerticalVector"):
+                    obj.setPropertyStatus(pr, "-Hidden")
+
+                obj.setPropertyStatus("TangentVector", "Hidden")
+
+            elif obj.AlignMode == "Frenet":
+                for pr in ("ForceVertical", "VerticalVector",
+                           "TangentVector"):
+                    obj.setPropertyStatus(pr, "Hidden")
+
+            elif obj.AlignMode == "Tangent":
+                for pr in ("ForceVertical", "VerticalVector",
+                           "TangentVector"):
+                    obj.setPropertyStatus(pr, "-Hidden")
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
