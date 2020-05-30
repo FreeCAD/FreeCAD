@@ -126,6 +126,11 @@ class PathArray(DraftLink):
         else:
             properties = []
 
+        self.set_general_properties(obj, properties)
+        self.set_align_properties(obj, properties)
+
+    def set_general_properties(self, obj, properties):
+        """Set general properties only if they don't exist."""
         if "Base" not in properties:
             _tip = _tr("The base object that will be duplicated")
             obj.addProperty("App::PropertyLinkGlobal",
@@ -160,38 +165,22 @@ class PathArray(DraftLink):
             _tip = _tr("Number of copies to create")
             obj.addProperty("App::PropertyInteger",
                             "Count",
-                            "General",
+                            "Objects",
                             _tip)
             obj.Count = 4
 
-        if "Align" not in properties:
-            _tip = _tr("Orient the copies along the path depending "
-                       "on the 'Align Mode'.\n"
-                       "Otherwise the copies will have the same orientation "
-                       "as the original Base object.")
+        if self.use_link and "ExpandArray" not in properties:
+            _tip = _tr("Show the individual array elements "
+                       "(only for Link arrays)")
             obj.addProperty("App::PropertyBool",
-                            "Align",
-                            "Alignment",
+                            "ExpandArray",
+                            "Objects",
                             _tip)
-            obj.Align = False
+            obj.ExpandArray = False
+            obj.setPropertyStatus('Shape', 'Transient')
 
-        if "AlignMode" not in properties:
-            _tip = _tr("Method to orient the copies along the path.\n"
-                       "- Original, X is curve tangent, Y is normal, "
-                       "and Z is the cross product.\n"
-                       "- Frenet uses a local coordinate system along "
-                       "the path.\n"
-                       "- Tangent is similar to 'Original' but the local X "
-                       "axis is pre-aligned to 'Tangent Vector'.\n"
-                       "To get better results with 'Original' and 'Tangent' "
-                       "you may have to set 'Force Vertical' to true.")
-            obj.addProperty("App::PropertyEnumeration",
-                            "AlignMode",
-                            "Alignment",
-                            _tip)
-            obj.AlignMode = ['Original', 'Frenet', 'Tangent']
-            obj.AlignMode = 'Original'
-
+    def set_align_properties(self, obj, properties):
+        """Set general properties only if they don't exist."""
         if "Xlate" not in properties:
             _tip = _tr("Additional translation "
                        "that will be applied to each copy.\n"
@@ -212,8 +201,8 @@ class PathArray(DraftLink):
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
-            _tip = _tr("Force use of 'Vertical Vector' as Z direction "
-                       "when using 'Original' or 'Tangent' align mode")
+            _tip = _tr("Force use of 'Vertical Vector' as local Z direction "
+                       "when using 'Original' or 'Tangent' alignment mode")
             obj.addProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",
@@ -229,15 +218,34 @@ class PathArray(DraftLink):
                             _tip)
             obj.VerticalVector = App.Vector(0, 0, 1)
 
-        if self.use_link and "ExpandArray" not in properties:
-            _tip = _tr("Show the individual array elements "
-                       "(only for Link arrays)")
-            obj.addProperty("App::PropertyBool",
-                            "ExpandArray",
-                            "General",
+        if "AlignMode" not in properties:
+            _tip = _tr("Method to orient the copies along the path.\n"
+                       "- Original: X is curve tangent, Y is normal, "
+                       "and Z is the cross product.\n"
+                       "- Frenet: aligns the object following the local "
+                       "coordinate system along the path.\n"
+                       "- Tangent: similar to 'Original' but the local X "
+                       "axis is pre-aligned to 'Tangent Vector'.\n"
+                       "\n"
+                       "To get better results with 'Original' or 'Tangent' "
+                       "you may have to set 'Force Vertical' to true.")
+            obj.addProperty("App::PropertyEnumeration",
+                            "AlignMode",
+                            "Alignment",
                             _tip)
-            obj.ExpandArray = False
-            obj.setPropertyStatus('Shape', 'Transient')
+            obj.AlignMode = ['Original', 'Frenet', 'Tangent']
+            obj.AlignMode = 'Original'
+
+        if "Align" not in properties:
+            _tip = _tr("Orient the copies along the path depending "
+                       "on the 'Align Mode'.\n"
+                       "Otherwise the copies will have the same orientation "
+                       "as the original Base object.")
+            obj.addProperty("App::PropertyBool",
+                            "Align",
+                            "Alignment",
+                            _tip)
+            obj.Align = False
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
