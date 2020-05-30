@@ -354,8 +354,9 @@ class PathArray(DraftLink):
 
         Add properties that don't exist.
         """
-        self.migrate_attributes(obj)
+        super(PathArray, self).migrate_attributes(obj)
         self.set_properties(obj)
+        self.migrate_properties_0v19(obj)
 
         if self.use_link:
             self.linkSetup(obj)
@@ -367,6 +368,28 @@ class PathArray(DraftLink):
                 self.buildShape(obj, obj.Placement, obj.PlacementList)
             else:
                 self.execute(obj)
+
+    def migrate_properties_0v19(self, obj):
+        """Migrate properties of this class, not from the parent class."""
+        properties = obj.PropertiesList
+
+        if "PathObj" in properties:
+            obj.PathObject = obj.PathObj
+            obj.removeProperty("PathObj")
+            _info = "'PathObj' property will be migrated to 'PathObject'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+
+        if "PathSubs" in properties:
+            obj.PathSubelements = obj.PathSubs
+            obj.removeProperty("PathSubs")
+            _info = "'PathSubs' property will be migrated to 'PathSubelements'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+
+        if "Xlate" in properties:
+            obj.ExtraTranslation = obj.Xlate
+            obj.removeProperty("Xlate")
+            _info = "'Xlate' property will be migrated to 'ExtraTranslation'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
 
 _PathArray = PathArray
