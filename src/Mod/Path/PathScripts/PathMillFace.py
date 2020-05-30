@@ -58,11 +58,11 @@ class ObjectFace(PathPocketBase.ObjectPocket):
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
-        obj.BoundaryShape = ['Perimeter', 'Boundbox', 'Stock', 'Available']
         obj.addProperty("App::PropertyBool", "ClearEdges", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clear edges of surface (Only applicable to BoundBox)"))
-
         if not hasattr(obj, 'ExcludeRaisedAreas'):
             obj.addProperty("App::PropertyBool", "ExcludeRaisedAreas", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."))
+
+        obj.BoundaryShape = ['Boundbox', 'Face Region', 'Perimeter', 'Stock']
 
     def pocketInvertExtraOffset(self):
         return True
@@ -190,13 +190,26 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 env = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
             else:
                 env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
+        elif obj.BoundaryShape == 'Face Region':
+            import PathScripts.PathSurfaceSupport as PathSurfaceSupport
+            baseShape = oneBase[0].Shape
+            psZMin = planeshape.BoundBox.ZMin
+            ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.tool.Diameter * 1.1, planeshape)
+            ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
+            # custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)  # only an envelope
+            # ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
+            # ofstShapeEnv.translate(FreeCAD.Vector(0.0, 0.0, -0.5))
+            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.1, obj.FinalDepth.Value - 0.1)  # only an envelope
+            ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
+            env = ofstShapeEnv.cut(baseShape)
 
         if holeShape:
-            PathLog.info("Processing holes...")
+            PathLog.debug("Processing holes and face ...")
             holeEnv = PathUtils.getEnvelope(partshape=holeShape, depthparams=self.depthparams)
             newEnv = env.cut(holeEnv)
             tup = newEnv, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
         else:
+            PathLog.debug("Processing solid face ...")
             tup = env, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
         return [tup]
 

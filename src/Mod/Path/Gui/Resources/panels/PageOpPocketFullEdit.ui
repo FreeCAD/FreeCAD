@@ -24,7 +24,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="toolController_label">
         <property name="text">
          <string>Tool Controller</string>
         </property>
@@ -38,7 +38,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="coolantController_label">
         <property name="text">
          <string>Coolant Mode</string>
         </property>
@@ -64,12 +64,17 @@
         </property>
         <item>
          <property name="text">
-          <string>Perimeter</string>
+          <string>Boundbox</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Boundbox</string>
+          <string>Face Region</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Perimeter</string>
          </property>
         </item>
         <item>
@@ -80,7 +85,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_12">
+       <widget class="QLabel" name="boundaryShape_label">
         <property name="text">
          <string>Boundary Shape</string>
         </property>
@@ -96,7 +101,7 @@
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="cutMode_label">
         <property name="text">
          <string>Cut Mode</string>
         </property>
@@ -120,7 +125,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="offsetPattern_label">
         <property name="text">
          <string>Pattern</string>
         </property>
@@ -172,7 +177,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="zigZagAngle_label">
         <property name="text">
          <string>Angle</string>
         </property>
@@ -186,7 +191,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="stepOverPercent_label">
         <property name="text">
          <string>Step Over Percent</string>
         </property>
@@ -212,7 +217,7 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="extraOffsetLabel">
+       <widget class="QLabel" name="extraOffset_label">
         <property name="text">
          <string>Material Allowance</string>
         </property>
@@ -226,7 +231,7 @@
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="enableRotation_label">
         <property name="text">
          <string>Enable Rotation</string>
         </property>
