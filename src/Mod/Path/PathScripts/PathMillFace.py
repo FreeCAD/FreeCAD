@@ -182,8 +182,14 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                     includedShape = Part.makeCompound(includedFaces)
                     includedEnv = PathUtils.getEnvelope(oneBase[0].Shape, subshape=includedShape, depthparams=self.depthparams)
                     env = stockEnv.cut(includedEnv)
-        else:
-            env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
+        elif obj.BoundaryShape == 'Perimeter':
+            if obj.ClearEdges:
+                psZMin = planeshape.BoundBox.ZMin
+                ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.radius * 1.25, planeshape)
+                ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
+                env = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
+            else:
+                env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 
         if holeShape:
             PathLog.info("Processing holes...")
