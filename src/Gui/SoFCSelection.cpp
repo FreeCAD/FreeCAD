@@ -407,14 +407,13 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                 const auto &pt = pp->getPoint();
                 
                 auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f, %f, %f) %s"
+                snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
                                 ,documentName.getValue().getString()
                                 ,objectName.getValue().getString()
                                 ,subElementName.getValue().getString()
-                                ,pts[0].first
-                                ,pts[1].first
-                                ,pts[2].first
-                                ,pts[0].second.c_str());
+                                ,pts[0].first, pts[0].second.c_str()
+                                ,pts[1].first, pts[1].second.c_str()
+                                ,pts[2].first, pts[2].second.c_str());
                 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }

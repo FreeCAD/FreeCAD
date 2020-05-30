@@ -488,9 +488,11 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         static char buf[513];
 
         auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-        snprintf(buf,512,"Preselected: %s.%s.%s (%f, %f, %f) %s"
+        snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
                 ,docname,objname,element
-                ,pts[0].first,pts[1].first,pts[2].first,pts[0].second.c_str());
+                ,pts[0].first,pts[0].second.c_str()
+                ,pts[1].first,pts[1].second.c_str()
+                ,pts[2].first,pts[2].second.c_str());
 
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 
