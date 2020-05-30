@@ -670,7 +670,9 @@ void MDIViewPage::printPdf(std::string file)
         printer.setOrientation(m_orientation);
     }
     printer.setPaperSize(m_paperSize);
+    m_view->setExporting(true);
     print(&printer);
+    m_view->setExporting(false);
 }
 
 void MDIViewPage::print()
