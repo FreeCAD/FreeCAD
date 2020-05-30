@@ -48,6 +48,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Wire.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TColgp_Array1OfPnt2d.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
@@ -55,6 +56,8 @@
 # include <Geom2d_BezierCurve.hxx>
 # include <gp_Trsf.hxx>
 # include <Precision.hxx>
+#include <ShapeConstruct_Curve.hxx>
+#include <Geom2d_BSplineCurve.hxx>
 #endif // _PreComp
 
 #include <Base/Console.h>
@@ -71,6 +74,8 @@
 
 #include "FT2FC.h"
 
+#define CLOCKWISE 0
+#define ANTICLOCKWISE 1
 using namespace Part;
 
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
@@ -79,6 +84,7 @@ typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UN
 PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);
 FT_Vector getKerning(FT_Face FTFont, UNICHAR lc, UNICHAR rc);
 TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges);
+int calcClockDir(std::vector<Base::Vector3d> points);
 
 // for compatibility with old version - separate path & filename
 PyObject* FT2FC(const Py_UNICODE *PyUString,
@@ -119,7 +125,6 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
       ErrorMsg << "FT_Init_FreeType failed: " << error;
       throw std::runtime_error(ErrorMsg.str());
       }
-
 
 #ifdef FC_OS_WIN32
     Base::FileInfo fi(FontSpec);
@@ -195,7 +200,9 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 // FT Decomp Context for 1 char
 struct FTDC_Ctx {
   std::vector<TopoDS_Wire> Wires;
+  std::vector<int> wDir;
   std::vector<TopoDS_Edge> Edges;
+  std::vector<Base::Vector3d> polyPoints;
   UNICHAR currchar;
   FT_Vector LastVert;
   Handle(Geom_Surface) surf;
@@ -209,8 +216,14 @@ static int move_cb(const FT_Vector* pt, void* p) {
        TopoDS_Wire newwire = edgesToWire(dc->Edges);
        dc->Wires.push_back(newwire);
        dc->Edges.clear();
+       dc->wDir.push_back(calcClockDir(dc->polyPoints));
+       dc->polyPoints.clear();
    }
    dc->LastVert = *pt;
+   if (dc->polyPoints.empty()) {
+        dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
+   }
+
    return 0;
 }
 
@@ -224,6 +237,7 @@ static int line_cb(const FT_Vector* pt, void* p) {
        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg , dc->surf);
        dc->Edges.push_back(edge);
        dc->LastVert = *pt;
+       dc->polyPoints.push_back(Base::Vector3d(pt->x, pt->y, 0.0));
    }
    return 0;
 }
@@ -240,9 +254,18 @@ static int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p) {
    Poles.SetValue(2, c1);
    Poles.SetValue(3, v2);
    Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
-   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg , dc->surf);
+   double u,v;
+   u = bcseg->FirstParameter();
+   v = bcseg->LastParameter();
+   ShapeConstruct_Curve scc;
+   Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(bcseg, u, v, Precision::Confusion());
+   if (spline.IsNull()) {
+       Base::Console().Message("Conversion to B-spline failed");
+   }
+   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt1;
+   dc->polyPoints.push_back(Base::Vector3d(pt1->x, pt1->y, 0.0));
    return 0;
 }
 
@@ -260,9 +283,18 @@ static int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector*
    Poles.SetValue(3, c2);
    Poles.SetValue(4, v2);
    Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
-   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg , dc->surf);
+   double u,v;
+   u = bcseg->FirstParameter();
+   v = bcseg->LastParameter();
+   ShapeConstruct_Curve scc;
+   Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(bcseg, u, v, Precision::Confusion());
+   if (spline.IsNull()) {
+       Base::Console().Message("Conversion to B-spline failed");
+   }
+   TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(spline , dc->surf);
    dc->Edges.push_back(edge);
    dc->LastVert = *pt2;
+   dc->polyPoints.push_back(Base::Vector3d(pt2->x, pt2->y, 0.0));
    return 0;
 }
 
@@ -297,8 +329,19 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
 // make the last TopoDS_Wire
    if (!ctx.Edges.empty()){
        ctx.Wires.push_back(edgesToWire(ctx.Edges));
+       ctx.wDir.push_back(calcClockDir(ctx.polyPoints));
    }
-   /*FT_Orientation fontClass =*/ FT_Outline_Get_Orientation(&FTFont->glyph->outline);
+
+//a ttf outer contour is clockwise with material on the right.
+//an occ outer contour has material on the left, so it must be reversed? 
+
+
+   FT_Orientation ftOrient = FT_Outline_Get_Orientation(&FTFont->glyph->outline);
+   bool isTTF = false;
+   if (ftOrient == FT_ORIENTATION_TRUETYPE) {
+        isTTF = true;
+   }
+   
    PyObject* ret = PyList_New(0);
 
    gp_Vec pointer = gp_Vec(PenPos * Scale + charNum*tracking,0.0,0.0);
@@ -308,7 +351,22 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    BRepBuilderAPI_Transform BRepScale(xForm);
    bool bCopy = true;                                                           // no effect?
 
-   for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end();++iWire) {
+
+   int wCount = 0; 
+   for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end(); ++iWire, wCount++) {
+       if ((ctx.wDir[wCount] == CLOCKWISE) && isTTF) {         //ttf outer wire. fill inside / right 
+           (*iWire).Orientation(TopAbs_REVERSED);
+       } else if ((ctx.wDir[wCount] == CLOCKWISE) && !isTTF) { //ps inner wire. fill outside / right
+           (*iWire).Orientation(TopAbs_REVERSED);
+       } else if ((ctx.wDir[wCount] == ANTICLOCKWISE) && isTTF) {  //ttf inner wire. fill outside / left
+           (*iWire).Orientation(TopAbs_REVERSED);
+       } else if ((ctx.wDir[wCount] == ANTICLOCKWISE) && !isTTF) {  //ps outer wire. fill inside / left
+           (*iWire).Orientation(TopAbs_REVERSED);
+       } else {
+            //this is likely a poorly constructed font (ex a ttf with outer wires ACW )
+            Base::Console().Message("FT2FC::getGlyphContours - indeterminate wire direction\n");
+       }
+
        BRepScale.Perform(*iWire,bCopy);
        if (!BRepScale.IsDone())  {
           ErrorMsg << "FT2FC OCC BRepScale failed \n";
@@ -354,5 +412,25 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge> Edges) {
     return(occwire);
 }
 
+//is polygon formed by points clockwise (0) or anticlockwise(1)
+int calcClockDir(std::vector<Base::Vector3d> points)
+{
+    int result = CLOCKWISE;
+    int stop = points.size() - 1;
+    int iPoint = 0;
+    double bigArea = 0;
+    for ( ; iPoint < stop; iPoint++) {
+        double area = points[iPoint].x * points[iPoint + 1].y -
+                      points[iPoint + 1].x * points[iPoint].y;
+        bigArea += area;
+    }
+    double area = points.back().x * points.front().y -
+                  points.front().x * points.back().y;
+    bigArea += area;
+    if (bigArea < 0) {
+        result = ANTICLOCKWISE;
+    }
+    return result;
+}
 
 #endif //#ifdef FCUseFreeType
