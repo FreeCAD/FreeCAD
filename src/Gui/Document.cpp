@@ -1648,10 +1648,7 @@ MDIView *Document::createView(const Base::Type& typeId)
             const char *ppReturn = 0;
             view3D->onMsg(cameraSettings.c_str(),&ppReturn);
         }
-        ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        if (hViewGrp->GetBool("ShowAxisCross",false)){
-            view3D->getViewer()->setAxisCross(true);
-        }
+
         getMainWindow()->addWindow(view3D);
         return view3D;
     }
