@@ -125,6 +125,17 @@ Py::Object Cloud::Module::sCloudRestore(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object Cloud::Module::sCloudProtocolVersion(const Py::Tuple& args)
+{
+    char *ProtocolVersion;
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TCPPort))     // convert args: Python->C
+        return Py::None();
+    if (this->ProtocolVersion.getStrValue() != ProtocolVersion) {
+            this->ProtocolVersion.setValue(ProtocolVersion);
+    }
+    return Py::None();
+}
+
 struct data_buffer
 {
         const char *ptr;

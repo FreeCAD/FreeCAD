@@ -122,6 +122,10 @@ public:
             "Restore(string) -- Restore to the active document from the Cloud."
         );
 
+	add_varargs_method("ProtocolVersion",&Module::sCloudProtocolVersion,
+            "ProtocolVersion(string) -- Specify Amazon s3 protocol version (2 or 4)"
+        );
+
         initialize("This module is the Cloud module."); // register with Python
     }
 
@@ -131,6 +135,7 @@ public:
     App::PropertyString TCPPort;
     App::PropertyString TokenAuth;
     App::PropertyString TokenSecret;
+    App::PropertyString ProtocolVersion;
     bool cloudSave(const char* BucketName);
     bool cloudRestore(const char* BucketName);
 
@@ -141,6 +146,7 @@ private:
     Py::Object sCloudTCPPort  (const Py::Tuple& args);
     Py::Object sCloudSave  (const Py::Tuple& args);
     Py::Object sCloudRestore  (const Py::Tuple& args);
+    Py::Object sCloudProtocolVersion  (const Py::Tuple& args);
 
 
 };
@@ -178,6 +184,7 @@ protected:
     const char* TokenAuth;
     const char* TokenSecret;
     const char* Bucket;
+    const char* ProtocolVersion;
     std::stringstream FileStream;
 };
 
