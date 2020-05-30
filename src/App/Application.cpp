@@ -2663,8 +2663,8 @@ void Application::ParseOptions(int ac, char ** av)
 void Application::ExtractUserPath()
 {
     // std paths
-    mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
-    mConfig["DocPath"] = mConfig["AppHomePath"] + "doc" + PATHSEP;
+    mConfig["BinPath"] = BIN_DIR + PATHSEP;
+    mConfig["DocPath"] = DATA_DIR + "doc" + PATHSEP;
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // Default paths for the user specific stuff
