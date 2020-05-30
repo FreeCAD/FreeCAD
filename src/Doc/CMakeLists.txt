@@ -22,13 +22,13 @@ if(BUILD_GUI)
     INSTALL(FILES
         ${CMAKE_BINARY_DIR}/doc/freecad.qch
         freecad.qhc
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/freecad/help
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/help
     )
 endif(BUILD_GUI)
 
 INSTALL(FILES
     ThirdPartyLibraries.html
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/help
 )
 
 if(DOXYGEN_FOUND)

@@ -8,5 +8,4 @@ add_custom_target(lazy_loader ALL SOURCES
 SET_PYTHON_PREFIX_SUFFIX(lazy_loader)
 
 fc_copy_sources(lazy_loader "${CMAKE_BINARY_DIR}/Ext/lazy_loader" ${lazy_loader})
-install (FILES ${lazy_loader} DESTINATION "${CMAKE_INSTALL_PREFIX}/Ext/lazy_loader")
-
+install (FILES ${lazy_loader} DESTINATION "${CMAKE_INSTALL_LIBDIR}/Ext/lazy_loader")
