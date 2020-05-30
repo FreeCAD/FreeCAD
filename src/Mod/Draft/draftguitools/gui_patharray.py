@@ -114,7 +114,7 @@ class PathArray(gui_base_original.Modifier):
             path_object = sel[1].Object
 
             count = 4
-            xlate = App.Vector(0, 0, 0)
+            extra = App.Vector(0, 0, 0)
             subelements = list(sel[1].SubElementNames)
             align = False
             align_mode = "Original"
@@ -136,7 +136,7 @@ class PathArray(gui_base_original.Modifier):
             _cmd += "App.ActiveDocument." + base_object.Name + ", "
             _cmd += "App.ActiveDocument." + path_object.Name + ", "
             _cmd += "count=" + str(count) + ", "
-            _cmd += "xlate=" + DraftVecUtils.toString(xlate) + ", "
+            _cmd += "extra=" + DraftVecUtils.toString(extra) + ", "
             _cmd += "subelements=" + subelements_list_str + ", "
             _cmd += "align=" + str(align) + ", "
             _cmd += "align_mode=" + "'" + align_mode + "', "
