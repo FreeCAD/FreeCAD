@@ -79,7 +79,6 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
@@ -100,6 +99,10 @@
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
 using namespace Gui;
+
+namespace Gui {
+std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+}
 
 SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
 
@@ -480,46 +483,14 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
-        
-        Base::Quantity mmx(Base::Quantity::MilliMetre);
-        mmx.setValue(fabs(x)>1e-7?(double)x:0.0);
-        Base::Quantity mmy(Base::Quantity::MilliMetre);
-        mmy.setValue(fabs(y)>1e-7?(double)y:0.0);
-        Base::Quantity mmz(Base::Quantity::MilliMetre);
-        mmz.setValue(fabs(z)>1e-7?(double)z:0.0);
-        
-        double xfactor, yfactor, zfactor, factor;
-        QString xunit, yunit, zunit, unit;
-        
-        QString xval = Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
-        QString yval = Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
-        QString zval = Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
-        
-        if (xfactor <= yfactor && xfactor <= zfactor)
-        {
-            factor = xfactor;
-            unit = xunit;
-        }
-        else if (yfactor <= xfactor && yfactor <= zfactor)
-        {
-            factor = yfactor;
-            unit = yunit;
-        }
-        else
-        {
-            factor = zfactor;
-            unit = zunit;
-        }
-        
-        float xuser = fabs(x)>1e-7 ? x / factor : 0.0;
-        float yuser = fabs(y)>1e-7 ? y / factor : 0.0;
-        float zuser = fabs(z)>1e-7 ? z / factor : 0.0;
     
         this->preSelection = 1;
         static char buf[513];
+
+        auto pts = schemaTranslatePoint(x, y, z, 1e-7);
         snprintf(buf,512,"Preselected: %s.%s.%s (%f, %f, %f) %s"
                 ,docname,objname,element
-                ,xuser,yuser,zuser,unit.toLatin1().data());
+                ,pts[0].first,pts[1].first,pts[2].first,pts[0].second.c_str());
 
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 
