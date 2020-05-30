@@ -139,7 +139,14 @@ structuralifcobjects = (
 # ********** get the prefs, available in import and export ****************
 def getPreferences():
 
-    """retrieves IFC preferences"""
+    """retrieves IFC preferences.
+    
+    MERGE_MODE_ARCH: 
+        0 = parametric arch objects
+        1 = non-parametric arch objects
+        2 = Part shapes
+        3 = One compound per storey
+    """
 
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
@@ -274,6 +281,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
     mattable = importIFCHelper.buildRelMattable(ifcfile)
     colors = importIFCHelper.buildRelProductColors(ifcfile, prodrepr)
+    colordict = {} # { objname:color tuple } for non-GUI use
     if preferences['DEBUG']: print("done.")
 
     # only import a list of IDs and their children, if defined
@@ -485,24 +493,29 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     else:
                         if preferences['GET_EXTRUSIONS'] and (preferences['MERGE_MODE_ARCH'] != 1):
 
+                            # get IFC profile
+                            profileid = None
+                            sortmethod = None
+                            if product.Representation:
+                                if product.Representation.Representations:
+                                    if product.Representation.Representations[0].is_a("IfcShapeRepresentation"):
+                                        if product.Representation.Representations[0].Items:
+                                            if product.Representation.Representations[0].Items[0].is_a("IfcExtrudedAreaSolid"):
+                                                profileid = product.Representation.Representations[0].Items[0].SweptArea.id()
+                                                sortmethod = importIFCHelper.getProfileCenterPoint(product.Representation.Representations[0].Items[0])
+
                             # recompose extrusions from a shape
-                            if ptype in ["IfcWall","IfcWallStandardCase","IfcSpace"]:
-                                sortmethod = "z"
-                            else:
-                                sortmethod = "area"
+                            if not sortmethod:
+                                if ptype in ["IfcWall","IfcWallStandardCase","IfcSpace"]:
+                                    sortmethod = "z"
+                                else:
+                                    sortmethod = "area"
                             ex = Arch.getExtrusionData(shape,sortmethod)  # is this an extrusion?
                             if ex:
 
                                 # check for extrusion profile
                                 baseface = None
-                                profileid = None
                                 addplacement = None
-                                if product.Representation:
-                                    if product.Representation.Representations:
-                                        if product.Representation.Representations[0].is_a("IfcShapeRepresentation"):
-                                            if product.Representation.Representations[0].Items:
-                                                if product.Representation.Representations[0].Items[0].is_a("IfcExtrudedAreaSolid"):
-                                                    profileid = product.Representation.Representations[0].Items[0].SweptArea.id()
                                 if profileid and (profileid in profiles):
 
                                     # reuse existing profile if existing
@@ -526,23 +539,34 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                                     print("extrusion ",end="")
                                     import DraftGeomUtils
                                     if DraftGeomUtils.hasCurves(ex[0]) or len(ex[0].Wires) != 1:
-                                        # curves or holes? We just make a Part face
-                                        baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                                        # bug/feature in ifcopenshell? Some faces of a shell may have non-null placement
-                                        # workaround to remove the bad placement: exporting/reimporting as step
-                                        if not ex[0].Placement.isNull():
-                                            import tempfile
-                                            fd, tf = tempfile.mkstemp(suffix=".stp")
-                                            ex[0].exportStep(tf)
-                                            f = Part.read(tf)
-                                            os.close(fd)
-                                            os.remove(tf)
+                                        # is this a circle?
+                                        if (len(ex[0].Edges) == 1) and isinstance(ex[0].Edges[0].Curve,Part.Circle):
+                                            baseface = Draft.makeCircle(ex[0].Edges[0])
                                         else:
-                                            f = ex[0]
-                                        baseface.Shape = f
+                                            # curves or holes? We just make a Part face
+                                            baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                                            # bug/feature in ifcopenshell? Some faces of a shell may have non-null placement
+                                            # workaround to remove the bad placement: exporting/reimporting as step
+                                            if not ex[0].Placement.isNull():
+                                                import tempfile
+                                                fd, tf = tempfile.mkstemp(suffix=".stp")
+                                                ex[0].exportStep(tf)
+                                                f = Part.read(tf)
+                                                os.close(fd)
+                                                os.remove(tf)
+                                            else:
+                                                f = ex[0]
+                                            baseface.Shape = f
                                     else:
-                                        # no hole and no curves, we make a Draft Wire instead
-                                        baseface = Draft.makeWire([v.Point for v in ex[0].Wires[0].OrderedVertexes],closed=True)
+                                        # no curve and no hole, we can make a draft object
+                                        verts = [v.Point for v in ex[0].Wires[0].OrderedVertexes]
+                                        # TODO verts are different if shape is made of RectangleProfileDef or not
+                                        # is this a rectangle?
+                                        if importIFCHelper.isRectangle(verts):
+                                            baseface = Draft.makeRectangle(verts,face=True)
+                                        else:
+                                            # no hole and no curves, we make a Draft Wire instead
+                                            baseface = Draft.makeWire(verts,closed=True)
                                     if profileid:
                                         # store for possible shared use
                                         profiles[profileid] = baseface
@@ -818,12 +842,15 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
             # color
 
-            if FreeCAD.GuiUp and (pid in colors) and colors[pid]:
-                # if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
-                if hasattr(obj.ViewObject,"ShapeColor"):
-                    obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
-                if hasattr(obj.ViewObject,"Transparency"):
-                    obj.ViewObject.Transparency = colors[pid][3]
+            if (pid in colors) and colors[pid]:
+                colordict[obj.Name] = colors[pid]
+                if FreeCAD.GuiUp:
+                    # if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
+                    if hasattr(obj.ViewObject,"ShapeColor"):
+                        obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
+                    if hasattr(obj.ViewObject,"Transparency"):
+                        obj.ViewObject.Transparency = colors[pid][3]
+                    
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
@@ -1248,6 +1275,13 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             if not obj.InList:
                 rootgroup.addObject(obj)
 
+    # Save colordict in non-GUI mode
+    if colordict and not FreeCAD.GuiUp:
+        import json
+        d = doc.Meta
+        d["colordict"] = json.dumps(colordict)
+        doc.Meta = d
+
     FreeCAD.ActiveDocument.recompute()
 
     if ZOOMOUT and FreeCAD.GuiUp:
@@ -1344,3 +1378,24 @@ def createFromProperties(propsets,ifcfile):
                             else:
                                 print("Unhandled FreeCAD property:",name," of type:",ptype)
     return obj
+
+
+def applyColorDict(doc,colordict=None):
+    
+    """applies the contents of a color dict to the objects in the given doc.
+    If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
+    
+    if not colordict:
+        if "colordict" in doc.Meta:
+            import json
+            colordict = json.loads(doc.Meta["colordict"])
+    if colordict:
+        for obj in doc.Objects:
+            if obj.Name in colordict:
+                color = colordict[obj.Name]
+                if hasattr(obj.ViewObject,"ShapeColor"):
+                    obj.ViewObject.ShapeColor = tuple(color[0:3])
+                if hasattr(obj.ViewObject,"Transparency") and (len(color) >= 4):
+                    obj.ViewObject.Transparency = color[3]
+    else:
+        print("No valid color dict to apply")

@@ -74,6 +74,10 @@
 
 using namespace Gui;
 
+namespace Gui {
+std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+}
+
 SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
 
 
@@ -401,13 +405,16 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                 }
                 
                 const auto &pt = pp->getPoint();
-                snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)",documentName.getValue().getString()
-                                           ,objectName.getValue().getString()
-                                           ,subElementName.getValue().getString()
-                                           ,fabs(pt[0])>1e-7?pt[0]:0.0
-                                           ,fabs(pt[1])>1e-7?pt[1]:0.0
-                                           ,fabs(pt[2])>1e-7?pt[2]:0.0);
-
+                
+                auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
+                snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
+                                ,documentName.getValue().getString()
+                                ,objectName.getValue().getString()
+                                ,subElementName.getValue().getString()
+                                ,pts[0].first, pts[0].second.c_str()
+                                ,pts[1].first, pts[1].second.c_str()
+                                ,pts[2].first, pts[2].second.c_str());
+                
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
             else { // picked point

@@ -107,72 +107,7 @@ from draftgeoutils.intersections import findIntersection
 from draftgeoutils.intersections import wiresIntersect
 
 
-
-def pocket2d(shape, offset):
-    """pocket2d(shape,offset): return a list of wires obtained from offsetting the wires from the given shape
-    by the given offset, and intersection if needed."""
-    # find the outer wire
-    l = 0
-    outerWire = None
-    innerWires = []
-    for w in shape.Wires:
-        if w.BoundBox.DiagonalLength > l:
-            outerWire = w
-            l = w.BoundBox.DiagonalLength
-    if not outerWire:
-        return []
-    for w in shape.Wires:
-        if w.hashCode() != outerWire.hashCode():
-            innerWires.append(w)
-    o = outerWire.makeOffset(-offset)
-    if not o.Wires:
-        return []
-    offsetWires = o.Wires
-    #print("base offset wires:",offsetWires)
-    if not innerWires:
-        return offsetWires
-    for innerWire in innerWires:
-        i = innerWire.makeOffset(offset)
-        if len(innerWire.Edges) == 1:
-            e = innerWire.Edges[0]
-            if isinstance(e.Curve,Part.Circle):
-                e = Part.makeCircle(e.Curve.Radius+offset,e.Curve.Center,e.Curve.Axis)
-                i = Part.Wire(e)
-        if i.Wires:
-            #print("offsetting island ",innerWire," : ",i.Wires)
-            for w in i.Wires:
-                added = False
-                #print("checking wire ",w)
-                k = list(range(len(offsetWires)))
-                for j in k:
-                    #print("checking against existing wire ",j)
-                    ow = offsetWires[j]
-                    if ow:
-                        if wiresIntersect(w,ow):
-                            #print("intersect")
-                            f1 = Part.Face(ow)
-                            f2 = Part.Face(w)
-                            f3  = f1.cut(f2)
-                            #print("made new wires: ",f3.Wires)
-                            offsetWires[j] = f3.Wires[0]
-                            if len(f3.Wires) > 1:
-                                #print("adding more")
-                                offsetWires.extend(f3.Wires[1:])
-                            added = True
-                        else:
-                            a = w.BoundBox
-                            b = ow.BoundBox
-                            if (a.XMin <= b.XMin) and (a.YMin <= b.YMin) and (a.ZMin <= b.ZMin) and (a.XMax >= b.XMax) and (a.YMax >= b.YMax) and (a.ZMax >= b.ZMax):
-                                #print("this wire is bigger than the outer wire")
-                                offsetWires[j] = None
-                                added = True
-                            #else:
-                                #print("doesn't intersect")
-                if not added:
-                    #print("doesn't intersect with any other")
-                    offsetWires.append(w)
-    offsetWires = [o for o in offsetWires if o != None]
-    return offsetWires
+from draftgeoutils.offsets import pocket2d
 
 
 from draftgeoutils.edges import orientEdge
@@ -190,40 +125,13 @@ def mirror(point, edge):
         return None
 
 
-def isClockwise(edge, ref=None):
-    """Return True if a circle-based edge has a clockwise direction."""
-    if not geomType(edge) == "Circle":
-        return True
-    v1 = edge.Curve.tangent(edge.ParameterRange[0])[0]
-    if DraftVecUtils.isNull(v1):
-        return True
-    # we take an arbitrary other point on the edge that has little chances to be aligned with the first one...
-    v2 = edge.Curve.tangent(edge.ParameterRange[0]+0.01)[0]
-    n = edge.Curve.Axis
-    # if that axis points "the wrong way" from the reference, we invert it
-    if not ref:
-        ref = Vector(0,0,1)
-    if n.getAngle(ref) > math.pi/2:
-        n = n.negative()
-    if DraftVecUtils.angle(v1,v2,n) < 0:
-        return False
-    if n.z < 0:
-        return False
-    return True
+from draftgeoutils.arcs import isClockwise
 
 
 from draftgeoutils.edges import isSameLine
 
 
-def isWideAngle(edge):
-    """returns True if the given edge is an arc with angle > 180 degrees"""
-    if geomType(edge) != "Circle":
-        return False
-    r = edge.Curve.Radius
-    total = 2*r*math.pi
-    if edge.Length > total/2:
-        return True
-    return False
+from draftgeoutils.arcs import isWideAngle
 
 
 def findClosest(basepoint, pointslist):
@@ -262,141 +170,16 @@ from draftgeoutils.sort_edges import sortEdgesOld
 from draftgeoutils.edges import invert
 
 
-def flattenWire(wire):
-    """flattenWire(wire): forces a wire to get completely flat
-    along its normal."""
-    import WorkingPlane
-    n = getNormal(wire)
-    if not n:
-        return
-    o = wire.Vertexes[0].Point
-    plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(o,n,0)
-    verts = [o]
-    for v in wire.Vertexes[1:]:
-        verts.append(plane.projectPoint(v.Point))
-    if wire.isClosed():
-        verts.append(o)
-    w = Part.makePolygon(verts)
-    return w
+from draftgeoutils.wires import flattenWire
 
 
-def findWires(edgeslist):
-    return [ Part.Wire(e) for e in Part.sortEdges(edgeslist)]
+from draftgeoutils.wires import findWires
 
 
-def findWiresOld2(edgeslist):
-    """Find connected wires in the given list of edges."""
-
-    def touches(e1,e2):
-        if len(e1.Vertexes) < 2:
-            return False
-        if len(e2.Vertexes) < 2:
-            return False
-        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[0].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[0].Point):
-            return True
-        if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
-            return True
-        return False
-
-    edges = edgeslist[:]
-    wires = []
-    lost = []
-    while edges:
-        e = edges[0]
-        if not wires:
-            # create first group
-            edges.remove(e)
-            wires.append([e])
-        else:
-            found = False
-            for w in wires:
-                if not found:
-                    for we in w:
-                        if touches(e,we):
-                            edges.remove(e)
-                            w.append(e)
-                            found = True
-                            break
-            if not found:
-                if e in lost:
-                    # we already tried this edge, and still nothing
-                    edges.remove(e)
-                    wires.append([e])
-                    lost = []
-                else:
-                    # put to the end of the list
-                    edges.remove(e)
-                    edges.append(e)
-                    lost.append(e)
-    nwires = []
-    for w in wires:
-        try:
-            wi = Part.Wire(w)
-        except:
-            print("couldn't join some edges")
-        else:
-            nwires.append(wi)
-    return nwires
+from draftgeoutils.wires import findWiresOld2
 
 
-def superWire(edgeslist, closed=False):
-        """superWire(edges,[closed]): forces a wire between edges that don't necessarily
-        have coincident endpoints. If closed=True, wire will always be closed"""
-        def median(v1,v2):
-                vd = v2.sub(v1)
-                vd.scale(.5,.5,.5)
-                return v1.add(vd)
-        edges = Part.__sortEdges__(edgeslist)
-        print(edges)
-        newedges = []
-        for i in range(len(edges)):
-                curr = edges[i]
-                if i == 0:
-                        if closed:
-                                prev = edges[-1]
-                        else:
-                                prev = None
-                else:
-                        prev = edges[i-1]
-                if i == (len(edges)-1):
-                        if closed:
-                                next = edges[0]
-                        else:
-                                next = None
-                else:
-                        next = edges[i+1]
-                print(i,prev,curr,next)
-                if prev:
-                        if curr.Vertexes[0].Point == prev.Vertexes[-1].Point:
-                                p1 = curr.Vertexes[0].Point
-                        else:
-                                p1 = median(curr.Vertexes[0].Point,prev.Vertexes[-1].Point)
-                else:
-                        p1 = curr.Vertexes[0].Point
-                if next:
-                        if curr.Vertexes[-1].Point == next.Vertexes[0].Point:
-                                p2 = next.Vertexes[0].Point
-                        else:
-                                p2 = median(curr.Vertexes[-1].Point,next.Vertexes[0].Point)
-                else:
-                        p2 = curr.Vertexes[-1].Point
-                if geomType(curr) == "Line":
-                        print("line",p1,p2)
-                        newedges.append(Part.LineSegment(p1,p2).toShape())
-                elif geomType(curr) == "Circle":
-                        p3 = findMidpoint(curr)
-                        print("arc",p1,p3,p2)
-                        newedges.append(Part.Arc(p1,p3,p2).toShape())
-                else:
-                        print("Cannot superWire edges that are not lines or arcs")
-                        return None
-        print(newedges)
-        return Part.Wire(newedges)
+from draftgeoutils.wires import superWire
 
 
 from draftgeoutils.edges import findMidpoint
@@ -405,55 +188,10 @@ from draftgeoutils.edges import findMidpoint
 from draftgeoutils.geometry import findPerpendicular
 
 
-def offset(edge, vector, trim=False):
-    """
-    offset(edge,vector)
-    returns a copy of the edge at a certain (vector) distance
-    if the edge is an arc, the vector will be added at its first point
-    and a complete circle will be returned
-    """
-    if (not isinstance(edge,Part.Shape)) or (not isinstance(vector,FreeCAD.Vector)):
-        return None
-    if geomType(edge) == "Line":
-        v1 = Vector.add(edge.Vertexes[0].Point, vector)
-        v2 = Vector.add(edge.Vertexes[-1].Point, vector)
-        return Part.LineSegment(v1,v2).toShape()
-    elif geomType(edge) == "Circle":
-        rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
-        curve = Part.Circle(edge.Curve)
-        curve.Radius = Vector.add(rad,vector).Length
-        if trim:
-            return Part.ArcOfCircle(curve,edge.FirstParameter,edge.LastParameter).toShape()
-        else:
-            return curve.toShape()
-    else:
-        return None
+from draftgeoutils.offsets import offset
 
 
-def isReallyClosed(wire):
-    """Check if a wire is really closed."""
-    ## TODO yet to find out why not use wire.isClosed() direct, in isReallyClosed(wire)
-
-    # Remark out below - Found not true if a vertex is used again in a wire in sketch ( e.g. wire with shape like 'd', 'b', 'g'... )
-    #if len(wire.Edges) == len(wire.Vertexes): return True
-
-    # Found cases where Wire[-1] are not 'last' vertexes (e.g. Part.Wire( Part.__sortEdges__( <Rectangle Geometries>.toShape() ) )
-    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
-    # - use Edges[i].Vertexes[0/1] instead
-    length = len(wire.Edges)
-
-    # Test if it is full circle / ellipse first
-    if length == 1:
-        if len(wire.Edges[0].Vertexes) == 1:
-            return True # This is a closed wire - full circle / ellipse
-        else:
-            return False # TODO Should be False if 1 edge but not single vertex, correct?  No need to test further below.
-
-    # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1,v2): return True
-    return False
+from draftgeoutils.wires import isReallyClosed
 
 
 from draftgeoutils.geometry import getSplineNormal
@@ -468,255 +206,7 @@ from draftgeoutils.geometry import getRotation
 from draftgeoutils.geometry import calculatePlacement
 
 
-def offsetWire(wire, dvec, bind=False, occ=False,
-               widthList=None, offsetMode=None, alignList=[],
-               normal=None, basewireOffset=0):  # offsetMode="BasewireMode" or None
-    """
-    offsetWire(wire,vector,[bind]): offsets the given wire along the given
-    vector. The vector will be applied at the first vertex of the wire. If bind
-    is True (and the shape is open), the original wire and the offsetted one
-    are bound by 2 edges, forming a face.
-
-        If widthList is provided (values only, not lengths - i.e. no unit),
-        each value will be used to offset each corresponding edge in the wire.
-
-        (The 1st value overrides 'dvec' for 1st segment of wire;
-         if a value is zero, value of 'widthList[0]' will follow;
-         if widthList[0]' == 0, but dvec still provided, dvec will be followed)
-
-        If alignList is provided,
-        each value will be used to offset each corresponding edge in the wire with corresponding index.
-
-        OffsetWire() is now aware of width and align per edge (Primarily for use with ArchWall based on Sketch object )
-
-        'dvec' vector to offset is now derived (and can be ignored) in this function if widthList and alignList are provided - 'dvec' to be obsolete in future ?
-
-        'basewireOffset' corresponds to 'offset' in ArchWall which offset the basewire before creating the wall outline
-    """
-
-    # Accept 'wire' as a list of edges (use the list directly), or previously as a wire or a face (Draft Wire with MakeFace True or False supported)
-
-    if isinstance(wire,Part.Wire) or isinstance(wire,Part.Face):
-        edges = wire.Edges  # Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
-    elif isinstance(wire, list):
-        if isinstance(wire[0],Part.Edge):
-            edges = wire.copy()
-            wire = Part.Wire( Part.__sortEdges__(edges) )  # How to avoid __sortEdges__ again?  Make getNormal directly tackle edges ?
-    else:
-        print ("Either Part.Wire or Part.Edges should be provided, returning None ")
-        return None
-
-    # For sketch with a number of wires, getNormal() may result in different direction for each wire
-    # The 'normal' parameter, if provided e.g. by ArchWall, allows normal over different wires e.g. in a Sketch be consistent (over different calls of this function)
-    if normal:
-        norm = normal
-    else:
-        norm = getNormal(wire)  # norm = Vector(0, 0, 1)
-
-    closed = isReallyClosed(wire)
-    nedges = []
-    if occ:
-        l=abs(dvec.Length)
-        if not l: return None
-        if wire.Wires:
-            wire = wire.Wires[0]
-        else:
-            wire = Part.Wire(edges)
-        try:
-            off = wire.makeOffset(l)
-        except:
-            return None
-        else:
-            return off
-
-    # vec of first edge depends on its geometry
-    e = edges[0]
-
-    # Make a copy of alignList - to avoid changes in this function become starting input of next call of this function ?
-    # https://www.dataquest.io/blog/tutorial-functions-modify-lists-dictionaries-python/
-    # alignListC = alignList.copy()  # Only Python 3
-    alignListC = list(alignList)  # Python 2 and 3
-
-    # Check the direction / offset of starting edge
-    firstDir = None
-    try:
-        if alignListC[0] == 'Left':
-            firstDir = 1
-            firstAlign = 'Left'
-        elif alignListC[0] == 'Right':
-            firstDir = -1
-            firstAlign = 'Right'
-        elif alignListC[0] == 'Center':
-            firstDir = 1
-            firstAlign = 'Center'
-    except:
-        pass  # Should no longer happen for ArchWall - as aligns are 'filled in' by ArchWall
-
-    # If not provided by alignListC checked above, check the direction of offset in dvec (not 'align') 
-    if not firstDir:  ## TODO Should check if dvec is provided or not ('legacy/backward-compatible' mode)
-        if isinstance(e.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
-            v0 = e.Vertexes[0].Point.sub(e.Curve.Center)
-        else:
-            v0 = vec(e).cross(norm)
-        # check against dvec provided for the offset direction - would not know if dvec is vector of width (Left/Right Align) or width/2 (Center Align)
-        dvec0 = DraftVecUtils.scaleTo(v0,dvec.Length)
-        if DraftVecUtils.equals(dvec0,dvec):  # if dvec0 == dvec:
-            firstDir = 1  # "Left Offset" (Left Align or 'left offset' in Centre Align)
-            firstAlign = 'Left'
-            alignListC.append('Left')
-        elif DraftVecUtils.equals(dvec0,dvec.negative()):  # elif dvec0 == dvec.negative():
-            firstDir = -1  # "Right Offset" (Right Align or 'right offset' in Centre Align)
-            firstAlign = 'Right'
-            alignListC.append('Right')
-        else:
-            print (" something wrong with firstDir ")
-            firstAlign = 'Left'
-            alignListC.append('Left')
-
-    for i in range(len(edges)):
-        # make a copy so it do not reverse the self.baseWires edges pointed to by _Wall.getExtrusionData() ?
-        curredge = edges[i].copy()
-
-        # record first edge's Orientation, Dir, Align and set Delta
-        if i == 0:
-            firstOrientation = curredge.Vertexes[0].Orientation			# TODO Could be edge.Orientation in fact	# "Forward" or "Reversed"
-            curOrientation = firstOrientation
-            curDir = firstDir
-            curAlign = firstAlign
-            delta = dvec
-
-        # record current edge's Orientation, and set Delta
-        if i != 0:  #else:
-            if isinstance(curredge.Curve,Part.Circle):				# TODO Should also calculate 1st edge direction above
-                delta = curredge.Vertexes[0].Point.sub(curredge.Curve.Center)
-            else:
-                delta = vec(curredge).cross(norm)
-            curOrientation = curredge.Vertexes[0].Orientation			# TODO Could be edge.Orientation in fact
-
-        # Consider individual edge width
-        if widthList:  # ArchWall should now always provide widthList
-            try:
-                if widthList[i] > 0:
-                    delta = DraftVecUtils.scaleTo(delta, widthList[i])
-                elif dvec:
-                    delta = DraftVecUtils.scaleTo(delta, dvec.Length)
-                else:
-                    #just hardcoded default value as ArchWall would provide if dvec is not provided either
-                    delta = DraftVecUtils.scaleTo(delta, 200)
-            except:
-                if dvec:
-                    delta = DraftVecUtils.scaleTo(delta, dvec.Length)
-                else:
-                    #just hardcoded default value as ArchWall would provide if dvec is not provided either
-                    delta = DraftVecUtils.scaleTo(delta, 200)
-        else:
-            delta = DraftVecUtils.scaleTo(delta,dvec.Length)
-
-        # Consider individual edge Align direction - ArchWall should now always provide alignList
-        if i == 0:
-            if alignListC[0] == 'Center':
-                delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
-            # No need to do anything for 'Left' and 'Right' as original dvec have set both the direction and amount of offset correct
-            # elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
-        if i != 0:
-            try:
-                if alignListC[i] == 'Left':
-                    curDir = 1
-                    curAlign = 'Left'
-                elif alignListC[i] == 'Right':
-                    curDir = -1
-                    curAlign = 'Right'
-                    delta = delta.negative()
-                elif alignListC[i] == 'Center':
-                    curDir = 1
-                    curAlign = 'Center'
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
-            except:
-                curDir = firstDir
-                curAlign = firstAlign
-                if firstAlign == 'Right':
-                    delta = delta.negative()
-                elif firstAlign == 'Center':
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
-
-        # Consider whether generating the 'offset wire' or the 'base wire'
-        if offsetMode is None:
-            # Consider if curOrientation and/or curDir match their firstOrientation/firstDir - to determine whether and how to offset the current edge 
-            if (curOrientation == firstOrientation) != (curDir == firstDir):	# i.e. xor
-                if curAlign in ['Left', 'Right']:
-                    nedge = curredge
-                elif curAlign == 'Center':
-                    delta = delta.negative()
-                    nedge = offset(curredge,delta,trim=True)
-            else:
-                # if curAlign in ['Left', 'Right']: # elif curAlign == 'Center': # Both conditions same result..
-                if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length+basewireOffset)
-                nedge = offset(curredge,delta,trim=True)
-
-            if curOrientation == "Reversed":  # TODO arc always in counter-clockwise directinon ... ( not necessarily 'reversed')
-                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
-                    # if not arc/circle, assume straight line, reverse it
-                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
-                else:
-                    # if arc/circle 
-                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
-                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
-                    midOfArc = nedge.valueAt(midParameter)
-                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
-                    # TODO any better solution than to calculate midpoint of arc to reverse ?
-
-        elif offsetMode in ["BasewireMode"]:
-            if not ( (curOrientation == firstOrientation) != (curDir == firstDir) ):
-                if curAlign in ['Left', 'Right']:
-                    if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
-                        delta = DraftVecUtils.scaleTo(delta, basewireOffset)
-                        nedge = offset(curredge,delta,trim=True)
-                    else:
-                        nedge = curredge
-                elif curAlign == 'Center':
-                    delta = delta.negative()
-                    nedge = offset(curredge,delta,trim=True)
-            else:
-                if curAlign in ['Left', 'Right']:
-                    if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
-                        delta = DraftVecUtils.scaleTo(delta, delta.Length+basewireOffset)
-                    nedge = offset(curredge,delta,trim=True)
-
-                elif curAlign == 'Center':
-                    nedge = offset(curredge,delta,trim=True)
-            if curOrientation == "Reversed":
-                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
-                    # if not arc/circle, assume straight line, reverse it
-                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
-                else:
-                    # if arc/circle
-                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
-                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
-                    midOfArc = nedge.valueAt(midParameter)
-                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
-                    # TODO any better solution than to calculate midpoint of arc to reverse ?
-        else:
-            print(" something wrong ")
-            return
-        if not nedge:
-            return None
-        nedges.append(nedge)
-
-    if len(edges) >1:
-        nedges = connect(nedges,closed)
-    else:
-        nedges = Part.Wire(nedges[0])
-
-    if bind and not closed:
-        e1 = Part.LineSegment(edges[0].Vertexes[0].Point,nedges[0].Vertexes[0].Point).toShape()
-        e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,nedges[-1].Vertexes[-1].Point).toShape()
-        alledges = edges.extend(nedges)
-        alledges = alledges.extend([e1,e2])
-        w = Part.Wire(alledges)
-        return w
-    else:
-        return nedges
+from draftgeoutils.offsets import offsetWire
 
 
 from draftgeoutils.intersections import connect
@@ -766,37 +256,7 @@ from draftgeoutils.faces import isCoplanar
 from draftgeoutils.geometry import isPlanar
 
 
-def findWiresOld(edges):
-        """finds connected edges in the list, and returns a list of lists containing edges
-        that can be connected"""
-        raise DeprecationWarning("This function shouldn't be called anymore - use findWires() instead")
-        def verts(shape):
-                return [shape.Vertexes[0].Point,shape.Vertexes[-1].Point]
-        def group(shapes):
-                shapesIn = shapes[:]
-                shapesOut = [shapesIn.pop()]
-                changed = False
-                for s in shapesIn:
-                        if len(s.Vertexes) < 2:
-                                continue
-                        else:
-                                clean = True
-                                for v in verts(s):
-                                        for i in range(len(shapesOut)):
-                                                if clean and (v in verts(shapesOut[i])):
-                                                        shapesOut[i] = Part.Wire(shapesOut[i].Edges+s.Edges)
-                                                        changed = True
-                                                        clean = False
-                                if clean:
-                                        shapesOut.append(s)
-                return(changed,shapesOut)
-        working = True
-        edgeSet = edges
-        while working:
-                result = group(edgeSet)
-                working = result[0]
-                edgeSet = result[1]
-        return result[1]
+from draftgeoutils.wires import findWiresOld
 
 
 def getTangent(edge, frompoint=None):
@@ -954,297 +414,10 @@ def arcFromSpline(edge):
                         print("couldn't make a circle out of this edge")
 
 
-def fillet(lEdges, r, chamfer=False):
-    """fillet(lEdges,r,chamfer=False): Take a list of two Edges & a float as argument,
-    Returns a list of sorted edges describing a round corner"""
-    # Fillet code graciously donated by Jacques-Antoine Gaudin
-
-    def getCurveType(edge, existingCurveType=None):
-            """Builds or completes a dictionary containing edges with keys "Arc" and 'Line'"""
-            if not existingCurveType:
-                    existingCurveType = { 'Line' : [], 'Arc' : [] }
-            if issubclass(type(edge.Curve),Part.LineSegment):
-                    existingCurveType['Line'] += [edge]
-            elif issubclass(type(edge.Curve),Part.Line):
-                    existingCurveType['Line'] += [edge]
-            elif issubclass(type(edge.Curve),Part.Circle):
-                    existingCurveType['Arc']  += [edge]
-            else:
-                    raise ValueError("Edge's curve must be either Line or Arc")
-            return existingCurveType
-
-    rndEdges = lEdges[0:2]
-    rndEdges = Part.__sortEdges__(rndEdges)
-
-    if len(rndEdges) < 2:
-        return rndEdges
-
-    if r <= 0:
-        print("DraftGeomUtils.fillet : Error : radius is negative.")
-        return rndEdges
-
-    curveType = getCurveType(rndEdges[0])
-    curveType = getCurveType(rndEdges[1],curveType)
-
-    lVertexes = rndEdges[0].Vertexes + [rndEdges[1].Vertexes[-1]]
-
-    if len(curveType['Line']) == 2:
-        # Deals with 2-line-edges lists --------------------------------------
-        U1 = lVertexes[0].Point.sub(lVertexes[1].Point) ; U1.normalize()
-        U2 = lVertexes[2].Point.sub(lVertexes[1].Point) ; U2.normalize()
-        alpha = U1.getAngle(U2)
-
-        if chamfer:
-            # correcting r value so the size of the chamfer = r
-            beta = math.pi - alpha/2
-            r = (r/2)/math.cos(beta)
-
-        if round(alpha,precision()) == 0 or round(alpha - math.pi,precision()) == 0: # Edges have same direction
-            print("DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing")
-            return rndEdges
-
-        dToCenter = r / math.sin(alpha/2.)
-        dToTangent = (dToCenter**2-r**2)**(0.5)
-        dirVect = Vector(U1) ; dirVect.scale(dToTangent,dToTangent,dToTangent)
-        arcPt1 = lVertexes[1].Point.add(dirVect)
-
-        dirVect = U2.add(U1) ; dirVect.normalize()
-        dirVect.scale(dToCenter-r,dToCenter-r,dToCenter-r)
-        arcPt2 = lVertexes[1].Point.add(dirVect)
-
-        dirVect = Vector(U2) ; dirVect.scale(dToTangent,dToTangent,dToTangent)
-        arcPt3 = lVertexes[1].Point.add(dirVect)
-
-        if (dToTangent>lEdges[0].Length) or (dToTangent>lEdges[1].Length) :
-            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
-            return rndEdges
-        if chamfer:
-            rndEdges[1]   =  Part.Edge(Part.LineSegment(arcPt1,arcPt3))
-        else:
-            rndEdges[1]   =  Part.Edge(Part.Arc(arcPt1,arcPt2,arcPt3))
-
-        if lVertexes[0].Point == arcPt1:
-            # fillet consumes entire first edge
-            rndEdges.pop(0)
-        else:
-            rndEdges[0]   =  Part.Edge(Part.LineSegment(lVertexes[0].Point,arcPt1))
-
-        if lVertexes[2].Point != arcPt3:
-            # fillet does not consume entire second edge
-            rndEdges     += [Part.Edge(Part.LineSegment(arcPt3,lVertexes[2].Point))]
-
-        return rndEdges
-
-    elif len(curveType['Arc']) == 1 :
-        # Deals with lists containing an arc and a line ----------------------
-        if lEdges[0] in curveType['Arc']:
-            lineEnd = lVertexes[2] ; arcEnd = lVertexes[0] ; arcFirst = True
-        else:
-            lineEnd = lVertexes[0] ; arcEnd = lVertexes[2] ; arcFirst = False
-        arcCenter = curveType['Arc'][0].Curve.Center
-        arcRadius = curveType['Arc'][0].Curve.Radius
-        arcAxis   = curveType['Arc'][0].Curve.Axis
-        arcLength = curveType['Arc'][0].Length
-
-        U1 = lineEnd.Point.sub(lVertexes[1].Point) ; U1.normalize()
-        toCenter = arcCenter.sub(lVertexes[1].Point)
-        if arcFirst : # make sure the tangent points towards the arc
-            T = arcAxis.cross(toCenter)
-        else:
-            T = toCenter.cross(arcAxis)
-
-        projCenter = toCenter.dot(U1)
-        if round(abs(projCenter),precision()) > 0:
-            normToLine = U1.cross(T).cross(U1)
-        else:
-            normToLine = Vector(toCenter)
-        normToLine.normalize()
-
-        dCenterToLine = toCenter.dot(normToLine) - r
-
-        if  round(projCenter,precision()) > 0:
-            newRadius = arcRadius - r
-        elif round(projCenter,precision()) < 0 or (round(projCenter,precision()) == 0 and U1.dot(T) > 0):
-            newRadius = arcRadius + r
-        else:
-            print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
-            return rndEdges
-
-        toNewCent = newRadius**2-dCenterToLine**2
-        if toNewCent > 0 :
-            toNewCent = abs(abs(projCenter) - toNewCent**(0.5))
-        else :
-            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
-            return rndEdges
-
-        U1.scale(toNewCent,toNewCent,toNewCent)
-        normToLine.scale(r,r,r)
-        newCent = lVertexes[1].Point.add(U1).add(normToLine)
-
-        arcPt1= lVertexes[1].Point.add(U1)
-        arcPt2= lVertexes[1].Point.sub(newCent); arcPt2.normalize()
-        arcPt2.scale(r,r,r) ; arcPt2 = arcPt2.add(newCent)
-        if newRadius == arcRadius - r :
-            arcPt3= newCent.sub(arcCenter)
-        else :
-            arcPt3= arcCenter.sub(newCent)
-        arcPt3.normalize()
-        arcPt3.scale(r,r,r) ; arcPt3 = arcPt3.add(newCent)
-        arcPt = [arcPt1,arcPt2,arcPt3]
+from draftgeoutils.fillets import fillet
 
 
-        # Warning : In the following I used a trick for calling the right element
-        # in arcPt or V : arcFirst is a boolean so - not arcFirst is -0 or -1
-        # list[-1] is the last element of a list and list[0] the first
-        # this way I don't have to proceed tests to know the position of the arc
-
-        myTrick = not arcFirst
-
-        V  = [arcPt3]
-        V += [arcEnd.Point]
-
-        toCenter.scale(-1,-1,-1)
-
-        delLength = arcRadius * V[0].sub(arcCenter).getAngle(toCenter)
-        if delLength > arcLength or toNewCent > curveType['Line'][0].Length:
-            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
-            return rndEdges
-
-        arcAsEdge = arcFrom2Pts(V[-arcFirst],V[-myTrick],arcCenter,arcAxis)
-
-        V = [lineEnd.Point,arcPt1]
-        lineAsEdge = Part.Edge(Part.LineSegment(V[-arcFirst],V[myTrick]))
-
-        rndEdges[not arcFirst]   =  arcAsEdge
-        rndEdges[arcFirst]       =  lineAsEdge
-        if chamfer:
-            rndEdges[1:1] = [Part.Edge(Part.LineSegment(arcPt[- arcFirst],arcPt[- myTrick]))]
-        else:
-            rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[- arcFirst],arcPt[1],arcPt[- myTrick]))]
-
-        return rndEdges
-
-    elif len(curveType['Arc']) == 2 :
-        # Deals with lists of 2 arc-edges -----------------------------------
-        arcCenter, arcRadius, arcAxis, arcLength, toCenter, T, newRadius = [], [], [], [], [], [], []
-        for i in range(2) :
-            arcCenter += [curveType['Arc'][i].Curve.Center]
-            arcRadius += [curveType['Arc'][i].Curve.Radius]
-            arcAxis   += [curveType['Arc'][i].Curve.Axis]
-            arcLength += [curveType['Arc'][i].Length]
-            toCenter  += [arcCenter[i].sub(lVertexes[1].Point)]
-        T += [arcAxis[0].cross(toCenter[0])]
-        T += [toCenter[1].cross(arcAxis[1])]
-        CentToCent = toCenter[1].sub(toCenter[0])
-        dCentToCent = CentToCent.Length
-
-        sameDirection = (arcAxis[0].dot(arcAxis[1]) > 0)
-        TcrossT = T[0].cross(T[1])
-        if sameDirection :
-            if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
-                newRadius += [arcRadius[0]+r]
-                newRadius += [arcRadius[1]+r]
-            elif round(TcrossT.dot(arcAxis[0]),precision()) < 0 :
-                newRadius += [arcRadius[0]-r]
-                newRadius += [arcRadius[1]-r]
-            elif T[0].dot(T[1]) > 0 :
-                newRadius += [arcRadius[0]+r]
-                newRadius += [arcRadius[1]+r]
-            else:
-                print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
-                return rndEdges
-        elif not sameDirection:
-            if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
-                newRadius += [arcRadius[0]+r]
-                newRadius += [arcRadius[1]-r]
-            elif round(TcrossT.dot(arcAxis[0]),precision()) < 0 :
-                newRadius += [arcRadius[0]-r]
-                newRadius += [arcRadius[1]+r]
-            elif T[0].dot(T[1]) > 0 :
-                if arcRadius[0] > arcRadius[1] :
-                    newRadius += [arcRadius[0]-r]
-                    newRadius += [arcRadius[1]+r]
-                elif arcRadius[1] > arcRadius[0] :
-                    newRadius += [arcRadius[0]+r]
-                    newRadius += [arcRadius[1]-r]
-                else :
-                    print("DraftGeomUtils.fillet : Warning : arcs are coincident. Did nothing")
-                    return rndEdges
-            else :
-                print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
-                return rndEdges
-
-        if newRadius[0]+newRadius[1] < dCentToCent or \
-           newRadius[0]-newRadius[1] > dCentToCent or \
-           newRadius[1]-newRadius[0] > dCentToCent :
-            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
-            return rndEdges
-
-        x = (dCentToCent**2+newRadius[0]**2-newRadius[1]**2)/(2*dCentToCent)
-        y = (newRadius[0]**2-x**2)**(0.5)
-
-        CentToCent.normalize() ; toCenter[0].normalize() ; toCenter[1].normalize()
-        if abs(toCenter[0].dot(toCenter[1])) != 1 :
-            normVect = CentToCent.cross(CentToCent.cross(toCenter[0]))
-        else :
-            normVect = T[0]
-        normVect.normalize()
-        CentToCent.scale(x,x,x) ; normVect.scale(y,y,y)
-        newCent = arcCenter[0].add(CentToCent.add(normVect))
-        CentToNewCent = [newCent.sub(arcCenter[0]),newCent.sub(arcCenter[1])]
-        for i in range(2) :
-            CentToNewCent[i].normalize()
-            if newRadius[i] == arcRadius[i]+r :
-                CentToNewCent[i].scale(-r,-r,-r)
-            else :
-                CentToNewCent[i].scale(r,r,r)
-        toThirdPt = lVertexes[1].Point.sub(newCent) ; toThirdPt.normalize()
-        toThirdPt.scale(r,r,r)
-        arcPt1 = newCent.add(CentToNewCent[0])
-        arcPt2 = newCent.add(toThirdPt)
-        arcPt3 = newCent.add(CentToNewCent[1])
-        arcPt = [arcPt1,arcPt2,arcPt3]
-
-        arcAsEdge = []
-        for i in range(2) :
-            toCenter[i].scale(-1,-1,-1)
-            delLength = arcRadius[i] * arcPt[-i].sub(arcCenter[i]).getAngle(toCenter[i])
-            if delLength > arcLength[i] :
-                print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
-                return rndEdges
-            V = [arcPt[-i],lVertexes[-i].Point]
-            arcAsEdge += [arcFrom2Pts(V[i-1],V[-i],arcCenter[i],arcAxis[i])]
-
-        rndEdges[0]   =  arcAsEdge[0]
-        rndEdges[1]   =  arcAsEdge[1]
-        if chamfer:
-            rndEdges[1:1] = [Part.Edge(Part.LineSegment(arcPt[0],arcPt[2]))]
-        else:
-            rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[0],arcPt[1],arcPt[2]))]
-
-        return rndEdges
-
-
-def filletWire(aWire, r, chamfer=False):
-    """Fillets each angle of a wire with r as radius value
-    if chamfer is true, a chamfer is made instead and r is the
-    size of the chamfer"""
-
-    edges = aWire.Edges
-    edges = Part.__sortEdges__(edges)
-    filEdges = [edges[0]]
-    for i in range(len(edges)-1):
-        result = fillet([filEdges[-1],edges[i+1]],r,chamfer)
-        if len(result)>2:
-            filEdges[-1:] = result[0:3]
-        else :
-            filEdges[-1:] = result[0:2]
-    if isReallyClosed(aWire):
-        result = fillet([filEdges[-1],filEdges[0]],r,chamfer)
-        if len(result)>2:
-            filEdges[-1:] = result[0:2]
-            filEdges[0]   = result[2]
-    return Part.Wire(filEdges)
+from draftgeoutils.fillets import filletWire
 
 
 def getCircleFromSpline(edge):
@@ -1277,15 +450,7 @@ def getCircleFromSpline(edge):
     return circle
 
 
-def curvetowire(obj, steps):
-    points = obj.copy().discretize(steps)
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
+from draftgeoutils.wires import curvetowire
 
 
 def cleanProjection(shape, tessellate=True, seglength=0.05):
@@ -1333,15 +498,7 @@ def cleanProjection(shape, tessellate=True, seglength=0.05):
     return Part.makeCompound(newedges)
 
 
-def curvetosegment(curve, seglen):
-    points = curve.discretize(seglen)
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
+from draftgeoutils.wires import curvetosegment
 
 
 def tessellateProjection(shape, seglen):
@@ -1366,18 +523,7 @@ def tessellateProjection(shape, seglen):
     return Part.makeCompound(newedges)
 
 
-def rebaseWire(wire, vidx):
-    """rebaseWire(wire,vidx): returns a new wire which is a copy of the
-    current wire, but where the first vertex is the vertex indicated by the given
-    index vidx, starting from 1. 0 will return an exact copy of the wire."""
-
-    if vidx < 1:
-        return wire
-    if vidx > len(wire.Vertexes):
-        #print("Vertex index above maximum\n")
-        return wire
-    #This can be done in one step
-    return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+from draftgeoutils.wires import rebaseWire
 
 
 def removeSplitter(shape):
@@ -1690,25 +836,7 @@ def circleFrom2PointsRadius(p1, p2, radius):
     else: return None
 
 
-def arcFrom2Pts(firstPt, lastPt, center, axis=None):
-    """Build an arc with center and 2 points, can be oriented with axis."""
-
-    radius1  = firstPt.sub(center).Length
-    radius2  = lastPt.sub(center).Length
-    if round(radius1-radius2,4) != 0 : # (PREC = 4 = same as Part Module),  Is it possible ?
-        return None
-
-    thirdPt = Vector(firstPt.sub(center).add(lastPt).sub(center))
-    thirdPt.normalize()
-    thirdPt.scale(radius1,radius1,radius1)
-    thirdPt = thirdPt.add(center)
-    newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
-    if not axis is None and newArc.Curve.Axis.dot(axis) < 0 :
-        thirdPt = thirdPt.sub(center)
-        thirdPt.scale(-1,-1,-1)
-        thirdPt = thirdPt.add(center)
-        newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
-    return newArc
+from draftgeoutils.arcs import arcFrom2Pts
 
 
 #############################33 to include
@@ -1876,53 +1004,10 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
         return None
 
 
-def linearFromPoints(p1, p2):
-    """Calculate linear equation from points.
-
-    Calculate the slope and offset parameters of the linear equation of a line defined by two points.
-
-    Linear equation:
-    y = m * x + b
-    m = dy / dx
-    m ... Slope
-    b ... Offset (point where the line intersects the y axis)
-    dx/dy ... Delta x and y. Using both as a vector results in a non-offset direction vector.
-    """
-    if isinstance(p1, Vector) and isinstance(p2, Vector):
-        line = {}
-        line['dx'] = (p2.x - p1.x)
-        line['dy'] = (p2.y - p1.y)
-        line['slope'] = line['dy'] / line['dx']
-        line['offset'] = p1.y - slope * p1.x
-        return line
-    else:
-        return None
+from draftgeoutils.linear_algebra import linearFromPoints
 
 
-def determinant(mat, n):
-    """
-    determinant(matrix,int) - Determinat function. Returns the determinant
-    of a n-matrix. It recursively expands the minors.
-    """
-    matTemp = [[0.0,0.0,0.0],[0.0,0.0,0.0],[0.0,0.0,0.0]]
-    if (n > 1):
-        if n == 2:
-            d = mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]
-        else:
-            d = 0.0
-            for j1 in range(n):
-                # Create minor
-                for i in range(1, n):
-                    j2 = 0
-                    for j in range(n):
-                        if j == j1:
-                            continue
-                        matTemp[i-1][j2] = mat[i][j]
-                        j2 += 1
-                d += (-1.0)**(1.0 + j1 + 1.0) * mat[0][j1] * determinant(matTemp, n-1)
-        return d
-    else:
-        return 0
+from draftgeoutils.linear_algebra import determinant
 
 
 def findHomotheticCenterOfCircles(circle1, circle2):

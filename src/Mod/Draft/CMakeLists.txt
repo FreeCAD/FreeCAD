@@ -36,6 +36,11 @@ SET (Draft_geoutils
     draftgeoutils/sort_edges.py
     draftgeoutils/faces.py
     draftgeoutils/geometry.py
+    draftgeoutils/wires.py
+    draftgeoutils/arcs.py
+    draftgeoutils/fillets.py
+    draftgeoutils/offsets.py
+    draftgeoutils/linear_algebra.py
 )
 
 SET(Draft_tests
