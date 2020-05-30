@@ -87,5 +87,5 @@ install(
     FILES
         ${Cloud_Scripts}
     DESTINATION
-        Mod/Cloud
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Cloud
 )

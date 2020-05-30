@@ -135,80 +135,80 @@ INSTALL(
     FILES
         ${ShipExamples_SRCS}
     DESTINATION
-        Mod/Ship/resources/examples
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/resources/examples
 )
 INSTALL(
     FILES
         ${ShipLoadExample_SRCS}
     DESTINATION
-        Mod/Ship/shipLoadExample
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipLoadExample
 )
 INSTALL(
     FILES
         ${ShipCreateShip_SRCS}
     DESTINATION
-        Mod/Ship/shipCreateShip
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipCreateShip
 )
 INSTALL(
     FILES
         ${ShipOutlineDraw_SRCS}
     DESTINATION
-        Mod/Ship/shipOutlineDraw
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipOutlineDraw
 )
 INSTALL(
     FILES
         ${ShipAreasCurve_SRCS}
     DESTINATION
-        Mod/Ship/shipAreasCurve
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipAreasCurve
 )
 INSTALL(
     FILES
         ${ShipHydrostatics_SRCS}
     DESTINATION
-        Mod/Ship/shipHydrostatics
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipHydrostatics
 )
 INSTALL(
     FILES
         ${ShipCreateWeight_SRCS}
     DESTINATION
-        Mod/Ship/shipCreateWeight
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipCreateWeight
 )
 INSTALL(
     FILES
         ${ShipCreateTank_SRCS}
     DESTINATION
-        Mod/Ship/shipCreateTank
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipCreateTank
 )
 INSTALL(
     FILES
         ${ShipCapacityCurve_SRCS}
     DESTINATION
-        Mod/Ship/shipCapacityCurve
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipCapacityCurve
 )
 INSTALL(
     FILES
         ${ShipCreateLoadCondition_SRCS}
     DESTINATION
-        Mod/Ship/shipCreateLoadCondition
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipCreateLoadCondition
 )
 INSTALL(
     FILES
         ${ShipGZ_SRCS}
     DESTINATION
-        Mod/Ship/shipGZ
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipGZ
 )
 INSTALL(
     FILES
         ${ShipUtils_SRCS}
     DESTINATION
-        Mod/Ship/shipUtils
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship/shipUtils
 )
 INSTALL(
     FILES
         ${ShipMain_SRCS}
         ${Ship_QRC_SRCS}
     DESTINATION
-        Mod/Ship
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Ship
 )
 INSTALL(
     FILES

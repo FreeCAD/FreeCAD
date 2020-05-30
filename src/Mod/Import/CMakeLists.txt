@@ -71,7 +71,7 @@ INSTALL(
         ${Import_Scripts}
         #${Import_QRC_SRCS}
     DESTINATION
-        Mod/Import
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Import
 )
 
 INSTALL(

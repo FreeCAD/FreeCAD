@@ -2,18 +2,23 @@ macro(ConfigureCMakeVariables)
     # ================================================================================
     # Output directories for install target
 
+    include(GNUInstallDirs)
+    mark_as_advanced(CLEAR
+        CMAKE_INSTALL_BINDIR
+	CMAKE_INSTALL_DATADIR
+	CMAKE_INSTALL_LIBDIR
+	CMAKE_INSTALL_INCLUDEDIR
+	)
+
     if(WIN32)
         set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root directory")
-        set(CMAKE_INSTALL_BINDIR bin CACHE PATH "Output directory for executables")
-        set(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
-        set(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
-        set(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
-        # Don't set it without manual adoption of LibDir variable in src/App/FreeCADInit.py
-        set(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
-    else()
-        set(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad" CACHE PATH "Installation root directory")
-        include(GNUInstallDirs)
-    endif()
+    elseif(APPLE)
+	# OSX Specific stuff here
+    else(WIN32)
+	# Assume UNIX and modify installation to freecad subdirectory where appropriate
+	set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/freecad)
+	set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/freecad)
+    endif(WIN32)
 
     set(PYCXX_INCLUDE_DIR
         "${CMAKE_SOURCE_DIR}/src" CACHE PATH

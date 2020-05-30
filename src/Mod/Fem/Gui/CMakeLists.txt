@@ -430,7 +430,7 @@ ADD_CUSTOM_TARGET(FemPythonUi ALL
 
 fc_copy_sources(FemPythonUi "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiPythonUI_SRCS})
 
-INSTALL(FILES ${FemGuiPythonUI_SRCS} DESTINATION Mod/Fem/Resources/ui)
+INSTALL(FILES ${FemGuiPythonUI_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/Resources/ui)
 
 
 

@@ -27,5 +27,5 @@ INSTALL(
     FILES
         ${Web_Scripts}
     DESTINATION
-        Mod/Web
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Web
 )

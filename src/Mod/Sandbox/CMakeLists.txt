@@ -17,5 +17,5 @@ INSTALL(
     FILES
         ${Sandbox_Scripts}
     DESTINATION
-        Mod/Sandbox
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Sandbox
 )

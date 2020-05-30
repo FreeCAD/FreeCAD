@@ -104,13 +104,13 @@ INSTALL(
     FILES
         ${Arch_SRCS}
         ${Arch_QRC_SRCS}
-    DESTINATION Mod/Arch
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Arch
 )
 
 INSTALL(
     FILES
         ${Dice3DS_SRCS}
-    DESTINATION Mod/Arch/Dice3DS
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Arch/Dice3DS
 )
 INSTALL(
     DIRECTORY

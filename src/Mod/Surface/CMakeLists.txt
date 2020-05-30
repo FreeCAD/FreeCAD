@@ -26,5 +26,5 @@ install(
     FILES
         ${Surface_Scripts}
     DESTINATION
-        Mod/Surface
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Surface
 )

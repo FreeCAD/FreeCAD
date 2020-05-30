@@ -20,7 +20,7 @@ INSTALL(
     FILES
         ${Path_Scripts}
     DESTINATION
-        Mod/Path
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path
 )
 
 SET(PathScripts_SRCS
@@ -243,55 +243,55 @@ INSTALL(
     FILES
         ${PathScripts_SRCS}
     DESTINATION
-        Mod/Path/PathScripts
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/PathScripts
 )
 
 INSTALL(
     FILES
         ${PathTests_SRCS}
     DESTINATION
-        Mod/Path/PathTests
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/PathTests
 )
 
 INSTALL(
     FILES
         ${PathScripts_post_SRCS}
     DESTINATION
-        Mod/Path/PathScripts/post
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/PathScripts/post
 )
 
 INSTALL(
     FILES
         ${Tools_Bit_SRCS}
     DESTINATION
-        Mod/Path/Tools/Bit
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/Tools/Bit
 )
 
 INSTALL(
     FILES
         ${Tools_Library_SRCS}
     DESTINATION
-        Mod/Path/Tools/Library
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/Tools/Library
 )
 
 INSTALL(
     FILES
       ${Tools_Shape_SRCS}
     DESTINATION
-      Mod/Path/Tools/Shape
+      ${CMAKE_INSTALL_LIBDIR}/Mod/Path/Tools/Shape
 )
 
 INSTALL(
     FILES
         ${PathImages_Ops}
     DESTINATION
-        Mod/Path/Images/Ops
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/Images/Ops
 )
 
 INSTALL(
     FILES
         ${PathImages_Tools}
     DESTINATION
-        Mod/Path/Images/Tools
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Path/Images/Tools
 )
 

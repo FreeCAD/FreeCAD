@@ -28,6 +28,6 @@ INSTALL(
         ${Tux_SRCS}
         ${Tux_QRC_SRCS}
     DESTINATION
-        Mod/Tux
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Tux
 )
 

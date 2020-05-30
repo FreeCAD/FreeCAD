@@ -26,5 +26,5 @@ INSTALL(
         Init.py
         InitGui.py
     DESTINATION
-        Mod/Assembly
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Assembly
 )

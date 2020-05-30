@@ -56,17 +56,17 @@ INSTALL(
     FILES
         ${IdfLibs_SRCS}
     DESTINATION
-        Mod/Idf/Idflibs
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Idf/Idflibs
 )
 INSTALL(
     FILES
         ${IdfLang_SRCS}
     DESTINATION
-        Mod/Idf/Languages
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Idf/Languages
 )
 INSTALL(
     FILES
         ${Idf_SRCS}
     DESTINATION
-        Mod/Idf
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Idf
 )

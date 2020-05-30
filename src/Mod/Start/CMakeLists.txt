@@ -24,5 +24,5 @@ INSTALL(
     FILES
         ${Start_Scripts}
     DESTINATION
-        Mod/Start
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Start
 )

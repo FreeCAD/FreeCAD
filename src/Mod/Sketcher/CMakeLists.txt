@@ -39,12 +39,12 @@ INSTALL(
     FILES
         ${Sketcher_Scripts}
     DESTINATION
-        Mod/Sketcher
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Sketcher
 )
 
 INSTALL(
     FILES
         ${Sketcher_Profiles}
     DESTINATION
-        Mod/Sketcher/ProfileLib
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Sketcher/ProfileLib
 )

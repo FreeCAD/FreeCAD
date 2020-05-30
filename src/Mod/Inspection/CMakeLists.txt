@@ -16,5 +16,5 @@ INSTALL(
     FILES
         ${Inspection_Scripts}
     DESTINATION
-        Mod/Inspection
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Inspection
 )

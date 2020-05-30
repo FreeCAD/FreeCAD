@@ -31,5 +31,5 @@ INSTALL(
     FILES
         ${Test_SRCS}
     DESTINATION
-        Mod/Test
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Test
 )

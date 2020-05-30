@@ -16,5 +16,5 @@ INSTALL(
     FILES
         ${Points_Scripts}
     DESTINATION
-        Mod/Points
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Points
 )

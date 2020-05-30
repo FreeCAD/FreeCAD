@@ -47,7 +47,7 @@ INSTALL(
     FILES
         ${TechDraw_Scripts}
     DESTINATION
-        Mod/TechDraw
+        ${CMAKE_INSTALL_LIBDIR}/Mod/TechDraw
 )
 
 INSTALL(
@@ -127,6 +127,6 @@ ADD_CUSTOM_TARGET(TDTestTarget ALL
 fc_copy_sources(TDTestTarget "${CMAKE_BINARY_DIR}/Mod/TechDraw" ${TDAllTest})
 
 # install Python packages (for make install)
-INSTALL(FILES ${TDTest_SRCS} DESTINATION Mod/TechDraw/TDTest)
-INSTALL(FILES ${TDTestFile_SRCS} DESTINATION Mod/TechDraw/TDTest)
+INSTALL(FILES ${TDTest_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/TechDraw/TDTest)
+INSTALL(FILES ${TDTestFile_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/TechDraw/TDTest)
 

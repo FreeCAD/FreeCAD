@@ -309,18 +309,18 @@ INSTALL(
         ${Draft_import}
         ${Draft_QRC_SRCS}
     DESTINATION
-        Mod/Draft
+        ${CMAKE_INSTALL_LIBDIR}/Mod/Draft
 )
 
-INSTALL(FILES ${Draft_tests} DESTINATION Mod/Draft/drafttests)
-INSTALL(FILES ${Draft_geoutils} DESTINATION Mod/Draft/draftgeoutils)
-INSTALL(FILES ${Draft_utilities} DESTINATION Mod/Draft/draftutils)
-INSTALL(FILES ${Draft_functions} DESTINATION Mod/Draft/draftfunctions)
-INSTALL(FILES ${Draft_make_functions} DESTINATION Mod/Draft/draftmake)
-INSTALL(FILES ${Draft_objects} DESTINATION Mod/Draft/draftobjects)
-INSTALL(FILES ${Draft_view_providers} DESTINATION Mod/Draft/draftviewproviders)
-INSTALL(FILES ${Draft_GUI_tools} DESTINATION Mod/Draft/draftguitools)
-INSTALL(FILES ${Draft_task_panels} DESTINATION Mod/Draft/drafttaskpanels)
+INSTALL(FILES ${Draft_tests} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/drafttests)
+INSTALL(FILES ${Draft_geoutils} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftgeoutils)
+INSTALL(FILES ${Draft_utilities} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftutils)
+INSTALL(FILES ${Draft_functions} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftfunctions)
+INSTALL(FILES ${Draft_make_functions} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftmake)
+INSTALL(FILES ${Draft_objects} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftobjects)
+INSTALL(FILES ${Draft_view_providers} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftviewproviders)
+INSTALL(FILES ${Draft_GUI_tools} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/draftguitools)
+INSTALL(FILES ${Draft_task_panels} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Draft/drafttaskpanels)
 
 INSTALL(
     FILES

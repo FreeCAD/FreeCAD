@@ -8,14 +8,15 @@ if (WIN32)
 	set(FREECAD_LIBRARY_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
 else()
 	set(FREECAD_LIBRARY_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR})
+	message(STATUS "Library install dir: ${FREECAD_LIBRARY_INSTALL_DIR}")
 endif()
 
 configure_file(__init__.py.template ${NAMESPACE_INIT})
 
 if (INSTALL_TO_SITEPACKAGES)
-    SET(SITE_PACKAGE_DIR ${PYTHON_MAIN_DIR}/freecad)
+    set(SITE_PACKAGE_DIR ${PYTHON_MAIN_DIR}/freecad)
 else ()
-    SET(SITE_PACKAGE_DIR Ext/freecad)
+    set(SITE_PACKAGE_DIR ${CMAKE_INSTALL_LIBDIR}/Ext/freecad)
 endif()
 
 INSTALL(

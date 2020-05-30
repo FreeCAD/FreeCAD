@@ -36,10 +36,10 @@ fc_copy_sources(Show "${CMAKE_BINARY_DIR}/Mod/Show" ${Show_All_SRCS})
 INSTALL(
     FILES
         ${Show_SRCS}
-    DESTINATION Mod/Show
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Show
 )
 INSTALL(
     FILES
         ${Show_SceneDetails_SRCS}
-    DESTINATION Mod/Show/SceneDetails
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Show/SceneDetails
 )
