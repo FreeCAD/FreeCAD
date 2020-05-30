@@ -139,27 +139,27 @@ class PathArray(DraftLink):
                             _tip)
             obj.Base = None
 
-        if "PathObj" not in properties:
+        if "PathObject" not in properties:
             _tip = _tr("The object along which "
                        "the copies will be distributed. "
                        "It must contain 'Edges'.")
             obj.addProperty("App::PropertyLinkGlobal",
-                            "PathObj",
+                            "PathObject",
                             "Objects",
                             _tip)
-            obj.PathObj = None
+            obj.PathObject = None
 
-        if "PathSubs" not in properties:
+        if "PathSubelements" not in properties:
             _tip = _tr("List of connected edges in the 'Path Object'.\n"
                        "If these are present, the copies will be created "
                        "along these subelements only.\n"
                        "Leave this property empty to create copies along "
                        "the entire 'Path Object'.")
             obj.addProperty("App::PropertyLinkSubListGlobal",
-                            "PathSubs",
+                            "PathSubelements",
                             "Objects",
                             _tip)
-            obj.PathSubs = []
+            obj.PathSubelements = []
 
         if "Count" not in properties:
             _tip = _tr("Number of copies to create")
@@ -181,16 +181,16 @@ class PathArray(DraftLink):
 
     def set_align_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
-        if "Xlate" not in properties:
+        if "ExtraTranslation" not in properties:
             _tip = _tr("Additional translation "
                        "that will be applied to each copy.\n"
                        "This is useful to adjust for the difference "
                        "between shape centre and shape reference point.")
             obj.addProperty("App::PropertyVectorDistance",
-                            "Xlate",
+                            "ExtraTranslation",
                             "Alignment",
                             _tip)
-            obj.Xlate = App.Vector(0, 0, 0)
+            obj.ExtraTranslation = App.Vector(0, 0, 0)
 
         if "TangentVector" not in properties:
             _tip = _tr("Alignment vector for 'Tangent' mode")
@@ -256,15 +256,15 @@ class PathArray(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if not obj.Base or not obj.PathObj:
+        if not obj.Base or not obj.PathObject:
             return
 
         # placement of entire PathArray object
         array_placement = obj.Placement
 
-        w = self.get_wires(obj.PathObj, obj.PathSubs)
+        w = self.get_wires(obj.PathObject, obj.PathSubelements)
         if not w:
-            _err(obj.PathObj.Label
+            _err(obj.PathObject.Label
                  + _tr(", path object doesn't have 'Edges'."))
             return
 
@@ -282,7 +282,7 @@ class PathArray(DraftLink):
 
         copy_placements = placements_on_path(final_rotation,
                                              w, obj.Count,
-                                             obj.Xlate,
+                                             obj.ExtraTranslation,
                                              obj.Align, obj.AlignMode,
                                              obj.ForceVertical,
                                              obj.VerticalVector)
@@ -305,7 +305,7 @@ class PathArray(DraftLink):
         return w
 
     def get_wire_from_subelements(self, subelements):
-        """Make a wire from PathObj subelements."""
+        """Make a wire from the path object subelements."""
         sl = []
         for sub in subelements:
             edgeNames = sub[1]

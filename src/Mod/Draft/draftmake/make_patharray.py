@@ -48,7 +48,7 @@ if App.GuiUp:
 
 
 def make_path_array(base_object, path_object, count=4,
-                    xlate=App.Vector(0, 0, 0), subelements=None,
+                    extra=App.Vector(0, 0, 0), subelements=None,
                     align=False, align_mode="Original",
                     tan_vector=App.Vector(1, 0, 0),
                     force_vertical=False,
@@ -79,9 +79,9 @@ def make_path_array(base_object, path_object, count=4,
         It must be at least 2.
         If a `float` is provided, it will be truncated by `int(count)`.
 
-    xlate: Base.Vector3, optional
+    extra: Base.Vector3, optional
         It defaults to `App.Vector(0, 0, 0)`.
-        It translates each copy by the value of `xlate`.
+        It translates each copy by the value of `extra`.
         This is useful to adjust for the difference between shape centre
         and shape reference point.
 
@@ -189,9 +189,9 @@ def make_path_array(base_object, path_object, count=4,
         return None
     count = int(count)
 
-    _msg("xlate: {}".format(xlate))
+    _msg("extra: {}".format(extra))
     try:
-        utils.type_check([(xlate, App.Vector)],
+        utils.type_check([(extra, App.Vector)],
                          name=_name)
     except TypeError:
         _err(_tr("Wrong input: must be a vector."))
@@ -277,10 +277,10 @@ def make_path_array(base_object, path_object, count=4,
         PathArray(new_obj)
 
     new_obj.Base = base_object
-    new_obj.PathObj = path_object
+    new_obj.PathObject = path_object
     new_obj.Count = count
-    new_obj.Xlate = xlate
-    new_obj.PathSubs = sub_list
+    new_obj.ExtraTranslation = extra
+    new_obj.PathSubelements = sub_list
     new_obj.Align = align
     new_obj.AlignMode = align_mode
     new_obj.TangentVector = tan_vector
