@@ -124,6 +124,7 @@ class PivyTestCases(unittest.TestCase):
 		from pivy import coin; import FreeCADGui
 		Mesh.show(planarMeshObject)
 		view=FreeCADGui.ActiveDocument.ActiveView
+		view.setAxisCross(False)
 		pc=coin.SoGetPrimitiveCountAction()
 		pc.apply(view.getSceneGraph())
 		self.failUnless(pc.getTriangleCount() == 2)

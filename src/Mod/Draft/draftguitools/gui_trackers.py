@@ -956,23 +956,42 @@ class gridTracker(Tracker):
     """A grid tracker."""
 
     def __init__(self):
+        GRID_TRANSPARENCY = 0
         col = self.getGridColor()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
         mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7)
+        mat1.transparency.setValue(0.7*(1-GRID_TRANSPARENCY))
         mat1.diffuseColor.setValue(col)
+        self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
         self.lines1 = coin.SoLineSet()
+        texts = coin.SoSeparator()
+        t1 = coin.SoSeparator()
+        self.textpos1 = coin.SoTransform()
+        self.text1 = coin.SoAsciiText()
+        self.text1.string = " "
+        t2 = coin.SoSeparator()
+        self.textpos2 = coin.SoTransform()
+        self.textpos2.rotation.setValue((0.0, 0.0, 0.7071067811865475, 0.7071067811865476))
+        self.text2 = coin.SoAsciiText()
+        self.text2.string = " "
+        t1.addChild(self.textpos1)
+        t1.addChild(self.text1)
+        t2.addChild(self.textpos2)
+        t2.addChild(self.text2)
+        texts.addChild(self.font)
+        texts.addChild(t1)
+        texts.addChild(t2)
         mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3)
+        mat2.transparency.setValue(0.3*(1-GRID_TRANSPARENCY))
         mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet()
         mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(0)
+        mat3.transparency.setValue(GRID_TRANSPARENCY)
         mat3.diffuseColor.setValue(col)
         self.coords3 = coin.SoCoordinate3()
         self.lines3 = coin.SoLineSet()
@@ -989,6 +1008,7 @@ class gridTracker(Tracker):
         s.addChild(mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
+        s.addChild(texts)
         Tracker.__init__(self, children=[s], name="gridTracker")
         self.reset()
 
@@ -1006,9 +1026,12 @@ class gridTracker(Tracker):
         # an exact pair number of main lines
         numlines = self.numlines // self.mainlines // 2 * 2 * self.mainlines
         bound = (numlines // 2) * self.space
+        border = (numlines//2 + self.mainlines/2) * self.space
+        cursor = self.mainlines//4 * self.space
         pts = []
         mpts = []
         apts = []
+        cpts = []
         for i in range(numlines + 1):
             curr = -bound + i * self.space
             z = 0
@@ -1019,6 +1042,10 @@ class gridTracker(Tracker):
                 else:
                     mpts.extend([[-bound, curr, z], [bound, curr, z]])
                     mpts.extend([[curr, -bound, z], [curr, bound, z]])
+                cpts.extend([[-border,curr,z], [-border+cursor,curr,z]])
+                cpts.extend([[border-cursor,curr,z], [border,curr,z]])
+                cpts.extend([[curr,-border,z], [curr,-border+cursor,z]])
+                cpts.extend([[curr,border-cursor,z], [curr,border,z]])
             else:
                 pts.extend([[-bound, curr, z], [bound, curr, z]])
                 pts.extend([[curr, -bound, z], [curr, bound, z]])
@@ -1026,12 +1053,36 @@ class gridTracker(Tracker):
             idx = []
             midx = []
             aidx = []
+            cidx = []
             for p in range(0, len(pts), 2):
                 idx.append(2)
             for mp in range(0, len(mpts), 2):
                 midx.append(2)
             for ap in range(0, len(apts), 2):
                 aidx.append(2)
+            for cp in range(0, len(cpts),2):
+                cidx.append(2)
+            
+            if Draft.getParam("gridBorder", True):
+                # extra border
+                border = (numlines//2 + self.mainlines/2) * self.space
+                mpts.extend([[-border, -border, z], [border, -border, z], [border, border, z], [-border, border, z], [-border, -border, z]])
+                midx.append(5)
+                # cursors
+                mpts.extend(cpts)
+                midx.extend(cidx)
+                # texts
+                self.font.size = self.space*(self.mainlines//4) or 1
+                self.font.name = Draft.getParam("textfont","Sans")
+                txt = FreeCAD.Units.Quantity(self.space*self.mainlines,FreeCAD.Units.Length).UserString
+                self.text1.string = txt
+                self.text2.string = txt
+                self.textpos1.translation.setValue((-bound+self.space,-border+self.space,z))
+                self.textpos2.translation.setValue((-bound-self.space,-bound+self.space,z))
+            else:
+                self.text1.string = " "
+                self.text2.string = " "
+            
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
             self.lines3.numVertices.deleteValues(0)

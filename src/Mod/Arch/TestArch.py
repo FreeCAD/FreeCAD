@@ -23,7 +23,19 @@
 #*                                                                         *
 #***************************************************************************/
 
-import FreeCAD, os, unittest, FreeCADGui, Arch, Draft, Part, Sketcher
+import os
+import unittest
+
+import FreeCAD
+
+import Arch
+import Draft
+import Part
+import Sketcher
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
 
 class ArchTest(unittest.TestCase):
 
@@ -138,6 +150,20 @@ class ArchTest(unittest.TestCase):
         p = Draft.makeRectangle(length=.5,height=.5)
         f = Arch.makeFrame(l,p)
         self.failUnless(f,"Arch Frame failed")
+
+    def testEquipment(self):
+        FreeCAD.Console.PrintLog ('Checking Arch Equipment...\n')
+        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        box.Length = 500
+        box.Width = 2000
+        box.Height = 600
+        equip = Arch.makeEquipment(box)
+        self.failUnless(equip,"Arch Equipment failed")
+
+    def testPipe(self):
+        FreeCAD.Console.PrintLog ('Checking Arch Pipe...\n')
+        pipe = Arch.makePipe(diameter=120, length=3000)
+        self.failUnless(pipe,"Arch Pipe failed")
 
     def testAdd(self):
         FreeCAD.Console.PrintLog ('Checking Arch Add...\n')

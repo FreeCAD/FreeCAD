@@ -401,5 +401,3 @@ class AngularDimension(DimensionBase):
             obj.setEditorMode('Normal',2)
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
-
-

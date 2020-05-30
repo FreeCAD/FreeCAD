@@ -55,14 +55,23 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Setup UI
     ui->setupUi(this);
 
-    if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
-        textChanged(Base::Tools::fromStdString(expression->toString()));
-    }
-
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+    
+    if (expression) {
+        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+    }
+    else {
+        QVariant text = parent->property("text");
+#if QT_VERSION >= 0x050000
+        if (text.canConvert(QMetaType::QString)) {
+#else
+        if (text.canConvert(QVariant::String)) {
+#endif
+            ui->expression->setText(text.toString());
+        }
+    }
 
     // Set document object on line edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();

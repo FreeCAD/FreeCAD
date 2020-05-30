@@ -557,9 +557,7 @@ void DrawGeomHatch::onDocumentRestored()
             std::string patFileName = FilePattern.getValue();
             Base::FileInfo tfi(patFileName);
             if (tfi.isReadable()) {
-                if (PatIncluded.isEmpty()) {
-                    setupPatIncluded();
-                }
+                setupPatIncluded();
             }
         }
     }

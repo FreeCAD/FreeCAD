@@ -125,6 +125,12 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
 
+unset(_flag_found CACHE)
+check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
+if (_flag_found)
+  target_compile_options(Robot PRIVATE -Wno-deprecated-copy)
+endif()
+
 SET_BIN_DIR(Robot Robot /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(Robot)
 

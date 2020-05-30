@@ -29,6 +29,12 @@
 # include <iterator> 
 #endif
 
+#if defined(__clang__) && defined(__has_warning)
+#if __has_warning("-Wdeprecated-copy")
+# pragma clang diagnostic ignored "-Wdeprecated-copy"
+#endif
+#endif
+
 #include "Approximation.h"
 #include "Elements.h"
 #include "Utilities.h"
@@ -1109,43 +1115,19 @@ float CylinderFit::Fit()
     _bIsFitted = true;
 
 #if 1
-    std::vector<Wm4::Vector3d> input;
-    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
-                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
-
-    Wm4::Vector3d cnt, axis;
-    if (_initialGuess) {
-        cnt = Base::convertTo<Wm4::Vector3d>(_vBase);
-        axis = Base::convertTo<Wm4::Vector3d>(_vAxis);
-    }
-
-    double radius, height;
-    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, _initialGuess);
-    _initialGuess = false;
-
-    _vBase = Base::convertTo<Base::Vector3f>(cnt);
-    _vAxis = Base::convertTo<Base::Vector3f>(axis);
-    _fRadius = float(radius);
-
-    _fLastResult = double(fit);
-
-#if defined(FC_DEBUG)
-    Base::Console().Message("   WildMagic Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f\n",
-        _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
-#endif
-
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
-    if (_fLastResult < FLOAT_MAX)
+    if (_initialGuess)
         cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
 
     float result = cylFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
+
 #if defined(FC_DEBUG)
-        Base::Console().Message("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
+        Base::Console().Log("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
 #endif
         _vBase = Base::convertTo<Base::Vector3f>(base);

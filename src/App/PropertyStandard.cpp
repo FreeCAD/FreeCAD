@@ -152,12 +152,14 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::an
 
     if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(double))
-        setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity))
-        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::math::round(boost::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(boost::math::round(boost::any_cast<float>(value)));
+    else if (value.type() == typeid(Quantity))
+        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     else
         throw bad_cast();
 }
@@ -430,7 +432,9 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     }
 
     if (val < 0) {
-        Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+        // If the enum is empty at this stage do not print a warning
+        if (_enum.getEnums())
+            Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
         val = getValue();
     }
 
@@ -1026,14 +1030,18 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any 
 {
     verifyPath(path);
 
-    if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(Quantity))
-        setValue((boost::any_cast<Quantity>(value)).getValue());
-    else if (value.type() == typeid(long))
+    if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
     else if (value.type() == typeid(unsigned long))
         setValue(boost::any_cast<unsigned long>(value));
+    else if (value.type() == typeid(int))
+        setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        setValue(boost::any_cast<float>(value));
+    else if (value.type() == typeid(Quantity))
+        setValue((boost::any_cast<Quantity>(value)).getValue());
     else
         throw bad_cast();
 }
@@ -1554,8 +1562,12 @@ void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any
         setValue(boost::any_cast<bool>(value)?"True":"False");
     else if (value.type() == typeid(int))
         setValue(std::to_string(boost::any_cast<int>(value)));
+    else if (value.type() == typeid(long))
+        setValue(std::to_string(boost::any_cast<long>(value)));
     else if (value.type() == typeid(double))
-        setValue(std::to_string(boost::math::round(App::any_cast<double>(value))));
+        setValue(std::to_string(App::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(std::to_string(App::any_cast<float>(value)));
     else if (value.type() == typeid(Quantity))
         setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))

@@ -348,6 +348,8 @@ void CmdTechDrawView::activated(int iMsg)
     openCommand("Create view");
     std::string FeatName = getUniqueObjectName("View");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewPart','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart *>(docObj);
     if (!dvp) {
@@ -355,7 +357,6 @@ void CmdTechDrawView::activated(int iMsg)
     }
     dvp->Source.setValues(shapes);
     dvp->XSource.setValues(xShapes);
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     if (faceName.size()) {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
         projDir = dirs.first;
@@ -1085,6 +1086,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
+    std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
     int draftItemsFound = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
         if (DrawGuiUtil::isDraftObject((*it)))  {
@@ -1097,6 +1099,8 @@ void CmdTechDrawDraftView::activated(int iMsg)
                             FeatName.c_str(),SourceName.c_str());
             doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                             PageName.c_str(),FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                          FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
             updateActive();
             commitCommand();
         }

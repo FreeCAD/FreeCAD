@@ -33,28 +33,28 @@ class DraftImport(unittest.TestCase):
     # No document is needed to test 'import Draft' or other modules
     # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
     def setUp(self):
-        aux._draw_header()
+        aux.draw_header()
 
     def test_import_draft(self):
         """Import the Draft module."""
         module = "Draft"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_draft_geomutils(self):
         """Import Draft geometrical utilities."""
         module = "DraftGeomUtils"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_draft_vecutils(self):
         """Import Draft vector utilities."""
         module = "DraftVecUtils"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_draft_svg(self):
         """Import Draft SVG utilities."""
         module = "getSVG"
-        imported = aux._import_test(module)
+        imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))

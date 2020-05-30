@@ -33,6 +33,7 @@ from .equations import elasticity
 from .equations import electrostatic
 from .equations import flow
 from .equations import fluxsolver
+from .equations import electricforce
 from .equations import heat
 from .. import run
 from .. import solverbase
@@ -47,13 +48,14 @@ def create(doc, name="ElmerSolver"):
 class Proxy(solverbase.Proxy):
     """Proxy for FemSolverElmers Document Object."""
 
-    Type = "Fem::FemSolverObjectElmer"
+    Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
         "Heat": heat,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
         "Fluxsolver": fluxsolver,
+        "Electricforce": electricforce,
         "Flow": flow,
     }
 

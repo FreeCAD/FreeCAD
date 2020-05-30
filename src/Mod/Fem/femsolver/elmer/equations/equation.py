@@ -34,7 +34,7 @@ from femtools import membertools
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from femguiobjects import FemSelectionWidgets
+    from femguiutils import selection_widgets
 
 
 class Proxy(equationbase.BaseProxy):
@@ -69,7 +69,7 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
-        self._refWidget = FemSelectionWidgets.SolidSelector()
+        self._refWidget = selection_widgets.SolidSelector()
         self._refWidget.setReferences(obj.References)
         propWidget = obj.ViewObject.Proxy.getTaskWidget(
             obj.ViewObject)

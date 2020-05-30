@@ -157,20 +157,9 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 
 bool CosmeticExtension::replaceCosmeticVertex(CosmeticVertex* newCV)
 {
-//    Base::Console().Message("DVP::replaceCV(%s)\n", newCV->getTagAsString().c_str());
+    (void) newCV;
+    Base::Console().Message("CX::replaceCosmeticVertex() - deprecated. do not use.\n");
     bool result = false;
-    std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    std::vector<CosmeticVertex*> newVerts;
-    std::string tag = newCV->getTagAsString();
-    for (auto& cv: cVerts) {
-        if (cv->getTagAsString() == tag)  {
-            newVerts.push_back(newCV);
-            result = true;
-        } else { 
-            newVerts.push_back(cv);
-        }
-    }
-    CosmeticVertexes.setValues(newVerts);
     return result;
 }
 
@@ -275,21 +264,12 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
     }
 }
 
+
 bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
 {
+    (void) newCE;
+    Base::Console().Message("CX::replaceCosmeticEdge() - deprecated. do not use.\n");
     bool result = false;
-    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
-    std::vector<CosmeticEdge*> newEdges;
-    std::string tag = newCE->getTagAsString();
-    for (auto& ce: cEdges) {
-        if (ce->getTagAsString() == tag)  {
-            newEdges.push_back(newCE);
-            result = true;
-        } else { 
-            newEdges.push_back(ce);
-        }
-    }
-    CosmeticEdges.setValues(newEdges);
     return result;
 }
 
@@ -403,20 +383,9 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
 
 bool CosmeticExtension::replaceCenterLine(CenterLine* newCL)
 {
-//    Base::Console().Message("DVP::replaceCL(%s)\n", newCL->getTagAsString().c_str());
+    (void) newCL;
+    Base::Console().Message("CX::replaceCenterLine() - deprecated. do not use.\n");
     bool result = false;
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    std::vector<CenterLine*> newLines;
-    std::string tag = newCL->getTagAsString();
-    for (auto& cl: cLines) {
-        if (cl->getTagAsString() == tag)  {
-            newLines.push_back(newCL);
-            result = true;
-        } else { 
-            newLines.push_back(cl);
-        }
-    }
-    CenterLines.setValues(newLines);
     return result;
 }
 
@@ -486,20 +455,9 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 
 bool CosmeticExtension::replaceGeomFormat(GeomFormat* newGF)
 {
-//    Base::Console().Message("CEx::replaceGF(%s)\n", newGF->getTagAsString().c_str());
+    (void) newGF;
+    Base::Console().Message("CX::replaceGeomFormat() - deprecated. do not use.\n");
     bool result = false;
-    std::vector<GeomFormat*> gFormats = GeomFormats.getValues();
-    std::vector<GeomFormat*> newFormats;
-    std::string tag = newGF->getTagAsString();
-    for (auto& gf: gFormats) {
-        if (gf->getTagAsString() == tag)  {
-            newFormats.push_back(newGF);
-            result = true;
-        } else { 
-            newFormats.push_back(gf);
-        }
-    }
-    GeomFormats.setValues(newFormats);
     return result;
 }
 

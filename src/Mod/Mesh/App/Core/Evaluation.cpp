@@ -312,8 +312,7 @@ struct Edge_Index
     unsigned long p0, p1, f;
 };
 
-struct Edge_Less  : public std::binary_function<const Edge_Index&, 
-                                                const Edge_Index&, bool>
+struct Edge_Less
 {
     bool operator()(const Edge_Index& x, const Edge_Index& y) const
     {

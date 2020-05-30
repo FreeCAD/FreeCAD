@@ -430,7 +430,7 @@ def get_concrete_nodes(res_obj):
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::Material"):
+                and is_of_type(obj, "Fem::MaterialCommon"):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):

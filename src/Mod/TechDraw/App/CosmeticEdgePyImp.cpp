@@ -45,7 +45,10 @@ using namespace TechDraw;
 // returns a string which represents the object e.g. when printed in python
 std::string CosmeticEdgePy::representation(void) const
 {
-    return "<CosmeticEdge object>";
+    std::stringstream ss;
+    ss << "<CosmeticEdge object> at " << std::hex << this;
+    return ss.str();
+//    return "<CosmeticEdge object>";
 }
 
 PyObject *CosmeticEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -119,16 +122,12 @@ PyObject* CosmeticEdgePy::copy(PyObject *args)
 
 void CosmeticEdgePy::setFormat(Py::Object arg)
 {
-//    Base::Console().Message("CEP::setFormat()\n");
     PyObject* pTuple = arg.ptr();
     int style = 1;
     double weight = 0.50;
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     App::Color c(red, blue, green, alpha);
     bool visible = 1; 
-//    if (!PyArg_ParseTuple(args, "O", &pTuple)) {
-//      return NULL;
-//    }
     
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
     if (PyTuple_Check(pTuple)) {
@@ -155,7 +154,6 @@ void CosmeticEdgePy::setFormat(Py::Object arg)
 
 Py::Object CosmeticEdgePy::getFormat(void) const
 {
-//    Base::Console().Message("CEP::getFormat()\n");
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
 
     PyObject* pStyle = PyLong_FromLong((long) ce->m_format.m_style);

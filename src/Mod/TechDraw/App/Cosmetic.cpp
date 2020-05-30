@@ -318,10 +318,13 @@ CosmeticVertex* CosmeticVertex::clone(void) const
 
 PyObject* CosmeticVertex::getPyObject(void)
 {
-//    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));  //shouldn't this be clone?
-    PyObject* result = new CosmeticVertexPy(this->clone());
-    return result;
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CosmeticVertexPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 void CosmeticVertex::dump(const char* title)
 {
@@ -403,12 +406,13 @@ void CosmeticEdge::initialize(void)
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
-void CosmeticEdge::unscaleEnds(double scale)
-{
-    permaStart = permaStart / scale;
-    permaEnd   = permaEnd   / scale;
-    permaRadius = permaRadius / scale;
-}
+//why is this needed?  isn't permaxxxx always unscaled??
+//void CosmeticEdge::unscaleEnds(double scale)
+//{
+//    permaStart = permaStart / scale;
+//    permaEnd   = permaEnd   / scale;
+//    permaRadius = permaRadius / scale;
+//}
 
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
@@ -567,8 +571,13 @@ CosmeticEdge* CosmeticEdge::clone(void) const
 
 PyObject* CosmeticEdge::getPyObject(void)
 {
-    return new CosmeticEdgePy(this->clone());
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CosmeticEdgePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 //*********************************************************
 
@@ -1419,8 +1428,13 @@ CenterLine *CenterLine::clone(void) const
 
 PyObject* CenterLine::getPyObject(void)
 {
-    return new CenterLinePy(this->clone());
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new CenterLinePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
+
 
 void CenterLine::setShifts(double h, double v)
 {
@@ -1615,7 +1629,11 @@ GeomFormat* GeomFormat::copy(void) const
 
 PyObject* GeomFormat::getPyObject(void)
 {
-    return new GeomFormatPy(new GeomFormat(this->copy()));
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new GeomFormatPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 bool CosmeticVertex::restoreCosmetic(void)

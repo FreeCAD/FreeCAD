@@ -81,6 +81,10 @@
 #undef NETGEN_PYTHON
 #endif
 
+#ifndef WIN32
+#undef DLL_HEADER
+#endif
+
 #include <occgeom.hpp>
 
 #if defined(__clang__)

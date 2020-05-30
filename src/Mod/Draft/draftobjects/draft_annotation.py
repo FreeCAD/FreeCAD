@@ -26,60 +26,61 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Annotation.
 
-import FreeCAD as App
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from draftutils import gui_utils
+
+from draftutils.messages import _wrn
+from draftutils.translate import _tr
+
 
 class DraftAnnotation(object):
     """The Draft Annotation Base object.
 
     This class is not used directly, but inherited by all Draft annotation
     objects.
-    
+
     LinearDimension through DimensionBase
     AngularDimension through DimensionBase
     Label
     Text
     """
-    def __init__(self, obj, tp="Annotation"):
-        """Add general Annotation properties to the object"""
 
+    def __init__(self, obj, tp="Annotation"):
         self.Type = tp
 
-
     def onDocumentRestored(self, obj):
-        '''Check if new properties are present after object is recreated.'''
+        """Run when the document that is using this class is restored.
+
+        Check if new properties are present after the object is restored
+        in order to migrate older objects.
+        """
         if hasattr(obj, "ViewObject") and obj.ViewObject:
-            if not 'ScaleMultiplier' in obj.ViewObject.PropertiesList:
+            if not hasattr(obj.ViewObject, 'ScaleMultiplier'):
                 # annotation properties
-                _msg = QT_TRANSLATE_NOOP("Draft", 
-                                         "Adding property ScaleMultiplier to ")
-                App.Console.PrintMessage(_msg + obj.Name + "\n")
-                obj.ViewObject.addProperty("App::PropertyFloat","ScaleMultiplier",
-                                "Annotation",QT_TRANSLATE_NOOP("App::Property",
-                                "Dimension size overall multiplier"))
-                obj.ViewObject.ScaleMultiplier = 1.00
+                vobj = obj.ViewObject
+                _tip = "Dimension size overall multiplier"
+                vobj.addProperty("App::PropertyFloat",
+                                 "ScaleMultiplier",
+                                 "Annotation",
+                                 QT_TRANSLATE_NOOP("App::Property", _tip))
+                vobj.ScaleMultiplier = 1.00
+
+                _info = "added view property 'ScaleMultiplier'"
+                _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
     def __getstate__(self):
         return self.Type
 
-
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         if state:
-            if isinstance(state,dict) and ("Type" in state):
+            if isinstance(state, dict) and ("Type" in state):
                 self.Type = state["Type"]
             else:
                 self.Type = state
 
-
-    def execute(self,obj):
-        '''Do something when recompute object'''
-
+    def execute(self, obj):
+        """Do something when recompute object."""
         return
-
 
     def onChanged(self, obj, prop):
-        '''Do something when a property has changed'''
-                
+        """Do something when a property has changed."""
         return
-

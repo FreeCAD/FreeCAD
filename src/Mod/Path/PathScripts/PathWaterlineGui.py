@@ -107,8 +107,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return signals
 
-    def updateVisibility(self):
-        '''updateVisibility()... Updates visibility of Tasks panel objects.'''
+    def updateVisibility(self, sentObj=None):
+        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
         Algorithm = self.form.algorithmSelect.currentText()
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 

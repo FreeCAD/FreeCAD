@@ -294,6 +294,17 @@ class _EquationFluxsolver(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
+class _EquationElectricforce(CommandManager):
+    "The FEM_EquationElectricforce command definition"
+
+    def __init__(self):
+        super(_EquationElectricforce, self).__init__()
+        self.menuetext = "Electricforce equation"
+        self.tooltip = "Creates a FEM equation for electric forces"
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
 class _EquationHeat(CommandManager):
     "The FEM_EquationHeat command definition"
 
@@ -384,8 +395,8 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # set solver attribute for nonlinearity for ccxtools
         # CalculiX solver or new frame work CalculiX solver
         if solver_object and (
-            is_of_type(solver_object, "Fem::FemSolverCalculixCcxTools")
-            or is_of_type(solver_object, "Fem::FemSolverObjectCalculix")
+            is_of_type(solver_object, "Fem::SolverCcxTools")
+            or is_of_type(solver_object, "Fem::SolverCalculix")
         ):
             FreeCAD.Console.PrintMessage(
                 "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
@@ -820,6 +831,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_EquationFluxsolver",
     _EquationFluxsolver()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationElectricforce",
+    _EquationElectricforce()
 )
 FreeCADGui.addCommand(
     "FEM_EquationHeat",

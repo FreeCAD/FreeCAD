@@ -93,17 +93,27 @@ class ViewProviderDraft(object):
         self.texture = None
         self.texcoords = None
 
-        vobj.addProperty("App::PropertyEnumeration", "Pattern", "Draft",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Defines a hatch pattern"))
-        vobj.addProperty("App::PropertyFloat", "PatternSize", "Draft",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Sets the size of the pattern"))
-        vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
-        vobj.PatternSize = 1
-
+        self._set_properties(vobj)
         # This class is assigned to the Proxy attribute
         vobj.Proxy = self
+
+    def _set_properties(self, vobj):
+        """Set the properties of objects if they don't exist."""
+        if not hasattr(vobj, "Pattern"):
+            _tip = "Defines a hatch pattern."
+            vobj.addProperty("App::PropertyEnumeration",
+                             "Pattern",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+
+        if not hasattr(vobj, "PatternSize"):
+            _tip = "Defines the size of the hatch pattern."
+            vobj.addProperty("App::PropertyFloat",
+                             "PatternSize",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.PatternSize = 1
 
     def __getstate__(self):
         """Return a tuple of all serializable objects or None.
@@ -138,7 +148,7 @@ class ViewProviderDraft(object):
         so nothing needs to be done here, and it returns `None`.
 
         Parameters
-        ---------
+        ----------
         state : state
             A serialized object.
 
@@ -167,7 +177,7 @@ class ViewProviderDraft(object):
         return
 
     def updateData(self, obj, prop):
-        """This method is run when an object property is changed.
+        """Run when an object property is changed.
 
         Override this method to handle the behavior of the view provider
         depending on changes that occur to the real object's properties.
@@ -241,7 +251,7 @@ class ViewProviderDraft(object):
         return mode
 
     def onChanged(self, vobj, prop):
-        """This method is run when a view property is changed.
+        """Run when a view property is changed.
 
         Override this method to handle the behavior
         of the view provider depending on changes that occur to its properties
@@ -334,7 +344,7 @@ class ViewProviderDraft(object):
             self.texcoords.directionT.setValue(vT.x, vT.y, vT.z)
 
     def execute(self, vobj):
-        """This method is run when the object is created or recomputed.
+        """Run when the object is created or recomputed.
 
         Override this method to produce effects when the object
         is newly created, and whenever the document is recomputed.

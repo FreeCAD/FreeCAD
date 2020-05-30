@@ -101,15 +101,18 @@ class FemInputWriter():
             elif hasattr(self.mesh_object, "Part"):
                 self.theshape = self.mesh_object.Part
             else:
-                FreeCAD.Console.PrintError(
+                FreeCAD.Console.PrintWarning(
                     "A finite mesh without a link to a Shape was given. "
-                    "Happen on pure mesh objects. Some methods might be broken.\n"
+                    "Happen on pure mesh objects. "
+                    "Not all methods do work without this link.\n"
                 )
+                # ATM only used in meshtools.get_femelement_direction1D_set
+                # TODO somehow this is not smart, rare meshes might be used often
             self.femmesh = self.mesh_object.FemMesh
         else:
-            FreeCAD.Console.PrintError(
-            "No finite element mesh object was given to the writer class. "
-            "In rare cases this might not be an error. Some methods might be broken.\n"
+            FreeCAD.Console.PrintWarning(
+                "No finite element mesh object was given to the writer class. "
+                "In rare cases this might not be an error. "
             )
         self.femnodes_mesh = {}
         self.femelement_table = {}

@@ -87,14 +87,14 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferencesPathJob.py
 	PathScripts/PathProbe.py
 	PathScripts/PathProbeGui.py
-    PathScripts/PathProfileBase.py
-    PathScripts/PathProfileBaseGui.py
+    PathScripts/PathProfile.py
     PathScripts/PathProfileContour.py
     PathScripts/PathProfileContourGui.py
     PathScripts/PathProfileEdges.py
     PathScripts/PathProfileEdgesGui.py
     PathScripts/PathProfileFaces.py
     PathScripts/PathProfileFacesGui.py
+    PathScripts/PathProfileGui.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSetupSheet.py

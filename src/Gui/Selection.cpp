@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -843,6 +844,34 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     return DocName.empty()?0:1;
 }
 
+namespace Gui {
+std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, double y, double z, double precision)
+{
+    Base::Quantity mmx(Base::Quantity::MilliMetre);
+    mmx.setValue(fabs(x) > precision ? x : 0.0);
+    Base::Quantity mmy(Base::Quantity::MilliMetre);
+    mmy.setValue(fabs(y) > precision ? y : 0.0);
+    Base::Quantity mmz(Base::Quantity::MilliMetre);
+    mmz.setValue(fabs(z) > precision ? z : 0.0);
+
+    double xfactor, yfactor, zfactor;
+    QString xunit, yunit, zunit;
+
+    Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
+    Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
+    Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+
+    double xuser = fabs(x) > precision ? x / xfactor : 0.0;
+    double yuser = fabs(y) > precision ? y / yfactor : 0.0;
+    double zuser = fabs(z) > precision ? z / zfactor : 0.0;
+
+    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toStdString()),
+                                                         std::make_pair(yuser, yunit.toStdString()),
+                                                         std::make_pair(zuser, zunit.toStdString())};
+    return ret;
+}
+}
+
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
     static char buf[513];
@@ -854,10 +883,14 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",CurrentPreselection.pDocName
-                                                       ,CurrentPreselection.pObjectName
-                                                       ,CurrentPreselection.pSubName
-                                                       ,x,y,z);
+    auto pts = schemaTranslatePoint(x, y, z, 0.0);
+    snprintf(buf,512,"Preselected: %s.%s.%s (%f %s,%f %s,%f %s)"
+                    ,CurrentPreselection.pDocName
+                    ,CurrentPreselection.pObjectName
+                    ,CurrentPreselection.pSubName
+                    ,pts[0].first, pts[0].second.c_str()
+                    ,pts[1].first, pts[1].second.c_str()
+                    ,pts[2].first, pts[2].second.c_str());
 
     if (getMainWindow())
         getMainWindow()->showMessage(QString::fromLatin1(buf));

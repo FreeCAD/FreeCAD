@@ -4168,7 +4168,7 @@ void SMESH_MeshEditor::Smooth (TIDSortedElemSet &          theElems,
             // if ( posType != SMDS_TOP_3DSPACE )
             //   dist2 = pNode.SquareDistance( surface->Value( newUV.X(), newUV.Y() ));
             // if ( dist2 < dist1 )
-              uv = newUV;
+            uv = newUV;
           }
         }
         // store UV in the map

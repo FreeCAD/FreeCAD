@@ -1746,16 +1746,18 @@ def getProfile(ifcfile,p):
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         if isinstance(p.Edges[0].Curve,Part.Circle):
             # extruded circle
-            profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
+            profile = ifcbin.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
-            profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+            profile = ifcbin.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        # profile must be located at (0,0) because placement gets added later
+        #povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -1763,7 +1765,7 @@ def getProfile(ifcfile,p):
         #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
         b = p.Edges[0].Length
         h = p.Edges[1].Length
-        profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+        profile = ifcbin.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
@@ -1922,6 +1924,31 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 shapes.append(shape)
                                 solidType = "SweptSolid"
                                 shapetype = "extrusion"
+        if (not shapes) and obj.isDerivedFrom("Part::Extrusion"):
+            import ArchComponent
+            pstr = str([v.Point for v in obj.Base.Shape.Vertexes])
+            profile,pl = ArchComponent.Component.rebase(obj,obj.Base.Shape)
+            profile.scale(preferences['SCALE_FACTOR'])
+            pl.Base = pl.Base.multiply(preferences['SCALE_FACTOR'])
+            profile = getProfile(ifcfile,profile)
+            if profile:
+                profiledefs[pstr] = profile
+            ev = obj.Dir
+            l = obj.LengthFwd.Value
+            if l:
+                ev.multiply(l)
+                ev.multiply(preferences['SCALE_FACTOR'])
+            ev = pl.Rotation.inverted().multVec(ev)
+            xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+            zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+            ovc =       ifcbin.createIfcCartesianPoint(tuple(pl.Base))
+            lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(ev).normalize()))
+            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,ev.Length)
+            shapes.append(shape)
+            solidType = "SweptSolid"
+            shapetype = "extrusion"
+                    
 
     if (not shapes) and (not skipshape):
 
@@ -1975,7 +2002,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
                             sh.scale(preferences['SCALE_FACTOR']) # to meters
-                            p = geom.serialise(sh.exportBrepToString())
+                            try:
+                                p = geom.serialise(sh.exportBrepToString())
+                            except TypeError:
+                                # IfcOpenShell v0.6.0
+                                # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
+                                p = geom.serialise(preferences['SCHEMA'],sh.exportBrepToString())
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:

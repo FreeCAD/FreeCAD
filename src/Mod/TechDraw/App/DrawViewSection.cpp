@@ -230,13 +230,12 @@ void DrawViewSection::onChanged(const App::Property* prop)
 void DrawViewSection::makeLineSets(void) 
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
-    if (!FileGeomPattern.isEmpty()) {
-        std::string fileSpec = FileGeomPattern.getValue();
+    if (!PatIncluded.isEmpty())  {
+        std::string fileSpec = PatIncluded.getValue();
         Base::FileInfo fi(fileSpec);
         std::string ext = fi.extension();
         if (!fi.isReadable()) {
             Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-            Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
         } else {
             if ( (ext == "pat") ||
                  (ext == "PAT") ) {
@@ -678,6 +677,36 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     return projectedFace;
 }
 
+
+//calculate the ends of the section line in BaseView's coords
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    auto sNorm  = SectionNormal.getValue();
+    double angle = M_PI / 2.0;
+    auto axis   = getBaseDVP()->Direction.getValue();
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+    Base::Vector3d sLineDir = DrawUtil::vecRotate(sNorm, angle, axis, stdOrg);
+    sLineDir.Normalize();
+    Base::Vector3d sLineDir2 = - axis.Cross(sNorm);
+    sLineDir2.Normalize();
+    Base::Vector3d sLineOnBase = getBaseDVP()->projectPoint(sLineDir2);
+    sLineOnBase.Normalize();
+
+    auto sOrigin = SectionOrigin.getValue();
+    Base::Vector3d adjSectionOrg = sOrigin - getBaseDVP()->getOriginalCentroid();
+    Base::Vector3d sOrgOnBase = getBaseDVP()->projectPoint(adjSectionOrg);
+
+    auto bbx = getBaseDVP()->getBoundingBox();
+    double xRange = bbx.MaxX - bbx.MinX;
+    xRange /= getBaseDVP()->getScale();
+    double yRange = bbx.MaxY - bbx.MinY;
+    yRange /= getBaseDVP()->getScale();
+    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);  //unscaled
+
+    return result;
+}
+
 //this should really be in BoundBox.h
 //!check if point is in box or on boundary of box
 //!compare to isInBox which doesn't allow on boundary
@@ -842,6 +871,7 @@ gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
+//    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
     result = DrawGeomHatch::getTrimmedLines(this,m_lineSets,i,HatchScale.getValue());
     return result;
@@ -919,26 +949,27 @@ int DrawViewSection::prefCutSurface(void) const
 void DrawViewSection::onDocumentRestored() 
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");
-    if (!FileHatchPattern.isEmpty()) {
-        std::string svgFileName = FileHatchPattern.getValue();
-        Base::FileInfo tfi(svgFileName);
-        if (tfi.isReadable()) {
-            if (SvgIncluded.isEmpty()) {
+    if (SvgIncluded.isEmpty()) {
+        if (!FileHatchPattern.isEmpty()) {
+            std::string svgFileName = FileHatchPattern.getValue();
+            Base::FileInfo tfi(svgFileName);
+            if (tfi.isReadable()) {
                 setupSvgIncluded();
             }
         }
     }
 
-    if (!FileGeomPattern.isEmpty()) {
-        std::string patFileName = FileGeomPattern.getValue();
-        Base::FileInfo tfi(patFileName);
-        if (tfi.isReadable()) {
-            if (PatIncluded.isEmpty()) {
-                setupPatIncluded();
+    if (PatIncluded.isEmpty()) {
+        if (!FileGeomPattern.isEmpty()) {
+            std::string patFileName = FileGeomPattern.getValue();
+            Base::FileInfo tfi(patFileName);
+            if (tfi.isReadable()) {
+                    setupPatIncluded();
             }
-        makeLineSets();
         }
     }
+
+    makeLineSets();
     DrawViewPart::onDocumentRestored();
 }
 

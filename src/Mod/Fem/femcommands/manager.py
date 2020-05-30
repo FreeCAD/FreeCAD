@@ -266,7 +266,7 @@ class CommandManager(object):
 
     def solver_elmer_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemSolverObjectElmer"):
+        if len(sel) == 1 and is_of_type(sel[0], "Fem::SolverElmer"):
             self.selobj = sel[0]
             return True
         else:

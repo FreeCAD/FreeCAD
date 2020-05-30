@@ -84,6 +84,7 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+using namespace std;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -407,7 +408,6 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
 void QGIViewPart::updateView(bool update)
 {
 //    Base::Console().Message("QGIVP::updateView()\n");
-    auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
@@ -421,15 +421,9 @@ void QGIViewPart::updateView(bool update)
         draw();
     }
     QGIView::updateView(update);
-
-    auto end   = std::chrono::high_resolution_clock::now();
-    auto diff  = end - start;
-    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - QGIVP::updateView - %s - total %.3f millisecs\n",getViewName(),diffOut);
 }
 
 void QGIViewPart::draw() {
-//    Base::Console().Message("QGIVP::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -458,7 +452,6 @@ void QGIViewPart::drawViewPart()
     if ( vp == nullptr ) {
         return;
     }
-
 
     float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
@@ -513,22 +506,20 @@ void QGIViewPart::drawViewPart()
                 if (!fHatch->SvgIncluded.isEmpty()) {
                     if (getExporting()) {
                         newFace->hideSvg(true);
-                        newFace->isHatched(false);
-                        newFace->setFillMode(QGIFace::PlainFill);
                     } else {
                         newFace->hideSvg(false);
-                        newFace->isHatched(true);
-                        newFace->setFillMode(QGIFace::FromFile);
-                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
-                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                        if (hatchVp != nullptr) {
-                            double hatchScale = hatchVp->HatchScale.getValue();
-                            if (hatchScale > 0.0) {
-                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
-                            }
-                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
+                    }
+                    newFace->isHatched(true);
+                    newFace->setFillMode(QGIFace::SvgFill);
+                    newFace->setHatchFile(fHatch->SvgIncluded.getValue());
+                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                    if (hatchVp != nullptr) {
+                        double hatchScale = hatchVp->HatchScale.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
                         }
+                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
             }
@@ -844,88 +835,31 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
         sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
 
-        //TODO: handle oblique section lines?
-        //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle
-        //Base::Vector3d normalDir = viewSection->SectionNormal.getValue();
-        Base::Vector3d arrowDir(0,1,0);                //for drawing only, not geom
-        Base::Vector3d lineDir(1,0,0);
-        bool horiz = false;
-
-        //this is a hack we can use since we don't support oblique section lines yet.
-        //better solution will be need if oblique is ever implemented
-        double rot = viewPart->Rotation.getValue();
-        bool switchWH = false;
-        if (TechDraw::DrawUtil::fpCompare(fabs(rot), 90.0)) {
-            switchWH = true;
-        }
-
-        if (viewSection->SectionDirection.isValue("Right")) {
-            arrowDir = Base::Vector3d(1,0,0);
-            lineDir = Base::Vector3d(0,1,0);
-        } else if (viewSection->SectionDirection.isValue("Left")) {
-            arrowDir = Base::Vector3d(-1,0,0);
-            lineDir = Base::Vector3d(0,-1,0);
-        } else if (viewSection->SectionDirection.isValue("Up")) {
-            arrowDir = Base::Vector3d(0,1,0);
-            lineDir = Base::Vector3d(1,0,0);
-            horiz = true;
-        } else if (viewSection->SectionDirection.isValue("Down")) {
-            arrowDir = Base::Vector3d(0,-1,0);
-            lineDir = Base::Vector3d(-1,0,0);
-            horiz = true;
-        }
-        sectionLine->setDirection(arrowDir.x,arrowDir.y);
-
-        //dvp is centered on centroid looking along dvp direction
-        //dvs is centered on SO looking along section normal
-        //dvp view origin is 000 + centroid
-        Base::Vector3d org = viewSection->SectionOrigin.getValue();
-        Base::Vector3d cent = viewPart->getOriginalCentroid();
-        Base::Vector3d adjOrg = org - cent;
+        //find the ends of the section line
         double scale = viewPart->getScale();
+        std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
+        Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
+        Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
 
-        Base::Vector3d pAdjOrg = scale * viewPart->projectPoint(adjOrg);
+        //which way to the arrows point?
+        Base::Vector3d lineDir = l2 - l1;
+        lineDir.Normalize();
+        Base::Vector3d normalDir = viewSection->SectionNormal.getValue();
+        Base::Vector3d projNormal = viewPart->projectPoint(normalDir);
+        projNormal.Normalize();
+        Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
+        arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal(extrusion dir)
+        sectionLine->setDirection(arrowDir.x, -arrowDir.y);           //invert Y
 
-        //now project pOrg onto arrowDir
-        Base::Vector3d displace;
-        displace.ProjectToLine(pAdjOrg, arrowDir);
-        Base::Vector3d offset = pAdjOrg + displace;
+        //make the section line a little longer
+        double fudge = Rez::guiX(2.0 * Preferences::dimFontSizeMM());
+        sectionLine->setEnds(l1 - lineDir * fudge, 
+                             l2 + lineDir * fudge);
 
-//        makeMark(0.0, 0.0);   //red
-//        makeMark(Rez::guiX(offset.x),
-//                 Rez::guiX(offset.y),
-//                 Qt::green);
-
-        sectionLine->setPos(Rez::guiX(offset.x),Rez::guiX(offset.y));
-        double sectionSpan;
-        double sectionFudge = Rez::guiX(10.0);
-        double xVal, yVal;
-//        double fontSize = getPrefFontSize();
-//        double fontSize = getDimFontSize();
-        double fontSize = Preferences::dimFontSizeMM();
-        if (horiz)  {
-            double width = Rez::guiX(viewPart->getBoxX());
-            double height = Rez::guiX(viewPart->getBoxY());
-            if (switchWH) {
-                sectionSpan = height + sectionFudge;
-            } else {
-                sectionSpan = width + sectionFudge;
-            }
-            xVal = sectionSpan / 2.0;
-            yVal = 0.0;
-        } else {
-            double width = Rez::guiX(viewPart->getBoxX());
-            double height = Rez::guiX(viewPart->getBoxY());
-            if (switchWH) {
-                sectionSpan = width + sectionFudge;
-            } else {
-                sectionSpan = height + sectionFudge;
-            }
-            xVal = 0.0;
-            yVal = sectionSpan / 2.0;
-        }
-        sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
+        //set the general parameters
+        sectionLine->setPos(0.0, 0.0);
         sectionLine->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+        double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(m_font, fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(viewPart->Rotation.getValue());

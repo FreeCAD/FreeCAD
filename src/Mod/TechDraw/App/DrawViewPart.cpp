@@ -248,14 +248,10 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-//    Base::Console().Message("DVP::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
     
-//    Base::Console().Message("DVP::execute - Source: %d XSource: %d\n",
-//                         Source.getValues().size(), XSource.getValues().size());
-
     App::Document* doc = getDocument();
     bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
     const std::vector<App::DocumentObject*>& links = getAllSources();
@@ -291,7 +287,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         XDirection.purgeTouched();  //don't trigger updates!
         //unblock
     }
-    auto start = std::chrono::high_resolution_clock::now();
 
     m_saveShape = shape;
     partExec(shape);
@@ -312,14 +307,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
     }
 
-    auto end   = std::chrono::high_resolution_clock::now();
-    auto diff  = end - start;
-    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
-                        getNameInDocument(),diffOut);
-
 //#endif //#if MOD_TECHDRAW_HANDLE_FACES
-//    Base::Console().Message("DVP::execute - exits\n");
     return DrawView::execute();
 }
 
@@ -366,7 +354,6 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
     }
 
 #if MOD_TECHDRAW_HANDLE_FACES
-//    auto start = std::chrono::high_resolution_clock::now();
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -463,8 +450,6 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
             viewAxis);
     }
 
-    auto start = std::chrono::high_resolution_clock::now();
-
     go->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDraw::ecOUTLINE,
@@ -499,10 +484,6 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
         go->extractGeometry(TechDraw::ecUVISO,
                             false);
     }
-    auto end   = std::chrono::high_resolution_clock::now();
-    auto diff  = end - start;
-    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
-    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
 
     const std::vector<TechDraw::BaseGeom  *> & edges = go->getEdgeGeometry();
     if (edges.empty()) {
@@ -533,34 +514,32 @@ void DrawViewPart::extractFaces()
         if (!DrawUtil::isZeroEdge(e)) {
             nonZero.push_back(e);
         } else {
-            Base::Console().Message("INFO - DVP::extractFaces for %s found ZeroEdge!\n",getNameInDocument());
+            Base::Console().Log("INFO - DVP::extractFaces for %s found ZeroEdge!\n",getNameInDocument());
         }
     }
-    faceEdges = nonZero;
-    origEdges = nonZero;
 
     //HLR algo does not provide all edge intersections for edge endpoints.
     //need to split long edges touched by Vertex of another edge
     std::vector<splitPoint> splits;
-    std::vector<TopoDS_Edge>::iterator itOuter = origEdges.begin();
+    std::vector<TopoDS_Edge>::iterator itOuter = nonZero.begin();
     int iOuter = 0;
-    for (; itOuter != origEdges.end(); ++itOuter, iOuter++) {
+    for (; itOuter != nonZero.end(); ++itOuter, iOuter++) {    //*** itOuter != nonZero.end() - 1
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
         BRepBndLib::Add(*itOuter, sOuter);
         sOuter.SetGap(0.1);
         if (sOuter.IsVoid()) {
-            Base::Console().Message("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
+            Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
             continue;
         }
         if (DrawUtil::isZeroEdge(*itOuter)) {
-            Base::Console().Message("DVP::extractFaces - outerEdge: %d is ZeroEdge\n",iOuter);   //this is not finding ZeroEdges
+            Base::Console().Log("DVP::extractFaces - outerEdge: %d is ZeroEdge\n",iOuter);   //this is not finding ZeroEdges
             continue;  //skip zero length edges. shouldn't happen ;)
         }
         int iInner = 0;
-        std::vector<TopoDS_Edge>::iterator itInner = faceEdges.begin();
-        for (; itInner != faceEdges.end(); ++itInner,iInner++) {
+        std::vector<TopoDS_Edge>::iterator itInner = nonZero.begin();   //***sb itOuter + 1;
+        for (; itInner != nonZero.end(); ++itInner,iInner++) {
             if (iInner == iOuter) {
                 continue;
             }
@@ -602,10 +581,10 @@ void DrawViewPart::extractFaces()
     std::vector<splitPoint> sorted = DrawProjectSplit::sortSplits(splits,true);
     auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
     sorted.erase(last, sorted.end());                         //remove dupl splits
-    std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(faceEdges,sorted);
+    std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(nonZero,sorted);
 
     if (newEdges.empty()) {
-        Base::Console().Log("LOG - DVP::extractFaces - no newEdges\n");
+        Base::Console().Log("DVP::extractFaces - no newEdges\n");
         return;
     }
 
@@ -646,8 +625,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ( ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) && 
-             (!(*it)->isRemoving()) ) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()))   {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
         }
@@ -1189,6 +1167,7 @@ void DrawViewPart::resetReferenceVerts()
 //********
 //* Cosmetics
 //********
+
 void DrawViewPart::clearCosmeticVertexes(void)
 {
     std::vector<CosmeticVertex*> noVerts;
@@ -1242,15 +1221,11 @@ int DrawViewPart::getCVIndex(std::string tag)
 //    Base::Console().Message("DVP::getCVIndex(%s)\n", tag.c_str());
     int result = -1;
     std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
-    Base::Console().Message("DVP::getCVIndex - gVerts: %d\n", gVerts.size());
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    Base::Console().Message("DVP::getCVIndex - cVerts: %d\n", cVerts.size());
 
     int i = 0;
     bool found = false;
     for (auto& gv :gVerts) {
-        Base::Console().Message("DVP::getCVIndex - gv cosmetic: %d ctag: %s\n", 
-                                gv->cosmetic, gv->cosmeticTag.c_str());
         if (gv->cosmeticTag == tag) {
             result = i;
             found = true;
