@@ -344,119 +344,150 @@ class Array(DraftLink):
 
     def execute(self, obj):
         """Execture when the object is created or recomputed."""
-        if obj.Base:
-            pl = obj.Placement
-            axis = obj.Axis
-            center = obj.Center
+        if not obj.Base:
+            return
 
-            if hasattr(obj, "AxisReference") and obj.AxisReference:
-                if hasattr(obj.AxisReference, "Placement"):
-                    reference = obj.AxisReference.Placement
-                    axis = reference.Rotation * App.Vector(0, 0, 1)
-                    center = reference.Base
-                else:
-                    _info = ("'AxisReference' has no 'Placement' property. "
-                             "Please select a different object to use as "
-                             "reference.")
-                    raise TypeError(_info)
+        pl = obj.Placement
+        axis = obj.Axis
+        center = obj.Center
 
-            if obj.ArrayType == "ortho":
-                pls = self.rectArray(obj.Base.Placement,
-                                     obj.IntervalX,
-                                     obj.IntervalY,
-                                     obj.IntervalZ,
-                                     obj.NumberX,
-                                     obj.NumberY,
-                                     obj.NumberZ)
-            elif obj.ArrayType == "polar":
-                av = obj.IntervalAxis if hasattr(obj, "IntervalAxis") else None
-                pls = self.polarArray(obj.Base.Placement,
-                                      center, obj.Angle.Value,
-                                      obj.NumberPolar, axis, av)
-            elif obj.ArrayType == "circular":
-                pls = self.circArray(obj.Base.Placement,
-                                     obj.RadialDistance,
-                                     obj.TangentialDistance,
-                                     axis, center,
-                                     obj.NumberCircles, obj.Symmetry)
+        if hasattr(obj, "AxisReference") and obj.AxisReference:
+            if hasattr(obj.AxisReference, "Placement"):
+                reference = obj.AxisReference.Placement
+                axis = reference.Rotation * App.Vector(0, 0, 1)
+                center = reference.Base
+            else:
+                _info = ("'AxisReference' has no 'Placement' property. "
+                         "Please select a different object to use as "
+                         "reference.")
+                raise TypeError(_info)
 
-            return super(Array, self).buildShape(obj, pl, pls)
+        if obj.ArrayType == "ortho":
+            pls = rect_placements(obj.Base.Placement,
+                                  obj.IntervalX,
+                                  obj.IntervalY,
+                                  obj.IntervalZ,
+                                  obj.NumberX,
+                                  obj.NumberY,
+                                  obj.NumberZ)
+        elif obj.ArrayType == "polar":
+            av = obj.IntervalAxis if hasattr(obj, "IntervalAxis") else None
+            pls = polar_placements(obj.Base.Placement,
+                                   center, obj.Angle.Value,
+                                   obj.NumberPolar, axis, av)
+        elif obj.ArrayType == "circular":
+            pls = circ_placements(obj.Base.Placement,
+                                  obj.RadialDistance,
+                                  obj.TangentialDistance,
+                                  axis, center,
+                                  obj.NumberCircles, obj.Symmetry)
 
-    def rectArray(self, pl, xvector, yvector, zvector, xnum, ynum, znum):
-        """Determine the placements where the rectangular copies will be."""
-        base = [pl.copy()]
-        for xcount in range(xnum):
-            currentxvector = App.Vector(xvector).multiply(xcount)
-            if not xcount == 0:
-                npl = pl.copy()
-                npl.translate(currentxvector)
-                base.append(npl)
-            for ycount in range(ynum):
-                currentyvector = App.Vector(currentxvector)
-                currentyvector = currentyvector.add(App.Vector(yvector).multiply(ycount))
-                if not ycount == 0:
-                    npl = pl.copy()
-                    npl.translate(currentyvector)
-                    base.append(npl)
-                for zcount in range(znum):
-                    currentzvector = App.Vector(currentyvector)
-                    currentzvector = currentzvector.add(App.Vector(zvector).multiply(zcount))
-                    if not zcount == 0:
-                        npl = pl.copy()
-                        npl.translate(currentzvector)
-                        base.append(npl)
-        return base
-
-    def circArray(self, pl, rdist, tdist, axis, center, cnum, sym):
-        """Determine the placements where the circular copies will be."""
-        sym = max(1, sym)
-        lead = (0, 1, 0)
-        if axis.x == 0 and axis.z == 0:
-            lead = (1, 0, 0)
-        direction = axis.cross(App.Vector(lead)).normalize()
-        base = [pl.copy()]
-        for xcount in range(1, cnum):
-            rc = xcount * rdist
-            c = 2 * rc * math.pi
-            n = math.floor(c / tdist)
-            n = int(math.floor(n / sym) * sym)
-            if n == 0:
-                continue
-            angle = 360.0/n
-            for ycount in range(0, n):
-                npl = pl.copy()
-                trans = App.Vector(direction).multiply(rc)
-                npl.translate(trans)
-                npl.rotate(npl.Rotation.inverted().multVec(center-trans),
-                           axis, ycount * angle)
-                base.append(npl)
-        return base
-
-    def polarArray(self, spl, center, angle, num, axis, axisvector):
-        """Determine the placements where the polar copies will be."""
-        # print("angle ",angle," num ",num)
-        spin = App.Placement(App.Vector(), spl.Rotation)
-        pl = App.Placement(spl.Base, App.Rotation())
-        center = center.sub(spl.Base)
-        base = [spl.copy()]
-        if angle == 360:
-            fraction = float(angle)/num
-        else:
-            if num == 0:
-                return base
-            fraction = float(angle)/(num-1)
-        ctr = DraftVecUtils.tup(center)
-        axs = DraftVecUtils.tup(axis)
-        for i in range(num-1):
-            currangle = fraction + (i*fraction)
-            npl = pl.copy()
-            npl.rotate(ctr, axs, currangle)
-            npl = npl.multiply(spin)
-            if axisvector:
-                if not DraftVecUtils.isNull(axisvector):
-                    npl.translate(App.Vector(axisvector).multiply(i+1))
-            base.append(npl)
-        return base
+        return super(Array, self).buildShape(obj, pl, pls)
 
 
 _Array = Array
+
+
+def rect_placements(base_placement,
+                    xvector, yvector, zvector,
+                    xnum, ynum, znum):
+    """Determine the placements where the rectangular copies will be."""
+    pl = base_placement
+    placements = [pl.copy()]
+
+    for xcount in range(xnum):
+        currentxvector = App.Vector(xvector).multiply(xcount)
+        if xcount != 0:
+            npl = pl.copy()
+            npl.translate(currentxvector)
+            placements.append(npl)
+
+        for ycount in range(ynum):
+            currentyvector = App.Vector(currentxvector)
+            _y_shift = App.Vector(yvector).multiply(ycount)
+            currentyvector = currentyvector.add(_y_shift)
+            if ycount != 0:
+                npl = pl.copy()
+                npl.translate(currentyvector)
+                placements.append(npl)
+
+            for zcount in range(znum):
+                currentzvector = App.Vector(currentyvector)
+                _z_shift = App.Vector(zvector).multiply(zcount)
+                currentzvector = currentzvector.add(_z_shift)
+                if zcount != 0:
+                    npl = pl.copy()
+                    npl.translate(currentzvector)
+                    placements.append(npl)
+
+    return placements
+
+
+def polar_placements(base_placement,
+                     center, angle,
+                     number, axis, axisvector):
+    """Determine the placements where the polar copies will be."""
+    # print("angle ",angle," num ",num)
+    placements = [base_placement.copy()]
+
+    if number == 0:
+        return placements
+
+    spin = App.Placement(App.Vector(), base_placement.Rotation)
+    pl = App.Placement(base_placement.Base, App.Rotation())
+    center = center.sub(base_placement.Base)
+
+    if angle == 360:
+        fraction = float(angle)/number
+    else:
+        fraction = float(angle)/(number - 1)
+
+    center_tuple = DraftVecUtils.tup(center)
+    axis_tuple = DraftVecUtils.tup(axis)
+
+    for i in range(number - 1):
+        currangle = fraction + (i*fraction)
+        npl = pl.copy()
+        npl.rotate(center_tuple, axis_tuple, currangle)
+        npl = npl.multiply(spin)
+        if axisvector:
+            if not DraftVecUtils.isNull(axisvector):
+                npl.translate(App.Vector(axisvector).multiply(i+1))
+        placements.append(npl)
+
+    return placements
+
+
+def circ_placements(base_placement,
+                    r_distance, tan_distance,
+                    axis, center,
+                    circle_number, symmetry):
+    """Determine the placements where the circular copies will be."""
+    symmetry = max(1, symmetry)
+    lead = (0, 1, 0)
+
+    if axis.x == 0 and axis.z == 0:
+        lead = (1, 0, 0)
+
+    direction = axis.cross(App.Vector(lead)).normalize()
+    placements = [base_placement.copy()]
+
+    for xcount in range(1, circle_number):
+        rc = xcount * r_distance
+        c = 2 * rc * math.pi
+        n = math.floor(c / tan_distance)
+        n = int(math.floor(n / symmetry) * symmetry)
+        if n == 0:
+            continue
+
+        angle = 360.0/n
+        for ycount in range(0, n):
+            npl = base_placement.copy()
+            trans = App.Vector(direction).multiply(rc)
+            npl.translate(trans)
+            npl.rotate(npl.Rotation.inverted().multVec(center-trans),
+                       axis,
+                       ycount * angle)
+            placements.append(npl)
+
+    return placements
