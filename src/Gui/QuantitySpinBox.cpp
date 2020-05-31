@@ -632,6 +632,7 @@ void QuantitySpinBox::setUnit(const Base::Unit &unit)
     Q_D(QuantitySpinBox);
 
     d->unit = unit;
+    d->quantity.setUnit(unit);
     updateText(d->quantity);
 }
 
