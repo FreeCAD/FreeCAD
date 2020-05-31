@@ -33,6 +33,7 @@
 #include <openssl/hmac.h>
 #include <openssl/pem.h>
 #include <openssl/md5.h>
+#include <openssl/sha.h>
 
 #include <curl/curl.h>
 
@@ -319,6 +320,8 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 		if (  ptr != NULL )
 		{
 	                returnData->MD5=Cloud::MD5Sum(ptr,size);
+			printf("Target: %s\n",target);
+			printf("SHA256: %s\n", Cloud::SHA256Sum(ptr,size));
 			sprintf(StringToSign,"%s\n%s\n%s\n%s\n%s", operation, returnData->MD5, data_type, date_formatted, target);
 		}
 		else
@@ -333,6 +336,17 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 	strcpy(returnData->dateFormatted,date_formatted);
 	return returnData;
 	
+}
+
+char *Cloud::SHA256Sum(const char *ptr, long size)
+{
+        char *output;
+        std::string local;
+        unsigned char result[SHA256_DIGEST_LENGTH];
+        output=(char *)malloc(SHA256_DIGEST_LENGTH*sizeof(char));
+        SHA256((unsigned char*) ptr, size, result);
+        strcpy(output,(const char *)(&(result[0])));
+        return(output);
 }
 
 char *Cloud::MD5Sum(const char *ptr, long size)
