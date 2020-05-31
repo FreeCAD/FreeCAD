@@ -3626,9 +3626,10 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 }
             }
 
-            for (std::vector<int>::const_iterator it = newgeoIdList.begin(); it != newgeoIdList.end(); ++it) {
+            int index = 0;
+            for (std::vector<int>::const_iterator it = newgeoIdList.begin(); it != newgeoIdList.end(); ++it, index++) {
                 const Part::Geometry *geo = getGeometry(*it);
-                Part::Geometry *geocopy = moveonly?const_cast<Part::Geometry *>(geo):geo->copy();
+                Part::Geometry *geocopy = geo->copy(); // make a copy of the pointer for undo even if moving
 
                 // Handle Geometry
                 if(geocopy->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -3735,6 +3736,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     newgeoVals.push_back(geocopy);
                     geoIdMap.insert(std::make_pair(*it, cgeoid));
                     cgeoid++;
+                }
+                else {
+                    newgeoVals[index] = geocopy;
                 }
             }
 
@@ -3963,9 +3967,8 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     }
                 }
 
+                geoIdMap.clear(); // after each creation reset map so that the key-value is univoque (only for operations other than move)
             }
-
-            geoIdMap.clear(); // after each creation reset map so that the key-value is univoque
         }
     }
 
