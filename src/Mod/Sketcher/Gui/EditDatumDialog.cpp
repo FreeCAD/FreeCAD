@@ -210,6 +210,8 @@ void EditDatumDialog::drivingToggled(bool state)
         ui_ins_datum->labelEdit->setToLastUsedValue();
     }
     sketch->setDriving(ConstrNbr, !state);
+    if(!sketch->noRecomputes) // if noRecomputes, solve() is already done by setDriving()
+        sketch->solve();
 }
 
 void EditDatumDialog::datumChanged()
