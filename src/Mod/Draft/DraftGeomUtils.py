@@ -380,27 +380,7 @@ from draftgeoutils.wires import tessellateProjection
 from draftgeoutils.wires import rebaseWire
 
 
-def removeSplitter(shape):
-    """an alternative, shared edge-based version of Part.removeSplitter. Returns a
-    face or None if the operation failed"""
-    lut = {}
-    for f in shape.Faces:
-        for e in f.Edges:
-            h = e.hashCode()
-            if h in lut:
-                lut[h].append(e)
-            else:
-                lut[h] = [e]
-    edges = [e[0] for e in lut.values() if len(e) == 1]
-    try:
-        face = Part.Face(Part.Wire(edges))
-    except:
-        # operation failed
-        return None
-    else:
-        if face.isValid():
-            return face
-    return None
+from draftgeoutils.faces import removeSplitter
 
 
 # circle functions *********************************************************
