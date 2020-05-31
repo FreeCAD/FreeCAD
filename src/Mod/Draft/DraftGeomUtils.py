@@ -113,16 +113,7 @@ from draftgeoutils.offsets import pocket2d
 from draftgeoutils.edges import orientEdge
 
 
-def mirror(point, edge):
-    """Find mirror point relative to an edge."""
-    normPoint = point.add(findDistance(point, edge, False))
-    if normPoint:
-        normPoint_point = Vector.sub(point, normPoint)
-        normPoint_refl = normPoint_point.negative()
-        refl = Vector.add(normPoint, normPoint_refl)
-        return refl
-    else:
-        return None
+from draftgeoutils.geometry import mirror
 
 
 from draftgeoutils.arcs import isClockwise

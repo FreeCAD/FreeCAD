@@ -319,3 +319,16 @@ def calculatePlacement(shape):
         pla.Rotation = r
 
     return pla
+
+
+def mirror(point, edge):
+    """Find mirror point relative to an edge."""
+    normPoint = point.add(findDistance(point, edge, False))
+
+    if normPoint:
+        normPoint_point = FreeCAD.Vector.sub(point, normPoint)
+        normPoint_refl = normPoint_point.negative()
+        refl = FreeCAD.Vector.add(normPoint, normPoint_refl)
+        return refl
+    else:
+        return None
