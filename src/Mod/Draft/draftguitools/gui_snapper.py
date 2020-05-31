@@ -1338,6 +1338,7 @@ class Snapper:
         self.callbackMove = None
 
         def move(event_cb):
+            self.lastSnappedObject = None
             event = event_cb.getEvent()
             mousepos = event.getPosition()
             ctrl = event.wasCtrlDown()
