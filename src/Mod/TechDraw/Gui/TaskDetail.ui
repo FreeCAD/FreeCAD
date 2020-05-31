@@ -129,7 +129,7 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="keyboardTracking">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -182,7 +182,7 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="keyboardTracking">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -201,7 +201,7 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="keyboardTracking">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>

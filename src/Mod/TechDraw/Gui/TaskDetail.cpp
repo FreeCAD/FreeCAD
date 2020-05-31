@@ -119,11 +119,11 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     //use editingFinished signal instead of valueChanged to prevent keyboard lock out
     //valueChanged fires every keystroke causing a recompute.
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
+    connect(ui->qsbX, SIGNAL(editingFinished()),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
+    connect(ui->qsbY, SIGNAL(editingFinished()),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
+    connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
@@ -192,12 +192,11 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     // the UI file uses setKeyboardTracking(false) so that a
     // recomputation will only be triggered when the arrow yeys of the spinboxes are used
-
-    connect(ui->qsbX, SIGNAL(valueChanged(double)),
+    connect(ui->qsbX, SIGNAL(editingFinished()),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(valueChanged(double)),
+    connect(ui->qsbY, SIGNAL(editingFinished()),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
+    connect(ui->qsbRadius, SIGNAL(editingFinished()),
             this, SLOT(onRadiusEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
