@@ -558,7 +558,7 @@ void PropertyItem::setPropertyValue(const QString& value)
         } else
             continue;
         ss << parent->getPropertyPrefix() << prop->getName()
-           << " = " << value.toLatin1().constData() << '\n';
+           << " = " << value.toUtf8().constData() << '\n';
     }
 
     std::string cmd = ss.str();
