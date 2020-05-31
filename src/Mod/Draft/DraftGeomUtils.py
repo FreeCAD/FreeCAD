@@ -191,29 +191,8 @@ from draftgeoutils.intersections import connect
 from draftgeoutils.geometry import findDistance
 
 
-def angleBisection(edge1, edge2):
-    """angleBisection(edge,edge) - Returns an edge that bisects the angle between the 2 edges."""
-    if (geomType(edge1) == "Line") and (geomType(edge2) == "Line"):
-        p1 = edge1.Vertexes[0].Point
-        p2 = edge1.Vertexes[-1].Point
-        p3 = edge2.Vertexes[0].Point
-        p4 = edge2.Vertexes[-1].Point
-        int = findIntersection(edge1, edge2, True, True)
-        if int:
-            line1Dir = p2.sub(p1)
-            angleDiff = DraftVecUtils.angle(line1Dir, p4.sub(p3))
-            ang = angleDiff * 0.5
-            origin = int[0]
-            line1Dir.normalize()
-            dir = DraftVecUtils.rotate(line1Dir, ang)
-            return Part.LineSegment(origin,origin.add(dir)).toShape()
-        else:
-            diff = p3.sub(p1)
-            origin = p1.add(diff.multiply(0.5))
-            dir = p2.sub(p1); dir.normalize()
-            return Part.LineSegment(origin,origin.add(dir)).toShape()
-    else:
-        return None
+from draftgeoutils.intersections import angleBisection
+
 
 def findClosestCircle(point, circles):
     """Return the circle with closest center."""
