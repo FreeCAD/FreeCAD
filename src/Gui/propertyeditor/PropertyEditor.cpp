@@ -623,8 +623,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     case MA_AddProp: {
         App::AutoTransaction committer("Add property");
         std::unordered_set<App::PropertyContainer*> containers;
-        for(auto prop : props)
-            containers.insert(prop->getContainer());
+        auto sels = Gui::Selection().getSelection("*");
+        if(sels.size() == 1)
+            containers.insert(sels[0].pObject);
+        else {
+            for(auto prop : props)
+                containers.insert(prop->getContainer());
+        }
         Gui::Dialog::DlgAddProperty dlg(
                 Gui::getMainWindow(),std::move(containers));
         dlg.exec();
