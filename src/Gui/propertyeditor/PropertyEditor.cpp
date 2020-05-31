@@ -56,6 +56,7 @@ using namespace Gui::PropertyEditor;
 PropertyEditor::PropertyEditor(QWidget *parent)
     : QTreeView(parent), autoupdate(false), committing(false)
     , delaybuild(false), binding(false), checkDocument(false)
+    , closingEditor(false)
 {
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
@@ -68,7 +69,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setItemDelegate(delegate);
 
     setAlternatingRowColors(true);
-    setRootIsDecorated(true);
+    setRootIsDecorated(false);
+    setExpandsOnDoubleClick(true);
 
     QStyleOptionViewItem opt = viewOptions();
     this->background = opt.palette.dark();
@@ -78,10 +80,30 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
     connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
+    connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(onItemExpanded(const QModelIndex &)));
+    connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(onItemCollapsed(const QModelIndex &)));
+    connect(propertyModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
+            this, SLOT(onRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
+    connect(propertyModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+            this, SLOT(onRowsRemoved(const QModelIndex &, int, int)));
 }
 
 PropertyEditor::~PropertyEditor()
 {
+}
+
+void PropertyEditor::onItemExpanded(const QModelIndex &index)
+{
+    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    item->setExpanded(true);
+    for(int i=0, c=item->childCount(); i<c; ++i)
+        setExpanded(propertyModel->index(i, 0, index), item->child(i)->isExpanded());
+}
+
+void PropertyEditor::onItemCollapsed(const QModelIndex &index)
+{
+    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    item->setExpanded(false);
 }
 
 void PropertyEditor::setAutomaticDocumentUpdate(bool v)
@@ -184,19 +206,37 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
     //     openPersistentEditor(model()->buddy(current));
 }
 
-void PropertyEditor::setupTransaction(const QModelIndex &index) {
-    if(!autoupdate)
-        return;
-    if(this->state()!=EditingState) {
-        FC_LOG("editor not editing");
-        return;
+void PropertyEditor::closeEditor()
+{
+    if (editingIndex.isValid()) {
+        Base::StateLocker guard(closingEditor);
+        bool hasFocus = activeEditor && activeEditor->hasFocus();
+        closePersistentEditor(editingIndex);
+        editingIndex = QPersistentModelIndex();
+        activeEditor = nullptr;
+        if(hasFocus)
+            setFocus();
     }
+}
+
+void PropertyEditor::openEditor(const QModelIndex &index)
+{
+    if(editingIndex == index && activeEditor)
+        return;
+
+    closeEditor();
+
+    openPersistentEditor(model()->buddy(index));
+
+    if(!editingIndex.isValid() || !autoupdate)
+        return;
+
     auto &app = App::GetApplication();
     if(app.getActiveTransaction()) {
         FC_LOG("editor already transacting " << app.getActiveTransaction());
         return;
     }
-    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    PropertyItem* item = static_cast<PropertyItem*>(editingIndex.internalPointer());
     auto items = item->getPropertyData();
     for(auto propItem=item->parent();items.empty() && propItem;propItem=propItem->parent())
         items = propItem->getPropertyData();
@@ -238,8 +278,7 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
 {
     if(index.column() != 1)
         return;
-    edit(model()->buddy(index),AllEditTriggers,0);
-    setupTransaction(index);
+    openEditor(index);
 }
 
 void PropertyEditor::closeTransaction()
@@ -263,15 +302,45 @@ void PropertyEditor::closeTransaction()
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
-    QTreeView::closeEditor(editor, hint);
+    if (closingEditor)
+        return;
+
+    if (removingRows) {
+        // When removing rows, QTreeView will temporary hide the editor which
+        // will trigger Event::FocusOut and subsequently trigger call of
+        // closeEditor() here. Since we are using persistent editor, QTreeView
+        // will not destory the editor. But we still needs to call
+        // QTreeView::closeEditor() here, in case the editor belongs to the
+        // removed rows.
+        QTreeView::closeEditor(editor, hint);
+        return;
+    }
+    // If we are not removing rows, then QTreeView::closeEditor() does
+    // nothing because we are using persistent editor, so we have to do it
+    // by ourselves.
+    if(editor)
+        editor->deleteLater();
 
     closeTransaction();
 
+    editingIndex = QPersistentModelIndex();
+    activeEditor = nullptr;
+
     QModelIndex indexSaved = currentIndex();
-    FC_LOG("index saved " << indexSaved.row() << ", " << indexSaved.column());
+
+    // Prevent reentry, which may be caused by the call of setFocus() below
+    // that cause the editor to lose focus.
+    Base::StateLocker guard(closingEditor);
+
+    if (indexSaved.column() == 0) {
+        // Calling setCurrentIndex() to make sure we focus on column 1 instead of 0.
+        setCurrentIndex(propertyModel->buddy(indexSaved));
+    }
+    // grab focus from the editor
+    setFocus();
 
     QModelIndex lastIndex;
-    while(this->state()!=EditingState) {
+    do {
         QModelIndex index;
         if (hint == QAbstractItemDelegate::EditNextItem) {
             index = moveCursor(MoveDown,Qt::NoModifier);
@@ -279,31 +348,99 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
             index = moveCursor(MoveUp,Qt::NoModifier);
         } else
             break;
-        if(!index.isValid() || index==lastIndex) {
-            setCurrentIndex(indexSaved);
+        if (!index.isValid() || index==lastIndex) {
+            setCurrentIndex(propertyModel->buddy(indexSaved));
             break;
         }
         lastIndex = index;
-        setCurrentIndex(index);
-        edit(index,AllEditTriggers,0);
-    }
-    setupTransaction(currentIndex());
+        setCurrentIndex(propertyModel->buddy(index));
+        openEditor(index);
+    } while (!editingIndex.isValid());
 }
 
 void PropertyEditor::reset()
 {
     QTreeView::reset();
 
-    QModelIndex index;
-    int numRows = propertyModel->rowCount(index);
-    if (numRows > 0)
-        setEditorMode(index, 0, numRows-1);
+    QModelIndex parent;
+    int numRows = propertyModel->rowCount(parent);
+    for (int i=0; i<numRows; ++i) {
+        QModelIndex index = propertyModel->index(i, 0, parent);
+        PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+        if (item->childCount() == 0) {
+            if(item->isSeparator())
+                setRowHidden(i, parent, true);
+        } else
+            setEditorMode(index, 0, item->childCount()-1);
+        if(item->isExpanded())
+            setExpanded(index, true);
+    }
+}
+
+void PropertyEditor::onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &dst, int)
+{
+    if(parent != dst) {
+        PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+        if(item && item->isSeparator() && item->childCount()==0)
+            setRowHidden(parent.row(), propertyModel->parent(parent), true);
+        item = static_cast<PropertyItem*>(dst.internalPointer());
+        if(item && item->isSeparator() && item->childCount()==end-start+1) {
+            setRowHidden(dst.row(), propertyModel->parent(dst), false);
+            setExpanded(dst, true);
+        }
+    }
 }
 
 void PropertyEditor::rowsInserted (const QModelIndex & parent, int start, int end)
 {
     QTreeView::rowsInserted(parent, start, end);
-    setEditorMode(parent, start, end);
+
+    PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+    if (item && item->isSeparator() && item->childCount() == end-start+1) {
+        setRowHidden(parent.row(), propertyModel->parent(parent), false);
+        if(item->isExpanded())
+            setExpanded(parent, true);
+    }
+
+    for (int i=start; i<end; ++i) {
+        QModelIndex index = propertyModel->index(i, 0, parent);
+        PropertyItem *child = static_cast<PropertyItem*>(index.internalPointer());
+        if(child->isSeparator()) {
+            // Set group header rows to span all columns
+            setFirstColumnSpanned(i, parent, true);
+        }
+        if(child->isExpanded())
+            setExpanded(index, true);
+    }
+
+    if(parent.isValid())
+        setEditorMode(parent, start, end);
+}
+
+void PropertyEditor::rowsAboutToBeRemoved (const QModelIndex & parent, int start, int end)
+{
+    QTreeView::rowsAboutToBeRemoved(parent, start, end);
+
+    PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+    if (item && item->isSeparator() && item->childCount() == end-start+1)
+        setRowHidden(parent.row(), propertyModel->parent(parent), true);
+
+    if (editingIndex.isValid()) {
+        removingRows = 1;
+        for (QWidget *w = qApp->focusWidget(); w; w = w->parentWidget()) {
+            if(w == activeEditor) {
+                removingRows = -1;
+                break;
+            }
+        }
+    }
+}
+
+void PropertyEditor::onRowsRemoved(const QModelIndex &, int, int)
+{
+    if (removingRows < 0 && activeEditor)
+        activeEditor->setFocus();
+    removingRows = 0;
 }
 
 void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const
@@ -378,58 +515,7 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
         if (!PropertyView::showAll() && propItem && propItem->testStatus(App::Property::Hidden)) {
             setRowHidden (i, parent, true);
         }
-        if (propItem && propItem->isSeparator()) {
-            // Set group header rows to span all columns
-            setFirstColumnSpanned(i, parent, true);
-        }
     }
-}
-
-void PropertyEditor::updateEditorMode(const App::Property& prop)
-{
-    // check if the parent object is selected
-    std::string editor = prop.getEditorName();
-    if (!PropertyView::showAll() && editor.empty())
-        return;
-
-    bool hidden = PropertyView::isPropertyHidden(&prop);
-    bool readOnly = prop.testStatus(App::Property::ReadOnly);
-
-    int column = 1;
-    int numRows = propertyModel->rowCount();
-    for (int i=0; i<numRows; i++) {
-        QModelIndex item = propertyModel->index(i, column);
-        PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
-        if (propItem && propItem->hasProperty(&prop)) {
-            setRowHidden (i, QModelIndex(), hidden);
-
-            propItem->updateData();
-            if (item.isValid()) {
-                updateItemEditor(!readOnly, column, item);
-                dataChanged(item, item);
-            }
-            break;
-        }
-    }
-}
-
-void PropertyEditor::updateItemEditor(bool enable, int column, const QModelIndex& parent)
-{
-    QWidget* editor = indexWidget(parent);
-    if (editor)
-        editor->setEnabled(enable);
-
-    int numRows = propertyModel->rowCount(parent);
-    for (int i=0; i<numRows; i++) {
-        QModelIndex item = propertyModel->index(i, column, parent);
-        if (item.isValid()) {
-            updateItemEditor(enable, column, item);
-        }
-    }
-}
-
-bool PropertyEditor::appendProperty(const App::Property& prop) {
-    return !!propOwners.count(prop.getContainer());
 }
 
 void PropertyEditor::removeProperty(const App::Property& prop)
@@ -614,10 +700,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         break;
     case MA_Expression:
         if(contextIndex == currentIndex()) {
-            closePersistentEditor(contextIndex);
             Base::FlagToggler<> flag(binding);
-            edit(contextIndex,AllEditTriggers,0);
-            setupTransaction(contextIndex);
+            openEditor(contextIndex);
         }
         break;
     case MA_AddProp: {

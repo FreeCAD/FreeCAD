@@ -28,6 +28,8 @@
 #include <QStringList>
 #include <vector>
 #include <map>
+#include <unordered_map>
+#include "PropertyItem.h"
 
 namespace App {
 class Property;
@@ -35,7 +37,6 @@ class Property;
 namespace Gui {
 namespace PropertyEditor {
 
-class PropertyItem;
 class PropertyModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -70,8 +71,18 @@ public:
 private:
     void updateChildren(PropertyItem* item, int column, const QModelIndex& parent);
 
+    struct GroupInfo {
+        PropertySeparatorItem *groupItem = nullptr;
+        std::vector<PropertyItem *> children;
+    };
+    GroupInfo &getGroupInfo(App::Property *);
+
 private:
     PropertyItem *rootItem;
+
+    std::unordered_map<App::Property*, QPointer<PropertyItem> > itemMap;
+
+    std::map<QString, GroupInfo> groupItems;
 };
 
 } //namespace PropertyEditor

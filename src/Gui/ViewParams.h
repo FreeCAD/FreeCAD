@@ -136,6 +136,7 @@ public:
     FC_VIEW_PARAM(ShadowGroundTransparency, double, Float, 0.0) \
     FC_VIEW_PARAM(ShadowGroundShading, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
+    FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

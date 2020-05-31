@@ -95,7 +95,7 @@ Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false), linked(false)
+PropertyItem::PropertyItem() : parentItem(0), readonly(false), linked(false), expanded(false)
 {
     precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
@@ -249,6 +249,11 @@ void PropertyItem::removeChildren(int from, int to)
     }
 }
 
+void PropertyItem::moveChild(int from, int to)
+{
+    childItems.move(from, to);
+}
+
 /*!
  * \brief PropertyItem::takeChild
  * Removes the child at index row but doesn't delete it
@@ -297,6 +302,16 @@ void PropertyItem::setLinked(bool l)
 bool PropertyItem::isLinked() const
 {
     return linked;
+}
+
+void PropertyItem::setExpanded(bool enable)
+{
+    expanded = enable;
+}
+
+bool PropertyItem::isExpanded() const
+{
+    return expanded;
 }
 
 bool PropertyItem::testStatus(App::Property::Status pos) const
@@ -642,8 +657,6 @@ QVariant PropertyItem::data(int column, int role) const
 
 bool PropertyItem::setData (const QVariant& value)
 {
-    cleared = false;
-
     // This is the basic mechanism to set the value to
     // a property and if no property is set for this item
     // it delegates it to its parent which sets then the

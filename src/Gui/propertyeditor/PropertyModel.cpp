@@ -33,6 +33,7 @@
 #include "PropertyItem.h"
 #include "PropertyView.h"
 
+using namespace Gui;
 using namespace Gui::PropertyEditor;
 
 
@@ -209,15 +210,6 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     return parent;
 }
 
-struct PropItemInfo {
-    const std::string &name;
-    const std::vector<App::Property*> &props;
-
-    PropItemInfo(const std::string &n, const std::vector<App::Property*> &p)
-        :name(n),props(p)
-    {}
-};
-
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
     QString name = QString::fromLatin1(propName);
     if(name.size()>groupName.size()+1 
@@ -227,180 +219,258 @@ static void setPropertyItemName(PropertyItem *item, const char *propName, QStrin
     item->setPropertyName(name);
 }
 
-void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
+static PropertyItem *createPropertyItem(App::Property *prop)
 {
-    beginResetModel();
+    const char *editor = prop->getEditorName();
+    if (!editor || !editor[0]) {
+        if (PropertyView::showAll())
+            editor = "Gui::PropertyEditor::PropertyItem";
+        else
+            return nullptr;
+    }
+    auto item = static_cast<PropertyItem*>(
+            PropertyItemFactory::instance().createPropertyItem(editor));
+    if (!item) {
+        qWarning("No property item for type %s found\n", editor);
+    }
+    return item;
+}
 
-    // fill up the listview with the properties
-    rootItem->reset();
+PropertyModel::GroupInfo &PropertyModel::getGroupInfo(App::Property *prop)
+{
+    const char* group = prop->getGroup();
+    bool isEmpty = (group == 0 || group[0] == '\0');
+    QString groupName = QString::fromLatin1(
+            isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
 
-    // sort the properties into their groups
-    std::map<std::string, std::vector<PropItemInfo> > propGroup;
-    PropertyModel::PropertyList::const_iterator jt;
-    for (jt = props.begin(); jt != props.end(); ++jt) {
-        App::Property* prop = jt->second.front();
-        const char* group = prop->getGroup();
-        bool isEmpty = (group == 0 || group[0] == '\0');
-        std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
-        propGroup[grp].emplace_back(jt->first,jt->second);
+    auto res = groupItems.insert(std::make_pair(groupName, GroupInfo()));
+    if (res.second) {
+        auto &groupInfo = res.first->second;
+        groupInfo.groupItem = static_cast<PropertySeparatorItem*>(PropertySeparatorItem::create());
+        groupInfo.groupItem->setReadOnly(true);
+        groupInfo.groupItem->setExpanded(true);
+        groupInfo.groupItem->setParent(rootItem);
+        groupInfo.groupItem->setPropertyName(groupName);
+
+        auto it = res.first;
+        int row = 0;
+        if (it != groupItems.begin()) {
+            --it;
+            row = it->second.groupItem->_row + 1;
+            ++it;
+        }
+        groupInfo.groupItem->_row = row;
+        beginInsertRows(QModelIndex(), row, row);
+        rootItem->insertChild(row, groupInfo.groupItem);
+        // update row index for all group items behind
+        for (++it; it!=groupItems.end(); ++it)
+            ++it->second.groupItem->_row;
+        endInsertRows();
     }
 
-    for (auto kt = propGroup.begin(); kt != propGroup.end(); ++kt) {
-        // set group item
-        PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
-        group->setParent(rootItem);
-        rootItem->appendChild(group);
-        QString groupName = QString::fromLatin1(kt->first.c_str());
-        group->setPropertyName(groupName);
+    return res.first->second;
+}
 
-        // setup the items for the properties
-        for (auto it = kt->second.begin(); it != kt->second.end(); ++it) {
-            const auto &info = *it;
-            App::Property* prop = info.props.front();
-            std::string editor(prop->getEditorName());
-            if(editor.empty() && PropertyView::showAll())
-                editor = "Gui::PropertyEditor::PropertyItem";
-            if (!editor.empty()) {
-                PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(editor.c_str());
-                if (!item) {
-                    qWarning("No property item for type %s found\n", editor.c_str());
-                    continue;
-                }
-                else {
-                    if(boost::ends_with(info.name,"*"))
-                        item->setLinked(true);
-                    PropertyItem* child = (PropertyItem*)item;
-                    child->setParent(rootItem);
-                    rootItem->appendChild(child);
+void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
+{
+    // If props empty, then simply reset all property items, but keep the group
+    // items.
+    if (props.empty()) {
+        beginResetModel();
+        for(auto &v : groupItems) {
+            auto &groupInfo = v.second;
+            groupInfo.groupItem->reset();
+            groupInfo.children.clear();
+        }
+        itemMap.clear();
+        endResetModel();
+        return;
+    }
 
-                    setPropertyItemName(child,prop->getName(),groupName);
+    // First step, init group info
+    for (auto &v : groupItems) {
+        auto &groupInfo = v.second;
+        groupInfo.children.clear();
+    }
 
-                    child->setPropertyData(info.props);
-                }
-            }
+    // Second step, either find existing items or create new items for the given
+    // properties. There is no signaling of model change at this stage. The
+    // change information is kept pending in GroupInfo::children
+    for (auto jt = props.begin(); jt != props.end(); ++jt) {
+        App::Property* prop = jt->second.front();
+
+        PropertyItem *item = nullptr;
+        for (auto prop : jt->second) {
+            auto it = itemMap.find(prop);
+            if (it == itemMap.end() || !it->second)
+                continue;
+            item = it->second;
+            break;
+        }
+
+        if (!item) {
+            item = createPropertyItem(prop);
+            if (!item)
+                continue;
+        }
+
+        GroupInfo &groupInfo = getGroupInfo(prop);
+        groupInfo.children.push_back(item);
+
+        item->setLinked(boost::ends_with(jt->first,"*"));
+        setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
+
+        if (jt->second != item->getPropertyData()) {
+            for (auto prop : item->getPropertyData())
+                itemMap.erase(prop);
+            for (auto prop : jt->second)
+                itemMap[prop] = item;
+            // TODO: is it necessary to make sure the item has no pending commit?
+            item->setPropertyData(jt->second);
         }
     }
 
-    endResetModel();
+    // Third step, signal item insertion and movement.
+    for (auto &v : groupItems) {
+        auto &groupInfo = v.second;
+        int beginChange = -1;
+        int endChange = 0;
+        int beginInsert = -1;
+        int endInsert = 0;
+        int row = -1;
+        QModelIndex midx = this->index(groupInfo.groupItem->_row, 0, QModelIndex());
+
+        auto flushInserts = [&]() {
+            if (beginInsert < 0)
+                return;
+            beginInsertRows(midx, beginInsert, endInsert);
+            for (int i=beginInsert; i<=endInsert; ++i)
+                groupInfo.groupItem->insertChild(i, groupInfo.children[i]);
+            endInsertRows();
+            beginInsert = -1;
+        };
+
+        auto flushChanges = [&]() {
+            if (beginChange < 0)
+                return;
+            dataChanged(this->index(beginChange,0,midx), this->index(endChange,1,midx));
+            beginChange = -1;
+        };
+
+        for (auto item : groupInfo.children) {
+            ++row;
+            if (!item->parent()) {
+                flushChanges();
+                item->setParent(groupInfo.groupItem);
+                if (beginInsert < 0)
+                    beginInsert = row;
+                endInsert = row;
+            } else {
+                flushInserts();
+                int oldRow = item->row();
+                // Dynamic property can rename group, so must check
+                auto groupItem = item->parent();
+                assert(groupItem);
+                if (oldRow == row && groupItem == groupInfo.groupItem) {
+                    if (beginChange < 0)
+                        beginChange = row;
+                    endChange = row;
+                } else {
+                    flushChanges();
+                    beginMoveRows(createIndex(groupItem->row(),0,groupItem),
+                            oldRow, oldRow, midx, row);
+                    if (groupItem == groupInfo.groupItem)
+                        groupInfo.groupItem->moveChild(oldRow, row);
+                    else {
+                        groupItem->takeChild(oldRow);
+                        item->setParent(groupInfo.groupItem);
+                        groupInfo.groupItem->insertChild(row, item);
+                    }
+                    endMoveRows();
+                }
+            }
+        }
+        flushChanges();
+        flushInserts();
+    }
+
+    // Final step, signal item removal. This is separated from the above because
+    // of the possibility of moving items between groups.
+    for (auto &v : groupItems) {
+        auto &groupInfo = v.second;
+        int last = groupInfo.groupItem->childCount();
+        int first = static_cast<int>(groupInfo.children.size());
+        if (last > first) {
+            QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
+            beginRemoveRows(midx, first, last-1);
+            groupInfo.groupItem->removeChildren(first, last-1);
+            endRemoveRows();
+        } else {
+            assert(last == first);
+        }
+    }
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)
 {
+    auto it = itemMap.find(const_cast<App::Property*>(&prop));
+    if (it == itemMap.end() || !it->second)
+        return;
+
     int column = 1;
-    int numChild = rootItem->childCount();
-    for (int row=0; row<numChild; row++) {
-        PropertyItem* child = rootItem->child(row);
-        if (child->hasProperty(&prop)) {
-            child->updateData();
-            QModelIndex data = this->index(row, column, QModelIndex());
-            if (data.isValid()) {
-                child->assignProperty(&prop);
-                dataChanged(data, data);
-                updateChildren(child, column, data);
-            }
-            break;
-        }
+    PropertyItem *item = it->second;
+    item->updateData();
+    QModelIndex data = this->index(item->row(), column, QModelIndex());
+    if (data.isValid()) {
+        item->assignProperty(&prop);
+        dataChanged(data, data);
+        updateChildren(item, column, data);
     }
 }
 
-void PropertyModel::appendProperty(const App::Property& prop)
+void PropertyModel::appendProperty(const App::Property& _prop)
 {
-    std::string editor(prop.getEditorName());
-    if(editor.empty() && PropertyView::showAll())
-        editor = "Gui::PropertyEditor::PropertyItem";
-    if (!editor.empty()) {
-        PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(editor.c_str());
-        if (!item) {
-            qWarning("No property item for type %s found\n", editor.c_str());
-            return;
-        }
+    auto prop = const_cast<App::Property*>(&_prop);
+    if (!prop->getName())
+        return;
+    auto it = itemMap.find(prop);
+    if (it == itemMap.end() || !it->second)
+        return;
 
-        const char* group = prop.getGroup();
-        bool isEmpty = (group == 0 || group[0] == '\0');
-        std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
-        QString groupName = QString::fromStdString(grp);
+    PropertyItem *item = createPropertyItem(prop);
+    GroupInfo &groupInfo = getGroupInfo(prop);
 
-        // go through all group names and check if one matches
-        int index = -1;
-        for (int i=0; i<rootItem->childCount(); i++) {
-            PropertyItem* child = rootItem->child(i);
-            if (child->isSeparator()) {
-                if (groupName == child->propertyName()) {
-                    index = i+1;
-                    break;
-                }
-            }
-        }
-
-        int numChilds = rootItem->childCount();
-        int first = 0;
-        int last = 0;
-        if (index < 0) {
-            // create a new group
-            first = numChilds;
-            last = first + 1;
-        }
-        else {
-            // the group exists, determine the position before the next group
-            // or at the end if there is no further group
-            for (int i=index; i<rootItem->childCount(); i++) {
-                index++;
-                PropertyItem* child = rootItem->child(i);
-                if (child->isSeparator()) {
-                    index = i;
-                    break;
-                }
-            }
-
-            first = index;
-            last = index;
-        }
-
-        // notify system to add new row
-        beginInsertRows(QModelIndex(), first, last);
-
-        // create a new group at the end with the property
-        if (index < 0) {
-            PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
-            group->setParent(rootItem);
-            rootItem->appendChild(group);
-            group->setPropertyName(groupName);
-
-            item->setParent(rootItem);
-            rootItem->appendChild(item);
-        }
-        // add the property at the end of its group
-        else if (index < numChilds) {
-            item->setParent(rootItem);
-            rootItem->insertChild(index, item);
-        }
-        // add the property at end
-        else {
-            item->setParent(rootItem);
-            rootItem->appendChild(item);
-        }
-
-        std::vector<App::Property*> data;
-        data.push_back(const_cast<App::Property*>(&prop));
-
-        setPropertyItemName(item,prop.getName(),groupName);
-        item->setPropertyData(data);
-
-        endInsertRows();
+    int row = 0;
+    for (int c=groupInfo.groupItem->childCount(); row<c; ++row) {
+        PropertyItem *child = groupInfo.groupItem->child(row);
+        App::Property *firstProp = item->getFirstProperty();
+        if (firstProp && firstProp->testStatus(App::Property::PropDynamic)
+                      && item->propertyName() >= child->propertyName())
+            break;
     }
+
+    QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
+    beginInsertRows(midx, row, row);
+    groupInfo.groupItem->insertChild(row, item);
+    setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
+    item->setPropertyData({prop});
+    endInsertRows();
 }
 
-void PropertyModel::removeProperty(const App::Property& prop)
+void PropertyModel::removeProperty(const App::Property& _prop)
 {
-    int numChild = rootItem->childCount();
-    for (int row=0; row<numChild; row++) {
-        PropertyItem* child = rootItem->child(row);
-        if (child->hasProperty(&prop)) {
-            if (child->removeProperty(&prop)) {
-                removeRow(row, QModelIndex());
-            }
-            break;
-        }
+    auto prop = const_cast<App::Property*>(&_prop);
+    auto it = itemMap.find(prop);
+    if (it == itemMap.end() || !it->second)
+        return;
+
+    PropertyItem *item = it->second;
+    if (item->removeProperty(prop)) {
+        PropertyItem *parent = item->parent();
+        int row = item->row();
+        beginRemoveRows(this->index(parent->row(), 0, QModelIndex()), row, row);
+        parent->removeChildren(row,row);
+        endRemoveRows();
     }
 }
 
