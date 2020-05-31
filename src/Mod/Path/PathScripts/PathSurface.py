@@ -1392,31 +1392,39 @@ class ObjectSurface(PathOp.ObjectOp):
         horizGC = 'G0'
         hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
+        maxXYDistanceSqrd = (self.cutter.getDiameter() + tolrnc)**2
 
-        if obj.CutPattern in ['Line', 'Circular']:
-            if obj.OptimizeStepOverTransitions is True:
-                height = minSTH + 2.0
-            # if obj.LayerMode == 'Multi-pass':
-            #    rtpd = minSTH
-        elif obj.CutPattern in ['ZigZag', 'CircularZigZag']:
-            if obj.OptimizeStepOverTransitions is True:
-                zChng = first.z - lstPnt.z
-                # PathLog.debug('first.z: {}'.format(first.z))
-                # PathLog.debug('lstPnt.z: {}'.format(lstPnt.z))
-                # PathLog.debug('zChng: {}'.format(zChng))
-                # PathLog.debug('minSTH: {}'.format(minSTH))
-                if abs(zChng) < tolrnc:  # transitions to same Z height
-                    PathLog.debug('abs(zChng) < tolrnc')
-                    if (minSTH - first.z) > tolrnc:
-                        PathLog.debug('(minSTH - first.z) > tolrnc')
-                        height = minSTH + 2.0
-                    else:
-                        PathLog.debug('ELSE (minSTH - first.z) > tolrnc')
-                        horizGC = 'G1'
-                        height = first.z
-                elif (minSTH + (2.0 * tolrnc)) >= max(first.z, lstPnt.z):
-                        height = False  # allow end of Zig to cut to beginning of Zag
-                    
+        if obj.OptimizeStepOverTransitions is True:
+            # Short distance within step over
+            xyDistanceSqrd = (abs(first.x - lstPnt.x)**2 +
+                              abs(first.y - lstPnt.y)**2)
+            zChng = abs(first.z - lstPnt.z)
+            # Only optimize short distances <= cutter diameter. Staying at
+            # minSTH over long distances is not safe for multi layer paths,
+            # since minSTH is calculated from the model, and not based on
+            # stock cut so far.
+            if xyDistanceSqrd <= maxXYDistanceSqrd:
+                horizGC = "G1"
+                hSpeed = self.horizFeed
+                if (minSTH <= max(first.z, lstPnt.z) + tolrnc
+                        and zChng < tolrnc):
+                    # Allow direct transition without any lift over short
+                    # distances, and only when there is very little z change.
+                    height = False
+                else:
+                    # Avoid a full lift, but stay at least at minSTH along the
+                    # entire transition.
+                    # TODO: Consider using an actual scan path for the
+                    # transition.
+                    height = max(minSTH, first.z, lstPnt.z)
+            else:
+                # We conservatively lift to SafeHeight for lack of an accurate
+                # stock model, but then speed up the drop back down
+                # When using multi pass, only drop quickly to previous layer
+                # depth
+                stepDown = obj.StepDown.Value if hasattr(obj, "StepDown") else 0
+                rtpd = min(height,
+                           max(minSTH, first.z, lstPnt.z) + stepDown + 2)
 
         # Create raise, shift, and optional lower commands
         if height is not False:
