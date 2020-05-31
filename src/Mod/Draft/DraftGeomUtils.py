@@ -223,73 +223,10 @@ from draftgeoutils.faces import bind
 from draftgeoutils.faces import cleanFaces
 
 
-def isCubic(shape):
-    """isCubic(shape): verifies if a shape is cubic, that is, has
-    8 vertices, 6 faces, and all angles are 90 degrees."""
-    # first we try fast methods
-    if len(shape.Vertexes) != 8:
-        return False
-    if len(shape.Faces) != 6:
-        return False
-    if len(shape.Edges) != 12:
-        return False
-    for e in shape.Edges:
-        if geomType(e) != "Line":
-            return False
-    # if ok until now, let's do more advanced testing
-    for f in shape.Faces:
-        if len(f.Edges) != 4: return False
-        for i in range(4):
-            e1 = vec(f.Edges[i])
-            if i < 3:
-                e2 = vec(f.Edges[i+1])
-            else: e2 = vec(f.Edges[0])
-            rpi = [0.0,round(math.pi/2,precision())]
-            if not round(e1.getAngle(e2),precision()) in rpi:
-                return False
-    return True
+from draftgeoutils.cuboids import isCubic
 
 
-def getCubicDimensions(shape):
-    """getCubicDimensions(shape): returns a list containing the placement,
-    the length, the width and the height of a cubic shape. If not cubic, nothing
-    is returned. The placement point is the lowest corner of the shape."""
-    if not isCubic(shape): return None
-    # determine lowest face, which will be our base
-    z = [10,1000000000000]
-    for i in range(len(shape.Faces)):
-        if shape.Faces[i].CenterOfMass.z < z[1]:
-            z = [i,shape.Faces[i].CenterOfMass.z]
-    if z[0] > 5: return None
-    base = shape.Faces[z[0]]
-    basepoint = base.Edges[0].Vertexes[0].Point
-    plpoint = base.CenterOfMass
-    basenorm = base.normalAt(0.5,0.5)
-    # getting length and width
-    vx = vec(base.Edges[0])
-    vy = vec(base.Edges[1])
-    # getting rotations
-    rotZ = DraftVecUtils.angle(vx)
-    rotY = DraftVecUtils.angle(vx,FreeCAD.Vector(vx.x,vx.y,0))
-    rotX = DraftVecUtils.angle(vy,FreeCAD.Vector(vy.x,vy.y,0))
-    # getting height
-    vz = None
-    rpi = round(math.pi/2,precision())
-    for i in range(1,6):
-        for e in shape.Faces[i].Edges:
-            if basepoint in [e.Vertexes[0].Point,e.Vertexes[1].Point]:
-                vtemp = vec(e)
-                # print(vtemp)
-                if round(vtemp.getAngle(vx),precision()) == rpi:
-                    if round(vtemp.getAngle(vy),precision()) == rpi:
-                        vz = vtemp
-    if not vz: return None
-    mat = FreeCAD.Matrix()
-    mat.move(plpoint)
-    mat.rotateX(rotX)
-    mat.rotateY(rotY)
-    mat.rotateZ(rotZ)
-    return [FreeCAD.Placement(mat),round(vx.Length,precision()),round(vy.Length,precision()),round(vz.Length,precision())]
+from draftgeoutils.cuboids import getCubicDimensions
 
 
 from draftgeoutils.wires import removeInterVertices

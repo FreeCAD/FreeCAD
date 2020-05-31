@@ -41,6 +41,7 @@ SET (Draft_geoutils
     draftgeoutils/fillets.py
     draftgeoutils/offsets.py
     draftgeoutils/linear_algebra.py
+    draftgeoutils/cuboids.py
 )
 
 SET(Draft_tests
