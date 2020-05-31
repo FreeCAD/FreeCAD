@@ -607,7 +607,9 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole) {
             QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
                     QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
-            QString doc = toolTip(propertyItems[0]).toString();
+            QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
+            if (doc.isEmpty())
+                doc = toolTip(propertyItems[0]).toString();
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
