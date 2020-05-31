@@ -384,3 +384,30 @@ def connect(edges, closed=False):
                   e.Vertexes[0].Point, " ",
                   e.Vertexes[-1].Point)
         return None
+
+
+def angleBisection(edge1, edge2):
+    """Return an edge that bisects the angle between the 2 straight edges."""
+    if geomType(edge1) != "Line" or geomType(edge2) != "Line":
+        return None
+
+    p1 = edge1.Vertexes[0].Point
+    p2 = edge1.Vertexes[-1].Point
+    p3 = edge2.Vertexes[0].Point
+    p4 = edge2.Vertexes[-1].Point
+    intersect = findIntersection(edge1, edge2, True, True)
+
+    if intersect:
+        line1Dir = p2.sub(p1)
+        angleDiff = DraftVecUtils.angle(line1Dir, p4.sub(p3))
+        ang = angleDiff * 0.5
+        origin = intersect[0]
+        line1Dir.normalize()
+        direction = DraftVecUtils.rotate(line1Dir, ang)
+    else:
+        diff = p3.sub(p1)
+        origin = p1.add(diff.multiply(0.5))
+        direction = p2.sub(p1)
+        direction.normalize()
+
+    return Part.LineSegment(origin, origin.add(direction)).toShape()
