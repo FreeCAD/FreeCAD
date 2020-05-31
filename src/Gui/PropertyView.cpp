@@ -169,8 +169,11 @@ void PropertyView::setShowAll(bool enable) {
     if(_ShowAll != enable) {
         _ShowAll = enable;
         for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
-            if(view->isVisible())
+            if(view->isVisible()) {
+                view->propertyEditorData->buildUp();
+                view->propertyEditorView->buildUp();
                 view->onTimer();
+            }
         }
     }
 }
@@ -187,7 +190,7 @@ void PropertyView::hideEvent(QHideEvent *ev) {
 
 void PropertyView::showEvent(QShowEvent *ev) {
     this->attachSelection();
-    this->timer->start(100);
+    this->timer->start(ViewParams::instance()->getPropertyViewTimer());
     QWidget::showEvent(ev);
 }
 
@@ -211,12 +214,18 @@ void PropertyView::slotRollback() {
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
 {
-    propertyEditorData->updateProperty(prop);
+    if (propertyEditorData->propOwners.count(prop.getContainer())) {
+        propertyEditorData->updateProperty(prop);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
 }
 
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
-    propertyEditorView->updateProperty(prop);
+    if (propertyEditorView->propOwners.count(prop.getContainer())) {
+        propertyEditorView->updateProperty(prop);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
 }
 
 bool PropertyView::isPropertyHidden(const App::Property *prop) {
@@ -229,10 +238,11 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
     if (isPropertyHidden(&prop))
         return;
 
-    if (propertyEditorData->appendProperty(prop)
-            || propertyEditorView->appendProperty(prop))
+    App::PropertyContainer* parent = prop.getContainer();
+    if (propertyEditorData->propOwners.count(parent)
+            || propertyEditorView->propOwners.count(parent))
     {
-        timer->start(100);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -243,34 +253,17 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
         propertyEditorData->removeProperty(prop);
     else if(propertyEditorView->propOwners.count(parent))
         propertyEditorView->removeProperty(prop);
+    else
+        return;
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    Gui::PropertyEditor::PropertyEditor* editor = nullptr;
-
-    if (parent && propertyEditorData->propOwners.count(parent))
-        editor = propertyEditorData;
-    else if (parent && propertyEditorView->propOwners.count(parent))
-        editor = propertyEditorView;
-    else
-        return;
-
-    if(showAll() || isPropertyHidden(&prop)) {
-        editor->updateEditorMode(prop);
-        return;
-    }
-    for(auto &v : editor->propList) {
-        for(auto p : v.second)
-            if(p == &prop) {
-                editor->updateEditorMode(prop);
-                return;
-            }
-    }
-    // The property is not in the list, probably because it is hidden before.
-    // So perform a full update.
-    timer->start(50);
+    if (propertyEditorData->propOwners.count(parent)
+            || propertyEditorView->propOwners.count(parent))
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
@@ -278,7 +271,7 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -287,7 +280,7 @@ void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -296,7 +289,7 @@ void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
-        timer->start(50);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
 }
 
@@ -341,23 +334,28 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         return;
 
     // clear the properties.
-    timer->start(50);
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::onTimer() {
 
-    propertyEditorData->buildUp();
-    propertyEditorView->buildUp();
-    clearPropertyItemSelection();
     timer->stop();
 
-    if(!this->isSelectionAttached())
+    if(!this->isSelectionAttached()) {
+        propertyEditorData->buildUp();
+        propertyEditorView->buildUp();
+        clearPropertyItemSelection();
         return;
+    }
 
     if(!Gui::Selection().hasSelection()) {
         auto gdoc = TreeWidget::selectedDocument();
-        if(!gdoc || !gdoc->getDocument())
+        if(!gdoc || !gdoc->getDocument()) {
+            propertyEditorData->buildUp();
+            propertyEditorView->buildUp();
+            clearPropertyItemSelection();
             return;
+        }
 
         PropertyModel::PropertyList docProps;
 

@@ -76,10 +76,13 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
         option.palette.setColor(QPalette::Text, color);
         option.font.setBold(true);
-        option.state &= ~QStyle::State_Selected;
-    }
 
-    if (index.column() == 1) {
+        // Since the group item now parents all the property items and can be
+        // collpased, it makes sense to have some selection visual clue for it.
+        //
+        // option.state &= ~QStyle::State_Selected;
+    }
+    else if (index.column() == 1) {
         option.state &= ~QStyle::State_Selected;
     }
 
@@ -131,9 +134,15 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     if (!childItem)
         return 0;
 
+    PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+    if(parentEditor)
+        parentEditor->closeEditor();
+
+    if (childItem->isSeparator())
+        return 0;
+
     FC_LOG("create editor " << index.row() << "," << index.column());
 
-    PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     QWidget* editor;
     expressionEditor = 0;
     if(parentEditor && parentEditor->isBinding())
@@ -152,6 +161,9 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         editor->setFocus();
     }
     this->pressed = false;
+
+    parentEditor->activeEditor = editor;
+    parentEditor->editingIndex = index;
 
     return editor;
 }

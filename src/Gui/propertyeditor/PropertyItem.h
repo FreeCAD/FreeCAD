@@ -76,6 +76,7 @@ class DlgPropertyLink;
 namespace PropertyEditor {
 
 class PropertyItem;
+class PropertyModel;
 
 /**
  * The PropertyItemFactory provides methods for the dynamic creation of property items.
@@ -149,6 +150,7 @@ public:
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
     void insertChild(int, PropertyItem *child);
+    void moveChild(int from, int to);
     void removeChildren(int from, int to);
     PropertyItem *takeChild(int);
 
@@ -161,6 +163,9 @@ public:
     void setLinked(bool);
     bool isLinked() const;
 
+    bool isExpanded() const;
+    void setExpanded(bool e);
+
     PropertyItem *child(int row);
     int childCount() const;
     int columnCount() const;
@@ -170,7 +175,7 @@ public:
     virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
     Qt::ItemFlags flags(int column) const;
-    int row() const;
+    virtual int row() const;
     void reset();
 
     bool hasAnyExpression() const;
@@ -197,8 +202,8 @@ protected:
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
-    bool cleared;
     bool linked;
+    bool expanded;
 };
 
 /**
@@ -254,6 +259,14 @@ class GuiExport PropertySeparatorItem : public PropertyItem
 
     bool isSeparator() const { return true; }
     QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+
+    virtual int row() const {
+        return _row<0?PropertyItem::row():_row;
+    }
+
+private:
+    friend PropertyModel;
+    int _row = -1;
 };
 
 /**
