@@ -46,7 +46,8 @@ lower right corner within opened files</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowAxisCross">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Axis cross will be shown by default at file&lt;/p&gt;&lt;p&gt;open or creation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Axis cross will be shown by default at file
+opening or creation</string>
         </property>
         <property name="text">
          <string>Show axis cross by default</string>
