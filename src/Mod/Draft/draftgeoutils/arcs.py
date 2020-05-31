@@ -102,3 +102,43 @@ def arcFrom2Pts(firstPt, lastPt, center, axis=None):
         newArc = Part.Edge(Part.Arc(firstPt, thirdPt, lastPt))
 
     return newArc
+
+
+def arcFromSpline(edge):
+    """Turn given edge into a circular arc from three points.
+
+    Takes its first point, midpoint and endpoint. It works best with bspline
+    segments such as those from imported svg files. Use this only
+    if you are sure your edge is really an arc.
+
+    It returns None if there is a problem, including passing straight edges.
+    """
+    if geomType(edge) == "Line":
+        print("This edge is straight, cannot build an arc on it")
+        return None
+
+    if len(edge.Vertexes) > 1:
+        # 2-point arc
+        p1 = edge.Vertexes[0].Point
+        p2 = edge.Vertexes[-1].Point
+        ml = edge.Length/2
+        p3 = edge.valueAt(ml)
+        try:
+            return Part.Arc(p1, p3, p2).toShape()
+        except:
+            print("Couldn't make an arc out of this edge")
+            return None
+    else:
+        # circle
+        p1 = edge.Vertexes[0].Point
+        ml = edge.Length/2
+        p2 = edge.valueAt(ml)
+        ray = p2.sub(p1)
+        ray.scale(0.5, 0.5, 0.5)
+        center = p1.add(ray)
+        radius = ray.Length
+        try:
+            return Part.makeCircle(radius, center)
+        except:
+            print("couldn't make a circle out of this edge")
+            return None
