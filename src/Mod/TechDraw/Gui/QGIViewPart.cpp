@@ -718,17 +718,27 @@ QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)
     for(std::vector<TechDraw::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
         QPainterPath wirePath;
         std::vector<TechDraw::BaseGeom*> geoms = (*wire)->geoms;
-        for(std::vector<TechDraw::BaseGeom *>::iterator edge = (*wire)->geoms.begin(); edge != (*wire)->geoms.end(); ++edge) {
-            //Save the start Position
+        TechDraw::BaseGeom* firstGeom = geoms.front();
+        //QPointF startPoint(firstGeom->getStartPoint().x, firstGeom->getStartPoint().y);
+        //wirePath.moveTo(startPoint);
+        QPainterPath firstSeg = drawPainterPath(firstGeom);
+        wirePath.connectPath(firstSeg);
+        for(std::vector<TechDraw::BaseGeom *>::iterator edge = ((*wire)->geoms.begin()) + 1; edge != (*wire)->geoms.end(); ++edge) {
             QPainterPath edgePath = drawPainterPath(*edge);
-            // If the current end point matches the shape end point the new edge path needs reversing
-            // wf: this check isn't good enough. 
-            //if ((*edge)->reversed) {
-            //    path = ???
-//            QPointF shapePos = (wirePath.currentPosition()- edgePath.currentPosition());
-//            if(sqrt(shapePos.x() * shapePos.x() + shapePos.y()*shapePos.y()) < 0.05) {    //magic tolerance
-//                edgePath = edgePath.toReversed();
-//            }
+            //handle section faces differently
+            if (idx == -1) {
+                    QPointF wEnd = wirePath.currentPosition();
+                    auto element = edgePath.elementAt(0);
+                    QPointF eStart(element.x, element.y);
+                    QPointF eEnd = edgePath.currentPosition();
+                    QPointF sVec = wEnd - eStart;
+                    QPointF eVec = wEnd - eEnd;
+                    double sDist2 = sVec.x() * sVec.x() + sVec.y() * sVec.y();
+                    double eDist2 = eVec.x() * eVec.x() + eVec.y() * eVec.y();
+                    if (sDist2 > eDist2) {
+                        edgePath = edgePath.toReversed();
+                    }
+           }
             wirePath.connectPath(edgePath);
         }
 //        dumpPath("wirePath:",wirePath);

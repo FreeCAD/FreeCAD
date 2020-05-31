@@ -36,6 +36,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
 
 namespace TechDraw {
 
@@ -279,6 +280,8 @@ class TechDrawExport Wire
         Wire(const TopoDS_Wire &w);
         ~Wire();
 
+        TopoDS_Wire toOccWire(void) const;
+        void dump(std::string s);
         std::vector<BaseGeom *> geoms;
 };
 
@@ -288,7 +291,7 @@ class TechDrawExport Face
     public:
         Face() = default;
         ~Face();
-
+        TopoDS_Face toOccFace(void) const;
         std::vector<Wire *> wires;
 };
 
