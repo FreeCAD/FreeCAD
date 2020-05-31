@@ -483,9 +483,15 @@ QString PropertyItem::propertyName() const
     return propName;
 }
 
-void PropertyItem::setPropertyName(const QString& name)
+void PropertyItem::setPropertyName(QString name, QString realName)
 {
-    setObjectName(name);
+    if(realName.size())
+        propName = realName;
+    else
+        propName = name;
+
+    setObjectName(propName);
+
     QString display;
     bool upper = false;
     for (int i=0; i<name.length(); i++) {
@@ -590,10 +596,8 @@ QVariant PropertyItem::data(int column, int role) const
             return QVariant();
         }
         else if (role == Qt::ToolTipRole) {
-            if(!PropertyView::showAll())
-                return toolTip(propertyItems[0]);
-            QString type = QString::fromLatin1("Type: %1").arg(
-                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()));
+            QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
+                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
             QString doc = toolTip(propertyItems[0]).toString();
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
