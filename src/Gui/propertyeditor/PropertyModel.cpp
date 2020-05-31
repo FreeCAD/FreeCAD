@@ -212,11 +212,12 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
     QString name = QString::fromLatin1(propName);
+    QString realName = name;
     if(name.size()>groupName.size()+1 
             && name.startsWith(groupName + QLatin1Char('_')))
         name = name.right(name.size()-groupName.size()-1);
 
-    item->setPropertyName(name);
+    item->setPropertyName(name, realName);
 }
 
 static PropertyItem *createPropertyItem(App::Property *prop)
