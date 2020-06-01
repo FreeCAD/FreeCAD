@@ -82,7 +82,7 @@ exp:      num                			{ $$ = $1;                                      
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | indexable       			    { $$ = $1;                                                                        }
-        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                   }
+        | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);        }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         ;
 
