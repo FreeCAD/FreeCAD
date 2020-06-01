@@ -34,7 +34,12 @@
 # include <QTimer>
 #endif
 
+#if QT_VERSION >= 0x050000
+# include <QWindow>
+#endif
+
 #include "ProgressBar.h"
+#include "ProgressDialog.h"
 #include "MainWindow.h"
 #include "WaitCursor.h"
 
@@ -62,9 +67,19 @@ struct ProgressBarPrivate
     bool isModalDialog(QObject* o) const
     {
         QWidget* parent = qobject_cast<QWidget*>(o);
+#if QT_VERSION >= 0x050000
+        if (!parent) {
+            QWindow* window = qobject_cast<QWindow*>(o);
+            if (window)
+                parent = QWidget::find(window->winId());
+        }
+#endif
         while (parent) {
             QMessageBox* dlg = qobject_cast<QMessageBox*>(parent);
             if (dlg && dlg->isModal())
+                return true;
+            QProgressDialog* pd = qobject_cast<QProgressDialog*>(parent);
+            if (pd)
                 return true;
             parent = parent->parentWidget();
         }
@@ -584,7 +599,8 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         case QEvent::NativeGesture:
         case QEvent::ContextMenu:
             {
-                return true;
+                if (!d->isModalDialog(o))
+                    return true;
             }   break;
 
         // special case if the main window's close button was pressed
@@ -601,10 +617,10 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         // do a system beep and ignore the event
         case QEvent::MouseButtonPress:
             {
-                if (d->isModalDialog(o))
-                    return false;
-                QApplication::beep();
-                return true;
+                if (!d->isModalDialog(o)) {
+                    QApplication::beep();
+                    return true;
+                }
             }   break;
 
         default:
