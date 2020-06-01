@@ -472,7 +472,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
         return;
     }
 
-    closeTransaction();
+    // closeTransaction();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);
