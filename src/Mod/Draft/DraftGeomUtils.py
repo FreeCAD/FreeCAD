@@ -371,120 +371,13 @@ from draftgeoutils.circles import circlefrom1Line2Points
 from draftgeoutils.circles import circleFrom2LinesRadius
 
 
-def circleFrom3LineTangents(edge1, edge2, edge3):
-    """circleFrom3LineTangents(edge,edge,edge)"""
-    def rot(ed):
-        return Part.LineSegment(v1(ed),v1(ed).add(DraftVecUtils.rotate(vec(ed),math.pi/2))).toShape()
-    bis12 = angleBisection(edge1,edge2)
-    bis23 = angleBisection(edge2,edge3)
-    bis31 = angleBisection(edge3,edge1)
-    intersections = []
-    int = findIntersection(bis12, bis23, True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    int = findIntersection(bis23, bis31, True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    int = findIntersection(bis31, bis12, True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    int = findIntersection(rot(bis12), rot(bis23), True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    int = findIntersection(rot(bis23), rot(bis31), True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    int = findIntersection(rot(bis31), rot(bis12), True, True)
-    if int:
-        radius = findDistance(int[0],edge1).Length
-        intersections.append(Part.Circle(int[0],NORM,radius))
-    circles = []
-    for int in intersections:
-        exists = False
-        for cir in circles:
-            if DraftVecUtils.equals(cir.Center, int.Center):
-                exists = True
-                break
-        if not exists:
-            circles.append(int)
-    if circles:
-        return circles
-    else:
-        return None
-
-def circleFromPointLineRadius(point, edge, radius):
-    """circleFromPointLineRadius (point, edge, radius)"""
-    dist = findDistance(point, edge, False)
-    center1 = None
-    center2 = None
-    if dist.Length == 0:
-        segment = vec(edge)
-        perpVec = DraftVecUtils.crossproduct(segment); perpVec.normalize()
-        normPoint_c1 = Vector(perpVec).multiply(radius)
-        normPoint_c2 = Vector(perpVec).multiply(-radius)
-        center1 = point.add(normPoint_c1)
-        center2 = point.add(normPoint_c2)
-    elif dist.Length > 2 * radius:
-        return None
-    elif dist.Length == 2 * radius:
-        normPoint = point.add(findDistance(point, edge, False))
-        dummy = (normPoint.sub(point)).multiply(0.5)
-        cen = point.add(dummy)
-        circ = Part.Circle(cen, NORM, radius)
-        if circ:
-            return [circ]
-        else:
-            return None
-    else:
-        normPoint = point.add(findDistance(point, edge, False))
-        normDist = DraftVecUtils.dist(normPoint, point)
-        dist = math.sqrt(radius**2 - (radius - normDist)**2)
-        centerNormVec = DraftVecUtils.scaleTo(point.sub(normPoint), radius)
-        edgeDir = edge.Vertexes[0].Point.sub(normPoint); edgeDir.normalize()
-        center1 = centerNormVec.add(normPoint.add(Vector(edgeDir).multiply(dist)))
-        center2 = centerNormVec.add(normPoint.add(Vector(edgeDir).multiply(-dist)))
-    circles = []
-    if center1:
-        circ = Part.Circle(center1, NORM, radius)
-        if circ:
-            circles.append(circ)
-    if center2:
-        circ = Part.Circle(center2, NORM, radius)
-        if circ:
-            circles.append(circ)
-
-    if len(circles):
-        return circles
-    else:
-        return None
+from draftgeoutils.circles import circleFrom3LineTangents
 
 
-def circleFrom2PointsRadius(p1, p2, radius):
-    """circleFrom2PointsRadiust(Vector, Vector, radius)"""
-    if DraftVecUtils.equals(p1, p2): return None
+from draftgeoutils.circles import circleFromPointLineRadius
 
-    p1_p2 = Part.LineSegment(p1, p2).toShape()
-    dist_p1p2 = DraftVecUtils.dist(p1, p1)
-    mid = findMidpoint(p1_p2)
-    if dist_p1p2 == 2*radius:
-        circle = Part.Circle(mid, NORM, radius)
-        if circle: return [circle]
-        else: return None
-    dir = vec(p1_p2); dir.normalize()
-    perpDir = dir.cross(Vector(0,0,1)); perpDir.normalize()
-    dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0)**2)
-    cen1 = Vector.add(mid, Vector(perpDir).multiply(dist))
-    cen2 = Vector.add(mid, Vector(perpDir).multiply(-dist))
-    circles = []
-    if cen1: circles.append(Part.Circle(cen1, NORM, radius))
-    if cen2: circles.append(Part.Circle(cen2, NORM, radius))
-    if circles: return circles
-    else: return None
+
+from draftgeoutils.circles import circleFrom2PointsRadius
 
 
 from draftgeoutils.arcs import arcFrom2Pts
@@ -661,130 +554,13 @@ from draftgeoutils.linear_algebra import linearFromPoints
 from draftgeoutils.linear_algebra import determinant
 
 
-def findHomotheticCenterOfCircles(circle1, circle2):
-    """Calculate the homothetic center(s) of two circles.
-
-    http://en.wikipedia.org/wiki/Homothetic_center
-    http://mathworld.wolfram.com/HomotheticCenter.html
-    """
-
-    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
-        if DraftVecUtils.equals(circle1.Curve.Center, circle2.Curve.Center):
-            return None
-
-        cen1_cen2 = Part.LineSegment(circle1.Curve.Center, circle2.Curve.Center).toShape()
-        cenDir = vec(cen1_cen2); cenDir.normalize()
-
-        # Get the perpedicular vector.
-        perpCenDir = cenDir.cross(Vector(0,0,1)); perpCenDir.normalize()
-
-        # Get point on first circle
-        p1 = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(circle1.Curve.Radius))
-
-        centers = []
-        # Calculate inner homothetic center
-        # Get point on second circle
-        p2_inner = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(-circle1.Curve.Radius))
-        hCenterInner = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_inner, True, True)
-        if hCenterInner:
-            centers.append(hCenterInner)
-
-        # Calculate outer homothetic center (only exists of the circles have different radii)
-        if circle1.Curve.Radius != circle2.Curve.Radius:
-            # Get point on second circle
-            p2_outer = Vector.add(circle1.Curve.Center, Vector(perpCenDir).multiply(circle1.Curve.Radius))
-            hCenterOuter = DraftVecUtils.intersect(circle1.Curve.Center, circle2.Curve.Center, p1, p2_outer, True, True)
-            if hCenterOuter:
-                centers.append(hCenterOuter)
-
-        if len(centers):
-            return centers
-        else:
-            return None
-
-    else:
-        FreeCAD.Console.PrintMessage("debug: findHomotheticCenterOfCirclescleFrom3tan bad parameters!\n")
-        return None
+from draftgeoutils.circles import findHomotheticCenterOfCircles
 
 
-def findRadicalAxis(circle1, circle2):
-    """Calculate the radical axis of two circles.
-
-    On the radical axis (also called power line) of two circles any
-    tangents drawn from a point on the axis to both circles have the same length.
-
-    http://en.wikipedia.org/wiki/Radical_axis
-    http://mathworld.wolfram.com/RadicalLine.html
-
-    @sa findRadicalCenter
-    """
-    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
-        if DraftVecUtils.equals(circle1.Curve.Center, circle2.Curve.Center):
-            return None
-        r1 = circle1.Curve.Radius
-        r2 = circle1.Curve.Radius
-        cen1 = circle1.Curve.Center
-        # dist .. the distance from cen1 to cen2.
-        dist = DraftVecUtils.dist(cen1, circle2.Curve.Center)
-        cenDir = cen1.sub(circle2.Curve.Center); cenDir.normalize()
-
-        # Get the perpedicular vector.
-        perpCenDir = cenDir.cross(Vector(0,0,1)); perpCenDir.normalize()
-
-        # J ... The radical center.
-        # K ... The point where the cadical axis crosses the line of cen1->cen2.
-        # k1 ... Distance from cen1 to K.
-        # k2 ... Distance from cen2 to K.
-        # dist = k1 + k2
-
-        k1 = (dist + (r1^2 - r2^2) / dist) / 2.0
-        #k2 = dist - k1
-
-        K = Vector.add(cen1, cenDir.multiply(k1))
-
-        # K_ .. A point somewhere between K and J (actually with a distance of 1 unit from K).
-        K_ = Vector,add(K, perpCenDir)
-
-        radicalAxis = Part.LineSegment(K, Vector.add(origin, dir))
-
-        if radicalAxis:
-            return radicalAxis
-        else:
-            return None
-    else:
-        FreeCAD.Console.PrintMessage("debug: findRadicalAxis bad parameters!\n")
-        return None
+from draftgeoutils.circles import findRadicalAxis
 
 
-def findRadicalCenter(circle1, circle2, circle3):
-    """
-    findRadicalCenter(circle1, circle2, circle3):
-    Calculates the radical center (also called the power center) of three circles.
-    It is the intersection point of the three radical axes of the pairs of circles.
-
-    http://en.wikipedia.org/wiki/Power_center_(geometry)
-    http://mathworld.wolfram.com/RadicalCenter.html
-
-    @sa findRadicalAxis
-    """
-    if (geomType(circle1) == "Circle") and (geomType(circle2) == "Circle"):
-        radicalAxis12 = findRadicalAxis(circle1, circle2)
-        radicalAxis23 = findRadicalAxis(circle1, circle2)
-
-        if not radicalAxis12 or not radicalAxis23:
-            # No radical center could be calculated.
-            return None
-
-        int = findIntersection(radicalAxis12, radicalAxis23, True, True)
-
-        if int:
-            return int
-        else:
-            # No radical center could be calculated.
-            return None
-    else:
-        FreeCAD.Console.PrintMessage("debug: findRadicalCenter bad parameters!\n")
-        return None
+from draftgeoutils.circles import findRadicalCenter
 
 
 def pointInversion(circle, point):
