@@ -142,13 +142,16 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
-    
+    void handlePendingEmit();
+
     //get notified on expression change
     virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
+    virtual void hideEvent(QHideEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
     virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
