@@ -286,6 +286,91 @@ void Cloud::CloudWriter::createBucket()
 //}
 //#endif
 
+struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size)
+{
+        struct AmzDatav4 *returnData;
+        char StringToSign[1024];
+        returnData = new Cloud::AmzDatav4;
+        struct tm *tm;
+        char date_formatted[256];
+	char *canonical_request;
+	char *digest;
+	char *canonicalRequestHash;
+	char *stringToSign;
+
+        strcpy(returnData->ContentType, data_type);
+
+#if defined(FC_OS_WIN32)
+        _putenv("TZ=GMT");
+        time_t rawtime;
+
+        time(&rawtime);
+        tm = localtime(&rawtime);
+#else
+        struct timeval tv;
+        setenv("TZ","GMT",1);
+        gettimeofday(&tv, NULL);
+        tm = localtime(&tv.tv_sec);
+#endif
+        strftime(returnData->dateFormattedD,256,"%Y%m%d", tm);
+        strftime(returnData->dateFormattedS,256,"%Y%m%dT%H%M%SZ", tm);
+        returnData->MD5=NULL;
+
+// We must evaluate the canonical request
+	canonical_request=(char *) malloc(4096*(sizeof(char*)));
+	strcpy(canonical_request,operation);
+	strcat(canonical_request,"\n");
+	strcat(canonical_request,target);	
+	strcat(canonical_request,"\n\n");
+	strcat(canonical_request,"host:");
+	strcat(canonical_request,server);
+	strcat(canonical_request, "\n");
+	strcat(canonical_request, "x-maz-date:");
+	strcat(canonical_request, returnData->dateFormattedS);
+	strcat(canonical_request, "\n\n");
+	strcat(canonical_request, "host;x-amz-date\n");
+	// We must add there the file SHA256 Hash	
+	puts("=====================================================");
+	if ( strcmp(operation,"PUT") == 0 )
+	{
+		if (  ptr != NULL )
+                {
+			returnData->SHA256=Cloud::SHA256Sum(ptr,size);
+			strcat(canonical_request, returnData->SHA256);
+		}
+	}
+	puts(canonical_request);
+	canonicalRequestHash = Cloud::SHA256Sum(canonical_request, strlen(canonical_request));	
+	puts(canonicalRequestHash);
+	// returnData->digest = string(digest);
+
+
+	// We need now to sign a string which contain the digest
+	// The format is as follow
+	// ${authType}
+	// ${dateValueL}
+	// ${dateValueS}/${region}/${service}/aws4_request
+	// ${canonicalRequestHash}"
+
+	stringToSign = (char *)malloc(4096*sizeof(char));
+	strcat(stringToSign, "AWS4-HMAC-SHA256");
+	strcat(stringToSign,"\n");
+	strcat(stringToSign,returnData->dateFormattedS);
+        strcat(stringToSign,"\n");
+	strcat(stringToSign,returnData->dateFormattedD);
+	strcat(stringToSign,"/us/s3/aws4_request");
+        strcat(stringToSign,"\n");
+	strcat(stringToSign,canonicalRequestHash);
+	strcat(stringToSign,"\0");
+
+	// We must now compute the signature
+	// Everything starts with the secret key and an SHA256 HMAC encryption
+
+
+	free(canonical_request);
+	return(returnData);
+}
+
 struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret, const char *ptr, long size)
 {
 	struct AmzData *returnData;
@@ -342,10 +427,19 @@ char *Cloud::SHA256Sum(const char *ptr, long size)
 {
         char *output;
         std::string local;
+	std::string resultReadable;
         unsigned char result[SHA256_DIGEST_LENGTH];
-        output=(char *)malloc(SHA256_DIGEST_LENGTH*sizeof(char));
+        char *Hex;
+        output=(char *)malloc(2*SHA256_DIGEST_LENGTH*sizeof(char)+1);
+	Hex = (char *)malloc(2*sizeof(char)+1);
         SHA256((unsigned char*) ptr, size, result);
-        strcpy(output,(const char *)(&(result[0])));
+	for ( int i = 0 ; i < SHA256_DIGEST_LENGTH ; i++ ) {
+		// snprintf((char *)(&Hex[0]),2,"%02x", result[i]);
+		sprintf(Hex,"%02x", result[i]);
+		Hex[2]='\0';
+		resultReadable+= Hex;
+	}
+        strcpy(output,resultReadable.c_str());
         return(output);
 }
 
@@ -359,6 +453,11 @@ char *Cloud::MD5Sum(const char *ptr, long size)
 	local= Base::base64_encode(result,MD5_DIGEST_LENGTH);
 	strcpy(output,local.c_str());
 	return(output);
+}
+
+struct curl_slist *Cloud::BuildHeaderAmzS3v4(const char *URL, const char *TCPPort, const char *PublicKey, struct Cloud::AmzDatav4 *Data)
+{
+	return NULL;
 }
 
 struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *URL, const char *TCPPort, const char *PublicKey, struct Cloud::AmzData *Data)
@@ -802,6 +901,8 @@ bool Cloud::CloudWriter::shouldWrite(const std::string& , const Base::Persistenc
 void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long size)
 {
         struct Cloud::AmzData *RequestData;
+// vejmarie
+        struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
 	struct data_buffer curl_buffer;
@@ -825,8 +926,8 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 		std::string strURL(this->URL);
 		eraseSubStr(strURL,"http://");
 		eraseSubStr(strURL,"https://");
-
-
+	        RequestDatav4 = Cloud::ComputeDigestAmzS3v4("PUT", strURL.c_str(), "application/octet-stream", path, this->TokenSecret, data, size);
+		delete RequestDatav4;
 		chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
 		delete RequestData;
 
