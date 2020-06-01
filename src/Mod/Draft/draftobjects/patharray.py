@@ -148,7 +148,7 @@ class PathArray(DraftLink):
                 baseRotation = basePlacement.Rotation
                 stdX = App.Vector(1.0, 0.0, 0.0)                          #default TangentVector
                 if (not DraftVecUtils.equals(stdX, obj.TangentVector)):
-                    preRotation = App.Rotation(stdX, obj.TangentVector)   #make rotation from X to TangentVector
+                    preRotation = App.Rotation(obj.TangentVector, stdX)   #make rotation from TangentVector to X
                     netRotation = baseRotation.multiply(preRotation)
                 else:
                     netRotation = baseRotation
