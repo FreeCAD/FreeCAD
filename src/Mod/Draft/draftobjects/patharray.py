@@ -159,7 +159,17 @@ class PathArray(DraftLink):
                 base = calculatePlacementsOnPath(
                         obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align, obj.AlignMode,
                             obj.ForceVertical, obj.VerticalVector)
-            return super(PathArray, self).buildShape(obj, pl, base)
+
+            #shape needs to be built before colors assigned
+            rc = super(PathArray, self).buildShape(obj, pl, base)
+            #match count of DiffuseColor entries to count of copies
+            vobdc = obj.Base.ViewObject.DiffuseColor
+            dc = vobdc
+            for x in range(obj.Count - 1):
+                dc =  dc + vobdc
+            obj.ViewObject.DiffuseColor = dc
+
+            return rc
 
     def getWireFromSubs(self,obj):
         '''Make a wire from PathObj subelements'''
