@@ -513,7 +513,10 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
         return;
     }
 
-    closeTransaction();
+    // Do not close transaction here, because we are now doing incremental
+    // update in PropertyModel::buildUp()
+    //
+    // closeTransaction();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);
