@@ -1766,66 +1766,12 @@ bool OperatorExpression::isRightAssociative() const
 
 TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
-FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
+FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::string &&name, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
+    , fname(std::move(name))
     , args(_args)
 {
-    switch (f) {
-    case ACOS:
-    case ASIN:
-    case ATAN:
-    case ABS:
-    case EXP:
-    case LOG:
-    case LOG10:
-    case SIN:
-    case SINH:
-    case TAN:
-    case TANH:
-    case SQRT:
-    case COS:
-    case COSH:
-    case ROUND:
-    case TRUNC:
-    case CEIL:
-    case FLOOR:
-    case MINVERT:
-        if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
-        break;
-    case MOD:
-    case ATAN2:
-    case POW:
-        if (args.size() != 2)
-            EXPR_THROW("Invalid number of arguments: exactly two required.");
-        break;
-    case HYPOT:
-    case CATH:
-        if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
-        break;
-    case STDDEV:
-    case SUM:
-    case AVERAGE:
-    case COUNT:
-    case MIN:
-    case MAX:
-    case CREATE:
-    case MSCALE:
-        if (args.size() == 0)
-            EXPR_THROW("Invalid number of arguments: at least one required.");
-        break;
-    case LIST:
-    case TUPLE:
-        break;
-    case NONE:
-    case AGGREGATES:
-    case LAST:
-    default:
-        EXPR_THROW("Unknown function");
-        break;
-    }
 }
 
 FunctionExpression::~FunctionExpression()
@@ -2392,7 +2338,7 @@ Expression *FunctionExpression::simplify() const
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, a);
+        return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 /**
@@ -2473,7 +2419,7 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
     case CREATE:
         ss << "create("; break;;
     default:
-        assert(0);
+        ss << fname << "("; break;;
     }
     for (size_t i = 0; i < args.size(); ++i) {
         ss << args[i]->toString(persistent);
@@ -2498,7 +2444,7 @@ Expression *FunctionExpression::_copy() const
         a.push_back((*i)->copy());
         ++i;
     }
-    return new FunctionExpression(owner, f, a);
+    return new FunctionExpression(owner, f, std::string(fname), a);
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
