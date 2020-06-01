@@ -409,85 +409,12 @@ from draftgeoutils.circles import findRadicalAxis
 from draftgeoutils.circles import findRadicalCenter
 
 
-def pointInversion(circle, point):
-    """Circle inversion of a point.
-
-    pointInversion(Circle, Vector)
-
-    Will calculate the inversed point an return it.
-    If the given point is equal to the center of the circle "None" will be returned.
-
-    See also:
-    http://en.wikipedia.org/wiki/Inversive_geometry
-    """
-    if (geomType(circle) == "Circle") and isinstance(point, FreeCAD.Vector):
-        cen = circle.Curve.Center
-        rad = circle.Curve.Radius
-
-        if DraftVecUtils.equals(cen, point):
-            return None
-
-        # Inverse the distance of the point
-        # dist(cen -> P) = r^2 / dist(cen -> invP)
-
-        dist = DraftVecUtils.dist(point, cen)
-        invDist = rad**2 / d
-
-        invPoint = Vector(0, 0, point.z)
-        invPoint.x = cen.x + (point.x - cen.x) * invDist / dist;
-        invPoint.y = cen.y + (point.y - cen.y) * invDist / dist;
-
-        return invPoint
-
-    else:
-        FreeCAD.Console.PrintMessage("debug: pointInversion bad parameters!\n")
-        return None
+from draftgeoutils.circle_inversion import pointInversion
 
 
-def polarInversion(circle, edge):
-    """Return the inversion pole of a line.
-
-    polarInversion(circle, edge):
-
-    edge ... The polar.
-    i.e. The nearest point on the line is inversed.
-
-    http://mathworld.wolfram.com/InversionPole.html
-    """
-
-    if (geomType(circle) == "Circle") and (geomType(edge) == "Line"):
-        nearest = circle.Curve.Center.add(findDistance(circle.Curve.Center, edge, False))
-        if nearest:
-            inversionPole = pointInversion(circle, nearest)
-            if inversionPole:
-                return inversionPole
-    else:
-        FreeCAD.Console.PrintMessage("debug: circleInversionPole bad parameters!\n")
-        return None
+from draftgeoutils.circle_inversion import polarInversion
 
 
-def circleInversion(circle, circle2):
-    """
-    pointInversion(Circle, Circle)
-
-    Circle inversion of a circle.
-    """
-    if (geomType(circle) == "Circle") and (geomType(circle2) == "Circle"):
-        cen1 = circle.Curve.Center
-        rad1 = circle.Curve.Radius
-
-        if DraftVecUtils.equals(cen1, point):
-            return None
-
-        invCen2 = Inversion(circle, circle2.Curve.Center)
-
-        pointOnCircle2 = Vector.add(circle2.Curve.Center, Vector(circle2.Curve.Radius, 0, 0))
-        invPointOnCircle2 = Inversion(circle, pointOnCircle2)
-
-        return Part.Circle(invCen2, norm, DraftVecUtils.dist(invCen2, invPointOnCircle2))
-
-    else:
-        FreeCAD.Console.PrintMessage("debug: circleInversion bad parameters!\n")
-        return None
+from draftgeoutils.circle_inversion import circleInversion
 
 ##  @}

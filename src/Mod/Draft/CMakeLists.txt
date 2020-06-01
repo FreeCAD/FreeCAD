@@ -44,6 +44,7 @@ SET (Draft_geoutils
     draftgeoutils/cuboids.py
     draftgeoutils/circles.py
     draftgeoutils/circles_apollonius.py
+    draftgeoutils/circle_inversion.py
 )
 
 SET(Draft_tests
