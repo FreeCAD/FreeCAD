@@ -4691,6 +4691,13 @@ void PropertyXLinkSubList::aboutToSetChildValue(Property &) {
     }
 }
 
+std::vector<App::DocumentObject*> PropertyXLinkSubList::getValues(void) const
+{
+    std::vector<DocumentObject*> xLinks;
+    getLinks(xLinks);
+    return(xLinks);
+}
+
 //**************************************************************************
 // PropertyXLinkList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -4740,14 +4747,6 @@ void PropertyXLinkList::setPyObject(PyObject *value)
     catch (Base::Exception&) {}
 
     PropertyXLinkSubList::setPyObject(value);
-}
-
-//for consistency with PropertyLinkList
-const std::vector<App::DocumentObject*> PropertyXLinkList::getValues(void) const
-{
-    std::vector<DocumentObject*> xLinks;
-    getLinks(xLinks);
-    return(xLinks);
 }
 
 //**************************************************************************
