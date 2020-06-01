@@ -249,7 +249,7 @@ class TaskPanelPolarArray:
         # that would crash Coin3D if done in the event callback.
         _cmd = "Draft.make_polar_array"
         _cmd += "("
-        _cmd += "App.ActiveDocument." + sel_obj.Name + ","
+        _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
         _cmd += "number=" + str(self.number) + ", "
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
@@ -312,31 +312,15 @@ class TaskPanelPolarArray:
             return self.proceed()
         _msg("Select an axis")
 
-        class AxisSelectionObserver:
-            def __init__(self, display_axis):
-                self.display_axis = display_axis
-            def addSelection(self, doc, objName, sub, pnt):
-                print("addSelection")
-                Gui.Selection.clearSelection(App.ActiveDocument.Name)
-                Gui.Selection.removeObserver(self)
-                axis_view_provider = Gui.ActiveDocument.getObject(objName)
-                axis = axis_view_provider.Object
-                self.display_axis(axis)
-            def removeSelection(self,doc,obj,sub):
-                print("removeSelection")
-            def setSelection(self,doc):
-                print("setSelection")
-            def clearSelection(self,doc):
-                print("clearSelection")
 
         axis_observer = AxisSelectionObserver(self.display_axis)
         Gui.Selection.addObserver(axis_observer)
 
-    def display_axis(self, axis):
+    def display_axis(self, axis_name, edge_name):
         """Show the selected axis in the Gui"""
-        _msg("Selected: {}".format(axis.Name))
-        self.axis_reference = "Gui.ActiveDocument.getObject('{}').Object".format(axis.Name)
-        self.form.label_axis_name.setText(axis.Name)
+        _msg("Selected: {} with edge {}".format(axis_name, edge_name))
+        self.axis_reference = "(Gui.ActiveDocument.getObject('{}').Object, ['{}'])".format(axis_name, edge_name)
+        self.form.label_axis_name.setText(axis_name)
         self.form.button_axis.setText("discard")
 
     def disable_point(self):
@@ -532,3 +516,21 @@ class TaskPanelPolarArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+
+class AxisSelectionObserver:
+    def __init__(self, display_axis):
+        self.display_axis = display_axis
+    def addSelection(self, doc, obj_name, sub_name, pnt):
+        Gui.Selection.clearSelection(App.ActiveDocument.Name)
+        Gui.Selection.removeObserver(self)
+        selection = Gui.ActiveDocument.getObject(obj_name)
+        object = selection.Object
+        edge_name = sub_name
+        _msg(obj_name)
+        _msg(sub_name)
+        edge = object.getSubObject(edge_name)
+        if isinstance(edge, Part.Edge):
+            self.display_axis(obj_name, edge_name)
+        else:
+            raise TypeError("Selected object is not an edge.")
