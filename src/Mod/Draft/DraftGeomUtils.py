@@ -194,15 +194,7 @@ from draftgeoutils.geometry import findDistance
 from draftgeoutils.intersections import angleBisection
 
 
-def findClosestCircle(point, circles):
-    """Return the circle with closest center."""
-    dist = 1000000
-    closest = None
-    for c in circles:
-        if c.Center.sub(point).Length < dist:
-            dist = c.Center.sub(point).Length
-            closest = c
-    return closest
+from draftgeoutils.circles import findClosestCircle
 
 
 from draftgeoutils.faces import isCoplanar
@@ -241,34 +233,7 @@ from draftgeoutils.fillets import fillet
 from draftgeoutils.fillets import filletWire
 
 
-def getCircleFromSpline(edge):
-    """Return a circle-based edge from a bspline-based edge."""
-    if geomType(edge) != "BSplineCurve":
-        return None
-    if len(edge.Vertexes) != 1:
-        return None
-    # get 2 points
-    p1 = edge.Curve.value(0)
-    p2 = edge.Curve.value(math.pi/2)
-    # get 2 tangents
-    t1 = edge.Curve.tangent(0)[0]
-    t2 = edge.Curve.tangent(math.pi/2)[0]
-    # get normal
-    n = p1.cross(p2)
-    if DraftVecUtils.isNull(n):
-        return None
-    # get rays
-    r1 = DraftVecUtils.rotate(t1,math.pi/2,n)
-    r2 = DraftVecUtils.rotate(t2,math.pi/2,n)
-    # get center (intersection of rays)
-    i = findIntersection(p1,p1.add(r1),p2,p2.add(r2),True,True)
-    if not i:
-        return None
-    c = i[0]
-    r = (p1.sub(c)).Length
-    circle = Part.makeCircle(r,c,n)
-    #print(circle.Curve)
-    return circle
+from draftgeoutils.circles import getCircleFromSpline
 
 
 from draftgeoutils.wires import curvetowire
@@ -397,67 +362,13 @@ def circleFrom3tan(tan1, tan2, tan3):
         return circleFrom2Circle1Lines(tan1, tan2, tan3)
 
 
-def circlefrom2Lines1Point(edge1, edge2, point):
-    """circlefrom2Lines1Point(edge, edge, Vector)"""
-    bis = angleBisection(edge1, edge2)
-    if not bis: return None
-    mirrPoint = mirror(point, bis)
-    return circlefrom1Line2Points(edge1, point, mirrPoint)
+from draftgeoutils.circles import circlefrom2Lines1Point
 
 
-def circlefrom1Line2Points(edge, p1, p2):
-    """circlefrom1Line2Points(edge, Vector, Vector)"""
-    p1_p2 = edg(p1, p2)
-    s = findIntersection(edge, p1_p2, True, True)
-    if not s: return None
-    s = s[0]
-    v1 = p1.sub(s)
-    v2 = p2.sub(s)
-    projectedDist = math.sqrt(abs(v1.dot(v2)))
-    edgeDir = vec(edge); edgeDir.normalize()
-    projectedCen1 = Vector.add(s, Vector(edgeDir).multiply(projectedDist))
-    projectedCen2 = Vector.add(s, Vector(edgeDir).multiply(-projectedDist))
-    perpEdgeDir = edgeDir.cross(Vector(0,0,1))
-    perpCen1 = Vector.add(projectedCen1, perpEdgeDir)
-    perpCen2 = Vector.add(projectedCen2, perpEdgeDir)
-    mid = findMidpoint(p1_p2)
-    x = DraftVecUtils.crossproduct(vec(p1_p2)); x.normalize()
-    perp_mid = Vector.add(mid, x)
-    cen1 = findIntersection(edg(projectedCen1, perpCen1), edg(mid, perp_mid), True, True)
-    cen2 = findIntersection(edg(projectedCen2, perpCen2), edg(mid, perp_mid), True, True)
-    circles = []
-    if cen1:
-        radius = DraftVecUtils.dist(projectedCen1, cen1[0])
-        circles.append(Part.Circle(cen1[0], NORM, radius))
-    if cen2:
-        radius = DraftVecUtils.dist(projectedCen2, cen2[0])
-        circles.append(Part.Circle(cen2[0], NORM, radius))
-
-    if circles: return circles
-    else: return None
+from draftgeoutils.circles import circlefrom1Line2Points
 
 
-def circleFrom2LinesRadius(edge1, edge2, radius):
-    """circleFrom2LinesRadius(edge,edge,radius)"""
-    int = findIntersection(edge1, edge2, True, True)
-    if not int: return None
-    int = int[0]
-    bis12 = angleBisection(edge1,edge2)
-    bis21 = Part.LineSegment(bis12.Vertexes[0].Point,DraftVecUtils.rotate(vec(bis12), math.pi/2.0))
-    ang12 = abs(DraftVecUtils.angle(vec(edge1),vec(edge2)))
-    ang21 = math.pi - ang12
-    dist12 = radius / math.sin(ang12 * 0.5)
-    dist21 = radius / math.sin(ang21 * 0.5)
-    circles = []
-    cen = Vector.add(int, vec(bis12).multiply(dist12))
-    circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, vec(bis12).multiply(-dist12))
-    circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, vec(bis21).multiply(dist21))
-    circles.append(Part.Circle(cen, NORM, radius))
-    cen = Vector.add(int, vec(bis21).multiply(-dist21))
-    circles.append(Part.Circle(cen, NORM, radius))
-    return circles
+from draftgeoutils.circles import circleFrom2LinesRadius
 
 
 def circleFrom3LineTangents(edge1, edge2, edge3):
