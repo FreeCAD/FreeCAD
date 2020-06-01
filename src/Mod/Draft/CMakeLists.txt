@@ -43,6 +43,7 @@ SET (Draft_geoutils
     draftgeoutils/linear_algebra.py
     draftgeoutils/cuboids.py
     draftgeoutils/circles.py
+    draftgeoutils/circles_apollonius.py
 )
 
 SET(Draft_tests
