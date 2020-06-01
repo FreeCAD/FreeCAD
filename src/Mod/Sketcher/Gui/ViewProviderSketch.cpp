@@ -6008,6 +6008,9 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();
+    SoPickStyle* ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::UNPICKABLE);
+    Coordsep->addChild(ps);
     Coordsep->setName("CoordSeparator");
     // no caching for fluctuand data structures
     Coordsep->renderCaching = SoSeparator::OFF;
@@ -6226,8 +6229,7 @@ void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos)
 {
     SbString text;
     text.sprintf(" (%.1f,%.1f)", Pos.x, Pos.y);
-    edit->textX->string = text;
-    edit->textPos->translation = SbVec3f(Pos.x,Pos.y,zText);
+    setPositionText(Pos,text);
 }
 
 void ViewProviderSketch::resetPositionText(void)
