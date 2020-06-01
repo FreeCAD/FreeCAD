@@ -3835,11 +3835,24 @@ PyObject *PropertyXLink::getPyObject(void)
 {
     if(!_pcLink)
         Py_Return;
-    if(_SubList.empty())
+    const auto &subs = getSubValues(false);
+    if(subs.empty())
         return _pcLink->getPyObject();
     Py::Tuple ret(2);
     ret.setItem(0,Py::Object(_pcLink->getPyObject(),true));
-    ret.setItem(1,Py::String(getSubName(true)));
+    PropertyString propString;
+    if (subs.size() == 1) {
+        propString.setValue(subs.front());
+        ret.setItem(1,Py::asObject(propString.getPyObject()));
+    } else {
+        Py::List list(subs.size());
+        int i = 0;
+        for (auto &sub : subs) {
+            propString.setValue(sub);
+            list[i++] = Py::asObject(propString.getPyObject());
+        }
+        ret.setItem(1, list);
+    }
     return Py::new_reference_to(ret);
 }
 
@@ -3856,16 +3869,19 @@ void PropertyXLink::setPyObject(PyObject *value) {
             return;
         } else if(!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type))
             throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
-        if(pySub.isString()) 
-            subs.push_back(pySub.as_string());
-        else if(pySub.isSequence()) {
+        PropertyString propString;
+        if(pySub.isString()) {
+            propString.setPyObject(pySub.ptr());
+            subs.push_back(propString.getStrValue());
+        } else if (pySub.isSequence()) {
             Py::Sequence seq(pySub);
             subs.reserve(seq.size());
             for(size_t i=0;i<seq.size();++i) {
                 Py::Object sub(seq[i]);
                 if(!sub.isString())
                     throw Base::TypeError("Expect only string inside second argument");
-                subs.push_back(sub.as_string());
+                propString.setPyObject(sub.ptr());
+                subs.push_back(propString.getStrValue());
             }
         }else
             throw Base::TypeError("Expect the second element to be a string or sequence of string");
@@ -3982,19 +3998,20 @@ bool PropertyXLinkSub::upgrade(Base::XMLReader &reader, const char *typeName) {
 
 PyObject *PropertyXLinkSub::getPyObject(void)
 {
-    Py::Tuple tup(2);
-    Py::List list(static_cast<int>(_SubList.size()));
-    if (_pcLink) 
-        tup[0] = Py::asObject(_pcLink->getPyObject());
-    else {
-        tup[0] = Py::None();
-        if(_SubList.empty())
-            Py_Return;
+    if(!_pcLink)
+        Py_Return;
+    Py::Tuple ret(2);
+    ret.setItem(0,Py::Object(_pcLink->getPyObject(),true));
+    const auto &subs = getSubValues(false);
+    Py::List list(subs.size());
+    int i = 0;
+    PropertyString propString;
+    for (auto &sub : subs) {
+        propString.setValue(sub);
+        list[i++] = Py::asObject(propString.getPyObject());
     }
-    for(unsigned int i = 0;i<_SubList.size(); i++)
-        list[i] = Py::String(_SubList[i]);
-    tup[1] = list;
-    return Py::new_reference_to(tup);
+    ret.setItem(1, list);
+    return Py::new_reference_to(ret);
 }
 
 //**************************************************************************
