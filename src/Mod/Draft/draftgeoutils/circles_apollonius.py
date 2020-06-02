@@ -48,11 +48,9 @@ import math
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import DraftVecUtils
 
-from draftgeoutils.general import geomType, vec, NORM
+from draftgeoutils.general import geomType, NORM
 from draftgeoutils.intersections import findIntersection
-
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")

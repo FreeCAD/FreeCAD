@@ -29,16 +29,16 @@
 import math
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
-PARAMGRP = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+PARAMGRP = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 # Default normal direction for all geometry operations
-NORM = FreeCAD.Vector(0, 0, 1)
+NORM = App.Vector(0, 0, 1)
 
 
 def precision():
@@ -70,7 +70,7 @@ def vec(edge):
 
 def edg(p1, p2):
     """Return an edge from 2 vectors."""
-    if isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
+    if isinstance(p1, App.Vector) and isinstance(p2, App.Vector):
         if DraftVecUtils.equals(p1, p2):
             return None
 
@@ -100,13 +100,13 @@ def isNull(something):
     """
     if isinstance(something, Part.Shape):
         return something.isNull()
-    elif isinstance(something, FreeCAD.Vector):
-        if something == FreeCAD.Vector(0, 0, 0):
+    elif isinstance(something, App.Vector):
+        if something == App.Vector(0, 0, 0):
             return True
         else:
             return False
-    elif isinstance(something, FreeCAD.Placement):
-        if (something.Base == FreeCAD.Vector(0, 0, 0)
+    elif isinstance(something, App.Placement):
+        if (something.Base == App.Vector(0, 0, 0)
                 and something.Rotation.Q == (0, 0, 0, 1)):
             return True
         else:
@@ -183,7 +183,7 @@ def getQuad(face):
     if len(face.Edges) != 4:
         return None
 
-    v1 = vec(face.Edges[0])
+    v1 = vec(face.Edges[0])  # Warning redefinition of function v1
     v2 = vec(face.Edges[1])
     v3 = vec(face.Edges[2])
     v4 = vec(face.Edges[3])
