@@ -758,3 +758,112 @@ def isRectangle(verts):
     if abs(v4.getAngle(v3)-math.pi/2) > 0.01:
         return False
     return True
+
+
+def createFromProperties(propsets,ifcfile,parametrics):
+
+    """
+    Creates a FreeCAD parametric object from a set of properties.
+    """
+
+    obj = None
+    sets = []
+    appset = None
+    guiset = None
+    for pset in propsets.keys():
+        if ifcfile[pset].Name == "FreeCADPropertySet":
+            appset = {}
+            for pid in propsets[pset]:
+                p = ifcfile[pid]
+                appset[p.Name] = p.NominalValue.wrappedValue
+        elif ifcfile[pset].Name == "FreeCADGuiPropertySet":
+            guiset = {}
+            for pid in propsets[pset]:
+                p = ifcfile[pid]
+                guiset[p.Name] = p.NominalValue.wrappedValue
+    if appset:
+        oname = None
+        otype = None
+        if "FreeCADType" in appset.keys():
+            if "FreeCADName" in appset.keys():
+                obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
+                if "FreeCADAppObject" in appset:
+                    mod,cla = appset["FreeCADAppObject"].split(".")
+                    if "'" in mod:
+                        mod = mod.split("'")[-1]
+                    if "'" in cla:
+                        cla = cla.split("'")[0]
+                    import importlib
+                    mod = importlib.import_module(mod)
+                    getattr(mod,cla)(obj)
+                sets.append(("App",appset))
+                if FreeCAD.GuiUp:
+                    if guiset:
+                        if "FreeCADGuiObject" in guiset:
+                            mod,cla = guiset["FreeCADGuiObject"].split(".")
+                            if "'" in mod:
+                                mod = mod.split("'")[-1]
+                            if "'" in cla:
+                                cla = cla.split("'")[0]
+                            import importlib
+                            mod = importlib.import_module(mod)
+                            getattr(mod,cla)(obj.ViewObject)
+                        sets.append(("Gui",guiset))
+    if obj and sets:
+        for realm,pset in sets:
+            if realm == "App":
+                target = obj
+            else:
+                target = obj.ViewObject
+            for key,val in pset.items():
+                if key.startswith("FreeCAD_") or key.startswith("FreeCADGui_"):
+                    name = key.split("_")[1]
+                    if name in target.PropertiesList:
+                        if not target.getEditorMode(name):
+                            ptype = target.getTypeIdOfProperty(name)
+                            if ptype in ["App::PropertyString","App::PropertyEnumeration","App::PropertyInteger","App::PropertyFloat"]:
+                                setattr(target,name,val)
+                            elif ptype in ["App::PropertyLength","App::PropertyDistance"]:
+                                setattr(target,name,val*1000)
+                            elif ptype == "App::PropertyBool":
+                                if val in [".T.",True]:
+                                    setattr(target,name,True)
+                                else:
+                                    setattr(target,name,False)
+                            elif ptype == "App::PropertyVector":
+                                setattr(target,name,FreeCAD.Vector([float(s) for s in val.split("(")[1].strip(")").split(",")]))
+                            elif ptype == "App::PropertyArea":
+                                setattr(target,name,val*1000000)
+                            elif ptype == "App::PropertyPlacement":
+                                data = val.split("[")[1].strip("]").split("(")
+                                data = [data[1].split(")")[0],data[2].strip(")")]
+                                v = FreeCAD.Vector([float(s) for s in data[0].split(",")])
+                                r = FreeCAD.Rotation(*[float(s) for s in data[1].split(",")])
+                                setattr(target,name,FreeCAD.Placement(v,r))
+                            elif ptype == "App::PropertyLink":
+                                link = val.split("_")[1]
+                                parametrics.append([target,name,link])
+                            else:
+                                print("Unhandled FreeCAD property:",name," of type:",ptype)
+    return obj,parametrics
+
+
+def applyColorDict(doc,colordict=None):
+
+    """applies the contents of a color dict to the objects in the given doc.
+    If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
+
+    if not colordict:
+        if "colordict" in doc.Meta:
+            import json
+            colordict = json.loads(doc.Meta["colordict"])
+    if colordict:
+        for obj in doc.Objects:
+            if obj.Name in colordict:
+                color = colordict[obj.Name]
+                if hasattr(obj.ViewObject,"ShapeColor"):
+                    obj.ViewObject.ShapeColor = tuple(color[0:3])
+                if hasattr(obj.ViewObject,"Transparency") and (len(color) >= 4):
+                    obj.ViewObject.Transparency = color[3]
+    else:
+        print("No valid color dict to apply")
