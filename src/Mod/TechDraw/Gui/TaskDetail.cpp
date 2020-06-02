@@ -71,7 +71,7 @@ using namespace Gui;
 #define CREATEMODE 0
 #define EDITMODE   1
 
-//creation ctor
+//creation constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     ui(new Ui_TaskDetail),
     m_detailFeat(nullptr),
@@ -135,7 +135,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
             this, SLOT(onHighlightMoved(QPointF)));
 }
 
-//edit ctor
+//edit constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     ui(new Ui_TaskDetail),
     m_detailFeat(detailFeat),
@@ -190,8 +190,8 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
+    // the UI file uses setKeyboardTracking(false) so that a
+    // recomputation will only be triggered when the arrow yeys of the spinboxes are used
     connect(ui->qsbX, SIGNAL(editingFinished()),
             this, SLOT(onXEdit()));
     connect(ui->qsbY, SIGNAL(editingFinished()),

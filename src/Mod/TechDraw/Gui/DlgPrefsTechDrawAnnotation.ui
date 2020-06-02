@@ -612,7 +612,7 @@
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
-            <italic>true</italic>
+            <italic>false</italic>
            </font>
           </property>
           <property name="text">
