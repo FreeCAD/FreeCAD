@@ -26,11 +26,12 @@
 # \ingroup DRAFTGEOUTILS
 # \brief Provides various functions for working with geometry.
 
-import lazy_loader.lazy_loader as lz
 import math
+import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
+
 import draftutils.gui_utils as gui_utils
 
 from draftgeoutils.general import geomType, vec
@@ -88,7 +89,7 @@ def findDistance(point, edge, strict=False):
     only if its endpoint lies on the `edge`.
     Edge can also be a list of 2 points.
     """
-    if isinstance(point, FreeCAD.Vector):
+    if isinstance(point, App.Vector):
         if isinstance(edge, list):
             segment = edge[1].sub(edge[0])
             chord = edge[0].sub(point)
@@ -155,7 +156,7 @@ def findDistance(point, edge, strict=False):
 
             ratio = (segment.Length - edge.Curve.Radius) / segment.Length
             dist = segment.multiply(ratio)
-            newpoint = FreeCAD.Vector.add(point, dist)
+            newpoint = App.Vector.add(point, dist)
 
             if dist.Length == 0:
                 return None
@@ -217,7 +218,7 @@ def getNormal(shape):
                 return n
         return None
 
-    n = FreeCAD.Vector(0, 0, 1)
+    n = App.Vector(0, 0, 1)
     if shape.isNull():
         return n
 
@@ -247,7 +248,7 @@ def getNormal(shape):
                     break
 
     # Check the 3D view to flip the normal if the GUI is available
-    if FreeCAD.GuiUp:
+    if App.GuiUp:
         vdir = gui_utils.get_3d_view().getViewDirection()
         if n.getAngle(vdir) < 0.78:
             n = n.negative()
@@ -258,7 +259,7 @@ def getNormal(shape):
     return n
 
 
-def getRotation(v1, v2=FreeCAD.Vector(0, 0, 1)):
+def getRotation(v1, v2=App.Vector(0, 0, 1)):
     """Get the rotation Quaternion between 2 vectors."""
     if (v1.dot(v2) > 0.999999) or (v1.dot(v2) < -0.999999):
         # vectors are opposite
@@ -268,7 +269,7 @@ def getRotation(v1, v2=FreeCAD.Vector(0, 0, 1)):
     axis.normalize()
     # angle = math.degrees(math.sqrt(v1.Length^2 * v2.Length^2) + v1.dot(v2))
     angle = math.degrees(DraftVecUtils.angle(v1, v2, axis))
-    return FreeCAD.Rotation(axis, angle)
+    return App.Rotation(axis, angle)
 
 
 def isPlanar(shape):
@@ -307,11 +308,11 @@ def calculatePlacement(shape):
     Otherwise, it returns a null placement.
     """
     if not isPlanar(shape):
-        return FreeCAD.Placement()
+        return App.Placement()
 
     pos = shape.BoundBox.Center
     norm = getNormal(shape)
-    pla = FreeCAD.Placement()
+    pla = App.Placement()
     pla.Base = pos
     r = getRotation(norm)
 
@@ -326,9 +327,9 @@ def mirror(point, edge):
     normPoint = point.add(findDistance(point, edge, False))
 
     if normPoint:
-        normPoint_point = FreeCAD.Vector.sub(point, normPoint)
+        normPoint_point = App.Vector.sub(point, normPoint)
         normPoint_refl = normPoint_point.negative()
-        refl = FreeCAD.Vector.add(normPoint, normPoint_refl)
+        refl = App.Vector.add(normPoint, normPoint_refl)
         return refl
     else:
         return None

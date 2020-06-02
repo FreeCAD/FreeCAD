@@ -26,10 +26,10 @@
 # \ingroup DRAFTGEOUTILS
 # \brief Provides various functions for arc operations.
 
-import lazy_loader.lazy_loader as lz
 import math
+import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import geomType
@@ -53,7 +53,7 @@ def isClockwise(edge, ref=None):
     n = edge.Curve.Axis
     # if that axis points "the wrong way" from the reference, we invert it
     if not ref:
-        ref = FreeCAD.Vector(0, 0, 1)
+        ref = App.Vector(0, 0, 1)
     if n.getAngle(ref) > math.pi/2:
         n = n.negative()
 
@@ -89,7 +89,7 @@ def arcFrom2Pts(firstPt, lastPt, center, axis=None):
     if round(radius1-radius2, 4) != 0:
         return None
 
-    thirdPt = FreeCAD.Vector(firstPt.sub(center).add(lastPt).sub(center))
+    thirdPt = App.Vector(firstPt.sub(center).add(lastPt).sub(center))
     thirdPt.normalize()
     thirdPt.scale(radius1, radius1, radius1)
     thirdPt = thirdPt.add(center)
@@ -125,7 +125,7 @@ def arcFromSpline(edge):
         p3 = edge.valueAt(ml)
         try:
             return Part.Arc(p1, p3, p2).toShape()
-        except:
+        except Part.OCCError:
             print("Couldn't make an arc out of this edge")
             return None
     else:
@@ -139,6 +139,6 @@ def arcFromSpline(edge):
         radius = ray.Length
         try:
             return Part.makeCircle(radius, center)
-        except:
+        except Part.OCCError:
             print("couldn't make a circle out of this edge")
             return None

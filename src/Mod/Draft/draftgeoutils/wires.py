@@ -26,15 +26,15 @@
 # \ingroup DRAFTGEOUTILS
 # \brief Provides various functions for working with wires.
 
-import lazy_loader.lazy_loader as lz
 import math
+import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
 import WorkingPlane
 
 from draftgeoutils.general import geomType, vec, precision
-from draftgeoutils.edges import findMidpoint, isLine
 from draftgeoutils.geometry import getNormal
+from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -400,7 +400,7 @@ def cleanProjection(shape, tessellate=True, seglength=0.05):
                                                         e.LastParameter))
             else:
                 newedges.append(e)
-        except Exception:
+        except Part.OCCError:
             print("Debug: error cleaning edge ", e)
 
     return Part.makeCompound(newedges)
@@ -425,7 +425,7 @@ def tessellateProjection(shape, seglen):
                 newedges.append(Part.Wire(curvetosegment(e, seglen)))
             else:
                 newedges.append(e)
-        except Exception:
+        except Part.OCCError:
             print("Debug: error cleaning edge ", e)
 
     return Part.makeCompound(newedges)

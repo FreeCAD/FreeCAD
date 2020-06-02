@@ -37,7 +37,6 @@ from draftgeoutils.geometry import mirror, findDistance
 from draftgeoutils.edges import findMidpoint
 from draftgeoutils.intersections import findIntersection, angleBisection
 
-
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
