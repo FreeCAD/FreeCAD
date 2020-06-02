@@ -1260,7 +1260,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             base = getSolid(result);
             if (base.IsNull())
                 return new App::DocumentObjectExecReturn("Hole: Resulting shape is not a solid");
-
+            base = refineShapeIfActive(base);
             builder.Add(holes, transformer.Shape() );
         }
 
