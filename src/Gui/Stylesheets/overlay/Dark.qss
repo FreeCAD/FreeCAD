@@ -32,6 +32,10 @@ QTabWidget::pane {
   border: transparent;
 }
 
+Gui--OverlayTabWidget {
+  qproperty-enableEffect: 0;
+}
+
 Gui--OverlayTabWidget::pane {
   background-color: rgba(100,100,100,150)
 }

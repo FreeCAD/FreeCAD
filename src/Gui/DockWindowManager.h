@@ -30,6 +30,7 @@
 #include <QTime>
 #include <QAction>
 #include <QToolButton>
+#include <QGraphicsEffect>
 
 #include <Base/Parameter.h>
 
@@ -163,10 +164,20 @@ private:
 #ifdef FC_HAS_DOCK_OVERLAY
 
 class OverlayProxyWidget;
+class OverlayGraphicsEffect;
 
 class OverlayTabWidget: public QTabWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor effectColor READ effectColor WRITE setEffectColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(int effectWidth READ effectWidth WRITE setEffectWidth DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(int effectHeight READ effectHeight WRITE setEffectHeight DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(qreal effectOffsetX READ effectOffsetX WRITE setEffectOffsetX DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(qreal effectOffsetY READ effectOffsetY WRITE setEffectOffsetY DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(qreal effectBlurRadius READ effectBlurRadius WRITE setEffectBlurRadius DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(bool enableEffect READ effectEnabled WRITE setEffectEnabled DESIGNABLE true SCRIPTABLE true)
+
 public:
     OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos);
 
@@ -225,11 +236,29 @@ public:
     void restore(ParameterGrp::handle handle);
     void saveTabs();
 
+    QColor effectColor() const;
+    void setEffectColor(const QColor&);
+    int effectWidth() const;
+    void setEffectWidth(int);
+    int effectHeight() const;
+    void setEffectHeight(int);
+    qreal effectOffsetX() const;
+    void setEffectOffsetX(qreal);
+    qreal effectOffsetY() const;
+    void setEffectOffsetY(qreal);
+    qreal effectBlurRadius() const;
+    void setEffectBlurRadius(qreal);
+    bool effectEnabled() const;
+    void setEffectEnabled(bool);
+
+    void scheduleRepaint();
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
     void changeEvent(QEvent*);
     void resizeEvent(QResizeEvent*);
+    void paintEvent(QPaintEvent *);
     bool eventFilter(QObject *, QEvent *ev);
 
     static void _setOverlayMode(QWidget *widget, int enable);
@@ -257,12 +286,17 @@ private:
     QAction actDecrease;
     QAction actOverlay;
     QTimer timer;
+    QTimer repaintTimer;
+    bool repainting = false;
     bool overlayed = false;
     bool touched = false;
     Qt::DockWidgetArea dockArea;
     int tabSize = 0;
     QTime revealTime;
     ParameterGrp::handle hGrp;
+
+    OverlayGraphicsEffect *_graphicsEffect = nullptr;
+    bool _effectEnabled = false;
 };
 
 class OverlayToolButton: public QToolButton
@@ -291,6 +325,47 @@ private:
     OverlayTabWidget* owner;
     bool drawLine = false;
     int pos;
+};
+
+
+// modified from https://stackoverflow.com/a/23752747
+class OverlayGraphicsEffect: public QGraphicsEffect
+{
+    Q_OBJECT
+public:
+    OverlayGraphicsEffect(QObject *parent);
+
+    virtual void draw(QPainter* painter);
+    virtual QRectF boundingRectFor(const QRectF& rect) const;
+
+    inline void setSize(const QSize &size)
+        { if(_size!=size){_size = size; updateBoundingRect(); } }
+
+    inline QSize size() const { return _size; }
+
+    inline void setOffset(const QPointF &offset)
+        { if(_offset!=offset) {_offset = offset; updateBoundingRect(); } }
+
+    inline QPointF offset() const { return _offset; }
+
+    inline void setBlurRadius(qreal blurRadius)
+        { if(_blurRadius!=blurRadius) {_blurRadius = blurRadius; updateBoundingRect();} }
+
+    inline qreal blurRadius() const { return _blurRadius; }
+
+    inline void setColor(const QColor& color) { _color = color; }
+    inline QColor color() const { return _color; }
+
+    inline bool enabled() const {return _enabled;}
+    inline void setEnabled(bool enabled) 
+        { if(_enabled!=enabled) {_enabled = enabled; updateBoundingRect();} }
+
+private:
+    bool _enabled;
+    QSize  _size;
+    qreal  _blurRadius;
+    QColor _color;
+    QPointF _offset;
 };
 
 #endif // FC_HAS_DOCK_OVERLAY

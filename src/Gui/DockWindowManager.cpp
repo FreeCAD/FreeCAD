@@ -211,6 +211,9 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
     splitter = new QSplitter(this);
 
+    _graphicsEffect = new OverlayGraphicsEffect(this);
+    splitter->setGraphicsEffect(_graphicsEffect);
+
     switch(pos) {
     case Qt::LeftDockWidgetArea:
         setTabPosition(QTabWidget::West);
@@ -416,6 +419,101 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(setupLayout()));
+
+    repaintTimer.setSingleShot(true);
+    connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(repaint()));
+}
+
+void OverlayTabWidget::paintEvent(QPaintEvent *ev)
+{
+    repainting = true;
+    repaintTimer.stop();
+    QTabWidget::paintEvent(ev);
+    repainting = false;
+}
+
+void OverlayTabWidget::scheduleRepaint()
+{
+    if(!repainting && splitter->graphicsEffect())
+        repaintTimer.start(100);
+}
+
+QColor OverlayTabWidget::effectColor() const
+{
+    return _graphicsEffect->color();
+}
+
+void OverlayTabWidget::setEffectColor(const QColor &color)
+{
+    _graphicsEffect->setColor(color);
+}
+
+int OverlayTabWidget::effectWidth() const
+{
+    return _graphicsEffect->size().width();
+}
+
+void OverlayTabWidget::setEffectWidth(int s)
+{
+    auto size = _graphicsEffect->size();
+    size.setWidth(s);
+    _graphicsEffect->setSize(size);
+}
+
+int OverlayTabWidget::effectHeight() const
+{
+    return _graphicsEffect->size().height();
+}
+
+void OverlayTabWidget::setEffectHeight(int s)
+{
+    auto size = _graphicsEffect->size();
+    size.setHeight(s);
+    _graphicsEffect->setSize(size);
+}
+
+qreal OverlayTabWidget::effectOffsetX() const
+{
+    return _graphicsEffect->offset().x();
+}
+
+void OverlayTabWidget::setEffectOffsetX(qreal d)
+{
+    auto offset = _graphicsEffect->offset();
+    offset.setX(d);
+    _graphicsEffect->setOffset(offset);
+}
+
+qreal OverlayTabWidget::effectOffsetY() const
+{
+    return _graphicsEffect->offset().y();
+}
+
+void OverlayTabWidget::setEffectOffsetY(qreal d)
+{
+    auto offset = _graphicsEffect->offset();
+    offset.setY(d);
+    _graphicsEffect->setOffset(offset);
+}
+
+qreal OverlayTabWidget::effectBlurRadius() const
+{
+    return _graphicsEffect->blurRadius();
+}
+
+void OverlayTabWidget::setEffectBlurRadius(qreal r)
+{
+    _graphicsEffect->setBlurRadius(r);
+}
+
+bool OverlayTabWidget::effectEnabled() const
+{
+    return _effectEnabled;
+}
+
+void OverlayTabWidget::setEffectEnabled(bool enable)
+{
+    _effectEnabled = enable;
 }
 
 bool OverlayTabWidget::eventFilter(QObject *o, QEvent *ev)
@@ -725,6 +823,7 @@ public:
 
                 "QScrollBar { background: transparent;}"
                 "QTabWidget::pane { background-color: transparent; border: transparent }"
+                "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
                 "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
 
                 "QTabBar {border : none;}"
@@ -967,6 +1066,8 @@ void OverlayTabWidget::setOverlayMode(bool enable)
         setOverlayMode(this, enable?1:0);
     }
 
+    _graphicsEffect->setEnabled(effectEnabled() && (enable || isTransparent()));
+
     if(count() <= 1)
         tabBar()->hide();
     else
@@ -1131,29 +1232,28 @@ void OverlayTabWidget::setupLayout()
             tsize = tabBar()->width();
         else
             tsize = tabBar()->height();
-        if(tsize > tabSize)
-            tabSize = tsize;
+        tabSize = tsize;
     }
-
+    int titleBarSize = _TitleButtonSize + 1;
     QRect rect, rectTitle;
     switch(tabPosition()) {
     case West:
-        rectTitle = QRect(tabSize, 0, this->width()-tabSize, titleBar->height());
+        rectTitle = QRect(tabSize, 0, this->width()-tabSize, titleBarSize);
         rect = QRect(rectTitle.left(), rectTitle.bottom(),
                      rectTitle.width(), this->height()-rectTitle.height());
         break;
     case East:
-        rectTitle = QRect(0, 0, this->width()-tabSize, titleBar->height());
+        rectTitle = QRect(0, 0, this->width()-tabSize, titleBarSize);
         rect = QRect(rectTitle.left(), rectTitle.bottom(),
                      rectTitle.width(), this->height()-rectTitle.height());
         break;
     case North:
-        rectTitle = QRect(0, tabSize, titleBar->width(), this->height()-tabSize);
+        rectTitle = QRect(0, tabSize, titleBarSize, this->height()-tabSize);
         rect = QRect(rectTitle.right(), rectTitle.top(),
                      this->width()-rectTitle.width(), rectTitle.height());
         break;
     case South:
-        rectTitle = QRect(0, 0, titleBar->width(), this->height()-tabSize);
+        rectTitle = QRect(0, 0, titleBarSize, this->height()-tabSize);
         rect = QRect(rectTitle.right(), rectTitle.top(),
                      this->width()-rectTitle.width(), rectTitle.height());
         break;
@@ -1234,6 +1334,94 @@ void OverlayTabWidget::changeSize(int changes, bool checkModify)
         break;
     }
     setRect(rect);
+}
+
+// -----------------------------------------------------------
+
+OverlayGraphicsEffect::OverlayGraphicsEffect(QObject *parent) :
+    QGraphicsEffect(parent),
+    _enabled(false),
+    _size(1,1),
+    _blurRadius(2.0f),
+    _color(0, 0, 0, 80)
+{
+}
+
+QT_BEGIN_NAMESPACE
+  extern Q_WIDGETS_EXPORT void qt_blurImage(QPainter *p, QImage &blurImage, qreal radius, bool quality, bool alphaOnly, int transposed = 0 );
+QT_END_NAMESPACE
+
+void OverlayGraphicsEffect::draw(QPainter* painter)
+{
+    // if nothing to show outside the item, just draw source
+    if (!_enabled || _blurRadius + _size.height() <= 0 || _blurRadius + _size.width() <= 0) {
+        drawSource(painter);
+        return;
+    }
+
+    PixmapPadMode mode = QGraphicsEffect::PadToEffectiveBoundingRect;
+    QPoint offset;
+    const QPixmap px = sourcePixmap(Qt::DeviceCoordinates, &offset, mode);
+
+    // return if no source
+    if (px.isNull())
+        return;
+
+    QTransform restoreTransform = painter->worldTransform();
+    painter->setWorldTransform(QTransform());
+
+    // Calculate size for the background image
+    QImage tmp(px.size(), QImage::Format_ARGB32_Premultiplied);
+    tmp.setDevicePixelRatio(px.devicePixelRatioF());
+    tmp.fill(0);
+    QPainter tmpPainter(&tmp);
+    tmpPainter.setCompositionMode(QPainter::CompositionMode_Source);
+    if(_size.width() == 0 && _size.height() == 0)
+	    tmpPainter.drawPixmap(QPoint(0, 0), px);
+    else {
+        for (int x=-_size.width();x<=_size.width();++x) {
+            for (int y=-_size.height();y<=_size.height();++y) {
+                tmpPainter.drawPixmap(QPoint(x, y), px);
+                tmpPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+            }
+        }
+    }
+    tmpPainter.end();
+
+    // blur the alpha channel
+    QImage blurred(tmp.size(), QImage::Format_ARGB32_Premultiplied);
+    blurred.setDevicePixelRatio(px.devicePixelRatioF());
+    blurred.fill(0);
+    QPainter blurPainter(&blurred);
+    qt_blurImage(&blurPainter, tmp, blurRadius(), false, true);
+    blurPainter.end();
+
+    tmp = blurred;
+
+    // blacken the image...
+    tmpPainter.begin(&tmp);
+    tmpPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    tmpPainter.fillRect(tmp.rect(), color());
+    tmpPainter.end();
+
+    // draw the blurred shadow...
+    painter->drawImage(QPointF(offset.x()+_offset.x(), offset.y()+_offset.y()), tmp);
+
+    // draw the actual pixmap...
+    painter->drawPixmap(offset, px, QRectF());
+
+    // restore world transform
+    painter->setWorldTransform(restoreTransform);
+}
+
+QRectF OverlayGraphicsEffect::boundingRectFor(const QRectF& rect) const
+{
+    if (!_enabled)
+        return rect;
+    return rect.united(rect.adjusted(-_blurRadius - _size.width() + _offset.x(), 
+                                     -_blurRadius - _size.height()+ _offset.y(), 
+                                     _blurRadius + _size.width() + _offset.x(),
+                                     _blurRadius + _size.height() + _offset.y()));
 }
 
 // -----------------------------------------------------------
@@ -2337,6 +2525,20 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         return false;
     }
 #ifdef FC_HAS_DOCK_OVERLAY
+    case QEvent::Paint:
+        if (auto widget = qobject_cast<QWidget*>(o)) {
+            // QAbstractItemView optimize redraw using its item delegate's
+            // visualRect(). However, if we are using QGraphicsEffects, the
+            // effect may touch areas outside of visualRect(), so
+            // OverlayTabWidget offers a timer for a delayed redraw.
+            widget = qobject_cast<QAbstractItemView*>(widget->parentWidget());
+            if(widget) {
+                auto tabWidget = findTabWidget(widget);
+                if (tabWidget)
+                    tabWidget->scheduleRepaint();
+            }
+        }
+        break;
     // case QEvent::MouseButtonDblClick:
     // case QEvent::NativeGesture:
     case QEvent::MouseButtonRelease:

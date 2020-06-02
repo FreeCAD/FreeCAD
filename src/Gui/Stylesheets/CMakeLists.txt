@@ -14,6 +14,8 @@ SET(Stylesheets_Files
 SET(Overlay_Stylesheets_Files
     "overlay/Dark.qss"
     "overlay/Light.qss"
+    "overlay/Dark-Outline.qss"
+    "overlay/Light-Outline.qss"
 )
 
 SET(Menu_Stylesheets_Files

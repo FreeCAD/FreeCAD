@@ -1,6 +1,6 @@
 * {
-  color: palette(text);
-  alternate-background-color: rgba(250,250,250,120);
+  color: palette(bright-text);
+  alternate-background-color: rgba(50,50,50,120);
 }
 
 QComboBox,
@@ -13,7 +13,7 @@ QAbstractSpinBox,
 QDateEdit,
 QDateTimeEdit,
 Gui--PropertyEditor--PropertyEditor QLabel {
-  background : palette(base);
+  background : #6e6e6e;
 }
 
 QComboBox:disabled,
@@ -24,7 +24,7 @@ QPlainTextEdit:disabled,
 QTimeEdit:disabled,
 QDateEdit:disabled,
 QDateTimeEdit:disabled {
-  color: palette(mid);
+  color: palette(dark);
 }
 
 QTabWidget::pane {
@@ -32,12 +32,24 @@ QTabWidget::pane {
   border: transparent;
 }
 
+/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+To customize for each overlay docking site, use the following selector
+
+Gui--OverlayTabWidget#OverlayLeft {}
+*/
+
 Gui--OverlayTabWidget {
-  qproperty-enableEffect: 0;
+  qproperty-effectColor: rgba(50, 50, 50, 200);
+  qproperty-effectBlurRadius: 2.0;
+  qproperty-effectOffsetX: 0.0;
+  qproperty-effectOffsetY: 0.0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
 }
 
 Gui--OverlayTabWidget::pane {
-  background-color: rgba(255,255,255,80)
+  background-color: transparent;
 }
 
 QTabBar {
@@ -45,29 +57,29 @@ QTabBar {
 }
 
 QTabBar::tab {
-  color: palette(text);
+  color: palette(bright-text);
   background-color: rgba(100,100,100,50);
   padding: 5px;
 }
 
 QTabBar::tab:selected {
-  background-color: rgba(250,250,250,80);
+  background-color: rgba(100,100,100,150);
 }
 
 QTabBar::tab:hover {
-  background-color: rgba(250,250,250,200);
+  background-color: rgba(150,150,150,150);
 }
 
 QHeaderView::section {
-  color: rgb(80, 80, 80);
-  background-color: rgba(250,250,250,50);
-  border: 1px solid palette(dark);
+  color: rgb(200,200,200);
+  background-color: rgba(50,50,50,100);
+  border: 1px solid rgb(100,100,100);
   padding: 2px;
 }
 
 QToolTip {
-  background-color: rgba(250,250,250,180);
-  border: 1px solid rgb(80,80,80);
+  background-color: rgba(100,100,100,180);
+  border: 1px solid palette(dark);
   border-radius:2px;
 }
 
@@ -78,16 +90,20 @@ Gui--OverlayToolButton {
 }
 
 Gui--OverlayToolButton::hover {
-  background: rgba(250,250,250,200);
+  background: rgba(150,150,150,200);
 }
 
 Gui--OverlayToolButton::focus {
-  background: rgba(250,250,250,255);
+  background: rgba(150,150,150,155);
 }
 
-Gui--OverlayToolButton::pressed,
+Gui--OverlayToolButton::pressed {
+  background: rgba(50,50,50,80);
+  border: 1px inset palette(dark);
+}
+
 Gui--OverlayToolButton::checked {
-  background: rgba(150,150,150,80);
+  background: rgba(50,50,50,80);
   border: 1px inset palette(dark);
 }
 
@@ -99,7 +115,7 @@ Gui--OverlayToolButton::checked:hover {
 QTreeView,
 QListView,
 QTableView {
-  background: rgb(250,250,250);
+  background: rgb(100,100,100);
   selection-background-color: rgba(94, 144, 250, 0.7);
 }
 
@@ -108,19 +124,17 @@ QTreeView::item:selected  {
   background-color: rgba(94, 144, 250, 0.7);
 }
 
-/* Property Editor QTreeView (FreeCAD custom widget) */
 Gui--PropertyEditor--PropertyEditor {
-  /* gridline-color: #6e6e6e; */
-  qproperty-groupTextColor: rgb(100, 100, 100);
-  qproperty-groupBackground: rgba(180, 180, 180, 0.7);
+  qproperty-groupTextColor: rgb(50, 50, 50);
+  qproperty-groupBackground: rgba(140, 140, 140, 0.7);
 }
 
 Gui--CallTipsList::item {
-  background-color: rgba(200, 200, 200, 200);
+  background-color: rgba(100, 100, 100, 200);
 }
 
 Gui--CallTipsList::item::selected {
-  background-color: rgba(94, 144, 250);
+  background-color: rgb(94, 144, 250);
 }
 
 /*==================================================================================================
@@ -128,7 +142,7 @@ Tasks panel (custom FreeCAD class)
 ==================================================================================================*/
 /* Panel header */
 QSint--ActionGroup QFrame[class="header"] {
-  background-color: rgba(250, 250, 250, 0.1); /* Task Panel Header background color */
+  background-color: rgba(80, 80, 80, 0.1); /* Task Panel Header background color */
 }
 
 QSint--ActionGroup QToolButton[class="header"] {

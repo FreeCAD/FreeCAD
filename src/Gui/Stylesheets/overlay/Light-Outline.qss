@@ -32,12 +32,24 @@ QTabWidget::pane {
   border: transparent;
 }
 
+/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+To customize for each overlay docking site, use the following selector
+
+Gui--OverlayTabWidget#OverlayLeft {}
+*/
+
 Gui--OverlayTabWidget {
-  qproperty-enableEffect: 0;
+  qproperty-effectColor: rgba(200, 200, 200, 100);
+  qproperty-effectBlurRadius: 2.0;
+  qproperty-effectOffsetX: 0.0;
+  qproperty-effectOffsetY: 0.0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
 }
 
 Gui--OverlayTabWidget::pane {
-  background-color: rgba(255,255,255,80)
+  background-color: transparent
 }
 
 QTabBar {
