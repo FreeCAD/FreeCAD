@@ -4655,12 +4655,17 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-    QString info = QString::fromLatin1(Obj->getStatusString());
-    if ( Obj->mustExecute() == 1 && !Obj->isError())
-        info += QString::fromLatin1(" (but must be executed)");
+#if (QT_VERSION >= 0x050000)
+    QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
+#else
+    QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
+#endif
+
+    if (Obj->mustExecute() == 1 && !Obj->isError())
+        info += TreeWidget::tr(" (but must be executed)");
+
     QString status = TreeWidget::tr("%1, Internal name: %2")
-            .arg(info,
-                 QString::fromLatin1(Obj->getNameInDocument()));
+            .arg(info, QString::fromLatin1(Obj->getNameInDocument()));
 
     if (!Obj->isError())
         getMainWindow()->showMessage(status);
