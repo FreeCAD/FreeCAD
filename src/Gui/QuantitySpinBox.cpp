@@ -639,9 +639,9 @@ void QuantitySpinBox::handlePendingEmit()
         d->quantity = res;
 
         // signaling
+        d->pendingEmit = false;
         valueChanged(res);
         valueChanged(res.getValue());
-        d->pendingEmit = false;
     }
 }
 
