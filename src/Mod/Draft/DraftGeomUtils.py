@@ -299,67 +299,13 @@ def getBoundaryAngles(angle, alist):
         return (lower,higher)
 
 
-def circleFrom2tan1pt(tan1, tan2, point):
-    """circleFrom2tan1pt(edge, edge, Vector)"""
-    if (geomType(tan1) == "Line") and (geomType(tan2) == "Line") and isinstance(point, FreeCAD.Vector):
-        return circlefrom2Lines1Point(tan1, tan2, point)
-    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Line") and isinstance(point, FreeCAD.Vector):
-        return circlefromCircleLinePoint(tan1, tan2, point)
-    elif (geomType(tan2) == "Circle") and (geomType(tan1) == "Line") and isinstance(point, FreeCAD.Vector):
-        return circlefromCircleLinePoint(tan2, tan1, point)
-    elif (geomType(tan2) == "Circle") and (geomType(tan1) == "Circle") and isinstance(point, FreeCAD.Vector):
-        return circlefrom2Circles1Point(tan2, tan1, point)
-
-
-def circleFrom2tan1rad(tan1, tan2, rad):
-    """circleFrom2tan1rad(edge, edge, float)"""
-    if (geomType(tan1) == "Line") and (geomType(tan2) == "Line"):
-        return circleFrom2LinesRadius(tan1, tan2, rad)
-    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Line"):
-        return circleFromCircleLineRadius(tan1, tan2, rad)
-    elif (geomType(tan1) == "Line") and (geomType(tan2) == "Circle"):
-        return circleFromCircleLineRadius(tan2, tan1, rad)
-    elif (geomType(tan1) == "Circle") and (geomType(tan2) == "Circle"):
-        return circleFrom2CirclesRadius(tan1, tan2, rad)
-
-
-def circleFrom1tan2pt(tan1, p1, p2):
-    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
-        return circlefrom1Line2Points(tan1, p1, p2)
-    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector) and isinstance(p2, FreeCAD.Vector):
-        return circlefrom1Circle2Points(tan1, p1, p2)
-
-
-def circleFrom1tan1pt1rad(tan1, p1, rad):
-    if (geomType(tan1) == "Line") and isinstance(p1, FreeCAD.Vector):
-        return circleFromPointLineRadius(p1, tan1, rad)
-    if (geomType(tan1) == "Circle") and isinstance(p1, FreeCAD.Vector):
-        return circleFromPointCircleRadius(p1, tan1, rad)
-
-
-def circleFrom3tan(tan1, tan2, tan3):
-    tan1IsLine = (geomType(tan1) == "Line")
-    tan2IsLine = (geomType(tan2) == "Line")
-    tan3IsLine = (geomType(tan3) == "Line")
-    tan1IsCircle = (geomType(tan1) == "Circle")
-    tan2IsCircle = (geomType(tan2) == "Circle")
-    tan3IsCircle = (geomType(tan3) == "Circle")
-    if tan1IsLine and tan2IsLine and tan3IsLine:
-        return circleFrom3LineTangents(tan1, tan2, tan3)
-    elif tan1IsCircle and tan2IsCircle and tan3IsCircle:
-        return circleFrom3CircleTangents(tan1, tan2, tan3)
-    elif (tan1IsCircle and tan2IsLine and tan3IsLine):
-        return circleFrom1Circle2Lines(tan1, tan2, tan3)
-    elif (tan1IsLine and tan2IsCircle and tan3IsLine):
-        return circleFrom1Circle2Lines(tan2, tan1, tan3)
-    elif (tan1IsLine and tan2IsLine and tan3IsCircle):
-        return circleFrom1Circle2Lines(tan3, tan1, tan2)
-    elif (tan1IsLine and tan2IsCircle and tan3IsCircle):
-        return circleFrom2Circle1Lines(tan2, tan3, tan1)
-    elif (tan1IsCircle and tan2IsLine and tan3IsCircle):
-        return circleFrom2Circle1Lines(tan1, tan3, tan2)
-    elif (tan1IsCircle and tan2IsCircle and tan3IsLine):
-        return circleFrom2Circle1Lines(tan1, tan2, tan3)
+# These functions are not imported because they are incomplete;
+# they require pre-requisite functions that haven't been written
+# from draftgeoutils.circles_incomplete import circleFrom2tan1pt
+# from draftgeoutils.circles_incomplete import circleFrom2tan1rad
+# from draftgeoutils.circles_incomplete import circleFrom1tan2pt
+# from draftgeoutils.circles_incomplete import circleFrom1tan1pt1rad
+# from draftgeoutils.circles_incomplete import circleFrom3tan
 
 
 from draftgeoutils.circles import circlefrom2Lines1Point
@@ -382,8 +328,6 @@ from draftgeoutils.circles import circleFrom2PointsRadius
 
 from draftgeoutils.arcs import arcFrom2Pts
 
-
-#############################33 to include
 
 from draftgeoutils.circles_apollonius import outerSoddyCircle
 
