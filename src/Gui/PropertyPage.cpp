@@ -119,6 +119,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
 #if QT_VERSION >= 0x040500
     loader.setLanguageChangeEnabled(true);
 #endif
+    loader.setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
     if (file.open(QFile::ReadOnly))
         form = loader.load(&file, this);
