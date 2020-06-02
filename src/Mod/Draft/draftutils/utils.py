@@ -561,7 +561,7 @@ def get_clone_base(obj, strict=False):
     if hasattr(obj, "CloneOf"):
         if obj.CloneOf:
             return get_clone_base(obj.CloneOf)
-    if get_type(obj) == "Clone":
+    if get_type(obj) == "Clone" and obj.Objects:
         return obj.Objects[0]
     if strict:
         return False
