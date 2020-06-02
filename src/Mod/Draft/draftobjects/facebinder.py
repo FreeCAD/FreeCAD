@@ -38,21 +38,21 @@ class Facebinder(DraftObject):
     def __init__(self,obj):
         super(Facebinder, self).__init__(obj, "Facebinder")
 
-        _tip = "Linked faces"
+        _tip = QT_TRANSLATE_NOOP("App::Property","Linked faces")
         obj.addProperty("App::PropertyLinkSubList", "Faces",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft",  _tip)
 
-        _tip = "Specifies if splitter lines must be removed"
+        _tip = QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed")
         obj.addProperty("App::PropertyBool","RemoveSplitter",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft",  _tip)
 
-        _tip = "An optional extrusion value to be applied to all faces"
+        _tip = QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces")
         obj.addProperty("App::PropertyDistance","Extrusion",
-                        "Draft" ,QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft" , _tip)
 
-        _tip = "This specifies if the shapes sew"
+        _tip = QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew")
         obj.addProperty("App::PropertyBool","Sew",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
 
     def execute(self,obj):
