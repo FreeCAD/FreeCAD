@@ -293,3 +293,49 @@ def findClosest(base_point, point_list):
             npoint = n
 
     return npoint
+
+
+def getBoundaryAngles(angle, alist):
+    """Return the 2 closest angles that encompass the given angle."""
+    negs = True
+    while negs:
+        negs = False
+        for i in range(len(alist)):
+            if alist[i] < 0:
+                alist[i] = 2*math.pi + alist[i]
+                negs = True
+        if angle < 0:
+            angle = 2*math.pi + angle
+            negs = True
+
+    lower = None
+    for a in alist:
+        if a < angle:
+            if lower is None:
+                lower = a
+            else:
+                if a > lower:
+                    lower = a
+
+    if lower is None:
+        lower = 0
+        for a in alist:
+            if a > lower:
+                lower = a
+
+    higher = None
+    for a in alist:
+        if a > angle:
+            if higher is None:
+                higher = a
+            else:
+                if a < higher:
+                    higher = a
+
+    if higher is None:
+        higher = 2*math.pi
+        for a in alist:
+            if a < higher:
+                higher = a
+
+    return lower, higher
