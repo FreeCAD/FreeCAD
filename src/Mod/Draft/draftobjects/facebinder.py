@@ -50,10 +50,18 @@ class Facebinder(DraftObject):
         obj.addProperty("App::PropertyDistance","Extrusion",
                         "Draft" , _tip)
 
+        _tip = QT_TRANSLATE_NOOP("App::Property","An optional offset value to be applied to all faces")
+        obj.addProperty("App::PropertyDistance","Offset",
+                        "Draft" , _tip)
+
         _tip = QT_TRANSLATE_NOOP("App::Property","This specifies if the shapes sew")
         obj.addProperty("App::PropertyBool","Sew",
                         "Draft", _tip)
 
+        _tip = QT_TRANSLATE_NOOP("App::Property","The area of the faces of this Facebinder")
+        obj.addProperty("App::PropertyArea","Area",
+                        "Draft", _tip)
+        obj.setEditorMode("Area",1)
 
     def execute(self,obj):
         import Part
@@ -61,12 +69,19 @@ class Facebinder(DraftObject):
         if not obj.Faces:
             return
         faces = []
+        area = 0
         for sel in obj.Faces:
             for f in sel[1]:
                 if "Face" in f:
                     try:
                         fnum = int(f[4:])-1
-                        faces.append(sel[0].Shape.Faces[fnum])
+                        face = sel[0].Shape.Faces[fnum]
+                        if hasattr(obj,"Offset") and obj.Offset.Value:
+                            norm = face.normalAt(0,0)
+                            dist = norm.multiply(obj.Offset.Value)
+                            face.translate(dist)
+                        faces.append(face)
+                        area += face.Area
                     except(IndexError, Part.OCCError):
                         print("Draft: wrong face index")
                         return
@@ -106,6 +121,7 @@ class Facebinder(DraftObject):
             return
         obj.Shape = sh
         obj.Placement = pl
+        obj.Area = area
 
     def addSubobjects(self,obj,facelinks):
         """adds facelinks to this facebinder"""
