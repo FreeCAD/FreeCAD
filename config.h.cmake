@@ -144,7 +144,7 @@
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #cmakedefine X_DISPLAY_MISSING */
 
-/* Define install locations
+/* Define install locations */
 #define PREFIX_DIR "${CMAKE_INSTALL_PREFIX}"
 #define BIN_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
 #define LIB_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}"

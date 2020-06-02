@@ -1860,7 +1860,7 @@ void Application::initTypes(void)
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = FindHomePath(argv[0]);
+    mConfig["AppHomePath"] = PREFIX_DIR + PATHSEP;
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
