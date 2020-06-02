@@ -197,6 +197,7 @@ class TaskPanelPage(object):
         '''__init__(obj, features) ... framework initialisation.
         Do not overwrite, implement initPage(obj) instead.'''
         self.obj = obj
+        self.job = PathUtils.findParentJob(obj)
         self.form = self.getForm() # pylint: disable=assignment-from-no-return
         self.signalDirtyChanged = None
         self.setClean()
@@ -416,7 +417,30 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         self.panelTitle = 'Base Geometry'
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
+        panel = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
+        self.modifyPanel(panel)
+        return panel
+
+    def modifyPanel(self, panel):
+        # Determine if possible operations are available
+        availableOps = list()
+        ops = self.job.Operations.Group
+        for op in ops:
+            if hasattr(op, 'Base') and op.Base.__len__() > 0:
+                availableOps.append(op.Label)
+
+        if availableOps.__len__() > 0:
+            # Populate the operations list
+            addInputs = True
+            panel.geometryImportList.blockSignals(True)
+            panel.geometryImportList.clear()
+            availableOps.sort()
+            for opLbl in availableOps:
+                panel.geometryImportList.addItem(opLbl)
+            panel.geometryImportList.blockSignals(False)
+        else:
+            panel.geometryImportList.hide()
+            panel.geometryImportButton.hide()
 
     def getTitle(self, obj):
         return translate("PathOp", "Base Geometry")
@@ -542,11 +566,23 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         self.setDirty()
         self.updatePanelVisibility('Operation', self.obj)
 
+    def importBaseGeometry(self):
+        opLabel = str(self.form.geometryImportList.currentText())
+        ops = FreeCAD.ActiveDocument.getObjectsByLabel(opLabel)
+        if ops.__len__() > 1:
+            msg = translate('PathOpGui', 'Mulitiple operations are labeled as')
+            msg += " {}\n".format(opLabel)
+            FreeCAD.Console.PrintWarning(msg)
+        for (base, subList) in ops[0].Base:
+            FreeCADGui.Selection.addSelection(base, subList)
+        self.addBase()
+
     def registerSignalHandlers(self, obj):
         self.form.baseList.itemSelectionChanged.connect(self.itemActivated)
         self.form.addBase.clicked.connect(self.addBase)
         self.form.deleteBase.clicked.connect(self.deleteBase)
         self.form.clearBase.clicked.connect(self.clearBase)
+        self.form.geometryImportButton.clicked.connect(self.importBaseGeometry)
 
     def pageUpdateData(self, obj, prop):
         if prop in ['Base']:
