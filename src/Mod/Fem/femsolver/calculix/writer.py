@@ -1733,6 +1733,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
+                        # see forum topic for output formating of rotation
+                        # https://forum.freecadweb.org/viewtopic.php?f=18&t=46133&p=405142#p405142
                         section_nor = "{:f}, {:f}, {:f}\n".format(
                             normal[0],
                             normal[1],
