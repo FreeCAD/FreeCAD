@@ -172,6 +172,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefLineEdit       *>();
     loadPrefWidgets<Gui::PrefFileChooser    *>();
     loadPrefWidgets<Gui::PrefComboBox       *>();
+    loadPrefWidgets<Gui::PrefFontBox        *>();
     loadPrefWidgets<Gui::PrefCheckBox       *>();
     loadPrefWidgets<Gui::PrefRadioButton    *>();
     loadPrefWidgets<Gui::PrefSlider         *>();
@@ -190,6 +191,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefLineEdit       *>();
     savePrefWidgets<Gui::PrefFileChooser    *>();
     savePrefWidgets<Gui::PrefComboBox       *>();
+    savePrefWidgets<Gui::PrefFontBox        *>();
     savePrefWidgets<Gui::PrefCheckBox       *>();
     savePrefWidgets<Gui::PrefRadioButton    *>();
     savePrefWidgets<Gui::PrefSlider         *>();
