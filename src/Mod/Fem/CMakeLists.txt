@@ -350,6 +350,7 @@ SET(FemGuiObjects_SRCS
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/task_result_mechanical.py
+    femtaskpanels/task_solver_ccxtools.py
 )
 
 SET(FemGuiTests_SRCS
