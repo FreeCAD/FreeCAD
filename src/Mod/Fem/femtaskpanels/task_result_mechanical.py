@@ -606,7 +606,14 @@ class _TaskPanel:
         self.reset_result_mesh()
         self.suitable_results = False
         self.disable_empty_result_buttons()
-        if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
+        if self.mesh_obj.FemMesh.NodeCount == 0:
+                error_message = (
+                    "FEM: there are no nodes in result mesh.  "
+                    "This means, there will be nothing to show.\n"
+                )
+                FreeCAD.Console.PrintError(error_message)
+                QtGui.QMessageBox.critical(None, "Empty result mesh", error_message)
+        elif (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
             self.suitable_results = True
             hide_parts_constraints()
         else:
@@ -657,6 +664,9 @@ def hide_parts_constraints():
 def get_displacement_scale_factor(res_obj):
     node_items = res_obj.Mesh.FemMesh.Nodes.items()
     displacements = res_obj.DisplacementVectors
+    # use standard scale if there are no displacements in result object
+    if len(displacements) == 0:
+        return 1
     x_max, y_max, z_max = map(max, zip(*displacements))
     positions = []  # list of node vectors
     for k, v in node_items:
