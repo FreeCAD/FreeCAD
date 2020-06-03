@@ -29,12 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for mesh region object
 
-from PySide import QtCore
-
-import FreeCAD
-import FreeCADGui
-
-from femguiutils import selection_widgets
+from femtaskpanels import task_mesh_region
 from . import view_base_femconstraint
 
 
@@ -48,61 +43,5 @@ class VPMeshRegion(view_base_femconstraint.VPBaseFemConstraint):
             self,
             vobj,
             mode,
-            _TaskPanel
+            task_mesh_region._TaskPanel
         )
-
-
-class _TaskPanel:
-    """
-    The TaskPanel for editing References property of FemMeshRegion objects
-    """
-
-    def __init__(self, obj):
-
-        self.obj = obj
-
-        # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshRegion.ui"
-        )
-        QtCore.QObject.connect(
-            self.parameterWidget.if_elelen,
-            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.elelen_changed
-        )
-        self.init_parameter_widget()
-
-        # geometry selection widget
-        # start with Solid in list!
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face", "Edge", "Vertex"]
-        )
-
-        # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
-
-    def accept(self):
-        self.obj.CharacteristicLength = self.elelen
-        self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
-
-    def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
-
-    def init_parameter_widget(self):
-        self.elelen = self.obj.CharacteristicLength
-        self.parameterWidget.if_elelen.setText(self.elelen.UserString)
-
-    def elelen_changed(self, base_quantity_value):
-        self.elelen = base_quantity_value

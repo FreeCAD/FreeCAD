@@ -361,6 +361,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_boundarylayer.py
     femtaskpanels/task_mesh_gmsh.py
     femtaskpanels/task_mesh_group.py
+    femtaskpanels/task_mesh_region.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_ccxtools.py
 )
