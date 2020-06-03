@@ -59,6 +59,10 @@ class _TaskPanel:
 
         from femtools.ccxtools import CcxTools as ccx
         # we do not need to pass the analysis, it will be found on fea init
+        # TODO: if there is not analysis object in document init of fea
+        # will fail with an exception and task panel will not open
+        # handle more smart by a pop up error message and still open
+        # task panel, may be deactivate write and run button.
         self.fea = ccx(solver_object)
         self.fea.setup_working_dir()
         self.fea.setup_ccx()
