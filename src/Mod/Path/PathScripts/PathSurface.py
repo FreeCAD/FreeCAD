@@ -753,11 +753,7 @@ class ObjectSurface(PathOp.ObjectOp):
             if prflShp is False:
                 PathLog.error('No profile shape is False.')
                 return list()
-            if self.showDebugObjects:
-                P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpNewProfileShape')
-                P.Shape = prflShp
-                P.purgeTouched()
-                self.tempGroup.addObject(P)
+            self.showDebugObject(prflShp, 'NewProfileShape')
             # get offset path geometry and perform OCL scan with that geometry
             pathOffsetGeom = self._offsetFacesToPointData(obj, prflShp)
             if pathOffsetGeom is False:
@@ -767,11 +763,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         geoScan = list()
         if obj.ProfileEdges != 'Only':
-            if self.showDebugObjects:
-                F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCutArea')
-                F.Shape = cmpdShp
-                F.purgeTouched()
-                self.tempGroup.addObject(F)
+            self.showDebugObject(cmpdShp, 'CutArea')
             # get internal path geometry and perform OCL scan with that geometry
             PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
             if self.showDebugObjects:
@@ -2107,6 +2099,13 @@ class ObjectSurface(PathOp.ObjectOp):
             if zMax < minDep:
                 zMax = minDep
         return zMax
+
+    def showDebugObject(self, objShape, objName):
+        if self.showDebugObjects:
+            do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
+            do.Shape = objShape
+            do.purgeTouched()
+            self.tempGroup.addObject(do)
 
 
 def SetupProperties():

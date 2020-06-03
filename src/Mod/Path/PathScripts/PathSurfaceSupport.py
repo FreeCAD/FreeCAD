@@ -1348,9 +1348,9 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
 
     isEven = lnCnt % 2
     if isEven == 0:
-        PathLog.debug('Line count is ODD.')
+        PathLog.debug('Line count is ODD: {}.'.format(lnCnt))
     else:
-        PathLog.debug('Line count is even.')
+        PathLog.debug('Line count is even: {}.'.format(lnCnt))
 
     return LINES
 
@@ -1432,9 +1432,9 @@ def pathGeomToZigzagPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gap
     # Fix directional issue with LAST line when line count is even
     isEven = lnCnt % 2
     if isEven == 0:  #  Changed to != with 90 degree CutPatternAngle
-        PathLog.debug('Line count is even.')
+        PathLog.debug('Line count is even: {}.'.format(lnCnt))
     else:
-        PathLog.debug('Line count is ODD.')
+        PathLog.debug('Line count is ODD: {}.'.format(lnCnt))
         dirFlg = -1 * dirFlg
         if not obj.CutPatternReversed:
             if cutClimb:
