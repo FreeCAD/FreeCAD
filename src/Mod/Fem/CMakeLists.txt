@@ -349,6 +349,7 @@ SET(FemGuiObjects_SRCS
 
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
+    femtaskpanels/task_result_mechanical.py
 )
 
 SET(FemGuiTests_SRCS
