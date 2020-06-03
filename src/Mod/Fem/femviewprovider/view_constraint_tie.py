@@ -29,13 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief view provider for constraint tie object
 
-from PySide import QtCore
-from PySide import QtGui
-
-import FreeCAD
-import FreeCADGui
-
-from femguiutils import selection_widgets
+from femtaskpanels import task_constraint_tie
 from . import view_base_femconstraint
 
 
@@ -49,83 +43,5 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
             self,
             vobj,
             mode,
-            _TaskPanel
+            task_constraint_tie._TaskPanel
         )
-
-
-class _TaskPanel:
-    """
-    The TaskPanel for editing References property of FemConstraintTie objects
-    """
-
-    def __init__(self, obj):
-
-        self.obj = obj
-
-        # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintTie.ui"
-        )
-        QtCore.QObject.connect(
-            self.parameterWidget.if_tolerance,
-            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.tolerance_changed
-        )
-        self.init_parameter_widget()
-
-        # geometry selection widget
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"]
-        )
-
-        # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
-
-    def accept(self):
-        # check values
-        items = len(self.selectionWidget.references)
-        FreeCAD.Console.PrintMessage(
-            "Task panel: found references: {}\n{}\n"
-            .format(items, self.selectionWidget.references)
-        )
-
-        if items != 2:
-            msgBox = QtGui.QMessageBox()
-            msgBox.setIcon(QtGui.QMessageBox.Question)
-            msgBox.setText(
-                "Constraint Tie requires exactly two faces\n\nfound references: {}"
-                .format(items)
-            )
-            msgBox.setWindowTitle("FreeCAD FEM Constraint Tie")
-            retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
-            ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
-            msgBox.exec_()
-
-            if msgBox.clickedButton() == retryButton:
-                return False
-            elif msgBox.clickedButton() == ignoreButton:
-                pass
-        self.obj.Tolerance = self.tolerance
-        self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
-
-    def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
-
-    def init_parameter_widget(self):
-        self.tolerance = self.obj.Tolerance
-        self.parameterWidget.if_tolerance.setText(self.tolerance.UserString)
-
-    def tolerance_changed(self, base_quantity_value):
-        self.tolerance = base_quantity_value
