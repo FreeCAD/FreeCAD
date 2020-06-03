@@ -91,12 +91,11 @@ class PathGeometryGenerator:
 
         if shape.BoundBox.ZMin != 0.0:
             shape.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - shape.BoundBox.ZMin))
-        if shape.BoundBox.ZLength == 0.0:
-            self.shape = shape
-        else:
+        if shape.BoundBox.ZLength > 1.0e-8:
             FreeCAD.Console.PrintWarning('Shape appears to not be horizontal planar. ZMax is {}.\n'.format(shape.BoundBox.ZMax))
-
-        self._prepareConstants()
+        else:
+            self.shape = shape
+            self._prepareConstants()
 
     def _prepareConstants(self):
         # Apply drop cutter extra offset and set the max and min XY area of the operation

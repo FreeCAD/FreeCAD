@@ -1281,14 +1281,17 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             if cont:
                 # Identify solid areas in the offset data
-                ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
-                if ofstSolidFacesList:
-                    clearArea = Part.makeCompound(ofstSolidFacesList)
-                    self.showDebugObject(clearArea, 'ClearArea_{}'.format(caCnt))
+                if obj.CutPattern == 'Offset' or obj.CutPattern == 'None':
+                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
+                    if ofstSolidFacesList:
+                        clearArea = Part.makeCompound(ofstSolidFacesList)
+                        self.showDebugObject(clearArea, 'ClearArea_{}'.format(caCnt))
+                    else:
+                        cont = False
+                        data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                        PathLog.error('Could not determine solid faces at {}.'.format(data))
                 else:
-                    cont = False
-                    data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                    PathLog.error('Could not determine solid faces at {}.'.format(data))
+                    clearArea = activeArea
 
             if cont:
                 # Make waterline path for current CUTAREA depth (csHght)
