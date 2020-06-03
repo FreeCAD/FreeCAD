@@ -425,7 +425,7 @@ class PathGeometryGenerator:
         '''_getFaceOffset(shape, offset) ... internal function.
             Original _buildPathArea() version copied from PathAreaOp.py module.  This version is modified.
             Adjustments made based on notes by @sliptonic at this webpage: https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
-        PathLog.debug('_getFaceOffset()')
+        # PathLog.debug('_getFaceOffset()')
 
         areaParams = {}
         areaParams['Offset'] = offset
@@ -559,7 +559,7 @@ class ProcessSelectedFaces:
         # Process each model base, as a whole, as needed
         # PathLog.debug(' -Pre-processing all models in Job.')
         for m in range(0, lenGRP):
-            if fShapes[m] is False:
+            if self.modelSTLs[m] and not fShapes[m]:
                 PathLog.debug(' -Pre-processing {} as a whole.'.format(GRP[m].Label))
                 if self.obj.BoundBox == 'BaseBoundBox':
                     base = GRP[m]
