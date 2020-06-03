@@ -21,31 +21,68 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element rotation 1D ViewProvider for the document object"
+__title__ = "FreeCAD FEM element rotation 1D task panel for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package view_element_rotation1D
+## @package task_element_rotation1D
 #  \ingroup FEM
-#  \brief view provider for element rotation 1D object
+#  \brief task panel  for element rotation 1D object
 
-# from femtaskpanels import task_element_rotation1D
-from . import view_base_femconstraint
+from PySide import QtCore
+
+import FreeCAD
+import FreeCADGui
+
+from femguiutils import selection_widgets
 
 
-class VPElementRotation1D(view_base_femconstraint.VPBaseFemConstraint):
+class _TaskPanel:
     """
-    A View Provider for the ElementRotation1D object
+    The TaskPanel for editing References property of ElementRotation1D objects
     """
 
-    pass
-    """
-    # do not activate the task panel, since rotation with reference shapes is not yet supported
-    def setEdit(self, vobj, mode=0):
-        view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self,
-            vobj,
-            mode,
-            task_element_rotation1D._TaskPanel
+    def __init__(self, obj):
+
+        self.obj = obj
+
+        # parameter widget
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementRotation1D.ui"
         )
-    """
+        QtCore.QObject.connect(
+            self.parameterWidget.if_rotation,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.rotation_changed
+        )
+        self.rotation = self.obj.Rotation
+        self.parameterWidget.if_rotation.setText(self.rotation.UserString)
+
+        # geometry selection widget
+        self.selectionWidget = selection_widgets.GeometryElementsSelection(
+            obj.References,
+            ["Edge"]
+        )
+
+        # form made from param and selection widget
+        self.form = [self.parameterWidget, self.selectionWidget]
+
+    def accept(self):
+        self.obj.Rotation = self.rotation
+        self.recompute_and_set_back_all()
+        return True
+
+    def reject(self):
+        self.recompute_and_set_back_all()
+        return True
+
+    def recompute_and_set_back_all(self):
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
+        self.selectionWidget.setback_listobj_visibility()
+        if self.selectionWidget.sel_server:
+            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
+        doc.resetEdit()
+
+    def rotation_changed(self, base_quantity_value):
+        self.rotation = base_quantity_value
