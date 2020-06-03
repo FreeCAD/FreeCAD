@@ -117,7 +117,9 @@ class TestFemCommon(unittest.TestCase):
         if FreeCAD.GuiUp:
             pymodules += testtools.collect_python_modules("femcommands")
             pymodules += testtools.collect_python_modules("femguiobjects")
+            pymodules += testtools.collect_python_modules("femguiutils")
             pymodules += testtools.collect_python_modules("femtaskpanels")
+            pymodules += testtools.collect_python_modules("femviewprovider")
 
         # import all collected modules
         # fcc_print(pymodules)
