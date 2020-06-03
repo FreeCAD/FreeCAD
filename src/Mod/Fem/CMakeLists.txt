@@ -354,6 +354,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_constraint_tie.py
     femtaskpanels/task_element_fluid1D.py
     femtaskpanels/task_element_geometry1D.py
+    femtaskpanels/task_element_geometry2D.py
     femtaskpanels/task_mesh_gmsh.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_ccxtools.py
