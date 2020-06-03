@@ -63,3 +63,6 @@ namespaces, so they are accessible at all times.
 These classes can be imported and initialized individually
 but it is easier to set them up just by importing `DraftTools`.
 """
+## \defgroup draftguitools draftguitools
+# \ingroup DRAFT
+# \brief Modules that define the workbench GuiCommands to perform actions.
