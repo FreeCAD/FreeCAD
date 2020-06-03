@@ -147,15 +147,15 @@ class VPMeshGmsh:
                                             gui_doc.setEdit(vobj.Object.Name)
                                             break
                             if not found_mesh_analysis:
-                                FreeCAD.Console.PrintMessage(
+                                FreeCAD.Console.PrintLog(
                                     "Gmsh FEM mesh object does not belong to an analysis. "
-                                    "Analysis group meshing will be deactivated.\n"
+                                    "Analysis group meshing can not be used.\n"
                                 )
                                 gui_doc.setEdit(vobj.Object.Name)
                     else:
                         FreeCAD.Console.PrintError("Active analysis is not in active document.\n")
                 else:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         "No active analysis in active document, "
                         "we are going to have a look if the Gmsh FEM mesh object "
                         "belongs to a non active analysis.\n"
@@ -175,13 +175,13 @@ class VPMeshGmsh:
                                     gui_doc.setEdit(vobj.Object.Name)
                                     break
                     if not found_mesh_analysis:
-                        FreeCAD.Console.PrintMessage(
+                        FreeCAD.Console.PrintLog(
                             "Gmsh FEM mesh object does not belong to an analysis. "
-                            "Analysis group meshing will be deactivated.\n"
+                            "Analysis group meshing can not be used.\n"
                         )
                         gui_doc.setEdit(vobj.Object.Name)
             else:
-                FreeCAD.Console.PrintMessage("No analysis in the active document.\n")
+                FreeCAD.Console.PrintLog("No analysis in the active document.\n")
                 gui_doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
