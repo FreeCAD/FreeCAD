@@ -125,7 +125,7 @@ class TestFemCommon(unittest.TestCase):
             # migrate modules do not import on Python 2
             if (
                 mod == "femtools.migrate_app"
-                or mod == "femtools.migrate_gui"
+                or mod == "femguiutils.migrate_gui"
             ) and sys.version_info.major < 3:
                 continue
 

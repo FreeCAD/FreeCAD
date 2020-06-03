@@ -272,7 +272,6 @@ SET(FemTools_SRCS
     femtools/geomtools.py
     femtools/membertools.py
     femtools/migrate_app.py
-    femtools/migrate_gui.py
     femtools/tokrules.py
 )
 
@@ -374,6 +373,7 @@ SET(FemGuiTests_SRCS
 
 SET(FemGuiUtils_SRCS
     femguiutils/__init__.py
+    femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
 )
 
