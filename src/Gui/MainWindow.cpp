@@ -184,6 +184,7 @@ struct MainWindowP
     QString whatstext;
     Assistant* assistant;
     int currentStatusType = 100;
+    QString currentStatusMessage;
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
@@ -325,7 +326,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     setCentralWidget(d->mdiArea);
 
     statusBar()->setObjectName(QString::fromLatin1("statusBar"));
-    connect(statusBar(), SIGNAL(messageChanged(const QString &)), this, SLOT(statusMessageChanged()));
+    connect(statusBar(), SIGNAL(messageChanged(const QString &)), this, SLOT(statusMessageChanged(const QString &)));
 
     // labels and progressbar
     d->status = new StatusBarObserver();
@@ -1955,14 +1956,13 @@ void MainWindow::clearStatus() {
     statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
 }
 
-void MainWindow::statusMessageChanged() {
-    if(d->currentStatusType<0)
-        d->currentStatusType = -d->currentStatusType;
-    else {
+void MainWindow::statusMessageChanged(const QString &msg) {
+    if (d->currentStatusMessage != msg) {
         // here probably means the status bar message is changed by QMainWindow
         // internals, e.g. for displaying tooltip and stuff. Set reset what
         // we've changed.
         d->statusTimer->stop();
+        d->currentStatusMessage.clear();
         clearStatus();
     }
 }
@@ -2014,8 +2014,9 @@ void MainWindow::showStatus(int type, const QString& message)
         statusBar()->setStyleSheet(d->status->msg);
         break;
     }
-    d->currentStatusType = -type;
-    statusBar()->showMessage(msg.simplified(), timeout);
+    d->currentStatusType = type;
+    d->currentStatusMessage = msg.simplified();
+    statusBar()->showMessage(d->currentStatusMessage, timeout);
 }
 
 

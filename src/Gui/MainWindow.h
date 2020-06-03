@@ -240,7 +240,7 @@ public Q_SLOTS:
     void switchToTopLevelMode();
     void switchToDockedMode();
 
-    void statusMessageChanged();
+    void statusMessageChanged(const QString &);
 
     void showMessage (const QString & message, int timeout = 0);
 
