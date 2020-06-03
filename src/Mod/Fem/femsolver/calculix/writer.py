@@ -1733,7 +1733,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
+                        section_nor = "{:f}, {:f}, {:f}\n".format(
                             normal[0],
                             normal[1],
                             normal[2]
@@ -1747,7 +1747,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
+                        section_nor = "{:f}, {:f}, {:f}\n".format(
                             normal[0],
                             normal[1],
                             normal[2]
@@ -1762,7 +1762,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
+                        section_nor = "{:f}, {:f}, {:f}\n".format(
                             normal[0],
                             normal[1],
                             normal[2]
