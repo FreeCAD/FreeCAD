@@ -206,7 +206,7 @@ class ObjectSurface(PathOp.ObjectOp):
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'PatternCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
             'DropCutterDir': ['X', 'Y'],
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],

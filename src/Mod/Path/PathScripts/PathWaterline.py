@@ -191,9 +191,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             'Algorithm': ['OCL Dropcutter', 'Experimental'],
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'PatternCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
-            'ClearLastLayer': ['Off', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],
+            'ClearLastLayer': ['Off', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['None', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['None', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
         }

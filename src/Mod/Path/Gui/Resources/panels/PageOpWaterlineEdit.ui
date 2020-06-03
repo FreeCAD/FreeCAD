@@ -167,22 +167,32 @@
         </item>
         <item>
          <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Circular</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>CircularZigZag</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Offset</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZigZag</string>
          </property>
         </item>
        </widget>
