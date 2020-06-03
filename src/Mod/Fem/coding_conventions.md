@@ -102,6 +102,14 @@ Python style is preferred over Doxygen style
     - see `ccx` tools module in fem tools package
     - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
 
+### Module structure
+- task panels should go into a separate package too
+    - according pep8 imports should be on module beginning
+    - if task panel class in inside viewprovider module, the imports needed for task panel are module beginning too
+    - might be some special plot module or what ever is needed
+    - if this is not available the object can not even created
+    - if task panel is separate the object can be createdh
+
 ## C++
 ### Naming policy
 - CamelCase names

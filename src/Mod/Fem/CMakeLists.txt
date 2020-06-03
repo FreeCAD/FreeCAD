@@ -347,6 +347,10 @@ SET(FemGuiObjects_SRCS
     femguiobjects/readme.md
 )
 
+SET(FemGuiTaskPanels_SRCS
+    femtaskpanels/__init__.py
+)
+
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
     femtest/gui/test_open.py
@@ -386,6 +390,7 @@ SET(FemGuiViewProvider_SRCS
 SET(FemAllGuiScripts
     ${FemGuiBaseModules_SRCS}
     ${FemGuiObjects_SRCS}
+    ${FemGuiTaskPanels_SRCS}
     ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
     ${FemGuiViewProvider_SRCS}
@@ -401,6 +406,7 @@ if(BUILD_GUI)
     # install directories for Python packages (for make install)
     INSTALL(FILES ${FemGuiBaseModules_SRCS} DESTINATION Mod/Fem/)
     INSTALL(FILES ${FemGuiObjects_SRCS} DESTINATION Mod/Fem/femguiobjects/)
+    INSTALL(FILES ${FemGuiTaskPanels_SRCS} DESTINATION Mod/Fem/femtaskpanels/)
     INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
     INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
