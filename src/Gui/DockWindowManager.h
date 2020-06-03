@@ -31,6 +31,7 @@
 #include <QAction>
 #include <QToolButton>
 #include <QGraphicsEffect>
+#include <QImage>
 
 #include <Base/Parameter.h>
 
@@ -253,12 +254,15 @@ public:
 
     void scheduleRepaint();
 
+    int testAlpha(const QPoint &);
+
 protected:
     void leaveEvent(QEvent*);
     void enterEvent(QEvent*);
     void changeEvent(QEvent*);
     void resizeEvent(QResizeEvent*);
     void paintEvent(QPaintEvent *);
+    bool event(QEvent *ev);
     bool eventFilter(QObject *, QEvent *ev);
 
     static void _setOverlayMode(QWidget *widget, int enable);
@@ -297,6 +301,8 @@ private:
 
     OverlayGraphicsEffect *_graphicsEffect = nullptr;
     bool _effectEnabled = false;
+
+    QImage _image;
 };
 
 class OverlayToolButton: public QToolButton

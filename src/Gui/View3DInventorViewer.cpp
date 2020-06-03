@@ -4337,36 +4337,40 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
     if (glWindow && glWindow->rect().contains(QCursor::pos()))
         glWindow->setAttribute(Qt::WA_UnderMouse);
 
+    QWidget *widget = QWidget::mouseGrabber();
+    if (!widget)
+        widget = this->getWidget();
+
     switch (modearg) {
     case NavigationStyle::IDLE:
     case NavigationStyle::INTERACT:
         if (isEditing())
-            this->getWidget()->setCursor(this->editCursor);
+            widget->setCursor(this->editCursor);
         else
-            this->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
+            widget->setCursor(QCursor(Qt::ArrowCursor));
         break;
 
     case NavigationStyle::DRAGGING:
     case NavigationStyle::SPINNING:
-        this->getWidget()->setCursor(spinCursor);
+        widget->setCursor(spinCursor);
         break;
 
     case NavigationStyle::ZOOMING:
-        this->getWidget()->setCursor(zoomCursor);
+        widget->setCursor(zoomCursor);
         break;
 
     case NavigationStyle::SEEK_MODE:
     case NavigationStyle::SEEK_WAIT_MODE:
     case NavigationStyle::BOXZOOM:
-        this->getWidget()->setCursor(Qt::CrossCursor);
+        widget->setCursor(Qt::CrossCursor);
         break;
 
     case NavigationStyle::PANNING:
-        this->getWidget()->setCursor(panCursor);
+        widget->setCursor(panCursor);
         break;
 
     case NavigationStyle::SELECTION:
-        this->getWidget()->setCursor(Qt::PointingHandCursor);
+        widget->setCursor(Qt::PointingHandCursor);
         break;
 
     default:
