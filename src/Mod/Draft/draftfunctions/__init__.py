@@ -39,3 +39,6 @@ represent the public application programming interface (API)
 of the Draft Workbench, and should be made available in the `Draft`
 namespace by importing them in the `Draft` module.
 """
+## \defgroup draftfuctions draftfuctions
+# \ingroup DRAFT
+# \brief Modules with functions for use with scripted objects and GuiCommands.

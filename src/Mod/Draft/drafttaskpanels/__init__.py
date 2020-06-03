@@ -53,3 +53,6 @@ Individual task panel classes and `.ui` files are more maintainable
 because changes can be done to a single tool without affecting the rest,
 and the module size is kept small.
 """
+## \defgroup drafttaskpanels drafttaskpanels
+# \ingroup DRAFT
+# \brief Modules with classes that handle task panels of the GuiCommands.

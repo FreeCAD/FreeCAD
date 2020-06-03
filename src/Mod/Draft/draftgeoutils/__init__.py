@@ -38,3 +38,6 @@ part of the Draft workbench programming interface yet.
 
 These functions were previously defined in the big `DraftGeomUtils` module.
 """
+## \defgroup draftgeoutils draftgeoutils
+# \ingroup DRAFT
+# \brief Functions that are meant to handle different geometrical operations
