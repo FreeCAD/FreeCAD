@@ -1800,6 +1800,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     section_def = "*SOLID SECTION, " + elsetdef + material + "\n"
                     f.write(section_def)
 
+
 # ************************************************************************************************
 # Helpers
 # ccx elset names:
