@@ -1139,33 +1139,14 @@ def extractFaceOffset(fcShape, offset, wpc, makeComp=True):
     return ofstFace  # offsetShape
 
 
-# Functions for making model STLs
 def _prepareModelSTLs(self, JOB, obj, m, ocl):
+    """Tessellate model shapes or copy existing meshes into ocl.STLSurf
+    objects"""
     PathLog.debug('_prepareModelSTLs()')
-    import MeshPart
-
     if self.modelSTLs[m] is True:
-        M = JOB.Model.Group[m]
-
-        # PathLog.debug(f" -self.modelTypes[{m}] == 'M'")
-        if self.modelTypes[m] == 'M':
-            # TODO: test if this works
-            facets = M.Mesh.Facets.Points
-        else:
-            facets = Part.getFacets(M.Shape)
-            # mesh = MeshPart.meshFromShape(Shape=M.Shape,
-            #                              LinearDeflection=obj.LinearDeflection.Value,
-            #                              AngularDeflection=obj.AngularDeflection.Value,
-            #                              Relative=False)
-
-        stl = ocl.STLSurf()
-        for tri in facets:
-            t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                             ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                             ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
-            stl.addTriangle(t)
-        self.modelSTLs[m] = stl
-    return
+        model = JOB.Model.Group[m]
+        if self.modelSTLs[m] is True:
+            self.modelSTLs[m] = _makeSTL(model, obj, ocl, self.modelTypes[m])
 
 
 def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
@@ -1242,20 +1223,32 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
         T.purgeTouched()
         self.tempGroup.addObject(T)
 
-    facets = Part.getFacets(fused)
-    # mesh = MeshPart.meshFromShape(Shape=fused,
-    #                                LinearDeflection=obj.LinearDeflection.Value,
-    #                                AngularDeflection=obj.AngularDeflection.Value,
-    #                                Relative=False)
+    self.safeSTLs[mdlIdx] = _makeSTL(fused, obj, ocl)
 
+
+def _makeSTL(model, obj, ocl, model_type=None):
+    """Convert a mesh or shape into an OCL STL, using the tessellation
+    tolerance specified in obj.LinearDeflection.
+    Returns an ocl.STLSurf()."""
+    if model_type == 'M':
+        facets = model.Mesh.Facets.Points
+    else:
+        if hasattr(model, 'Shape'):
+            shape = model.Shape
+        else:
+            shape = model
+        vertices, facet_indices = shape.tessellate(
+            obj.LinearDeflection.Value)
+        facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]])
+                  for f in facet_indices)
     stl = ocl.STLSurf()
     for tri in facets:
-        t = ocl.Triangle(ocl.Point(tri[0][0], tri[0][1], tri[0][2]),
-                            ocl.Point(tri[1][0], tri[1][1], tri[1][2]),
-                            ocl.Point(tri[2][0], tri[2][1], tri[2][2]))
+        v1, v2, v3 = tri
+        t = ocl.Triangle(ocl.Point(v1[0], v1[1], v1[2]),
+                         ocl.Point(v2[0], v2[1], v2[2]),
+                         ocl.Point(v3[0], v3[1], v3[2]))
         stl.addTriangle(t)
-
-    self.safeSTLs[mdlIdx] = stl
+    return stl
 
 
 # Functions to convert path geometry into line/arc segments for OCL input or directly to g-code
@@ -1332,7 +1325,7 @@ def pathGeomToLinesPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, gaps
                     gaps.insert(0, gap)
                     gaps.pop()
         inLine.append(tup)
-            
+
     # Efor
     lnCnt += 1
     if cutClimb is True:
@@ -2003,7 +1996,7 @@ class FindUnifiedRegions:
 
         def faceIndex(tup):
             return tup[3]
-        
+
         def faceArea(face):
             return face.Area
 
@@ -2057,7 +2050,7 @@ class FindUnifiedRegions:
                     notConnected = False
                     # Save loop components
                     LOOPS.append(connectedEdges)
-                    # reset connected variables and re-assess 
+                    # reset connected variables and re-assess
                     connectedEdges = []
                     connectedIndexes = []
                     connectedCnt = 0
@@ -2086,7 +2079,7 @@ class FindUnifiedRegions:
             if idxCnt == 0:
                 cont = False
         # Ewhile
-        
+
         if len(LOOPS) > 0:
             FACES = list()
             for Edges in LOOPS:
