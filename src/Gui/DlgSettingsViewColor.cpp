@@ -79,6 +79,7 @@ void DlgSettingsViewColor::saveSettings()
     ui->spinPickRadius->onSave();
     ui->TreeEditColor->onSave();
     ui->TreeActiveColor->onSave();
+    ui->spinPreselectionDelay->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -97,6 +98,7 @@ void DlgSettingsViewColor::loadSettings()
     ui->spinPickRadius->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
+    ui->spinPreselectionDelay->onRestore();
 }
 
 /**
