@@ -409,13 +409,14 @@ if gui:
     ViewProviderDraftLabel = ViewProviderLabel
 
 
-from draftobjects.text import make_text
-from draftobjects.text import Text
-makeText = make_text
-DraftText = Text
+from draftobjects.text import (Text,
+                               DraftText)
 
-if gui:
-    from draftviewproviders.view_text import ViewProviderText
-    ViewProviderDraftText = ViewProviderText
+from draftmake.make_text import (make_text,
+                                 makeText)
+
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_text import (ViewProviderText,
+                                              ViewProviderDraftText)
 
 ## @}

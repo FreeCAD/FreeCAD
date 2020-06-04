@@ -180,3 +180,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
                 self.text3d.spacing = vobj.LineSpacing
+
+
+# Alias for compatibility with v0.18 and earlier
+ViewProviderDraftText = ViewProviderText
