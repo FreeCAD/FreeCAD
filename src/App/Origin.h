@@ -49,6 +49,8 @@ public:
         return "Gui::ViewProviderOrigin";
     }
 
+    virtual Property *getPropertyByName(const char* name) const;
+
     /** @name Axis and plane access
      * This functions returns casted axis and planes objects and asserts they are set correctly
      * otherwise Base::Exception is thrown.

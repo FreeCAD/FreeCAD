@@ -77,6 +77,15 @@ App::OriginFeature *Origin::getOriginFeature( const char *role) const {
     }
 }
 
+App::Property *Origin::getPropertyByName(const char *name) const
+{
+    if (name && strcmp(name, OriginFeatures.getName())==0) {
+        initObjects();
+        return &const_cast<Origin*>(this)->OriginFeatures;
+    }
+    return DocumentObject::getPropertyByName(name);
+}
+
 App::Line *Origin::getAxis( const char *role ) const {
     App::OriginFeature *feat = getOriginFeature (role);
     if ( feat->isDerivedFrom(App::Line::getClassTypeId () ) ) {
