@@ -4406,7 +4406,7 @@ DocumentObjectItem *DocumentItem::findItem(
     // try to find the next level object name
     const char *nextsub = 0;
     const char *dot = 0;
-    if((dot=strchr(subname,'.'))) 
+    if(!Data::ComplexGeoData::isElementName(subname) && (dot=strchr(subname,'.'))) 
         nextsub = dot+1;
     else {
         if(select) {
