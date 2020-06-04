@@ -1003,8 +1003,12 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
         return;
 
     if(widget != tabBar()) {
-        if(ViewParams::getDockOverlayMouseThrough() && enable == -1)
+        if((ViewParams::getDockOverlayMouseThrough()
+                    || ViewParams::getDockOverlayAutoMouseThrough())
+                && enable == -1)
+        {
             widget->setMouseTracking(true);
+        }
     }
 
     _setOverlayMode(widget, enable);
@@ -1426,7 +1430,7 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     QPainter tmpPainter(&tmp);
     tmpPainter.setCompositionMode(QPainter::CompositionMode_Source);
     if(_size.width() == 0 && _size.height() == 0)
-	    tmpPainter.drawPixmap(QPoint(0, 0), px);
+        tmpPainter.drawPixmap(QPoint(0, 0), px);
     else {
         for (int x=-_size.width();x<=_size.width();++x) {
             for (int y=-_size.height();y<=_size.height();++y) {
@@ -2611,12 +2615,19 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                      || QApplication::mouseButtons() == Qt::NoButton)
             {
                 d->_trackingView = -1;
+                if (d->_trackingOverlay == QWidget::mouseGrabber()
+                        && ev->type() == QEvent::MouseButtonRelease)
+                {
+                    d->_trackingOverlay = nullptr;
+                    // Must not release mouse here, because otherwise the event
+                    // will find its way to the actual widget under cursor.
+                    // Instead, return false here to let OverlayTabWidget::event()
+                    // release the mouse.
+                    return false;
+                }
+                if(d->_trackingOverlay && QWidget::mouseGrabber() == d->_trackingOverlay)
+                    d->_trackingOverlay->releaseMouse();
                 d->_trackingOverlay = nullptr;
-                // Must not release mouse here, because otherwise the event
-                // will find its way to the actual widget under cursor.
-                // Instead, return false here to let OverlayTabWidget::event()
-                // release the mouse.
-                return false;
             }
             // Must return true here to filter the event, otherwise ContextMenu
             // event may be routed to the actual widget. Other types of event
@@ -2626,16 +2637,21 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
                 && QApplication::mouseButtons()!=Qt::NoButton)
             return false;
 
-        if(!ViewParams::getDockOverlayMouseThrough() || TreeWidget::isDragging())
+        if(TreeWidget::isDragging())
             return false;
 
         bool hit = false;
         QPoint pos = QCursor::pos();
-        if ((ev->type() != QEvent::Wheel && pos == d->_lastPos)
-                || (QApplication::queryKeyboardModifiers() & Qt::AltModifier))
+        if ((ViewParams::getDockOverlayAutoMouseThrough()
+                    && ev->type() != QEvent::Wheel
+                    && pos == d->_lastPos)
+                || (ViewParams::getDockOverlayMouseThrough()
+                    && (QApplication::queryKeyboardModifiers() & Qt::AltModifier)))
         {
             hit = true;
-        } else if (ev->type() != QEvent::Wheel) {
+        } else if (ViewParams::getDockOverlayAutoMouseThrough()
+                    && ev->type() != QEvent::Wheel)
+        {
             for (auto o : d->_overlayInfos) {
                 if (o->tabWidget->testAlpha(pos) == 0) {
                     hit = true;

@@ -4099,6 +4099,20 @@ VIEW_CMD_DEF(DockOverlayMouseThrough, DockOverlayMouseThrough)
 }
 
 //===========================================================================
+// Std_DockOverlayAutoMouseThrough
+//===========================================================================
+
+VIEW_CMD_DEF(DockOverlayAutoMouseThrough, DockOverlayAutoMouseThrough)
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Auto mouse event pass through");
+    sToolTipText  = QT_TR_NOOP("Auto pass through mouse event on completely transparent background");
+    sWhatsThis    = "Std_DockOverlayAutoMouseThrough";
+    sStatusTip    = sToolTipText;
+    eType         = 0;
+}
+
+//===========================================================================
 // Std_DockOverlayCheckNaviCube
 //===========================================================================
 
@@ -4144,6 +4158,7 @@ public:
         addCommand(new StdCmdDockOverlayExtraState());
         addCommand(new StdCmdDockOverlayActivateOnHover());
         addCommand(new StdCmdDockOverlayMouseThrough());
+        addCommand(new StdCmdDockOverlayAutoMouseThrough());
         addCommand(new StdCmdDockOverlayCheckNaviCube());
     };
     virtual const char* className() const {return "StdCmdDockOverlay";}
