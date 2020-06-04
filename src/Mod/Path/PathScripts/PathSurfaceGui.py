@@ -42,6 +42,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def initPage(self, obj):
         self.setTitle("3D Surface")
         # self.updateVisibility()
+        # retrieve property enumerations
+        self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
 
     def getForm(self):
         '''getForm() ... returns UI'''
@@ -61,11 +63,25 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.LayerMode != str(self.form.layerMode.currentText()):
             obj.LayerMode = str(self.form.layerMode.currentText())
 
-        if obj.CutPattern != str(self.form.cutPattern.currentText()):
-            obj.CutPattern = str(self.form.cutPattern.currentText())
+        """
+        The following method of getting values from the UI form
+            allows for translations of combobox options in the UI.
+        The requirement is that the enumeration lists must
+            be in the same order in both the opPropertyEnumerations() method
+            and the UI panel QComboBox list.
+        Another step to ensure sychronization of the two lists is to
+            populate the list dynamically in this Gui module in `initPage()`
+            using the property enumerations list when loading the UI panel.
+            This type of dynamic combobox population is done for the
+            Tool Controller selection.
+        """
+        val = self.propEnums['CutPattern'][self.form.cutPattern.currentIndex()]
+        if obj.CutPattern != val:
+            obj.CutPattern = val
 
-        if obj.ProfileEdges != str(self.form.profileEdges.currentText()):
-            obj.ProfileEdges = str(self.form.profileEdges.currentText())
+        val = self.propEnums['ProfileEdges'][self.form.profileEdges.currentIndex()]
+        if obj.ProfileEdges != val:
+            obj.ProfileEdges = val
 
         if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
             obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
@@ -99,8 +115,22 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.ScanType, self.form.scanType)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
-        self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
-        self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
+
+        """
+        The following method of setting values in the UI form
+            allows for translations of combobox options in the UI.
+        The requirement is that the enumeration lists must
+            be in the same order in both the opPropertyEnumerations() method
+            and the UI panel QComboBox list.
+        The original method is commented out below.
+        """
+        idx = self.propEnums['CutPattern'].index(obj.CutPattern)
+        self.form.cutPattern.setCurrentIndex(idx)
+        idx = self.propEnums['ProfileEdges'].index(obj.ProfileEdges)
+        self.form.profileEdges.setCurrentIndex(idx)
+        # self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
+        # self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
+
         self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
         self.form.boundBoxExtraOffsetX.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.x, FreeCAD.Units.Length).UserString)
         self.form.boundBoxExtraOffsetY.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.y, FreeCAD.Units.Length).UserString)
