@@ -1320,9 +1320,16 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 
 SbBool View3DInventorViewer::searchNode(SoNode* node) const
 {
+    if (node == pcEditingRoot)
+        return true;
     SoSearchAction searchAction;
     searchAction.setNode(node);
     searchAction.setInterest(SoSearchAction::FIRST);
+    if (pcEditingRoot->getNumChildren()) {
+        searchAction.apply(pcEditingRoot);
+        if (searchAction.getPath())
+            return true;
+    }
     searchAction.apply(this->getSceneGraph());
     SoPath* selectionPath = searchAction.getPath();
     return selectionPath ? true : false;

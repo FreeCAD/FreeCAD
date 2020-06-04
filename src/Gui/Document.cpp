@@ -2241,11 +2241,10 @@ void Document::setActiveWindow(Gui::MDIView* view)
 
 Gui::MDIView* Document::getViewOfNode(SoNode* node) const
 {
-    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
-    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        View3DInventor* view = static_cast<View3DInventor*>(*it);
-        if (view->getViewer()->searchNode(node))
-            return *it;
+    for(auto v : getViews()) {
+        auto view = Base::freecad_dynamic_cast<View3DInventor>(v);
+        if (view && view->getViewer()->searchNode(node))
+            return view;
     }
 
     return 0;
@@ -2259,13 +2258,11 @@ Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
 {
     (void)vp;
-    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
-    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        View3DInventor* view = static_cast<View3DInventor*>(*it);
-        View3DInventorViewer* viewer = view->getViewer();
+    for (auto v : getViews()) {
+        View3DInventor* view = Base::freecad_dynamic_cast<View3DInventor>(v);
         // there is only one 3d view which is in edit mode
-        if (viewer->isEditingViewProvider())
-            return *it;
+        if (view && view->getViewer()->isEditingViewProvider())
+            return view;
     }
 
     return 0;

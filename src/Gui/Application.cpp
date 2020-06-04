@@ -1029,7 +1029,13 @@ Gui::Document* Application::editDocument(void) const
 
 Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 {
-    return d->editDocument?d->editDocument->getViewOfNode(node):0;
+    // getViewOfNode() searches the scene graph that can be slow. It can be
+    // simplified here since we only allow one editing view at the moment.
+    //
+    // return d->editDocument?d->editDocument->getViewOfNode(node):0;
+    
+    (void)node;
+    return d->editDocument?d->editDocument->getEditingViewOfViewProvider(nullptr):nullptr;
 }
 
 void Application::setEditDocument(Gui::Document *doc) {
