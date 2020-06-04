@@ -944,7 +944,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         << "Sketcher_ConstrainHorizontal";
 
                         // Gets a selection vector
-                        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+                        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx("*");
 
                         bool rightClickOnSelectedLine = false;
 
