@@ -463,10 +463,13 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
             || pos.y() >= size.height())
         return -1;
 
-    if (_image.isNull())
-        _image = splitter->grab().toImage();
+    if (_image.isNull()) {
+        auto pixmap = splitter->grab();
+        _imageScale = pixmap.devicePixelRatio();
+        _image = pixmap.toImage();
+    }
 
-    return qAlpha(_image.pixel(pos));
+    return qAlpha(_image.pixel(pos*_imageScale));
 }
 
 void OverlayTabWidget::paintEvent(QPaintEvent *ev)

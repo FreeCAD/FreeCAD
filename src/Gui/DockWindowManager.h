@@ -303,6 +303,7 @@ private:
     bool _effectEnabled = false;
 
     QImage _image;
+    qreal _imageScale;
 };
 
 class OverlayToolButton: public QToolButton
