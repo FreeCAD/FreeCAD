@@ -22,7 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for the Draft PointArray object."""
+"""Provides the object code for the Draft PointArray object.
+
+To Do
+-----
+This object currently uses the points inside a `Draft Block`,
+a `Part::Compound`, or a `Sketch`. To make this more general,
+this object could be augmented to extract a list of points
+from the vertices of any object with a `Part::TopoShape` (2D or 3D).
+
+See the `get_point_list` function for more information.
+"""
 ## @package pointarray
 # \ingroup DRAFT
 # \brief Provides the object code for the Draft PointArray object.
@@ -147,12 +157,32 @@ class PointArray(DraftObject):
 def get_point_list(point_object):
     """Extract a list of points from a point object.
 
+    Parameters
+    ----------
+    point_object: Part::Feature
+        Either a `Draft Block`, a `Part::Compound`,
+        or a `Sketcher::SketchObject` containing points.
+
     Returns
     -------
     list, int
         A list of points that have `X`, `Y`, `Z` coordinates;
         the second element is the number of elements.
         If the list is empty, the second element is zero.
+
+    To Do
+    -----
+    - This function currently extracts the points inside a `Draft Block`,
+      a `Part::Compound`, or a `Sketch`. To make this more general,
+      this function could be augmented to extract a list of points
+      from the vertices of any object with a `Part::TopoShape` (2D or 3D).
+
+    - If the input is a `Part::Compound`, it should handle all valid types
+      of objects simultaneously, that is, `Draft Points`, `Part::Vertexes`,
+      `Sketches` with points, and possibly any other object with
+      a `Part::TopoShape` as in the previous point.
+      It should recursively call itself to extract
+      points contained in nested compounds.
     """
     # If its a clone, extract the real object
     while utils.get_type(point_object) == 'Clone':
@@ -216,18 +246,23 @@ def build_copies(base_object, pt_list=None, placement=App.Placement()):
         new_shape = base_object.Shape.copy()
         original_rotation = new_shape.Placement.Rotation
 
-        # Reset placement of the copy, and combine the original rotation
-        # with the provided placement. Two rotations (quaternions)
+        # Reset the position of the copy, and combine the original rotation
+        # with the provided rotation. Two rotations (quaternions)
         # are combined by multiplying them.
         new_shape.Placement.Base = placement.Base
         new_shape.Placement.Rotation = original_rotation * placement.Rotation
 
-        # If the point object has a placement, use it
-        # to displace the copy of the shape. Otherwise
-        # translate by the X, Y, Z coordinates.
-        if hasattr(point, 'Placement'):
-            place = point.Placement
-            new_shape.translate(place.Base)
+        if point.TypeId == "Part::Vertex":
+            # For this object the final position is the value of the Placement
+            # plus the value of the X, Y, Z properties
+            place = App.Vector(point.X,
+                               point.Y,
+                               point.Z) + point.Placement.Base
+
+        elif hasattr(point, 'Placement'):
+            # If the point object has a placement (Draft Point), use it
+            # to displace the copy of the shape
+            place = point.Placement.Base
 
             # The following old code doesn't make much sense because it uses
             # the rotation value of the auxiliary point.
@@ -237,11 +272,16 @@ def build_copies(base_object, pt_list=None, placement=App.Placement()):
             # which will probably be zero anyway.
 
             # Old code:
+            # place = point.Placement
             # new_shape.rotate(place.Base,
             #                  place.Rotation.Axis,
             #                  math.degrees(place.Rotation.Angle))
         else:
-            new_shape.translate(App.Vector(point.X, point.Y, point.Z))
+            # In other cases (Sketch with points)
+            # translate by the X, Y, Z coordinates
+            place = App.Vector(point.X, point.Y, point.Z)
+
+        new_shape.translate(place)
 
         copies.append(new_shape)
 
