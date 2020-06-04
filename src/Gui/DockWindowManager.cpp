@@ -54,6 +54,7 @@
 #include "SplitView3DInventor.h"
 #include "Application.h"
 #include "Control.h"
+#include "TaskView/TaskView.h"
 #include "Tree.h"
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
@@ -709,8 +710,10 @@ bool OverlayTabWidget::checkAutoHide() const
             return true;
     }
 
-    if(isEditShow())
-        return !Application::Instance->editDocument() && !Control().activeDialog();
+    if(isEditShow()) {
+        return !Application::Instance->editDocument() 
+            && (!Control().taskPanel() || Control().taskPanel()->isEmpty());
+    }
 
     if(isEditHide() && Application::Instance->editDocument())
         return true;
@@ -1427,8 +1430,10 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
     else {
         for (int x=-_size.width();x<=_size.width();++x) {
             for (int y=-_size.height();y<=_size.height();++y) {
-                tmpPainter.drawPixmap(QPoint(x, y), px);
-                tmpPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                if (x || y) {
+                    tmpPainter.drawPixmap(QPoint(x, y), px);
+                    tmpPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                }
             }
         }
     }

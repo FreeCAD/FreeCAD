@@ -186,6 +186,8 @@ public:
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher(void);
 
+    bool isEmpty() const;
+
     void clearActionStyle();
     void restoreActionStyle();
 

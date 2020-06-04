@@ -419,6 +419,11 @@ TaskView::~TaskView()
     Gui::Selection().Detach(this);
 }
 
+bool TaskView::isEmpty() const
+{
+    return !ActiveCtrl && !ActiveDialog && ActiveWatcher.empty();
+}
+
 bool TaskView::event(QEvent* event)
 {
     // Workaround for a limitation in Qt (#0003794)
