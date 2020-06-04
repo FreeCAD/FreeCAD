@@ -426,10 +426,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         availableOps = list()
         ops = self.job.Operations.Group
         for op in ops:
-            if hasattr(op, 'Base') and op.Base.__len__() > 0:
-                availableOps.append(op.Label)
+            if hasattr(op, 'Base') and isinstance(op.Base, list):
+                if len(op.Base) > 0:
+                    availableOps.append(op.Label)
 
-        if availableOps.__len__() > 0:
+        if len(availableOps) > 0:
             # Populate the operations list
             addInputs = True
             panel.geometryImportList.blockSignals(True)
