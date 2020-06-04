@@ -415,7 +415,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                 ,pts[1].first, pts[1].second.c_str()
                                 ,pts[2].first, pts[2].second.c_str());
                 
-                getMainWindow()->showMessage(QString::fromLatin1(buf));
+                getMainWindow()->showMessage(QString::fromUtf8(buf));
             }
             else { // picked point
                 if (highlighted) {

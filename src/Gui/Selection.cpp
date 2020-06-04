@@ -865,9 +865,9 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, dou
     double yuser = fabs(y) > precision ? y / yfactor : 0.0;
     double zuser = fabs(z) > precision ? z / zfactor : 0.0;
 
-    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toStdString()),
-                                                         std::make_pair(yuser, yunit.toStdString()),
-                                                         std::make_pair(zuser, zunit.toStdString())};
+    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toUtf8().constBegin()),
+                                                         std::make_pair(yuser, yunit.toUtf8().constBegin()),
+                                                         std::make_pair(zuser, zunit.toUtf8().constBegin())};
     return ret;
 }
 }
@@ -893,7 +893,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
                     ,pts[2].first, pts[2].second.c_str());
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        getMainWindow()->showMessage(QString::fromUtf8(buf));
 }
 
 void SelectionSingleton::rmvPreselect(bool signal)
