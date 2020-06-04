@@ -38,7 +38,8 @@ from PySide import QtCore
 try:
     import ocl
 except ImportError:
-    msg = QtCore.QCoreApplication.translate("PathSurface", "This operation requires OpenCamLib to be installed.")
+    msg = QtCore.QCoreApplication.translate("PathSurface",
+        "This operation requires OpenCamLib to be installed.")
     FreeCAD.Console.PrintError(msg + "\n")
     raise ImportError
     # import sys
@@ -206,7 +207,7 @@ class ObjectSurface(PathOp.ObjectOp):
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'PatternCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
             'DropCutterDir': ['X', 'Y'],
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
@@ -575,18 +576,18 @@ class ObjectSurface(PathOp.ObjectOp):
                 PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, m, ocl)
 
                 Mdl = JOB.Model.Group[m]
-                if FACES[m] is False:
-                    PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
-                else:
+                if FACES[m]:
+                    PathLog.debug('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     if m > 0:
                         # Raise to clearance between models
                         CMDS.append(Path.Command('N (Transition to base: {}.)'.format(Mdl.Label)))
                         CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-                        PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
                     # make stock-model-voidShapes STL model for avoidance detection on transitions
                     PathSurfaceSupport._makeSafeSTL(self, JOB, obj, m, FACES[m], VOIDS[m], ocl)
                     # Process model/faces - OCL objects must be ready
                     CMDS.extend(self._processCutAreas(JOB, obj, m, FACES[m], VOIDS[m]))
+                else:
+                    PathLog.debug('No data for model base: {}'.format(JOB.Model.Group[m].Label))
 
             # Save gcode produced
             self.commandlist.extend(CMDS)
@@ -659,7 +660,8 @@ class ObjectSurface(PathOp.ObjectOp):
             exTime = str(tMins) + ' min. ' + str(round(tSecs, 5)) + ' sec.'
         else:
             exTime = str(round(execTime, 5)) + ' sec.'
-        FreeCAD.Console.PrintMessage('3D Surface operation time is {}\n'.format(exTime))
+        msg = translate('PathSurface', 'operation time is')
+        FreeCAD.Console.PrintMessage('3D Surface ' + msg + '{}\n'.format(exTime))
 
         if self.cancelOperation:
             FreeCAD.ActiveDocument.openTransaction(translate("PathSurface", "Canceled 3D Surface operation."))
@@ -751,27 +753,21 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.ProfileEdges != 'None':
             prflShp = self.profileShapes[mdlIdx][fsi]
             if prflShp is False:
-                PathLog.error('No profile shape is False.')
+                msg = translate('PathSurface', 'No profile geometry shape returned.')
+                PathLog.error(msg)
                 return list()
-            if self.showDebugObjects:
-                P = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpNewProfileShape')
-                P.Shape = prflShp
-                P.purgeTouched()
-                self.tempGroup.addObject(P)
+            self.showDebugObject(prflShp, 'NewProfileShape')
             # get offset path geometry and perform OCL scan with that geometry
             pathOffsetGeom = self._offsetFacesToPointData(obj, prflShp)
             if pathOffsetGeom is False:
-                PathLog.error('No profile geometry returned.')
+                msg = translate('PathSurface', 'No profile path geometry returned.')
+                PathLog.error(msg)
                 return list()
             profScan = [self._planarPerformOclScan(obj, pdc, pathOffsetGeom, True)]
 
         geoScan = list()
         if obj.ProfileEdges != 'Only':
-            if self.showDebugObjects:
-                F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpCutArea')
-                F.Shape = cmpdShp
-                F.purgeTouched()
-                self.tempGroup.addObject(F)
+            self.showDebugObject(cmpdShp, 'CutArea')
             # get internal path geometry and perform OCL scan with that geometry
             PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
             if self.showDebugObjects:
@@ -779,12 +775,14 @@ class ObjectSurface(PathOp.ObjectOp):
             self.tmpCOM = PGG.getCenterOfPattern()
             pathGeom = PGG.generatePathGeometry()
             if pathGeom is False:
-                PathLog.error('No path geometry returned.')
+                msg = translate('PathSurface', 'No clearing shape returned.')
+                PathLog.error(msg)
                 return list()
             if obj.CutPattern == 'Offset':
                 useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
                 if useGeom is False:
-                    PathLog.error('No profile geometry returned.')
+                    msg = translate('PathSurface', 'No clearing path geometry returned.')
+                    PathLog.error(msg)
                     return list()
                 geoScan = [self._planarPerformOclScan(obj, pdc, useGeom, True)]
             else:
@@ -803,7 +801,8 @@ class ObjectSurface(PathOp.ObjectOp):
             SCANDATA.extend(profScan)
 
         if len(SCANDATA) == 0:
-            PathLog.error('No scan data to convert to Gcode.')
+            msg = translate('PathSuface', 'No scan data to convert to Gcode.')
+            PathLog.error(msg)
             return list()
 
         # Apply depth offset
@@ -1173,7 +1172,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
                     # Manage step over transition and CircularZigZag direction
                     if so > 0:
-                        # PathLog.debug('  stepover index: {}'.format(so))
                         # Control ZigZag direction
                         if obj.CutPattern == 'CircularZigZag':
                             if odd is True:
@@ -1195,7 +1193,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     for i in range(0, lenAdjPrts):
                         prt = ADJPRTS[i]
                         lenPrt = len(prt)
-                        # PathLog.debug('  adj parts index - lenPrt: {} - {}'.format(i, lenPrt))
                         if prt == 'BRK' and prtsHasCmds is True:
                             nxtStart = ADJPRTS[i + 1][0]
                             minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart, minDep=None)  # Check safe travel height against fullSTL
@@ -2107,6 +2104,13 @@ class ObjectSurface(PathOp.ObjectOp):
             if zMax < minDep:
                 zMax = minDep
         return zMax
+
+    def showDebugObject(self, objShape, objName):
+        if self.showDebugObjects:
+            do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
+            do.Shape = objShape
+            do.purgeTouched()
+            self.tempGroup.addObject(do)
 
 
 def SetupProperties():

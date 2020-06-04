@@ -191,9 +191,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             'Algorithm': ['OCL Dropcutter', 'Experimental'],
             'BoundBox': ['BaseBoundBox', 'Stock'],
             'PatternCenterAt': ['CenterOfMass', 'CenterOfBoundBox', 'XminYmin', 'Custom'],
-            'ClearLastLayer': ['Off', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],
+            'ClearLastLayer': ['Off', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],
             'CutMode': ['Conventional', 'Climb'],
-            'CutPattern': ['None', 'Line', 'Circular', 'CircularZigZag', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
+            'CutPattern': ['None', 'Circular', 'CircularZigZag', 'Line', 'Offset', 'Spiral', 'ZigZag'],  # Additional goals ['Offset', 'Spiral', 'ZigZagOffset', 'Grid', 'Triangle']
             'HandleMultipleFeatures': ['Collectively', 'Individually'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
         }
@@ -488,7 +488,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.opApplyPropertyLimits(obj)
 
         # Create temporary group for temporary objects, removing existing
-        # if self.showDebugObjects is True:
         tempGroupName = 'tempPathWaterlineGroup'
         if FCAD.getObject(tempGroupName):
             for to in FCAD.getObject(tempGroupName).Group:
@@ -576,7 +575,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
-
             for m in range(0, len(JOB.Model.Group)):
                 # Create OCL.stl model objects
                 if obj.Algorithm == 'OCL Dropcutter':
@@ -662,7 +660,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         del self.midDep
 
         execTime = time.time() - startTime
-        PathLog.info('Operation time: {} sec.'.format(execTime))
+        msg = translate('PathWaterline', 'operation time is')
+        PathLog.info('Waterline ' + msg + ' {} sec.'.format(execTime))
 
         return True
 
@@ -1238,11 +1237,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             bbFace = PathSurfaceSupport.getCrossSection(baseEnv)  # returned at Z=0.0
 
         trimFace = borderFace.cut(bbFace)
-        if self.showDebugObjects is True:
-            TF = FreeCAD.ActiveDocument.addObject('Part::Feature', 'trimFace')
-            TF.Shape = trimFace
-            TF.purgeTouched()
-            self.tempGroup.addObject(TF)
+        self.showDebugObject(trimFace, 'TrimFace')
 
         # Cycle through layer depths
         CUTAREAS = self._getCutAreas(base.Shape, depthparams, bbFace, trimFace, borderFace)
@@ -1267,11 +1262,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if area.Area > 0.0:
                 cont = True
                 caWireCnt = len(area.Wires) - 1  # first wire is boundFace wire
-                if self.showDebugObjects:
-                    CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'cutArea_{}'.format(caCnt))
-                    CA.Shape = area
-                    CA.purgeTouched()
-                    self.tempGroup.addObject(CA)
+                self.showDebugObject(area, 'CutArea_{}'.format(caCnt))
             else:
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
                 PathLog.debug('Cut area at {} is zero.'.format(data))
@@ -1281,11 +1272,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 area.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - area.BoundBox.ZMin))
                 activeArea = area.cut(trimFace)
                 activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
-                if self.showDebugObjects:
-                    CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'activeArea_{}'.format(caCnt))
-                    CA.Shape = activeArea
-                    CA.purgeTouched()
-                    self.tempGroup.addObject(CA)
+                self.showDebugObject(activeArea, 'ActiveArea_{}'.format(caCnt))
                 ofstArea = PathSurfaceSupport.extractFaceOffset(activeArea, ofst, self.wpc, makeComp=False)
                 if not ofstArea:
                     data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
@@ -1294,20 +1281,21 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             if cont:
                 # Identify solid areas in the offset data
-                ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
-                if ofstSolidFacesList:
-                    clearArea = Part.makeCompound(ofstSolidFacesList)
-                    if self.showDebugObjects is True:
-                        CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'clearArea_{}'.format(caCnt))
-                        CA.Shape = clearArea
-                        CA.purgeTouched()
-                        self.tempGroup.addObject(CA)
+                if obj.CutPattern == 'Offset' or obj.CutPattern == 'None':
+                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
+                    if ofstSolidFacesList:
+                        clearArea = Part.makeCompound(ofstSolidFacesList)
+                        self.showDebugObject(clearArea, 'ClearArea_{}'.format(caCnt))
+                    else:
+                        cont = False
+                        data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                        PathLog.error('Could not determine solid faces at {}.'.format(data))
                 else:
-                    cont = False
-                    data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
-                    PathLog.error('Could not determine solid faces at {}.'.format(data))
+                    clearArea = activeArea
 
             if cont:
+                data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                PathLog.debug('... Clearning area at {}.'.format(data))
                 # Make waterline path for current CUTAREA depth (csHght)
                 commands.extend(self._wiresToWaterlinePath(obj, clearArea, csHght))
                 clearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clearArea.BoundBox.ZMin))
@@ -1325,7 +1313,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                     commands.extend(self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, cutPattern))
         # Efor
 
-        if clearLastLayer:
+        if clearLastLayer and obj.ClearLastLayer != 'Off':
+            PathLog.debug('... Clearning last layer')
             (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
             lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
             if clrLyr == 'Offset':
@@ -1333,7 +1322,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             elif clrLyr:
                 commands.extend(self._makeCutPatternLayerPaths(JOB, obj, lastClearArea, lastCsHght, obj.ClearLastLayer))
 
-        PathLog.info("Waterline: All layer scans combined took " + str(time.time() - t_begin) + " s")
         return commands
 
     def _getCutAreas(self, shape, depthparams, bbFace, trimFace, borderFace):
@@ -1363,13 +1351,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                 if useFaces:
                     compAdjFaces = Part.makeCompound(useFaces)
-
-                    if self.showDebugObjects is True:
-                        CA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpSolids_{}'.format(dp + 1))
-                        CA.Shape = compAdjFaces
-                        CA.purgeTouched()
-                        self.tempGroup.addObject(CA)
-
+                    self.showDebugObject(compAdjFaces, 'Solids_{}'.format(dp + 1))
                     if isFirst:
                         allPrevComp = compAdjFaces
                         cutArea = borderFace.cut(compAdjFaces)
@@ -1395,11 +1377,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Translate path geometry to layer height
         ofstPlnrShp.translate(FreeCAD.Vector(0.0, 0.0, csHght - ofstPlnrShp.BoundBox.ZMin))
-        if self.showDebugObjects is True:
-            OA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'waterlinePathArea_{}'.format(round(csHght, 2)))
-            OA.Shape = ofstPlnrShp
-            OA.purgeTouched()
-            self.tempGroup.addObject(OA)
+        self.showDebugObject(ofstPlnrShp, 'WaterlinePathArea_{}'.format(round(csHght, 2)))
 
         commands.append(Path.Command('N (Cut Area {}.)'.format(round(csHght, 2))))
         start = 1
@@ -1442,11 +1420,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 return commands
             pathGeom.translate(FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin))
 
-            if self.showDebugObjects is True:
-                OA = FreeCAD.ActiveDocument.addObject('Part::Feature', 'pathGeom_{}'.format(round(csHght, 2)))
-                OA.Shape = pathGeom
-                OA.purgeTouched()
-                self.tempGroup.addObject(OA)
+            self.showDebugObject(pathGeom, 'PathGeom_{}'.format(round(csHght, 2)))
 
             if cutPattern == 'Line':
                 pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
@@ -1481,6 +1455,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cnt == 0:
                 ofst = 0.0 - self.cutOut
             cnt += 1
+        PathLog.debug(' -Offset path count: {} at height: {}'.format(cnt, round(csHght, 2)))
+
         return cmds
 
     def _clearGeomToPaths(self, JOB, obj, safePDC, stpOVRS, cutPattern):
@@ -1854,6 +1830,13 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Default to standard end mill
             PathLog.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
+
+    def showDebugObject(self, objShape, objName):
+        if self.showDebugObjects:
+            do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
+            do.Shape = objShape
+            do.purgeTouched()
+            self.tempGroup.addObject(do)
 
 
 def SetupProperties():
