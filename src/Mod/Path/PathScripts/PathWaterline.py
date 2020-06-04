@@ -575,7 +575,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
-
             for m in range(0, len(JOB.Model.Group)):
                 # Create OCL.stl model objects
                 if obj.Algorithm == 'OCL Dropcutter':
@@ -661,7 +660,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         del self.midDep
 
         execTime = time.time() - startTime
-        PathLog.info('Operation time: {} sec.'.format(execTime))
+        msg = translate('PathWaterline', 'operation time is')
+        PathLog.info('Waterline ' + msg + ' {} sec.'.format(execTime))
 
         return True
 
@@ -1294,6 +1294,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                     clearArea = activeArea
 
             if cont:
+                data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
+                PathLog.debug('... Clearning area at {}.'.format(data))
                 # Make waterline path for current CUTAREA depth (csHght)
                 commands.extend(self._wiresToWaterlinePath(obj, clearArea, csHght))
                 clearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clearArea.BoundBox.ZMin))
@@ -1311,7 +1313,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                     commands.extend(self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, cutPattern))
         # Efor
 
-        if clearLastLayer:
+        if clearLastLayer and obj.ClearLastLayer != 'Off':
+            PathLog.debug('... Clearning last layer')
             (clrLyr, cLL) = self._clearLayer(obj, 1, 1, False)
             lastClearArea.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - lastClearArea.BoundBox.ZMin))
             if clrLyr == 'Offset':
@@ -1319,7 +1322,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             elif clrLyr:
                 commands.extend(self._makeCutPatternLayerPaths(JOB, obj, lastClearArea, lastCsHght, obj.ClearLastLayer))
 
-        PathLog.info("Waterline: All layer scans combined took " + str(time.time() - t_begin) + " s")
         return commands
 
     def _getCutAreas(self, shape, depthparams, bbFace, trimFace, borderFace):
@@ -1453,6 +1455,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cnt == 0:
                 ofst = 0.0 - self.cutOut
             cnt += 1
+        PathLog.debug(' -Offset path count: {} at height: {}'.format(cnt, round(csHght, 2)))
+
         return cmds
 
     def _clearGeomToPaths(self, JOB, obj, safePDC, stpOVRS, cutPattern):
