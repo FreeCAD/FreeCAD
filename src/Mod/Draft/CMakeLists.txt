@@ -124,6 +124,7 @@ SET(Draft_make_functions
     draftmake/make_shape2dview.py
     draftmake/make_shapestring.py
     draftmake/make_sketch.py
+    draftmake/make_text.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
     draftmake/README.md
