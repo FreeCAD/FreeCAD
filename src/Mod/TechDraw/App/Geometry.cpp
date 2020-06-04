@@ -27,10 +27,13 @@
 #include <BRepBndLib.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_HCurve.hxx>
 #include <BRepLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <Precision.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
@@ -96,7 +99,12 @@ Wire::Wire(const TopoDS_Wire &w)
     TopExp_Explorer edges(w, TopAbs_EDGE);
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
-        geoms.push_back( BaseGeom::baseFactory(edge) );
+        BaseGeom* bg = BaseGeom::baseFactory(edge);
+        if (bg != nullptr) {
+            geoms.push_back( BaseGeom::baseFactory(edge) );
+        } else {
+            Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
+        }
     }
 }
 
@@ -106,6 +114,46 @@ Wire::~Wire()
         delete it;
     }
     geoms.clear();
+}
+
+TopoDS_Wire Wire::toOccWire(void) const
+{
+    TopoDS_Wire result;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (auto& g: geoms) {
+        TopoDS_Edge e = g->occEdge;
+        mkWire.Add(e);
+    }
+    if (mkWire.IsDone())  {
+        result = mkWire.Wire();
+    }
+//    BRepTools::Write(result, "toOccWire.brep");
+    return result;
+}
+
+void Wire::dump(std::string s)
+{
+    BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+TopoDS_Face Face::toOccFace(void) const
+{
+    TopoDS_Face result;
+    //if (!wires.empty) {
+    BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
+    int limit = wires.size();
+    int iwire = 1;
+    for ( ; iwire < limit; iwire++) {
+//        w->dump("wireInToFace.brep");
+        TopoDS_Wire wOCC = wires.at(iwire)->toOccWire();
+        if(!wOCC.IsNull())  {
+            mkFace.Add(wOCC);
+        }
+    }
+    if (mkFace.IsDone())  {
+        result = mkFace.Face();
+    }
+    return result;
 }
 
 Face::~Face()
