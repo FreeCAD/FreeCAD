@@ -650,11 +650,13 @@ class ProcessSelectedFaces:
                     if F[m] is False:
                         F[m] = list()
                     F[m].append((shape, faceIdx))
+                    PathLog.debug('.. Cutting {}'.format(sub))
                     hasFace = True
                 else:
                     if V[m] is False:
                         V[m] = list()
                     V[m].append((shape, faceIdx))
+                    PathLog.debug('.. Avoiding {}'.format(sub))
                     hasVoid = True
         return (hasFace, hasVoid)
 
@@ -690,7 +692,8 @@ class ProcessSelectedFaces:
                     cfsL = Part.makeCompound(outFCS)
 
                 # Handle profile edges request
-                if cont is True and self.profileEdges != 'None':
+                if cont and self.profileEdges != 'None':
+                    PathLog.debug('.. include Profile Edge')
                     ofstVal = self._calculateOffsetValue(isHole)
                     psOfst = extractFaceOffset(cfsL, ofstVal, self.wpc)
                     if psOfst is not False:
@@ -2228,24 +2231,34 @@ class FindUnifiedRegions:
 
         self._extractTopFaces()
         lenFaces = len(self.topFaces)
+        PathLog.debug('getUnifiedRegions() lenFaces: {}.'.format(lenFaces))
         if lenFaces == 0:
             return []
 
         # if single topFace, return it
         if lenFaces == 1:
             topFace = self.topFaces[0][0]
-            # self._showShape(topFace, 'TopFace')
+            self._showShape(topFace, 'TopFace')
             # prepare inner wires as faces for internal features
             lenWrs = len(topFace.Wires)
             if lenWrs > 1:
                 for w in range(1, lenWrs):
-                    self.INTERNALS.append(Part.Face(topFace.Wires[w]))
-            # prepare outer wire as face for return value in list
-            if hasattr(topFace, 'OuterWire'):
-                ow = topFace.OuterWire
-            else:
-                ow = topFace.Wires[0]
-            face = Part.Face(ow)
+                    # Any internal wires need to be flattened
+                    # before appending to self.INTERNALS
+                    # A problem exists that inner wires are not all recognized as wires.
+                    # Some are single circular edges.
+                    # Face.Edges.__len_() - Face.OuterWire.Edges.__len__() = edges for inner wire(s)
+
+                    # extWire = getExtrudedShape(wr)
+                    # wCS = getCrossSection(extWire)
+                    # wCS.translate(FreeCAD.Vector(0.0, 0.0, wr.BoundBox.ZMin))
+                    wr = topFace.Wires[w]
+                    self.INTERNALS.append(Part.Face(wr))
+            # Flatten face and extract outer wire, then convert to face
+            extWire = getExtrudedShape(topFace)
+            wCS = getCrossSection(extWire)
+            wCS.translate(FreeCAD.Vector(0.0, 0.0, topFace.BoundBox.ZMin))
+            face = Part.Face(wCS)
             return [face]
 
         # process multiple top faces, unifying if possible
