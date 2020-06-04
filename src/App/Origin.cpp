@@ -79,7 +79,9 @@ App::OriginFeature *Origin::getOriginFeature( const char *role) const {
 
 App::Property *Origin::getPropertyByName(const char *name) const
 {
-    if (name && strcmp(name, OriginFeatures.getName())==0) {
+    if (getDocument() && !getDocument()->testStatus(App::Document::Restoring)
+            && name && strcmp(name, OriginFeatures.getName())==0)
+    {
         initObjects();
         return &const_cast<Origin*>(this)->OriginFeatures;
     }
