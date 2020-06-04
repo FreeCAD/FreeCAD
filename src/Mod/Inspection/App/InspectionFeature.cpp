@@ -587,12 +587,12 @@ void PropertyDistanceList::setPyObject(PyObject *value)
 void PropertyDistanceList::Save (Base::Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << std::endl;
         writer.incInd();
         for(int i = 0;i<getSize(); i++)
-            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << std::endl;
         writer.decInd();
-        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+        writer.Stream() << writer.ind() <<"</FloatList>" << std::endl;
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\"" << 
