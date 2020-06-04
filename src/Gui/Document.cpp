@@ -2362,7 +2362,7 @@ void Document::undo(int iSteps)
     Gui::Selection().clearCompleteSelection();
 
     {
-        App::TransactionGuard guard;
+        App::TransactionGuard guard(true);
 
         if(!checkTransactionID(true,iSteps))
             return;
@@ -2371,7 +2371,6 @@ void Document::undo(int iSteps)
             getDocument()->undo();
         }
     }
-    App::GetApplication().signalUndo();
 }
 
 /// Will REDO one or more steps
@@ -2382,7 +2381,7 @@ void Document::redo(int iSteps)
     Gui::Selection().clearCompleteSelection();
 
     {
-        App::TransactionGuard guard;
+        App::TransactionGuard guard(false);
 
         if(!checkTransactionID(false,iSteps))
             return;
@@ -2391,8 +2390,6 @@ void Document::redo(int iSteps)
             getDocument()->redo();
         }
     }
-    App::GetApplication().signalRedo();
-
     for (auto it : d->_redoViewProviders)
         handleChildren3D(it);
     d->_redoViewProviders.clear();

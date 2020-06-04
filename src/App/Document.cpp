@@ -957,7 +957,7 @@ bool Document::undo(int id)
             if(it == mUndoMap.end())
                 return false;
             if(it->second != d->activeUndoTransaction) {
-                TransactionGuard guard;
+                TransactionGuard guard(true);
                 while(mUndoTransactions.size() && mUndoTransactions.back()!=it->second)
                     undo(0);
             }
@@ -967,6 +967,9 @@ bool Document::undo(int id)
             _commitTransaction(true);
         if (mUndoTransactions.empty())
             return false;
+
+        TransactionGuard guard(true);
+
         // redo
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
@@ -983,18 +986,6 @@ bool Document::undo(int id)
         mUndoMap.erase(mUndoTransactions.back()->getID());
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
-
-        }
-
-        for(auto & obj:d->objectArray) {
-            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
-                obj->onUndoRedoFinished();
-                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
-            }
-        }
-
-        signalUndo(*this); // now signal the undo
-
         return true;
     }
 
@@ -1009,7 +1000,7 @@ bool Document::redo(int id)
             if(it == mRedoMap.end())
                 return false;
             {
-                TransactionGuard guard;
+                TransactionGuard guard(false);
                 while(mRedoTransactions.size() && mRedoTransactions.back()!=it->second)
                     redo(0);
             }
@@ -1019,6 +1010,8 @@ bool Document::redo(int id)
             _commitTransaction(true);
 
         assert(mRedoTransactions.size()!=0);
+
+        TransactionGuard guard(false);
 
         // undo
         d->activeUndoTransaction = new Transaction(mRedoTransactions.back()->getID());
@@ -1035,16 +1028,6 @@ bool Document::redo(int id)
         mRedoMap.erase(mRedoTransactions.back()->getID());
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
-        }
-
-        for(auto & obj:d->objectArray) {
-            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
-                obj->onUndoRedoFinished();
-                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
-            }
-        }
-
-        signalRedo(*this);
         return true;
     }
 
@@ -2933,6 +2916,10 @@ const char* Document::getName() const
 
 std::string Document::getFullName() const {
     return myName;
+}
+
+App::Document *Document::getOwnerDocument() const {
+    return const_cast<App::Document*>(this);
 }
 
 const char* Document::getProgramVersion() const

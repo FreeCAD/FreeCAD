@@ -42,6 +42,7 @@ class Property;
 class PropertyContainer;
 class DocumentObject;
 class Extension;
+class Document;
 
 enum PropertyType
 {
@@ -160,6 +161,10 @@ public:
   virtual unsigned int getMemSize (void) const;
 
   virtual std::string getFullName() const {return std::string();}
+
+  /// Return owner document of this container
+  virtual App::Document *getOwnerDocument() const 
+    {return nullptr;}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
