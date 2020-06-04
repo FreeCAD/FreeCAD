@@ -39,6 +39,7 @@ using Base::XMLReader;
 #include <Base/Tools.h>
 #include "Transactions.h"
 #include "Property.h"
+#include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
 
@@ -174,7 +175,8 @@ static bool _FlushingProps;
 static std::unordered_map<Property*, int> _PendingProps;
 static int _PendingPropIndex;
 
-TransactionGuard::TransactionGuard()
+TransactionGuard::TransactionGuard(bool undo)
+    :undo(undo)
 {
     if(_FlushingProps) {
         FC_ERR("Recursive transaction");
@@ -200,6 +202,17 @@ TransactionGuard::~TransactionGuard()
         [](const std::pair<Property*,int> &a, const std::pair<Property*,int> &b) {
             return a.second < b.second;
         });
+
+    std::vector<App::Document*> docs;
+    std::set<App::Document*> docSet;
+    for(auto &v : props) {
+        auto container = v.first->getContainer();
+        if (!container) continue;
+        auto doc = container->getOwnerDocument();
+        if (doc && docSet.insert(doc).second)
+            docs.push_back(doc);
+    }
+
     std::string errMsg;
     for(auto &v : props) {
         auto prop = v.first;
@@ -225,6 +238,16 @@ TransactionGuard::~TransactionGuard()
     }
     _PendingProps.clear();
     _PendingPropIndex = 0;
+
+    if(undo) {
+        for (auto doc : docs)
+            doc->signalUndo(*doc);
+        GetApplication().signalUndo();
+    } else {
+        for (auto doc : docs)
+            doc->signalRedo(*doc);
+        GetApplication().signalRedo();
+    }
 }
 
 
@@ -261,7 +284,6 @@ void Transaction::removePendingProperty(Property *prop)
 
 void Transaction::apply(Document &Doc, bool forward)
 {
-    TransactionGuard guard;
     std::string errMsg;
     try {
         auto &index = _Objects.get<0>();

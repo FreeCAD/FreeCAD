@@ -203,8 +203,11 @@ private:
     void* operator new(size_t size);
 
 public:
-    TransactionGuard();
+    TransactionGuard(bool undo);
     ~TransactionGuard();
+
+private:
+    bool undo;
 };
 
 } //namespace App
