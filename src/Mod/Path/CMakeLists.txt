@@ -34,6 +34,7 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py
     PathScripts/PathDeburrGui.py
     PathScripts/PathDressup.py
