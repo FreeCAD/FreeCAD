@@ -41,24 +41,23 @@ else:
     if printverbose: print("FreeCAD Gui not present.")
     gui = False
 
-
 import ply.lex as lex
 import ply.yacc as yacc
 import Part
 
-import freecad.OpenSCAD.OpenSCADFeatures
-import freecad.OpenSCAD.OpenSCADUtils
+from OpenSCADFeatures import *
+from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
 
 printverbose = True
+
 # Get the token map from the lexer.  This is required.
-import freecad.OpenSCAD.tokrules
+import tokrules
 from tokrules import tokens
 
 try:
-    from PySide import QtGui
     _encoding = QtGui.QApplication.UnicodeUTF8
     def translate(context, text):
         "convenience function for Qt translator"
@@ -77,7 +76,6 @@ def open(filename):
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.scad'):
-        from OpenSCADUtils import callopenscad, workaroundforissue128needed
         tmpfile=callopenscad(filename)
         if workaroundforissue128needed():
             pathName = '' #https://github.com/openscad/openscad/issues/128
@@ -105,7 +103,6 @@ def insert(filename,docname):
         doc=FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
-        from OpenSCADUtils import callopenscad, workaroundforissue128needed
         tmpfile=callopenscad(filename)
         if workaroundforissue128needed():
             pathName = '' #https://github.com/openscad/openscad/issues/128
@@ -127,7 +124,7 @@ def processcsg(filename):
     if printverbose: print ('ImportCSG Version 0.6a')
     # Build the lexer
     if printverbose: print('Start Lex')
-    lex.lex(module=freecad.OpenSCAD.tokrules)
+    lex.lex(module=tokrules)
     if printverbose: print('End Lex')
 
     # Build the parser   
@@ -344,12 +341,12 @@ def p_operation(p):
               | linear_extrude_with_twist
               | rotate_extrude_file
               | import_file1
+              | resize_action
               | surface_action
               | projection_action
               | hull_action
               | minkowski_action
               | offset_action
-              | resize_action
               '''
     p[0] = p[1]
 
@@ -369,7 +366,6 @@ def placeholder(name,children,arguments):
 
 def CGALFeatureObj(name,children,arguments=[]):
     myobj=doc.addObject("Part::FeaturePython",name)
-    from OpenSCADFeatures import CGALFeature
     CGALFeature(myobj,name,children,str(arguments))
     if gui:
         for subobj in children:
@@ -418,61 +414,31 @@ def p_offset_action(p):
 
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
-    from OpenSCADFeatures import CGALFeature
     p[0] = [ CGALFeatureObj(p[1],p[5]) ]
-
-
-def setObjColor(obj, color):
-    # set color for all faces of selected object
-    colorlist=[]
-    for i in range(len(obj.Shape.Faces)):
-        colorlist.append(color)
-        #print('[*] Object contains %d faces'%(len(colorlist),))
-        obj.ViewObject.DiffuseColor = colorlist
-
-def setOutListColor(obj, color) :
-    if obj.OutList != None :
-       for i in obj.OutList : 
-           setOutListColor(i,color)
-           setObjColor(i,color)
 
 def p_minkowski_action(p):
     '''
     minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
-
-    # - For minkowski Just indicate first shape needs editing
-
-    if len(p[6]) == 2 :
-       # return just first object     
-       #print(dir(p[6][0]))
-       #print(dir((p[6][1]).ViewObject))
-       #print(p[6][0].TypeId)
-       p[6][0].ViewObject.ShapeColor = (1.,0.,0.)
-       setObjColor(p[6][0],(1.,0.,0.))
-       setOutListColor(p[6][0],(1.,0.,0.))
-       #print(p[6][1].TypeId)
-       p[6][1].ViewObject.ShapeColor = (0.,1.,0.)
-       setObjColor(p[6][1],(0.,1.,0.))
-       setOutListColor(p[6][1],(1.,0.,0.))
-       #p[6][1].ViewObject.hide()
-       p[0] = [p[6][0]]
-
-    else :
-        p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
+    p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
 
 def p_resize_action(p):
     '''
-    resize_action :  resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
-    from OpenSCADFeatures import Resize, ViewProviderTree
-    print("Resize")
+    resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
+    import Draft
+    print(p[3])
     newsize = p[3]['newsize']
+    auto    = p[3]['auto'] 
     print(newsize)
-    auto = p[3]['auto']
     print(auto)
-    myresize = doc.addObject('Part::FeaturePython','Resize')
-    Resize(myresize,p[6][0],newsize)
-    ViewProviderTree(myresize.ViewObject)
-    p[0] = [myresize]
+    for r in range(0,3) :
+        if auto[r] == '1' :
+           newsize[r] = newsize[0]
+        if newsize[r] == '0' :
+           newsize[r] = '1'
+    print(newsize)
+    scale = FreeCAD.Vector(float(newsize[0]), float(newsize[1]), float(newsize[2]))
+    print(scale)       
+    p[0] = [Draft.scale(p[6],scale)]
 
 def p_not_supported(p):
     '''
@@ -482,7 +448,7 @@ def p_not_supported(p):
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('usePlaceholderForUnsupported'):
         from PySide import QtGui
-        QtGui.QMessageBox.critical(None, translate('OpenSCAD',p[1]+" : Unsupported Function"),translate('OpenSCAD',"Press OK"))
+        QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
     else:
         p[0] = [placeholder(p[1],p[6],p[3])]
 
@@ -619,9 +585,7 @@ def p_intersection_action(p):
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
-def process_rotate_extrude(obj,angle):
-    
-    from OpenSCADFeatures import RefineShape     
+def process_rotate_extrude(obj):
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,obj)
     if gui:
@@ -636,7 +600,7 @@ def process_rotate_extrude(obj,angle):
     myrev.Source = newobj
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
-    myrev.Angle = angle
+    myrev.Angle = 360.00
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
@@ -649,8 +613,7 @@ def p_rotate_extrude_action(p):
         part = fuse(p[6],"Rotate Extrude Union")
     else :
         part = p[6][0]
-    angle = float(p[3]['angle'])    
-    p[0] = [process_rotate_extrude(part,angle)]
+    p[0] = [process_rotate_extrude(part)]
     if printverbose: print("End Rotate Extrude")
 
 def p_rotate_extrude_file(p):
@@ -663,8 +626,6 @@ def p_rotate_extrude_file(p):
 
 def process_linear_extrude(obj,h) :
     #if gui:
-    from OpenSCADFeatures import RefineShape
-
     newobj=doc.addObject("Part::FeaturePython",'RefineLinearExtrude')
     RefineShape(newobj,obj)#mylinear)
     if gui:
@@ -827,10 +788,6 @@ def processSTL(fname):
 
 def p_multmatrix_action(p):
     'multmatrix_action : multmatrix LPAREN matrix RPAREN OBRACE block_list EBRACE'
-    from OpenSCADUtils import isspecialorthogonalpython, \
-         fcsubmatrix, roundrotation, isrotoinversionpython, \
-         decomposerotoinversion
-    from OpenSCADFeatures import RefineShape     
     if printverbose: print("MultMatrix")
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
@@ -850,9 +807,6 @@ def p_multmatrix_action(p):
     if printverbose: print(transform_matrix)
     if printverbose: print("Apply Multmatrix")
 #   If more than one object on the stack for multmatrix fuse first
-    if p[6] == None :
-       print(p) 
-       print(dir(p))
     if (len(p[6]) == 0) :
         part = placeholder('group',[],'{}')
     elif (len(p[6]) > 1) :
@@ -1016,7 +970,6 @@ def p_cylinder_action(p):
             else:
                 if printverbose: print("Make Frustum")
                 mycyl=doc.addObject("Part::FeaturePython",'frustum')
-                from OpenSCADFeatures import Frustum
                 Frustum(mycyl,r1,r2,n,h)
                 if gui:
                     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -1265,10 +1218,9 @@ def p_projection_action(p) :
             subobj[0].ViewObject.hide()
         p[0] = [obj]
     else: # cut == 'false' => true projection
-        #if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        #        GetBool('usePlaceholderForUnsupported'):
-        #    from PySide import QtGui
-        #    QtGui.QMessageBox.critical(None, translate('OpenSCAD',p[1]+" : Unsupported Function"),translate('OpenSCAD',"Press OK"))
-        #else:
-        #    p[0] = [placeholder(p[1],p[6],p[3])]
-        p[0] = [placeholder(p[1],p[6],p[3])]
+        if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                GetBool('usePlaceholderForUnsupported'):
+            from PySide import QtGui
+            QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
+        else:
+            p[0] = [placeholder(p[1],p[6],p[3])]
