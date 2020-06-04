@@ -1591,6 +1591,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             FC_ERR("Object not found");
         return -1;
     }
+    if(sel.pObject->testStatus(App::ObjectStatus::Remove))
+        return -1;
     if(pSubName)
        sel.SubName = pSubName;
     if(!resolve && !SelectionNoTopParentCheck::enabled())
@@ -1606,6 +1608,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             FC_ERR("Sub-object " << sel.DocName << '#' << sel.FeatName << '.' << sel.SubName << " not found");
         return -1;
     }
+    if(sel.pResolvedObject->testStatus(App::ObjectStatus::Remove))
+        return -1;
     std::string subname;
     std::string prefix;
     if(pSubName && element) {
