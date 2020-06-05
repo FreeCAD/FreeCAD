@@ -354,9 +354,10 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Label")
     place = App.Placement(Vector(18500, 500, 0), App.Rotation())
-    label = Draft.make_label(targetpoint=Vector(18000, 0, 0),
-                             distance=-250,
-                             placement=place)
+    label = Draft.make_label(target_point=Vector(18000, 0, 0),
+                             placement=place,
+                             custom_text="Example label",
+                             distance=-250)
     label.Text = "Testing"
     if App.GuiUp:
         label.ViewObject.ArrowSize = 15

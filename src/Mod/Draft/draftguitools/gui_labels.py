@@ -43,6 +43,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 import draftutils.utils as utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -56,7 +57,19 @@ class Label(gui_base_original.Creator):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         _tip = ("Creates a label, "
-                "optionally attached to a selected object or element.")
+                "optionally attached to a selected object or subelement.\n"
+                "\n"
+                "First select a vertex, an edge, or a face of an object, "
+                "then call this command,\n"
+                "and then set the position of the leader line "
+                "and the textual label.\n"
+                "The label will be able to display information "
+                "about this object, and about the selected subelement,\n"
+                "if any.\n"
+                "\n"
+                "If many objects or many subelements are selected, "
+                "only the first one in each case\n"
+                "will be used to provide information to the label.")
 
         return {'Pixmap': 'Draft_Label',
                 'Accel': "D, L",
@@ -107,6 +120,7 @@ class Label(gui_base_original.Creator):
                 h = App.Vector(1, 0, 0)
                 n = App.Vector(0, 0, 1)
                 r = App.Rotation()
+
             if abs(DraftVecUtils.angle(v, h, n)) <= math.pi/4:
                 direction = "Horizontal"
                 dist = -dist
@@ -117,38 +131,45 @@ class Label(gui_base_original.Creator):
             else:
                 direction = "Vertical"
                 dist = -dist
-            tp = "targetpoint=FreeCAD." + str(targetpoint) + ", "
+
+            tp = DraftVecUtils.toString(targetpoint)
             sel = ""
             if self.sel:
                 if self.sel.SubElementNames:
                     sub = "'" + self.sel.SubElementNames[0] + "'"
                 else:
-                    sub = "()"
-                sel = "target="
-                sel += "("
+                    sub = "[]"
+                sel = "["
                 sel += "FreeCAD.ActiveDocument." + self.sel.Object.Name + ", "
                 sel += sub
-                sel += "),"
-            pl = "placement=FreeCAD.Placement"
+                sel += "]"
+
+            pl = "FreeCAD.Placement"
             pl += "("
-            pl += "FreeCAD." + str(basepoint) + ", "
+            pl += DraftVecUtils.toString(basepoint) + ", "
             pl += "FreeCAD.Rotation" + str(r.Q)
             pl += ")"
-            App.ActiveDocument.openTransaction("Create Label")
+
             Gui.addModule("Draft")
-            _cmd = "Draft.makeLabel"
+            _cmd = "Draft.make_label"
             _cmd += "("
-            _cmd += tp
-            _cmd += sel
-            _cmd += "direction='" + direction + "', "
-            _cmd += "distance=" + str(dist) + ", "
-            _cmd += "labeltype='" + self.labeltype + "', "
-            _cmd += pl
+            _cmd += "target_point=" + tp + ", "
+            _cmd += "placement=" + pl + ", "
+            if sel:
+                _cmd += "target=" + sel + ", "
+            _cmd += "label_type=" + "'" + self.labeltype + "'" + ", "
+            # _cmd += "custom_text=" + "'Label'" + ", "
+            _cmd += "direction=" + "'" + direction + "'" + ", "
+            _cmd += "distance=" + str(dist)
             _cmd += ")"
-            Gui.doCommand("l = " + _cmd)
-            Gui.doCommand("Draft.autogroup(l)")
-            App.ActiveDocument.recompute()
-            App.ActiveDocument.commitTransaction()
+
+            # Commit the creation instructions through the parent class,
+            # the Creator class
+            _cmd_list = ['_label_ = ' + _cmd,
+                         'Draft.autogroup(_label_)',
+                         'FreeCAD.ActiveDocument.recompute()']
+            self.commit(translate("draft", "Create Label"),
+                        _cmd_list)
         self.finish()
 
     def action(self, arg):

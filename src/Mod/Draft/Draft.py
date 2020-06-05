@@ -398,16 +398,15 @@ if gui:
     _ViewProviderAngularDimension = ViewProviderAngularDimension
 
 
-from draftobjects.label import make_label
-from draftobjects.label import Label
+from draftobjects.label import (Label,
+                                DraftLabel)
 
-makeLabel = make_label
-DraftLabel = Label
+from draftmake.make_label import (make_label,
+                                  makeLabel)
 
 if gui:
     from draftviewproviders.view_label import ViewProviderLabel
     ViewProviderDraftLabel = ViewProviderLabel
-
 
 from draftobjects.text import (Text,
                                DraftText)

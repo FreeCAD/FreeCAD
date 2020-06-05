@@ -113,6 +113,7 @@ SET(Draft_make_functions
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
+    draftmake/make_label.py
     draftmake/make_line.py
     draftmake/make_orthoarray.py
     draftmake/make_patharray.py
