@@ -1508,6 +1508,7 @@ class _Wall(ArchComponent.Component):
                 base = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             placement = FreeCAD.Placement()
         if base and placement:
+            normal.normalize()
             extrusion = normal.multiply(height)
             if placement.Rotation.Angle > 0:
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
