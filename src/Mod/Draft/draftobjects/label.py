@@ -222,53 +222,133 @@ class Label(DraftAnnotation):
             p1 = obj.Placement.Base
             if obj.StraightDirection == "Horizontal":
                 p2 = App.Vector(obj.StraightDistance.Value, 0, 0)
-            else:
+            elif obj.StraightDirection == "Vertical":
                 p2 = App.Vector(0, obj.StraightDistance.Value, 0)
 
             p2 = obj.Placement.multVec(p2)
             # p3 = obj.Placement.multVec(obj.TargetPoint)
             p3 = obj.TargetPoint
             obj.Points = [p1, p2, p3]
+        else:
+            # If StraightDirection is 'Custom'
+            # we can draw the leader line manually by specifying
+            # any number of vectors in the Points property.
+            # The first point should indicate the position of the text label,
+            # while the last one should be 'TargetPoint'
+            # obj.Points = [p1, p2, p3, p4, ...]
+            #
+            # The drawing of the line is done in the viewprovider
+            #
+            # However, as soon as StraightDirection is changed to
+            # 'Horizontal' or 'Vertical' this custom list of points
+            # will be overwritten
+            pass
+
+        # Reset the text, only change it depending on the options
+        obj.Text = ""
 
         if obj.LabelType == "Custom":
             if obj.CustomText:
                 obj.Text = obj.CustomText
 
         elif obj.Target and obj.Target[0]:
-            if obj.LabelType == "Name":
-                obj.Text = [obj.Target[0].Name]
-            elif obj.LabelType == "Label":
-                obj.Text = [obj.Target[0].Label]
-            elif obj.LabelType == "Tag":
-                if hasattr(obj.Target[0], "Tag"):
-                    obj.Text = [obj.Target[0].Tag]
-            elif obj.LabelType == "Material":
-                if hasattr(obj.Target[0], "Material"):
-                    if hasattr(obj.Target[0].Material, "Label"):
-                        obj.Text = [obj.Target[0].Material.Label]
-            elif obj.LabelType == "Position":
-                p = obj.Target[0].Placement.Base
-                if obj.Target[1]:
-                    if "Vertex" in obj.Target[1][0]:
-                        p = obj.Target[0].Shape.Vertexes[int(obj.Target[1][0][6:])-1].Point
-                obj.Text = [U.Quantity(x, U.Length).UserString for x in tuple(p)]
-            elif obj.LabelType == "Length":
-                if hasattr(obj.Target[0], 'Shape'):
-                    if hasattr(obj.Target[0].Shape, "Length"):
-                        obj.Text = [U.Quantity(obj.Target[0].Shape.Length, U.Length).UserString]
-                    if obj.Target[1] and ("Edge" in obj.Target[1][0]):
-                        obj.Text = [U.Quantity(obj.Target[0].Shape.Edges[int(obj.Target[1][0][4:]) - 1].Length, U.Length).UserString]
-            elif obj.LabelType == "Area":
-                if hasattr(obj.Target[0], 'Shape'):
-                    if hasattr(obj.Target[0].Shape, "Area"):
-                        obj.Text = [U.Quantity(obj.Target[0].Shape.Area, U.Area).UserString.replace("^2", "²")]
-                    if obj.Target[1] and ("Face" in obj.Target[1][0]):
-                        obj.Text = [U.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area, U.Area).UserString]
-            elif obj.LabelType == "Volume":
-                if hasattr(obj.Target[0], 'Shape'):
-                    if hasattr(obj.Target[0].Shape, "Volume"):
-                        obj.Text = [U.Quantity(obj.Target[0].Shape.Volume, U.Volume).UserString.replace("^3", "³")]
+            target = obj.Target[0]
+            sub_list = obj.Target[1]
+            typ = obj.LabelType
+
+            # The sublist may be empty so we test it first
+            subelement = sub_list[0] if sub_list else None
+
+            text_list = return_info(target, typ, subelement)
+            obj.Text = text_list
 
 
 # Alias for compatibility with v0.18 and earlier
 DraftLabel = Label
+
+
+def return_info(target, typ, subelement=None):
+    """Return the text list from the target and the given type.
+
+    Parameters
+    ----------
+    target: Part::Feature
+        The object targeted by the label.
+
+    typ: str
+        It is the type of information that we want to extract.
+
+    subelement: str, optional
+        A string indicating a subelement of the `target`;
+        it could be `'VertexN'`, `'EdgeN'`, or `'FaceN'`,
+        where `'N'` is a number that starts from `1` up to the maximum
+        number of subelements in that target.
+
+    To Do
+    -----
+    Other types could be defined to return lists of strings
+    that return various types of information at the same time, for example,
+    `'Length + Area'`, `'Length + Area + Volume'`, `'Label + Area'`,
+    `'Label + Volume'`, etc.
+
+    For this, each type could be implemented as a function that returns
+    the corresponding string. And then the strings could be combined
+    in a single output string.
+    """
+    # print(obj, target, typ, subelement)
+
+    if typ == "Name":
+        return [target.Name]
+
+    elif typ == "Label":
+        return [target.Label]
+
+    elif typ == "Tag" and hasattr(target, "Tag"):
+        return [target.Tag]
+
+    elif (typ == "Material"
+          and hasattr(target, "Material")
+          and hasattr(target.Material, "Label")):
+        return [target.Material.Label]
+
+    elif typ == "Position":
+        p = target.Placement.Base
+
+        # Position of the vertex if it is given as subelement
+        if subelement and "Vertex" in subelement:
+            p = target.Shape.Vertexes[int(subelement[6:]) - 1].Point
+
+        return [U.Quantity(x, U.Length).UserString for x in tuple(p)]
+
+    elif typ == "Length" and hasattr(target, 'Shape'):
+        text_list = ["No length"]
+        if hasattr(target.Shape, "Length"):
+            text_list = [U.Quantity(target.Shape.Length, U.Length).UserString]
+
+        # Length of the edge if it is given as subelement
+        if subelement and "Edge" in subelement:
+            edge = target.Shape.Edges[int(subelement[4:]) - 1]
+            text_list = [U.Quantity(edge.Length, U.Length).UserString]
+
+        return text_list
+
+    elif typ == "Area" and hasattr(target, 'Shape'):
+        text_list = ["No area"]
+        if hasattr(target.Shape, "Area"):
+            area = U.Quantity(target.Shape.Area, U.Area).UserString
+            text_list = [area.replace("^2", "²")]
+
+        # Area of the face if it is given as subelement
+        if subelement and "Face" in subelement:
+            face = target.Shape.Faces[int(subelement[4:]) - 1]
+            text_list = [U.Quantity(face.Area, U.Area).UserString]
+
+        return text_list
+
+    elif (typ == "Volume"
+          and hasattr(target, 'Shape')
+          and hasattr(target.Shape, "Volume")):
+        volume = U.Quantity(target.Shape.Volume, U.Volume).UserString
+        return [volume.replace("^3", "³")]
+
+    return [""]
