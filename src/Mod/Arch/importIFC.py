@@ -182,6 +182,14 @@ def getPreferences():
 
 
 # ************************************************************************************************
+# ********** backwards compatibility ****************
+
+def export(exportList,filename,colors=None,preferences=None):
+    import exportIFC
+    exportIFC.export(exportList,filename,colors,preferences)
+
+
+# ************************************************************************************************
 # ********** open and import IFC ****************
 
 def open(filename,skip=[],only=[],root=None):
