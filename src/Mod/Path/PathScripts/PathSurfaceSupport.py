@@ -576,16 +576,16 @@ class ProcessSelectedFaces:
                     FreeCAD.Console.PrintError(msg)
                 else:
                     (fcShp, prflShp) = pPEB
-                    if fcShp is not False:
+                    if fcShp:
                         if fcShp is True:
                             PathLog.debug(' -fcShp is True.')
                             fShapes[m] = True
                         else:
                             fShapes[m] = [fcShp]
-                    if prflShp is not False:
-                        if fcShp is not False:
+                    if prflShp:
+                        if fcShp:
                             PathLog.debug('vShapes[{}]: {}'.format(m, vShapes[m]))
-                            if vShapes[m] is not False:
+                            if vShapes[m]:
                                 PathLog.debug(' -Cutting void from base profile shape.')
                                 adjPS = prflShp.cut(vShapes[m][0])
                                 self.profileShapes[m] = [adjPS]
@@ -696,7 +696,7 @@ class ProcessSelectedFaces:
                     PathLog.debug('.. include Profile Edge')
                     ofstVal = self._calculateOffsetValue(isHole)
                     psOfst = extractFaceOffset(cfsL, ofstVal, self.wpc)
-                    if psOfst is not False:
+                    if psOfst:
                         mPS = [psOfst]
                         if self.profileEdges == 'Only':
                             mFS = True
@@ -753,17 +753,19 @@ class ProcessSelectedFaces:
                     FUR = FindUnifiedRegions([(fcshp, fcIdx)], self.JOB.GeometryTolerance.Value)
                     if self.showDebugObjects:
                         FUR.setTempGroup(self.tempGroup)
-                    outerFace = FUR.getUnifiedRegions()[0]
-                    if not self.obj.InternalFeaturesCut:
-                        ifL = FUR.getInternalFeatures()
+                    gUR = FUR.getUnifiedRegions()
+                    if len(gUR) > 0:
+                        outerFace = gUR[0]
+                        if not self.obj.InternalFeaturesCut:
+                            ifL = FUR.getInternalFeatures()
 
-                    if outerFace is not False:
+                    if outerFace:
                         PathLog.debug('Attempting to create offset face of Face{}'.format(fNum))
 
                         if self.profileEdges != 'None':
                             ofstVal = self._calculateOffsetValue(isHole)
                             psOfst = extractFaceOffset(outerFace, ofstVal, self.wpc)
-                            if psOfst is not False:
+                            if psOfst:
                                 if mPS is False:
                                     mPS = list()
                                 mPS.append(psOfst)
@@ -805,7 +807,7 @@ class ProcessSelectedFaces:
             for ifs in mIFS:
                 mVS.append(ifs)
 
-        if VDS is not False:
+        if VDS:
             PathLog.debug('Processing avoid faces.')
             cont = True
             isHole = False
@@ -908,7 +910,7 @@ class ProcessSelectedFaces:
             PathLog.debug(' -Attempting profile geometry for model base.')
             ofstVal = self._calculateOffsetValue(isHole)
             psOfst = extractFaceOffset(csFaceShape, ofstVal, self.wpc)
-            if psOfst is not False:
+            if psOfst:
                 if self.profileEdges == 'Only':
                     return (True, psOfst)
                 prflShp = psOfst
@@ -1220,7 +1222,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
         B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
         fuseShapes.append(B)
 
-    if voidShapes is not False:
+    if voidShapes:
         voidComp = Part.makeCompound(voidShapes)
         voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
         fuseShapes.append(voidEnv)
@@ -1608,7 +1610,7 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
             chkGap = False
             lst = None
 
-            if CONN is not False:
+            if CONN:
                 (iE, iS) = CONN
                 v1 = compGeoShp.Edges[iE].Vertexes[0]
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
@@ -2257,9 +2259,17 @@ class FindUnifiedRegions:
             # Flatten face and extract outer wire, then convert to face
             extWire = getExtrudedShape(topFace)
             wCS = getCrossSection(extWire)
-            wCS.translate(FreeCAD.Vector(0.0, 0.0, topFace.BoundBox.ZMin))
-            face = Part.Face(wCS)
-            return [face]
+            if wCS:
+                wCS.translate(FreeCAD.Vector(0.0, 0.0, topFace.BoundBox.ZMin))
+                face = Part.Face(wCS)
+                return [face]
+            else:
+                (faceShp, fcIdx) = self.FACES[0] 
+                msg = translate('PathSurfaceSupport',
+                    'Failed to identify a horizontal cross-section for Face')
+                msg += '{}.\n'.format(fcIdx + 1)
+                FreeCAD.Console.PrintWarning(msg)
+                return []
 
         # process multiple top faces, unifying if possible
         self._fuseTopFaces()
