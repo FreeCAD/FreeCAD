@@ -53,7 +53,7 @@ Origin::Origin(void) : extension(this) {
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);
-    extension.GroupExtension::initExtension(this);
+    extension.initExtension(this);
 }
 
 
