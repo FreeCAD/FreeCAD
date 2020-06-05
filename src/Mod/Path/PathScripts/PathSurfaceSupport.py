@@ -114,9 +114,9 @@ class PathGeometryGenerator:
                     fCnt += 1
                     zeroCOM = zeroCOM.add(FreeCAD.Vector(comF.x, comF.y, 0.0).multiply(areaF))
                 if fCnt == 0:
-                    msg = translate('PathSurfaceSupport', 
+                    msg = translate('PathSurfaceSupport',
                         'Cannot calculate the Center Of Mass.')
-                    msg += ' ' + translate('PathSurfaceSupport', 
+                    msg += ' ' + translate('PathSurfaceSupport',
                         'Using Center of Boundbox instead.') + '\n'
                     FreeCAD.Console.PrintError(msg)
                     bbC = self.shape.BoundBox.Center
@@ -910,22 +910,26 @@ class ProcessSelectedFaces:
         '''_calculateOffsetValue(self.obj, isHole, isVoid) ... internal function.
         Calculate the offset for the Path.Area() function.'''
         self.JOB = PathUtils.findParentJob(self.obj)
-        tolrnc = self.JOB.GeometryTolerance.Value
+        # We need to offset by at least our linear tessellation deflection
+        # (default GeometryTolerance / 4) to avoid false retracts at the
+        # boundaries.
+        tolrnc = max(self.JOB.GeometryTolerance.Value / 10.0,
+                     self.obj.LinearDeflection.Value)
 
         if isVoid is False:
             if isHole is True:
                 offset = -1 * self.obj.InternalFeaturesAdjustment.Value
-                offset += self.radius + (tolrnc / 10.0)
+                offset += self.radius + tolrnc
             else:
                 offset = -1 * self.obj.BoundaryAdjustment.Value
                 if self.obj.BoundaryEnforcement is True:
-                    offset += self.radius + (tolrnc / 10.0)
+                    offset += self.radius + tolrnc
                 else:
-                    offset -= self.radius + (tolrnc / 10.0)
+                    offset -= self.radius + tolrnc
                 offset = 0.0 - offset
         else:
             offset = -1 * self.obj.BoundaryAdjustment.Value
-            offset += self.radius + (tolrnc / 10.0)
+            offset += self.radius + tolrnc
 
         return offset
 
