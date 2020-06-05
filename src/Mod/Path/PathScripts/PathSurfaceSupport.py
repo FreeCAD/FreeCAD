@@ -660,7 +660,9 @@ class ProcessSelectedFaces:
                     FUR.setTempGroup(self.tempGroup)
                 outFCS = FUR.getUnifiedRegions()
                 if not self.obj.InternalFeaturesCut:
-                    ifL.extend(FUR.getInternalFeatures())
+                    gIF = FUR.getInternalFeatures()
+                    if gIF:
+                        ifL.extend(gIF)
 
                 PathLog.debug('Attempting to get cross-section of collective faces.')
                 if len(outFCS) == 0:
@@ -736,7 +738,9 @@ class ProcessSelectedFaces:
                     if len(gUR) > 0:
                         outerFace = gUR[0]
                         if not self.obj.InternalFeaturesCut:
-                            ifL = FUR.getInternalFeatures()
+                            gIF = FUR.getInternalFeatures()
+                            if gIF:
+                                ifL = gIF
 
                     if outerFace:
                         PathLog.debug('Attempting to create offset face of Face{}'.format(fNum))
@@ -800,9 +804,13 @@ class ProcessSelectedFaces:
                 FUR = FindUnifiedRegions([(fcshp, fcIdx)], self.JOB.GeometryTolerance.Value)
                 if self.showDebugObjects:
                     FUR.setTempGroup(self.tempGroup)
-                outFCS.extend(FUR.getUnifiedRegions())
+                gUR = FUR.getUnifiedRegions()
+                if len(gUR) > 0:
+                    outFCS.extend(gUR)
                 if not self.obj.InternalFeaturesCut:
-                    intFEAT.extend(FUR.getInternalFeatures())
+                    gIF = FUR.getInternalFeatures()
+                    if gIF:
+                        intFEAT.extend(gIF)
 
             lenOtFcs = len(outFCS)
             if lenOtFcs == 0:
@@ -1770,10 +1778,11 @@ class FindUnifiedRegions:
         self.noSharedEdges = True
         self.topWires = list()
         self.REGIONS = list()
-        self.INTERNALS = False
+        self.INTERNALS = list()
         self.idGroups = list()
         self.sharedEdgeIdxs = list()
         self.fusedFaces = None
+        self.internalsReady = False
 
         if self.geomToler == 0.0:
             self.geomToler = 0.00001
@@ -2154,7 +2163,6 @@ class FindUnifiedRegions:
                     # if True action here
                     if isTrue:
                         self.REGIONS[hi] = high.cut(low)
-                        # self.INTERNALS.append(low)
                         remList.append(li)
                     else:
                         hold.append(hi)
@@ -2230,7 +2238,6 @@ class FindUnifiedRegions:
         '''getUnifiedRegions()... Returns a list of unified regions from list
         of tuples (faceShape, faceIndex) received at instantiation of the class object.'''
         PathLog.debug('getUnifiedRegions()')
-        self.INTERNALS = list()
         if len(self.FACES) == 0:
             msg = translate('PathSurfaceSupport',
                 'No FACE data tuples received at instantiation of class.')
@@ -2252,6 +2259,7 @@ class FindUnifiedRegions:
                 for w in range(1, lenWrs):
                     wr = topFace.Wires[w]
                     self.INTERNALS.append(Part.Face(wr))
+            self.internalsReady = True
             # Flatten face and extract outer wire, then convert to face
             extWire = getExtrudedShape(topFace)
             wCS = getCrossSection(extWire)
@@ -2278,7 +2286,17 @@ class FindUnifiedRegions:
 
         if self.noSharedEdges:
             PathLog.debug('No shared edges by length detected.')
-            return [topFace for (topFace, fcIdx) in self.topFaces]
+            allTopFaces = list()
+            for (topFace, fcIdx) in self.topFaces:
+                allTopFaces.append(topFace)
+                # Identify internal features
+                lenWrs = len(topFace.Wires)
+                if lenWrs > 1:
+                    for w in range(1, lenWrs):
+                        wr = topFace.Wires[w]
+                        self.INTERNALS.append(Part.Face(wr))
+            self.internalsReady = True
+            return allTopFaces
         else:
             # Delete shared edges from edgeData list
             self.sharedEdgeIdxs.sort(reverse=True)
@@ -2291,13 +2309,18 @@ class FindUnifiedRegions:
         # for ri in range(0, len(self.REGIONS)):
         #    self._showShape(self.REGIONS[ri], 'UnifiedRegion_{}'.format(ri))
 
+        self.internalsReady = True
         return self.REGIONS
 
     def getInternalFeatures(self):
         '''getInternalFeatures()... Returns internal features identified
         after calling getUnifiedRegions().'''
-        if self.INTERNALS:
-            return self.INTERNALS
+        if self.internalsReady:
+            if len(self.INTERNALS) > 0:
+                return self.INTERNALS
+            else:
+                return False
+
         msg = translate('PathSurfaceSupport',
             'getUnifiedRegions() must be called before getInternalFeatures().')
         FreeCAD.Console.PrintError(msg + '\n')
