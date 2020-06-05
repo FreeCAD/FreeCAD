@@ -124,6 +124,30 @@ public:
     // Axis links
     PropertyLinkList OriginFeatures;
 
+    // The methods below avoid that the additional properties of the
+    // extension are accessible from outside
+    /** @name Access properties */
+    //@{
+    virtual Property *getPropertyByName(const char* name) const {
+        return PropertyContainer::getPropertyByName(name);
+    }
+    virtual const char* getPropertyName(const Property* prop) const {
+        return PropertyContainer::getPropertyName(prop);
+    }
+    virtual void getPropertyMap(std::map<std::string,Property*> &Map) const {
+        return PropertyContainer::getPropertyMap(Map);
+    }
+    virtual void getPropertyList(std::vector<Property*> &List) const {
+        return PropertyContainer::getPropertyList(List);
+    }
+    virtual void Save(Base::Writer& writer) const {
+        return PropertyContainer::Save(writer);
+    }
+    virtual void Restore(Base::XMLReader& reader) {
+        return PropertyContainer::Restore(reader);
+    }
+    //@}
+
 protected:
     /// Checks integrity of the Origin
     virtual App::DocumentObjectExecReturn *execute(void);
