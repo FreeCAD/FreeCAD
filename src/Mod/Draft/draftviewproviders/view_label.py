@@ -210,15 +210,17 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             else:
                 self.text2d.justification = coin.SoText2.LEFT
                 self.text3d.justification = coin.SoAsciiText.LEFT
-        elif prop == "Text":
-            if obj.Text:
-                if sys.version_info.major >= 3:
-                    self.text2d.string.setValues([l for l in obj.Text if l])
-                    self.text3d.string.setValues([l for l in obj.Text if l])
-                else:
-                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.onChanged(obj.ViewObject,"TextAlignment")
+        elif prop == "Text" and obj.Text:
+            self.text2d.string.setValue("")
+            self.text3d.string.setValue("")
+
+            if sys.version_info.major >= 3:
+                self.text2d.string.setValues([l for l in obj.Text if l])
+                self.text3d.string.setValues([l for l in obj.Text if l])
+            else:
+                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+            self.onChanged(obj.ViewObject, "TextAlignment")
 
     def getTextSize(self,vobj):
         if vobj.DisplayMode == "3D text":
