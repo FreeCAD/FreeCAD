@@ -29,95 +29,25 @@
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Label.
 
-import FreeCAD as App
-import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
+
+import FreeCAD as App
+
 from draftobjects.draft_annotation import DraftAnnotation
-
-if App.GuiUp:
-    from draftviewproviders.view_label import ViewProviderLabel
-
-
-
-def make_label(targetpoint=None, target=None, direction=None,
-               distance=None, labeltype=None, placement=None):
-    """
-    make_label(targetpoint, target, direction, distance, labeltype, placement)
-    
-    Function to create a Draft Label annotation object
-
-    Parameters
-    ----------
-    targetpoint : App::Vector
-            To be completed
-
-    target  : LinkSub
-            To be completed
-
-    direction : String
-            Straight direction of the label
-            ["Horizontal","Vertical","Custom"]
-
-    distance : Quantity
-            Length of the straight segment of label leader line 
-
-    labeltype : String
-            Label type in
-            ["Custom","Name","Label","Position",
-            "Length","Area","Volume","Tag","Material"]
-
-    placement : Base::Placement
-            To be completed
-
-    Returns
-    -------
-    obj :   App::DocumentObject
-            Newly created label object
-    """
-    obj = App.ActiveDocument.addObject("App::FeaturePython", 
-                                       "dLabel")
-    Label(obj)
-    if App.GuiUp:
-        ViewProviderLabel(obj.ViewObject)
-    if targetpoint:
-        obj.TargetPoint = targetpoint
-    if target:
-        obj.Target = target
-    if direction:
-        obj.StraightDirection = direction
-    if distance:
-        obj.StraightDistance = distance
-    if labeltype:
-        obj.LabelType = labeltype
-    if placement:
-        obj.Placement = placement
-
-    if App.GuiUp:
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
-
 
 
 class Label(DraftAnnotation):
     """The Draft Label object"""
 
     def __init__(self, obj):
-
         super(Label, self).__init__(obj, "Label")
 
         self.init_properties(obj)
 
         obj.Proxy = self
 
-
     def init_properties(self, obj):
         """Add properties to the object and set them"""
-
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The placement of this object")
         obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip)
@@ -213,3 +143,7 @@ class Label(DraftAnnotation):
         '''Do something when a property has changed'''
 
         return
+
+
+# Alias for compatibility with v0.18 and earlier
+DraftLabel = Label
