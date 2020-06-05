@@ -101,12 +101,6 @@ class PathGeometryGenerator:
             self._prepareConstants()
 
     def _prepareConstants(self):
-        # Apply drop cutter extra offset and set the max and min XY area of the operation
-        # xmin = self.shape.BoundBox.XMin
-        # xmax = self.shape.BoundBox.XMax
-        # ymin = self.shape.BoundBox.YMin
-        # ymax = self.shape.BoundBox.YMax
-
         # Compute weighted center of mass of all faces combined
         if self.pattern in ['Circular', 'CircularZigZag', 'Spiral']:
             if self.obj.PatternCenterAt == 'CenterOfMass':
@@ -234,20 +228,6 @@ class PathGeometryGenerator:
         GeoSet = list()
         centRot = FreeCAD.Vector(0.0, 0.0, 0.0)  # Bottom left corner of face/selection/model
         cAng = math.atan(self.deltaX / self.deltaY)  # BoundaryBox angle
-
-        # Determine end points and create top lines
-        # x1 = centRot.x - self.halfDiag
-        # x2 = centRot.x + self.halfDiag
-        # diag = None
-        # if self.obj.CutPatternAngle == 0 or self.obj.CutPatternAngle == 180:
-        #    diag = self.deltaY
-        # elif self.obj.CutPatternAngle == 90 or self.obj.CutPatternAngle == 270:
-        #    diag = self.deltaX
-        # else:
-        #    perpDist = math.cos(cAng - math.radians(self.obj.CutPatternAngle)) * self.deltaC
-        #    diag = perpDist
-        # y1 = centRot.y + diag
-        # y2 = y1
 
         # Create end points for set of lines to intersect with cross-section face
         pntTuples = list()
@@ -576,16 +556,16 @@ class ProcessSelectedFaces:
                     FreeCAD.Console.PrintError(msg)
                 else:
                     (fcShp, prflShp) = pPEB
-                    if fcShp is not False:
+                    if fcShp:
                         if fcShp is True:
                             PathLog.debug(' -fcShp is True.')
                             fShapes[m] = True
                         else:
                             fShapes[m] = [fcShp]
-                    if prflShp is not False:
-                        if fcShp is not False:
+                    if prflShp:
+                        if fcShp:
                             PathLog.debug('vShapes[{}]: {}'.format(m, vShapes[m]))
-                            if vShapes[m] is not False:
+                            if vShapes[m]:
                                 PathLog.debug(' -Cutting void from base profile shape.')
                                 adjPS = prflShp.cut(vShapes[m][0])
                                 self.profileShapes[m] = [adjPS]
@@ -696,7 +676,7 @@ class ProcessSelectedFaces:
                     PathLog.debug('.. include Profile Edge')
                     ofstVal = self._calculateOffsetValue(isHole)
                     psOfst = extractFaceOffset(cfsL, ofstVal, self.wpc)
-                    if psOfst is not False:
+                    if psOfst:
                         mPS = [psOfst]
                         if self.profileEdges == 'Only':
                             mFS = True
@@ -721,7 +701,7 @@ class ProcessSelectedFaces:
 
                 if cont:
                     lenIfL = len(ifL)
-                    if self.obj.InternalFeaturesCut is False:
+                    if not self.obj.InternalFeaturesCut:
                         if lenIfL == 0:
                             PathLog.debug(' -No internal features saved.')
                         else:
@@ -737,7 +717,6 @@ class ProcessSelectedFaces:
                             ofstVal = self._calculateOffsetValue(isHole=True)
                             intOfstShp = extractFaceOffset(casL, ofstVal, self.wpc)
                             mIFS.append(intOfstShp)
-                            # faceOfstShp = faceOfstShp.cut(intOfstShp)
 
                     mFS = [faceOfstShp]
                 # Eif
@@ -753,17 +732,19 @@ class ProcessSelectedFaces:
                     FUR = FindUnifiedRegions([(fcshp, fcIdx)], self.JOB.GeometryTolerance.Value)
                     if self.showDebugObjects:
                         FUR.setTempGroup(self.tempGroup)
-                    outerFace = FUR.getUnifiedRegions()[0]
-                    if not self.obj.InternalFeaturesCut:
-                        ifL = FUR.getInternalFeatures()
+                    gUR = FUR.getUnifiedRegions()
+                    if len(gUR) > 0:
+                        outerFace = gUR[0]
+                        if not self.obj.InternalFeaturesCut:
+                            ifL = FUR.getInternalFeatures()
 
-                    if outerFace is not False:
+                    if outerFace:
                         PathLog.debug('Attempting to create offset face of Face{}'.format(fNum))
 
                         if self.profileEdges != 'None':
                             ofstVal = self._calculateOffsetValue(isHole)
                             psOfst = extractFaceOffset(outerFace, ofstVal, self.wpc)
-                            if psOfst is not False:
+                            if psOfst:
                                 if mPS is False:
                                     mPS = list()
                                 mPS.append(psOfst)
@@ -805,7 +786,7 @@ class ProcessSelectedFaces:
             for ifs in mIFS:
                 mVS.append(ifs)
 
-        if VDS is not False:
+        if VDS:
             PathLog.debug('Processing avoid faces.')
             cont = True
             isHole = False
@@ -908,7 +889,7 @@ class ProcessSelectedFaces:
             PathLog.debug(' -Attempting profile geometry for model base.')
             ofstVal = self._calculateOffsetValue(isHole)
             psOfst = extractFaceOffset(csFaceShape, ofstVal, self.wpc)
-            if psOfst is not False:
+            if psOfst:
                 if self.profileEdges == 'Only':
                     return (True, psOfst)
                 prflShp = psOfst
@@ -1220,7 +1201,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
         B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
         fuseShapes.append(B)
 
-    if voidShapes is not False:
+    if voidShapes:
         voidComp = Part.makeCompound(voidShapes)
         voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)  # Produces .Shape
         fuseShapes.append(voidEnv)
@@ -1608,7 +1589,7 @@ def pathGeomToCircularPointSet(obj, compGeoShp, cutClimb, toolDiam, closedGap, g
             chkGap = False
             lst = None
 
-            if CONN is not False:
+            if CONN:
                 (iE, iS) = CONN
                 v1 = compGeoShp.Edges[iE].Vertexes[0]
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
@@ -1883,6 +1864,7 @@ class FindUnifiedRegions:
                     count[1] += 1
 
     def _groupEdgesByLength(self):
+        PathLog.debug('_groupEdgesByLength()')
         cont = True
         threshold = self.geomToler
         grp = list()
@@ -1933,6 +1915,7 @@ class FindUnifiedRegions:
                 self.idGroups.append(grp)
 
     def _identifySharedEdgesByLength(self, grp):
+        PathLog.debug('_identifySharedEdgesByLength()')
         holds = list()
         cont = True
         specialIndexes = []
@@ -1992,6 +1975,7 @@ class FindUnifiedRegions:
             self.noSharedEdges = False
 
     def _extractWiresFromEdges(self):
+        PathLog.debug('_extractWiresFromEdges()')
         DATA = self.edgeData
         holds = list()
         lastEdge = None
@@ -2090,16 +2074,34 @@ class FindUnifiedRegions:
                 cont = False
         # Ewhile
 
-        if len(LOOPS) > 0:
+        numLoops = len(LOOPS)
+        PathLog.debug(' -numLoops: {}.'.format(numLoops))
+        if numLoops > 0:
             FACES = list()
-            for Edges in LOOPS:
+            for li in range(0, numLoops):
+                Edges = LOOPS[li]
+                #for e in Edges:
+                #    self._showShape(e, 'Loop_{}_Edge'.format(li))
                 wire = Part.Wire(Part.__sortEdges__(Edges))
                 if wire.isClosed():
-                    face = Part.Face(wire)
+                    # This simple Part.Face() method fails to catch
+                    # wires with tangent closed wires, or an external
+                    # wire with one or more internal tangent wires.
+                    # face = Part.Face(wire)
+
+                    # This method works with the complex tangent
+                    # closed wires mentioned above.
+                    extWire = wire.extrude(FreeCAD.Vector(0.0, 0.0, 2.0))
+                    wireSolid = Part.makeSolid(extWire)
+                    extdBBFace1 = makeExtendedBoundBox(wireSolid.BoundBox, 5.0, wireSolid.BoundBox.ZMin + 1.0)
+                    extdBBFace2 = makeExtendedBoundBox(wireSolid.BoundBox, 5.0, wireSolid.BoundBox.ZMin + 1.0)
+                    inverse = extdBBFace1.cut(wireSolid)
+                    face = extdBBFace2.cut(inverse)
                     self.REGIONS.append(face)
             self.REGIONS.sort(key=faceArea, reverse=True)
 
     def _identifyInternalFeatures(self):
+        PathLog.debug('_identifyInternalFeatures()')
         remList = list()
 
         for (top, fcIdx) in self.topFaces:
@@ -2121,6 +2123,7 @@ class FindUnifiedRegions:
             self.REGIONS.pop(ri)
 
     def _processNestedRegions(self):
+        PathLog.debug('_processNestedRegions()')
         cont = True
         hold = list()
         Ids = list()
@@ -2222,6 +2225,7 @@ class FindUnifiedRegions:
     def getUnifiedRegions(self):
         '''getUnifiedRegions()... Returns a list of unified regions from list
         of tuples (faceShape, faceIndex) received at instantiation of the class object.'''
+        PathLog.debug('getUnifiedRegions()')
         self.INTERNALS = list()
         if len(self.FACES) == 0:
             msg = translate('PathSurfaceSupport',
@@ -2231,7 +2235,6 @@ class FindUnifiedRegions:
 
         self._extractTopFaces()
         lenFaces = len(self.topFaces)
-        PathLog.debug('getUnifiedRegions() lenFaces: {}.'.format(lenFaces))
         if lenFaces == 0:
             return []
 
@@ -2243,28 +2246,26 @@ class FindUnifiedRegions:
             lenWrs = len(topFace.Wires)
             if lenWrs > 1:
                 for w in range(1, lenWrs):
-                    # Any internal wires need to be flattened
-                    # before appending to self.INTERNALS
-                    # A problem exists that inner wires are not all recognized as wires.
-                    # Some are single circular edges.
-                    # Face.Edges.__len_() - Face.OuterWire.Edges.__len__() = edges for inner wire(s)
-
-                    # extWire = getExtrudedShape(wr)
-                    # wCS = getCrossSection(extWire)
-                    # wCS.translate(FreeCAD.Vector(0.0, 0.0, wr.BoundBox.ZMin))
                     wr = topFace.Wires[w]
                     self.INTERNALS.append(Part.Face(wr))
             # Flatten face and extract outer wire, then convert to face
             extWire = getExtrudedShape(topFace)
             wCS = getCrossSection(extWire)
-            wCS.translate(FreeCAD.Vector(0.0, 0.0, topFace.BoundBox.ZMin))
-            face = Part.Face(wCS)
-            return [face]
+            if wCS:
+                face = Part.Face(wCS)
+                return [face]
+            else:
+                (faceShp, fcIdx) = self.FACES[0] 
+                msg = translate('PathSurfaceSupport',
+                    'Failed to identify a horizontal cross-section for Face')
+                msg += '{}.\n'.format(fcIdx + 1)
+                FreeCAD.Console.PrintWarning(msg)
+                return []
 
         # process multiple top faces, unifying if possible
         self._fuseTopFaces()
-        # for F in self.fusedFaces.Faces:
-        #    self._showShape(F, 'TopFaceFused')
+        for F in self.fusedFaces.Faces:
+            self._showShape(F, 'TopFaceFused')
 
         self._getEdgesData()
         self._groupEdgesByLength()
@@ -2272,7 +2273,7 @@ class FindUnifiedRegions:
             self._identifySharedEdgesByLength(grp)
 
         if self.noSharedEdges:
-            PathLog.debug('No shared edges by length detected.\n')
+            PathLog.debug('No shared edges by length detected.')
             return [topFace for (topFace, fcIdx) in self.topFaces]
         else:
             # Delete shared edges from edgeData list
@@ -2283,8 +2284,8 @@ class FindUnifiedRegions:
         self._extractWiresFromEdges()
         self._identifyInternalFeatures()
         self._processNestedRegions()
-        for ri in range(0, len(self.REGIONS)):
-            self._showShape(self.REGIONS[ri], 'UnifiedRegion_{}'.format(ri))
+        # for ri in range(0, len(self.REGIONS)):
+        #    self._showShape(self.REGIONS[ri], 'UnifiedRegion_{}'.format(ri))
 
         return self.REGIONS
 
@@ -2298,3 +2299,18 @@ class FindUnifiedRegions:
         FreeCAD.Console.PrintError(msg + '\n')
         return False
 # Eclass
+
+# Support functions
+def makeExtendedBoundBox(wBB, bbBfr, zDep):
+    PathLog.debug('makeExtendedBoundBox()')
+    p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
+    p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
+    p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
+    p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
+
+    L1 = Part.makeLine(p1, p2)
+    L2 = Part.makeLine(p2, p3)
+    L3 = Part.makeLine(p3, p4)
+    L4 = Part.makeLine(p4, p1)
+
+    return Part.Face(Part.Wire([L1, L2, L3, L4]))

@@ -418,6 +418,20 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.AvoidLastX_Faces = 100
             PathLog.error(translate('PathSurface', 'AvoidLastX_Faces: Avoid last X faces count limited to 100.'))
 
+    def opUpdateDepths(self, obj):
+        if hasattr(obj, 'Base') and obj.Base:
+            base, sublist = obj.Base[0]
+            fbb = base.Shape.getElement(sublist[0]).BoundBox
+            zmin = fbb.ZMax
+            for base, sublist in obj.Base:
+                for sub in sublist:
+                    try:
+                        fbb = base.Shape.getElement(sub).BoundBox
+                        zmin = min(zmin, fbb.ZMin)
+                    except Part.OCCError as e:
+                        PathLog.error(e)
+            obj.OpFinalDepth = zmin
+
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
@@ -661,7 +675,7 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             exTime = str(round(execTime, 5)) + ' sec.'
         msg = translate('PathSurface', 'operation time is')
-        FreeCAD.Console.PrintMessage('3D Surface ' + msg + '{}\n'.format(exTime))
+        FreeCAD.Console.PrintMessage('3D Surface ' + msg + ' {}\n'.format(exTime))
 
         if self.cancelOperation:
             FreeCAD.ActiveDocument.openTransaction(translate("PathSurface", "Canceled 3D Surface operation."))
