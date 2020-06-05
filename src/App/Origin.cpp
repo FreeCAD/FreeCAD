@@ -48,11 +48,12 @@ PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
-Origin::Origin(void) {
+Origin::Origin(void) : extension(this) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);
+    extension.GroupExtension::initExtension(this);
 }
 
 
@@ -181,4 +182,32 @@ void Origin::unsetupObject () {
             }
         }
     }
+}
+
+// ----------------------------------------------------------------------------
+
+Origin::OriginExtension::OriginExtension(Origin* obj)
+    : obj(obj)
+{
+    Group.setStatus(Property::Transient, true);
+}
+
+void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
+    App::GroupExtension::initExtension(obj);
+}
+
+bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+                                                    PyObject **, Base::Matrix4D *, bool, int) const {
+    const char* dot;
+    if (!subname || subname[0] == '\0') {
+        return false;
+    }
+
+    std::string name(subname);
+    if ((dot=strchr(subname,'.'))) {
+        name = std::string(subname,dot);
+    }
+
+    ret = obj->getOriginFeature(name.c_str());
+    return true;
 }
