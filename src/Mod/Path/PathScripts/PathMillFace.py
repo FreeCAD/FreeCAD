@@ -185,7 +185,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         elif obj.BoundaryShape == 'Perimeter':
             if obj.ClearEdges:
                 psZMin = planeshape.BoundBox.ZMin
-                ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.radius * 1.25, planeshape)
+                ofstShape = PathUtils.getOffsetArea(planeshape,
+                                                    self.radius * 1.25,
+                                                    plane=planeshape)
                 ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
                 env = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
             else:
@@ -194,7 +196,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             import PathScripts.PathSurfaceSupport as PathSurfaceSupport
             baseShape = oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
-            ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.tool.Diameter * 1.1, planeshape)
+            ofstShape = PathUtils.getOffsetArea(planeshape,
+                                                self.tool.Diameter * 1.1,
+                                                plane=planeshape)
             ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
             # custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)  # only an envelope
             # ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)

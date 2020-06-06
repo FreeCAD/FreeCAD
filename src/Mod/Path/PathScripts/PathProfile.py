@@ -887,7 +887,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         cent1 = FreeCAD.Vector(lstVrt.X, lstVrt.Y, fdv)
 
         # Calculate offset shape, containing cut region
-        ofstShp = self._extractFaceOffset(obj, cutShp, False)
+        ofstShp = self._getOffsetArea(obj, cutShp, False)
 
         # CHECK for ZERO area of offset shape
         try:
@@ -1005,15 +1005,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return rtnWIRES
 
-    def _extractFaceOffset(self, obj, fcShape, isHole):
-        '''_extractFaceOffset(obj, fcShape, isHole) ... internal function.
-            Original _buildPathArea() version copied from PathAreaOp.py module.  This version is modified.
-            Adjustments made based on notes by @sliptonic - https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
-        PathLog.debug('_extractFaceOffset()')
+    def _getOffsetArea(self, obj, fcShape, isHole):
+        '''Get an offset area for a shape. Wrapper around
+        PathUtils.getOffsetArea.'''
+        PathLog.debug('_getOffsetArea()')
 
-        areaParams = {}
         JOB = PathUtils.findParentJob(obj)
-        tolrnc = JOB.GeometryTolerance.Value
+        tolerance = JOB.GeometryTolerance.Value
         if self.useComp is True:
             offset = self.ofstRadius  # + tolrnc
         else:
@@ -1022,22 +1020,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if isHole is False:
             offset = 0 - offset
 
-        areaParams['Offset'] = offset
-        areaParams['Fill'] = 1
-        areaParams['Coplanar'] = 0
-        areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
-        areaParams['Reorient'] = True
-        areaParams['OpenMode'] = 0
-        areaParams['MaxArcPoints'] = 400  # 400
-        areaParams['Project'] = True
-        # areaParams['JoinType'] = 1
-
-        area = Path.Area()  # Create instance of Area() class object
-        area.setPlane(PathUtils.makeWorkplane(fcShape))  # Set working plane
-        area.add(fcShape)  # obj.Shape to use for extracting offset
-        area.setParams(**areaParams)  # set parameters
-
-        return area.getShape()
+        return PathUtils.getOffsetArea(fcShape,
+                                       offset,
+                                       plane=fcShape,
+                                       tolerance=tolerance)
 
     def _findNearestVertex(self, shape, point):
         PathLog.debug('_findNearestVertex()')
@@ -1202,7 +1188,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return (wireIdxs[0], wireIdxs[1])
 
     def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):
-        '''_makeCrossSection(shape, sliceZ, zHghtTrgt=None)... 
+        '''_makeCrossSection(shape, sliceZ, zHghtTrgt=None)...
         Creates cross-section objectc from shape.  Translates cross-section to zHghtTrgt if available.
         Makes face shape from cross-section object. Returns face shape at zHghtTrgt.'''
         PathLog.debug('_makeCrossSection()')
@@ -1331,7 +1317,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # 2   6
             # |   |
             # |   ----5----|
-            # |            4  
+            # |            4
             # -----3-------|
             # positive dist in _makePerp2DVector() is CCW rotation
             p1 = E

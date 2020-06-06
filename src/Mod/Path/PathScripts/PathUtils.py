@@ -336,6 +336,94 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     return envelopeshape
 
 
+def getProjectionArea(
+        shapes,
+        removeHoles=False,
+        # Face merge and discretization tolerance.
+        tolerance=1e-4,
+        # Default: XY plane
+        plane=Part.makeCircle(10.0)):
+    """Take a list of Shapes, and get a merged 2d projection onto the X/y plane
+    (by default). Internal holes can be optionally removed / filled in, which
+    is useful when internal features in a shape should be treated the same way
+    as the remainder of the shape.
+    Returns a Shape on success (typically a Shell), False on failure"""
+    areaParams = {}
+    # We add a small amount of offset (equal tolerance), which encourages
+    # merging of adjacent areas.
+    areaParams['Offset'] = tolerance
+    areaParams['Fill'] = 1  # FACE
+    # Whether to remove internal features / holes
+    areaParams['Outline'] = removeHoles
+    areaParams['Reorient'] = True  # Reorient inner wires to identify holes
+    areaParams['Coplanar'] = 0  # NONE, do not check
+    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
+    areaParams['OpenMode'] = 0  # Do not do anything special for open wires
+    areaParams['MaxArcPoints'] = 400  # 400
+    areaParams['Project'] = True
+    areaParams['FitArcs'] = False  # FitArcs can be buggy, and is expensive
+    areaParams['Deflection'] = tolerance  # Discretization tolerance
+    areaParams['Accuracy'] = tolerance  # Arc discretization / fit tolerance
+    areaParams['Tolerance'] = tolerance  # Equal point tolerance
+
+    area = Path.Area()  # Create instance of Area() class object
+    area.setPlane(makeWorkplane(plane))
+    area.setParams(**areaParams)  # set parameters
+
+    for shape in shapes:
+        area.add(shape)
+
+    section = area.makeSections(heights=[0.0], project=True)[0].getShape()
+    # Now undo the offset
+    return getOffsetArea(section,
+                         -1 * tolerance,
+                         plane=plane,
+                         tolerance=tolerance)
+
+
+# Function to extract offset face from shape
+def getOffsetArea(fcShape,
+                  offset,
+                  # Default: XY plane
+                  plane=Part.makeCircle(10),
+                  makeComp=True,
+                  tolerance=1e-4):
+    '''Make an offset area of a shape, projected onto a plane.
+    Positive offsets expand the area, negative offsets shrink it.
+    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    based on notes by @sliptonic at this webpage:
+    https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
+    PathLog.debug('getOffsetArea()')
+
+    if fcShape.BoundBox.ZMin != 0.0:
+        fcShape.translate(FreeCAD.Vector(0.0, 0.0,
+                                         0.0 - fcShape.BoundBox.ZMin))
+
+    areaParams = {}
+    areaParams['Offset'] = offset
+    areaParams['Fill'] = 1  # 1
+    areaParams['Coplanar'] = 0
+    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
+    areaParams['Reorient'] = True
+    areaParams['OpenMode'] = 0
+    areaParams['MaxArcPoints'] = 400  # 400
+    areaParams['Project'] = True
+    areaParams['FitArcs'] = False  # Can be buggy & expensive
+    areaParams['Deflection'] = tolerance
+    areaParams['Accuracy'] = tolerance
+
+    area = Path.Area()  # Create instance of Area() class object
+    # Set working plane normal to Z=1
+    area.setPlane(makeWorkplane(plane))
+    area.add(fcShape)
+    area.setParams(**areaParams)  # set parameters
+
+    offsetShape = area.getShape()
+    if not offsetShape.Faces:
+        return False
+    return offsetShape
+
+
 def reverseEdge(e):
     if DraftGeomUtils.geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)

@@ -389,7 +389,7 @@ class PathGeometryGenerator:
         cont = True
         cnt = 0
         while cont:
-            ofstArea = self._getFaceOffset(shape, ofst)
+            ofstArea = PathUtils._getOffsetArea(shape, ofst, plane=self.wpc)
             if not ofstArea:
                 cont = False
                 True if cont else False  # cont used for LGTM
@@ -403,40 +403,6 @@ class PathGeometryGenerator:
                 ofst = 0.0 - self.cutOut
             cnt += 1
         return wires
-
-    def _getFaceOffset(self, shape, offset):
-        '''_getFaceOffset(shape, offset) ... internal function.
-            Original _buildPathArea() version copied from PathAreaOp.py module.  This version is modified.
-            Adjustments made based on notes by @sliptonic at this webpage: https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
-        areaParams = {}
-
-        areaParams['Offset'] = offset
-        areaParams['Fill'] = 1  # 1
-        areaParams['Coplanar'] = 0
-        areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
-        areaParams['Reorient'] = True
-        areaParams['OpenMode'] = 0
-        areaParams['MaxArcPoints'] = 400  # 400
-        areaParams['Project'] = True
-
-        area = Path.Area()  # Create instance of Area() class object
-        area.setPlane(PathUtils.makeWorkplane(self.wpc))  # Set working plane to normal at Z=1
-        area.add(shape)
-        area.setParams(**areaParams)  # set parameters
-
-        offsetShape = area.getShape()
-        wCnt = len(offsetShape.Wires)
-        if wCnt == 0:
-            return False
-        elif wCnt == 1:
-            ofstFace = Part.Face(offsetShape.Wires[0])
-        else:
-            W = list()
-            for wr in offsetShape.Wires:
-                W.append(Part.Face(wr))
-            ofstFace = Part.makeCompound(W)
-
-        return ofstFace
 # Eclass
 
 
@@ -650,22 +616,17 @@ class ProcessSelectedFaces:
             isHole = False
             if self.obj.HandleMultipleFeatures == 'Collectively':
                 cont = True
-                fsL = list()  # face shape list
-                ifL = list()  # avoid shape list
-                outFCS = list()
+                PathLog.debug(
+                    'Attempting to get cross-section of collective faces.')
+                outFCS, ifL = self.findUnifiedRegions(FCS)
+                if self.obj.InternalFeaturesCut:
+                    ifL = list()  # avoid shape list
 
-                # Use new face-unifying class
-                FUR = FindUnifiedRegions(FCS, self.JOB.GeometryTolerance.Value)
-                if self.showDebugObjects:
-                    FUR.setTempGroup(self.tempGroup)
-                outFCS = FUR.getUnifiedRegions()
-                if not self.obj.InternalFeaturesCut:
-                    ifL.extend(FUR.getInternalFeatures())
-
-                PathLog.debug('Attempting to get cross-section of collective faces.')
                 if len(outFCS) == 0:
-                    msg = translate('PathSurfaceSupport',
-                        'Cannot process selected faces. Check horizontal surface exposure.')
+                    msg = translate(
+                        'PathSurfaceSupport',
+                        'Cannot process selected faces. Check horizontal '
+                        'surface exposure.')
                     FreeCAD.Console.PrintError(msg + '\n')
                     cont = False
                 else:
@@ -675,7 +636,9 @@ class ProcessSelectedFaces:
                 if cont and self.profileEdges != 'None':
                     PathLog.debug('.. include Profile Edge')
                     ofstVal = self._calculateOffsetValue(isHole)
-                    psOfst = extractFaceOffset(cfsL, ofstVal, self.wpc)
+                    psOfst = PathUtils.getOffsetArea(cfsL,
+                                                     ofstVal,
+                                                     plane=self.wpc)
                     if psOfst:
                         mPS = [psOfst]
                         if self.profileEdges == 'Only':
@@ -692,7 +655,8 @@ class ProcessSelectedFaces:
                         self.tempGroup.addObject(T)
 
                     ofstVal = self._calculateOffsetValue(isHole)
-                    faceOfstShp = extractFaceOffset(cfsL, ofstVal, self.wpc)
+                    faceOfstShp = PathUtils.getOffsetArea(
+                        cfsL, ofstVal, plane=self.wpc)
                     if not faceOfstShp:
                         msg = translate('PathSurfaceSupport',
                             'Failed to create offset face.') + '\n'
@@ -715,7 +679,8 @@ class ProcessSelectedFaces:
                                 C.purgeTouched()
                                 self.tempGroup.addObject(C)
                             ofstVal = self._calculateOffsetValue(isHole=True)
-                            intOfstShp = extractFaceOffset(casL, ofstVal, self.wpc)
+                            intOfstShp = PathUtils.getOffsetArea(
+                                casL, ofstVal, plane=self.wpc)
                             mIFS.append(intOfstShp)
 
                     mFS = [faceOfstShp]
@@ -724,26 +689,20 @@ class ProcessSelectedFaces:
             elif self.obj.HandleMultipleFeatures == 'Individually':
                 for (fcshp, fcIdx) in FCS:
                     cont = True
-                    ifL = list()  # avoid shape list
                     fNum = fcIdx + 1
                     outerFace = False
 
-                    # Use new face-unifying class
-                    FUR = FindUnifiedRegions([(fcshp, fcIdx)], self.JOB.GeometryTolerance.Value)
-                    if self.showDebugObjects:
-                        FUR.setTempGroup(self.tempGroup)
-                    gUR = FUR.getUnifiedRegions()
-                    if len(gUR) > 0:
-                        outerFace = gUR[0]
-                        if not self.obj.InternalFeaturesCut:
-                            ifL = FUR.getInternalFeatures()
+                    gUR, ifL = self.findUnifiedRegions(FCS)
+                    if self.obj.InternalFeaturesCut:
+                        ifL = list()  # avoid shape list
 
                     if outerFace:
                         PathLog.debug('Attempting to create offset face of Face{}'.format(fNum))
 
                         if self.profileEdges != 'None':
                             ofstVal = self._calculateOffsetValue(isHole)
-                            psOfst = extractFaceOffset(outerFace, ofstVal, self.wpc)
+                            psOfst = PathUtils.getOffsetArea(
+                                outerFace, ofstVal, plane=self.wpc)
                             if psOfst:
                                 if mPS is False:
                                     mPS = list()
@@ -758,7 +717,8 @@ class ProcessSelectedFaces:
 
                         if cont:
                             ofstVal = self._calculateOffsetValue(isHole)
-                            faceOfstShp = extractFaceOffset(outerFace, ofstVal, self.wpc)
+                            faceOfstShp = PathUtils.getOffsetArea(
+                                outerFace, ofstVal, plane=self.wpc)
 
                             lenIfl = len(ifL)
                             if self.obj.InternalFeaturesCut is False and lenIfl > 0:
@@ -768,7 +728,8 @@ class ProcessSelectedFaces:
                                     casL = Part.makeCompound(ifL)
 
                                 ofstVal = self._calculateOffsetValue(isHole=True)
-                                intOfstShp = extractFaceOffset(casL, ofstVal, self.wpc)
+                                intOfstShp = PathUtils.getOffsetArea(
+                                    casL, ofstVal, plane=self.wpc)
                                 mIFS.append(intOfstShp)
                                 # faceOfstShp = faceOfstShp.cut(intOfstShp)
 
@@ -793,16 +754,9 @@ class ProcessSelectedFaces:
             outFCS = list()
             intFEAT = list()
 
-            for (fcshp, fcIdx) in VDS:
-                fNum = fcIdx + 1
-
-                # Use new face-unifying class
-                FUR = FindUnifiedRegions([(fcshp, fcIdx)], self.JOB.GeometryTolerance.Value)
-                if self.showDebugObjects:
-                    FUR.setTempGroup(self.tempGroup)
-                outFCS.extend(FUR.getUnifiedRegions())
-                if not self.obj.InternalFeaturesCut:
-                    intFEAT.extend(FUR.getInternalFeatures())
+            outFCS, intFEAT = self.findUnifiedRegions(VDS)
+            if self.obj.InternalFeaturesCut:
+                intFEAT = list()
 
             lenOtFcs = len(outFCS)
             if lenOtFcs == 0:
@@ -826,7 +780,9 @@ class ProcessSelectedFaces:
                     P.purgeTouched()
                     self.tempGroup.addObject(P)
                 ofstVal = self._calculateOffsetValue(isHole, isVoid=True)
-                avdOfstShp = extractFaceOffset(avoid, ofstVal, self.wpc)
+                avdOfstShp = PathUtils.getOffsetArea(avoid,
+                                                     ofstVal,
+                                                     plane=self.wpc)
                 if avdOfstShp is False:
                     msg = translate('PathSurfaceSupport',
                         'Failed to create collective offset avoid face.')
@@ -842,7 +798,9 @@ class ProcessSelectedFaces:
                     else:
                         ifc = intFEAT[0]
                     ofstVal = self._calculateOffsetValue(isHole=True)
-                    ifOfstShp = extractFaceOffset(ifc, ofstVal, self.wpc)
+                    ifOfstShp = PathUtils.getOffsetArea(ifc,
+                                                        ofstVal,
+                                                        plane=self.wpc)
                     if ifOfstShp is False:
                         msg = translate('PathSurfaceSupport',
                             'Failed to create collective offset avoid internal features.') + '\n'
@@ -888,7 +846,9 @@ class ProcessSelectedFaces:
         if cont and self.profileEdges != 'None':
             PathLog.debug(' -Attempting profile geometry for model base.')
             ofstVal = self._calculateOffsetValue(isHole)
-            psOfst = extractFaceOffset(csFaceShape, ofstVal, self.wpc)
+            psOfst = PathUtils.getOffsetArea(csFaceShape,
+                                             ofstVal,
+                                             plane=self.wpc)
             if psOfst:
                 if self.profileEdges == 'Only':
                     return (True, psOfst)
@@ -898,9 +858,10 @@ class ProcessSelectedFaces:
 
         if cont:
             ofstVal = self._calculateOffsetValue(isHole)
-            faceOffsetShape = extractFaceOffset(csFaceShape, ofstVal, self.wpc)
+            faceOffsetShape = PathUtils.getOffsetArea(csFaceShape, ofstVal,
+                                                      plane=self.wpc)
             if faceOffsetShape is False:
-                PathLog.debug('extractFaceOffset() failed for entire base.')
+                PathLog.debug('getOffsetArea() failed for entire base.')
             else:
                 faceOffsetShape.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - faceOffsetShape.BoundBox.ZMin))
                 return (faceOffsetShape, prflShp)
@@ -928,6 +889,38 @@ class ProcessSelectedFaces:
             offset += self.radius + (tolrnc / 10.0)
 
         return offset
+
+    def findUnifiedRegions(
+            self,
+            shapeAndIndexTuples,
+            useAreaImplementation=True):
+        """Wrapper around area and wire based region unification
+        implementations."""
+        PathLog.debug('findUnifiedRegions()')
+        # Allow merging of faces within the LinearDeflection tolerance.
+        tolerance = self.obj.LinearDeflection.Value
+        # Default: normal to Z=1 (XY plane), at Z=0
+        workingPlane = self.wpc
+        if useAreaImplementation:
+            # Use Area based implementation
+            shapes = [t[0] for t in shapeAndIndexTuples]
+            outlineShape = PathUtils.getProjectionArea(
+                shapes,
+                removeHoles=True,
+                tolerance=tolerance,
+                plane=workingPlane)
+            projectionShape = PathUtils.getProjectionArea(
+                shapes,
+                removeHoles=False,
+                tolerance=tolerance,
+                plane=workingPlane)
+            return ([outlineShape], [outlineShape.cut(projectionShape)])
+        else:
+            # Use face-unifying class
+            FUR = FindUnifiedRegions(shapeAndIndexTuples, tolerance)
+            if self.showDebugObjects:
+                FUR.setTempGroup(self.tempGroup)
+            return (FUR.getUnifiedRegions(), FUR.getInternalFeatures)
 
 # Eclass
 
@@ -1082,50 +1075,6 @@ def getSliceFromEnvelope(env):
     return tf
 
 
-# Function to extract offset face from shape
-def extractFaceOffset(fcShape, offset, wpc, makeComp=True):
-    '''extractFaceOffset(fcShape, offset) ... internal function.
-        Original _buildPathArea() version copied from PathAreaOp.py module.  This version is modified.
-        Adjustments made based on notes by @sliptonic at this webpage: https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
-    PathLog.debug('extractFaceOffset()')
-
-    if fcShape.BoundBox.ZMin != 0.0:
-        fcShape.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - fcShape.BoundBox.ZMin))
-
-    areaParams = {}
-    areaParams['Offset'] = offset
-    areaParams['Fill'] = 1  # 1
-    areaParams['Coplanar'] = 0
-    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
-    areaParams['Reorient'] = True
-    areaParams['OpenMode'] = 0
-    areaParams['MaxArcPoints'] = 400  # 400
-    areaParams['Project'] = True
-
-    area = Path.Area()  # Create instance of Area() class object
-    # area.setPlane(PathUtils.makeWorkplane(fcShape))  # Set working plane
-    area.setPlane(PathUtils.makeWorkplane(wpc))  # Set working plane to normal at Z=1
-    area.add(fcShape)
-    area.setParams(**areaParams)  # set parameters
-
-    offsetShape = area.getShape()
-    wCnt = len(offsetShape.Wires)
-    if wCnt == 0:
-        return False
-    elif wCnt == 1:
-        ofstFace = Part.Face(offsetShape.Wires[0])
-        if not makeComp:
-            ofstFace = [ofstFace]
-    else:
-        W = list()
-        for wr in offsetShape.Wires:
-            W.append(Part.Face(wr))
-        if makeComp:
-            ofstFace = Part.makeCompound(W)
-        else:
-            ofstFace = W
-
-    return ofstFace  # offsetShape
 
 
 def _prepareModelSTLs(self, JOB, obj, m, ocl):
@@ -1144,7 +1093,6 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     model, and avoided faces.  Travel lines can be checked against this
     STL object to determine minimum travel height to clear stock and model.'''
     PathLog.debug('_makeSafeSTL()')
-    import MeshPart
 
     fuseShapes = list()
     Mdl = JOB.Model.Group[mdlIdx]
@@ -2255,7 +2203,7 @@ class FindUnifiedRegions:
                 face = Part.Face(wCS)
                 return [face]
             else:
-                (faceShp, fcIdx) = self.FACES[0] 
+                (faceShp, fcIdx) = self.FACES[0]
                 msg = translate('PathSurfaceSupport',
                     'Failed to identify a horizontal cross-section for Face')
                 msg += '{}.\n'.format(fcIdx + 1)
@@ -2314,3 +2262,5 @@ def makeExtendedBoundBox(wBB, bbBfr, zDep):
     L4 = Part.makeLine(p4, p1)
 
     return Part.Face(Part.Wire([L1, L2, L3, L4]))
+
+
