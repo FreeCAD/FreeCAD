@@ -1076,45 +1076,20 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return GCODE
 
-    def _planarSinglepassProcess(self, obj, PNTS):
-        output = []
-        optimize = obj.OptimizeLinearPaths
-        lenPNTS = len(PNTS)
-        lop = None
-        onLine = False
-
-        # Initialize first three points
-        nxt = None
-        pnt = PNTS[0]
-        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
-
-        #  Add temp end point
-        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
-
+    def _planarSinglepassProcess(self, obj, points):
+        if obj.OptimizeLinearPaths:
+            points = self._optimizeLinearSegments(points)
         # Begin processing ocl points list into gcode
-        for i in range(0, lenPNTS):
-            # Calculate next point for consideration with current point
-            nxt = PNTS[i + 1]
-
-            # Process point
-            if optimize:
-                if pnt.isOnLineSegment(prev, nxt):
-                    onLine = True
-                else:
-                    onLine = False
-                    output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-            else:
-                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-
-            # Rotate point data
-            if onLine is False:
-                prev = pnt
-            pnt = nxt
-        # Efor
-
-        PNTS.pop()  # Remove temp end point
-
-        return output
+        commands = []
+        for pnt in points:
+            commands.append(
+                Path.Command('G1', {
+                    'X': pnt.x,
+                    'Y': pnt.y,
+                    'Z': pnt.z,
+                    'F': self.horizFeed
+                }))
+        return commands
 
     def _planarDropCutMulti(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
         GCODE = [Path.Command('N (Beginning of Multi-pass layers.)', {})]
