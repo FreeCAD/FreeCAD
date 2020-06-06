@@ -164,7 +164,7 @@ class ToolEditorDrill(ToolEditorImage):
 class ToolEditorEngrave(ToolEditorImage):
     '''Tool parameter editor for v-bits.'''
     def __init__(self, editor):
-        super(ToolEditorEngrave, self).__init__(editor, 'v-bit.svg', '', 'HS')
+        super(ToolEditorEngrave, self).__init__(editor, 'v-bit.svg', '', 'dS')
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         PathLog.track()
