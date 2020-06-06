@@ -951,7 +951,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return commands
 
     def _waterlineDropCutScan(self, stl, smplInt, xmin, xmax, ymin, fd, numScanLines):
-        '''_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ... 
+        '''_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ...
         Perform OCL scan for waterline purpose.'''
         pdc = ocl.PathDropCutter()   # create a pdc
         pdc.setSTL(stl)
@@ -1299,7 +1299,10 @@ class ObjectWaterline(PathOp.ObjectOp):
                 activeArea = area.cut(trimFace)
                 activeAreaWireCnt = len(activeArea.Wires)  # first wire is boundFace wire
                 self.showDebugObject(activeArea, 'ActiveArea_{}'.format(caCnt))
-                ofstArea = PathSurfaceSupport.extractFaceOffset(activeArea, ofst, self.wpc, makeComp=False)
+                ofstArea = PathUtils.getOffsetArea(activeArea,
+                                                   ofst,
+                                                   self.wpc,
+                                                   makeComp=False)
                 if not ofstArea:
                     data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
                     PathLog.debug('No offset area returned for cut area depth at {}.'.format(data))
@@ -1359,7 +1362,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         CUTAREAS = list()
         isFirst = True
         lenDP = len(depthparams)
-        
+
         # Cycle through layer depths
         for dp in range(0, lenDP):
             csHght = depthparams[dp]
@@ -1472,7 +1475,10 @@ class ObjectWaterline(PathOp.ObjectOp):
         cont = True
         cnt = 0
         while cont:
-            ofstArea = PathSurfaceSupport.extractFaceOffset(shape, ofst, self.wpc, makeComp=True)
+            ofstArea = PathUtils.getOffsetArea(shape,
+                                               ofst,
+                                               self.wpc,
+                                               makeComp=True)
             if not ofstArea:
                 break
             for F in ofstArea.Faces:
@@ -1584,7 +1590,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 li = fIds.pop()
                 low = csFaces[li]  # senior face
                 pIds = self._idInternalFeature(csFaces, fIds, pIds, li, low)
-            
+
             for af in range(lenCsF - 1, -1, -1):  # cycle from last item toward first
                 prnt = pIds[af]
                 if prnt == -1:
