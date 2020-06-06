@@ -752,6 +752,8 @@ def pruneIncluded(objectslist,strict=False):
                                 pass
                             elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
                                 pass
+                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
+                                pass
                             elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
                                     if parent.CloneOf.Name != obj.Name:
