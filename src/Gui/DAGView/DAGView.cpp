@@ -36,11 +36,14 @@
 #include <Gui/Document.h>
 #include <Gui/Application.h>
 
+#include <boost/bind/bind.hpp>
+
 #include "DAGModel.h"
 #include "DAGView.h"
 
 using namespace Gui;
 using namespace DAG;
+using namespace boost::placeholders;
 
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {

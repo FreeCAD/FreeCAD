@@ -40,8 +40,11 @@
 
 #include "ViewProviderSketch.h"
 
+#include <boost/bind/bind.hpp>
+
 using namespace SketcherGui;
 using namespace Gui::TaskView;
+using namespace boost::placeholders;
 
 SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
   : QWidget(parent), ui(new Ui_TaskSketcherGeneral)
