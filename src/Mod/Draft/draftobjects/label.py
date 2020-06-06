@@ -229,6 +229,22 @@ class Label(DraftAnnotation):
         """
         super(Label, self).onDocumentRestored(obj)
 
+    def onChanged(self, obj, prop):
+        """Execute when a property is changed."""
+        super(Label, self).onChanged(obj, prop)
+        self.show_and_hide(obj, prop)
+
+    def show_and_hide(self, obj, prop):
+        """Show and hide the properties depending on the touched property."""
+        # The minus sign removes the Hidden property (show)
+        if prop == "LabelType":
+            if obj.LabelType != "Custom":
+                obj.setPropertyStatus("CustomText", "Hidden")
+                obj.setPropertyStatus("Target", "-Hidden")
+            else:
+                obj.setPropertyStatus("CustomText", "-Hidden")
+                obj.setPropertyStatus("Target", "Hidden")
+
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
         if obj.StraightDirection != "Custom":
