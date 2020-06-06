@@ -198,16 +198,29 @@ void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
 
 bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
                                                     PyObject **, Base::Matrix4D *, bool, int) const {
-    const char* dot;
     if (!subname || subname[0] == '\0') {
         return false;
     }
 
+    // mapping of object name to role name
     std::string name(subname);
-    if ((dot=strchr(subname,'.'))) {
-        name = std::string(subname,dot);
+    for (int i=0; i<3; i++) {
+        if (name.rfind(Origin::AxisRoles[i], 0) == 0) {
+            name = Origin::AxisRoles[i];
+            break;
+        }
+        if (name.rfind(Origin::PlaneRoles[i], 0) == 0) {
+            name = Origin::PlaneRoles[i];
+            break;
+        }
     }
 
-    ret = obj->getOriginFeature(name.c_str());
-    return true;
+    try {
+        ret = obj->getOriginFeature(name.c_str());
+        return true;
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+        return false;
+    }
 }
