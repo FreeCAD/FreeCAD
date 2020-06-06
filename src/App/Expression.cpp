@@ -2301,7 +2301,12 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         _EXPR_THROW("Unknown function: " << f,expr);
     }
 
-    return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
+    Quantity q(scaler * output, unit);
+    if (!q.isValid()) {
+        throw Base::ValueError("Not a number");
+    }
+
+    return Py::asObject(new QuantityPy(new Quantity(q)));
 }
 
 Py::Object FunctionExpression::_getPyValue() const {
