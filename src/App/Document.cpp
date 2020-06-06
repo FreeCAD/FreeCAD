@@ -804,6 +804,12 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
         void markCycles() {
             bool changed = true;
             std::unordered_set<Vertex> in_use;
@@ -868,6 +874,11 @@ void Document::exportGraphviz(std::ostream& out) const
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
         }
+
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
+#endif
 
         void markOutOfScopeLinks() {
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
