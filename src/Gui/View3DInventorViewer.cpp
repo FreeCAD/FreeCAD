@@ -1801,6 +1801,14 @@ void View3DInventorViewer::applyOverrideMode()
                         prop.setConstraints(&_cstr);
                 });
 
+        static const App::PropertyPrecision::Constraints _smooth_cstr(0.0,5.0,0.001);
+        pcShadowGroup->smoothBorder = _shadowParam<App::PropertyPrecision>(
+                doc, "SmoothBorder", 0.0,
+                [](App::PropertyPrecision &prop) {
+                    if(prop.getConstraints() != &_smooth_cstr)
+                        prop.setConstraints(&_smooth_cstr);
+                });
+
         SoLight *light;
         auto _dir = _shadowParam<App::PropertyVector>(
                 doc, "LightDirection", 
@@ -1817,7 +1825,7 @@ void View3DInventorViewer::applyOverrideMode()
         pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc,
                 "Epsilon", 1e-5,
                     [](App::PropertyFloatConstraint &prop) {
-                        if(!prop.getConstraints())
+                        if(prop.getConstraints() != &_epsilon_cstr)
                             prop.setConstraints(&_epsilon_cstr);
                     });
 
