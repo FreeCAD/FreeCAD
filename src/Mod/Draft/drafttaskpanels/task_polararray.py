@@ -38,6 +38,10 @@ import draftutils.utils as utils
 from FreeCAD import Units as U
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
+<<<<<<< HEAD
+=======
+from FreeCAD import Units as U
+>>>>>>> Improve axis selection GUI
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -286,62 +290,55 @@ class TaskPanelPolarArray:
         return center
 
     def select_axis(self):
-        """Execute as callback when the axis button is clicked."""
-        #TO DO: Add handling of actually linking the axis
+        """Execute as callback when the axis button is clicked.
 
+        The axis selection process and button has the three stages
+        select (triggers selection), abort (aborts selection),
+        discard (set after axis is selected successfully and discards
+        the selected and saved axis)
+        """
         if self.form.button_axis.text() == "select":
-            self.disable_point()
-            #self.enable_axis_selection_cb()
-            self.form.button_axis.setText("abort")
-            self.initiate_axis_selection()
+            self.enable_axis_selection()
             return
-        elif self.form.button_axis.text() == "abort":
-            self.enable_point()
-            self.form.label_axis_name.setText("")
-            self.form.button_axis.setText("select")
+        elif self.form.button_axis.text() == "abort" or self.form.button_axis.text() == "discard":
+            self.disable_axis_selection()
             return
-        else:
-            self.axis_reference = None
-            self.enable_point()
-            self.form.button_axis.setText("select")
-            #self.disable_axis_selection_cb()
-
-    def initiate_axis_selection(self):
-        """Initiate the selection of an axis."""
-        if Gui.Selection.getSelectionEx():
-            return self.proceed()
-        _msg("Select an axis")
-
-
-        axis_observer = AxisSelectionObserver(self.display_axis)
-        Gui.Selection.addObserver(axis_observer)
 
     def display_axis(self, axis_name, edge_name):
-        """Show the selected axis in the Gui"""
+        """Show the selected axis in the GUI"""
         _msg("Selected: {} with edge {}".format(axis_name, edge_name))
         self.axis_reference = "(Gui.ActiveDocument.getObject('{}').Object, ['{}'])".format(axis_name, edge_name)
-        self.form.label_axis_name.setText(axis_name)
+        self.form.label_axis_name.setText("{} {}".format(axis_name, edge_name))
         self.form.button_axis.setText("discard")
 
+    def enable_axis_selection(self):
+        """Enable axis selection GUI elements and callbacks"""
+        self.disable_point()
+        self.form.button_axis.setText("abort")
+        self.axis_reference = None
+        self.source_command.add_axis_selection_observer()
+
+    def disable_axis_selection(self):
+        """Disable axis selection GUI elements and callbacks"""
+        self.enable_point()
+        self.axis_reference = None
+        self.form.button_axis.setText("select")
+        self.form.label_axis_name.setText("")
+        self.source_command.remove_axis_selection_observer()
+
     def disable_point(self):
-        """Disable point selection Gui elements"""
+        """Disable point selection GUI elements and callbacks"""
         _msg(_tr("Disabling point"))
-        self.source_command.view.removeEventCallbackPivy(self.source_command.location,
-                                          self.source_command.callback_move)
-        self.source_command.view.removeEventCallbackPivy(self.source_command.mouse_event,
-                                          self.source_command.callback_click)
-        _msg(_tr("Setting input to readonly"))
+        self.reset_point()
+        self.source_command.remove_center_callbacks()
         self.form.input_c_x.setProperty('readOnly', True)
         self.form.input_c_y.setProperty('readOnly', True)
         self.form.input_c_z.setProperty('readOnly', True)
 
     def enable_point(self):
-        """Enable point selection Gui elements"""
+        """Enable point selection GUI elements and callbacks"""
         _msg(_tr("enabling point"))
-        self.source_command.view.addEventCallbackPivy(self.source_command.location,
-                                          self.source_command.callback_move)
-        self.source_command.view.addEventCallbackPivy(self.source_command.mouse_event,
-                                          self.source_command.callback_click)
+        self.source_command.add_center_callbacks()
         _msg(_tr("Setting input to read/write"))
         self.form.input_c_x.setProperty('readOnly', False)
         self.form.input_c_y.setProperty('readOnly', False)
@@ -517,20 +514,3 @@ class TaskPanelPolarArray:
         # Runs the parent command to complete the call
         self.source_command.completed()
 
-
-class AxisSelectionObserver:
-    def __init__(self, display_axis):
-        self.display_axis = display_axis
-    def addSelection(self, doc, obj_name, sub_name, pnt):
-        Gui.Selection.clearSelection(App.ActiveDocument.Name)
-        Gui.Selection.removeObserver(self)
-        selection = Gui.ActiveDocument.getObject(obj_name)
-        object = selection.Object
-        edge_name = sub_name
-        _msg(obj_name)
-        _msg(sub_name)
-        edge = object.getSubObject(edge_name)
-        if isinstance(edge, Part.Edge):
-            self.display_axis(obj_name, edge_name)
-        else:
-            raise TypeError("Selected object is not an edge.")

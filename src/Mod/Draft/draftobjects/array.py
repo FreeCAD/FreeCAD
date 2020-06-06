@@ -352,12 +352,12 @@ class Array(DraftLink):
         center = obj.Center
 
         if hasattr(obj, "AxisReference") and obj.AxisReference:
-            if hasattr(obj.AxisReference, "Placement"):
-                reference = obj.AxisReference.Placement
-                axis = reference.Rotation * App.Vector(0, 0, 1)
-                center = reference.Base
+            edge = obj.AxisReference[0].getSubObject(obj.AxisReference[1][0])
+            if hasattr(edge, "Curve"):
+                axis = edge.Curve.Direction
+                center = edge.Curve.Location
             else:
-                _info = ("'AxisReference' has no 'Placement' property. "
+                _info = ("'AxisReference' has no 'Curve' property. "
                          "Please select a different object to use as "
                          "reference.")
                 raise TypeError(_info)
