@@ -113,7 +113,6 @@ class PolarArray(gui_base.GuiCommandBase):
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
-        return
         if event_cb:
             event = event_cb.getEvent()
             if (event.getState() != coin.SoMouseButtonEvent.DOWN
@@ -146,7 +145,6 @@ class PolarArray(gui_base.GuiCommandBase):
 
     def add_axis_selection_observer(self):
         """Execute when axis reference selection should be enabled"""
-        _msg("Select an axis")
         Gui.Selection.clearSelection(App.ActiveDocument.Name)
         self.axis_observer = AxisSelectionObserver(self)
         Gui.Selection.addObserver(self.axis_observer)
@@ -186,11 +184,9 @@ class AxisSelectionObserver:
         Gui.Selection.clearSelection(App.ActiveDocument.Name)
         selection = Gui.ActiveDocument.getObject(obj_name)
         selection_object = selection.Object
-        _msg(obj_name)
-        _msg(sub_name)
         edge = selection_object.getSubObject(sub_name)
-        if isinstance(edge, Part.Edge):
-            self.polar_array.ui.display_axis(obj_name, sub_name)
+        if isinstance(edge, Part.Edge) and isinstance(edge.Curve, Part.Line):
+            self.polar_array.ui.display_axis(obj_name, sub_name, edge)
             self.polar_array.remove_axis_selection_observer()
         else:
             self.polar_array.ui.disable_axis_selection()

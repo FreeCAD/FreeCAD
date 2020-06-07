@@ -35,6 +35,7 @@ import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+import Part
 import DraftVecUtils
 
 from draftobjects.draftlink import DraftLink
@@ -185,11 +186,11 @@ class Array(DraftLink):
         if "AxisReference" not in properties:
             _tip = ("The axis object that overrides the value of 'Axis' "
                     "and 'Center', for example, a datum line.\n"
-                    "Its placement, position and rotation, will be used "
+                    "It's location and direction will be used "
                     "when creating polar and circular arrays.\n"
                     "Leave this property empty to be able to set "
                     "'Axis' and 'Center' manually.")
-            obj.addProperty("App::PropertyLinkGlobal",
+            obj.addProperty("App::PropertyLinkSubGlobal",
                             "AxisReference",
                             "Objects",
                             QT_TRANSLATE_NOOP("App::Property", _tip))
@@ -353,14 +354,21 @@ class Array(DraftLink):
 
         if hasattr(obj, "AxisReference") and obj.AxisReference:
             edge = obj.AxisReference[0].getSubObject(obj.AxisReference[1][0])
-            if hasattr(edge, "Curve"):
-                axis = edge.Curve.Direction
-                center = edge.Curve.Location
-            else:
-                _info = ("'AxisReference' has no 'Curve' property. "
+            if not hasattr(edge, "Curve"):
+                _info = ("'AxisReference' has no 'Curve' attribute. "
                          "Please select a different object to use as "
-                         "reference.")
+                         "reference. It needs to be an edge.")
                 raise TypeError(_info)
+
+            if not isinstance(edge.Curve, Part.Line):
+                _info = ("The 'AxisReference' 'Curve' attribute "
+                         "does not contain an 'Part.Line' instance. "
+                         "Please select a different object to use as "
+                         "reference. It needs to be an edge.")
+                raise TypeError(_info)
+
+            axis = edge.Curve.Direction
+            center = edge.Curve.Location
 
         if obj.ArrayType == "ortho":
             pls = rect_placements(obj.Base.Placement,

@@ -26,6 +26,7 @@
 # \brief Provides functions for creating polar arrays in a plane.
 
 import FreeCAD as App
+import Part
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
@@ -36,7 +37,7 @@ from draftutils.translate import _tr
 
 def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
-                     use_link=True, axis_reference=None):
+                     axis_reference=None, use_link=True):
     """Create a polar array from the given object.
     ----------
     base_object: Part::Feature or str
@@ -58,6 +59,11 @@ def make_polar_array(base_object,
         It defaults to the origin `App.Vector(0, 0, 0)`.
         The vector indicating the center of rotation of the array.
 
+    axis_reference: ('DocumentObject', ['ObjectString']), optional
+        It defaults to `None`.
+        If it is set the resulting array will use the referenced axis
+        as center instead of the `center` argument to create the array.
+
     use_link: bool, optional
         It defaults to `True`.
         If it is `True` the produced copies are not `Part::TopoShape` copies,
@@ -73,11 +79,6 @@ def make_polar_array(base_object,
         If `use_link` is `False` the original shape is copied many times.
         In this case the `Fuse` property is able to fuse
         all copies into a single object, if they touch each other.
-
-    axis_reference: axis_object, optional
-        It defaults to `None`.
-        If it is set the resulting array will use the referenced axis
-        as center instead of the `center` argument to create the array.
 
     Returns
     -------
@@ -133,5 +134,15 @@ def make_polar_array(base_object,
 
     new_obj = make_array.make_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
-                                    use_link=use_link, axis_reference=axis_reference)
+                                    use_link=use_link)
+    if axis_reference:
+        if not (isinstance(axis_reference, tuple) and isinstance(axis_reference[1], list) and len(axis_reference[1]) == 1):
+            _err(_tr("Wrong input. Must be ('DocumentObject', ['ObjectString'])"))
+            return None
+        new_obj.AxisReference = axis_reference
+        #now the AxisReference property will have checked that 'DocumentObject' is correct
+        #so we can do one more test
+        if not axis_reference[0].getSubObject(axis_reference[1][0]):
+            _err(_tr("Wrong input. 'ObjectString' in ('DocumentObject', ['ObjectString']) must be a valid SubObject name."))
+            return None
     return new_obj

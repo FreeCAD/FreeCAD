@@ -25,7 +25,6 @@
 # \ingroup DRAFT
 # \brief This module provides the task panel code for the PolarArray tool.
 
-import types
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -38,10 +37,6 @@ import draftutils.utils as utils
 from FreeCAD import Units as U
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
-<<<<<<< HEAD
-=======
-from FreeCAD import Units as U
->>>>>>> Improve axis selection GUI
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -302,21 +297,24 @@ class TaskPanelPolarArray:
             return
         elif self.form.button_axis.text() == "abort" or self.form.button_axis.text() == "discard":
             self.disable_axis_selection()
-            return
 
-    def display_axis(self, axis_name, edge_name):
-        """Show the selected axis in the GUI"""
+    def display_axis(self, axis_name, edge_name, edge):
+        """Show the selected axis in the GUI. Add derived values for the center coordinates GUI."""
         _msg("Selected: {} with edge {}".format(axis_name, edge_name))
-        self.axis_reference = "(Gui.ActiveDocument.getObject('{}').Object, ['{}'])".format(axis_name, edge_name)
+        self.axis_reference = "(Gui.ActiveDocument.getObject('{}').Object, " \
+                              "['{}'])".format(axis_name, edge_name)
         self.form.label_axis_name.setText("{} {}".format(axis_name, edge_name))
         self.form.button_axis.setText("discard")
+        center = edge.Curve.Location
+        self.display_point(center)
 
     def enable_axis_selection(self):
         """Enable axis selection GUI elements and callbacks"""
-        self.disable_point()
         self.form.button_axis.setText("abort")
         self.axis_reference = None
         self.source_command.add_axis_selection_observer()
+        self.disable_point()
+        _msg(_tr("Selecting axis"))
 
     def disable_axis_selection(self):
         """Disable axis selection GUI elements and callbacks"""
@@ -325,10 +323,10 @@ class TaskPanelPolarArray:
         self.form.button_axis.setText("select")
         self.form.label_axis_name.setText("")
         self.source_command.remove_axis_selection_observer()
+        _msg(_tr("Selecting axis disabled"))
 
     def disable_point(self):
         """Disable point selection GUI elements and callbacks"""
-        _msg(_tr("Disabling point"))
         self.reset_point()
         self.source_command.remove_center_callbacks()
         self.form.input_c_x.setProperty('readOnly', True)
@@ -337,9 +335,9 @@ class TaskPanelPolarArray:
 
     def enable_point(self):
         """Enable point selection GUI elements and callbacks"""
-        _msg(_tr("enabling point"))
+        self.reset_point()
+        self.source_command.remove_center_callbacks()
         self.source_command.add_center_callbacks()
-        _msg(_tr("Setting input to read/write"))
         self.form.input_c_x.setProperty('readOnly', False)
         self.form.input_c_y.setProperty('readOnly', False)
         self.form.input_c_z.setProperty('readOnly', False)
