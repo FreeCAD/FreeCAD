@@ -2106,6 +2106,9 @@ Document::readObjects(Base::XMLReader& reader)
             catch (const Base::RuntimeError &e) {
                 e.ReportException();
             }
+            catch (const Base::XMLAttributeError &e) {
+                e.ReportException();
+            }
 
             pObj->setStatus(ObjectStatus::Restore, false);
 
