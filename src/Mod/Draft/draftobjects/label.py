@@ -182,6 +182,15 @@ class Label(DraftAnnotation):
                             _tip)
             obj.setEditorMode("Text", 1)  # Read only
 
+        # TODO: maybe here we can define a second and third 'label type'
+        # properties, so that the final displayed text is either
+        # the first type, or the combination of two or three types,
+        # if they are available.
+        # The current system has some labels combined, but these combinations
+        # are hard coded. By considering multiple properties, we could produce
+        # arbitrary combinations of labels.
+        # This would also require updating the `return_info` function
+        # to handle any combination that we want.
         if "LabelType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The type of information displayed "
@@ -207,7 +216,11 @@ class Label(DraftAnnotation):
                             "Label",
                             _tip)
             obj.LabelType = ["Custom", "Name", "Label", "Position",
-                             "Length", "Area", "Volume", "Tag", "Material"]
+                             "Length", "Area", "Volume",
+                             "Tag", "Material",
+                             "Label + Position", "Label + Length",
+                             "Label + Area", "Label + Volume",
+                             "Label + Material"]
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
@@ -283,72 +296,116 @@ def return_info(target, typ, subelement=None):
         it could be `'VertexN'`, `'EdgeN'`, or `'FaceN'`,
         where `'N'` is a number that starts from `1` up to the maximum
         number of subelements in that target.
-
-    To Do
-    -----
-    Other types could be defined to return lists of strings
-    that return various types of information at the same time, for example,
-    `'Length + Area'`, `'Length + Area + Volume'`, `'Label + Area'`,
-    `'Label + Volume'`, etc.
-
-    For this, each type could be implemented as a function that returns
-    the corresponding string. And then the strings could be combined
-    in a single output string.
     """
     # print(obj, target, typ, subelement)
 
     if typ == "Name":
-        return [target.Name]
+        return _get_name(target)
 
     elif typ == "Label":
-        return [target.Label]
+        return _get_label(target)
 
     elif typ == "Tag" and hasattr(target, "Tag"):
-        return [target.Tag]
+        return _get_tag(target)
 
     elif (typ == "Material"
           and hasattr(target, "Material")
           and hasattr(target.Material, "Label")):
-        return [target.Material.Label]
+        return _get_material(target)
+
+    elif (typ == "Label + Material"
+          and hasattr(target, "Material")
+          and hasattr(target.Material, "Label")):
+        return _get_label(target) + _get_material(target)
 
     elif typ == "Position":
-        p = target.Placement.Base
+        return _get_position(target, subelement)
 
-        # Position of the vertex if it is given as subelement
-        if subelement and "Vertex" in subelement:
-            p = target.Shape.Vertexes[int(subelement[6:]) - 1].Point
-
-        return [U.Quantity(x, U.Length).UserString for x in tuple(p)]
+    elif typ == "Label + Position":
+        return _get_label(target) + _get_position(target, subelement)
 
     elif typ == "Length" and hasattr(target, 'Shape'):
-        text_list = ["No length"]
-        if hasattr(target.Shape, "Length"):
-            text_list = [U.Quantity(target.Shape.Length, U.Length).UserString]
+        return _get_length(target, subelement)
 
-        # Length of the edge if it is given as subelement
-        if subelement and "Edge" in subelement:
-            edge = target.Shape.Edges[int(subelement[4:]) - 1]
-            text_list = [U.Quantity(edge.Length, U.Length).UserString]
-
-        return text_list
+    elif typ == "Label + Length" and hasattr(target, 'Shape'):
+        return _get_label(target) + _get_length(target, subelement)
 
     elif typ == "Area" and hasattr(target, 'Shape'):
-        text_list = ["No area"]
-        if hasattr(target.Shape, "Area"):
-            area = U.Quantity(target.Shape.Area, U.Area).UserString
-            text_list = [area.replace("^2", "²")]
+        return _get_area(target, subelement)
 
-        # Area of the face if it is given as subelement
-        if subelement and "Face" in subelement:
-            face = target.Shape.Faces[int(subelement[4:]) - 1]
-            text_list = [U.Quantity(face.Area, U.Area).UserString]
-
-        return text_list
+    elif typ == "Label + Area" and hasattr(target, 'Shape'):
+        return _get_label(target) + _get_area(target, subelement)
 
     elif (typ == "Volume"
           and hasattr(target, 'Shape')
           and hasattr(target.Shape, "Volume")):
-        volume = U.Quantity(target.Shape.Volume, U.Volume).UserString
-        return [volume.replace("^3", "³")]
+        return _get_volume(target)
 
+    elif (typ == "Label + Volume"
+          and hasattr(target, 'Shape')
+          and hasattr(target.Shape, "Volume")):
+        return _get_label(target) + _get_volume(target)
+
+    # If the type is not the correct one, or the subelement doesn't have
+    # the required `Shape` and information underneath, it will return
+    # an empty list
     return [""]
+
+
+def _get_name(target):
+    return [target.Name]
+
+
+def _get_label(target):
+    return [target.Label]
+
+
+def _get_tag(target):
+    return [target.Tag]
+
+
+def _get_material(target):
+    return [target.Material.Label]
+
+
+def _get_position(target, subelement):
+    p = target.Placement.Base
+
+    # Position of the vertex if it is given as subelement
+    if subelement and "Vertex" in subelement:
+        p = target.Shape.Vertexes[int(subelement[6:]) - 1].Point
+
+    text_list = [U.Quantity(x, U.Length).UserString for x in tuple(p)]
+    return text_list
+
+
+def _get_length(target, subelement):
+    text_list = ["No length"]
+    if hasattr(target.Shape, "Length"):
+        text_list = [U.Quantity(target.Shape.Length, U.Length).UserString]
+
+    # Length of the edge if it is given as subelement
+    if subelement and "Edge" in subelement:
+        edge = target.Shape.Edges[int(subelement[4:]) - 1]
+        text_list = [U.Quantity(edge.Length, U.Length).UserString]
+
+    return text_list
+
+
+def _get_area(target, subelement):
+    text_list = ["No area"]
+    if hasattr(target.Shape, "Area"):
+        area = U.Quantity(target.Shape.Area, U.Area).UserString
+        text_list = [area.replace("^2", "²")]
+
+    # Area of the face if it is given as subelement
+    if subelement and "Face" in subelement:
+        face = target.Shape.Faces[int(subelement[4:]) - 1]
+        text_list = [U.Quantity(face.Area, U.Area).UserString]
+
+    return text_list
+
+
+def _get_volume(target):
+    volume = U.Quantity(target.Shape.Volume, U.Volume).UserString
+    return [volume.replace("^3", "³")]
