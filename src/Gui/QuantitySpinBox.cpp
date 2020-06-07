@@ -630,6 +630,11 @@ void QuantitySpinBox::finishFormulaDialog()
 
 void QuantitySpinBox::handlePendingEmit()
 {
+    updateFromCache(true);
+}
+
+void QuantitySpinBox::updateFromCache(bool notify)
+{
     Q_D(QuantitySpinBox);
     if (d->pendingEmit) {
         double factor;
@@ -639,9 +644,11 @@ void QuantitySpinBox::handlePendingEmit()
         d->quantity = res;
 
         // signaling
-        d->pendingEmit = false;
-        valueChanged(res);
-        valueChanged(res.getValue());
+        if (notify) {
+            d->pendingEmit = false;
+            valueChanged(res);
+            valueChanged(res.getValue());
+        }
     }
 }
 
@@ -791,8 +798,7 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
-
-    handlePendingEmit();
+    updateFromCache(false);
 
     double step = d->singleStep * steps;
     double val = d->unitValue + step;
@@ -802,6 +808,7 @@ void QuantitySpinBox::stepBy(int steps)
         val = d->minimum;
 
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
+    updateFromCache(true);
     update();
     selectNumber();
 }

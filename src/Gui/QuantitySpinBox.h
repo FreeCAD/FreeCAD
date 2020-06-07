@@ -159,6 +159,7 @@ protected:
 
 private:
     void updateText(const Base::Quantity&);
+    void updateFromCache(bool);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
 
