@@ -584,17 +584,21 @@ class ProcessSelectedFaces:
     def _isReady(self, module):
         '''_isReady(module)... Internal method.
         Checks if required attributes are available for processing obj.Base (the Base Geometry).'''
+        PathLog.debug('ProcessSelectedFaces _isReady({})'.format(module))
         if hasattr(self, module):
             self.module = module
             modMethod = getattr(self, module)  # gets the attribute only
             modMethod()  # executes as method
         else:
+            PathLog.error('PSF._isReady() no "{}" method.'.format(module))
             return False
 
         if not self.radius:
+            PathLog.error('PSF._isReady() no cutter radius available.')
             return False
 
         if not self.depthParams:
+            PathLog.error('PSF._isReady() no depth params available.')
             return False
 
         return True
@@ -932,7 +936,6 @@ class ProcessSelectedFaces:
             offset += self.radius + tolrnc
 
         return offset
-
 # Eclass
 
 
@@ -2302,6 +2305,333 @@ class FindUnifiedRegions:
             'getUnifiedRegions() must be called before getInternalFeatures().')
         FreeCAD.Console.PrintError(msg + '\n')
         return False
+# Eclass
+
+class OCL_Tool():
+    """The OCL_Tool class is designed to translate a FreeCAD standard ToolBit shape,
+    or Legacy tool type, in the active Tool Controller, into an OCL tool type."""
+
+    def __init__(self, ocl, obj, safe=False):
+        self.ocl = ocl
+        self.obj = obj
+        self.tool = None
+        self.tiltCutter = False
+        self.safe = safe
+        self.oclTool = None
+        self.toolType = None
+        self.toolMode = None
+        self.toolMethod = None
+
+        self.diameter = -1.0
+        self.cornerRadius = -1.0
+        self.flatRadius = -1.0
+        self.cutEdgeHeight = -1.0
+        self.cutEdgeAngle = -1.0
+        # Default to zero. ToolBit likely is without.
+        self.lengthOffset = 0.0
+
+        if hasattr(obj, 'ToolController'):
+            if hasattr(obj.ToolController, 'Tool'):
+                self.tool = obj.ToolController.Tool
+                if hasattr(self.tool, 'ShapeName'):
+                    self.toolType = self.tool.ShapeName  # Indicates ToolBit tool
+                    self.toolMode = 'ToolBit'
+                elif hasattr(self.tool, 'ToolType'):
+                    self.toolType = self.tool.ToolType  # Indicates Legacy tool
+                    self.toolMode = 'Legacy'
+        if self.toolType:
+            PathLog.debug('OCL_Tool tool mode, type: {}, {}'.format(self.toolMode, self.toolType))
+
+    '''
+        #### FreeCAD Legacy tool shape properties per tool type
+        shape = EndMill
+        Diameter
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = Drill
+        Diameter
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = CenterDrill
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = CounterSink
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = CounterBore
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = FlyCutter
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = Reamer
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = Tap
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = SlotCutter
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = BallEndMill
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = ChamferMill
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = CornerRound
+        Diameter
+        FlatRadius
+        CornerRadius
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+        shape = Engraver
+        Diameter
+        CuttingEdgeAngle  # TipAngle from above, center shaft. 180 = flat tip (endmill)
+        CuttingEdgeHeight
+        LengthOffset
+
+
+        #### FreeCAD packaged ToolBit named constaints per shape files
+        shape = endmill
+        Diameter; Endmill diameter
+        Length; Overall length of the endmill
+        ShankDiameter; diameter of the shank
+        CuttingEdgeHeight
+
+        shape = ballend
+        Diameter; Endmill diameter
+        Length; Overall length of the endmill
+        ShankDiameter; diameter of the shank
+        CuttingEdgeHeight
+
+        shape = bullnose
+        Diameter; Endmill diameter
+        Length; Overall length of the endmill
+        ShankDiameter; diameter of the shank
+        FlatRadius;Radius of the bottom flat part.
+        CuttingEdgeHeight
+
+        shape = drill
+        TipAngle; Full angle of the drill tip
+        Diameter; Drill bit diameter
+        Length; Overall length of the drillbit
+
+        shape = v-bit
+        Diameter; Overall diameter of the V-bit
+        CuttingEdgeAngle;Full angle of the v-bit
+        Length; Overall  bit length
+        ShankDiameter
+        FlatHeight;Height of the flat extension of the v-bit
+        FlatRadius; Diameter of the flat end of the tip
+    '''
+
+    # Private methods
+    def _setDimensions(self):
+        '''_setDimensions() ... Set values for possible dimensions.'''
+        if hasattr(self.tool, 'Diameter'):
+            self.diameter = float(self.tool.Diameter)
+        else:
+            msg = translate('PathSurfaceSupport',
+                    'Diameter dimension missing from ToolBit shape.')
+            FreeCAD.Console.PrintError(msg + '\n')
+            return False
+        if hasattr(self.tool, 'LengthOffset'):
+            self.lengthOffset = float(self.tool.LengthOffset)
+        if hasattr(self.tool, 'FlatRadius'):
+            self.flatRadius = float(self.tool.FlatRadius)
+        if hasattr(self.tool, 'CuttingEdgeHeight'):
+            self.cutEdgeHeight = float(self.tool.CuttingEdgeHeight)
+        if hasattr(self.tool, 'CuttingEdgeAngle'):
+            self.cutEdgeAngle = float(self.tool.CuttingEdgeAngle)
+        return True
+
+    def _makeSafeCutter(self):
+        # Make safeCutter with 25% buffer around physical cutter
+        if self.safe:
+            self.diameter = self.diameter * 1.25
+            if self.flatRadius == 0.0:
+                self.flatRadius = self.diameter * 0.25
+            elif self.flatRadius > 0.0:
+                self.flatRadius = self.flatRadius * 1.25 
+            
+    def _oclCylCutter(self):
+        # Standard End Mill, Slot cutter, or Fly cutter
+        # OCL -> CylCutter::CylCutter(diameter, length)
+        if (self.diameter == -1.0 or self.cutEdgeHeight == -1.0):
+            return
+        self.oclTool = self.ocl.CylCutter(
+                            self.diameter,
+                            self.cutEdgeHeight + self.lengthOffset
+                        )
+
+    def _oclBallCutter(self):
+        # Standard Ball End Mill
+        # OCL -> BallCutter::BallCutter(diameter, length)
+        if (self.diameter == -1.0 or self.cutEdgeHeight == -1.0):
+            return
+        self.tiltCutter = True
+        self.oclTool = self.ocl.BallCutter(
+                            self.diameter,
+                            self.cutEdgeHeight + self.lengthOffset
+                        )
+
+    def _oclBullCutter(self):
+        # Standard Bull Nose cutter
+        # Reference: https://www.fine-tools.com/halbstabfraeser.html
+        # OCL -> BullCutter::BullCutter(diameter, minor radius, length)
+        if (self.diameter == -1.0 or
+            self.flatRadius == -1.0 or
+            self.cutEdgeHeight == -1.0):
+            return
+        self.oclTool = self.ocl.BullCutter(
+                            self.diameter,
+                            self.diameter - self.flatRadius,
+                            self.cutEdgeHeight + self.lengthOffset
+                        )
+
+    def _oclConeCutter(self):
+        # Engraver or V-bit cutter
+        # OCL -> ConeCutter::ConeCutter(diameter, angle, length)
+        if (self.diameter == -1.0 or
+            self.cuttingEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
+            return
+        self.oclTool = self.ocl.ConeCutter(
+                            self.diameter,
+                            self.cuttingEdgeAngle,
+                            self.cutEdgeHeight + self.lengthOffset
+                        )
+
+    def _setToolMethod(self):
+        toolMap = dict()
+
+        if self.toolMode == 'Legacy':
+            # Set cutter details
+            # https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
+            toolMap = {
+                'EndMill':      'CylCutter',
+                'BallEndMill':  'BallCutter',
+                'SlotCutter':   'CylCutter',
+                'Engraver':     'ConeCutter',
+                'Drill':        'ConeCutter',
+                'CounterSink':  'ConeCutter',
+                'FlyCutter':    'CylCutter',
+                'CenterDrill':  'None',
+                'CounterBore':  'None',
+                'Reamer':       'None',
+                'Tap':          'None',
+                'ChamferMill':  'None',
+                'CornerRound':  'None'
+            }
+        elif self.toolMode == 'ToolBit':
+            toolMap = {
+                'endmill':   'CylCutter',
+                'ballend':   'BallCutter',
+                'bullnose':  'BullCutter',
+                'drill':     'ConeCutter',
+                'engraver':  'ConeCutter',
+                'v-bit':     'ConeCutter',
+                'chamfer':   'None'
+            }
+        self.toolMethod = 'None'
+        if self.toolType in toolMap:
+            self.toolMethod = toolMap[self.toolType]
+
+    # Public methods
+    def getOclTool(self):
+        """getOclTool()... Call this method after class instantiation
+        to return OCL tool object."""
+        # Check for tool controller and tool object
+        if not self.tool or not self.toolMode:
+            msg = translate('PathSurface',
+                'Failed to identify tool for operation.')
+            FreeCAD.Console.PrintError(msg + '\n')
+            return False
+
+        if not self._setDimensions():
+            return False
+
+        self._setToolMethod()
+
+        if self.toolMethod == 'None':
+            err = translate('PathSurface',
+                'Failed to map selected tool to an OCL tool type.')
+            FreeCAD.Console.PrintError(err + '\n')
+            return False
+        else:
+            PathLog.debug('OCL_Tool tool method: {}'.format(self.toolMethod))
+            oclToolMethod = getattr(self, '_ocl' + self.toolMethod)
+            oclToolMethod()
+
+        if self.oclTool:
+            return self.oclTool
+
+        # Set error messages
+        err = translate('PathSurface',
+            'Failed to translate active tool to OCL tool type.')
+        FreeCAD.Console.PrintError(err + '\n')
+        return False
+
+    def useTiltCutter(self):
+        """useTiltCutter()... Call this method after getOclTool() method
+        to return status of cutter tilt availability - generally this
+        is for a ball end mill."""
+        if not self.tool or not self.oclTool:
+            err = translate('PathSurface',
+                'OCL tool not available. Cannot determine is cutter has tilt available.')
+            FreeCAD.Console.PrintError(err + '\n')
+            return False
+        return self.tiltCutter
 # Eclass
 
 # Support functions
