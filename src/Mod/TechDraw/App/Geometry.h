@@ -133,8 +133,9 @@ typedef std::vector<BaseGeom *> BaseGeomPtrVector;        //obs?
 class TechDrawExport Circle: public BaseGeom
 {
     public:
-        Circle(const TopoDS_Edge &e);
         Circle(void);
+        Circle(const TopoDS_Edge &e);
+        Circle(Base::Vector3d center, double radius);
         ~Circle() = default;
 
     public:
@@ -150,7 +151,8 @@ class TechDrawExport Circle: public BaseGeom
 class TechDrawExport Ellipse: public BaseGeom
 {
     public:
-        Ellipse(const TopoDS_Edge &e);
+    Ellipse(const TopoDS_Edge &e);
+    Ellipse(Base::Vector3d c, double mnr,  double mjr);
         ~Ellipse() = default;
 
     public:
@@ -188,6 +190,7 @@ class TechDrawExport AOC: public Circle
 {
     public:
         AOC(const TopoDS_Edge &e);
+        AOC(Base::Vector3d c, double r, double s, double e);
         AOC(void);
         ~AOC() = default;
 

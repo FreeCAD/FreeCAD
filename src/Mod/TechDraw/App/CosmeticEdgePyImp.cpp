@@ -26,6 +26,11 @@
 
 # include <boost/uuid/uuid_io.hpp>
 #endif
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <gp_Circ.hxx>
+#include <Geom_Circle.hxx>
+
 
 #include <App/Material.h>
 
@@ -206,59 +211,135 @@ Py::String CosmeticEdgePy::getTag(void) const
 //    }
 //}
 
-//Py::Object CosmeticEdgePy::getStart(void) const
-//{
-//    Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
-//    point = DrawUtil::invertY(point);
-//    return Py::asObject(new Base::VectorPy(point));
-//}
+Py::Object CosmeticEdgePy::getStart(void) const
+{
+    Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    return Py::asObject(new Base::VectorPy(point));
+}
 
-//void CosmeticEdgePy::setStart(Py::Object arg)
-//{
-//    PyObject* p = arg.ptr();
-//    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-//        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
-//        getCosmeticEdgePtr()->permaStart = 
-//                DrawUtil::invertY(point);
-//    }
-//    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-//        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
-//        getCosmeticEdgePtr()->permaStart = 
-//                DrawUtil::invertY(point);
-//    }
-//    else {
-//        std::string error = std::string("type must be 'Vector', not ");
-//        error += p->ob_type->tp_name;
-//        throw Py::TypeError(error);
-//    }
-//}
+void CosmeticEdgePy::setStart(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    Base::Vector3d pNew;
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        pNew = static_cast<Base::VectorPy*>(p)->value();
+    }
+    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+        pNew = Base::getVectorFromTuple<double>(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
 
-//Py::Object CosmeticEdgePy::getEnd(void) const
-//{
-//    Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
-//    point = DrawUtil::invertY(point);
-//    return Py::asObject(new Base::VectorPy(point));
-//}
+    pNew = DrawUtil::invertY(pNew);
+    Base::Vector3d pEnd = getCosmeticEdgePtr()->permaEnd;
+    pEnd = DrawUtil::invertY(pEnd);
+    gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
+    gp_Pnt gp2(pEnd.x,pEnd.y,pEnd.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+    getCosmeticEdgePtr()->m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    getCosmeticEdgePtr()->permaStart = pNew;
+    delete oldGeom;
+}
 
-//void CosmeticEdgePy::setEnd(Py::Object arg)
-//{
-//    PyObject* p = arg.ptr();
-//    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-//        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
-//        getCosmeticEdgePtr()->permaEnd = 
-//                DrawUtil::invertY(point);
-//    }
-//    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-//        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
-//        getCosmeticEdgePtr()->permaEnd = 
-//                DrawUtil::invertY(point);
-//    }
-//    else {
-//        std::string error = std::string("type must be 'Vector', not ");
-//        error += p->ob_type->tp_name;
-//        throw Py::TypeError(error);
-//    }
-//}
+Py::Object CosmeticEdgePy::getEnd(void) const
+{
+    Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
+    return Py::asObject(new Base::VectorPy(point));
+}
+
+void CosmeticEdgePy::setEnd(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    Base::Vector3d pNew;
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        pNew = static_cast<Base::VectorPy*>(p)->value();
+    }
+    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+        pNew = Base::getVectorFromTuple<double>(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    pNew = DrawUtil::invertY(pNew);
+    Base::Vector3d pStart = getCosmeticEdgePtr()->permaStart;
+    pStart = DrawUtil::invertY(pStart);
+    gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
+    gp_Pnt gp2(pStart.x,pStart.y,pStart.z);
+    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp2, gp1);
+    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+    getCosmeticEdgePtr()->m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    getCosmeticEdgePtr()->permaEnd = pNew;
+    delete oldGeom;
+}
+
+Py::Object CosmeticEdgePy::getRadius(void) const
+{
+    double r = getCosmeticEdgePtr()->permaRadius;
+    return Py::asObject(PyFloat_FromDouble(r));
+}
+
+void CosmeticEdgePy::setRadius(Py::Object arg)
+{
+    //TODO: check if the edge has a radius attrib
+    PyObject* p = arg.ptr();
+    double r;
+    if (PyObject_TypeCheck(p, &PyFloat_Type)) {
+        r = PyFloat_AsDouble(p);
+    }
+    else if (PyObject_TypeCheck(p, &PyLong_Type)) {
+        r = (double) PyLong_AsLong(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Float' or 'Int', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    getCosmeticEdgePtr()->permaRadius = r;
+    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+    getCosmeticEdgePtr()->m_geometry = new TechDraw::Circle(getCosmeticEdgePtr()->permaStart, r);
+    delete oldGeom;
+}
+
+Py::Object CosmeticEdgePy::getCenter(void) const
+{
+    Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    return Py::asObject(new Base::VectorPy(point));
+}
+
+void CosmeticEdgePy::setCenter(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    Base::Vector3d pNew;
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        pNew = static_cast<Base::VectorPy*>(p)->value();
+    }
+    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+        pNew = Base::getVectorFromTuple<double>(p);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+
+    pNew = DrawUtil::invertY(pNew);
+    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+    TechDraw::Circle* oldCircle = dynamic_cast<TechDraw::Circle*>(oldGeom);
+
+    getCosmeticEdgePtr()->permaStart = pNew;
+    getCosmeticEdgePtr()->permaEnd = pNew;
+    getCosmeticEdgePtr()->permaRadius = oldCircle->radius;
+    getCosmeticEdgePtr()->m_geometry = new TechDraw::Circle(getCosmeticEdgePtr()->permaStart, oldCircle->radius);
+    delete oldGeom;
+}
 
 PyObject *CosmeticEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
