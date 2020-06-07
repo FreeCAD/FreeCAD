@@ -428,6 +428,9 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Starting directory for menu 'Insert Page using Template'</string>
           </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
           </property>
@@ -538,6 +541,9 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Default directory for welding symbols</string>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>WeldingDir</cstring>
