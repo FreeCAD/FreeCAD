@@ -57,11 +57,9 @@ class DraftAnnotation(object):
             if not hasattr(obj.ViewObject, 'ScaleMultiplier'):
                 # annotation properties
                 vobj = obj.ViewObject
-                _tip = "Dimension size overall multiplier"
-                vobj.addProperty("App::PropertyFloat",
-                                 "ScaleMultiplier",
-                                 "Annotation",
-                                 QT_TRANSLATE_NOOP("App::Property", _tip))
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                        "Dimension size overall multiplier")
+                vobj.addProperty("App::PropertyFloat", "ScaleMultiplier", "Annotation", _tip)
                 vobj.ScaleMultiplier = 1.00
 
                 _info = "added view property 'ScaleMultiplier'"

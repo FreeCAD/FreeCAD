@@ -51,42 +51,34 @@ class DrawingView(DraftObject):
     def __init__(self, obj):
         super(DrawingView, self).__init__(obj, "DrawingView")
         
-        _tip = "The linked object"
-        obj.addProperty("App::PropertyLink", "Source",
-                        "Base", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The linked object")
+        obj.addProperty("App::PropertyLink", "Source", "Base", _tip)
         
-        _tip ="Projection direction"
-        obj.addProperty("App::PropertyVector", "Direction",
-                        "Shape View", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Projection direction")
+        obj.addProperty("App::PropertyVector", "Direction", "Shape View", _tip)
         
-        _tip = "The width of the lines inside this object"
-        obj.addProperty("App::PropertyFloat", "LineWidth",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The width of the lines inside this object")
+        obj.addProperty("App::PropertyFloat", "LineWidth", "View Style", _tip)
                 
-        _tip = "The size of the texts inside this object"
-        obj.addProperty("App::PropertyLength", "FontSize",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The size of the texts inside this object")
+        obj.addProperty("App::PropertyLength", "FontSize", "View Style", _tip)
                 
-        _tip = "The spacing between lines of text"
-        obj.addProperty("App::PropertyLength", "LineSpacing",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The spacing between lines of text")
+        obj.addProperty("App::PropertyLength", "LineSpacing", "View Style", _tip)
                 
-        _tip = "The color of the projected objects"
-        obj.addProperty("App::PropertyColor", "LineColor",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The color of the projected objects")
+        obj.addProperty("App::PropertyColor", "LineColor", "View Style", _tip)
                 
-        _tip = "Shape Fill Style"
-        obj.addProperty("App::PropertyEnumeration", "FillStyle",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Shape Fill Style")
+        obj.addProperty("App::PropertyEnumeration", "FillStyle", "View Style", _tip)
                 
-        _tip = "Line Style"
-        obj.addProperty("App::PropertyEnumeration", "LineStyle",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Line Style")
+        obj.addProperty("App::PropertyEnumeration", "LineStyle", "View Style", _tip)
                 
-        _tip = "If checked, source objects are displayed regardless of being \
-                visible in the 3D model"
-        obj.addProperty("App::PropertyBool", "AlwaysOn",
-                        "View Style", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", 
+                "If checked, source objects are displayed regardless of being \
+                visible in the 3D model")
+        obj.addProperty("App::PropertyBool", "AlwaysOn", "View Style", _tip)
 
         obj.FillStyle = ['shape color'] + list(utils.svgpatterns().keys())
         obj.LineStyle = ['Solid','Dashed','Dotted','Dashdot']
