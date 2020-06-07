@@ -37,7 +37,7 @@ import draftutils.todo as todo
 
 from draftutils.messages import _msg, _log
 from draftutils.translate import _tr
-from draftguitools import gui_base, gui_tool_utils
+from draftguitools import gui_base
 from drafttaskpanels import task_polararray
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -79,7 +79,7 @@ class PolarArray(gui_base.GuiCommandBase):
         the widgets of the task panel.
         """
         _log("GuiCommand: {}".format(_tr(self.command_name)))
-        _msg("{}".format(16*"-"))
+        _msg("{}".format(16 * "-"))
         _msg("GuiCommand: {}".format(_tr(self.command_name)))
 
         self.location = coin.SoLocation2Event.getClassTypeId()
@@ -135,13 +135,13 @@ class PolarArray(gui_base.GuiCommandBase):
         """Execute when the center selection should be disabled"""
         if hasattr(self, "callback_move"):
             self.view.removeEventCallbackPivy(self.location,
-                                      self.callback_move)
-            del(self.callback_move)
+                                              self.callback_move)
+            del (self.callback_move)
 
         if hasattr(self, "callback_click"):
             self.view.removeEventCallbackPivy(self.mouse_event,
-                                      self.callback_click)
-            del(self.callback_click)
+                                              self.callback_click)
+            del (self.callback_click)
 
     def add_axis_selection_observer(self):
         """Execute when axis reference selection should be enabled"""
@@ -153,7 +153,7 @@ class PolarArray(gui_base.GuiCommandBase):
         """Execute when axis reference selection should be disabled"""
         if hasattr(self, "axis_observer"):
             Gui.Selection.removeObserver(self.axis_observer)
-            del(self.axis_observer)
+            del (self.axis_observer)
 
     def completed(self):
         """Execute when the command is terminated.
@@ -167,13 +167,17 @@ class PolarArray(gui_base.GuiCommandBase):
             Gui.Control.closeDialog()
             super(PolarArray, self).finish()
 
+
 Gui.addCommand('Draft_PolarArray', PolarArray())
+
 
 class AxisSelectionObserver:
     """This classes functions will be called when an selection
     event occurs."""
+
     def __init__(self, polar_array):
         self.polar_array = polar_array
+
     def addSelection(self, doc, obj_name, sub_name, pnt):
         """Executed when a new selection is added during AxisReference
         selection process.

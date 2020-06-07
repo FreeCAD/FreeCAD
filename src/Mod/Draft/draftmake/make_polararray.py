@@ -39,6 +39,8 @@ def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
                      axis_reference=None, use_link=True):
     """Create a polar array from the given object.
+
+    Parameters
     ----------
     base_object: Part::Feature or str
         Any of object that has a `Part::TopoShape` that can be duplicated.
@@ -136,13 +138,17 @@ def make_polar_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
                                     use_link=use_link)
     if axis_reference:
-        if not (isinstance(axis_reference, tuple) and isinstance(axis_reference[1], list) and len(axis_reference[1]) == 1):
+        if not (isinstance(axis_reference, tuple)
+                and isinstance(axis_reference[1], list)
+                and len(axis_reference[1]) == 1):
             _err(_tr("Wrong input. Must be ('DocumentObject', ['ObjectString'])"))
             return None
         new_obj.AxisReference = axis_reference
-        #now the AxisReference property will have checked that 'DocumentObject' is correct
-        #so we can do one more test
+        # now the AxisReference property will have checked that 'DocumentObject' is correct
+        # so we can do one more test
         if not axis_reference[0].getSubObject(axis_reference[1][0]):
-            _err(_tr("Wrong input. 'ObjectString' in ('DocumentObject', ['ObjectString']) must be a valid SubObject name."))
+            _err(_tr(
+                "Wrong input. 'ObjectString' in ('DocumentObject', ['ObjectString'])"
+                " must be a valid SubObject name."))
             return None
     return new_obj

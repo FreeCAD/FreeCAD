@@ -89,10 +89,10 @@ def make_circular_array(base_object,
         The point through which the `axis` passes to define
         the axis of rotation.
 
-    axis_reference: axis_object, optional
+    axis_reference: ('DocumentObject', ['ObjectString']), optional
         It defaults to `None`.
         If it is set the resulting array will use the referenced axis
-        as center instead of the `center` argument to create the array.
+        as center instead of the `center` argument to create the array
 
     use_link: bool, optional
         It defaults to `True`.

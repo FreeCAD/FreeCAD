@@ -118,6 +118,7 @@ def make_array(base_object,
         new_obj.Center = arg1
         new_obj.Angle = arg2
         new_obj.NumberPolar = arg3
+
     if App.GuiUp:
         if use_link:
             ViewProviderDraftLink(new_obj.ViewObject)
