@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
 #endif

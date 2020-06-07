@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost/bind.hpp>
 #endif
 
 #include "ui_TaskSketcherGeneral.h"
