@@ -249,8 +249,9 @@ class ObjectSurface(PathOp.ObjectOp):
             'AvoidLastX_Faces': 0,
             'PatternCenterCustom': FreeCAD.Vector(0.0, 0.0, 0.0),
             'GapThreshold': 0.005,
-            'AngularDeflection': 0.25,
-            'LinearDeflection': 0.0001,
+            'AngularDeflection': 0.25, # AngularDeflection is unused
+             # Reasonable compromise between speed & precision
+            'LinearDeflection': 0.001,
             # For debugging
             'ShowTempObjects': False
         }
@@ -259,12 +260,16 @@ class ObjectSurface(PathOp.ObjectOp):
         if hasattr(job, 'GeometryTolerance'):
             if job.GeometryTolerance.Value != 0.0:
                 warn = False
-                defaults['LinearDeflection'] = job.GeometryTolerance.Value
+                # Tessellation precision dictates the offsets we need to add to
+                # avoid false collisions with the model mesh, so make sure we
+                # default to tessellating with greater precision than the target
+                # GeometryTolerance.
+                defaults['LinearDeflection'] = job.GeometryTolerance.Value / 4
         if warn:
             msg = translate('PathSurface',
                             'The GeometryTolerance for this Job is 0.0.')
             msg += translate('PathSurface',
-                             'Initializing LinearDeflection to 0.0001 mm.')
+                             'Initializing LinearDeflection to 0.001 mm.')
             FreeCAD.Console.PrintWarning(msg + '\n')
 
         return defaults
@@ -1027,11 +1032,11 @@ class ObjectSurface(PathOp.ObjectOp):
                         odd = False
                     else:
                         odd = True
-                minTrnsHght = self._getMinSafeTravelHeight(safePDC, lstStpEnd, first)  # Check safe travel height against fullSTL
-                # cmds.append(Path.Command('N (Transition: last, first: {}, {}:  minSTH: {})'.format(lstStpEnd, first, minTrnsHght), {}))
-                cmds.extend(self._stepTransitionCmds(obj, lstStpEnd, first, minTrnsHght, tolrnc))
-
-            # Override default `OptimizeLinearPaths` behavior to allow `ProfileEdges` optimization
+                cmds.extend(
+                    self._stepTransitionCmds(obj, lstStpEnd, first, safePDC,
+                                             tolrnc))
+            # Override default `OptimizeLinearPaths` behavior to allow
+            # `ProfileEdges` optimization
             if so == peIdx or peIdx == -1:
                 obj.OptimizeLinearPaths = self.preOLP
 
@@ -1041,9 +1046,10 @@ class ObjectSurface(PathOp.ObjectOp):
                 lenPrt = len(prt)
                 if prt == 'BRK':
                     nxtStart = PRTS[i + 1][0]
-                    minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart)  # Check safe travel height against fullSTL
                     cmds.append(Path.Command('N (Break)', {}))
-                    cmds.extend(self._breakCmds(obj, last, nxtStart, minSTH, tolrnc))
+                    cmds.extend(
+                        self._stepTransitionCmds(obj, last, nxtStart, safePDC,
+                                                 tolrnc))
                 else:
                     cmds.append(Path.Command('N (part {}.)'.format(i + 1), {}))
                     start = prt[0]
@@ -1070,45 +1076,20 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return GCODE
 
-    def _planarSinglepassProcess(self, obj, PNTS):
-        output = []
-        optimize = obj.OptimizeLinearPaths
-        lenPNTS = len(PNTS)
-        lop = None
-        onLine = False
-
-        # Initialize first three points
-        nxt = None
-        pnt = PNTS[0]
-        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
-
-        #  Add temp end point
-        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
-
+    def _planarSinglepassProcess(self, obj, points):
+        if obj.OptimizeLinearPaths:
+            points = self._optimizeLinearSegments(points)
         # Begin processing ocl points list into gcode
-        for i in range(0, lenPNTS):
-            # Calculate next point for consideration with current point
-            nxt = PNTS[i + 1]
-
-            # Process point
-            if optimize:
-                if pnt.isOnLineSegment(prev, nxt):
-                    onLine = True
-                else:
-                    onLine = False
-                    output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-            else:
-                output.append(Path.Command('G1', {'X': pnt.x, 'Y': pnt.y, 'Z': pnt.z, 'F': self.horizFeed}))
-
-            # Rotate point data
-            if onLine is False:
-                prev = pnt
-            pnt = nxt
-        # Efor
-        
-        PNTS.pop()  # Remove temp end point
-
-        return output
+        commands = []
+        for pnt in points:
+            commands.append(
+                Path.Command('G1', {
+                    'X': pnt.x,
+                    'Y': pnt.y,
+                    'Z': pnt.z,
+                    'F': self.horizFeed
+                }))
+        return commands
 
     def _planarDropCutMulti(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
         GCODE = [Path.Command('N (Beginning of Multi-pass layers.)', {})]
@@ -1183,6 +1164,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 transCmds = list()
                 if soHasPnts is True:
                     first = ADJPRTS[0][0]  # first point of arc/line stepover group
+                    last = None
 
                     # Manage step over transition and CircularZigZag direction
                     if so > 0:
@@ -1195,9 +1177,9 @@ class ObjectSurface(PathOp.ObjectOp):
                         # Control step over transition
                         if prvStpLast is None:
                             prvStpLast = lastPrvStpLast
-                        minTrnsHght = self._getMinSafeTravelHeight(safePDC, prvStpLast, first, minDep=None)  # Check safe travel height against fullSTL
-                        transCmds.append(Path.Command('N (--Step {} transition)'.format(so), {}))
-                        transCmds.extend(self._stepTransitionCmds(obj, prvStpLast, first, minTrnsHght, tolrnc))
+                        transCmds.extend(
+                            self._stepTransitionCmds(obj, prvStpLast, first,
+                                                     safePDC, tolrnc))
 
                     # Override default `OptimizeLinearPaths` behavior to allow `ProfileEdges` optimization
                     if so == peIdx or peIdx == -1:
@@ -1209,9 +1191,10 @@ class ObjectSurface(PathOp.ObjectOp):
                         lenPrt = len(prt)
                         if prt == 'BRK' and prtsHasCmds is True:
                             nxtStart = ADJPRTS[i + 1][0]
-                            minSTH = self._getMinSafeTravelHeight(safePDC, last, nxtStart, minDep=None)  # Check safe travel height against fullSTL
                             prtsCmds.append(Path.Command('N (--Break)', {}))
-                            prtsCmds.extend(self._breakCmds(obj, last, nxtStart, minSTH, tolrnc))
+                            prtsCmds.extend(
+                                self._stepTransitionCmds(
+                                    obj, last, nxtStart, safePDC, tolrnc))
                         else:
                             segCmds = False
                             prtsCmds.append(Path.Command('N (part {})'.format(i + 1), {}))
@@ -1305,7 +1288,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 else:
                     PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
             # Efor
-        
+
         if optLinTrans is True:
             # Remove leading and trailing Hold Points
             popList = list()
@@ -1397,76 +1380,69 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return output
 
-    def _stepTransitionCmds(self, obj, lstPnt, first, minSTH, tolrnc):
+    def _stepTransitionCmds(self, obj, p1, p2, safePDC, tolrnc):
+        """Generate transition commands / paths between two dropcutter steps or
+        passes, as well as other kinds of breaks. When
+        OptimizeStepOverTransitions is enabled, uses safePDC to safely optimize
+        short (~order of cutter diameter) transitions."""
         cmds = list()
         rtpd = False
-        horizGC = 'G0'
-        hSpeed = self.horizRapid
         height = obj.SafeHeight.Value
-        maxXYDistanceSqrd = (self.cutter.getDiameter() + tolrnc)**2
+        # Allow cutter-down transitions with a distance up to 2x cutter
+        # diameter. We might be able to extend this further to the
+        # full-retract-and-rapid break even point in the future, but this will
+        # require a safeSTL that has all non-cut surfaces raised sufficiently
+        # to avoid inadvertent cutting.
+        maxXYDistanceSqrd = (self.cutter.getDiameter() * 2)**2
 
-        if obj.OptimizeStepOverTransitions is True:
+        if obj.OptimizeStepOverTransitions:
             # Short distance within step over
-            xyDistanceSqrd = (abs(first.x - lstPnt.x)**2 +
-                              abs(first.y - lstPnt.y)**2)
-            zChng = abs(first.z - lstPnt.z)
-            # Only optimize short distances <= cutter diameter. Staying at
-            # minSTH over long distances is not safe for multi layer paths,
-            # since minSTH is calculated from the model, and not based on
-            # stock cut so far.
+            xyDistanceSqrd = ((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+            # Try to keep cutting for short distances.
             if xyDistanceSqrd <= maxXYDistanceSqrd:
-                horizGC = "G1"
-                hSpeed = self.horizFeed
-                if (minSTH <= max(first.z, lstPnt.z) + tolrnc
-                        and zChng < tolrnc):
-                    # Allow direct transition without any lift over short
-                    # distances, and only when there is very little z change.
-                    height = False
-                else:
-                    # Avoid a full lift, but stay at least at minSTH along the
-                    # entire transition.
-                    # TODO: Consider using an actual scan path for the
-                    # transition.
-                    height = max(minSTH, first.z, lstPnt.z)
-            else:
-                # We conservatively lift to SafeHeight for lack of an accurate
-                # stock model, but then speed up the drop back down
-                # When using multi pass, only drop quickly to previous layer
-                # depth
-                stepDown = obj.StepDown.Value if hasattr(obj, "StepDown") else 0
-                rtpd = min(height,
-                           max(minSTH, first.z, lstPnt.z) + stepDown + 2)
+                # Try to keep cutting, following the model shape
+                (transLine, minZ, maxZ) = self._getTransitionLine(
+                    safePDC, p1, p2, obj)
+                # For now, only optimize moderate deviations in Z direction, and
+                # no dropping below the min of p1 and p2, primarily for multi
+                # layer path safety.
+                zFloor = min(p1.z, p2.z)
+                if abs(minZ - maxZ) < self.cutter.getDiameter():
+                    for pt in transLine[1:-1]:
+                        cmds.append(
+                            Path.Command('G1', {
+                                'X': pt.x,
+                                'Y': pt.y,
+                                # Enforce zFloor
+                                'Z': max(pt.z, zFloor),
+                                'F': self.horizFeed
+                            }))
+                    # Use p2 (start of next step) verbatim
+                    cmds.append(
+                        Path.Command('G1', {
+                            'X': p2.x,
+                            'Y': p2.y,
+                            'Z': p2.z,
+                            'F': self.horizFeed
+                        }))
+                    return cmds
+            # For longer distances or large z deltas, we conservatively lift
+            # to SafeHeight for lack of an accurate stock model, but then
+            # speed up the drop back down when using multi pass, dropping
+            # quickly to *previous* layer depth.
+            stepDown = obj.StepDown.Value if hasattr(obj,
+                                                     "StepDown") else 0
+            rtpd = min(height, p2.z + stepDown + 2)
 
         # Create raise, shift, and optional lower commands
         if height is not False:
             cmds.append(Path.Command('G0', {'Z': height, 'F': self.vertRapid}))
-            cmds.append(Path.Command(horizGC, {'X': first.x, 'Y': first.y, 'F': hSpeed}))
-        if rtpd is not False:  # ReturnToPreviousDepth
-            cmds.append(Path.Command('G0', {'Z': rtpd, 'F': self.vertRapid}))
-
-        return cmds
-
-    def _breakCmds(self, obj, lstPnt, first, minSTH, tolrnc):
-        cmds = list()
-        rtpd = False
-        horizGC = 'G0'
-        hSpeed = self.horizRapid
-        height = obj.SafeHeight.Value
-
-        if obj.CutPattern in ['Line', 'Circular']:
-            if obj.OptimizeStepOverTransitions is True:
-                height = minSTH + 2.0
-        elif obj.CutPattern in ['ZigZag', 'CircularZigZag']:
-            if obj.OptimizeStepOverTransitions is True:
-                zChng = first.z - lstPnt.z
-                if abs(zChng) < tolrnc:  # transitions to same Z height
-                    if (minSTH - first.z) > tolrnc:
-                        height = minSTH + 2.0
-                    else:
-                        height = first.z + 2.0  # first.z
-
-        cmds.append(Path.Command('G0', {'Z': height, 'F': self.vertRapid}))
-        cmds.append(Path.Command(horizGC, {'X': first.x, 'Y': first.y, 'F': hSpeed}))
+            cmds.append(
+                Path.Command('G0', {
+                    'X': p2.x,
+                    'Y': p2.y,
+                    'F': self.horizRapid
+                }))
         if rtpd is not False:  # ReturnToPreviousDepth
             cmds.append(Path.Command('G0', {'Z': rtpd, 'F': self.vertRapid}))
 
@@ -2075,7 +2051,7 @@ class ObjectSurface(PathOp.ObjectOp):
             diam_1 += 4.0
             if FR != 0.0:
                 FR += 2.0
-            
+
         PathLog.debug('ToolType: {}'.format(obj.ToolController.Tool.ToolType))
         if obj.ToolController.Tool.ToolType == 'EndMill':
             # Standard End Mill
@@ -2109,15 +2085,37 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
-    def _getMinSafeTravelHeight(self, pdc, p1, p2, minDep=None):
-        A = (p1.x, p1.y)
-        B = (p2.x, p2.y)
-        LINE = self._planarDropCutScan(pdc, A, B)
-        zMax = max([obj.z for obj in LINE])
-        if minDep is not None:
-            if zMax < minDep:
-                zMax = minDep
-        return zMax
+    def _optimizeLinearSegments(self, line):
+        """Eliminate collinear interior segments"""
+        if len(line) > 2:
+            prv, pnt = line[0:2]
+            pts = [prv]
+            for nxt in line[2:]:
+                if not pnt.isOnLineSegment(prv, nxt):
+                    pts.append(pnt)
+                prv = pnt
+                pnt = nxt
+            pts.append(line[-1])
+            return pts
+        else:
+            return line
+
+    def _getTransitionLine(self, pdc, p1, p2, obj):
+        """Use an OCL PathDropCutter to generate a safe transition path between
+        two points in the x/y plane."""
+        p1xy, p2xy = ((p1.x, p1.y), (p2.x, p2.y))
+        pdcLine = self._planarDropCutScan(pdc, p1xy, p2xy)
+        if obj.OptimizeLinearPaths:
+            pdcLine = self._optimizeLinearSegments(pdcLine)
+        zs = [obj.z for obj in pdcLine]
+        # PDC z values are based on the model, and do not take into account
+        # any remaining stock / multi layer paths. Adjust raw PDC z values to
+        # align with p1 and p2 z values.
+        zDelta = p1.z - pdcLine[0].z
+        if zDelta > 0:
+            for p in pdcLine:
+                p.z += zDelta
+        return (pdcLine, min(zs), max(zs))
 
     def showDebugObject(self, objShape, objName):
         if self.showDebugObjects:
