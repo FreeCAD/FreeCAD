@@ -792,6 +792,8 @@ void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
 
+    handlePendingEmit();
+
     double step = d->singleStep * steps;
     double val = d->unitValue + step;
     if (val > d->maximum)
@@ -800,7 +802,6 @@ void QuantitySpinBox::stepBy(int steps)
         val = d->minimum;
 
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
-    handlePendingEmit();
     update();
     selectNumber();
 }
