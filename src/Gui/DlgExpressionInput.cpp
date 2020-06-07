@@ -156,13 +156,17 @@ void DlgExpressionInput::textChanged(const QString &text)
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
 
-                if(!impliedUnit.isEmpty()) {
+                if (!value.isValid()) {
+                    throw Base::ValueError("Not a number");
+                }
+                else if (!impliedUnit.isEmpty()) {
                     if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
-                } else if (!value.getUnit().isEmpty()) {
+                }
+                else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
 
                     QPalette p(ui->msg->palette());
