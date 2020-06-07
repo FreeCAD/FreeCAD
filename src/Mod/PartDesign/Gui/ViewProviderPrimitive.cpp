@@ -123,8 +123,12 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 
 void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
+
+    // Rely on parent class to:
+    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
+    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {
