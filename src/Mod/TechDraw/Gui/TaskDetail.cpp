@@ -117,13 +117,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
@@ -190,13 +190,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     connect(ui->pbDragger, SIGNAL(clicked(bool)),
             this, SLOT(onDraggerClicked(bool)));
 
-    // the UI file uses setKeyboardTracking(false) so that a
-    // recomputation will only be triggered when the arrow yeys of the spinboxes are used
-    connect(ui->qsbX, SIGNAL(editingFinished()),
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->qsbX, SIGNAL(valueChanged(double)),
             this, SLOT(onXEdit()));
-    connect(ui->qsbY, SIGNAL(editingFinished()),
+    connect(ui->qsbY, SIGNAL(valueChanged(double)),
             this, SLOT(onYEdit()));
-    connect(ui->qsbRadius, SIGNAL(editingFinished()),
+    connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
