@@ -93,12 +93,9 @@ class DraftLink(DraftObject):
             # with native App::Link
             obj.configLinkProperty('ShowElement')
             showElement = obj.ShowElement
-            obj.addProperty("App::PropertyBool",
-                            "ExpandArray",
-                            "Draft",
-                            QT_TRANSLATE_NOOP("App::Property",
-                                              "Show array element as "
-                                              "children object"))
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "Show array element as children object")
+            obj.addProperty("App::PropertyBool", "ExpandArray", "Draft", _tip)
             obj.ExpandArray = showElement
             obj.configLinkProperty(ShowElement='ExpandArray')
             obj.removeProperty('ShowElement')

@@ -118,59 +118,33 @@ class Label(DraftAnnotation):
     def init_properties(self, obj):
         """Add properties to the object and set them"""
 
-        obj.addProperty("App::PropertyPlacement",
-                        "Placement",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The placement of this object"))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The placement of this object")
+        obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip)
 
-        obj.addProperty("App::PropertyDistance",
-                        "StraightDistance",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The length of the straight segment"))
+        _tip = QT_TRANSLATE_NOOP("App::Property","The length of the straight segment")
+        obj.addProperty("App::PropertyDistance", "StraightDistance", "Base", _tip)
 
-        obj.addProperty("App::PropertyVector",
-                        "TargetPoint",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The point indicated by this label"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The point indicated by this label")
+        obj.addProperty("App::PropertyVector", "TargetPoint", "Base", _tip)
 
-        obj.addProperty("App::PropertyVectorList",
-                        "Points",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The points defining the label polyline"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The points defining the label polyline")
+        obj.addProperty("App::PropertyVectorList", "Points", "Base", _tip)
 
-        obj.addProperty("App::PropertyEnumeration",
-                        "StraightDirection",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The direction of the straight segment"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The direction of the straight segment")
+        obj.addProperty("App::PropertyEnumeration", "StraightDirection", "Base", _tip)
 
-        obj.addProperty("App::PropertyEnumeration",
-                        "LabelType",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The type of information shown by this label"))
+        _tip = QT_TRANSLATE_NOOP("App::Property","The type of information shown by this label")
+        obj.addProperty("App::PropertyEnumeration", "LabelType", "Base", _tip)
 
-        obj.addProperty("App::PropertyLinkSub",
-                        "Target",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The target object of this label"))
+        _tip = QT_TRANSLATE_NOOP("App::Property","The target object of this label")
+        obj.addProperty("App::PropertyLinkSub", "Target", "Base", _tip)
 
-        obj.addProperty("App::PropertyStringList",
-                        "CustomText",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The text to display when type is set to custom"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The text to display when type is set to custom")
+        obj.addProperty("App::PropertyStringList", "CustomText", "Base", _tip)
 
-        obj.addProperty("App::PropertyStringList",
-                        "Text",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The text displayed by this label"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The text displayed by this label")
+        obj.addProperty("App::PropertyStringList", "Text", "Base", _tip)
 
         obj.StraightDirection = ["Horizontal","Vertical","Custom"]
         obj.LabelType = ["Custom","Name","Label","Position",

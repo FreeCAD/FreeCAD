@@ -171,30 +171,18 @@ class DimensionBase(DraftAnnotation):
         super(DimensionBase, self).__init__(obj, tp)
 
         # Draft
-        obj.addProperty("App::PropertyVector",
-                        "Normal",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The normal direction of this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The normal direction of this dimension")
+        obj.addProperty("App::PropertyVector", "Normal", "Draft", _tip)
 
-        obj.addProperty("App::PropertyLink",
-                        "Support",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The object measured by this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The object measured by this dimension")
+        obj.addProperty("App::PropertyLink", "Support", "Draft",_tip)
 
-        obj.addProperty("App::PropertyLinkSubList",
-                        "LinkedGeometry",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The geometry this dimension is linked to"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The geometry this dimension is linked to")
+        obj.addProperty("App::PropertyLinkSubList", "LinkedGeometry", "Draft", _tip)
                                           
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Dimline",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Point on which the dimension \n"
-                                          "line is placed."))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Point on which the dimension\nline is placed.")
+        obj.addProperty("App::PropertyVectorDistance", "Dimline", "Draft", _tip)
                                           
         obj.Dimline = App.Vector(0,1,0)
         obj.Normal = App.Vector(0,0,1)
@@ -232,35 +220,20 @@ class LinearDimension(DimensionBase):
         """Add Linear Dimension specific properties to the object and set them"""
 
         # Draft
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Start",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Startpoint of dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Startpoint of dimension")
+        obj.addProperty("App::PropertyVectorDistance", "Start", "Draft", _tip)
 
-        obj.addProperty("App::PropertyVectorDistance",
-                        "End",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Endpoint of dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Endpoint of dimension")
+        obj.addProperty("App::PropertyVectorDistance", "End", "Draft", _tip)
 
-        obj.addProperty("App::PropertyVector",
-                        "Direction",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The normal direction of this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The normal direction of this dimension")
+        obj.addProperty("App::PropertyVector", "Direction", "Draft", _tip)
 
-        obj.addProperty("App::PropertyLength",
-                        "Distance",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The measurement of this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The measurement of this dimension")
+        obj.addProperty("App::PropertyLength", "Distance", "Draft", _tip)
 
-        obj.addProperty("App::PropertyBool",
-                        "Diameter",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "For arc/circle measurements, false = radius, true = diameter"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "For arc/circle measurements, false = radius, true = diameter")
+        obj.addProperty("App::PropertyBool", "Diameter", "Draft", _tip)
 
         obj.Start = App.Vector(0,0,0)
         obj.End = App.Vector(1,0,0)
@@ -353,29 +326,17 @@ class AngularDimension(DimensionBase):
     def init_properties(self, obj):
         """Add Angular Dimension specific properties to the object and set them"""
 
-        obj.addProperty("App::PropertyAngle",
-                        "FirstAngle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Start angle of the dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Start angle of the dimension")
+        obj.addProperty("App::PropertyAngle", "FirstAngle", "Draft", )
 
-        obj.addProperty("App::PropertyAngle",
-                        "LastAngle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "End angle of the dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property","End angle of the dimension")
+        obj.addProperty("App::PropertyAngle", "LastAngle", "Draft", _tip)
 
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Center",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The center point of this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The center point of this dimension")
+        obj.addProperty("App::PropertyVectorDistance", "Center", "Draft", _tip)
 
-        obj.addProperty("App::PropertyAngle",
-                        "Angle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The measurement of this dimension"))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The measurement of this dimension")
+        obj.addProperty("App::PropertyAngle", "Angle", "Draft", _tip)
 
         obj.FirstAngle = 0
         obj.LastAngle = 90

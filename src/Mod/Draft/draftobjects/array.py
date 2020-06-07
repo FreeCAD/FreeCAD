@@ -75,15 +75,13 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if "Base" not in properties:
-            _tip = "The base object that will be duplicated"
-            obj.addProperty("App::PropertyLink",
-                            "Base",
-                            "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The base object that will be duplicated")
+            obj.addProperty("App::PropertyLink", "Base", "Objects", _tip)
             obj.Base = None
 
         if "ArrayType" not in properties:
-            _tip = ("The type of array to create.\n"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "The type of array to create.\n"
                     "- Ortho: places the copies in the direction "
                     "of the global X, Y, Z axes.\n"
                     "- Polar: places the copies along a circular arc, "
@@ -94,16 +92,17 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "ArrayType",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                             _tip)
             obj.ArrayType = ['ortho', 'polar', 'circular']
 
         if "Fuse" not in properties:
-            _tip = ("Specifies if the copies should be fused together "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Specifies if the copies should be fused together "
                     "if they touch each other (slower)")
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Fuse = False
 
     def set_ortho_properties(self, obj):
@@ -111,51 +110,55 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if "NumberX" not in properties:
-            _tip = "Number of copies in X direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                                     "Number of copies in X direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberX",
                             "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.NumberX = 2
 
         if "NumberY" not in properties:
-            _tip = "Number of copies in Y direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                                     "Number of copies in Y direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberY",
                             "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.NumberY = 2
 
         if "NumberZ" not in properties:
-            _tip = "Number of copies in Z direction"
-            obj.addProperty("App::PropertyInteger",
-                            "NumberZ",
-                            "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                                     "Number of copies in Z direction")
+            obj.addProperty("App::PropertyInteger", "NumberZ",
+                            "Orthogonal array", _tip)
             obj.NumberZ = 1
 
         if "IntervalX" not in properties:
-            _tip = "Distance and orientation of intervals in X direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Distance and orientation of intervals in X direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalX",
                             "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.IntervalX = App.Vector(50, 0, 0)
 
         if "IntervalY" not in properties:
-            _tip = "Distance and orientation of intervals in Y direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Distance and orientation of intervals in Y direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalY",
                             "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.IntervalY = App.Vector(0, 50, 0)
 
         if "IntervalZ" not in properties:
-            _tip = "Distance and orientation of intervals in Z direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Distance and orientation of intervals in Z direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalZ",
                             "Orthogonal array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.IntervalZ = App.Vector(0, 0, 50)
 
     def set_polar_circular_properties(self, obj):
@@ -163,27 +166,30 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if "Axis" not in properties:
-            _tip = ("The axis direction around which the elements in "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "The axis direction around which the elements in "
                     "a polar or a circular array will be created")
             obj.addProperty("App::PropertyVector",
                             "Axis",
                             "Polar/circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Axis = App.Vector(0, 0, 1)
 
         if "Center" not in properties:
-            _tip = ("Center point for polar and circular arrays.\n"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Center point for polar and circular arrays.\n"
                     "The 'Axis' passes through this point.")
             obj.addProperty("App::PropertyVectorDistance",
                             "Center",
                             "Polar/circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Center = App.Vector(0, 0, 0)
 
         # The AxisReference property must be attached after Axis and Center
         # so that onChanged works properly
         if "AxisReference" not in properties:
-            _tip = ("The axis object that overrides the value of 'Axis' "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "The axis object that overrides the value of 'Axis' "
                     "and 'Center', for example, a datum line.\n"
                     "Its placement, position and rotation, will be used "
                     "when creating polar and circular arrays.\n"
@@ -192,7 +198,7 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "AxisReference",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.AxisReference = None
 
     def set_polar_properties(self, obj):
@@ -200,27 +206,29 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if "NumberPolar" not in properties:
-            _tip = "Number of copies in the polar direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Number of copies in the polar direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberPolar",
                             "Polar array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.NumberPolar = 5
 
         if "IntervalAxis" not in properties:
-            _tip = "Distance and orientation of intervals in 'Axis' direction"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Distance and orientation of intervals in 'Axis' direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalAxis",
                             "Polar array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.IntervalAxis = App.Vector(0, 0, 0)
 
         if "Angle" not in properties:
-            _tip = "Angle to cover with copies"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Angle to cover with copies")
             obj.addProperty("App::PropertyAngle",
                             "Angle",
                             "Polar array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Angle = 360
 
     def set_circular_properties(self, obj):
@@ -228,37 +236,40 @@ class Array(DraftLink):
         properties = obj.PropertiesList
 
         if "RadialDistance" not in properties:
-            _tip = "Distance between circular layers"
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Distance between circular layers")
             obj.addProperty("App::PropertyDistance",
                             "RadialDistance",
                             "Circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.RadialDistance = 50
 
         if "TangentialDistance" not in properties:
-            _tip = "Distance between copies in the same circular layer"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Distance between copies in the same circular layer")
             obj.addProperty("App::PropertyDistance",
                             "TangentialDistance",
                             "Circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.TangentialDistance = 25
 
         if "NumberCircles" not in properties:
-            _tip = ("Number of circular layers. "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Number of circular layers. "
                     "The 'Base' object counts as one layer.")
             obj.addProperty("App::PropertyInteger",
                             "NumberCircles",
                             "Circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.NumberCircles = 3
 
         if "Symmetry" not in properties:
-            _tip = ("A parameter that determines how many symmetry planes "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "A parameter that determines how many symmetry planes "
                     " the circular array will have.")
             obj.addProperty("App::PropertyInteger",
                             "Symmetry",
                             "Circular array",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Symmetry = 1
 
     def set_link_properties(self, obj):
@@ -267,23 +278,25 @@ class Array(DraftLink):
 
         if self.use_link:
             if "Count" not in properties:
-                _tip = ("Total number of elements in the array.\n"
+                _tip = QT_TRANSLATE_NOOP("App::Property", 
+                        "Total number of elements in the array.\n"
                         "This property is read-only, as the number depends "
                         "on the parameters of the array.")
                 obj.addProperty("App::PropertyInteger",
                                 "Count",
                                 "Objects",
-                                QT_TRANSLATE_NOOP("App::Property", _tip))
+                                _tip)
                 obj.Count = 0
                 obj.setEditorMode("Count", 1)  # Read only
 
             if "ExpandArray" not in properties:
-                _tip = ("Show the individual array elements "
+                _tip = QT_TRANSLATE_NOOP("App::Property", 
+                        "Show the individual array elements "
                         "(only for Link arrays)")
                 obj.addProperty("App::PropertyBool",
                                 "ExpandArray",
                                 "Objects",
-                                QT_TRANSLATE_NOOP("App::Property", _tip))
+                                _tip)
                 obj.ExpandArray = False
 
     def linkSetup(self, obj):
