@@ -36,6 +36,346 @@ import Sketcher
 if FreeCAD.GuiUp:
     import FreeCADGui
 
+brepArchiCAD = """
+DBRep_DrawableShape
+
+CASCADE Topology V1, (c) Matra-Datavision
+Locations 3
+1
+              1               0               0               0
+              0               1               0               0
+              0               0               1               0
+1
+              0               1               0               0
+             -1               0               0               0
+              0               0               1               0
+2  2 -1 0
+Curve2ds 0
+Curves 12
+1 0 0 0 1 0 0
+1 3000 0 0 0 0 1
+1 3000 0 3000 -1 0 0
+1 0 0 3000 0 0 -1
+1 0 0 0 0 1 0
+1 0 5000 0 1 0 0
+1 3000 5000 0 0 -1 0
+1 3000 5000 0 0 0 1
+1 3000 5000 3000 0 -1 0
+1 3000 5000 3000 -1 0 0
+1 0 5000 3000 0 -1 0
+1 0 5000 3000 0 0 -1
+Polygon3D 0
+PolygonOnTriangulations 24
+2 1 2
+p 18.3333333333333 1 0 3000
+2 1 4
+p 18.3333333333333 1 0 3000
+2 2 3
+p 18.3333333333333 1 0 3000
+2 2 4
+p 18.3333333333333 1 0 3000
+2 3 4
+p 18.3333333333333 1 0 3000
+2 1 2
+p 18.3333333333333 1 0 3000
+2 4 1
+p 18.3333333333333 1 0 3000
+2 3 1
+p 18.3333333333333 1 0 3000
+2 1 2
+p 18.3333333333333 1 0 5000
+2 1 2
+p 18.3333333333333 1 0 5000
+2 2 3
+p 18.3333333333333 1 0 3000
+2 1 2
+p 18.3333333333333 1 0 3000
+2 3 4
+p 18.3333333333333 1 0 5000
+2 1 2
+p 18.3333333333333 1 0 5000
+2 1 3
+p 18.3333333333333 1 0 3000
+2 2 4
+p 18.3333333333333 1 0 3000
+2 3 4
+p 18.3333333333333 1 0 5000
+2 3 1
+p 18.3333333333333 1 0 5000
+2 3 4
+p 18.3333333333333 1 0 3000
+2 4 3
+p 18.3333333333333 1 0 3000
+2 4 2
+p 18.3333333333333 1 0 5000
+2 4 3
+p 18.3333333333333 1 0 5000
+2 4 2
+p 18.3333333333333 1 0 3000
+2 3 1
+p 18.3333333333333 1 0 3000
+Surfaces 6
+1 1500 0 1500 -0 -1 -0 0 0 -1 1 0 0
+1 1500 2500 0 -0 -0 -1 -1 0 0 0 1 0
+1 3000 2500 1500 1 0 0 0 0 1 0 -1 0
+1 1500 2500 3000 0 0 1 1 0 0 0 1 0
+1 0 2500 1500 -1 -0 -0 0 0 -1 0 -1 0
+1 1500 5000 1500 0 1 0 0 0 1 1 0 0
+Triangulations 6
+4 2 1 18.3333333333333
+0 0 0 3000 0 0 3000 0 3000 0 0 3000 1500 -1500 1500 1500 -1500 1500 -1500 -1500 3 4 1 2 3 1
+4 2 1 18.3333333333333
+0 0 0 0 5000 0 3000 5000 0 3000 0 0 1500 -2500 1500 2500 -1500 2500 -1500 -2500 2 3 4 2 4 1
+4 2 1 18.3333333333333
+3000 5000 0 3000 0 0 3000 5000 3000 3000 0 3000 -1500 -2500 -1500 2500 1500 -2500 1500 2500 4 2 1 4 1 3
+4 2 1 18.3333333333333
+3000 0 3000 0 0 3000 3000 5000 3000 0 5000 3000 1500 -2500 -1500 -2500 1500 2500 -1500 2500 3 2 1 3 4 2
+4 2 1 18.3333333333333
+0 0 0 0 5000 0 0 0 3000 0 5000 3000 1500 2500 1500 -2500 -1500 2500 -1500 -2500 1 3 4 1 4 2
+4 2 1 18.3333333333333
+0 5000 0 3000 5000 0 0 5000 3000 3000 5000 3000 -1500 -1500 -1500 1500 1500 -1500 1500 1500 3 2 1 4 2 3
+
+TShapes 35
+Ve
+0.1
+0 0 0
+0 0
+
+0101101
+*
+Ve
+0.1
+0 -3000 0
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  1 0 0 3000
+6  1 1 0
+6  2 2 0
+0
+
+0101000
++35 3 -34 3 *
+Ve
+0.1
+0 -3000 3000
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  2 0 0 3000
+6  3 1 0
+6  4 3 0
+0
+
+0101000
++34 3 -32 3 *
+Ve
+0.1
+0 0 3000
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  3 0 0 3000
+6  5 1 0
+6  6 4 0
+0
+
+0101000
++32 3 -30 3 *
+Ed
+ 0.0001 1 1 0
+1  4 0 0 3000
+6  7 1 0
+6  8 5 0
+0
+
+0101000
++30 3 -35 3 *
+Wi
+
+0101100
++33 0 +31 0 +29 0 +28 0 *
+Fa
+0  0.1 1 0
+2  1
+0111000
++27 0 *
+Ve
+0.1
+5000 0 0
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  5 0 0 5000
+6  9 2 0
+6  10 5 0
+0
+
+0101000
++35 3 -25 3 *
+Ve
+0.1
+5000 -3000 0
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  6 0 0 3000
+6  11 2 0
+6  12 6 0
+0
+
+0101000
++25 3 -23 3 *
+Ed
+ 0.0001 1 1 0
+1  7 0 0 5000
+6  13 2 0
+6  14 3 0
+0
+
+0101000
++23 3 -34 3 *
+Wi
+
+0101100
++24 0 +22 0 +21 0 -33 0 *
+Fa
+0  0.1 2 0
+2  2
+0111000
++20 0 *
+Ve
+0.1
+5000 -3000 3000
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  8 0 0 3000
+6  15 3 0
+6  16 6 0
+0
+
+0101000
++23 3 -18 3 *
+Ed
+ 0.0001 1 1 0
+1  9 0 0 5000
+6  17 3 0
+6  18 4 0
+0
+
+0101000
++18 3 -32 3 *
+Wi
+
+0101100
+-21 0 +17 0 +16 0 -31 0 *
+Fa
+0  0.1 3 0
+2  3
+0111000
++15 0 *
+Ve
+0.1
+5000 0 3000
+0 0
+
+0101101
+*
+Ed
+ 0.0001 1 1 0
+1  10 0 0 3000
+6  19 4 0
+6  20 6 0
+0
+
+0101000
++18 3 -13 3 *
+Ed
+ 0.0001 1 1 0
+1  11 0 0 5000
+6  21 4 0
+6  22 5 0
+0
+
+0101000
++13 3 -30 3 *
+Wi
+
+0101100
+-29 0 -16 0 +12 0 +11 0 *
+Fa
+0  0.1 4 0
+2  4
+0111000
++10 0 *
+Ed
+ 0.0001 1 1 0
+1  12 0 0 3000
+6  23 5 0
+6  24 6 0
+0
+
+0101000
++13 3 -25 3 *
+Wi
+
+0101100
+-24 0 -28 0 -11 0 +8 0 *
+Fa
+0  0.1 5 0
+2  5
+0111000
++7 0 *
+Wi
+
+0101100
+-22 0 -8 0 -12 0 -17 0 *
+Fa
+0  0.1 6 0
+2  6
+0111000
++5 0 *
+Sh
+
+0101100
++26 0 +19 0 +14 0 +9 0 +6 0 +4 0 *
+So
+
+0100000
++3 0 *
+Co
+
+1100000
++2 2 *
+
++1 1
+"""
+
+def like(a, b):
+    return abs(a-b) < 0.001
+
+def checkBB(a, b):
+    return like(a.XMin, b.XMin) and like(a.YMin, b.YMin) and like(a.ZMin, b.ZMin) and like(a.XMax, b.XMax) and like(a.YMax, b.YMax) and like(a.ZMax, b.ZMax)
+
 
 class ArchTest(unittest.TestCase):
 
@@ -68,9 +408,9 @@ class ArchTest(unittest.TestCase):
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75,1.25,0),FreeCAD.Vector(0.75,-1.20,0)))
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0.75,-1.20,0),FreeCAD.Vector(-0.85,-1.20,0)))
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.85,-1.20,0),FreeCAD.Vector(-0.85,1.25,0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
-        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1)) 
-        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) 
+        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
+        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
+        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
         sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1))
         r = Arch.makeRebar(s,sk,diameter=.1,amount=2)
         self.failUnless(r,"Arch Rebar failed")
@@ -106,10 +446,10 @@ class ArchTest(unittest.TestCase):
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.90,1.30,0),FreeCAD.Vector(-0.90,0.25,0)))
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-0.90,0.25,0),FreeCAD.Vector(-1.80,0.25,0)))
         sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-1.80,0.25,0),FreeCAD.Vector(-1.80,1.30,0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
-        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1)) 
-        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) 
-        sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1)) 
+        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
+        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
+        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
+        sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1))
         win = Arch.makeWindow(sk)
         Arch.removeComponents(win,host=w)
         self.failUnless(win,"Arch Window failed")
@@ -123,7 +463,7 @@ class ArchTest(unittest.TestCase):
     def testAxis(self):
         FreeCAD.Console.PrintLog ('Checking Arch Axis...\n')
         a = Arch.makeAxis()
-        self.failUnless(a,"Arch Axis failed") 
+        self.failUnless(a,"Arch Axis failed")
 
     def testSection(self):
         FreeCAD.Console.PrintLog ('Checking Arch Section...\n')
@@ -138,6 +478,19 @@ class ArchTest(unittest.TestCase):
         b.Shape = sb
         s = Arch.makeSpace([b])
         self.failUnless(s,"Arch Space failed")
+
+    def testSpaceBBox(self):
+        shape = Part.Shape()
+        shape.importBrepFromString(brepArchiCAD)
+        bborig = shape.BoundBox
+        FreeCAD.Console.PrintLog ("Original BB: "+str(bborig))
+        baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature","brepArchiCAD_body")
+        baseobj.Shape = shape
+        space = Arch.makeSpace(baseobj)
+        space.recompute()
+        bbnew = space.Shape.BoundBox
+        FreeCAD.Console.PrintLog ("New BB: "+str(bbnew))
+        self.failUnless(checkBB(bborig,bbnew),"Arch Space has wrong Placement")
 
     def testStairs(self):
         FreeCAD.Console.PrintLog ('Checking Arch Stairs...\n')
