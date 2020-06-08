@@ -380,7 +380,7 @@ protected:
             .arg(size.width())
             .arg(size.height());
         QPixmap icon;
-        if (QPixmapCache::find(key, icon))
+        if (QPixmapCache::find(key, &icon))
             return icon;
 
         icon = Gui::BitmapFactory().pixmapFromSvg(name, size);

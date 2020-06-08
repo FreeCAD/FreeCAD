@@ -145,7 +145,7 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
-    if (QPixmapCache::find(key, icon))
+    if (QPixmapCache::find(key, &icon))
         return icon;
 
     icon = BitmapFactory().pixmapFromSvg(name, size);
