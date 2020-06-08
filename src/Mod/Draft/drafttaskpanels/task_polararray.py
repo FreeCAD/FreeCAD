@@ -109,7 +109,8 @@ class TaskPanelPolarArray:
         self.form.spinbox_number.setValue(self.number)
 
         self.form.label_axis_name.setText("")
-        self.axis_reference = None
+        self.axis_name = None
+        self.edge_name = None
 
         start_point = U.Quantity(0.0, App.Units.Length)
         length_unit = start_point.getUserPreferred()[2]
@@ -253,7 +254,9 @@ class TaskPanelPolarArray:
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
         _cmd += "use_link=" + str(self.use_link) + ", "
-        _cmd += "axis_reference=" + str(self.axis_reference)
+        if self.axis_name and self.edge_name:
+            _cmd += "axis_object='" + str(self.axis_name) + "', "
+            _cmd += "axis_edge='" + str(self.edge_name) + "'"
         _cmd += ")"
 
         Gui.addModule('Draft')
@@ -298,20 +301,18 @@ class TaskPanelPolarArray:
         elif self.form.button_axis.text() == "abort" or self.form.button_axis.text() == "discard":
             self.disable_axis_selection()
 
-    def display_axis(self, axis_name, edge_name, edge):
+    def display_axis(self, axis_name, edge_name):
         """Show the selected axis in the GUI. Add derived values for the center coordinates GUI."""
         _msg("Selected: {} with edge {}".format(axis_name, edge_name))
-        self.axis_reference = "(Gui.ActiveDocument.getObject('{}').Object, " \
-                              "['{}'])".format(axis_name, edge_name)
+        self.axis_name = axis_name
+        self.edge_name = edge_name
         self.form.label_axis_name.setText("{} {}".format(axis_name, edge_name))
         self.form.button_axis.setText("discard")
-        center = edge.Curve.Location
-        self.display_point(center)
 
     def enable_axis_selection(self):
         """Enable axis selection GUI elements and callbacks"""
         self.form.button_axis.setText("abort")
-        self.axis_reference = None
+        self.axis_name = self.edge_name = None
         self.source_command.add_axis_selection_observer()
         self.disable_point()
         _msg(_tr("Selecting axis"))
@@ -319,7 +320,7 @@ class TaskPanelPolarArray:
     def disable_axis_selection(self):
         """Disable axis selection GUI elements and callbacks"""
         self.enable_point()
-        self.axis_reference = None
+        self.axis_name = self.edge_name = None
         self.form.button_axis.setText("select")
         self.form.label_axis_name.setText("")
         self.source_command.remove_axis_selection_observer()

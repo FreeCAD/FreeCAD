@@ -40,7 +40,6 @@ import DraftVecUtils
 
 from draftobjects.draftlink import DraftLink
 
-
 class Array(DraftLink):
     """The Draft Array object.
 
@@ -186,7 +185,7 @@ class Array(DraftLink):
         if "AxisReference" not in properties:
             _tip = ("The axis object that overrides the value of 'Axis' "
                     "and 'Center', for example, a datum line.\n"
-                    "It's location and direction will be used "
+                    "Its location and direction will be used "
                     "when creating polar and circular arrays.\n"
                     "Leave this property empty to be able to set "
                     "'Axis' and 'Center' manually.")

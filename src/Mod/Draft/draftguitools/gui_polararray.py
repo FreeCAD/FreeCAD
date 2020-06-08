@@ -136,12 +136,12 @@ class PolarArray(gui_base.GuiCommandBase):
         if hasattr(self, "callback_move"):
             self.view.removeEventCallbackPivy(self.location,
                                               self.callback_move)
-            del (self.callback_move)
+            del self.callback_move
 
         if hasattr(self, "callback_click"):
             self.view.removeEventCallbackPivy(self.mouse_event,
                                               self.callback_click)
-            del (self.callback_click)
+            del self.callback_click
 
     def add_axis_selection_observer(self):
         """Execute when axis reference selection should be enabled"""
@@ -153,7 +153,7 @@ class PolarArray(gui_base.GuiCommandBase):
         """Execute when axis reference selection should be disabled"""
         if hasattr(self, "axis_observer"):
             Gui.Selection.removeObserver(self.axis_observer)
-            del (self.axis_observer)
+            del self.axis_observer
 
     def completed(self):
         """Execute when the command is terminated.
@@ -173,7 +173,8 @@ Gui.addCommand('Draft_PolarArray', PolarArray())
 
 class AxisSelectionObserver:
     """This classes functions will be called when an selection
-    event occurs."""
+    event occurs after axis selection is enabled.
+    """
 
     def __init__(self, polar_array):
         self.polar_array = polar_array
@@ -190,7 +191,7 @@ class AxisSelectionObserver:
         selection_object = selection.Object
         edge = selection_object.getSubObject(sub_name)
         if isinstance(edge, Part.Edge) and isinstance(edge.Curve, Part.Line):
-            self.polar_array.ui.display_axis(obj_name, sub_name, edge)
+            self.polar_array.ui.display_axis(obj_name, sub_name)
             self.polar_array.remove_axis_selection_observer()
         else:
             self.polar_array.ui.disable_axis_selection()

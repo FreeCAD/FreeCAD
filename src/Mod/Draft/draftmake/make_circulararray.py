@@ -26,7 +26,6 @@
 # \brief Provides functions for creating circular arrays in a plane.
 
 import FreeCAD as App
-import Part
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
@@ -39,7 +38,7 @@ def make_circular_array(base_object,
                         r_distance=100, tan_distance=50,
                         number=3, symmetry=1,
                         axis=App.Vector(0, 0, 1), center=App.Vector(0, 0, 0),
-                        axis_reference=None, use_link=True):
+                        use_link=True):
     """Create a circular array from the given object.
 
     Parameters
@@ -88,11 +87,6 @@ def make_circular_array(base_object,
         It defaults to `App.Vector(0, 0, 0)` or the global origin.
         The point through which the `axis` passes to define
         the axis of rotation.
-
-    axis_reference: ('DocumentObject', ['ObjectString']), optional
-        It defaults to `None`.
-        If it is set the resulting array will use the referenced axis
-        as center instead of the `center` argument to create the array
 
     use_link: bool, optional
         It defaults to `True`.

@@ -37,7 +37,7 @@ from draftutils.translate import _tr
 
 def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
-                     axis_reference=None, use_link=True):
+                     axis_object=None, axis_edge=None, use_link=True):
     """Create a polar array from the given object.
 
     Parameters
@@ -61,10 +61,28 @@ def make_polar_array(base_object,
         It defaults to the origin `App.Vector(0, 0, 0)`.
         The vector indicating the center of rotation of the array.
 
-    axis_reference: ('DocumentObject', ['ObjectString']), optional
+    axis_object: str or DocumentObject, optional
+        It defaults to `None`.
+        This parameter should be the name of an `DocumentObject` or
+        the `DocumentObject` itself.
+        If it is set the resulting array will use the referenced axis
+        with it's name provided by parameter `edge_name` that is part
+        of `axis_object` to calculate center and direction instead
+        of the `center` and `axis` arguments to create the array.
+        If the parameter `edge_name` is not given as default the
+        first edge of the `axis_object` will be used
+
+    axis_edge: str or int, optional
         It defaults to `None`.
         If it is set the resulting array will use the referenced axis
-        as center instead of the `center` argument to create the array.
+        to calculate center and direction instead of the `center`
+        and `axis` arguments to create the array. The `edge_name` must
+        refer to the name of an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
+        integer or string. For example the string `Edge1` corresponds
+        to the integer `1`.
+        This `SubObject` must belong to parameter `axis_object` which
+        must be given as well.
 
     use_link: bool, optional
         It defaults to `True`.
@@ -131,24 +149,67 @@ def make_polar_array(base_object,
         _err(_tr("Wrong input: must be a vector."))
         return None
 
+    _msg("axis_object: {}".format(axis_object))
+    _msg("axis_edge: {}".format(axis_edge))
+    axis = axis_object
+    if axis_object and isinstance(axis_object, str):
+        found, axis = utils.find_object(axis_object,
+                                        doc=App.activeDocument())
+        if not found:
+            _err(_tr(
+                "Wrong input. Given axis_name does not refer to an "
+                "existing DocumentObject."))
+            return None
+    if axis:
+        axis_edge_name = axis_edge
+        if axis_edge:
+            if isinstance(axis_edge, str):
+                print(axis)
+                print(axis_edge)
+                edge_object = axis.getSubObject(axis_edge)
+            elif isinstance(axis_edge, int):
+                axis_edge_name = "Edge" + str(axis_edge)
+                edge_object = axis.getSubObject(axis_edge_name)
+            else:
+                _err(_tr(
+                    "Wrong input. Given axis_edge has to be of type int or str."
+                ))
+                return None
+        else:
+            if not (hasattr(axis, "Shape") and hasattr(axis.Shape, "Edges")):
+                _err(_tr("Wrong input: axis_object cannot be used for Axis Reference,"
+                         "it lacks a Shape with Edges."))
+                return None
+            axis_edge_name = "Edge1"  # this is the default if axis_edge is missing
+            edge_object = axis.getSubObject(axis_edge_name)
+        if not edge_object:
+            _err(_tr(
+                "Wrong input. Given axis_edge does not refer to a "
+                "SubObject of axis_object or given axis_object lacks"
+                "having edges."))
+            return None
+        if not isinstance(edge_object, Part.Edge):
+            _err(_tr(
+                "Wrong input. Given axis_edge does not refer to a "
+                "SubObject of type Part.Edge"))
+            return None
+        if not isinstance(edge_object.Curve, Part.Line):
+            _err(_tr(
+                "Wrong input. Given axis_edge does not refer to a "
+                "SubObject with Curve of type Part.Line"))
+            return None
+
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
     new_obj = make_array.make_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
                                     use_link=use_link)
-    if axis_reference:
-        if not (isinstance(axis_reference, tuple)
-                and isinstance(axis_reference[1], list)
-                and len(axis_reference[1]) == 1):
-            _err(_tr("Wrong input. Must be ('DocumentObject', ['ObjectString'])"))
-            return None
+
+    if axis_object:
+        axis_reference = [axis, axis_edge_name]
+        _msg("axis_reference: {}".format(axis_reference))
         new_obj.AxisReference = axis_reference
-        # now the AxisReference property will have checked that 'DocumentObject' is correct
-        # so we can do one more test
-        if not axis_reference[0].getSubObject(axis_reference[1][0]):
-            _err(_tr(
-                "Wrong input. 'ObjectString' in ('DocumentObject', ['ObjectString'])"
-                " must be a valid SubObject name."))
-            return None
+        new_obj.recompute()
+
     return new_obj
