@@ -1841,11 +1841,11 @@ private:
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
-            pysize = PyUnicode_GetSize(p);
+            pysize = PyUnicode_GetLength(p);
             unichars = PyUnicode_AS_UNICODE(p);
         }
         else if (PyUnicode_Check(intext)) {
-            pysize = PyUnicode_GetSize(intext);
+            pysize = PyUnicode_GetLength(intext);
             unichars = PyUnicode_AS_UNICODE(intext);
         }
         else {
