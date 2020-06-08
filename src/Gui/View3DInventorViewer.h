@@ -77,6 +77,7 @@ class SoTexture2;
 class SoTextureCoordinate2;
 class SoBumpMap;
 class SoShadowStyle;
+class SoShadowDirectionalLight;
 class SoLightModel;
 
 namespace Quarter = SIM::Coin3D::Quarter;
@@ -487,7 +488,7 @@ private:
     SoSeparator * pcViewProviderRoot;
 
     CoinPtr<SoShadowGroup>            pcShadowGroup;
-    CoinPtr<SoDirectionalLight>       pcShadowDirectionalLight;
+    CoinPtr<SoShadowDirectionalLight> pcShadowDirectionalLight;
     CoinPtr<SoSpotLight>              pcShadowSpotLight;
     CoinPtr<SoGroup>                  pcShadowGroundGroup;
     CoinPtr<SoSwitch>                 pcShadowGroundSwitch;

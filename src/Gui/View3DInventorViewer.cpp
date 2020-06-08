@@ -1860,7 +1860,7 @@ void View3DInventorViewer::applyOverrideMode()
             if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
                 static const App::PropertyFloatConstraint::Constraints _dist_cstr(-1.0,DBL_MAX,10.0);
                 static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
-                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 1e4,
+                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 0,
                         [](App::PropertyFloatConstraint &prop) {
                             if(!prop.getConstraints())
                                 prop.setConstraints(&_dist_cstr);
@@ -3782,8 +3782,13 @@ void View3DInventorViewer::viewAll()
 
 void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
 {
-    if(!pcShadowGroundSwitch || pcShadowGroundSwitch->whichChild.getValue()<0)
+    if(!pcShadowGroundSwitch || pcShadowGroundSwitch->whichChild.getValue()<0) {
+        if(pcShadowDirectionalLight) {
+            pcShadowDirectionalLight->bboxSize = box.getSize();
+            pcShadowDirectionalLight->bboxCenter = box.getCenter();
+        }
         return;
+    }
 
     SbVec3f size = box.getSize();
     float z = size[2];
@@ -3834,6 +3839,14 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
         float l = length*2.0/textureSize;
         SbVec2f points[4] = {{0,l}, {w,l}, {w,0}, {0,0}};
         pcShadowGroundTextureCoords->point.setValues(0,4,points);
+    }
+
+    if(pcShadowDirectionalLight) {
+        SbBox3f gbox = box;
+        for(int i=0; i<4; ++i)
+            gbox.extendBy(coords[i]);
+        pcShadowDirectionalLight->bboxSize = gbox.getSize() * 1.2f;
+        pcShadowDirectionalLight->bboxCenter = gbox.getCenter();
     }
 }
 
