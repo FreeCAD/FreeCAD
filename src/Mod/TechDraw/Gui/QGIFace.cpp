@@ -124,6 +124,8 @@ void QGIFace::draw()
 
     if (isHatched()) {   
         if (m_mode == GeomHatchFill) {
+            //GeomHatch does not appear in pdf if clipping is set to true
+            setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
                 m_fillStyleCurrent = m_styleDef;
@@ -145,10 +147,14 @@ void QGIFace::draw()
                     m_fillStyleCurrent = m_styleNormal;
                     loadSvgHatch(m_fileSpec);
                     if (m_hideSvgTiles) {
+                        //bitmap hatch doesn't need clipping
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
                         buildPixHatch();
                         m_rect->hide();
                         m_image->show();
                     } else {
+                        //SVG tiles need to be clipped
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
                         buildSvgHatch();
                         m_image->hide();
                         m_rect->show();
@@ -164,9 +170,7 @@ void QGIFace::draw()
                 }
             }
         } else if (m_mode == PlainFill) {
-            if (!m_lineSets.empty()) {
-                setFill(m_colNormalFill, m_styleNormal);
-            }
+            setFill(m_colNormalFill, m_styleNormal);
         }
     }
     show();
