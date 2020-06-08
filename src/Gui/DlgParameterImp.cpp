@@ -489,7 +489,7 @@ void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
         // do not allow to import parameters from a non-empty parameter group
         importAct->setEnabled(item->childCount() == 0);
 
-        if ( isItemExpanded(item) )
+        if (item->isExpanded())
             expandAct->setText( tr("Collapse") );
         else
         expandAct->setText( tr("Expand") );
@@ -539,9 +539,9 @@ void ParameterGroup::onToggleSelectedItem()
     QTreeWidgetItem* sel = currentItem();
     if (isItemSelected(sel))
     {
-        if ( isItemExpanded(sel) )
+        if (sel->isExpanded())
             sel->setExpanded(false);
-        else if ( sel->childCount() > 0 )
+        else if (sel->childCount() > 0)
             sel->setExpanded(true);
     }
 }
@@ -997,7 +997,7 @@ QVariant ParameterGroupItem::data ( int column, int role ) const
     if (role == Qt::DecorationRole) {
         // The root item should keep its special pixmap
         if (parent()) {
-            return treeWidget()->isItemExpanded(this) ?
+            return this->isExpanded() ?
                 QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon):
                 QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon);
         }
