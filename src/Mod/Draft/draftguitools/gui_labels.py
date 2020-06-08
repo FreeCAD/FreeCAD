@@ -133,16 +133,14 @@ class Label(gui_base_original.Creator):
                 dist = -dist
 
             tp = DraftVecUtils.toString(targetpoint)
-            sel = ""
+            sel = None
             if self.sel:
+                sel = "FreeCAD.ActiveDocument." + self.sel.Object.Name
+
                 if self.sel.SubElementNames:
                     sub = "'" + self.sel.SubElementNames[0] + "'"
                 else:
-                    sub = "[]"
-                sel = "["
-                sel += "FreeCAD.ActiveDocument." + self.sel.Object.Name + ", "
-                sel += sub
-                sel += "]"
+                    sub = "None"
 
             pl = "FreeCAD.Placement"
             pl += "("
@@ -156,7 +154,8 @@ class Label(gui_base_original.Creator):
             _cmd += "target_point=" + tp + ", "
             _cmd += "placement=" + pl + ", "
             if sel:
-                _cmd += "target=" + sel + ", "
+                _cmd += "target_object=" + sel + ", "
+                _cmd += "subelements=" + sub + ", "
             _cmd += "label_type=" + "'" + self.labeltype + "'" + ", "
             # _cmd += "custom_text=" + "'Label'" + ", "
             _cmd += "direction=" + "'" + direction + "'" + ", "
