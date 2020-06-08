@@ -332,7 +332,7 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
 static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection) {
     std::vector<gp_Pnt> ret;
     BRepAdaptor_Curve curve(edge);
-    Standard_Real efirst,elast,first,last;
+    Standard_Real efirst,elast;
     efirst = curve.FirstParameter();
     elast = curve.LastParameter();
     bool reversed = (edge.Orientation()==TopAbs_REVERSED);
@@ -340,29 +340,12 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // push the first point
     ret.push_back(curve.Value(reversed?elast:efirst));
 
-    Handle(Geom_Curve) c = BRep_Tool::Curve(edge, first, last);
-    first = c->FirstParameter();
-    last = c->LastParameter();
-    if(efirst>elast) {
-        if(first<last)
-            std::swap(first,last);
-    }else if(first>last)
-        std::swap(first,last);
-
-    // NOTE: OCCT QuasiUniformDeflection has a bug cause it to return only
-    // partial points for some (BSpline) curve if we pass in the edge trimmed
-    // first and last parameters. Passing the original curve first and last
-    // parameters works fine. The following algorithm uses the original curve
-    // parameters, and skip those out of range. The algorithm shall work the
-    // same for any other discetization algorithm, althgouth it seems only
-    // QuasiUniformDeflection has this bug.
-
     // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
     // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
     //
     // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
     //
-    GCPnts_UniformDeflection discretizer(curve, deflection, first, last);
+    GCPnts_UniformDeflection discretizer(curve, deflection, efirst, elast);
     if (!discretizer.IsDone ())
         Standard_Failure::Raise("Curve discretization failed");
     if(discretizer.NbPoints () > 1) {
@@ -370,22 +353,10 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
         //strangely OCC discretizer points are one-based, not zero-based, why?
         if(reversed) {
             for (int i=nbPoints-1; i>=1; --i) {
-                auto param = discretizer.Parameter(i);
-                if(first<last) {
-                    if(param<efirst || param>elast)
-                        continue;
-                }else if(param>efirst || param<elast)
-                    continue;
                 ret.push_back(discretizer.Value(i));
             }
         }else{
             for (int i=2; i<=nbPoints; i++) {
-                auto param = discretizer.Parameter(i);
-                if(first<last) {
-                    if(param<efirst || param>elast)
-                        continue;
-                }else if(param>efirst || param<elast)
-                    continue;
                 ret.push_back(discretizer.Value(i));
             }
         }
@@ -864,14 +835,13 @@ struct WireJoiner {
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
-    int findClosedWires() {
+    int findClosedWires(double tol = Precision::Confusion()) {
 #if (BOOST_VERSION < 105500)
         throw Base::RuntimeError("Module must be built with boost version >= 1.55");
 #else
-        // It seems OCC projector sometimes mess up the tolerance of edges
-        // which are supposed to be connected. So use a lesser precision
-        // below, and call makeCleanWire to fix the tolerance
-        const double tol = 1e-10;
+        // Note on tolerance: It seems OCC projector sometimes mess up the
+        // tolerance of edges which are supposed to be connected. So use a
+        // lesser precision below, and call makeCleanWire to fix the tolerance
 
         std::vector<VertexInfo> adjacentList;
         std::set<EdgeInfo*> edgesToVisit;
@@ -1185,7 +1155,7 @@ static int foreachSubshape(const TopoDS_Shape &shape,
     }
     if(openShapes.empty())
         return res;
- 
+
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
@@ -1258,7 +1228,9 @@ TopoDS_Shape Area::findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf)
 }
 
 int Area::project(TopoDS_Shape &shape_out,
-        const TopoDS_Shape &shape_in, const AreaParams *params)
+        const TopoDS_Shape &shape_in,
+        const AreaParams *params,
+        const TopoDS_Shape *work_plane)
 {
     FC_TIME_INIT2(t,t1);
     Handle_HLRBRep_Algo brep_hlr = NULL;
@@ -1309,7 +1281,8 @@ int Area::project(TopoDS_Shape &shape_out,
         showShape(v.edge,"split");
     }
 
-    int skips = joiner.findClosedWires();
+    double tolerance = params ? params->Tolerance : Precision::Confusion();
+    int skips = joiner.findClosedWires(tolerance);
     FC_TIME_LOG(t1,"WireJoiner findClosedWires");
 
     showShape(joiner.comp,"pre_project");
@@ -1325,6 +1298,9 @@ int Area::project(TopoDS_Shape &shape_out,
     area.myParams.Fill = TopExp_Explorer(shape_in,TopAbs_FACE).More()?FillFace:FillNone;
     area.myParams.Coplanar = CoplanarNone;
     area.myProjecting = true;
+    if (work_plane) {
+        area.myWorkPlane = *work_plane;
+    }
     area.add(joiner.comp, OperationUnion);
     const TopoDS_Shape &shape = area.getShape();
 
@@ -1627,7 +1603,8 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
     mySkippedShapes = 0;
     for(auto &s : myShapes) {
         TopoDS_Shape out;
-        int skipped = Area::project(out,s.shape.Moved(loc),&myParams);
+        int skipped =
+            Area::project(out, s.shape.Moved(loc), &myParams, &myWorkPlane);
         if(skipped < 0) {
             ++mySkippedShapes;
             continue;
@@ -3300,7 +3277,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         (p.*setter)(retraction);
         addGCode(false,path,plast,p,"G0");
     }
-    
+
 
     plast = p;
     bool first = true;
