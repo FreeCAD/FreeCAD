@@ -542,8 +542,8 @@ void PropertyView::tabChanged(int index)
 void PropertyView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(0, trUtf8("View"));
-        tabs->setTabText(1, trUtf8("Data"));
+        tabs->setTabText(0, tr("View"));
+        tabs->setTabText(1, tr("Data"));
     }
 
     QWidget::changeEvent(e);
