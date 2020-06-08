@@ -1786,28 +1786,46 @@ void View3DInventorViewer::applyOverrideMode()
             pcShadowGroup->addChild(pcShadowGroundSwitch);
         }
 
-        static const App::PropertyFloatConstraint::Constraints _cstr(0.0,1000.0,0.1);
+        static const App::PropertyFloatConstraint::Constraints _precision_cstr(0.0,1.0,0.1);
         pcShadowGroup->quality = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "Quality", 1.0f,
                 [](App::PropertyFloatConstraint &prop) {
                     if(!prop.getConstraints())
-                        prop.setConstraints(&_cstr);
+                        prop.setConstraints(&_precision_cstr);
                 });
 
         pcShadowGroup->precision = _shadowParam<App::PropertyFloatConstraint>(
-                doc, "Precision", 1.0f,
+                doc, "Precision", 1.0,
                 [](App::PropertyFloatConstraint &prop) {
                     if(!prop.getConstraints())
-                        prop.setConstraints(&_cstr);
+                        prop.setConstraints(&_precision_cstr);
                 });
 
-        static const App::PropertyPrecision::Constraints _smooth_cstr(0.0,5.0,0.001);
-        pcShadowGroup->smoothBorder = _shadowParam<App::PropertyPrecision>(
+        static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
+        int smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(
                 doc, "SmoothBorder", 0.0,
-                [](App::PropertyPrecision &prop) {
+                [](App::PropertyIntegerConstraint &prop) {
                     if(prop.getConstraints() != &_smooth_cstr)
                         prop.setConstraints(&_smooth_cstr);
                 });
+
+        static const App::PropertyIntegerConstraint::Constraints _spread_cstr(0,1000000,1000);
+        int spread = _shadowParam<App::PropertyIntegerConstraint>(
+                doc, "SpreadSize", 0,
+                [](App::PropertyIntegerConstraint &prop) {
+                    if(prop.getConstraints() != &_spread_cstr)
+                        prop.setConstraints(&_spread_cstr);
+                });
+
+        static const App::PropertyIntegerConstraint::Constraints _sample_cstr(0,7,1);
+        int sample = _shadowParam<App::PropertyIntegerConstraint>(
+                doc, "SpreadSampleSize", 0,
+                [](App::PropertyIntegerConstraint &prop) {
+                    if(prop.getConstraints() != &_sample_cstr)
+                        prop.setConstraints(&_sample_cstr);
+                });
+
+        pcShadowGroup->smoothBorder = smoothBorder/10.0f + sample/100.0f + spread/1000000.0f;
 
         SoLight *light;
         auto _dir = _shadowParam<App::PropertyVector>(
@@ -1868,6 +1886,7 @@ void View3DInventorViewer::applyOverrideMode()
             }
         }
 
+        static const App::PropertyFloatConstraint::Constraints _cstr(0.0,1000.0,0.1);
         light->intensity = _shadowParam<App::PropertyFloatConstraint>(
                 doc, "LightIntensity", ViewParams::getShadowLightIntensity(),
                 [](App::PropertyFloatConstraint &prop) {
