@@ -354,7 +354,12 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         auto flushChanges = [&]() {
             if (beginChange < 0)
                 return;
-            dataChanged(this->index(beginChange,0,midx), this->index(endChange,1,midx));
+            (void)endChange;
+            // There is no need to signal dataChange(), because PropertyEditor
+            // will call PropertyModel::updateProperty() on any property
+            // changes.
+            //
+            // dataChanged(this->index(beginChange,0,midx), this->index(endChange,1,midx));
             beginChange = -1;
         };
 
