@@ -28,7 +28,36 @@
 """Provides the object code for the Draft PathArray object.
 
 The copies will be placed along a path like a polyline, spline, or bezier
-curve.
+curve, and along the selected subelements.
+
+To Do
+-----
+The `'PathSubelements'` property must be changed in type, as it does not need
+to be an `App::PropertyLinkSubList`.
+A `LinkSubList` is to select multiple subelements (edges) from multiple
+objects. However, since we need to select a `'Path Object'` already,
+which is a single object, the subelements that we can choose must belong
+to this `'Path Object'` only.
+
+Therefore, the correct property that must be used is `App::PropertyLinkSub`.
+Then in the property editor we will be unable to select more than one object
+thus preventing errors of the subelements not matching the `'PathObject'`.
+
+In fact, both `'PathObject'` and `'PathSubelements'`
+could be handled with a single `App::PropertyLinkSub` property,
+as this property can be used to select a single object,
+or a single object with its subelements.
+
+In the future, we could migrate the properties, or outright break
+compatibility with older objects by changing both properties
+`'PathObject'` and `'PathSubelements'`.
+
+An alternative to this would be to use a single `App::PropertyLinkSubList`.
+This would allow us to build PathArrays on multiple objects and multiple
+subelements (edges) of those objects at the same time. However, to do this,
+the logic in `execute` would have to be changed to account for multiple
+objects. Therefore, the first solution is simpler, that is, using
+a single property of type `App::PropertyLinkSub`.
 """
 ## @package patharray
 # \ingroup DRAFT
@@ -149,6 +178,13 @@ class PathArray(DraftLink):
                             _tip)
             obj.PathObject = None
 
+        # TODO: the 'PathSubelements' property must be changed,
+        # as it does not need to be an 'App::PropertyLinkSubList'.
+        #
+        # In fact, both 'PathObject' and 'PathSubelements'
+        # could be handled with a single 'App::PropertyLinkSub' property,
+        # as this property can be used to select a single object,
+        # or a single object with its subelements.
         if "PathSubelements" not in properties:
             _tip = _tr("List of connected edges in the 'Path Object'.\n"
                        "If these are present, the copies will be created "
