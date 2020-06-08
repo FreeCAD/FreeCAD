@@ -101,7 +101,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
-    drag->start(Qt::MoveAction);
+    drag->exec(Qt::MoveAction);
 }
 
 /**
