@@ -489,7 +489,7 @@ void DlgCustomKeyboardImp::onModifyMacroAction(const QByteArray& macro)
                 item->setSizeHint(0, QSize(32, 32));
                 if (pCmd->getPixmap())
                     item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
-                if (ui->commandTreeWidget->isItemSelected(item))
+                if (item->isSelected())
                     ui->textLabelDescription->setText(item->toolTip(1));
                 break;
             }

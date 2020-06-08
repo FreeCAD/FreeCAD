@@ -696,7 +696,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
 void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
-    if (!isItemSelected(item)) return;
+    if (!item->isSelected()) return;
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();

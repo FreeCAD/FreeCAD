@@ -1403,7 +1403,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
     auto modifier = QApplication::queryKeyboardModifiers();
     QTreeWidgetItem* targetItem = itemAt(event->pos());
-    if (!targetItem || this->isItemSelected(targetItem)) {
+    if (!targetItem || targetItem->isSelected()) {
         leaveEvent(0);
         event->ignore();
     }
@@ -1545,7 +1545,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     if (!targetItem)
         return;
     // one of the source items is also the destination item, that's not allowed
-    if (this->isItemSelected(targetItem))
+    if (targetItem->isSelected())
         return;
 
     App::Document *thisDoc;
