@@ -350,7 +350,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
-        QLineEdit::Normal, QString::null, 0);
+        QLineEdit::Normal, QString(), 0);
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();

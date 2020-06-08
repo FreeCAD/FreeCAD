@@ -412,7 +412,7 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString::null,
+        QString(),
         QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
 
     if (!fileName.isEmpty())

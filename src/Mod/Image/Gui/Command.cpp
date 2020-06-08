@@ -74,7 +74,7 @@ void CmdImageOpen::activated(int iMsg)
     str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
     QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
-                                             QString::null, formats);
+                                             QString(), formats);
     if (!s.isEmpty()) {
         try {
             s = Base::Tools::escapeEncodeFilename(s);
@@ -122,7 +122,7 @@ void CmdCreateImagePlane::activated(int iMsg)
     str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
     QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
-                                             QString::null, formats);
+                                             QString(), formats);
     if (!s.isEmpty()) {
 
         QImage impQ(s);
