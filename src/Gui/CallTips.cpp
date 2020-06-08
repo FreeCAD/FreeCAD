@@ -143,7 +143,8 @@ void CallTipsList::keyboardSearch(const QString& wordPrefix)
         }
     }
 
-    setItemSelected(currentItem(), false);
+    if (currentItem())
+        currentItem()->setSelected(false);
 }
 
 void CallTipsList::validateCursor()

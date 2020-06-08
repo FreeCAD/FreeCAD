@@ -518,7 +518,8 @@ void CompletionList::findCurrentWord(const QString& wordPrefix)
         }
     }
 
-    setItemSelected(currentItem(), false);
+    if (currentItem())
+        currentItem()->setSelected(false);
 }
 
 /** 
