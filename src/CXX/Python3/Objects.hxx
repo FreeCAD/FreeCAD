@@ -3164,14 +3164,36 @@ namespace Py
         // Call with keywords
         Object apply( const Tuple &args, const Dict &kw ) const
         {
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+            PyObject *result = PyObject_Call( ptr(), args.ptr(), kw.ptr() );
+#else
             PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
+#endif
             if( result == NULL )
             {
                 throw Exception();
             }
             return asObject( result );
         }
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+        Object apply() const
+        {
+            PyObject *result = PyObject_CallNoArgs( ptr() );
+            return asObject( result );
+        }
 
+        Object apply( PyObject *pargs ) const
+        {
+            if( pargs == 0 )
+            {
+                return apply( Tuple() );
+            }
+            else
+            {
+                return apply( Tuple( pargs ) );
+            }
+        }
+#else
         Object apply( PyObject *pargs = 0 ) const
         {
             if( pargs == 0 )
@@ -3183,6 +3205,7 @@ namespace Py
                 return apply( Tuple( pargs ) );
             }
         }
+#endif
     };
 
     class PYCXX_EXPORT Module: public Object
@@ -3233,8 +3256,7 @@ namespace Py
     inline Object Object::callMemberFunction( const std::string &function_name ) const
     {
         Callable target( getAttr( function_name ) );
-        Tuple args( (sequence_index_type)0 );
-        return target.apply( args );
+        return target.apply();
     }
 
     inline Object Object::callMemberFunction( const std::string &function_name, const Tuple &args ) const
