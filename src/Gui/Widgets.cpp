@@ -339,7 +339,7 @@ void ActionSelector::on_removeButton_clicked()
 void ActionSelector::on_upButton_clicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
-    if (item && selectedWidget->isItemSelected(item)) {
+    if (item && item->isSelected()) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         if (index > 0) {
             selectedWidget->takeTopLevelItem(index);
@@ -352,7 +352,7 @@ void ActionSelector::on_upButton_clicked()
 void ActionSelector::on_downButton_clicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
-    if (item && selectedWidget->isItemSelected(item)) {
+    if (item && item->isSelected()) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         if (index < selectedWidget->topLevelItemCount()-1) {
             selectedWidget->takeTopLevelItem(index);
