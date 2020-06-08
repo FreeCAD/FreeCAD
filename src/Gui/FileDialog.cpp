@@ -221,7 +221,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -316,7 +316,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         setWorkingDirectory(file);
         return file;
     } else {
-        return QString::null;
+        return QString();
     }
 }
 
@@ -622,7 +622,7 @@ FileChooser::FileChooser ( QWidget * parent )
   : QWidget(parent)
   , md( File )
   , accMode( AcceptOpen )
-  , _filter( QString::null )
+  , _filter( QString() )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );

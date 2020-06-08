@@ -550,7 +550,7 @@ void ParameterGroup::onCreateSubgroup()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New sub-group"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString::null, &ok );
+                                         QLineEdit::Normal, QString(), &ok );
 
     if (ok && Gui::validateInput(this, name))
     {
@@ -577,7 +577,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QString file = FileDialog::getSaveFileName( this, tr("Export parameter to file"),
-        QString::null, QString::fromLatin1("XML (*.FCParam)"));
+        QString(), QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -593,7 +593,7 @@ void ParameterGroup::onExportToFile()
 void ParameterGroup::onImportFromFile()
 {
     QString file = FileDialog::getOpenFileName( this, tr("Import parameter from file"),
-        QString::null, QString::fromLatin1("XML (*.FCParam)"));
+        QString(), QString::fromLatin1("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -771,7 +771,7 @@ void ParameterValue::onCreateTextItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New text item"), QObject::tr("Enter the name:"), 
-                                         QLineEdit::Normal, QString::null, &ok);
+                                         QLineEdit::Normal, QString(), &ok);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -787,7 +787,7 @@ void ParameterValue::onCreateTextItem()
     }
 
     QString val = QInputDialog::getText(this, QObject::tr("New text item"), QObject::tr("Enter your text:"), 
-                                        QLineEdit::Normal, QString::null, &ok);
+                                        QLineEdit::Normal, QString(), &ok);
     if ( ok && !val.isEmpty() )
     {
         ParameterValueItem *pcItem;
@@ -800,7 +800,7 @@ void ParameterValue::onCreateIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New integer item"), QObject::tr("Enter the name:"), 
-                                         QLineEdit::Normal, QString::null, &ok);
+                                         QLineEdit::Normal, QString(), &ok);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -830,7 +830,7 @@ void ParameterValue::onCreateUIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New unsigned item"), QObject::tr("Enter the name:"), 
-                                         QLineEdit::Normal, QString::null, &ok);
+                                         QLineEdit::Normal, QString(), &ok);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -866,7 +866,7 @@ void ParameterValue::onCreateFloatItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New float item"), QObject::tr("Enter the name:"), 
-                                         QLineEdit::Normal, QString::null, &ok);
+                                         QLineEdit::Normal, QString(), &ok);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -895,7 +895,7 @@ void ParameterValue::onCreateBoolItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New Boolean item"), QObject::tr("Enter the name:"), 
-                                         QLineEdit::Normal, QString::null, &ok);
+                                         QLineEdit::Normal, QString(), &ok);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
