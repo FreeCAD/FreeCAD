@@ -1788,19 +1788,11 @@ class ObjectWaterline(PathOp.ObjectOp):
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
-
+# Eclass
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = ['Algorithm', 'AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
-    setup.extend(['BoundaryAdjustment', 'PatternCenterAt', 'PatternCenterCustom'])
-    setup.extend(['ClearLastLayer', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
-    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
-    setup.extend(['DepthOffset', 'GapSizes', 'GapThreshold', 'StepOver'])
-    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
-    setup.extend(['BoundaryEnforcement', 'SampleInterval', 'StartPoint', 'IgnoreOuterAbove'])
-    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
-    return setup
+    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):

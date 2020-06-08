@@ -2129,18 +2129,10 @@ class ObjectSurface(PathOp.ObjectOp):
             self.tempGroup.addObject(do)
 # Eclass
 
+
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = ['AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
-    setup.extend(['BoundaryAdjustment', 'PatternCenterAt', 'PatternCenterCustom'])
-    setup.extend(['CircularUseG2G3', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
-    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
-    setup.extend(['CutterTilt', 'DepthOffset', 'DropCutterDir', 'GapSizes', 'GapThreshold'])
-    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
-    setup.extend(['ProfileEdges', 'BoundaryEnforcement', 'RotationAxis', 'SampleInterval'])
-    setup.extend(['ScanType', 'StartIndex', 'StartPoint', 'StepOver', 'StopIndex'])
-    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
-    return setup
+    return [tup[1] for tup in ObjectSurface.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):
