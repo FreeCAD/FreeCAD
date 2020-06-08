@@ -1810,7 +1810,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         QFileInfo info((*it).toLocalFile());
         if (info.exists() && info.isFile()) {
             if (info.isSymLink())
-                info.setFile(info.readLink());
+                info.setFile(info.symLinkTarget());
             std::vector<std::string> module = App::GetApplication()
                 .getImportModules(info.completeSuffix().toLatin1());
             if (module.empty()) {
