@@ -1813,37 +1813,43 @@ class FindUnifiedRegions:
             cutBox.translate(FreeCAD.Vector(efBB.XMin - 1.0, efBB.YMin - 1.0, zHght))
             base = ef.cut(cutBox)
 
-            # Identify top face of base
-            fIdx = 0
-            zMin = base.Faces[fIdx].BoundBox.ZMin
-            for bfi in range(0, len(base.Faces)):
-                fzmin = base.Faces[bfi].BoundBox.ZMin
-                if fzmin > zMin:
-                    fIdx = bfi
-                    zMin = fzmin
+            if base.Volume == 0:
+                PathLog.debug('Ignoring Face{}.  It is likely vertical with no horizontal exposure.'.format(fcIdx))
+                cont = False
 
-            # Translate top face to Z=0.0 and save to topFaces list
-            topFace = base.Faces[fIdx]
-            # self._showShape(topFace, 'topFace_{}'.format(fNum))
-            tfBB = topFace.BoundBox
-            tfBB_Area = tfBB.XLength * tfBB.YLength
-            fBB_Area = fBB.XLength * fBB.YLength
-            if tfBB_Area < (fBB_Area * 0.9):
-                # attempt alternate methods
-                topFace = self._getCompleteCrossSection(ef)
+            if cont:
+                # Identify top face of base
+                fIdx = 0
+                zMin = base.Faces[fIdx].BoundBox.ZMin
+                for bfi in range(0, len(base.Faces)):
+                    fzmin = base.Faces[bfi].BoundBox.ZMin
+                    if fzmin > zMin:
+                        fIdx = bfi
+                        zMin = fzmin
+
+                # Translate top face to Z=0.0 and save to topFaces list
+                topFace = base.Faces[fIdx]
+                # self._showShape(topFace, 'topFace_{}'.format(fNum))
                 tfBB = topFace.BoundBox
                 tfBB_Area = tfBB.XLength * tfBB.YLength
-                # self._showShape(topFace, 'topFaceAlt_1_{}'.format(fNum))
+                fBB_Area = fBB.XLength * fBB.YLength
                 if tfBB_Area < (fBB_Area * 0.9):
-                    topFace = getShapeSlice(ef)
+                    # attempt alternate methods
+                    topFace = self._getCompleteCrossSection(ef)
                     tfBB = topFace.BoundBox
                     tfBB_Area = tfBB.XLength * tfBB.YLength
-                    # self._showShape(topFace, 'topFaceAlt_2_{}'.format(fNum))
+                    # self._showShape(topFace, 'topFaceAlt_1_{}'.format(fNum))
                     if tfBB_Area < (fBB_Area * 0.9):
-                        msg = translate('PathSurfaceSupport',
-                            'Faild to extract processing region for Face')
-                        FreeCAD.Console.PrintError(msg + '{}.\n'.format(fNum))
-                        cont = False
+                        topFace = getShapeSlice(ef)
+                        tfBB = topFace.BoundBox
+                        tfBB_Area = tfBB.XLength * tfBB.YLength
+                        # self._showShape(topFace, 'topFaceAlt_2_{}'.format(fNum))
+                        if tfBB_Area < (fBB_Area * 0.9):
+                            msg = translate('PathSurfaceSupport',
+                                'Faild to extract processing region for Face')
+                            FreeCAD.Console.PrintError(msg + '{}.\n'.format(fNum))
+                            cont = False
+            # Eif
 
             if cont:
                 topFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - zMin))
