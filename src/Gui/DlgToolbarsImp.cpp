@@ -503,7 +503,7 @@ void DlgCustomToolbars::on_newButton_clicked()
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
         item->setCheckState(0, Qt::Checked);
-        ui->toolbarTreeWidget->setItemExpanded(item, true);
+        item->setExpanded(true);
 
         QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();

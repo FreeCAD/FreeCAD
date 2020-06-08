@@ -408,7 +408,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
     }
 
     while (parent && !paths.empty()) {
-        paramGroup->setItemExpanded(parent, true);
+        parent->setExpanded(true);
         QTreeWidgetItem* item = parent;
         parent = 0;
         for (int index=0; index < item->childCount(); index++) {
@@ -540,9 +540,9 @@ void ParameterGroup::onToggleSelectedItem()
     if (isItemSelected(sel))
     {
         if ( isItemExpanded(sel) )
-            setItemExpanded(sel, false);
+            sel->setExpanded(false);
         else if ( sel->childCount() > 0 )
-            setItemExpanded(sel, true);
+            sel->setExpanded(true);
     }
 }
 
@@ -618,7 +618,7 @@ void ParameterGroup::onImportFromFile()
                     new ParameterGroupItem(para,*it);
                 }
 
-                setItemExpanded(para, para->childCount());
+                para->setExpanded(para->childCount());
             }
             catch( const Base::Exception& )
             {
