@@ -57,6 +57,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
@@ -2011,6 +2012,8 @@ void SoFCSelectionRoot::setupSelectionLineRendering(
 
     if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
         width *= Gui::ViewParams::instance()->getSelectionLineThicken();
+
+    SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
 
     SoLineWidthElement::set(state,width);
 

@@ -63,6 +63,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SoBrepPointSet.h"
@@ -261,6 +262,7 @@ static inline void setupRendering(
     float ps = SoPointSizeElement::get(state);
     if (ps < 4.0f) SoPointSizeElement::set(state, node, 4.0f);
 
+    SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
     SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoLazyElement::setPacked(state, node,1, color, false);
