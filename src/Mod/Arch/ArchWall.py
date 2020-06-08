@@ -1343,9 +1343,9 @@ class _Wall(ArchComponent.Component):
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                ## Get the 'offseted' wire taking into account
-                                ## of Width and Align of each edge, and overall
-                                ## Offset
+                                # Get the 'offseted' wire taking into account
+                                # of Width and Align of each edge, and overall
+                                # Offset
                                 w2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
                                                                occ=False,
