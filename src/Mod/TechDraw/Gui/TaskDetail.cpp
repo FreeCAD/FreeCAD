@@ -125,6 +125,10 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
             this, SLOT(onYEdit()));
     connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
+    connect(ui->cbScaleType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onScaleTypeEdit()));
+    connect(ui->qsbScale, SIGNAL(valueChanged(double)),
+        this, SLOT(onScaleEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
 
@@ -198,6 +202,10 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
             this, SLOT(onYEdit()));
     connect(ui->qsbRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onRadiusEdit()));
+    connect(ui->cbScaleType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onScaleTypeEdit()));
+    connect(ui->qsbScale, SIGNAL(valueChanged(double)),
+        this, SLOT(onScaleEdit()));
     connect(ui->leReference, SIGNAL(editingFinished()),
         this, SLOT(onReferenceEdit()));
 
@@ -257,7 +265,6 @@ void TaskDetail::setUiFromFeat()
     }
 
     Base::Vector3d anchor;
-    double radius;
 
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument()) + 
@@ -265,7 +272,9 @@ void TaskDetail::setUiFromFeat()
                             QString::fromUtf8(detailFeat->Label.getValue());
     ui->leDetailView->setText(detailDisplay);
     anchor = detailFeat->AnchorPoint.getValue();
-    radius = detailFeat->Radius.getValue();
+    double radius = detailFeat->Radius.getValue();
+    long ScaleType = detailFeat->ScaleType.getValue();
+    double scale = detailFeat->Scale.getValue();
     QString ref = QString::fromUtf8(detailFeat->Reference.getValue());
 
     ui->pbDragger->setText(QString::fromUtf8("Drag Highlight"));
@@ -273,13 +282,20 @@ void TaskDetail::setUiFromFeat()
     int decimals = Base::UnitsApi::getDecimals();
     ui->qsbX->setUnit(Base::Unit::Length);
     ui->qsbX->setDecimals(decimals);
+    ui->qsbX->setValue(anchor.x);
     ui->qsbY->setUnit(Base::Unit::Length);
     ui->qsbY->setDecimals(decimals);
+    ui->qsbY->setValue(anchor.y);
     ui->qsbRadius->setDecimals(decimals);
     ui->qsbRadius->setUnit(Base::Unit::Length);
-    ui->qsbX->setValue(anchor.x);
-    ui->qsbY->setValue(anchor.y);
     ui->qsbRadius->setValue(radius);
+    ui->qsbScale->setDecimals(decimals);
+    ui->cbScaleType->setCurrentIndex(ScaleType);
+    if (ui->cbScaleType->currentIndex() == 2) // only if custom scale
+        ui->qsbScale->setEnabled(true);
+    else
+        ui->qsbScale->setEnabled(false);
+    ui->qsbScale->setValue(scale);
     ui->leReference->setText(ref);
 }
 
@@ -294,6 +310,8 @@ void TaskDetail::enableInputFields(bool b)
 {
     ui->qsbX->setEnabled(b);
     ui->qsbY->setEnabled(b);
+    if (ui->cbScaleType->currentIndex() == 2) // only if custom scale
+        ui->qsbScale->setEnabled(b);
     ui->qsbRadius->setEnabled(b);
     ui->leReference->setEnabled(b);
 }
@@ -313,9 +331,45 @@ void TaskDetail::onRadiusEdit()
     updateDetail();
 }
 
+void TaskDetail::onScaleTypeEdit()
+{
+    TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
+
+     if (ui->cbScaleType->currentIndex() == 0) {
+         // page scale
+         ui->qsbScale->setEnabled(false);
+         detailFeat->ScaleType.setValue(0.0);
+         // set the page scale if there is a valid page
+         if (m_basePage != nullptr) {
+             // set the page scale
+             detailFeat->Scale.setValue(m_basePage->Scale.getValue());
+             ui->qsbScale->setValue(m_basePage->Scale.getValue());
+         }
+         // finally update the view
+         updateDetail();
+    }
+    else if (ui->cbScaleType->currentIndex() == 1) {
+        // automatic scale
+        ui->qsbScale->setEnabled(false);
+        detailFeat->ScaleType.setValue(1.0);
+        // don't do anything here since automatic scaling is only possible for DrawView
+    }
+    else if (ui->cbScaleType->currentIndex() == 2) {
+        // custom scale
+        ui->qsbScale->setEnabled(true);
+        detailFeat->ScaleType.setValue(2.0);
+        // no updateDetail() necessary since nothing visibly was changed
+    }
+}
+
+void TaskDetail::onScaleEdit()
+{
+    updateDetail();
+}
+
 void TaskDetail::onReferenceEdit()
 {
-    updateDetail();   //<<<<<
+    updateDetail();
 }
 
 void TaskDetail::onDraggerClicked(bool b)
@@ -437,7 +491,8 @@ void TaskDetail::updateDetail()
         Base::Vector3d temp(x, y, 0.0);
         TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
         detailFeat->AnchorPoint.setValue(temp);
-
+        double scale = ui->qsbScale->rawValue();
+        detailFeat->Scale.setValue(scale);
         double radius = ui->qsbRadius->rawValue();
         detailFeat->Radius.setValue(radius);
         QString qRef = ui->leReference->text();
