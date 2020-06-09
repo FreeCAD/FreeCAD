@@ -36,8 +36,11 @@ bool(Draft_rc.__name__)
 
 
 class CircularArray(gui_base.PolarCircularBase):
-    """Gui command for the CircularArray tool."""
+    """Gui command for the CircularArray tool.
 
+    The Parent class PolarCircularBase sets up callbacks that
+    allow the selection of edges and the object(s) to be duplicated.
+    """
     def __init__(self):
         super(CircularArray, self).__init__()
         self.command_name = "Circular array"

@@ -185,7 +185,6 @@ class GuiCommandBase:
         else:
             return False
 
-    # noinspection DuplicatedCode
     def finish(self):
         """Terminate the active command by committing the list of commands.
 
@@ -224,6 +223,12 @@ class GuiCommandBase:
 
 
 class PolarCircularBase(GuiCommandBase):
+    """This class is the base of the PolarArray and CircularArray Command to be
+    subclassed by them.
+
+    The functionality of this class entails adding and removing the callbacks
+    for selecting the AxisReference and the objects to be duplicated.
+   """
     def __init__(self):
         super(PolarCircularBase, self).__init__()
         self.location = None
@@ -329,7 +334,8 @@ class PolarCircularBase(GuiCommandBase):
 
 class AxisSelectionObserver:
     """This classes functions will be called when an selection
-    event occurs after axis selection is enabled.
+    event occurs after axis selection is enabled. This class is used by
+    PolarCircularBase.
     """
 
     def __init__(self, source_command):

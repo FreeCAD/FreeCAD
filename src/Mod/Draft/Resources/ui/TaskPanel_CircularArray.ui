@@ -181,7 +181,7 @@ It cannot be zero.</string>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance" native="true">
           <property name="toolTip">
            <string>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</string>
@@ -189,7 +189,7 @@ It cannot be zero.</string>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>100.000000000000000</double>
           </property>
          </widget>
@@ -205,14 +205,14 @@ It cannot be zero.</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance" native="true">
           <property name="toolTip">
            <string>Distance from one layer of objects to the next layer of objects.</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>200.000000000000000</double>
           </property>
          </widget>
@@ -264,6 +264,31 @@ It must be at least 2.</string>
            <string>Symmetry</string>
           </property>
          </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_axis">
+          <property name="text">
+           <string>Axis Reference</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <layout class="QGridLayout" name="grid_axis_reference" columnstretch="0,0" columnminimumwidth="0,0">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="button_axis">
+            <property name="text">
+             <string>select</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_axis_name">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

@@ -36,7 +36,11 @@ bool(Draft_rc.__name__)
 
 
 class PolarArray(gui_base.PolarCircularBase):
-    """Gui command for the PolarArray tool."""
+    """Gui command for the PolarArray tool.
+
+    The Parent class PolarCircularBase sets up callbacks that
+    allow the selection of edges and the object(s) to be duplicated.
+    """
 
     def __init__(self):
         super(PolarArray, self).__init__()
@@ -61,7 +65,6 @@ class PolarArray(gui_base.PolarCircularBase):
 
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
-        super(PolarArray, self).Activated()
         """
         self.ui = task_polararray.TaskPanelPolarArray()
         # The calling class (this one) is saved in the object

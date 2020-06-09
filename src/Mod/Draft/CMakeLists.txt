@@ -260,6 +260,7 @@ SET(Draft_GUI_tools
 
 SET(Draft_task_panels
     drafttaskpanels/__init__.py
+    drafttaskpanels/task_base.py
     drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py

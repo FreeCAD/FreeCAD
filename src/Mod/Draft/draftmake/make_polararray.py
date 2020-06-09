@@ -61,22 +61,22 @@ def make_polar_array(base_object,
         It defaults to the origin `App.Vector(0, 0, 0)`.
         The vector indicating the center of rotation of the array.
 
-    axis_object: str or DocumentObject, optional
+    axis_object: str or Part::Feature, optional
         It defaults to `None`.
-        This parameter should be the name of an `DocumentObject` or
-        the `DocumentObject` itself.
+        This parameter should be the name of an `Part::Feature` or
+        the `Part::Feature` object itself.
         If it is set the resulting array will use the referenced axis
-        with it's name provided by parameter `edge_name` that is part
+        with it's name provided by parameter `axis_edge` that is part
         of `axis_object` to calculate center and direction instead
         of the `center` and `axis` arguments to create the array.
-        If the parameter `edge_name` is not given as default the
+        If the parameter `axis_edge` is not given as default the
         first edge of the `axis_object` will be used
 
     axis_edge: str or int, optional
         It defaults to `None`.
         If it is set the resulting array will use the referenced axis
         to calculate center and direction instead of the `center`
-        and `axis` arguments to create the array. The `edge_name` must
+        and `axis` arguments to create the array. The `axis_edge` must
         refer to the name of an `SubObject` with type `Part.Edge` and
         a `Part.Edge.Curve` of type `Part.Line`. It can be given as
         integer or string. For example the string `Edge1` corresponds
@@ -177,10 +177,10 @@ def make_polar_array(base_object,
                 return None
         else:
             if not (hasattr(axis, "Shape") and hasattr(axis.Shape, "Edges")):
-                _err(_tr("Wrong input: axis_object cannot be used for Axis Reference,"
-                         "it lacks a Shape with Edges."))
+                _err(_tr("Wrong input: axis_object cannot be used for Axis"
+                         " Reference, it lacks a Shape with Edges."))
                 return None
-            axis_edge_name = "Edge1"  # this is the default if axis_edge is missing
+            axis_edge_name = "Edge1"  # default if axis_edge is missing
             edge_object = axis.getSubObject(axis_edge_name)
         if not edge_object:
             _err(_tr(
