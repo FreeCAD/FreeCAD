@@ -126,6 +126,15 @@ App::Color Preferences::vertexColor()
     return fcColor;
 }
 
+double Preferences::vertexScale()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetFloat("VertexScale", 3.0);
+    return result;
+}
+
+
 
 //lightgray #D3D3D3 
 
