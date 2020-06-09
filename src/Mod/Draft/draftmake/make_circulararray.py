@@ -29,6 +29,7 @@ import FreeCAD as App
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
+from draftutils.make_utils import make_polcirc_shared
 
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
@@ -38,7 +39,7 @@ def make_circular_array(base_object,
                         r_distance=100, tan_distance=50,
                         number=3, symmetry=1,
                         axis=App.Vector(0, 0, 1), center=App.Vector(0, 0, 0),
-                        use_link=True):
+                        axis_object=None, axis_edge=None, use_link=True):
     """Create a circular array from the given object.
 
     Parameters
@@ -87,6 +88,29 @@ def make_circular_array(base_object,
         It defaults to `App.Vector(0, 0, 0)` or the global origin.
         The point through which the `axis` passes to define
         the axis of rotation.
+
+    axis_object: str or Part::Feature, optional
+        It defaults to `None`.
+        This parameter should be the name of an `Part::Feature` or
+        the `Part::Feature` object itself.
+        If it is set the resulting array will use the referenced axis
+        with it's name provided by parameter `axis_edge` that is part
+        of `axis_object` to calculate center and direction instead
+        of the `center` and `axis` arguments to create the array.
+        If the parameter `axis_edge` is not given as default the
+        first edge of the `axis_object` will be used
+
+    axis_edge: str or int, optional
+        It defaults to `None`.
+        If it is set the resulting array will use the referenced axis
+        to calculate center and direction instead of the `center`
+        and `axis` arguments to create the array. The `axis_edge` must
+        refer to the name of an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
+        integer or string. For example the string `Edge1` corresponds
+        to the integer `1`.
+        This `SubObject` must belong to parameter `axis_object` which
+        must be given as well.
 
     use_link: bool, optional
         It defaults to `True`.
@@ -163,6 +187,8 @@ def make_circular_array(base_object,
         _err(_tr("Wrong input: must be a vector."))
         return None
 
+    axis_reference = make_polcirc_shared(_name, center, axis_object, axis_edge)
+
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
@@ -171,4 +197,8 @@ def make_circular_array(base_object,
                                     arg3=axis, arg4=center,
                                     arg5=number, arg6=symmetry,
                                     use_link=use_link)
+
+    if axis_reference:
+        new_obj.AxisReference = axis_reference
+
     return new_obj

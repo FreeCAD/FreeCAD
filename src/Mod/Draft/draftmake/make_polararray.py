@@ -30,6 +30,7 @@ import Part
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
+from draftutils.make_utils import make_polcirc_shared
 
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
@@ -142,62 +143,7 @@ def make_polar_array(base_object,
         _err(_tr("Wrong input: must be a number."))
         return None
 
-    _msg("center: {}".format(center))
-    try:
-        utils.type_check([(center, App.Vector)], name=_name)
-    except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
-        return None
-
-    _msg("axis_object: {}".format(axis_object))
-    _msg("axis_edge: {}".format(axis_edge))
-    axis = axis_object
-    if axis_object and isinstance(axis_object, str):
-        found, axis = utils.find_object(axis_object,
-                                        doc=App.activeDocument())
-        if not found:
-            _err(_tr(
-                "Wrong input. Given axis_name does not refer to an "
-                "existing DocumentObject."))
-            return None
-    if axis:
-        axis_edge_name = axis_edge
-        if axis_edge:
-            if isinstance(axis_edge, str):
-                print(axis)
-                print(axis_edge)
-                edge_object = axis.getSubObject(axis_edge)
-            elif isinstance(axis_edge, int):
-                axis_edge_name = "Edge" + str(axis_edge)
-                edge_object = axis.getSubObject(axis_edge_name)
-            else:
-                _err(_tr(
-                    "Wrong input. Given axis_edge has to be of type int or str."
-                ))
-                return None
-        else:
-            if not (hasattr(axis, "Shape") and hasattr(axis.Shape, "Edges")):
-                _err(_tr("Wrong input: axis_object cannot be used for Axis"
-                         " Reference, it lacks a Shape with Edges."))
-                return None
-            axis_edge_name = "Edge1"  # default if axis_edge is missing
-            edge_object = axis.getSubObject(axis_edge_name)
-        if not edge_object:
-            _err(_tr(
-                "Wrong input. Given axis_edge does not refer to a "
-                "SubObject of axis_object or given axis_object lacks"
-                "having edges."))
-            return None
-        if not isinstance(edge_object, Part.Edge):
-            _err(_tr(
-                "Wrong input. Given axis_edge does not refer to a "
-                "SubObject of type Part.Edge"))
-            return None
-        if not isinstance(edge_object.Curve, Part.Line):
-            _err(_tr(
-                "Wrong input. Given axis_edge does not refer to a "
-                "SubObject with Curve of type Part.Line"))
-            return None
+    axis_reference = make_polcirc_shared(_name, center, axis_object, axis_edge)
 
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
@@ -206,10 +152,7 @@ def make_polar_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
                                     use_link=use_link)
 
-    if axis_object:
-        axis_reference = [axis, axis_edge_name]
-        _msg("axis_reference: {}".format(axis_reference))
+    if axis_reference:
         new_obj.AxisReference = axis_reference
-        new_obj.recompute()
 
     return new_obj
