@@ -30,11 +30,11 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
-#include <QList>
-#include <QPointer>
-#include <boost/signals2.hpp>
-#include <boost/signals2/connection.hpp>
-#include <boost/bind.hpp>
+# include <QList>
+# include <QPointer>
+# include <boost/signals2.hpp>
+# include <boost/signals2/connection.hpp>
+# include <boost/bind/bind.hpp>
 
 #endif
 
@@ -73,6 +73,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+namespace bp = boost::placeholders;
 
 #define _SHOWDRAWING 10
 #define _TOGGLEUPDATE 11
@@ -107,7 +108,7 @@ void ViewProviderPage::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, _1);
+    auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
     auto feature = getDrawPage();
     if (feature != nullptr) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);

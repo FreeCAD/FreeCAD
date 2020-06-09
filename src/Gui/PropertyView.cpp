@@ -27,9 +27,9 @@
 # include <QHeaderView>
 # include <QEvent>
 # include <QTimer>
+# include <boost/bind/bind.hpp>
 #endif
 
-#include <boost/bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Parameter.h>
@@ -57,6 +57,7 @@ using namespace std;
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
+namespace bp = boost::placeholders;
 
 static ParameterGrp::handle _GetParam() {
     static ParameterGrp::handle hGrp;
@@ -111,19 +112,19 @@ PropertyView::PropertyView(QWidget *parent)
 
     this->connectPropData =
     App::GetApplication().signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyData, this, _1, _2));
+        (&PropertyView::slotChangePropertyData, this, bp::_1, bp::_2));
     this->connectPropView =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&PropertyView::slotChangePropertyView, this, _1, _2));
+        (&PropertyView::slotChangePropertyView, this, bp::_1, bp::_2));
     this->connectPropAppend =
     App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
-        (&PropertyView::slotAppendDynamicProperty, this, _1));
+        (&PropertyView::slotAppendDynamicProperty, this, bp::_1));
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
-        (&PropertyView::slotRemoveDynamicProperty, this, _1));
+        (&PropertyView::slotRemoveDynamicProperty, this, bp::_1));
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(boost::bind
-        (&PropertyView::slotChangePropertyEditor, this, _1, _2));
+        (&PropertyView::slotChangePropertyEditor, this, bp::_1, bp::_2));
     this->connectUndoDocument =
     App::GetApplication().signalUndoDocument.connect(boost::bind
         (&PropertyView::slotRollback, this));
@@ -132,16 +133,16 @@ PropertyView::PropertyView(QWidget *parent)
         (&PropertyView::slotRollback, this));
     this->connectActiveDoc =
     Application::Instance->signalActiveDocument.connect(boost::bind
-        (&PropertyView::slotActiveDocument, this, _1));
+        (&PropertyView::slotActiveDocument, this, bp::_1));
     this->connectDelDocument = 
         Application::Instance->signalDeleteDocument.connect(
-                boost::bind(&PropertyView::slotDeleteDocument, this, _1));
+                boost::bind(&PropertyView::slotDeleteDocument, this, bp::_1));
     this->connectDelViewObject = 
         Application::Instance->signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedViewObject, this, _1));
+                boost::bind(&PropertyView::slotDeletedViewObject, this, bp::_1));
     this->connectDelObject = 
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&PropertyView::slotDeletedObject, this, _1));
+                boost::bind(&PropertyView::slotDeletedObject, this, bp::_1));
 }
 
 PropertyView::~PropertyView()

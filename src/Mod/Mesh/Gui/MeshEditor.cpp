@@ -45,7 +45,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include "MeshEditor.h"
@@ -61,6 +61,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
+namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
@@ -477,7 +478,7 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     viewer->addEventCallback(SoEvent::getClassTypeId(),
         MeshFillHole::fileHoleCallback, this);
     myConnection = App::GetApplication().signalChangedObject.connect(
-        boost::bind(&MeshFillHole::slotChangedObject, this, _1, _2));
+        boost::bind(&MeshFillHole::slotChangedObject, this, bp::_1, bp::_2));
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
     myBoundariesRoot->addChild(viewer->getHeadlight());

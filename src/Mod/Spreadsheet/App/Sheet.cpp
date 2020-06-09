@@ -53,7 +53,6 @@
 #include <string>
 #include <iomanip>
 #include <boost/regex.hpp>
-#include <boost/bind.hpp>
 #include <deque>
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)

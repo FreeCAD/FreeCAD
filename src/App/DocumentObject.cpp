@@ -42,7 +42,7 @@
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

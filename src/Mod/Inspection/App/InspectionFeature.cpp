@@ -36,7 +36,7 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -59,6 +59,7 @@
 
 
 using namespace Inspection;
+namespace bp = boost::placeholders;
 
 InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
@@ -786,7 +787,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
     QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, _1));
+        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;

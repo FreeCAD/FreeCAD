@@ -45,7 +45,7 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <QAction>
 # include <QMenu>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include <App/PropertyStandard.h>
@@ -56,6 +56,7 @@
 
 
 using namespace PartGui;
+namespace bp = boost::placeholders;
 
 
 PROPERTY_SOURCE(PartGui::ViewProviderSpline, PartGui::ViewProviderPartExt)
@@ -79,7 +80,7 @@ void ViewProviderSpline::setupContextMenu(QMenu* menu, QObject* receiver, const 
     QAction* act = menu->addAction(QObject::tr("Show control points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
-    func->toggle(act, boost::bind(&ViewProviderSpline::toggleControlPoints, this, _1));
+    func->toggle(act, boost::bind(&ViewProviderSpline::toggleControlPoints, this, bp::_1));
 }
 
 void ViewProviderSpline::toggleControlPoints(bool on)

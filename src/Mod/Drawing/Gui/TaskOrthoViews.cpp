@@ -37,12 +37,13 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 
 using namespace Gui;
 using namespace DrawingGui;
 using namespace std;
+namespace bp = boost::placeholders;
 
 
 #ifndef PI
@@ -304,9 +305,9 @@ OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * p
     num_gaps_x = num_gaps_y = 0;
 
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-        (&OrthoViews::slotDeletedObject, this, _1));
+        (&OrthoViews::slotDeletedObject, this, bp::_1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-        (&OrthoViews::slotDeletedDocument, this, _1));
+        (&OrthoViews::slotDeletedDocument, this, bp::_1));
 }
 
 OrthoViews::~OrthoViews()

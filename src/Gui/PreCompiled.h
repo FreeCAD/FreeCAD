@@ -78,7 +78,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>

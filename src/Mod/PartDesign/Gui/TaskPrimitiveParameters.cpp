@@ -29,8 +29,6 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
-# include <boost/bind/bind.hpp>
-# include <boost/bind.hpp>
 #endif
 
 #include "TaskPrimitiveParameters.h"

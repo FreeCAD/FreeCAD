@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include "ui_TaskHoleParameters.h"
@@ -43,6 +43,7 @@
 
 using namespace PartDesignGui;
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR PartDesignGui::TaskHoleParameters */
 
@@ -118,7 +119,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
 
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
-            boost::bind(&TaskHoleParameters::changedObject, this, _1, _2));
+            boost::bind(&TaskHoleParameters::changedObject, this, bp::_1, bp::_2));
 
     this->groupLayout()->addWidget(proxy);
 }

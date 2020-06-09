@@ -31,8 +31,6 @@
 #include "ui_DlgEvaluateMesh.h"
 #include "DlgEvaluateSettings.h"
 
-#include <boost/bind.hpp>
-
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Gui/Application.h>

@@ -53,8 +53,6 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/bind.hpp>
-
 // FreeCAD Base header
 #include <Base/Parameter.h>
 #include <Base/Exception.h>

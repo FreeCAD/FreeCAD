@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include "TaskDlgEditSketch.h"
@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 
 using namespace SketcherGui;
+namespace bp = boost::placeholders;
 
 
 //**************************************************************************
@@ -75,9 +76,9 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
 
     App::Document* document = sketchView->getObject()->getDocument();
     connectUndoDocument =
-        document->signalUndo.connect(boost::bind(&TaskDlgEditSketch::slotUndoDocument, this, _1));
+        document->signalUndo.connect(boost::bind(&TaskDlgEditSketch::slotUndoDocument, this, bp::_1));
     connectRedoDocument =
-        document->signalRedo.connect(boost::bind(&TaskDlgEditSketch::slotRedoDocument, this, _1));
+        document->signalRedo.connect(boost::bind(&TaskDlgEditSketch::slotRedoDocument, this, bp::_1));
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()

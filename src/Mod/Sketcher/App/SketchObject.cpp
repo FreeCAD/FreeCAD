@@ -58,7 +58,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 //# include <QtGlobal>
 #endif
 
@@ -88,6 +88,7 @@
 
 using namespace Sketcher;
 using namespace Base;
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -134,10 +135,10 @@ SketchObject::SketchObject()
 
     noRecomputes=false;
 
-    ExpressionEngine.setValidator(boost::bind(&Sketcher::SketchObject::validateExpression, this, _1, _2));
+    ExpressionEngine.setValidator(boost::bind(&Sketcher::SketchObject::validateExpression, this, bp::_1, bp::_2));
 
-    constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
-    constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
+    constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, bp::_1));
+    constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, bp::_1));
 
     analyser = new SketchAnalysis(this);
 }

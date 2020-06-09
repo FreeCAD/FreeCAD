@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #endif
 
 #include "ui_TaskSketcherGeneral.h"
@@ -43,6 +43,7 @@
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
   : QWidget(parent), ui(new Ui_TaskSketcherGeneral)
@@ -250,7 +251,7 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(boost::bind
-        (&TaskSketcherGeneral::onChangedSketchView, this, _1, _2));
+        (&TaskSketcherGeneral::onChangedSketchView, this, bp::_1, bp::_2));
 }
 
 TaskSketcherGeneral::~TaskSketcherGeneral()

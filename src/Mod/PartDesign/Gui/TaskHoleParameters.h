@@ -28,7 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"

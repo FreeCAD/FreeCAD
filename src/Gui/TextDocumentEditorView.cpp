@@ -30,11 +30,11 @@
 # include <QMessageBox>
 # include <QPushButton>
 # include <QTextBlock>
+# include <iostream>
+# include <boost/bind/bind.hpp>
+# include <boost/signals2.hpp>
 #endif
 
-#include <iostream>
-#include <boost/bind.hpp>
-#include <boost/signals2.hpp>
 
 #include <App/TextDocument.h>
 #include <Gui/Document.h>
