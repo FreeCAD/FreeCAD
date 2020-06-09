@@ -90,7 +90,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
 SET(PlaneGCS_SRCS
-    planegcs/qp_eq.h
     planegcs/GCS.cpp
     planegcs/GCS.h
     planegcs/Util.h
@@ -138,6 +137,15 @@ if(FREECAD_USE_PCH)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
 endif(FREECAD_USE_PCH)
+
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        planegcs/GCS.cpp
+        planegcs/SubSystem.cpp
+        planegcs/qp_eq.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)

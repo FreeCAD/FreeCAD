@@ -43,48 +43,58 @@ class Shape2DView(DraftObject):
 
     def __init__(self,obj):
 
-        _tip = "The base object this 2D view must represent"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The base object this 2D view must represent")
         obj.addProperty("App::PropertyLink", "Base",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The projection vector of this object"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The projection vector of this object")
         obj.addProperty("App::PropertyVector", "Projection",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The way the viewed object must be projected"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The way the viewed object must be projected")
         obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The indices of the faces to be projected in Individual Faces mode"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The indices of the faces to be projected in Individual Faces mode")
         obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Show hidden lines"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Show hidden lines")
         obj.addProperty("App::PropertyBool", "HiddenLines",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Fuse wall and structure objects of same type and material"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Fuse wall and structure objects of same type and material")
         obj.addProperty("App::PropertyBool", "FuseArch",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Tessellate Ellipses and B-splines into line segments"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Tessellate Ellipses and B-splines into line segments")
         obj.addProperty("App::PropertyBool", "Tessellation",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "For Cutlines and Cutfaces modes, \
-                this leaves the faces at the cut location"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "For Cutlines and Cutfaces modes, \
+                this leaves the faces at the cut location")
         obj.addProperty("App::PropertyBool", "InPlace",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Length of line segments if tessellating Ellipses or B-splines \
-                into line segments"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Length of line segments if tessellating Ellipses or B-splines \
+                into line segments")
         obj.addProperty("App::PropertyFloat", "SegmentLength",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "If this is True, this object will be recomputed only if it is \
-                visible"
+        _tip = QT_TRANSLATE_NOOP("App::Property", 
+                "If this is True, this object will be recomputed only if it is \
+                visible")
         obj.addProperty("App::PropertyBool", "VisibleOnly",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
         
         obj.Projection = App.Vector(0,0,1)
         obj.ProjectionMode = ["Solid", "Individual Faces",

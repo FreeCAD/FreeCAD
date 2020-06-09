@@ -250,7 +250,7 @@ def removeSplitter(shape):
 
     try:
         face = Part.Face(Part.Wire(edges))
-    except:
+    except Part.OCCError:
         # operation failed
         return None
     else:

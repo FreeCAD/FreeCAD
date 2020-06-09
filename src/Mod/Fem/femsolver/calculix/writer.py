@@ -660,15 +660,30 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object["Object"]
-            f.write("** " + trans_obj.Label + "\n")
+            trans_name = ""
+            trans_type = ""
             if trans_obj.TransformType == "Rectangular":
-                f.write("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
+                trans_name = "Rect"
+                trans_type = "R"
                 coords = geomtools.get_rectangular_coords(trans_obj)
-                f.write(coords + "\n")
             elif trans_obj.TransformType == "Cylindrical":
-                f.write("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
+                trans_name = "Cylin"
+                trans_type = "C"
                 coords = geomtools.get_cylindrical_coords(trans_obj)
-                f.write(coords + "\n")
+            f.write("** {}\n".format(trans_obj.Label))
+            f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
+                trans_name,
+                trans_obj.Name,
+                trans_type,
+            ))
+            f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
+                coords[0],
+                coords[1],
+                coords[2],
+                coords[3],
+                coords[4],
+                coords[5],
+            ))
 
     # ********************************************************************************************
     # constraints temperature

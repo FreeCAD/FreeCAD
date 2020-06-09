@@ -34,292 +34,128 @@ and on their subelements, that is, vertices, edges, and faces.
 
 ## \addtogroup DRAFTGEOMUTILS
 #  @{
-import cmath
-import math
-
-import FreeCAD
-import Part
-import DraftVecUtils
-from FreeCAD import Vector
 
 __title__ = "FreeCAD Draft Workbench - Geometry library"
 __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
 __url__ = ["https://www.freecadweb.org"]
 
-from draftgeoutils.general import PARAMGRP as params
+# Doesn't need requisites
+from draftgeoutils.linear_algebra import (linearFromPoints,
+                                          determinant)
 
+# Needs math, Part, and vector tools
+from draftgeoutils.general import PARAMGRP as params
 from draftgeoutils.general import NORM
 
-# Generic functions *********************************************************
+from draftgeoutils.general import (precision,
+                                   vec,
+                                   edg,
+                                   getVerts,
+                                   v1,
+                                   isNull,
+                                   isPtOnEdge,
+                                   hasCurves,
+                                   isAligned,
+                                   getQuad,
+                                   areColinear,
+                                   hasOnlyWires,
+                                   geomType,
+                                   isValidPath,
+                                   findClosest,
+                                   getBoundaryAngles)
+
+# Needs general functions
+from draftgeoutils.geometry import (findPerpendicular,
+                                    findDistance,
+                                    getSplineNormal,
+                                    getNormal,
+                                    getRotation,
+                                    isPlanar,
+                                    calculatePlacement,
+                                    mirror)
+
+from draftgeoutils.edges import (findEdge,
+                                 orientEdge,
+                                 isSameLine,
+                                 isLine,
+                                 invert,
+                                 findMidpoint,
+                                 getTangent)
+
+from draftgeoutils.faces import (concatenate,
+                                 getBoundary,
+                                 isCoplanar,
+                                 bind,
+                                 cleanFaces,
+                                 removeSplitter)
+
+from draftgeoutils.arcs import (isClockwise,
+                                isWideAngle,
+                                arcFrom2Pts,
+                                arcFromSpline)
+
+from draftgeoutils.cuboids import (isCubic,
+                                   getCubicDimensions)
+
+# Needs geometry functions
+from draftgeoutils.circle_inversion import (pointInversion,
+                                            polarInversion,
+                                            circleInversion)
+
+# Needs edges functions
+from draftgeoutils.sort_edges import (sortEdges,
+                                      sortEdgesOld)
+
+from draftgeoutils.intersections import (findIntersection,
+                                         wiresIntersect,
+                                         connect,
+                                         angleBisection)
+
+from draftgeoutils.wires import (findWires,
+                                 findWiresOld,
+                                 findWiresOld2,
+                                 flattenWire,
+                                 superWire,
+                                 isReallyClosed,
+                                 curvetowire,
+                                 curvetosegment,
+                                 rebaseWire,
+                                 removeInterVertices,
+                                 cleanProjection,
+                                 tessellateProjection)
+
+# Needs wires functions
+from draftgeoutils.fillets import (fillet,
+                                   filletWire)
+
+# Needs intersections functions
+from draftgeoutils.offsets import (pocket2d,
+                                   offset,
+                                   offsetWire)
+
+from draftgeoutils.circles import (findClosestCircle,
+                                   getCircleFromSpline,
+                                   circlefrom1Line2Points,
+                                   circlefrom2Lines1Point,
+                                   circleFrom2LinesRadius,
+                                   circleFrom3LineTangents,
+                                   circleFromPointLineRadius,
+                                   circleFrom2PointsRadius,
+                                   findHomotheticCenterOfCircles,
+                                   findRadicalAxis,
+                                   findRadicalCenter)
+
+from draftgeoutils.circles_apollonius import (outerSoddyCircle,
+                                              innerSoddyCircle,
+                                              circleFrom3CircleTangents)
 
-
-from draftgeoutils.general import precision
-
-
-from draftgeoutils.general import vec
-
-
-from draftgeoutils.general import edg
-
-
-from draftgeoutils.general import getVerts
-
-
-from draftgeoutils.general import v1
-
-
-from draftgeoutils.general import isNull
-
-
-from draftgeoutils.general import isPtOnEdge
-
-
-from draftgeoutils.general import hasCurves
-
-
-from draftgeoutils.general import isAligned
-
-
-from draftgeoutils.general import getQuad
-
-
-from draftgeoutils.general import areColinear
-
-
-from draftgeoutils.general import hasOnlyWires
-
-
-from draftgeoutils.general import geomType
-
-
-from draftgeoutils.general import isValidPath
-
-
-# edge functions *************************************************************
-
-
-from draftgeoutils.edges import findEdge
-
-
-from draftgeoutils.intersections import findIntersection
-
-
-from draftgeoutils.intersections import wiresIntersect
-
-
-from draftgeoutils.offsets import pocket2d
-
-
-from draftgeoutils.edges import orientEdge
-
-
-from draftgeoutils.geometry import mirror
-
-
-from draftgeoutils.arcs import isClockwise
-
-
-from draftgeoutils.edges import isSameLine
-
-
-from draftgeoutils.arcs import isWideAngle
-
-
-from draftgeoutils.general import findClosest
-
-
-from draftgeoutils.faces import concatenate
-
-
-from draftgeoutils.faces import getBoundary
-
-
-from draftgeoutils.edges import isLine
-
-
-from draftgeoutils.sort_edges import sortEdges
-
-
-from draftgeoutils.sort_edges import sortEdgesOld
-
-
-from draftgeoutils.edges import invert
-
-
-from draftgeoutils.wires import flattenWire
-
-
-from draftgeoutils.wires import findWires
-
-
-from draftgeoutils.wires import findWiresOld2
-
-
-from draftgeoutils.wires import superWire
-
-
-from draftgeoutils.edges import findMidpoint
-
-
-from draftgeoutils.geometry import findPerpendicular
-
-
-from draftgeoutils.offsets import offset
-
-
-from draftgeoutils.wires import isReallyClosed
-
-
-from draftgeoutils.geometry import getSplineNormal
-
-
-from draftgeoutils.geometry import getNormal
-
-
-from draftgeoutils.geometry import getRotation
-
-
-from draftgeoutils.geometry import calculatePlacement
-
-
-from draftgeoutils.offsets import offsetWire
-
-
-from draftgeoutils.intersections import connect
-
-
-from draftgeoutils.geometry import findDistance
-
-
-from draftgeoutils.intersections import angleBisection
-
-
-from draftgeoutils.circles import findClosestCircle
-
-
-from draftgeoutils.faces import isCoplanar
-
-
-from draftgeoutils.geometry import isPlanar
-
-
-from draftgeoutils.wires import findWiresOld
-
-
-from draftgeoutils.edges import getTangent
-
-
-from draftgeoutils.faces import bind
-
-
-from draftgeoutils.faces import cleanFaces
-
-
-from draftgeoutils.cuboids import isCubic
-
-
-from draftgeoutils.cuboids import getCubicDimensions
-
-
-from draftgeoutils.wires import removeInterVertices
-
-
-from draftgeoutils.arcs import arcFromSpline
-
-
-from draftgeoutils.fillets import fillet
-
-
-from draftgeoutils.fillets import filletWire
-
-
-from draftgeoutils.circles import getCircleFromSpline
-
-
-from draftgeoutils.wires import curvetowire
-
-
-from draftgeoutils.wires import cleanProjection
-
-
-from draftgeoutils.wires import curvetosegment
-
-
-from draftgeoutils.wires import tessellateProjection
-
-
-from draftgeoutils.wires import rebaseWire
-
-
-from draftgeoutils.faces import removeSplitter
-
-
-# circle functions *********************************************************
-
-
-from draftgeoutils.general import getBoundaryAngles
-
-
+# Needs circles_apollonius functions
 # These functions are not imported because they are incomplete;
 # they require pre-requisite functions that haven't been written
-# from draftgeoutils.circles_incomplete import circleFrom2tan1pt
-# from draftgeoutils.circles_incomplete import circleFrom2tan1rad
-# from draftgeoutils.circles_incomplete import circleFrom1tan2pt
-# from draftgeoutils.circles_incomplete import circleFrom1tan1pt1rad
-# from draftgeoutils.circles_incomplete import circleFrom3tan
-
-
-from draftgeoutils.circles import circlefrom2Lines1Point
-
-
-from draftgeoutils.circles import circlefrom1Line2Points
-
-
-from draftgeoutils.circles import circleFrom2LinesRadius
-
-
-from draftgeoutils.circles import circleFrom3LineTangents
-
-
-from draftgeoutils.circles import circleFromPointLineRadius
-
-
-from draftgeoutils.circles import circleFrom2PointsRadius
-
-
-from draftgeoutils.arcs import arcFrom2Pts
-
-
-from draftgeoutils.circles_apollonius import outerSoddyCircle
-
-
-from draftgeoutils.circles_apollonius import innerSoddyCircle
-
-
-from draftgeoutils.circles_apollonius import circleFrom3CircleTangents
-
-
-from draftgeoutils.linear_algebra import linearFromPoints
-
-
-from draftgeoutils.linear_algebra import determinant
-
-
-from draftgeoutils.circles import findHomotheticCenterOfCircles
-
-
-from draftgeoutils.circles import findRadicalAxis
-
-
-from draftgeoutils.circles import findRadicalCenter
-
-
-from draftgeoutils.circle_inversion import pointInversion
-
-
-from draftgeoutils.circle_inversion import polarInversion
-
-
-from draftgeoutils.circle_inversion import circleInversion
+# from draftgeoutils.circles_incomplete import (circleFrom2tan1pt,
+#                                               circleFrom2tan1rad,
+#                                               circleFrom1tan2pt,
+#                                               circleFrom1tan1pt1rad,
+#                                               circleFrom3tan)
 
 ##  @}

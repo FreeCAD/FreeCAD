@@ -63,43 +63,47 @@ class PointArray(DraftObject):
         properties = obj.PropertiesList
 
         if "Base" not in properties:
-            _tip = "Base object that will be duplicated"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Base object that will be duplicated")
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Base = None
 
         if "PointObject" not in properties:
-            _tip = ("Object containing points used to distribute "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    ("Object containing points used to distribute "
                     "the base object, for example, a sketch or "
                     "a Part compound.\n"
                     "The sketch or compound must contain at least "
-                    "one explicit point or vertex object.")
+                    "one explicit point or vertex object."))
             obj.addProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.PointObject = None
 
         if "Count" not in properties:
-            _tip = ("Total number of elements in the array.\n"
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Total number of elements in the array.\n"
                     "This property is read-only, as the number depends "
                     "on the points contained within 'Point Object'.")
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
         if "ExtraPlacement" not in properties:
-            _tip = ("Additional placement, shift and rotation, "
+            _tip = QT_TRANSLATE_NOOP("App::Property", 
+                    "Additional placement, shift and rotation, "
                     "that will be applied to each copy")
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.ExtraPlacement = App.Placement()
 
     def execute(self, obj):
@@ -128,12 +132,12 @@ class PointArray(DraftObject):
         properties = obj.PropertiesList
 
         if "ExtraPlacement" not in properties:
-            _tip = ("Additional placement, shift and rotation, "
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, "
                     "that will be applied to each copy")
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
-                            QT_TRANSLATE_NOOP("App::Property", _tip))
+                            _tip)
             obj.ExtraPlacement.Base = obj.Base.Placement.Base
             _info = "added property 'ExtraPlacement'"
             _wrn("v0.19, " + obj.Label + ", " + _tr(_info))

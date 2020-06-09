@@ -2093,7 +2093,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for nxt in line[2:]:
                 if not pnt.isOnLineSegment(prv, nxt):
                     pts.append(pnt)
-                prv = pnt
+                    prv = pnt
                 pnt = nxt
             pts.append(line[-1])
             return pts

@@ -37,9 +37,9 @@ class Block(DraftObject):
     def __init__(self, obj):
         super(Block, self).__init__(obj, "Block")
 
-        _tip = "The components of this block"
-        obj.addProperty("App::PropertyLinkList","Components",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The components of this block")
+        obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip)
 
     def execute(self, obj):
         import Part
