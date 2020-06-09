@@ -22,152 +22,32 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Dimension.
-"""
+"""This module provides the object code for Draft Dimension."""
 ## @package dimension
 # \ingroup DRAFT
 # \brief This module provides the object code for Draft Dimension.
 
-import FreeCAD as App
-import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils, DraftVecUtils
-import draftutils.gui_utils as gui_utils
+
+import FreeCAD as App
+import DraftVecUtils
+import DraftGeomUtils
 import draftutils.utils as utils
+
 from draftobjects.draft_annotation import DraftAnnotation
-
-if App.GuiUp:
-    from draftviewproviders.view_dimension import ViewProviderDimensionBase
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
-    from draftviewproviders.view_dimension import ViewProviderAngularDimension
-
-def make_dimension(p1,p2,p3=None,p4=None):
-    """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
-    or makeDimension(objlist,indices,p3): Creates a Dimension object with
-    the dimension line passign through p3.The current line width and color
-    will be used. There are multiple  ways to create a dimension, depending on
-    the arguments you pass to it:
-    - (p1,p2,p3): creates a standard dimension from p1 to p2
-    - (object,i1,i2,p3): creates a linked dimension to the given object,
-    measuring the distance between its vertices indexed i1 and i2
-    - (object,i1,mode,p3): creates a linked dimension
-    to the given object, i1 is the index of the (curved) edge to measure,
-    and mode is either "radius" or "diameter".
-    """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    LinearDimension(obj)
-    if App.GuiUp:
-        ViewProviderLinearDimension(obj.ViewObject)
-    if isinstance(p1,App.Vector) and isinstance(p2,App.Vector):
-        obj.Start = p1
-        obj.End = p2
-        if not p3:
-            p3 = p2.sub(p1)
-            p3.multiply(0.5)
-            p3 = p1.add(p3)
-    elif isinstance(p2,int) and isinstance(p3,int):
-        l = []
-        idx = (p2,p3)
-        l.append((p1,"Vertex"+str(p2+1)))
-        l.append((p1,"Vertex"+str(p3+1)))
-        obj.LinkedGeometry = l
-        obj.Support = p1
-        p3 = p4
-        if not p3:
-            v1 = obj.Base.Shape.Vertexes[idx[0]].Point
-            v2 = obj.Base.Shape.Vertexes[idx[1]].Point
-            p3 = v2.sub(v1)
-            p3.multiply(0.5)
-            p3 = v1.add(p3)
-    elif isinstance(p3,str):
-        l = []
-        l.append((p1,"Edge"+str(p2+1)))
-        if p3 == "radius":
-            #l.append((p1,"Center"))
-            if App.GuiUp:
-                obj.ViewObject.Override = "R $dim"
-            obj.Diameter = False
-        elif p3 == "diameter":
-            #l.append((p1,"Diameter"))
-            if App.GuiUp:
-                obj.ViewObject.Override = "Ø $dim"
-            obj.Diameter = True
-        obj.LinkedGeometry = l
-        obj.Support = p1
-        p3 = p4
-        if not p3:
-            p3 = p1.Shape.Edges[p2].Curve.Center.add(App.Vector(1,0,0))
-    obj.Dimline = p3
-    if hasattr(App,"DraftWorkingPlane"):
-        normal = App.DraftWorkingPlane.axis
-    else:
-        normal = App.Vector(0,0,1)
-    if App.GuiUp:
-        # invert the normal if we are viewing it from the back
-        vnorm = gui_utils.get3DView().getViewDirection()
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-    obj.Normal = normal
-
-    if App.GuiUp:
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
-
-
-def make_angular_dimension(center,angles,p3,normal=None):
-    """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
-    from the given center, with the given list of angles, passing through p3.
-    """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    AngularDimension(obj)
-    if App.GuiUp:
-        ViewProviderAngularDimension(obj.ViewObject)
-    obj.Center = center
-    for a in range(len(angles)):
-        if angles[a] > 2*math.pi:
-            angles[a] = angles[a]-(2*math.pi)
-    obj.FirstAngle = math.degrees(angles[1])
-    obj.LastAngle = math.degrees(angles[0])
-    obj.Dimline = p3
-    if not normal:
-        if hasattr(App,"DraftWorkingPlane"):
-            normal = App.DraftWorkingPlane.axis
-        else:
-            normal = App.Vector(0,0,1)
-    if App.GuiUp:
-        # invert the normal if we are viewing it from the back
-        vnorm = gui_utils.get3DView().getViewDirection()
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-
-    obj.Normal = normal
-            
-    if App.GuiUp:
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
-
 
 
 class DimensionBase(DraftAnnotation):
-    """
-    The Draft Dimension Base object
+    """The base objects for dimension objects.
+
+    This class inherits `DraftAnnotation` to define the basic properties
+    of all annotation type objects, like a scaling multiplier.
+
     This class is not used directly, but inherited by all dimension
     objects.
     """
 
-    def __init__(self, obj, tp = "Dimension"):
-        """Add common dimension properties to the object and set them"""
-        
+    def __init__(self, obj, tp="Dimension"):
         super(DimensionBase, self).__init__(obj, tp)
 
         # Draft
@@ -190,21 +70,12 @@ class DimensionBase(DraftAnnotation):
     def onDocumentRestored(self, obj):
         super(DimensionBase, self).onDocumentRestored(obj)
 
-    def execute(self, obj):
-        '''Do something when recompute object'''
-        
-        return
-
-
-    def onChanged(self,obj,prop):
-        '''Do something when a property has changed'''
-
-        return
-
 
 class LinearDimension(DimensionBase):
-    """
-    The Draft Linear Dimension object
+    """The linear dimension object.
+
+    This inherits `DimensionBase` to provide the basic functionality of
+    a dimension.
     """
 
     def __init__(self, obj):
@@ -238,7 +109,6 @@ class LinearDimension(DimensionBase):
         obj.Start = App.Vector(0,0,0)
         obj.End = App.Vector(1,0,0)
 
-
     def onDocumentRestored(self, obj):
         super(LinearDimension, self).onDocumentRestored(obj)
 
@@ -250,7 +120,6 @@ class LinearDimension(DimensionBase):
         #    obj.setEditorMode('Normal', 2)
         if hasattr(obj, "Support"):
             obj.setEditorMode('Support', 2)
-
 
     def execute(self, obj):
         """ Set start point and end point according to the linked geometry"""
@@ -308,20 +177,21 @@ class LinearDimension(DimensionBase):
                 obj.ViewObject.update()
 
 
+# Alias for compatibility with v0.18 and earlier
+_Dimension = LinearDimension
+
 
 class AngularDimension(DimensionBase):
-    """
-    The Draft AngularDimension object
+    """The angular dimension object.
+
+    This inherits `DimensionBase` to provide the basic functionality of
+    a dimension.
     """
 
     def __init__(self, obj):
-
         super(AngularDimension, self).__init__(obj, "AngularDimension")
-        
         self.init_properties(obj)
-
-        obj.Proxy = self    
-
+        obj.Proxy = self
 
     def init_properties(self, obj):
         """Add Angular Dimension specific properties to the object and set them"""
@@ -352,7 +222,6 @@ class AngularDimension(DimensionBase):
         if fp.ViewObject:
             fp.ViewObject.update()
 
-
     def onChanged(self,obj,prop):
         '''Do something when a property has changed'''
         super(AngularDimension, self).onChanged(obj, prop)
@@ -362,3 +231,7 @@ class AngularDimension(DimensionBase):
             obj.setEditorMode('Normal',2)
         if hasattr(obj,"Support"):
             obj.setEditorMode('Support',2)
+
+
+# Alias for compatibility with v0.18 and earlier
+_AngularDimension = AngularDimension

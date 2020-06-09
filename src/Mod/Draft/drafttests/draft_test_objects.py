@@ -39,7 +39,6 @@ Or load it as a module and use the defined function.
 # @{
 
 import datetime
-import math
 import os
 
 import FreeCAD as App
@@ -260,8 +259,8 @@ def _create_objects(doc=None,
     _msg("Angular dimension")
     Draft.make_line(Vector(10500, 300, 0), Vector(11500, 1000, 0))
     Draft.make_line(Vector(10500, 300, 0), Vector(11500, 0, 0))
-    angle1 = math.radians(40)
-    angle2 = math.radians(-20)
+    angle1 = -20
+    angle2 = 40
     dimension_a = Draft.make_angular_dimension(Vector(10500, 300, 0),
                                                [angle1, angle2],
                                                Vector(11500, 300, 0))

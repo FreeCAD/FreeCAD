@@ -24,7 +24,6 @@
 """Unit test for the Draft Workbench, object creation tests."""
 
 import unittest
-import math
 
 import FreeCAD as App
 import Draft
@@ -210,14 +209,13 @@ class DraftCreation(unittest.TestCase):
         _msg("  Test '{}'".format(operation))
         _msg("  Occasionally crashes")
         center = Vector(0, 0, 0)
-        angle1 = math.radians(60)
-        angle2 = math.radians(10)
-        p3 = Vector(3, 1, 0)
+        angle1 = 20
+        angle2 = 70
+        dim_line = Vector(3, 1, 0)
         _msg("  center={}".format(center))
-        _msg("  angle1={0}, angle2={1}".format(math.degrees(angle1),
-                                               math.degrees(angle2)))
-        _msg("  point={}".format(p3))
-        obj = Draft.make_angular_dimension(center, [angle1, angle2], p3)
+        _msg("  angle1={0}, angle2={1}".format(angle1, angle2))
+        _msg("  dim_line={}".format(dim_line))
+        obj = Draft.make_angular_dimension(center, [angle1, angle2], dim_line)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_bspline(self):
