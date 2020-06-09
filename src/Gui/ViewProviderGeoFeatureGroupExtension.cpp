@@ -113,9 +113,8 @@ void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* 
 }
 
 bool ViewProviderGeoFeatureGroupExtension::extensionHandleChildren3D(
-        const std::vector<App::DocumentObject*> &children) 
+        const std::vector<App::DocumentObject*> &) 
 {
-    getExtendedViewProvider();
     if(linkView) {
         buildChildren3D();
         return true;
