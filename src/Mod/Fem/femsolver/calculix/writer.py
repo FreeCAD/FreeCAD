@@ -658,6 +658,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("\n***********************************************************\n")
         f.write("** Transform Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        # coords values rounded and converted to strings in the geom tools method
+        # TODO round and string conversation should happen here
         for trans_object in self.transform_objects:
             trans_obj = trans_object["Object"]
             f.write("** " + trans_obj.Label + "\n")

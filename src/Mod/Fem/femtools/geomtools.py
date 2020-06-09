@@ -222,6 +222,7 @@ def get_rectangular_coords(
         b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
     A = [a_x, a_y, a_z]
     B = [b_x, b_y, b_z]
+    # TODO: round and string conversation should happen in the method which uses the return value
     A_coords = str(round(A[0], 4)) + "," + str(round(A[1], 4)) + "," + str(round(A[2], 4))
     B_coords = str(round(B[0], 4)) + "," + str(round(B[1], 4)) + "," + str(round(B[2], 4))
     coords = A_coords + "," + B_coords
@@ -242,7 +243,8 @@ def get_cylindrical_coords(
     Bz = base[2] - 10 * vec[2]
     A = [Ax, Ay, Az]
     B = [Bx, By, Bz]
-    A_coords = str(A[0]) + "," + str(A[1]) + "," + str(A[2])
-    B_coords = str(B[0]) + "," + str(B[1]) + "," + str(B[2])
+    # TODO: round and string conversation should happen in the method which uses the return value
+    A_coords = str(round(A[0])) + "," + str(round(A[1])) + "," + str(round(A[2]))
+    B_coords = str(round(B[0])) + "," + str(round(B[1])) + "," + str(round(B[2]))
     coords = A_coords + "," + B_coords
     return coords
