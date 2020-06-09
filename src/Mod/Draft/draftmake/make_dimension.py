@@ -172,9 +172,221 @@ def makeDimension(p1, p2, p3=None, p4=None):
     return make_dimension(p1, p2, p3, p4)
 
 
+def make_linear_dimension(p1, p2, dim_line=None):
+    """Create a free linear dimension from two main points.
+
+    Parameters
+    ----------
+    p1: Base::Vector3
+        First point of the measurement.
+
+    p2: Base::Vector3
+        Second point of the measurement.
+
+    dim_line: Base::Vector3, optional
+        It defaults to `None`.
+        This is a point through which the extension of the dimension line
+        will pass.
+        This point controls how close or how far the dimension line is
+        positioned from the measured segment that goes from `p1` to `p2`.
+
+        If it is `None`, this point will be calculated from the intermediate
+        distance betwwen `p1` and `p2`.
+
+    Returns
+    -------
+    App::FeaturePython
+        A scripted object of type `'LinearDimension'`.
+        This object does not have a `Shape` attribute, as the text and lines
+        are created on screen by Coin (pivy).
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "make_linear_dimension"
+    utils.print_header(_name, "Linear dimension")
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    _msg("p1: {}".format(p1))
+    try:
+        utils.type_check([(p1, App.Vector)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    _msg("p2: {}".format(p2))
+    try:
+        utils.type_check([(p2, App.Vector)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    _msg("dim_line: {}".format(dim_line))
+    if dim_line:
+        try:
+            utils.type_check([(dim_line, App.Vector)], name=_name)
+        except TypeError:
+            _err(_tr("Wrong input: must be a vector."))
+            return None
+    else:
+        diff = p2.sub(p1)
+        diff.multiply(0.5)
+        dim_line = p1.add(diff)
+
+    new_obj = make_dimension(p1, p2, dim_line)
+
+    return new_obj
+
+
+def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
+    """Create a linear dimension from an object.
+
+    Parameters
+    ----------
+    edge_object: Part::Feature
+        The object which has an edge which will be measured.
+        It must have a `Part::TopoShape`, and at least one element
+        in `Shape.Vertexes`, to be able to measure a distance.
+
+    i1: int, optional
+        It defaults to `1`.
+        It is the index of the first vertex in `edge_object` from which
+        the measurement will be taken.
+        The minimum value should be `1`, which will be interpreted
+        as `'Vertex1'`.
+
+        If the value is below `1`, it will be set to `1`.
+
+    i2: int, optional
+        It defaults to `2`, which will be converted to `'Vertex2'`.
+        It is the index of the second vertex in `edge_object` that determines
+        the endpoint of the measurement.
+
+        If it is the same value as `i1`, the resulting measurement will be
+        made from the origin `(0, 0, 0)` to the vertex indicated by `i1`.
+
+        If the value is below `1`, it will be set to the last vertex
+        in `edge_object`.
+
+        Then to measure the first and last, this could be used
+        ::
+            make_linear_dimension_obj(edge_object, i1=1, i2=-1)
+
+    dim_line: Base::Vector3
+        It defaults to `None`.
+        This is a point through which the extension of the dimension line
+        will pass.
+        This point controls how close or how far the dimension line is
+        positioned from the measured segment in `edge_object`.
+
+        If it is `None`, this point will be calculated from the intermediate
+        distance betwwen the vertices defined by `i1` and `i2`.
+
+    Returns
+    -------
+    App::FeaturePython
+        A scripted object of type `'LinearDimension'`.
+        This object does not have a `Shape` attribute, as the text and lines
+        are created on screen by Coin (pivy).
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "make_linear_dimension_obj"
+    utils.print_header(_name, "Linear dimension")
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(edge_object, str):
+        edge_object_str = edge_object
+
+    if isinstance(edge_object, (list, tuple)):
+        _msg("edge_object: {}".format(edge_object))
+        _err(_tr("Wrong input: object must not be a list."))
+        return None
+
+    found, edge_object = utils.find_object(edge_object, doc)
+    if not found:
+        _msg("edge_object: {}".format(edge_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("edge_object: {}".format(edge_object.Label))
+    if not hasattr(edge_object, "Shape"):
+        _err(_tr("Wrong input: object doesn't have a 'Shape' to measure."))
+        return None
+    if (not hasattr(edge_object.Shape, "Vertexes")
+            or len(edge_object.Shape.Vertexes) < 1):
+        _err(_tr("Wrong input: object doesn't have at least one element "
+                 "in 'Vertexes' to use for measuring."))
+        return None
+
+    _msg("i1: {}".format(i1))
+    try:
+        utils.type_check([(i1, int)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be an integer."))
+        return None
+
+    if i1 < 1:
+        i1 = 1
+        _wrn(_tr("i1: values below 1 are not allowed; will be set to 1."))
+
+    vx1 = edge_object.getSubObject("Vertex" + str(i1))
+    if not vx1:
+        _err(_tr("Wrong input: vertex not in object."))
+        return None
+
+    _msg("i2: {}".format(i2))
+    try:
+        utils.type_check([(i2, int)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    if i2 < 1:
+        i2 = len(edge_object.Shape.Vertexes)
+        _wrn(_tr("i2: values below 1 are not allowed; "
+                 "will be set to the last vertex in the object."))
+
+    vx2 = edge_object.getSubObject("Vertex" + str(i2))
+    if not vx2:
+        _err(_tr("Wrong input: vertex not in object."))
+        return None
+
+    _msg("dim_line: {}".format(dim_line))
+    if dim_line:
+        try:
+            utils.type_check([(dim_line, App.Vector)], name=_name)
+        except TypeError:
+            _err(_tr("Wrong input: must be a vector."))
+            return None
+    else:
+        diff = vx2.Point.sub(vx1.Point)
+        diff.multiply(0.5)
+        dim_line = vx1.Point.add(diff)
+
+    # TODO: the internal function expects an index starting with 0
+    # so we need to decrease the value here.
+    # This should be changed in the future in the internal function.
+    i1 -= 1
+    i2 -= 1
+
+    new_obj = make_dimension(edge_object, i1, i2, dim_line)
+
+    return new_obj
+
+
 def make_angular_dimension(center=App.Vector(0, 0, 0),
                            angles=[0, 90],
-                           dim_line=App.Vector(3, 3, 0), normal=None):
+                           dim_line=App.Vector(10, 10, 0), normal=None):
     """Create an angular dimension from the given center and angles.
 
     Parameters
@@ -194,9 +406,10 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
             angles = [-30 60]  # same angle
 
     dim_line: Base::Vector3, optional
-        It defaults to `Vector(3, 3, 0)`.
-        Point through which the dimension line will pass.
-        This defines the radius of the dimension line, the circular arc.
+        It defaults to `Vector(10, 10, 0)`.
+        This is a point through which the extension of the dimension line
+        will pass. This defines the radius of the dimension line,
+        the circular arc.
 
     normal: Base::Vector3, optional
         It defaults to `None`, in which case the `normal` is taken

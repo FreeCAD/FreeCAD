@@ -211,9 +211,12 @@ def _create_objects(doc=None,
     # Linear dimension
     _msg(16 * "-")
     _msg("Linear dimension")
-    dimension = Draft.make_dimension(Vector(8500, 500, 0),
-                                     Vector(8500, 1000, 0),
-                                     Vector(9000, 750, 0))
+    line = Draft.make_wire([Vector(8700, 200, 0),
+                            Vector(8700, 1200, 0)])
+
+    dimension = Draft.make_linear_dimension(Vector(8600, 200, 0),
+                                            Vector(8600, 1000, 0),
+                                            Vector(8400, 750, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSize = 15
         dimension.ViewObject.ExtLines = 1000
@@ -221,6 +224,19 @@ def _create_objects(doc=None,
         dimension.ViewObject.DimOvershoot = 50
         dimension.ViewObject.FontSize = 100
         dimension.ViewObject.ShowUnit = False
+    doc.recompute()
+
+    dim_obj = Draft.make_linear_dimension_obj(line, 1, 2,
+                                              Vector(9000, 750, 0))
+    if App.GuiUp:
+        dim_obj.ViewObject.ArrowSize = 15
+        dim_obj.ViewObject.ArrowType = "Arrow"
+        dim_obj.ViewObject.ExtLines = 100
+        dim_obj.ViewObject.ExtOvershoot = 100
+        dim_obj.ViewObject.DimOvershoot = 50
+        dim_obj.ViewObject.FontSize = 100
+        dim_obj.ViewObject.ShowUnit = False
+
     t_xpos += 680
     _set_text(["Dimension"], Vector(t_xpos, t_ypos, 0))
 
