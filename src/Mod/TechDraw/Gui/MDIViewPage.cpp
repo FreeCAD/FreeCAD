@@ -40,7 +40,7 @@
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
     #include <boost/signals2.hpp>
-    #include <boost/bind.hpp>
+    #include <boost/bind/bind.hpp>
 
 #endif  // #ifndef _PreComp_
 
@@ -109,6 +109,7 @@
 
 
 using namespace TechDrawGui;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
@@ -163,7 +164,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
-    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, _1);
+    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
 }
 

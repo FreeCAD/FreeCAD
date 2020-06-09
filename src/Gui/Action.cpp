@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
@@ -55,6 +55,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
+namespace bp = boost::placeholders;
 
 /**
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
@@ -522,9 +523,9 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
         action->setData(QVariant(i)); // set the index
     }
 
-    Application::Instance->signalActivateWorkbench.connect(boost::bind(&WorkbenchGroup::slotActivateWorkbench, this, _1));
-    Application::Instance->signalAddWorkbench.connect(boost::bind(&WorkbenchGroup::slotAddWorkbench, this, _1));
-    Application::Instance->signalRemoveWorkbench.connect(boost::bind(&WorkbenchGroup::slotRemoveWorkbench, this, _1));
+    Application::Instance->signalActivateWorkbench.connect(boost::bind(&WorkbenchGroup::slotActivateWorkbench, this, bp::_1));
+    Application::Instance->signalAddWorkbench.connect(boost::bind(&WorkbenchGroup::slotAddWorkbench, this, bp::_1));
+    Application::Instance->signalRemoveWorkbench.connect(boost::bind(&WorkbenchGroup::slotRemoveWorkbench, this, bp::_1));
 }
 
 WorkbenchGroup::~WorkbenchGroup()

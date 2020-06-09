@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 
 #include <QCoreApplication>
@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 
 using namespace App;
+namespace bp = boost::placeholders;
 
 namespace App {
 
@@ -127,9 +128,9 @@ private:
 MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(0), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
 
     QCoreApplication* app = QCoreApplication::instance();
     if (app && app->inherits("QApplication")) {

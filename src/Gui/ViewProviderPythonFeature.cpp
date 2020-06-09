@@ -30,7 +30,7 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -71,6 +71,7 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
 
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 // #0003564: Python objects: updateData calls to proxy instance that should have been deleted
 // See https://forum.freecadweb.org/viewtopic.php?f=22&t=30429&p=252429#p252429
@@ -274,11 +275,11 @@ void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider
 ViewProviderPythonFeatureObserver::ViewProviderPythonFeatureObserver()
 {
     Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteObject, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotDeleteObject, this, bp::_1));
     Gui::Application::Instance->signalNewObject.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotAppendObject, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotAppendObject, this, bp::_1));
     Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ViewProviderPythonFeatureObserver::slotDeleteDocument, this, _1));
+        (&ViewProviderPythonFeatureObserver::slotDeleteDocument, this, bp::_1));
 }
 
 ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()

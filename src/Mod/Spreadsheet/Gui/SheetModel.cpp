@@ -38,17 +38,18 @@
 #include <Gui/Command.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
+namespace bp = boost::placeholders;
 
 SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
 {
-    cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, _1));
+    cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, bp::_1));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));

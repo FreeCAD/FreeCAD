@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <boost/signals2.hpp>
 # include <QDockWidget>
 #endif
@@ -51,6 +51,7 @@
 
 using namespace Gui::Dialog;
 using namespace std;
+namespace bp = boost::placeholders;
 
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
@@ -111,7 +112,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     d->connectChangedObject =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&DlgDisplayPropertiesImp::slotChangedObject, this, _1, _2));
+        (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
 }
 
 /** 

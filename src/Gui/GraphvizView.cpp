@@ -37,7 +37,7 @@
 # include <QGraphicsView>
 # include <QThread>
 # include <QProcess>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 #endif
 #include "GraphicsViewZoom.h"
 #include "FileDialog.h"
@@ -50,6 +50,7 @@
 #include <App/Document.h>
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 namespace Gui {
 
@@ -187,9 +188,9 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
     connect(thread, SIGNAL(svgFileRead(const QByteArray &)), this, SLOT(svgFileRead(const QByteArray &)));
 
     // Connect signal from document
-    recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
-    undoConnection = _doc.signalUndo.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
-    redoConnection = _doc.signalRedo.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
+    recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
+    undoConnection = _doc.signalUndo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
+    redoConnection = _doc.signalRedo.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
 
     updateSvgItem(_doc);
 }

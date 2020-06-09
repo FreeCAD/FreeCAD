@@ -176,7 +176,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 // Qt Toolkit
 #ifndef __Qt4All__
