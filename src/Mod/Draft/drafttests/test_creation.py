@@ -170,8 +170,8 @@ class DraftCreation(unittest.TestCase):
         obj = Draft.make_text(text)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_dimension_linear(self):
-        """Create a linear dimension."""
+    def test_dimension_linear_simple(self):
+        """Create a simple linear dimension not linked to an object."""
         operation = "Draft Dimension"
         _msg("  Test '{}'".format(operation))
         _msg("  Occasionally crashes")
@@ -180,7 +180,23 @@ class DraftCreation(unittest.TestCase):
         c = Vector(4, -1, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        obj = Draft.make_dimension(a, b, c)
+        obj = Draft.make_linear_dimension(a, b, c)
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_dimension_linear_obj(self):
+        """Create a linear dimension linked to an object."""
+        operation = "Draft Dimension"
+        _msg("  Test '{}'".format(operation))
+        _msg("  Occasionally crashes")
+        a = Vector(0, 0, 0)
+        b = Vector(9, 0, 0)
+        _msg("  a={0}, b={1}".format(a, b))
+        line = Draft.make_line(a, b)
+        self.doc.recompute()
+
+        obj = Draft.make_linear_dimension_obj(line,
+                                              i1=1, i2=2,
+                                              dim_line=Vector(5, 3, 0))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_dimension_radial(self):
