@@ -31,13 +31,13 @@ and circular arcs.
 And it can also be an angular dimension measuring the angle between
 two straight lines.
 """
-## @package gui_texts
+## @package gui_dimensions
 # \ingroup DRAFT
 # \brief Provides tools for creating dimensions with the Draft Workbench.
 
 import math
+import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import sys
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -48,6 +48,8 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 from draftutils.translate import translate
 from draftutils.messages import _msg
+
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -71,14 +73,24 @@ class Dimension(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a dimension. "
-                "Select a straight line to create a linear dimension.\n"
-                "Select an arc or circle to create a radius or diameter "
-                "dimension.\n"
-                "Select two straight lines to create an angular dimension "
+        _tip = ("Creates a dimension.\n"
+                "\n"
+                "- Pick three points to create a simple linear dimension.\n"
+                "- Select a straight line to create a linear dimension "
+                "linked to that line.\n"
+                "- Select an arc or circle to create a radius or diameter "
+                "dimension linked to that arc.\n"
+                "- Select two straight lines to create an angular dimension "
                 "between them.\n"
                 "CTRL to snap, SHIFT to constrain, "
-                "ALT to select an edge or arc.")
+                "ALT to select an edge or arc.\n"
+                "\n"
+                "You may select a single line or single circular arc "
+                "before launching this command\n"
+                "to create the corresponding linked dimension.\n"
+                "You may also select an 'App::MeasureDistance' object "
+                "before launching this command\n"
+                "to turn it into a 'Draft Dimension' object.")
 
         return {'Pixmap': 'Draft_Dimension',
                 'Accel': "D, I",
@@ -123,8 +135,6 @@ class Dimension(gui_base_original.Creator):
 
     def setFromSelection(self):
         """Fill the nodes according to the selected geometry."""
-        import DraftGeomUtils
-
         sel = Gui.Selection.getSelectionEx()
         if len(sel) == 1:
             if len(sel[0].SubElementNames) == 1:
@@ -180,23 +190,22 @@ class Dimension(gui_base_original.Creator):
             pt = _ch.getChildren()[3]
             p3 = App.Vector(pt.point.getValues()[2].getValue())
             Gui.addModule("Draft")
-            _cmd = 'Draft.makeDimension'
+            _cmd = 'Draft.make_dimension'
             _cmd += '('
             _cmd += DraftVecUtils.toString(p1) + ', '
             _cmd += DraftVecUtils.toString(p2) + ', '
             _cmd += DraftVecUtils.toString(p3)
             _cmd += ')'
             _rem = 'FreeCAD.ActiveDocument.removeObject("' + o.Name + '")'
-            _cmd_list = ['dim = ' + _cmd,
+            _cmd_list = ['_dim_ = ' + _cmd,
                          _rem,
-                         'Draft.autogroup(dim)',
+                         'Draft.autogroup(_dim_)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Dimension"),
                         _cmd_list)
 
     def createObject(self):
         """Create the actual object in the current document."""
-        import DraftGeomUtils
         Gui.addModule("Draft")
 
         if self.angledata:
@@ -206,92 +215,96 @@ class Dimension(gui_base_original.Creator):
                 v2 = DraftGeomUtils.vec(self.edges[1])
                 normal = DraftVecUtils.toString((v1.cross(v2)).normalize())
 
-            _cmd = 'Draft.makeAngularDimension('
+            _cmd = 'Draft.make_angular_dimension'
+            _cmd += '('
             _cmd += 'center=' + DraftVecUtils.toString(self.center) + ', '
             _cmd += 'angles='
             _cmd += '['
-            _cmd += str(self.angledata[0]) + ', '
-            _cmd += str(self.angledata[1])
+            _cmd += str(math.degrees(self.angledata[1])) + ', '
+            _cmd += str(math.degrees(self.angledata[0]))
             _cmd += '], '
-            _cmd += 'p3=' + DraftVecUtils.toString(self.node[-1]) + ', '
+            _cmd += 'dim_line=' + DraftVecUtils.toString(self.node[-1]) + ', '
             _cmd += 'normal=' + normal
             _cmd += ')'
-            _cmd_list = ['dim = ' + _cmd,
-                         'Draft.autogroup(dim)',
+            _cmd_list = ['_dim_ = ' + _cmd,
+                         'Draft.autogroup(_dim_)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Dimension"),
                         _cmd_list)
+
         elif self.link and not self.arcmode:
-            ops = []
             # Linear dimension, linked
             if self.force == 1:
-                _cmd = 'Draft.makeDimension'
+                _cmd = 'Draft.make_dimension'
                 _cmd += '('
                 _cmd += 'FreeCAD.ActiveDocument.' + self.link[0].Name + ', '
                 _cmd += str(self.link[1]) + ', '
                 _cmd += str(self.link[2]) + ', '
                 _cmd += DraftVecUtils.toString(self.node[2])
                 _cmd += ')'
-                _cmd_list = ['dim = ' + _cmd,
-                             'dim.Direction = FreeCAD.Vector(0, 1, 0)',
-                             'Draft.autogroup(dim)',
+                _cmd_list = ['_dim_ = ' + _cmd,
+                             '_dim_.Direction = FreeCAD.Vector(0, 1, 0)',
+                             'Draft.autogroup(_dim_)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Dimension"),
                             _cmd_list)
             elif self.force == 2:
-                _cmd = 'Draft.makeDimension'
+                _cmd = 'Draft.make_dimension'
                 _cmd += '('
                 _cmd += 'FreeCAD.ActiveDocument.' + self.link[0].Name + ', '
                 _cmd += str(self.link[1]) + ', '
                 _cmd += str(self.link[2]) + ', '
                 _cmd += DraftVecUtils.toString(self.node[2])
                 _cmd += ')'
-                _cmd_list = ['dim = ' + _cmd,
-                             'dim.Direction = FreeCAD.Vector(1, 0, 0)',
-                             'Draft.autogroup(dim)',
+                _cmd_list = ['_dim_ = ' + _cmd,
+                             '_dim_.Direction = FreeCAD.Vector(1, 0, 0)',
+                             'Draft.autogroup(_dim_)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Dimension"),
                             _cmd_list)
             else:
-                _cmd = 'Draft.makeDimension'
+                _cmd = 'Draft.make_dimension'
                 _cmd += '('
                 _cmd += 'FreeCAD.ActiveDocument.' + self.link[0].Name + ', '
                 _cmd += str(self.link[1]) + ', '
                 _cmd += str(self.link[2]) + ', '
                 _cmd += DraftVecUtils.toString(self.node[2])
                 _cmd += ')'
-                _cmd_list = ['dim = ' + _cmd,
-                             'Draft.autogroup(dim)',
+                _cmd_list = ['_dim_ = ' + _cmd,
+                             'Draft.autogroup(_dim_)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Dimension"),
                             _cmd_list)
+
         elif self.arcmode:
             # Radius or dimeter dimension, linked
-            _cmd = 'Draft.makeDimension'
+            _cmd = 'Draft.make_dimension'
             _cmd += '('
             _cmd += 'FreeCAD.ActiveDocument.' + self.link[0].Name + ', '
             _cmd += str(self.link[1]) + ', '
             _cmd += '"' + str(self.arcmode) + '", '
             _cmd += DraftVecUtils.toString(self.node[2])
             _cmd += ')'
-            _cmd_list = ['dim = ' + _cmd,
-                         'Draft.autogroup(dim)',
+            _cmd_list = ['_dim_ = ' + _cmd,
+                         'Draft.autogroup(_dim_)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Dimension"),
                         _cmd_list)
+
         else:
             # Linear dimension, non-linked
-            _cmd = 'Draft.makeDimension'
+            _cmd = 'Draft.make_dimension'
             _cmd += '('
             _cmd += DraftVecUtils.toString(self.node[0]) + ', '
             _cmd += DraftVecUtils.toString(self.node[1]) + ', '
             _cmd += DraftVecUtils.toString(self.node[2])
             _cmd += ')'
-            _cmd_list = ['dim = ' + _cmd,
-                         'Draft.autogroup(dim)',
+            _cmd_list = ['_dim_ = ' + _cmd,
+                         'Draft.autogroup(_dim_)',
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Create Dimension"),
                         _cmd_list)
+
         if self.ui.continueMode:
             self.cont = self.node[2]
             if not self.dir:
@@ -323,7 +336,6 @@ class Dimension(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            import DraftGeomUtils
             shift = gui_tool_utils.hasMod(arg, gui_tool_utils.MODCONSTRAIN)
             if self.arcmode or self.point2:
                 gui_tool_utils.setMod(arg, gui_tool_utils.MODCONSTRAIN, False)
@@ -423,7 +435,6 @@ class Dimension(gui_base_original.Creator):
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                import DraftGeomUtils
                 if self.point:
                     self.ui.redraw()
                     if (not self.node) and (not self.support):
