@@ -139,7 +139,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyDistance", "InternalFeaturesAdjustment", "Selected Geometry Settings",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.")),
             ("App::PropertyBool", "InternalFeaturesCut", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore internal feature areas within a larger selected face.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Cut internal feature areas within a larger selected face.")),
 
             ("App::PropertyEnumeration", "Algorithm", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).")),
@@ -925,7 +925,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return commands
 
     def _waterlineDropCutScan(self, stl, smplInt, xmin, xmax, ymin, fd, numScanLines):
-        '''_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ... 
+        '''_waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines) ...
         Perform OCL scan for waterline purpose.'''
         pdc = ocl.PathDropCutter()   # create a pdc
         pdc.setSTL(stl)
@@ -1333,7 +1333,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         CUTAREAS = list()
         isFirst = True
         lenDP = len(depthparams)
-        
+
         # Cycle through layer depths
         for dp in range(0, lenDP):
             csHght = depthparams[dp]
@@ -1558,7 +1558,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 li = fIds.pop()
                 low = csFaces[li]  # senior face
                 pIds = self._idInternalFeature(csFaces, fIds, pIds, li, low)
-            
+
             for af in range(lenCsF - 1, -1, -1):  # cycle from last item toward first
                 prnt = pIds[af]
                 if prnt == -1:
@@ -1797,7 +1797,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             diam_1 += 4.0
             if FR != 0.0:
                 FR += 2.0
-            
+
         PathLog.debug('ToolType: {}'.format(obj.ToolController.Tool.ToolType))
         if obj.ToolController.Tool.ToolType == 'EndMill':
             # Standard End Mill

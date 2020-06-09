@@ -157,7 +157,7 @@ class ObjectSurface(PathOp.ObjectOp):
             ("App::PropertyDistance", "InternalFeaturesAdjustment", "Selected Geometry Settings",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.")),
             ("App::PropertyBool", "InternalFeaturesCut", "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore internal feature areas within a larger selected face.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Cut internal feature areas within a larger selected face.")),
 
             ("App::PropertyEnumeration", "BoundBox", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Select the overall boundary for the operation.")),

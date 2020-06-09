@@ -135,7 +135,7 @@
     </message>
     <message>
         <location filename="../../../PathScripts/PathWaterline.py" line="141"/>
-        <source>Ignore internal feature areas within a larger selected face.</source>
+        <source>Cut internal feature areas within a larger selected face.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
