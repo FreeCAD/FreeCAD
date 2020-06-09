@@ -281,14 +281,27 @@ void CosmeticEdgePy::setEnd(Py::Object arg)
 
 Py::Object CosmeticEdgePy::getRadius(void) const
 {
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    if ( (gt != TechDraw::GeomType::CIRCLE) &&
+         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+        std::string error = "not a cirle. Can not set radius";
+        throw Py::TypeError(error);
+    }
     double r = getCosmeticEdgePtr()->permaRadius;
     return Py::asObject(PyFloat_FromDouble(r));
 }
 
 void CosmeticEdgePy::setRadius(Py::Object arg)
 {
-    //TODO: check if the edge has a radius attrib
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     PyObject* p = arg.ptr();
+    if ( (gt != TechDraw::GeomType::CIRCLE) &&
+         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+        std::string error = std::string(p->ob_type->tp_name);
+        error += " is not a cirle. Can not set radius";
+        throw Py::TypeError(error);
+    }
+
     double r;
     if (PyObject_TypeCheck(p, &PyFloat_Type)) {
         r = PyFloat_AsDouble(p);
@@ -310,13 +323,28 @@ void CosmeticEdgePy::setRadius(Py::Object arg)
 
 Py::Object CosmeticEdgePy::getCenter(void) const
 {
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    if ( (gt != TechDraw::GeomType::CIRCLE) &&
+         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+        std::string error = "not a cirle. Can not get center";
+        throw Py::TypeError(error);
+    }
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
     return Py::asObject(new Base::VectorPy(point));
 }
 
 void CosmeticEdgePy::setCenter(Py::Object arg)
 {
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     PyObject* p = arg.ptr();
+    if ( (gt != TechDraw::GeomType::CIRCLE) &&
+         (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
+        std::string error = std::string(p->ob_type->tp_name);
+        error += " is not a cirle. Can not set center";
+        throw Py::TypeError(error);
+    }
+
+//    PyObject* p = arg.ptr();
     Base::Vector3d pNew;
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         pNew = static_cast<Base::VectorPy*>(p)->value();
