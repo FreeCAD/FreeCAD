@@ -76,6 +76,8 @@ public Q_SLOTS:
     void onXEdit();
     void onYEdit();
     void onRadiusEdit();
+    void onScaleTypeEdit();
+    void onScaleEdit();
     void onReferenceEdit();
 
 public:
