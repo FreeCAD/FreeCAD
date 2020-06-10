@@ -120,6 +120,7 @@
 #include <Build/Version.h>
 #include "Branding.h"
 
+#include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
 #include <boost/bind.hpp>
@@ -2573,9 +2574,13 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("python-path")) {
-        vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It= Paths.begin();It != Paths.end();++It)
-            Base::Interpreter().addPythonPath(It->c_str());
+        vector<string> paths = vm["python-path"].as<vector<string>>();
+        for (const auto &it : paths) {
+            vector<string> splitPaths;
+            split(splitPaths, it, is_any_of(PYPATHSEP));
+            for (const auto &path : splitPaths)
+                Base::Interpreter().addPythonPath(path.c_str());
+        }
     }
 
     if (vm.count("input-file")) {

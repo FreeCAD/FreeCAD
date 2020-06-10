@@ -119,8 +119,10 @@
 
 #ifdef FC_OS_WIN32
 #   define PATHSEP '\\'
+#   define PYPATHSEP ";"
 #else
 #   define PATHSEP '/'
+#   define PYPATHSEP ":"
 #endif
 
 //**************************************************************************
