@@ -389,6 +389,7 @@ set(Gui_MOC_HDRS
     TaskElementColors.h
     DlgObjectSelection.h
     DlgAddProperty.h
+    View3DInventorViewer.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 

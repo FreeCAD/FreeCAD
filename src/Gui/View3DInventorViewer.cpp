@@ -390,6 +390,9 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 void View3DInventorViewer::init()
 {
     shadowNodeId = 0;
+    cameraNodeId = 0;
+    _shadowTimer.setSingleShot(true);
+    connect(&_shadowTimer,SIGNAL(timeout()),this,SLOT(redrawShadow()));
 
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
@@ -3106,17 +3109,10 @@ void View3DInventorViewer::renderScene(void)
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
-    } else if (ViewParams::getShadowExtraRedraw()
-            && pcShadowGroup
-            && shadowNodeId != pcShadowGroup->getNodeId())
-    {
-        // Work around coin shadow rendering bug. On Windows, (and occasionally
-        // on Linux), when shadow group is touched, it renders nothing when the
-        // shadow cache is freshly built. We work around this issue using an
-        // extra redraw, and the node renders fine with the already built
-        // cache.
-        shadowNodeId = pcShadowGroup->getNodeId();
-        this->getSoRenderManager()->scheduleRedraw();
+    } else if (ViewParams::getShadowExtraRedraw() && pcShadowGroup) {
+        SoCamera* cam = getSoRenderManager()->getCamera();
+        if(cam && (shadowNodeId != pcShadowGroup->getNodeId() || cameraNodeId != cam->getNodeId()))
+            _shadowTimer.start(100);
     }
 
 #if 0 // this breaks highlighting of edges
@@ -3784,12 +3780,18 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
     SbVec3f size = box.getSize();
     SbVec3f center = box.getCenter();
 
-    if(!pcShadowGroundSwitch || pcShadowGroundSwitch->whichChild.getValue()<0) {
-        if(pcShadowDirectionalLight) {
-            pcShadowDirectionalLight->bboxSize = size;
-            pcShadowDirectionalLight->bboxCenter = center;
-        }
-    } else {
+    if(pcShadowDirectionalLight) {
+        // static const App::PropertyFloatConstraint::Constraints _cstr(1.0,1000.0,0.1);
+        // double scale = _shadowParam<App::PropertyFloatConstraint>(doc, "BoundBoxScale", 1.5,
+        //     [](App::PropertyFloatConstraint &prop) {
+        //         if(!prop.getConstraints())
+        //             prop.setConstraints(&_cstr);
+        //     });
+        // pcShadowDirectionalLight->bboxSize = size * float(scale);
+        // pcShadowDirectionalLight->bboxCenter = center;
+    }
+
+    if(pcShadowGroundSwitch && pcShadowGroundSwitch->whichChild.getValue()>=0) {
         float z = size[2];
         float width, length;
         if(_shadowParam<App::PropertyBool>(doc, "GroundSizeAuto", true)) {
@@ -3841,10 +3843,6 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
         for(int i=0; i<4; ++i)
             gbox.extendBy(coords[i]);
         size = gbox.getSize();
-        if(pcShadowDirectionalLight) {
-            pcShadowDirectionalLight->bboxSize = size * 1.2f;
-            pcShadowDirectionalLight->bboxCenter = gbox.getCenter();
-        }
     }
 
     static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
@@ -4622,3 +4620,28 @@ void View3DInventorViewer::callEventFilter(QEvent *e)
 {
     getEventFilter()->eventFilter(this, e);
 }
+
+void View3DInventorViewer::redrawShadow()
+{
+    _shadowTimer.stop();
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    if(pcShadowGroup && pcShadowGroundSwitch && cam) {
+        // Work around coin shadow rendering bug. On Windows, (and occasionally
+        // on Linux), when shadow group is touched, it renders nothing when the
+        // shadow cache is freshly built. We work around this issue using an
+        // extra redraw, and the node renders fine with the already built
+        // cache.
+        //
+        // Amendment: directional shadow light requires update on camera change
+        // (not sure why or if it's absolutely needed yet). A patch has been
+        // added to Coin3D to perform only quick partial update if there is no
+        // scene changes.  We shall schedule an extra redraw to perform a full
+        // update by touching the shadow group.
+        pcShadowGround->touch();
+        shadowNodeId = pcShadowGroup->getNodeId();
+        cameraNodeId = cam->getNodeId();
+        this->getSoRenderManager()->scheduleRedraw();
+    }
+}
+
+#include "moc_View3DInventorViewer.cpp"

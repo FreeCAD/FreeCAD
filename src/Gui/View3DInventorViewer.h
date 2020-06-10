@@ -40,6 +40,7 @@
 #include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
+#include <QTimer>
 
 #include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
@@ -106,6 +107,7 @@ class LinkView;
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
+    Q_OBJECT
     
 public:
     /// Pick modes for picking points in the scene
@@ -473,6 +475,9 @@ private:
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
 
+private Q_SLOTS:
+    void redrawShadow();
+
 private:
     NaviCube* naviCube;
     std::set<ViewProvider*> _ViewProviderSet;
@@ -501,6 +506,7 @@ private:
     CoinPtr<SoBumpMap>                pcShadowGroundBumpMap;
     CoinPtr<SoLightModel>             pcShadowGroundLightModel;
     uint32_t                          shadowNodeId;
+    uint32_t                          cameraNodeId;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
@@ -568,6 +574,8 @@ private:
     PyObject *_viewerPy;
 
     bool _applyingOverride = false;
+
+    QTimer _shadowTimer;
 
     // friends
     friend class NavigationStyle;
