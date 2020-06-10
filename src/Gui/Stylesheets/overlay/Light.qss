@@ -113,6 +113,7 @@ Gui--PropertyEditor--PropertyEditor {
   /* gridline-color: #6e6e6e; */
   qproperty-groupTextColor: rgb(100, 100, 100);
   qproperty-groupBackground: rgba(180, 180, 180, 0.7);
+  qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
 Gui--CallTipsList::item {

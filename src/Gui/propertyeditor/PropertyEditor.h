@@ -66,6 +66,7 @@ class PropertyEditor : public QTreeView
 
     Q_PROPERTY(QBrush groupBackground READ groupBackground WRITE setGroupBackground DESIGNABLE true SCRIPTABLE true)
     Q_PROPERTY(QColor groupTextColor READ groupTextColor WRITE setGroupTextColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QBrush itemBackground READ itemBackground WRITE setItemBackground DESIGNABLE true SCRIPTABLE true)
 
 public:
     PropertyEditor(QWidget *parent = 0);
@@ -84,6 +85,8 @@ public:
     void setGroupBackground(const QBrush& c);
     QColor groupTextColor() const;
     void setGroupTextColor(const QColor& c);
+    QBrush itemBackground() const;
+    void setItemBackground(const QBrush& c);
 
     bool isBinding() const { return binding; }
     void openEditor(const QModelIndex &index);
@@ -129,6 +132,7 @@ private:
 
     QColor groupColor;
     QBrush background;
+    QBrush _itemBackground;
 
     QPointer<QWidget> activeEditor;
     QPersistentModelIndex editingIndex;

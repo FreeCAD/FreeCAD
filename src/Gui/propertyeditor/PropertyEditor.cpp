@@ -76,6 +76,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
+    this->_itemBackground.setColor(QColor(0,0,0,0));
+
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
@@ -134,6 +136,16 @@ QColor PropertyEditor::groupTextColor() const
 void PropertyEditor::setGroupTextColor(const QColor& c)
 {
     this->groupColor = c;
+}
+
+QBrush PropertyEditor::itemBackground() const
+{
+    return this->_itemBackground;
+}
+
+void PropertyEditor::setItemBackground(const QBrush& c)
+{
+    this->_itemBackground = c;
 }
 
 QStyleOptionViewItem PropertyEditor::viewOptions() const

@@ -115,6 +115,7 @@ QTreeView::item:selected  {
 Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: rgb(50, 50, 50);
   qproperty-groupBackground: rgba(140, 140, 140, 0.7);
+  qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
 Gui--CallTipsList::item {

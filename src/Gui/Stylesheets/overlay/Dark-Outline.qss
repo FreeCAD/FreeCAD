@@ -58,12 +58,12 @@ QTabBar {
 
 QTabBar::tab {
   color: palette(bright-text);
-  background-color: rgba(100,100,100,50);
+  background-color: rgba(100,100,100,10);
   padding: 5px;
 }
 
 QTabBar::tab:selected {
-  background-color: rgba(100,100,100,150);
+  background-color: rgba(100,100,100,20);
 }
 
 QTabBar::tab:hover {
@@ -72,9 +72,7 @@ QTabBar::tab:hover {
 
 QHeaderView::section {
   color: rgb(200,200,200);
-  background-color: rgba(50,50,50,100);
-  border: 1px solid rgb(100,100,100);
-  padding: 2px;
+  background-color: rgba(50,50,50,10);
 }
 
 QToolTip {
@@ -126,7 +124,8 @@ QTreeView::item:selected  {
 
 Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: rgb(50, 50, 50);
-  qproperty-groupBackground: rgba(140, 140, 140, 0.7);
+  qproperty-groupBackground: rgba(140, 140, 140, 0.6);
+  qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
 Gui--CallTipsList::item {

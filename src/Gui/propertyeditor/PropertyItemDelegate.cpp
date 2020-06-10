@@ -88,15 +88,25 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     option.state &= ~QStyle::State_HasFocus;
 
-    if (property && property->isSeparator()) {
-        QBrush brush = option.palette.dark();
-        QObject* par = parent();
-        if (par) {
+    QObject* par = parent();
+    if (par) {
+        if (property && property->isSeparator()) {
+            QBrush brush = option.palette.dark();
             QVariant value = par->property("groupBackground");
             if (value.canConvert<QBrush>())
                 brush = value.value<QBrush>();
+            painter->fillRect(option.rect, brush);
         }
-        painter->fillRect(option.rect, brush);
+#if QT_VERSION  >= 0x050000
+        else if (!(option.features & QStyleOptionViewItem::Alternate)) {
+            QVariant value = par->property("itemBackground");
+            if (value.canConvert<QBrush>()) {
+                QBrush brush = value.value<QBrush>();
+                if (brush.color().alpha() != 0)
+                    painter->fillRect(option.rect, brush);
+            }
+        }
+#endif
     }
 
     QPen savedPen = painter->pen();
