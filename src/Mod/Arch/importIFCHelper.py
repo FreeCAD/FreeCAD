@@ -641,7 +641,7 @@ def get2DShape(representation,scaling=1000):
         for el in elts:
             if el.is_a("IfcPolyline"):
                 result.append(getPolyline(el))
-            if el.is_a("IfcRectangleProfileDef"):
+            elif el.is_a("IfcRectangleProfileDef"):
                 result.append(getRectangle(el))
             elif el.is_a("IfcLine"):
                 result.append(getLine(el))
