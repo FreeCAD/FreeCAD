@@ -588,6 +588,11 @@ StdCmdDrawStyle::StdCmdDrawStyle()
     eType         = Alter3DView;
 
     this->getGuiApplication()->signalActivateView.connect(boost::bind(&StdCmdDrawStyle::updateIcon, this, _1));
+    this->getGuiApplication()->signalViewModeChanged.connect(
+        [this](const MDIView *view) {
+            if (view == Application::Instance->activeView())
+                updateIcon(view);
+        });
 }
 
 Gui::Action * StdCmdDrawStyle::createAction(void)

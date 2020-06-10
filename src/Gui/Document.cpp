@@ -1848,6 +1848,7 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
         std::string overrideMode = firstView->getViewer()->getOverrideMode();
         view3D->getViewer()->setOverrideMode(overrideMode);
+        Application::Instance->signalViewModeChanged(view3D);
 
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
         for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {

@@ -841,6 +841,7 @@ bool View3DInventor::setCamera(const char* pCamera)
         for(;pos[end] && pos[end]!='\n'; ++end);
         for(;end!=start && std::isspace((int)pos[end-1]);--end);
         _viewer->setOverrideMode(std::string(pos+start, pos+end));
+        Application::Instance->signalViewModeChanged(this);
     }
 
     return true;

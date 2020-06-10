@@ -127,6 +127,8 @@ public:
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
     /// signal on activating view
     boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
+    /// signal on view override mode change
+    boost::signals2::signal<void (const Gui::MDIView*)> signalViewModeChanged;
     /// signal on entering in edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
