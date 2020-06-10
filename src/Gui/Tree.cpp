@@ -1269,14 +1269,14 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
     }else if(event->key() == Qt::Key_Left) {
         auto index = currentIndex();
         if(index.column()==1) {
-            setCurrentIndex(index.parent().child(index.row(),0));
+            setCurrentIndex(model()->index(index.row(), 0, index.parent()));
             event->accept();
             return;
         }
     }else if(event->key() == Qt::Key_Right) {
         auto index = currentIndex();
         if(index.column()==0) {
-            setCurrentIndex(index.parent().child(index.row(),1));
+            setCurrentIndex(model()->index(index.row(), 1, index.parent()));
             event->accept();
             return;
         }
