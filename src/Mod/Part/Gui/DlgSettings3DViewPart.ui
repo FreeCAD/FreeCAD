@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>339</height>
+    <width>564</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,19 +20,6 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>61</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox12">
      <property name="title">
@@ -53,6 +40,19 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel1">
+          <property name="toolTip">
+           <string>Defines the deviation of tessellation to the actual surface. This will be used to set the 'Deviation' property of any new view object.</string>
+          </property>
+          <property name="whatsThis">
+           <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Maximum deviation depending on the model bounding box</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="maxDeviation">
           <property name="suffix">
@@ -62,7 +62,7 @@
            <number>4</number>
           </property>
           <property name="minimum">
-           <double>0.0100000000000</double>
+           <double>0.010000000000000</double>
           </property>
           <property name="maximum">
            <double>100.000000000000000</double>
@@ -81,27 +81,36 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabel1">
-          <property name="toolTip">
-           <string>Defines the deviation of tessellation to the actual surface</string>
+        <item row="1" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="deviationLowerBound">
+          <property name="suffix">
+           <string>%</string>
           </property>
-          <property name="whatsThis">
-           <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <property name="decimals">
+           <number>4</number>
           </property>
-          <property name="text">
-           <string>Maximum deviation depending on the model bounding box</string>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>MinimumDeviation</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>Mod/Part</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="label_2">
+          <property name="toolTip">
+           <string>Runtime lower bound of the deviation setting. This is used to limit the 'Deviation' for any existing view object.</string>
+          </property>
           <property name="text">
-           <string>Maximum angular deflection</string>
+           <string>Deviation lower bound</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="maxAngularDeflection">
           <property name="suffix">
            <string> °</string>
@@ -110,16 +119,16 @@
            <number>2</number>
           </property>
           <property name="minimum">
-           <double>0.0</double>
+           <double>0.000000000000000</double>
           </property>
           <property name="maximum">
            <double>180.000000000000000</double>
           </property>
           <property name="singleStep">
-           <double>0.5</double>
+           <double>0.500000000000000</double>
           </property>
           <property name="value">
-           <double>28.5</double>
+           <double>28.500000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>MeshAngularDeflection</cstring>
@@ -129,10 +138,78 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="toolTip">
+           <string>Defines the maximum angular deflection when tessellating the actual surface. This will be used to set the 'AngularDeflection' property of any new view object.</string>
+          </property>
+          <property name="text">
+           <string>Maximum angular deflection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxOverride">
+          <property name="toolTip">
+           <string>Override view object tessellation settings in the document using the settings here.</string>
+          </property>
+          <property name="text">
+           <string>Override document settings</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>OverrideTessellation</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>Mod/Part</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="toolTip">
+           <string>Runtime lower bound of angular deflection. This is used to limited the 'AngularDeflection' property of all existing view object.</string>
+          </property>
+          <property name="text">
+           <string>Angular deflection lower bound</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="angularDeflectionLowerBound">
+          <property name="suffix">
+           <string>°</string>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>MinimumAngularDeflection</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>Mod/Part</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>61</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -141,6 +218,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

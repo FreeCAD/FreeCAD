@@ -49,6 +49,7 @@ protected:
 
 private Q_SLOTS:
     void on_maxDeviation_valueChanged(double);
+    void onLowerBoundChanged();
 
 private:
     std::unique_ptr<Ui_DlgSettings3DViewPart> ui;

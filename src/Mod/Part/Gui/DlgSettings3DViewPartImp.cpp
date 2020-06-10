@@ -35,6 +35,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include "PartParams.h"
 
 using namespace PartGui;
 
@@ -46,10 +47,16 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
 {
     ui->setupUi(this);
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    double lowerLimit = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
-    ui->maxDeviation->setMinimum(lowerLimit);
+
+    ui->maxDeviation->setMinimum(PartParams::MinimumDeviation());
+    ui->maxDeviation->setValue(PartParams::MeshDeviation());
+    ui->maxAngularDeflection->setMinimum(PartParams::MinimumAngularDeflection());
+    ui->maxAngularDeflection->setValue(PartParams::MeshAngularDeflection());
+    ui->deviationLowerBound->setValue(PartParams::MinimumDeviation());
+    ui->angularDeflectionLowerBound->setValue(PartParams::MinimumAngularDeflection());
+
+    connect(ui->deviationLowerBound, SIGNAL(valueChanged(double)), this, SLOT(onLowerBoundChanged()));
+    connect(ui->angularDeflectionLowerBound, SIGNAL(valueChanged(double)), this, SLOT(onLowerBoundChanged()));
 }
 
 /** 
@@ -72,26 +79,28 @@ void DlgSettings3DViewPart::on_maxDeviation_valueChanged(double v)
     }
 }
 
+void DlgSettings3DViewPart::onLowerBoundChanged()
+{
+    ui->maxDeviation->setMinimum(ui->deviationLowerBound->value());
+    ui->maxAngularDeflection->setMinimum(ui->angularDeflectionLowerBound->value());
+}
+
 void DlgSettings3DViewPart::saveSettings()
 {
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
-
-    // search for Part view providers and apply the new settings
-    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::iterator it = docs.begin(); it != docs.end(); ++it) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(*it);
-        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
-        for (std::vector<Gui::ViewProvider*>::iterator jt = views.begin(); jt != views.end(); ++jt) {
-            static_cast<ViewProviderPart*>(*jt)->reload();
-        }
-    }
+    ui->deviationLowerBound->onSave();
+    ui->angularDeflectionLowerBound->onSave();
+    ui->checkBoxOverride->onSave();
 }
 
 void DlgSettings3DViewPart::loadSettings()
 {
     ui->maxDeviation->onRestore();
     ui->maxAngularDeflection->onRestore();
+    ui->deviationLowerBound->onRestore();
+    ui->angularDeflectionLowerBound->onRestore();
+    ui->checkBoxOverride->onRestore();
 }
 
 /**
