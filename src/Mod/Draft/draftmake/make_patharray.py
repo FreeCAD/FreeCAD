@@ -114,7 +114,7 @@ def make_path_array(base_object, path_object, count=4,
           `X` is curve tangent, `Y` is normal parameter, Z is the cross
           product `X` x `Y`.
         - Frenet. It defines a local coordinate system along the path.
-          `X` is tanget to curve, `Y` is curve normal, `Z` is curve binormal.
+          `X` is tangent to curve, `Y` is curve normal, `Z` is curve binormal.
           If normal cannot be computed, for example, in a straight path,
           a default is used.
         - Tangent. It is similar to `'Original'` but includes a pre-rotation

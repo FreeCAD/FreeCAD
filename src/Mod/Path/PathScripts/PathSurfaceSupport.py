@@ -57,7 +57,7 @@ class PathGeometryGenerator:
     PathGeometryGenerator(obj, shape, pattern)
     `obj` is the operation object, `shape` is the horizontal planar shape object,
     and `pattern` is the name of the geometric pattern to apply.
-    Frist, call the getCenterOfPattern() method for the CenterOfMass for patterns allowing a custom center.
+    First, call the getCenterOfPattern() method for the CenterOfMass for patterns allowing a custom center.
     Next, call the generatePathGeometry() method to request the path geometry shape.'''
 
     # Register valid patterns here by name

@@ -284,7 +284,7 @@ Py::Object CosmeticEdgePy::getRadius(void) const
     TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
-        std::string error = "not a cirle. Can not set radius";
+        std::string error = "not a circle. Can not set radius";
         throw Py::TypeError(error);
     }
     double r = getCosmeticEdgePtr()->permaRadius;
@@ -298,7 +298,7 @@ void CosmeticEdgePy::setRadius(Py::Object arg)
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
         std::string error = std::string(p->ob_type->tp_name);
-        error += " is not a cirle. Can not set radius";
+        error += " is not a circle. Can not set radius";
         throw Py::TypeError(error);
     }
 
@@ -326,7 +326,7 @@ Py::Object CosmeticEdgePy::getCenter(void) const
     TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
-        std::string error = "not a cirle. Can not get center";
+        std::string error = "not a circle. Can not get center";
         throw Py::TypeError(error);
     }
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
@@ -340,7 +340,7 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
         std::string error = std::string(p->ob_type->tp_name);
-        error += " is not a cirle. Can not set center";
+        error += " is not a circle. Can not set center";
         throw Py::TypeError(error);
     }
 

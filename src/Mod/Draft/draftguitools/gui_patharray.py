@@ -81,7 +81,7 @@ class PathArray(gui_base_original.Modifier):
         """Execute when the command is called."""
         super(PathArray, self).Activated(name=name)
         self.name = name
-        # This was deactivated becuase it doesn't work correctly;
+        # This was deactivated because it doesn't work correctly;
         # the selection needs to be made on two objects, but currently
         # it only selects one.
 

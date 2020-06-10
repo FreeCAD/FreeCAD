@@ -1361,8 +1361,8 @@ def use_instead(function, version=""):
         If we don't know when this command will be deprecated
         then we should not give a version.
     """
-    text = "This function will be deprected in "
-    text2 = "This function will be deprected. "
+    text = "This function will be deprecated in "
+    text2 = "This function will be deprecated. "
     text3 = "Please use "
 
     if version:
