@@ -126,7 +126,7 @@ class PointArray(gui_base_original.Modifier):
                          "App.ActiveDocument.recompute()"]
             self.commit(_tr(self.name), _cmd_list)
 
-        # Commit the transaction and execute the comamnds
+        # Commit the transaction and execute the commands
         # through the parent class
         self.finish()
 

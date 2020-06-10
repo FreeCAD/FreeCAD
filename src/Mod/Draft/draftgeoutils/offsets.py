@@ -41,7 +41,7 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 
 def pocket2d(shape, offset):
-    """Return a list of wires obtained from offseting wires from the shape.
+    """Return a list of wires obtained from offsetting wires from the shape.
 
     Return a list of wires obtained from offsetting the wires
     from the given shape by the given offset, and intersection if needed.

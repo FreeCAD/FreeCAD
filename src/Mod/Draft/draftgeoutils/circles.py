@@ -144,7 +144,7 @@ def circlefrom2Lines1Point(edge1, edge2, point):
 
 
 def circleFrom2LinesRadius(edge1, edge2, radius):
-    """Retun a list of circles from two edges and one radius.
+    """Return a list of circles from two edges and one radius.
 
     It calculates 4 centers.
     """
