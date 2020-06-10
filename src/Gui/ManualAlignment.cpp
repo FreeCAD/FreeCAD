@@ -67,6 +67,7 @@
 #include "ManualAlignment.h"
 #include "BitmapFactory.h"
 #include "SoAxisCrossKit.h"
+#include "Tools.h"
 
 
 using namespace Gui;
@@ -472,7 +473,7 @@ public:
         QColor front;
         front.setRgbF(0.8f, 0.8f, 0.8f);
 
-        int w = fm.width(text);
+        int w = QtTools::horizontalAdvance(fm, text);
         int h = fm.height();
 
         QImage image(w,h,QImage::Format_ARGB32_Premultiplied);

@@ -94,6 +94,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
@@ -3471,7 +3472,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                 boundingBoxes->push_back(labelBB);
             }
 
-            cursorOffset += qfm.width(labelStr);
+            cursorOffset += Gui::QtTools::horizontalAdvance(qfm, labelStr);
         }
     }
 

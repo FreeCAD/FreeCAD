@@ -116,6 +116,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
+#include "Tools.h"
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
@@ -1547,14 +1548,14 @@ QPixmap MainWindow::splashImage() const
         QFont fontExe = painter.font();
         fontExe.setPointSize(20);
         QFontMetrics metricExe(fontExe);
-        int l = metricExe.width(title);
+        int l = QtTools::horizontalAdvance(metricExe, title);
         int w = splash_image.width();
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
         fontVer.setPointSize(12);
         QFontMetrics metricVer(fontVer);
-        int v = metricVer.width(version);
+        int v = QtTools::horizontalAdvance(metricVer, version);
 
         int x = -1, y = -1;
         QRegExp rx(QLatin1String("(\\d+).(\\d+)"));

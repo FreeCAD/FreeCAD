@@ -46,6 +46,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 
 #include "Rez.h"
@@ -719,7 +720,7 @@ int QGIView::calculateFontPixelSize(double sizeInMillimetres)
 int QGIView::calculateFontPixelWidth(const QFont &font)
 {
     // Return the width of digit 0, most likely the most wide digit
-    return QFontMetrics(font).width(QChar::fromLatin1('0'));
+    return Gui::QtTools::horizontalAdvance(QFontMetrics(font), QChar::fromLatin1('0'));
 }
 
 const double QGIView::DefaultFontSizeInMM = 5.0;
