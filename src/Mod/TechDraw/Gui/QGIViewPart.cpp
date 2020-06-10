@@ -658,7 +658,7 @@ void QGIViewPart::drawViewPart()
 //                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
                 if (cv != nullptr) {
                     item->setNormalColor(cv->color.asValue<QColor>());
-                    item->setRadius(cv->size);
+                    item->setRadius(Rez::guiX(cv->size));
                 } else {
                     item->setNormalColor(vertexColor);
                     item->setFillColor(vertexColor);
