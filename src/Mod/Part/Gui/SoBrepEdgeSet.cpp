@@ -196,6 +196,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     SoColorPacker packer;
     float trans = 0.0;
+    float width = 0.0;
 
     for(;pass<=2;++pass) {
         bool pushed = false;
@@ -208,14 +209,15 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 }
                 SoLinePatternElement::set(state, pattern);
             }
-            float width = Gui::ViewParams::getSelectionHiddenLineWidth();
-            if(width>0.0) {
+            width = Gui::ViewParams::getSelectionHiddenLineWidth();
+            if(width>0.0 && SoLineWidthElement::get(state) < width) {
                 if(!pushed) {
                     pushed = true;
                     state->push();
                 }
                 SoLineWidthElement::set(state,width);
-            }
+            } else
+                width = 0.0;
         } else if(pass==1) {
             depthGuard.set(GL_LEQUAL);
             if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
@@ -229,6 +231,13 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 // ideal of drawing hidden line, or indicating we are invisible
                 // (but forced to shown by on top rendering)
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
+            }
+            if(width != 0.0) {
+                if(!pushed) {
+                    pushed = true;
+                    state->push();
+                }
+                SoLineWidthElement::set(state,width);
             }
             pass = 2;
         }
