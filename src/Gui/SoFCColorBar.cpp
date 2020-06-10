@@ -254,7 +254,10 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
         if ((e->getButton() == SoMouseButtonEvent::BUTTON1)) {
             if (e->getState() == SoButtonEvent::DOWN) {
                 // double click event
-                if (_timer.restart() < QApplication::doubleClickInterval()) {
+                if (!_timer.isValid()) {
+                    _timer.start();
+                }
+                else if (_timer.restart() < QApplication::doubleClickInterval()) {
                     QApplication::postEvent(
                         new SoFCColorBarProxyObject(this),
                         new QEvent(QEvent::User));

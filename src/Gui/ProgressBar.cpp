@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QElapsedTimer>
 # include <QGenericReturnArgument>
 # include <QKeyEvent>
 # include <QMessageBox>
@@ -51,9 +52,9 @@ struct SequencerBarPrivate
 {
     ProgressBar* bar;
     WaitCursor* waitCursor;
-    QTime measureTime;
-    QTime progressTime;
-    QTime checkAbortTime;
+    QElapsedTimer measureTime;
+    QElapsedTimer progressTime;
+    QElapsedTimer checkAbortTime;
     QString text;
     bool guiThread;
 };

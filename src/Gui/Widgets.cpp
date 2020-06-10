@@ -990,6 +990,7 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->w = w;
         // show text with a short delay
         tip->tooltipTimer.start(80, tip);
+        tip->displayTime.start();
     }
     else {
         // do immediately
