@@ -171,7 +171,7 @@ IF(OCULUS_FOUND)
     )
 ENDIF(OCULUS_FOUND)
 
-if(SHIBOKEN_INCLUDE_DIR)
+if(FREECAD_USE_SHIBOKEN)
     if (BUILD_QT5)
         add_definitions(-DHAVE_SHIBOKEN2)
     else()
@@ -191,7 +191,7 @@ if(SHIBOKEN_INCLUDE_DIR)
             )
         endif (TARGET Shiboken2::libshiboken)
     endif (SHIBOKEN_LIBRARY)
-endif(SHIBOKEN_INCLUDE_DIR)
+endif(FREECAD_USE_SHIBOKEN)
 
 if(PYSIDE_INCLUDE_DIR)
     include_directories(

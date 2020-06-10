@@ -136,4 +136,11 @@ macro(SetupShibokenAndPyside)
         find_package(PySideTools REQUIRED) # PySide utilities (pyside-uic & pyside-rcc)
     endif(BUILD_QT5)
 
+    # If shiboken cannot be found the build option will be set to OFF
+    if(NOT SHIBOKEN_INCLUDE_DIR)
+        option(FREECAD_USE_SHIBOKEN "Links to the shiboken and PySide libraries at build time. If OFF their Python modules are imported at runtime" OFF)
+    else()
+        option(FREECAD_USE_SHIBOKEN "Links to the shiboken and PySide libraries at build time. If OFF their Python modules are imported at runtime" ON)
+    endif(NOT SHIBOKEN_INCLUDE_DIR)
+
 endmacro(SetupShibokenAndPyside)
