@@ -26,9 +26,9 @@
 # include <sstream>
 # include <locale>
 # include <iostream>
+# include <QElapsedTimer>
 #endif
 
-# include <QTime>
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
@@ -265,7 +265,7 @@ using namespace Base;
 
 struct StopWatch::Private
 {
-    QTime t;
+    QElapsedTimer t;
 };
 
 StopWatch::StopWatch() : d(new Private)
@@ -313,6 +313,3 @@ std::string StopWatch::toString(int ms) const
         str << msec << "ms";
     return str.str();
 }
-
-
-
