@@ -349,10 +349,11 @@ void TaskDetail::onScaleTypeEdit()
          updateDetail();
     }
     else if (ui->cbScaleType->currentIndex() == 1) {
-        // automatic scale
+        // automatic scale (if view is too large to fit into page, it will be scaled down)
         ui->qsbScale->setEnabled(false);
         detailFeat->ScaleType.setValue(1.0);
-        // don't do anything here since automatic scaling is only possible for DrawView
+        // updating the feature will trigger the rescaling
+        updateDetail();
     }
     else if (ui->cbScaleType->currentIndex() == 2) {
         // custom scale
