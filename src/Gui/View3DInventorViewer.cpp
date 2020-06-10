@@ -1801,32 +1801,6 @@ void View3DInventorViewer::applyOverrideMode()
                         prop.setConstraints(&_precision_cstr);
                 });
 
-        static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
-        int smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(
-                doc, "SmoothBorder", 0.0,
-                [](App::PropertyIntegerConstraint &prop) {
-                    if(prop.getConstraints() != &_smooth_cstr)
-                        prop.setConstraints(&_smooth_cstr);
-                });
-
-        static const App::PropertyIntegerConstraint::Constraints _spread_cstr(0,1000000,1000);
-        int spread = _shadowParam<App::PropertyIntegerConstraint>(
-                doc, "SpreadSize", 0,
-                [](App::PropertyIntegerConstraint &prop) {
-                    if(prop.getConstraints() != &_spread_cstr)
-                        prop.setConstraints(&_spread_cstr);
-                });
-
-        static const App::PropertyIntegerConstraint::Constraints _sample_cstr(0,7,1);
-        int sample = _shadowParam<App::PropertyIntegerConstraint>(
-                doc, "SpreadSampleSize", 0,
-                [](App::PropertyIntegerConstraint &prop) {
-                    if(prop.getConstraints() != &_sample_cstr)
-                        prop.setConstraints(&_sample_cstr);
-                });
-
-        pcShadowGroup->smoothBorder = smoothBorder/10.0f + sample/100.0f + spread/1000000.0f;
-
         SoLight *light;
         auto _dir = _shadowParam<App::PropertyVector>(
                 doc, "LightDirection", 
@@ -1852,9 +1826,10 @@ void View3DInventorViewer::applyOverrideMode()
             pcShadowSpotLight->direction = dir;
             Base::Vector3d initPos;
             if(!bbox.isEmpty()) {
-                initPos.x = _dir.x < 0 ? bbox.getMax()[0]+10 : bbox.getMin()[0]-10;
-                initPos.y = _dir.y < 0 ? bbox.getMax()[1]+10 : bbox.getMin()[1]-10;
-                initPos.z = _dir.z < 0 ? bbox.getMax()[2]+10 : bbox.getMin()[2]-10;
+                SbVec3f center = bbox.getCenter();
+                initPos.x = center[0];
+                initPos.y = center[1];
+                initPos.z = center[2] + (_dir.z < 0 ? 1.0f : -1.0f) * (bbox.getMax()[2] - bbox.getMin()[2]);
             }
             auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", initPos);
             pcShadowSpotLight->location = SbVec3f(pos.x,pos.y,pos.z);
@@ -3801,72 +3776,105 @@ void View3DInventorViewer::viewAll()
 
 void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
 {
-    if(!pcShadowGroundSwitch || pcShadowGroundSwitch->whichChild.getValue()<0) {
-        if(pcShadowDirectionalLight) {
-            pcShadowDirectionalLight->bboxSize = box.getSize();
-            pcShadowDirectionalLight->bboxCenter = box.getCenter();
-        }
+    App::Document *doc = guiDocument?guiDocument->getDocument():nullptr;
+
+    if (!pcShadowGroup || !doc)
         return;
-    }
 
     SbVec3f size = box.getSize();
-    float z = size[2];
-    float width, length;
-    App::Document *doc = guiDocument?guiDocument->getDocument():nullptr;
-    if(_shadowParam<App::PropertyBool>(doc, "GroundSizeAuto", true)) {
-        double scale = _shadowParam<App::PropertyFloat>(
-                doc, "GroundSizeScale", ViewParams::getShadowGroundScale());
-        if(scale <= 0.0)
-            scale = 1.0;
-        width = length = scale * std::max(std::max(size[0],size[1]),size[2]);
-    } else {
-        width = _shadowParam<App::PropertyLength>(doc, "GroundSizeX", 100.0);
-        length = _shadowParam<App::PropertyLength>(doc, "GroundSizeY", 100.0);
-    }
-
     SbVec3f center = box.getCenter();
 
-    Base::Placement pla = _shadowParam<App::PropertyPlacement>(
-            doc, "GroundPlacement", Base::Placement());
-
-    if(!_shadowParam<App::PropertyBool>(doc, "GroundAutoPosition", true)) {
-        center[0] = pla.getPosition().x;
-        center[1] = pla.getPosition().y;
-        z = pla.getPosition().z;
-        pla = Base::Placement();
+    if(!pcShadowGroundSwitch || pcShadowGroundSwitch->whichChild.getValue()<0) {
+        if(pcShadowDirectionalLight) {
+            pcShadowDirectionalLight->bboxSize = size;
+            pcShadowDirectionalLight->bboxCenter = center;
+        }
     } else {
-        z = center[2]-z/2-1;
-    }
-    SbVec3f coords[4] = {
-        {center[0]-width, center[1]-length, z},
-        {center[0]+width, center[1]-length, z},
-        {center[0]+width, center[1]+length, z},
-        {center[0]-width, center[1]+length, z},
-    };
-    if(!pla.isIdentity()) {
-        SbMatrix mat = ViewProvider::convert(pla.toMatrix());
-        for(auto &coord : coords)
-            mat.multVecMatrix(coord,coord);
-    }
-    pcShadowGroundCoords->point.setValues(0, 4, coords);
+        float z = size[2];
+        float width, length;
+        if(_shadowParam<App::PropertyBool>(doc, "GroundSizeAuto", true)) {
+            double scale = _shadowParam<App::PropertyFloat>(
+                    doc, "GroundSizeScale", ViewParams::getShadowGroundScale());
+            if(scale <= 0.0)
+                scale = 1.0;
+            width = length = scale * std::max(std::max(size[0],size[1]),size[2]);
+        } else {
+            width = _shadowParam<App::PropertyLength>(doc, "GroundSizeX", 100.0);
+            length = _shadowParam<App::PropertyLength>(doc, "GroundSizeY", 100.0);
+        }
 
-    float textureSize = _shadowParam<App::PropertyLength>(doc, "GroundTextureSize", 100.0); 
-    if(textureSize < 1e-5)
-        pcShadowGroundTextureCoords->point.setNum(0);
-    else {
-        float w = width*2.0/textureSize;
-        float l = length*2.0/textureSize;
-        SbVec2f points[4] = {{0,l}, {w,l}, {w,0}, {0,0}};
-        pcShadowGroundTextureCoords->point.setValues(0,4,points);
-    }
+        Base::Placement pla = _shadowParam<App::PropertyPlacement>(
+                doc, "GroundPlacement", Base::Placement());
 
-    if(pcShadowDirectionalLight) {
+        if(!_shadowParam<App::PropertyBool>(doc, "GroundAutoPosition", true)) {
+            center[0] = pla.getPosition().x;
+            center[1] = pla.getPosition().y;
+            z = pla.getPosition().z;
+            pla = Base::Placement();
+        } else {
+            z = center[2]-z/2-1;
+        }
+        SbVec3f coords[4] = {
+            {center[0]-width, center[1]-length, z},
+            {center[0]+width, center[1]-length, z},
+            {center[0]+width, center[1]+length, z},
+            {center[0]-width, center[1]+length, z},
+        };
+        if(!pla.isIdentity()) {
+            SbMatrix mat = ViewProvider::convert(pla.toMatrix());
+            for(auto &coord : coords)
+                mat.multVecMatrix(coord,coord);
+        }
+        pcShadowGroundCoords->point.setValues(0, 4, coords);
+
+        float textureSize = _shadowParam<App::PropertyLength>(doc, "GroundTextureSize", 100.0); 
+        if(textureSize < 1e-5)
+            pcShadowGroundTextureCoords->point.setNum(0);
+        else {
+            float w = width*2.0/textureSize;
+            float l = length*2.0/textureSize;
+            SbVec2f points[4] = {{0,l}, {w,l}, {w,0}, {0,0}};
+            pcShadowGroundTextureCoords->point.setValues(0,4,points);
+        }
+
         SbBox3f gbox = box;
         for(int i=0; i<4; ++i)
             gbox.extendBy(coords[i]);
-        pcShadowDirectionalLight->bboxSize = gbox.getSize() * 1.2f;
-        pcShadowDirectionalLight->bboxCenter = gbox.getCenter();
+        size = gbox.getSize();
+        if(pcShadowDirectionalLight) {
+            pcShadowDirectionalLight->bboxSize = size * 1.2f;
+            pcShadowDirectionalLight->bboxCenter = gbox.getCenter();
+        }
     }
+
+    static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
+    double smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(
+            doc, "SmoothBorder", 0.0,
+            [](App::PropertyIntegerConstraint &prop) {
+                if(prop.getConstraints() != &_smooth_cstr)
+                    prop.setConstraints(&_smooth_cstr);
+            });
+
+    static const App::PropertyIntegerConstraint::Constraints _spread_cstr(0,1000000,500);
+    double spread = _shadowParam<App::PropertyIntegerConstraint>(
+            doc, "SpreadSize", 0,
+            [](App::PropertyIntegerConstraint &prop) {
+                if(prop.getConstraints() != &_spread_cstr)
+                    prop.setConstraints(&_spread_cstr);
+            });
+
+    static const App::PropertyIntegerConstraint::Constraints _sample_cstr(0,7,1);
+    double sample = _shadowParam<App::PropertyIntegerConstraint>(
+            doc, "SpreadSampleSize", 0,
+            [](App::PropertyIntegerConstraint &prop) {
+                if(prop.getConstraints() != &_sample_cstr)
+                    prop.setConstraints(&_sample_cstr);
+            });
+
+    float maxSize = std::max(size[0],std::max(size[1],size[2]));
+    if (maxSize > 256.0 && pcShadowGroup->findChild(pcShadowSpotLight)>=0)
+        spread *= 256.0/maxSize;
+    pcShadowGroup->smoothBorder = smoothBorder/10.0f + sample/100.0f + spread/1000000.0f;
 }
 
 void View3DInventorViewer::viewAll(float factor)
