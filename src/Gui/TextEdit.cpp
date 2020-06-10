@@ -32,6 +32,7 @@
 
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -239,7 +240,7 @@ TextEditor::~TextEditor()
 
 int TextEditor::lineNumberAreaWidth()
 {
-    return fontMetrics().width(QLatin1String("0000"))+10;
+    return QtTools::horizontalAdvance(fontMetrics(), QLatin1String("0000")) + 10;
 }
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
@@ -449,7 +450,7 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
     if (strcmp(sReason, "TabSize") == 0 || strcmp(sReason, "FontSize") == 0) {
         int tabWidth = hPrefGrp->GetInt("TabSize", 4);
         QFontMetrics metric(font());
-        int fontSize = metric.width(QLatin1String("0"));
+        int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
         setTabStopWidth(tabWidth * fontSize);
     }
 

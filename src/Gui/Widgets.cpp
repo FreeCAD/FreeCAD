@@ -54,6 +54,7 @@
 #include "BitmapFactory.h"
 #include "DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
+#include "Tools.h"
 
 using namespace Gui;
 using namespace App;
@@ -1191,7 +1192,7 @@ int PropertyListEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+    int space = 3 + QtTools::horizontalAdvance(fontMetrics(), QLatin1Char('9')) * digits;
 
     return space;
 }
@@ -1398,8 +1399,8 @@ void LabelEditor::validateText(const QString& text)
 void LabelEditor::setButtonText(const QString& txt)
 {
     button->setText(txt);
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(QLatin1String(" ... "));
+    int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 

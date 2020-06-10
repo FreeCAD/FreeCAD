@@ -48,6 +48,7 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/Tools.h>
 #include <string>
 
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -444,7 +445,7 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
             int pos = labelText.indexOf(QString::fromUtf8("|"));
             labelText.replace(pos, 1, QString::fromUtf8("   "));
             QFontMetrics fm(balloonLabel->getFont());
-            balloonLabel->seps.push_back(fm.width((labelText.left(pos + 2))));
+            balloonLabel->seps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
             balloonLabel->verticalSep = true;
         }
     }

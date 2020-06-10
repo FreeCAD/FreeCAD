@@ -45,6 +45,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -779,8 +780,8 @@ void FileChooser::setFilter ( const QString& filter )
 void FileChooser::setButtonText( const QString& txt )
 {
     button->setText( txt );
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(QLatin1String(" ... "));
+    int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth( (w1 > w2 ? w1 : w2) );
 }
 

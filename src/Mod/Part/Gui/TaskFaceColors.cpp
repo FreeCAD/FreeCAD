@@ -61,6 +61,7 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -408,7 +409,7 @@ void FaceColors::updatePanel()
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());
-    if (fm.width(faces) > maxWidth) {
+    if (Gui::QtTools::horizontalAdvance(fm, faces) > maxWidth) {
         faces = fm.elidedText(faces, Qt::ElideMiddle, maxWidth);
     }
 

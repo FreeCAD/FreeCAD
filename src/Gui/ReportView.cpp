@@ -41,6 +41,7 @@
 #include "BitmapFactory.h"
 #include "MainWindow.h"
 #include "Application.h"
+#include "Tools.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -653,7 +654,7 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         QFont font(fontFamily, fontSize);
         setFont(font);
         QFontMetrics metric(font);
-        int width = metric.width(QLatin1String("0000"));
+        int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
         setTabStopWidth(width);
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {

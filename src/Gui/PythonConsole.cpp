@@ -49,6 +49,7 @@
 #include "DlgEditorImp.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "Tools.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -524,7 +525,7 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         QFont font(fontFamily, fontSize);
         setFont(font);
         QFontMetrics metric(font);
-        int width = metric.width(QLatin1String("0000"));
+        int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
         setTabStopWidth(width);
     } else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));

@@ -70,6 +70,7 @@
 #include "SceneInspector.h"
 #include "DemoMode.h"
 #include "TextureMapping.h"
+#include "Tools.h"
 #include "Utilities.h"
 #include "NavigationStyle.h"
 
@@ -1862,14 +1863,15 @@ void StdViewScreenShot::activated(int iMsg)
                     QFont font = painter.font();
                     font.setPointSize(20);
 
-                    int n = QFontMetrics(font).width(name);
+                    QFontMetrics fm(font);
+                    int n = QtTools::horizontalAdvance(fm, name);
                     int h = pixmap.height();
 
                     painter.setFont(font);
                     painter.drawText(8+appicon.width(), h-24, name);
 
                     font.setPointSize(12);
-                    int u = QFontMetrics(font).width(url);
+                    int u = QtTools::horizontalAdvance(fm, url);
                     painter.setFont(font);
                     painter.drawText(8+appicon.width()+n-u, h-9, url);
 

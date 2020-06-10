@@ -53,6 +53,7 @@
 #include "MainWindow.h"
 #include "FileDialog.h"
 #include "ui_DlgAuthorization.h"
+#include "Tools.h"
 
 using namespace Gui::Dialog;
 
@@ -100,7 +101,7 @@ SqueezeLabel::SqueezeLabel(QWidget *parent) : QLabel(parent)
 void SqueezeLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fm = fontMetrics();
-    if (fm.width(text()) > contentsRect().width()) {
+    if (Gui::QtTools::horizontalAdvance(fm, text()) > contentsRect().width()) {
         QString elided = fm.elidedText(text(), Qt::ElideMiddle, width());
         QString oldText = text();
         setText(elided);
