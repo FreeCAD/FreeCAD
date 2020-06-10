@@ -193,7 +193,7 @@ if(FREECAD_USE_SHIBOKEN)
     endif (SHIBOKEN_LIBRARY)
 endif(FREECAD_USE_SHIBOKEN)
 
-if(PYSIDE_INCLUDE_DIR)
+if(FREECAD_USE_PYSIDE)
     include_directories(
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
@@ -218,7 +218,7 @@ if(PYSIDE_INCLUDE_DIR)
     else()
         add_definitions(-DHAVE_PYSIDE)
     endif()
-endif(PYSIDE_INCLUDE_DIR)
+endif(FREECAD_USE_PYSIDE)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
