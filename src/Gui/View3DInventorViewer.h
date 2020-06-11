@@ -505,6 +505,7 @@ private:
     CoinPtr<SoTextureCoordinate2>     pcShadowGroundTextureCoords;
     CoinPtr<SoBumpMap>                pcShadowGroundBumpMap;
     CoinPtr<SoLightModel>             pcShadowGroundLightModel;
+    CoinPtr<SoShapeHints>             pcShadowGroundShapeHints;
     uint32_t                          shadowNodeId;
     uint32_t                          cameraNodeId;
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>733</height>
+    <height>926</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -436,7 +436,46 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Smooth border</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxBackFaceCull">
+          <property name="toolTip">
+           <string>Whether to show the ground when viewing from under the ground face</string>
+          </property>
+          <property name="text">
+           <string>Ground back face culling</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowGroundBacFaceCull</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="Gui::PrefSpinBox" name="spinBoxSpreadSize">
+          <property name="maximum">
+           <number>1000000</number>
+          </property>
+          <property name="singleStep">
+           <number>500</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowSpreadSize</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
            <string>Ground color</string>
@@ -445,6 +484,9 @@
         </item>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxShowGround">
+          <property name="toolTip">
+           <string>Whether to show auto generated ground face. You can specify you own ground object by changing its view property 'ShadowStyle' to 'Shadowed', meaning that it will only receive but not cast shadow.</string>
+          </property>
           <property name="text">
            <string>Show ground</string>
           </property>
@@ -463,7 +505,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinBoxGroundScale">
           <property name="minimum">
            <double>0.100000000000000</double>
@@ -492,7 +534,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="Gui::PrefColorButton" name="GroundColor">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -518,8 +560,11 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxFlatLines">
+          <property name="toolTip">
+           <string>Draw object with 'Flat lines' style when shadow is enabled.</string>
+          </property>
           <property name="text">
            <string>Flat lines</string>
           </property>
@@ -576,7 +621,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Ground scale</string>
@@ -602,14 +647,17 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_10">
+          <property name="toolTip">
+           <string>Set ground transparency. When set to 0, the non-shadowed part of the ground will be complete transparent, showing only the shadow part of the ground.</string>
+          </property>
           <property name="text">
            <string>Ground transparency</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="Gui::PrefDoubleSpinBox" name="spinGroundTransparency">
           <property name="toolTip">
            <string>Override transparency of all objects in the scene.</string>
@@ -640,13 +688,88 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxGroundShading">
+          <property name="toolTip">
+           <string>Render ground with shading. If disabled, the ground and the shadow casted on ground will not change shading when viewing in different angle.</string>
+          </property>
           <property name="text">
            <string>Ground shading</string>
           </property>
           <property name="prefEntry" stdset="0">
            <string>ShadowGroundShading</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="1">
+         <widget class="Gui::PrefSpinBox" name="spinBoxSpreadSampleSize">
+          <property name="maximum">
+           <number>7</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowSpreadSampleSize</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Spread size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Spread sample size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="Gui::PrefSpinBox" name="spinBoxSmoothBorder">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowSmoothBorder</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="toolTip">
+           <string>Specifies shadow rendering precision. This parameter actually controls the underlying texture size used for rendering shadow. The maximum texture size is 2048x2048. The actual size is calculated as 'Precision' times 2048 and round up to power of two. A smaller texture corresponds to faster rendering speed, and also especially when rendering with 'SmoothBorder' or soft shadow with 'SpreadSize'</string>
+          </property>
+          <property name="text">
+           <string>Precision</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxPrecision">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>ShadowPrecision</string>
           </property>
           <property name="prefPath" stdset="0">
            <string>View</string>
@@ -705,6 +828,11 @@
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

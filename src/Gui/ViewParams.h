@@ -129,6 +129,7 @@ public:
     FC_VIEW_PARAM(ShadowLightDirectionZ, double, Float, -1.0) \
     FC_VIEW_PARAM(ShadowLightColor, unsigned long, Unsigned, 0xf0fdffff) \
     FC_VIEW_PARAM(ShadowShowGround, bool, Bool, true) \
+    FC_VIEW_PARAM(ShadowGroundBackFaceCull, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0) \
     FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0x7d7d7dff) \
     FC_VIEW_PARAM(ShadowGroundShininess, double, Float, 0.8) \
@@ -137,6 +138,9 @@ public:
     FC_VIEW_PARAM(ShadowGroundTransparency, double, Float, 0.0) \
     FC_VIEW_PARAM(ShadowGroundShading, bool, Bool, true) \
     FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
+    FC_VIEW_PARAM(ShadowSmoothBorder, int, Int, 0) \
+    FC_VIEW_PARAM(ShadowSpreadSize, int, Int, 0) \
+    FC_VIEW_PARAM(ShadowSpreadSampleSize, int, Int, 0) \
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
 
 #undef FC_VIEW_PARAM

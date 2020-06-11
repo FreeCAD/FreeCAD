@@ -1740,9 +1740,8 @@ void View3DInventorViewer::applyOverrideMode()
 
                 pcShadowGround = new SoFaceSet;
 
-                auto shapeHints = new SoShapeHints;
-                shapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-                // shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
+                pcShadowGroundShapeHints = new SoShapeHints;
+                pcShadowGroundShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
 
                 auto pickStyle = new SoPickStyle;
                 pickStyle->style = SoPickStyle::UNPICKABLE;
@@ -1755,7 +1754,7 @@ void View3DInventorViewer::applyOverrideMode()
                 pcShadowGroundGroup = new SoSeparator;
                 pcShadowGroundGroup->addChild(pcShadowGroundLightModel);
                 pcShadowGroundGroup->addChild(pickStyle);
-                pcShadowGroundGroup->addChild(shapeHints);
+                pcShadowGroundGroup->addChild(pcShadowGroundShapeHints);
                 pcShadowGroundGroup->addChild(pcShadowGroundTextureCoords);
                 pcShadowGroundGroup->addChild(tu);
 
@@ -1816,7 +1815,7 @@ void View3DInventorViewer::applyOverrideMode()
         SbBox3f bbox;
         getSceneBoundBox(bbox);
 
-        static const App::PropertyPrecision::Constraints _epsilon_cstr(0.0,1000.0,1e-5);
+        static const App::PropertyPrecision::Constraints _epsilon_cstr(0.0,1000.0,1e-4);
         pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc,
                 "Epsilon", 1e-5,
                     [](App::PropertyFloatConstraint &prop) {
@@ -1856,7 +1855,7 @@ void View3DInventorViewer::applyOverrideMode()
             if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
                 static const App::PropertyFloatConstraint::Constraints _dist_cstr(-1.0,DBL_MAX,10.0);
                 static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
-                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 0,
+                    _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 0.0,
                         [](App::PropertyFloatConstraint &prop) {
                             if(!prop.getConstraints())
                                 prop.setConstraints(&_dist_cstr);
@@ -1892,6 +1891,12 @@ void View3DInventorViewer::applyOverrideMode()
                     if(!prop.getConstraints())
                         prop.setConstraints(&_transp_cstr);
                 });
+
+        if(_shadowParam<App::PropertyBool>(doc, "GroundBackFaceCull",
+                    ViewParams::getShadowGroundBackFaceCull()))
+            pcShadowGroundShapeHints->shapeType = SoShapeHints::SOLID;
+        else
+            pcShadowGroundShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
 
         pcShadowMaterial->transparency = transp;
         pcShadowGroundStyle->style = (transp == 1.0 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
@@ -3847,7 +3852,7 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
 
     static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
     double smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SmoothBorder", 0.0,
+            doc, "SmoothBorder", ViewParams::getShadowSmoothBorder(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_smooth_cstr)
                     prop.setConstraints(&_smooth_cstr);
@@ -3855,7 +3860,7 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
 
     static const App::PropertyIntegerConstraint::Constraints _spread_cstr(0,1000000,500);
     double spread = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SpreadSize", 0,
+            doc, "SpreadSize", ViewParams::getShadowSpreadSize(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_spread_cstr)
                     prop.setConstraints(&_spread_cstr);
@@ -3863,7 +3868,7 @@ void View3DInventorViewer::updateShadowGround(const SbBox3f &box)
 
     static const App::PropertyIntegerConstraint::Constraints _sample_cstr(0,7,1);
     double sample = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SpreadSampleSize", 0,
+            doc, "SpreadSampleSize", ViewParams::getShadowSpreadSampleSize(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_sample_cstr)
                     prop.setConstraints(&_sample_cstr);
