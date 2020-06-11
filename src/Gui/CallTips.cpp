@@ -523,7 +523,7 @@ void CallTipsList::showTips(const QString& line)
         addItem(it.key());
         QListWidgetItem *item = this->item(this->count()-1);
         item->setData(Qt::ToolTipRole, QVariant(it.value().description));
-        item->setData(Qt::UserRole, qVariantFromValue( it.value() )); //< store full CallTip data
+        item->setData(Qt::UserRole, QVariant::fromValue( it.value() )); //< store full CallTip data
         switch (it.value().type)
         {
         case CallTip::Module:
