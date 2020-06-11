@@ -717,7 +717,7 @@ void StdCmdDrawStyle::languageChange()
     a[8]->setText(QCoreApplication::translate(
         "Std_DrawStyle", "Shadow"));
     a[8]->setToolTip(QCoreApplication::translate(
-        "Std_DrawStyle", "Drop shadows for the scene"));
+        "Std_DrawStyle", "Drop shadows for the scene. Click this button while in shadow mode to toggle light manipulator"));
 }
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
@@ -817,7 +817,10 @@ void StdCmdDrawStyle::activated(int iMsg)
                     viewer->setOverrideMode("Tessellation");
                     break;
                 case 8:
-                    viewer->setOverrideMode("Shadow");
+                    if (viewer->getOverrideMode() == "Shadow")
+                        viewer->toggleShadowLightManip();
+                    else
+                        viewer->setOverrideMode("Shadow");
                     break;
                 default:
                     viewer->setOverrideMode("As Is");

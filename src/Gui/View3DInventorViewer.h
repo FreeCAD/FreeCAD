@@ -429,6 +429,8 @@ public:
 
     void callEventFilter(QEvent *);
 
+    void toggleShadowLightManip(int toggle = -1);
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();
@@ -506,6 +508,7 @@ private:
     CoinPtr<SoBumpMap>                pcShadowGroundBumpMap;
     CoinPtr<SoLightModel>             pcShadowGroundLightModel;
     CoinPtr<SoShapeHints>             pcShadowGroundShapeHints;
+    CoinPtr<SoNode>                   pcShadowLightManip;
     uint32_t                          shadowNodeId;
     uint32_t                          cameraNodeId;
     bool                              shadowExtraRedraw = false;

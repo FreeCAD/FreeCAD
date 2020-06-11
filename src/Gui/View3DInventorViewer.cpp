@@ -97,6 +97,9 @@
 #include <Inventor/nodes/SoBumpMap.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/draggers/SoDirectionalLightDragger.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>
@@ -795,7 +798,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
 
 void View3DInventorViewer::slotChangeDocument(const App::Document &, const App::Property &prop)
 {
-    if(!prop.getName())
+    if(!prop.getName() || prop.testStatus(App::Property::User3))
         return;
 
     if(!_applyingOverride
@@ -1651,6 +1654,15 @@ template<class PropT, class ValueT>
 ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def) {
     auto cb = [](PropT &){};
     return _shadowParam<PropT, ValueT>(doc, _name, def, cb);
+}
+
+template<class PropT, class ValueT>
+void _shadowSetParam(App::Document *doc, const char *_name, const ValueT &def) {
+    _shadowParam<PropT, ValueT>(doc, _name, def,
+        [&def](PropT &prop) {
+            Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(App::Property::User3, &prop);
+            prop.setValue(def);
+        });
 }
 
 void View3DInventorViewer::applyOverrideMode()
@@ -4654,6 +4666,70 @@ void View3DInventorViewer::redrawShadow()
         this->getSoRenderManager()->scheduleRedraw();
         shadowExtraRedraw = ViewParams::getShadowExtraRedraw();
     }
+}
+
+void View3DInventorViewer::toggleShadowLightManip(int toggle)
+{
+    App::Document *doc = guiDocument?guiDocument->getDocument():nullptr;
+    if (!pcShadowGroup || !doc)
+        return;
+
+    if (toggle == 0 || (toggle == -1 && pcShadowLightManip)) {
+        if(pcShadowGroup->findChild(pcShadowLightManip) >= 0) {
+            SoTempPath path(2);
+            path.ref();
+            path.append(pcShadowGroup);
+            path.append(pcShadowLightManip);
+            SbVec3f dir;
+            if (pcShadowLightManip->isOfType(SoDirectionalLightManip::getClassTypeId())) {
+                static_cast<SoDirectionalLightManip*>(pcShadowLightManip.get())->replaceManip(
+                        &path, pcShadowDirectionalLight);
+                dir = pcShadowDirectionalLight->direction.getValue();
+            } else {
+                static_cast<SoSpotLightManip*>(pcShadowLightManip.get())->replaceManip(
+                        &path, pcShadowSpotLight);
+                dir = pcShadowSpotLight->direction.getValue();
+                SbVec3f pos = pcShadowSpotLight->location.getValue();
+                _shadowSetParam<App::PropertyVector>(doc, "SpotLightPosition", 
+                        Base::Vector3d(pos[0], pos[1], pos[2]));
+                _shadowSetParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle",
+                        pcShadowSpotLight->cutOffAngle.getValue() * 180.0 / M_PI);
+            }
+            _shadowSetParam<App::PropertyVector>(doc, "LightDirection", Base::Vector3d(dir[0],dir[1],dir[2]));
+            path.unrefNoDelete();
+            pcShadowLightManip.reset();
+            return;
+        }
+    }
+
+    if (toggle != -1 && pcShadowLightManip)
+        return;
+
+    SoTempPath path(2);
+    path.ref();
+    path.append(pcShadowGroup);
+    if (pcShadowGroup->findChild(pcShadowDirectionalLight) >= 0) {
+        path.append(pcShadowDirectionalLight);
+        auto manip = new SoDirectionalLightManip;
+        pcShadowLightManip = manip;
+
+        SbBox3f bbox;
+        if(getSceneBoundBox(bbox)) {
+            viewBoundBox(bbox);
+            auto dragger = manip->getDragger();
+            SbVec3f pos = bbox.getCenter();
+            pos[2] += bbox.getSize()[2];
+            if (dragger->isOfType(SoDirectionalLightDragger::getClassTypeId()))
+                static_cast<SoDirectionalLightDragger*>(dragger)->translation = pos;
+        }
+        manip->replaceNode(&path);
+    } else if (pcShadowGroup->findChild(pcShadowSpotLight) >= 0) {
+        path.append(pcShadowSpotLight);
+        auto manip = new SoSpotLightManip;
+        pcShadowLightManip = manip;
+        manip->replaceNode(&path);
+    }
+    path.unrefNoDelete();
 }
 
 #include "moc_View3DInventorViewer.cpp"
