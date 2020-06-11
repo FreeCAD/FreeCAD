@@ -440,7 +440,7 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->verticalSep = false;
     balloonLabel->seps.clear();
 
-    if (strcmp(balloon->Shape.getValueAsString(), "Rectangle") == 0) {
+    if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
         while (labelText.contains(QString::fromUtf8("|"))) {
             int pos = labelText.indexOf(QString::fromUtf8("|"));
             labelText.replace(pos, 1, QString::fromUtf8("   "));
@@ -614,7 +614,7 @@ void QGIViewBalloon::draw()
     Base::Vector3d kinkPoint;
     double kinkLength = Rez::guiX(balloon->KinkLength.getValue());
 
-    const char *balloonType = balloon->Shape.getValueAsString();
+    const char *balloonType = balloon->BubbleShape.getValueAsString();
 
     float scale = balloon->ShapeScale.getValue();
     double offsetLR     = 0;
