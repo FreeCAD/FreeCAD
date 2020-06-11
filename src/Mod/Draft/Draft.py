@@ -392,6 +392,7 @@ from draftmake.make_dimension import (make_dimension,
                                       makeDimension,
                                       make_linear_dimension,
                                       make_linear_dimension_obj,
+                                      make_radial_dimension_obj,
                                       make_angular_dimension,
                                       makeAngularDimension)
 

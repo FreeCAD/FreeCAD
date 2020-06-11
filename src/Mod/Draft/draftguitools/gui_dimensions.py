@@ -305,12 +305,12 @@ class Dimension(gui_base_original.Creator):
 
     def create_radial_dimension_obj(self):
         """Create a radial dimension linked to a circular edge."""
-        _cmd = 'Draft.make_dimension'
+        _cmd = 'Draft.make_radial_dimension_obj'
         _cmd += '('
         _cmd += 'FreeCAD.ActiveDocument.' + self.link[0].Name + ', '
-        _cmd += str(self.link[1]) + ', '
-        _cmd += '"' + str(self.arcmode) + '", '
-        _cmd += DraftVecUtils.toString(self.node[2])
+        _cmd += 'index=' + str(self.link[1] + 1) + ', '
+        _cmd += 'mode="' + str(self.arcmode) + '", '
+        _cmd += 'dim_line=' + DraftVecUtils.toString(self.node[2])
         _cmd += ')'
         _cmd_list = ['_dim_ = ' + _cmd,
                      'Draft.autogroup(_dim_)',

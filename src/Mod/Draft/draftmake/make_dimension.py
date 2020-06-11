@@ -384,6 +384,130 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
     return new_obj
 
 
+def make_radial_dimension_obj(edge_object, index=1, mode="radius",
+                              dim_line=None):
+    """Create a radial or diameter dimension from an arc object.
+
+    Parameters
+    ----------
+    edge_object: Part::Feature
+        The object which has a circular edge which will be measured.
+        It must have a `Part::TopoShape`, and at least one element
+        must be a circular edge in `Shape.Edges` to be able to measure
+        its radius.
+
+    index: int, optional
+        It defaults to `1`.
+        It is the index of the edge in `edge_object` which is going to
+        be measured.
+        The minimum value should be `1`, which will be interpreted
+        as `'Edge1'`. If the value is below `1`, it will be set to `1`.
+
+    mode: str, optional
+        It defaults to `'radius'`; the other option is `'diameter'`.
+        It determines whether the dimension will be shown as a radius
+        or as a diameter.
+
+    dim_line: Base::Vector3, optional
+        It defaults to `None`.
+        This is a point through which the extension of the dimension line
+        will pass. The dimension line will be a radius or diameter
+        of the measured arc, extending from the center to the arc itself.
+
+        If it is `None`, this point will be set to one unit to the right
+        of the center of the arc, which will create a dimension line that is
+        horizontal, that is, parallel to the +X axis.
+
+    Returns
+    -------
+    App::FeaturePython
+        A scripted object of type `'LinearDimension'`.
+        This object does not have a `Shape` attribute, as the text and lines
+        are created on screen by Coin (pivy).
+
+    None
+        If there is a problem it will return `None`.
+    """
+    _name = "make_radial_dimension_obj"
+    utils.print_header(_name, "Radial dimension")
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(edge_object, str):
+        edge_object_str = edge_object
+
+    found, edge_object = utils.find_object(edge_object, doc)
+    if not found:
+        _msg("edge_object: {}".format(edge_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("edge_object: {}".format(edge_object.Label))
+    if not hasattr(edge_object, "Shape"):
+        _err(_tr("Wrong input: object doesn't have a 'Shape' to measure."))
+        return None
+    if (not hasattr(edge_object.Shape, "Edges")
+            or len(edge_object.Shape.Edges) < 1):
+        _err(_tr("Wrong input: object doesn't have at least one element "
+                 "in 'Edges' to use for measuring."))
+        return None
+
+    _msg("index: {}".format(index))
+    try:
+        utils.type_check([(index, int)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be an integer."))
+        return None
+
+    if index < 1:
+        index = 1
+        _wrn(_tr("index: values below 1 are not allowed; will be set to 1."))
+
+    edge = edge_object.getSubObject("Edge" + str(index))
+    if not edge:
+        _err(_tr("Wrong input: index doesn't correspond to an edge "
+                 "in the object."))
+        return None
+
+    if not hasattr(edge, "Curve") or edge.Curve.TypeId != 'Part::GeomCircle':
+        _err(_tr("Wrong input: index doesn't correspond to a circular edge."))
+        return None
+
+    _msg("mode: {}".format(mode))
+    try:
+        utils.type_check([(mode, str)], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a string, 'radius' or 'diameter'."))
+        return None
+
+    if mode not in ("radius", "diameter"):
+        _err(_tr("Wrong input: must be a string, 'radius' or 'diameter'."))
+        return None
+
+    _msg("dim_line: {}".format(dim_line))
+    if dim_line:
+        try:
+            utils.type_check([(dim_line, App.Vector)], name=_name)
+        except TypeError:
+            _err(_tr("Wrong input: must be a vector."))
+            return None
+    else:
+        center = edge_object.Shape.Edges[index - 1].Curve.Center
+        dim_line = center + App.Vector(1, 0, 0)
+
+    # TODO: the internal function expects an index starting with 0
+    # so we need to decrease the value here.
+    # This should be changed in the future in the internal function.
+    index -= 1
+
+    new_obj = make_dimension(edge_object, index, mode, dim_line)
+
+    return new_obj
+
+
 def make_angular_dimension(center=App.Vector(0, 0, 0),
                            angles=[0, 90],
                            dim_line=App.Vector(10, 10, 0), normal=None):
