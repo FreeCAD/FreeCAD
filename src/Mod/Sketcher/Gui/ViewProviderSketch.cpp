@@ -369,18 +369,31 @@ ViewProviderSketch::~ViewProviderSketch()
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
-    if(getSketchObject()->noRecomputes)
-        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
-    else
-        getSketchObject()->getDocument()->recompute(); // or fully recomputed if applicable
+    // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
+    // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
+    //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
+    //         may reference invalid geometry). However undo/redo notify SketchObject after the undo/redo
+    //         and before this slot is called.
+    // Note 3: Note that recomputes are no longer inhibited during the call to this slot.
+    forceUpdateData();
 }
 
 void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 {
-    if(getSketchObject()->noRecomputes)
-        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
-    else
-        getSketchObject()->getDocument()->recompute();  // or fully recomputed if applicable
+    // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
+    // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
+    //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
+    //         may reference invalid geometry). However undo/redo notify SketchObject after the undo/redo
+    //         and before this slot is called.
+    // Note 3: Note that recomputes are no longer inhibited during the call to this slot.
+    forceUpdateData();
+}
+
+void ViewProviderSketch::forceUpdateData()
+{
+    if(!getSketchObject()->noRecomputes) { // the sketch was already solved in SketchObject in onUndoRedoFinished
+        Gui::Command::updateActive();
+    }
 }
 
 // handler management ***************************************************************
@@ -5548,8 +5561,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObject::updateData(prop);
 
-    if (edit && (prop == &(getSketchObject()->Geometry) ||
-                 prop == &(getSketchObject()->Constraints))) {
+    if ( edit && !getSketchObject()->getDocument()->isPerformingTransaction() &&
+         (prop == &(getSketchObject()->Geometry) || prop == &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
         // At this point, we do not need to solve the Sketch
         // If we are adding geometry an update can be triggered before the sketch is actually solved.
