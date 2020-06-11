@@ -204,7 +204,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setNameFilterDetailsVisible(true);
-        dlg.setConfirmOverwrite(true);
+        dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
