@@ -548,6 +548,8 @@ public:
   MeshPointArray (void) { }
   // constructor
   MeshPointArray (unsigned long ulSize) : TMeshPointArray(ulSize) { }
+  /// copy-constructor
+  MeshPointArray (const MeshPointArray&);
   // Destructor
   ~MeshPointArray (void) { }
   //@}
@@ -600,6 +602,8 @@ public:
     MeshFacetArray (void) { }
     /// constructor
     MeshFacetArray (unsigned long ulSize) : TMeshFacetArray(ulSize) { }
+    /// copy-constructor
+    MeshFacetArray (const MeshFacetArray&);
     /// destructor
     ~MeshFacetArray (void) { }
     //@}
