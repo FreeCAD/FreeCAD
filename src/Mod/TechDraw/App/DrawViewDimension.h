@@ -135,6 +135,8 @@ public:
 
     virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
+    QStringList getPrefixSuffixSpec(QString fSpec);
+
     virtual DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
     static int getRefType1(const std::string s);
