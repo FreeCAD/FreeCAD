@@ -73,6 +73,7 @@ QTabBar::tab:hover {
 QHeaderView::section {
   color: rgb(200,200,200);
   background-color: rgba(50,50,50,10);
+  padding: 2px;
 }
 
 QToolTip {
