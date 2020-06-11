@@ -3261,7 +3261,10 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
         switch (ke->getKey()) {
         case SoKeyboardEvent::ESCAPE:
-            Gui::Selection().clearSelection();
+            if (Gui::Selection().hasSelection())
+                Gui::Selection().clearSelection();
+            else
+                toggleShadowLightManip(0);
             //fall through
         case SoKeyboardEvent::Q: // ignore 'Q' keys (to prevent app from being closed)
             return inherited::processSoEvent(ev);
@@ -4698,8 +4701,8 @@ void View3DInventorViewer::toggleShadowLightManip(int toggle)
             _shadowSetParam<App::PropertyVector>(doc, "LightDirection", Base::Vector3d(dir[0],dir[1],dir[2]));
             path.unrefNoDelete();
             pcShadowLightManip.reset();
-            return;
         }
+        return;
     }
 
     if (toggle != -1 && pcShadowLightManip)
