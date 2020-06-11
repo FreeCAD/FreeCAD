@@ -162,18 +162,18 @@ class TaskPanelPolarCircularBase:
         if self.form.button_axis.text() == "select":
             self.enable_axis_selection()
             return
-        elif self.form.button_axis.text() == "abort"\
-                or self.form.button_axis.text() == "discard":
+        elif (self.form.button_axis.text() == "abort"
+              or self.form.button_axis.text() == "discard"):
             self.disable_axis_selection()
 
-    def display_axis(self, axis_name, edge_name):
+    def display_axis(self, axis_label, axis_name, edge_name):
         """Show the selected axis in the GUI. Add derived values for the center
         coordinates GUI.
         """
         _msg("Selected: {} with edge {}".format(axis_name, edge_name))
         self.axis_name = axis_name
         self.edge_name = edge_name
-        self.form.label_axis_name.setText("{} {}".format(axis_name, edge_name))
+        self.form.label_axis_name.setText("{} {}".format(axis_label, edge_name))
         self.form.button_axis.setText("discard")
 
     def enable_axis_selection(self):

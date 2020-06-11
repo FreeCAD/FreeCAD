@@ -117,11 +117,16 @@ def make_polar_array(base_object,
     _name = "make_polar_array"
     utils.print_header(_name, _tr("Polar array"))
 
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
     if isinstance(base_object, str):
         base_object_str = base_object
 
     found, base_object = utils.find_object(base_object,
-                                           doc=App.activeDocument())
+                                           doc=doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
         _err(_tr("Wrong input: object not in document."))
@@ -143,7 +148,7 @@ def make_polar_array(base_object,
         _err(_tr("Wrong input: must be a number."))
         return None
 
-    all_correct, axis_reference = make_utils.make_polcirc_shared(_name,
+    all_correct, axis_reference = make_utils.make_polcirc_shared(doc, _name,
                                                                  center,
                                                                  axis_object,
                                                                  axis_edge)

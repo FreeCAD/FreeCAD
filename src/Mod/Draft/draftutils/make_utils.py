@@ -34,13 +34,62 @@ from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 
-def make_polcirc_shared(_name, center, axis_object, axis_edge):
+def make_polcirc_shared(doc, _name, center=App.Vector(0,0,0), axis_object=None, axis_edge=None):
     """Typecheck center, axis_object and axis_edge. Return axis_reference if
     axis_object and axis_edge (optional) are set and correct. Otherwise return
     None.
 
     This is the shared functionality of make_polar_array and make_circulararray.
+
+    Parameters
+    ----------
+    doc: App::Document
+        The currently active document.
+
+    _name: str
+        Name of the make_function that is calling this function.
+
+    center: Base::Vector3, optional
+        It defaults to the origin `App.Vector(0, 0, 0)`.
+        The vector indicating the center of rotation of the array.
+
+    axis_object: str or Part::Feature, optional
+        It defaults to `None`.
+        This parameter should be the name of an `Part::Feature` or
+        the `Part::Feature` object itself.
+        If it is set the resulting array will use the referenced axis
+        with it's name provided by parameter `axis_edge` that is part
+        of `axis_object` to calculate center and direction instead
+        of the `center` and `axis` arguments to create the array.
+        If the parameter `axis_edge` is not given as default the
+        first edge of the `axis_object` will be used
+
+    axis_edge: str or int, optional
+        It defaults to `None`.
+        If it is set the resulting array will use the referenced axis
+        to calculate center and direction instead of the `center`
+        and `axis` arguments to create the array. The `axis_edge` must
+        refer to the name of an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
+        integer or string. For example the string `Edge1` corresponds
+        to the integer `1`.
+        This `SubObject` must belong to parameter `axis_object` which
+        must be given as well.
+
+    Returns
+    -------
+    Part::FeaturePython
+        A scripted object of type `'Array'`.
+        Its `Shape` is a compound of the copies of the original object.
+
+    None
+        If there is a problem it will return `None`.
+
+    See Also
+    --------
+    make_polar_array, make_circular_array
     """
+
     CORRECT = True
     axis_reference = None
 
@@ -56,7 +105,7 @@ def make_polcirc_shared(_name, center, axis_object, axis_edge):
     axis = axis_object
     if axis_object and isinstance(axis_object, str):
         found, axis = utils.find_object(axis_object,
-                                        doc=App.activeDocument())
+                                        doc=doc)
         if not found:
             _err(_tr(
                 "Wrong input. Given axis_name does not refer to an "

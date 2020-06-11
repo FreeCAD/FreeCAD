@@ -354,7 +354,8 @@ class AxisSelectionObserver:
         selection_object = selection.Object
         edge = selection_object.getSubObject(sub_name)
         if isinstance(edge, Part.Edge) and isinstance(edge.Curve, Part.Line):
-            self.source_command.ui.display_axis(obj_name, sub_name)
+            obj_label = selection_object.Label
+            self.source_command.ui.display_axis(obj_label, obj_name, sub_name)
             self.source_command.remove_axis_selection_observer()
         else:
             self.source_command.ui.disable_axis_selection()
