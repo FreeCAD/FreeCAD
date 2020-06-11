@@ -451,7 +451,11 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         int tabWidth = hPrefGrp->GetInt("TabSize", 4);
         QFontMetrics metric(font());
         int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(tabWidth * fontSize);
+#else
+        setTabStopDistance(tabWidth * fontSize);
+#endif
     }
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
