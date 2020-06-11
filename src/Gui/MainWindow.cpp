@@ -53,6 +53,10 @@
 # include <QWhatsThis>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
+
 // FreeCAD Base header
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -1409,7 +1413,11 @@ void MainWindow::loadWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+#else
     QRect rect = QApplication::desktop()->availableGeometry();
+#endif
     int maxHeight = rect.height();
     int maxWidth = rect.width();
 
