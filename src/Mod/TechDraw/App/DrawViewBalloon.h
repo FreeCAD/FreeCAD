@@ -52,7 +52,7 @@ public:
     App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
-    App::PropertyEnumeration Shape;
+    App::PropertyEnumeration BubbleShape;
     App::PropertyFloatConstraint ShapeScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
