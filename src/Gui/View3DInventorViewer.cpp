@@ -3114,10 +3114,16 @@ void View3DInventorViewer::renderScene(void)
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
-    } else if (ViewParams::getShadowExtraRedraw() && pcShadowGroup) {
+    } else if (pcShadowGroup) {
         SoCamera* cam = getSoRenderManager()->getCamera();
-        if(cam && (shadowNodeId != pcShadowGroup->getNodeId() || cameraNodeId != cam->getNodeId()))
-            _shadowTimer.start(100);
+        if(cam) {
+            if(shadowNodeId != pcShadowGroup->getNodeId() || cameraNodeId != cam->getNodeId())
+                _shadowTimer.start(100);
+            else if (shadowExtraRedraw) {
+                shadowExtraRedraw = false;
+                this->getSoRenderManager()->scheduleRedraw();
+            }
+        }
     }
 
 #if 0 // this breaks highlighting of edges
@@ -4646,6 +4652,7 @@ void View3DInventorViewer::redrawShadow()
         shadowNodeId = pcShadowGroup->getNodeId();
         cameraNodeId = cam->getNodeId();
         this->getSoRenderManager()->scheduleRedraw();
+        shadowExtraRedraw = ViewParams::getShadowExtraRedraw();
     }
 }
 

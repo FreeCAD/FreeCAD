@@ -508,6 +508,7 @@ private:
     CoinPtr<SoShapeHints>             pcShadowGroundShapeHints;
     uint32_t                          shadowNodeId;
     uint32_t                          cameraNodeId;
+    bool                              shadowExtraRedraw = false;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
