@@ -526,7 +526,11 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(width);
+#else
+        setTabStopDistance(width);
+#endif
     } else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
