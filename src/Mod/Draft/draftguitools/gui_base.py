@@ -297,15 +297,15 @@ class PolarCircularBase(GuiCommandBase):
 
     def remove_center_callbacks(self):
         """Execute when the center selection should be disabled"""
-        if hasattr(self, "callback_move"):
+        if self.callback_move:
             self.view.removeEventCallbackPivy(self.location,
                                               self.callback_move)
-            del self.callback_move
+            self.callback_move = None
 
-        if hasattr(self, "callback_click"):
+        if self.callback_click:
             self.view.removeEventCallbackPivy(self.mouse_event,
                                               self.callback_click)
-            del self.callback_click
+            self.callback_click = None
 
     def add_axis_selection_observer(self):
         """Execute when axis reference selection should be enabled"""
@@ -315,9 +315,9 @@ class PolarCircularBase(GuiCommandBase):
 
     def remove_axis_selection_observer(self):
         """Execute when axis reference selection should be disabled"""
-        if hasattr(self, "axis_observer"):
+        if self.axis_observer:
             Gui.Selection.removeObserver(self.axis_observer)
-            del self.axis_observer
+            self.axis_observer = None
 
     def completed(self):
         """Execute when the command is terminated.
@@ -332,6 +332,7 @@ class PolarCircularBase(GuiCommandBase):
             super(PolarCircularBase, self).finish()
 
 
+# noinspection PyPep8Naming
 class AxisSelectionObserver:
     """This classes functions will be called when an selection
     event occurs after axis selection is enabled. This class is used by

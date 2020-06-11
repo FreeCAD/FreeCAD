@@ -29,7 +29,7 @@ import FreeCAD as App
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
-from draftutils.make_utils import make_polcirc_shared
+import draftutils.make_utils as make_utils
 
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
@@ -187,8 +187,14 @@ def make_circular_array(base_object,
         _err(_tr("Wrong input: must be a vector."))
         return None
 
-    axis_reference = make_polcirc_shared(_name, center, axis_object, axis_edge)
 
+    all_correct, axis_reference = make_utils.make_polcirc_shared(_name,
+                                                                 center,
+                                                                 axis_object,
+                                                                 axis_edge)
+
+    if not all_correct:
+        return None
     use_link = bool(use_link)
     _msg("use_link: {}".format(use_link))
 
