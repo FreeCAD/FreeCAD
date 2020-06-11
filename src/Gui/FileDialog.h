@@ -28,6 +28,7 @@
 #include <QFileIconProvider>
 #include <QFileSystemModel>
 #include <QCompleter>
+#include <QPointer>
 
 class QButtonGroup;
 class QGridLayout;
@@ -105,7 +106,10 @@ protected Q_SLOTS:
     void toggleExtension();
 
 private:
+    QSize oldSize;
+    ExtensionPosition extensionPos;
     QPushButton* extensionButton;
+    QPointer<QWidget> extensionWidget;
 };
 
 // ----------------------------------------------------------------------

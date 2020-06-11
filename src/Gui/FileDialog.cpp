@@ -28,6 +28,7 @@
 # include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>
+# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
@@ -463,6 +464,7 @@ void FileDialog::saveLocation(const QString& dirName)
 
 FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
   : QFileDialog( parent, fl )
+  , extensionPos(ExtensionRight)
 {
     extensionButton = new QPushButton( this );
     extensionButton->setText( tr( "Extended" ) );
@@ -470,6 +472,10 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
 #if QT_VERSION >= 0x050000
     setOption(QFileDialog::DontUseNativeDialog);
 #endif
+
+    // This is an alternative to add the button to the grid layout
+    //QDialogButtonBox* box = this->findChild<QDialogButtonBox*>();
+    //box->addButton(extensionButton, QDialogButtonBox::ActionRole);
 
     //search for the grid layout and add the new button
     QGridLayout* grid = this->findChild<QGridLayout*>();
@@ -546,22 +552,55 @@ void FileOptionsDialog::accept()
 
 void FileOptionsDialog::toggleExtension()
 {
-    QWidget* w = extension();
-    if (w)
-        showExtension(!w->isVisible());
+    if (extensionWidget) {
+        bool showIt = !extensionWidget->isVisible();
+        if (showIt) {
+            oldSize = size();
+            QSize s(extensionWidget->sizeHint()
+                   .expandedTo(extensionWidget->minimumSize())
+                   .boundedTo(extensionWidget->maximumSize()));
+            if (extensionPos == ExtensionRight) {
+                setFixedSize(width() + s.width(), height());
+            }
+            else {
+                setFixedSize(width(), height() + s.height());
+            }
+
+            extensionWidget->show();
+        }
+        else {
+            extensionWidget->hide();
+            setFixedSize(oldSize);
+        }
+    }
 }
 
 void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition pos, QWidget* w, bool show)
 {
-    if (pos == ExtensionRight) {
-        setExtension(w);
-        setOrientation(Qt::Horizontal);
+    extensionPos = pos;
+    extensionWidget = w;
+    if (extensionWidget->parentWidget() != this)
+        extensionWidget->setParent(this);
+
+    QGridLayout* grid = this->findChild<QGridLayout*>();
+
+    if (extensionPos == ExtensionRight) {
+        int cols = grid->columnCount();
+        grid->addWidget(extensionWidget, 0, cols, -1, -1);
+        setMinimumHeight(extensionWidget->height());
     }
-    else if (pos == ExtensionBottom) {
-        setExtension(w);
-        setOrientation(Qt::Vertical);
+    else if (extensionPos == ExtensionBottom) {
+        int rows = grid->rowCount();
+        grid->addWidget(extensionWidget, rows, 0, -1, -1);
+        setMinimumWidth(extensionWidget->width());
     }
 
+    // Instead of resizing the dialog we can fix the layout size.
+    // This however, doesn't work nicely when the extension widget
+    // is higher/wider than the dialog. 
+    //grid->setSizeConstraint(QLayout::SetFixedSize);
+
+    oldSize = size();
     w->hide();
     if (show)
         toggleExtension();
@@ -569,7 +608,7 @@ void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition po
 
 QWidget* FileOptionsDialog::getOptionsWidget() const
 {
-    return this->extension();
+    return extensionWidget;
 }
 
 // ======================================================================
