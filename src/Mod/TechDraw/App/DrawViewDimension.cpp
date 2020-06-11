@@ -519,10 +519,8 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     }
 
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-
-    if (((uniSys == Base::UnitSystem::Imperial1) ||
-         (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
-         !angularMeasure) {
+    if ( (uniSys == Base::UnitSystem::ImperialBuilding) &&
+          !angularMeasure ) {
         result = true;
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
          angularMeasure) {
@@ -576,9 +574,8 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     std::string genPrefix = getPrefix();     //general prefix - diameter, radius, etc
     QString qMultiValueStr;
     QString qGenPrefix = QString::fromUtf8(genPrefix.data(),genPrefix.size());
-    if (((unitSystem == Base::UnitSystem::Imperial1) ||
-         (unitSystem == Base::UnitSystem::ImperialBuilding) ) &&
-         !angularMeasure) {
+    if ( (unitSystem == Base::UnitSystem::ImperialBuilding)  &&
+         !angularMeasure ) {
         multiValueSchema = true;
         qMultiValueStr = qUserString;
         if (!genPrefix.empty()) {
