@@ -199,11 +199,11 @@ class DraftCreation(unittest.TestCase):
                                               dim_line=Vector(5, 3, 0))
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_dimension_radial(self):
-        """Create a circle and then a radial dimension."""
+    def test_dimension_radial_obj(self):
+        """Create a circle and then a radial and a diameter dimension."""
         operation = "Draft Dimension Radial"
         _msg("  Test '{}'".format(operation))
-        radius = 3
+        radius = 10
         start_angle = 0
         end_angle = 90
         _msg("  radius={}".format(radius))
@@ -213,10 +213,12 @@ class DraftCreation(unittest.TestCase):
                                  startangle=start_angle, endangle=end_angle)
         self.doc.recompute()
 
-        obj1 = Draft.make_dimension(circ, 0,
-                                    p3="radius", p4=Vector(1, 1, 0))
-        obj2 = Draft.make_dimension(circ, 0,
-                                    p3="diameter", p4=Vector(3, 1, 0))
+        obj1 = Draft.make_radial_dimension_obj(circ, index=1,
+                                               mode="radius",
+                                               dim_line=Vector(1, 1, 0))
+        obj2 = Draft.make_radial_dimension_obj(circ, index=1,
+                                               mode="diameter",
+                                               dim_line=Vector(3, 1, 0))
         self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
 
     def test_dimension_angular(self):

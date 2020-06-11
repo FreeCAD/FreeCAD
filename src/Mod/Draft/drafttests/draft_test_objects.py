@@ -247,9 +247,9 @@ def _create_objects(doc=None,
     arc_h.Placement.Base = Vector(9500, 0, 0)
     doc.recompute()
 
-    dimension_r = Draft.make_dimension(arc_h, 0,
-                                       "radius",
-                                       Vector(9750, 200, 0))
+    dimension_r = Draft.make_radial_dimension_obj(arc_h, 1,
+                                                  "radius",
+                                                  Vector(9750, 200, 0))
     if App.GuiUp:
         dimension_r.ViewObject.ArrowSize = 15
         dimension_r.ViewObject.FontSize = 100
@@ -259,9 +259,9 @@ def _create_objects(doc=None,
     arc_h2.Placement.Base = Vector(10000, 1000, 0)
     doc.recompute()
 
-    dimension_d = Draft.make_dimension(arc_h2, 0,
-                                       "diameter",
-                                       Vector(10750, 900, 0))
+    dimension_d = Draft.make_radial_dimension_obj(arc_h2, 1,
+                                                  "diameter",
+                                                  Vector(10750, 900, 0))
     if App.GuiUp:
         dimension_d.ViewObject.ArrowSize = 15
         dimension_d.ViewObject.FontSize = 100
