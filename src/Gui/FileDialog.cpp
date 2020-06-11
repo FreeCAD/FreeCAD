@@ -203,7 +203,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
@@ -297,7 +297,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
@@ -373,7 +373,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
-        dlg.setNameFilterDetailsVisible(true);
+        dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         if (selectedFilter && !selectedFilter->isEmpty())
             dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
