@@ -37,6 +37,10 @@
 # include <QToolButton>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
+
 #include <Base/Tools.h>
 #include "Action.h"
 #include "Application.h"
@@ -420,7 +424,11 @@ void WorkbenchComboBox::showPopup()
     int rows = count();
     if (rows > 0) {
         int height = view()->sizeHintForRow(0);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        int maxHeight = QApplication::primaryScreen()->size().height();
+#else
         int maxHeight = QApplication::desktop()->height();
+#endif
         view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
     }
 
