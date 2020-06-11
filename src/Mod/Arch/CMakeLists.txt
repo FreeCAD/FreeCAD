@@ -54,6 +54,7 @@ SET(Arch_SRCS
     ArchTruss.py
     ArchCurtainWall.py
     importSHP.py
+    exportIFCStructuralTools.py
 )
 
 SET(Dice3DS_SRCS

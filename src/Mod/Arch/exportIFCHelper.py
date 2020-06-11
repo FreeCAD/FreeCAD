@@ -280,7 +280,11 @@ class recycler:
                 self.propertysinglevalues[key] = c
             return c
 
-    def createIfcAxis2Placement3D(self,p1,p2,p3):
+    def createIfcAxis2Placement3D(self,p1=None,p2=None,p3=None):
+        if not p1:
+            p1 = self.createIfcCartesianPoint((0.0,0.0,0.0))
+            p2 = self.createIfcDirection((0.0,0.0,1.0))
+            p3 = self.createIfcDirection((1.0,0.0,0.0))
         if p2:
             tp2 = str(p2.DirectionRatios)
         else:
@@ -310,7 +314,9 @@ class recycler:
                 self.axis2placement2ds[key] = c
             return c
 
-    def createIfcLocalPlacement(self,gpl):
+    def createIfcLocalPlacement(self,gpl=None):
+        if not gpl:
+            gpl = self.createIfcAxis2Placement3D()
         key = str(gpl.Location.Coordinates) + str(gpl.Axis.DirectionRatios) + str(gpl.RefDirection.DirectionRatios)
         if self.compress and key in self.localplacements:
             self.spared += 1
