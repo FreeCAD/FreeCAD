@@ -1094,6 +1094,8 @@ SET(Inventor_CPP_SRCS
     SoTextLabel.cpp
     SoTouchEvents.cpp
     SoFCCSysDragger.cpp
+    SoFCDirectionalLight.cpp
+    SoFCSpotLight.cpp
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
@@ -1120,6 +1122,8 @@ SET(Inventor_SRCS
     SoTextLabel.h
     SoTouchEvents.h
     SoFCCSysDragger.h
+    SoFCDirectionalLight.h
+    SoFCSpotLight.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 

@@ -56,6 +56,8 @@
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "SoFCCSysDragger.h"
+#include "SoFCDirectionalLight.h"
+#include "SoFCSpotLight.h"
 
 #include "propertyeditor/PropertyItem.h"
 #include "NavigationStyle.h"
@@ -129,6 +131,10 @@ void Gui::SoFCDB::init()
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
     SoFCDetail                      ::initClass();
+    SoFCDirectionalLightDragger     ::initClass();
+    SoFCSpotLightDragger            ::initClass();
+    SoFCDirectionalLight            ::initClass();
+    SoFCSpotLight                   ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();

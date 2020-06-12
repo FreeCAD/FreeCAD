@@ -40,7 +40,6 @@
 #include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
-#include <QTimer>
 
 #include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
@@ -68,18 +67,6 @@ class SoClipPlane;
 class SoTimerSensor;
 class SoSensor;
 class SbBox3f;
-class SoShadowGroup;
-class SoDirectionalLight;
-class SoSpotLight;
-class SoFaceSet;
-class SoSwitch;
-class SoCoordinate3;
-class SoTexture2;
-class SoTextureCoordinate2;
-class SoBumpMap;
-class SoShadowStyle;
-class SoShadowDirectionalLight;
-class SoLightModel;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -95,6 +82,8 @@ class SoFCPathAnnotation;
 class SoSelectionElementAction;
 class SoHighlightElementAction;
 class SoFCPathAnnotation;
+class SoFCDirectionalLight;
+class SoFCSpotLight;
 class Document;
 class GLGraphicsItem;
 class SoShapeScale;
@@ -448,7 +437,6 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
-    void updateShadowGround(const SbBox3f &box);
     void slotChangeDocument(const App::Document &, const App::Property &);
 
     enum eWinGestureTuneState{
@@ -494,24 +482,9 @@ private:
     SoMaterial  * pcRootMaterial;
     SoSeparator * pcViewProviderRoot;
 
-    CoinPtr<SoShadowGroup>            pcShadowGroup;
-    CoinPtr<SoShadowDirectionalLight> pcShadowDirectionalLight;
-    CoinPtr<SoSpotLight>              pcShadowSpotLight;
-    CoinPtr<SoGroup>                  pcShadowGroundGroup;
-    CoinPtr<SoSwitch>                 pcShadowGroundSwitch;
-    CoinPtr<SoCoordinate3>            pcShadowGroundCoords;
-    CoinPtr<SoFaceSet>                pcShadowGround;
-    CoinPtr<SoShadowStyle>            pcShadowGroundStyle;
-    CoinPtr<SoMaterial>               pcShadowMaterial;
-    CoinPtr<SoTexture2>               pcShadowGroundTexture;
-    CoinPtr<SoTextureCoordinate2>     pcShadowGroundTextureCoords;
-    CoinPtr<SoBumpMap>                pcShadowGroundBumpMap;
-    CoinPtr<SoLightModel>             pcShadowGroundLightModel;
-    CoinPtr<SoShapeHints>             pcShadowGroundShapeHints;
-    CoinPtr<SoNode>                   pcShadowLightManip;
-    uint32_t                          shadowNodeId;
-    uint32_t                          cameraNodeId;
-    bool                              shadowExtraRedraw = false;
+    struct ShadowInfo;
+    friend ShadowInfo;
+    std::unique_ptr<ShadowInfo> shadowInfo;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;
@@ -579,8 +552,6 @@ private:
     PyObject *_viewerPy;
 
     bool _applyingOverride = false;
-
-    QTimer _shadowTimer;
 
     // friends
     friend class NavigationStyle;
