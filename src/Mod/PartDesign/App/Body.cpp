@@ -492,7 +492,10 @@ void Body::onChanged (const App::Property* prop) {
 
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
-               (Group.getValues().empty() || Group.getValues().front()!=BaseFeature.getValue())) {
+               (Group.getValues().empty() || 
+                (!Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId())
+                 && Group.getValues().front()!=BaseFeature.getValue())))
+            {
                 BaseFeature.setValue(nullptr);
             }
         }

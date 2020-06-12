@@ -34,7 +34,7 @@
 #include <Base/Console.h>
 #include <App/Origin.h>
 #include <App/Part.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -108,7 +108,9 @@ void CmdPartDesignBody::activated(int iMsg)
     if(!activeDoc)
         return;
 
-    App::Part *actPart = PartDesignGui::getActivePart ();
+    App::DocumentObject *topParent = nullptr;
+    std::string topSubName;
+    App::Part *actPart = PartDesignGui::getActivePart (&topParent, &topSubName);
 
     App::DocumentObject* baseFeature = nullptr;
     bool viewAll;
@@ -151,15 +153,22 @@ void CmdPartDesignBody::activated(int iMsg)
                 numSolids += cnt;
             else
                 numShells += shape.countSubShapes(TopAbs_SHELL);
-            ss << '(' << getObjectCmd(sel.pObject) << ",'" << sel.SubName << "'), ";
 
-            if(sel.pObject->getDocument() != activeDoc)
-                ss2 << '\n' << sel.pObject->getFullName();
+            auto link = sel.pObject;
+            std::string subname(sel.SubName ? sel.SubName : "");
+            if (topParent) {
+                std::string s(topSubName);
+                topParent->resolveRelativeLink(s, link, subname);
+            }
+            ss << '(' << getObjectCmd(link) << ",'" << subname << "'), ";
+
+            if(link->getDocument() != activeDoc)
+                ss2 << '\n' << link->getFullName();
             else
-                ss2 << '\n' << sel.pObject->getNameInDocument();
-            if(sel.SubName && sel.SubName[0])
-                ss2 << '.' << sel.SubName;
-            if(owner->Label.getStrValue() != sel.pObject->getNameInDocument())
+                ss2 << '\n' << link->getNameInDocument();
+            if(subname.size())
+                ss2 << '.' << subname;
+            if(owner->Label.getStrValue() != owner->getNameInDocument())
                 ss2 << " (" << owner->Label.getValue() << ")";
         }
         if(!count) {
@@ -211,39 +220,41 @@ void CmdPartDesignBody::activated(int iMsg)
             support.clear();
     }
 
-    std::string bodyName = getUniqueObjectName("Body");
+    std::string bodyName = getUniqueObjectName("Body", actPart);
+    App::Document *doc = actPart ? actPart->getDocument() : App::GetApplication().getActiveDocument();
 
     // add the Body feature itself, and make it active
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
+    Gui::cmdAppDocument(doc, std::ostringstream() << "addObject('PartDesign::Body','" << bodyName << "')");
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(doc->getObject(bodyName.c_str()));
     if (baseFeature) {
         if (baseFeature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            doCommand(Doc,"App.activeDocument().%s.Group = [App.activeDocument().%s]",
-                    bodyName.c_str(), baseFeature->getNameInDocument());
+            Gui::cmdAppObjectArgs(body, "Group = [%s]", getObjectCmd(baseFeature));
         }
         else {
-            doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
-                    bodyName.c_str(), baseFeature->getNameInDocument());
+            Gui::cmdAppObjectArgs(body, "BaseFeature = %s", getObjectCmd(baseFeature));
         }
     }
 
     if (actPart) {
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyName.c_str());
+        Gui::cmdAppObjectArgs(actPart, "addObject(%s)", getObjectCmd(body));
     }
 
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
-                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
-    doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyName.c_str());
+    if (topParent) {
+        doCommand(Gui,"Gui.Selection.addSelection(%s, '%s')",
+                getObjectCmd(topParent).c_str(), (topSubName + bodyName + ".").c_str());
+    } else
+        doCommand(Gui,"Gui.Selection.addSelection(%s)", getObjectCmd(body).c_str());
+
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', %s)",
+            PDBODYKEY, getObjectCmd(body).c_str());
 
     // check if a proxy object has been created for the base feature inside the body
     if (baseFeature) {
-        PartDesign::Body* body = dynamic_cast<PartDesign::Body*>
-                (baseFeature->getDocument()->getObject(bodyName.c_str()));
         if (body) {
             std::vector<App::DocumentObject*> links = body->Group.getValues();
             for (auto it : links) {
@@ -305,41 +316,29 @@ void CmdPartDesignBody::activated(int iMsg)
                 }
             }
         }
-    } else if (support.size()) {
-        std::string name = getUniqueObjectName("BaseFeature");
-        doCommand(Doc,"App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')", name.c_str());
+    } else if (body && support.size()) {
+        std::string name = getUniqueObjectName("BaseFeature", body);
+        Gui::cmdAppDocument(doc, std::ostringstream() << "addObject('PartDesign::SubShapeBinder','" << name << "')");
 
-        baseFeature = App::GetApplication().getActiveDocument()->getObject(name.c_str());
+        baseFeature = doc->getObject(name.c_str());
         if(baseFeature) {
-            auto body = activeDoc->getObject(bodyName.c_str());
-            if(body) {
-                FCMD_OBJ_CMD(body,"addObject(" << getObjectCmd(baseFeature) << ")");
-                FCMD_OBJ_CMD(body,"BaseFeature = " << getObjectCmd(baseFeature));
-                FCMD_OBJ_CMD(baseFeature,"Fuse = True");
-                FCMD_OBJ_CMD(baseFeature,"Support = " << support);
-            }
+            FCMD_OBJ_CMD(body,"addObject(" << getObjectCmd(baseFeature) << ")");
+            FCMD_OBJ_CMD(body,"BaseFeature = " << getObjectCmd(baseFeature));
+            FCMD_OBJ_CMD(baseFeature,"Fuse = True");
+            FCMD_OBJ_CMD(baseFeature,"Support = " << support);
         }
     }
 
     // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
     // older than 4.0.
-#if COIN_MAJOR_VERSION >= 4
     // if no part feature was there then auto-adjust the camera
     if (viewAll) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
         Gui::View3DInventor* view = doc ? qobject_cast<Gui::View3DInventor*>(doc->getActiveView()) : nullptr;
         if (view) {
-            SoCamera* camera = view->getViewer()->getCamera();
-            SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
-            float aspectratio = vpregion.getViewportAspectRatio();
-
-            float size = Gui::ViewProviderOrigin::defaultSize();
-            SbBox3f bbox;
-            bbox.setBounds(-size,-size,-size,size,size,size);
-            camera->viewBoundingBox(bbox, aspectratio, 1.0f);
+            view->getViewer()->viewSelection();
         }
     }
-#endif
 
     updateActive();
 }
