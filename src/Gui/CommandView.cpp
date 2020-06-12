@@ -87,6 +87,7 @@
 #include <App/DocumentObject.h>
 #include <App/ComplexGeoDataPy.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/DocumentObserver.h>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -817,6 +818,58 @@ bool StdCmdToggleVisibility::isActive(void)
 }
 
 //===========================================================================
+// Std_ToggleGroupVisibility
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleGroupVisibility)
+
+StdCmdToggleGroupVisibility::StdCmdToggleGroupVisibility()
+  : Command("Std_ToggleGroupVisibility")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle group visibility");
+    sToolTipText  = QT_TR_NOOP("Toggles visibility of a group and all its nested children");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Std_ToggleGroupVisibility";
+    eType         = Alter3DView;
+}
+
+
+void StdCmdToggleGroupVisibility::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+
+    auto sels = Gui::Selection().getSelectionT(0,0);
+    std::set<App::DocumentObject*> groups;
+    for(auto &sel : sels) {
+        auto sobj = sel.getSubObject();
+        if(!sobj)
+            continue;
+        if(App::GeoFeatureGroupExtension::isNonGeoGroup(sobj))
+            groups.insert(sobj);
+    }
+
+    for(auto it=sels.begin();it!=sels.end();) {
+        auto &sel = *it;
+        auto sobj = sel.getSubObject();
+        if(!sobj || groups.count(App::GroupExtension::getGroupOfObject(sobj)))
+            it = sels.erase(it);
+        else
+            ++it;
+    }
+
+    if(sels.empty())
+        return;
+
+    App::GroupExtension::ToggleNestedVisibility guard;
+    Gui::Selection().setVisible(SelectionSingleton::VisToggle,sels);
+}
+
+bool StdCmdToggleGroupVisibility::isActive(void)
+{
+    return (Gui::Selection().size() != 0);
+}
+
+//===========================================================================
 // Std_ToggleSelectability
 //===========================================================================
 DEF_STD_CMD_A(StdCmdToggleSelectability)
@@ -846,7 +899,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
 
         for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+            if (pr && pr->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
                                  , (*it)->getName(), (*ft)->getNameInDocument());
@@ -2596,7 +2649,7 @@ static std::vector<std::string> getBoxSelection(
         if(!sobj) 
             continue;
         int vis;
-        if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+        if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
             vis = sobj->Visibility.getValue()?1:0;
 
         if(!vis)
@@ -3503,6 +3556,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleGroupVisibility());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());

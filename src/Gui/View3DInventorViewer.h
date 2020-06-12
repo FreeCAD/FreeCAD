@@ -191,6 +191,8 @@ public:
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
     void removeViewProvider(ViewProvider*);
+    /// Check viewprovider to see if it should be added to or removed from scene graph root
+    void toggleViewProvider(ViewProvider*);
     /// get view provider by path
     ViewProvider* getViewProviderByPath(SoPath*) const;
     ViewProvider* getViewProviderByPathFromTail(SoPath*) const;

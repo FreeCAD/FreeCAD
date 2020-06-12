@@ -264,7 +264,7 @@ public:
     virtual void onExtendedDocumentRestored() override;
 
     virtual int extensionSetElementVisible(const char *, bool) override;
-    virtual int extensionIsElementVisible(const char *) override;
+    virtual int extensionIsElementVisible(const char *) const override;
     virtual bool extensionHasChildElement() const override;
 
     virtual PyObject* getExtensionPyObject(void) override;
@@ -302,7 +302,6 @@ protected:
     void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
-    void slotChangedPlainGroup(const App::DocumentObject &, const App::Property &);
 
 protected:
     std::vector<Property *> props;
@@ -310,8 +309,7 @@ protected:
     mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
-    std::unordered_map<const App::DocumentObject*, 
-        boost::signals2::scoped_connection> plainGroupConns;
+    std::vector<boost::signals2::scoped_connection> plainGroupConns;
 
     long myOwner;
 

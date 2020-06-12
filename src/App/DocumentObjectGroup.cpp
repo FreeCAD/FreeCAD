@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include "Application.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "Document.h"
@@ -38,7 +39,12 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject)
 DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 
     GroupExtension::initExtension(this);
-    _GroupTouched.setStatus(App::Property::Output,true);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
+    if(hGrp->GetBool("ExportChildren",true)) {
+        ExportMode.setStatus(Property::Hidden,false);
+        ExportMode.setValue(EXPORT_BY_VISIBILITY);
+    }
 }
 
 DocumentObjectGroup::~DocumentObjectGroup() {
@@ -54,13 +60,18 @@ PyObject *DocumentObjectGroup::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-
 // Python feature ---------------------------------------------------------
 
 namespace App {
     
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
+
+template<> void App::DocumentObjectGroupPython::setupObject() {
+    ExportMode.setStatus(Property::Hidden,true);
+    ExportMode.setValue(EXPORT_DISABLED);
+}
+
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {
     return "Gui::ViewProviderDocumentObjectGroupPython";
 }

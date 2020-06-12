@@ -24,7 +24,7 @@
 #*                                                                         *
 #***************************************************************************/
 
-
+import FreeCAD
 
 # Append the open handler
 #FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
@@ -36,6 +36,22 @@ FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
 
 # Add initial parameters value if they are not set
 
+def _checkParamBool(paramGet, param, default):
+    if paramGet.GetBool(param, False) != paramGet.GetBool(param, True):
+        paramGet.SetBool(param, default)
+
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTEP")
-if  paramGetV.GetBool("ReadShapeCompoundMode", False) != paramGetV.GetBool("ReadShapeCompoundMode", True):
-    paramGetV.SetBool("ReadShapeCompoundMode", True)
+_checkParamBool(paramGetV,"ReadShapeCompoundMode",False)
+
+paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import")
+for p in (("UseAppPart",True),
+          ("UseLegacyImporter", False),
+          ("UseBaseName",True),
+          ("ImportHiddenObject",True),
+          ("ExportHiddenObject",True),
+          ("ExportKeepPlacement",True),
+          ("ReduceObjects", False),
+          ("ShowProgress", True),
+          ("ExpandCompound",True)):
+    _checkParamBool(paramGetV,*p)
+

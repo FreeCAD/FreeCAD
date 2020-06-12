@@ -47,11 +47,9 @@ ViewProviderCosmeticExtension::ViewProviderCosmeticExtension()
     initExtensionType(ViewProviderCosmeticExtension::getExtensionClassTypeId());
 }
 
-QIcon ViewProviderCosmeticExtension::extensionMergeOverlayIcons(const QIcon & orig) const
+void ViewProviderCosmeticExtension::extensionMergeOverlayIcons(QIcon & orig) const
 {
-    QIcon mergedicon = orig;
-
-    return mergedicon;
+    (void)orig;
 }
 
 void ViewProviderCosmeticExtension::extensionUpdateData(const App::Property* prop)

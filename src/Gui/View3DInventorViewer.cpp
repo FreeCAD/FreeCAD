@@ -970,11 +970,12 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 
 SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 {
-    SoSearchAction sa;
-    sa.setNode(vp->getRoot());
-    sa.setSearchingAll(false);
-    sa.apply(getSoRenderManager()->getSceneGraph());
-    return sa.getPath() != nullptr;
+    return hasViewProvider(const_cast<ViewProvider*>(vp));
+    // SoSearchAction sa;
+    // sa.setNode(vp->getRoot());
+    // sa.setSearchingAll(true);
+    // sa.apply(getSoRenderManager()->getSceneGraph());
+    // return sa.getPath() != nullptr;
 }
 
 /// adds an ViewProvider to the view, e.g. from a feature
@@ -983,7 +984,7 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        if(pcProvider->canAddToSceneGraph())
+        if(!guiDocument->isClaimed3D(pcProvider) && pcProvider->canAddToSceneGraph())
             pcViewProviderRoot->addChild(root);
         _ViewProviderMap[root] = pcProvider;
     }
@@ -1023,6 +1024,20 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
         backgroundroot->removeChild(back);
 
     _ViewProviderSet.erase(pcProvider);
+}
+
+void View3DInventorViewer::toggleViewProvider(ViewProvider *vp) {
+    if(!_ViewProviderSet.count(vp))
+        return;
+    SoSeparator* root = vp->getRoot();
+    if(!root || !guiDocument)
+        return;
+    int index = pcViewProviderRoot->findChild(root);
+    if(index>=0) {
+        if(guiDocument->isClaimed3D(vp) || !vp->canAddToSceneGraph())
+            pcViewProviderRoot->removeChild(index);
+    } else if(!guiDocument->isClaimed3D(vp) && vp->canAddToSceneGraph())
+        pcViewProviderRoot->addChild(root);
 }
 
 void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {

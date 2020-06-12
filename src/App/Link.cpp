@@ -30,7 +30,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include "Application.h"
 #include "Document.h"
-#include "GroupExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
@@ -148,6 +148,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         }
         break;
     case PropElementList:
+        getElementListProperty()->setScope(LinkScope::Global);
         getElementListProperty()->setStatus(Property::Hidden,true);
         // fall through
     case PropLinkedObject:
@@ -254,7 +255,7 @@ App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
     auto linked = getTrueLinkedObject(false);
     if(!linked)
         return 0;
-    return linked->getExtensionByType<GroupExtension>(true,false);
+    return GeoFeatureGroupExtension::getNonGeoGroup(linked);
 }
 
 App::PropertyLinkList *LinkBaseExtension::_getElementListProperty() const {
@@ -341,7 +342,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
     return -1;
 }
 
-int LinkBaseExtension::extensionIsElementVisible(const char *element) {
+int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         auto propElementVis = getVisibilityListProperty();
@@ -463,7 +464,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         if(_ChildCache.getSize()) {
             auto obj=_ChildCache.find(name,&idx);
             if(obj) {
-                auto group = obj->getExtensionByType<GroupExtension>(true,false);
+                auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
                 if(group) {
                     int nidx = getElementIndex(dot+1,psubname);
                     if(nidx >= 0)
@@ -498,7 +499,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             return -1;
         auto obj = elements[idx];
         if(obj && _ChildCache.getSize()) {
-            auto group = obj->getExtensionByType<GroupExtension>(true,false);
+            auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
             if(group) {
                 int nidx = getElementIndex(dot+1,psubname);
                 if(nidx >= 0)
@@ -785,65 +786,39 @@ void LinkBaseExtension::parseSubName() const {
     }
 }
 
-void LinkBaseExtension::slotChangedPlainGroup(const App::DocumentObject &obj, const App::Property &prop) {
-    auto group = obj.getExtensionByType<GroupExtension>(true,false);
-    if(group && &prop == &group->Group)
-        updateGroup();
-}
-
 void LinkBaseExtension::updateGroup() {
     std::vector<GroupExtension*> groups;
-    std::unordered_set<const App::DocumentObject*> groupSet;
     auto group = linkedPlainGroup();
     if(group) {
         groups.push_back(group);
-        groupSet.insert(group->getExtendedObject());
     }else{
         for(auto o : getElementListProperty()->getValues()) {
             if(!o || !o->getNameInDocument())
                 continue;
-            auto ext = o->getExtensionByType<GroupExtension>(true,false);
-            if(ext) {
+            auto ext = GeoFeatureGroupExtension::getNonGeoGroup(o);
+            if(ext) 
                 groups.push_back(ext);
-                groupSet.insert(o);
-            }
         }
     }
     std::vector<App::DocumentObject*> children;
+    plainGroupConns.clear();
     if(groups.size()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
         for(auto ext : groups) {
-            auto group = ext->getExtendedObject();
-            auto &conn = plainGroupConns[group];
-            if(!conn.connected()) {
-                FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                        << " -> " << group->getFullName());
-                conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-            }
+            plainGroupConns.push_back(ext->Group.signalChanged.connect(
+                        boost::bind(&LinkBaseExtension::updateGroup,this)));
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
             for(;count<children.size();++count) {
                 auto child = children[count];
-                if(!child->getExtensionByType<GroupExtension>(true,false))
+                auto childGroup = GeoFeatureGroupExtension::getNonGeoGroup(child);
+                if(!childGroup)
                     continue;
-                groupSet.insert(child);
-                auto &conn = plainGroupConns[child];
-                if(!conn.connected()) {
-                    FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                            << " -> " << child->getFullName());
-                    conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-                }
+                plainGroupConns.push_back(childGroup->Group.signalChanged.connect(
+                            boost::bind(&LinkBaseExtension::updateGroup,this)));
             }
         }
-    }
-    for(auto it=plainGroupConns.begin();it!=plainGroupConns.end();) {
-        if(!groupSet.count(it->first))
-            it = plainGroupConns.erase(it);
-        else
-            ++it;
     }
     if(children != _ChildCache.getValues())
         _ChildCache.setValue(children);
@@ -1369,7 +1344,7 @@ std::vector<App::DocumentObject*> LinkBaseExtension::getLinkedChildren(bool filt
         return _getElementListValue();
     std::vector<App::DocumentObject*> ret;
     for(auto o : _getElementListValue()) {
-        if(!o->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+        if(!GeoFeatureGroupExtension::isNonGeoGroup(o))
             ret.push_back(o);
     }
     return ret;
@@ -1386,7 +1361,7 @@ const char *LinkBaseExtension::flattenSubname(const char *subname) const {
             extensionGetSubObject(obj,s.c_str());
             if(!obj)
                 break;
-            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+            if(!GeoFeatureGroupExtension::isNonGeoGroup(obj))
                 return sub;
         }
     }

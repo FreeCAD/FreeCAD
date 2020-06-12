@@ -117,14 +117,49 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
+    virtual int extensionIsElementVisible(const char *element) const override;
+
+    virtual int extensionIsElementVisibleEx(const char *element, int reason) const override;
+
+    virtual void onExtendedDocumentRestored() override;
+
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+
+    virtual void onExtendedSetupObject() override;
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
-    
+
+    void checkParentGroup();
+
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
+    PropertyInteger _GroupVersion;
+
+    enum ExportModeValue {
+        EXPORT_DISABLED,
+        EXPORT_BY_VISIBILITY,
+        EXPORT_BY_CHILD_QUERY,
+        EXPORT_BOTH,
+    };
+    PropertyEnumeration ExportMode;
+
+    /// Helper class to temperary enable old group visibility toggling behavior
+    struct AppExport ToggleNestedVisibility {
+        ToggleNestedVisibility();
+        ~ ToggleNestedVisibility();
+    };
+
+protected:
+
+    virtual const PropertyLinkList& getExportGroupProperty() const {
+        return Group;
+    }
+
+    bool queryChildExport(App::DocumentObject *obj) const;
+
+    void initSetup();
 
 private:
     void removeObjectFromDocument(DocumentObject*);
@@ -133,8 +168,10 @@ private:
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 
     // for tracking children visibility
-    void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    void slotChildChanged(const App::Property&);
+    std::vector<boost::signals2::scoped_connection> _Conns;
+
+    bool _togglingVisibility = false;
 };
 
 

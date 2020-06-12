@@ -259,7 +259,7 @@ public:
 
     /// Helper function to return linked objects using an std::inserter
     template<class T>
-    void getLinkedObjects(T &inserter, bool all=false) const {
+    void getLinkedObjects(T inserter, bool all=false) const {
         std::vector<App::DocumentObject*> ret;
         getLinks(ret,all);
         std::copy(ret.begin(),ret.end(),inserter);

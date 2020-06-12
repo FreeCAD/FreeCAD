@@ -45,22 +45,25 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::GeoFeature)
 
 Part::Part(void)
 {
-    ADD_PROPERTY(Type,(""));
-    ADD_PROPERTY_TYPE(Material, (), 0, App::Prop_None, "Map with material properties");
-    ADD_PROPERTY_TYPE(Meta, (), 0, App::Prop_None, "Map with additional meta information");
+    ADD_PROPERTY_TYPE(Type,(""),"Part", App::Prop_None,"");
+    ADD_PROPERTY_TYPE(Material, (), "Part", App::Prop_None, "Map with material properties");
+    ADD_PROPERTY_TYPE(Meta, (), "Part", App::Prop_None, "Map with additional meta information");
 
     // create the uuid for the document
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Id, (""), 0, App::Prop_None, "ID (Part-Number) of the Item");
-    ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Item");
+    ADD_PROPERTY_TYPE(Id, (""), "Part", App::Prop_None, "ID (Part-Number) of the Item");
+    ADD_PROPERTY_TYPE(Uid, (id), "Part", App::Prop_None, "UUID of the Item");
 
     // license stuff (leave them empty to avoid confusion with imported 3rd party STEP/IGES files)
-    ADD_PROPERTY_TYPE(License, (""), 0, App::Prop_None, "License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL, (""), 0, App::Prop_None, "URL to the license text/contract");
-    // color and appearance
-    ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
+    ADD_PROPERTY_TYPE(License, (""), "Part", App::Prop_None, "License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL, (""), "Part", App::Prop_None, "URL to the license text/contract");
 
-    GroupExtension::initExtension(this);
+    ADD_PROPERTY_TYPE(ColoredElements, (0), 0, (PropertyType)(Prop_ReadOnly|Prop_Hidden), "");
+
+    OriginGroupExtension::initExtension(this);
+
+    ExportMode.setStatus(Property::Hidden,false);
+    ExportMode.setValue(EXPORT_BY_VISIBILITY);
 }
 
 Part::~Part(void)
