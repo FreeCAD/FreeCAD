@@ -179,12 +179,9 @@ QStringList PropertyModel::propertyPathFromIndex(const QModelIndex& index) const
     QStringList path;
     if (index.isValid()) {
         PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
-        if (!item->isSeparator()) {
-            do {
-                path.push_front(item->propertyName());
-                item = item->parent();
-            }
-            while (item != this->rootItem && item != 0);
+        while (item && item != this->rootItem) {
+            path.push_front(item->propertyName());
+            item = item->parent();
         }
     }
 
@@ -193,21 +190,20 @@ QStringList PropertyModel::propertyPathFromIndex(const QModelIndex& index) const
 
 QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
 {
-    QModelIndex parent;
-    for (QStringList::const_iterator it = path.begin(); it != path.end(); ++it) {
-        int rows = this->rowCount(parent);
-        for (int i=0; i<rows; i++) {
-            QModelIndex index = this->index(i, 0, parent);
-            if (index.isValid()) {
-                PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
-                if (item->propertyName() == *it) {
-                    parent = index;
-                    break;
-                }
-            }
-        }
+    if (path.size() < 2)
+        return QModelIndex();
+
+    auto it = groupItems.find(path.front());
+    if (it == groupItems.end())
+        return QModelIndex();
+
+    const QString &propName = path[1];
+    for (int i=0, c = it->second.groupItem->childCount(); i<c; ++i) {
+        auto item = it->second.groupItem->child(i);
+        if (item->propertyName() == propName)
+            return index(i, 1, index(it->second.groupItem->row(), 0, QModelIndex()));
     }
-    return parent;
+    return QModelIndex();
 }
 
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
@@ -420,18 +416,17 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 void PropertyModel::updateProperty(const App::Property& prop)
 {
     auto it = itemMap.find(const_cast<App::Property*>(&prop));
-    if (it == itemMap.end() || !it->second)
+    if (it == itemMap.end() || !it->second || !it->second->parent())
         return;
 
     int column = 1;
     PropertyItem *item = it->second;
     item->updateData();
-    QModelIndex data = this->index(item->row(), column, QModelIndex());
-    if (data.isValid()) {
-        item->assignProperty(&prop);
-        dataChanged(data, data);
-        updateChildren(item, column, data);
-    }
+    QModelIndex parent = this->index(item->parent()->row(), 0, QModelIndex());
+    item->assignProperty(&prop);
+    QModelIndex data = this->index(item->row(), column, parent);
+    dataChanged(data, data);
+    updateChildren(item, column, data);
 }
 
 void PropertyModel::appendProperty(const App::Property& _prop)
