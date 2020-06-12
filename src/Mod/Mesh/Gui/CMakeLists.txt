@@ -174,6 +174,7 @@ SET(MeshGuiIcon_SVG
 if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(
         SoFCIndexedFaceSet.cpp
+        ViewProvider.cpp
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif ()
 
