@@ -514,9 +514,9 @@ public:
      * If you want add a link of Group.Group002.Box001 to Group.Group001, you
      * can call with the following parameter (which are usually obtained from
      * Selection.getSelectionEx(), check usage in TreeWidget::onDropEvent()):
-     *      std::string subname("Group002.");
+     *      std::string subname("Group001.");
      *      auto link = Group;
-     *      std::string linkSub("Group001.Box001.");
+     *      std::string linkSub("Group002.Box001.");
      *      parent = Group.resolveRelativeLink(subname,link,linkSub);
      *
      * The resolving result is as follow:
