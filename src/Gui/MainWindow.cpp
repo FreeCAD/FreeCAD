@@ -1325,7 +1325,16 @@ void MainWindow::updateActions(bool delay)
         return;
 
     if (!d->activityTimer->isActive()) {
-        d->activityTimer->start(150);
+        // If for some reason updateActions() is called from a worker thread
+        // we must avoid to directly call QTimer::start() because this leaves
+        // the whole application in a weird state
+        if (d->activityTimer->thread() != QThread::currentThread()) {
+            QMetaObject::invokeMethod(d->activityTimer, "start", Qt::QueuedConnection,
+                QGenericReturnArgument(), Q_ARG(int, 150));
+        }
+        else {
+            d->activityTimer->start(150);
+        }
     }
     else if (delay) {
         if (!d->actionUpdateDelay)
