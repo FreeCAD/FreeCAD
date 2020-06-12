@@ -425,7 +425,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
         scaledShape = TechDraw::rotateShape(scaledShape,
                                             viewAxis,
-                                            Rotation.getValue());
+                                            Rotation.getValue());  //conventional rotation
      }
 //    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
     GeometryObject* go =  buildGeometryObject(scaledShape,viewAxis);
@@ -622,9 +622,13 @@ void DrawViewPart::extractFaces()
 
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
+//    Base::Console().Message("DVP::getHatches()\n");
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->isRemoving()) {
+            continue;
+        }
         if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()))   {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
