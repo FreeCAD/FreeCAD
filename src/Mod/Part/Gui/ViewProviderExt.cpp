@@ -1523,6 +1523,7 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
     {
         TopoDS_Shape cShape = getShape().getShape();
         if(cachedShape.IsPartner(cShape)) {
+            updateColors();
             Gui::ViewProviderGeometryObject::updateData(prop);
             return;
         }
