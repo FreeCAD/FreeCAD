@@ -25,6 +25,7 @@ SET(Arch_SRCS
     importDAE.py
     importOBJ.py
     ArchWindow.py
+    ArchWindowPresets.py
     ArchAxis.py
     ArchVRM.py
     ArchRoof.py
