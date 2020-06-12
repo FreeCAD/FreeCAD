@@ -59,9 +59,11 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
+#include "TaskHatch.h"
 //#include "TaskLeaderLine.h"
 //#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -281,8 +283,18 @@ void CmdTechDrawHatch::activated(int iMsg)
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
     hatch->Source.setValue(partFeat, subNames);
 
+    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(hatch);
+    TechDrawGui::ViewProviderHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
+    if (!hvp) {
+        Base::Console().Log("ERROR - CommandDecorate - Hatch has no ViewProvider\n");
+        return;
+    }
+
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
+
+    // dialog to fill in hatch values
+    Gui::Control().showDialog(new TaskDlgHatch(hatch, hvp, true));
 
     commitCommand();
 
@@ -353,8 +365,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     }
 
     // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
-
+    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch, hvp, true));
 
     commitCommand();
 
@@ -401,7 +412,7 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString::null,
+        QString(),
         QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
 
     if (!fileName.isEmpty())

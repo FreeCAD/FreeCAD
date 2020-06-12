@@ -47,7 +47,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Command.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
 #include <LineEdit.h>
@@ -59,6 +59,7 @@ using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
 using namespace App;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
@@ -99,8 +100,8 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
     connect(ui->cellAlias, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
 
-    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
-    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
+    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
 
     connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
 

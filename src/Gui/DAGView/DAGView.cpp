@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
 #endif
@@ -42,6 +42,7 @@
 
 using namespace Gui;
 using namespace DAG;
+namespace bp = boost::placeholders;
 
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
@@ -55,8 +56,8 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
-  Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, _1));
-  Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, _1));
+  Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
+  Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
   
   //just update the dagview when the gui process is idle.
   connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
@@ -64,8 +65,8 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 
 View::~View()
 {
-  Application::Instance->signalActiveDocument.disconnect(boost::bind(&View::slotActiveDocument, this, _1));
-  Application::Instance->signalDeleteDocument.disconnect(boost::bind(&View::slotDeleteDocument, this, _1));
+  Application::Instance->signalActiveDocument.disconnect(boost::bind(&View::slotActiveDocument, this, bp::_1));
+  Application::Instance->signalDeleteDocument.disconnect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
 }
 
 void View::slotActiveDocument(const Document &documentIn)

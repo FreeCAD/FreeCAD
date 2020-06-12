@@ -38,6 +38,7 @@ import Arch
 import DraftVecUtils
 import ArchIFCSchema
 import exportIFCHelper
+import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
@@ -140,7 +141,8 @@ def getPreferences():
         'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True),
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
-        'GET_STANDARD': p.GetBool("getStandardType",False)
+        'GET_STANDARD': p.GetBool("getStandardType",False),
+        'EXPORT_MODEL': ['arch','struct','hybrid'][p.GetInt("ifcExportModel",0)]
     }
     if hasattr(ifcopenshell,"schema_identifier"):
         schema = ifcopenshell.schema_identifier
@@ -228,7 +230,7 @@ def export(exportList,filename,colors=None,preferences=None):
     if preferences['FULL_PARAMETRIC']:
         objectslist = Arch.getAllChildren(objectslist)
 
-    # create project and context
+    # create project, context and geodata settings
 
     contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
     context = contextCreator.model_view_subcontext
@@ -238,6 +240,16 @@ def export(exportList,filename,colors=None,preferences=None):
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
         contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+
+    # reusable entity system
+
+    global ifcbin
+    ifcbin = exportIFCHelper.recycler(ifcfile)
+
+    # setup analytic model
+    
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.setup(ifcfile,ifcbin,preferences['SCALE_FACTOR'])
 
     # define holders for the different types we create
 
@@ -251,11 +263,6 @@ def export(exportList,filename,colors=None,preferences=None):
     profiledefs = {} # { ProfileDefString:profiledef,...}
     shapedefs = {} # { ShapeDefString:[shapes],... }
     spatialelements = {} # {Name:IfcEntity, ... }
-
-    # reusable entity system
-
-    global ifcbin
-    ifcbin = exportIFCHelper.recycler(ifcfile)
 
     # build clones table
 
@@ -278,6 +285,14 @@ def export(exportList,filename,colors=None,preferences=None):
     # products
 
     for obj in objectslist:
+
+        # structural analysis object
+        
+        structobj = None
+        if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+            structobj = exportIFCStructuralTools.createStructuralMember(ifcfile,ifcbin,obj)
+            if preferences['EXPORT_MODEL'] == 'struct':
+                continue
 
         # getting generic data
 
@@ -452,6 +467,11 @@ def export(exportList,filename,colors=None,preferences=None):
         products[obj.Name] = product
         if ifctype in ["IfcBuilding","IfcBuildingStorey","IfcSite","IfcSpace"]:
             spatialelements[obj.Name] = product
+
+        # associate with structural analysis object if any
+        
+        if structobj:
+            exportIFCStructuralTools.associates(ifcfile,product,structobj)
 
         # gather assembly subelements
 
@@ -833,6 +853,11 @@ def export(exportList,filename,colors=None,preferences=None):
                 )
 
         count += 1
+
+    # relate structural analysis objects to the struct model
+
+    if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
+        exportIFCStructuralTools.createStructuralGroup(ifcfile)
 
     # relationships
 
@@ -2012,11 +2037,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
                                     rep.ContextOfItems = context
-                                xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-                                zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-                                ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                                gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                                placement = ifcbin.createIfcLocalPlacement(gpl)
+                                placement = ifcbin.createIfcLocalPlacement()
                                 shapetype = "advancedbrep"
                                 shapes = None
                                 serialized = True
@@ -2124,10 +2145,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         colorshapes = shapes # to keep track of individual shapes for coloring below
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-            xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-            zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-            ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-            gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            gpl = ifcbin.createIfcAxis2Placement3D()
             repmap = ifcfile.createIfcRepresentationMap(gpl,subrep)
             pla = obj.getGlobalPlacement()
             axis1 = ifcbin.createIfcDirection(tuple(pla.Rotation.multVec(FreeCAD.Vector(1,0,0))))
@@ -2194,11 +2212,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
-        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-        gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-        placement = ifcbin.createIfcLocalPlacement(gpl)
+        placement = ifcbin.createIfcLocalPlacement()
         representation = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
         productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
 

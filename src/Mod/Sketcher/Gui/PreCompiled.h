@@ -67,7 +67,7 @@
 
 // Boost
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #ifdef FC_OS_WIN32

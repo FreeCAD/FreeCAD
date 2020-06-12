@@ -41,6 +41,7 @@
 #include "DlgExpressionInput.h"
 #include "propertyeditor/PropertyItem.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 #include "Command.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
@@ -830,7 +831,7 @@ QSize QuantitySpinBox::sizeHint() const
     s = textFromValue(q);
     s.truncate(18);
     s += fixedContent;
-    w = qMax(w, fm.width(s));
+    w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
     w += 2; // cursor blinking space
     w += iconHeight;
@@ -860,7 +861,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     s = textFromValue(q);
     s.truncate(18);
     s += fixedContent;
-    w = qMax(w, fm.width(s));
+    w = qMax(w, QtTools::horizontalAdvance(fm, s));
 
     w += 2; // cursor blinking space
     w += iconHeight;

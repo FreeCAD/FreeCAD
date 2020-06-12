@@ -77,7 +77,11 @@ void iisTaskBox::showHide()
 	if (m_foldStep)
 		return;
 
+#if QT_VERSION >= 0x050000
+	m_foldPixmap = myGroup->grab(myGroup->rect());
+#else
 	m_foldPixmap = QPixmap::grabWidget(myGroup, myGroup->rect());
+#endif
 
 	if (myGroup->isVisible()) {
 		m_tempHeight = m_fullHeight = myGroup->height();

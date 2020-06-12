@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 # include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
@@ -35,6 +35,10 @@
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
+#endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
 #endif
 
 #include <Base/Tools.h>
@@ -55,6 +59,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
+namespace bp = boost::placeholders;
 
 /**
  * Constructs an action called \a name with parent \a parent. It also stores a pointer
@@ -419,7 +424,11 @@ void WorkbenchComboBox::showPopup()
     int rows = count();
     if (rows > 0) {
         int height = view()->sizeHintForRow(0);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        int maxHeight = QApplication::primaryScreen()->size().height();
+#else
         int maxHeight = QApplication::desktop()->height();
+#endif
         view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
     }
 
@@ -522,9 +531,9 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
         action->setData(QVariant(i)); // set the index
     }
 
-    Application::Instance->signalActivateWorkbench.connect(boost::bind(&WorkbenchGroup::slotActivateWorkbench, this, _1));
-    Application::Instance->signalAddWorkbench.connect(boost::bind(&WorkbenchGroup::slotAddWorkbench, this, _1));
-    Application::Instance->signalRemoveWorkbench.connect(boost::bind(&WorkbenchGroup::slotRemoveWorkbench, this, _1));
+    Application::Instance->signalActivateWorkbench.connect(boost::bind(&WorkbenchGroup::slotActivateWorkbench, this, bp::_1));
+    Application::Instance->signalAddWorkbench.connect(boost::bind(&WorkbenchGroup::slotAddWorkbench, this, bp::_1));
+    Application::Instance->signalRemoveWorkbench.connect(boost::bind(&WorkbenchGroup::slotRemoveWorkbench, this, bp::_1));
 }
 
 WorkbenchGroup::~WorkbenchGroup()

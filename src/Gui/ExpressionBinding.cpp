@@ -34,12 +34,13 @@
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
 #include <App/Application.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
+namespace bp = boost::placeholders;
 
 ExpressionBinding::ExpressionBinding()
     : iconLabel(0)
@@ -99,7 +100,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
-    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, _1));
+    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
 }
 
 void ExpressionBinding::bind(const Property &prop)
@@ -158,7 +159,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
-    if (QPixmapCache::find(key, icon))
+    if (QPixmapCache::find(key, &icon))
         return icon;
 
     icon = BitmapFactory().pixmapFromSvg(name, size);

@@ -47,9 +47,9 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
+# include <boost/bind/bind.hpp>
 #endif
 
-#include <boost/bind.hpp>
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
@@ -67,9 +67,11 @@
 #include "ManualAlignment.h"
 #include "BitmapFactory.h"
 #include "SoAxisCrossKit.h"
+#include "Tools.h"
 
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 AlignmentGroup::AlignmentGroup()
 {
@@ -471,7 +473,7 @@ public:
         QColor front;
         front.setRgbF(0.8f, 0.8f, 0.8f);
 
-        int w = fm.width(text);
+        int w = QtTools::horizontalAdvance(fm, text);
         int h = fm.height();
 
         QImage image(w,h,QImage::Format_ARGB32_Premultiplied);
@@ -668,7 +670,7 @@ ManualAlignment::ManualAlignment()
 {
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
-        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, _1));
+        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, bp::_1));
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -862,7 +864,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
     this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(boost::bind
-        (&ManualAlignment::slotDeletedObject, this, _1));
+        (&ManualAlignment::slotDeletedObject, this, bp::_1));
 
     continueAlignment();
 }

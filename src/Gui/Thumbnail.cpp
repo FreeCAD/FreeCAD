@@ -29,6 +29,7 @@
 # include <QByteArray>
 # include <QDateTime>
 # include <QImage>
+# include <QThread>
 #endif
 
 #include <QtOpenGL.h>
@@ -88,6 +89,11 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         return;
     QImage img;
     if (this->viewer->isActiveWindow()) {
+        if (this->viewer->thread() != QThread::currentThread()) {
+            qWarning("Cannot create a thumbnail from non-GUI thread");
+            return;
+        }
+
         QColor invalid;
         this->viewer->imageFromFramebuffer(this->size, this->size, 0, invalid, img);
     }

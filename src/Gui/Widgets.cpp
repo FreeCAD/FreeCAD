@@ -54,6 +54,7 @@
 #include "BitmapFactory.h"
 #include "DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
+#include "Tools.h"
 
 using namespace Gui;
 using namespace App;
@@ -101,7 +102,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
-    drag->start(Qt::MoveAction);
+    drag->exec(Qt::MoveAction);
 }
 
 /**
@@ -339,7 +340,7 @@ void ActionSelector::on_removeButton_clicked()
 void ActionSelector::on_upButton_clicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
-    if (item && selectedWidget->isItemSelected(item)) {
+    if (item && item->isSelected()) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         if (index > 0) {
             selectedWidget->takeTopLevelItem(index);
@@ -352,7 +353,7 @@ void ActionSelector::on_upButton_clicked()
 void ActionSelector::on_downButton_clicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
-    if (item && selectedWidget->isItemSelected(item)) {
+    if (item && item->isSelected()) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         if (index < selectedWidget->topLevelItemCount()-1) {
             selectedWidget->takeTopLevelItem(index);
@@ -850,7 +851,11 @@ void UrlLabel::mouseReleaseEvent (QMouseEvent *)
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
             PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
+#if PY_VERSION_HEX < 0x03090000
             PyObject* result = PyEval_CallObject(func,args);
+#else
+            PyObject* result = PyObject_CallObject(func,args);
+#endif
             // decrement the args and module reference
             Py_XDECREF(result);
             Py_DECREF(args);
@@ -985,6 +990,7 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->w = w;
         // show text with a short delay
         tip->tooltipTimer.start(80, tip);
+        tip->displayTime.start();
     }
     else {
         // do immediately
@@ -1187,7 +1193,7 @@ int PropertyListEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+    int space = 3 + QtTools::horizontalAdvance(fontMetrics(), QLatin1Char('9')) * digits;
 
     return space;
 }
@@ -1394,8 +1400,8 @@ void LabelEditor::validateText(const QString& text)
 void LabelEditor::setButtonText(const QString& txt)
 {
     button->setText(txt);
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(QLatin1String(" ... "));
+    int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 

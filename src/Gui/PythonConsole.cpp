@@ -49,6 +49,7 @@
 #include "DlgEditorImp.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "Tools.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -141,7 +142,11 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
+#if PY_VERSION_HEX < 0x03090000
     d->interpreter = PyEval_CallObject(func,args);
+#else
+    d->interpreter = PyObject_CallObject(func,args);
+#endif
     Py_DECREF(args);
     Py_DECREF(func);
     Py_DECREF(module);
@@ -195,7 +200,11 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
+#if PY_VERSION_HEX < 0x03090000
     PyObject* eval = PyEval_CallObject(func,args);  // must decref later
+#else
+    PyObject* eval = PyObject_CallObject(func,args);  // must decref later
+#endif
 
     Py_DECREF(args);
     Py_DECREF(func);
@@ -227,7 +236,11 @@ int InteractiveInterpreter::compileCommand(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
+#if PY_VERSION_HEX < 0x03090000
     PyObject* eval = PyEval_CallObject(func,args);  // must decref later
+#else
+    PyObject* eval = PyObject_CallObject(func,args);  // must decref later
+#endif
 
     Py_DECREF(args);
     Py_DECREF(func);
@@ -512,8 +525,12 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         QFont font(fontFamily, fontSize);
         setFont(font);
         QFontMetrics metric(font);
-        int width = metric.width(QLatin1String("0000"));
+        int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(width);
+#else
+        setTabStopDistance(width);
+#endif
     } else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
@@ -720,13 +737,13 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
     // write normal messages
     if (!d->output.isEmpty()) {
         appendOutput(d->output, (int)PythonConsoleP::Message);
-        d->output = QString::null;
+        d->output.clear();
     }
 
     // write error messages
     if (!d->error.isEmpty()) {
         appendOutput(d->error, (int)PythonConsoleP::Error);
-        d->error = QString::null;
+        d->error.clear();
     }
 
     // Append the prompt string
@@ -1326,7 +1343,7 @@ void PythonConsole::onSaveHistoryAs()
 
 void PythonConsole::onInsertFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), tr("Insert file name"), QString::null,
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), tr("Insert file name"), QString(),
         QString::fromLatin1("%1 (*.*)").arg(tr("All Files")));
     if ( fn.isEmpty() )
         return;

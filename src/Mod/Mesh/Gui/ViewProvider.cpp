@@ -57,7 +57,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
@@ -100,7 +100,6 @@
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
 #include <zipios++/gzipoutputstream.h>
-#include <boost/bind.hpp>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -108,6 +107,7 @@
 
 
 using namespace MeshGui;
+namespace bp = boost::placeholders;
 
 using Mesh::Feature;
 using MeshCore::MeshKernel;
@@ -739,13 +739,13 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setCheckable(true);
     act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == "Component");
-    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, bp::_1));
 
     QAction* seg = menu->addAction(QObject::tr("Display segments"));
     seg->setCheckable(true);
     seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
                     highlightMode == "Segment");
-    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, _1));
+    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, bp::_1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -1383,7 +1383,7 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
 
     Vertex v(kernel, grid, Base::convertTo<Base::Vector3f>(pos));
     QFuture<bool> future = QtConcurrent::mapped
-        (points, boost::bind(&Vertex::visible, &v, _1));
+        (points, boost::bind(&Vertex::visible, &v, bp::_1));
     QFutureWatcher<bool> watcher;
     watcher.setFuture(future);
     watcher.waitForFinished();
