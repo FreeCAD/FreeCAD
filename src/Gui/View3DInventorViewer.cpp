@@ -4770,20 +4770,6 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
     if (showDragger.getValue() && toggle <= 0) {
         showDragger = FALSE;
         pcShadowPickStyle->style = SoPickStyle::SHAPE;
-    } else if (!showDragger.getValue() && toggle != 0) {
-        pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;
-        showDragger = TRUE;
-        SbBox3f bbox;
-        if(owner->getSceneBoundBox(bbox)) {
-            owner->viewBoundBox(bbox);
-            if (dirlight) {
-                auto dragger = pcShadowDirectionalLight->getDragger();
-                SbVec3f pos = bbox.getCenter();
-                pos[2] += bbox.getSize()[2];
-                if (dragger->isOfType(SoDirectionalLightDragger::getClassTypeId()))
-                    static_cast<SoDirectionalLightDragger*>(dragger)->translation = pos;
-            }
-        }
 
         SbVec3f dir;
         if (dirlight)
@@ -4800,6 +4786,21 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
         }
         _shadowSetParam<App::PropertyVector>(doc, "LightDirection",
                 Base::Vector3d(dir[0], dir[1], dir[2]));
+
+    } else if (!showDragger.getValue() && toggle != 0) {
+        pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;
+        SbBox3f bbox;
+        if(owner->getSceneBoundBox(bbox)) {
+            owner->viewBoundBox(bbox);
+            if (dirlight) {
+                auto dragger = pcShadowDirectionalLight->getDragger();
+                SbVec3f pos = bbox.getCenter();
+                pos[2] += bbox.getSize()[2];
+                if (dragger->isOfType(SoDirectionalLightDragger::getClassTypeId()))
+                    static_cast<SoDirectionalLightDragger*>(dragger)->translation = pos;
+            }
+        }
+        showDragger = TRUE;
     }
 }
 
