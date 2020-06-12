@@ -55,6 +55,7 @@ set(TechDrawGui_MOC_HDRS
     DlgTemplateField.h
     TaskSectionView.h
     TaskGeomHatch.h
+    TaskHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
     TaskCosVertex.h
@@ -98,6 +99,7 @@ set(TechDrawGui_UIC_SRCS
     DlgTemplateField.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     mrichtextedit.ui
@@ -185,6 +187,9 @@ SET(TechDrawGui_SRCS
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
+    TaskHatch.ui
+    TaskHatch.cpp
+    TaskHatch.h
     TaskLeaderLine.ui
     TaskLeaderLine.cpp
     TaskLeaderLine.h
@@ -347,10 +352,10 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderSpreadsheet.h
     ViewProviderViewClip.cpp
     ViewProviderViewClip.h
-    ViewProviderHatch.cpp
-    ViewProviderHatch.h
     ViewProviderGeomHatch.cpp
     ViewProviderGeomHatch.h
+    ViewProviderHatch.cpp
+    ViewProviderHatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
     ViewProviderLeader.cpp
@@ -375,6 +380,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     TaskCosVertex.ui
