@@ -2,6 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -29,11 +30,75 @@ The first one measures a distance between two points or vertices
 in an object; it includes radial dimensions of circular arcs.
 The second one creates an arc between two straight lines to measure
 the angle between both.
+
+To Do
+-----
+1. Currently the angular dimension does not use linked geometrical
+elements, meaning that it cannot update its `Angle` by picking lines or edges
+from objects. If fact, `LinkedGeometry` is hidden to prevent the user
+from picking any object.
+
+At the moment the user must manually modify `FirstAngle` and `LastAngle`
+to obtain a new `Angle`, but since the values are manually entered
+the result is not parametrically tied to any actual object in the document.
+
+We introduced a function `measure_two_obj_angles` to calculate
+the corresponding parameters from a pair of objects and their edges.
+Currently this function is deactivated because we don't consider it
+to be ready; it is there for testing purposes only.
+This needs to be improved because at the moment it only gives
+one possible angle. We should be able to get the four angles
+of a two-line intersection. Maybe a new property is required
+to indicate the quadrant to choose and display.
+
+2. In general, the `LinkedGeometry` property must be changed in type,
+as it does not need to be an `App::PropertyLinkSubList`.
+A `LinkSubList` is to select multiple subelements (vertices, edges)
+from multiple objects (two lines). However, since we typically measure
+a single object, for example, a single line or circle, the subelements
+that we can choose must belong to this object only.
+
+Therefore, just like in the case of the `PathArray` class the best property
+that could be used is `App::PropertyLinkSub`.
+Then in the property editor we will be unable to select more than one object
+thus preventing errors of the subelements not matching the measured object.
+
+3. Currently the `LinearDimension` class is able to measure the distance
+between two arbitrary vertices in two distinct objects.
+For this case `App::PropertyLinkSubList` is in fact the right property
+to use, however, neither the `make_dimension` functions
+nor the Gui Command are set up to use this type of information.
+This has to be done manually by picking the two objects and the two vertices
+in the property editor. That is, this functionality is not entirely intuitive,
+so it is somewhat 'hidden' from the user.
+
+So, the make function and the Gui Command should be expanded to consider
+this case.
+
+Another possibility would be to use one property (LinkSub) for single-object
+measurements (linear, radial), and a second property (LinkSubList)
+for two-object measurements (linear, angular). This would require adjustments
+to the `execute` method to handle both cases properly. It may be necessary
+to have another property to control which type to use.
+
+4. The `Support` property is not used at all, so it should be removed.
+It is just set at creation time by the `make_dimension` function
+but it actually isn't used in the `execute` code.
+
+5. In fact the `DimensionBase` class is not the best base class
+than can be used as parent for all dimensions because it defines `Normal`,
+`Support`, and `LinkedGeometry`, which aren't used in all cases.
+In some of the derived classes, these properties are hidden.
+
+So, together with what is explained in point 3, we probably need to use
+a more generic base class, while at the same time improve the way
+the link properties are used.
 """
 ## @package dimension
 # \ingroup DRAFT
 # \brief Provides the object code for the Draft Dimensions.
 
+import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -496,6 +561,24 @@ class AngularDimension(DimensionBase):
         Nothing is actually done here, except update the viewprovider,
         as the lines and text are created in the viewprovider.
         """
+        # TODO: introduce the calculation of 'Angle' by taking a pair of
+        # objects and edges in the 'LinkedGeometry' property.
+        #
+        # We introduced a function `measure_two_obj_angles` to calculate
+        # the corresponding parameters from a pair of objects and their edges.
+        # Currently this function is deactivated because we don't consider it
+        # to be ready; it is there for testing purposes only.
+        #
+        # if obj.LinkedGeometry and len(obj.LinkedGeometry) == 2:
+        #     (obj.FirstAngle,
+        #      obj.LastAngle) = measure_two_obj_angles(obj.LinkedGeometry[0],
+        #                                              obj.LinkedGeometry[1])
+
+        # TODO: move the calculation of 'Angle' from the viewprovider
+        # to this object class.
+        # The viewprovider should modify visual properties only, not real
+        # properties. It can react to real properties by using the 'updateData'
+        # method.
         if App.GuiUp and obj.ViewObject:
             obj.ViewObject.update()
 
@@ -514,6 +597,64 @@ class AngularDimension(DimensionBase):
             obj.setPropertyStatus('Support', 'Hidden')
         if hasattr(obj, "LinkedGeometry"):
             obj.setPropertyStatus('LinkedGeometry', 'Hidden')
+
+
+def measure_two_obj_angles(link_sub_1, link_sub_2):
+    """Measure two edges from two different objects to measure the angle.
+
+    This function is a prototype because it does not determine all possible
+    starting and ending angles that could be used to draw the dimension line,
+    which is a circular arc.
+
+    Parameters
+    ----------
+    link_sub_1: tuple
+        A tuple containing one object and a list of subelement strings,
+        which may be empty. Only the first subelement is considered, which
+        must be an edge.
+        ::
+            link_sub_1 = (obj1, ['EdgeN', ...])
+
+    link_sub_2: tuple
+        Same.
+    """
+    start = 0
+    end = 0
+
+    obj1 = link_sub_1[0]
+    lsub1 = link_sub_1[1]
+
+    obj2 = link_sub_2[0]
+    lsub2 = link_sub_2[1]
+
+    # The subelement list may be empty so we test it first
+    # and pick only the first item
+    if lsub1 and lsub2:
+        subelement1 = lsub1[0]
+        subelement2 = lsub2[0]
+
+        if "Edge" in subelement1 and "Edge" in subelement2:
+            n1 = int(subelement1[4:]) - 1
+            n2 = int(subelement2[4:]) - 1
+            start = obj1.Shape.Edges[n1].Curve.Direction
+            end = obj2.Shape.Edges[n2].Curve.Direction
+
+            # We get the angle from the direction of the line to the U axis
+            # of the working plane; we should be able to also use the V axis
+            start_r = DraftVecUtils.angle(start, App.DraftWorkingPlane.u)
+            end_r = DraftVecUtils.angle(end, App.DraftWorkingPlane.u)
+            start = math.degrees(start_r)
+            end = math.degrees(end_r)
+
+            # We make the angle positive because when tested, some errors
+            # were produced in the code that calculates the 'Angle'.
+            # This code is actually inside the viewprovider.
+            if start < 0:
+                start = abs(start)
+            if end < 0:
+                end = abs(end)
+
+    return start, end
 
 
 # Alias for compatibility with v0.18 and earlier
