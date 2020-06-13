@@ -44,8 +44,7 @@ class QGCustomImage;
 
     const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
     const double SVGSIZEH = 64.0;
-    const std::string  SVGCOLPREFIX = "stroke:";
-    const std::string  SVGCOLDEFAULT = "#000000";
+    const std::string SVGCOLDEFAULT = "#000000";
 
 class QGIFace : public QGIPrimPath
 {
@@ -68,7 +67,7 @@ public:
         GeomHatchFill,
         PlainFill
     };
-
+    std::string SVGCOLPREFIX = ""; // will be determined on runtime
 
     int getProjIndex() const { return projIndex; }
 

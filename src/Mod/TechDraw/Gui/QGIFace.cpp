@@ -59,6 +59,7 @@
 //
 #include "Rez.h"
 #include "DrawGuiUtil.h"
+#include <QByteArrayMatcher>
 #include "QGCustomSvg.h"
 #include "QGCustomImage.h"
 #include "QGCustomRect.h"
@@ -222,6 +223,17 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
         return;
     }
     m_svgXML = f.readAll();
+
+    // search in the file for the "stroke" specifiction in order to find out what specification style is used
+    // this is necessary to apply a color set by the user to the SVG
+    QByteArray pattern("stroke:");
+    QByteArrayMatcher matcher(pattern);
+    int pos = 0;
+    if ((pos = matcher.indexIn(m_svgXML, pos)) != -1)
+        SVGCOLPREFIX = "stroke:"; // declaration part of a style= statement
+    else
+        SVGCOLPREFIX = "stroke=\""; // declaration of its own
+
     if (!m_svg->load(&m_svgXML)) {
         Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
         return;
