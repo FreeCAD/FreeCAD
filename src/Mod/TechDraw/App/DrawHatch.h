@@ -41,8 +41,7 @@ public:
     DrawHatch();
     virtual ~DrawHatch();
 
-    App::PropertyVector      DirProjection;                            //Source is only valid for original projection?
-    App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
+    App::PropertyLinkSub     Source;       // the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyFileIncluded SvgIncluded;
 
