@@ -247,63 +247,164 @@ class LinearDimension(DimensionBase):
     def execute(self, obj):
         """Execute when the object is created or recomputed.
 
-        Set start point and end point according to the linked geometry.
+        Set start point and end point according to the linked geometry
+        and the number of subelements.
+
+        If it has one subelement, we assume a straight edge or a circular edge.
+        If it has two subelements, we assume a straight edge (two vertices).
         """
         if obj.LinkedGeometry:
             if len(obj.LinkedGeometry) == 1:
-                lobj = obj.LinkedGeometry[0][0]
-                lsub = obj.LinkedGeometry[0][1]
-                if len(lsub) == 1:
-                    if "Edge" in lsub[0]:
-                        n = int(lsub[0][4:]) - 1
-                        edge = lobj.Shape.Edges[n]
-                        if DraftGeomUtils.geomType(edge) == "Line":
-                            obj.Start = edge.Vertexes[0].Point
-                            obj.End = edge.Vertexes[-1].Point
-                        elif DraftGeomUtils.geomType(edge) == "Circle":
-                            c = edge.Curve.Center
-                            r = edge.Curve.Radius
-                            a = edge.Curve.Axis
-                            ray = obj.Dimline.sub(c).projectToPlane(App.Vector(0, 0, 0), a)
-                            if ray.Length == 0:
-                                ray = a.cross(App.Vector(1, 0, 0))
-                                if ray.Length == 0:
-                                    ray = a.cross(App.Vector(0, 1, 0))
-                            ray = DraftVecUtils.scaleTo(ray, r)
-                            if hasattr(obj, "Diameter"):
-                                if obj.Diameter:
-                                    obj.Start = c.add(ray.negative())
-                                    obj.End = c.add(ray)
-                                else:
-                                    obj.Start = c
-                                    obj.End = c.add(ray)
-                elif len(lsub) == 2:
-                    if ("Vertex" in lsub[0]) and ("Vertex" in lsub[1]):
-                        n1 = int(lsub[0][6:]) - 1
-                        n2 = int(lsub[1][6:]) - 1
-                        obj.Start = lobj.Shape.Vertexes[n1].Point
-                        obj.End = lobj.Shape.Vertexes[n2].Point
-            elif len(obj.LinkedGeometry) == 2:
-                lobj1 = obj.LinkedGeometry[0][0]
-                lobj2 = obj.LinkedGeometry[1][0]
-                lsub1 = obj.LinkedGeometry[0][1]
-                lsub2 = obj.LinkedGeometry[1][1]
-                if (len(lsub1) == 1) and (len(lsub2) == 1):
-                    if ("Vertex" in lsub1[0]) and ("Vertex" in lsub2[1]):
-                        n1 = int(lsub1[0][6:]) - 1
-                        n2 = int(lsub2[0][6:]) - 1
-                        obj.Start = lobj1.Shape.Vertexes[n1].Point
-                        obj.End = lobj2.Shape.Vertexes[n2].Point
+                linked_obj = obj.LinkedGeometry[0][0]
+                sub_list = obj.LinkedGeometry[0][1]
 
-        # set the distance property
-        total_len = (obj.Start.sub(obj.End)).Length
-        if round(obj.Distance.Value, utils.precision()) != round(total_len, utils.precision()):
-            obj.Distance = total_len
+                if len(sub_list) == 1:
+                    # If it has one subelement, we assume an edge
+                    # that can be a straight line, or a circular edge
+                    subelement = sub_list[0]
+                    (obj.Start,
+                     obj.End) = measure_one_obj_edge(linked_obj,
+                                                     subelement,
+                                                     obj.Dimline,
+                                                     obj.Diameter)
+                elif len(sub_list) == 2:
+                    # If it has two subelements, we assume a straight edge
+                    # that is measured by two vertices
+                    (obj.Start,
+                     obj.End) = measure_one_obj_vertices(linked_obj,
+                                                         sub_list)
+
+            elif len(obj.LinkedGeometry) == 2:
+                # If the list has two objects, it measures the distance
+                # between the two vertices in those two objects
+                (obj.Start,
+                 obj.End) = measure_two_objects(obj.LinkedGeometry[0],
+                                                obj.LinkedGeometry[1])
+
+        # Update the distance property by comparing the floats
+        # with the precision
+        net_length = (obj.Start.sub(obj.End)).Length
+        rounded_1 = round(obj.Distance.Value, utils.precision())
+        rounded_2 = round(net_length, utils.precision())
+
+        if rounded_1 != rounded_2:
+            obj.Distance = net_length
 
         # The lines and text are created in the viewprovider, so we should
         # update it whenever the object is recomputed
         if App.GuiUp and obj.ViewObject:
             obj.ViewObject.update()
+
+
+def measure_one_obj_edge(obj, subelement, dim_point, diameter=False):
+    """Measure one object with one subelement, a straight or circular edge.
+
+    Parameters
+    ----------
+    obj: Part::Feature
+        The object that is measured.
+
+    subelement: str
+        The subelement that is measured, for example, `'Edge1'`.
+
+    dim_line: Base::Vector3
+        A point through which the dimension goes through.
+    """
+    start = App.Vector()
+    end = App.Vector()
+
+    if "Edge" in subelement:
+        n = int(subelement[4:]) - 1
+        edge = obj.Shape.Edges[n]
+
+        if DraftGeomUtils.geomType(edge) == "Line":
+            start = edge.Vertexes[0].Point
+            end = edge.Vertexes[-1].Point
+        elif DraftGeomUtils.geomType(edge) == "Circle":
+            center = edge.Curve.Center
+            radius = edge.Curve.Radius
+            axis = edge.Curve.Axis
+            dim_line = dim_point.sub(center)
+
+            # The ray is projected to the plane on which the circle lies,
+            # but if the projection is not succesful, try in the other planes
+            ray = dim_line.projectToPlane(App.Vector(0, 0, 0), axis)
+
+            if ray.Length == 0:
+                ray = axis.cross(App.Vector(1, 0, 0))
+                if ray.Length == 0:
+                    ray = axis.cross(App.Vector(0, 1, 0))
+
+            # The ray is made as large as the arc's radius
+            # and optionally the diameter
+            ray = DraftVecUtils.scaleTo(ray, radius)
+
+            if diameter:
+                # The start and end points lie on the arc
+                start = center.add(ray.negative())
+                end = center.add(ray)
+            else:
+                # The start is th center and the end lies on the arc
+                start = center
+                end = center.add(ray)
+
+    return start, end
+
+
+def measure_one_obj_vertices(obj, subelements):
+    """Measure two vertices in the same object."""
+    start = App.Vector()
+    end = App.Vector()
+
+    subelement1 = subelements[0]
+    subelement2 = subelements[1]
+
+    if "Vertex" in subelement1 and "Vertex" in subelement2:
+        n1 = int(subelement1[6:]) - 1
+        n2 = int(subelement2[6:]) - 1
+        start = obj.Shape.Vertexes[n1].Point
+        end = obj.Shape.Vertexes[n2].Point
+
+    return start, end
+
+
+def measure_two_objects(link_sub_1, link_sub_2):
+    """Measure two vertices from two different objects.
+
+    Parameters
+    ----------
+    link_sub_1: tuple
+        A tuple containing one object and a list of subelement strings,
+        which may be empty. Only the first subelement is considered, which
+        must be a vertex.
+        ::
+            link_sub_1 = (obj1, ['VertexN', ...])
+
+    link_sub_2: tuple
+        Same.
+    """
+    start = App.Vector()
+    end = App.Vector()
+
+    obj1 = link_sub_1[0]
+    lsub1 = link_sub_1[1]
+
+    obj2 = link_sub_2[0]
+    lsub2 = link_sub_2[1]
+
+    # The subelement list may be empty so we test it first
+    # and pick only the first item
+    if lsub1 and lsub2:
+        subelement1 = lsub1[0]
+        subelement2 = lsub2[0]
+
+        if "Vertex" in subelement1 and "Vertex" in subelement2:
+            n1 = int(subelement1[6:]) - 1
+            n2 = int(subelement2[6:]) - 1
+            start = obj1.Shape.Vertexes[n1].Point
+            end = obj2.Shape.Vertexes[n2].Point
+
+    return start, end
 
 
 # Alias for compatibility with v0.18 and earlier
