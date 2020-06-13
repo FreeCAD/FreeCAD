@@ -432,6 +432,8 @@ protected:
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
 
+    virtual void onUndoRedoFinished() override;
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
