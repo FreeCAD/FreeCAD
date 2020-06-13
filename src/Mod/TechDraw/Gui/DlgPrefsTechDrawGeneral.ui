@@ -278,7 +278,6 @@ for ProjectionGroups</string>
           </property>
           <property name="currentFont">
            <font>
-            <family>MS Shell Dlg 2</family>
             <pointsize>10</pointsize>
            </font>
           </property>
