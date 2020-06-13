@@ -585,6 +585,11 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
+    Base::Vector3d stdZ(0.0, 0.0, 1.0);
+    double baseRotation = getBaseDVP()->Rotation.getValue();      //Qt degrees
+    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
+    Base::Rotation unrotator(stdZ, - baseRotation * M_PI / 180.0);
+
     auto sNorm  = SectionNormal.getValue();
     double angle = M_PI / 2.0;
     auto axis   = getBaseDVP()->Direction.getValue();
@@ -605,7 +610,12 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
     xRange /= getBaseDVP()->getScale();
     double yRange = bbx.MaxY - bbx.MinY;
     yRange /= getBaseDVP()->getScale();
+    sOrgOnBase = rotator.multVec(sOrgOnBase);
+    sLineOnBase = rotator.multVec(sLineOnBase);
+
     result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);  //unscaled
+    result.first = unrotator.multVec(result.first);
+    result.second = unrotator.multVec(result.second);
 
     return result;
 }

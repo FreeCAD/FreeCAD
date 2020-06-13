@@ -872,7 +872,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(m_font, fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
-        sectionLine->setRotation(viewPart->Rotation.getValue());
+        sectionLine->setRotation(- viewPart->Rotation.getValue());
         sectionLine->draw();
     }
 }
