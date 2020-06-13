@@ -34,13 +34,13 @@ the arrays that use it.
 # \ingroup DRAFT
 # \brief Provides the object code for the Draft Link object.
 
+import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import lazy_loader.lazy_loader as lz
 
-from draftobjects.base import DraftObject
 from draftutils.messages import _wrn
+from draftobjects.base import DraftObject
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -82,20 +82,27 @@ class DraftLink(DraftObject):
     def canLinkProperties(self, _obj):
         """Link properties.
 
-        TODO: add more explanation. C++ override???"""
+        TODO: add more explanation. Overrides a C++ method?
+        """
         return False
 
     def linkSetup(self, obj):
         """Set up the link properties on attachment."""
         obj.configLinkProperty('Placement', LinkedObject='Base')
+
         if hasattr(obj, 'ShowElement'):
             # Rename 'ShowElement' property to 'ExpandArray' to avoid conflict
             # with native App::Link
             obj.configLinkProperty('ShowElement')
             showElement = obj.ShowElement
+
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "Show array element as children object")
-            obj.addProperty("App::PropertyBool", "ExpandArray", "Draft", _tip)
+                                     "Show the individual array elements")
+            obj.addProperty("App::PropertyBool",
+                            "ExpandArray",
+                            "Draft",
+                            _tip)
+
             obj.ExpandArray = showElement
             obj.configLinkProperty(ShowElement='ExpandArray')
             obj.removeProperty('ShowElement')
@@ -110,12 +117,12 @@ class DraftLink(DraftObject):
         if not hasattr(obj, 'LinkTransform'):
             obj.addProperty('App::PropertyBool',
                             'LinkTransform',
-                            ' Link')
+                            'Link')
 
         if not hasattr(obj, 'ColoredElements'):
             obj.addProperty('App::PropertyLinkSubHidden',
                             'ColoredElements',
-                            ' Link')
+                            'Link')
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
         obj.configLinkProperty('LinkTransform', 'ColoredElements')
@@ -138,8 +145,8 @@ class DraftLink(DraftObject):
             # all models should use 'use_link' by default
             # and this won't be run.
             self.use_link = bool(self.useLink)
-            _wrn("Migrating 'useLink' to 'use_link', "
-                 "{} ({})\n".format(obj.Label, obj.TypeId))
+            _wrn("v0.19, {}, 'useLink' will be migrated "
+                 "to 'use_link'".format(obj.Label))
             del self.useLink
 
     def onDocumentRestored(self, obj):
@@ -215,4 +222,5 @@ class DraftLink(DraftObject):
                     obj.setPropertyStatus('PlacementList', 'Immutable')
 
 
+# Alias for compatibility with old versions of v0.19
 _DraftLink = DraftLink
