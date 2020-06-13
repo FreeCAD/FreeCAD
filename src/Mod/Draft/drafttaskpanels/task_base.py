@@ -72,6 +72,7 @@ class TaskPanelPolarCircularBase:
     * https://forum.freecadweb.org/viewtopic.php?f=10&t=40007
     * https://forum.freecadweb.org/viewtopic.php?t=5374#p43038
     """
+
     def __init__(self, ui_file, icon_name):
         self.form = Gui.PySideUic.loadUi(ui_file)
 
@@ -103,6 +104,10 @@ class TaskPanelPolarCircularBase:
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
+
+        self.form.label_axis_name.setText("")
+        self.axis_name = None
+        self.edge_index = None
 
         # Some objects need to be selected before we can execute the function.
         self.selection = None
@@ -166,20 +171,21 @@ class TaskPanelPolarCircularBase:
               or self.form.button_axis.text() == "discard"):
             self.disable_axis_selection()
 
-    def display_axis(self, axis_label, axis_name, edge_name):
+    def display_axis(self, axis_label, axis_name, edge_name, edge_index):
         """Show the selected axis in the GUI. Add derived values for the center
         coordinates GUI.
         """
-        _msg("Selected: {} with edge {}".format(axis_name, edge_name))
+        _msg("Selected: {} with "
+             "edge {} (index: {})".format(axis_label, edge_name, edge_index))
         self.axis_name = axis_name
-        self.edge_name = edge_name
+        self.edge_index = edge_index
         self.form.label_axis_name.setText("{} {}".format(axis_label, edge_name))
         self.form.button_axis.setText("discard")
 
     def enable_axis_selection(self):
         """Enable axis selection GUI elements and callbacks"""
         self.form.button_axis.setText("abort")
-        self.axis_name = self.edge_name = None
+        self.axis_name = self.edge_index = None
         self.source_command.add_axis_selection_observer()
         self.disable_point()
         _msg(_tr("Selecting axis"))
@@ -187,7 +193,7 @@ class TaskPanelPolarCircularBase:
     def disable_axis_selection(self):
         """Disable axis selection GUI elements and callbacks"""
         self.enable_point()
-        self.axis_name = self.edge_name = None
+        self.axis_name = self.edge_index = None
         self.form.button_axis.setText("select")
         self.form.label_axis_name.setText("")
         self.source_command.remove_axis_selection_observer()

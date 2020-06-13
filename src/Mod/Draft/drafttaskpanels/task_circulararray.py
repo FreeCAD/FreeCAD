@@ -220,9 +220,9 @@ class TaskPanelCircularArray(TaskPanelPolarCircularBase):
         _cmd += "symmetry=" + str(self.symmetry) + ", "
         _cmd += "axis=" + DraftVecUtils.toString(self.axis) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
-        if self.axis_name and self.edge_name:
+        if self.axis_name and self.edge_index:
             _cmd += "axis_object='" + str(self.axis_name) + "', "
-            _cmd += "axis_edge='" + str(self.edge_name) + "', "
+            _cmd += "axis_edge=" + str(self.edge_index) + ", "
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 

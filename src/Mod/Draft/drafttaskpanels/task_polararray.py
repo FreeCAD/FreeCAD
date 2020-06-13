@@ -98,10 +98,6 @@ class TaskPanelPolarArray(TaskPanelPolarCircularBase):
 
         self.form.spinbox_number.setValue(self.number)
 
-        self.form.label_axis_name.setText("")
-        self.axis_name = None
-        self.edge_name = None
-
     def accept(self):
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
@@ -191,9 +187,9 @@ class TaskPanelPolarArray(TaskPanelPolarCircularBase):
         _cmd += "number=" + str(self.number) + ", "
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
-        if self.axis_name and self.edge_name:
+        if self.axis_name and self.edge_index:
             _cmd += "axis_object='" + str(self.axis_name) + "', "
-            _cmd += "axis_edge='" + str(self.edge_name) + "', "
+            _cmd += "axis_edge=" + str(self.edge_index) + ", "
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 

@@ -222,6 +222,7 @@ class GuiCommandBase:
         self.commit_list.append((name, func))
 
 
+# noinspection PyPep8Naming
 class PolarCircularBase(GuiCommandBase):
     """This class is the base of the PolarArray and CircularArray Command to be
     subclassed by them.
@@ -229,6 +230,7 @@ class PolarCircularBase(GuiCommandBase):
     The functionality of this class entails adding and removing the callbacks
     for selecting the AxisReference and the objects to be duplicated.
    """
+
     def __init__(self):
         super(PolarCircularBase, self).__init__()
         self.location = None
@@ -352,10 +354,23 @@ class AxisSelectionObserver:
         Gui.Selection.clearSelection(App.ActiveDocument.Name)
         selection = Gui.ActiveDocument.getObject(obj_name)
         selection_object = selection.Object
+
+        if not (hasattr(selection_object, "Shape") and
+                hasattr(selection_object.Shape, "Edges")):
+            self.source_command.ui.disable_axis_selection()
+            raise TypeError("Selected object has no Shape.Edges attribute.")
+
+        index = sub_name.lstrip("Edge")
+        try:
+            edge_index = int(index)
+        except ValueError:
+            edge_index = 1
+
         edge = selection_object.getSubObject(sub_name)
         if isinstance(edge, Part.Edge) and isinstance(edge.Curve, Part.Line):
             obj_label = selection_object.Label
-            self.source_command.ui.display_axis(obj_label, obj_name, sub_name)
+            self.source_command.ui.display_axis(obj_label, obj_name, sub_name,
+                                                edge_index)
             self.source_command.remove_axis_selection_observer()
         else:
             self.source_command.ui.disable_axis_selection()

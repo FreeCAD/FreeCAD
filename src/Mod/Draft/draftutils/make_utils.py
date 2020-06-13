@@ -34,7 +34,9 @@ from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 
-def make_polcirc_shared(doc, _name, center=App.Vector(0,0,0), axis_object=None, axis_edge=None):
+def make_polcirc_shared(doc, _name, center=App.Vector(0, 0, 0),
+                        axis_object=None,
+                        axis_edge=1):
     """Typecheck center, axis_object and axis_edge. Return axis_reference if
     axis_object and axis_edge (optional) are set and correct. Otherwise return
     None.
@@ -64,17 +66,14 @@ def make_polcirc_shared(doc, _name, center=App.Vector(0,0,0), axis_object=None, 
         If the parameter `axis_edge` is not given as default the
         first edge of the `axis_object` will be used
 
-    axis_edge: str or int, optional
-        It defaults to `None`.
+    axis_edge: int, optional
+        It defaults to `1`.
         If it is set the resulting array will use the referenced axis
         to calculate center and direction instead of the `center`
         and `axis` arguments to create the array. The `axis_edge` must
-        refer to the name of an `SubObject` with type `Part.Edge` and
-        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
-        integer or string. For example the string `Edge1` corresponds
-        to the integer `1`.
-        This `SubObject` must belong to parameter `axis_object` which
-        must be given as well.
+        refer to an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It has to be given as
+        integer between 1 and len(axis.Shape.Edges).
 
     Returns
     -------
@@ -112,27 +111,26 @@ def make_polcirc_shared(doc, _name, center=App.Vector(0,0,0), axis_object=None, 
                 "existing DocumentObject."))
             return not CORRECT, axis_reference
     if axis:
-        axis_edge_name = axis_edge
-        if axis_edge:
-            if isinstance(axis_edge, str):
-                print(axis)
-                print(axis_edge)
-                edge_object = axis.getSubObject(axis_edge)
-            elif isinstance(axis_edge, int):
-                axis_edge_name = "Edge" + str(axis_edge)
-                edge_object = axis.getSubObject(axis_edge_name)
-            else:
-                _err(_tr(
-                    "Wrong input. Given axis_edge has to be of type int or str."
-                ))
-                return not CORRECT, axis_reference
-        else:
-            if not (hasattr(axis, "Shape") and hasattr(axis.Shape, "Edges")):
-                _err(_tr("Wrong input: axis_object cannot be used for Axis"
-                         " Reference, it lacks a Shape with Edges."))
-                return not CORRECT, axis_reference
-            axis_edge_name = "Edge1"  # default if axis_edge is missing
-            edge_object = axis.getSubObject(axis_edge_name)
+        if not (hasattr(axis, "Shape") and hasattr(axis.Shape, "Edges")):
+            _err(_tr("Wrong input: axis_object cannot be used for Axis"
+                     " Reference, it lacks a Shape with Edges."))
+            return not CORRECT, axis_reference
+
+        if not isinstance(axis_edge, int):
+            _err(_tr(
+                "Wrong input. Given axis_edge has to be of type int."
+            ))
+            return not CORRECT, axis_reference
+
+        if not in_axis_range(axis, axis_edge):
+            _err(_tr(
+                "Wrong input. Given axis_edge has to be "
+                "between 1 and len(axis.Shape.Edges))."
+            ))
+            return not CORRECT, axis_reference
+
+        edge_object = axis.Shape.Edges[axis_edge - 1]
+
         if not edge_object:
             _err(_tr(
                 "Wrong input. Given axis_edge does not refer to a "
@@ -151,7 +149,13 @@ def make_polcirc_shared(doc, _name, center=App.Vector(0,0,0), axis_object=None, 
             return not CORRECT, axis_reference
 
     if axis_object:
+        axis_edge_name = "Edge" + str(axis_edge)
         axis_reference = [axis, axis_edge_name]
         _msg("axis_reference: {}".format(axis_reference))
         return CORRECT, axis_reference
     return CORRECT, axis_reference
+
+
+def in_axis_range(axis, index):
+    """Returns wether the index is withing allowed range"""
+    return index in range(1, len(axis.Shape.Edges) + 1)
