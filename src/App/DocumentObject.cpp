@@ -936,6 +936,11 @@ void DocumentObject::onDocumentRestored()
         Visibility.setStatus(Property::NoModify,true);
 }
 
+void DocumentObject::onUndoRedoFinished()
+{
+
+}
+
 void DocumentObject::onSettingDocument()
 {
     //call all extensions

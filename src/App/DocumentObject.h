@@ -64,6 +64,7 @@ enum ObjectStatus {
     GeoExcluded = 15, // mark as a member but not claimed by GeoFeatureGroup
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
+    PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
 };
 
 /** Return object for feature execution
@@ -592,6 +593,8 @@ protected:
     virtual void onChanged(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
+    /// get called after an undo/redo transaction is finished
+    virtual void onUndoRedoFinished();
     /// get called after setting the document
     virtual void onSettingDocument();
     /// get called after a brand new object was created

@@ -963,6 +963,7 @@ bool Document::undo(int id)
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
 
+        {
         Base::FlagToggler<bool> flag(d->undoing);
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
@@ -976,7 +977,17 @@ bool Document::undo(int id)
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
 
-        signalUndo(*this);
+        }
+
+        for(auto & obj:d->objectArray) {
+            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
+                obj->onUndoRedoFinished();
+                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
+            }
+        }
+
+        signalUndo(*this); // now signal the undo
+
         return true;
     }
 
@@ -1004,6 +1015,7 @@ bool Document::redo(int id)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
+        {
         Base::FlagToggler<bool> flag(d->undoing);
         mRedoTransactions.back()->apply(*this,true);
 
@@ -1014,6 +1026,14 @@ bool Document::redo(int id)
         mRedoMap.erase(mRedoTransactions.back()->getID());
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
+        }
+
+        for(auto & obj:d->objectArray) {
+            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
+                obj->onUndoRedoFinished();
+                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
+            }
+        }
 
         signalRedo(*this);
         return true;
