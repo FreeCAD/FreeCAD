@@ -214,32 +214,32 @@ the top and left view border</string>
        </property>
        <item>
         <property name="text">
-         <string>AS_IS</string>
+         <string>As is</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>WIREFRAME</string>
+         <string>Wireframe</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>POINTS</string>
+         <string>Points</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>WIREFRAME_OVERLAY</string>
+         <string>Wireframe overlay</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>HIDDEN_LINE</string>
+         <string>Hidden Line</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>BOUNDING_BOX</string>
+         <string>Bounding box</string>
         </property>
        </item>
       </widget>

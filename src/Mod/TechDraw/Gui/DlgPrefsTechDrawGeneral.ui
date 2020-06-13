@@ -95,7 +95,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Whether or not a page's 'Keep Update' property
+           <string>Whether or not a page's 'Keep Updated' property
 can override the global 'Update With 3D' parameter</string>
           </property>
           <property name="text">
@@ -278,7 +278,7 @@ for ProjectionGroups</string>
           </property>
           <property name="currentFont">
            <font>
-            <family>osifont</family>
+            <family>MS Shell Dlg 2</family>
             <pointsize>10</pointsize>
            </font>
           </property>
