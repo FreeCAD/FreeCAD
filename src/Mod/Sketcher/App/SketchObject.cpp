@@ -6804,7 +6804,12 @@ void SketchObject::onChanged(const App::Property* prop)
         }
     }
     if (prop == &Geometry || prop == &Constraints) {
-        Constraints.checkGeometry(getCompleteGeometry());
+        if(getDocument()->isPerformingTransaction()) {
+            setStatus(App::PendingTransactionUpdate, true);
+        }
+        else {
+            Constraints.checkGeometry(getCompleteGeometry());
+        }
     }
     else if (prop == &ExternalGeometry) {
         // make sure not to change anything while restoring this object
@@ -6830,6 +6835,19 @@ void SketchObject::onChanged(const App::Property* prop)
     }
 #endif
     Part::Part2DObject::onChanged(prop);
+}
+
+void SketchObject::onUndoRedoFinished()
+{
+    // upon undo/redo, PropertyConstraintList does not have updated valid geometry keys, which results in empty constraint lists
+    // when using getValues
+    //
+    // The sketch will also have invalid vertex indices, requiring a call to rebuildVertexIndex
+    //
+    // Historically this was "solved" by issuing a recompute, which is absolutely unnecessary and prevents solve() from working before
+    // such a recompute
+    acceptGeometry();
+    solve();
 }
 
 void SketchObject::onDocumentRestored()
