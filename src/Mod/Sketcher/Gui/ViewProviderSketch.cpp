@@ -3069,8 +3069,8 @@ void ViewProviderSketch::drawConstraintIcons()
             {   // second icon is available only for colinear line segments
                 const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                 const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
-                if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                    geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                    geo2 && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     multipleIcons = true;
                 }
             }
@@ -5453,15 +5453,18 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 if ((*it)->Type == Tangent) {
                     const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                     const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
-                    if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                        geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if (!geo1 || !geo2) {
+                        Base::Console().Warning("Tangent constraint references non-existing geometry\n");
+                    }
+                    else if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                             geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                         sep->addChild(new SoZoomTranslation());
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
                         sep->addChild(new SoImage());
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                         sep->addChild(new SoInfo());
-                        }
+                    }
                 }
 
                 edit->vConstrType.push_back((*it)->Type);
