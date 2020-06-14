@@ -819,8 +819,14 @@ void StdCmdDrawStyle::activated(int iMsg)
                 case 8:
                     if (viewer->getOverrideMode() == "Shadow")
                         viewer->toggleShadowLightManip();
-                    else
+                    else {
+                        if (!doc->getDocument()->getPropertyByName("Shadow_ShowGround")) {
+                            // If it is the first time shadow is turned on, switch to isometric view
+                            viewer->setCameraOrientation(
+                                    SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f));
+                        }
                         viewer->setOverrideMode("Shadow");
+                    }
                     break;
                 default:
                     viewer->setOverrideMode("As Is");
