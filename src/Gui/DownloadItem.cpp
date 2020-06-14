@@ -130,8 +130,6 @@ AutoSaver::~AutoSaver()
 
 void AutoSaver::changeOccurred()
 {
-if (!m_firstChange.isValid())
-printf("changeOccurred\n");
     if (!m_firstChange.isValid())
         m_firstChange.start();
 
@@ -156,7 +154,6 @@ void AutoSaver::saveIfNecessary()
     if (!m_timer.isActive())
         return;
     m_timer.stop();
-printf("saveifnecessary\n");
     m_firstChange = QElapsedTimer();
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection)) {
         qWarning() << "AutoSaver: error invoking slot save() on parent";
