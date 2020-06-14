@@ -182,6 +182,7 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+    std::string programVersion;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
@@ -2731,7 +2732,9 @@ void Document::restore (const char *filename,
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
+
     d->partialLoadObjects.clear();
+    d->programVersion = reader.ProgramVersion;
 
     // Special handling for Gui document, the view representations must already
     // exist, what is done in Restore().
@@ -2884,6 +2887,11 @@ const char* Document::getName() const
 
 std::string Document::getFullName() const {
     return myName;
+}
+
+const char* Document::getProgramVersion() const
+{
+    return d->programVersion.c_str();
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
