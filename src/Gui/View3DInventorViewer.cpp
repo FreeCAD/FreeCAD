@@ -362,7 +362,7 @@ public:
 };
 
 template<class PropT, class ValueT, class CallbackT>
-ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def, CallbackT cb) {
+ValueT _shadowParam(App::Document *doc, const char *_name, const char *_docu, const ValueT &def, CallbackT cb) {
     if(!doc)
         return def;
     char name[64];
@@ -371,7 +371,7 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def, Ca
     if(prop && !prop->isDerivedFrom(PropT::getClassTypeId()))
         return def;
     if(!prop) {
-        prop = doc->addDynamicProperty(PropT::getClassTypeId().getName(), name, "Shadow");
+        prop = doc->addDynamicProperty(PropT::getClassTypeId().getName(), name, "Shadow", _docu);
         static_cast<PropT*>(prop)->setValue(def);
     }
     cb(*static_cast<PropT*>(prop));
@@ -379,14 +379,14 @@ ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def, Ca
 }
 
 template<class PropT, class ValueT>
-ValueT _shadowParam(App::Document *doc, const char *_name, const ValueT &def) {
+ValueT _shadowParam(App::Document *doc, const char *_name, const char *_docu, const ValueT &def) {
     auto cb = [](PropT &){};
-    return _shadowParam<PropT, ValueT>(doc, _name, def, cb);
+    return _shadowParam<PropT, ValueT>(doc, _name, _docu, def, cb);
 }
 
 template<class PropT, class ValueT>
 void _shadowSetParam(App::Document *doc, const char *_name, const ValueT &def) {
-    _shadowParam<PropT, ValueT>(doc, _name, def,
+    _shadowParam<PropT, ValueT>(doc, _name, nullptr, def,
         [&def](PropT &prop) {
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(App::Property::User3, &prop);
             prop.setValue(def);
@@ -1761,12 +1761,13 @@ void View3DInventorViewer::ShadowInfo::activate()
 {
     owner->shading = true;
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
-    bool shaded = !_shadowParam<App::PropertyBool>(
-            doc,"FlatLines",ViewParams::getShadowFlatLines());
+    bool shaded = !_shadowParam<App::PropertyBool>(doc, "FlatLines",
+            ViewParams::docShadowFlatLines(), ViewParams::getShadowFlatLines());
     owner->selectionRoot->overrideMode = shaded?"Shaded":"Flat Lines";
     owner->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
 
-    bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", ViewParams::getShadowSpotLight());
+    bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", 
+            ViewParams::docShadowSpotLight(), ViewParams::getShadowSpotLight());
 
     if(pcShadowGroup) {
         if((spotlight && pcShadowGroup->findChild(pcShadowSpotLight)<0)
@@ -1875,15 +1876,15 @@ void View3DInventorViewer::ShadowInfo::activate()
     }
 
     static const App::PropertyFloatConstraint::Constraints _precision_cstr(0.0,1.0,0.1);
-    pcShadowGroup->quality = _shadowParam<App::PropertyFloatConstraint>(
-            doc, "Quality", 1.0f,
-            [](App::PropertyFloatConstraint &prop) {
-                if(!prop.getConstraints())
-                    prop.setConstraints(&_precision_cstr);
-            });
+    // pcShadowGroup->quality = _shadowParam<App::PropertyFloatConstraint>(
+    //         doc, "Quality", 1.0f,
+    //         [](App::PropertyFloatConstraint &prop) {
+    //             if(!prop.getConstraints())
+    //                 prop.setConstraints(&_precision_cstr);
+    //         });
 
-    pcShadowGroup->precision = _shadowParam<App::PropertyFloatConstraint>(
-            doc, "Precision", 1.0,
+    pcShadowGroup->precision = _shadowParam<App::PropertyFloatConstraint>(doc, "Precision",
+            ViewParams::docShadowPrecision(), ViewParams::getShadowPrecision(),
             [](App::PropertyFloatConstraint &prop) {
                 if(!prop.getConstraints())
                     prop.setConstraints(&_precision_cstr);
@@ -1891,7 +1892,7 @@ void View3DInventorViewer::ShadowInfo::activate()
 
     SoLight *light;
     auto _dir = _shadowParam<App::PropertyVector>(
-            doc, "LightDirection", 
+            doc, "LightDirection", nullptr,
             Base::Vector3d(ViewParams::getShadowLightDirectionX(),
                             ViewParams::getShadowLightDirectionY(),
                             ViewParams::getShadowLightDirectionZ()));
@@ -1901,13 +1902,21 @@ void View3DInventorViewer::ShadowInfo::activate()
     SbBox3f bbox;
     owner->getSceneBoundBox(bbox);
 
-    static const App::PropertyPrecision::Constraints _epsilon_cstr(0.0,1000.0,1e-4);
-    pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc,
-            "Epsilon", 1e-5,
-                [](App::PropertyFloatConstraint &prop) {
-                    if(prop.getConstraints() != &_epsilon_cstr)
-                        prop.setConstraints(&_epsilon_cstr);
-                });
+    static const App::PropertyPrecision::Constraints _epsilon_cstr(0.0,1000.0,1e-5);
+    pcShadowGroup->epsilon = _shadowParam<App::PropertyPrecision>(doc, "Epsilon",
+            ViewParams::docShadowEpsilon(), ViewParams::getShadowEpsilon(),
+            [](App::PropertyFloatConstraint &prop) {
+                if(prop.getConstraints() != &_epsilon_cstr)
+                    prop.setConstraints(&_epsilon_cstr);
+            });
+
+    static const App::PropertyFloatConstraint::Constraints _threshold_cstr(0.0,1.0,0.1);
+    pcShadowGroup->threshold = _shadowParam<App::PropertyFloatConstraint>(doc, "Threshold",
+            ViewParams::docShadowThreshold(), ViewParams::getShadowThreshold(),
+            [](App::PropertyFloatConstraint &prop) {
+                if(prop.getConstraints() != &_threshold_cstr)
+                    prop.setConstraints(&_threshold_cstr);
+            });
 
     if(spotlight) {
         light = pcShadowSpotLight;
@@ -1919,17 +1928,17 @@ void View3DInventorViewer::ShadowInfo::activate()
             initPos.y = center[1];
             initPos.z = center[2] + (_dir.z < 0 ? 1.0f : -1.0f) * (bbox.getMax()[2] - bbox.getMin()[2]);
         }
-        auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", initPos);
+        auto pos = _shadowParam<App::PropertyVector>(doc, "SpotLightPosition", nullptr, initPos);
         pcShadowSpotLight->location = SbVec3f(pos.x,pos.y,pos.z);
         static const App::PropertyFloatConstraint::Constraints _drop_cstr(-0.01,1.0,0.01);
         pcShadowSpotLight->dropOffRate =
-            _shadowParam<App::PropertyFloatConstraint>(doc, "SpotLightDropOffRate",0.0,
+            _shadowParam<App::PropertyFloatConstraint>(doc, "SpotLightDropOffRate", nullptr, 0.0,
                 [](App::PropertyFloatConstraint &prop) {
                     if(!prop.getConstraints())
                         prop.setConstraints(&_drop_cstr);
                 });
         pcShadowSpotLight->cutOffAngle =
-            M_PI * _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", 45.0) / 180.0;
+            M_PI * _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle", nullptr, 45.0) / 180.0;
 
         // pcShadowGroup->visibilityFlag = SoShadowGroup::ABSOLUTE_RADIUS;
         // pcShadowGroup->visibilityNearRadius = _shadowParam<App::PropertyFloat>(doc, "SpotLightRadiusNear", -1.0);
@@ -1941,7 +1950,8 @@ void View3DInventorViewer::ShadowInfo::activate()
         if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
             static const App::PropertyFloatConstraint::Constraints _dist_cstr(-1.0,DBL_MAX,10.0);
             static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
-                _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance", 0.0,
+                _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance",
+                    ViewParams::docShadowMaxDistance(), ViewParams::getShadowMaxDistance(),
                     [](App::PropertyFloatConstraint &prop) {
                         if(!prop.getConstraints())
                             prop.setConstraints(&_dist_cstr);
@@ -1950,36 +1960,36 @@ void View3DInventorViewer::ShadowInfo::activate()
     }
 
     static const App::PropertyFloatConstraint::Constraints _cstr(0.0,1000.0,0.1);
-    light->intensity = _shadowParam<App::PropertyFloatConstraint>(
-            doc, "LightIntensity", ViewParams::getShadowLightIntensity(),
+    light->intensity = _shadowParam<App::PropertyFloatConstraint>(doc, "LightIntensity",
+            ViewParams::docShadowLightIntensity(), ViewParams::getShadowLightIntensity(),
             [](App::PropertyFloatConstraint &prop) {
                 if(!prop.getConstraints())
                     prop.setConstraints(&_cstr);
             });
 
-    App::Color color = _shadowParam<App::PropertyColor>(
-            doc, "LightColor", App::Color((uint32_t)ViewParams::getShadowLightColor()));
+    App::Color color = _shadowParam<App::PropertyColor>(doc, "LightColor",
+            ViewParams::docShadowLightColor(), App::Color((uint32_t)ViewParams::getShadowLightColor()));
     SbColor sbColor;
     float f;
     sbColor.setPackedValue(color.getPackedValue(),f);
     light->color = sbColor;
 
     color = _shadowParam<App::PropertyColor>(doc, "GroundColor",
-            App::Color((uint32_t)ViewParams::getShadowGroundColor()));
+            ViewParams::docShadowGroundColor(), App::Color((uint32_t)ViewParams::getShadowGroundColor()));
     sbColor.setPackedValue(color.getPackedValue(),f);
     pcShadowMaterial->diffuseColor = sbColor;
     pcShadowMaterial->specularColor = SbColor(0,0,0);
 
     static const App::PropertyFloatConstraint::Constraints _transp_cstr(0.0,1.0,0.1);
-    double transp = _shadowParam<App::PropertyFloatConstraint>(
-            doc, "GroundTransparency", ViewParams::getShadowGroundTransparency(),
+    double transp = _shadowParam<App::PropertyFloatConstraint>(doc, "GroundTransparency",
+            ViewParams::docShadowGroundTransparency(), ViewParams::getShadowGroundTransparency(),
             [](App::PropertyFloatConstraint &prop) {
                 if(!prop.getConstraints())
                     prop.setConstraints(&_transp_cstr);
             });
 
     if(_shadowParam<App::PropertyBool>(doc, "GroundBackFaceCull",
-                ViewParams::getShadowGroundBackFaceCull()))
+            ViewParams::docShadowGroundBackFaceCull(), ViewParams::getShadowGroundBackFaceCull()))
         pcShadowGroundShapeHints->shapeType = SoShapeHints::SOLID;
     else
         pcShadowGroundShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -1987,13 +1997,8 @@ void View3DInventorViewer::ShadowInfo::activate()
     pcShadowMaterial->transparency = transp;
     pcShadowGroundStyle->style = (transp == 1.0 ? 0x4 : 0) | SoShadowStyle::SHADOWED;
 
-    // pcShadowMaterial->shininess = _shadowParam<App::PropertyFloatConstraint>(
-    //         doc, "GroundShininess", ViewParams::getShadowGroundShininess(),
-    //         [](App::PropertyFloatConstraint &prop) {
-    //             prop.setConstraints(&_cstr);
-    //         });
-
-    if(_shadowParam<App::PropertyBool>(doc, "ShowGround", ViewParams::getShadowShowGround()))
+    if(_shadowParam<App::PropertyBool>(doc, "ShowGround",
+            ViewParams::docShadowShowGround(), ViewParams::getShadowShowGround()))
         pcShadowGroundSwitch->whichChild = 0;
     else
         pcShadowGroundSwitch->whichChild = -1;
@@ -2001,11 +2006,11 @@ void View3DInventorViewer::ShadowInfo::activate()
     if(!bbox.isEmpty())
         updateShadowGround(bbox);
 
-    pcShadowGroundTexture->filename = _shadowParam<App::PropertyFileIncluded>(
-            doc, "GroundTexture", ViewParams::getShadowGroundTexture().c_str());
+    pcShadowGroundTexture->filename = _shadowParam<App::PropertyFileIncluded>(doc, "GroundTexture",
+            ViewParams::docShadowGroundTexture(), ViewParams::getShadowGroundTexture().c_str());
     
-    const char *bumpmap = _shadowParam<App::PropertyFileIncluded>(
-            doc, "GroundBumpMap", ViewParams::getShadowGroundBumpMap().c_str());
+    const char *bumpmap = _shadowParam<App::PropertyFileIncluded>(doc, "GroundBumpMap",
+            ViewParams::docShadowGroundBumpMap(), ViewParams::getShadowGroundBumpMap().c_str());
     if(bumpmap && bumpmap[0]) {
         if(!pcShadowGroundBumpMap) {
             pcShadowGroundBumpMap = new SoBumpMap;
@@ -2022,7 +2027,8 @@ void View3DInventorViewer::ShadowInfo::activate()
             pcShadowGroundGroup->removeChild(idx);
     }
 
-    if(_shadowParam<App::PropertyBool>(doc, "GroundShading", ViewParams::getShadowGroundShading()))
+    if(_shadowParam<App::PropertyBool>(doc, "GroundShading",
+            ViewParams::docShadowGroundShading(), ViewParams::getShadowGroundShading()))
         pcShadowGroundLightModel->model = SoLightModel::PHONG;
     else
         pcShadowGroundLightModel->model = SoLightModel::BASE_COLOR;
@@ -3869,34 +3875,41 @@ void View3DInventorViewer::ShadowInfo::updateShadowGround(const SbBox3f &box)
     SbVec3f center = box.getCenter();
 
     if(pcShadowDirectionalLight) {
-        // static const App::PropertyFloatConstraint::Constraints _cstr(1.0,1000.0,0.1);
-        // double scale = _shadowParam<App::PropertyFloatConstraint>(doc, "BoundBoxScale", 1.5,
-        //     [](App::PropertyFloatConstraint &prop) {
-        //         if(!prop.getConstraints())
-        //             prop.setConstraints(&_cstr);
-        //     });
-        // pcShadowDirectionalLight->bboxSize = size * float(scale);
-        // pcShadowDirectionalLight->bboxCenter = center;
+        static const App::PropertyFloatConstraint::Constraints _cstr(1.0,1000.0,0.1);
+        double scale = _shadowParam<App::PropertyFloatConstraint>(doc, "BoundBoxScale",
+                ViewParams::docShadowBoundBoxScale(), ViewParams::getShadowBoundBoxScale(),
+            [](App::PropertyFloatConstraint &prop) {
+                if(!prop.getConstraints())
+                    prop.setConstraints(&_cstr);
+            });
+        pcShadowDirectionalLight->bboxSize = size * float(scale);
+        pcShadowDirectionalLight->bboxCenter = center;
     }
 
     if(pcShadowGroundSwitch && pcShadowGroundSwitch->whichChild.getValue()>=0) {
         float z = size[2];
         float width, length;
-        if(_shadowParam<App::PropertyBool>(doc, "GroundSizeAuto", true)) {
-            double scale = _shadowParam<App::PropertyFloat>(
-                    doc, "GroundSizeScale", ViewParams::getShadowGroundScale());
+        if(_shadowParam<App::PropertyBool>(doc, "GroundSizeAuto",
+                    "Auto adjust ground size based on the scene bounding box", true))
+        {
+            double scale = _shadowParam<App::PropertyFloat>(doc, "GroundSizeScale",
+                    ViewParams::docShadowGroundScale(), ViewParams::getShadowGroundScale());
             if(scale <= 0.0)
                 scale = 1.0;
             width = length = scale * std::max(std::max(size[0],size[1]),size[2]);
         } else {
-            width = _shadowParam<App::PropertyLength>(doc, "GroundSizeX", 100.0);
-            length = _shadowParam<App::PropertyLength>(doc, "GroundSizeY", 100.0);
+            width = _shadowParam<App::PropertyLength>(doc, "GroundSizeX", "", 100.0);
+            length = _shadowParam<App::PropertyLength>(doc, "GroundSizeY", "", 100.0);
         }
 
         Base::Placement pla = _shadowParam<App::PropertyPlacement>(
-                doc, "GroundPlacement", Base::Placement());
+                doc, "GroundPlacement",
+                "Ground placement. If 'GroundAutoPosition' is on, this specifies an additional offset of the ground",
+                Base::Placement());
 
-        if(!_shadowParam<App::PropertyBool>(doc, "GroundAutoPosition", true)) {
+        if(!_shadowParam<App::PropertyBool>(doc, "GroundAutoPosition",
+                    "Auto place the ground face at the Z bottom of the scene", true))
+        {
             center[0] = pla.getPosition().x;
             center[1] = pla.getPosition().y;
             z = pla.getPosition().z;
@@ -3917,7 +3930,13 @@ void View3DInventorViewer::ShadowInfo::updateShadowGround(const SbBox3f &box)
         }
         pcShadowGroundCoords->point.setValues(0, 4, coords);
 
-        float textureSize = _shadowParam<App::PropertyLength>(doc, "GroundTextureSize", 100.0); 
+        static const App::PropertyQuantityConstraint::Constraints _texture_cstr = {0,DBL_MAX,10.0};
+        float textureSize = _shadowParam<App::PropertyLength>(doc, "GroundTextureSize",
+            ViewParams::docShadowGroundTextureSize(), ViewParams::getShadowGroundTextureSize(),
+            [](App::PropertyLength &prop) {
+                if(prop.getConstraints() != &_texture_cstr)
+                    prop.setConstraints(&_texture_cstr);
+            });
         if(textureSize < 1e-5)
             pcShadowGroundTextureCoords->point.setNum(0);
         else {
@@ -3934,24 +3953,24 @@ void View3DInventorViewer::ShadowInfo::updateShadowGround(const SbBox3f &box)
     }
 
     static const App::PropertyIntegerConstraint::Constraints _smooth_cstr(0,100,1);
-    double smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SmoothBorder", ViewParams::getShadowSmoothBorder(),
+    double smoothBorder = _shadowParam<App::PropertyIntegerConstraint>(doc, "SmoothBorder",
+            ViewParams::docShadowSmoothBorder(), ViewParams::getShadowSmoothBorder(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_smooth_cstr)
                     prop.setConstraints(&_smooth_cstr);
             });
 
     static const App::PropertyIntegerConstraint::Constraints _spread_cstr(0,1000000,500);
-    double spread = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SpreadSize", ViewParams::getShadowSpreadSize(),
+    double spread = _shadowParam<App::PropertyIntegerConstraint>(doc, "SpreadSize",
+            ViewParams::docShadowSpreadSize(), ViewParams::getShadowSpreadSize(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_spread_cstr)
                     prop.setConstraints(&_spread_cstr);
             });
 
     static const App::PropertyIntegerConstraint::Constraints _sample_cstr(0,7,1);
-    double sample = _shadowParam<App::PropertyIntegerConstraint>(
-            doc, "SpreadSampleSize", ViewParams::getShadowSpreadSampleSize(),
+    double sample = _shadowParam<App::PropertyIntegerConstraint>(doc, "SpreadSampleSize",
+            ViewParams::docShadowSpreadSampleSize(), ViewParams::getShadowSpreadSampleSize(),
             [](App::PropertyIntegerConstraint &prop) {
                 if(prop.getConstraints() != &_sample_cstr)
                     prop.setConstraints(&_sample_cstr);
@@ -4781,7 +4800,7 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
             _shadowSetParam<App::PropertyVector>(doc, "SpotLightPosition",
                     Base::Vector3d(pos[0], pos[1], pos[2]));
 
-            _shadowParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle",
+            _shadowSetParam<App::PropertyAngle>(doc, "SpotLightCutOffAngle",
                     pcShadowSpotLight->cutOffAngle.getValue() * 180.0 / M_PI);
         }
         _shadowSetParam<App::PropertyVector>(doc, "LightDirection",
@@ -4790,17 +4809,9 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
     } else if (!showDragger.getValue() && toggle != 0) {
         pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;
         SbBox3f bbox;
-        if(owner->getSceneBoundBox(bbox)) {
-            owner->viewBoundBox(bbox);
-            if (dirlight) {
-                auto dragger = pcShadowDirectionalLight->getDragger();
-                SbVec3f pos = bbox.getCenter();
-                pos[2] += bbox.getSize()[2];
-                if (dragger->isOfType(SoDirectionalLightDragger::getClassTypeId()))
-                    static_cast<SoDirectionalLightDragger*>(dragger)->translation = pos;
-            }
-        }
         showDragger = TRUE;
+        if(owner->getSceneBoundBox(bbox))
+            owner->viewBoundBox(bbox);
     }
 }
 

@@ -36,7 +36,7 @@ namespace Gui {
  * To add a new parameter, add a new line under FC_VIEW_PARAMS using macro
  *
  * @code
- *      FC_VIEW_PARAM(parameter_name, c_type, parameter_type, default_value)
+ *      FC_VIEW_PARAM(parameter_name, c_type, parameter_type, default_value, documentation)
  * @endcode
  *
  * If there is special handling on parameter change, use FC_VIEW_PARAM2()
@@ -58,99 +58,148 @@ public:
     }
 
 #define FC_VIEW_PARAMS \
-    FC_VIEW_PARAM(UseNewSelection,bool,Bool,true) \
-    FC_VIEW_PARAM(UseSelectionRoot,bool,Bool,true) \
-    FC_VIEW_PARAM(EnableSelection,bool,Bool,true) \
-    FC_VIEW_PARAM(EnablePreselection,bool,Bool,true) \
-    FC_VIEW_PARAM(RenderCache,int,Int,0) \
-    FC_VIEW_PARAM(RandomColor,bool,Bool,false) \
-    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,0xffffffff) \
-    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,0xffffffff) \
-    FC_VIEW_PARAM(HighlightColor,unsigned long,Unsigned,0xe1e114ff) \
-    FC_VIEW_PARAM(SelectionColor,unsigned long,Unsigned,0x1cad1cff) \
-    FC_VIEW_PARAM(MarkerSize,int,Int,9) \
-    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFFFF) \
-    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,0x191919FF) \
-    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCCFF) \
-    FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
-    FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2) \
-    FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
-    FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
-    FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
-    FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
-    FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
-    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
-    FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5) \
-    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false) \
-    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
-    FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
-    FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \
-    FC_VIEW_PARAM(SelectionLinePattern,int,Int,0) \
-    FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0) \
-    FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0) \
-    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false) \
-    FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1) \
-    FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50) \
-    FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true) \
-    FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5) \
-    FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true) \
-    FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true) \
-    FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true) \
-    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false) \
-    FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0) \
-    FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20) \
-    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
-    FC_VIEW_PARAM(NaviWidgetSize,int,Int,132) \
-    FC_VIEW_PARAM2(CornerNaviCube,int,Int,1) \
-    FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true) \
-    FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false) \
-    FC_VIEW_PARAM(DockOverlayDelay,int,Int,200) \
-    FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000) \
-    FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true) \
-    FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,true) \
-    FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true) \
-    FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true) \
-    FC_VIEW_PARAM(EditingTransparency,double,Float,0.5) \
-    FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true) \
-    FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4) \
-    FC_VIEW_PARAM(HiddenLineFaceColor,unsigned long,Unsigned,0xffffffff) \
-    FC_VIEW_PARAM(HiddenLineOverrideFaceColor,bool,Bool,true) \
-    FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff) \
-    FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true) \
-    FC_VIEW_PARAM(HiddenLineBackground,unsigned long,Unsigned,0xffffffff) \
-    FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,false) \
-    FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false) \
-    FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000) \
-    FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true) \
-    FC_VIEW_PARAM(ShadowSpotLight, bool, Bool, false) \
-    FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8) \
-    FC_VIEW_PARAM(ShadowLightDirectionX, double, Float, -1.0) \
-    FC_VIEW_PARAM(ShadowLightDirectionY, double, Float, -1.0) \
-    FC_VIEW_PARAM(ShadowLightDirectionZ, double, Float, -1.0) \
-    FC_VIEW_PARAM(ShadowLightColor, unsigned long, Unsigned, 0xf0fdffff) \
-    FC_VIEW_PARAM(ShadowShowGround, bool, Bool, true) \
-    FC_VIEW_PARAM(ShadowGroundBackFaceCull, bool, Bool, true) \
-    FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0) \
-    FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0x7d7d7dff) \
-    FC_VIEW_PARAM(ShadowGroundShininess, double, Float, 0.8) \
-    FC_VIEW_PARAM(ShadowGroundBumpMap, std::string, ASCII, "") \
-    FC_VIEW_PARAM(ShadowGroundTexture, std::string, ASCII, "") \
-    FC_VIEW_PARAM(ShadowGroundTransparency, double, Float, 0.0) \
-    FC_VIEW_PARAM(ShadowGroundShading, bool, Bool, true) \
-    FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true) \
-    FC_VIEW_PARAM(ShadowSmoothBorder, int, Int, 0) \
-    FC_VIEW_PARAM(ShadowSpreadSize, int, Int, 0) \
-    FC_VIEW_PARAM(ShadowSpreadSampleSize, int, Int, 0) \
-    FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
+    FC_VIEW_PARAM(UseNewSelection,bool,Bool,true, "") \
+    FC_VIEW_PARAM(UseSelectionRoot,bool,Bool,true, "") \
+    FC_VIEW_PARAM(EnableSelection,bool,Bool,true, "") \
+    FC_VIEW_PARAM(EnablePreselection,bool,Bool,true, "") \
+    FC_VIEW_PARAM(RenderCache,int,Int,0, "") \
+    FC_VIEW_PARAM(RandomColor,bool,Bool,false, "") \
+    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,0xffffffff, "") \
+    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,0xffffffff, "") \
+    FC_VIEW_PARAM(HighlightColor,unsigned long,Unsigned,0xe1e114ff, "") \
+    FC_VIEW_PARAM(SelectionColor,unsigned long,Unsigned,0x1cad1cff, "") \
+    FC_VIEW_PARAM(MarkerSize,int,Int,9, "") \
+    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFFFF, "") \
+    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,0x191919FF, "") \
+    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCCFF, "") \
+    FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2, "") \
+    FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2, "") \
+    FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true, "") \
+    FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true, "") \
+    FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false, "") \
+    FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true, "") \
+    FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true, "") \
+    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true, "") \
+    FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5, \
+       QT_TRANSLATE_NOOP("ViewParams","Transparency for the selected object when being shown on top."))\
+    FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, "") \
+    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0, \
+       QT_TRANSLATE_NOOP("ViewParams","Muplication factor to increase the width the selected line."))\
+    FC_VIEW_PARAM(PickRadius,double,Float,5.0, "") \
+    FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5, "") \
+    FC_VIEW_PARAM(SelectionLinePattern,int,Int,0, "") \
+    FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0, \
+       QT_TRANSLATE_NOOP("ViewParams","Width of the hidden line."))\
+    FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0, "") \
+    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false, "") \
+    FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1, "") \
+    FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50, "") \
+    FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true, "") \
+    FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5, "") \
+    FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true, "") \
+    FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true, "") \
+    FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true, "") \
+    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false, "") \
+    FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0, "") \
+    FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20, "") \
+    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false, "") \
+    FC_VIEW_PARAM(NaviWidgetSize,int,Int,132, "") \
+    FC_VIEW_PARAM2(CornerNaviCube,int,Int,1, "") \
+    FC_VIEW_PARAM2(DockOverlayAutoView,bool,Bool,true, "") \
+    FC_VIEW_PARAM2(DockOverlayExtraState,bool,Bool,false, "") \
+    FC_VIEW_PARAM(DockOverlayDelay,int,Int,200, "") \
+    FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000, "") \
+    FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true, "") \
+    FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,true, "") \
+    FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, "") \
+    FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true, "") \
+    FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, "") \
+    FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true, "") \
+    FC_VIEW_PARAM(HiddenLineTransparency,double,Float,0.4, \
+       QT_TRANSLATE_NOOP("ViewParams","Override transparency of all objects in the scene."))\
+    FC_VIEW_PARAM(HiddenLineFaceColor,unsigned long,Unsigned,0xffffffff, "") \
+    FC_VIEW_PARAM(HiddenLineOverrideFaceColor,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Enable preselection and highlight by specified color."))\
+    FC_VIEW_PARAM(HiddenLineColor,unsigned long,Unsigned,0x000000ff, "") \
+    FC_VIEW_PARAM(HiddenLineOverrideColor,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Enable selection highlighting and use specified color"))\
+    FC_VIEW_PARAM(HiddenLineBackground,unsigned long,Unsigned,0xffffffff, "") \
+    FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,false, "") \
+    FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false, "") \
+    FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000, "") \
+    FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true, \
+       QT_TRANSLATE_NOOP("ViewParams","Draw object with 'Flat lines' style when shadow is enabled.")) \
+    FC_VIEW_PARAM(ShadowSpotLight, bool, Bool, false, \
+       QT_TRANSLATE_NOOP("ViewParams","Whether to use spot light or directional light.")) \
+    FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8, "") \
+    FC_VIEW_PARAM(ShadowLightDirectionX, double, Float, -1.0, "") \
+    FC_VIEW_PARAM(ShadowLightDirectionY, double, Float, -1.0, "") \
+    FC_VIEW_PARAM(ShadowLightDirectionZ, double, Float, -1.0, "") \
+    FC_VIEW_PARAM(ShadowLightColor, unsigned long, Unsigned, 0xf0fdffff, "") \
+    FC_VIEW_PARAM(ShadowShowGround, bool, Bool, true, \
+       QT_TRANSLATE_NOOP("ViewParams","Whether to show auto generated ground face. You can specify you own ground\n"\
+                                      "object by changing its view property 'ShadowStyle' to 'Shadowed', meaning\n"\
+                                      "that it will only receive but not cast shadow."))\
+    FC_VIEW_PARAM(ShadowGroundBackFaceCull, bool, Bool, true, \
+       QT_TRANSLATE_NOOP("ViewParams","Whether to show the ground when viewing from under the ground face"))\
+    FC_VIEW_PARAM(ShadowGroundScale, double, Float, 2.0, \
+       QT_TRANSLATE_NOOP("ViewParams","The auto generated ground face is determined by the scene bounding box\n"\
+                                      "multiplied by this scale"))\
+    FC_VIEW_PARAM(ShadowGroundColor, unsigned long, Unsigned, 0x7d7d7dff, "") \
+    FC_VIEW_PARAM(ShadowGroundBumpMap, std::string, ASCII, "", "") \
+    FC_VIEW_PARAM(ShadowGroundTexture, std::string, ASCII, "", "") \
+    FC_VIEW_PARAM(ShadowGroundTextureSize, double, Float, 100.0, \
+       QT_TRANSLATE_NOOP("ViewParams","Specifies the physcal length of the ground texture image size.\n"\
+                                      "Texture mappings beyond this size will be wrapped around"))\
+    FC_VIEW_PARAM(ShadowGroundTransparency, double, Float, 0.0, \
+       QT_TRANSLATE_NOOP("ViewParams","Specifics the ground transparency. When set to 0, the non-shadowed part\n"\
+                                      "of the ground will be complete transparent, showing only the shadowed part\n"\
+                                      "of the ground with some transparency."))\
+    FC_VIEW_PARAM(ShadowGroundShading, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Render ground with shading. If disabled, the ground and the shadow casted\n" \
+                                       "on ground will not change shading when viewing in different angle."))\
+    FC_VIEW_PARAM(ShadowExtraRedraw, bool, Bool, true, "") \
+    FC_VIEW_PARAM(ShadowSmoothBorder, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Specifies the blur raidus of the shadow edge. Higher number will result in\n" \
+                                       "slower rendering speed on scene change. Use a lower 'Precision' value to\n"\
+                                       "counter the effect."))\
+    FC_VIEW_PARAM(ShadowSpreadSize, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Specifies the spread size for a soft shadow. The resulting spread size is\n"\
+                                       "dependent on the model scale"))\
+    FC_VIEW_PARAM(ShadowSpreadSampleSize, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Specifies the sample size used for rendering shadow spread. A value 0\n"\
+                                       "corresponds to a sampling square of 2x2. And 1 corresponds to 3x3, etc.\n"\
+                                       "The bigger the size the slower the rendering speed. You can use a lower\n"\
+                                       "'Precision' value to counter the effect."))\
+    FC_VIEW_PARAM(ShadowPrecision, double, Float, 1.0, \
+        QT_TRANSLATE_NOOP("ViewParams","Specifies shadow precision. This parameter affects the internal texture\n"\
+                                       "size used to hold the casted shadows. You might want a bigger texture if\n"\
+                                       "you want a hard shadow but a smaller one for soft shadow."))\
+    FC_VIEW_PARAM(ShadowEpsilon, double, Float, 1e-5, \
+        QT_TRANSLATE_NOOP("ViewParams","Epsilon is used to offset the shadow map depth from the model depth.\n"\
+                                       "Should be set to as low a number as possible without causing flickering\n"\
+                                       "in the shadows or on non-shadowed objects."))\
+    FC_VIEW_PARAM(ShadowThreshold, double, Float, 0.0, \
+        QT_TRANSLATE_NOOP("ViewParams","Can be used to avoid light bleeding in merged shadows cast from different objects."))\
+    FC_VIEW_PARAM(ShadowBoundBoxScale, double, Float, 1.2, \
+        QT_TRANSLATE_NOOP("ViewParams","Scene bounding box is used to determine the scale of the shadow texture.\n"\
+                                       "You can increase the bounding box scale to avoid execessive clipping of\n"\
+                                       "shadows when viewing up close in certain angle."))\
+    FC_VIEW_PARAM(ShadowMaxDistance, double, Float, 0.0, \
+        QT_TRANSLATE_NOOP("ViewParams","Specifics the clipping distance for when rendering shadows.\n"\
+                                       "You can increase the bounding box scale to avoid execessive\n"\
+                                       "clipping of shadows when viewing up close in certain angle."))\
+    FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100, "") \
 
 #undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
+#define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_name; }\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
+    static const char *doc##_name(); \
 
 #undef FC_VIEW_PARAM2
-#define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
+#define FC_VIEW_PARAM2(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_name; }\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
     void on##_name##Changed();\
@@ -158,6 +207,7 @@ public:
         self->_name = self->handle->Get##_type(#_name,_def); \
         self->on##_name##Changed();\
     }\
+    static const char *doc##_name(); \
 
     FC_VIEW_PARAMS
 
@@ -167,7 +217,7 @@ public:
 
 private:
 #undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
+#define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     _ctype _name;
 
 #undef FC_VIEW_PARAM2

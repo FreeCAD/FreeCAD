@@ -34,7 +34,7 @@ ViewParams::ViewParams() {
             "User parameter:BaseApp/Preferences/View");
     handle->Attach(this);
 #undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
+#define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     _name = handle->Get##_type(#_name,_def);\
     funcs[#_name] = &ViewParams::update##_name;
 
@@ -45,6 +45,12 @@ ViewParams::ViewParams() {
 
 ViewParams::~ViewParams() {
 }
+
+#undef FC_VIEW_PARAM
+#define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
+const char *ViewParams::doc##_name() { return _doc; }
+
+FC_VIEW_PARAMS
 
 void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
     if(!sReason)

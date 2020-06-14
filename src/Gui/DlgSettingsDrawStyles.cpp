@@ -67,25 +67,6 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     , ui(new Ui_DlgSettingsDrawStyles)
 {
     ui->setupUi(this);
-    ui->checkBoxShaded->setChecked(ViewParams::getHiddenLineShaded());
-    ui->checkBoxLineColor->setChecked(ViewParams::getHiddenLineOverrideColor());
-    ui->checkBoxFaceColor->setChecked(ViewParams::getHiddenLineOverrideFaceColor());
-    ui->checkBoxBackground->setChecked(ViewParams::getHiddenLineOverrideBackground());
-
-    ui->LineColor->setEnabled(ui->checkBoxLineColor->isChecked());
-    ui->FaceColor->setEnabled(ui->checkBoxFaceColor->isChecked());
-    ui->BackgroundColor->setEnabled(ui->checkBoxBackground->isChecked());
-
-    ui->LineColor->setColor(App::Color(
-                (uint32_t)ViewParams::getHiddenLineColor()).asValue<QColor>());
-
-    ui->FaceColor->setColor(App::Color(
-                (uint32_t)ViewParams::getHiddenLineFaceColor()).asValue<QColor>());
-
-    ui->BackgroundColor->setColor(App::Color(
-                (uint32_t)ViewParams::getHiddenLineBackground()).asValue<QColor>());
-
-    ui->spinTransparency->setValue(ViewParams::getHiddenLineTransparency());
 
     ui->comboLinePattern->setIconSize (QSize(80,12));
     for(auto &v : _LinePatterns) {
@@ -126,30 +107,76 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
                 QString::fromLatin1("0x%1").arg(pattern,0,16));
     }
 
-    ui->checkBoxSelectionOnTop->setChecked(ViewParams::getShowSelectionOnTop());
-    ui->spinTransparencyOnTop->setValue(ViewParams::getTransparencyOnTop());
-    ui->spinLineWidthMultiplier->setValue(ViewParams::getSelectionLineThicken());
-    ui->spinSelectionHiddenLineWidth->setValue(ViewParams::getSelectionHiddenLineWidth());
+#define FC_DRAW_STYLE_PARAMS \
+    FC_DRAW_STYLE_PARAM(HiddenLineTransparency, value, setValue) \
+    FC_DRAW_STYLE_PARAM(ShowSelectionOnTop, isChecked, setChecked) \
+    FC_DRAW_STYLE_PARAM(HiddenLineShaded, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(HiddenLineOverrideColor, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(HiddenLineOverrideFaceColor, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(HiddenLineOverrideBackground, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(TransparencyOnTop, value, setValue)\
+    FC_DRAW_STYLE_PARAM(SelectionLineThicken, value, setValue)\
+    FC_DRAW_STYLE_PARAM(SelectionHiddenLineWidth, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowSpotLight, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowShowGround, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowFlatLines, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowGroundShading, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowGroundBackFaceCull, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowLightIntensity, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowGroundScale, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowSmoothBorder, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowSpreadSize, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowSpreadSampleSize, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowEpsilon, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowThreshold, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowPrecision, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowBoundBoxScale, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowGroundTransparency, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowMaxDistance, value, setValue)\
+    FC_DRAW_STYLE_PARAM2(ShadowLightColor, color, setColor)\
+    FC_DRAW_STYLE_PARAM2(ShadowGroundColor, color, setColor)\
+    FC_DRAW_STYLE_PARAM2(HiddenLineColor, color, setColor)\
+    FC_DRAW_STYLE_PARAM2(HiddenLineFaceColor, color, setColor)\
+    FC_DRAW_STYLE_PARAM2(HiddenLineBackground, color, setColor)\
+    FC_DRAW_STYLE_PARAM3(ShadowGroundTexture, fileName, setFileName)\
+    FC_DRAW_STYLE_PARAM3(ShadowGroundBumpMap, fileName, setFileName)\
+    FC_DRAW_STYLE_PARAM(ShadowGroundTextureSize, value, setValue)\
 
-    ui->checkBoxSpotLight->setChecked(ViewParams::getShadowSpotLight());
-    ui->checkBoxShowGround->setChecked(ViewParams::getShadowShowGround());
-    ui->checkBoxFlatLines->setChecked(ViewParams::getShadowFlatLines());
-    ui->checkBoxGroundShading->setChecked(ViewParams::getShadowGroundShading());
-    ui->checkBoxBackFaceCull->setChecked(ViewParams::getShadowGroundBackFaceCull());
+#undef FC_DRAW_STYLE_PARAM
+#define FC_DRAW_STYLE_PARAM(_name, _getter, _setter) do {\
+        QString tooltip = QCoreApplication::translate("ViewParams", ViewParams::doc##_name()); \
+        if (!tooltip.isEmpty()) {\
+            ui->_name->setToolTip(tooltip); \
+            if (QLabel *child = findChild<QLabel*>(QString::fromLatin1("label" #_name))) \
+                child->setToolTip(tooltip);\
+        }\
+    }while(0);
 
-    ui->spinBoxLightIntensity->setValue(ViewParams::getShadowLightIntensity());
-    ui->spinBoxGroundScale->setValue(ViewParams::getShadowGroundScale());
-    ui->spinBoxSmoothBorder->setValue(ViewParams::getShadowSmoothBorder());
-    ui->spinBoxSpreadSize->setValue(ViewParams::getShadowSpreadSize());
-    ui->spinBoxSpreadSampleSize->setValue(ViewParams::getShadowSpreadSampleSize());
+#undef FC_DRAW_STYLE_PARAM2
+#define FC_DRAW_STYLE_PARAM2 FC_DRAW_STYLE_PARAM
 
-    ui->LightColor->setColor(App::Color(
-                (uint32_t)ViewParams::getShadowLightColor()).asValue<QColor>());
+#undef FC_DRAW_STYLE_PARAM3
+#define FC_DRAW_STYLE_PARAM3 FC_DRAW_STYLE_PARAM
 
-    ui->GroundColor->setColor(App::Color(
-                (uint32_t)ViewParams::getShadowGroundColor()).asValue<QColor>());
+    FC_DRAW_STYLE_PARAMS;
 
-    ui->spinGroundTransparency->setValue(ViewParams::getShadowGroundTransparency());
+#undef FC_DRAW_STYLE_PARAM
+#define FC_DRAW_STYLE_PARAM(_name, _getter, _setter) \
+    ui->_name->_setter(ViewParams::get##_name());\
+
+#undef FC_DRAW_STYLE_PARAM2
+#define FC_DRAW_STYLE_PARAM2(_name, _getter, _setter) \
+    ui->_name->_setter(App::Color((uint32_t)ViewParams::get##_name()).asValue<QColor>());\
+
+#undef FC_DRAW_STYLE_PARAM3
+#define FC_DRAW_STYLE_PARAM3(_name, _getter, _setter) \
+    ui->_name->_setter(QString::fromUtf8(ViewParams::get##_name().c_str()));\
+
+    FC_DRAW_STYLE_PARAMS;
+
+    ui->HiddenLineColor->setEnabled(ui->HiddenLineOverrideColor->isChecked());
+    ui->HiddenLineFaceColor->setEnabled(ui->HiddenLineOverrideFaceColor->isChecked());
+    ui->HiddenLineBackground->setEnabled(ui->HiddenLineOverrideBackground->isChecked());
 }
 
 /** 
@@ -158,62 +185,6 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
 DlgSettingsDrawStyles::~DlgSettingsDrawStyles()
 {
     // no need to delete child widgets, Qt does it all for us
-}
-
-void DlgSettingsDrawStyles::saveSettings()
-{
-    int idx = ui->comboLinePattern->currentIndex();
-    if(idx >= 0) {
-        ViewParams::setSelectionLinePattern(
-                ui->comboLinePattern->itemData(idx).toInt());
-    } else {
-        QString pattern = ui->comboLinePattern->currentText();
-        bool res;
-        ViewParams::setSelectionLinePattern(pattern.toInt(&res,0));
-        if(!res) {
-            Base::Console().Warning("Invalid line pattern: %s'\n",
-                    pattern.toLatin1().constData());
-        }
-    }
-    ui->checkBoxSelectionOnTop->onSave();
-    ui->spinTransparencyOnTop->onSave();
-    ui->spinLineWidthMultiplier->onSave();
-    ui->spinSelectionHiddenLineWidth->onSave();
-
-    ui->checkBoxShaded->onSave();
-    ui->checkBoxFaceColor->onSave();
-    ui->checkBoxLineColor->onSave();
-    ui->checkBoxBackground->onSave();
-    ui->BackgroundColor->onSave();
-    ui->FaceColor->onSave();
-    ui->LineColor->onSave();
-    ui->spinTransparency->onSave();
-
-    ui->checkBoxSpotLight->onSave();
-    ui->checkBoxShowGround->onSave();
-    ui->checkBoxFlatLines->onSave();
-    ui->spinBoxLightIntensity->onSave();
-    ui->spinBoxGroundScale->onSave();
-    ui->LightColor->onSave();
-    ui->GroundColor->onSave();
-    ui->spinGroundTransparency->onSave();
-    ui->checkBoxGroundShading->onSave();
-    ui->checkBoxBackFaceCull->onSave();
-    ui->spinBoxPrecision->onSave();
-    ui->spinBoxSmoothBorder->onSave();
-    ui->spinBoxSpreadSize->onSave();
-    ui->spinBoxSpreadSampleSize->onSave();
-
-    for(auto doc : App::GetApplication().getDocuments()) {
-        for(auto v : Application::Instance->getDocument(doc)->getMDIViews()) {
-            View3DInventor* view = qobject_cast<View3DInventor*>(v);
-            if(!view)
-                continue;
-            auto viewer = view->getViewer();
-            if(viewer->getOverrideMode() != "As Is")
-                viewer->applyOverrideMode();
-        }
-    }
 }
 
 void DlgSettingsDrawStyles::loadSettings()
@@ -232,35 +203,54 @@ void DlgSettingsDrawStyles::loadSettings()
     if(!found)
         ui->comboLinePattern->setEditText(QString::fromLatin1("0x%1").arg(pattern));
 
-    ui->checkBoxSelectionOnTop->onRestore();
-    ui->spinTransparencyOnTop->onRestore();
-    ui->spinLineWidthMultiplier->onRestore();
-    ui->spinSelectionHiddenLineWidth->onRestore();
-
-    ui->checkBoxShaded->onRestore();
-    ui->checkBoxFaceColor->onRestore();
-    ui->checkBoxLineColor->onRestore();
-    ui->checkBoxBackground->onRestore();
-    ui->BackgroundColor->onRestore();
-    ui->FaceColor->onRestore();
-    ui->LineColor->onRestore();
-    ui->spinTransparency->onRestore();
-
-    ui->checkBoxSpotLight->onRestore();
-    ui->checkBoxShowGround->onRestore();
-    ui->checkBoxFlatLines->onRestore();
-    ui->spinBoxLightIntensity->onRestore();
-    ui->spinBoxGroundScale->onRestore();
-    ui->LightColor->onRestore();
-    ui->GroundColor->onRestore();
-    ui->spinGroundTransparency->onRestore();
-    ui->checkBoxGroundShading->onRestore();
-    ui->checkBoxBackFaceCull->onRestore();
-    ui->spinBoxPrecision->onRestore();
-    ui->spinBoxSmoothBorder->onRestore();
-    ui->spinBoxSpreadSize->onRestore();
-    ui->spinBoxSpreadSampleSize->onRestore();
+    FC_DRAW_STYLE_PARAMS;
 }
+
+void DlgSettingsDrawStyles::saveSettings()
+{
+    int idx = ui->comboLinePattern->currentIndex();
+    if(idx >= 0) {
+        ViewParams::setSelectionLinePattern(
+                ui->comboLinePattern->itemData(idx).toInt());
+    } else {
+        QString pattern = ui->comboLinePattern->currentText();
+        bool res;
+        ViewParams::setSelectionLinePattern(pattern.toInt(&res,0));
+        if(!res) {
+            Base::Console().Warning("Invalid line pattern: %s'\n",
+                    pattern.toLatin1().constData());
+        }
+    }
+
+#undef FC_DRAW_STYLE_PARAM
+#define FC_DRAW_STYLE_PARAM(_name, _getter, _setter) \
+    ViewParams::set##_name(ui->_name->_getter());\
+
+#undef FC_DRAW_STYLE_PARAM2
+#define FC_DRAW_STYLE_PARAM2(_name, _getter, _setter) do {\
+        App::Color color;\
+        color.setValue(ui->_name->_getter());\
+        ViewParams::set##_name(color.getPackedValue());\
+    }while(0);
+
+#undef FC_DRAW_STYLE_PARAM3
+#define FC_DRAW_STYLE_PARAM3(_name, _getter, _setter) \
+    ViewParams::set##_name(ui->_name->_getter().toUtf8().constData());\
+
+    FC_DRAW_STYLE_PARAMS;
+
+    for(auto doc : App::GetApplication().getDocuments()) {
+        for(auto v : Application::Instance->getDocument(doc)->getMDIViews()) {
+            View3DInventor* view = qobject_cast<View3DInventor*>(v);
+            if(!view)
+                continue;
+            auto viewer = view->getViewer();
+            if(viewer->getOverrideMode() != "As Is")
+                viewer->applyOverrideMode();
+        }
+    }
+}
+
 
 /**
  * Sets the strings of the subwidgets using the current language.

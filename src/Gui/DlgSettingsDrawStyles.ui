@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>926</height>
+    <height>1104</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxSelectionOnTop">
+         <widget class="QCheckBox" name="ShowSelectionOnTop">
           <property name="minimumSize">
            <size>
             <width>240</width>
@@ -43,19 +43,10 @@
           <property name="text">
            <string>Show selection on top</string>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShowSelectionOnTop</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinLineWidthMultiplier">
-          <property name="toolTip">
-           <string>Muplication factor to increase the width the selected line.</string>
-          </property>
+         <widget class="QDoubleSpinBox" name="SelectionLineThicken">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
           </property>
@@ -74,19 +65,10 @@
           <property name="value">
            <double>1.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SelectionLineThicken</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinSelectionHiddenLineWidth">
-          <property name="toolTip">
-           <string>Width of the hidden line.</string>
-          </property>
+         <widget class="QDoubleSpinBox" name="SelectionHiddenLineWidth">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
           </property>
@@ -105,23 +87,17 @@
           <property name="value">
            <double>1.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SelectionHiddenLineWidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="labelSelectionLineThicken">
           <property name="text">
            <string>Line width multiplier</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelTransparencyOnTop">
           <property name="text">
            <string>Transparency</string>
           </property>
@@ -131,10 +107,7 @@
          <widget class="QComboBox" name="comboLinePattern"/>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinTransparencyOnTop">
-          <property name="toolTip">
-           <string>Transparency for the selected object when being shown on top.</string>
-          </property>
+         <widget class="QDoubleSpinBox" name="TransparencyOnTop">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
           </property>
@@ -153,16 +126,10 @@
           <property name="value">
            <double>0.500000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TransparencyOnTop</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="labelSelectionHiddenLineWidth">
           <property name="text">
            <string>Selected hidden line width</string>
           </property>
@@ -207,27 +174,18 @@
          <number>6</number>
         </property>
         <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxFaceColor">
+         <widget class="QCheckBox" name="HiddenLineOverrideFaceColor">
           <property name="minimumSize">
            <size>
             <width>240</width>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>Enable preselection and highlight by specified color</string>
-          </property>
           <property name="text">
            <string>Override face color</string>
           </property>
           <property name="checked">
            <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineOverrideFaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
           </property>
          </widget>
         </item>
@@ -239,7 +197,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="FaceColor">
+         <widget class="Gui::ColorButton" name="HiddenLineFaceColor">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -259,38 +217,20 @@
             <blue>255</blue>
            </color>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineFaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxLineColor">
-          <property name="toolTip">
-           <string>Enable selection highlighting and use specified color</string>
-          </property>
+         <widget class="QCheckBox" name="HiddenLineOverrideColor">
           <property name="text">
            <string>Override line color</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineOverrideColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinTransparency">
-          <property name="toolTip">
-           <string>Override transparency of all objects in the scene.</string>
-          </property>
+         <widget class="QDoubleSpinBox" name="HiddenLineTransparency">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
           </property>
@@ -309,16 +249,10 @@
           <property name="value">
            <double>0.500000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineTransparency</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="LineColor">
+         <widget class="Gui::ColorButton" name="HiddenLineColor">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -332,42 +266,24 @@
             <blue>0</blue>
            </color>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxShaded">
+         <widget class="QCheckBox" name="HiddenLineShaded">
           <property name="text">
            <string>Shaded</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>HiddenLineShaded</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxBackground">
+         <widget class="QCheckBox" name="HiddenLineOverrideBackground">
           <property name="text">
            <string>Override background color</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>HiddenLineOverrideBackground</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::PrefColorButton" name="BackgroundColor">
+         <widget class="Gui::ColorButton" name="HiddenLineBackground">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -386,12 +302,6 @@
             <green>255</green>
             <blue>255</blue>
            </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLineBackground</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
           </property>
          </widget>
         </item>
@@ -436,77 +346,22 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="11" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Smooth border</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxBackFaceCull">
-          <property name="toolTip">
-           <string>Whether to show the ground when viewing from under the ground face</string>
-          </property>
+         <widget class="QCheckBox" name="ShadowGroundBackFaceCull">
           <property name="text">
            <string>Ground back face culling</string>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowGroundBacFaceCull</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
          </widget>
         </item>
-        <item row="12" column="1">
-         <widget class="Gui::PrefSpinBox" name="spinBoxSpreadSize">
-          <property name="maximum">
-           <number>1000000</number>
-          </property>
-          <property name="singleStep">
-           <number>500</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowSpreadSize</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_4">
+        <item row="7" column="0">
+         <widget class="QLabel" name="labelShadowGroundTransparency">
           <property name="text">
-           <string>Ground color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxShowGround">
-          <property name="toolTip">
-           <string>Whether to show auto generated ground face. You can specify you own ground object by changing its view property 'ShadowStyle' to 'Shadowed', meaning that it will only receive but not cast shadow.</string>
-          </property>
-          <property name="text">
-           <string>Show ground</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowShowGround</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Light intensity</string>
+           <string>Ground transparency</string>
           </property>
          </widget>
         </item>
         <item row="6" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxGroundScale">
+         <widget class="QDoubleSpinBox" name="ShadowGroundScale">
           <property name="minimum">
            <double>0.100000000000000</double>
           </property>
@@ -519,11 +374,89 @@
           <property name="value">
            <double>2.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowGroundScale</string>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="ShadowShowGround">
+          <property name="text">
+           <string>Show ground</string>
           </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="QSpinBox" name="ShadowSmoothBorder">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowBoundBoxScale">
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.200000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0">
+         <widget class="QLabel" name="labelShadowPrecision">
+          <property name="text">
+           <string>Precision</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowPrecision">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="0">
+         <widget class="QLabel" name="labelShadowEpsilon">
+          <property name="text">
+           <string>Epsilon</string>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="0">
+         <widget class="QLabel" name="labelShadowBoundBoxScale">
+          <property name="text">
+           <string>Bounding box scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="0">
+         <widget class="QLabel" name="labelShadowThreshold">
+          <property name="text">
+           <string>Threshold</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowThreshold">
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
           </property>
          </widget>
         </item>
@@ -534,134 +467,18 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="GroundColor">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShadowGroundColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxFlatLines">
-          <property name="toolTip">
-           <string>Draw object with 'Flat lines' style when shadow is enabled.</string>
-          </property>
-          <property name="text">
-           <string>Flat lines</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowFlatLines</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="LightColor">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShadowLightColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxLightIntensity">
+        <item row="15" column="1">
+         <widget class="QSpinBox" name="ShadowSpreadSize">
           <property name="maximum">
-           <double>1000.000000000000000</double>
+           <number>1000000</number>
           </property>
           <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.800000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowLightIntensity</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Ground scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxSpotLight">
-          <property name="minimumSize">
-           <size>
-            <width>240</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Use spot light</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowSpotLight</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="toolTip">
-           <string>Set ground transparency. When set to 0, the non-shadowed part of the ground will be complete transparent, showing only the shadow part of the ground.</string>
-          </property>
-          <property name="text">
-           <string>Ground transparency</string>
+           <number>500</number>
           </property>
          </widget>
         </item>
         <item row="7" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinGroundTransparency">
-          <property name="toolTip">
-           <string>Override transparency of all objects in the scene.</string>
-          </property>
+         <widget class="QDoubleSpinBox" name="ShadowGroundTransparency">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
           </property>
@@ -680,99 +497,207 @@
           <property name="value">
            <double>0.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShadowGroundTransparency</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Light intensity</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxGroundShading">
-          <property name="toolTip">
-           <string>Render ground with shading. If disabled, the ground and the shadow casted on ground will not change shading when viewing in different angle.</string>
+        <item row="14" column="0">
+         <widget class="QLabel" name="labelShadowSmoothBorder">
+          <property name="text">
+           <string>Smooth border</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Ground color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::ColorButton" name="ShadowGroundColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
-           <string>Ground shading</string>
+           <string/>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowGroundShading</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
-         <widget class="Gui::PrefSpinBox" name="spinBoxSpreadSampleSize">
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelShadowGroundScale">
+          <property name="text">
+           <string>Ground scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QSpinBox" name="ShadowSpreadSampleSize">
           <property name="maximum">
            <number>7</number>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowSpreadSampleSize</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Spread size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="label_13">
-          <property name="text">
-           <string>Spread sample size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="Gui::PrefSpinBox" name="spinBoxSmoothBorder">
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowLightIntensity">
           <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowSmoothBorder</string>
-          </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_14">
-          <property name="toolTip">
-           <string>Specifies shadow rendering precision. This parameter actually controls the underlying texture size used for rendering shadow. The maximum texture size is 2048x2048. The actual size is calculated as 'Precision' times 2048 and round up to power of two. A smaller texture corresponds to faster rendering speed, and also especially when rendering with 'SmoothBorder' or soft shadow with 'SpreadSize'</string>
-          </property>
-          <property name="text">
-           <string>Precision</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxPrecision">
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
+           <double>1000.000000000000000</double>
           </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
           <property name="value">
+           <double>0.800000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="0">
+         <widget class="QLabel" name="labelShadowSpreadSize">
+          <property name="text">
+           <string>Spread size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0">
+         <widget class="QLabel" name="labelShadowSpreadSampleSize">
+          <property name="text">
+           <string>Spread sample size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="ShadowSpotLight">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Use spot light</string>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowEpsilon">
+          <property name="decimals">
+           <number>7</number>
+          </property>
+          <property name="maximum">
            <double>1.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
-           <string>ShadowPrecision</string>
+          <property name="singleStep">
+           <double>0.000010000000000</double>
           </property>
-          <property name="prefPath" stdset="0">
-           <string>View</string>
+          <property name="value">
+           <double>0.000010000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::ColorButton" name="ShadowLightColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Ground texture</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QCheckBox" name="ShadowGroundShading">
+          <property name="text">
+           <string>Ground shading</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="QCheckBox" name="ShadowFlatLines">
+          <property name="text">
+           <string>Flat lines</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>Ground bump map</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="Gui::FileChooser" name="ShadowGroundTexture" native="true"/>
+        </item>
+        <item row="10" column="1">
+         <widget class="Gui::FileChooser" name="ShadowGroundBumpMap" native="true"/>
+        </item>
+        <item row="20" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowMaxDistance">
+          <property name="maximum">
+           <double>999999999.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="0">
+         <widget class="QLabel" name="labelShadowMaxDistance">
+          <property name="text">
+           <string>MaxDistance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelShadowGroundTextureSize">
+          <property name="text">
+           <string>Ground texture size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowGroundTextureSize">
+          <property name="maximum">
+           <double>99999999.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -816,39 +741,25 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>checkBoxFaceColor</tabstop>
-  <tabstop>FaceColor</tabstop>
-  <tabstop>checkBoxLineColor</tabstop>
-  <tabstop>LineColor</tabstop>
-  <tabstop>spinTransparency</tabstop>
+  <tabstop>HiddenLineOverrideFaceColor</tabstop>
+  <tabstop>HiddenLineFaceColor</tabstop>
+  <tabstop>HiddenLineOverrideColor</tabstop>
+  <tabstop>HiddenLineColor</tabstop>
+  <tabstop>HiddenLineTransparency</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>checkBoxFaceColor</sender>
+   <sender>HiddenLineOverrideFaceColor</sender>
    <signal>toggled(bool)</signal>
-   <receiver>FaceColor</receiver>
+   <receiver>HiddenLineFaceColor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -862,9 +773,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBoxLineColor</sender>
+   <sender>HiddenLineOverrideColor</sender>
    <signal>toggled(bool)</signal>
-   <receiver>LineColor</receiver>
+   <receiver>HiddenLineColor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -878,9 +789,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBoxBackground</sender>
+   <sender>HiddenLineOverrideBackground</sender>
    <signal>toggled(bool)</signal>
-   <receiver>BackgroundColor</receiver>
+   <receiver>HiddenLineBackground</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
