@@ -1321,6 +1321,15 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
+void MainWindow::appendRecentMacro(const QString& filename)
+{
+    RecentMacrosAction *recent = this->findChild<RecentMacrosAction *>
+        (QString::fromLatin1("recentMacros"));
+    if (recent) {
+        recent->appendFile(filename);
+    }
+}
+
 void MainWindow::updateActions(bool delay)
 {
     //make it safe to call before the main window is actually created

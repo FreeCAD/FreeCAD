@@ -44,11 +44,16 @@
 #include <Base/Tools.h>
 #include "Action.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
 #include "DlgWorkbenchesImp.h"
+#include "Document.h"
+#include "EditorView.h"
 #include "FileDialog.h"
+#include "Macro.h"
 #include "MainWindow.h"
+#include "PythonEditor.h"
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
@@ -814,6 +819,195 @@ void RecentFilesAction::save()
     }
 
     hGrp->SetInt("RecentFiles", count); // restore
+}
+
+// --------------------------------------------------------------------
+
+/* TRANSLATOR Gui::RecentMacrosAction */
+
+RecentMacrosAction::RecentMacrosAction ( Command* pcCmd, QObject * parent )
+  : ActionGroup( pcCmd, parent ), visibleItems(4), maximumItems(20)
+{
+    restore();
+}
+
+RecentMacrosAction::~RecentMacrosAction()
+{
+}
+
+/** Adds the new item to the recent files. */
+void RecentMacrosAction::appendFile(const QString& filename)
+{
+    // restore the list of recent files
+    QStringList files = this->files();
+
+    // if already inside remove and prepend it
+    files.removeAll(filename);
+    files.prepend(filename);
+    setFiles(files);
+    save();
+
+    // update the XML structure and save the user parameter to disk (#0001989)
+    bool saveParameter = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
+    if (saveParameter) {
+        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    }
+}
+
+/**
+ * Set the list of recent macro files. For each item an action object is
+ * created and added to this action group.
+ */
+void RecentMacrosAction::setFiles(const QStringList& files)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                                ->GetGroup("Preferences")->GetGroup("RecentMacros");
+    this->shortcut_modifiers = hGrp->GetASCII("ShortcutModifiers","Ctrl+Shift+");
+    this->shortcut_count = std::min<int>(hGrp->GetInt("ShortcutCount",3),9);//max = 9, e.g. Ctrl+Shift+9
+    this->visibleItems = hGrp->GetInt("RecentMacros",12);
+    QList<QAction*> recentFiles = _group->actions();
+
+    int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
+    for (int index = 0; index < numRecentFiles; index++) {
+        QFileInfo fi(files[index]);
+        QString accel = tr(QString::fromLatin1(shortcut_modifiers.c_str())\
+                           .append(QString::number(index+1,10)).toStdString().c_str());
+        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.baseName()));
+        recentFiles[index]->setStatusTip(tr("Run macro %1 (Shift+click to edit) shortcut: %2").arg(files[index]).arg(accel));
+        recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
+        recentFiles[index]->setData(QVariant(index));
+        if (index < shortcut_count){
+            recentFiles[index]->setShortcut(accel);
+        }
+        recentFiles[index]->setVisible(true);
+    }
+
+    // if less file names than actions
+    numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
+    for (int index = numRecentFiles; index < recentFiles.count(); index++) {
+        recentFiles[index]->setVisible(false);
+        recentFiles[index]->setText(QString());
+        recentFiles[index]->setToolTip(QString());
+    }
+}
+
+/**
+ * Returns the list of defined recent files.
+ */
+QStringList RecentMacrosAction::files() const
+{
+    QStringList files;
+    QList<QAction*> recentFiles = _group->actions();
+    for (int index = 0; index < recentFiles.count(); index++) {
+        QString file = recentFiles[index]->toolTip();
+        if (file.isEmpty())
+            break;
+        files.append(file);
+    }
+
+    return files;
+}
+
+void RecentMacrosAction::activateFile(int id)
+{
+    // restore the list of recent files
+    QStringList files = this->files();
+    if (id < 0 || id >= files.count())
+        return; // no valid item
+
+    QString filename = files[id];
+    QFileInfo fi(filename);
+    if (!fi.exists() || !fi.isFile()) {
+        QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
+        files.removeAll(filename);
+        setFiles(files);
+    }
+    else {
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //open for editing on Shift+click
+            PythonEditor* editor = new PythonEditor();
+            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
+            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            edit->setDisplayName(PythonEditorView::FileName);
+            edit->open(filename);
+            edit->resize(400, 300);
+            getMainWindow()->addWindow(edit);
+            getMainWindow()->appendRecentMacro(filename);
+            edit->setWindowTitle(fi.fileName());
+        } else { //execute macro on normal (non-shifted) click
+            try {
+                getMainWindow()->appendRecentMacro(fi.filePath());
+                Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
+                // after macro run recalculate the document
+                if (Application::Instance->activeDocument())
+                    Application::Instance->activeDocument()->getDocument()->recompute();
+            }
+            catch (const Base::SystemExitException&) {
+                // handle SystemExit exceptions
+                Base::PyGILStateLocker locker;
+                Base::PyException e;
+                e.ReportException();
+            }
+        }
+    }
+}
+
+void RecentMacrosAction::resizeList(int size)
+{
+    this->visibleItems = size;
+    int diff = this->visibleItems - this->maximumItems;
+    // create new items if needed
+    for (int i=0; i<diff; i++)
+        _group->addAction(QLatin1String(""))->setVisible(false);
+    setFiles(files());
+}
+
+/** Loads all recent files from the preferences. */
+void RecentMacrosAction::restore()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
+    if (hGrp->HasGroup("RecentMacros")) {
+        hGrp = hGrp->GetGroup("RecentMacros");
+        // we want at least 20 items but we do only show the number of files
+        // that is defined in user parameters
+        this->visibleItems = hGrp->GetInt("RecentMacros", this->visibleItems);
+        this->shortcut_count = hGrp->GetInt("ShortcutCount", 3); // number of shortcuts
+        this->shortcut_modifiers = hGrp->GetASCII("ShortcutModifiers","Ctrl+Shift+");
+    }
+
+    int count = std::max<int>(this->maximumItems, this->visibleItems);
+    for (int i=0; i<count; i++)
+        _group->addAction(QLatin1String(""))->setVisible(false);
+    std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
+    QStringList files;
+    for (std::vector<std::string>::iterator it = MRU.begin(); it!=MRU.end();++it)
+        files.append(QString::fromUtf8(it->c_str()));
+    setFiles(files);
+}
+
+/** Saves all recent files to the preferences. */
+void RecentMacrosAction::save()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                                ->GetGroup("Preferences")->GetGroup("RecentMacros");
+    int count = hGrp->GetInt("RecentMacros", this->visibleItems); // save number of files
+    hGrp->Clear();
+
+    // count all set items
+    QList<QAction*> recentFiles = _group->actions();
+    int num = std::min<int>(count, recentFiles.count());
+    for (int index = 0; index < num; index++) {
+        QString key = QString::fromLatin1("MRU%1").arg(index);
+        QString value = recentFiles[index]->toolTip();
+        if (value.isEmpty())
+            break;
+        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
+    }
+
+    hGrp->SetInt("RecentMacros", count); // restore
+    hGrp->SetInt("ShortcutCount", this->shortcut_count);
+    hGrp->SetASCII("ShortcutModifiers",this->shortcut_modifiers.c_str());
 }
 
 // --------------------------------------------------------------------

@@ -671,6 +671,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *macro << "Std_DlgMacroRecord"
            << "Std_MacroStopRecord"
            << "Std_DlgMacroExecute"
+           << "Std_RecentMacros"
            << "Separator"
            << "Std_DlgMacroExecuteDirect"
            << "Std_MacroAttachDebugger"

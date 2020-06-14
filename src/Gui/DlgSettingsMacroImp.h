@@ -52,6 +52,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgSettingsMacro> ui;
+    void setRecentMacroSize();
 };
 
 } // namespace Dialog
