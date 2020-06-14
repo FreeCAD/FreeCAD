@@ -62,6 +62,7 @@ public:
 
     App::PropertyEnumeration ProjectionType;
 
+    /// Whether projcetion group view are automatically distributed or not
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
     App::PropertyLength spacingX;
@@ -175,6 +176,7 @@ protected:
 
     void updateChildrenSource(void);
     void updateChildrenLock(void);
+    void updateViews(void);
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv(void) const;
     Base::Vector3d dir2vec(gp_Dir d);
