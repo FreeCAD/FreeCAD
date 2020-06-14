@@ -3679,7 +3679,7 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
     SoSearchAction sa;
     sa.setType(SoSkipBoundingGroup::getClassTypeId());
     sa.setInterest(SoSearchAction::ALL);
-    sa.apply(this->getSoRenderManager()->getSceneGraph());
+    sa.apply(pcViewProviderRoot);
     const SoPathList& pathlist = sa.getPaths();
 
     for (int i = 0; i < pathlist.getLength(); i++) {
@@ -3729,15 +3729,6 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
         SoPath* path = pathlist[i];
         SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
         group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
-    }
-
-    SbBox3f bbox;
-    shadowInfo->getBoundingBox(bbox);
-    if (!bbox.isEmpty()) {
-        float minx,miny,minz,maxx,maxy,maxz;
-        bbox.getBounds(minx,miny,minz,maxx,maxy,maxz);
-        box.Add(Base::Vector3d(minx,miny,minz));
-        box.Add(Base::Vector3d(maxx,maxy,maxz));
     }
     return box.IsValid();
 }
@@ -4810,7 +4801,9 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
         pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;
         SbBox3f bbox;
         showDragger = TRUE;
-        if(owner->getSceneBoundBox(bbox))
+        owner->getSceneBoundBox(bbox);
+        this->getBoundingBox(bbox);
+        if (!bbox.isEmpty())
             owner->viewBoundBox(bbox);
     }
 }
