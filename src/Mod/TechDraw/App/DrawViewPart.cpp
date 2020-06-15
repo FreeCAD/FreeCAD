@@ -622,14 +622,11 @@ void DrawViewPart::extractFaces()
 
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
-//    Base::Console().Message("DVP::getHatches()\n");
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->isRemoving()) {
-            continue;
-        }
-        if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()))   {
+        if ( ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) &&
+            (!(*it)->isRemoving()) ) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
         }
@@ -642,7 +639,7 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ( ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId()))  &&
+        if ( ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())) &&
              (!(*it)->isRemoving()) ) {
             TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(*it);
             result.push_back(geom);
