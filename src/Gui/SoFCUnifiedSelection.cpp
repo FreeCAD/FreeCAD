@@ -2830,7 +2830,7 @@ bool SoFCSelectionRoot::handleSelectionAction(SoAction *action,
             // call below to obtain a action context.  If no secondary context
             // exist, it will create an empty one, and an empty secondary
             // context inhibites drawing here.
-            auto ctx = getActionContext<SelContext>(action,node);
+            auto ctx = getActionContext<SoFCSelectionContextEx>(action,node);
             selCounter.checkAction(selaction,ctx);
             node->touch();
         }
