@@ -247,7 +247,7 @@ def export(exportList,filename,colors=None,preferences=None):
     ifcbin = exportIFCHelper.recycler(ifcfile)
 
     # setup analytic model
-    
+
     if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
         exportIFCStructuralTools.setup(ifcfile,ifcbin,preferences['SCALE_FACTOR'])
 
@@ -287,7 +287,7 @@ def export(exportList,filename,colors=None,preferences=None):
     for obj in objectslist:
 
         # structural analysis object
-        
+
         structobj = None
         if preferences['EXPORT_MODEL'] in ['struct','hybrid']:
             structobj = exportIFCStructuralTools.createStructuralMember(ifcfile,ifcbin,obj)
@@ -306,7 +306,7 @@ def export(exportList,filename,colors=None,preferences=None):
             continue
 
         # handle assemblies (arrays, app::parts, references, etc...)
-        
+
         assemblyElements = []
 
         if ifctype == "IfcArray":
@@ -342,7 +342,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     placement,
                     representation,
                     preferences)
-                
+
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
@@ -367,7 +367,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     placement,
                     representation,
                     preferences)
-                
+
                 assemblyElements.append(subproduct)
                 ifctype = "IfcElementAssembly"
 
@@ -447,7 +447,7 @@ def export(exportList,filename,colors=None,preferences=None):
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
 
-        if preferences['DEBUG']: 
+        if preferences['DEBUG']:
             print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # creating the product
@@ -469,7 +469,7 @@ def export(exportList,filename,colors=None,preferences=None):
             spatialelements[obj.Name] = product
 
         # associate with structural analysis object if any
-        
+
         if structobj:
             exportIFCStructuralTools.associates(ifcfile,product,structobj)
 
@@ -1656,7 +1656,7 @@ def buildAddress(obj,ifcfile):
     return addr
 
 
-def createCurve(ifcfile,wire):
+def createCurve(ifcfile,wire,scaling=1.0):
 
     "creates an IfcCompositeCurve from a shape"
 
@@ -1668,6 +1668,8 @@ def createCurve(ifcfile,wire):
     else:
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
+        if scaling not in (0,1):
+            e.scale(scaling)
         if isinstance(e.Curve,Part.Circle):
             xaxis = e.Curve.XAxis
             zaxis = e.Curve.Axis
@@ -1973,7 +1975,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             shapes.append(shape)
             solidType = "SweptSolid"
             shapetype = "extrusion"
-                    
+
 
     if (not shapes) and (not skipshape):
 
@@ -2213,8 +2215,13 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 
         placement = ifcbin.createIfcLocalPlacement()
-        representation = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
-        productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
+        representation = [ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)]
+        # additional representations?
+        if Draft.getType(obj) in ["Wall"]:
+            addrepr = createAxis(ifcfile,obj,preferences)
+            if addrepr:
+                representation = representation + [addrepr]
+        productdef = ifcfile.createIfcProductDefinitionShape(None,None,representation)
 
     return productdef,placement,shapetype
 
@@ -2277,7 +2284,7 @@ def getUID(obj,preferences):
 
 def getText(field,obj):
     """Returns the value of a text property of an object"""
-        
+
     result = ""
     if field == "Name":
         field = "Label"
@@ -2286,3 +2293,31 @@ def getText(field,obj):
     if six.PY2:
         result = result.encode("utf8")
     return result
+
+def getAxisContext(ifcfile):
+
+    """gets or creates an axis context"""
+
+    contexts = ifcfile.by_type("IfcGeometricRepresentationContext")
+    # filter out subcontexts
+    subcontexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationSubContext"]
+    contexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationContext"]
+    for ctx in subcontexts:
+        if ctx.ContextIdentifier == "Axis":
+            return ctx
+    ctx = contexts[0] # arbitrarily take the first one...
+    nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
+    return nctx
+
+def createAxis(ifcfile,obj,preferences):
+
+    """Creates an axis for a given wall, if applicable"""
+
+    if hasattr(obj,"Base") and hasattr(obj.Base,"Shape") and obj.Base.Shape:
+        if obj.Base.Shape.ShapeType in ["Wire","Edge"]:
+            curve = createCurve(ifcfile,obj.Base.Shape,preferences["SCALE_FACTOR"])
+            if curve:
+                ctx = getAxisContext(ifcfile)
+                axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])
+                return axis
+    return None
