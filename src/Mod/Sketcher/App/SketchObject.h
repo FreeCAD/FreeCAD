@@ -378,6 +378,8 @@ public:
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
 
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
+
+    bool isPerformingInternalTransaction() const {return internaltransaction;};
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
