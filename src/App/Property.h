@@ -267,6 +267,16 @@ public:
      */
     virtual Property *copyBeforeChange(void) const;
 
+    /** Return a unique ID for the property
+     *
+     * The ID of a property is generated from an monotonically increasing
+     * internal counter. The intention of the ID is to be used as a key for
+     * mapping, instead of using the raw pointer. Because, it is possible for
+     * the runtime memory allocator to reuse just deleted memory, which will
+     * cause hard to debug problem if use pointer as key. 
+     */
+    long getID() const {return _id;}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -307,6 +317,7 @@ private:
     PropertyContainer *father;
     const char *myName;
     std::unique_ptr<Property> _old;
+    long _id;
 
 public:
     boost::signals2::signal<void (const App::Property&)> signalChanged;
