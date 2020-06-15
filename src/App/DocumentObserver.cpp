@@ -27,7 +27,7 @@
 # include <sstream>
 #endif
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <Base/Tools.h>
 #include "Application.h"

@@ -33,7 +33,7 @@
 #include <QDir>
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <CXX/Objects.hxx>

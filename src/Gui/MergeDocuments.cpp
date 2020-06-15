@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 #include "MergeDocuments.h"
 #include <Base/Console.h>

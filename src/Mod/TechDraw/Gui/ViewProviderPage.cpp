@@ -34,7 +34,7 @@
 # include <QPointer>
 # include <boost/signals2.hpp>
 # include <boost/signals2/connection.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 
 #endif
 

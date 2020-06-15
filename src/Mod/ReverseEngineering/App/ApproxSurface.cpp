@@ -30,7 +30,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Base/Sequencer.h>

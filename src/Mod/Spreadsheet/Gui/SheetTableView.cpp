@@ -35,7 +35,7 @@
 #include <App/Document.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
 #include <App/Range.h>

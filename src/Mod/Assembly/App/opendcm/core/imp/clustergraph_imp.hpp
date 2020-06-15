@@ -27,7 +27,7 @@
 #include <boost/fusion/include/at_c.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 namespace bp = boost::placeholders;
 

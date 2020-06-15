@@ -122,7 +122,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>

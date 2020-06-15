@@ -26,7 +26,7 @@
 # include <vector>
 # include <list>
 # include <set>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QMessageBox>
 # include <QPushButton>
 #endif

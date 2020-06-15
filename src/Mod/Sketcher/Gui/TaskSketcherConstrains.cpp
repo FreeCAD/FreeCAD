@@ -33,7 +33,7 @@
 # include <QStyledItemDelegate>
 # include <QPainter>
 # include <QPixmapCache>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherConstrains.h"

@@ -38,7 +38,7 @@
 #include <Gui/Command.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;

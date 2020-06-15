@@ -71,7 +71,7 @@
 # include <QTextStream>
 # include <QKeyEvent>
 
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
 #endif
 

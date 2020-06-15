@@ -28,7 +28,7 @@
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/assign.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
 #include <Base/Console.h>
 #include <App/Document.h>

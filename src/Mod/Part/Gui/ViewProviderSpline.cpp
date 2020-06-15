@@ -45,7 +45,7 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <QAction>
 # include <QMenu>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <App/PropertyStandard.h>

@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "Application.h"

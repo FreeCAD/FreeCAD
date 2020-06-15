@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <boost/signals2.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <qapplication.h>
 # include <qregexp.h>
 # include <QEvent>

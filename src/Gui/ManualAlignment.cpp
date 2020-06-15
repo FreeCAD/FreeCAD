@@ -47,7 +47,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 

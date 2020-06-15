@@ -28,7 +28,7 @@
 
 #include <QColorDialog>
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "ui_TaskElementColors.h"

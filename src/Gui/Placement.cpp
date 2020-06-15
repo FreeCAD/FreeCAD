@@ -28,7 +28,7 @@
 #include <QMessageBox>
 #include <QClipboard>
 #include <QMetaObject>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #endif
 
 #include "Placement.h"

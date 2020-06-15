@@ -36,7 +36,7 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

@@ -27,7 +27,7 @@
 # include <QApplication>
 # include <algorithm>
 # include <boost/signals2.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <boost/unordered_set.hpp>

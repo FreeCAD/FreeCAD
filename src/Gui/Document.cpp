@@ -33,7 +33,7 @@
 # include <qmessagebox.h>
 # include <qstatusbar.h>
 # include <boost/signals2.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif

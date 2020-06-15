@@ -82,7 +82,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #endif //USE_OLD_DAG
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>

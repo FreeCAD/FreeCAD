@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskHoleParameters.h"

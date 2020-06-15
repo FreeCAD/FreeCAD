@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <string>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QApplication>
 # include <QString>
 # include <QStatusBar>

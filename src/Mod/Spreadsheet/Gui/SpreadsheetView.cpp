@@ -47,7 +47,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Command.h>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
 #include <LineEdit.h>

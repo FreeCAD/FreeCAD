@@ -38,7 +38,7 @@
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......

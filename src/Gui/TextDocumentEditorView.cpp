@@ -31,7 +31,7 @@
 # include <QPushButton>
 # include <QTextBlock>
 # include <iostream>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <boost/signals2.hpp>
 #endif
 

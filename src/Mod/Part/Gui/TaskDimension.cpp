@@ -27,7 +27,7 @@
 # include <QPushButton>
 # include <sstream>
 # include <Python.h>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>

@@ -28,7 +28,7 @@
 #include "defines.hpp"
 
 #include <boost/exception/errinfo_errno.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 namespace bp = boost::placeholders;
 
 namespace dcm {

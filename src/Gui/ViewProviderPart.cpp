@@ -27,7 +27,7 @@
 # include <QApplication>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <App/Part.h>

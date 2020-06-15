@@ -22,7 +22,7 @@
 
 #include "../module.hpp"
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include "constraint3d_imp.hpp"
 #include "geometry3d_imp.hpp"

@@ -58,7 +58,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 //# include <QtGlobal>
 #endif
 

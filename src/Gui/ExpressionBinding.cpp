@@ -34,7 +34,7 @@
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
 #include <App/Application.h>
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 

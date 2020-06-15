@@ -44,7 +44,7 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <boost/signals2.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskFaceColors.h"

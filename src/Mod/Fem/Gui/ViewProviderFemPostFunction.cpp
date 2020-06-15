@@ -47,7 +47,7 @@
 
 # include <QMessageBox>
 
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 
 # include <math.h>
 #endif

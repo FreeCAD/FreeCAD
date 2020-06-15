@@ -27,7 +27,7 @@
 # include <QHeaderView>
 # include <QEvent>
 # include <QTimer>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 

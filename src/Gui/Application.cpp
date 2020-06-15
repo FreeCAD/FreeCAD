@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include "InventorAll.h"
 # include <boost/signals2.hpp>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <sstream>
 # include <stdexcept>
 # include <iostream>

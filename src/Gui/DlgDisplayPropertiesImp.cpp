@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <boost/signals2.hpp>
 # include <QDockWidget>
 #endif

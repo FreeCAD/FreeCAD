@@ -37,7 +37,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
-#include <boost/bind/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 
 using namespace Gui;

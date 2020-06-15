@@ -37,7 +37,7 @@
 # include <QGraphicsView>
 # include <QThread>
 # include <QProcess>
-# include <boost/bind/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 #include "GraphicsViewZoom.h"
 #include "FileDialog.h"
