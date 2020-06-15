@@ -65,6 +65,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <Base/Stream.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
@@ -749,6 +750,8 @@ void Feature::onChanged(const App::Property* prop)
 
         TopoShape shape = this->Shape.getShape();
         shape.setTransform(this->Placement.getValue().toMatrix());
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+                App::Property::NoRecompute, &this->Shape);
         this->Shape.setValue(shape);
     }
     // if the point data has changed check and adjust the transformation as well
