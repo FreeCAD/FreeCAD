@@ -48,10 +48,14 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Electrostatic Constraints");
     qApp->translate("Workbench", "Fluid Constraints");
     qApp->translate("Workbench", "&Fluid Constraints");
+    qApp->translate("Workbench", "Geometrical Constraints");
+    qApp->translate("Workbench", "&Geometrical Constraints");
     qApp->translate("Workbench", "Mechanical Constraints");
     qApp->translate("Workbench", "&Mechanical Constraints");
     qApp->translate("Workbench", "Thermal Constraints");
     qApp->translate("Workbench", "&Thermal Constraints");
+    qApp->translate("Workbench", "Constraints without solver");
+    qApp->translate("Workbench", "&Constraints without solver");
     //
     qApp->translate("Workbench", "Mesh");
     qApp->translate("Workbench", "M&esh");
@@ -89,6 +93,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
+
     Gui::ToolBarItem* model = new Gui::ToolBarItem(root);
     model->setCommand("Model");
     *model << "FEM_Analysis"
@@ -104,14 +109,27 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_ElementGeometry2D"
            << "FEM_ElementFluid1D";
 
+    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
+    electrostat->setCommand("Electrostatic Constraints");
+    *electrostat << "FEM_ConstraintElectrostaticPotential";
+
+    Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
+    fluid->setCommand("Fluid Constraints");
+    *fluid << "FEM_ConstraintInitialFlowVelocity"
+           << "Separator"
+           << "FEM_ConstraintFlowVelocity";
+
+    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+    geom->setCommand("Geometrical Constraints");
+    *geom << "FEM_ConstraintPlaneRotation"
+          << "FEM_ConstraintTransform";
+
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
     mech->setCommand("Mechanical Constraints");
     *mech << "FEM_ConstraintFixed"
           << "FEM_ConstraintDisplacement"
-          << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintContact"
           << "FEM_ConstraintTie"
-          << "FEM_ConstraintTransform"
           << "Separator"
           << "FEM_ConstraintForce"
           << "FEM_ConstraintPressure"
@@ -121,8 +139,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     thermal->setCommand("Thermal Constraints");
     *thermal << "FEM_ConstraintInitialTemperature"
              << "Separator"
+             << "FEM_ConstraintHeatflux"
              << "FEM_ConstraintTemperature"
-             << "FEM_ConstraintHeatflux";
+             << "FEM_ConstraintBodyHeatSource";
 
      Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
      mesh->setCommand("Mesh");
@@ -136,17 +155,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_MeshGroup"
            << "Separator"
            << "FEM_FEMMesh2Mesh";
-
-    Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
-    fluid->setCommand("Fluid Constraints");
-    *fluid << "FEM_ConstraintInitialFlowVelocity"
-           << "Separator"
-           << "FEM_ConstraintFluidBoundary"
-           << "FEM_ConstraintFlowVelocity";
-
-    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
-    electrostat->setCommand("Electrostatic Constraints");
-    *electrostat << "FEM_ConstraintElectrostaticPotential";
 
      Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
      solve->setCommand("Solve");
@@ -205,10 +213,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
               << "FEM_MaterialReinforced"
               << "FEM_MaterialEditor";
 
-    Gui::MenuItem* elec = new Gui::MenuItem;
-    elec->setCommand("&Electrostatic Constraints");
-    *elec << "FEM_ConstraintElectrostaticPotential";
-
     Gui::MenuItem* elegeom = new Gui::MenuItem;
     elegeom->setCommand("&Element Geometry");
     *elegeom << "FEM_ElementGeometry1D"
@@ -216,22 +220,31 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_ElementGeometry2D"
              << "FEM_ElementFluid1D";
 
+    Gui::MenuItem* elec = new Gui::MenuItem;
+    elec->setCommand("&Electrostatic Constraints");
+    *elec << "FEM_ConstraintElectrostaticPotential";
+
+    Gui::MenuItem* fluid = new Gui::MenuItem;
+    fluid->setCommand("&Fluid Constraints");
+    *fluid << "FEM_ConstraintInitialFlowVelocity"
+           << "Separator"
+           << "FEM_ConstraintFlowVelocity";
+
+    Gui::MenuItem* geom = new Gui::MenuItem;
+    geom->setCommand("&Geometrical Constraints");
+    *geom << "FEM_ConstraintPlaneRotation"
+          << "FEM_ConstraintTransform";
+
     Gui::MenuItem* mech = new Gui::MenuItem;
     mech->setCommand("&Mechanical Constraints");
     *mech << "FEM_ConstraintFixed"
           << "FEM_ConstraintDisplacement"
-          << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintContact"
           << "FEM_ConstraintTie"
-          << "FEM_ConstraintTransform"
           << "Separator"
           << "FEM_ConstraintForce"
           << "FEM_ConstraintPressure"
-          << "FEM_ConstraintSelfWeight"
-          << "Separator"
-          << "FEM_ConstraintBearing"
-          << "FEM_ConstraintGear"
-          << "FEM_ConstraintPulley";
+          << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
     thermal->setCommand("&Thermal Constraints");
@@ -241,12 +254,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_ConstraintTemperature"
              << "FEM_ConstraintBodyHeatSource";
 
-    Gui::MenuItem* fluid = new Gui::MenuItem;
-    fluid->setCommand("&Fluid Constraints");
-    *fluid << "FEM_ConstraintInitialFlowVelocity"
-           << "Separator"
-           << "FEM_ConstraintFluidBoundary"
-           << "FEM_ConstraintFlowVelocity";
+    Gui::MenuItem* nosolver = new Gui::MenuItem;
+    nosolver->setCommand("&Constraints without solver");
+    *nosolver << "FEM_ConstraintFluidBoundary"
+              << "Separator"
+              << "FEM_ConstraintBearing"
+              << "FEM_ConstraintGear"
+              << "FEM_ConstraintPulley";
 
     Gui::MenuItem* model = new Gui::MenuItem;
     root->insertItem(item, model);
@@ -258,8 +272,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
            << "Separator"
            << elec
            << fluid
+           << geom
            << mech
-           << thermal;
+           << thermal
+           << "Separator"
+           << nosolver;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
