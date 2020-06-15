@@ -62,7 +62,7 @@ public:
 
     virtual void setSize(int newSize) override;
     virtual int getSize(void) const override;
-    
+
     const char* getEditorName(void) const override {
         return "SketcherGui::PropertyConstraintListItem";
     }
@@ -121,7 +121,7 @@ public:
     virtual unsigned int getMemSize(void) const override;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
-    void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+    bool checkGeometry(const std::vector<Part::Geometry *> &GeoList);
     bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
 
     /// Return status of geometry for better error reporting
