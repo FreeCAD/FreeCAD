@@ -46,7 +46,7 @@ BuildRequires:  git
 
 # Development Libraries
 
-BuildRequires:  Coin3-devel
+BuildRequires:  Coin4-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
@@ -198,8 +198,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
-       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin3 \
-       -DCOIN3D_DOC_PATH=%{_datadir}/Coin3/Coin \
+       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
+       -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DUSE_OCC=TRUE \
 %if ! %{bundled_smesh}
