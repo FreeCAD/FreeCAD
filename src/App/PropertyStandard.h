@@ -294,6 +294,9 @@ public:
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyIntegerConstraintItem"; }
     virtual void setPyObject(PyObject *);
 
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
 protected:
     const Constraints* _ConstStruct;
 };
@@ -588,6 +591,9 @@ public:
     { return "Gui::PropertyEditor::PropertyFloatConstraintItem"; }
 
     virtual void setPyObject(PyObject *);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
 
 protected:
     const Constraints* _ConstStruct;

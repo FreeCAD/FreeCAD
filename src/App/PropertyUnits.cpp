@@ -163,7 +163,24 @@ App::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
 
 TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
 
+Property *PropertyQuantityConstraint::Copy(void) const
+{
+    PropertyQuantityConstraint *p= new PropertyQuantityConstraint();
+    p->_dValue = _dValue;
+    p->_Unit = _Unit;
+    p->setConstraints(_ConstStruct);
+    return p;
+}
 
+void PropertyQuantityConstraint::Paste(const Property &from)
+{
+    aboutToSetValue();
+    auto &other = dynamic_cast<const PropertyQuantityConstraint&>(from);
+    _dValue = other._dValue;
+    _Unit = _Unit;
+    setConstraints(other._ConstStruct);
+    hasSetValue();
+}
 
 void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
 {

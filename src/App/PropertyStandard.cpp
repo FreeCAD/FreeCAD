@@ -676,6 +676,23 @@ PropertyIntegerConstraint::~PropertyIntegerConstraint()
         delete _ConstStruct;
 }
 
+Property *PropertyIntegerConstraint::Copy(void) const
+{
+    PropertyIntegerConstraint *p= new PropertyIntegerConstraint();
+    p->_lValue = _lValue;
+    p->setConstraints(_ConstStruct);
+    return p;
+}
+
+void PropertyIntegerConstraint::Paste(const Property &from)
+{
+    aboutToSetValue();
+    auto &other = dynamic_cast<const PropertyIntegerConstraint&>(from);
+    _lValue = other._lValue;
+    setConstraints(other._ConstStruct);
+    hasSetValue();
+}
+
 void PropertyIntegerConstraint::setConstraints(const Constraints* sConstrain)
 {
     if (_ConstStruct != sConstrain) {
@@ -1163,6 +1180,23 @@ PropertyFloatConstraint::~PropertyFloatConstraint()
 {
     if (_ConstStruct && _ConstStruct->isDeletable())
         delete _ConstStruct;
+}
+
+Property *PropertyFloatConstraint::Copy(void) const
+{
+    PropertyFloatConstraint *p= new PropertyFloatConstraint();
+    p->_dValue = _dValue;
+    p->setConstraints(_ConstStruct);
+    return p;
+}
+
+void PropertyFloatConstraint::Paste(const Property &from)
+{
+    aboutToSetValue();
+    auto &other = dynamic_cast<const PropertyFloatConstraint&>(from);
+    _dValue = other._dValue;
+    setConstraints(other._ConstStruct);
+    hasSetValue();
 }
 
 void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)

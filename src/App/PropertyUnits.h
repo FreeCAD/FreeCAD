@@ -115,6 +115,8 @@ public:
     virtual const char* getEditorName(void) const;
     virtual void setPyObject(PyObject *);
 
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
 
 protected:
     const Constraints* _ConstStruct;
