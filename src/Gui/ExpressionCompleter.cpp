@@ -528,6 +528,14 @@ public:
                     return propName.mid(1);
                 return propName;
             case Qt::DecorationRole: 
+                if (prop->getName()) {
+                    static QIcon icon(BitmapFactory().pixmap("ClassBrowser/alias.svg"));
+                    if(propName.startsWith(QLatin1Char('.'))) {
+                        if (propName != QString::fromLatin1(".%1").arg(QLatin1String(prop->getName())))
+                            return icon;
+                    } else if (propName != QString::fromLatin1(prop->getName()))
+                        return icon;
+                }
                 return CallTipsList::iconOfType(CallTip::Property);
             case Qt::ToolTipRole: {
                 const char *docu = prop->getDocumentation();

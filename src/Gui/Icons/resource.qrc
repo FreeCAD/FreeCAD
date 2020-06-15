@@ -44,6 +44,7 @@
         <file>ClassBrowser/type_module.svg</file>
         <file>ClassBrowser/sub_path.svg</file>
         <file>ClassBrowser/unit.svg</file>
+        <file>ClassBrowser/alias.svg</file>
         <file>ClassBrowser/function.svg</file>
         <file>style/windows_branch_closed.png</file>
         <file>style/windows_branch_open.png</file>
