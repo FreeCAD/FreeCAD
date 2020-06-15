@@ -33,6 +33,7 @@
 #endif
 
 #include <unordered_map>
+#include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
