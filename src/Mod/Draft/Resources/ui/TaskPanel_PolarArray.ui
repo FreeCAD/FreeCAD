@@ -168,7 +168,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
        </layout>
       </item>
       <item row="1" column="0">
-       <layout class="QGridLayout" name="grid_values">
+       <layout class="QGridLayout" name="grid_values" columnstretch="0,0">
         <item row="0" column="0">
          <widget class="QLabel" name="label_angle">
           <property name="toolTip">
@@ -182,7 +182,7 @@ The maximum absolute value is 360 degrees.</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_angle">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_angle" native="true">
           <property name="toolTip">
            <string>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
@@ -191,13 +191,13 @@ The maximum absolute value is 360 degrees.</string>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="minimum">
+          <property name="minimum" stdset="0">
            <double>-360.000000000000000</double>
           </property>
-          <property name="maximum">
+          <property name="maximum" stdset="0">
            <double>360.000000000000000</double>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>360.000000000000000</double>
           </property>
          </widget>
@@ -226,6 +226,31 @@ It must be at least 2.</string>
            <number>5</number>
           </property>
          </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_axis">
+          <property name="text">
+           <string>Axis reference</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <layout class="QGridLayout" name="grid_axis_reference">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="button_axis">
+            <property name="text">
+             <string>select</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_axis_name">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

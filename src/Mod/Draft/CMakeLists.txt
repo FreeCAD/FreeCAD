@@ -70,6 +70,7 @@ SET(Draft_utilities
     draftutils/__init__.py
     draftutils/init_tools.py
     draftutils/init_draft_statusbar.py
+    draftutils/make_utils.py
     draftutils/utils.py
     draftutils/gui_utils.py
     draftutils/todo.py
@@ -261,6 +262,7 @@ SET(Draft_GUI_tools
 
 SET(Draft_task_panels
     drafttaskpanels/__init__.py
+    drafttaskpanels/task_base.py
     drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py

@@ -26,9 +26,11 @@
 # \brief Provides functions for creating polar arrays in a plane.
 
 import FreeCAD as App
+import Part
 
 import draftmake.make_array as make_array
 import draftutils.utils as utils
+import draftutils.make_utils as make_utils
 
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
@@ -36,7 +38,7 @@ from draftutils.translate import _tr
 
 def make_polar_array(base_object,
                      number=5, angle=360, center=App.Vector(0, 0, 0),
-                     use_link=True):
+                     axis_object=None, axis_edge=None, use_link=True):
     """Create a polar array from the given object.
 
     Parameters
@@ -59,6 +61,29 @@ def make_polar_array(base_object,
     center: Base::Vector3, optional
         It defaults to the origin `App.Vector(0, 0, 0)`.
         The vector indicating the center of rotation of the array.
+
+    axis_object: str or Part::Feature, optional
+        It defaults to `None`.
+        This parameter should be the name of an `Part::Feature` or
+        the `Part::Feature` object itself.
+        If it is set the resulting array will use the referenced axis
+        with it's name provided by parameter `axis_edge` that is part
+        of `axis_object` to calculate center and direction instead
+        of the `center` and `axis` arguments to create the array.
+        If the parameter `axis_edge` is not given as default the
+        first edge of the `axis_object` will be used
+
+    axis_edge: str or int, optional
+        It defaults to `None`.
+        If it is set the resulting array will use the referenced axis
+        to calculate center and direction instead of the `center`
+        and `axis` arguments to create the array. The `axis_edge` must
+        refer to the name of an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
+        integer or string. For example the string `Edge1` corresponds
+        to the integer `1`.
+        This `SubObject` must belong to parameter `axis_object` which
+        must be given as well.
 
     use_link: bool, optional
         It defaults to `True`.
@@ -92,11 +117,16 @@ def make_polar_array(base_object,
     _name = "make_polar_array"
     utils.print_header(_name, _tr("Polar array"))
 
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
     if isinstance(base_object, str):
         base_object_str = base_object
 
     found, base_object = utils.find_object(base_object,
-                                           doc=App.activeDocument())
+                                           doc=doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
         _err(_tr("Wrong input: object not in document."))
@@ -118,11 +148,12 @@ def make_polar_array(base_object,
         _err(_tr("Wrong input: must be a number."))
         return None
 
-    _msg("center: {}".format(center))
-    try:
-        utils.type_check([(center, App.Vector)], name=_name)
-    except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
+    all_correct, axis_reference = make_utils.make_polcirc_shared(doc, _name,
+                                                                 center,
+                                                                 axis_object,
+                                                                 axis_edge)
+
+    if not all_correct:
         return None
 
     use_link = bool(use_link)
@@ -131,4 +162,8 @@ def make_polar_array(base_object,
     new_obj = make_array.make_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
                                     use_link=use_link)
+
+    if axis_reference:
+        new_obj.AxisReference = axis_reference
+
     return new_obj

@@ -27,10 +27,16 @@
 # \ingroup DRAFT
 # \brief This module provides the Base object for all Draft Gui commands.
 
+from pivy import coin
 import FreeCAD as App
 import FreeCADGui as Gui
+import Part
+import Draft
+import Draft_rc  # include resources, icons, ui files
 import draftutils.todo as todo
+# noinspection PyProtectedMember,PyProtectedMember
 from draftutils.messages import _msg, _log
+from draftutils.translate import _tr
 
 __metaclass__ = type  # to support Python 2 use of `super()`
 
@@ -103,7 +109,7 @@ class GuiCommandSimplest:
         self.doc = App.activeDocument()
         _log("Document: {}".format(self.doc.Label))
         _log("GuiCommand: {}".format(self.command_name))
-        _msg("{}".format(16*"-"))
+        _msg("{}".format(16 * "-"))
         _msg("GuiCommand: {}".format(self.command_name))
 
 
@@ -214,3 +220,158 @@ class GuiCommandBase:
             that will be executed.
         """
         self.commit_list.append((name, func))
+
+
+# noinspection PyPep8Naming
+class PolarCircularBase(GuiCommandBase):
+    """This class is the base of the PolarArray and CircularArray Command to be
+    subclassed by them.
+
+    The functionality of this class entails adding and removing the callbacks
+    for selecting the AxisReference and the objects to be duplicated.
+   """
+
+    def __init__(self):
+        super(PolarCircularBase, self).__init__()
+        self.location = None
+        self.mouse_event = None
+        self.view = None
+        self.callback_move = None
+        self.callback_click = None
+        self.ui = None
+        self.point = App.Vector()
+
+    def Activated(self):
+        """Execute when the command is called.
+
+        We add callbacks that connect the 3D view with
+        the widgets of the task panel.
+        """
+        _log("GuiCommand: {}".format(_tr(self.command_name)))
+        _msg("{}".format(16 * "-"))
+        _msg("GuiCommand: {}".format(_tr(self.command_name)))
+
+        self.location = coin.SoLocation2Event.getClassTypeId()
+        self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
+        self.view = Draft.get3DView()
+        self.add_center_callbacks()
+
+        self.ui.source_command = self
+        # Gui.Control.showDialog(self.ui)
+        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
+
+    def move(self, event_cb):
+        """Execute as a callback when the pointer moves in the 3D view.
+
+        It should automatically update the coordinates in the widgets
+        of the task panel.
+        """
+        event = event_cb.getEvent()
+        mousepos = event.getPosition().getValue()
+        ctrl = event.wasCtrlDown()
+        self.point = Gui.Snapper.snap(mousepos, active=ctrl)
+        if self.ui:
+            self.ui.display_point(self.point)
+
+    def click(self, event_cb=None):
+        """Execute as a callback when the pointer clicks on the 3D view.
+
+        It should act as if the Enter key was pressed, or the OK button
+        was pressed in the task panel.
+        """
+        if event_cb:
+            event = event_cb.getEvent()
+            if (event.getState() != coin.SoMouseButtonEvent.DOWN
+                    or event.getButton() != coin.SoMouseButtonEvent.BUTTON1):
+                return
+        if self.ui and self.point:
+            # The accept function of the interface
+            # should call the completed function
+            # of the calling class (this one).
+            self.ui.accept()
+
+    def add_center_callbacks(self):
+        """Execute when the center selection should be enabled"""
+        self.callback_move = \
+            self.view.addEventCallbackPivy(self.location, self.move)
+        self.callback_click = \
+            self.view.addEventCallbackPivy(self.mouse_event, self.click)
+
+    def remove_center_callbacks(self):
+        """Execute when the center selection should be disabled"""
+        if self.callback_move:
+            self.view.removeEventCallbackPivy(self.location,
+                                              self.callback_move)
+            self.callback_move = None
+
+        if self.callback_click:
+            self.view.removeEventCallbackPivy(self.mouse_event,
+                                              self.callback_click)
+            self.callback_click = None
+
+    def add_axis_selection_observer(self):
+        """Execute when axis reference selection should be enabled"""
+        Gui.Selection.clearSelection(App.ActiveDocument.Name)
+        self.axis_observer = AxisSelectionObserver(self)
+        Gui.Selection.addObserver(self.axis_observer)
+
+    def remove_axis_selection_observer(self):
+        """Execute when axis reference selection should be disabled"""
+        if self.axis_observer:
+            Gui.Selection.removeObserver(self.axis_observer)
+            self.axis_observer = None
+
+    def completed(self):
+        """Execute when the command is terminated.
+
+        We should remove the callbacks that were added to the 3D view
+        and then close the task panel.
+        """
+        self.remove_center_callbacks()
+        self.remove_axis_selection_observer()
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
+            super(PolarCircularBase, self).finish()
+
+
+# noinspection PyPep8Naming
+class AxisSelectionObserver:
+    """This classes functions will be called when an selection
+    event occurs after axis selection is enabled. This class is used by
+    PolarCircularBase.
+    """
+
+    def __init__(self, source_command):
+        self.source_command = source_command
+
+    def addSelection(self, doc, obj_name, sub_name, pnt):
+        """Executed when a new selection is added during AxisReference
+        selection process.
+
+        The selection will be cleared and checked if the selected
+        object is edge, if so the axis will be displayed in the UI.
+        """
+        Gui.Selection.clearSelection(App.ActiveDocument.Name)
+        selection = Gui.ActiveDocument.getObject(obj_name)
+        selection_object = selection.Object
+
+        if not (hasattr(selection_object, "Shape") and
+                hasattr(selection_object.Shape, "Edges")):
+            self.source_command.ui.disable_axis_selection()
+            raise TypeError("Selected object has no Shape.Edges attribute.")
+
+        index = sub_name.lstrip("Edge")
+        try:
+            edge_index = int(index)
+        except ValueError:
+            edge_index = 1
+
+        edge = selection_object.getSubObject(sub_name)
+        if isinstance(edge, Part.Edge) and isinstance(edge.Curve, Part.Line):
+            obj_label = selection_object.Label
+            self.source_command.ui.display_axis(obj_label, obj_name, sub_name,
+                                                edge_index)
+            self.source_command.remove_axis_selection_observer()
+        else:
+            self.source_command.ui.disable_axis_selection()
+            raise TypeError("Selected object is not an edge.")
