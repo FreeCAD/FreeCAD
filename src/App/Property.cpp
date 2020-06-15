@@ -27,6 +27,8 @@
 #	include <cassert>
 #endif
 
+#include <atomic>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "ObjectIdentifier.h"
@@ -49,11 +51,12 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
+static std::atomic<int64_t> _PropID;
+
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0), myName(0)
+  :father(0), myName(0), _id(++_PropID)
 {
-
 }
 
 Property::~Property()

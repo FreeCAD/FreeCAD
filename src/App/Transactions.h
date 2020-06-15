@@ -132,8 +132,9 @@ protected:
 
     struct PropData : DynamicProperty::PropData {
         Base::Type propertyType;
+        const Property *propertyOrig = nullptr;
     };
-    std::unordered_map<const Property*, PropData> _PropChangeMap;
+    std::unordered_map<int64_t, PropData> _PropChangeMap;
 
     std::string _NameInDocument;
 };
