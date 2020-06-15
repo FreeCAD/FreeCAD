@@ -141,6 +141,8 @@ SketchObject::SketchObject()
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, bp::_1));
 
     analyser = new SketchAnalysis(this);
+
+    internaltransaction=false;
 }
 
 SketchObject::~SketchObject()
@@ -835,11 +837,11 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
     }
 
     newVals.insert(newVals.end(), copies.begin(), copies.end());
+    // On setting geometry the onChanged method will call acceptGeometry(), thereby updating constraint geometry indices and rebuilding the vertex index
     Geometry.setValues(newVals);
     for (std::vector<Part::Geometry *>::iterator it = copies.begin(); it != copies.end(); ++it)
         delete *it;
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+
 
     return Geometry.getSize()-1;
 }
@@ -855,10 +857,9 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
         geoNew->Construction = construction;
 
     newVals.push_back(geoNew);
+    // On setting geometry the onChanged method will call acceptGeometry(), thereby updating constraint geometry indices and rebuilding the vertex index
     Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
     delete geoNew;
-    rebuildVertexIndex();
 
     return Geometry.getSize()-1;
 }
@@ -914,10 +915,14 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         }
     }
 
-    this->Geometry.setValues(newVals);
-    this->Constraints.setValues(std::move(newConstraints));
-    this->Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(newVals);
+        this->Constraints.setValues(std::move(newConstraints));
+    }
+    // Update geometry indices and rebuild vertexindex now
+    acceptGeometry();
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -930,11 +935,14 @@ int SketchObject::deleteAllGeometry()
     std::vector< Part::Geometry * > newVals(0);
     std::vector< Constraint * > newConstraints(0);
 
-    this->Geometry.setValues(newVals);
-    this->Constraints.setValues(newConstraints);
+    // Avoid unnecessary updates and checks as this is a transaction
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(newVals);
+        this->Constraints.setValues(newConstraints);
+    }
 
-    this->Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    acceptGeometry();
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -947,9 +955,6 @@ int SketchObject::deleteAllConstraints()
     std::vector< Constraint * > newConstraints(0);
 
     this->Constraints.setValues(newConstraints);
-
-    this->Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -972,8 +977,13 @@ int SketchObject::toggleConstruction(int GeoId)
     geoNew->Construction = !geoNew->Construction;
     newVals[GeoId]=geoNew;
 
-    this->Geometry.setValues(newVals);
-    //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
+    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
+    // so this is a convenient way of preventing it.
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(newVals);
+    }
+
     solverNeedsUpdate=true;
     return 0;
 }
@@ -993,8 +1003,13 @@ int SketchObject::setConstruction(int GeoId, bool on)
     geoNew->Construction = on;
     newVals[GeoId]=geoNew;
 
-    this->Geometry.setValues(newVals);
-    //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
+    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
+    // so this is a convenient way of preventing it.
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        this->Geometry.setValues(newVals);
+    }
+
     solverNeedsUpdate=true;
     return 0;
 }
@@ -2137,10 +2152,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             std::vector< Part::Geometry * > newVals(geomlist);
             newVals[GeoId] = geoNew;
+            // This is a special case, we need the geometry and the vertexindex updated here (via onChanged() )
+            // this is not a transaction. if the vertexindex is not rebuild the code below will fail.
             Geometry.setValues(newVals);
-            Constraints.acceptGeometry(getCompleteGeometry());
             delete geoNew;
-            rebuildVertexIndex();
 
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
@@ -2252,11 +2267,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             std::vector< Part::Geometry * > newVals(geomlist);
             newVals[GeoId] = geoNew;
+            // This is a special case, we need the geometry and the vertexindex updated here (via onChanged() )
+            // this is not a transaction. if the vertexindex is not rebuild the code below will fail.
             Geometry.setValues(newVals);
-            Constraints.acceptGeometry(getCompleteGeometry());
             delete geoNew;
-            rebuildVertexIndex();
-
 
             auto handleinternalalignment = [this] (Constraint * constr, int GeoId, PointPos & secondPos) {
                 if( constr->Type == Sketcher::InternalAlignment &&
@@ -3459,106 +3473,113 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     }
 
     // add the geometry
-    Geometry.setValues(newgeoVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 
-    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        Geometry.setValues(newgeoVals);
 
-        std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
+        for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
 
-        if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
+            std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
 
-            if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
-                if( (*it)->Type != Sketcher::DistanceX &&
-                    (*it)->Type != Sketcher::DistanceY) {
+            if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
 
-                    Constraint *constNew = (*it)->copy();
+                if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
+                    if( (*it)->Type != Sketcher::DistanceX &&
+                        (*it)->Type != Sketcher::DistanceY) {
 
-                    constNew->First = geoIdMap[(*it)->First];
-                    newconstrVals.push_back(constNew);
-                }
-            }
-            else { // other geoids intervene in this constraint
+                        Constraint *constNew = (*it)->copy();
 
-                std::vector<int>::const_iterator sit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Second);
-
-                if(sit != geoIdList.end()) { // Second is also in the list
-
-                    if( (*it)->Third == Constraint::GeoUndef ) {
-                        if((*it)->Type ==  Sketcher::Coincident ||
-                        (*it)->Type ==  Sketcher::Perpendicular ||
-                        (*it)->Type ==  Sketcher::Parallel ||
-                        (*it)->Type ==  Sketcher::Tangent ||
-                        (*it)->Type ==  Sketcher::Distance ||
-                        (*it)->Type ==  Sketcher::Equal ||
-                        (*it)->Type ==  Sketcher::Radius ||
-                        (*it)->Type ==  Sketcher::Diameter ||
-                        (*it)->Type ==  Sketcher::Angle ||
-                        (*it)->Type ==  Sketcher::PointOnObject ){
-                            Constraint *constNew = (*it)->copy();
-
-                            constNew->First = geoIdMap[(*it)->First];
-                            constNew->Second = geoIdMap[(*it)->Second];
-                            if(isStartEndInverted[(*it)->First]){
-                                if((*it)->FirstPos == Sketcher::start)
-                                    constNew->FirstPos = Sketcher::end;
-                                else if((*it)->FirstPos == Sketcher::end)
-                                    constNew->FirstPos = Sketcher::start;
-                            }
-                            if(isStartEndInverted[(*it)->Second]){
-                                if((*it)->SecondPos == Sketcher::start)
-                                    constNew->SecondPos = Sketcher::end;
-                                else if((*it)->SecondPos == Sketcher::end)
-                                    constNew->SecondPos = Sketcher::start;
-                            }
-
-                            if (constNew->Type == Tangent || constNew->Type == Perpendicular)
-                                AutoLockTangencyAndPerpty(constNew,true);
-
-                            if( ((*it)->Type ==  Sketcher::Angle) && (refPosId == Sketcher::none)) {
-                                constNew->setValue(-(*it)->getValue());
-                            }
-
-                            newconstrVals.push_back(constNew);
-                        }
+                        constNew->First = geoIdMap[(*it)->First];
+                        newconstrVals.push_back(constNew);
                     }
-                    else {
-                        std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
+                }
+                else { // other geoids intervene in this constraint
 
-                        if(tit != geoIdList.end()) { // Third is also in the list
-                            Constraint *constNew = (*it)->copy();
-                            constNew->First = geoIdMap[(*it)->First];
-                            constNew->Second = geoIdMap[(*it)->Second];
-                            constNew->Third = geoIdMap[(*it)->Third];
-                            if(isStartEndInverted[(*it)->First]){
-                                if((*it)->FirstPos == Sketcher::start)
-                                    constNew->FirstPos = Sketcher::end;
-                                else if((*it)->FirstPos == Sketcher::end)
-                                    constNew->FirstPos = Sketcher::start;
+                    std::vector<int>::const_iterator sit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Second);
+
+                    if(sit != geoIdList.end()) { // Second is also in the list
+
+                        if( (*it)->Third == Constraint::GeoUndef ) {
+                            if((*it)->Type ==  Sketcher::Coincident ||
+                            (*it)->Type ==  Sketcher::Perpendicular ||
+                            (*it)->Type ==  Sketcher::Parallel ||
+                            (*it)->Type ==  Sketcher::Tangent ||
+                            (*it)->Type ==  Sketcher::Distance ||
+                            (*it)->Type ==  Sketcher::Equal ||
+                            (*it)->Type ==  Sketcher::Radius ||
+                            (*it)->Type ==  Sketcher::Diameter ||
+                            (*it)->Type ==  Sketcher::Angle ||
+                            (*it)->Type ==  Sketcher::PointOnObject ){
+                                Constraint *constNew = (*it)->copy();
+
+                                constNew->First = geoIdMap[(*it)->First];
+                                constNew->Second = geoIdMap[(*it)->Second];
+                                if(isStartEndInverted[(*it)->First]){
+                                    if((*it)->FirstPos == Sketcher::start)
+                                        constNew->FirstPos = Sketcher::end;
+                                    else if((*it)->FirstPos == Sketcher::end)
+                                        constNew->FirstPos = Sketcher::start;
+                                }
+                                if(isStartEndInverted[(*it)->Second]){
+                                    if((*it)->SecondPos == Sketcher::start)
+                                        constNew->SecondPos = Sketcher::end;
+                                    else if((*it)->SecondPos == Sketcher::end)
+                                        constNew->SecondPos = Sketcher::start;
+                                }
+
+                                if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+                                    AutoLockTangencyAndPerpty(constNew,true);
+
+                                if( ((*it)->Type ==  Sketcher::Angle) && (refPosId == Sketcher::none)) {
+                                    constNew->setValue(-(*it)->getValue());
+                                }
+
+                                newconstrVals.push_back(constNew);
                             }
-                            if(isStartEndInverted[(*it)->Second]){
-                                if((*it)->SecondPos == Sketcher::start)
-                                    constNew->SecondPos = Sketcher::end;
-                                else if((*it)->SecondPos == Sketcher::end)
-                                    constNew->SecondPos = Sketcher::start;
+                        }
+                        else {
+                            std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
+
+                            if(tit != geoIdList.end()) { // Third is also in the list
+                                Constraint *constNew = (*it)->copy();
+                                constNew->First = geoIdMap[(*it)->First];
+                                constNew->Second = geoIdMap[(*it)->Second];
+                                constNew->Third = geoIdMap[(*it)->Third];
+                                if(isStartEndInverted[(*it)->First]){
+                                    if((*it)->FirstPos == Sketcher::start)
+                                        constNew->FirstPos = Sketcher::end;
+                                    else if((*it)->FirstPos == Sketcher::end)
+                                        constNew->FirstPos = Sketcher::start;
+                                }
+                                if(isStartEndInverted[(*it)->Second]){
+                                    if((*it)->SecondPos == Sketcher::start)
+                                        constNew->SecondPos = Sketcher::end;
+                                    else if((*it)->SecondPos == Sketcher::end)
+                                        constNew->SecondPos = Sketcher::start;
+                                }
+                                if(isStartEndInverted[(*it)->Third]){
+                                    if((*it)->ThirdPos == Sketcher::start)
+                                        constNew->ThirdPos = Sketcher::end;
+                                    else if((*it)->ThirdPos == Sketcher::end)
+                                        constNew->ThirdPos = Sketcher::start;
+                                }
+                                newconstrVals.push_back(constNew);
                             }
-                            if(isStartEndInverted[(*it)->Third]){
-                                if((*it)->ThirdPos == Sketcher::start)
-                                    constNew->ThirdPos = Sketcher::end;
-                                else if((*it)->ThirdPos == Sketcher::end)
-                                    constNew->ThirdPos = Sketcher::start;
-                            }
-                            newconstrVals.push_back(constNew);
                         }
                     }
                 }
             }
         }
-    }
 
     if( newconstrVals.size() > constrvals.size() )
         Constraints.setValues(newconstrVals);
+
+    }
+
+    // we delayed update, so trigger it now.
+    acceptGeometry();
 
     return Geometry.getSize()-1;
 }
@@ -3973,12 +3994,17 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
         }
     }
 
-    Geometry.setValues(newgeoVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        Geometry.setValues(newgeoVals);
 
-    if( newconstrVals.size() > constrvals.size() )
-        Constraints.setValues(newconstrVals);
+        if( newconstrVals.size() > constrvals.size() )
+            Constraints.setValues(newconstrVals);
+    }
+
+    // we inhibited update, so we trigger it now
+    acceptGeometry();
 
     return Geometry.getSize()-1;
 
@@ -4916,32 +4942,38 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    if (GeoId < 0) { // external geometry
-        newVals.push_back(bspline);
-    }
-    else { // normal geometry
+    // Block checks and updates in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
 
-        newVals[GeoId] = bspline;
-
-        const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
-
-        std::vector< Constraint * > newcVals(cvals);
-
-        int index = cvals.size()-1;
-        // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
-        for (; index >= 0; index--) {
-            if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
-
-                newcVals.erase(newcVals.begin()+index);
-
-            }
+        if (GeoId < 0) { // external geometry
+            newVals.push_back(bspline);
         }
-        this->Constraints.setValues(newcVals);
+        else { // normal geometry
+
+            newVals[GeoId] = bspline;
+
+            const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+
+            std::vector< Constraint * > newcVals(cvals);
+
+            int index = cvals.size()-1;
+            // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
+            for (; index >= 0; index--) {
+                if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
+
+                    newcVals.erase(newcVals.begin()+index);
+
+                }
+            }
+            this->Constraints.setValues(newcVals);
+        }
+
+        Geometry.setValues(newVals);
     }
 
-    Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    // trigger update now
+    acceptGeometry();
 
     delete bspline;
 
@@ -4981,9 +5013,8 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     newVals[GeoId] = bspline.release();
 
+    // AcceptGeometry called from onChanged
     Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 
     return true;
 }
@@ -5127,11 +5158,15 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     newVals[GeoId] = bspline;
 
-    Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        Geometry.setValues(newVals);
 
-    this->Constraints.setValues(newcVals);
+        this->Constraints.setValues(newcVals);
+    }
+    // Trigger update now
+    acceptGeometry();
 
     std::sort (delGeoId.begin(), delGeoId.end());
 
@@ -5265,11 +5300,14 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         newcVals.push_back(newConstr);
     }
 
-    Geometry.setValues(newVals);
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
-
-    this->Constraints.setValues(newcVals);
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        Geometry.setValues(newVals);
+        this->Constraints.setValues(newcVals);
+    }
+    // we trigger now the update (before dealing with expressions)
+    acceptGeometry();
 
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
@@ -5342,9 +5380,9 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
         return -1;
     }
 
+    acceptGeometry(); // This may need to be refactored into onChanged for ExternalGeometry
+
     solverNeedsUpdate=true;
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
     return ExternalGeometry.getValues().size()-1;
 }
 
@@ -5399,8 +5437,7 @@ int SketchObject::delExternal(int ExtGeoId)
 
     solverNeedsUpdate=true;
     Constraints.setValues(std::move(newConstraints));
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    acceptGeometry(); // This may need to be refactored into OnChanged for ExternalGeometry.
     return 0;
 }
 
@@ -5447,8 +5484,7 @@ int SketchObject::delAllExternal()
     Constraints.setValues(newConstraints);
     for (Constraint* it : newConstraints)
         delete it;
-    Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
+    acceptGeometry(); // This may need to be refactored into OnChanged for ExternalGeometry
     return 0;
 }
 
@@ -5640,8 +5676,7 @@ void SketchObject::validateExternalLinks(void)
     if (rebuild) {
         ExternalGeometry.setValues(Objects,SubElements);
         rebuildExternalGeometry();
-        Constraints.acceptGeometry(getCompleteGeometry());
-        rebuildVertexIndex();
+        acceptGeometry(); // This may need to be refactor to OnChanged for ExternalGeo
         solve(true); // we have to update this sketch and everything depending on it.
     }
 }
@@ -6808,7 +6843,15 @@ void SketchObject::onChanged(const App::Property* prop)
             setStatus(App::PendingTransactionUpdate, true);
         }
         else {
-            Constraints.checkGeometry(getCompleteGeometry());
+            if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicity perform an update
+                if(prop == &Geometry) {
+                    acceptGeometry(); // if geometry changed, the constraint geometry indices must be updated
+                }
+                else { // Change is in Constraints
+                    if (Constraints.checkGeometry(getCompleteGeometry())) // if there are invalid geometry indices in the constraints, we need to update them
+                        acceptGeometry();
+                }
+            }
         }
     }
     else if (prop == &ExternalGeometry) {

@@ -200,7 +200,7 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
     boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
-    
+
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(lValue[i]->tag);
@@ -221,7 +221,7 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     }
 
     /* Collect info about removed elements */
-    for(auto &v : valueMap) 
+    for(auto &v : valueMap)
         removed.insert(makePath(v.second,_lValueList[v.second]));
 
     /* Update value map with new tags from new array */
@@ -234,7 +234,7 @@ void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
     /* Signal renames */
     if (renamed.size() > 0 && !restoreFromTransaction)
         signalConstraintsRenamed(renamed);
-    
+
     _lValueList = std::move(lValue);
 
     /* Clean-up; remove old values */
@@ -258,7 +258,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     const Constraint *cstr = 0;
 
-    if (c1.isArray()) 
+    if (c1.isArray())
         cstr = _lValueList[c1.getIndex(_lValueList.size())];
     else if (c1.isSimple()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
@@ -384,11 +384,11 @@ void PropertyConstraintList::applyValidGeometryKeys(const std::vector<unsigned i
     validGeometryKeys = keys;
 }
 
-void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
+bool PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
 {
     if (!scanGeometry(GeoList)) {
         invalidGeometry = true;
-        return;
+        return invalidGeometry;
     }
 
     //if we made it here, geometry is OK
@@ -397,6 +397,8 @@ void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
         invalidGeometry = false;
         touch();
     }
+
+    return invalidGeometry;
 }
 
 /*!

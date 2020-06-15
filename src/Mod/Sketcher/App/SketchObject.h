@@ -468,6 +468,8 @@ private:
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
     SketchAnalysis * analyser;
+
+    bool internaltransaction;
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
