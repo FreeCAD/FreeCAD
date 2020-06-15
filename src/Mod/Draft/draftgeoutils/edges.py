@@ -223,8 +223,8 @@ def getTangent(edge, from_point=None):
 
 
 def get_referenced_edges(property_value):
-    """ Returns the Edges referenced by the value of a App:PropertyLink, App::PropertyLinkList,
-        App::PropertyLinkSub or App::PropertyLinkSubList property. """
+    """Return the Edges referenced by the value of a App:PropertyLink, App::PropertyLinkList,
+       App::PropertyLinkSub or App::PropertyLinkSubList property."""
     edges = []
     if not isinstance(property_value, list):
         property_value = [property_value]

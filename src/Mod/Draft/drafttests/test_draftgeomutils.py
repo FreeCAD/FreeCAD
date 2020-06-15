@@ -1,4 +1,3 @@
-""" Unit test for the DraftGeomUtils module. """
 # ***************************************************************************
 # *   Copyright (c) 2020 Antoine Lafr                                       *
 # *                                                                         *
@@ -21,6 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the DraftGeomUtils module."""
 
 import unittest
 import FreeCAD
@@ -30,14 +30,14 @@ import drafttests.auxiliary as aux
 from draftutils.messages import _msg
 
 class TestDraftGeomUtils(unittest.TestCase):
-    """ Testing the functions in the file DraftGeomUtils.py """
+    """Testing the functions in the file DraftGeomUtils.py"""
 
     def setUp(self):
-        """ Prepare the test. Nothing to do here, DraftGeomUtils doesn't need a document. """
+        """Prepare the test. Nothing to do here, DraftGeomUtils doesn't need a document."""
         aux.draw_header()
 
     def test_get_extended_wire(self):
-        """ Test the DraftGeomUtils.get_extended_wire function. """
+        """Test the DraftGeomUtils.get_extended_wire function."""
         operation = "DraftGeomUtils.get_extended_wire"
         _msg("  Test '{}'".format(operation))
 
@@ -135,7 +135,7 @@ class TestDraftGeomUtils(unittest.TestCase):
         _msg("  Test completed, {} subtests run".format(num_subtests))
 
     def tearDown(self):
-        """ Finish the test. Nothing to do here, DraftGeomUtils doesn't need a document. """
+        """Finish the test. Nothing to do here, DraftGeomUtils doesn't need a document."""
         pass
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)

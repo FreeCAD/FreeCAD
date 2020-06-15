@@ -436,7 +436,7 @@ def tessellateProjection(shape, seglen):
     return Part.makeCompound(newedges)
 
 def get_placement_perpendicular_to_wire(wire):
-    """ Returns the placement whose base is the wire's first vertex and it's z axis aligned to the wire's tangent. """
+    """Return the placement whose base is the wire's first vertex and it's z axis aligned to the wire's tangent."""
     pl = FreeCAD.Placement()
     if wire.Length > 0.0:
         pl.Base = wire.OrderedVertexes[0].Point
@@ -452,9 +452,11 @@ def get_placement_perpendicular_to_wire(wire):
 
 
 def get_extended_wire(wire, offset_start, offset_end):
-    """ Returns a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends. 
-            get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
-            get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex """
+    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends. 
+    
+    get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
+    get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex
+    """
     if min(offset_start, offset_end, offset_start + offset_end) <= -wire.Length:
         FreeCAD.Console.PrintError("debug: get_extended_wire error, wire's length insufficient for trimming.\n")
         return wire

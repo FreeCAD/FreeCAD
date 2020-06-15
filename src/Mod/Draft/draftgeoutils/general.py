@@ -60,9 +60,11 @@ def precision():
 
 
 def vec(edge, use_orientation = False):
-    """ vec(edge[, use_orientation]) or vec(line): returns a vector from an edge or a Part.LineSegment.
-        If use_orientation is True, it takes into account the edges orientation.
-        If edge is not straight, you'll get strange results! """
+    """Return a vector from an edge or a Part.LineSegment.
+
+    If use_orientation is True, it takes into account the edges orientation.
+    If edge is not straight, you'll get strange results!
+    """
     if isinstance(edge, Part.Edge):
         if edge.Orientation == "Forward" or not use_orientation:
             return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
