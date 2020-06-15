@@ -250,36 +250,48 @@ void PropertyEditor::openEditor(const QModelIndex &index)
     }
     PropertyItem* item = static_cast<PropertyItem*>(editingIndex.internalPointer());
     auto items = item->getPropertyData();
-    for(auto propItem=item->parent();items.empty() && propItem;propItem=propItem->parent())
-        items = propItem->getPropertyData();
-    if(items.empty()) {
-        FC_LOG("editor no item");
-        return;
+    if (items.empty()) {
+        for(item = item->parent(); item; item = item->parent()) {
+            items = item->getPropertyData();
+            if(!items.empty())
+                break;
+        }
+        if(items.empty()) {
+            FC_LOG("editor no item");
+            return;
+        }
     }
     auto prop = items[0];
     auto parent = prop->getContainer();
-    auto obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
-    if(!obj || !obj->getDocument()) {
-        FC_LOG("invalid object");
-        return;
+    App::DocumentObject *obj = nullptr;
+    App::Document *doc = Base::freecad_dynamic_cast<App::Document>(parent);
+    if(!doc) {
+        obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+        if(!obj || !obj->getDocument()) {
+            FC_LOG("invalid object");
+            return;
+        }
+        doc = obj->getDocument();
     }
-    if(obj->getDocument()->hasPendingTransaction()) {
+    if(doc->hasPendingTransaction()) {
         FC_LOG("pending transaction");
         return;
     }
     std::ostringstream str;
     str << tr("Edit").toUtf8().constData() << ' ';
     for(auto prop : items) {
-        if(prop->getContainer()!=obj) {
-            obj = 0;
+        if(prop->getContainer()!=parent) {
+            parent = 0;
             break;
         }
     }
-    if(obj && obj->getNameInDocument())
-        str << obj->getNameInDocument() << '.';
+    if(parent == doc)
+        str << tr("document").toUtf8().constData();
+    else if(obj && obj->getNameInDocument())
+        str << obj->Label.getValue();
     else
-        str << tr("property").toUtf8().constData() << ' ';
-    str << prop->getName();
+        str << tr("property").toUtf8().constData();
+    str << " " << item->data(0, Qt::DisplayRole).toString().toUtf8().constData();
     if(items.size()>1)
         str << "...";
     transactionID = app.setActiveTransaction(str.str().c_str());

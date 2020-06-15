@@ -258,6 +258,12 @@ public:
     virtual void SaveDocFile(Base::Writer &writer) const override;
     virtual void RestoreDocFile(Base::Reader &reader) override;
 
+    virtual bool removeDynamicProperty(const char* prop) override;
+    virtual App::Property* addDynamicProperty(
+            const char* type, const char* name=0,
+            const char* group=0, const char* doc=0,
+            short attr=0, bool ro=false, bool hidden=false) override;
+
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
     unsigned int getMemSize (void) const override;
 
@@ -615,6 +621,8 @@ protected:
     void _commitTransaction(bool notify=false);
     /// Internally called by App::Application to abort the running transaction.
     void _abortTransaction();
+
+    void _addOrRemoveProperty(TransactionalObject*, Property *prop, bool add);
 
 private:
     // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

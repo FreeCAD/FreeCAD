@@ -167,7 +167,6 @@ namespace App {
 typedef boost::bimap<StringHasherRef,int> HasherMap;
 
 static bool _IsRestoring;
-static bool _IsRelabeling;
 
 // Pimpl class
 struct DocumentP
@@ -1025,10 +1024,35 @@ bool Document::redo(int id)
     return false;
 }
 
+App::Property* Document::addDynamicProperty(
+    const char* type, const char* name, const char* group, const char* doc,
+    short attr, bool ro, bool hidden)
+{
+    auto prop = PropertyContainer::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    if(prop)
+        _addOrRemoveProperty(nullptr, prop, true);
+    return prop;
+}
+
+bool Document::removeDynamicProperty(const char* name)
+{
+    Property* prop = getDynamicPropertyByName(name);
+    if(!prop || prop->testStatus(App::Property::LockDynamic))
+        return false;
+
+    _addOrRemoveProperty(nullptr, prop, false);
+    return PropertyContainer::removeDynamicProperty(name);
+}
+
 void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *prop, bool add)
 {
     if (!prop || !obj || !obj->isAttachedToDocument()) 
         return;
+    _addOrRemoveProperty(obj, prop, add);
+}
+
+void Document::_addOrRemoveProperty(TransactionalObject* obj, Property *prop, bool add)
+{
     if(d->iUndoMode && !isPerformingTransaction() && !d->activeUndoTransaction) {
         if(!testStatus(Restoring) || testStatus(Importing)) {
             int tid=0;
@@ -1137,7 +1161,8 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     if(What) {
                         if(What->testStatus(Property::NoModify))
                             ignore = true;
-                        else if(!DocumentParams::ViewObjectTransaction()
+                        else if(!Base::freecad_dynamic_cast<Document>(What->getContainer())
+                                && !DocumentParams::ViewObjectTransaction()
                                 && !Base::freecad_dynamic_cast<DocumentObject>(What->getContainer()))
                             ignore = true;
                     }
@@ -1426,6 +1451,11 @@ unsigned int Document::getMaxUndoStackSize(void)const
 
 void Document::onBeforeChange(const Property* prop)
 {
+    if(!d->rollback) {
+        _checkTransaction(0, prop, __LINE__);
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->addObjectChange(nullptr, prop);
+    }
     if(prop == &Label)
         oldLabel = Label.getValue();
     signalBeforeChange(*this, *prop);
@@ -1437,7 +1467,6 @@ void Document::onChanged(const Property* prop)
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
-        Base::FlagToggler<> flag(_IsRelabeling);
         App::GetApplication().signalRelabelDocument(*this);
     } else if(prop == &ShowHidden) {
         App::GetApplication().signalShowHidden(*this);
@@ -1485,7 +1514,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    if(!d->rollback && !_IsRelabeling) {
+    if(!d->rollback) {
         _checkTransaction(0,What,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectChange(Who,What);

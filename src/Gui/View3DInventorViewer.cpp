@@ -4781,6 +4781,8 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
         showDragger = FALSE;
         pcShadowPickStyle->style = SoPickStyle::SHAPE;
 
+        App::GetApplication().setActiveTransaction("Change shadow light");
+
         SbVec3f dir;
         if (dirlight)
             dir = pcShadowDirectionalLight->direction.getValue();
@@ -4796,6 +4798,8 @@ void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
         }
         _shadowSetParam<App::PropertyVector>(doc, "LightDirection",
                 Base::Vector3d(dir[0], dir[1], dir[2]));
+
+        App::GetApplication().closeActiveTransaction();
 
     } else if (!showDragger.getValue() && toggle != 0) {
         pcShadowPickStyle->style = SoPickStyle::UNPICKABLE;

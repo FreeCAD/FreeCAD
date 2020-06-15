@@ -79,7 +79,7 @@ Transaction::~Transaction()
             // to cause a memory leak. This usually is the case when the removal
             // of an object is not undone or when an addition is undone.
 
-            if (!It->first->isAttachedToDocument()) {
+            if (It->first && !It->first->isAttachedToDocument()) {
                 if (It->first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
                     // #0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
@@ -154,7 +154,10 @@ void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
         To = pos->second;
     }
     else {
-        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        if (Obj)
+            To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        else
+            To = new TransactionObject;
         To->status = TransactionObject::Chn;
         index.emplace(Obj,To);
     }
@@ -366,7 +369,10 @@ void Transaction::addObjectChange(const TransactionalObject *Obj, const Property
         To = pos->second;
     }
     else {
-        To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        if (Obj)
+            To = TransactionFactory::instance().createTransaction(Obj->getTypeId());
+        else
+            To = new TransactionObject;
         To->status = TransactionObject::Chn;
         index.emplace(Obj,To);
     }
@@ -412,8 +418,14 @@ void TransactionObject::applyNew(Document & /*Doc*/, TransactionalObject * /*pcO
 {
 }
 
-void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj, bool /* Forward */)
+void TransactionObject::applyChn(Document &Doc, TransactionalObject *pcObj, bool /* Forward */)
 {
+    App::PropertyContainer *container;
+    if(pcObj)
+        container = pcObj;
+    else
+        container = &Doc;
+
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
         for(auto &v : _PropChangeMap) {
@@ -422,14 +434,14 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 
             if(!data.property) {
                 // here means we are undoing/redoing and property add operation
-                pcObj->removeDynamicProperty(v.second.name.c_str());
+                container->removeDynamicProperty(data.name.c_str());
                 continue;
             }
 
             // getPropertyName() is specially coded to be safe even if prop has
             // been destroies. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
-            auto name = pcObj->getPropertyName(prop);
+            auto name = container->getPropertyName(prop);
             if(!name || (data.name.size() && data.name != name) || data.propertyType != prop->getTypeId()) {
                 // Here means the original property is not found, probably removed
                 if(data.name.empty()) {
@@ -441,10 +453,10 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                 // restored. But since restoring property is actually creating
                 // a new property, the property key inside redo stack will not
                 // match. So we search by name first.
-                prop = pcObj->getDynamicPropertyByName(data.name.c_str());
+                prop = container->getDynamicPropertyByName(data.name.c_str());
                 if(!prop) {
                     // Still not found, re-create the property
-                    prop = pcObj->addDynamicProperty(
+                    prop = container->addDynamicProperty(
                             data.propertyType.getName(),
                             data.name.c_str(), data.group.c_str(), data.getDoc(),
                             data.attr, data.readonly, data.hidden);

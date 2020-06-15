@@ -395,6 +395,7 @@ void PropertyView::onTimer() {
         for(auto &v : props) 
             docProps.emplace_back(v.first,
                     std::vector<App::Property*>(1,v.second));
+        propertyEditorData->setAutomaticDocumentUpdate(false);
         propertyEditorData->buildUp(std::move(docProps));
         tabs->setCurrentIndex(1);
         return;
@@ -550,6 +551,7 @@ void PropertyView::onTimer() {
         dataProps.emplace_back(v.first,std::move(v.second));
 
     propertyEditorData->buildUp(std::move(dataProps),true);
+    propertyEditorData->setAutomaticDocumentUpdate(true);
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
         if (it->propList.size() == sels.size())
