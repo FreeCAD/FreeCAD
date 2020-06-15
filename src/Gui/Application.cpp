@@ -897,7 +897,9 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
 bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
 {
     MDIView* pView = getMainWindow()->activeWindow();
-    return pView ? pView->onMsg(pMsg,ppReturn) : false;
+    bool res = pView ? pView->onMsg(pMsg,ppReturn) : false;
+    getMainWindow()->updateActions(true);
+    return res;
 }
 
 bool Application::sendHasMsgToActiveView(const char* pMsg)
@@ -913,8 +915,11 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     if(!pView)
         return false;
     for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
-        if(focus == pView)
-            return pView->onMsg(pMsg,ppReturn);
+        if(focus == pView) {
+            bool res = pView->onMsg(pMsg,ppReturn);
+            getMainWindow()->updateActions(true);
+            return res;
+        }
     }
     return false;
 }
