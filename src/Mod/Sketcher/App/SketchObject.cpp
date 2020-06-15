@@ -921,8 +921,8 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(std::move(newConstraints));
     }
-    // Update geometry indices and rebuild vertexindex now
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -941,8 +941,8 @@ int SketchObject::deleteAllGeometry()
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(newConstraints);
     }
-
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -3579,7 +3579,8 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     }
 
     // we delayed update, so trigger it now.
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     return Geometry.getSize()-1;
 }
@@ -4004,7 +4005,8 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     }
 
     // we inhibited update, so we trigger it now
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     return Geometry.getSize()-1;
 
@@ -4973,7 +4975,8 @@ bool SketchObject::convertToNURBS(int GeoId)
     }
 
     // trigger update now
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     delete bspline;
 
@@ -5166,7 +5169,8 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         this->Constraints.setValues(newcVals);
     }
     // Trigger update now
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     std::sort (delGeoId.begin(), delGeoId.end());
 
@@ -5307,7 +5311,8 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         this->Constraints.setValues(newcVals);
     }
     // we trigger now the update (before dealing with expressions)
-    acceptGeometry();
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
 
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
