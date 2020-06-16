@@ -63,15 +63,21 @@ class DraftAnnotation(object):
         Check if new properties are present after the object is restored
         in order to migrate older objects.
         """
-        self.add_missing_properties_0v19(obj)
-
-    def add_missing_properties_0v19(self, obj):
-        """Provide missing annotation properties, if they don't exist."""
-        if (hasattr(obj, "ViewObject") and obj.ViewObject
-                and not hasattr(obj.ViewObject, 'ScaleMultiplier')):
+        if hasattr(obj, "ViewObject") and obj.ViewObject:
             vobj = obj.ViewObject
+            self.add_missing_properties_0v19(obj, vobj)
+
+    def add_missing_properties_0v19(self, obj, vobj):
+        """Provide missing annotation properties, if they don't exist."""
+        vproperties = vobj.PropertiesList
+
+        if 'ScaleMultiplier' not in vproperties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Dimension size overall multiplier")
+                                     "General scaling factor that affects "
+                                     "the annotation consistently\n"
+                                     "because it scales the text, "
+                                     "and the line decorations, if any,\n"
+                                     "in the same proportion.")
             vobj.addProperty("App::PropertyFloat",
                              "ScaleMultiplier",
                              "Annotation",
@@ -79,6 +85,30 @@ class DraftAnnotation(object):
             vobj.ScaleMultiplier = 1.00
 
             _info = "added view property 'ScaleMultiplier'"
+            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+
+        if 'AnnotationStyle' not in vproperties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Annotation style to apply "
+                                     "to this object.\n"
+                                     "When using a saved style "
+                                     "some of the view properties "
+                                     "will become read-only;\n"
+                                     "they will only be editable by changing "
+                                     "the style through "
+                                     "the 'Annotation style editor' tool.")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "AnnotationStyle",
+                             "Annotation",
+                             _tip)
+            styles = []
+            for key in obj.Document.Meta.keys():
+                if key.startswith("Draft_Style_"):
+                    styles.append(key[12:])
+
+            vobj.AnnotationStyle = [""] + styles
+
+            _info = "added view property 'AnnotationStyle'"
             _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
 
     def __getstate__(self):
