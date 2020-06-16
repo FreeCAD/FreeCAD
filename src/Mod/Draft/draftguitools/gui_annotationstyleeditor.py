@@ -28,27 +28,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
+
+from FreeCAD import Units as U
 from draftutils.translate import _tr
+from draftutils.utils import ANNOTATION_STYLE as DEFAULT
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
-DEFAULT = {
-    "FontName": ("font", param.GetString("textfont", "Sans")),
-    "FontSize": ("str", str(param.GetFloat("textheight", 100))),
-    "LineSpacing": ("float", 1),
-    "ScaleMultiplier": ("float", 1),
-    "ShowUnit": ("bool", False),
-    "UnitOverride": ("str", ""),
-    "Decimals": ("int", 2),
-    "ShowLines": ("bool", True),
-    "LineWidth": ("int", param.GetInt("linewidth", 1)),
-    "LineColor": ("color", param.GetInt("color", 255)),
-    "ArrowType": ("index", param.GetInt("dimsymbol", 0)),
-    "ArrowSize": ("str", str(param.GetFloat("arrowsize", 20))),
-    "DimensionOvershoot": ("str", str(param.GetFloat("dimovershoot", 20))),
-    "ExtensionLines": ("str", str(param.GetFloat("extlines", 300))),
-    "ExtensionOvershoot": ("str", str(param.GetFloat("extovershoot", 20))),
-    }
 
 
 class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
@@ -211,7 +196,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                                     try:
                                         setattr(vobj,attr,attrvalue)
                                     except:
-                                        unitvalue = FreeCAD.Units.Quantity(attrvalue,FreeCAD.Units.Length).Value
+                                        unitvalue = U.Quantity(attrvalue, U.Length).Value
                                         setattr(vobj,attr,unitvalue)
                 else:
                     # the style has been removed
