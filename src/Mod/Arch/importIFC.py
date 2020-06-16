@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 import six
 import os
 import math
+import time
 
 import FreeCAD
 import Part
@@ -140,8 +141,8 @@ structuralifcobjects = (
 def getPreferences():
 
     """retrieves IFC preferences.
-    
-    MERGE_MODE_ARCH: 
+
+    MERGE_MODE_ARCH:
         0 = parametric arch objects
         1 = non-parametric arch objects
         2 = Part shapes
@@ -210,6 +211,9 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
+
+    starttime = time.time() # in seconds
+    filesize = os.path.getsize(filename) * 0.000001 # in megabytes
 
     # read preference settings
     if preferences is None:
@@ -352,7 +356,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     if preferences['DEBUG']: print(" layer ", layer_name, " found", ptype,end="")
                 else:
                     if preferences['DEBUG']: print(" no layer found", ptype,end="")
-   
+
 
         # checking for full FreeCAD parametric definition, overriding everything else
         if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
@@ -858,7 +862,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
                     if hasattr(obj.ViewObject,"Transparency"):
                         obj.ViewObject.Transparency = colors[pid][3]
-                    
+
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
@@ -897,7 +901,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     # If the y-part of TrueNorth is 0, then the x-part should be checked.
                     # Declination would be -90° if x  >0 and +90° if x < 0
                     # Only if x==0 then we can not determine TrueNorth.
-                    # But that would actually be an invalid IFC file, because the magnitude 
+                    # But that would actually be an invalid IFC file, because the magnitude
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y,x))-90+180)%360)-180
@@ -1295,5 +1299,8 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     if ZOOMOUT and FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
-    print("Finished importing.")
+
+    endtime = time.time()-starttime
+
+    print("Finished importing",round(filesize,1),"Mb in",int(endtime),"seconds, or",int(endtime/filesize),"s/Mb")
     return doc
