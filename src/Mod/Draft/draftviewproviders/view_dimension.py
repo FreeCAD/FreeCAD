@@ -21,70 +21,89 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Dimensions view provider classes
-"""
-## @package dimension
-# \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Dimensions.
+"""Provides the Draft Dimension viewprovider classes.
 
+These include linear dimensions, including radius and diameter,
+as well as angular dimensions.
+They inherit their behavior from the base Annotation viewprovider.
+"""
+## @package view_dimension
+# \ingroup DRAFT
+# \brief Provides the Draft Dimension viewprovider classes.
+
+import pivy.coin as coin
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
-from pivy import coin
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import DraftVecUtils
+import DraftGeomUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+from draftviewproviders.view_draft_annotation \
+    import ViewProviderDraftAnnotation
+
 
 class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
-    """
-    A View Provider for the Draft Dimension object
-    This class is not used directly, but inherited by all dimension
-    view providers.
+    """The base viewprovider for the Draft Dimensions object.
 
-    DIMENSION VIEW PROVIDER NOMENCLATURE:
-    
-        |              txt               |       e
-    ----o--------------------------------o-----
-        |                                |
-        |                                |       d  
-        |                                |
+    This class is not used directly, but inherited by dimension
+    viewproviders like linear, radial, and angular.
 
-     a  b               c                b  a
-    
-    a = DimOvershoot (vobj)
-    b = Arrows (vobj)
-    c = Dimline (obj)
-    d = ExtLines (vobj)
-    e = ExtOvershoot (vobj)
-    txt = label (vobj)
+    Dimension nomeclature
+    ---------------------
+    The dimension object depends on various variables to draw the lines
+    that are drawn on 3D view.
+    ::
+            |              txt               |      e
+        ----b---------a----------------------b----
+            |                                |
+            |                                |      d
+            |                                |
 
-    COIN OBJECT STRUCTURE:
-    vobj.node.color
-             .drawstyle
-             .lineswitch1.coords
-                         .line
-                         .marks
-                         .marksDimOvershoot
-                         .marksExtOvershoot
-             .label.textpos
-                   .color
-                   .font
-                   .text
-             
-    vobj.node3d.color
-               .drawstyle
-               .lineswitch3.coords
-                           .line
-                           .marks
-                           .marksDimOvershoot
-                           .marksExtOvershoot
-               .label3d.textpos
+        c  (t)                              (t)   c
+
+    From the object class
+
+    * `a`, `Dimline`, point through which the dimension line goes through
+
+    From the viewprovider class
+
+    * `b`, `ArrowType` and `ArrowSize`, the symbol shown on the endpoints
+    * `c`, `DimOvershoot`, extension to the dimension line going through `a`
+    * `d`, `ExtLines`, distance to target `(t)`
+    * `e`, `ExtOvershoot`, extension in the opposite direction to `(t)`
+    * `txt`, text label showing the value of the measurement
+
+    Coin object structure
+    ---------------------
+    The scenegraph is set from two main nodes.
+    ::
+        vobj.node.color
+                 .drawstyle
+                 .lineswitch1.coords
+                             .line
+                             .marks
+                             .marksDimOvershoot
+                             .marksExtOvershoot
+                 .label.textpos
                        .color
-                       .font3d
-                       .text3d
-    
+                       .font
+                       .text
+
+        vobj.node3d.color
+                   .drawstyle
+                   .lineswitch3.coords
+                               .line
+                               .marks
+                               .marksDimOvershoot
+                               .marksExtOvershoot
+                   .label3d.textpos
+                           .color
+                           .font3d
+                           .text3d
     """
+
     def __init__(self, vobj):
         super(ViewProviderDimensionBase, self).__init__(vobj)
 
@@ -128,7 +147,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "TextSpacing",
                              "Text",
                              _tip)
-            vobj.TextSpacing = utils.get_param("dimspacing", 0.05)
+            vobj.TextSpacing = utils.get_param("dimspacing", 1)
 
         if "FlipText" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -152,7 +171,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "Override" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Text override.\n"
-                                     "Use '$dim' so that it is replaced by "
+                                     "Write '$dim' so that it is replaced by "
                                      "the dimension length.")
             vobj.addProperty("App::PropertyString",
                              "Override",
@@ -188,10 +207,12 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "UnitOverride",
                              "Units",
                              _tip)
+            vobj.UnitOverride = ''
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
-        super(ViewProviderDimensionBase, self).set_graphics_properties(vobj, properties)
+        super(ViewProviderDimensionBase,
+              self).set_graphics_properties(vobj, properties)
 
         if "ArrowSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -244,7 +265,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         if "ExtOvershoot" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Length of the extension line\n"
-                                     "above the dimension line")
+                                     "beyond the dimension line")
             vobj.addProperty("App::PropertyDistance",
                              "ExtOvershoot",
                              "Graphics",
@@ -261,41 +282,51 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
             vobj.ShowLine = True
 
     def updateData(self, obj, prop):
-        """called when the base object is changed"""
+        """Execute when a property from the Proxy class is changed."""
         return
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
         super(ViewProviderDimensionBase, self).onChanged(vobj, prop)
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
+        """Execute when double clicking the icon in the tree view."""
         self.setEdit(vobj)
 
-    def getDisplayModes(self,vobj):
-        return ["2D","3D"]
+    def getDisplayModes(self, vobj):
+        """Return the display modes that this viewprovider supports."""
+        return ["2D", "3D"]
 
     def getDefaultDisplayMode(self):
-        if hasattr(self,"defaultmode"):
+        """Return the default display mode."""
+        if hasattr(self, "defaultmode"):
             return self.defaultmode
         else:
-            return ["2D","3D"][utils.get_param("dimstyle",0)]
+            return ["2D", "3D"][utils.get_param("dimstyle", 0)]
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
+        """Return the saved display mode."""
         return mode
 
     def getIcon(self):
-        if self.is_linked_to_circle():
-            return ":/icons/Draft_DimensionRadius.svg"
+        """Return the path to the icon used by the viewprovider."""
         return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
+        """Return a tuple of objects to save or None.
+
+        Save the display mode.
+        """
         return self.Object.ViewObject.DisplayMode
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
+        """Set the internal properties from the restored state.
+
+        Restore the display mode.
+        """
         if state:
             self.defaultmode = state
             self.setDisplayMode(state)
-
 
 
 class ViewProviderLinearDimension(ViewProviderDimensionBase):
