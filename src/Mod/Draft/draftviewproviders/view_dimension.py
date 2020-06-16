@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -902,7 +903,8 @@ _ViewProviderDimension = ViewProviderLinearDimension
 
 
 class ViewProviderAngularDimension(ViewProviderDimensionBase):
-    """A View Provider for the Draft Angular Dimension object"""
+    """Viewprovider for the Angular dimension object."""
+
     def __init__(self, vobj):
         super(ViewProviderAngularDimension, self).__init__(vobj)
         super(ViewProviderAngularDimension, self).set_properties(vobj)
@@ -911,30 +913,40 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         vobj.Proxy = self
 
     def attach(self, vobj):
-        '''Setup the scene sub-graph of the view provider'''
-        from pivy import coin
+        """Set up the scene sub-graph of the viewprovider."""
         self.Object = vobj.Object
+
         self.color = coin.SoBaseColor()
-        if hasattr(vobj,"LineColor"):
-            self.color.rgb.setValue(vobj.LineColor[0],vobj.LineColor[1],vobj.LineColor[2])
+        if hasattr(vobj, "LineColor"):
+            self.color.rgb.setValue(vobj.LineColor[0],
+                                    vobj.LineColor[1],
+                                    vobj.LineColor[2])
+
         self.font = coin.SoFont()
         self.font3d = coin.SoFont()
-        self.text = coin.SoAsciiText()
-        self.text3d = coin.SoText2()
-        self.text.string = "d" # some versions of coin crash if string is not set
+        self.text = coin.SoAsciiText()  # Can be oriented in 3D space
+        self.text3d = coin.SoText2()  # Faces the camera always
+
+        # The text string needs to be initialized to something,
+        # otherwise it may cause a crash of the system
+        self.text.string = "d"
         self.text3d.string = "d"
-        self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
+        self.text.justification = coin.SoAsciiText.CENTER
+        self.text3d.justification = coin.SoAsciiText.CENTER
         self.textpos = coin.SoTransform()
+
         label = coin.SoSeparator()
         label.addChild(self.textpos)
         label.addChild(self.color)
         label.addChild(self.font)
         label.addChild(self.text)
+
         label3d = coin.SoSeparator()
         label3d.addChild(self.textpos)
         label3d.addChild(self.color)
         label3d.addChild(self.font3d)
         label3d.addChild(self.text3d)
+
         self.coord1 = coin.SoCoordinate3()
         self.trans1 = coin.SoTransform()
         self.coord2 = coin.SoCoordinate3()
@@ -943,6 +955,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.drawstyle = coin.SoDrawStyle()
         self.coords = coin.SoCoordinate3()
         self.arc = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+
         self.node = coin.SoGroup()
         self.node.addChild(self.color)
         self.node.addChild(self.drawstyle)
@@ -950,6 +963,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node.addChild(self.arc)
         self.node.addChild(self.marks)
         self.node.addChild(label)
+
         self.node3d = coin.SoGroup()
         self.node3d.addChild(self.color)
         self.node3d.addChild(self.drawstyle)
@@ -957,216 +971,303 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.node3d.addChild(self.arc)
         self.node3d.addChild(self.marks)
         self.node3d.addChild(label3d)
-        vobj.addDisplayMode(self.node,"2D")
-        vobj.addDisplayMode(self.node3d,"3D")
-        self.updateData(vobj.Object,None)
-        self.onChanged(vobj,"FontSize")
-        self.onChanged(vobj,"FontName")
-        self.onChanged(vobj,"ArrowType")
-        self.onChanged(vobj,"LineColor")
+
+        vobj.addDisplayMode(self.node, "2D")
+        vobj.addDisplayMode(self.node3d, "3D")
+        self.updateData(vobj.Object, None)
+        self.onChanged(vobj, "FontSize")
+        self.onChanged(vobj, "FontName")
+        self.onChanged(vobj, "ArrowType")
+        self.onChanged(vobj, "LineColor")
 
     def updateData(self, obj, prop):
-        if hasattr(self,"arc"):
-            from pivy import coin
-            import Part, DraftGeomUtils
-            import DraftGui
-            arcsegs = 24
+        """Execute when a property from the Proxy class is changed."""
+        if not hasattr(self, "arc"):
+            return
 
-            # calculate the arc data
-            if DraftVecUtils.isNull(obj.Normal):
-                norm = App.Vector(0,0,1)
-            else:
-                norm = obj.Normal
-            radius = (obj.Dimline.sub(obj.Center)).Length
-            self.circle = Part.makeCircle(radius,obj.Center,norm,obj.FirstAngle.Value,obj.LastAngle.Value)
-            self.p2 = self.circle.Vertexes[0].Point
-            self.p3 = self.circle.Vertexes[-1].Point
-            mp = DraftGeomUtils.findMidpoint(self.circle.Edges[0])
-            ray = mp.sub(obj.Center)
+        arcsegs = 24
 
-            # set text value
-            if obj.LastAngle.Value > obj.FirstAngle.Value:
-                a = obj.LastAngle.Value - obj.FirstAngle.Value
-            else:
-                a = (360 - obj.FirstAngle.Value) + obj.LastAngle.Value
-            su = True
-            if hasattr(obj.ViewObject,"ShowUnit"):
-                su = obj.ViewObject.ShowUnit
-            if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su)
-            else:
-                self.string = DraftGui.displayExternal(a,None,'Angle',su)
-            if obj.ViewObject.Override:
-                self.string = obj.ViewObject.Override.replace("$dim",\
-                    self.string)
-            self.text.string = self.text3d.string = utils.string_encode_coin(self.string)
+        vobj = obj.ViewObject
 
-            # check display mode
-            try:
-                m = obj.ViewObject.DisplayMode
-            except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
-                m = ["2D","3D"][utils.get_param("dimstyle",0)]
+        # Determine the orientation of the text by using a normal direction.
+        # Also calculate the arc data.
+        if DraftVecUtils.isNull(obj.Normal):
+            norm = App.Vector(0, 0, 1)
+        else:
+            norm = obj.Normal
 
-            # set the arc
-            if m == "3D":
-                # calculate the spacing of the text
-                spacing = (len(self.string)*obj.ViewObject.FontSize.Value)/8.0
-                pts1 = []
-                cut = None
-                pts2 = []
-                for i in range(arcsegs+1):
-                    p = self.circle.valueAt(self.circle.FirstParameter+((self.circle.LastParameter-self.circle.FirstParameter)/arcsegs)*i)
-                    if (p.sub(mp)).Length <= spacing:
-                        if cut is None:
-                            cut = i
+        radius = (obj.Dimline - obj.Center).Length
+        self.circle = Part.makeCircle(radius, obj.Center, norm,
+                                      obj.FirstAngle.Value,
+                                      obj.LastAngle.Value)
+        self.p2 = self.circle.Vertexes[0].Point
+        self.p3 = self.circle.Vertexes[-1].Point
+        midp = DraftGeomUtils.findMidpoint(self.circle.Edges[0])
+        ray = midp - obj.Center
+
+        # Set text value
+        if obj.LastAngle.Value > obj.FirstAngle.Value:
+            angle = obj.LastAngle.Value - obj.FirstAngle.Value
+        else:
+            angle = (360 - obj.FirstAngle.Value) + obj.LastAngle.Value
+
+        show_unit = True
+        if hasattr(vobj, "ShowUnit"):
+            show_unit = vobj.ShowUnit
+
+        if hasattr(vobj, "Decimals"):
+            self.string = units.display_external(angle,
+                                                 vobj.Decimals,
+                                                 'Angle', show_unit)
+        else:
+            self.string = units.display_external(angle,
+                                                 None,
+                                                 'Angle', show_unit)
+
+        if vobj.Override:
+            self.string = vobj.Override.replace("$dim", self.string)
+
+        self.text.string = utils.string_encode_coin(self.string)
+        self.text3d.string = utils.string_encode_coin(self.string)
+
+        # On first run the `DisplayMode` enumeration is not set, so we trap
+        # the exception and set the display mode using the value
+        # in the parameter database
+        try:
+            m = vobj.DisplayMode
+        except AssertionError:
+            m = ["2D", "3D"][utils.get_param("dimstyle", 0)]
+
+        # Set the arc
+        first = self.circle.FirstParameter
+        last = self.circle.LastParameter
+
+        if m == "3D":
+            # Calculate the spacing of the text
+            spacing = len(self.string) * vobj.FontSize.Value / 8.0
+            pts1 = []
+            cut = None
+            pts2 = []
+
+            for i in range(arcsegs + 1):
+                p = self.circle.valueAt(first + (last - first) / arcsegs * i)
+                if (p - midp).Length <= spacing:
+                    if cut is None:
+                        cut = i
+                else:
+                    if cut is None:
+                        pts1.append([p.x, p.y, p.z])
                     else:
-                        if cut is None:
-                            pts1.append([p.x,p.y,p.z])
-                        else:
-                            pts2.append([p.x,p.y,p.z])
-                self.coords.point.setValues(pts1+pts2)
-                i1 = len(pts1)
-                i2 = i1+len(pts2)
-                self.arc.coordIndex.setValues(0,len(pts1)+len(pts2)+1,list(range(len(pts1)))+[-1]+list(range(i1,i2)))
-                if (len(pts1) >= 3) and (len(pts2) >= 3):
-                    self.circle1 = Part.Arc(App.Vector(pts1[0][0],pts1[0][1],pts1[0][2]),App.Vector(pts1[1][0],pts1[1][1],pts1[1][2]),App.Vector(pts1[-1][0],pts1[-1][1],pts1[-1][2])).toShape()
-                    self.circle2 = Part.Arc(App.Vector(pts2[0][0],pts2[0][1],pts2[0][2]),App.Vector(pts2[1][0],pts2[1][1],pts2[1][2]),App.Vector(pts2[-1][0],pts2[-1][1],pts2[-1][2])).toShape()
-            else:
-                pts = []
-                for i in range(arcsegs+1):
-                    p = self.circle.valueAt(self.circle.FirstParameter+((self.circle.LastParameter-self.circle.FirstParameter)/arcsegs)*i)
-                    pts.append([p.x,p.y,p.z])
-                self.coords.point.setValues(pts)
-                self.arc.coordIndex.setValues(0,arcsegs+1,list(range(arcsegs+1)))
+                        pts2.append([p.x, p.y, p.z])
 
-            # set the arrow coords and rotation
-            self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
-            self.coord1.point.setValue((self.p2.x,self.p2.y,self.p2.z))
-            self.trans2.translation.setValue((self.p3.x,self.p3.y,self.p3.z))
-            self.coord2.point.setValue((self.p3.x,self.p3.y,self.p3.z))
-            # calculate small chords to make arrows look better
-            arrowlength = 4*obj.ViewObject.ArrowSize.Value
-            u1 = (self.circle.valueAt(self.circle.FirstParameter+arrowlength)).sub(self.circle.valueAt(self.circle.FirstParameter)).normalize()
-            u2 = (self.circle.valueAt(self.circle.LastParameter)).sub(self.circle.valueAt(self.circle.LastParameter-arrowlength)).normalize()
-            if hasattr(obj.ViewObject,"FlipArrows"):
-                if obj.ViewObject.FlipArrows:
-                    u1 = u1.negative()
-                    u2 = u2.negative()
-            w2 = self.circle.Curve.Axis
-            w1 = w2.negative()
-            v1 = w1.cross(u1)
-            v2 = w2.cross(u2)
-            q1 = App.Placement(DraftVecUtils.getPlaneRotation(u1,v1,w1)).Rotation.Q
-            q2 = App.Placement(DraftVecUtils.getPlaneRotation(u2,v2,w2)).Rotation.Q
-            self.trans1.rotation.setValue((q1[0],q1[1],q1[2],q1[3]))
-            self.trans2.rotation.setValue((q2[0],q2[1],q2[2],q2[3]))
+            self.coords.point.setValues(pts1 + pts2)
 
-            # setting text pos & rot
-            self.tbase = mp
-            if hasattr(obj.ViewObject,"TextPosition"):
-                if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
-                    self.tbase = obj.ViewObject.TextPosition
+            pts1_num = len(pts1)
+            pts2_num = len(pts2)
+            i1 = pts1_num
+            i2 = i1 + pts2_num
 
-            u3 = ray.cross(norm).normalize()
-            v3 = norm.cross(u3)
-            r = App.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation
-            offset = r.multVec(App.Vector(0,1,0))
+            self.arc.coordIndex.setValues(0,
+                                          pts1_num + pts2_num + 1,
+                                          list(range(pts1_num))
+                                          + [-1]
+                                          + list(range(i1, i2)))
 
-            if hasattr(obj.ViewObject,"TextSpacing"):
-                offset = DraftVecUtils.scaleTo(offset,obj.ViewObject.TextSpacing.Value)
-            else:
-                offset = DraftVecUtils.scaleTo(offset,0.05)
-            if m == "3D":
-                offset = offset.negative()
-            self.tbase = self.tbase.add(offset)
-            q = r.Q
-            self.textpos.translation.setValue([self.tbase.x,self.tbase.y,self.tbase.z])
-            self.textpos.rotation = coin.SbRotation(q[0],q[1],q[2],q[3])
+            if pts1_num >= 3 and pts2_num >= 3:
+                self.circle1 = Part.Arc(App.Vector(pts1[0][0],
+                                                   pts1[0][1],
+                                                   pts1[0][2]),
+                                        App.Vector(pts1[1][0],
+                                                   pts1[1][1],
+                                                   pts1[1][2]),
+                                        App.Vector(pts1[-1][0],
+                                                   pts1[-1][1],
+                                                   pts1[-1][2])).toShape()
+                self.circle2 = Part.Arc(App.Vector(pts2[0][0],
+                                                   pts2[0][1],
+                                                   pts2[0][2]),
+                                        App.Vector(pts2[1][0],
+                                                   pts2[1][1],
+                                                   pts2[1][2]),
+                                        App.Vector(pts2[-1][0],
+                                                   pts2[-1][1],
+                                                   pts2[-1][2])).toShape()
+        else:
+            pts = []
+            for i in range(arcsegs + 1):
+                p = self.circle.valueAt(first + (last - first) / arcsegs * i)
+                pts.append([p.x, p.y, p.z])
 
-            # set the angle property
-            if round(obj.Angle,utils.precision()) != round(a,utils.precision()):
-                obj.Angle = a
+            self.coords.point.setValues(pts)
+            self.arc.coordIndex.setValues(0,
+                                          arcsegs + 1,
+                                          list(range(arcsegs + 1)))
+
+        # Set the arrow coords and rotation
+        p2 = (self.p2.x, self.p2.y, self.p2.z)
+        p3 = (self.p3.x, self.p3.y, self.p3.z)
+
+        self.trans1.translation.setValue(p2)
+        self.coord1.point.setValue(p2)
+        self.trans2.translation.setValue(p3)
+        self.coord2.point.setValue(p3)
+
+        # Calculate small chords to make arrows look better
+        arrowlength = 4 * vobj.ArrowSize.Value
+        u1 = (self.circle.valueAt(first + arrowlength)
+              - self.circle.valueAt(first)).normalize()
+        u2 = (self.circle.valueAt(last)
+              - self.circle.valueAt(last - arrowlength)).normalize()
+        if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
+            u1 = u1.negative()
+            u2 = u2.negative()
+
+        w2 = self.circle.Curve.Axis
+        w1 = w2.negative()
+
+        v1 = w1.cross(u1)
+        v2 = w2.cross(u2)
+        _plane_rot_1 = DraftVecUtils.getPlaneRotation(u1, v1, w1)
+        _plane_rot_2 = DraftVecUtils.getPlaneRotation(u2, v2, w2)
+        q1 = App.Placement(_plane_rot_1).Rotation.Q
+        q2 = App.Placement(_plane_rot_2).Rotation.Q
+
+        self.trans1.rotation.setValue((q1[0], q1[1], q1[2], q1[3]))
+        self.trans2.rotation.setValue((q2[0], q2[1], q2[2], q2[3]))
+
+        # Set text position and rotation
+        self.tbase = midp
+        if (hasattr(vobj, "TextPosition")
+                and not DraftVecUtils.isNull(vobj.TextPosition)):
+            self.tbase = vobj.TextPosition
+
+        u3 = ray.cross(norm).normalize()
+        v3 = norm.cross(u3)
+        _plane_rot_3 = DraftVecUtils.getPlaneRotation(u3, v3, norm)
+        r = App.Placement(_plane_rot_3).Rotation
+        offset = r.multVec(App.Vector(0, 1, 0))
+
+        if hasattr(vobj, "TextSpacing"):
+            offset = DraftVecUtils.scaleTo(offset,
+                                           vobj.TextSpacing.Value)
+        else:
+            offset = DraftVecUtils.scaleTo(offset, 0.05)
+
+        if m == "3D":
+            offset = offset.negative()
+
+        self.tbase = self.tbase.add(offset)
+        q = r.Q
+        self.textpos.translation.setValue([self.tbase.x,
+                                           self.tbase.y,
+                                           self.tbase.z])
+        self.textpos.rotation = coin.SbRotation(q[0], q[1], q[2], q[3])
+
+        # Set the angle property
+        _round_1 = round(obj.Angle, utils.precision())
+        _round_2 = round(angle, utils.precision())
+        if _round_1 != _round_2:
+            obj.Angle = angle
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
         super(ViewProviderAngularDimension, self).onChanged(vobj, prop)
 
-        if hasattr(vobj, "ScaleMultiplier"):
-            if vobj.ScaleMultiplier == 0:
-                return
-        if prop == "ScaleMultiplier" and hasattr(vobj, "ScaleMultiplier"):
-            if hasattr(self,"font"):
+        obj = vobj.Object
+        properties = vobj.PropertiesList
+
+        if "ScaleMultiplier" in properties and vobj.ScaleMultiplier == 0:
+            return
+
+        if prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
+            if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-            if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
-            if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
+            if hasattr(self, "font3d"):
+                self.font3d.size = \
+                    vobj.FontSize.Value * 10 * vobj.ScaleMultiplier
+            if (hasattr(self, "node") and hasattr(self, "p2")
+                    and "ArrowSize" in properties):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
-            self.updateData(vobj.Object,"Start")
-            vobj.Object.touch()
-        elif prop == "FontSize" and hasattr(vobj, "ScaleMultiplier"):
-            if hasattr(self,"font"):
+
+            self.updateData(obj, "Start")
+            obj.touch()
+
+        elif prop == "FontSize" and "ScaleMultiplier" in properties:
+            if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-            if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
-            vobj.Object.touch()
-        elif prop == "FontName":
-            if hasattr(self,"font") and hasattr(self,"font3d"):
-                self.font.name = self.font3d.name = str(vobj.FontName)
-                vobj.Object.touch()
-        elif prop == "LineColor":
-            if hasattr(self,"color") and hasattr(vobj,"LineColor"):
-                c = vobj.LineColor
-                self.color.rgb.setValue(c[0],c[1],c[2])
-        elif prop == "LineWidth":
-            if hasattr(self,"drawstyle"):
-                self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["ArrowSize","ArrowType"] and hasattr(vobj, "ScaleMultiplier"):
-            if hasattr(self,"node") and hasattr(self,"p2"):
-                self.remove_dim_arrows()
-                self.draw_dim_arrows(vobj)
-                vobj.Object.touch()
+            if hasattr(self, "font3d"):
+                self.font3d.size = \
+                    vobj.FontSize.Value * 10 * vobj.ScaleMultiplier
+            obj.touch()
+
+        elif (prop == "FontName"
+              and hasattr(self, "font") and hasattr(self, "font3d")):
+            self.font.name = str(vobj.FontName)
+            self.font3d.name = str(vobj.FontName)
+            obj.touch()
+
+        elif (prop == "LineColor" and "LineColor" in properties
+              and hasattr(self, "color")):
+            col = vobj.LineColor
+            self.color.rgb.setValue(col[0], col[1], col[2])
+
+        elif prop == "LineWidth" and hasattr(self, "drawstyle"):
+            self.drawstyle.lineWidth = vobj.LineWidth
+
+        elif (prop in ("ArrowSize", "ArrowType")
+              and "ScaleMultiplier" in properties
+              and hasattr(self, "node") and hasattr(self, "p2")):
+            self.remove_dim_arrows()
+            self.draw_dim_arrows(vobj)
+            obj.touch()
         else:
-            self.updateData(vobj.Object, None)
+            self.updateData(obj, None)
 
     def remove_dim_arrows(self):
-        # remove existing nodes
+        """Remove dimension arrows in the dimension lines.
+
+        Remove the existing nodes.
+        """
         self.node.removeChild(self.marks)
         self.node3d.removeChild(self.marks)
 
     def draw_dim_arrows(self, vobj):
-        from pivy import coin
-
-        if not hasattr(vobj,"ArrowType"):
+        """Draw dimension arrows."""
+        if not hasattr(vobj, "ArrowType"):
             return
 
-        # set scale
+        # Set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
         s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-        self.trans1.scaleFactor.setValue((s,s,s))
-        self.trans2.scaleFactor.setValue((s,s,s))
+        self.trans1.scaleFactor.setValue((s, s, s))
+        self.trans2.scaleFactor.setValue((s, s, s))
 
-        # set new nodes
+        # Set new nodes
         self.marks = coin.SoSeparator()
         self.marks.addChild(self.color)
+
         s1 = coin.SoSeparator()
         if symbol == "Circle":
             s1.addChild(self.coord1)
         else:
             s1.addChild(self.trans1)
-        s1.addChild(gui_utils.dim_symbol(symbol,invert=False))
+        s1.addChild(gui_utils.dim_symbol(symbol, invert=False))
         self.marks.addChild(s1)
+
         s2 = coin.SoSeparator()
         if symbol == "Circle":
             s2.addChild(self.coord2)
         else:
             s2.addChild(self.trans2)
-        s2.addChild(gui_utils.dim_symbol(symbol,invert=True))
+        s2.addChild(gui_utils.dim_symbol(symbol, invert=True))
         self.marks.addChild(s2)
-        self.node.insertChild(self.marks,2)
-        self.node3d.insertChild(self.marks,2)
+
+        self.node.insertChild(self.marks, 2)
+        self.node3d.insertChild(self.marks, 2)
 
     def getIcon(self):
+        """Return the path to the icon used by the viewprovider."""
         return ":/icons/Draft_DimensionAngular.svg"
 
 
