@@ -382,7 +382,12 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 
     std::string FeatName;
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(false,true,true,&parent,&parentSub);
-    FeatName = getUniqueObjectName("Binder",pcActiveBody);
+    App::Part *pcActivePart = nullptr;
+    if (!pcActiveBody)
+        pcActivePart = PartDesignGui::getActivePart (&parent, &parentSub);
+    FeatName = getUniqueObjectName("Binder", pcActiveBody ?
+            static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+    App::SubObjectT objT(parent,parentSub.c_str());
     if(parent) {
         decltype(values) links;
         for(auto &v : values) {
@@ -414,11 +419,28 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
                     "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(
                     App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
+            if (pcActivePart)
+                Gui::cmdAppObject(pcActivePart, std::ostringstream()
+                        << "addObject(" << getObjectCmd(binder) << ")");
         }
         if(!binder) return;
         binder->setLinks(std::move(values));
         updateActive();
         commitCommand();
+
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearCompleteSelection();
+        if (objT.getObject()) {
+            objT.setSubName(objT.getSubName() + FeatName + ".");
+            if (objT.getSubObject()) {
+                Gui::Selection().addSelection(objT.getDocumentName().c_str(),
+                                              objT.getObjectName().c_str(),
+                                              objT.getSubName().c_str());
+                return;
+            }
+        }
+        Gui::Selection().addSelection(binder->getDocument()->getName(),
+                                      binder->getNameInDocument());
     }catch(Base::Exception &e) {
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(), 
