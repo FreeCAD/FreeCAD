@@ -186,6 +186,11 @@ public:
     /// Set the subname path to the sub-object
     void setSubName(const char *subname);
 
+    /// Set the subname path to the sub-object
+    void setSubName(const std::string &subname) {
+        setSubName(subname.c_str());
+    }
+
     /// Return the subname path
     const std::string &getSubName() const;
 
@@ -212,6 +217,8 @@ public:
     bool operator<(const SubObjectT &other) const;
 
     std::string getSubObjectPython(bool force=true) const;
+
+    SubObjectT getParent() const;
 
 private:
     std::string subname;

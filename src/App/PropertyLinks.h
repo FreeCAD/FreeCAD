@@ -547,6 +547,7 @@ public:
         LinkRestoring,
         LinkAllowPartial,
         LinkRestoreLabel,
+        LinkSyncSubObject, // used by DlgPropertyLink
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
@@ -880,6 +881,8 @@ public:
     virtual bool isTouched() const override;
     virtual void purgeTouched() override;
 
+    void setSyncSubObject(bool enable);
+
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
@@ -1026,6 +1029,8 @@ public:
     virtual bool isTouched() const override;
     virtual void purgeTouched() override;
 
+    void setSyncSubObject(bool enable);
+
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
@@ -1163,6 +1168,8 @@ public:
     }
 
     virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
+
+    void setSyncSubObject(bool enable);
 
 protected:
     void unlink();
@@ -1319,6 +1326,8 @@ public:
 
     virtual bool isTouched() const override;
     virtual void purgeTouched() override;
+
+    void setSyncSubObject(bool enable);
 
 protected:
     std::list<PropertyXLinkSub> _Links;

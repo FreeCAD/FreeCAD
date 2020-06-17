@@ -393,6 +393,29 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
     return {};
 }
 
+SubObjectT SubObjectT::getParent() const {
+    const char *pos  = Data::ComplexGeoData::findElementName(subname.c_str());
+    if (!pos || pos == subname.c_str())
+        return SubObjectT();
+
+    if(*pos != '.')
+        --pos;
+    if(--pos <= subname.c_str())
+        return SubObjectT();
+
+    bool found = false;
+    for(;pos!=subname.c_str();--pos) {
+        if(*pos != '.') {
+            found = true;
+            continue;
+        }
+        if(found)
+            return SubObjectT(getDocumentName().c_str(),
+                    getObjectName().c_str(), std::string(subname.c_str(), pos+1).c_str());
+    }
+    return SubObjectT(getDocumentName().c_str(), getObjectName().c_str(), nullptr);
+}
+
 // -----------------------------------------------------------------------------
 
 class DocumentWeakPtrT::Private {

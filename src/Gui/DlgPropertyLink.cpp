@@ -92,6 +92,7 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent, int flags)
         connect(ui->searchBox, SIGNAL(returnPressed()), this, SLOT(onItemSearch()));
     }
 
+    ui->checkSubObject->setChecked(false);
     if(flags & NoSyncSubObject)
         ui->checkSubObject->hide();
     else if(flags & AlwaysSyncSubObject) {
@@ -285,6 +286,29 @@ void DlgPropertyLink::setInitObjects(std::vector<App::DocumentObjectT> &&objs)
     initObjs = std::move(objs);
 }
 
+static std::pair<App::DocumentObject *, const char *> resolveContext(
+        const App::SubObjectT &ctx, std::string &subname, const App::SubObjectT &sobjT)
+{
+    auto obj = ctx.getObject();
+    if (!obj) {
+        subname = sobjT.getSubName();
+        return {sobjT.getObject(), subname.c_str()};
+    }
+    subname = ctx.getSubName();
+    subname += sobjT.getObjectName();
+    subname += ".";
+    auto sobj = sobjT.getObject();
+    if (!sobj)
+        return {nullptr, nullptr};
+    if(obj->getSubObject(subname.c_str()) == sobj) {
+        subname += sobjT.getSubName();
+        return {obj, subname.c_str()};
+    }
+
+    subname = sobjT.getSubName();
+    return {sobj, subname.c_str()};
+}
+
 void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
 {
     {
@@ -315,6 +339,16 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
 
     ui->searchBox->setDocumentObject(owner);
 
+    if (selContext.getObjectName().empty()) {
+        for(auto &sel : Gui::Selection().getSelectionT("*", false)) {
+            if (sel.getSubObject() == owner) {
+                if (sel.getObject() != owner) 
+                    selContext = sel.getParent();
+                break;
+            }
+        }
+    }
+
     auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
     if(!propLink)
         return;
@@ -344,9 +378,12 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
 
     std::vector<App::DocumentObject*> objs;
 
+    isXLink = false;
+
     if(App::PropertyXLink::supportXLink(propLink)) {
         allowSubObject = true;
         docs = App::GetApplication().getDocuments();
+        isXLink = true;
     } else if (initObjs.empty()) {
         objs = owner->getDocument()->getObjects();
     } else {
@@ -435,36 +472,30 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
         return;
 
     if(allowSubObject && !(flags & (NoSyncSubObject|AlwaysSyncSubObject))) {
-        for(auto &link : oldLinks) {
-            auto sobj = link.getSubObject();
-            if(sobj && sobj!=link.getObject()) {
-                ui->checkSubObject->setChecked(true);
-                break;
+        if (propLink->testFlag(App::PropertyLinkBase::LinkSyncSubObject))
+            ui->checkSubObject->setChecked(true);
+        else {
+            for(auto &link : oldLinks) {
+                auto sobj = link.getSubObject();
+                if(sobj && sobj!=link.getObject()) {
+                    ui->checkSubObject->setChecked(true);
+                    break;
+                }
             }
         }
     }
 
     // Try to select items corresponding to the current links inside the
     // property
-    if(selContext.getDocumentName().size()) {
-        std::string subname;
-        for(auto &link : oldLinks) {
-            subname = selContext.getSubName();
-            subname += link.getObjectName();
-            subname += ".";
-            subname += link.getSubName();
-            selectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
-                                                        selContext.getDocumentName(),
-                                                        selContext.getObjectName(),
-                                                        subname));
-        }
-    } else {
-        for(auto &link : oldLinks) {
-            selectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
-                                                    link.getDocumentName(),
-                                                    link.getObjectName(),
-                                                    link.getSubName()));
-        }
+    std::string subname;
+    for(auto &link : oldLinks) {
+        auto res = resolveContext(selContext, subname, link);
+        if(!res.first)
+            continue;
+        selectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
+                                               res.first->getDocument()->getName(),
+                                               res.first->getNameInDocument(),
+                                               res.second));
     }
 
     // For link list type property, try to auto filter type
@@ -619,24 +650,13 @@ void DlgPropertyLink::onCurrentItemChanged(QTreeWidgetItem *item, QTreeWidgetIte
     {
         Base::StateLocker locker(busy);
         Gui::Selection().clearSelection();
-        
-        if(selContext.getDocumentName().size()) {
-            std::string subname;
-            for(auto &sobj : sobjs) {
-                subname = selContext.getSubName();
-                subname += sobj.getObjectName();
-                subname += ".";
-                subname += sobj.getSubName();
-                Gui::Selection().addSelection(selContext.getDocumentName().c_str(),
-                                            selContext.getObjectName().c_str(),
-                                            subname.c_str());
-            }
-        } else {
-            for(auto &sobj : sobjs) {
-                Gui::Selection().addSelection(sobj.getDocumentName().c_str(),
-                                            sobj.getObjectName().c_str(),
-                                            sobj.getSubName().c_str());
-            }
+
+        std::string subname;
+        for(auto &sobj : sobjs) {
+            auto res = resolveContext(selContext, subname, sobj);
+            if(!res.first) continue;
+            Gui::Selection().addSelection(res.first->getDocument()->getName(),
+                    res.first->getNameInDocument(), res.second);
         }
     }
 
@@ -705,43 +725,39 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
     if(pfound)
         *pfound = false;
 
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->getNameInDocument() || !obj->getSubObject(subname))
         return 0;
 
     std::vector<App::DocumentObject *> sobjs;
-    
-    if(selContext.getDocumentName().size()) {
-        if(allowSubObject) {
-            auto ctxObjs = selContext.getSubObjectList();
-            auto sobjs = obj->getSubObjectList(subname);
-            if(ctxObjs.size() >= sobjs.size())
-                return 0;
-            for(size_t i=0;i<ctxObjs.size();++i) {
-                if(ctxObjs[i]!=sobjs[i])
-                    return 0;
-            }
-            sobjs.erase(sobjs.begin(),sobjs.begin()+ctxObjs.size());
-            obj = sobjs.front();
-            sobjs.erase(sobjs.begin());
-        }
-    } else if(subname && subname[0]) {
+    if(subname && subname[0]) {
         if(!allowSubObject) {
             obj = obj->getSubObject(subname);
             if(!obj)
                 return 0;
+            sobjs.push_back(obj);
         } else {
-            sobjs = obj->getSubObjectList(subname);
+            bool checking = true;
+            for(auto sobj : obj->getSubObjectList(subname)) {
+                if(checking && inList.count(sobj))
+                    continue;
+                checking = false;
+                sobjs.push_back(sobj);
+            }
         }
+    } else
+        sobjs.push_back(obj);
 
-        if(docItems.size()) {
-            auto itDoc = docItems.find(obj->getDocument());
-            if(itDoc == docItems.end())
-                return 0;
-            onItemExpanded(itDoc->second);
-        }
+    if(sobjs.empty())
+        return 0;
+
+    if(docItems.size()) {
+        auto itDoc = docItems.find(sobjs.front()->getDocument());
+        if(itDoc == docItems.end())
+            return 0;
+        onItemExpanded(itDoc->second);
     }
 
-    auto it = itemMap.find(obj);
+    auto it = itemMap.find(sobjs.front());
     if(it == itemMap.end() || it->second->isHidden())
         return 0;
 
@@ -806,7 +822,7 @@ void DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& msg)
         subname = elementName.second.c_str();
     }
 
-    auto item = findItem(selObj, msg.pSubName, &found);
+    auto item = findItem(selObj, subname, &found);
     if(!item || !found)
         return;
 
@@ -937,17 +953,12 @@ void DlgPropertyLink::onTimer() {
         return;
     const auto &sobj = sobjs.front();
 
-    if(selContext.getDocumentName().size()) {
-        Gui::Selection().setPreselect(selContext.getDocumentName().c_str(),
-                                      selContext.getObjectName().c_str(),
-                                      (selContext.getSubName()
-                                       + sobj.getObjectName() + "." 
-                                       + sobj.getSubName()).c_str(),
-                                      0,0,0,2);
-    } else {
-        Gui::Selection().setPreselect(sobj.getDocumentName().c_str(),
-                                      sobj.getObjectName().c_str(),
-                                      sobj.getSubName().c_str(),
+    std::string subname;
+    auto res = resolveContext(selContext, subname, sobj);
+    if(res.first) {
+        Gui::Selection().setPreselect(res.first->getDocument()->getName(),
+                                      res.first->getNameInDocument(),
+                                      res.second,
                                       0,0,0,2);
     }
     enterTime.start();
@@ -998,6 +1009,10 @@ void DlgPropertyLink::filterObjects()
 {
     for(int i=0, count=ui->treeWidget->topLevelItemCount(); i<count; ++i) {
         auto item = ui->treeWidget->topLevelItem(i);
+        if(!isXLink) {
+            filterItem(item);
+            continue;
+        }
         for(int j=0, c=item->childCount(); j<c; ++j)
             filterItem(item->child(j));
     }
@@ -1115,11 +1130,17 @@ void DlgPropertyLink::itemSearch(const QString &text, bool select) {
         if(select) {
             if(!found)
                 return;
-            Gui::Selection().addSelection(obj->getDocument()->getName(),
-                    obj->getNameInDocument(),subname);
+            std::string s;
+            auto res = resolveContext(selContext, s, App::SubObjectT(obj,subname));
+            if(res.first)
+                Gui::Selection().addSelection(res.first->getDocument()->getName(),
+                        res.first->getNameInDocument(),res.second);
         }else{
-            Selection().setPreselect(obj->getDocument()->getName(),
-                    obj->getNameInDocument(), subname,0,0,0,2);
+            std::string s;
+            auto res = resolveContext(selContext, s, App::SubObjectT(obj,subname));
+            if(res.first)
+                Selection().setPreselect(res.first->getDocument()->getName(),
+                    res.first->getNameInDocument(), res.second, 0,0,0,2);
             searchItem = item;
             ui->treeWidget->scrollToItem(searchItem);
             bgBrush = searchItem->background(0);

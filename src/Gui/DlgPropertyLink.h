@@ -156,6 +156,7 @@ private:
     bool singleSelect = false;
     bool singleParent = false;
     bool busy = false;
+    bool isXLink = false;
     App::DocumentObject *currentObj = nullptr;
     QTreeWidgetItem *searchItem = nullptr;
     QBrush bgBrush;
