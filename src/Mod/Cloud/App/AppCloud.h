@@ -61,15 +61,16 @@ struct AmzDatav4 {
         char dateFormattedD[256];
         char ContentType[256];
         char Host[256];
+	std::string Region;
         char *MD5;
-	char *SHA256;
+	char *SHA256Sum;
 };
 
-
+std::string getHexValue(unsigned char *input, unsigned int HMACLength);
 void eraseSubStr(std::string & Str, const std::string & toErase);
 size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s);
 struct AmzData *ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret, const char *ptr, long size);
-struct AmzDatav4 *ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size);
+struct AmzDatav4 *ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size, char *paramters, std::string Region);
 struct curl_slist *BuildHeaderAmzS3v2(const char *URL, const char *TCPPort, const char *PublicKey, struct AmzData *Data);
 struct curl_slist *BuildHeaderAmzS3v4(const char *URL, const char *TCPPort, const char *PublicKey, struct AmzDatav4 *Data);
 char *MD5Sum(const char *ptr, long size);
@@ -78,7 +79,7 @@ char *SHA256Sum(const char *ptr, long size);
 class CloudAppExport CloudReader
 {
 public:
-    CloudReader(const char* URL, const char* AccessKey, const char* SecretKey, const char* TCPPort, const char* Bucket);
+    CloudReader(const char* URL, const char* AccessKey, const char* SecretKey, const char* TCPPort, const char* Bucket,std::string ProtocolVersion, std::string Region);
     virtual ~CloudReader();
     int file=0;
     int continuation=0;
@@ -105,6 +106,8 @@ protected:
     const char* TokenAuth;
     const char* TokenSecret;
     const char* Bucket;
+    std::string ProtocolVersion;
+    std::string Region;
 };
 
 class Module : public Py::ExtensionModule<Module>
@@ -139,6 +142,9 @@ public:
 	add_varargs_method("ProtocolVersion",&Module::sCloudProtocolVersion,
             "ProtocolVersion(string) -- Specify Amazon s3 protocol version (2 or 4)"
         );
+	add_varargs_method("Region",&Module::sCloudRegion,
+            "Region(string) -- Specify Amazon s3 Region"
+        );
 
         initialize("This module is the Cloud module."); // register with Python
     }
@@ -150,6 +156,7 @@ public:
     App::PropertyString TokenAuth;
     App::PropertyString TokenSecret;
     App::PropertyString ProtocolVersion;
+    App::PropertyString Region;
     bool cloudSave(const char* BucketName);
     bool cloudRestore(const char* BucketName);
 
@@ -161,6 +168,7 @@ private:
     Py::Object sCloudSave  (const Py::Tuple& args);
     Py::Object sCloudRestore  (const Py::Tuple& args);
     Py::Object sCloudProtocolVersion  (const Py::Tuple& args);
+    Py::Object sCloudRegion  (const Py::Tuple& args);
 
 
 };
@@ -178,7 +186,7 @@ class CloudAppExport CloudWriter : public Base::Writer
 public:
     int print=0;
     char errorCode[1024]="";
-    CloudWriter(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket);
+    CloudWriter(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket, std::string ProtocolVersion, std::string Region);
     virtual ~CloudWriter();
     void pushCloud(const char *FileName, const char *data, long size);
     void putNextEntry(const char* file);
@@ -198,7 +206,8 @@ protected:
     const char* TokenAuth;
     const char* TokenSecret;
     const char* Bucket;
-    const char* ProtocolVersion;
+    std::string ProtocolVersion;
+    std::string Region;
     std::stringstream FileStream;
 };
 
