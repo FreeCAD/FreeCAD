@@ -3809,6 +3809,7 @@ void LinkLabel::onLinkChanged() {
             /*emit*/ linkChanged(link);
             updatePropertyLink();
         }
+        this->deleteLater();
     }
 }
 
