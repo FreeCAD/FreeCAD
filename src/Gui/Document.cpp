@@ -996,6 +996,11 @@ void Document::slotTouchedObject(const App::DocumentObject &Obj)
         FC_LOG(Obj.getFullName() << (Obj.isTouched()?" touched":" purged"));
         setModified(true);
     }
+    if (Obj.isTouched()) {
+        auto it = d->_ViewProviderMap.find(&Obj);
+        if (it !=d->_ViewProviderMap.end())
+            it->second->updateChildren(true);
+    }
 }
 
 void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
