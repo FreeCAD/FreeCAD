@@ -1040,7 +1040,7 @@ void ParameterValueItem::setData ( int column, int role, const QVariant & value 
 ParameterText::ParameterText ( QTreeWidget * parent, QString label, const char* value, const Base::Reference<ParameterGrp> &hcGrp)
   :ParameterValueItem( parent, hcGrp)
 {
-    setIcon(0,BitmapFactory().pixmap("Param_Text") );
+    setIcon(0, BitmapFactory().iconFromTheme("Param_Text") );
     setText(0, label);
     setText(1, QString::fromLatin1("Text"));
     setText(2, QString::fromUtf8(value));
@@ -1084,7 +1084,7 @@ void ParameterText::appendToGroup()
 ParameterInt::ParameterInt ( QTreeWidget * parent, QString label, long value, const Base::Reference<ParameterGrp> &hcGrp)
   :ParameterValueItem( parent, hcGrp)
 {
-    setIcon(0,BitmapFactory().pixmap("Param_Int") );
+    setIcon(0, BitmapFactory().iconFromTheme("Param_Int") );
     setText(0, label);
     setText(1, QString::fromLatin1("Integer"));
     setText(2, QString::fromLatin1("%1").arg(value));
@@ -1128,7 +1128,7 @@ void ParameterInt::appendToGroup()
 ParameterUInt::ParameterUInt ( QTreeWidget * parent, QString label, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp)
   :ParameterValueItem( parent, hcGrp)
 {
-    setIcon(0,BitmapFactory().pixmap("Param_UInt") );
+    setIcon(0, BitmapFactory().iconFromTheme("Param_UInt") );
     setText(0, label);
     setText(1, QString::fromLatin1("Unsigned"));
     setText(2, QString::fromLatin1("%1").arg(value));
@@ -1181,7 +1181,7 @@ void ParameterUInt::appendToGroup()
 ParameterFloat::ParameterFloat ( QTreeWidget * parent, QString label, double value, const Base::Reference<ParameterGrp> &hcGrp)
   :ParameterValueItem( parent, hcGrp)
 {
-    setIcon(0,BitmapFactory().pixmap("Param_Float") );
+    setIcon(0, BitmapFactory().iconFromTheme("Param_Float") );
     setText(0, label);
     setText(1, QString::fromLatin1("Float"));
     setText(2, QString::fromLatin1("%1").arg(value));
@@ -1225,7 +1225,7 @@ void ParameterFloat::appendToGroup()
 ParameterBool::ParameterBool ( QTreeWidget * parent, QString label, bool value, const Base::Reference<ParameterGrp> &hcGrp)
   :ParameterValueItem( parent, hcGrp)
 {
-    setIcon(0,BitmapFactory().pixmap("Param_Bool") );
+    setIcon(0, BitmapFactory().iconFromTheme("Param_Bool") );
     setText(0, label);
     setText(1, QString::fromLatin1("Boolean"));
     setText(2, QString::fromLatin1((value ? "true" : "false")));
