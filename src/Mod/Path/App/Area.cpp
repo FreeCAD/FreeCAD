@@ -21,6 +21,9 @@
  ****************************************************************************/
 #include "PreCompiled.h"
 
+// From Boost 1.75 on the geometry component requires C++14
+#define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
+
 #ifndef _PreComp_
 # include <cfloat>
 # include <boost/version.hpp>

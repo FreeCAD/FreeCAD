@@ -229,3 +229,32 @@ def cleanFaces(shape):
     if shape.isClosed():
         fshape = Part.makeSolid(fshape)
     return fshape
+
+
+def removeSplitter(shape):
+    """Return a face from removing the splitter in a list of faces.
+
+    This is an alternative, shared edge-based version of Part.removeSplitter.
+    Returns a face, or `None` if the operation failed.
+    """
+    lookup = dict()
+    for f in shape.Faces:
+        for e in f.Edges:
+            h = e.hashCode()
+            if h in lookup:
+                lookup[h].append(e)
+            else:
+                lookup[h] = [e]
+
+    edges = [e[0] for e in lookup.values() if len(e) == 1]
+
+    try:
+        face = Part.Face(Part.Wire(edges))
+    except Part.OCCError:
+        # operation failed
+        return None
+    else:
+        if face.isValid():
+            return face
+
+    return None

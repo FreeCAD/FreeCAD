@@ -660,15 +660,30 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object["Object"]
-            f.write("** " + trans_obj.Label + "\n")
+            trans_name = ""
+            trans_type = ""
             if trans_obj.TransformType == "Rectangular":
-                f.write("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
+                trans_name = "Rect"
+                trans_type = "R"
                 coords = geomtools.get_rectangular_coords(trans_obj)
-                f.write(coords + "\n")
             elif trans_obj.TransformType == "Cylindrical":
-                f.write("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
+                trans_name = "Cylin"
+                trans_type = "C"
                 coords = geomtools.get_cylindrical_coords(trans_obj)
-                f.write(coords + "\n")
+            f.write("** {}\n".format(trans_obj.Label))
+            f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
+                trans_name,
+                trans_obj.Name,
+                trans_type,
+            ))
+            f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
+                coords[0],
+                coords[1],
+                coords[2],
+                coords[3],
+                coords[4],
+                coords[5],
+            ))
 
     # ********************************************************************************************
     # constraints temperature
@@ -1733,11 +1748,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
-                        )
                     elif beamsec_obj.SectionType == "Circular":
                         radius = 0.5 * beamsec_obj.CircDiameter.getValueAs("mm")
                         section_type = ", SECTION=CIRC"
@@ -1746,11 +1756,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             elsetdef,
                             material,
                             section_type
-                        )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
                         )
                     elif beamsec_obj.SectionType == "Pipe":
                         radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs("mm")
@@ -1762,11 +1767,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
-                        )
+                    # see forum topic for output formatting of rotation
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=46133&p=405142#p405142
+                    section_nor = "{:f}, {:f}, {:f}\n".format(
+                        normal[0],
+                        normal[1],
+                        normal[2]
+                    )
                     f.write(section_def)
                     f.write(section_geo)
                     f.write(section_nor)

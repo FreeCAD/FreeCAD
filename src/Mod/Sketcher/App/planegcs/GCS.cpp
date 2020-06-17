@@ -25,12 +25,6 @@
 #pragma warning(disable : 4996)
 #endif
 
-#if defined(__clang__) && defined(__has_warning)
-#if __has_warning("-Wdeprecated-copy")
-# pragma clang diagnostic ignored "-Wdeprecated-copy"
-#endif
-#endif
-
 //#define _GCS_DEBUG
 //#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 //#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.

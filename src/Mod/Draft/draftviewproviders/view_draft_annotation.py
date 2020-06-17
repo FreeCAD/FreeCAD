@@ -48,6 +48,9 @@ class ViewProviderDraftAnnotation(object):
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                         "Dimension size overall multiplier"))
+        vobj.addProperty("App::PropertyEnumeration", "AnnotationStyle", 
+                         "Annotation", QT_TRANSLATE_NOOP("App::Property",
+                         "Annotation style"))
 
         # graphics properties
         vobj.addProperty("App::PropertyFloat","LineWidth",
@@ -59,6 +62,8 @@ class ViewProviderDraftAnnotation(object):
         annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
         if annotation_scale != 0:
             vobj.ScaleMultiplier = 1 / annotation_scale
+        styles =  [key[12:] for key in vobj.Object.Document.Meta.keys() if key.startswith("Draft_Style_")]
+        vobj.AnnotationStyle = [""] + styles
 
 
     def __getstate__(self):
@@ -82,7 +87,31 @@ class ViewProviderDraftAnnotation(object):
         return mode
 
     def onChanged(self, vobj, prop):
-        return
+        if (prop == "AnnotationStyle") and hasattr(vobj,"AnnotationStyle"):
+            import gui_annotationstyleeditor
+            if (not vobj.AnnotationStyle) or (vobj.AnnotationStyle == " "):
+                # unset style
+                for visprop in gui_annotationstyleeditor.DEFAULT.keys():
+                    if visprop in vobj.PropertiesList:
+                        # make property writable
+                        vobj.setEditorMode(visprop,0)
+            else:
+                # set style
+                import json
+                styles = {}
+                for key, value in vobj.Object.Document.Meta.items():
+                    if key.startswith("Draft_Style_"):
+                        styles[key[12:]] = json.loads(value)  
+                if prop.AnnotationStyle in styles:
+                    style = styles[prop.AnnotationStyle]
+                    for visprop in style.keys():
+                        if visprop in vobj.PropertiesList:
+                            try:
+                                getattr(vobj,visprop).setValue(style[visprop])
+                            except:
+                                setattr(vobj,visprop,style[visprop])
+                            # make property read-only
+                            vobj.setEditorMode(visprop,1)
 
     def execute(self,vobj):
         return

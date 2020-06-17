@@ -519,10 +519,8 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     }
 
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-
-    if (((uniSys == Base::UnitSystem::Imperial1) ||
-         (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
-         !angularMeasure) {
+    if ( (uniSys == Base::UnitSystem::ImperialBuilding) &&
+          !angularMeasure ) {
         result = true;
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
          angularMeasure) {
@@ -540,155 +538,148 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     }
     bool multiValueSchema = false;
 
-    QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
-    QString specStrCopy = specStr;
-    QString formatPrefix;
-    QString formatSuffix;
+    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = getDimValue();
-    QString specVal;
-    QString userUnits;
+    QString qUserStringUnits;
+    QString formattedValue;
 
     bool angularMeasure = false;
-    Base::Quantity qVal;
-    qVal.setValue(val);
+    Base::Quantity asQuantity;
+    asQuantity.setValue(val);
     if ( (Type.isValue("Angle")) ||
          (Type.isValue("Angle3Pt")) ) {
         angularMeasure = true;
-        qVal.setUnit(Base::Unit::Angle);
+        asQuantity.setUnit(Base::Unit::Angle);
     } else {
-        qVal.setUnit(Base::Unit::Length);
+        asQuantity.setUnit(Base::Unit::Length);
     }
 
-    QString userStr = qVal.getUserString();            // this handles mm to inch/km/parsec etc
+    QString qUserString = asQuantity.getUserString();      // this handles mm to inch/km/parsec etc
                                                        // and decimal positions but won't give more than
                                                        // Global_Decimals precision
                                                        // really should be able to ask units for value
                                                        // in appropriate UoM!!
 
     //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
-    //if it is multi-unit schema, don't even try to use Alt Decimals or format per format spec
-    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
+    //if it is multi-unit schema, don't even try to use Alt Decimals
+    Base::UnitSystem unitSystem = Base::UnitsApi::getSchema();
 
-//handle multi value schemes
-    std::string pre = getPrefix();
+    //get formatSpec prefix/suffix/specifier
+    QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
+    QString formatPrefix    = qsl[0];   //FormatSpec prefix
+    QString formatSuffix    = qsl[1];   //FormatSpec suffix
+    QString formatSpecifier = qsl[2];   //FormatSpec specifier
+
+    //handle multi value schemes (yd/ft/in, dms, etc)
+    std::string genPrefix = getPrefix();     //general prefix - diameter, radius, etc
     QString qMultiValueStr;
-    QString qPre = QString::fromUtf8(pre.data(),pre.size());
-    if (((uniSys == Base::UnitSystem::Imperial1) ||
-         (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
-         !angularMeasure) {
+    QString qGenPrefix = QString::fromUtf8(genPrefix.data(),genPrefix.size());
+    if ( (unitSystem == Base::UnitSystem::ImperialBuilding)  &&
+         !angularMeasure ) {
         multiValueSchema = true;
-        qMultiValueStr = userStr;
-        specStr = userStr;
-        if (!pre.empty()) {
-            qMultiValueStr = qPre + userStr;
-            specStr = qPre + userStr;
+        qMultiValueStr = qUserString;
+        if (!genPrefix.empty()) {
+            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
+            qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
         }
-    } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
-         angularMeasure) {
+    } else if ((unitSystem == Base::UnitSystem::ImperialCivil) &&
+                angularMeasure) {
         multiValueSchema = true;
         QString dispMinute = QString::fromUtf8("\'");
         QString dispSecond = QString::fromUtf8("\"");
         QString schemeMinute = QString::fromUtf8("M");
         QString schemeSecond = QString::fromUtf8("S");
-        specStr = userStr.replace(schemeMinute,dispMinute);
-        specStr = specStr.replace(schemeSecond,dispSecond);
+        QString displaySub = qUserString.replace(schemeMinute,dispMinute);
+        displaySub = displaySub.replace(schemeSecond,dispSecond);
         multiValueSchema = true;
-        qMultiValueStr = specStr;
-        if (!pre.empty()) {
-            qMultiValueStr = qPre + specStr;
-            specStr = qPre + specStr;
+        qMultiValueStr = displaySub;
+        if (!genPrefix.empty()) {
+            // prefix + 48*30'30" + suffix
+            qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
         }
     } else {
-//handle single value schemes
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
-
-        QString userVal = userStr;
-        userVal.remove(rxUnits);                                          //getUserString(defaultDecimals) without units
+    //handle single value schemes
+        if (formatSpecifier.isEmpty()) {
+            Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
+                                    qPrintable(qFormatSpec), getNameInDocument());
+            return Base::Tools::toStdString(qFormatSpec);
+        }
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));   //space + any non digits at end of string
+        QString userVal = qUserString;
+        userVal.remove(rxUnits);                        //getUserString(defaultDecimals) without units
 
         QLocale loc;
         double userValNum = loc.toDouble(userVal);
 
-//        QString userUnits;
         int pos = 0;
-        if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
-            userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
+        if ((pos = rxUnits.indexIn(qUserString, 0)) != -1)  {
+            qUserStringUnits = rxUnits.cap(0);                //entire capture - non numerics at end of qUserString
         }
-
-        //find the %x.y tag in FormatSpec
-        QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
-        QString match;
-//        QString specVal = userVal;                                             //sensible default
-        specVal = userVal;                                             //sensible default
-        pos = 0;
-        if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
-            match = rxFormat.cap(0);                                          //entire capture of rx
+        formattedValue = userVal;                            //sensible default
     #if QT_VERSION >= 0x050000
-            specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
+        formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(),userValNum);
     #else
-            QString qs2;
-            specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
+        QString qs2;
+        formattedValue = qs2.sprintf(Base::Tools::toStdString(formatSpecifier).c_str(),userValNum);
     #endif
-        formatPrefix = specStrCopy.left(pos);
-        formatSuffix = specStrCopy.right(specStrCopy.size() - pos - match.size());
-        } else {       //printf format not found!
-            Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
-                                    qPrintable(specStr), getNameInDocument());
-            return Base::Tools::toStdString(specStr);
-        }
 
         QString repl = userVal;
         if (useDecimals()) {
             if (showUnits() || (Type.isValue("Angle")) ||(Type.isValue("Angle3Pt")) ) {
-                repl = userStr;
+                repl = qUserString;
             } else {
                 repl = userVal;
             }
         } else {
             if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-                repl = specVal + userUnits;
+                repl = formattedValue + qUserStringUnits;
             } else {
-                repl = specVal;
+                repl = formattedValue;
             }
         }
 
-        specStr.replace(match,repl);
+        qFormatSpec.replace(formatSpecifier,repl);
         //this next bit is so inelegant!!!
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
-            specStr.replace(dp,loc.decimalPoint());
-            specVal.replace(dp,loc.decimalPoint());
+            qFormatSpec.replace(dp,loc.decimalPoint());
+            formattedValue.replace(dp,loc.decimalPoint());
         }
         //Remove space between dimension and degree sign
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
             QRegExp space(QString::fromUtf8("\\s"));
-            specStr.remove(space);
+            qFormatSpec.remove(space);
         }
     }
+    //formattedValue   - formatted numeric value
+    //qUserStringUnits - unit abbrev
+    //qFormatSpec      - prefix + formattedValue w/units + suffix
 
-    //specVal - qstring with formatted numeric value
-    //userUnits - qstring with unit abbrev
-    //specStr  - number + units
-    //partial = 0 --> the whole dimension string number + units )the "user string"
+    //partial = 0 --> prefix + formattedValue w/units +suffix
+    // prefix 4' 11" suffix
+    result = qFormatSpec.toUtf8().constData();
+
     std::string ssPrefix = Base::Tools::toStdString(formatPrefix);
     std::string ssSuffix = Base::Tools::toStdString(formatSuffix);
-    result = specStr.toUtf8().constData();
+    std::string ssUnits  = Base::Tools::toStdString(qUserStringUnits);
     if (multiValueSchema) {
         result = ssPrefix +
                  Base::Tools::toStdString(qMultiValueStr) +
-                 ssSuffix;
+                 ssSuffix +
+                 ssUnits;
     }
-    if (partial == 1)  {                            //just the number (+prefix & suffix)
-//        result = Base::Tools::toStdString(specVal);
+
+    if (partial == 1)  {                            //prefix number suffix
         result = ssPrefix +
-                 Base::Tools::toStdString(specVal) +
+                 Base::Tools::toStdString(formattedValue) +
                  ssSuffix;
     } else if (partial == 2) {                       //just the unit
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
             QRegExp space(QString::fromUtf8("\\s"));
-            userUnits.remove(space);
-            result = Base::Tools::toStdString(userUnits);
+            qUserStringUnits.remove(space);
+            result = Base::Tools::toStdString(qUserStringUnits);
         } else if (showUnits()) {
-            result = Base::Tools::toStdString(userUnits);
+            result = Base::Tools::toStdString(qUserStringUnits);
         } else {
             result = "";
         }
@@ -696,6 +687,41 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
 
     return result;
 }
+
+
+QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
+{
+    QStringList result;
+    QString formatPrefix;
+    QString formatSuffix;
+    QString formatted;
+    //find the %x.y tag in FormatSpec
+    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
+    QString match;
+    int pos = 0;
+    if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {
+        match = rxFormat.cap(0);                                          //entire capture of rx
+//#if QT_VERSION >= 0x050000
+//        formatted = QString::asprintf(Base::Tools::toStdString(match).c_str(),value);
+//#else
+//        QString qs2;
+//        formatted = qs2.sprintf(Base::Tools::toStdString(match).c_str(),value);
+//#endif
+        formatPrefix = fSpec.left(pos);
+        result.append(formatPrefix);
+        formatSuffix = fSpec.right(fSpec.size() - pos - match.size());
+        result.append(formatSuffix);
+        result.append(match);
+    } else {       //printf format not found!
+        Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
+                                qPrintable(fSpec), getNameInDocument());
+        result.append(QString());
+        result.append(QString());
+        result.append(fSpec);
+    }
+    return result;
+}
+
 
 //!NOTE: this returns the Dimension value in internal units (ie mm)!!!!
 double DrawViewDimension::getDimValue()

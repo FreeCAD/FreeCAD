@@ -27,7 +27,7 @@
 # include <QTreeWidget>
 # include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "DlgBooleanOperation.h"
@@ -47,6 +47,7 @@
 #include <Gui/WaitCursor.h>
 
 using namespace PartGui;
+namespace bp = boost::placeholders;
 
 namespace PartGui {
     class BooleanOperationItem : public QTreeWidgetItem
@@ -89,9 +90,9 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
     connect(ui->secondShape, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
     this->connectNewObject = App::GetApplication().signalNewObject.connect(boost::bind
-        (&DlgBooleanOperation::slotCreatedObject, this, _1));
+        (&DlgBooleanOperation::slotCreatedObject, this, bp::_1));
     this->connectModObject = App::GetApplication().signalChangedObject.connect(boost::bind
-        (&DlgBooleanOperation::slotChangedObject, this, _1, _2));
+        (&DlgBooleanOperation::slotChangedObject, this, bp::_1, bp::_2));
     findShapes();
 }
 

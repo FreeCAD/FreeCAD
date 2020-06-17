@@ -172,6 +172,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     }
 
     if (GeoId != Constraint::GeoUndef) {
+
+        const Part::Geometry * hitobject = sketchgui->getSketchObject()->getGeometry(GeoId);
+
         // Currently only considers objects in current Sketcher
         AutoConstraint constr;
         constr.Type = Sketcher::None;
@@ -181,7 +184,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             constr.Type = Sketcher::Coincident;
         else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none)
+        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
             constr.Type = Sketcher::PointOnObject;
         else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
             constr.Type = Sketcher::Tangent;

@@ -26,29 +26,31 @@
 # \brief Provides functions for creating polar arrays in a plane.
 
 import FreeCAD as App
-import Draft
-# import draftmake.make_array as make_array
+
+import draftmake.make_array as make_array
 import draftutils.utils as utils
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 
-def make_polar_array(obj,
-                     number=4, angle=360, center=App.Vector(0, 0, 0),
+def make_polar_array(base_object,
+                     number=5, angle=360, center=App.Vector(0, 0, 0),
                      use_link=True):
     """Create a polar array from the given object.
 
     Parameters
     ----------
-    obj: Part::Feature
-        Any type of object that has a `Part::TopoShape`
-        that can be duplicated.
-        This means most 2D and 3D objects produced
-        with any workbench.
+    base_object: Part::Feature or str
+        Any of object that has a `Part::TopoShape` that can be duplicated.
+        This means most 2D and 3D objects produced with any workbench.
+        If it is a string, it must be the `Label` of that object.
+        Since a label is not guaranteed to be unique in a document,
+        it will use the first object found with this label.
 
     number: int, optional
-        It defaults to 4.
-        The number of copies produced in the circular pattern.
+        It defaults to 5.
+        The number of copies produced in the polar pattern.
 
     angle: float, optional
         It defaults to 360.
@@ -77,38 +79,56 @@ def make_polar_array(obj,
     Returns
     -------
     Part::FeaturePython
-        A scripted object with `Proxy.Type='Array'`.
+        A scripted object of type `'Array'`.
         Its `Shape` is a compound of the copies of the original object.
+
+    None
+        If there is a problem it will return `None`.
+
+    See Also
+    --------
+    make_ortho_array, make_circular_array, make_path_array, make_point_array
     """
     _name = "make_polar_array"
     utils.print_header(_name, _tr("Polar array"))
 
-    _msg("Number: {}".format(number))
-    _msg("Angle: {}".format(angle))
-    _msg("Center: {}".format(center))
+    if isinstance(base_object, str):
+        base_object_str = base_object
 
+    found, base_object = utils.find_object(base_object,
+                                           doc=App.activeDocument())
+    if not found:
+        _msg("base_object: {}".format(base_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("base_object: {}".format(base_object.Label))
+
+    _msg("number: {}".format(number))
     try:
         utils.type_check([(number, int)], name=_name)
     except TypeError:
         _err(_tr("Wrong input: must be an integer number."))
         return None
 
+    _msg("angle: {}".format(angle))
     try:
         utils.type_check([(angle, (int, float))], name=_name)
     except TypeError:
         _err(_tr("Wrong input: must be a number."))
         return None
 
+    _msg("center: {}".format(center))
     try:
         utils.type_check([(center, App.Vector)], name=_name)
     except TypeError:
         _err(_tr("Wrong input: must be a vector."))
         return None
 
-    _msg("use_link: {}".format(bool(use_link)))
+    use_link = bool(use_link)
+    _msg("use_link: {}".format(use_link))
 
-    # new_obj = make_array.make_array()
-    new_obj = Draft.makeArray(obj,
-                              arg1=center, arg2=angle, arg3=number,
-                              use_link=use_link)
+    new_obj = make_array.make_array(base_object,
+                                    arg1=center, arg2=angle, arg3=number,
+                                    use_link=use_link)
     return new_obj

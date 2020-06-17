@@ -233,17 +233,17 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
 
 void TaskProjGroup::scaleTypeChanged(int index)
 {
-    if(blockUpdate)
+    if (blockUpdate)
         return;
 
     //defaults to prevent scale changing 
     ui->sbScaleNum->setEnabled(false);
     ui->sbScaleDen->setEnabled(false);
 
-    if(index == 0) {
+    if (index == 0) {
         // Document Scale Type
         multiView->ScaleType.setValue("Page");
-    } else if(index == 1) {
+    } else if (index == 1) {
         // Automatic Scale Type
         //block recompute
         multiView->ScaleType.setValue("Automatic");
@@ -251,7 +251,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         multiView->Scale.setValue(autoScale);
         //unblock recompute
 
-    } else if(index == 2) {
+    } else if (index == 2) {
         // Custom Scale Type
         //block recompute
         multiView->ScaleType.setValue("Custom");

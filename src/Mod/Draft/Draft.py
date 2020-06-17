@@ -398,24 +398,24 @@ if gui:
     _ViewProviderAngularDimension = ViewProviderAngularDimension
 
 
-from draftobjects.label import make_label
-from draftobjects.label import Label
+from draftobjects.label import (Label,
+                                DraftLabel)
 
-makeLabel = make_label
-DraftLabel = Label
+from draftmake.make_label import (make_label,
+                                  makeLabel)
 
 if gui:
     from draftviewproviders.view_label import ViewProviderLabel
     ViewProviderDraftLabel = ViewProviderLabel
 
+from draftobjects.text import (Text,
+                               DraftText)
 
-from draftobjects.text import make_text
-from draftobjects.text import Text
-makeText = make_text
-DraftText = Text
+from draftmake.make_text import (make_text,
+                                 makeText)
 
-if gui:
-    from draftviewproviders.view_text import ViewProviderText
-    ViewProviderDraftText = ViewProviderText
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_text import (ViewProviderText,
+                                              ViewProviderDraftText)
 
 ## @}

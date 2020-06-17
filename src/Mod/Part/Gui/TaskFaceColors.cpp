@@ -44,7 +44,7 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskFaceColors.h"
@@ -61,6 +61,7 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -68,6 +69,7 @@
 
 
 using namespace PartGui;
+namespace bp = boost::placeholders;
 
 namespace PartGui {
     class FaceSelection : public Gui::SelectionFilterGate
@@ -274,11 +276,11 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     Gui::Selection().addSelectionGate(gate);
 
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&FaceColors::slotDeleteDocument, this, _1));
+        (&FaceColors::slotDeleteDocument, this, bp::_1));
     d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&FaceColors::slotDeleteObject, this, _1));
+        (&FaceColors::slotDeleteObject, this, bp::_1));
     d->connectUndoDoc = d->doc->signalUndoDocument.connect(boost::bind
-        (&FaceColors::slotUndoDocument, this, _1));
+        (&FaceColors::slotUndoDocument, this, bp::_1));
 }
 
 FaceColors::~FaceColors()
@@ -407,7 +409,7 @@ void FaceColors::updatePanel()
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());
-    if (fm.width(faces) > maxWidth) {
+    if (Gui::QtTools::horizontalAdvance(fm, faces) > maxWidth) {
         faces = fm.elidedText(faces, Qt::ElideMiddle, maxWidth);
     }
 

@@ -703,8 +703,9 @@ def isColinear(vlist):
     return True
 
 
-def rounded(v):
-    """Return a vector rounded to the `precision` in the parameter database.
+def rounded(v,d=None):
+    """Return a vector rounded to the `precision` in the parameter database
+    or to the given decimals value
 
     Each of the components of the vector is rounded to the decimal
     precision set in the parameter database.
@@ -713,6 +714,7 @@ def rounded(v):
     ----------
     v : Base::Vector3
         The input vector.
+    d : (Optional) the number of decimals to round to
 
     Returns
     -------
@@ -722,6 +724,8 @@ def rounded(v):
         in the parameter database.
     """
     p = precision()
+    if d:
+        p = d
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
 

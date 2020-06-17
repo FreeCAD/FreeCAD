@@ -26,14 +26,15 @@
 # \ingroup DRAFTGEOUTILS
 # \brief Provides various functions for working with wires.
 
+import math
 import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
 import WorkingPlane
 
-from draftgeoutils.general import geomType
-from draftgeoutils.edges import findMidpoint
+from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import getNormal
+from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -312,3 +313,119 @@ def rebaseWire(wire, vidx=0):
 
     # This can be done in one step
     return Part.Wire(wire.Edges[vidx-1:] + wire.Edges[:vidx-1])
+
+
+def removeInterVertices(wire):
+    """Remove middle vertices from a straight wire and return a new wire.
+
+    Remove unneeded vertices, those that are in the middle of a straight line,
+    from a wire, return a new wire.
+    """
+    _pre = precision()
+    edges = Part.__sortEdges__(wire.Edges)
+    nverts = []
+
+    def getvec(v1, v2):
+        if not abs(round(v1.getAngle(v2), _pre) in [0, round(math.pi, _pre)]):
+            nverts.append(edges[i].Vertexes[-1].Point)
+
+    for i in range(len(edges) - 1):
+        vA = vec(edges[i])
+        vB = vec(edges[i + 1])
+        getvec(vA, vB)
+
+    vA = vec(edges[-1])
+    vB = vec(edges[0])
+    getvec(vA, vB)
+
+    if nverts:
+        if wire.isClosed():
+            nverts.append(nverts[0])
+        w = Part.makePolygon(nverts)
+        return w
+    else:
+        return wire
+
+
+def cleanProjection(shape, tessellate=True, seglength=0.05):
+    """Return a valid compound of edges, by recreating them.
+
+    This is because the projection algorithm somehow creates wrong shapes.
+    They display fine, but on loading the file the shape is invalid.
+
+    Now with tanderson's fix to `ProjectionAlgos`, that isn't the case,
+    but this function can be used for tessellating ellipses and splines
+    for DXF output-DF.
+    """
+    oldedges = shape.Edges
+    newedges = []
+    for e in oldedges:
+        try:
+            if geomType(e) == "Line":
+                newedges.append(e.Curve.toShape())
+
+            elif geomType(e) == "Circle":
+                if len(e.Vertexes) > 1:
+                    mp = findMidpoint(e)
+                    a = Part.Arc(e.Vertexes[0].Point,
+                                 mp,
+                                 e.Vertexes[-1].Point).toShape()
+                    newedges.append(a)
+                else:
+                    newedges.append(e.Curve.toShape())
+
+            elif geomType(e) == "Ellipse":
+                if tessellate:
+                    newedges.append(Part.Wire(curvetowire(e, seglength)))
+                else:
+                    if len(e.Vertexes) > 1:
+                        a = Part.Arc(e.Curve,
+                                     e.FirstParameter,
+                                     e.LastParameter).toShape()
+                        newedges.append(a)
+                    else:
+                        newedges.append(e.Curve.toShape())
+
+            elif (geomType(e) == "BSplineCurve"
+                  or geomType(e) == "BezierCurve"):
+                if tessellate:
+                    newedges.append(Part.Wire(curvetowire(e, seglength)))
+                else:
+                    if isLine(e.Curve):
+                        line = Part.LineSegment(e.Vertexes[0].Point,
+                                                e.Vertexes[-1].Point).toShape()
+                        newedges.append(line)
+                    else:
+                        newedges.append(e.Curve.toShape(e.FirstParameter,
+                                                        e.LastParameter))
+            else:
+                newedges.append(e)
+        except Part.OCCError:
+            print("Debug: error cleaning edge ", e)
+
+    return Part.makeCompound(newedges)
+
+
+def tessellateProjection(shape, seglen):
+    """Return projection with BSplines and Ellipses broken into line segments.
+
+    Useful for exporting projected views to DXF files.
+    """
+    oldedges = shape.Edges
+    newedges = []
+    for e in oldedges:
+        try:
+            if geomType(e) == "Line":
+                newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Circle":
+                newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Ellipse":
+                newedges.append(Part.Wire(curvetosegment(e, seglen)))
+            elif geomType(e) == "BSplineCurve":
+                newedges.append(Part.Wire(curvetosegment(e, seglen)))
+            else:
+                newedges.append(e)
+        except Part.OCCError:
+            print("Debug: error cleaning edge ", e)
+
+    return Part.makeCompound(newedges)

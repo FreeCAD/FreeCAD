@@ -28,7 +28,7 @@
 
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import precision, vec, geomType, isPtOnEdge
@@ -120,7 +120,7 @@ def findIntersection(edge1, edge2,
 
     pt1 = None
 
-    if isinstance(edge1, FreeCAD.Vector) and isinstance(edge2, FreeCAD.Vector):
+    if isinstance(edge1, App.Vector) and isinstance(edge2, App.Vector):
         # we got points directly
         pt1 = edge1
         pt2 = edge2
@@ -174,16 +174,16 @@ def findIntersection(edge1, edge2,
             # Line and Arc are on same plane
 
             dOnLine = center.sub(pt1).dot(dirVec)
-            onLine = FreeCAD.Vector(dirVec)
+            onLine = App.Vector(dirVec)
             onLine.scale(dOnLine, dOnLine, dOnLine)
             toLine = pt1.sub(center).add(onLine)
 
             if toLine.Length < arc.Curve.Radius:
                 dOnLine = (arc.Curve.Radius**2 - toLine.Length**2)**(0.5)
-                onLine = FreeCAD.Vector(dirVec)
+                onLine = App.Vector(dirVec)
                 onLine.scale(dOnLine, dOnLine, dOnLine)
                 int += [center.add(toLine).add(onLine)]
-                onLine = FreeCAD.Vector(dirVec)
+                onLine = App.Vector(dirVec)
                 onLine.scale(-dOnLine, -dOnLine, -dOnLine)
                 int += [center.add(toLine).add(onLine)]
             elif round(toLine.Length - arc.Curve.Radius, precision()) == 0:
@@ -194,13 +194,13 @@ def findIntersection(edge1, edge2,
         else:
             # Line isn't on Arc's plane
             if dirVec.dot(arc.Curve.Axis) != 0:
-                toPlane = FreeCAD.Vector(arc.Curve.Axis)
+                toPlane = App.Vector(arc.Curve.Axis)
                 toPlane.normalize()
                 d = pt1.dot(toPlane)
                 if not d:
                     return []
                 dToPlane = center.sub(pt1).dot(toPlane)
-                toPlane = FreeCAD.Vector(pt1)
+                toPlane = App.Vector(pt1)
                 toPlane.scale(dToPlane/d, dToPlane/d, dToPlane/d)
                 ptOnPlane = toPlane.add(pt1)
                 if round(ptOnPlane.sub(center).Length - arc.Curve.Radius,
@@ -377,10 +377,37 @@ def connect(edges, closed=False):
                                        v2).toShape())
     try:
         return Part.Wire(nedges)
-    except:
+    except Part.OCCError:
         print("DraftGeomUtils.connect: unable to connect edges")
         for e in nedges:
             print(e.Curve, " ",
                   e.Vertexes[0].Point, " ",
                   e.Vertexes[-1].Point)
         return None
+
+
+def angleBisection(edge1, edge2):
+    """Return an edge that bisects the angle between the 2 straight edges."""
+    if geomType(edge1) != "Line" or geomType(edge2) != "Line":
+        return None
+
+    p1 = edge1.Vertexes[0].Point
+    p2 = edge1.Vertexes[-1].Point
+    p3 = edge2.Vertexes[0].Point
+    p4 = edge2.Vertexes[-1].Point
+    intersect = findIntersection(edge1, edge2, True, True)
+
+    if intersect:
+        line1Dir = p2.sub(p1)
+        angleDiff = DraftVecUtils.angle(line1Dir, p4.sub(p3))
+        ang = angleDiff * 0.5
+        origin = intersect[0]
+        line1Dir.normalize()
+        direction = DraftVecUtils.rotate(line1Dir, ang)
+    else:
+        diff = p3.sub(p1)
+        origin = p1.add(diff.multiply(0.5))
+        direction = p2.sub(p1)
+        direction.normalize()
+
+    return Part.LineSegment(origin, origin.add(direction)).toShape()

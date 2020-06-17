@@ -125,9 +125,10 @@ PlaneSurfaceFit::~PlaneSurfaceFit()
 
 void PlaneSurfaceFit::Initialize(const MeshCore::MeshGeomFacet& tria)
 {
-    basepoint = tria.GetGravityPoint();
-    normal = tria.GetNormal();
     if (fitter) {
+        basepoint = tria.GetGravityPoint();
+        normal = tria.GetNormal();
+
         fitter->Clear();
 
         fitter->AddPoint(tria._aclPoints[0]);

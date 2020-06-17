@@ -1766,7 +1766,11 @@ _PySwigObject_type(void) {
 	sizeof(SwigPyObject),		    /* tp_basicsize */
 	0,			            /* tp_itemsize */
 	(destructor)SwigPyObject_dealloc,   /* tp_dealloc */
+#if PY_VERSION_HEX < 0x03080000
 	(printfunc)SwigPyObject_print,	    /* tp_print */
+#else
+	0, /*tp_vectorcall_offset*/
+#endif
 #if PY_VERSION_HEX < 0x02020000
 	(getattrfunc)SwigPyObject_getattr,  /* tp_getattr */ 
 #else
@@ -1947,8 +1951,12 @@ _PySwigPacked_type(void) {
 	(char *)"SwigPyPacked",		    /* tp_name */	
 	sizeof(SwigPyPacked),		    /* tp_basicsize */	
 	0,				    /* tp_itemsize */	
-	(destructor)SwigPyPacked_dealloc,   /* tp_dealloc */	
-	(printfunc)SwigPyPacked_print,	    /* tp_print */   	
+	(destructor)SwigPyPacked_dealloc,   /* tp_dealloc */
+#if PY_VERSION_HEX < 0x03080000
+	(printfunc)SwigPyPacked_print,	    /* tp_print */
+#else
+	0, /*tp_vectorcall_offset*/
+#endif
 	(getattrfunc)0,			    /* tp_getattr */ 	
 	(setattrfunc)0,			    /* tp_setattr */ 	
 #if PY_VERSION_HEX>=0x03000000

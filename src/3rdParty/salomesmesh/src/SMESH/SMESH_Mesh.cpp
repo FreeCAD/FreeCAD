@@ -76,10 +76,10 @@
 
 #ifndef WIN32
 #include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #else 
 #include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 //#include <pthread.h>
 #endif
 

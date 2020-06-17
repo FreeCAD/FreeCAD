@@ -36,12 +36,17 @@ the graphical user interface (GUI).
 import os
 from PySide import QtCore
 
-import FreeCAD
+import FreeCAD as App
 import Draft_rc
-from draftutils.messages import _msg, _log
+
+from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
 
-App = FreeCAD
+# TODO: move the functions that require the graphical interface
+# This module should not import any graphical commands; those should be
+# in gui_utils
+if App.GuiUp:
+    import FreeCADGui as Gui
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc else False
@@ -113,9 +118,8 @@ def type_check(args_and_types, name="?"):
     """
     for v, t in args_and_types:
         if not isinstance(v, t):
-            w = "typecheck[" + str(name) + "]: "
-            w += str(v) + " is not " + str(t) + "\n"
-            FreeCAD.Console.PrintWarning(w)
+            w = "typecheck[{}]: '{}' is not {}".format(name, v, t)
+            _wrn(w)
             raise TypeError("Draft." + str(name))
 
 
@@ -158,7 +162,7 @@ def get_param_type(param):
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
                    "DiscretizeEllipses", "showUnit",
-                   "Draft_array_fuse", "Draft_array_Link","gridBorder"):
+                   "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",
                    "snapcolor", "gridColor"):
@@ -204,8 +208,8 @@ def get_param(param, default=None):
     draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
     view_params = "User parameter:BaseApp/Preferences/View"
 
-    p = FreeCAD.ParamGet(draft_params)
-    v = FreeCAD.ParamGet(view_params)
+    p = App.ParamGet(draft_params)
+    v = App.ParamGet(view_params)
     t = getParamType(param)
     # print("getting param ",param, " of type ",t, " default: ",str(default))
     if t == "int":
@@ -267,8 +271,8 @@ def set_param(param, value):
     draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
     view_params = "User parameter:BaseApp/Preferences/View"
 
-    p = FreeCAD.ParamGet(draft_params)
-    v = FreeCAD.ParamGet(view_params)
+    p = App.ParamGet(draft_params)
+    v = App.ParamGet(view_params)
     t = getParamType(param)
 
     if t == "int":
@@ -525,24 +529,39 @@ isClone = is_clone
 
 
 def get_clone_base(obj, strict=False):
-    """get_clone_base(obj, [strict])
-    
-    Returns the object cloned by this object, if any, or this object if 
-    it is no clone. 
+    """Return the object cloned by this object, if any.
 
     Parameters
     ----------
-    obj : 
-        TODO: describe
+    obj: App::DocumentObject
+        Any type of object.
 
-    strict : bool (default = False)
-        If strict is True, if this object is not a clone, 
-        this function returns False
+    strict: bool, optional
+        It defaults to `False`.
+        If it is `True`, and this object is not a clone,
+        this function will return `False`.
+
+    Returns
+    -------
+    App::DocumentObject
+        It `obj` is a `Draft Clone`, it will return the first object
+        that is in its `Objects` property.
+
+        If `obj` has a `CloneOf` property, it will search iteratively
+        inside the object pointed to by this property.
+
+    obj
+        If `obj` is not a `Draft Clone`, nor it has a `CloneOf` property,
+        it will return the same `obj`, as long as `strict` is `False`.
+
+    False
+        It will return `False` if `obj` is not a clone,
+        and `strict` is `True`.
     """
-    if hasattr(obj,"CloneOf"):
+    if hasattr(obj, "CloneOf"):
         if obj.CloneOf:
             return get_clone_base(obj.CloneOf)
-    if get_type(obj) == "Clone":
+    if get_type(obj) == "Clone" and obj.Objects:
         return obj.Objects[0]
     if strict:
         return False
@@ -566,7 +585,7 @@ def get_group_names():
         Otherwise, return an empty list.
     """
     glist = []
-    doc = FreeCAD.ActiveDocument
+    doc = App.ActiveDocument
     for obj in doc.Objects:
         if (obj.isDerivedFrom("App::DocumentObjectGroup")
                 or getType(obj) in ("Floor", "Building", "Site")):
@@ -588,7 +607,7 @@ def ungroup(obj):
         Any type of scripted object.
     """
     for name in getGroupNames():
-        group = FreeCAD.ActiveDocument.getObject(name)
+        group = App.ActiveDocument.getObject(name)
         if obj in group.Group:
             # The list of objects cannot be modified directly,
             # so a new list is created, this new list is modified,
@@ -647,8 +666,8 @@ def shapify(obj):
     else:
         name = getRealName(obj.Name)
 
-    FreeCAD.ActiveDocument.removeObject(obj.Name)
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature", name)
+    App.ActiveDocument.removeObject(obj.Name)
+    newobj = App.ActiveDocument.addObject("Part::Feature", name)
     newobj.Shape = shape
 
     return newobj
@@ -869,11 +888,11 @@ compareObjects = compare_objects
 def load_svg_patterns():
     """Load the default Draft SVG patterns and user defined patterns.
 
-    The SVG patterns are added as a dictionary to the `FreeCAD.svgpatterns`
+    The SVG patterns are added as a dictionary to the `App.svgpatterns`
     attribute.
     """
     import importSVG
-    FreeCAD.svgpatterns = {}
+    App.svgpatterns = {}
 
     # Getting default patterns in the resource file
     patfiles = QtCore.QDir(":/patterns").entryList()
@@ -885,7 +904,7 @@ def load_svg_patterns():
         if p:
             for k in p:
                 p[k] = [p[k], file]
-            FreeCAD.svgpatterns.update(p)
+            App.svgpatterns.update(p)
 
     # Get patterns in a user defined file
     altpat = getParam("patternFile", "")
@@ -897,7 +916,7 @@ def load_svg_patterns():
                 if p:
                     for k in p:
                         p[k] = [p[k], file]
-                    FreeCAD.svgpatterns.update(p)
+                    App.svgpatterns.update(p)
 
 
 loadSvgPatterns = load_svg_patterns
@@ -909,16 +928,16 @@ def svg_patterns():
     Returns
     -------
     dict
-        Returns `FreeCAD.svgpatterns` if it exists.
+        Returns `App.svgpatterns` if it exists.
         Otherwise it calls `load_svg_patterns` to create it
         before returning it.
     """
-    if hasattr(FreeCAD, "svgpatterns"):
-        return FreeCAD.svgpatterns
+    if hasattr(App, "svgpatterns"):
+        return App.svgpatterns
     else:
         loadSvgPatterns()
-        if hasattr(FreeCAD, "svgpatterns"):
-            return FreeCAD.svgpatterns
+        if hasattr(App, "svgpatterns"):
+            return App.svgpatterns
     return {}
 
 
@@ -926,10 +945,8 @@ svgpatterns = svg_patterns
 
 
 def get_rgb(color, testbw=True):
-    """getRGB(color,[testbw])
-    
-    Return a rgb value #000000 from a freecad color
-    
+    """Return an RRGGBB value #000000 from a FreeCAD color.
+
     Parameters
     ----------
     testwb : bool (default = True)
@@ -941,8 +958,8 @@ def get_rgb(color, testbw=True):
     col = "#"+r+g+b
     if testbw:
         if col == "#ffffff":
-            #print(getParam('SvgLinesBlack'))
-            if getParam('SvgLinesBlack',True):
+            # print(getParam('SvgLinesBlack'))
+            if getParam('SvgLinesBlack', True):
                 col = "#000000"
     return col
 
@@ -1000,9 +1017,9 @@ def get_DXF(obj,direction=None):
         import Drawing
         import DraftVecUtils
         if not direction:
-            direction = FreeCAD.Vector(0,0,-1)
+            direction = App.Vector(0,0,-1)
         if DraftVecUtils.isNull(direction):
-            direction = FreeCAD.Vector(0,0,-1)
+            direction = App.Vector(0,0,-1)
         try:
             d = Drawing.projectToDXF(obj.Shape,direction)
         except:
@@ -1089,7 +1106,7 @@ def filter_objects_for_modifiers(objects, isCopied=False):
                 warningMessage = _tr("%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
                 App.Console.PrintError(warningMessage)
                 if App.GuiUp:
-                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
+                    Gui.getMainWindow().showMessage(warningMessage, 0)
             filteredObjects.append(obj.Base)
         elif hasattr(obj,"Placement") and obj.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
             App.Console.PrintError(_tr("%s cannot be modified because its placement is readonly.") % obj.Name)
@@ -1118,7 +1135,7 @@ def convert_draft_texts(textslist=[]):
     if not isinstance(textslist,list):
         textslist = [textslist]
     if not textslist:
-        for o in FreeCAD.ActiveDocument.Objects:
+        for o in App.ActiveDocument.Objects:
             if o.TypeId == "App::Annotation":
                 textslist.append(o)
     todelete = []
@@ -1135,7 +1152,7 @@ def convert_draft_texts(textslist=[]):
                     g.append(obj)
                     p.Group = g
     for n in todelete:
-        FreeCAD.ActiveDocument.removeObject(n)
+        App.ActiveDocument.removeObject(n)
 
 
 convertDraftTexts = convert_draft_texts
@@ -1232,3 +1249,125 @@ def print_header(name, description, debug=True):
     if debug:
         _msg(16 * "-")
         _msg(description)
+
+
+def find_doc(doc=None):
+    """Return the active document or find a document by name.
+
+    Parameters
+    ----------
+    doc: App::Document or str, optional
+        The document that will be searched in the session.
+        It defaults to `None`, in which case it tries to find
+        the active document.
+        If `doc` is a string, it will try to get the document by `Name`.
+
+    Returns
+    -------
+    bool, App::Document
+        A tuple containing the information on whether the search
+        was successful. In this case, the boolean is `True`,
+        and the second value is the document instance.
+
+    False, None
+        If there is no active document, or the string in `doc`
+        doesn't correspond to an open document in the session.
+    """
+    FOUND = True
+
+    if not doc:
+        doc = App.activeDocument()
+    if not doc:
+        return not FOUND, None
+
+    if isinstance(doc, str):
+        try:
+            doc = App.getDocument(doc)
+        except NameError:
+            _msg("document: {}".format(doc))
+            _err(_tr("Wrong input: unknown document."))
+            return not FOUND, None
+
+    return FOUND, doc
+
+
+def find_object(obj, doc=None):
+    """Find object in the document, inclusive by Label.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject or str
+        The object to search in `doc`.
+        Or if the `obj` is a string, it will search the object by `Label`.
+        Since Labels are not guaranteed to be unique, it will get the first
+        object with that label in the document.
+
+    doc: App::Document or str, optional
+        The document in which the object will be searched.
+        It defaults to `None`, in which case it tries to search in the
+        active document.
+        If `doc` is a string, it will search the document by `Name`.
+
+    Returns
+    -------
+    bool, App::DocumentObject
+        A tuple containing the information on whether the search
+        was successful. In this case, the boolean is `True`,
+        and the second value is the object found.
+
+    False, None
+        If the object doesn't exist in the document.
+    """
+    FOUND = True
+
+    found, doc = find_doc(doc)
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return not FOUND, None
+
+    if isinstance(obj, str):
+        try:
+            obj = doc.getObjectsByLabel(obj)[0]
+        except IndexError:
+            return not FOUND, None
+
+    if obj not in doc.Objects:
+        return not FOUND, None
+
+    return FOUND, obj
+
+
+def use_instead(function, version=""):
+    """Print a deprecation message and suggest another function.
+
+    This function must be used inside the definition of a function
+    that has been considered for deprecation, so we must provide
+    an alternative.
+    ::
+        def old_function():
+            use_instead('new_function', 1.0)
+
+        def someFunction():
+            use_instead('some_function')
+
+    Parameters
+    ----------
+    function: str
+        The name of the function to use instead of the current one.
+
+    version: float or str, optional
+        It defaults to the empty string `''`.
+        The version where this command is to be deprecated, if it is known.
+        If we don't know when this command will be deprecated
+        then we should not give a version.
+    """
+    text = "This function will be deprecated in "
+    text2 = "This function will be deprecated. "
+    text3 = "Please use "
+
+    if version:
+        _wrn(_tr(text) + "{}. ".format(version)
+             + _tr(text3) + "'{}'.".format(function))
+    else:
+        _wrn(_tr(text2)
+             + _tr(text3) + "'{}'.".format(function))

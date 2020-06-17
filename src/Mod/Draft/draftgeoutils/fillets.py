@@ -26,10 +26,10 @@
 # \ingroup DRAFTGEOUTILS
 # \brief Provides various functions for working with fillets.
 
-import lazy_loader.lazy_loader as lz
 import math
+import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 
 from draftgeoutils.general import precision
 from draftgeoutils.arcs import arcFrom2Pts
@@ -102,7 +102,7 @@ def fillet(lEdges, r, chamfer=False):
 
         dToCenter = r / math.sin(alpha/2.0)
         dToTangent = (dToCenter**2-r**2)**(0.5)
-        dirVect = FreeCAD.Vector(U1)
+        dirVect = App.Vector(U1)
         dirVect.scale(dToTangent, dToTangent, dToTangent)
         arcPt1 = lVertexes[1].Point.add(dirVect)
 
@@ -111,7 +111,7 @@ def fillet(lEdges, r, chamfer=False):
         dirVect.scale(dToCenter - r, dToCenter - r, dToCenter - r)
         arcPt2 = lVertexes[1].Point.add(dirVect)
 
-        dirVect = FreeCAD.Vector(U2)
+        dirVect = App.Vector(U2)
         dirVect.scale(dToTangent, dToTangent, dToTangent)
         arcPt3 = lVertexes[1].Point.add(dirVect)
 
@@ -166,7 +166,7 @@ def fillet(lEdges, r, chamfer=False):
         if round(abs(projCenter), precision()) > 0:
             normToLine = U1.cross(T).cross(U1)
         else:
-            normToLine = FreeCAD.Vector(toCenter)
+            normToLine = App.Vector(toCenter)
         normToLine.normalize()
 
         dCenterToLine = toCenter.dot(normToLine) - r

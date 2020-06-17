@@ -9286,9 +9286,9 @@ YY_RULE_SETUP
                             s.erase(i + 1);
                             std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
-                              yylval.func = j->second;
+                              yylval.func.first = j->second;
                             else
-                              yylval.func = FunctionExpression::NONE;
+                            { yylval.func.first = FunctionExpression::NONE; yylval.func.second = std::move(s); }
                             return FUNC;
                         }
 	YY_BREAK

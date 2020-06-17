@@ -72,8 +72,7 @@ def insert(filename,docname,record=None):
                                                translate("Arch","Shapes elevation"),
                                                translate("Arch","Choose which field provides shapes elevations:"),
                                                fields)
-            if reply[1]:
-                if record != "None":
+            if reply[1] and reply[0] != "None":
                     record = reply[0]
     
     # build shapes

@@ -3932,7 +3932,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "wb")
+    f = pythonopen(filename, "w")
     f.write(template)
     f.close()
 

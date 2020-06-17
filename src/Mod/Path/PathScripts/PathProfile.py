@@ -1266,8 +1266,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             begExt = extTObj
                 else:
                     d = i * mid
-                    cp1 = E.valueAt(E.getParameterByLength(d - spc))
-                    cp2 = E.valueAt(E.getParameterByLength(d + spc))
+                    negTestLen = d - spc
+                    if negTestLen < 0:
+                        negTestLen = d - (LE * 0.25)
+                    posTestLen = d + spc
+                    if posTestLen > LE:
+                        posTestLen = d + (LE * 0.25)
+                    cp1 = E.valueAt(E.getParameterByLength(negTestLen))
+                    cp2 = E.valueAt(E.getParameterByLength(posTestLen))
                     (intTObj, extTObj) = self._makeOffsetCircleTag(cp1, cp2, tagRad, fdv, 'Edge[{}]_'.format(e))
                     if intTObj and extTObj:
                         tagCnt += nt

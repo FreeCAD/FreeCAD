@@ -414,9 +414,7 @@ class _Space(ArchComponent.Component):
             if shape.Solids:
                 #print("setting objects shape")
                 shape = shape.Solids[0]
-                obj.Shape = shape
-                #pl = pl.multiply(obj.Placement)
-                obj.Placement = pl
+                self.applyShape(obj,shape,pl)
                 if hasattr(obj.Area,"Value"):
                     a = self.getArea(obj)
                     if obj.Area.Value != a:

@@ -287,7 +287,8 @@ public:
         LAST,
     };
 
-    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE, std::vector<Expression *> _args = std::vector<Expression*>());
+    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE, 
+            std::string &&name = std::string(), std::vector<Expression *> _args = std::vector<Expression*>());
 
     virtual ~FunctionExpression();
 
@@ -305,6 +306,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
     Function f;        /**< Function to execute */
+    std::string fname;
     std::vector<Expression *> args; /** Arguments to function*/
 };
 
@@ -484,9 +486,9 @@ public:
   std::vector<Expression*> arguments;
   std::vector<Expression*> list;
   std::string string;
-  FunctionExpression::Function func;
+  std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
+  semantic_type() : expr(0), ivalue(0), fvalue(0), func({FunctionExpression::NONE, std::string()}) {}
 };
 
 #define YYSTYPE semantic_type

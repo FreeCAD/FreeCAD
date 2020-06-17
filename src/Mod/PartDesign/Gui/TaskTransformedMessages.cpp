@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskTransformedMessages.h"
@@ -37,6 +37,7 @@
 
 using namespace PartDesignGui;
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Transformed feature messages"),true, 0),
@@ -54,7 +55,7 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     this->groupLayout()->addWidget(proxy);
     ui->labelTransformationStatus->setText(transformedView->getMessage());
 
-    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this,_1));
+    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, bp::_1));
 }
 
 TaskTransformedMessages::~TaskTransformedMessages()

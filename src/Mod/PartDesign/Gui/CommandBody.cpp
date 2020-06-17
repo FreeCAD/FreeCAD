@@ -315,6 +315,8 @@ void CmdPartDesignBody::activated(int iMsg)
             camera->viewBoundingBox(bbox, aspectratio, 1.0f);
         }
     }
+#else
+    Q_UNUSED(viewAll)
 #endif
 
     updateActive();

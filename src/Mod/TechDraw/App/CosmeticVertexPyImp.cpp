@@ -206,6 +206,8 @@ void CosmeticVertexPy::setSize(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyFloat_Check(p)) {
         size = PyFloat_AsDouble(p);
+    } else if (PyLong_Check(p)) {
+        size = (double) PyLong_AsLong(p);
     } else {
         throw Py::TypeError("expected (float)");
     }

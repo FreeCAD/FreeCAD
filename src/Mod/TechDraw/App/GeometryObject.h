@@ -131,7 +131,9 @@ public:
     void setFocus(double f) { m_focus = f; }
     double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
-    TopoDS_Shape invertGeometry(const TopoDS_Shape s);
+
+    //dupl mirrorShape???
+    static TopoDS_Shape invertGeometry(const TopoDS_Shape s);
 
     TopoDS_Shape getVisHard(void)    { return visHard; }
     TopoDS_Shape getVisOutline(void) { return visOutline; }

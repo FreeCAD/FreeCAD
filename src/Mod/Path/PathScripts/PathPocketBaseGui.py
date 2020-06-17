@@ -65,7 +65,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             form.clearEdges.hide()
 
         if FeaturePocket & self.pocketFeatures():
-            form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
+            form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
             form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
 
         if not (FeatureOutline & self.pocketFeatures()):

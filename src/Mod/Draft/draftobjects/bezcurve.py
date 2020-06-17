@@ -41,39 +41,39 @@ class BezCurve(DraftObject):
     def __init__(self, obj):
         super(BezCurve, self).__init__(obj, "BezCurve")
 
-        _tip = "The points of the Bezier curve"
-        obj.addProperty("App::PropertyVectorList", "Points",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The points of the Bezier curve")
+        obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip)
 
-        _tip = "The degree of the Bezier function"
-        obj.addProperty("App::PropertyInteger", "Degree",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", 
+                "The degree of the Bezier function")
+        obj.addProperty("App::PropertyInteger", "Degree", "Draft", _tip)
 
-        _tip = "Continuity"
-        obj.addProperty("App::PropertyIntegerList", "Continuity",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Continuity")
+        obj.addProperty("App::PropertyIntegerList", "Continuity", "Draft", _tip)
 
-        _tip = "If the Bezier curve should be closed or not"
-        obj.addProperty("App::PropertyBool", "Closed",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "If the Bezier curve should be closed or not")
+        obj.addProperty("App::PropertyBool", "Closed", "Draft", _tip)
 
-        _tip = "Create a face if this curve is closed"
-        obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Create a face if this curve is closed")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
 
-        _tip = "The length of this object"
-        obj.addProperty("App::PropertyLength", "Length",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The length of this object")
+        obj.addProperty("App::PropertyLength", "Length", "Draft", _tip)
 
-        _tip = "The area of this object"
-        obj.addProperty("App::PropertyArea", "Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The area of this object")
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
         obj.MakeFace = get_param("fillmode", True)
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []
-        #obj.setEditorMode("Degree",2)
+        #obj.setEditorMode("Degree", 2)
         obj.setEditorMode("Continuity", 1)
 
     def execute(self, fp):

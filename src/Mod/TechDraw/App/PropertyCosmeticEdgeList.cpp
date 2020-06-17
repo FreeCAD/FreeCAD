@@ -78,7 +78,7 @@ int PropertyCosmeticEdgeList::getSize(void) const
 }
 
 
-//_lValueList is not const. so why do we pass a const paramter?
+//_lValueList is not const. so why do we pass a const parameter?
 void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 {
     if (lValue) {

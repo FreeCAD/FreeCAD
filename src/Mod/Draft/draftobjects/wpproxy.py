@@ -37,9 +37,8 @@ class WorkingPlaneProxy:
     def __init__(self,obj):
         obj.Proxy = self
 
-        _tip = "The placement of this object"
-        obj.addProperty("App::PropertyPlacement", "Placement",
-                        "Base", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The placement of this object")
+        obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip)
 
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
 

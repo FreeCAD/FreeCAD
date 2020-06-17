@@ -41,6 +41,11 @@ SET (Draft_geoutils
     draftgeoutils/fillets.py
     draftgeoutils/offsets.py
     draftgeoutils/linear_algebra.py
+    draftgeoutils/cuboids.py
+    draftgeoutils/circles.py
+    draftgeoutils/circles_apollonius.py
+    draftgeoutils/circle_inversion.py
+    draftgeoutils/circles_incomplete.py
 )
 
 SET(Draft_tests
@@ -108,6 +113,7 @@ SET(Draft_make_functions
     draftmake/make_ellipse.py
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
+    draftmake/make_label.py
     draftmake/make_line.py
     draftmake/make_orthoarray.py
     draftmake/make_patharray.py
@@ -119,6 +125,7 @@ SET(Draft_make_functions
     draftmake/make_shape2dview.py
     draftmake/make_shapestring.py
     draftmake/make_sketch.py
+    draftmake/make_text.py
     draftmake/make_wire.py
     draftmake/make_wpproxy.py
     draftmake/README.md

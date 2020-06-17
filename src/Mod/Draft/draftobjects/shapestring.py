@@ -45,21 +45,17 @@ class ShapeString(DraftObject):
     def __init__(self, obj):
         super(ShapeString, self).__init__(obj, "ShapeString")
 
-        _tip = "Text string"
-        obj.addProperty("App::PropertyString", "String",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
+        obj.addProperty("App::PropertyString", "String", "Draft", _tip)
 
-        _tip = "Font file name"
-        obj.addProperty("App::PropertyFile", "FontFile",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
+        obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
 
-        _tip = "Height of text"
-        obj.addProperty("App::PropertyLength", "Size",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
+        obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
 
-        _tip = "Inter-character spacing"
-        obj.addProperty("App::PropertyLength", "Tracking",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
+        obj.addProperty("App::PropertyLength", "Tracking", "Draft", _tip)
 
     def execute(self, obj):
         import Part

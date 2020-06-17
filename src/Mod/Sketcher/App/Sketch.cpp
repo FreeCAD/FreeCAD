@@ -3684,6 +3684,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case Line:
         {
             switch(pos) {
@@ -3693,6 +3694,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return false;break;
             }
         }
+        break;
         case Arc:
         {
             switch(pos) {
@@ -3702,6 +3704,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case Circle:
         {
             switch(pos) { // NOTE: points are added to all the cases, see addition.
@@ -3711,7 +3714,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
-
+        break;
         case Ellipse:
         {
             switch(pos) { // NOTE: points are added to all the cases, see addition.
@@ -3721,6 +3724,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfEllipse:
         {
             switch(pos) {
@@ -3730,6 +3734,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfHyperbola:
         {
             switch(pos) {
@@ -3739,6 +3744,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case ArcOfParabola:
         {
             switch(pos) {
@@ -3748,6 +3754,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
             }
         }
+        break;
         case BSpline:
         {
             switch(pos) {
@@ -3757,6 +3764,7 @@ bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
                 case mid: return false;break;
             }
         }
+        break;
         case None:
             return false; break;
     }

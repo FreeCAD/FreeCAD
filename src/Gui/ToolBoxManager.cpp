@@ -90,7 +90,7 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
         bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         std::string toolbarName = (*item)->command();
         bar->setObjectName(QString::fromLatin1((*item)->command().c_str()));
-        bar->setWindowTitle(QObject::trUtf8(toolbarName.c_str())); // i18n
+        bar->setWindowTitle(QObject::tr(toolbarName.c_str())); // i18n
         _toolBox->addItem( bar, bar->windowTitle() );
 
         QList<ToolBarItem*> subitems = (*item)->getItems();
@@ -129,7 +129,7 @@ void ToolBoxManager::retranslate() const
         // get always the first item widget
         QWidget* w = _toolBox->widget(i);
         QByteArray toolbarName = w->objectName().toUtf8();
-        w->setWindowTitle(QObject::trUtf8(toolbarName.constData()));
+        w->setWindowTitle(QObject::tr(toolbarName.constData()));
         _toolBox->setItemText(i, w->windowTitle());
     }
 }

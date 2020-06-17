@@ -30,6 +30,7 @@
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
 #include "ExpressionCompleter.h"
+#include "Tools.h"
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -124,7 +125,7 @@ void DlgExpressionInput::textChanged(const QString &text)
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
-        int width = fm.width(text) + 15;
+        int width = QtTools::horizontalAdvance(fm, text) + 15;
         if (width < minimumWidth)
             ui->expression->setMinimumWidth(minimumWidth);
         else
@@ -156,13 +157,17 @@ void DlgExpressionInput::textChanged(const QString &text)
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
 
-                if(!impliedUnit.isEmpty()) {
+                if (!value.isValid()) {
+                    throw Base::ValueError("Not a number");
+                }
+                else if (!impliedUnit.isEmpty()) {
                     if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
-                } else if (!value.getUnit().isEmpty()) {
+                }
+                else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
 
                     QPalette p(ui->msg->palette());

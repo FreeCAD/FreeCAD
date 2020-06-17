@@ -42,6 +42,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def initPage(self, obj):
         self.setTitle("3D Surface")
         # self.updateVisibility()
+        # retrieve property enumerations
+        self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
 
     def getForm(self):
         '''getForm() ... returns UI'''
@@ -52,23 +54,37 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        PathGui.updateInputField(obj, 'DepthOffset', self.form.depthOffset)
-        PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
-
         if obj.BoundBox != str(self.form.boundBoxSelect.currentText()):
             obj.BoundBox = str(self.form.boundBoxSelect.currentText())
 
         if obj.ScanType != str(self.form.scanType.currentText()):
             obj.ScanType = str(self.form.scanType.currentText())
 
-        if obj.StepOver != self.form.stepOver.value():
-            obj.StepOver = self.form.stepOver.value()
-
         if obj.LayerMode != str(self.form.layerMode.currentText()):
             obj.LayerMode = str(self.form.layerMode.currentText())
 
-        if obj.CutPattern != str(self.form.cutPattern.currentText()):
-            obj.CutPattern = str(self.form.cutPattern.currentText())
+        """
+        The following method of getting values from the UI form
+            allows for translations of combobox options in the UI.
+        The requirement is that the enumeration lists must
+            be in the same order in both the opPropertyEnumerations() method
+            and the UI panel QComboBox list.
+        Another step to ensure sychronization of the two lists is to
+            populate the list dynamically in this Gui module in `initPage()`
+            using the property enumerations list when loading the UI panel.
+            This type of dynamic combobox population is done for the
+            Tool Controller selection.
+        """
+        val = self.propEnums['CutPattern'][self.form.cutPattern.currentIndex()]
+        if obj.CutPattern != val:
+            obj.CutPattern = val
+
+        val = self.propEnums['ProfileEdges'][self.form.profileEdges.currentIndex()]
+        if obj.ProfileEdges != val:
+            obj.ProfileEdges = val
+
+        if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
+            obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
 
         obj.DropCutterExtraOffset.x = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetX.text()).Value
         obj.DropCutterExtraOffset.y = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetY.text()).Value
@@ -77,6 +93,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentText())
 
         PathGui.updateInputField(obj, 'DepthOffset', self.form.depthOffset)
+
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
+
         PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
@@ -95,7 +115,23 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.ScanType, self.form.scanType)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
-        self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
+
+        """
+        The following method of setting values in the UI form
+            allows for translations of combobox options in the UI.
+        The requirement is that the enumeration lists must
+            be in the same order in both the opPropertyEnumerations() method
+            and the UI panel QComboBox list.
+        The original method is commented out below.
+        """
+        idx = self.propEnums['CutPattern'].index(obj.CutPattern)
+        self.form.cutPattern.setCurrentIndex(idx)
+        idx = self.propEnums['ProfileEdges'].index(obj.ProfileEdges)
+        self.form.profileEdges.setCurrentIndex(idx)
+        # self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
+        # self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
+
+        self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
         self.form.boundBoxExtraOffsetX.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.x, FreeCAD.Units.Length).UserString)
         self.form.boundBoxExtraOffsetY.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.y, FreeCAD.Units.Length).UserString)
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
@@ -129,6 +165,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.scanType.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.cutPattern.currentIndexChanged)
+        signals.append(self.form.profileEdges.currentIndexChanged)
+        signals.append(self.form.avoidLastX_Faces.editingFinished)
         signals.append(self.form.boundBoxExtraOffsetX.editingFinished)
         signals.append(self.form.boundBoxExtraOffsetY.editingFinished)
         signals.append(self.form.dropCutterDirSelect.currentIndexChanged)

@@ -1,7 +1,12 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2013 Wandererfan <wandererfan@gmail.com>                *
+# *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
+# *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,98 +25,293 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_path_array function.
+"""Provides functions for creating path arrays.
+
+The copies will be placed along a path like a polyline, spline, or bezier
+curve.
 """
 ## @package make_patharray
 # \ingroup DRAFT
-# \brief This module provides the code for Draft make_path_array function.
+# \brief Provides functions for creating path arrays.
 
 import FreeCAD as App
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.translate import _tr, translate
+from draftutils.messages import _msg, _err
+from draftutils.translate import _tr
 from draftobjects.patharray import PathArray
 
-from draftviewproviders.view_draftlink import ViewProviderDraftLink
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
+    from draftviewproviders.view_draftlink import ViewProviderDraftLink
 
 
-def make_path_array(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs=[],use_link=False):
-    """make_path_array(docobj, path, count, xlate, align, pathobjsubs, use_link)
-    
-    Make a Draft PathArray object.
-    
-    Distribute count copies of a document baseobject along a pathobject 
-    or subobjects of a pathobject. 
+def make_path_array(base_object, path_object, count=4,
+                    extra=App.Vector(0, 0, 0), subelements=None,
+                    align=False, align_mode="Original",
+                    tan_vector=App.Vector(1, 0, 0),
+                    force_vertical=False,
+                    vertical_vector=App.Vector(0, 0, 1),
+                    use_link=True):
+    """Make a Draft PathArray object.
 
-    
+    Distribute copies of a `base_object` along `path_object`
+    or `subelements` from `path_object`.
+
     Parameters
     ----------
-    docobj : 
-        Object to array
+    base_object: Part::Feature or str
+        Any of object that has a `Part::TopoShape` that can be duplicated.
+        This means most 2D and 3D objects produced with any workbench.
+        If it is a string, it must be the `Label` of that object.
+        Since a label is not guaranteed to be unique in a document,
+        it will use the first object found with this label.
 
-    path : 
-        Path object
+    path_object: Part::Feature or str
+        Path object like a polyline, B-Spline, or bezier curve that should
+        contain edges.
+        Just like `base_object` it can also be `Label`.
 
-    pathobjsubs : 
-        TODO: Complete documentation
+    count: int, float, optional
+        It defaults to 4.
+        Number of copies to create along the `path_object`.
+        It must be at least 2.
+        If a `float` is provided, it will be truncated by `int(count)`.
 
-    align : 
-        Optionally aligns baseobject to tangent/normal/binormal of path. TODO: verify
+    extra: Base.Vector3, optional
+        It defaults to `App.Vector(0, 0, 0)`.
+        It translates each copy by the value of `extra`.
+        This is useful to adjust for the difference between shape centre
+        and shape reference point.
 
-    count : 
-        TODO: Complete documentation
+    subelements: list or tuple of str, optional
+        It defaults to `None`.
+        It should be a list of names of edges that must exist in `path_object`.
+        Then the path array will be created along these edges only,
+        and not the entire `path_object`.
+        ::
+            subelements = ['Edge1', 'Edge2']
 
-    xlate : Base.Vector
-        Optionally translates each copy by FreeCAD.Vector xlate direction
-        and distance to adjust for difference in shape centre vs shape reference point.
-        
-    use_link :
-        TODO: Complete documentation
+        The edges must be contiguous, meaning that it is not allowed to
+        input `'Edge1'` and `'Edge3'` if they do not touch each other.
+
+        A single string value is also allowed.
+        ::
+            subelements = 'Edge1'
+
+    align: bool, optional
+        It defaults to `False`.
+        If it is `True` it will align `base_object` to tangent, normal,
+        or binormal to the `path_object`, depending on the value
+        of `tan_vector`.
+
+    align_mode: str, optional
+        It defaults to `'Original'` which is the traditional alignment.
+        It can also be `'Frenet'` or `'Tangent'`.
+
+        - Original. It does not calculate curve normal.
+          `X` is curve tangent, `Y` is normal parameter, Z is the cross
+          product `X` x `Y`.
+        - Frenet. It defines a local coordinate system along the path.
+          `X` is tangent to curve, `Y` is curve normal, `Z` is curve binormal.
+          If normal cannot be computed, for example, in a straight path,
+          a default is used.
+        - Tangent. It is similar to `'Original'` but includes a pre-rotation
+          to align the base object's `X` to the value of `tan_vector`,
+          then `X` follows curve tangent.
+
+    tan_vector: Base::Vector3, optional
+        It defaults to `App.Vector(1, 0, 0)` or the +X axis.
+        It aligns the tangent of the path to this local unit vector
+        of the object.
+
+    force_vertical: Base::Vector3, optional
+        It defaults to `False`.
+        If it is `True`, the value of `vertical_vector`
+        will be used when `align_mode` is `'Original'` or `'Tangent'`.
+
+    vertical_vector: Base::Vector3, optional
+        It defaults to `App.Vector(0, 0, 1)` or the +Z axis.
+        It will force this vector to be the vertical direction
+        when `force_vertical` is `True`.
+
+    use_link: bool, optional
+        It defaults to `True`, in which case the copies are `App::Link`
+        elements. Otherwise, the copies are shape copies which makes
+        the resulting array heavier.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The scripted object of type `'PathArray'`.
+        Its `Shape` is a compound of the copies of the original object.
+
+    None
+        If there is a problem it will return `None`.
     """
+    _name = "make_path_array"
+    utils.print_header(_name, "Path array")
 
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if isinstance(base_object, str):
+        base_object_str = base_object
+
+    found, base_object = utils.find_object(base_object, doc)
+    if not found:
+        _msg("base_object: {}".format(base_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("base_object: {}".format(base_object.Label))
+
+    if isinstance(path_object, str):
+        path_object_str = path_object
+
+    found, path_object = utils.find_object(path_object, doc)
+    if not found:
+        _msg("path_object: {}".format(path_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("path_object: {}".format(path_object.Label))
+
+    _msg("count: {}".format(count))
+    try:
+        utils.type_check([(count, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a number."))
+        return None
+    count = int(count)
+
+    _msg("extra: {}".format(extra))
+    try:
+        utils.type_check([(extra, App.Vector)],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    _msg("subelements: {}".format(subelements))
+    if subelements:
+        try:
+            # Make a list
+            if isinstance(subelements, str):
+                subelements = [subelements]
+
+            utils.type_check([(subelements, (list, tuple, str))],
+                             name=_name)
+        except TypeError:
+            _err(_tr("Wrong input: must be a list or tuple of strings. "
+                     "Or a single string."))
+            return None
+
+        # The subelements list is used to build a special list
+        # called a LinkSubList, which includes the path_object.
+        # Old style: [(path_object, "Edge1"), (path_object, "Edge2")]
+        # New style: [(path_object, ("Edge1", "Edge2"))]
+        #
+        # If a simple list is given ["a", "b"], this will create an old-style
+        # SubList.
+        # If a nested list is given [["a", "b"]], this will create a new-style
+        # SubList.
+        # In any case, the property of the object accepts both styles.
+        #
+        # If the old style is deprecated then this code should be updated
+        # to create new style lists exclusively.
+        sub_list = list()
+        for sub in subelements:
+            sub_list.append((path_object, sub))
+    else:
+        sub_list = None
+
+    align = bool(align)
+    _msg("align: {}".format(align))
+
+    _msg("align_mode: {}".format(align_mode))
+    try:
+        utils.type_check([(align_mode, str)],
+                         name=_name)
+
+        if align_mode not in ("Original", "Frenet", "Tangent"):
+            raise TypeError
+    except TypeError:
+        _err(_tr("Wrong input: must be "
+                 "'Original', 'Frenet', or 'Tangent'."))
+        return None
+
+    _msg("tan_vector: {}".format(tan_vector))
+    try:
+        utils.type_check([(tan_vector, App.Vector)],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    force_vertical = bool(force_vertical)
+    _msg("force_vertical: {}".format(force_vertical))
+
+    _msg("vertical_vector: {}".format(vertical_vector))
+    try:
+        utils.type_check([(vertical_vector, App.Vector)],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a vector."))
+        return None
+
+    use_link = bool(use_link)
+    _msg("use_link: {}".format(use_link))
 
     if use_link:
-        obj = App.ActiveDocument.addObject("Part::FeaturePython","PathArray", PathArray(None), None, True)
+        # The PathArray class must be called in this special way
+        # to make it a PathLinkArray
+        new_obj = doc.addObject("Part::FeaturePython", "PathArray",
+                                PathArray(None), None, True)
     else:
-        obj = App.ActiveDocument.addObject("Part::FeaturePython","PathArray")
-        PathArray(obj)
+        new_obj = doc.addObject("Part::FeaturePython", "PathArray")
+        PathArray(new_obj)
 
-    obj.Base = baseobject
-    obj.PathObj = pathobject
-
-    if pathobjsubs:
-        sl = []
-        for sub in pathobjsubs:
-            sl.append((obj.PathObj,sub))
-        obj.PathSubs = list(sl)
-
-    if count > 1:
-        obj.Count = count
-
-    if xlate:
-        obj.Xlate = xlate
-
-    obj.Align = align
+    new_obj.Base = base_object
+    new_obj.PathObject = path_object
+    new_obj.Count = count
+    new_obj.ExtraTranslation = extra
+    new_obj.PathSubelements = sub_list
+    new_obj.Align = align
+    new_obj.AlignMode = align_mode
+    new_obj.TangentVector = tan_vector
+    new_obj.ForceVertical = force_vertical
+    new_obj.VerticalVector = vertical_vector
 
     if App.GuiUp:
         if use_link:
-            ViewProviderDraftLink(obj.ViewObject)
+            ViewProviderDraftLink(new_obj.ViewObject)
         else:
-            ViewProviderDraftArray(obj.ViewObject)
-            gui_utils.formatObject(obj,obj.Base)
-            if hasattr(obj.Base.ViewObject, "DiffuseColor"):
-                if len(obj.Base.ViewObject.DiffuseColor) > 1:
-                    obj.ViewObject.Proxy.resetColors(obj.ViewObject)
-        baseobject.ViewObject.hide()
-        gui_utils.select(obj)
-    return obj
+            ViewProviderDraftArray(new_obj.ViewObject)
+            gui_utils.formatObject(new_obj, new_obj.Base)
+
+            if hasattr(new_obj.Base.ViewObject, "DiffuseColor"):
+                if len(new_obj.Base.ViewObject.DiffuseColor) > 1:
+                    new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
+
+        new_obj.Base.ViewObject.hide()
+        gui_utils.select(new_obj)
+
+    return new_obj
 
 
-makePathArray = make_path_array
+def makePathArray(baseobject, pathobject, count,
+                  xlate=None, align=False,
+                  pathobjsubs=[],
+                  use_link=False):
+    """Create PathArray. DEPRECATED. Use 'make_path_array'."""
+    utils.use_instead('make_path_array')
+
+    return make_path_array(baseobject, pathobject, count,
+                           xlate, pathobjsubs,
+                           align,
+                           use_link)

@@ -48,6 +48,7 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/Tools.h>
 #include <string>
 
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -439,12 +440,12 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->verticalSep = false;
     balloonLabel->seps.clear();
 
-    if (strcmp(balloon->Shape.getValueAsString(), "Rectangle") == 0) {
+    if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
         while (labelText.contains(QString::fromUtf8("|"))) {
             int pos = labelText.indexOf(QString::fromUtf8("|"));
             labelText.replace(pos, 1, QString::fromUtf8("   "));
             QFontMetrics fm(balloonLabel->getFont());
-            balloonLabel->seps.push_back(fm.width((labelText.left(pos + 2))));
+            balloonLabel->seps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
             balloonLabel->verticalSep = true;
         }
     }
@@ -613,7 +614,7 @@ void QGIViewBalloon::draw()
     Base::Vector3d kinkPoint;
     double kinkLength = Rez::guiX(balloon->KinkLength.getValue());
 
-    const char *balloonType = balloon->Shape.getValueAsString();
+    const char *balloonType = balloon->BubbleShape.getValueAsString();
 
     float scale = balloon->ShapeScale.getValue();
     double offsetLR     = 0;

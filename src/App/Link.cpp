@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -46,6 +47,7 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
 using namespace Base;
+namespace bp = boost::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
@@ -819,7 +821,7 @@ void LinkBaseExtension::updateGroup() {
                 FC_LOG("new group connection " << getExtendedObject()->getFullName() 
                         << " -> " << group->getFullName());
                 conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
+                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
             }
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
@@ -833,7 +835,7 @@ void LinkBaseExtension::updateGroup() {
                     FC_LOG("new group connection " << getExtendedObject()->getFullName() 
                             << " -> " << child->getFullName());
                     conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
+                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,bp::_1,bp::_2));
                 }
             }
         }

@@ -36,7 +36,7 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -59,6 +59,7 @@
 
 
 using namespace Inspection;
+namespace bp = boost::placeholders;
 
 InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
@@ -587,12 +588,12 @@ void PropertyDistanceList::setPyObject(PyObject *value)
 void PropertyDistanceList::Save (Base::Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << std::endl;
         writer.incInd();
         for(int i = 0;i<getSize(); i++)
-            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
+            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << std::endl;
         writer.decInd();
-        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
+        writer.Stream() << writer.ind() <<"</FloatList>" << std::endl;
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\"" << 
@@ -786,7 +787,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
     QFuture<float> future = QtConcurrent::mapped
-        (index, boost::bind(&DistanceInspection::mapped, &check, _1));
+        (index, boost::bind(&DistanceInspection::mapped, &check, bp::_1));
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;

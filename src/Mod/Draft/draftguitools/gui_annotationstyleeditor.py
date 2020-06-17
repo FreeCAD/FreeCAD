@@ -35,7 +35,7 @@ param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 DEFAULT = {
     "FontName": ("font", param.GetString("textfont", "Sans")),
     "FontSize": ("str", str(param.GetFloat("textheight", 100))),
-    "LineSpacing": ("str", "1 cm"),
+    "LineSpacing": ("float", 1),
     "ScaleMultiplier": ("float", 1),
     "ShowUnit": ("bool", False),
     "UnitOverride": ("str", ""),
@@ -189,18 +189,34 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         # propagate changes to all annotations
         for obj in self.get_annotations():
             vobj = obj.ViewObject
-            if vobj.AnnotationStyle in self.renamed.keys():
-                # temporarily add the new style and switch to it
-                vobj.AnnotationStyle = vobj.AnnotationStyle + [self.renamed[vobj.AnnotationStyle]]
-                vobj.AnnotationStyle = self.renamed[vobj.AnnotationStyle]
-            if vobj.AnnotationStyle in styles.keys():
-                if vobj.AnnotationStyle in changedstyles:
-                    for attr, attrvalue in styles[vobj.AnnotationStyle].items():
-                        if hasattr(vobj, attr):
-                            setattr(vobj, attr, attrvalue)
+            try:
+                curent = vobj.AnnotationStyle
+            except AssertionError:
+                # empty annotation styles list
+                pass
             else:
-                vobj.AnnotationStyle = ""
-            vobj.AnnotationStyle = [""] + styles.keys()
+                if vobj.AnnotationStyle in self.renamed.keys():
+                    # the style has been renamed
+                    # temporarily add the new style and switch to it
+                    vobj.AnnotationStyle = vobj.AnnotationStyle + [self.renamed[vobj.AnnotationStyle]]
+                    vobj.AnnotationStyle = self.renamed[vobj.AnnotationStyle]
+                if vobj.AnnotationStyle in styles.keys():
+                    if vobj.AnnotationStyle in changedstyles:
+                        # the style has changed
+                        for attr, attrvalue in styles[vobj.AnnotationStyle].items():
+                            if hasattr(vobj, attr):
+                                try:
+                                    getattr(vobj,attr).setValue(attrvalue)
+                                except:
+                                    try:
+                                        setattr(vobj,attr,attrvalue)
+                                    except:
+                                        unitvalue = FreeCAD.Units.Quantity(attrvalue,FreeCAD.Units.Length).Value
+                                        setattr(vobj,attr,unitvalue)
+                else:
+                    # the style has been removed
+                    vobj.AnnotationStyle = ""
+            vobj.AnnotationStyle = [""] + list(styles.keys())
 
     def on_style_changed(self, index):
         """Execute as a callback when the styles combobox changes."""
@@ -333,7 +349,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         users = []
         for obj in self.doc.Objects:
             vobj = obj.ViewObject
-            if hasattr(vobj, "AnnotationStyle"):
+            if "AnnotationStyle" in vobj.PropertiesList:
                 users.append(obj)
         return users
 

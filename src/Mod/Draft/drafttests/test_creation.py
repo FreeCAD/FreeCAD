@@ -321,7 +321,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  target_point={0}, "
              "distance={1}".format(target_point, distance))
         _msg("  placement={}".format(placement))
-        obj = Draft.make_label(targetpoint=target_point,
+        obj = Draft.make_label(target_point=target_point,
                                distance=distance,
                                placement=placement)
         self.doc.recompute()

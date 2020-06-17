@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DOWNLOADITEM_H
 
 #include <QBasicTimer>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QTime>
 #include <QUrl>
@@ -83,7 +84,7 @@ protected:
 
 private:
     QBasicTimer m_timer;
-    QTime m_firstChange;
+    QElapsedTimer m_firstChange;
 
 };
 
@@ -146,7 +147,7 @@ private:
 
     bool m_requestFileName;
     qint64 m_bytesReceived;
-    QTime m_downloadTime;
+    QElapsedTimer m_downloadTime;
 };
 
 } // namespace Dialog

@@ -348,8 +348,8 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 {
     PyObject* pPnt1 = nullptr;
     double radius = 5.0;
-    double angle1 = 0.0;
-    double angle2 = 360.0;
+//    double angle1 = 0.0;
+//    double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
     App::Color defCol = LineFormat::getDefEdgeColor();
@@ -364,22 +364,13 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
-    gp_Pnt loc(pnt1.x, pnt1.y, pnt1.z);
-    gp_Dir dir(0,0,1);
-    gp_Ax1 axis(loc, dir);
-    gp_Circ circle;
-    circle.SetAxis(axis);
-    circle.SetRadius(radius);
-
-    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
-    TopoDS_Edge edge = aMakeEdge.Edge();
-    TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
+    TechDraw::BaseGeom* bg = new TechDraw::Circle(pnt1, radius);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
         ce->permaStart = pnt1;
         ce->permaEnd   = pnt1;
+        ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {
@@ -418,25 +409,13 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
-    gp_Pnt loc(pnt1.x, pnt1.y, pnt1.z);
-    gp_Dir dir(0,0,1);
-    gp_Ax1 axis(loc, dir);
-    gp_Circ circle;
-    circle.SetAxis(axis);
-    circle.SetRadius(radius);      //full circle @ right loc
-    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
-    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, -angle2*(M_PI/180), -angle1*(M_PI/180)); //hack!
-    // right result, but ugly:
-    // Qt angles are cw, OCC angles are CCW
-    // Qt -y is up, OCC -y is down
-
-    TopoDS_Edge edge = aMakeEdge.Edge();
-    TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
+    TechDraw::BaseGeom* bg = new TechDraw::AOC(pnt1, radius, angle1, angle2);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
         ce->permaStart = pnt1;
         ce->permaEnd   = pnt1;
+        ce->permaRadius = radius;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {

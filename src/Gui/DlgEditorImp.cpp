@@ -61,6 +61,12 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     ui->setupUi(this);
     ui->EnableFolding->hide(); // Switch off until we have an editor with folding
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+    ui->textEdit1->setTabStopWidth(40);
+#else
+    ui->textEdit1->setTabStopDistance(40.0);
+#endif
+
     d = new DlgSettingsEditorP();
     QColor col;
     col = Qt::black; 
