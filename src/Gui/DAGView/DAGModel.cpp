@@ -121,15 +121,15 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
     selectionMode = static_cast<SelectionMode>(group->GetInt("SelectionMode", 0));
     group->SetInt("SelectionMode", static_cast<int>(selectionMode)); //ensure entry exists.
     
-  QIcon temp(Gui::BitmapFactory().pixmap("dagViewVisible"));
+  QIcon temp(Gui::BitmapFactory().iconFromTheme("dagViewVisible"));
   visiblePixmapEnabled = temp.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On);
   visiblePixmapDisabled = temp.pixmap(iconSize, iconSize, QIcon::Disabled, QIcon::Off);
   
-  QIcon passIcon(Gui::BitmapFactory().pixmap("dagViewPass"));
+  QIcon passIcon(Gui::BitmapFactory().iconFromTheme("dagViewPass"));
   passPixmap = passIcon.pixmap(iconSize, iconSize);
-  QIcon failIcon(Gui::BitmapFactory().pixmap("dagViewFail"));
+  QIcon failIcon(Gui::BitmapFactory().iconFromTheme("dagViewFail"));
   failPixmap = failIcon.pixmap(iconSize, iconSize);
-  QIcon pendingIcon(Gui::BitmapFactory().pixmap("dagViewPending"));
+  QIcon pendingIcon(Gui::BitmapFactory().iconFromTheme("dagViewPending"));
   pendingPixmap = pendingIcon.pixmap(iconSize, iconSize);
   
   renameAction = new QAction(this);
