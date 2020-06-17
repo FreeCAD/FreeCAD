@@ -386,6 +386,8 @@ void PropertyEditor::reset()
 {
     QTreeView::reset();
 
+    closeTransaction();
+
     QModelIndex parent;
     int numRows = propertyModel->rowCount(parent);
     for (int i=0; i<numRows; ++i) {
@@ -450,11 +452,15 @@ void PropertyEditor::rowsAboutToBeRemoved (const QModelIndex & parent, int start
         setRowHidden(parent.row(), propertyModel->parent(parent), true);
 
     if (editingIndex.isValid()) {
-        removingRows = 1;
-        for (QWidget *w = qApp->focusWidget(); w; w = w->parentWidget()) {
-            if(w == activeEditor) {
-                removingRows = -1;
-                break;
+        if (editingIndex.row() >= start && editingIndex.row() <= end)
+            closeTransaction();
+        else {
+            removingRows = 1;
+            for (QWidget *w = qApp->focusWidget(); w; w = w->parentWidget()) {
+                if(w == activeEditor) {
+                    removingRows = -1;
+                    break;
+                }
             }
         }
     }
