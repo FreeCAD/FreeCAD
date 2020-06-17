@@ -43,41 +43,59 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
 
     def __init__(self,vobj):
-
         super(ViewProviderText, self).__init__(vobj)
 
         self.set_properties(vobj)
-
         self.Object = vobj.Object
         vobj.Proxy = self
 
-
     def set_properties(self, vobj):
+        """Set the properties only if they don't already exist."""
+        super(ViewProviderText, self).set_properties(vobj)
+        properties = vobj.PropertiesList
 
-        vobj.addProperty("App::PropertyLength","FontSize",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The size of the text"))
-        vobj.addProperty("App::PropertyFont","FontName",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The font of the text"))
-        vobj.addProperty("App::PropertyEnumeration","Justification",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyColor","TextColor",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Text color"))
-        vobj.addProperty("App::PropertyFloat","LineSpacing",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Line spacing (relative to font size)"))
+        if "FontSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The size of the text")
+            vobj.addProperty("App::PropertyLength",
+                             "FontSize",
+                             "Text",
+                             _tip)
+            vobj.FontSize = utils.get_param("textheight", 1)
 
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-        vobj.ScaleMultiplier = 1 / annotation_scale
+        if "FontName" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The font of the text")
+            vobj.addProperty("App::PropertyFont",
+                             "FontName",
+                             "Text",
+                             _tip)
+            vobj.FontName = utils.get_param("textfont", "sans")
 
-        vobj.Justification = ["Left","Center","Right"]
-        vobj.FontName = utils.get_param("textfont","sans")
-        vobj.FontSize = utils.get_param("textheight",1)
+        if "Justification" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The vertical alignment of the text")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "Justification",
+                             "Text",
+                             _tip)
+            vobj.Justification = ["Left", "Center", "Right"]
 
+        if "TextColor" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Text color")
+            vobj.addProperty("App::PropertyColor",
+                             "TextColor",
+                             "Text",
+                             _tip)
+
+        if "LineSpacing" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Line spacing (relative to font size)")
+            vobj.addProperty("App::PropertyFloat",
+                             "LineSpacing",
+                             "Text",
+                             _tip)
 
     def getIcon(self):
         return ":/icons/Draft_Text.svg"
