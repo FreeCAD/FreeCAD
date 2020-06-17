@@ -290,7 +290,7 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 SubShapeBinder::SubShapeBinder()
 {
     ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
-    Support.setStatus(App::Property::ReadOnly, true);
+    // Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
@@ -808,15 +808,19 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
                 std::map<App::DocumentObject *, std::vector<std::string> > values;
                 for(auto &link : Support.getSubListValues()) 
                     values.emplace(link.getValue(),link.getSubValues());
+
+                Base::ObjectStatusLocker<App::Property::Status, App::Property>
+                    guard(App::Property::User2, &Support);
                 setLinks(std::move(values),true);
-                return;
             }
-            clearCopiedObjects();
-            setupCopyOnChange();
-            if(Support.getSubListValues().size()) {
-                update(); 
-                if(BindMode.getValue() == 2)
-                    Support.setValue(0);
+            if (!Support.testStatus(App::Property::User2)) {
+                clearCopiedObjects();
+                setupCopyOnChange();
+                if(Support.getSubListValues().size()) {
+                    update(); 
+                    if(BindMode.getValue() == 2)
+                        Support.setValue(0);
+                }
             }
         }else if(prop == &BindCopyOnChange) {
             setupCopyOnChange();
