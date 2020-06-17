@@ -129,10 +129,21 @@ Py::Object Cloud::Module::sCloudRestore(const Py::Tuple& args)
 Py::Object Cloud::Module::sCloudProtocolVersion(const Py::Tuple& args)
 {
     char *ProtocolVersion;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TCPPort))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &ProtocolVersion))     // convert args: Python->C
         return Py::None();
     if (this->ProtocolVersion.getStrValue() != ProtocolVersion) {
             this->ProtocolVersion.setValue(ProtocolVersion);
+    }
+    return Py::None();
+}
+
+Py::Object Cloud::Module::sCloudRegion(const Py::Tuple& args)
+{
+    char *Region;
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &Region))     // convert args: Python->C
+        return Py::None();
+    if (this->Region.getStrValue() != Region) {
+            this->Region.setValue(Region);
     }
     return Py::None();
 }
@@ -212,6 +223,7 @@ void Cloud::CloudWriter::checkText(DOMText* text) {
 void Cloud::CloudWriter::createBucket()
 {
         struct Cloud::AmzData *RequestData;
+        struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
 
@@ -219,7 +231,14 @@ void Cloud::CloudWriter::createBucket()
 
 	char path[1024];
         sprintf(path, "/%s/", this->Bucket);
-        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/xml", path, this->TokenSecret, NULL, 0);
+        std::string strURL(this->URL);
+        eraseSubStr(strURL,"http://");
+        eraseSubStr(strURL,"https://");
+
+	if ( this->ProtocolVersion ==  "2" )
+	        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/xml", path, this->TokenSecret, NULL, 0);
+	else
+		RequestDatav4 = Cloud::ComputeDigestAmzS3v4("PUT", strURL.c_str(), "application/xml", path, this->TokenSecret, NULL, 0, NULL, this->Region);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
@@ -237,9 +256,16 @@ void Cloud::CloudWriter::createBucket()
                 std::string strURL(this->URL);
                 eraseSubStr(strURL,"http://");
                 eraseSubStr(strURL,"https://");
-
-                chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
-		delete RequestData;
+		if ( this->ProtocolVersion ==  "2" )
+		{
+	                chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
+			delete RequestData;
+		}
+		else
+		{
+			chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+			delete RequestDatav4;
+		}
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -286,15 +312,12 @@ void Cloud::CloudWriter::createBucket()
 //}
 //#endif
 
-struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size)
+struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size, char *parameters, std::string Region)
 {
         struct AmzDatav4 *returnData;
-        char StringToSign[1024];
         returnData = new Cloud::AmzDatav4;
         struct tm *tm;
-        char date_formatted[256];
 	char *canonical_request;
-	char *digest;
 	char *canonicalRequestHash;
 	char *stringToSign;
 
@@ -321,27 +344,38 @@ struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char
 	strcpy(canonical_request,operation);
 	strcat(canonical_request,"\n");
 	strcat(canonical_request,target);	
-	strcat(canonical_request,"\n\n");
+	strcat(canonical_request,"\n");
+	if ( parameters == NULL )
+		strcat(canonical_request,"\n");
+	else
+	{
+		strcat(canonical_request,parameters);
+                strcat(canonical_request,"\n");
+	}
 	strcat(canonical_request,"host:");
 	strcat(canonical_request,server);
 	strcat(canonical_request, "\n");
-	strcat(canonical_request, "x-maz-date:");
+	strcat(canonical_request, "x-amz-date:");
 	strcat(canonical_request, returnData->dateFormattedS);
 	strcat(canonical_request, "\n\n");
 	strcat(canonical_request, "host;x-amz-date\n");
 	// We must add there the file SHA256 Hash	
-	puts("=====================================================");
+	returnData->SHA256Sum=NULL;
 	if ( strcmp(operation,"PUT") == 0 )
 	{
 		if (  ptr != NULL )
                 {
-			returnData->SHA256=Cloud::SHA256Sum(ptr,size);
-			strcat(canonical_request, returnData->SHA256);
+			returnData->SHA256Sum=Cloud::SHA256Sum(ptr,size);
+			strcat(canonical_request, returnData->SHA256Sum);
 		}
+		else
+			strcat(canonical_request,"UNSIGNED-PAYLOAD");
 	}
-	puts(canonical_request);
+	else
+	{
+		strcat(canonical_request,"UNSIGNED-PAYLOAD");
+	}
 	canonicalRequestHash = Cloud::SHA256Sum(canonical_request, strlen(canonical_request));	
-	puts(canonicalRequestHash);
 	// returnData->digest = string(digest);
 
 
@@ -349,7 +383,7 @@ struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char
 	// The format is as follow
 	// ${authType}
 	// ${dateValueL}
-	// ${dateValueS}/${region}/${service}/aws4_request
+	// ${dateValueS}/${Region}/${service}/aws4_request
 	// ${canonicalRequestHash}"
 
 	stringToSign = (char *)malloc(4096*sizeof(char));
@@ -365,10 +399,62 @@ struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char
 
 	// We must now compute the signature
 	// Everything starts with the secret key and an SHA256 HMAC encryption
+	char kSecret[256];
+	unsigned char *kDate, *kRegion, *kService, *kSigned, *kSigning;
+
+	strcpy(kSecret,"AWS4");
+	strcat(kSecret,Secret);
+        unsigned int HMACLength;
+
+	std::string temporary;
+
+	kDate = HMAC(EVP_sha256(),kSecret,strlen(kSecret),
+                (const unsigned char *)returnData->dateFormattedD,strlen(returnData->dateFormattedD),NULL,&HMACLength);	
+
+	temporary = getHexValue(kDate,HMACLength);
+        temporary = getHexValue(kDate,HMACLength);
+
+	// We can now compute the remaining parts
+	kRegion = HMAC(EVP_sha256(),kDate,HMACLength,
+                (const unsigned char *)Region.c_str(),strlen(Region.c_str()),NULL,&HMACLength);
+
+	temporary = getHexValue(kRegion,HMACLength);
+
+	kService = HMAC(EVP_sha256(),kRegion,HMACLength,
+                (const unsigned char *)"s3",strlen("s3"),NULL,&HMACLength);
+
+        temporary = getHexValue(kService,HMACLength);
+
+	kSigning = HMAC(EVP_sha256(),kService,HMACLength,
+                (const unsigned char *)"aws4_request",strlen("aws4_request"),NULL,&HMACLength);
+
+        temporary = getHexValue(kService,HMACLength);
 
 
+	kSigned = HMAC(EVP_sha256(),kSigning,HMACLength,
+                (const unsigned char *)stringToSign,strlen(stringToSign),NULL,&HMACLength);
+
+        temporary = getHexValue(kSigned,HMACLength);
+
+	returnData->digest=string(temporary);
+	returnData->Region = Region;
 	free(canonical_request);
 	return(returnData);
+}
+
+std::string Cloud::getHexValue(unsigned char *input, unsigned int HMACLength)
+{
+        char *Hex;
+	unsigned char *ptr = input;
+        std::string resultReadable;
+        Hex = (char *)malloc(HMACLength*2*sizeof(char)+1);
+        for ( unsigned int i = 0 ; i < HMACLength ; i++ ) {
+                sprintf(Hex,"%02x", *ptr);
+		ptr++;
+                Hex[2]='\0';
+                resultReadable+= Hex;
+        }
+	return resultReadable;
 }
 
 struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret, const char *ptr, long size)
@@ -405,8 +491,6 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 		if (  ptr != NULL )
 		{
 	                returnData->MD5=Cloud::MD5Sum(ptr,size);
-			printf("Target: %s\n",target);
-			printf("SHA256: %s\n", Cloud::SHA256Sum(ptr,size));
 			sprintf(StringToSign,"%s\n%s\n%s\n%s\n%s", operation, returnData->MD5, data_type, date_formatted, target);
 		}
 		else
@@ -433,13 +517,9 @@ char *Cloud::SHA256Sum(const char *ptr, long size)
         output=(char *)malloc(2*SHA256_DIGEST_LENGTH*sizeof(char)+1);
 	Hex = (char *)malloc(2*sizeof(char)+1);
         SHA256((unsigned char*) ptr, size, result);
-	for ( int i = 0 ; i < SHA256_DIGEST_LENGTH ; i++ ) {
-		// snprintf((char *)(&Hex[0]),2,"%02x", result[i]);
-		sprintf(Hex,"%02x", result[i]);
-		Hex[2]='\0';
-		resultReadable+= Hex;
-	}
-        strcpy(output,resultReadable.c_str());
+
+	strcpy(output,getHexValue(result, SHA256_DIGEST_LENGTH).c_str());
+
         return(output);
 }
 
@@ -457,7 +537,52 @@ char *Cloud::MD5Sum(const char *ptr, long size)
 
 struct curl_slist *Cloud::BuildHeaderAmzS3v4(const char *URL, const char *TCPPort, const char *PublicKey, struct Cloud::AmzDatav4 *Data)
 {
-	return NULL;
+        char header_data[1024];
+        struct curl_slist *chunk = NULL;
+
+        // Build the Host: entry
+        // sprintf(header_data,"Host: %s:%s", URL, TCPPort);
+        sprintf(header_data,"Host: %s", URL);
+        chunk = curl_slist_append(chunk, header_data);
+
+        // Build the Date entry
+
+        sprintf(header_data,"X-Amz-Date: %s", Data->dateFormattedS);
+        chunk = curl_slist_append(chunk, header_data);
+
+        // Build the Content-Type entry
+
+        sprintf(header_data,"Content-Type:%s", Data->ContentType);
+        chunk = curl_slist_append(chunk, header_data);
+
+        // If ptr is not null we must compute the MD5-Sum as to validate later the ETag
+        // and add the MD5-Content: entry to the header
+        if ( Data->MD5 != NULL )
+        {
+                sprintf(header_data,"Content-MD5: %s", Data->MD5);
+                chunk = curl_slist_append(chunk, header_data);
+                // We don't need it anymore we can free it
+                free((void *)Data->MD5);
+        }
+
+	if ( Data->SHA256Sum != NULL ) 
+	{
+		sprintf(header_data,"x-amz-content-sha256: %s", Data->SHA256Sum);
+                chunk = curl_slist_append(chunk, header_data);
+                // We don't need it anymore we can free it
+                free((void *)Data->SHA256Sum);
+	}
+	else
+	{
+		chunk = curl_slist_append(chunk, "x-amz-content-sha256: UNSIGNED-PAYLOAD");
+	}
+
+        // build the Auth entry
+        sprintf(header_data,"Authorization: AWS4-HMAC-SHA256 Credential=%s/%s/%s/%s/aws4_request, SignedHeaders=%s, Signature=%s", PublicKey, Data->dateFormattedD,"us","s3","host;x-amz-date",
+                Data->digest.c_str());
+        chunk = curl_slist_append(chunk, header_data);
+
+        return chunk;
 }
 
 struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *URL, const char *TCPPort, const char *PublicKey, struct Cloud::AmzData *Data)
@@ -499,9 +624,10 @@ struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *URL, const char *TCPPor
 	return chunk;
 }
 
-Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket)
+Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket, std::string ProtocolVersion, std::string Region)
 {
         struct Cloud::AmzData *RequestData;
+        struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
 
@@ -512,10 +638,21 @@ Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const ch
         this->TokenSecret=TokenSecret;
         this->TCPPort=TCPPort;
         this->Bucket=Bucket;
+	if ( !ProtocolVersion.empty() ) 
+		this->ProtocolVersion=ProtocolVersion;
+	else
+		this->ProtocolVersion="2";
+	this->Region=Region;
         this->FileName="";
 	char path[1024];
 	sprintf(path,"/%s/", this->Bucket);
-	RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->TokenSecret, NULL, 0);
+	std::string strURL(this->URL);
+        eraseSubStr(strURL,"http://");
+        eraseSubStr(strURL,"https://");
+	if ( this->ProtocolVersion == "2" )
+		RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->TokenSecret, NULL, 0);
+	else
+		RequestDatav4 = Cloud::ComputeDigestAmzS3v4("GET", strURL.c_str(), "application/xml", path, this->TokenSecret, NULL, 0, NULL, this->Region);
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
@@ -531,9 +668,16 @@ Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const ch
                 std::string strURL(this->URL);
                 eraseSubStr(strURL,"http://");
                 eraseSubStr(strURL,"https://");
-
-		chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
-		delete RequestData;
+		if ( this->ProtocolVersion == "2")
+		{
+			chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
+			delete RequestData;
+		}
+		else
+		{
+                        chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        delete RequestDatav4;
+                }
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -551,8 +695,8 @@ Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const ch
                       fprintf(stderr, "curl_easy_perform() failed: %s\n",
                         curl_easy_strerror(res));
                 curl_easy_cleanup(curl);
+		createBucket();
 		// Lets dump temporarily for debug purposes of s3v4 implementation
-
                 std::stringstream input(s);
 
                 try { XMLPlatformUtils::Initialize(); }
@@ -681,12 +825,15 @@ Cloud::CloudReader::~CloudReader()
 {
 }
 
-Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket) 
+Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const char* TokenSecret, const char* TCPPort, const char* Bucket, std::string ProtocolVersion, std::string Region) 
 {
         struct Cloud::AmzData *RequestData;
+        struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
 	bool GetBucketContentList=true;
+	struct curl_slist *chunk = NULL;
+	char parameters[1024];
 
 
         this->URL=URL;
@@ -694,6 +841,11 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
         this->TokenSecret=TokenSecret;
         this->TCPPort=TCPPort;
         this->Bucket=Bucket;
+	if ( !ProtocolVersion.empty() )
+	        this->ProtocolVersion=ProtocolVersion;
+	else
+		this->ProtocolVersion="2";
+	this->Region=Region;
 
 	char path[1024];
         sprintf(path,"/%s/", this->Bucket);
@@ -708,7 +860,6 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
 	while ( GetBucketContentList )
 	{
         	std::string s;
-	        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->TokenSecret, NULL, 0);
 	        curl = curl_easy_init();
 #ifdef ALLOW_SELF_SIGNED_CERTIFICATE
      		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -717,24 +868,35 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
 	        if ( curl )
 	        {
 			// Let's build our own header
-	                struct curl_slist *chunk = NULL;
 	                char URL[256];
-	                std::string strURL(this->URL);
+			std::string strURL(this->URL);
 	                eraseSubStr(strURL,"http://");
 	                eraseSubStr(strURL,"https://");
-
-	                chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
-			delete RequestData;
-
-	                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 			if ( strlen(NextFileName) == 0 )
-		                sprintf(URL,"%s:%s/%s/?list-type=2", this->URL,this->TCPPort,
-	                                                    this->Bucket);
+			{
+				sprintf(parameters,"list-type=2");
+			}
 			else
-				sprintf(URL,"%s:%s/%s/?list-type=2&continuation-token=%s", this->URL,this->TCPPort,
-							    this->Bucket, NextFileName);
+			{
+				sprintf(parameters,"list-type=2&continuation-token=%s", NextFileName);
+			}
+			sprintf(URL,"%s:%s/%s/?%s", this->URL,this->TCPPort,
+						    this->Bucket, parameters);
 	                curl_easy_setopt(curl, CURLOPT_URL, URL);
 
+                        if ( this->ProtocolVersion == "2" )
+                        {
+				RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->TokenSecret, NULL, 0);
+                                chunk = Cloud::BuildHeaderAmzS3v2(strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
+                                delete RequestData;
+                        }
+                        else
+                        {
+				RequestDatav4 = Cloud::ComputeDigestAmzS3v4("GET", strURL.c_str(),"application/xml", path, this->TokenSecret, NULL, 0, (char *)&parameters[0], this->Region);
+                                chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                                delete RequestDatav4;
+                        }
+	                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
 	                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
 	                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
@@ -748,6 +910,8 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
 	                      fprintf(stderr, "curl_easy_perform() failed: %s\n",
 	                        curl_easy_strerror(res));
 	                curl_easy_cleanup(curl);
+
+
 	                std::stringstream input(s);
 
 	                try { XMLPlatformUtils::Initialize(); }
@@ -785,6 +949,7 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
 void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
 {
         struct Cloud::AmzData *RequestData;
+        struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
 
@@ -793,7 +958,13 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
         // We must get the directory content
 	char path[1024];
 	sprintf(path, "/%s/%s", this->Bucket, entry->FileName);
-        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/octet-stream", path, this->TokenSecret, NULL, 0);
+	std::string strURL(this->URL);
+        eraseSubStr(strURL,"http://");
+        eraseSubStr(strURL,"https://");
+	if ( this->ProtocolVersion == "2" )
+	        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/octet-stream", path, this->TokenSecret, NULL, 0);
+	else
+		RequestDatav4 = Cloud::ComputeDigestAmzS3v4("GET", strURL.c_str(), "application/octet-stream", path, this->TokenSecret, NULL, 0, NULL, this->Region);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
@@ -810,9 +981,16 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
 		std::string strURL(this->URL);
                 eraseSubStr(strURL,"http://");
                 eraseSubStr(strURL,"https://");
-
-                chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
-		delete RequestData;
+                if ( this->ProtocolVersion == "2" )
+		{
+	                chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
+			delete RequestData;
+		}
+		else
+		{
+			chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+	                delete RequestDatav4;
+		}
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -820,7 +998,6 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                                                     this->Bucket, entry->FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, URL);
 
-//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
                 // curl read a file not a memory buffer (it shall be able to do it)
@@ -901,7 +1078,6 @@ bool Cloud::CloudWriter::shouldWrite(const std::string& , const Base::Persistenc
 void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long size)
 {
         struct Cloud::AmzData *RequestData;
-// vejmarie
         struct Cloud::AmzDatav4 *RequestDatav4;
         CURL *curl;
         CURLcode res;
@@ -909,7 +1085,14 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
 	char path[1024];
         sprintf(path, "/%s/%s", this->Bucket, FileName);
-        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/octet-stream", path, this->TokenSecret, data, size);
+
+        std::string strURL(this->URL);
+        eraseSubStr(strURL,"http://");
+        eraseSubStr(strURL,"https://");
+	if ( this->ProtocolVersion == "2" )
+	        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/octet-stream", path, this->TokenSecret, data, size);
+	else
+		RequestDatav4 = Cloud::ComputeDigestAmzS3v4("PUT", strURL.c_str(), "application/octet-stream", path, this->TokenSecret, data, size, NULL, this->Region);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
@@ -926,10 +1109,16 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 		std::string strURL(this->URL);
 		eraseSubStr(strURL,"http://");
 		eraseSubStr(strURL,"https://");
-	        RequestDatav4 = Cloud::ComputeDigestAmzS3v4("PUT", strURL.c_str(), "application/octet-stream", path, this->TokenSecret, data, size);
-		delete RequestDatav4;
-		chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
-		delete RequestData;
+		if ( this->ProtocolVersion == "2" )
+		{
+			chunk = Cloud::BuildHeaderAmzS3v2( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestData);
+			delete RequestData;
+		} 
+		else
+		{
+			chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
+                        delete RequestDatav4;
+		}
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -940,8 +1129,6 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
                 curl_easy_setopt(curl, CURLOPT_URL, URL);
 
 				
-//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
                 curl_easy_setopt(curl, CURLOPT_PUT, 1L);
                 // curl read a file not a memory buffer (it shall be able to do it)
@@ -1028,7 +1215,9 @@ bool Cloud::Module::cloudSave(const char *BucketName)
                                   (const char*)this->TokenAuth.getStrValue().c_str(),
                                   (const char*)this->TokenSecret.getStrValue().c_str(),
                                   (const char*)this->TCPPort.getStrValue().c_str(),
-                                  BucketName);
+                                  BucketName, 
+				  (const char*)this->ProtocolVersion.getStrValue().c_str(),
+				  this->Region.getStrValue());
 
         mywriter.putNextEntry("Document.xml");
 
@@ -1102,7 +1291,8 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
                                   (const char*)this->TokenAuth.getStrValue().c_str(),
                                   (const char*)this->TokenSecret.getStrValue().c_str(),
                                   (const char*)this->TCPPort.getStrValue().c_str(),
-                                  BucketName);
+                                  BucketName, (const char*)this->ProtocolVersion.getStrValue().c_str(),
+				  this->Region.getStrValue());
 
     // we shall pass there the initial Document.xml file
 
