@@ -465,6 +465,14 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connectChangedChildren = Application::Instance->signalChangedChildren.connect(
             boost::bind(&TreeWidget::slotChangedChildren, this, _1));
 
+    connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
+        [this](const App::Document &doc) {
+            for(auto obj : doc.getObjects()) {
+                if(!obj->isValid()) 
+                    ChangedObjects[obj].set(TreeWidget::CS_Error);
+            }
+        });
+
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
 
@@ -557,6 +565,7 @@ TreeWidget::~TreeWidget()
     connectShowHidden.disconnect();
     connectChangedViewObj.disconnect();
     connectChangedChildren.disconnect();
+    connectFinishRestoreDocument.disconnect();
     Instances.erase(this);
     if(_LastSelectedTreeWidget == this)
         _LastSelectedTreeWidget = 0;

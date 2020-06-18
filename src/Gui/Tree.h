@@ -280,6 +280,7 @@ private:
     Connection connectShowHidden;
     Connection connectChangedViewObj;
     Connection connectChangedChildren;
+    Connection connectFinishRestoreDocument;
 };
 
 /** The link between the tree and a document.
