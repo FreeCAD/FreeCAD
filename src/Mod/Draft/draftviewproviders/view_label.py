@@ -276,7 +276,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         text.getBoundingBox(b)
         return b.getBoundingBox().getSize().getValue()
 
-    def onChanged(self,vobj,prop):
+    def onChanged(self, vobj, prop):
+        """Execute when a view property is changed."""
+        super(ViewProviderLabel, self).onChanged(vobj, prop)
+
         if prop == "ScaleMultiplier":
             if not hasattr(vobj,"ScaleMultiplier"):
                 return
