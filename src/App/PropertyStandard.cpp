@@ -680,7 +680,10 @@ Property *PropertyIntegerConstraint::Copy(void) const
 {
     PropertyIntegerConstraint *p= new PropertyIntegerConstraint();
     p->_lValue = _lValue;
-    p->setConstraints(_ConstStruct);
+    if (_ConstStruct && _ConstStruct->isDeletable())
+        p->setConstraints(new Constraints(*_ConstStruct));
+    else
+        p->setConstraints(_ConstStruct);
     return p;
 }
 
@@ -689,7 +692,10 @@ void PropertyIntegerConstraint::Paste(const Property &from)
     aboutToSetValue();
     auto &other = dynamic_cast<const PropertyIntegerConstraint&>(from);
     _lValue = other._lValue;
-    setConstraints(other._ConstStruct);
+    if (other._ConstStruct && other._ConstStruct->isDeletable())
+        setConstraints(new Constraints(*other._ConstStruct));
+    else
+        setConstraints(other._ConstStruct);
     hasSetValue();
 }
 
@@ -744,6 +750,8 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
                 throw Base::TypeError("Type in tuple must be int");
         }
 
+        aboutToSetValue();
+
         Constraints* c = new Constraints();
         c->setDeletable(true);
         c->LowerBound = values[1];
@@ -755,7 +763,6 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
             values[0] = c->LowerBound;
         setConstraints(c);
 
-        aboutToSetValue();
         _lValue = values[0];
         hasSetValue();
     }
@@ -1186,7 +1193,10 @@ Property *PropertyFloatConstraint::Copy(void) const
 {
     PropertyFloatConstraint *p= new PropertyFloatConstraint();
     p->_dValue = _dValue;
-    p->setConstraints(_ConstStruct);
+    if (_ConstStruct && _ConstStruct->isDeletable())
+        p->setConstraints(new Constraints(*_ConstStruct));
+    else
+        p->setConstraints(_ConstStruct);
     return p;
 }
 
@@ -1195,7 +1205,10 @@ void PropertyFloatConstraint::Paste(const Property &from)
     aboutToSetValue();
     auto &other = dynamic_cast<const PropertyFloatConstraint&>(from);
     _dValue = other._dValue;
-    setConstraints(other._ConstStruct);
+    if (other._ConstStruct && other._ConstStruct->isDeletable())
+        setConstraints(new Constraints(*other._ConstStruct));
+    else
+        setConstraints(other._ConstStruct);
     hasSetValue();
 }
 
@@ -1269,6 +1282,8 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
         if (stepSize < DBL_EPSILON)
             throw Base::ValueError("Step size must be greater than zero");
 
+        aboutToSetValue();
+
         Constraints* c = new Constraints();
         c->setDeletable(true);
         c->LowerBound = values[1];
@@ -1280,7 +1295,6 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
             values[0] = c->LowerBound;
         setConstraints(c);
 
-        aboutToSetValue();
         _dValue = values[0];
         hasSetValue();
     }
