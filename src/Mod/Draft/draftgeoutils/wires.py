@@ -32,6 +32,7 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
+import FreeCAD
 
 from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import get_normal
