@@ -41,7 +41,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Waterline operation.'''
 
     def initPage(self, obj):
-        # self.setTitle("Waterline")
+        self.setTitle("Waterline - " + obj.Label)
         self.updateVisibility()
 
     def getForm(self):
