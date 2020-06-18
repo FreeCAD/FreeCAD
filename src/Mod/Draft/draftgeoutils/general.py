@@ -70,7 +70,7 @@ def vec(edge, use_orientation = False):
             return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
         else:
             return edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point)
-    elif isinstance(edge,Part.LineSegment):
+    elif isinstance(edge, Part.LineSegment):
         return edge.EndPoint.sub(edge.StartPoint)
     else:
         return None
