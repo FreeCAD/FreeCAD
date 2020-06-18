@@ -1078,7 +1078,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _planarSinglepassProcess(self, obj, points):
         if obj.OptimizeLinearPaths:
-            points = self._optimizeLinearSegments(points)
+            points = PathUtils.simplify3dLine(points,
+                    tolerance=obj.LinearDeflection.Value)
         # Begin processing ocl points list into gcode
         commands = []
         for pnt in points:
@@ -2085,28 +2086,14 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
-    def _optimizeLinearSegments(self, line):
-        """Eliminate collinear interior segments"""
-        if len(line) > 2:
-            prv, pnt = line[0:2]
-            pts = [prv]
-            for nxt in line[2:]:
-                if not pnt.isOnLineSegment(prv, nxt):
-                    pts.append(pnt)
-                    prv = pnt
-                pnt = nxt
-            pts.append(line[-1])
-            return pts
-        else:
-            return line
-
     def _getTransitionLine(self, pdc, p1, p2, obj):
         """Use an OCL PathDropCutter to generate a safe transition path between
         two points in the x/y plane."""
         p1xy, p2xy = ((p1.x, p1.y), (p2.x, p2.y))
         pdcLine = self._planarDropCutScan(pdc, p1xy, p2xy)
         if obj.OptimizeLinearPaths:
-            pdcLine = self._optimizeLinearSegments(pdcLine)
+            pdcLine = PathUtils.simplify3dLine(
+                pdcLine, tolerance=obj.LinearDeflection.Value)
         zs = [obj.z for obj in pdcLine]
         # PDC z values are based on the model, and do not take into account
         # any remaining stock / multi layer paths. Adjust raw PDC z values to
