@@ -542,10 +542,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for item in selected:
             self.form.baseList.takeItem(self.form.baseList.row(item))
             self.setDirty()
-            self.updatePanelVisibility('Operation', self.obj)
         self.updateBase()
-        # self.obj.Proxy.execute(self.obj)
-        # FreeCAD.ActiveDocument.recompute()
+        self.updatePanelVisibility('Operation', self.obj)
 
     def updateBase(self):
         newlist = []
