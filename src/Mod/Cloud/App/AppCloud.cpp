@@ -984,7 +984,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 {
                         chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
-
+                }
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
