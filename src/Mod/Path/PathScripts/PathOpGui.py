@@ -415,6 +415,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
 
         self.panelTitle = 'Base Geometry'
+        self.OpIcon = ":/icons/Path-BaseGeometry.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         panel = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
@@ -723,6 +725,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = None
         self.safeHeight = None
         self.panelTitle = 'Heights'
+        self.OpIcon = ":/icons/Path-Heights.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -765,6 +769,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finishDepth = None
         self.stepDown = None
         self.panelTitle = 'Depths'
+        self.OpIcon = ":/icons/Path-Depths.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
@@ -961,10 +967,16 @@ class TaskPanel(object):
             if taskPanelLayout == 0:
                 for page in self.featurePages:
                     toolbox.addItem(page.form, page.getTitle(obj))
+                    itemIdx = toolbox.count() - 1
+                    if page.icon:
+                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
                 toolbox.setCurrentIndex(len(self.featurePages)-1)
             else:
                 for page in reversed(self.featurePages):
                     toolbox.addItem(page.form, page.getTitle(obj))
+                    itemIdx = toolbox.count() - 1
+                    if page.icon:
+                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
             toolbox.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
