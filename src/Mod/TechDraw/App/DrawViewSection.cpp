@@ -286,7 +286,6 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
-//    Base::Console().Message("DVS::execute() - %s/%s \n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -420,23 +419,30 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
         return;
+
     }
 
 // build display geometry as in DVP, with minor mods
     gp_Ax2 viewAxis;
     TopoDS_Shape centeredShape;
     try {
-        Base::Vector3d sectionOrigin = SectionOrigin.getValue();
+        Base::Vector3d origin(0.0, 0.0, 0.0);
+        viewAxis = getProjectionCS(origin);
+        gp_Pnt inputCenter;
+        inputCenter = TechDraw::findCentroid(rawShape,
+                                             viewAxis);
+        Base::Vector3d centroid(inputCenter.X(),
+                                inputCenter.Y(),
+                                inputCenter.Z());
+
         centeredShape = TechDraw::moveShape(rawShape,
-                                            sectionOrigin * -1.0);
+                                            centroid * -1.0);
         m_cutShape = centeredShape;
-        m_saveCentroid = sectionOrigin;
+        m_saveCentroid = centroid;
 
         TopoDS_Shape scaledShape   = TechDraw::scaleShape(centeredShape,
                                                           getScale());
 
-        Base::Vector3d origin(0.0, 0.0, 0.0);
-        viewAxis = getProjectionCS(origin);
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             scaledShape = TechDraw::rotateShape(scaledShape,
                                                 viewAxis,
@@ -462,13 +468,9 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 //display geometry for cut shape is in geometryObject as in DVP
 
 // build section face geometry
-//    try {
-        //sectionFaces = build sectionFaces(rawShape);
         TopoDS_Compound faceIntersections = findSectionPlaneIntersections(rawShape);
- 
-        Base::Vector3d sectionOrigin = SectionOrigin.getValue();
         TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
-                                                         sectionOrigin * -1.0);
+                                                           m_saveCentroid * -1.0);
 
         TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
                                                           getScale());
