@@ -34,7 +34,6 @@ import Part
 import Draft
 import Draft_rc  # include resources, icons, ui files
 import draftutils.todo as todo
-# noinspection PyProtectedMember,PyProtectedMember
 from draftutils.messages import _msg, _log
 from draftutils.translate import _tr
 
@@ -222,7 +221,6 @@ class GuiCommandBase:
         self.commit_list.append((name, func))
 
 
-# noinspection PyPep8Naming
 class PolarCircularBase(GuiCommandBase):
     """This class is the base of the PolarArray and CircularArray Command to be
     subclassed by them.
@@ -334,7 +332,6 @@ class PolarCircularBase(GuiCommandBase):
             super(PolarCircularBase, self).finish()
 
 
-# noinspection PyPep8Naming
 class AxisSelectionObserver:
     """This classes functions will be called when an selection
     event occurs after axis selection is enabled. This class is used by

@@ -152,7 +152,6 @@ def make_polcirc_shared(doc, _name, center=App.Vector(0, 0, 0),
         axis_edge_name = "Edge" + str(axis_edge)
         axis_reference = [axis, axis_edge_name]
         _msg("axis_reference: {}".format(axis_reference))
-        return CORRECT, axis_reference
     return CORRECT, axis_reference
 
 
