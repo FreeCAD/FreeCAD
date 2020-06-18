@@ -32,7 +32,7 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import FreeCAD
+import FreeCAD as App
 
 from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import get_normal
@@ -438,7 +438,7 @@ def tessellateProjection(shape, seglen):
 
 def get_placement_perpendicular_to_wire(wire):
     """Return the placement whose base is the wire's first vertex and it's z axis aligned to the wire's tangent."""
-    pl = FreeCAD.Placement()
+    pl = App.Placement()
     if wire.Length > 0.0:
         pl.Base = wire.OrderedVertexes[0].Point
         first_edge = wire.OrderedEdges[0]
@@ -446,9 +446,9 @@ def get_placement_perpendicular_to_wire(wire):
             zaxis = -first_edge.tangentAt(first_edge.FirstParameter)
         else:
             zaxis = first_edge.tangentAt(first_edge.LastParameter)
-        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), FreeCAD.Vector(0, 0, 1), zaxis, "ZYX")
+        pl.Rotation = App.Rotation(App.Vector(1, 0, 0), App.Vector(0, 0, 1), zaxis, "ZYX")
     else:
-        FreeCAD.Console.PrintError("debug: get_placement_perpendicular_to_wire called with a zero-length wire.\n")
+        App.Console.PrintError("debug: get_placement_perpendicular_to_wire called with a zero-length wire.\n")
     return pl
 
 
@@ -459,7 +459,7 @@ def get_extended_wire(wire, offset_start, offset_end):
     get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex
     """
     if min(offset_start, offset_end, offset_start + offset_end) <= -wire.Length:
-        FreeCAD.Console.PrintError("debug: get_extended_wire error, wire's length insufficient for trimming.\n")
+        App.Console.PrintError("debug: get_extended_wire error, wire's length insufficient for trimming.\n")
         return wire
     if offset_start < 0: # Trim the wire from the first vertex
         offset_start = -offset_start
