@@ -335,7 +335,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(3);
+    _Version.setValue(4);
     checkPropertyStatus();
 }
 
@@ -580,11 +580,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
-                if(!shape.isNull()) {
-                    shapes.push_back(shape);
-                    shapeOwners.emplace_back(sidx, subidx);
-                    shapeMats.push_back(&res.first->second);
-                }
+                if(shape.isNull())
+                    throw Part::NullShapeException();
+                shapes.push_back(shape);
+                shapeOwners.emplace_back(sidx, subidx);
+                shapeMats.push_back(&res.first->second);
             } catch(Base::Exception &e) {
                 e.ReportException();
                 FC_ERR(getFullName() << " failed to obtain shape from " 
@@ -615,7 +615,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     if(!init) {
 
         if(errMsg.size()) {
-            if(!(options & UpdateInit))
+            // Notify user about restore error
+            // if(!(options & UpdateInit))
                 FC_THROWM(Base::RuntimeError, errMsg);
             if(!Shape.getValue().IsNull())
                 return;
@@ -788,6 +789,36 @@ App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
 void SubShapeBinder::onDocumentRestored() {
     if(_Version.getValue()<2)
         update(UpdateInit);
+    else if (_Version.getValue()<4
+            && BindMode.getValue()==0
+            && !testStatus(App::ObjectStatus::PartialObject))
+    {
+        // Older version SubShapeBinder does not treat missing sub object as
+        // error, which may cause noticable error to user. We'll perform an
+        // explicit check here, and raise exception if necessary.
+        for(auto &l : Support.getSubListValues()) {
+            auto obj = l.getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            const auto &subvals = l.getSubValues();
+            std::set<std::string> subs(subvals.begin(),subvals.end());
+            static std::string none("");
+            if(subs.empty())
+                subs.insert(none);
+            else if(subs.size()>1)
+                subs.erase(none);
+            for(const auto &sub : subs) {
+                if(!obj->getSubObject(sub.c_str())) {
+                    if (obj->getDocument() != getDocument())
+                        FC_THROWM(Base::RuntimeError,
+                                "Failed to get sub-object " << obj->getFullName() << "." << sub);
+                    else
+                        FC_THROWM(Base::RuntimeError,
+                                "Failed to get sub-object " << obj->getNameInDocument() << "." << sub);
+                }
+            }
+        }
+    }
     inherited::onDocumentRestored();
 }
 
