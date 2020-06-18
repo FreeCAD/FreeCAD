@@ -265,8 +265,8 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         return
 
     def onChanged(self, vobj, prop):
-        """called when a view property has changed"""
-        return
+        """Execute when a view property is changed."""
+        super(ViewProviderDimensionBase, self).onChanged(vobj, prop)
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
@@ -559,7 +559,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 self.line.coordIndex.setValues(0,4,(0,1,2,3))
 
     def onChanged(self, vobj, prop):
-        """called when a view property has changed"""
+        """Execute when a view property is changed."""
+        super(ViewProviderLinearDimension, self).onChanged(vobj, prop)
+
         if prop == "ScaleMultiplier" and hasattr(vobj, "ScaleMultiplier"):
             # update all dimension values
             if hasattr(self,"font"):
@@ -936,6 +938,9 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 obj.Angle = a
 
     def onChanged(self, vobj, prop):
+        """Execute when a view property is changed."""
+        super(ViewProviderAngularDimension, self).onChanged(vobj, prop)
+
         if hasattr(vobj, "ScaleMultiplier"):
             if vobj.ScaleMultiplier == 0:
                 return

@@ -162,8 +162,10 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
 
+    def onChanged(self, vobj, prop):
+        """Execute when a view property is changed."""
+        super(ViewProviderText, self).onChanged(vobj, prop)
 
-    def onChanged(self,vobj,prop):
         if prop == "ScaleMultiplier":
             if "ScaleMultiplier" in vobj.PropertiesList:
                 if vobj.ScaleMultiplier:
