@@ -65,7 +65,7 @@ FeatureBasePanels   = 0x0800     # Base
 FeatureLocations    = 0x1000     # Locations
 FeatureCoolant      = 0x2000     # Coolant
 
-FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels | FeatureCoolant
+FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
 
 class ObjectOp(object):
@@ -245,7 +245,7 @@ class ObjectOp(object):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
-        The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
+        The default implementation returns "FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
         # pylint: disable=unused-argument
         return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth | FeatureCoolant

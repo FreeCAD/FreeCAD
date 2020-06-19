@@ -98,6 +98,7 @@
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>

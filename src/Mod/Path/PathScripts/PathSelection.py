@@ -290,6 +290,10 @@ def probeselect():
     FreeCADGui.Selection.addSelectionGate(PROBEGate())
     FreeCAD.Console.PrintWarning("Probe Select Mode\n")
 
+def customselect():
+    FreeCAD.Console.PrintWarning("Custom Select Mode\n")
+
+
 
 def select(op):
     opsel = {}
@@ -309,6 +313,7 @@ def select(op):
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect
     opsel['Probe'] = probeselect
+    opsel['Custom'] = customselect
     return opsel[op]
 
 
