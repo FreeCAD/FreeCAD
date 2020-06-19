@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #include "PyExport.h"
 #include "Exception.h"
+#include <sstream>
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 #if defined(__clang__)
 # pragma clang diagnostic push

@@ -201,8 +201,16 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
                 vp->setDisplayMode(modes.front().c_str());
             node = vp->getRoot()->copy();
             node->ref();
-            std::string type = "So";
-            type += node->getTypeId().getName().getString();
+            std::string prefix = "So";
+            std::string type = node->getTypeId().getName().getString();
+            // doesn't start with the prefix 'So'
+            if (type.rfind("So", 0) != 0) {
+                type = prefix + type;
+            }
+            else if (type == "SoFCSelectionRoot") {
+                type = "SoSeparator";
+            }
+
             type += " *";
             PyObject* proxy = 0;
             proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)node, 1);
