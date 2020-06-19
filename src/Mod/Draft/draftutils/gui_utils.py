@@ -39,9 +39,9 @@ import os
 import six
 
 import FreeCAD as App
+import draftutils.utils as utils
+
 from draftutils.messages import _msg, _wrn
-from draftutils.utils import getParam
-from draftutils.utils import get_type
 from draftutils.translate import _tr, translate
 
 if App.GuiUp:
@@ -141,19 +141,19 @@ def autogroup(obj):
                 App.Console.PrintMessage(err)
                 return
             inverse_placement = App.Placement(matrix.inverse())
-            if get_type(obj) == 'Point':
+            if utils.get_type(obj) == 'Point':
                 point_vector = App.Vector(obj.X, obj.Y, obj.Z)
                 real_point = inverse_placement.multVec(point_vector)
                 obj.X = real_point.x
                 obj.Y = real_point.y
                 obj.Z = real_point.z
-            elif get_type(obj) in ["Dimension", "LinearDimension"]:
+            elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
                 obj.Start = inverse_placement.multVec(obj.Start)
                 obj.End = inverse_placement.multVec(obj.End)
                 obj.Dimline = inverse_placement.multVec(obj.Dimline)
                 obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
                 obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
-            elif get_type(obj) in ["Label"]:
+            elif utils.get_type(obj) in ["Label"]:
                 obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
                 obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
             elif hasattr(obj,"Placement"):
@@ -193,7 +193,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = getParam("dimsymbol", 0)
+        symbol = utils.get_param("dimsymbol", 0)
 
     if symbol == 0:
         return coin.SoSphere()
@@ -340,7 +340,7 @@ def format_object(target, origin=None):
         doc = App.ActiveDocument
         if ui.isConstructionMode():
             col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname", "Construction")
+            gname = utils.get_param("constructiongroupname", "Construction")
             grp = doc.getObject(gname)
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup", gname)
@@ -655,3 +655,13 @@ def load_texture(filename, size=None, gui=App.GuiUp):
 
 
 loadTexture = load_texture
+
+
+def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
+    """Migrate the display mode of objects of certain type."""
+    if not doc:
+        doc = App.activeDocument()
+
+    for obj in doc.Objects:
+        if utils.get_type(obj) == obj_type:
+            obj.ViewObject.DisplayMode = mode
