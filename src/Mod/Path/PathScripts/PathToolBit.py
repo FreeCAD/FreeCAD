@@ -151,6 +151,7 @@ class ToolBit(object):
         obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
         obj.addProperty('App::PropertyLink', 'BitBody',  'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
         obj.addProperty('App::PropertyFile', 'File',     'Base', translate('PathToolBit', 'The file of the tool'))
+        obj.addProperty('App::PropertyString', 'ShapeName', 'Base', translate('PathToolBit', 'The name of the shape file'))
         if shapeFile is None:
             obj.BitShape = 'endmill.fcstd'
             self._setupBitShape(obj)
@@ -230,6 +231,7 @@ class ToolBit(object):
             if not path and p != obj.BitShape:
                 obj.BitShape = p
             doc = FreeCAD.open(p)
+            obj.ShapeName = doc.Name
             docOpened = True
         return (doc, docOpened)
 

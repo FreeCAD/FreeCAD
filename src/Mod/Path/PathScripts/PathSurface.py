@@ -494,23 +494,35 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 self.CutClimb = True
 
+        # Instantiate additional class operation variables
+        self.resetOpVariables()
+
+        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
+        oclTool = PathSurfaceSupport.OCL_Tool(ocl, obj)
+        self.cutter = oclTool.getOclTool()
+        if not self.cutter:
+            PathLog.error(translate('PathSurface', "Canceling 3D Surface operation. Error creating OCL cutter."))
+            return
+        self.toolDiam = self.cutter.getDiameter()  # oclTool.diameter
+        self.radius = self.toolDiam / 2.0
+        self.useTiltCutter = oclTool.useTiltCutter()
+        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
+        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
+
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
         output = ''
         if obj.Comment != '':
             self.commandlist.append(Path.Command('N ({})'.format(str(obj.Comment)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(obj.Label), {}))
-        self.commandlist.append(Path.Command('N (Tool type: {})'.format(str(obj.ToolController.Tool.ToolType)), {}))
-        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(str(obj.ToolController.Tool.Diameter)), {}))
+        self.commandlist.append(Path.Command('N (Tool type: {})'.format(oclTool.toolType), {}))
+        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(oclTool.diameter), {}))
         self.commandlist.append(Path.Command('N (Sample interval: {})'.format(str(obj.SampleInterval.Value)), {}))
         self.commandlist.append(Path.Command('N (Step over %: {})'.format(str(obj.StepOver)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(output), {}))
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if obj.UseStartPoint is True:
             self.commandlist.append(Path.Command('G0', {'X': obj.StartPoint.x, 'Y': obj.StartPoint.y, 'F': self.horizRapid}))
-
-        # Instantiate additional class operation variables
-        self.resetOpVariables()
 
         # Impose property limits
         self.opApplyPropertyLimits(obj)
@@ -531,16 +543,6 @@ class ObjectSurface(PathOp.ObjectOp):
         tempGroup.purgeTouched()
         # Add temp object to temp group folder with following code:
         # ... self.tempGroup.addObject(OBJ)
-
-        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
-        self.cutter = self.setOclCutter(obj)
-        if self.cutter is False:
-            PathLog.error(translate('PathSurface', "Canceling 3D Surface operation. Error creating OCL cutter."))
-            return
-        self.toolDiam = self.cutter.getDiameter()
-        self.radius = self.toolDiam / 2.0
-        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
-        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
 
         # Get height offset values for later use
         self.SafeHeightOffset = JOB.SetupSheet.SafeHeightOffset.Value
@@ -610,6 +612,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # Save gcode produced
             self.commandlist.extend(CMDS)
+        else:
+            PathLog.error('Failed to pre-process model and/or selected face(s).')
+            
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
 
@@ -2006,7 +2011,6 @@ class ObjectSurface(PathOp.ObjectOp):
             self.stl = None
             self.fullSTL = None
             self.cutOut = 0.0
-            self.radius = 0.0
             self.useTiltCutter = False
         return True
 
@@ -2123,20 +2127,12 @@ class ObjectSurface(PathOp.ObjectOp):
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
+# Eclass
 
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = ['AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
-    setup.extend(['BoundaryAdjustment', 'PatternCenterAt', 'PatternCenterCustom'])
-    setup.extend(['CircularUseG2G3', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
-    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
-    setup.extend(['CutterTilt', 'DepthOffset', 'DropCutterDir', 'GapSizes', 'GapThreshold'])
-    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
-    setup.extend(['ProfileEdges', 'BoundaryEnforcement', 'RotationAxis', 'SampleInterval'])
-    setup.extend(['ScanType', 'StartIndex', 'StartPoint', 'StepOver', 'StopIndex'])
-    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
-    return setup
+    return [tup[1] for tup in ObjectSurface.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):
