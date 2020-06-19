@@ -871,3 +871,41 @@ class depth_params(object):
             return depths
         else:
             return [stop] + depths
+
+
+def simplify3dLine(line, tolerance=1e-4):
+    """Simplify a line defined by a list of App.Vectors, while keeping the
+    maximum deviation from the original line within the defined tolerance.
+    Implementation of
+    https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm"""
+    stack = [(0, len(line) - 1)]
+    results = []
+
+    def processRange(start, end):
+        """Internal worker. Process a range of Vector indices within the
+        line."""
+        if end - start < 2:
+            results.extend(line[start:end])
+            return
+        # Find point with maximum distance
+        maxIndex, maxDistance = 0, 0.0
+        startPoint, endPoint = (line[start], line[end])
+        for i in range(start + 1, end):
+            v = line[i]
+            distance = v.distanceToLineSegment(startPoint, endPoint).Length
+            if distance > maxDistance:
+                maxDistance = distance
+                maxIndex = i
+        if maxDistance > tolerance:
+            # Push second branch first, to be executed last
+            stack.append((maxIndex, end))
+            stack.append((start, maxIndex))
+        else:
+            results.append(line[start])
+
+    while len(stack):
+        processRange(*stack.pop())
+    # Each segment only appended its start point to the final result, so fill in
+    # the last point.
+    results.append(line[-1])
+    return results
