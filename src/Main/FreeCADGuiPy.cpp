@@ -39,6 +39,7 @@
 #elif defined(Q_WS_X11)
 #include <QX11EmbedWidget>
 #endif
+#include <thread>
 // FreeCAD Base header
 #include <CXX/WrapPython.h>
 #include <Base/Exception.h>
@@ -54,23 +55,6 @@
 
 static
 QWidget* setupMainWindow();
-
-class GUIThread : public QThread
-{
-public:
-    GUIThread()
-    {
-    }
-    void run()
-    {
-        static int argc = 0;
-        static char **argv = {0};
-        QApplication app(argc, argv);
-        if (setupMainWindow()) {
-            app.exec();
-        }
-    }
-};
 
 #if defined(Q_OS_WIN)
 HHOOK hhook;
@@ -90,11 +74,22 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
         return NULL;
 
-    static GUIThread* thr = 0;
+    static bool thr = false;
     if (!qApp) {
-        if (PyObject_IsTrue(inThread)) {
-            if (!thr) thr = new GUIThread();
-            thr->start();
+        if (PyObject_IsTrue(inThread) && !thr) {
+            thr = true;
+            std::thread t([]() {
+                static int argc = 0;
+                static char **argv = {0};
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
+                QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+                QApplication app(argc, argv);
+                if (setupMainWindow()) {
+                    app.exec();
+                }
+            });
+            t.detach();
         }
         else {
 #if defined(Q_OS_WIN)
