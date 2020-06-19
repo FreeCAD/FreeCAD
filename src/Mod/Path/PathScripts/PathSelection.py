@@ -233,6 +233,17 @@ class PROBEGate:
         pass
 
 
+class ALLGate(PathBaseGate):
+    def allow(self, doc, obj, sub): # pylint: disable=unused-argument
+        if sub and sub[0:6] == 'Vertex':
+            return True
+        if sub and sub[0:4] == 'Edge':
+            return True
+        if sub and sub[0:4] == 'Face':
+            return True
+        return False
+
+
 def contourselect():
     FreeCADGui.Selection.addSelectionGate(CONTOURGate())
     FreeCAD.Console.PrintWarning("Contour Select Mode\n")
@@ -278,6 +289,10 @@ def adaptiveselect():
     FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
 
 
+def slotselect():
+    FreeCADGui.Selection.addSelectionGate(ALLGate())
+    FreeCAD.Console.PrintWarning("Slot Cutter Select Mode\n")
+
 def surfaceselect():
     gate = False
     if(MESHGate() or FACEGate()):
@@ -309,6 +324,7 @@ def select(op):
     opsel['Profile Edges'] = eselect  # (depreciated)
     opsel['Profile Faces'] = fselect  # (depreciated)
     opsel['Profile'] = profileselect
+    opsel['Slot'] = slotselect
     opsel['Surface'] = surfaceselect
     opsel['Waterline'] = surfaceselect
     opsel['Adaptive'] = adaptiveselect

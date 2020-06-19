@@ -104,6 +104,8 @@ SET(PathScripts_SRCS
     PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathSimulatorGui.py
+    PathScripts/PathSlot.py
+    PathScripts/PathSlotGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
