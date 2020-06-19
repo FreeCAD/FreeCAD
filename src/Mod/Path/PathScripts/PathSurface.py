@@ -436,6 +436,17 @@ class ObjectSurface(PathOp.ObjectOp):
                     except Part.OCCError as e:
                         PathLog.error(e)
             obj.OpFinalDepth = zmin
+        elif self.job:
+            if hasattr(obj, 'BoundBox'):
+                if obj.BoundBox == 'BaseBoundBox':
+                    models = self.job.Model.Group
+                    zmin = models[0].Shape.BoundBox.ZMin
+                    for M in models:
+                        zmin = min(zmin, M.Shape.BoundBox.ZMin)
+                    obj.OpFinalDepth = zmin
+                if obj.BoundBox == 'Stock':
+                    models = self.job.Stock
+                    obj.OpFinalDepth = self.job.Stock.Shape.BoundBox.ZMin
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
