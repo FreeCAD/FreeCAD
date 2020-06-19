@@ -47,10 +47,10 @@ CosmeticExtension::CosmeticExtension()
 {
     static const char *cgroup = "Cosmetics";
 
-    EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (0), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (0), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(0),cgroup,App::Prop_Output,"Geometry format Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(0),cgroup,App::Prop_Output,"Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (0), cgroup, App::Prop_None, "CosmeticVertex Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (0), cgroup, App::Prop_None, "CosmeticEdge Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(0),cgroup,App::Prop_None,"Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(0),cgroup,App::Prop_None,"Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
