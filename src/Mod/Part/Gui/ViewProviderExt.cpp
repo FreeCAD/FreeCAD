@@ -226,6 +226,25 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
     }
 }
 
+
+namespace PartGui {
+
+// Private class used by ViewProviderExt to update its visual nodes up on
+// receiving SoGetBoundingBoxAction
+class SoFCCoordinate3: public SoCoordinate3
+{
+public:
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action) {
+        if (vp && vp->VisualTouched)
+            vp->updateVisual();
+        SoCoordinate3::getBoundingBox(action);
+    }
+
+    ViewProviderPartExt *vp = nullptr;
+};
+
+} // namespace PartGui
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -289,7 +308,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(MapTransparency,(PartParams::MapTransparency()));
     ADD_PROPERTY(ForceMapColors,(false));
 
-    coords = new SoCoordinate3();
+    coords = new SoFCCoordinate3();
+    static_cast<SoFCCoordinate3*>(coords)->vp = this;
     coords->ref();
     pcoords = new SoCoordinate3();
     pcoords->ref();
@@ -341,13 +361,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     DrawStyle.touch();
 
     sPixmap = "Tree_Part";
-
-    if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
-        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->setBBoxCallback([this] {
-            if(VisualTouched)
-                this->updateVisual();
-        });
-    }
 }
 
 ViewProviderPartExt::~ViewProviderPartExt()
@@ -360,6 +373,7 @@ ViewProviderPartExt::~ViewProviderPartExt()
     pcLineStyle->unref();
     pcPointStyle->unref();
     pShapeHints->unref();
+    static_cast<SoFCCoordinate3*>(coords)->vp = nullptr;
     coords->unref();
     pcoords->unref();
     faceset->unref();
@@ -1627,7 +1641,7 @@ void ViewProviderPartExt::updateVisual()
 
     // time measurement and book keeping
     Base::TimeInfo start_time;
-    int numTriangles=0,numNodes=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
+    int numTriangles=0,numNodes=0,numPoints=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
     std::set<int> faceEdges;
 
     try {
@@ -1928,10 +1942,11 @@ void ViewProviderPartExt::updateVisual()
         TopTools_IndexedMapOfShape vertexMap;
         TopExp::MapShapes(cShape, TopAbs_VERTEX, vertexMap);
 
-        pcoords->point.setNum(vertexMap.Extent());
+        numPoints = vertexMap.Extent();
+        pcoords->point.setNum(numPoints);
         verts = pcoords->point.startEditing();
 
-        for (int i=0; i<vertexMap.Extent(); i++) {
+        for (int i=0; i<numPoints; i++) {
             const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i+1));
             gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
             verts[i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
@@ -1969,9 +1984,10 @@ void ViewProviderPartExt::updateVisual()
     }
 
     // printing some information
-    FC_TRACE("ViewProvider update time: " << Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
+    FC_TRACE(getFullName() << " update time: " << Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
     FC_TRACE("Shape tria info: Faces:" << numFaces << " Edges:" << numEdges 
-             << "Nodes:" << numNodes << " Triangles:" << numTriangles << " IdxVec:" << numLines);
+             << " Points:" << numPoints << " Nodes:" << numNodes
+             << " Triangles:" << numTriangles << " IdxVec:" << numLines);
     VisualTouched = false;
 
     // The material has to be checked again (#0001736)

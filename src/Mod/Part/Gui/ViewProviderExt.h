@@ -61,6 +61,7 @@ namespace PartGui {
 class SoBrepFaceSet;
 class SoBrepEdgeSet;
 class SoBrepPointSet;
+class SoFCCoordinate3;
 
 class PartGuiExport ViewProviderPartExt : public Gui::ViewProviderGeometryObject
 {
@@ -209,6 +210,8 @@ protected:
     bool UpdatingColor;
 
     std::string shapePropName;
+
+    friend class SoFCCoordinate3;
 
 private:
     // settings stuff

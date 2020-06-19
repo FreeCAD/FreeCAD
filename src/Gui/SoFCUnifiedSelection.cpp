@@ -1738,8 +1738,6 @@ void SoFCSwitch::traverseChild(SoAction *action, int idx)
 
 void SoFCSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-    if(cb)
-        cb();
     doAction(action);
 }
 

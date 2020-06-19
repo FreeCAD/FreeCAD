@@ -45,7 +45,6 @@
 #include <list>
 #include <unordered_set>
 #include <unordered_map>
-#include <functional>
 
 class SoFullPath;
 class SoPickedPoint;
@@ -355,21 +354,9 @@ public:
     typedef std::bitset<32> TraverseState;
     static bool testTraverseState(TraverseStateFlag flag);
 
-    /** Register a callback when handling GetBoundingBoxAction in switch override mode
-     *
-     * It is useful for some view provider that delays visual update until visible
-     */
-    template<class F>
-    void setBBoxCallback(F f) {
-        cb = f;
-    }
-
 private:
     void traverseTail(SoAction *action, int idx);
     void traverseChild(SoAction *action, int idx);
-
-private:
-    std::function<void(void)> cb;
 };
 
 
