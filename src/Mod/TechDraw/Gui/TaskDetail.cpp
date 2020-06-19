@@ -472,6 +472,8 @@ void TaskDetail::createDetail()
                             m_detailName.c_str(),m_baseName.c_str());
     Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.XDirection = App.activeDocument().%s.XDirection",
                             m_detailName.c_str(),m_baseName.c_str());
+    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                            m_detailName.c_str(),m_baseName.c_str());
     Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                             m_pageName.c_str(), m_detailName.c_str());
 
