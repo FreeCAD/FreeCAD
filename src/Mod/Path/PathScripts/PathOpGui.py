@@ -347,14 +347,16 @@ class TaskPanelPage(object):
         pass  # pylint: disable=unnecessary-pass
 
     def updateSelection(self, obj, sel):
-        '''updateSelection(obj, sel) ... overwrite to customize UI depending on current selection.
+        '''updateSelection(obj, sel) ...
+        overwrite to customize UI depending on current selection.
         Can safely be overwritten by subclasses.'''
         # pylint: disable=unused-argument
         pass  # pylint: disable=unnecessary-pass
 
     # helpers
     def selectInComboBox(self, name, combo):
-        '''selectInComboBox(name, combo) ... helper function to select a specific value in a combo box.'''
+        '''selectInComboBox(name, combo) ...
+        helper function to select a specific value in a combo box.'''
         index = combo.findText(name, QtCore.Qt.MatchFixedString)
         if index >= 0:
             combo.blockSignals(True)
@@ -362,7 +364,9 @@ class TaskPanelPage(object):
             combo.blockSignals(False)
 
     def setupToolController(self, obj, combo):
-        '''setupToolController(obj, combo) ... helper function to setup obj's ToolController in the given combo box.'''
+        '''setupToolController(obj, combo) ...
+        helper function to setup obj's ToolController
+        in the given combo box.'''
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
         combo.blockSignals(True)
@@ -376,13 +380,16 @@ class TaskPanelPage(object):
             self.selectInComboBox(obj.ToolController.Label, combo)
 
     def updateToolController(self, obj, combo):
-        '''updateToolController(obj, combo) ... helper function to update obj's ToolController property if a different one has been selected in the combo box.'''
+        '''updateToolController(obj, combo) ...
+        helper function to update obj's ToolController property if a different
+        one has been selected in the combo box.'''
         tc = PathUtils.findToolController(obj, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
 
     def setupCoolant(self, obj, combo):
-        '''setupCoolant(obj, combo) ... helper function to setup obj's Coolant option.'''
+        '''setupCoolant(obj, combo) ...
+        helper function to setup obj's Coolant option.'''
         job = PathUtils.findParentJob(obj)
         options = job.SetupSheet.CoolantModes
         combo.blockSignals(True)
@@ -394,13 +401,18 @@ class TaskPanelPage(object):
             self.selectInComboBox(obj.CoolantMode, combo)
 
     def updateCoolant(self, obj, combo):
-        '''updateCoolant(obj, combo) ... helper function to update obj's Coolant property if a different one has been selected in the combo box.'''
+        '''updateCoolant(obj, combo) ...
+        helper function to update obj's Coolant property if a different
+        one has been selected in the combo box.'''
         option = combo.currentText()
         if hasattr(obj, 'CoolantMode'):
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
     def updatePanelVisibility(self, panelTitle, obj):
+        '''updatePanelVisibility(panelTitle, obj) ...
+        Function to call the `updateVisibility()` GUI method of the
+        page whose panel title is as indicated.'''
         if hasattr(self, 'parent'):
             parent = getattr(self, 'parent')
             if parent and hasattr(parent, 'featurePages'):
@@ -420,6 +432,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
 
         self.panelTitle = 'Base Geometry'
+        self.OpIcon = ":/icons/Path-BaseGeometry.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         panel = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseGeometryEdit.ui")
@@ -427,7 +441,10 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         return panel
 
     def modifyPanel(self, panel):
-        # Determine if possible operations are available
+        '''modifyPanel(self, panel) ...
+        Helper method to modify the current form immediately after
+        it is loaded.'''
+        # Determine if Job operations are available with Base Geometry
         availableOps = list()
         ops = self.job.Operations.Group
         for op in ops:
@@ -435,6 +452,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 if len(op.Base) > 0:
                     availableOps.append(op.Label)
 
+        # Load available operations into combobox
         if len(availableOps) > 0:
             # Populate the operations list
             panel.geometryImportList.blockSignals(True)
@@ -725,6 +743,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = None
         self.safeHeight = None
         self.panelTitle = 'Heights'
+        self.OpIcon = ":/icons/Path-Heights.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
@@ -767,6 +787,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finishDepth = None
         self.stepDown = None
         self.panelTitle = 'Depths'
+        self.OpIcon = ":/icons/Path-Depths.svg"
+        self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
@@ -963,10 +985,16 @@ class TaskPanel(object):
             if taskPanelLayout == 0:
                 for page in self.featurePages:
                     toolbox.addItem(page.form, page.getTitle(obj))
+                    itemIdx = toolbox.count() - 1
+                    if page.icon:
+                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
                 toolbox.setCurrentIndex(len(self.featurePages)-1)
             else:
                 for page in reversed(self.featurePages):
                     toolbox.addItem(page.form, page.getTitle(obj))
+                    itemIdx = toolbox.count() - 1
+                    if page.icon:
+                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
             toolbox.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
