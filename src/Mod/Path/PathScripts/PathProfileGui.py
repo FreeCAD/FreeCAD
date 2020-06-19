@@ -51,6 +51,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''
 
     def initPage(self, obj):
+        self.setTitle("Profile - " + obj.Label)
         self.updateVisibility()
 
     def profileFeatures(self):
