@@ -52,9 +52,29 @@
 #include <Gui/SoFCDB.h>
 #include <Gui/Quarter/Quarter.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+
+static bool _isSetupWithoutGui = false;
 
 static
 QWidget* setupMainWindow();
+
+class QtApplication : public QApplication {
+public:
+    QtApplication(int &argc, char **argv)
+        : QApplication(argc, argv) {
+    }
+    bool notify (QObject * receiver, QEvent * event) {
+        try {
+            return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException& e) {
+            exit(e.getExitCode());
+            return true;
+        }
+    }
+};
 
 #if defined(Q_OS_WIN)
 HHOOK hhook;
@@ -70,6 +90,11 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 {
+    if (_isSetupWithoutGui) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot call showMainWindow() after calling setupWithoutGUI()\n");
+        return nullptr;
+    }
+
     PyObject* inThread = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread))
         return NULL;
@@ -84,7 +109,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
                 QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 #endif
-                QApplication app(argc, argv);
+                QtApplication app(argc, argv);
                 if (setupMainWindow()) {
                     app.exec();
                 }
@@ -95,14 +120,14 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 #if defined(Q_OS_WIN)
             static int argc = 0;
             static char **argv = {0};
-            (void)new QApplication(argc, argv);
+            (void)new QtApplication(argc, argv);
             // When QApplication is constructed
             hhook = SetWindowsHookEx(WH_GETMESSAGE,
                 FilterProc, 0, GetCurrentThreadId());
 #elif !defined(QT_NO_GLIB)
             static int argc = 0;
             static char **argv = {0};
-            (void)new QApplication(argc, argv);
+            (void)new QtApplication(argc, argv);
 #else
             PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
             return NULL;
@@ -154,6 +179,7 @@ FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
 
     if (!Gui::Application::Instance) {
         static Gui::Application *app = new Gui::Application(false);
+        _isSetupWithoutGui = true;
         Q_UNUSED(app);
     }
     else {
@@ -164,7 +190,8 @@ FreeCADGui_setupWithoutGUI(PyObject * /*self*/, PyObject *args)
     if (!SoDB::isInitialized()) {
         // init the Inventor subsystem
         SoDB::init();
-        SIM::Coin3D::Quarter::Quarter::init();
+        SoNodeKit::init();
+        SoInteraction::init();
     }
     if (!Gui::SoFCDB::isInitialized()) {
         Gui::SoFCDB::init();

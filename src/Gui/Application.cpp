@@ -147,14 +147,17 @@ namespace Gui {
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP() :
+    ApplicationP(bool GUIenabled) :
     activeDocument(0L),
     editDocument(0L),
     isClosing(false),
     startingUp(true)
     {
         // create the macro manager
-        macroMngr = new MacroManager();
+        if (GUIenabled)
+            macroMngr = new MacroManager();
+        else
+            macroMngr = nullptr;
     }
 
     ~ApplicationP()
@@ -451,7 +454,7 @@ Application::Application(bool GUIenabled)
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
 
-    d = new ApplicationP;
+    d = new ApplicationP(GUIenabled);
 
     // global access
     Instance = this;
