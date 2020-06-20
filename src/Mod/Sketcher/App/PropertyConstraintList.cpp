@@ -183,9 +183,8 @@ void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
     auto copy = lValue;
     for(auto &cstr : copy)
         cstr = cstr->clone();
-    aboutToSetValue();
-    applyValues(std::move(copy));
-    hasSetValue();
+
+    setValues(std::move(copy));
 }
 
 void PropertyConstraintList::setValues(std::vector<Constraint*>&& lValue) {
