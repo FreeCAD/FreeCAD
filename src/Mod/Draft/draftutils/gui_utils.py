@@ -196,9 +196,18 @@ def dim_symbol(symbol=None, invert=False):
         symbol = utils.get_param("dimsymbol", 0)
 
     if symbol == 0:
-        return coin.SoSphere()
+        # marker = coin.SoMarkerSet()
+        # marker.markerIndex = 80
+
+        # Returning a sphere means that the bounding box will
+        # be 3-dimensional; a marker will always be planar seen from any
+        # orientation but it currently doesn't work correctly
+        marker = coin.SoSphere()
+        return marker
     elif symbol == 1:
         marker = coin.SoMarkerSet()
+        # Should be the same as
+        # marker.markerIndex = 10
         marker.markerIndex = Gui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
