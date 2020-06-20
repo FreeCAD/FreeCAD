@@ -67,6 +67,9 @@
       </property>
       <item row="0" column="1">
        <widget class="QComboBox" name="geo1Reference">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -77,7 +80,7 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="editable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <item>
          <property name="text">
@@ -159,7 +162,7 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="editable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <item>
          <property name="text">
