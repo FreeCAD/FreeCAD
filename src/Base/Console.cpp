@@ -126,8 +126,6 @@ ConsoleSingleton::ConsoleSingleton(void)
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
-    // make sure this object is part of the main thread
-    ConsoleOutput::getInstance();
 }
 
 ConsoleSingleton::~ConsoleSingleton()
@@ -233,6 +231,11 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
 {
     connectionMode = mode;
+
+    // make sure this method gets called from the main thread
+    if (connectionMode == Queued) {
+        ConsoleOutput::getInstance();
+    }
 }
 
 /** Prints a Message
