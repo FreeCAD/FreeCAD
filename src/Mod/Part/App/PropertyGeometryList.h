@@ -64,6 +64,7 @@ public:
      */
     void setValue(const Geometry*);
     void setValues(const std::vector<Geometry*>&);
+    void setValues(const std::vector<Geometry*>&&);
 
     /// index operator
     const Geometry *operator[] (const int idx) const {
