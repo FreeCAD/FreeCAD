@@ -40,6 +40,7 @@ public:
     static SbBool isInitialized(void);
     static void init();
     static void finish();
+    static SoNode* replaceSwitches(SoNode* node);
     /// helper to apply a SoWriteAction to a node and write it to a string
     static const std::string& writeNodesToString(SoNode * root);
     static bool writeToVRML(SoNode* node, const char* filename, bool binary);
