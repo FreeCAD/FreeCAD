@@ -688,7 +688,7 @@ using the given X/Y Spacing</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>Horizontal space between center of projections</string>
+        <string>Horizontal space between border of projections</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -754,7 +754,7 @@ using the given X/Y Spacing</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>Vertical space between center of projections</string>
+        <string>Vertical space between border of projections</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
