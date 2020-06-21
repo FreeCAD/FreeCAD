@@ -85,6 +85,9 @@ protected Q_SLOTS:
 /*    void projectionTypeChanged(int index);*/
     void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
+    void AutoDistributeClicked(bool b);
+    /// Updates item spacing
+    void spacingChanged(void);
     void scaleManuallyChanged(int i);
 
 protected:
@@ -122,6 +125,9 @@ private:
     std::string    m_saveProjType;
     std::string    m_saveScaleType;
     double         m_saveScale;
+    bool           m_saveAutoDistribute;
+    double         m_saveSpacingX;
+    double         m_saveSpacingY;
     Base::Vector3d m_saveDirection;
     std::vector<std::string> m_saveViewNames;
 };
