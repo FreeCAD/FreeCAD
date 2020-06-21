@@ -147,14 +147,17 @@ namespace Gui {
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP() :
+    ApplicationP(bool GUIenabled) :
     activeDocument(0L),
     editDocument(0L),
     isClosing(false),
     startingUp(true)
     {
         // create the macro manager
-        macroMngr = new MacroManager();
+        if (GUIenabled)
+            macroMngr = new MacroManager();
+        else
+            macroMngr = nullptr;
     }
 
     ~ApplicationP()
@@ -228,6 +231,47 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
 }
 
 static PyObject *
+FreeCADGui_replaceSwitchNodes(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* proxy;
+    if (!PyArg_ParseTuple(args, "O", &proxy))
+        return nullptr;
+
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        SoNode* replace = SoFCDB::replaceSwitches(node);
+        if (replace) {
+            replace->ref();
+
+            std::string prefix = "So";
+            std::string type = replace->getTypeId().getName().getString();
+            // doesn't start with the prefix 'So'
+            if (type.rfind("So", 0) != 0) {
+                type = prefix + type;
+            }
+            else if (type == "SoFCSelectionRoot") {
+                type = "SoSeparator";
+            }
+
+            type += " *";
+            PyObject* proxy = 0;
+            proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", type.c_str(), (void*)replace, 1);
+            return Py::new_reference_to(Py::Object(proxy, true));
+        }
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return nullptr;
+    }
+}
+
+static PyObject *
 FreeCADGui_getSoDBVersion(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -290,6 +334,9 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {"subgraphFromObject",FreeCADGui_subgraphFromObject,METH_VARARGS,
      "subgraphFromObject(object) -> Node\n\n"
      "Return the Inventor subgraph to an object"},
+    {"replaceSwitchNodes",FreeCADGui_replaceSwitchNodes,METH_VARARGS,
+     "replaceSwitchNodes(Node) -> Node\n\n"
+     "Replace Switch nodes with Separators"},
     {"getSoDBVersion",FreeCADGui_getSoDBVersion,METH_VARARGS,
      "getSoDBVersion() -> String\n\n"
      "Return a text string containing the name\n"
@@ -451,7 +498,7 @@ Application::Application(bool GUIenabled)
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
 
-    d = new ApplicationP;
+    d = new ApplicationP(GUIenabled);
 
     // global access
     Instance = this;

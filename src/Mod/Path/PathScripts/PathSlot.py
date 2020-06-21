@@ -46,8 +46,12 @@ Part = LazyLoader('Part', globals(), 'Part')
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+DEBUG = False
+if DEBUG:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -91,6 +95,7 @@ class ObjectSlot(PathOp.ObjectOp):
         # Set enumeration lists for enumeration properties
         if len(self.addNewProps) > 0:
             ENUMS = self.opPropertyEnumerations()
+            # ENUMS = self.getActiveEnumerations(obj)
             for n in ENUMS:
                 if n in self.addNewProps:
                     setattr(obj, n, ENUMS[n])
@@ -114,6 +119,8 @@ class ObjectSlot(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Enter custom start point for slot path.")),
             ("App::PropertyVectorDistance", "CustomPoint2", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Enter custom end point for slot path.")),
+            ("App::PropertyEnumeration", "CutPattern", "Slot",
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the geometric clearing pattern to use for the operation.")),
             ("App::PropertyDistance", "ExtendPathStart", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive extends the beginning of the path, negative shortens.")),
             ("App::PropertyDistance", "ExtendPathEnd", "Slot",
@@ -138,6 +145,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def opPropertyEnumerations(self):
         # Enumeration lists for App::PropertyEnumeration properties
         return {
+            'CutPattern': ['Line', 'ZigZag'],
             'LayerMode': ['Single-pass', 'Multi-pass'],
             'PathOrientation': ['Start to End', 'Perpendicular'],
             'Reference1': ['Center of Mass', 'Center of BoundBox',
@@ -157,7 +165,8 @@ class ObjectSlot(PathOp.ObjectOp):
             'CustomPoint2': FreeCAD.Vector(10.0, 10.0, 0.0),
             'ExtendPathEnd': 0.0,
             'Reference2': 'Center of Mass',
-            'LayerMode': 'Single-pass',
+            'LayerMode': 'Multi-pass',
+            'CutPattern': 'ZigZag',
             'PathOrientation': 'Start to End',
             'ReverseDirection': False,
 
@@ -167,27 +176,64 @@ class ObjectSlot(PathOp.ObjectOp):
 
         return defaults
 
-    def setEditorProperties(self, obj):
-        # Used to hide inputs in properties list
-        A = B = 2
+    def getActiveEnumerations(self, obj):
+        """getActiveEnumerations(obj) ...
+        Method returns dictionary of property enumerations based on
+        active conditions in the operation."""
+        ENUMS = self.opPropertyEnumerations()
         if hasattr(obj, 'Base'):
-            enums2 = self.opPropertyEnumerations()['Reference2']
             if obj.Base:
                 (base, subsList) = obj.Base[0]
                 subCnt = len(subsList)
                 if subCnt == 1:
                     # Adjust available enumerations
-                    obj.Reference1 = self._getReference1Enums(subsList[0], True)
-                    A = 0
+                    ENUMS['Reference1'] = self._makeReference1Enumerations(subsList[0], True)
                 elif subCnt == 2:
                     # Adjust available enumerations
-                    obj.Reference1 = self._getReference1Enums(subsList[0])
-                    obj.Reference2 = self._getReference2Enums(subsList[1])
+                    ENUMS['Reference1'] = self._makeReference1Enumerations(subsList[0])
+                    ENUMS['Reference2'] = self._makeReference2Enumerations(subsList[1])
+        return ENUMS
+
+    def updateEnumerations(self, obj):
+        """updateEnumerations(obj) ...
+        Method updates property enumerations based on active conditions
+        in the operation.  Returns the updated enumerations dictionary.
+        Existing property values must be stored, and then restored after
+        the assignment of updated enumerations."""
+        PathLog.debug('updateEnumerations()')
+        # Save existing values
+        pre_Ref1 = obj.Reference1
+        pre_Ref2 = obj.Reference2
+
+        # Update enumerations
+        ENUMS = self.getActiveEnumerations(obj)
+        obj.Reference1 = ENUMS['Reference1']
+        obj.Reference2 = ENUMS['Reference2']
+
+        # Restore pre-existing values if available with active enumerations.
+        # If not, set to first element in active enumeration list.
+        if pre_Ref1 in ENUMS['Reference1']:
+            obj.Reference1 = pre_Ref1
+        else:
+            obj.Reference1 = ENUMS['Reference1'][0]
+        if pre_Ref2 in ENUMS['Reference2']:
+            obj.Reference2 = pre_Ref2
+        else:
+            obj.Reference2 = ENUMS['Reference2'][0]
+
+        return ENUMS
+
+    def setEditorProperties(self, obj):
+        # Used to hide inputs in properties list
+        A = B = 2
+        if hasattr(obj, 'Base'):
+            if obj.Base:
+                (base, subsList) = obj.Base[0]
+                subCnt = len(subsList)
+                if subCnt == 1:
+                    A = 0
+                elif subCnt == 2:
                     A = B = 0
-            else:
-                ENUMS = self.opPropertyEnumerations()
-                obj.Reference1 = ENUMS['Reference1']
-                obj.Reference2 = ENUMS['Reference2']
 
         obj.setEditorMode('Reference1', A)
         obj.setEditorMode('Reference2', B)
@@ -196,6 +242,7 @@ class ObjectSlot(PathOp.ObjectOp):
         if hasattr(self, 'propertiesReady'):
             if self.propertiesReady:
                 if prop in ['Base']:
+                    self.updateEnumerations(obj)
                     self.setEditorProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -209,15 +256,15 @@ class ObjectSlot(PathOp.ObjectOp):
         obj.setEditorMode('ShowTempObjects', mode)
 
         # Repopulate enumerations in case of changes
-        ENUMS = self.opPropertyEnumerations()
+        ENUMS = self.updateEnumerations(obj)
         for n in ENUMS:
             restore = False
             if hasattr(obj, n):
                 val = obj.getPropertyByName(n)
                 restore = True
-            setattr(obj, n, ENUMS[n])
+            setattr(obj, n, ENUMS[n])  # set the enumerations list
             if restore:
-                setattr(obj, n, val)
+                setattr(obj, n, val)  # restore the value
 
         self.setEditorProperties(obj)
 
@@ -320,6 +367,8 @@ class ObjectSlot(PathOp.ObjectOp):
             self.tmpGrp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
             tmpGrpNm = self.tmpGrp.Name
 
+        # self.updateEnumerations(obj)
+
         # Identify parent Job
         JOB = PathUtils.findParentJob(obj)
         self.JOB = JOB
@@ -418,11 +467,14 @@ class ObjectSlot(PathOp.ObjectOp):
             lenSL = len(subsList)
             featureCnt = lenSL
             if lenSL == 1:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
                 sub1 = subsList[0]
                 shape_1 = getattr(base.Shape, sub1)
                 self.shape1 = shape_1
                 pnts = self._processSingle(obj, shape_1, sub1)
             else:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+                PathLog.debug('Reference 2: {}'.format(obj.Reference2))
                 sub1 = subsList[0]
                 sub2 = subsList[1]
                 shape_1 = getattr(base.Shape, sub1)
@@ -467,7 +519,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         (p1, p2) = pnts
         if self.isDebug:
-            PathLog.debug('p1, p2: {}, {}'.format(p1, p2))
+            PathLog.debug('Path Points are:\np1 = {}\np2 = {}'.format(p1, p2))
             if p1.sub(p2).Length != 0 and self.showTempObjects:
                 O = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_Path')
                 O.Shape = Part.makeLine(p1, p2)
@@ -493,7 +545,7 @@ class ObjectSlot(PathOp.ObjectOp):
         It returns the slot gcode for the operation."""
         CMDS = list()
 
-        def layerPass(p1, p2, depth):
+        def linePass(p1, p2, depth):
             cmds = list()
             # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
             cmds.append(Path.Command('G0', {'X': p1.x, 'Y': p1.y, 'F': self.horizRapid}))
@@ -502,16 +554,25 @@ class ObjectSlot(PathOp.ObjectOp):
             return cmds
 
         # CMDS.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-        # CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if obj.LayerMode == 'Single-pass':
-            CMDS.extend(layerPass(p1, p2, obj.FinalDepth.Value))
+            CMDS.extend(linePass(p1, p2, obj.FinalDepth.Value))
             CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
         else:
-            prvDep = obj.StartDepth.Value
-            for dep in self.depthParams:
-                CMDS.extend(layerPass(p1, p2, dep))
-                CMDS.append(Path.Command('G0', {'Z': prvDep, 'F': self.vertRapid}))
-                prvDep = dep
+            if obj.CutPattern == 'Line':
+                for dep in self.depthParams:
+                    CMDS.extend(linePass(p1, p2, dep))
+                    CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+            elif obj.CutPattern == 'ZigZag':
+                CMDS.append(Path.Command('G0', {'X': p1.x, 'Y': p1.y, 'F': self.horizRapid}))
+                i = 0
+                for dep in self.depthParams:
+                    if i % 2.0 == 0:  # even
+                        CMDS.append(Path.Command('G1', {'Z': dep, 'F': self.vertFeed}))
+                        CMDS.append(Path.Command('G1', {'X': p2.x, 'Y': p2.y, 'F': self.horizFeed}))
+                    else:  # odd
+                        CMDS.append(Path.Command('G1', {'Z': dep, 'F': self.vertFeed}))
+                        CMDS.append(Path.Command('G1', {'X': p1.x, 'Y': p1.y, 'F': self.horizFeed}))
+                    i += 1
             CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
 
         return CMDS
@@ -528,7 +589,7 @@ class ObjectSlot(PathOp.ObjectOp):
             pnts = False
 
             norm = shape_1.normalAt(0.0, 0.0)
-            PathLog.debug('Face.normalAt(): {}'.format(norm))
+            PathLog.debug('{}.normalAt(): {}'.format(sub1, norm))
             if norm.z == 1 or norm.z == -1:
                 pnts = self._processSingleHorizFace(obj, shape_1)
             elif norm.z == 0:
@@ -571,6 +632,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _processSingleHorizFace(self, obj, shape):
         """Determine slot path endpoints from a single horizontally oriented face."""
+        PathLog.debug('_processSingleHorizFace()')
         lineTypes = ['Part::GeomLine']
 
         def getRadians(self, E):
@@ -603,8 +665,6 @@ class ObjectSlot(PathOp.ObjectOp):
         pairs = list()
         eCnt = len(shape.Edges)
         lstE = eCnt - 1
-        I = [i for i in range(0, eCnt)]
-        I.append(0)
         for i in range(0, eCnt):
             if i < lstE:
                 ni = i + 1
@@ -629,6 +689,11 @@ class ObjectSlot(PathOp.ObjectOp):
         if pairCnt > 1:
             pairs.sort(key=lambda tup: tup[0].Length, reverse=True)
 
+        if self.isDebug:
+            PathLog.debug(' -pairCnt: {}'.format(pairCnt))
+            for (a, b) in pairs:
+                PathLog.debug(' -pair: {}, {}'.format(round(a.Length, 4), round(b.Length,4)))
+
         if pairCnt == 0:
             msg = translate('PathSlot',
                 'No parallel edges identified.')
@@ -638,9 +703,9 @@ class ObjectSlot(PathOp.ObjectOp):
             same = pairs[0]
         else:
             if obj.Reference1 == 'Long Edge':
-                same = pairs[0]
-            elif obj.Reference1 == 'Short Edge':
                 same = pairs[1]
+            elif obj.Reference1 == 'Short Edge':
+                same = pairs[0]
             else:
                 msg = 'Reference1 '
                 msg += translate('PathSlot',
@@ -653,6 +718,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _processSingleComplexFace(self, obj, shape):
         """Determine slot path endpoints from a single complex face."""
+        PathLog.debug('_processSingleComplexFace()')
         PNTS = list()
 
         def zVal(V):
@@ -667,6 +733,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingleVertFace(self, obj, shape):
         """Determine slot path endpoints from a single vertically oriented face
         with no single bottom edge."""
+        PathLog.debug('_processSingleVertFace()')
         eCnt = len(shape.Edges)
         V0 = shape.Edges[0].Vertexes[0]
         V1 = shape.Edges[eCnt - 1].Vertexes[1]
@@ -691,6 +758,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     # Methods for processing double geometry
     def _processDouble(self, obj, shape_1, sub1, shape_2, sub2):
+        PathLog.debug('_processDouble()')
         """This is the control method for slots based on a
         two Base Geometry features."""
         cmds = False
@@ -898,47 +966,12 @@ class ObjectSlot(PathOp.ObjectOp):
             n2 = p2
         return (n1, n2)
 
-    def _getEndMidPoints(self, same):
-        # Find mid-points between ends of equal, oppossing edges
-        e0va = same[0].Vertexes[0]
-        e0vb = same[0].Vertexes[1]
-        e1va = same[1].Vertexes[0]
-        e1vb = same[1].Vertexes[1]
-
-        if False:
-            midX1 = (e0va.X + e0vb.X) / 2.0
-            midY1 = (e0va.Y + e0vb.Y) / 2.0
-            midX2 = (e1va.X + e1vb.X) / 2.0
-            midY2 = (e1va.Y + e1vb.Y) / 2.0
-            m1 = FreeCAD.Vector(midX1, midY1, e0va.Z)
-            m2 = FreeCAD.Vector(midX2, midY2, e0va.Z)
-
-        p1 = FreeCAD.Vector(e0va.X, e0va.Y, e0va.Z)
-        p2 = FreeCAD.Vector(e0vb.X, e0vb.Y, e0vb.Z)
-        p3 = FreeCAD.Vector(e1va.X, e1va.Y, e1va.Z)
-        p4 = FreeCAD.Vector(e1vb.X, e1vb.Y, e1vb.Z)
-
-        L0 = Part.makeLine(p1, p2)
-        L1 = Part.makeLine(p3, p4)
-        comL0 = L0.CenterOfMass
-        comL1 = L1.CenterOfMass
-        m1 = FreeCAD.Vector(comL0.x, comL0.y, 0.0)
-        m2 = FreeCAD.Vector(comL1.x, comL1.y, 0.0)
-
-        return (m1, m2)
-
     def _getOppMidPoints(self, same):
         # Find mid-points between ends of equal, oppossing edges
-        v1 = same[0].Vertexes[0]
-        v2 = same[0].Vertexes[1]
-        a1 = same[1].Vertexes[0]
-        a2 = same[1].Vertexes[1]
-        midX1 = (v1.X + a2.X) / 2.0
-        midY1 = (v1.Y + a2.Y) / 2.0
-        midX2 = (v2.X + a1.X) / 2.0
-        midY2 = (v2.Y + a1.Y) / 2.0
-        p1 = FreeCAD.Vector(midX1, midY1, v1.Z)
-        p2 = FreeCAD.Vector(midX2, midY2, v1.Z)
+        com1 = same[0].CenterOfMass
+        com2 = same[1].CenterOfMass
+        p1 = FreeCAD.Vector(com1.x, com1.y, 0.0)
+        p2 = FreeCAD.Vector(com2.x, com2.y, 0.0)
         return (p1, p2)
 
     def _isParallel(self, dYdX1, dYdX2):
@@ -1152,19 +1185,31 @@ class ObjectSlot(PathOp.ObjectOp):
             return ('Wire', wires[0])
         return False
 
-    def _getReference1Enums(self, sub, single=False):
-        # Adjust available enumerations
-        enums1 = self.opPropertyEnumerations()['Reference1']
-        for ri in removeIndexesFromReference_1(sub, single):
-            enums1.pop(ri)
-        return enums1
+    def _makeReference1Enumerations(self, sub, single=False):
+        """Customize Reference1 enumerations based on feature type."""
+        PathLog.debug('_makeReference1Enumerations()')
+        cat = sub[:4]
+        if single:
+            if cat == 'Face':
+                return ['Long Edge', 'Short Edge']
+            elif cat == 'Edge':
+                return ['Long Edge']
+            elif cat == 'Vert':
+                return ['Vertex']
+        elif cat == 'Vert':
+            return ['Vertex']
 
-    def _getReference2Enums(self, sub):
-        # Adjust available enumerations
-        enums2 = self.opPropertyEnumerations()['Reference2']
-        for ri in removeIndexesFromReference_2(sub):
-            enums2.pop(ri)
-        return enums2
+        return ['Center of Mass', 'Center of BoundBox',
+               'Lowest Point', 'Highest Point']
+
+    def _makeReference2Enumerations(self, sub):
+        """Customize Reference2 enumerations based on feature type."""
+        PathLog.debug('_makeReference2Enumerations()')
+        cat = sub[:4]
+        if cat == 'Vert':
+            return ['Vertex']
+        return ['Center of Mass', 'Center of BoundBox',
+               'Lowest Point', 'Highest Point']
 
     def _lineCollisionCheck(self, obj, p1, p2):
         """Make simple circle with diameter of tool, at start point.
@@ -1176,44 +1221,51 @@ class ObjectSlot(PathOp.ObjectOp):
 
         def getPerp(p1, p2, dist):
             toEnd = p2.sub(p1)
-            factor = dist / toEnd.Length
             perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0)
+            if perp.x == 0 and perp.y == 0:
+                return perp
             perp.normalize()
             perp.multiply(dist)
             return perp
 
+        # Make first cylinder
         ce1 = Part.Wire(Part.makeCircle(rad, p1).Edges)
-        ce2 = Part.Wire(Part.makeCircle(rad, p2).Edges)
         C1 = Part.Face(ce1)
-        C2 = Part.Face(ce2)
-
         zTrans = obj.FinalDepth.Value - C1.BoundBox.ZMin
         C1.translate(FreeCAD.Vector(0.0, 0.0, zTrans))
-        zTrans = obj.FinalDepth.Value - C2.BoundBox.ZMin
-        C2.translate(FreeCAD.Vector(0.0, 0.0, zTrans))
-
         extFwd = obj.StartDepth.Value - obj.FinalDepth.Value
         extVect = FreeCAD.Vector(0.0, 0.0, extFwd)
         startShp = C1.extrude(extVect)
-        endShp = C2.extrude(extVect)
 
-        perp = getPerp(p1, p2, rad)
-        v1 = p1.add(perp)
-        v2 = p1.sub(perp)
-        v3 = p2.sub(perp)
-        v4 = p2.add(perp)
-        e1 = Part.makeLine(v1, v2)
-        e2 = Part.makeLine(v2, v3)
-        e3 = Part.makeLine(v3, v4)
-        e4 = Part.makeLine(v4, v1)
-        edges = Part.__sortEdges__([e1, e2, e3, e4])
-        rectFace = Part.Face(Part.Wire(edges))
-        zTrans = obj.FinalDepth.Value - rectFace.BoundBox.ZMin
-        rectFace.translate(FreeCAD.Vector(0.0, 0.0, zTrans))
-        boxShp = rectFace.extrude(extVect)
+        if p2.sub(p1).Length > 0:
+            # Make second cylinder
+            ce2 = Part.Wire(Part.makeCircle(rad, p2).Edges)
+            C2 = Part.Face(ce2)
+            zTrans = obj.FinalDepth.Value - C2.BoundBox.ZMin
+            C2.translate(FreeCAD.Vector(0.0, 0.0, zTrans))
+            endShp = C2.extrude(extVect)
 
-        part1 = startShp.fuse(boxShp)
-        pathTravel = part1.fuse(endShp)
+            # Make extruded rectangle to connect cylinders
+            perp = getPerp(p1, p2, rad)
+            v1 = p1.add(perp)
+            v2 = p1.sub(perp)
+            v3 = p2.sub(perp)
+            v4 = p2.add(perp)
+            e1 = Part.makeLine(v1, v2)
+            e2 = Part.makeLine(v2, v3)
+            e3 = Part.makeLine(v3, v4)
+            e4 = Part.makeLine(v4, v1)
+            edges = Part.__sortEdges__([e1, e2, e3, e4])
+            rectFace = Part.Face(Part.Wire(edges))
+            zTrans = obj.FinalDepth.Value - rectFace.BoundBox.ZMin
+            rectFace.translate(FreeCAD.Vector(0.0, 0.0, zTrans))
+            boxShp = rectFace.extrude(extVect)
+
+            # Fuse two cylinders and box together
+            part1 = startShp.fuse(boxShp)
+            pathTravel = part1.fuse(endShp)
+        else:
+            pathTravel = startShp
 
         if self.showTempObjects:
             O = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_PathTravel')
@@ -1231,35 +1283,6 @@ class ObjectSlot(PathOp.ObjectOp):
 
         return False
 # Eclass
-
-
-# Determine applicable enumerations
-def removeIndexesFromReference_1(sub, single=False):
-    """Determine which enumerations to remove for Reference1 input
-    based upon the feature type(category)."""
-    cat = sub[:4]
-    remIdxs = [6, 5, 4]
-    if cat == 'Face':
-        if single:
-            remIdxs = [6, 3, 2, 1, 0]
-    elif cat == 'Edge':
-        if single:
-            remIdxs = [6, 5, 3, 2, 1, 0]
-    elif cat == 'Vert':
-        remIdxs = [5, 4, 3, 2, 1, 0]
-    return remIdxs
-
-
-def removeIndexesFromReference_2(sub):
-    """Determine which enumerations to remove for Reference2 input
-    based upon the feature type(category)."""
-    cat = sub[:4]
-    remIdxs = [4]
-    # Customize Reference combobox options
-    if cat == 'Vert':
-        remIdxs = [3, 2, 1, 0]
-    return remIdxs
-
 
 
 def SetupProperties():

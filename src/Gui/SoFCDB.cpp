@@ -295,6 +295,11 @@ SoNode* replaceSwitchesInSceneGraph(SoNode* node)
     return node;
 }
 
+SoNode* Gui::SoFCDB::replaceSwitches(SoNode* node)
+{
+    return replaceSwitchesInSceneGraph(node);
+}
+
 bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
 {
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
