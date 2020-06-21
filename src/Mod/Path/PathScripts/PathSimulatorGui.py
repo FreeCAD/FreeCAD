@@ -192,15 +192,20 @@ class PathSimulation:
         pathSolid = None
 
         if cmd.Name in ['G0']:
+            self.firstDrill = True
             self.curpos = self.RapidMove(cmd, self.curpos)
         if cmd.Name in ['G1', 'G2', 'G3']:
+            self.firstDrill = True
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
                 (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
+
+        if cmd.Name in ['G80']:
+            self.firstDrill = True
         if cmd.Name in ['G81', 'G82', 'G83']:
             if self.firstDrill:
-                extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": cmd.r})
+                extendcommand = Path.Command('G0', {"Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
                 self.firstDrill = False
             extendcommand = Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
@@ -248,14 +253,17 @@ class PathSimulation:
         cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
         if cmd.Name in ['G0', 'G1', 'G2', 'G3']:
+            self.firstDrill = True
             self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos
                 (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
+        if cmd.Name in ['G80']:
+            self.firstDrill = True
         if cmd.Name in ['G81', 'G82', 'G83']:
             extendcommands = []
             if self.firstDrill:
-                extendcommands.append(Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": cmd.r}))
+                extendcommands.append(Path.Command('G0', {"Z": cmd.r}))
                 self.firstDrill = False
             extendcommands.append(Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
             extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.z}))
