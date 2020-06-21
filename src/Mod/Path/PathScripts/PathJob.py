@@ -223,13 +223,17 @@ class ObjectJob:
         doc.removeObject(obj.Model.Name)
         obj.Model = None
 
-        # Tool controllers don't depend on anything
+        # Tool controllers might refer to either legacy tool or toolbit
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
+            if hasattr(tc.Tool,"Proxy"):
+                PathUtil.clearExpressionEngine(tc.Tool)
+                doc.removeObject(tc.Tool.Name)
             PathUtil.clearExpressionEngine(tc)
             tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
         obj.ToolController = []
+
         # SetupSheet
         PathUtil.clearExpressionEngine(obj.SetupSheet)
         doc.removeObject(obj.SetupSheet.Name)
@@ -351,8 +355,9 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
-        obj.Path = obj.Operations.Path
-        self.getCycleTime()
+        if hasattr(obj, 'Operations'):
+            obj.Path = obj.Operations.Path
+            self.getCycleTime()
 
     def getCycleTime(self):
         seconds = 0
