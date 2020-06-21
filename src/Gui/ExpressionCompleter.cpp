@@ -2355,8 +2355,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
             break;
     }
 
-    if(token != ExpressionParser::FUNC)
-        ++i;
+    ++i;
 
     // Set prefix start for use when replacing later
     if (i == tokenCount)
