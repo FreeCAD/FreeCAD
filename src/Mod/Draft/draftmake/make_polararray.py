@@ -73,17 +73,14 @@ def make_polar_array(base_object,
         If the parameter `axis_edge` is not given as default the
         first edge of the `axis_object` will be used
 
-    axis_edge: str or int, optional
-        It defaults to `None`.
+    axis_edge: int, optional
+        It defaults to `1`.
         If it is set the resulting array will use the referenced axis
         to calculate center and direction instead of the `center`
         and `axis` arguments to create the array. The `axis_edge` must
-        refer to the name of an `SubObject` with type `Part.Edge` and
-        a `Part.Edge.Curve` of type `Part.Line`. It can be given as
-        integer or string. For example the string `Edge1` corresponds
-        to the integer `1`.
-        This `SubObject` must belong to parameter `axis_object` which
-        must be given as well.
+        refer to an `SubObject` with type `Part.Edge` and
+        a `Part.Edge.Curve` of type `Part.Line`. It has to be given as
+        integer between 1 and len(axis.Shape.Edges).
 
     use_link: bool, optional
         It defaults to `True`.
