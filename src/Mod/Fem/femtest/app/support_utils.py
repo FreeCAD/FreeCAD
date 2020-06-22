@@ -41,7 +41,10 @@ def get_fem_test_home_dir(
 
 def get_fem_test_tmp_dir(
 ):
-    temp_dir = join(tempfile.gettempdir(), "FEM_unittests")
+    from uuid import uuid4
+    _unique_id = str(uuid4())[-12:]
+    print(_unique_id)
+    temp_dir = join(tempfile.gettempdir(), "FEM_unittests", _unique_id)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     return(temp_dir)
