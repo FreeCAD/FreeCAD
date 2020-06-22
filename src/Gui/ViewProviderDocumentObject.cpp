@@ -72,12 +72,12 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(0)
   , pcDocument(0)
 {
-    static const char *dmgroup = "Display Options";
+    static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
     
-    ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dmgroup, App::Prop_None, "Set the display mode");
-    ADD_PROPERTY_TYPE(Visibility, (true), dmgroup, App::Prop_None, "Show the object in the 3d view");
-    ADD_PROPERTY_TYPE(ShowInTree, (true), dmgroup, App::Prop_None, "Show the object in the tree view");
+    ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
+    ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
+    ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
     
     ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};

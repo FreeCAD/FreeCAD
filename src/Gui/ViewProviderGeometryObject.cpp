@@ -95,13 +95,17 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
 
-    ADD_PROPERTY(ShapeColor,(r, g, b));
-    ADD_PROPERTY(Transparency,(0));
+    static const char *dogroup = "Display Options";
+    static const char *sgroup = "Selection";
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(ShapeColor, (r, g, b), osgroup, App::Prop_None, "Set shape color");
+    ADD_PROPERTY_TYPE(Transparency, (0), osgroup, App::Prop_None, "Set object transparency");
     Transparency.setConstraints(&intPercent);
     App::Material mat(App::Material::DEFAULT);
-    ADD_PROPERTY(ShapeMaterial,(mat));
-    ADD_PROPERTY(BoundingBox,(false));
-    ADD_PROPERTY(Selectable,(true));
+    ADD_PROPERTY_TYPE(ShapeMaterial,(mat), osgroup, App::Prop_None, "Shape material");
+    ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
+    ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
 
     bool enableSel = hGrp->GetBool("EnableSelection", true);
     Selectable.setValue(enableSel);
