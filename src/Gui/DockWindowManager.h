@@ -273,6 +273,7 @@ protected Q_SLOTS:
     void onTabMoved(int from, int to);
     void onSplitterMoved();
     void setupLayout();
+    void onRepaint();
 
 private:
     QSize offset;

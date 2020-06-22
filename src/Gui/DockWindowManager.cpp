@@ -212,7 +212,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
     splitter = new QSplitter(this);
 
-    _graphicsEffect = new OverlayGraphicsEffect(this);
+    _graphicsEffect = new OverlayGraphicsEffect(splitter);
     splitter->setGraphicsEffect(_graphicsEffect);
 
     switch(pos) {
@@ -422,7 +422,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     connect(&timer, SIGNAL(timeout()), this, SLOT(setupLayout()));
 
     repaintTimer.setSingleShot(true);
-    connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(repaint()));
+    connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(onRepaint()));
 }
 
 bool OverlayTabWidget::event(QEvent *ev)
@@ -491,18 +491,31 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
 
 void OverlayTabWidget::paintEvent(QPaintEvent *ev)
 {
-    repainting = true;
+    Base::StateLocker guard(repainting);
     repaintTimer.stop();
     if (!_image.isNull())
         _image = QImage();
     QTabWidget::paintEvent(ev);
-    repainting = false;
+}
+
+void OverlayTabWidget::onRepaint()
+{
+    Base::StateLocker guard(repainting);
+    repaintTimer.stop();
+    if (!_image.isNull())
+        _image = QImage();
+    splitter->repaint();
 }
 
 void OverlayTabWidget::scheduleRepaint()
 {
-    if(!repainting && splitter->graphicsEffect())
+    if(!repainting
+            && isVisible() 
+            && _graphicsEffect
+            && _graphicsEffect->enabled())
+    {
         repaintTimer.start(100);
+    }
 }
 
 QColor OverlayTabWidget::effectColor() const
@@ -741,7 +754,7 @@ bool OverlayTabWidget::checkAutoHide() const
     return false;
 }
 
-static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr)
+static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filterDialog=false)
 {
     if(!widget)
         widget = qApp->focusWidget();
@@ -752,6 +765,8 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr)
         auto proxy = qobject_cast<OverlayProxyWidget*>(w);
         if(proxy)
             return proxy->getOwner();
+        if(filterDialog && qobject_cast<QDialog*>(w))
+            return nullptr;
     }
     return nullptr;
 }
@@ -1434,11 +1449,17 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
 
     PixmapPadMode mode = QGraphicsEffect::PadToEffectiveBoundingRect;
     QPoint offset;
-    const QPixmap px = sourcePixmap(Qt::DeviceCoordinates, &offset, mode);
+    QPixmap px = sourcePixmap(Qt::DeviceCoordinates, &offset, mode);
 
     // return if no source
     if (px.isNull())
         return;
+
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        static int count;
+        getMainWindow()->showMessage(
+                QString::fromLatin1("dock overlay redraw %1").arg(count++));
+    }
 
     QTransform restoreTransform = painter->worldTransform();
     painter->setWorldTransform(QTransform());
@@ -1484,6 +1505,27 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
 
     // draw the actual pixmap...
     painter->drawPixmap(offset, px, QRectF());
+
+#if 0
+    QWidget *focus = qApp->focusWidget();
+    if (focus) {
+        QWidget *widget = qobject_cast<QWidget*>(this->parent());
+        if (auto *edit = qobject_cast<QPlainTextEdit*>(focus)) {
+            if (!edit->isReadOnly() && edit->isEnabled()) {
+                for(auto w=edit->parentWidget(); w; w=w->parentWidget()) {
+                    if (w == widget) {
+                        QRect r = edit->cursorRect();
+                        QRect rect(edit->viewport()->mapTo(widget, r.topLeft()), 
+                                edit->viewport()->mapTo(widget, r.bottomRight()));
+                        // painter->fillRect(rect, edit->textColor());
+                        // painter->fillRect(rect, edit->currentCharFormat().foreground());
+                        painter->fillRect(rect.translated(offset), Qt::white);
+                    }
+                }
+            }
+        }
+    }
+#endif
 
     // restore world transform
     painter->setWorldTransform(restoreTransform);
@@ -2612,7 +2654,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
             // OverlayTabWidget offers a timer for a delayed redraw.
             widget = qobject_cast<QAbstractItemView*>(widget->parentWidget());
             if(widget) {
-                auto tabWidget = findTabWidget(widget);
+                auto tabWidget = findTabWidget(widget, true);
                 if (tabWidget)
                     tabWidget->scheduleRepaint();
             }
@@ -2709,7 +2751,7 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         auto widget = qobject_cast<QWidget*>(o);
         if(!widget)
             return false;
-        auto tabWidget = findTabWidget(widget);
+        auto tabWidget = findTabWidget(widget, true);
         if(!tabWidget || tabWidget->isOverlayed() || !tabWidget->isTransparent())
             return false;
         if(o != tabWidget) {
