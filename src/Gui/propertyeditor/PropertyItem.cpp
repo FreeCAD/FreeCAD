@@ -1507,7 +1507,7 @@ void PropertyVectorListItem::setValue(const QVariant& value)
     QString data;
     QTextStream str(&data);
     str << "[";
-    for (const auto it : val) {
+    for (const auto& it : val) {
         str << QString::fromLatin1("(%1, %2, %3), ")
                .arg(it.x,0,'f',decimals())
                .arg(it.y,0,'f',decimals())
