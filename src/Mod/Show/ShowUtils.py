@@ -30,6 +30,17 @@ def is3DObject(obj):
     # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
     try:
         from pivy import coin
+        # Special treatment for plain group. Toggling plain group visibility may
+        # affect its children recursively, coupling with the fact that the plain
+        # group does not appear in selection object path, which may cause
+        # undesirable effect.
+        # 
+        # Note that The plain group used to be filtered here without special
+        # treatment, but it no longer works as the its view object now contain
+        # some node under its switch node.
+        if obj.hasExtension('App::GroupExtension') \
+                and not obj.hasExtension('App::GeoFeatureGroupExtension'):
+            return False
         return obj.ViewObject.SwitchNode.getNumChildren()>0
     except Exception as err:
         import FreeCAD as App
