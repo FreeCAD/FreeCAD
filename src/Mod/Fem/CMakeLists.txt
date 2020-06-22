@@ -59,6 +59,7 @@ SET(FemExamples_SRCS
     femexamples/constraint_selfweight_cantilever.py
     femexamples/constraint_tie.py
     femexamples/constraint_transform_beam_hinged.py
+    femexamples/constraint_transform_torque.py
     femexamples/examplesgui.py
     femexamples/elmer_nonguitutorial01_eigenvalue_of_elastic_beam.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
@@ -104,6 +105,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
+    femexamples/meshes/mesh_transform_torque_tetra10.py
 )
 
 SET(FemInOut_SRCS
