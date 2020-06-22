@@ -108,13 +108,12 @@ class Point(gui_base_original.Creator):
         """
         if event_cb:
             event = event_cb.getEvent()
-            if event.getState() != coin.SoMouseButtonEvent.DOWN:
+            if (event.getState() != coin.SoMouseButtonEvent.DOWN or
+                event.getButton() != event.BUTTON1):
                 return
         if self.point:
             self.stack.append(self.point)
             if len(self.stack) == 1:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
@@ -151,6 +150,11 @@ class Point(gui_base_original.Creator):
     def finish(self, cont=False):
         """Terminate the operation and restart if needed."""
         super(Point, self).finish()
+        if self.callbackClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+        if self.callbackMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()

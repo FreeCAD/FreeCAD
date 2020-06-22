@@ -24,7 +24,6 @@
 """Unit test for the Draft Workbench, object creation tests."""
 
 import unittest
-import math
 
 import FreeCAD as App
 import Draft
@@ -171,8 +170,8 @@ class DraftCreation(unittest.TestCase):
         obj = Draft.make_text(text)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_dimension_linear(self):
-        """Create a linear dimension."""
+    def test_dimension_linear_simple(self):
+        """Create a simple linear dimension not linked to an object."""
         operation = "Draft Dimension"
         _msg("  Test '{}'".format(operation))
         _msg("  Occasionally crashes")
@@ -181,14 +180,30 @@ class DraftCreation(unittest.TestCase):
         c = Vector(4, -1, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        obj = Draft.make_dimension(a, b, c)
+        obj = Draft.make_linear_dimension(a, b, c)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_dimension_radial(self):
-        """Create a circle and then a radial dimension."""
+    def test_dimension_linear_obj(self):
+        """Create a linear dimension linked to an object."""
+        operation = "Draft Dimension"
+        _msg("  Test '{}'".format(operation))
+        _msg("  Occasionally crashes")
+        a = Vector(0, 0, 0)
+        b = Vector(9, 0, 0)
+        _msg("  a={0}, b={1}".format(a, b))
+        line = Draft.make_line(a, b)
+        self.doc.recompute()
+
+        obj = Draft.make_linear_dimension_obj(line,
+                                              i1=1, i2=2,
+                                              dim_line=Vector(5, 3, 0))
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_dimension_radial_obj(self):
+        """Create a circle and then a radial and a diameter dimension."""
         operation = "Draft Dimension Radial"
         _msg("  Test '{}'".format(operation))
-        radius = 3
+        radius = 10
         start_angle = 0
         end_angle = 90
         _msg("  radius={}".format(radius))
@@ -198,10 +213,12 @@ class DraftCreation(unittest.TestCase):
                                  startangle=start_angle, endangle=end_angle)
         self.doc.recompute()
 
-        obj1 = Draft.make_dimension(circ, 0,
-                                    p3="radius", p4=Vector(1, 1, 0))
-        obj2 = Draft.make_dimension(circ, 0,
-                                    p3="diameter", p4=Vector(3, 1, 0))
+        obj1 = Draft.make_radial_dimension_obj(circ, index=1,
+                                               mode="radius",
+                                               dim_line=Vector(1, 1, 0))
+        obj2 = Draft.make_radial_dimension_obj(circ, index=1,
+                                               mode="diameter",
+                                               dim_line=Vector(3, 1, 0))
         self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
 
     def test_dimension_angular(self):
@@ -210,14 +227,13 @@ class DraftCreation(unittest.TestCase):
         _msg("  Test '{}'".format(operation))
         _msg("  Occasionally crashes")
         center = Vector(0, 0, 0)
-        angle1 = math.radians(60)
-        angle2 = math.radians(10)
-        p3 = Vector(3, 1, 0)
+        angle1 = 20
+        angle2 = 70
+        dim_line = Vector(3, 1, 0)
         _msg("  center={}".format(center))
-        _msg("  angle1={0}, angle2={1}".format(math.degrees(angle1),
-                                               math.degrees(angle2)))
-        _msg("  point={}".format(p3))
-        obj = Draft.make_angular_dimension(center, [angle1, angle2], p3)
+        _msg("  angle1={0}, angle2={1}".format(angle1, angle2))
+        _msg("  dim_line={}".format(dim_line))
+        obj = Draft.make_angular_dimension(center, [angle1, angle2], dim_line)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_bspline(self):
@@ -321,7 +337,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  target_point={0}, "
              "distance={1}".format(target_point, distance))
         _msg("  placement={}".format(placement))
-        obj = Draft.make_label(targetpoint=target_point,
+        obj = Draft.make_label(target_point=target_point,
                                distance=distance,
                                placement=placement)
         self.doc.recompute()

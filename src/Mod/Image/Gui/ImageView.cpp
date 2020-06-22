@@ -408,7 +408,9 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
 // Mouse move event
 void ImageView::mouseMoveEvent(QMouseEvent* cEvent)
 {
+#if QT_VERSION < 0x050900
     QApplication::flush();
+#endif
 
    // Mouse event coordinates are relative to top-left of image view (including toolbar!)
    // Get current cursor position relative to top-left of image box

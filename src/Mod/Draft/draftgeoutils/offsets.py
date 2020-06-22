@@ -28,20 +28,20 @@
 
 import lazy_loader.lazy_loader as lz
 
-import FreeCAD
+import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import geomType, vec
-from draftgeoutils.intersections import wiresIntersect, connect
 from draftgeoutils.geometry import getNormal
 from draftgeoutils.wires import isReallyClosed
+from draftgeoutils.intersections import wiresIntersect, connect
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
 
 def pocket2d(shape, offset):
-    """Return a list of wires obtained from offseting wires from the shape.
+    """Return a list of wires obtained from offsetting wires from the shape.
 
     Return a list of wires obtained from offsetting the wires
     from the given shape by the given offset, and intersection if needed.
@@ -134,18 +134,18 @@ def offset(edge, vector, trim=False):
     None if there is a problem.
     """
     if (not isinstance(edge, Part.Shape)
-            or not isinstance(vector, FreeCAD.Vector)):
+            or not isinstance(vector, App.Vector)):
         return None
 
     if geomType(edge) == "Line":
-        v1 = FreeCAD.Vector.add(edge.Vertexes[0].Point, vector)
-        v2 = FreeCAD.Vector.add(edge.Vertexes[-1].Point, vector)
+        v1 = App.Vector.add(edge.Vertexes[0].Point, vector)
+        v2 = App.Vector.add(edge.Vertexes[-1].Point, vector)
         return Part.LineSegment(v1, v2).toShape()
 
     elif geomType(edge) == "Circle":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
         curve = Part.Circle(edge.Curve)
-        curve.Radius = FreeCAD.Vector.add(rad, vector).Length
+        curve.Radius = App.Vector.add(rad, vector).Length
         if trim:
             return Part.ArcOfCircle(curve,
                                     edge.FirstParameter,

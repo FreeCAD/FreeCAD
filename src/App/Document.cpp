@@ -82,7 +82,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #endif //USE_OLD_DAG
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>
@@ -182,6 +182,7 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+    std::string programVersion;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
@@ -626,7 +627,10 @@ void Document::exportGraphviz(std::ostream& out) const
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
                     // do not require an empty inlist (#0003465: Groups breaking dependency graph)
-                    if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    // App::Origin now has the GeoFeatureGroupExtension but it shoud not move its
+                    // group symbol outside its parent
+                    if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) &&
+                         objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                         recursiveCSSubgraphs(objectIt, nullptr);
                 }
             }
@@ -804,6 +808,12 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+
         void markCycles() {
             bool changed = true;
             std::unordered_set<Vertex> in_use;
@@ -868,6 +878,11 @@ void Document::exportGraphviz(std::ostream& out) const
             for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
                 edgeAttrMap[ei->second]["color"] = "red";
         }
+
+#if defined(__clang__)
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
+#endif
 
         void markOutOfScopeLinks() {
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
@@ -949,6 +964,7 @@ bool Document::undo(int id)
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
 
+        {
         Base::FlagToggler<bool> flag(d->undoing);
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
@@ -962,7 +978,17 @@ bool Document::undo(int id)
         delete mUndoTransactions.back();
         mUndoTransactions.pop_back();
 
-        signalUndo(*this);
+        }
+
+        for(auto & obj:d->objectArray) {
+            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
+                obj->onUndoRedoFinished();
+                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
+            }
+        }
+
+        signalUndo(*this); // now signal the undo
+
         return true;
     }
 
@@ -990,6 +1016,7 @@ bool Document::redo(int id)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
+        {
         Base::FlagToggler<bool> flag(d->undoing);
         mRedoTransactions.back()->apply(*this,true);
 
@@ -1000,6 +1027,14 @@ bool Document::redo(int id)
         mRedoMap.erase(mRedoTransactions.back()->getID());
         delete mRedoTransactions.back();
         mRedoTransactions.pop_back();
+        }
+
+        for(auto & obj:d->objectArray) {
+            if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
+                obj->onUndoRedoFinished();
+                obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
+            }
+        }
 
         signalRedo(*this);
         return true;
@@ -2092,6 +2127,9 @@ Document::readObjects(Base::XMLReader& reader)
             catch (const Base::RuntimeError &e) {
                 e.ReportException();
             }
+            catch (const Base::XMLAttributeError &e) {
+                e.ReportException();
+            }
 
             pObj->setStatus(ObjectStatus::Restore, false);
 
@@ -2694,7 +2732,9 @@ void Document::restore (const char *filename,
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
+
     d->partialLoadObjects.clear();
+    d->programVersion = reader.ProgramVersion;
 
     // Special handling for Gui document, the view representations must already
     // exist, what is done in Restore().
@@ -2847,6 +2887,11 @@ const char* Document::getName() const
 
 std::string Document::getFullName() const {
     return myName;
+}
+
+const char* Document::getProgramVersion() const
+{
+    return d->programVersion.c_str();
 }
 
 /// Remove all modifications. After this call The document becomes valid again.

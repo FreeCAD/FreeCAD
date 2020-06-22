@@ -165,7 +165,6 @@ class Writer(object):
         tools.temp_file_mesh = unvGmshPath
 
         tools.get_dimension()
-        tools.get_gmsh_command()
         tools.get_region_data()
         tools.get_boundary_layer_data()
         tools.write_part_file()
@@ -175,6 +174,7 @@ class Writer(object):
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:
+            tools.get_gmsh_command()
             tools.run_gmsh_with_geo()
 
             ioMesh = Fem.FemMesh()

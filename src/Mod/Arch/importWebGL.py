@@ -62,7 +62,7 @@ template = """<!DOCTYPE html>
     window.onload = function() {
 
         var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-        var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+        var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 200000;
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
@@ -117,30 +117,42 @@ template = """<!DOCTYPE html>
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
     
-def export(exportList,filename):
+def export(exportList,filename,colors=None,camera=None):
     "exports the given objects to an .html file"
 
-    html = getHTML(exportList)
+    html = getHTML(exportList,colors,camera)
     outfile = pythonopen(filename,"w")
     outfile.write(html)
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written", utf8_decode=True) + ' ' + filename + "\n")
     
-def getHTML(objectsList):
+def getHTML(objectsList,colors=None,camera=None):
     "returns the complete HTML code of a viewer for the given objects"
     
     # get objects data
     objectsData = ''
     for obj in objectsList:
-        objectsData += getObjectData(obj)
-    t = template.replace("$CameraData",getCameraData())
+        colordata = None
+        if colors:
+            if obj.Name in colors:
+                colordata = colors[obj.Name]
+        objectsData += getObjectData(obj,color=colordata)
+    t = template.replace("$CameraData",getCameraData(camera))
     t = t.replace("$ObjectsData",objectsData)
     return t
     
-def getCameraData():
+def getCameraData(camera=None):
     "returns the position and direction of the camera as three.js snippet"
     
     result = ""
+    if camera:
+        global cameraPosition
+        if isinstance(camera,str):
+            import OfflineRenderingUtils
+            camnode = OfflineRenderingUtils.getCoinCamera(camera)
+            cameraPosition = camnode.position.getValue().getValue()
+        elif hasattr(camera,"position"):
+            cameraPosition = camera.position.getValue().getValue()
     if cameraPosition:
         result += "camera.position.set("+str(cameraPosition[0])+","+str(cameraPosition[1])+","+str(cameraPosition[2])+");\n"
     elif FreeCADGui:
@@ -156,7 +168,7 @@ def getCameraData():
     # print(result)
     return result
     
-def getObjectData(obj,wireframeMode=wireframeStyle):
+def getObjectData(obj,wireframeMode=wireframeStyle,color=None):
     """returns the geometry data of an object as three.js snippet. 
     wireframeMode can be multimaterial, faceloop, or None"""
     
@@ -199,7 +211,9 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             
     if result:
         # adding a base material
-        if FreeCADGui:
+        if color:
+            rgb = Draft.getrgb(color,testbw=False)
+        elif FreeCADGui:
             col = obj.ViewObject.ShapeColor
             rgb = Draft.getrgb(col,testbw=False)
         else:

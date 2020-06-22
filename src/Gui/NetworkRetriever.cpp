@@ -460,8 +460,8 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         bool bAuthor    = hGrp->GetBool ("Authorize", false);
 
         if (bUseProxy) {
-            QString username = QString::null;
-            QString password = QString::null;
+            QString username;
+            QString password;
 
             if (bAuthor) {
                 QDialog dlg(getMainWindow());

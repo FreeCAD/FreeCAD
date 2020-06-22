@@ -296,36 +296,41 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
     dir.Normalize();
     // y = mx + b
     // m = (y1 - y0) / (x1 - x0)
-    if (DrawUtil::fpCompare(dir.x, 0.0) ) {
+    if (DrawUtil::fpCompare(dir.x, 0.0) ) {                 //vertical case
         p1 = Base::Vector3d(point.x, - yRange / 2.0, 0.0);  
         p2 = Base::Vector3d(point.x, yRange / 2.0, 0.0);
     } else {
         double slope = dir.y / dir.x;
         double left = -xRange / 2.0;
         double right = xRange / 2.0;
-        double top = yRange / 2.0;
-        double bottom = -yRange / 2.0;
-        double yLeft   = point.y - slope * (point.x - left) ;
-        double yRight  = point.y - slope * (point.x - right);
-        double xTop    = point.x - ( (point.y - top) / slope );
-        double xBottom = point.x - ( (point.y - bottom) / slope );
+        if (DrawUtil::fpCompare(slope, 0.0)) {               //horizontal case
+            p1 = Base::Vector3d(left, point.y);
+            p2 = Base::Vector3d(right, point.y);
+        } else {                                           //normal case
+            double top = yRange / 2.0;
+            double bottom = -yRange / 2.0;
+            double yLeft   = point.y - slope * (point.x - left) ;
+            double yRight  = point.y - slope * (point.x - right);
+            double xTop    = point.x - ( (point.y - top) / slope );
+            double xBottom = point.x - ( (point.y - bottom) / slope );
 
-        if ( (bottom < yLeft) &&
-             (top > yLeft) )  {
-            p1 = Base::Vector3d(left, yLeft);
-        } else if (yLeft <= bottom) {
-            p1 = Base::Vector3d(xBottom, bottom);
-        } else if (yLeft >= top) {
-            p1 = Base::Vector3d(xTop, top);
-        }
+            if ( (bottom < yLeft) &&
+                 (top > yLeft) )  {
+                p1 = Base::Vector3d(left, yLeft);
+            } else if (yLeft <= bottom) {
+                p1 = Base::Vector3d(xBottom, bottom);
+            } else if (yLeft >= top) {
+                p1 = Base::Vector3d(xTop, top);
+            }
 
-        if ( (bottom < yRight) &&
-             (top > yRight) )  {
-            p2 = Base::Vector3d(right, yRight);
-        } else if (yRight <= bottom) {
-            p2 = Base::Vector3d(xBottom, bottom);
-        } else if (yRight >= top) {
-            p2 = Base::Vector3d(xTop, top);
+            if ( (bottom < yRight) &&
+                 (top > yRight) )  {
+                p2 = Base::Vector3d(right, yRight);
+            } else if (yRight <= bottom) {
+                p2 = Base::Vector3d(xBottom, bottom);
+            } else if (yRight >= top) {
+                p2 = Base::Vector3d(xTop, top);
+            }
         }
     }
     result.first = p1;

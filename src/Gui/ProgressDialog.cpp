@@ -26,8 +26,9 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QTime>
+# include <QElapsedTimer>
 # include <QThread>
+# include <QTime>
 #endif
 #include "ProgressDialog.h"
 #include "MainWindow.h"
@@ -40,8 +41,8 @@ namespace Gui {
 struct SequencerDialogPrivate
 {
     ProgressDialog* dlg;
-    QTime measureTime;
-    QTime progressTime;
+    QElapsedTimer measureTime;
+    QElapsedTimer progressTime;
     QString text;
     bool guiThread;
     bool canabort;

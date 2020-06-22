@@ -49,6 +49,7 @@ from ArchProfile import *
 from ArchCommands import *
 from ArchSectionPlane import *
 from ArchWindow import *
+from ArchWindowPresets import *
 from ArchAxis import *
 from ArchRoof import *
 from ArchSpace import *

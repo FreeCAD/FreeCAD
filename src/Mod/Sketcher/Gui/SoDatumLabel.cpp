@@ -56,6 +56,7 @@
 
 #include "SoDatumLabel.h"
 #include <Gui/BitmapFactory.h>
+#include <Gui/Tools.h>
 
 #define ZCONSTR 0.006f
 
@@ -116,7 +117,7 @@ void SoDatumLabel::drawImage()
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 
-    int w = fm.width(str);
+    int w = Gui::QtTools::horizontalAdvance(fm, str);
     int h = fm.height();
 
     // No Valid text

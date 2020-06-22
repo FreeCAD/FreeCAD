@@ -176,13 +176,14 @@ void TaskSectionView::setUiPrimary()
     this->setToolTip(QObject::tr("Select at first an orientation"));
     enableAll(false);
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
     connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-    connect(ui->sbScale, SIGNAL(editingFinished()), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(editingFinished()), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(editingFinished()), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(editingFinished()), this, SLOT(onZChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 void TaskSectionView::setUiEdit()
@@ -207,13 +208,14 @@ void TaskSectionView::setUiEdit()
     ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
     connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-    connect(ui->sbScale, SIGNAL(editingFinished()), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(editingFinished()), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(editingFinished()), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(editingFinished()), this, SLOT(onZChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 //save the start conditions

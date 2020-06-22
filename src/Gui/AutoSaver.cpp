@@ -30,7 +30,7 @@
 # include <QRunnable>
 # include <QTextStream>
 # include <QThreadPool>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <sstream>
 #endif
 
@@ -53,14 +53,15 @@
 FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)
 {
-    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, bp::_1));
 }
 
 AutoSaver::~AutoSaver()
@@ -242,9 +243,9 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
     documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
-        (boost::bind(&AutoSaveProperty::slotNewObject, this, _1));
+        (boost::bind(&AutoSaveProperty::slotNewObject, this, bp::_1));
     documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
-        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, _2));
+        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, bp::_2));
 }
 
 AutoSaveProperty::~AutoSaveProperty()

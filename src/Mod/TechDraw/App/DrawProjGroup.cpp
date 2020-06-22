@@ -72,10 +72,10 @@ DrawProjGroup::DrawProjGroup(void) :
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
     
-    ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
+    ADD_PROPERTY_TYPE(Source, (0), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
-    ADD_PROPERTY_TYPE(XSource ,(0),group,App::Prop_None,"External 3D Shape to view");
+    ADD_PROPERTY_TYPE(XSource, (0), group,App::Prop_None, "External 3D Shape to view");
 
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
@@ -84,18 +84,17 @@ DrawProjGroup::DrawProjGroup(void) :
     ADD_PROPERTY_TYPE(ProjectionType, ((long)getDefProjConv()), group,
                                 App::Prop_None, "First or Third angle projection");
 
-    ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,
-                                App::Prop_None,"Distribute views automatically or manually");
-    ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
-    ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
-    Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
-    Caption.setStatus(App::Property::Hidden,true);
+    ADD_PROPERTY_TYPE(AutoDistribute, (autoDist), agroup,
+                                App::Prop_None, "Distribute views automatically or manually");
+    ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the horizontal \nspacing between the borders of views \n(if label width is not wider than the object)");
+    ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the vertical \nspacing between the borders of views");
+    Rotation.setStatus(App::Property::Hidden, true);   //DPG does not rotate
+    Caption.setStatus(App::Property::Hidden, true);
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
 }
-
 
 //TODO: this duplicates code in DVP
 std::vector<App::DocumentObject*> DrawProjGroup::getAllSources(void) const
@@ -121,6 +120,8 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         if (prop == &Scale) {
             if (!m_lockScale) {
                 updateChildrenScale();
+                // the whole group needs to be recomputed after the different children to take the spacingX/Y into account
+                updateViews();
             }
         }
 
@@ -131,6 +132,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         if ( (prop == &Source) ||
              (prop == &XSource) ) {
             updateChildrenSource();
+        }
+
+        if ((prop == &spacingX) || (prop == &spacingY)) {
+            updateViews();
         }
 
         if (prop == &LockPosition) {
@@ -312,8 +317,8 @@ QRectF DrawProjGroup::getRect() const         //this is current rect, not potent
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                //this is scaled!
-    double xSpace = spacingX.getValue() * 3.0 * std::max(1.0,getScale());
-    double ySpace = spacingY.getValue() * 2.0 * std::max(1.0,getScale());
+    double xSpace = spacingX.getValue() * 3.0 * std::max(1.0, getScale());
+    double ySpace = spacingY.getValue() * 2.0 * std::max(1.0, getScale());
     double rectW = 0.0;
     double rectH = 0.0;
     if ( !(DrawUtil::fpCompare(width, 0.0) &&
@@ -656,9 +661,9 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     int viewIndex = getViewIndex(viewTypeCStr);
 
         //TODO: bounding boxes do not take view orientation into account
-        //      ie X&Y widths might be swapped on page
+        //      i.e. X&Y widths might be swapped on page
 
-//    if (AutoDistribute.getValue()) {
+    // if (AutoDistribute.getValue()) {
     if (true) {
         std::vector<Base::Vector3d> position(idxCount);
         int idx = 0;
@@ -961,7 +966,7 @@ void DrawProjGroup::updateChildrenScale(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else  if(view->Scale.getValue()!=Scale.getValue()) {
+        } else if(view->Scale.getValue() != Scale.getValue()) {
             view->Scale.setValue(Scale.getValue());
             view->recomputeFeature();
         }
@@ -1007,6 +1012,21 @@ void DrawProjGroup::updateChildrenLock(void)
         } else {
             view->requestPaint();
         }
+    }
+}
+
+void DrawProjGroup::updateViews(void) {
+    // this is intended to update the views in general, e.g. when the spacing changed
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem *>(it));
+        if (view == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
+                getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        }
+        else // the views are OK
+            view->recomputeFeature();
     }
 }
 

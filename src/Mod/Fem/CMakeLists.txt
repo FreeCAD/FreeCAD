@@ -272,7 +272,6 @@ SET(FemTools_SRCS
     femtools/geomtools.py
     femtools/membertools.py
     femtools/migrate_app.py
-    femtools/migrate_gui.py
     femtools/tokrules.py
 )
 
@@ -347,12 +346,34 @@ SET(FemGuiObjects_SRCS
     femguiobjects/readme.md
 )
 
+SET(FemGuiTaskPanels_SRCS
+    femtaskpanels/__init__.py
+    femtaskpanels/task_constraint_electrostaticpotential.py
+    femtaskpanels/task_constraint_flowvelocity.py
+    femtaskpanels/task_constraint_initialflowvelocity.py
+    femtaskpanels/task_constraint_tie.py
+    femtaskpanels/task_element_fluid1D.py
+    femtaskpanels/task_element_geometry1D.py
+    femtaskpanels/task_element_geometry2D.py
+    femtaskpanels/task_element_rotation1D.py
+    femtaskpanels/task_material_common.py
+    femtaskpanels/task_material_reinforced.py
+    femtaskpanels/task_mesh_boundarylayer.py
+    femtaskpanels/task_mesh_gmsh.py
+    femtaskpanels/task_mesh_group.py
+    femtaskpanels/task_mesh_region.py
+    femtaskpanels/task_result_mechanical.py
+    femtaskpanels/task_solver_ccxtools.py
+)
+
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
     femtest/gui/test_open.py
 )
 
 SET(FemGuiUtils_SRCS
+    femguiutils/__init__.py
+    femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
 )
 
@@ -385,6 +406,7 @@ SET(FemGuiViewProvider_SRCS
 SET(FemAllGuiScripts
     ${FemGuiBaseModules_SRCS}
     ${FemGuiObjects_SRCS}
+    ${FemGuiTaskPanels_SRCS}
     ${FemGuiTests_SRCS}
     ${FemGuiUtils_SRCS}
     ${FemGuiViewProvider_SRCS}
@@ -400,6 +422,7 @@ if(BUILD_GUI)
     # install directories for Python packages (for make install)
     INSTALL(FILES ${FemGuiBaseModules_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/)
     INSTALL(FILES ${FemGuiObjects_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/femguiobjects/)
+    INSTALL(FILES ${FemGuiTaskPanels_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}Mod/Fem/femtaskpanels/)
     INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/femtest/gui/)
     INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/femguiutils/)
     INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/Mod/Fem/femviewprovider/)

@@ -26,39 +26,43 @@
 # \brief Provides functions for creating circular arrays in a plane.
 
 import FreeCAD as App
-import Draft
-# import draftmake.make_array as make_array
+
+import draftmake.make_array as make_array
 import draftutils.utils as utils
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 
-def make_circular_array(obj,
-                        r_distance=100, tan_distance=100,
-                        number=2, symmetry=1,
+def make_circular_array(base_object,
+                        r_distance=100, tan_distance=50,
+                        number=3, symmetry=1,
                         axis=App.Vector(0, 0, 1), center=App.Vector(0, 0, 0),
                         use_link=True):
     """Create a circular array from the given object.
 
     Parameters
     ----------
-    obj: Part::Feature
-        Any type of object that has a `Part::TopoShape`
-        that can be duplicated.
+    base_object: Part::Feature or str
+        Any of object that has a `Part::TopoShape` that can be duplicated.
+        This means most 2D and 3D objects produced with any workbench.
+        If it is a string, it must be the `Label` of that object.
+        Since a label is not guaranteed to be unique in a document,
+        it will use the first object found with this label.
 
     r_distance: float, optional
         It defaults to `100`.
         Radial distance to the next ring of circular arrays.
 
     tan_distance: float, optional
-        It defaults to `100`.
+        It defaults to `50`.
         The tangential distance between two elements located
         in the same circular ring.
         The tangential distance together with the radial distance
         determine how many copies are created.
 
     number: int, optional
-        It defaults to 2.
+        It defaults to 3.
         The number of layers or rings of repeated objects.
         The original object stays at the center, and is counted
         as a layer itself. So, if you want at least one layer of circular
@@ -88,7 +92,7 @@ def make_circular_array(obj,
         It defaults to `True`.
         If it is `True` the produced copies are not `Part::TopoShape` copies,
         but rather `App::Link` objects.
-        The Links repeat the shape of the original `obj` exactly,
+        The Links repeat the shape of the original `base_object` exactly,
         and therefore the resulting array is more memory efficient.
 
         Also, when `use_link` is `True`, the `Fuse` property
@@ -103,11 +107,30 @@ def make_circular_array(obj,
     Returns
     -------
     Part::FeaturePython
-        A scripted object with `Proxy.Type='Array'`.
+        A scripted object of type `'Array'`.
         Its `Shape` is a compound of the copies of the original object.
+
+    None
+        If there is a problem it will return `None`.
+
+    See Also
+    --------
+    make_ortho_array, make_polar_array, make_path_array, make_point_array
     """
     _name = "make_circular_array"
     utils.print_header(_name, _tr("Circular array"))
+
+    if isinstance(base_object, str):
+        base_object_str = base_object
+
+    found, base_object = utils.find_object(base_object,
+                                           doc=App.activeDocument())
+    if not found:
+        _msg("base_object: {}".format(base_object_str))
+        _err(_tr("Wrong input: object not in document."))
+        return None
+
+    _msg("base_object: {}".format(base_object.Label))
 
     _msg("r_distance: {}".format(r_distance))
     _msg("tan_distance: {}".format(tan_distance))
@@ -140,12 +163,12 @@ def make_circular_array(obj,
         _err(_tr("Wrong input: must be a vector."))
         return None
 
-    _msg("use_link: {}".format(bool(use_link)))
+    use_link = bool(use_link)
+    _msg("use_link: {}".format(use_link))
 
-    # new_obj = make_array.make_array()
-    new_obj = Draft.makeArray(obj,
-                              arg1=r_distance, arg2=tan_distance,
-                              arg3=axis, arg4=center,
-                              arg5=number, arg6=symmetry,
-                              use_link=use_link)
+    new_obj = make_array.make_array(base_object,
+                                    arg1=r_distance, arg2=tan_distance,
+                                    arg3=axis, arg4=center,
+                                    arg5=number, arg6=symmetry,
+                                    use_link=use_link)
     return new_obj

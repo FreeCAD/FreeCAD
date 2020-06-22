@@ -27,6 +27,7 @@
 # include <QPushButton>
 # include <sstream>
 # include <Python.h>
+# include <boost_bind_bind.hpp>
 
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
@@ -78,6 +79,8 @@
 
 #include "TaskDimension.h"
 
+namespace bp = boost::placeholders;
+
 static bool _MeasureInfoInited;
 
 static void slotDeleteDocument(const App::Document &doc);
@@ -91,7 +94,7 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
-            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, _1));
+            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, bp::_1));
         }
     }
 };

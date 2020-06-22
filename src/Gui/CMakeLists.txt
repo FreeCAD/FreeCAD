@@ -171,7 +171,7 @@ IF(OCULUS_FOUND)
     )
 ENDIF(OCULUS_FOUND)
 
-if(SHIBOKEN_INCLUDE_DIR)
+if(FREECAD_USE_SHIBOKEN)
     if (BUILD_QT5)
         add_definitions(-DHAVE_SHIBOKEN2)
     else()
@@ -191,9 +191,9 @@ if(SHIBOKEN_INCLUDE_DIR)
             )
         endif (TARGET Shiboken2::libshiboken)
     endif (SHIBOKEN_LIBRARY)
-endif(SHIBOKEN_INCLUDE_DIR)
+endif(FREECAD_USE_SHIBOKEN)
 
-if(PYSIDE_INCLUDE_DIR)
+if(FREECAD_USE_PYSIDE)
     include_directories(
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
@@ -218,7 +218,7 @@ if(PYSIDE_INCLUDE_DIR)
     else()
         add_definitions(-DHAVE_PYSIDE)
     endif()
-endif(PYSIDE_INCLUDE_DIR)
+endif(FREECAD_USE_PYSIDE)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
@@ -1344,6 +1344,21 @@ endif(FREECAD_USE_PCH)
 if (FREECAD_USE_QT_FILEDIALOG)
     set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
 endif()
+
+# Suppress some very long Eigen3 warnings of older versions and
+# suppress this warning for the SbMatrix class
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        NaviCube.cpp
+        Inventor/SoAutoZoomTranslation.cpp
+        SoFCOffscreenRenderer.cpp
+        SoFCSelectionAction.cpp
+        SoNavigationDragger.cpp
+        SoFCCSysDragger.cpp
+        Quarter/QuarterWidget.cpp
+        View3DInventorViewer.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})

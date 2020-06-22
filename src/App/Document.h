@@ -223,6 +223,8 @@ public:
     bool isSaved() const;
     /// Get the document name
     const char* getName() const;
+    /// Get program version the project file was created with
+    const char* getProgramVersion() const;
     //@}
 
     virtual void Save (Base::Writer &writer) const override;

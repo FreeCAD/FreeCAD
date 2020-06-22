@@ -58,7 +58,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 //# include <QtGlobal>
 #endif
 
@@ -88,6 +88,7 @@
 
 using namespace Sketcher;
 using namespace Base;
+namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -134,10 +135,10 @@ SketchObject::SketchObject()
 
     noRecomputes=false;
 
-    ExpressionEngine.setValidator(boost::bind(&Sketcher::SketchObject::validateExpression, this, _1, _2));
+    ExpressionEngine.setValidator(boost::bind(&Sketcher::SketchObject::validateExpression, this, bp::_1, bp::_2));
 
-    constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, _1));
-    constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, _1));
+    constraintsRemovedConn = Constraints.signalConstraintsRemoved.connect(boost::bind(&Sketcher::SketchObject::constraintsRemoved, this, bp::_1));
+    constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(boost::bind(&Sketcher::SketchObject::constraintsRenamed, this, bp::_1));
 
     analyser = new SketchAnalysis(this);
 }
@@ -3626,9 +3627,10 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 }
             }
 
-            for (std::vector<int>::const_iterator it = newgeoIdList.begin(); it != newgeoIdList.end(); ++it) {
+            int index = 0;
+            for (std::vector<int>::const_iterator it = newgeoIdList.begin(); it != newgeoIdList.end(); ++it, index++) {
                 const Part::Geometry *geo = getGeometry(*it);
-                Part::Geometry *geocopy = moveonly?const_cast<Part::Geometry *>(geo):geo->copy();
+                Part::Geometry *geocopy = geo->copy(); // make a copy of the pointer for undo even if moving
 
                 // Handle Geometry
                 if(geocopy->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -3735,6 +3737,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     newgeoVals.push_back(geocopy);
                     geoIdMap.insert(std::make_pair(*it, cgeoid));
                     cgeoid++;
+                }
+                else {
+                    newgeoVals[index] = geocopy;
                 }
             }
 
@@ -3963,9 +3968,8 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     }
                 }
 
+                geoIdMap.clear(); // after each creation reset map so that the key-value is univoque (only for operations other than move)
             }
-
-            geoIdMap.clear(); // after each creation reset map so that the key-value is univoque
         }
     }
 
@@ -6800,7 +6804,12 @@ void SketchObject::onChanged(const App::Property* prop)
         }
     }
     if (prop == &Geometry || prop == &Constraints) {
-        Constraints.checkGeometry(getCompleteGeometry());
+        if(getDocument()->isPerformingTransaction()) {
+            setStatus(App::PendingTransactionUpdate, true);
+        }
+        else {
+            Constraints.checkGeometry(getCompleteGeometry());
+        }
     }
     else if (prop == &ExternalGeometry) {
         // make sure not to change anything while restoring this object
@@ -6826,6 +6835,19 @@ void SketchObject::onChanged(const App::Property* prop)
     }
 #endif
     Part::Part2DObject::onChanged(prop);
+}
+
+void SketchObject::onUndoRedoFinished()
+{
+    // upon undo/redo, PropertyConstraintList does not have updated valid geometry keys, which results in empty constraint lists
+    // when using getValues
+    //
+    // The sketch will also have invalid vertex indices, requiring a call to rebuildVertexIndex
+    //
+    // Historically this was "solved" by issuing a recompute, which is absolutely unnecessary and prevents solve() from working before
+    // such a recompute
+    acceptGeometry();
+    solve();
 }
 
 void SketchObject::onDocumentRestored()

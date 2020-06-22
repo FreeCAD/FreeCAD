@@ -156,7 +156,7 @@
        </widget>
       </item>
       <item row="4" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="profileEdges">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>

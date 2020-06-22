@@ -106,6 +106,12 @@ QColor QGIDecoration::prefSelectColor()
     return PreferencesGui::selectQColor();
 }
 
+QRectF QGIDecoration::boundingRect() const
+{
+    return childrenBoundingRect();
+}
+
+
 void QGIDecoration::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);

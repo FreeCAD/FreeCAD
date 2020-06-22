@@ -74,7 +74,11 @@ QSize iisIconLabel::minimumSizeHint() const
     int w = 8 + px.width();
     if (!myText.isEmpty()) {
         QFontMetrics fm(myFont);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+        w += fm.horizontalAdvance(myText);
+#else
         w += fm.width(myText);
+#endif
         h = qMax(h, 4+fm.height());
     }
 

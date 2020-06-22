@@ -40,6 +40,45 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Export type</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>The type of objects you wish to export: Standard (solid objects), wireframe model for structural analysis, or both in a same model</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcExportModel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Standard model</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Structural analysis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Standard + structural</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
          <string>Some IFC viewers don't like objects exported as extrusions.

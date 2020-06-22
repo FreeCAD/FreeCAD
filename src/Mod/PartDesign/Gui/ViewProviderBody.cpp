@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Precision.hxx>
@@ -60,6 +60,7 @@
 #include <Gui/MDIView.h>
 
 using namespace PartDesignGui;
+namespace bp = boost::placeholders;
 
 const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
 
@@ -96,10 +97,10 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     assert ( gdoc );
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1, _2) );
+            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, bp::_1, bp::_2) );
 
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1, _2) );
+            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, bp::_1, bp::_2) );
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)

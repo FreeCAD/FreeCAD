@@ -41,18 +41,21 @@ class Clone(DraftObject):
     def __init__(self,obj):
         super(Clone, self).__init__(obj, "Clone")
 
-        _tip = "The objects included in this clone"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The objects included in this clone")
         obj.addProperty("App::PropertyLinkListGlobal", "Objects",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The scale factor of this clone"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The scale factor of this clone")
         obj.addProperty("App::PropertyVector", "Scale",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "If Clones includes several objects,\n\
-                set True for fusion or False for compound"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "If Clones includes several objects,\n"
+                "set True for fusion or False for compound")
         obj.addProperty("App::PropertyBool", "Fuse",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
         
         obj.Scale = App.Vector(1,1,1)
 

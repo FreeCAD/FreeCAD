@@ -46,7 +46,7 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawDetail;
+class DrawViewDetail;
 class DrawViewPart;
 }
 
@@ -76,6 +76,8 @@ public Q_SLOTS:
     void onXEdit();
     void onYEdit();
     void onRadiusEdit();
+    void onScaleTypeEdit();
+    void onScaleEdit();
     void onReferenceEdit();
 
 public:

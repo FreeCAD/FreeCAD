@@ -28,12 +28,6 @@
 #ifndef _PreComp_
 #endif
 
-#if defined(__clang__) && defined(__has_warning)
-#if __has_warning("-Wdeprecated-copy")
-# pragma clang diagnostic ignored "-Wdeprecated-copy"
-#endif
-#endif
-
 #include "KDTree.h"
 #include <kdtree++/kdtree.hpp>
 
@@ -44,6 +38,14 @@ struct Point3d
    typedef float value_type;
 
    Point3d(const Base::Vector3f& f, unsigned long i) : p(f), i(i)
+   {
+   }
+
+   Point3d(const Point3d& pnt) : p(pnt.p), i(pnt.i)
+   {
+   }
+
+   ~Point3d()
    {
    }
 

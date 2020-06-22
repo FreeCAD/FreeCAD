@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QAction>
 # include <QMenu>
 #endif

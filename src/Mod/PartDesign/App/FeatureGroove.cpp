@@ -103,10 +103,10 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
-                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+                                    "  - the active Body does not contain a base shape, so there is no\n"
                                     "  material to be removed;\n"
-                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+                                    "  - the selected sketch does not belong to the active Body."));
         return new App::DocumentObjectExecReturn(text);
     }
 

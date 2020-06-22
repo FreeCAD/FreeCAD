@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 import six
 import os
 import math
+import time
 
 import FreeCAD
 import Part
@@ -140,8 +141,8 @@ structuralifcobjects = (
 def getPreferences():
 
     """retrieves IFC preferences.
-    
-    MERGE_MODE_ARCH: 
+
+    MERGE_MODE_ARCH:
         0 = parametric arch objects
         1 = non-parametric arch objects
         2 = Part shapes
@@ -182,6 +183,14 @@ def getPreferences():
 
 
 # ************************************************************************************************
+# ********** backwards compatibility ****************
+
+def export(exportList,filename,colors=None,preferences=None):
+    import exportIFC
+    exportIFC.export(exportList,filename,colors,preferences)
+
+
+# ************************************************************************************************
 # ********** open and import IFC ****************
 
 def open(filename,skip=[],only=[],root=None):
@@ -196,12 +205,14 @@ def open(filename,skip=[],only=[],root=None):
     return doc
 
 
-def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
+def insert(srcfile,docname,skip=[],only=[],root=None,preferences=None):
 
-    """insert(filename,docname,skip=[],only=[],root=None,preferences=None): imports the contents of an IFC file.
+    """insert(srcfile,docname,skip=[],only=[],root=None,preferences=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
+
+    starttime = time.time() # in seconds
 
     # read preference settings
     if preferences is None:
@@ -214,7 +225,6 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
         return
 
-    if preferences['DEBUG']: print("Opening ",filename,"...",end="")
     try:
         doc = FreeCAD.getDocument(docname)
     except:
@@ -231,8 +241,15 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     # keeping global variable for debugging purposes
     # global ifcfile
 
-    filename = importIFCHelper.decode(filename,utf=True)
-    ifcfile = ifcopenshell.open(filename)
+    if hasattr(srcfile, "by_guid"):
+        ifcfile = srcfile
+        filesize = None
+        filename = None
+    else:
+        if preferences['DEBUG']: print("Opening ",srcfile,"...",end="")
+        filename = importIFCHelper.decode(srcfile,utf=True)
+        filesize = os.path.getsize(filename) * 0.000001 # in megabytes
+        ifcfile = ifcopenshell.open(filename)
 
     # get file scale
     ifcscale = importIFCHelper.getScaling(ifcfile)
@@ -344,13 +361,13 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     if preferences['DEBUG']: print(" layer ", layer_name, " found", ptype,end="")
                 else:
                     if preferences['DEBUG']: print(" no layer found", ptype,end="")
-   
+
 
         # checking for full FreeCAD parametric definition, overriding everything else
         if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in psets.keys()]:
                 if preferences['DEBUG']: print(" restoring from parametric definition...",end="")
-                obj = createFromProperties(psets,ifcfile)
+                obj,parametrics = importIFCHelper.createFromProperties(psets,ifcfile,parametrics)
                 if obj:
                     objects[pid] = obj
                     if preferences['DEBUG']: print("done")
@@ -850,7 +867,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
                     if hasattr(obj.ViewObject,"Transparency"):
                         obj.ViewObject.Transparency = colors[pid][3]
-                    
+
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
@@ -889,7 +906,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     # If the y-part of TrueNorth is 0, then the x-part should be checked.
                     # Declination would be -90° if x  >0 and +90° if x < 0
                     # Only if x==0 then we can not determine TrueNorth.
-                    # But that would actually be an invalid IFC file, because the magnitude 
+                    # But that would actually be an invalid IFC file, because the magnitude
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
                     (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y,x))-90+180)%360)-180
@@ -1267,7 +1284,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             setattr(p[0],p[1],l)
 
     # Grouping everything if required
-    if preferences['REPLACE_PROJECT']:
+    if preferences['REPLACE_PROJECT'] and filename:
         rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
         rootgroup.Label = os.path.basename(filename)
         for key,obj in objects.items():
@@ -1287,115 +1304,12 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     if ZOOMOUT and FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
-    print("Finished importing.")
-    return doc
 
+    endtime = time.time()-starttime
 
-# ************************************************************************************************
-# ********** helper ****************
-def createFromProperties(propsets,ifcfile):
-
-    "creates a FreeCAD parametric object from a set of properties"
-
-    obj = None
-    sets = []
-    global parametrics
-    appset = None
-    guiset = None
-    for pset in propsets.keys():
-        if ifcfile[pset].Name == "FreeCADPropertySet":
-            appset = {}
-            for pid in propsets[pset]:
-                p = ifcfile[pid]
-                appset[p.Name] = p.NominalValue.wrappedValue
-        elif ifcfile[pset].Name == "FreeCADGuiPropertySet":
-            guiset = {}
-            for pid in propsets[pset]:
-                p = ifcfile[pid]
-                guiset[p.Name] = p.NominalValue.wrappedValue
-    if appset:
-        oname = None
-        otype = None
-        if "FreeCADType" in appset.keys():
-            if "FreeCADName" in appset.keys():
-                obj = FreeCAD.ActiveDocument.addObject(appset["FreeCADType"],appset["FreeCADName"])
-                if "FreeCADAppObject" in appset:
-                    mod,cla = appset["FreeCADAppObject"].split(".")
-                    if "'" in mod:
-                        mod = mod.split("'")[-1]
-                    if "'" in cla:
-                        cla = cla.split("'")[0]
-                    import importlib
-                    mod = importlib.import_module(mod)
-                    getattr(mod,cla)(obj)
-                sets.append(("App",appset))
-                if FreeCAD.GuiUp:
-                    if guiset:
-                        if "FreeCADGuiObject" in guiset:
-                            mod,cla = guiset["FreeCADGuiObject"].split(".")
-                            if "'" in mod:
-                                mod = mod.split("'")[-1]
-                            if "'" in cla:
-                                cla = cla.split("'")[0]
-                            import importlib
-                            mod = importlib.import_module(mod)
-                            getattr(mod,cla)(obj.ViewObject)
-                        sets.append(("Gui",guiset))
-    if obj and sets:
-        for realm,pset in sets:
-            if realm == "App":
-                target = obj
-            else:
-                target = obj.ViewObject
-            for key,val in pset.items():
-                if key.startswith("FreeCAD_") or key.startswith("FreeCADGui_"):
-                    name = key.split("_")[1]
-                    if name in target.PropertiesList:
-                        if not target.getEditorMode(name):
-                            ptype = target.getTypeIdOfProperty(name)
-                            if ptype in ["App::PropertyString","App::PropertyEnumeration","App::PropertyInteger","App::PropertyFloat"]:
-                                setattr(target,name,val)
-                            elif ptype in ["App::PropertyLength","App::PropertyDistance"]:
-                                setattr(target,name,val*1000)
-                            elif ptype == "App::PropertyBool":
-                                if val in [".T.",True]:
-                                    setattr(target,name,True)
-                                else:
-                                    setattr(target,name,False)
-                            elif ptype == "App::PropertyVector":
-                                setattr(target,name,FreeCAD.Vector([float(s) for s in val.split("(")[1].strip(")").split(",")]))
-                            elif ptype == "App::PropertyArea":
-                                setattr(target,name,val*1000000)
-                            elif ptype == "App::PropertyPlacement":
-                                data = val.split("[")[1].strip("]").split("(")
-                                data = [data[1].split(")")[0],data[2].strip(")")]
-                                v = FreeCAD.Vector([float(s) for s in data[0].split(",")])
-                                r = FreeCAD.Rotation(*[float(s) for s in data[1].split(",")])
-                                setattr(target,name,FreeCAD.Placement(v,r))
-                            elif ptype == "App::PropertyLink":
-                                link = val.split("_")[1]
-                                parametrics.append([target,name,link])
-                            else:
-                                print("Unhandled FreeCAD property:",name," of type:",ptype)
-    return obj
-
-
-def applyColorDict(doc,colordict=None):
-    
-    """applies the contents of a color dict to the objects in the given doc.
-    If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
-    
-    if not colordict:
-        if "colordict" in doc.Meta:
-            import json
-            colordict = json.loads(doc.Meta["colordict"])
-    if colordict:
-        for obj in doc.Objects:
-            if obj.Name in colordict:
-                color = colordict[obj.Name]
-                if hasattr(obj.ViewObject,"ShapeColor"):
-                    obj.ViewObject.ShapeColor = tuple(color[0:3])
-                if hasattr(obj.ViewObject,"Transparency") and (len(color) >= 4):
-                    obj.ViewObject.Transparency = color[3]
+    if filesize:
+        print("Finished importing",round(filesize,1),"Mb in",int(endtime),"seconds, or",int(endtime/filesize),"s/Mb")
     else:
-        print("No valid color dict to apply")
+        print("Finished importing in",int(endtime),"seconds")
+
+    return doc

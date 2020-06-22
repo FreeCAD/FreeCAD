@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>496</width>
-    <height>531</height>
+    <height>495</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,12 +15,6 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>General</string>
@@ -95,7 +89,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Whether or not a page's 'Keep Update' property
+           <string>Whether or not a page's 'Keep Updated' property
 can override the global 'Update With 3D' parameter</string>
           </property>
           <property name="text">
@@ -278,7 +272,6 @@ for ProjectionGroups</string>
           </property>
           <property name="currentFont">
            <font>
-            <family>osifont</family>
             <pointsize>10</pointsize>
            </font>
           </property>
@@ -428,6 +421,9 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Starting directory for menu 'Insert Page using Template'</string>
           </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
           </property>
@@ -539,6 +535,9 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Default directory for welding symbols</string>
           </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>WeldingDir</cstring>
           </property>
@@ -642,15 +641,12 @@ for ProjectionGroups</string>
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
+       <pointsize>10</pointsize>
+       <italic>false</italic>
       </font>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
      <property name="text">
-      <string>Items in italics are default values for new objects.  They have no effect on existing objects.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

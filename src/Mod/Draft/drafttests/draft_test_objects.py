@@ -39,7 +39,6 @@ Or load it as a module and use the defined function.
 # @{
 
 import datetime
-import math
 import os
 
 import FreeCAD as App
@@ -212,9 +211,12 @@ def _create_objects(doc=None,
     # Linear dimension
     _msg(16 * "-")
     _msg("Linear dimension")
-    dimension = Draft.make_dimension(Vector(8500, 500, 0),
-                                     Vector(8500, 1000, 0),
-                                     Vector(9000, 750, 0))
+    line = Draft.make_wire([Vector(8700, 200, 0),
+                            Vector(8700, 1200, 0)])
+
+    dimension = Draft.make_linear_dimension(Vector(8600, 200, 0),
+                                            Vector(8600, 1000, 0),
+                                            Vector(8400, 750, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSize = 15
         dimension.ViewObject.ExtLines = 1000
@@ -222,6 +224,19 @@ def _create_objects(doc=None,
         dimension.ViewObject.DimOvershoot = 50
         dimension.ViewObject.FontSize = 100
         dimension.ViewObject.ShowUnit = False
+    doc.recompute()
+
+    dim_obj = Draft.make_linear_dimension_obj(line, 1, 2,
+                                              Vector(9000, 750, 0))
+    if App.GuiUp:
+        dim_obj.ViewObject.ArrowSize = 15
+        dim_obj.ViewObject.ArrowType = "Arrow"
+        dim_obj.ViewObject.ExtLines = 100
+        dim_obj.ViewObject.ExtOvershoot = 100
+        dim_obj.ViewObject.DimOvershoot = 50
+        dim_obj.ViewObject.FontSize = 100
+        dim_obj.ViewObject.ShowUnit = False
+
     t_xpos += 680
     _set_text(["Dimension"], Vector(t_xpos, t_ypos, 0))
 
@@ -232,9 +247,9 @@ def _create_objects(doc=None,
     arc_h.Placement.Base = Vector(9500, 0, 0)
     doc.recompute()
 
-    dimension_r = Draft.make_dimension(arc_h, 0,
-                                       "radius",
-                                       Vector(9750, 200, 0))
+    dimension_r = Draft.make_radial_dimension_obj(arc_h, 1,
+                                                  "radius",
+                                                  Vector(9750, 200, 0))
     if App.GuiUp:
         dimension_r.ViewObject.ArrowSize = 15
         dimension_r.ViewObject.FontSize = 100
@@ -244,9 +259,9 @@ def _create_objects(doc=None,
     arc_h2.Placement.Base = Vector(10000, 1000, 0)
     doc.recompute()
 
-    dimension_d = Draft.make_dimension(arc_h2, 0,
-                                       "diameter",
-                                       Vector(10750, 900, 0))
+    dimension_d = Draft.make_radial_dimension_obj(arc_h2, 1,
+                                                  "diameter",
+                                                  Vector(10750, 900, 0))
     if App.GuiUp:
         dimension_d.ViewObject.ArrowSize = 15
         dimension_d.ViewObject.FontSize = 100
@@ -260,8 +275,8 @@ def _create_objects(doc=None,
     _msg("Angular dimension")
     Draft.make_line(Vector(10500, 300, 0), Vector(11500, 1000, 0))
     Draft.make_line(Vector(10500, 300, 0), Vector(11500, 0, 0))
-    angle1 = math.radians(40)
-    angle2 = math.radians(-20)
+    angle1 = -20
+    angle2 = 40
     dimension_a = Draft.make_angular_dimension(Vector(10500, 300, 0),
                                                [angle1, angle2],
                                                Vector(11500, 300, 0))
@@ -354,9 +369,10 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Label")
     place = App.Placement(Vector(18500, 500, 0), App.Rotation())
-    label = Draft.make_label(targetpoint=Vector(18000, 0, 0),
-                             distance=-250,
-                             placement=place)
+    label = Draft.make_label(target_point=Vector(18000, 0, 0),
+                             placement=place,
+                             custom_text="Example label",
+                             distance=-250)
     label.Text = "Testing"
     if App.GuiUp:
         label.ViewObject.ArrowSize = 15
@@ -476,7 +492,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Path array")
     poly_h = Draft.make_polygon(3, 250)
-    poly_h.Placement.Base = Vector(10500, 3000, 0)
+    poly_h.Placement.Base = Vector(10000, 3000, 0)
     if App.GuiUp:
         poly_h.ViewObject.Visibility = False
 
@@ -494,7 +510,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Path link array")
     poly_h_2 = Draft.make_polygon(4, 200)
-    poly_h_2.Placement.Base = Vector(10500, 5000, 0)
+    poly_h_2.Placement.Base = Vector(10000, 5000, 0)
     if App.GuiUp:
         poly_h_2.ViewObject.Visibility = False
 
@@ -512,6 +528,7 @@ def _create_objects(doc=None,
     _msg(16 * "-")
     _msg("Point array")
     poly_h = Draft.make_polygon(3, 250)
+    poly_h.Placement.Base = Vector(12500, 2500, 0)
 
     point_1 = Draft.make_point(13000, 3000, 0)
     point_2 = Draft.make_point(13000, 3500, 0)

@@ -42,7 +42,6 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
-#include <boost/bind.hpp>
 
 using namespace AssemblyGui;
 using namespace Gui::TaskView;

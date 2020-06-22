@@ -26,7 +26,7 @@
 
 #include <unordered_map>
 #include <QTreeWidget>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
@@ -228,7 +228,7 @@ private:
     QTimer* statusTimer;
     QTimer* selectTimer;
     QTimer* preselectTimer;
-    QTime preselectTime;
+    QElapsedTimer preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;

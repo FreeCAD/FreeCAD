@@ -122,7 +122,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>
@@ -131,6 +131,7 @@ using namespace App;
 using namespace std;
 using namespace boost;
 using namespace boost::program_options;
+namespace bp = boost::placeholders;
 
 
 // scriptings (scripts are built-in but can be overridden by command line option)
@@ -413,26 +414,26 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
 
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, _1, _2));
-    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, _1, _2));
-    _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, _1));
-    _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, _1));
-    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, _1, _2));
-    _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, _1, _2));
-    _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, _1));
-    _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
-    _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
-    _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
-    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
-    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
-    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, _1));
-    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
-    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
-    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
-    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, _1, _2));
-    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, _1, _2));
+    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, bp::_1, bp::_2));
+    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, bp::_1, bp::_2));
+    _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, bp::_1));
+    _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, bp::_1));
+    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, bp::_1, bp::_2));
+    _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, bp::_1, bp::_2));
+    _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, bp::_1));
+    _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, bp::_1));
+    _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, bp::_1));
+    _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, bp::_1));
+    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, bp::_1));
+    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, bp::_1));
+    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, bp::_1));
+    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, bp::_1, bp::_2));
+    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, bp::_1));
+    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, bp::_1));
+    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, bp::_1, bp::_2));
+    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, bp::_1, bp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(
-            boost::bind(&App::Application::slotChangePropertyEditor, this, _1, _2));
+            boost::bind(&App::Application::slotChangePropertyEditor, this, bp::_1, bp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1888,7 +1889,7 @@ void Application::initConfig(int argc, char ** argv)
     Branding brand;
     QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
     QFileInfo fi(binDir, QString::fromLatin1("branding.xml"));
-    if (brand.readFile(fi.absoluteFilePath())) {
+    if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
             App::Application::Config()[it.key()] = it.value();

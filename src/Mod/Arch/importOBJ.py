@@ -66,6 +66,7 @@ def getIndices(obj,shape,offsetv,offsetvn):
     elist = []
     flist = []
     curves = None
+    mesh = None
 
     if isinstance(shape,Part.Shape):
         for e in shape.Edges:
@@ -77,8 +78,8 @@ def getIndices(obj,shape,offsetv,offsetvn):
                             myshape.Placement=obj.LinkPlacement
                         else:
                             myshape = obj.Shape.copy(False)
-                            myshape.Placement=obj.getGlobalPlacement()
-                        mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
+                            myshape.Placement = obj.getGlobalPlacement()
+                        mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
@@ -89,10 +90,11 @@ def getIndices(obj,shape,offsetv,offsetvn):
                   else:
                       myshape = obj.Shape.copy(False)
                       myshape.Placement=obj.getGlobalPlacement()
-                mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
+                mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
     elif isinstance(shape,Mesh.Mesh):
+        mesh = shape
         curves = shape.Topology
     if mesh:
         for v in mesh.Topology[0]:

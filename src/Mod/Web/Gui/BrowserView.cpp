@@ -71,6 +71,10 @@
 # define QWEBPAGE QWebPage
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
+
 #include <QLatin1String>
 #include <QRegExp>
 #include "BrowserView.h"
@@ -239,7 +243,11 @@ WebView::WebView(QWidget *parent)
     : QWEBVIEW(parent)
 {
     // Increase html font size for high DPI displays
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QRect mainScreenSize = QApplication::primaryScreen()->geometry();
+#else
     QRect mainScreenSize = QApplication::desktop()->screenGeometry();
+#endif
     if (mainScreenSize.width() > 1920){
         setTextSizeMultiplier (mainScreenSize.width()/1920.0);
     }

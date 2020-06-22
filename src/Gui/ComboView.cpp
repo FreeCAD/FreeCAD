@@ -73,16 +73,16 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
         // property view
         prop = new PropertyView(this);
         splitter->addWidget(prop);
-        modelIndex = tabs->addTab(splitter,trUtf8("Model"));
+        modelIndex = tabs->addTab(splitter,tr("Model"));
     }
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);
-    taskIndex = tabs->addTab(taskPanel, trUtf8("Tasks"));
+    taskIndex = tabs->addTab(taskPanel, tr("Tasks"));
 
     // task panel
     //projectView = new Gui::ProjectWidget(this);
-    //tabs->addTab(projectView, trUtf8("Project"));
+    //tabs->addTab(projectView, tr("Project"));
 }
 
 ComboView::~ComboView()
@@ -137,9 +137,9 @@ void ComboView::showTaskView()
 void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(modelIndex, trUtf8("Model"));
-        tabs->setTabText(taskIndex, trUtf8("Tasks"));
-        //tabs->setTabText(2, trUtf8("Project"));
+        tabs->setTabText(modelIndex, tr("Model"));
+        tabs->setTabText(taskIndex, tr("Tasks"));
+        //tabs->setTabText(2, tr("Project"));
     }
 
     DockWindow::changeEvent(e);

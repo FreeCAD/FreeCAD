@@ -41,11 +41,8 @@ else:
     if printverbose: print("FreeCAD Gui not present.")
     gui = False
 
-try:
-    import ply.lex as lex
-    import ply.yacc as yacc
-except:
-    FreeCAD.Console.PrintError("PLY module was not found. Please refer to the OpenSCAD documentation on the FreeCAD wiki\n")
+import ply.lex as lex
+import ply.yacc as yacc
 import Part
 
 from OpenSCADFeatures import *
@@ -53,6 +50,8 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
+
+printverbose = True
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -342,6 +341,7 @@ def p_operation(p):
               | linear_extrude_with_twist
               | rotate_extrude_file
               | import_file1
+              | resize_action
               | surface_action
               | projection_action
               | hull_action
@@ -421,10 +421,28 @@ def p_minkowski_action(p):
     minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
     p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
 
+def p_resize_action(p):
+    '''
+    resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
+    import Draft
+    print(p[3])
+    newsize = p[3]['newsize']
+    auto    = p[3]['auto'] 
+    print(newsize)
+    print(auto)
+    for r in range(0,3) :
+        if auto[r] == '1' :
+           newsize[r] = newsize[0]
+        if newsize[r] == '0' :
+           newsize[r] = '1'
+    print(newsize)
+    scale = FreeCAD.Vector(float(newsize[0]), float(newsize[1]), float(newsize[2]))
+    print(scale)       
+    p[0] = [Draft.scale(p[6],scale)]
+
 def p_not_supported(p):
     '''
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -567,7 +585,7 @@ def p_intersection_action(p):
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
-def process_rotate_extrude(obj,angle):
+def process_rotate_extrude(obj):
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,obj)
     if gui:
@@ -582,7 +600,7 @@ def process_rotate_extrude(obj,angle):
     myrev.Source = newobj
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
-    myrev.Angle = angle
+    myrev.Angle = 360.00
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
@@ -595,8 +613,7 @@ def p_rotate_extrude_action(p):
         part = fuse(p[6],"Rotate Extrude Union")
     else :
         part = p[6][0]
-    angle = float(p[3]['angle'])    
-    p[0] = [process_rotate_extrude(part,angle)]
+    p[0] = [process_rotate_extrude(part)]
     if printverbose: print("End Rotate Extrude")
 
 def p_rotate_extrude_file(p):

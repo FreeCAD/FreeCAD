@@ -30,7 +30,6 @@
 #include <Base/Placement.h>
 
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
 
 class QSignalMapper;
 

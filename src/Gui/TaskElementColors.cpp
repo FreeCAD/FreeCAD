@@ -28,7 +28,7 @@
 
 #include <QColorDialog>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "ui_TaskElementColors.h"
@@ -52,6 +52,7 @@
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 class ElementColors::Private: public Gui::SelectionGate
 {
@@ -323,9 +324,9 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     Selection().addSelectionGate(d,0);
 
     d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&ElementColors::slotDeleteDocument, this, _1));
+        (&ElementColors::slotDeleteDocument, this, bp::_1));
     d->connectDelObj = Application::Instance->signalDeletedObject.connect(boost::bind
-        (&ElementColors::slotDeleteObject, this, _1));
+        (&ElementColors::slotDeleteObject, this, bp::_1));
 
     d->populate();
 }

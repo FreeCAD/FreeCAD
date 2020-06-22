@@ -32,7 +32,7 @@
 #include <QPushButton>
 #include <QPlainTextEdit>
 #include <QBasicTimer>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QToolButton>
 #include <QModelIndex>
 #include "ExpressionBinding.h"
@@ -351,7 +351,7 @@ private:
     QPoint pos;
     QPointer<QWidget> w; // need guard in case widget gets destroyed
     QBasicTimer tooltipTimer;
-    QTime displayTime;
+    QElapsedTimer displayTime;
 };
 
 // ----------------------------------------------------------------------

@@ -3,6 +3,7 @@ import math
 import FreeCAD
 import ArchComponent
 import Draft
+import draftobjects.patharray as patharray
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -134,8 +135,9 @@ class _Fence(ArchComponent.Component):
         # We want to center the posts on the path. So move them the half width in
         transformationVector = FreeCAD.Vector(0, - postWidth / 2, 0)
 
-        placements = Draft.calculatePlacementsOnPath(
-            rotation, pathwire, obj.NumberOfSections + 1, transformationVector, True)
+        placements = patharray.placements_on_path(rotation, pathwire,
+                                                  obj.NumberOfSections + 1,
+                                                  transformationVector, True)
 
         # The placement of the last object is always the second entry in the list.
         # So we move it to the end

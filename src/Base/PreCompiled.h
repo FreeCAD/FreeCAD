@@ -114,11 +114,13 @@
 #include <QIODevice>
 #include <QDataStream>
 #include <QDateTime>
+#include <QElapsedTimer>
 #include <QWriteLocker>
 #include <QReadLocker>
 #include <QReadWriteLock>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QTime>
 #include <QUuid>
 
 

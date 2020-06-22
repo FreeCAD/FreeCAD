@@ -32,11 +32,12 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc  # include resources, icons, ui files
+import draftutils.todo as todo
+
 from draftutils.messages import _msg, _log
 from draftutils.translate import _tr
 from draftguitools import gui_base
 from drafttaskpanels import task_polararray
-import draftutils.todo as todo
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -58,11 +59,12 @@ class PolarArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates copies of a selected object, "
-                "and places the copies in a polar pattern.\n"
-                "The properties of the array can be further modified after "
-                "the new object is created, including turning it into "
-                "a different type of array.")
+        _tip = ("Creates copies of the selected object, "
+                "and places the copies in a polar pattern\n"
+                "defined by a center of rotation and its angle.\n"
+                "\n"
+                "The array can be turned into an orthogonal "
+                "or a circular array by changing its type.")
 
         d = {'Pixmap': 'Draft_PolarArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Polar array"),

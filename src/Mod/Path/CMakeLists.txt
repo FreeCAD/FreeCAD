@@ -34,6 +34,7 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py
     PathScripts/PathDeburrGui.py
     PathScripts/PathDressup.py
@@ -103,6 +104,8 @@ SET(PathScripts_SRCS
     PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathSimulatorGui.py
+    PathScripts/PathSlot.py
+    PathScripts/PathSlotGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathSurface.py

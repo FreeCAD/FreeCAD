@@ -109,7 +109,7 @@ std::string App::quote(const std::string &input, bool toPython)
  * @param property Name of property.
  */
 
-ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, 
+ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
         const std::string & property, int index)
     : owner(0)
     , documentNameSet(false)
@@ -301,7 +301,7 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
     CellAddress addr;
     bool isAddress = addr.parseAbsoluteAddress(name.c_str());
     if((isAddress && addr.toString(true) != prop.getName()) ||
-       (!isAddress && name!=prop.getName())) 
+       (!isAddress && name!=prop.getName()))
     {
         if(silent) return false;
         FC_THROWM(Base::ValueError,"Invalid property path: name mismatch");
@@ -329,11 +329,11 @@ const std::string &ObjectIdentifier::toString() const
 
     if(result.propertyIndex >= (int)components.size())
         return _cache;
-    
+
     if(localProperty ||
-       (result.resolvedProperty && 
-        result.resolvedDocumentObject==owner && 
-        components.size()>1 && 
+       (result.resolvedProperty &&
+        result.resolvedDocumentObject==owner &&
+        components.size()>1 &&
         components[1].isSimple() &&
         result.propertyIndex==0))
     {
@@ -371,11 +371,11 @@ std::string ObjectIdentifier::toPersistentString() const {
 
     if(result.propertyIndex >= (int)components.size())
         return std::string();
-    
+
     if(localProperty ||
-       (result.resolvedProperty && 
-        result.resolvedDocumentObject==owner && 
-        components.size()>1 && 
+       (result.resolvedProperty &&
+        result.resolvedDocumentObject==owner &&
+        components.size()>1 &&
         components[1].isSimple() &&
         result.propertyIndex==0))
     {
@@ -467,7 +467,7 @@ std::string ObjectIdentifier::toEscapedString() const
 }
 
 bool ObjectIdentifier::updateLabelReference(
-        App::DocumentObject *obj, const std::string &ref, const char *newLabel) 
+        App::DocumentObject *obj, const std::string &ref, const char *newLabel)
 {
     if(!owner)
         return false;
@@ -491,7 +491,7 @@ bool ObjectIdentifier::updateLabelReference(
         if(documentObjectName.isForceIdentifier())
             return false;
 
-        if(!documentObjectName.isRealString() && 
+        if(!documentObjectName.isRealString() &&
            documentObjectName.getString()==obj->getNameInDocument())
             return false;
 
@@ -504,10 +504,10 @@ bool ObjectIdentifier::updateLabelReference(
         return true;
     }
 
-    if (result.resolvedDocumentObject==obj && 
-        result.propertyIndex == 1 && 
-        result.resolvedDocumentObjectName.isRealString() && 
-        result.resolvedDocumentObjectName.getString()==obj->Label.getValue()) 
+    if (result.resolvedDocumentObject==obj &&
+        result.propertyIndex == 1 &&
+        result.resolvedDocumentObjectName.isRealString() &&
+        result.resolvedDocumentObjectName.getString()==obj->Label.getValue())
     {
         components[0].name = ObjectIdentifier::String(newLabel, true);
         _cache.clear();
@@ -575,7 +575,7 @@ std::string ObjectIdentifier::getSubPathStr(bool toPython) const {
  * @param _end ending of a Range, or INT_MAX for other type.
  */
 
-ObjectIdentifier::Component::Component(const String &_name, 
+ObjectIdentifier::Component::Component(const String &_name,
         ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step)
     : name(_name)
     , type(_type)
@@ -585,7 +585,7 @@ ObjectIdentifier::Component::Component(const String &_name,
 {
 }
 
-ObjectIdentifier::Component::Component(String &&_name, 
+ObjectIdentifier::Component::Component(String &&_name,
         ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step)
     : name(std::move(_name))
     , type(_type)
@@ -797,7 +797,7 @@ void ObjectIdentifier::Component::toString(std::ostream &ss, bool toPython) cons
         ss << ':';
         if(end!=INT_MAX)
             ss << end;
-        if(step!=1) 
+        if(step!=1)
             ss << ':' << step;
         ss << ']';
         break;
@@ -823,7 +823,7 @@ enum ResolveFlags {
  * @return Pointer to document object if a unique pointer is found, 0 otherwise.
  */
 
-App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * doc, 
+App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * doc,
         const String & name, std::bitset<32> &flags)
 {
     DocumentObject * objectById = 0;
@@ -1006,7 +1006,7 @@ Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
         name = getDocumentName();
 
     App::Document * docById = 0;
-    
+
     if(!name.isRealString()) {
         docById = App::GetApplication().getDocument(name);
         if (name.isForceIdentifier())
@@ -1088,13 +1088,13 @@ std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std:
                 labels->push_back(documentObjectName.getString());
         } else if(result.propertyIndex == 1)
             labels->push_back(components[0].name.getString());
-        if(subObjectName.getString().size()) 
+        if(subObjectName.getString().size())
             PropertyLinkBase::getLabelReferences(*labels,subObjectName.getString().c_str());
     }
     if(subObjectName.getString().empty()) {
         if(result.propertyType==PseudoNone) {
             CellAddress addr;
-            if(addr.parseAbsoluteAddress(result.propertyName.c_str())) 
+            if(addr.parseAbsoluteAddress(result.propertyName.c_str()))
                 return std::make_pair(result.resolvedDocumentObject,addr.toString(true));
             return std::make_pair(result.resolvedDocumentObject,result.propertyName);
         }else if(result.propertyType == PseudoSelf
@@ -1225,8 +1225,8 @@ Property *ObjectIdentifier::getProperty(int *ptype) const
     return result.resolvedProperty;
 }
 
-Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj, 
-        const char *propertyName, App::DocumentObject *&sobj, int &ptype) const 
+Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
+        const char *propertyName, App::DocumentObject *&sobj, int &ptype) const
 {
     if(obj && subObjectName.getString().size()) {
         sobj = obj->getSubObject(subObjectName);
@@ -1236,7 +1236,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         return 0;
 
     static std::map<std::string,int> _props = {
-        {"_shape",PseudoShape}, 
+        {"_shape",PseudoShape},
         {"_pla",PseudoPlacement},
         {"_matrix",PseudoMatrix},
         {"__pla",PseudoLinkPlacement},
@@ -1256,7 +1256,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         ptype = PseudoNone;
     else {
         ptype = it->second;
-        if(ptype != PseudoShape && 
+        if(ptype != PseudoShape &&
            subObjectName.getString().size() &&
            !boost::ends_with(subObjectName.getString(),"."))
         {
@@ -1264,7 +1264,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         }
         return &const_cast<App::DocumentObject*>(obj)->Label; //fake the property
     }
-    
+
     auto prop = obj->getPropertyByName(propertyName);
     if(prop && !prop->testStatus(Property::Hidden) && !(prop->getType() & PropertyType::Prop_Hidden))
         return prop;
@@ -1283,7 +1283,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
     return linkedProp?linkedProp:prop;
 }
 
-        
+
 
 /**
  * @brief Create a canonical representation of an object identifier.
@@ -1376,7 +1376,7 @@ ObjectIdentifier::String ObjectIdentifier::getDocumentName() const
  * @param force Force name to be set.
  */
 
-void ObjectIdentifier::setDocumentObjectName(ObjectIdentifier::String &&name, bool force, 
+void ObjectIdentifier::setDocumentObjectName(ObjectIdentifier::String &&name, bool force,
         ObjectIdentifier::String &&subname, bool checkImport)
 {
     if(checkImport) {
@@ -1397,7 +1397,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
     if(!owner || !obj || !obj->getNameInDocument() || !obj->getDocument())
         FC_THROWM(Base::RuntimeError,"invalid object");
 
-    if(checkImport) 
+    if(checkImport)
         subname.checkImport(owner,obj);
 
     if(obj == owner)
@@ -1413,7 +1413,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
             documentNameSet = true;
             documentName = String(obj->getDocument()->getName(),false,true);
         }
-    }else if(documentName.isRealString()) 
+    }else if(documentName.isRealString())
         documentName = String(obj->getDocument()->Label.getStrValue(),true);
     else
         documentName = String(obj->getDocument()->getName(),false,true);
@@ -1456,11 +1456,11 @@ std::string ObjectIdentifier::String::toString(bool toPython) const
 }
 
 void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
-        const App::DocumentObject *obj, String *objName) 
+        const App::DocumentObject *obj, String *objName)
 {
     if(owner && owner->getDocument() &&
-       str.size() && 
-       ExpressionParser::ExpressionImporter::reader()) 
+       str.size() &&
+       ExpressionParser::ExpressionImporter::reader())
     {
         auto reader = ExpressionParser::ExpressionImporter::reader();
         if(obj || objName) {
@@ -1481,7 +1481,7 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject *owner,
             str.resize(str.size()-1);
             auto mapped = reader->getName(str.c_str());
             auto obj = owner->getDocument()->getObject(mapped);
-            if(!obj) 
+            if(!obj)
                 FC_ERR("Cannot find object " << str);
             else {
                 isString = true;
@@ -1497,8 +1497,8 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
     {
-        FC_THROWM(Base::RuntimeError, result.resolveErrorString() << std::endl
-           << "in '" << toString() << "'");
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString()
+           << " in '" << toString() << "'");
     }
 
     Py::Object pyobj;
@@ -1563,7 +1563,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
             pyobj = func.apply(tuple,dict);
         }
         break;
-    } default: { 
+    } default: {
         Base::Matrix4D mat;
         auto obj = result.resolvedDocumentObject;
         switch(ptype) {
@@ -1590,7 +1590,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
             auto linked = obj->getLinkedObject(true,&mat,false);
             if(!linked || linked==obj) {
                 auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true);
-                if(ext) 
+                if(ext)
                     ext->getTrueLinkedObject(true,&mat);
             }
             if(ptype == PseudoLinkPlacement)
@@ -1609,26 +1609,26 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
             // attribute tracking only if we obtain attribute through
             // getAttr(). Without attribute tracking, we can't do things like
             //
-            //      obj.Placement.Base.x = 10. 
+            //      obj.Placement.Base.x = 10.
             //
             // What happens is that the when Python interpreter calls
             //
-            //      Base.setAttr('x', 10), 
+            //      Base.setAttr('x', 10),
             //
             // PyObjectBase will lookup Base's parent, i.e. Placement, and call
             //
-            //      Placement.setAttr('Base', Base), 
+            //      Placement.setAttr('Base', Base),
             //
-            // and in turn calls 
+            // and in turn calls
             //
             //      obj.setAttr('Placement',Placement)
             //
             // The tracking logic is implemented in PyObjectBase::__getattro/__setattro
 
             auto container = result.resolvedProperty->getContainer();
-            if(container 
-                    && container!=result.resolvedDocumentObject 
-                    && container!=result.resolvedSubObject) 
+            if(container
+                    && container!=result.resolvedDocumentObject
+                    && container!=result.resolvedSubObject)
             {
                 if(!container->isDerivedFrom(DocumentObject::getClassTypeId()))
                     FC_WARN("Invalid property container");
@@ -1645,7 +1645,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
     size_t count = components.size();
     if(value) --count;
     assert(idx<=count);
-    for(;idx<count;++idx) 
+    for(;idx<count;++idx)
         pyobj = components[idx].get(pyobj);
     if(value) {
         components[idx].set(pyobj,*value);
@@ -1761,7 +1761,7 @@ const std::string &ObjectIdentifier::getSubObjectName() const {
     return subObjectName.getString();
 }
 
-void ObjectIdentifier::importSubNames(const ObjectIdentifier::SubNameMap &subNameMap) 
+void ObjectIdentifier::importSubNames(const ObjectIdentifier::SubNameMap &subNameMap)
 {
     if(!owner || !owner->getDocument())
         return;
@@ -1770,7 +1770,7 @@ void ObjectIdentifier::importSubNames(const ObjectIdentifier::SubNameMap &subNam
     if(it!=subNameMap.end()) {
         auto obj = owner->getDocument()->getObject(it->second.c_str());
         if(!obj) {
-            FC_ERR("Failed to find import object " << it->second << " from " 
+            FC_ERR("Failed to find import object " << it->second << " from "
                     << result.resolvedDocumentObject->getFullName());
             return;
         }
@@ -1846,7 +1846,7 @@ bool ObjectIdentifier::isTouched() const {
 
 void ObjectIdentifier::resolveAmbiguity() {
     if(!owner || !owner->getNameInDocument() || isLocalProperty() ||
-       (documentObjectNameSet && documentObjectName.getString().size() && 
+       (documentObjectNameSet && documentObjectName.getString().size() &&
         (documentObjectName.isRealString() || documentObjectName.isForceIdentifier())))
     {
         return;
@@ -1900,23 +1900,23 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 {
     std::ostringstream ss;
     if (resolvedDocument == 0) {
-        if(flags.test(ResolveAmbiguous)) 
-            ss << "Ambiguous document name/label '" 
+        if(flags.test(ResolveAmbiguous))
+            ss << "Ambiguous document name/label '"
                << resolvedDocumentName.getString() << "'";
         else
             ss << "Document '" << resolvedDocumentName.toString() << "' not found";
     } else if (resolvedDocumentObject == 0) {
         if(flags.test(ResolveAmbiguous))
-            ss << "Ambiguous document object name '" 
+            ss << "Ambiguous document object name '"
                 << resolvedDocumentObjectName.getString() << "'";
         else
-            ss << "Document object '" << resolvedDocumentObjectName.toString() 
+            ss << "Document object '" << resolvedDocumentObjectName.toString()
                 << "' not found";
     } else if (subObjectName.getString().size() && resolvedSubObject == 0) {
         ss << "Sub-object '" << resolvedDocumentObjectName.getString()
             << '.' << subObjectName.toString() << "' not found";
     } else if (resolvedProperty == 0) {
-        if(propertyType != PseudoShape && 
+        if(propertyType != PseudoShape &&
            subObjectName.getString().size() &&
            !boost::ends_with(subObjectName.getString(),"."))
         {
