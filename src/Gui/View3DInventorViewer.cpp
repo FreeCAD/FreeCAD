@@ -1761,9 +1761,37 @@ void View3DInventorViewer::ShadowInfo::activate()
 {
     owner->shading = true;
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
-    bool shaded = !_shadowParam<App::PropertyBool>(doc, "FlatLines",
-            ViewParams::docShadowFlatLines(), ViewParams::getShadowFlatLines());
-    owner->selectionRoot->overrideMode = shaded?"Shaded":"Flat Lines";
+
+    static const char *_ShadowDisplayMode[] = {"Flat Lines", "Shaded", "As Is", nullptr};
+    int displayMode = _shadowParam<App::PropertyEnumeration>(doc, "DisplayMode",
+            ViewParams::docShadowDisplayMode(), ViewParams::getShadowDisplayMode(),
+            [](App::PropertyEnumeration &prop) {
+                if (!prop.getEnum().isValid())
+                    prop.setEnums(_ShadowDisplayMode);
+            });
+
+    App::PropertyBool *flatlines = Base::freecad_dynamic_cast<App::PropertyBool>(
+            doc->getPropertyByName("FlatLines"));
+    if (flatlines) {
+        owner->selectionRoot->overrideMode = flatlines->getValue()?"Shaded":"Flat Lines";
+        _shadowSetParam<App::PropertyEnumeration>(doc, "DisplayMode", flatlines->getValue()?0:1);
+        doc->removeDynamicProperty("Shadow_FlatLines");
+    } else {
+        SbName mode;
+        switch (displayMode) {
+        case 0:
+            mode = "Flat Lines";
+            break;
+        case 1:
+            mode = "Shaded";
+            break;
+        default:
+            mode = "As Is";
+            break;
+        }
+        if (owner->selectionRoot->overrideMode.getValue() != mode)
+            owner->selectionRoot->overrideMode = mode;
+    }
     owner->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
 
     bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", 

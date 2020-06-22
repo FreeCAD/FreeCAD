@@ -107,6 +107,10 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
                 QString::fromLatin1("0x%1").arg(pattern,0,16));
     }
 
+    ui->ShadowDisplayMode->addItem(tr("Flat Lines"));
+    ui->ShadowDisplayMode->addItem(tr("Shaded"));
+    ui->ShadowDisplayMode->addItem(tr("As Is"));
+
 #define FC_DRAW_STYLE_PARAMS \
     FC_DRAW_STYLE_PARAM(HiddenLineTransparency, value, setValue) \
     FC_DRAW_STYLE_PARAM(ShowSelectionOnTop, isChecked, setChecked) \
@@ -119,7 +123,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     FC_DRAW_STYLE_PARAM(SelectionHiddenLineWidth, value, setValue)\
     FC_DRAW_STYLE_PARAM(ShadowSpotLight, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowShowGround, isChecked, setChecked)\
-    FC_DRAW_STYLE_PARAM(ShadowFlatLines, isChecked, setChecked)\
+    FC_DRAW_STYLE_PARAM(ShadowDisplayMode, currentIndex, setCurrentIndex)\
     FC_DRAW_STYLE_PARAM(ShadowGroundShading, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowGroundBackFaceCull, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowLightIntensity, value, setValue)\

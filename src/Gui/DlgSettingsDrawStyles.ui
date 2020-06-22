@@ -346,6 +346,28 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="ShadowGroundTransparency">
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0">
          <widget class="QCheckBox" name="ShadowGroundBackFaceCull">
           <property name="text">
@@ -474,28 +496,6 @@
           </property>
           <property name="singleStep">
            <number>500</number>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QDoubleSpinBox" name="ShadowGroundTransparency">
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -644,13 +644,6 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="QCheckBox" name="ShadowFlatLines">
-          <property name="text">
-           <string>Flat lines</string>
-          </property>
-         </widget>
-        </item>
         <item row="10" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
@@ -698,6 +691,16 @@
           </property>
           <property name="value">
            <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QComboBox" name="ShadowDisplayMode"/>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="labelShadowDisplayMode">
+          <property name="text">
+           <string>Display mode</string>
           </property>
          </widget>
         </item>

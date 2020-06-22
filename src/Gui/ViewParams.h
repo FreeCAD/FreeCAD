@@ -130,6 +130,8 @@ public:
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000, "") \
     FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true, \
        QT_TRANSLATE_NOOP("ViewParams","Draw object with 'Flat lines' style when shadow is enabled.")) \
+    FC_VIEW_PARAM(ShadowDisplayMode, int, Int, 0, \
+       QT_TRANSLATE_NOOP("ViewParams","Override view object display mode when shadow is enabled.")) \
     FC_VIEW_PARAM(ShadowSpotLight, bool, Bool, false, \
        QT_TRANSLATE_NOOP("ViewParams","Whether to use spot light or directional light.")) \
     FC_VIEW_PARAM(ShadowLightIntensity, double, Float, 0.8, "") \
