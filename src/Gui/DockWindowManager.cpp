@@ -469,7 +469,24 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
         _image = pixmap.toImage();
     }
 
-    return qAlpha(_image.pixel(pos*_imageScale));
+    int res = qAlpha(_image.pixel(pos*_imageScale));
+    int radius = ViewParams::getDockOverlayAlphaRadius();
+    if (res || radius<=0 )
+        return res;
+
+    radius *= _imageScale;
+    for (int i=-radius; i<radius; ++i) {
+        for (int j=-radius; j<radius; ++j) {
+            if (pos.x()+i < 0 || pos.y()+j < 0
+                    || pos.x()+i >= size.width()
+                    || pos.y()+j >= size.height())
+                continue;
+            res = qAlpha(_image.pixel(pos*_imageScale + QPoint(i,j)));
+            if (res)
+                return res;
+        }
+    }
+    return 0;
 }
 
 void OverlayTabWidget::paintEvent(QPaintEvent *ev)

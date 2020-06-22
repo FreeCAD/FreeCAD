@@ -112,6 +112,7 @@ public:
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true, "") \
     FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,true, "") \
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, "") \
+    FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, "Dock overlay auto mouse through alpha test radius") \
     FC_VIEW_PARAM2(DockOverlayCheckNaviCube,bool,Bool,true, "") \
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, "") \
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true, "") \
