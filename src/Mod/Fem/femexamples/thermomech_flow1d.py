@@ -235,6 +235,7 @@ def setup(doc=None, solvertype="ccxtools"):
     outlet.OutletPressure = 0.1
     outlet.References = [(geom_obj, "Edge13")]
 
+    # self_weight_constraint
     self_weight = analysis.addObject(
         ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
     )[0]
