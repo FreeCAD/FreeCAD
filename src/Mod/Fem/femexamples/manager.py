@@ -331,6 +331,7 @@ def run_all():
     run_ccx_cantileverprescribeddisplacement()
     run_constraint_contact_shell_shell()
     run_constraint_contact_solid_solid()
+    run_constraint_tie()
     run_material_nl_platewithhole()
     run_material_multiple_twoboxes()
     run_rcwall2d()
