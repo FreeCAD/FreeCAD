@@ -179,6 +179,14 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_constraint_transform_torque(
+        self
+    ):
+        from femexamples.constraint_transform_torque import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def test_frequency_beamsimple(
         self
     ):
