@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
+# to run the example use:
 """
 from femexamples.thermomech_bimetall import setup
 setup()
@@ -32,7 +32,6 @@ setup()
 # analytical solution 7.05 mm deflection in the invar material direction
 # see post in the forum link
 # this file has 7.15 mm max deflection
-# to run the example use:
 
 import FreeCAD
 from FreeCAD import Rotation
