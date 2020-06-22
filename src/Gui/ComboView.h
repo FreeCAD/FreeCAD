@@ -87,6 +87,9 @@ public:
     void showTreeView();
     void showTaskView();
 
+public Q_SLOTS:
+  void on_current_tab_changed(int index);
+
 protected:
     void showDialog(Gui::TaskView::TaskDialog *dlg);
     void closeDialog();
