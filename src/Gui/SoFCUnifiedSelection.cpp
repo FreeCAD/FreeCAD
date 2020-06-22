@@ -695,12 +695,11 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
                     element[0] ? ") " : "");
         }
         if(offset <= sizeof(buf)) {
-            int len = element ? (element - subname) : (int)std::strlen(subname);
-            snprintf(buf+offset, sizeof(buf)-offset-1, "[%g, %g, %g] %s#%s.%.*s",
+            snprintf(buf+offset, sizeof(buf)-offset-1, "[%g, %g, %g] %s#%s.%s",
                     fabs(x)>1e-7?x:0.0,
                     fabs(y)>1e-7?y:0.0,
                     fabs(z)>1e-7?z:0.0,
-                    docname, objname, len, subname);
+                    docname, objname, subname);
         }
 
         getMainWindow()->showMessage(QString::fromLatin1(buf));
