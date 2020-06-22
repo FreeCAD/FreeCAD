@@ -44,7 +44,10 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis_static.py
     femexamples/boxanalysis_frequency.py
-    femexamples/ccx_cantilever_std.py
+    femexamples/ccx_cantilever_faceload.py
+    femexamples/ccx_cantilever_nodeload.py
+    femexamples/ccx_cantilever_hexa20faceload.py
+    femexamples/ccx_cantilever_prescribeddisplacement.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
     femexamples/constraint_tie.py

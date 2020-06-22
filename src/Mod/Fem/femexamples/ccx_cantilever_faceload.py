@@ -23,13 +23,9 @@
 
 # to run the example use:
 """
-from femexamples import ccx_cantilever_std as canti
+from femexamples import ccx_cantilever_faceload as canti
 
-canti.setup_cantileverbase()
-canti.setup_cantileverfaceload()
-canti.setup_cantilevernodeload()
-canti.setup_cantileverprescribeddisplacement()
-canti.setup_cantileverhexa20faceload()
+canti.setup()
 
 """
 
@@ -125,7 +121,7 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     return doc
 
 
-def setup_cantileverfaceload(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on surface of front end face
 
     doc = setup_cantileverbase(doc, solvertype)
@@ -138,69 +134,6 @@ def setup_cantileverfaceload(doc=None, solvertype="ccxtools"):
     force_constraint.Force = 9000000.0
     force_constraint.Direction = (doc.Box, ["Edge5"])
     force_constraint.Reversed = True
-
-    doc.recompute()
-    return doc
-
-
-def setup_cantilevernodeload(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
-
-    doc = setup_cantileverbase(doc, solvertype)
-
-    # force_constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
-    )[0]
-    # should be possible in one tuple too
-    force_constraint.References = [
-        (doc.Box, "Vertex5"),
-        (doc.Box, "Vertex6"),
-        (doc.Box, "Vertex7"),
-        (doc.Box, "Vertex8")
-    ]
-    force_constraint.Force = 9000000.0
-    force_constraint.Direction = (doc.Box, ["Edge5"])
-    force_constraint.Reversed = True
-
-    doc.recompute()
-    return doc
-
-
-def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
-    # setup CalculiX cantilever
-    # apply a prescribed displacement of 250 mm in -z on the front end face
-
-    doc = setup_cantileverbase(doc, solvertype)
-
-    # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    )[0]
-    displacement_constraint.References = [(doc.Box, "Face2")]
-    displacement_constraint.zFix = False
-    displacement_constraint.zFree = False
-    displacement_constraint.zDisplacement = -250.0
-
-    doc.recompute()
-    return doc
-
-
-def setup_cantileverhexa20faceload(doc=None, solvertype="ccxtools"):
-    doc = setup_cantileverfaceload(doc, solvertype)
-
-    # load the hexa20 mesh
-    from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
-
-    # overwrite mesh with the hexa20 mesh
-    doc.getObject(mesh_name).FemMesh = fem_mesh
 
     doc.recompute()
     return doc
