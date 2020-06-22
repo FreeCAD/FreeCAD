@@ -42,7 +42,8 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
-    femexamples/boxanalysis.py
+    femexamples/boxanalysis_static.py
+    femexamples/boxanalysis_frequency.py
     femexamples/ccx_cantilever_std.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py

@@ -100,7 +100,7 @@ def run_analysis(doc, base_name, filepath=""):
 
 def run_boxanalysisstatic(solver=None, base_name=None):
 
-    from .boxanalysis import setup_static as setup
+    from .boxanalysis_static import setup
     doc = setup()
 
     if base_name is None:
@@ -115,7 +115,7 @@ def run_boxanalysisstatic(solver=None, base_name=None):
 
 def run_boxanalysisfrequency(solver=None, base_name=None):
 
-    from .boxanalysis import setup_frequency as setup
+    from .boxanalysis_frequency import setup
     doc = setup()
 
     if base_name is None:
