@@ -39,20 +39,16 @@ Report to Draft.py for info
 import os
 import sys
 import math
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
-from PySide import QtCore, QtGui
 
-
-import draftutils.translate
-translate = draftutils.translate.translate
-
-
-import draftutils.utils
-utf8_decode = draftutils.utils.utf8_decode
-
+from draftutils.translate import translate
+from draftutils.utils import utf8_decode
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control
 inCommandShortcuts = {
@@ -78,65 +74,14 @@ inCommandShortcuts = {
     "NearSnap":       [Draft.getParam("inCommandShortcutNearSnap", "N"),translate("draft","Toggle near snap on/off"), None],
 }
 
-import draftutils.todo
-todo = draftutils.todo.ToDo
+from draftutils.todo import todo
 
 #---------------------------------------------------------------------------
 # UNITS handling
 #---------------------------------------------------------------------------
-def getDefaultUnit(dim):
-    '''return default Unit of Measure for a Dimension based on user preference
-    Units Schema'''
-    # only Length and Angle so far
-    if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
-        UOM = qty.getUserPreferred()[2]
-    elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
-        UOM = qty.getUserPreferred()[2]
-    else:
-        UOM = "xx"
-    return UOM
-
-def makeFormatSpec(decimals=4,dim='Length'):
-    ''' return a % format spec with specified decimals for a specified
-    dimension based on on user preference Units Schema'''
-    if dim == 'Length':
-        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Length')
-    elif dim == 'Angle':
-        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Angle')
-    else:
-        fmtSpec = "%." + str(decimals) + "f " + "??"
-    return fmtSpec
-
-def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
-    '''return an internal value (ie mm) Length or Angle converted for display according
-    to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
-    if dim == 'Length':
-        q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        if not unit:
-            if (decimals is None) and showUnit:
-                return q.UserString
-            conversion = q.getUserPreferred()[1]
-            uom = q.getUserPreferred()[2]
-        else:
-            uom = unit
-            internValue = q.getValueAs(unit)
-            conversion = 1
-    elif dim == 'Angle':
-        return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
-    else:
-        conversion = 1.0
-        if decimals is None:
-            decimals = 2
-        uom = "??"
-    if not showUnit:
-        uom = ""
-    decimals = abs(decimals) # prevent negative values
-    fmt = "{0:."+ str(decimals) + "f} "+ uom
-    displayExt = fmt.format(float(internValue) / float(conversion))
-    displayExt = displayExt.replace(".",QtCore.QLocale().decimalPoint())
-    return displayExt
+from draftutils.units import (getDefaultUnit,
+                              makeFormatSpec,
+                              displayExternal)
 
 #---------------------------------------------------------------------------
 # Customized widgets
