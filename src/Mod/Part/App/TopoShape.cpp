@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <array>
 # include <cmath>
 # include <cstdlib>
@@ -230,6 +231,23 @@ const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
     default:
         return "Unknown creation error";
     }
+}
+
+/**
+ * Derive a roughly proportional default angular deflection from a linear
+ * tolerance. This is a work-around for unreliable linear tolerance enforcement
+ * in OCC, especially on nurbs surfaces. The intention is to provide sane
+ * baseline (default) behavior with linear tolerances only, until OCC is fixed.
+ * If needed for specific use cases, explicit angular deflection parameters can
+ * still be exposed separately.
+ */
+inline double defaultAngularDeflection(double linearTolerance) {
+    // Default OCC angular deflection is 0.5 radians, or about 28.6 degrees.
+    // That is a bit coarser than necessary for performance, so we default to at
+    // most 0.1 radians, or 5.7 degrees. We also do not go finer than 0.005, or
+    // roughly 0.28 degree angular resolution, to avoid performance tanking
+    // completely at very fine resolutions.
+    return std::min(0.1, linearTolerance * 5 + 0.005);
 }
 
 // ------------------------------------------------
@@ -971,7 +989,8 @@ void TopoShape::exportStl(const char *filename, double deflection) const
 #else
     BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection,
                                    /*isRelative*/ Standard_False,
-                                   /*theAngDeflection*/ 0.5,
+                                   /*theAngDeflection*/
+                                   defaultAngularDeflection(deflection),
                                    /*isInParallel*/ true);
 #endif
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
@@ -993,7 +1012,8 @@ void TopoShape::exportFaceSet(double dev, double ca,
     std::size_t index=0;
     BRepMesh_IncrementalMesh MESH(this->_Shape, dev,
                                   /*isRelative*/ Standard_False,
-                                  /*theAngDeflection*/ 0.5,
+                                  /*theAngDeflection*/
+                                  defaultAngularDeflection(dev),
                                   /*isInParallel*/ true);
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
@@ -3319,7 +3339,8 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     // get the meshes of all faces and then merge them
     BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy,
                                    /*isRelative*/ Standard_False,
-                                   /*theAngDeflection*/ 0.5,
+                                   /*theAngDeflection*/
+                                   defaultAngularDeflection(accuracy),
                                    /*isInParallel*/ true);
     std::vector<Domain> domains;
     getDomains(domains);
