@@ -23,9 +23,8 @@
 
 # to run the example use:
 """
-from femexamples import boxanalysis as box
-
-box.setup()
+from femexamples.boxanalysis_static import setup
+setup()
 
 """
 

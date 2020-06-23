@@ -23,9 +23,8 @@
 
 # to run the example use:
 """
-from femexamples import ccx_cantilever_faceload as canti
-
-canti.setup()
+from femexamples.ccx_cantilever_faceload import setup
+setup()
 
 """
 

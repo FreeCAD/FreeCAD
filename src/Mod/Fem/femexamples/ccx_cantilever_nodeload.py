@@ -24,9 +24,8 @@
 
 # to run the example use:
 """
-from femexamples import ccx_cantilever_nodeload as canti
-
-canti.setup()
+from femexamples.ccx_cantilever_nodeload import setup
+setup()
 
 """
 
