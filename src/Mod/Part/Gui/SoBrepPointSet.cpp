@@ -193,13 +193,17 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     if(ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
     else {
-        bool pushed = false;
         uint32_t color;
         SoColorPacker packer;
         float trans = 0.0;
+
+        state->push();
+
+        // Work around Coin bug of losing per line/point color when rendering
+        // with transparency type SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        SoShapeStyleElement::setTransparencyType(state,SoGLRenderAction::SORTED_OBJECT_BLEND);
+
         if(Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
-            pushed = true;
-            state->push();
             SoLazyElement::setTransparency(state,this,1,&trans,&packer);
             SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
             auto lineColor = Gui::SoFCDisplayModeElement::getLineColor(state);
@@ -211,9 +215,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         }
 
         inherited::GLRender(action);
-
-        if(pushed)
-            state->pop();
+        state->pop();
     }
 
     if(ctx && ctx->selectionIndex.size() && ctx->hasSelectionColor())

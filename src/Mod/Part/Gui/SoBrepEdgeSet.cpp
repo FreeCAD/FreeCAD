@@ -199,32 +199,19 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     float width = 0.0;
 
     for(;pass<=2;++pass) {
-        bool pushed = false;
+        state->push();
         if(pass==0) {
             int pattern = Gui::ViewParams::getSelectionLinePattern();
-            if(pattern) {
-                if(!pushed) {
-                    pushed = true;
-                    state->push();
-                }
+            if(pattern)
                 SoLinePatternElement::set(state, pattern);
-            }
             width = Gui::ViewParams::getSelectionHiddenLineWidth();
-            if(width>0.0 && SoLineWidthElement::get(state) < width) {
-                if(!pushed) {
-                    pushed = true;
-                    state->push();
-                }
+            if(width>0.0 && SoLineWidthElement::get(state) < width)
                 SoLineWidthElement::set(state,width);
-            } else
+            else
                 width = 0.0;
         } else if(pass==1) {
             depthGuard.set(GL_LEQUAL);
             if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
-                if(!pushed) {
-                    pushed = true;
-                    state->push();
-                }
                 // If we are visible, disable transparency to get a solid
                 // outline, or else on top rendering will have some default
                 // transprency, which will give a fainted appearance that is
@@ -232,13 +219,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 // (but forced to shown by on top rendering)
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
             }
-            if(width != 0.0) {
-                if(!pushed) {
-                    pushed = true;
-                    state->push();
-                }
+            if(width != 0.0)
                 SoLineWidthElement::set(state,width);
-            }
             pass = 2;
         }
 
@@ -255,8 +237,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                     renderSelection(action,ctx); 
                 renderHighlight(action,ctx);
 
-                if(pushed)
-                    state->pop();
+                state->pop();
                 continue;
             }
         }
@@ -266,9 +247,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
-            if(!Gui::SoFCDisplayModeElement::showHiddenLines(state))
+            if(!Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
+                // Work around Coin bug of losing per line/point color when
+                // rendering with transparency type SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+                SoShapeStyleElement::setTransparencyType(state,SoGLRenderAction::SORTED_OBJECT_BLEND);
                 inherited::GLRender(action);
-            else {
+            } else {
                 state->push();
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
                 SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
@@ -288,8 +272,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             renderSelection(action,ctx);
         renderHighlight(action,ctx);
 
-        if(pushed)
-            state->pop();
+        state->pop();
     }
 }
 
