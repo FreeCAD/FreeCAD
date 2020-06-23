@@ -360,8 +360,13 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         Property* prop = getPropertyByName(reader.getAttribute("name"));
         if(prop)
             FC_TRACE("restore transient '" << prop->getFullName() << "'");
-        if(prop && reader.hasAttribute("status"))
-            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+        if(prop && reader.hasAttribute("status")) {
+            Property::StatusBits status(reader.getAttributeAsUnsigned("status"));
+            status.reset(Property::User1);
+            status.reset(Property::User2);
+            status.reset(Property::User3);
+            prop->setStatusValue(status.to_ulong());
+        }
     }
 
     for (int i=0 ;i<Cnt ;i++) {
@@ -382,6 +387,12 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             Property::StatusBits status;
             if(reader.hasAttribute("status")) {
                 status = Property::StatusBits(reader.getAttributeAsUnsigned("status"));
+
+                // User1~3 are currently reserved for various temporary usage.
+                // To avoid some potential problems, no persistence at the moment.
+                status.reset(Property::User1);
+                status.reset(Property::User2);
+                status.reset(Property::User3);
                 if(prop)
                     prop->setStatusValue(status.to_ulong());
             }
