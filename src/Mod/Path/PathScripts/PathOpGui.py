@@ -481,6 +481,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 item.setData(self.DataObjectSub, sub)
                 self.form.baseList.addItem(item)
         self.form.baseList.blockSignals(False)
+        self.resizeBaseList()
 
     def itemActivated(self):
         FreeCADGui.Selection.clearSelection()
@@ -566,6 +567,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             self.setDirty()
         self.updateBase()
         self.updatePanelVisibility('Operation', self.obj)
+        self.resizeBaseList()
 
     def updateBase(self):
         newlist = []
@@ -586,6 +588,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         self.obj.Base = []
         self.setDirty()
         self.updatePanelVisibility('Operation', self.obj)
+        self.resizeBaseList()
 
     def importBaseGeometry(self):
         opLabel = str(self.form.geometryImportList.currentText())
@@ -615,6 +618,15 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         else:
             self.form.addBase.setEnabled(False)
 
+    def resizeBaseList(self):
+        # Set base geometry list window to resize based on contents
+        # Code reference:
+        # https://stackoverflow.com/questions/6337589/qlistwidget-adjust-size-to-content
+        qList = self.form.baseList
+        # qList.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        col = qList.width()  # 300
+        row = (qList.count() + qList.frameWidth()) * 15
+        qList.setFixedSize(col, row)
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
