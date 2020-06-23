@@ -82,7 +82,7 @@ class ViewProviderTree:
         return objs
    
     def getIcon(self):
-        import freecad.OpenSCAD.OpenSCAD_rc
+        import OpenSCAD_rc
         if isinstance(self.Object.Proxy,RefineShape):
             return(":/icons/OpenSCAD_RefineShapeFeature.svg")
         if isinstance(self.Object.Proxy,IncreaseTolerance):
