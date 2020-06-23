@@ -82,7 +82,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.boxanalysis import setup_frequency as setup
+        from femexamples.boxanalysis_frequency import setup
         setup(self.document, "ccxtools")
         test_name = "frequency"
         base_name = "cube_frequency"
@@ -114,7 +114,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.boxanalysis import setup_static as setup
+        from femexamples.boxanalysis_static import setup
         setup(self.document, "ccxtools")
         test_name = "ccxtools static"
         base_name = "cube_static"
@@ -146,7 +146,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.ccx_cantilever_std import setup_cantileverhexa20faceload as setup
+        from femexamples.ccx_cantilever_hexa20faceload import setup
         setup(self.document, "ccxtools")
         test_name = "canti ccx faceload hexa20"
         base_name = "canti_ccx_faceload_hexa20"
