@@ -1176,10 +1176,10 @@ void ViewProviderPartExt::reload()
     if (!PartParams::OverrideTessellation()) {
         Deviation.setStatus(App::Property::User3, true);
         Deviation.setValue(PartParams::MeshDeviation());
-        Deviation.setStatus(App::Property::User3, true);
+        Deviation.setStatus(App::Property::User3, false);
         AngularDeflection.setStatus(App::Property::User3, true);
         AngularDeflection.setValue(PartParams::MeshAngularDeflection());
-        AngularDeflection.setStatus(App::Property::User3, true);
+        AngularDeflection.setStatus(App::Property::User3, false);
     }
     updateVisual();
 }
