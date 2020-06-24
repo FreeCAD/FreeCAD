@@ -2901,7 +2901,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                     continue;
 
                 auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-                if (!vp || !vp->isVisible())
+                if (!vp || !vp->isVisible() || !vp->isShowable())
                     continue;
 
                 Base::Matrix4D mat;
