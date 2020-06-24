@@ -151,7 +151,10 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     if(!action->isRenderingDelayedPaths())
         depthGuard.set(GL_LEQUAL);
 
-    if(!highlightIndices.getNum() && ctx && ctx->isHighlightAll()) {
+    if(ctx && ctx->isHighlightAll()
+           && (!highlightIndices.getNum()
+               || (ctx2 && !ctx2->isSelectAll())))
+    {
         if(ctx2) {
             ctx2->selectionColor = ctx->highlightColor;
             renderSelection(action,ctx2); 

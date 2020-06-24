@@ -159,7 +159,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     if(!action->isRenderingDelayedPaths())
         depthGuard.set(GL_LEQUAL);
 
-    if(ctx && ctx->isHighlightAll() && !highlightIndices.getNum()) {
+    if(ctx && ctx->isHighlightAll()
+           && (!highlightIndices.getNum()
+               || (ctx2 && !ctx2->isSelectAll())))
+    {
         if(ctx2 && !ctx2->isSelectAll()) {
             ctx2->selectionColor = ctx->highlightColor;
             renderSelection(action,ctx2); 
