@@ -190,7 +190,9 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <App/Material.h>
+#include <App/Application.h>
 
 #include "PartPyCXX.h"
 #include "TopoShape.h"
@@ -3129,6 +3131,18 @@ TopoDS_Shape TopoShape::removeSplitter() const
     return _Shape;
 }
 
+static void meshShape(const TopoDS_Shape &shape, double accuracy=0.0)
+{
+    if (accuracy == 0.0) {
+        static ParameterGrp::handle hGrp;
+        if (!hGrp)
+            hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Part");
+        accuracy = hGrp->GetFloat("MeshDeviation", 0.2);
+    }
+    BRepMesh_IncrementalMesh aMesh(shape, accuracy);
+}
+
 void TopoShape::getDomains(std::vector<Domain>& domains) const
 {
     std::size_t countFaces = 0;
@@ -3137,18 +3151,27 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
     }
     domains.reserve(countFaces);
 
+    bool meshed = false;
     for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
         TopoDS_Face face = TopoDS::Face(xp.Current());
 
         TopLoc_Location loc;
         Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
         if (theTriangulation.IsNull()) {
-            // For a face that cannot be meshed append an empty domain.
-            // It's important for some algorithms (e.g. color mapping) that the numbers of
-            // faces and domains match
-            Domain domain;
-            domains.push_back(domain);
-            continue;
+            if (!meshed) { 
+                // Retry to make sure the shape is meshed
+                meshed = true;
+                meshShape(this->_Shape);
+                theTriangulation = BRep_Tool::Triangulation(face, loc);
+            }
+            if (theTriangulation.IsNull()) {
+                // For a face that cannot be meshed append an empty domain.
+                // It's important for some algorithms (e.g. color mapping) that the numbers of
+                // faces and domains match
+                Domain domain;
+                domains.push_back(domain);
+                continue;
+            }
         }
 
         Domain domain;
@@ -3490,20 +3513,32 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
             vertices.emplace_back(pnt.X(),pnt.Y(),pnt.Z());
             return;
         }
-
+        bool meshed = false;
         for(TopExp_Explorer exp(shape.getShape(),TopAbs_EDGE);exp.More();exp.Next()) {
-
+            std::size_t line_start = vertices.size();
             TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
             TopLoc_Location aLoc;
-            Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
-
             gp_Trsf myTransf;
-            Standard_Integer nbNodesInFace;
 
-            auto line_start = vertices.size();
+            TopoDS_Shape aFace = findAncestorShape(aEdge, TopAbs_FACE);
 
-            // triangulation succeeded?
-            if (!aPoly.IsNull()) {
+            if(aFace.IsNull()) {
+                Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+
+                Standard_Integer nbNodesInFace;
+
+                // triangulation succeeded?
+                if (aPoly.IsNull()) {
+                    if (meshed)
+                        continue;
+                    // make sure the shape is meshed
+                    meshed = true;
+                    meshShape(shape.getShape());
+                    aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
+                    if (aPoly.IsNull())
+                        continue;
+                }
+
                 if (!aLoc.IsIdentity()) {
                     myTransf = aLoc.Transformation();
                 }
@@ -3522,26 +3557,27 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                 // the edge has not its own triangulation, but then a face the edge is attached to
                 // must provide this triangulation
 
-                // Look for one face in our map (it doesn't care which one we take)
-                auto aFace = findAncestorShape(aEdge, TopAbs_FACE);
-                if(aFace.IsNull())
-                    continue;
-
                 // take the face's triangulation instead
                 Handle(Poly_Triangulation) aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(aFace),aLoc);
+                if (aPolyTria.IsNull()) {
+                    if (meshed)
+                        continue;
+                    // make sure the shape is meshed
+                    meshed = true;
+                    meshShape(shape.getShape());
+                    aPolyTria = BRep_Tool::Triangulation(TopoDS::Face(aFace),aLoc);
+                    if (aPolyTria.IsNull())
+                        continue;
+                }
+
                 if (!aLoc.IsIdentity()) {
                     myTransf = aLoc.Transformation();
                 }
-
-                if (aPolyTria.IsNull()) break;
 
                 // this holds the indices of the edge's triangulation to the actual points
                 Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(aEdge, aPolyTria, aLoc);
                 if (aPoly.IsNull())
                     continue; // polygon does not exist
-
-                // getting size and create the array
-                nbNodesInFace = aPoly->NbNodes();
 
                 const TColStd_Array1OfInteger& indices = aPoly->Nodes();
                 const TColgp_Array1OfPnt& Nodes = aPolyTria->Nodes();
@@ -3554,7 +3590,7 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                     vertices.emplace_back(V.X(),V.Y(),V.Z());
                 }
             }
-            
+
             if(line_start+1 < vertices.size()) {
                 lines.emplace_back();
                 lines.back().I1 = line_start;
@@ -3571,7 +3607,7 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
 {
     if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
         const TopoShape& shape = static_cast<const ShapeSegment*>(element)->Shape;
-        if (shape.isNull() || shape.shapeType() != TopAbs_FACE)
+        if (shape.isNull())
             return;
 
         // get the meshes of all faces and then merge them
