@@ -1585,8 +1585,11 @@ struct OverlayInfo {
         if(forced) {
             auto mw = getMainWindow();
             for(auto d : mw->findChildren<QDockWidget*>()) {
-                if(mw->dockWidgetArea(d) == dockArea)
+                if(mw->dockWidgetArea(d) == dockArea
+                        && d->toggleViewAction()->isChecked())
+                {
                     addWidget(d, false);
+                }
             }
             if(visible) {
                 dock->show();
