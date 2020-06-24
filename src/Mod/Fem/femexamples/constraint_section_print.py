@@ -170,7 +170,8 @@ def setup(doc=None, solvertype="ccxtools"):
     solid_one.items = "0"
     # solid_one.Proxy.execute(solid_one)
     solid_one.purgeTouched()
-    solid_one.Base.ViewObject.hide()
+    if FreeCAD.GuiUp:
+        solid_one.Base.ViewObject.hide()
 
     solid_two = makeCompoundFilter(name='SolidTwo')
     solid_two.Base = Slice
@@ -178,7 +179,8 @@ def setup(doc=None, solvertype="ccxtools"):
     solid_two.items = "1"
     # solid_two.Proxy.execute(solid_two)
     solid_two.purgeTouched()
-    solid_two.Base.ViewObject.hide()
+    if FreeCAD.GuiUp:
+        solid_two.Base.ViewObject.hide()
 
     # CompSolid out of the two solids
     geom_obj = makeBooleanFragments(name='BooleanFragments')
