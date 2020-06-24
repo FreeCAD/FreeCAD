@@ -109,6 +109,7 @@ SET(FemObjects_SRCS
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
     femobjects/constraint_initialflowvelocity.py
+    femobjects/constraint_sectionprint.py
     femobjects/constraint_selfweight.py
     femobjects/constraint_tie.py
     femobjects/element_fluid1D.py
@@ -389,6 +390,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
     femviewprovider/view_constraint_initialflowvelocity.py
+    femviewprovider/view_constraint_sectionprint.py
     femviewprovider/view_constraint_selfweight.py
     femviewprovider/view_constraint_tie.py
     femviewprovider/view_element_fluid1D.py

@@ -223,6 +223,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintPulley(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintSectionPrint",
+            type_of_obj(ObjectsFem.makeConstraintSectionPrint(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintSelfWeight",
             type_of_obj(ObjectsFem.makeConstraintSelfWeight(doc))
         )
@@ -422,6 +426,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintPulley(doc),
             "Fem::ConstraintPulley"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintSectionPrint(doc),
+            "Fem::ConstraintSectionPrint"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSelfWeight(doc),
@@ -809,6 +817,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_pulley,
             "Fem::ConstraintPulley"
+        ))
+
+        # ConstraintSectionPrint
+        constraint_self_weight = ObjectsFem.makeConstraintSectionPrint(doc)
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintSectionPrint"
         ))
 
         # ConstraintSelfWeight
@@ -1356,6 +1379,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintPulley")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintSectionPrint(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintSelfWeight(
                 doc
             ).isDerivedFrom("Fem::ConstraintPython")
@@ -1537,6 +1565,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
     analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
     analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
     analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintTie(doc))
