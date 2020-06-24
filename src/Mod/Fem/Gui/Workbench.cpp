@@ -127,6 +127,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     geom->setCommand("Geometrical Constraints");
     *geom
         << "FEM_ConstraintPlaneRotation"
+        << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
@@ -251,6 +252,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     geom->setCommand("&Geometrical Constraints");
     *geom
         << "FEM_ConstraintPlaneRotation"
+        << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::MenuItem* mech = new Gui::MenuItem;
