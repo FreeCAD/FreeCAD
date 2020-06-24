@@ -377,7 +377,9 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
         static int buildElementMap = -1;
         if(buildElementMap<0) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            static ParameterGrp::handle hGrp;
+            if (!hGrp)
+               hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Mod/Part/General");
             buildElementMap = hGrp->GetBool("AutoElementMap",true)?1:0;
         }
@@ -452,6 +454,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
         shape.exportBinary(writer.Stream());
     }
     else {
+        static 
         bool direct = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
@@ -521,8 +524,11 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     }
     else {
         TopoDS_Shape sh;
-        bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
+        static ParameterGrp::handle hGrp;
+        if (!hGrp)
+            hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Part/General");
+        bool direct = hGrp->GetBool("DirectAccess", true);
         if (!direct) {
             BRep_Builder builder;
             // create a temporary file and copy the content from the zip stream
