@@ -120,6 +120,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyFile.h>
+#include <App/ComplexGeoDataPy.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -137,6 +138,7 @@
 #include "SoFCDirectionalLight.h"
 #include "SoFCSpotLight.h"
 #include "View3DInventorRiftViewer.h"
+#include "Utilities.h"
 
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
@@ -4030,26 +4032,147 @@ void View3DInventorViewer::viewAll(float factor)
     }
 }
 
+// Recursively check if any sub-element intersects with a given projected 2D polygon
+static bool
+checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
+                         const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
+                         Base::Matrix4D mat, bool transform=true, int depth=0)
+{
+    auto obj = vp->getObject();
+    if(!obj || !obj->getNameInDocument())
+        return false;
+
+    if (subname && subname[0]) {
+        App::DocumentObject *parent = 0;
+        std::string childName;
+        auto sobj = obj->resolve(subname,&parent,&childName,0,0,&mat,transform,depth+1);
+        if(!sobj) 
+            return false;
+        if(!ViewParams::getShowSelectionOnTop()) {
+            int vis;
+            if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
+                vis = sobj->Visibility.getValue()?1:0;
+            if(!vis)
+                return false;
+        }
+        auto svp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(sobj));
+        if(!svp)
+            return false;
+        vp = svp;
+        obj = sobj;
+        transform = false;
+    }
+
+    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
+    if(!bbox3.IsValid())
+        return false;
+
+    auto bbox = bbox3.ProjectBox(&proj);
+    if(!bbox.Intersect(polygon)) 
+        return false;
+
+    const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+    if(subs.size()) {
+        for(auto &sub : subs) {
+            if(checkElementIntersection(vp, sub.c_str(), proj, polygon, mat, false, depth+1))
+                return true;
+        }
+        return false;
+    }
+
+    Base::PyGILStateLocker lock;
+    PyObject *pyobj = 0;
+    obj->getSubObject(0,&pyobj,&mat,transform,depth);
+    if(!pyobj)
+        return false;
+    Py::Object pyobject(pyobj,true);
+    if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
+        return false;
+    auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+    for(auto type : data->getElementTypes()) {
+        size_t count = data->countSubElements(type);
+        if(!count)
+            continue;
+        for(size_t i=1;i<=count;++i) {
+            std::string element(type);
+            element += std::to_string(i);
+            std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+            if(!segment)
+                continue;
+            std::vector<Base::Vector3d> points;
+            std::vector<Data::ComplexGeoData::Line> lines;
+            Base::Polygon2d loop;
+
+            // Call getLinesFromSubelement to get the outer loop of the entire segment
+            data->getLinesFromSubelement(segment.get(),points,lines);
+            if(lines.empty()) {
+                if(points.empty())
+                    continue;
+                auto v = proj(points[0]);
+                if(polygon.Contains(Base::Vector2d(v.x,v.y)))
+                    return true;
+                continue;
+            }
+            auto v = proj(points[lines.front().I1]);
+            loop.Add(Base::Vector2d(v.x,v.y));
+            for(auto &line : lines) {
+                for(auto i=line.I1;i<line.I2;++i) {
+                    auto v = proj(points[i+1]);
+                    loop.Add(Base::Vector2d(v.x,v.y));
+                }
+            }
+            if(polygon.Intersect(loop))
+                return true;
+        }
+    }
+    return false;
+}
+
 void View3DInventorViewer::viewSelection(bool extend)
 {
     if(!guiDocument)
         return;
 
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    if(!cam)
+        return;
+
+    // When calling viewSelection(extend = true), we are supposed to make sure
+    // the current view volume includes at least include some geometry
+    // sub-element of all current selection. The volume does not have to include
+    // the entire selection. The implementation below uses the screen dimension
+    // as a rectangle selection and recursively test intersection. The algorithm
+    // used is similar to Command Std_BoxElementSelection.
+    SbViewVolume vv = cam->getViewVolume();
+    ViewVolumeProjection proj(vv);
+    Base::Polygon2d polygon;
+    SbViewportRegion viewport = getSoRenderManager()->getViewportRegion();
+    const SbVec2s& sp = viewport.getViewportSizePixels();
+    auto pos = getGLPolygon({{0,0}, sp});
+    polygon.Add(Base::Vector2d(pos[0][0], pos[1][1]));
+    polygon.Add(Base::Vector2d(pos[0][0], pos[0][1]));
+    polygon.Add(Base::Vector2d(pos[1][0], pos[0][1]));
+    polygon.Add(Base::Vector2d(pos[1][0], pos[1][1]));
+
     Base::BoundBox3d bbox;
     for(auto &sel : Selection().getSelection(guiDocument->getDocument()->getName(),0)) {
-        auto vp = guiDocument->getViewProvider(sel.pObject);
+        auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                guiDocument->getViewProvider(sel.pObject));
         if(!vp)
             continue;
-        bbox.Add(vp->getBoundingBox(sel.SubName));
+
+        if(!extend || !checkElementIntersection(vp, sel.SubName, proj, polygon, Base::Matrix4D()))
+            bbox.Add(vp->getBoundingBox(sel.SubName));
     }
 
-    SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam && bbox.IsValid()) {
+    if (bbox.IsValid()) {
         SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
         if(extend) { // whether to extend the current view volume to include the selection
-            SbViewportRegion vp = getSoRenderManager()->getViewportRegion();
-            const SbViewVolume &vv = cam->getViewVolume(vp,vp,SbMatrix::identity());
 
+            // Replace the following bounding box intersection test with finer
+            // sub-element intersection test.
+#if 0
             SbVec3f center = box.getCenter();
             SbVec3f size = box.getSize() 
                 * 0.5f * ViewParams::instance()->getViewSelectionExtendFactor();
@@ -4060,14 +4183,16 @@ void View3DInventorViewer::viewSelection(bool extend)
 
             int cullbits = 7;
             // test if the scaled box is completely outside of view
-            if(!sbox.outside(vv.getMatrix(),cullbits))
+            if(!sbox.outside(vv.getMatrix(),cullbits)) {
                 return;
+            }
+#endif
 
             float vx,vy,vz;
             SbVec3f vcenter = vv.getProjectionPoint()+vv.getProjectionDirection()*(vv.getDepth()*0.5+vv.getNearDist());
             vcenter.getValue(vx,vy,vz);
 
-            float radius = std::max(vv.getDepth(),std::max(vv.getWidth(),vv.getHeight()))*0.5f;
+            float radius = std::max(vv.getWidth(),vv.getHeight())*0.5f;
 
             // A rough estimation of the view bounding box. Note that
             // SoCamera::viewBoundingBox() is not accurate as well. It uses a
