@@ -413,7 +413,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
     retranslate();
 
-    connect(this, SIGNAL(currentChanged(int)), this, SLOT(onCurrentChanged(int)));
+    connect(tabBar(), SIGNAL(tabBarClicked(int)), this, SLOT(onCurrentChanged(int)));
     connect(tabBar(), SIGNAL(tabMoved(int,int)), this, SLOT(onTabMoved(int,int)));
     tabBar()->installEventFilter(this);
     connect(splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved()));
