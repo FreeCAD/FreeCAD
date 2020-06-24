@@ -64,6 +64,7 @@ public:
     virtual ~LinkBaseExtension();
 
     PropertyBool _LinkTouched;
+    PropertyInteger _LinkVersion;
     PropertyLinkList _ChildCache; // cache for plain group expansion
 
     enum {
@@ -274,6 +275,7 @@ public:
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
     virtual short extensionMustExecute(void) override;
     virtual void extensionOnChanged(const Property* p) override;
+    virtual void onExtendedSetupObject () override;
     virtual void onExtendedUnsetupObject () override;
     virtual void onExtendedDocumentRestored() override;
 
@@ -443,7 +445,7 @@ public:
 
 #define LINK_PARAMS_EXT \
     LINK_PARAM_EXT(SCALE)\
-    LINK_PARAM_EXT_ATYPE(SCALE_VECTOR,App::Prop_Hidden)\
+    LINK_PARAM_EXT(SCALE_VECTOR)\
     LINK_PARAM_EXT(SCALES)\
     LINK_PARAM_EXT(VISIBILITIES)\
     LINK_PARAM_EXT(PLACEMENTS)\
@@ -518,7 +520,7 @@ public:
 
 #define LINK_PARAMS_ELEMENT \
     LINK_PARAM_EXT(SCALE)\
-    LINK_PARAM_EXT_ATYPE(SCALE_VECTOR,App::Prop_Hidden)\
+    LINK_PARAM_EXT(SCALE_VECTOR)\
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\

@@ -48,6 +48,65 @@ FC_LOG_LEVEL_INIT("App::Link", true,true)
 using namespace App;
 using namespace Base;
 
+class LinkParams: public ParameterGrp::ObserverType {
+public:
+#define FC_LINK_PARAMS \
+    FC_LINK_PARAM(HideScaleVector, bool, Bool, true) \
+
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    static const _ctype & _name() { return instance()->_##_name; }\
+    static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void update##_name(LinkParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
+
+    FC_LINK_PARAMS
+
+    LinkParams() {
+        handle = GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Link");
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+        _##_name = handle->Get##_type(#_name,_def);\
+        handle->Set##_type(#_name,_##_name);\
+        funcs[#_name] = &LinkParams::update##_name;
+
+        FC_LINK_PARAMS
+
+        handle->Attach(this);
+    }
+
+    virtual ~LinkParams() {}
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(!sReason)
+            return;
+        auto it = funcs.find(sReason);
+        if(it == funcs.end())
+            return;
+        it->second(this);
+    }
+
+    static LinkParams *instance() {
+        static LinkParams *inst;
+        if(!inst)
+            inst = new LinkParams;
+        return inst;
+    }
+
+    ParameterGrp::handle getHandle() {
+        return handle;
+    }
+
+private:
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    _ctype _##_name;
+
+    FC_LINK_PARAMS
+    ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(LinkParams*),App::CStringHasher,App::CStringHasher> funcs;
+};
+
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
@@ -59,6 +118,8 @@ LinkBaseExtension::LinkBaseExtension(void)
     EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link", 
             PropertyType(Prop_Hidden|Prop_NoPersist|Prop_ReadOnly),0);
     _ChildCache.setScope(LinkScope::Global);
+    EXTENSION_ADD_PROPERTY_TYPE(_LinkVersion, (0), " Link", 
+            PropertyType(Prop_Hidden|Prop_ReadOnly),0);
     props.resize(PropMax,0);
 }
 
@@ -129,6 +190,10 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     props[idx]->setStatus(Property::LockDynamic,true);
 
     switch(idx) {
+    case PropScaleVector:
+        if (!GetApplication().isRestoring() && LinkParams::HideScaleVector())
+            prop->setStatus(Property::Hidden, true);
+        break;
     case PropLinkMode: {
         static const char *linkModeEnums[] = {"None","Auto Delete","Auto Link","Auto Unlink",0};
         auto propLinkMode = freecad_dynamic_cast<PropertyEnumeration>(prop);
@@ -937,6 +1002,10 @@ void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
     geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
 }
 
+void LinkBaseExtension::onExtendedSetupObject() {
+    _LinkVersion.setValue(1);
+}
+
 void LinkBaseExtension::onExtendedUnsetupObject() {
     if(!getElementListProperty())
         return;
@@ -1437,16 +1506,23 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
             xlink->setSubValues(std::move(subs));
         }
     }
-    if(getScaleVectorProperty() && getScaleProperty()) {
-        // Scale vector is added later. The code here is for migration.
-        const auto &v = getScaleVectorValue();
-        double s = getScaleValue();
-        if(v.x == v.y && v.x == v.z && v.x != s)
-            getScaleVectorProperty()->setValue(s,s,s);
+    if(getScaleVectorProperty()) {
+        if(getScaleProperty()) {
+            // Scale vector is added later. The code here is for migration.
+            const auto &v = getScaleVectorValue();
+            double s = getScaleValue();
+            if(v.x == v.y && v.x == v.z && v.x != s)
+                getScaleVectorProperty()->setValue(s,s,s);
+        }
+        if(_LinkVersion.getValue()<1 && LinkParams::HideScaleVector())
+            getScaleVectorProperty()->setStatus(Property::Hidden, true);
     }
     update(parent,getVisibilityListProperty());
     update(parent,getLinkedObjectProperty());
     update(parent,getElementListProperty());
+
+    if (_LinkVersion.getValue() == 0)
+        _LinkVersion.setValue(1);
 }
 
 void LinkBaseExtension::_handleChangedPropertyName(
