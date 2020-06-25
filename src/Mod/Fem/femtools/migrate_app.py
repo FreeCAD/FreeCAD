@@ -181,7 +181,8 @@ class FemMigrateApp(object):
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
             import femobjects.constraint_electrostaticpotential
-            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
+            module.Proxy = \
+                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
         if module.__name__ == "femobjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
             module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
@@ -211,7 +212,8 @@ class FemMigrateApp(object):
             module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "femobjects._FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
-            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
+            module._FemMaterialMechanicalNonlinear = \
+                femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "femobjects._FemMaterialReinforced":
             import femobjects.material_reinforced
             module._FemMaterialReinforced = femobjects.material_reinforced.MaterialReinforced
@@ -244,7 +246,8 @@ class FemMigrateApp(object):
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
             import femobjects.constraint_electrostaticpotential
-            module.Proxy = femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
+            module.Proxy = \
+                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
             module.Proxy = femobjects.constraint_flowvelocity.ConstraintFlowVelocity
@@ -271,7 +274,8 @@ class FemMigrateApp(object):
             module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "PyObjects._FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
-            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
+            module._FemMaterialMechanicalNonlinear = \
+                femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "PyObjects._FemMeshBoundaryLayer":
             import femobjects.mesh_boundarylayer
             module._FemMeshBoundaryLayer = femobjects.mesh_boundarylayer.MeshBoundaryLayer
@@ -315,7 +319,8 @@ class FemMigrateApp(object):
             module._FemMaterial = femobjects.material_common.MaterialCommon
         if module.__name__ == "_FemMaterialMechanicalNonlinear":
             import femobjects.material_mechanicalnonlinear
-            module._FemMaterialMechanicalNonlinear = femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
+            module._FemMaterialMechanicalNonlinear = \
+                femobjects.material_mechanicalnonlinear.MaterialMechanicalNonlinear
         if module.__name__ == "_FemMeshGmsh":
             import femobjects.mesh_gmsh
             module._FemMeshGmsh = femobjects.mesh_gmsh.MeshGmsh
@@ -353,25 +358,29 @@ class FemMigrateApp(object):
             module._FemBeamSection = femobjects.element_geometry1D.ElementGeometry1D
             if FreeCAD.GuiUp:
                 import femviewprovider.view_element_geometry1D
-                module._ViewProviderFemBeamSection = femviewprovider.view_element_geometry1D.VPElementGeometry1D
+                module._ViewProviderFemBeamSection = \
+                    femviewprovider.view_element_geometry1D.VPElementGeometry1D
         if module.__name__ == "FemShellThickness":
             import femobjects.element_geometry2D
             module._FemShellThickness = femobjects.element_geometry2D.ElementGeometry2D
             if FreeCAD.GuiUp:
                 import femviewprovider.view_element_geometry2D
-                module._ViewProviderFemShellThickness = femviewprovider.view_element_geometry2D.VPElementGeometry2D
+                module._ViewProviderFemShellThickness = \
+                    femviewprovider.view_element_geometry2D.VPElementGeometry2D
         if module.__name__ == "MechanicalAnalysis":
             import femobjects.base_fempythonobject
             module._FemAnalysis = femobjects.base_fempythonobject.BaseFemPythonObject
             if FreeCAD.GuiUp:
                 import femviewprovider.view_base_femobject
-                module._ViewProviderFemAnalysis = femviewprovider.view_base_femobject.VPBaseFemObject
+                module._ViewProviderFemAnalysis = \
+                    femviewprovider.view_base_femobject.VPBaseFemObject
         if module.__name__ == "MechanicalMaterial":
             import femobjects.material_common
             module._MechanicalMaterial = femobjects.material_common.MaterialCommon
             if FreeCAD.GuiUp:
                 import femviewprovider.view_material_common
-                module._ViewProviderMechanicalMaterial = femviewprovider.view_material_common.VPMaterialCommon
+                module._ViewProviderMechanicalMaterial = \
+                    femviewprovider.view_material_common.VPMaterialCommon
         return None
 
 

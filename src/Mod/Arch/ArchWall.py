@@ -1278,6 +1278,7 @@ class _Wall(ArchComponent.Component):
                             self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0
                         baseface = None
+
                         for i,wire in enumerate(self.basewires):
 
                             # Check number of edges per 'wire' and get the 1st edge
@@ -1322,8 +1323,10 @@ class _Wall(ArchComponent.Component):
                             sh = None
 
                             curAligns = aligns[0]
+                            off = obj.Offset.Value
+
                             if curAligns == "Left":
-                                off = obj.Offset.Value
+
                                 if layers:
                                     curWidth = abs(layers[i])
                                     off = off+layeroffset
@@ -1362,11 +1365,12 @@ class _Wall(ArchComponent.Component):
                                                                alignList=aligns,
                                                                normal=normal,
                                                                basewireOffset=off)
+
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             elif curAligns == "Right":
                                 dvec = dvec.negative()
-                                off = obj.Offset.Value
+
                                 if layers:
                                     curWidth = abs(layers[i])
                                     off = off+layeroffset
@@ -1381,6 +1385,7 @@ class _Wall(ArchComponent.Component):
                                 #if off:
                                 #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                 #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
+
 
                                 w2 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                bind=False,
@@ -1423,17 +1428,16 @@ class _Wall(ArchComponent.Component):
                                                                    widthList=widths,
                                                                    offsetMode=None,
                                                                    alignList=aligns,
-                                                                   normal=normal)
-
+                                                                   normal=normal,
+                                                                   basewireOffset=off)
                                     w1 = DraftGeomUtils.offsetWire(wire, dvec,
                                                                    bind=False,
                                                                    occ=False,
                                                                    widthList=widths,
                                                                    offsetMode="BasewireMode",
                                                                    alignList=aligns,
-                                                                   normal=normal)
-
-
+                                                                   normal=normal,
+                                                                   basewireOffset=off)
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             del widths[0:edgeNum]
