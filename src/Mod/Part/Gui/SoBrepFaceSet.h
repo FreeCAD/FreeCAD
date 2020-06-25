@@ -141,7 +141,7 @@ private:
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
 
-    void renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp);
+    void renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp, bool shadowRendering=false);
     void renderShape(SoGLRenderAction *action, bool check_override);
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
@@ -152,7 +152,7 @@ private:
             int selected, SelContextPtr ctx, SelContextPtr ctx2);
 
     void onPartIndexChange();
-    void sortParts(SoState *state, SelContextPtr ctx2, const float *trans, int numtrans);
+    void sortParts(SoState *state, SelContextPtr ctx2, const float *trans, int numtrans, bool shadow);
     void buildPartBBoxes(SoState *state);
     void buildPartIndexCache();
     int getPartFromFace(int index);

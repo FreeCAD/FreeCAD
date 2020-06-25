@@ -417,6 +417,7 @@ struct View3DInventorViewer::ShadowInfo
     uint32_t                          shadowNodeId = 0;
     uint32_t                          cameraNodeId = 0;
     bool                              shadowExtraRedraw = false;
+    bool                              animating = false;
 
     QTimer                            timer;
 
@@ -2062,6 +2063,13 @@ void View3DInventorViewer::ShadowInfo::activate()
         pcShadowGroundLightModel->model = SoLightModel::PHONG;
     else
         pcShadowGroundLightModel->model = SoLightModel::BASE_COLOR;
+
+    SbBool isActive = TRUE;
+    if (_shadowParam<App::PropertyBool>(doc, "TransparentShadow",
+            ViewParams::docShadowTransparentShadow(), ViewParams::getShadowTransparentShadow()))
+        isActive |= 2;
+    if (pcShadowGroup->isActive.getValue() != isActive)
+        pcShadowGroup->isActive = isActive;
 
     auto superScene = static_cast<SoGroup*>(owner->getSoRenderManager()->getSceneGraph());
     int index = superScene->findChild(owner->pcViewProviderRoot);
@@ -3825,6 +3833,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms
     timer.setSingleShot(true);
     QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
+    Base::StateLocker guard(shadowInfo->animating);
     for (int i=0; i<steps; i++) {
         float s = float(i)/float(steps);
 
@@ -3838,6 +3847,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms
         timer.start(Base::clamp<int>(ms,0,5000));
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
+    shadowInfo->onRender();
 }
 
 #if BUILD_VR
@@ -4878,7 +4888,7 @@ void View3DInventorViewer::ShadowInfo::onRender()
         return;
     SoCamera* cam = owner->getSoRenderManager()->getCamera();
     if(cam) {
-        if(shadowNodeId != pcShadowGroup->getNodeId() || cameraNodeId != cam->getNodeId())
+        if(animating || shadowNodeId != pcShadowGroup->getNodeId() || cameraNodeId != cam->getNodeId())
             timer.start(100);
         else if (shadowExtraRedraw) {
             shadowExtraRedraw = false;
@@ -4894,6 +4904,10 @@ void View3DInventorViewer::redrawShadow()
 
 void View3DInventorViewer::ShadowInfo::redraw()
 {
+    if (animating) {
+        timer.start(100);
+        return;
+    }
     timer.stop();
     SoCamera* cam = owner->getSoRenderManager()->getCamera();
     if(pcShadowGroup && pcShadowGroundSwitch && cam) {

@@ -192,6 +192,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Specifics the clipping distance for when rendering shadows.\n"\
                                        "You can increase the bounding box scale to avoid execessive\n"\
                                        "clipping of shadows when viewing up close in certain angle."))\
+    FC_VIEW_PARAM(ShadowTransparentShadow, bool, Bool, false, \
+        QT_TRANSLATE_NOOP("ViewParams","Whether to cast shadow from transparent objects."))\
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100, "") \
 
 #undef FC_VIEW_PARAM

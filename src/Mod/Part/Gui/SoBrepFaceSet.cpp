@@ -388,14 +388,20 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             }
         }
     }
+
+    bool shadowRendering = false;
     if (shapestyleflags & SoShapeStyleElement::SHADOWMAP) {
+        // We will be rendering transparent shadow below
+#if 0
         SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
                                                  SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
         if (transparent)
             return;
+#endif
         int style = SoShadowStyleElement::get(state);
         if (!(style & SoShadowStyleElement::CASTS_SHADOW))
             return;
+        shadowRendering = true;
     }
     //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -449,6 +455,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                     selected = 2;
             }
         }
+    }
+
+    if (shadowRendering) {
+        renderShape(action, ctx2, true, true);
+        return;
     }
 
     // If 'ShowSelectionOnTop' is enabled, and this node is selected, and we
@@ -628,13 +639,18 @@ struct PartDist {
 };
 static FC_COIN_THREAD_LOCAL std::vector<PartDist> SortedParts;
 
-void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp) 
+void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp, bool shadow) 
 {
     SoState *state = action->getState();
 
-    bool transparent = checkTransp 
-        && (SoShapeStyleElement::get(state)->getFlags() 
+    unsigned int shapestyleflags = SoShapeStyleElement::get(state)->getFlags();
+
+    bool transparent = checkTransp && (shapestyleflags
             & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL));
+
+    bool transpShadow = shadow && (shapestyleflags & 0x01000000);
+    if (transpShadow && !transparent)
+        return;
 
     if(transparent) {
         auto element = SoLazyElement::getInstance(state);
@@ -644,7 +660,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
         // In case not all faces are transparent, render opaque one first, with
         // depth test enabled
         if(!action->isRenderingTranspPaths()) {
-            if(SoMaterialBindingElement::get(state) != SoMaterialBindingElement::OVERALL) {
+            if(!transpShadow && SoMaterialBindingElement::get(state) != SoMaterialBindingElement::OVERALL) {
                 RenderIndices.clear();
                 int numparts = partIndex.getNum();
                 if(ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
@@ -663,21 +679,28 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
                     }
                 }
                 if(RenderIndices.size()) {
+                    // disable blending
+                    action->handleTransparency(false);
+
                     Gui::FCDepthFunc guard(GL_LEQUAL);
                     renderShape(action, true);
                 }
             }
+
             // Calling handleTransparency() here to get us queued in the
             // delayed transparency rendering paths
+            //
+            // Another usage of the following call with the patched Coin3D is
+            // to inform transparency on shadow map rendering
             action->handleTransparency(true);
         } 
-        
-        if(action->isRenderingDelayedPaths() || action->isRenderingTranspPaths()) {
+
+        if (transpShadow || action->isRenderingDelayedPaths() || action->isRenderingTranspPaths()) {
 
             // We perform our own "per part" face sorting to avoid artifacts in
             // transparent face rendering, where some triangle inside a part is
             // mis-sorted.
-            sortParts(state, ctx2, trans, numtrans);
+            sortParts(state, ctx2, trans, numtrans, shadow);
 
             RenderIndices.clear();
             for(auto &v : SortedParts)
@@ -685,10 +708,11 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
 
             if(RenderIndices.size()) {
                 // Calling handleTransparency() here will setup blending for us
-                action->handleTransparency(true);
-                renderShape(action,checkTransp);
+                if (!action->handleTransparency(true))
+                    renderShape(action,checkTransp);
             }
         }
+
     } else  if (ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
         RenderIndices.clear();
         for(auto &v : ctx2->selectionIndex) {
@@ -1085,9 +1109,9 @@ void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
     }
 }
 
-
-void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2, const float *trans, int numtrans) {
-
+void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2,
+                              const float *trans, int numtrans, bool shadow)
+{
     SortedParts.clear();
 
     if (coordIndex.getNum() < 3)
@@ -1121,11 +1145,14 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2, const float *t
             SortedParts.emplace_back(id,dist);
         }
     }
-    std::sort(SortedParts.begin(),SortedParts.end(),
-        [](const PartDist &a, const PartDist &b) {
-            return a.dist > b.dist;
-        }
-    );
+
+    if (!shadow) {
+        std::sort(SortedParts.begin(),SortedParts.end(),
+            [](const PartDist &a, const PartDist &b) {
+                return a.dist > b.dist;
+            }
+        );
+    }
 }
 
   // this macro actually makes the code below more readable  :-)

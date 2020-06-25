@@ -145,6 +145,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     FC_DRAW_STYLE_PARAM3(ShadowGroundTexture, fileName, setFileName)\
     FC_DRAW_STYLE_PARAM3(ShadowGroundBumpMap, fileName, setFileName)\
     FC_DRAW_STYLE_PARAM(ShadowGroundTextureSize, value, setValue)\
+    FC_DRAW_STYLE_PARAM(ShadowTransparentShadow, isChecked, setChecked)\
 
 #undef FC_DRAW_STYLE_PARAM
 #define FC_DRAW_STYLE_PARAM(_name, _getter, _setter) do {\
