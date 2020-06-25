@@ -823,7 +823,7 @@ QRectF DrawViewPart::getRect() const
 }
 
 //used to project a pt (ex SectionOrigin) onto paper plane
-Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
+Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
 //    Base::Console().Message("DVP::projectPoint()\n");
     Base::Vector3d stdOrg(0.0,0.0,0.0);
@@ -834,7 +834,9 @@ Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
     gp_Pnt2d prjPnt;
     projector.Project(gPt, prjPnt);
     Base::Vector3d result(prjPnt.X(),prjPnt.Y(), 0.0);
-    result = DrawUtil::invertY(result);
+    if (invert) {
+        result = DrawUtil::invertY(result);
+    }
     return result;
 }
 
