@@ -407,7 +407,7 @@ def handleWorkBook(theBook, sheetDict, Doc):
       #print('Sheet Name: ', refList[0])
       #print('Adress: ', adressList[0] + adressList[1])
       actSheet, sheetFile = sheetDict[refList[0]]
-      actSheet.setAlias(adressList[0]+adressList[1], aliasName.encode('utf8'))
+      actSheet.setAlias(adressList[0]+adressList[1], aliasName)
 
 def handleStrings(theStr, sList):
   print('process Strings: ')
