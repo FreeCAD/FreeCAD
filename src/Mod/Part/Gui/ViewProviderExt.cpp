@@ -488,11 +488,11 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         setHighlightedFaces(DiffuseColor.getValues());
     }else if(prop == &ShapeColor) {
         if(!ShapeColor.testStatus(App::Property::User3)) {
-            ShapeColor.setStatus(App::Property::User3,true);
+            Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                    App::Property::User3, &ShapeColor);
             ViewProviderGeometryObject::onChanged(prop);
             DiffuseColor.setValue(ShapeColor.getValue());
             updateColors();
-            ShapeColor.setStatus(App::Property::User3,false);
         }
         return;
     }
@@ -519,7 +519,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             ShapeMaterial.setContainer(parent);
 
             if(!prop->testStatus(App::Property::User3)) {
-                if(MapTransparency.getValue()) {
+                if(MapTransparency.getValue() || MappedColors.getSize()) {
                     updateColors();
                 } else{
                     Gui::SoUpdateVBOAction action;
@@ -1075,9 +1075,9 @@ void ViewProviderPartExt::setElementColors(const std::map<std::string,App::Color
     }
     if(colors!=MappedColors.getValues()) {
         touched = true;
-        MappedColors.setStatus(App::Property::User3,true);
+        Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                App::Property::User3, &MappedColors);
         MappedColors.setValues(colors);
-        MappedColors.setStatus(App::Property::User3,false);
     }
     if(subs.empty())
         propColoredElements->setValue(0);
@@ -1174,12 +1174,13 @@ void ViewProviderPartExt::reload()
         return;
 
     if (!PartParams::OverrideTessellation()) {
-        Deviation.setStatus(App::Property::User3, true);
+        Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
+                App::Property::User3, &Deviation);
+
         Deviation.setValue(PartParams::MeshDeviation());
-        Deviation.setStatus(App::Property::User3, false);
-        AngularDeflection.setStatus(App::Property::User3, true);
+        Base::ObjectStatusLocker<App::Property::Status,App::Property> guard2(
+                App::Property::User3, &AngularDeflection);
         AngularDeflection.setValue(PartParams::MeshAngularDeflection());
-        AngularDeflection.setStatus(App::Property::User3, false);
     }
     updateVisual();
 }
