@@ -788,6 +788,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
              BRepBndLib::Add((*it)->occEdge, testBox);
         }
     }
+    
 
     double xMin = 0,xMax = 0,yMin = 0,yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
@@ -814,8 +815,6 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     }
     vertexGeom = newVerts;
 }
-
-
 
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector3d v)
