@@ -131,7 +131,10 @@ class Writer(object):
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
-            Console.PrintMessage("Solver Elmer testmode, ElmerGrid will not be used. It might not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, ElmerGrid will not be used. "
+                "It might not be installed.\n"
+            )
         else:
             binary = settings.get_binary("ElmerGrid")
             if binary is None:
@@ -170,7 +173,10 @@ class Writer(object):
         tools.write_part_file()
         tools.write_geo()
         if self.testmode:
-            Console.PrintMessage("Solver Elmer testmode, Gmsh will not be used. It might not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, Gmsh will not be used. "
+                "It might not be installed.\n"
+            )
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:

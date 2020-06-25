@@ -126,7 +126,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_node_sets_constraints_planerotation(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_contact(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_tie(inpfileMain, self.split_inpfile)
-        self.write_surfaces_constraints_sectionprint(inpfileMain,  self.split_inpfile)
+        self.write_surfaces_constraints_sectionprint(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_transform(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_temperature(inpfileMain, self.split_inpfile)
 
