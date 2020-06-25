@@ -711,7 +711,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 self.draw_ext_overshoot(vobj)
 
             self.updateData(obj, "Start")
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "FontSize" and "FontSize" in properties
               and "ScaleMultiplier" in properties):
@@ -720,13 +720,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             if hasattr(self, "font3d"):
                 self.font3d.size = \
                     vobj.FontSize.Value * 10 * vobj.ScaleMultiplier
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "FontName" and "FontName" in properties
               and hasattr(self, "font") and hasattr(self, "font3d")):
             self.font.name = str(vobj.FontName)
             self.font3d.name = str(vobj.FontName)
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "LineColor" and "LineColor" in properties
               and hasattr(self, "color")):
@@ -743,21 +743,21 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
               and hasattr(self, "node") and hasattr(self, "p2")):
             self.remove_dim_arrows()
             self.draw_dim_arrows(vobj)
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "DimOvershoot"
               and "DimOvershoot" in properties
               and "ScaleMultiplier" in properties):
             self.remove_dim_overshoot()
             self.draw_dim_overshoot(vobj)
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "ExtOvershoot"
               and "ExtOvershoot" in properties
               and "ScaleMultiplier" in properties):
             self.remove_ext_overshoot()
             self.draw_ext_overshoot(vobj)
-            obj.touch()
+            # obj.touch()
 
         elif prop == "ShowLine" and "ShowLine" in properties:
             if vobj.ShowLine:
@@ -1191,7 +1191,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 self.draw_dim_arrows(vobj)
 
             self.updateData(obj, "Start")
-            obj.touch()
+            # obj.touch()
 
         elif prop == "FontSize" and "ScaleMultiplier" in properties:
             if hasattr(self, "font"):
@@ -1199,13 +1199,13 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
             if hasattr(self, "font3d"):
                 self.font3d.size = \
                     vobj.FontSize.Value * 10 * vobj.ScaleMultiplier
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "FontName"
               and hasattr(self, "font") and hasattr(self, "font3d")):
             self.font.name = str(vobj.FontName)
             self.font3d.name = str(vobj.FontName)
-            obj.touch()
+            # obj.touch()
 
         elif (prop == "LineColor" and "LineColor" in properties
               and hasattr(self, "color")):
@@ -1220,7 +1220,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
               and hasattr(self, "node") and hasattr(self, "p2")):
             self.remove_dim_arrows()
             self.draw_dim_arrows(vobj)
-            obj.touch()
+            # obj.touch()
         else:
             self.updateData(obj, None)
 
