@@ -170,7 +170,8 @@ def getPreferences():
         'SPLIT_LAYERS': p.GetBool("ifcSplitLayers",False),
         'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False),
         'ALLOW_INVALID': p.GetBool("ifcAllowInvalid",False),
-        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject",False)
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject",False),
+        'MULTICORE':p.GetInt("ifcMulticore",0)
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:
@@ -217,6 +218,10 @@ def insert(srcfile,docname,skip=[],only=[],root=None,preferences=None):
     # read preference settings
     if preferences is None:
         preferences = getPreferences()
+    
+    if preferences["MULTICORE"] and (not hasattr(srcfile,"by_guid")):
+        import importIFCmulticore
+        return importIFCmulticore.insert(srcfile,docname,preferences)
 
     try:
         import ifcopenshell

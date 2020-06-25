@@ -12,7 +12,10 @@ else:
 
 import ArchIFCSchema
 
-IfcTypes = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
+def uncamel(t):
+    return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
+
+IfcTypes = [uncamel(t) for t in ArchIFCSchema.IfcProducts.keys()]
 
 class IfcRoot:
     """This class defines the common methods and properties for managing IFC data.

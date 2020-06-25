@@ -44,7 +44,7 @@ __url__ = "http://www.freecadweb.org"
 #  This module provides tools to add materials to
 #  Arch objects
 
-def makeMaterial(name="Material"):
+def makeMaterial(name="Material",color=None,transparency=None):
 
     '''makeMaterial(name): makes an Material object'''
     if not FreeCAD.ActiveDocument:
@@ -56,6 +56,12 @@ def makeMaterial(name="Material"):
     if FreeCAD.GuiUp:
         _ViewProviderArchMaterial(obj.ViewObject)
     getMaterialContainer().addObject(obj)
+    if color:
+        obj.Color = color[:3]
+        if len(color) > 3:
+            obj.Transparency = color[3]*100
+    if transparency:
+        obj.Transparency = transparency
     return obj
 
 
