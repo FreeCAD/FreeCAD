@@ -424,6 +424,18 @@ void QGIView::draw()
     if (getViewObject() != nullptr) {
         x = Rez::guiX(getViewObject()->X.getValue());
         y = Rez::guiX(getViewObject()->Y.getValue());
+        if (getFrameState()) {
+            //+/- space for label if DPGI
+            TechDraw::DrawProjGroupItem* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+            if (dpgi != nullptr) {
+                double vertLabelSpace = Rez::guiX(Preferences::labelFontSizeMM());
+                if (y > 0) {
+                    y += vertLabelSpace;
+                } else if (y < 0) {
+                    y -= vertLabelSpace;
+                }
+            }
+        }
         setPosition(x, y);
     }
     if (isVisible()) {

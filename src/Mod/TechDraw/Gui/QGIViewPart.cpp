@@ -59,6 +59,7 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 //#include <Mod/TechDraw/App/Preferences.h>
