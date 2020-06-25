@@ -28,6 +28,8 @@
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
 
+#include <mutex>
+
 namespace Surface
 {
 
@@ -41,14 +43,22 @@ public:
 
     App::PropertyLinkSub Face;
     App::PropertyFloatConstraint Tolerance;
-    App::PropertyFloatConstraint ExtendU;
-    App::PropertyFloatConstraint ExtendV;
+    App::PropertyFloatConstraint ExtendUNeg;
+    App::PropertyFloatConstraint ExtendUPos;
+    App::PropertyBool            ExtendUSymetric;
+    App::PropertyFloatConstraint ExtendVNeg;
+    App::PropertyFloatConstraint ExtendVPos;
+    App::PropertyBool            ExtendVSymetric;
     App::PropertyIntegerConstraint SampleU;
     App::PropertyIntegerConstraint SampleV;
+    std::mutex lockOnChangeMutex;
 
     // recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+
+private:
+  virtual void onChanged(const App::Property* prop) override;
 };
 
 }//Namespace Surface
