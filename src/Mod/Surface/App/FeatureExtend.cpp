@@ -46,16 +46,61 @@ const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0,10.0,0.01}
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5,10.0,0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
+void Surface::Extend::onChanged(const App::Property* prop)
+{
+  // using a mutex and lock to protect a recursive calling when setting the new values
+  if (!lockOnChangeMutex.try_lock()) return;
+  lockOnChangeMutex.unlock();
+  std::lock_guard<std::mutex> lock(lockOnChangeMutex);
+
+  if ( ExtendUSymetric.getValue() )
+  {
+    if (prop->getName() == ExtendUNeg.getName()
+      || prop->getName() == ExtendUPos.getName())
+    {
+      auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+      if (changedValue)
+      {
+        ExtendUNeg.setValue(changedValue->getValue());
+        ExtendUPos.setValue(changedValue->getValue());
+      }
+    }
+  }
+  if (ExtendVSymetric.getValue())
+  {
+    if (prop->getName() == ExtendVNeg.getName()
+      || prop->getName() == ExtendVPos.getName())
+    {
+      auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+      if (changedValue)
+      {
+        ExtendVNeg.setValue(changedValue->getValue());
+        ExtendVPos.setValue(changedValue->getValue());
+      }
+    }
+  }
+  Part::Feature::onChanged(prop);
+}
+
 Extend::Extend()
 {
     ADD_PROPERTY(Face,(0));
     Face.setScope(App::LinkScope::Global);
     ADD_PROPERTY(Tolerance, (0.1));
     Tolerance.setConstraints(&ToleranceRange);
-    ADD_PROPERTY(ExtendU, (0.05));
-    ExtendU.setConstraints(&ExtendRange);
-    ADD_PROPERTY(ExtendV, (0.05));
-    ExtendV.setConstraints(&ExtendRange);
+    ADD_PROPERTY(ExtendUNeg, (0.05));
+    ExtendUNeg.setConstraints(&ExtendRange);
+    ADD_PROPERTY(ExtendUPos, (0.05));
+    ExtendUPos.setConstraints(&ExtendRange);
+    ADD_PROPERTY(ExtendUSymetric, (true));
+    
+    ADD_PROPERTY(ExtendVNeg, (0.05));
+    ExtendVNeg.setConstraints(&ExtendRange);
+    ADD_PROPERTY(ExtendVPos, (0.05));
+    ExtendVPos.setConstraints(&ExtendRange);
+    ExtendVSymetric.setValue(true);
+    ADD_PROPERTY(ExtendVSymetric, (true));
+
     ADD_PROPERTY(SampleU, (32));
     SampleU.setConstraints(&SampleRange);
     ADD_PROPERTY(SampleV, (32));
@@ -70,10 +115,14 @@ short Extend::mustExecute() const
 {
     if (Face.isTouched())
         return 1;
-    if (ExtendU.isTouched())
+    if (ExtendUNeg.isTouched())
         return 1;
-    if (ExtendV.isTouched())
+    if (ExtendUPos.isTouched())
+      return 1;
+    if (ExtendVNeg.isTouched())
         return 1;
+    if (ExtendVPos.isTouched())
+      return 1;
     return 0;
 }
 
@@ -100,10 +149,10 @@ App::DocumentObjectExecReturn *Extend::execute(void)
 
     double ur = u2 - u1;
     double vr = v2 - v1;
-    double eu1 = u1 - ur*ExtendU.getValue();
-    double eu2 = u2 + ur*ExtendU.getValue();
-    double ev1 = v1 - vr*ExtendV.getValue();
-    double ev2 = v2 + vr*ExtendV.getValue();
+    double eu1 = u1 - ur*ExtendUNeg.getValue();
+    double eu2 = u2 + ur*ExtendUPos.getValue();
+    double ev1 = v1 - vr*ExtendVNeg.getValue();
+    double ev2 = v2 + vr*ExtendVPos.getValue();
     double eur = eu2 - eu1;
     double evr = ev2 - ev1;
 
