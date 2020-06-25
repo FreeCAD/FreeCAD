@@ -348,6 +348,15 @@ class _Space(ArchComponent.Component):
                             objs.append((o.Object,el))
         obj.Boundaries = objs
 
+    def addObject(self,obj,child):
+
+        "Adds an object to this Space"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
     def getShape(self,obj):
 
         "computes a shape from a base shape and/or boundary faces"
@@ -358,8 +367,8 @@ class _Space(ArchComponent.Component):
         pl = obj.Placement
 
         #print("starting compute")
-        # 1: if we have a base shape, we use it
 
+        # 1: if we have a base shape, we use it
         if obj.Base:
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
@@ -379,6 +388,12 @@ class _Space(ArchComponent.Component):
                     else:
                         bb.add(b[0].Shape.BoundBox)
             if not bb:
+                # compute area even if we are not calculating the shape
+                if obj.Shape and obj.Shape.Solids:
+                    if hasattr(obj.Area,"Value"):
+                        a = self.getArea(obj)
+                        if obj.Area.Value != a:
+                            obj.Area = a
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print("created shape from boundbox")
