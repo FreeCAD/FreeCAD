@@ -155,8 +155,6 @@ def createProduct(ifcproduct,brep):
     else:
         obj = Arch.makeComponent()
     obj.Shape = shape
-    if ifcproduct.Name:
-        obj.Label = ifcproduct.Name
     objects[ifcproduct.id()] = obj
     setAttributes(obj,ifcproduct)
     setProperties(obj,ifcproduct)
@@ -171,6 +169,8 @@ def setAttributes(obj,ifcproduct):
     """sets the IFC attributes of a component"""
 
     ifctype = ArchIFC.uncamel(ifcproduct.is_a())
+    if ifcproduct.Name:
+        obj.Label = ifcproduct.Name
     if ifctype in ArchIFC.IfcTypes:
         obj.IfcType = ifctype
     for attr in dir(ifcproduct):
@@ -237,15 +237,7 @@ def createModelStructure(obj,ifcobj):
 
     global objects
 
-    parentlist = []
-    if hasattr(ifcobj,"ContainedInStructure"):
-        for rel in ifcobj.ContainedInStructure:
-            parentlist.append(rel.RelatingStructure)
-    elif hasattr(ifcobj,"Decomposes"):
-        for rel in ifcobj.Decomposes:
-            if rel.is_a("IfcRelAggregates"):
-                parentlist.append(rel.RelatingObject)
-    for parent in parentlist:
+    for parent in importIFCHelper.getParents(ifcobj):
         if not parent.id() in objects:
             if parent.is_a("IfcProject"):
                 parentobj = Arch.makeProject()
@@ -253,7 +245,6 @@ def createModelStructure(obj,ifcobj):
                 parentobj = Arch.makeSite()
             else:
                 parentobj = Arch.makeBuildingPart()
-            parentobj.Label = parent.Name
             setAttributes(parentobj,parent)
             setProperties(parentobj,parent)
             createModelStructure(parentobj,parent)

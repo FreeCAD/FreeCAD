@@ -880,3 +880,18 @@ def applyColorDict(doc,colordict=None):
                     obj.ViewObject.Transparency = color[3]
     else:
         print("No valid color dict to apply")
+
+
+def getParents(ifcobj):
+
+    """finds the parent entities of an IFC entity"""
+
+    parentlist = []
+    if hasattr(ifcobj,"ContainedInStructure"):
+        for rel in ifcobj.ContainedInStructure:
+            parentlist.append(rel.RelatingStructure)
+    elif hasattr(ifcobj,"Decomposes"):
+        for rel in ifcobj.Decomposes:
+            if rel.is_a("IfcRelAggregates"):
+                parentlist.append(rel.RelatingObject)
+    return parentlist
