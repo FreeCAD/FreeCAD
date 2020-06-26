@@ -32,6 +32,7 @@ import FreeCAD as App
 
 import DraftVecUtils
 import draftutils.utils as utils
+import draftutils.groups as u_groups
 import draftutils.gui_utils as gui_utils
 from draftutils.translate import translate
 
@@ -155,7 +156,7 @@ class Shape2DView(DraftObject):
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     import Arch, Part, Drawing
-                    objs = utils.get_group_contents(objs,walls=True)
+                    objs = u_groups.get_group_contents(objs, walls=True)
                     objs = gui_utils.remove_hidden(objs)
                     shapes = []
                     if hasattr(obj,"FuseArch") and obj.FuseArch:
@@ -246,7 +247,7 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = utils.get_group_contents(obj.Base)
+                objs = u_groups.get_group_contents(obj.Base)
                 for o in objs:
                     if hasattr(o,'Shape'):
                         if o.Shape:

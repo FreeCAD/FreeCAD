@@ -27,18 +27,12 @@ This module is obsolete, since Drawing was substituted by TechDraw.
 # \ingroup DRAFT
 # \brief This module provides the object code for the Draft DrawingView object.
 
-import math
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
-
-import DraftVecUtils
-
-from getSVG import getSVG
+import getSVG
 
 import draftutils.utils as utils
-
+import draftutils.groups as groups
 from draftobjects.base import DraftObject
 
 
@@ -105,16 +99,16 @@ class DrawingView(DraftObject):
                     svg = ""
                     shapes = []
                     others = []
-                    objs = utils.getGroupContents([obj.Source])
+                    objs = groups.get_group_contents([obj.Source])
                     for o in objs:
                         v = o.ViewObject.isVisible()
                         if hasattr(obj,"AlwaysOn"):
                             if obj.AlwaysOn:
                                 v = True
                         if v:
-                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
+                            svg += getSVG.getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
                 else:
-                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
+                    svg = getSVG.getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
                 result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '

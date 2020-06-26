@@ -28,8 +28,9 @@
 
 import FreeCAD as App
 
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+import draftutils.groups as groups
+import draftutils.gui_utils as gui_utils
 
 from draftmake.make_copy import make_copy
 from draftmake.make_line import make_line
@@ -59,8 +60,10 @@ def move(objectslist, vector, copy=False):
     The objects (or their copies) are returned.
     """
     utils.type_check([(vector, App.Vector), (copy,bool)], "move")
-    if not isinstance(objectslist, list): objectslist = [objectslist]
-    objectslist.extend(utils.get_movable_children(objectslist))
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+
+    objectslist.extend(groups.get_movable_children(objectslist))
     newobjlist = []
     newgroups = {}
     objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
@@ -103,7 +106,7 @@ def move(objectslist, vector, copy=False):
                 newobj = obj
             newobj.Position = obj.Position.add(real_vector)
 
-        elif utils.get_type(obj) == "Text":
+        elif utils.get_type(obj) in ("Text", "DraftText"):
             if copy:
                 newobj = make_copy(obj)
             else:
@@ -136,7 +139,7 @@ def move(objectslist, vector, copy=False):
 
         if newobj is not None:
             newobjlist.append(newobj)
-        
+
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -150,7 +153,8 @@ def move(objectslist, vector, copy=False):
         gui_utils.select(objectslist)
     else:
         gui_utils.select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
+    if len(newobjlist) == 1:
+        return newobjlist[0]
     return newobjlist
 
 
