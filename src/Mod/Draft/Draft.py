@@ -117,14 +117,6 @@ from draftutils.utils import is_clone
 from draftutils.utils import getCloneBase
 from draftutils.utils import get_clone_base
 
-from draftutils.utils import getGroupNames
-from draftutils.utils import get_group_names
-
-from draftutils.utils import ungroup
-
-from draftutils.utils import getGroupContents
-from draftutils.utils import get_group_contents
-
 from draftutils.utils import printShape
 from draftutils.utils import print_shape
 
@@ -138,9 +130,6 @@ from draftutils.utils import load_svg_patterns
 
 from draftutils.utils import svgpatterns
 from draftutils.utils import svg_patterns
-
-from draftutils.utils import getMovableChildren
-from draftutils.utils import get_movable_children
 
 from draftutils.utils import filter_objects_for_modifiers
 from draftutils.utils import filterObjectsForModifiers
@@ -185,6 +174,13 @@ from draftutils.gui_utils import select
 from draftutils.gui_utils import loadTexture
 from draftutils.gui_utils import load_texture
 
+from draftutils.groups import (get_group_names,
+                               getGroupNames,
+                               ungroup,
+                               get_group_contents,
+                               getGroupContents,
+                               get_movable_children,
+                               getMovableChildren)
 
 #---------------------------------------------------------------------------
 # Draft functions
