@@ -49,6 +49,17 @@ doc = run_ccx_cantilevernodeload("z88")
 
 """
 
+# use of generic method to run the examples
+# the string is the example module name
+"""
+from femexamples.manager import run_example as run
+
+doc = run("boxanalysis_static")
+doc = run("boxanalysis_frequency")
+
+...
+
+"""
 
 import FreeCAD
 
@@ -96,6 +107,23 @@ def run_analysis(doc, base_name, filepath=""):
 
     # save doc once again with results
     doc.save()
+
+
+def run_example(example, solver=None, base_name=None):
+
+    from importlib import import_module
+    module = import_module("femexamples." + example)
+    if hasattr(module, "setup"):
+        doc = getattr(module, "setup")()
+
+    if base_name is None:
+        base_name = example
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
 
 
 def run_boxanalysisstatic(solver=None, base_name=None):
