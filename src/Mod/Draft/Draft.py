@@ -78,9 +78,6 @@ from DraftLayer import Layer as _VisGroup
 from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
 from DraftLayer import makeLayer
 
-from draftutils.utils import convert_draft_texts
-from draftutils.utils import convertDraftTexts
-
 # ---------------------------------------------------------------------------
 # General functions
 # ---------------------------------------------------------------------------
@@ -416,7 +413,9 @@ from draftobjects.text import (Text,
                                DraftText)
 
 from draftmake.make_text import (make_text,
-                                 makeText)
+                                 makeText,
+                                 convert_draft_texts,
+                                 convertDraftTexts)
 
 if FreeCAD.GuiUp:
     from draftviewproviders.view_text import (ViewProviderText,

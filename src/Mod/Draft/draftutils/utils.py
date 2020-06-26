@@ -1146,38 +1146,6 @@ def is_closed_edge(edge_index, object):
 isClosedEdge = is_closed_edge
 
 
-def convert_draft_texts(textslist=[]):
-    """
-    converts the given Draft texts (or all that is found
-    in the active document) to the new object
-    This function was already present at splitting time during v 0.19
-    """
-    if not isinstance(textslist,list):
-        textslist = [textslist]
-    if not textslist:
-        for o in App.ActiveDocument.Objects:
-            if o.TypeId == "App::Annotation":
-                textslist.append(o)
-    todelete = []
-    for o in textslist:
-        l = o.Label
-        o.Label = l+".old"
-        obj = makeText(o.LabelText,point=o.Position)
-        obj.Label = l
-        todelete.append(o.Name)
-        for p in o.InList:
-            if p.isDerivedFrom("App::DocumentObjectGroup"):
-                if o in p.Group:
-                    g = p.Group
-                    g.append(obj)
-                    p.Group = g
-    for n in todelete:
-        App.ActiveDocument.removeObject(n)
-
-
-convertDraftTexts = convert_draft_texts
-
-
 def utf8_decode(text):
     r"""Decode the input string and return a unicode string.
 

@@ -154,3 +154,67 @@ def makeText(stringlist, point=App.Vector(0, 0, 0), screen=False):
     utils.use_instead("make_text")
 
     return make_text(stringlist, point, screen)
+
+
+def convert_draft_texts(textslist=None):
+    """Convert the given Annotation to a Draft text.
+
+    In the past, the `Draft Text` object didn't exist; text objects
+    were of type `App::Annotation`. This function was introduced
+    to convert those older objects to a `Draft Text` scripted object.
+
+    This function was already present at splitting time during v0.19.
+
+    Parameters
+    ----------
+    textslist: list of objects, optional
+        It defaults to `None`.
+        A list containing `App::Annotation` objects or a single of these
+        objects.
+        If it is `None` it will convert all objects in the current document.
+    """
+    _name = "convert_draft_texts"
+    utils.print_header(_name, "Convert Draft texts")
+
+    found, doc = utils.find_doc(App.activeDocument())
+    if not found:
+        _err(_tr("No active document. Aborting."))
+        return None
+
+    if not textslist:
+        textslist = list()
+        for obj in doc.Objects:
+            if obj.TypeId == "App::Annotation":
+                textslist.append(obj)
+
+    if not isinstance(textslist, list):
+        textslist = [textslist]
+
+    to_delete = []
+
+    for obj in textslist:
+        label = obj.Label
+        obj.Label = label + ".old"
+
+        # Create a new Draft Text object
+        new_obj = make_text(obj.LabelText, placement=obj.Position)
+        new_obj.Label = label
+        to_delete.append(obj)
+
+        # Move the new object to the group which contained the old object
+        for in_obj in obj.InList:
+            if in_obj.isDerivedFrom("App::DocumentObjectGroup"):
+                if obj in in_obj.Group:
+                    group = in_obj.Group
+                    group.append(new_obj)
+                    in_obj.Group = group
+
+    for obj in to_delete:
+        doc.removeObject(obj.Name)
+
+
+def convertDraftTexts(textslist=[]):
+    """Convert Text. DEPRECATED. Use 'convert_draft_texts'."""
+    utils.use_instead("convert_draft_texts")
+
+    return convert_draft_texts(textslist)
