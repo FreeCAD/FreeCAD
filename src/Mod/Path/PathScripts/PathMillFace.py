@@ -43,8 +43,12 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+DEBUG = False
+if DEBUG:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule()
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -196,9 +200,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             psZMin = planeshape.BoundBox.ZMin
             ofstShape = PathSurfaceSupport.extractFaceOffset(planeshape, self.tool.Diameter * 1.1, planeshape)
             ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
-            # custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)  # only an envelope
-            # ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
-            # ofstShapeEnv.translate(FreeCAD.Vector(0.0, 0.0, -0.5))
+
             custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.1, obj.FinalDepth.Value - 0.1)  # only an envelope
             ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
             env = ofstShapeEnv.cut(baseShape)
@@ -226,9 +228,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             obj.OpFinalDepth = job.Proxy.modelBoundBox(job).ZMax
 
             # If the operation has a geometry identified the Finaldepth
-            # is the top of the bboundbox which includes all features.
+            # is the top of the boundbox which includes all features.
             if len(obj.Base) >= 1:
-                obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
+                shapes = list()
+                for base, subs in obj.Base:
+                    for s in subs:
+                        shapes.append(getattr(base.Shape, s))
+                obj.OpFinalDepth = Part.makeCompound(shapes).BoundBox.ZMax
 
     def isPocket(self, b, f, w):
         e = w.Edges[0]
@@ -252,9 +258,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         eXMax = env.BoundBox.XMax
         eYMin = env.BoundBox.YMin
         eYMax = env.BoundBox.YMax
-        # eZMin = env.BoundBox.ZMin
         eZMin = faceZ
-        # eZMax = env.BoundBox.ZMax
 
         def isOverlap(fMn, fMx, eMn, eMx):
             if fMx > eMn:
@@ -276,7 +280,6 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             fXMax = face.BoundBox.XMax
             fYMin = face.BoundBox.YMin
             fYMax = face.BoundBox.YMax
-            # fZMin = face.BoundBox.ZMin
             fZMax = face.BoundBox.ZMax
 
             if fZMax > eZMin:
