@@ -66,7 +66,7 @@ UNITS = {
 CONSTS_DEF = {
     "Gravity": constants.gravity(),
     "StefanBoltzmann": constants.stefan_boltzmann(),
-    "PermittivityOfVacuum": constants.permittivity_of_vakuum(),
+    "PermittivityOfVacuum": constants.vacuum_permittivity(),
     "BoltzmannConstant": constants.boltzmann_constant(),
 }
 
@@ -91,8 +91,8 @@ def _getAllSubObjects(obj):
     return s
 
 
-def getConstant(name, dimension):
-    return convert(CONSTS_DEF[name], dimension)
+def getConstant(name, unit_dimension):
+    return convert(CONSTS_DEF[name], unit_dimension)
 
 
 class Writer(object):
