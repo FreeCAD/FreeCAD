@@ -31,23 +31,6 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.rectangle import Rectangle
-from draftobjects.point import Point
-from draftobjects.dimension import LinearDimension
-from draftobjects.wire import Wire
-from draftobjects.circle import Circle
-from draftobjects.polygon import Polygon
-from draftobjects.bspline import BSpline
-from draftobjects.block import Block
-
-
-if App.GuiUp:
-    from draftviewproviders.view_base import ViewProviderDraft
-    from draftviewproviders.view_base import ViewProviderDraftPart
-    from draftviewproviders.view_rectangle import ViewProviderRectangle
-    from draftviewproviders.view_point import ViewProviderPoint
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
-    from draftviewproviders.view_wire import ViewProviderWire
 
 
 def make_copy(obj, force=None, reparent=False, simple_copy=False):
@@ -78,6 +61,7 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
         _name = utils.get_real_name(obj.Name)
         newobj = App.ActiveDocument.addObject("Part::Feature", _name)
         newobj.Shape = obj.Shape
+        gui_utils.format_object(newobj, obj)
     elif not simple_copy and hasattr(obj, 'Shape'):
         newobj = App.ActiveDocument.copyObject(obj)
 
@@ -95,6 +79,5 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
                         if getattr(par, prop) == obj:
                             setattr(par, prop, newobj)
 
-    # gui_utils.format_object(newobj, obj) seems not necessary with copyObject()
     return newobj
     
