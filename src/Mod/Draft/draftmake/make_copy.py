@@ -50,7 +50,7 @@ if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
 
 
-def make_copy(obj, force=None, reparent=False):
+def make_copy(obj, force=None, reparent=False, simple_copy=False):
     """makeCopy(object, [force], [reparent])
     
     Make an exact copy of an object and return it.
@@ -61,140 +61,28 @@ def make_copy(obj, force=None, reparent=False):
         Object to copy.
 
     force :
-        TODO: Describe.
+        Obsolete, not used anymore.
 
     reparent :
-        TODO: Describe.
+        Group the new object in the same group of the old one.
+
+    simple_copy :
+        Create a simple copy of the object (a new non parametric 
+        Part::Feature with the same Shape as the given object).
     """
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if (utils.get_type(obj) == "Rectangle") or (force == "Rectangle"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Rectangle(newobj)
-        if App.GuiUp:
-            ViewProviderRectangle(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Point") or (force == "Point"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Point(newobj)
-        if App.GuiUp:
-            ViewProviderPoint(newobj.ViewObject)
-
-    elif (utils.get_type(obj) in ["Dimension", 
-            "LinearDimension"]) or (force == "Dimension"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        LinearDimension(newobj)
-        if App.GuiUp:
-            ViewProviderLinearDimension(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Wire") or (force == "Wire"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Wire(newobj)
-        if App.GuiUp:
-            ViewProviderWire(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Circle") or (force == "Circle"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Circle(newobj)
-        if App.GuiUp:
-            ViewProviderDraft(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Polygon") or (force == "Polygon"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Polygon(newobj)
-        if App.GuiUp:
-            ViewProviderDraft(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "BSpline") or (force == "BSpline"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        BSpline(newobj)
-        if App.GuiUp:
-            ViewProviderWire(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Block") or (force == "BSpline"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        Block(newobj)
-        if App.GuiUp:
-            ViewProviderDraftPart(newobj.ViewObject)
-            
-    # drawingview became obsolete with v 0.19
-    # TODO: uncomment after splitting DrawingView object from draft py
-
-    #elif (utils.get_type(obj) == "DrawingView") or (force == "DrawingView"):
-    #_name = utils.get_real_name(obj.Name)
-    #newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-    #DrawingView(newobj)
-
-    elif (utils.get_type(obj) == "Structure") or (force == "Structure"):
-        import ArchStructure
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        ArchStructure._Structure(newobj)
-        if App.GuiUp:
-            ArchStructure._ViewProviderStructure(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Wall") or (force == "Wall"):
-        import ArchWall
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        ArchWall._Wall(newobj)
-        if App.GuiUp:
-            ArchWall._ViewProviderWall(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Window") or (force == "Window"):
-        import ArchWindow
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        ArchWindow._Window(newobj)
-        if App.GuiUp:
-            ArchWindow._ViewProviderWindow(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Panel") or (force == "Panel"):
-        import ArchPanel
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject(obj.TypeId, _name)
-        ArchPanel._Panel(newobj)
-        if App.GuiUp:
-            ArchPanel._ViewProviderPanel(newobj.ViewObject)
-
-    elif (utils.get_type(obj) == "Sketch") or (force == "Sketch"):
-        _name = utils.get_real_name(obj.Name)
-        newobj = App.ActiveDocument.addObject("Sketcher::SketchObject", _name)
-        for geo in obj.Geometry:
-            newobj.addGeometry(geo)
-        for con in obj.Constraints:
-            newobj.addConstraint(con)
-
-    elif hasattr(obj, 'Shape'):
+    if simple_copy and hasattr(obj, 'Shape'):
         _name = utils.get_real_name(obj.Name)
         newobj = App.ActiveDocument.addObject("Part::Feature", _name)
         newobj.Shape = obj.Shape
+    elif not simple_copy and hasattr(obj, 'Shape'):
+        newobj = App.ActiveDocument.copyObject(obj)
 
-    else:
-        print("Error: Object type cannot be copied")
+    if not newobj:
         return None
-
-    for p in obj.PropertiesList:
-        if not p in ["Proxy", "ExpressionEngine"]:
-            if p in newobj.PropertiesList:
-                if not "ReadOnly" in newobj.getEditorMode(p):
-                    try:
-                        setattr(newobj, p, obj.getPropertyByName(p))
-                    except AttributeError:
-                        try:
-                            setattr(newobj, p, obj.getPropertyByName(p).Value)
-                        except AttributeError:
-                            pass
 
     if reparent:
         parents = obj.InList
@@ -202,11 +90,11 @@ def make_copy(obj, force=None, reparent=False):
             for par in parents:
                 if par.isDerivedFrom("App::DocumentObjectGroup"):
                     par.addObject(newobj)
-                else:
+                else: # Carlo: when is it used?
                     for prop in par.PropertiesList:
                         if getattr(par, prop) == obj:
                             setattr(par, prop, newobj)
 
-    gui_utils.format_object(newobj, obj)
+    # gui_utils.format_object(newobj, obj) seems not necessary with copyObject()
     return newobj
     
