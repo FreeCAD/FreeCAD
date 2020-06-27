@@ -186,7 +186,14 @@ class Draft_SelectPlane:
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1:
             sel = sel[0]
-            if Draft.getType(sel.Object) == "Axis":
+            if hasattr(sel.Object, 'TypeId') and sel.Object.TypeId == 'App::Part':
+                FreeCAD.DraftWorkingPlane.setFromPlacement(sel.Object.getGlobalPlacement(), rebase=True)
+                FreeCAD.DraftWorkingPlane.weak = False
+                self.display(FreeCAD.DraftWorkingPlane.axis)
+                self.wpButton.setText(sel.Object.Label)
+                self.wpButton.setToolTip(translate("draft", "Current working plane")+": " + self.wpButton.text())
+                return True
+            elif Draft.getType(sel.Object) == "Axis":
                 FreeCAD.DraftWorkingPlane.alignToEdges(sel.Object.Shape.Edges)
                 self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
@@ -274,6 +281,7 @@ class Draft_SelectPlane:
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
         elif sel:
+            # try to setup the working plane for 3 vertexes
             subs = []
             import Part
             for s in sel:
