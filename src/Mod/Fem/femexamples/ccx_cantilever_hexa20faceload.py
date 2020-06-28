@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +21,44 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
+# to run the example use:
 """
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
-
-
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
-
-
-def vacuum_permittivity():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
-
-
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+from femexamples.ccx_cantilever_hexa20faceload import setup
+setup()
 
 """
 
-# TODO: a unit test to be sure these values are returned!
+import FreeCAD
+
+import Fem
+
+from . import ccx_cantilever_faceload as faceload
+
+mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+
+
+def init_doc(doc=None):
+    if doc is None:
+        doc = FreeCAD.newDocument()
+    return doc
+
+
+def setup(doc=None, solvertype="ccxtools"):
+    doc = faceload.setup(doc, solvertype)
+
+    # load the hexa20 mesh
+    from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
+    fem_mesh = Fem.FemMesh()
+    control = create_nodes(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
+    control = create_elements(fem_mesh)
+    if not control:
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
+
+    # overwrite mesh with the hexa20 mesh
+    doc.getObject(mesh_name).FemMesh = fem_mesh
+
+    doc.recompute()
+    return doc

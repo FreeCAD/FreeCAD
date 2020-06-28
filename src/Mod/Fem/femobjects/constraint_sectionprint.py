@@ -2,7 +2,7 @@
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
+
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -20,40 +20,26 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM constraint section print document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
+
+## @package constraint_sectionprint
+#  \ingroup FEM
+#  \brief constraint section print object
+
+from . import base_fempythonobject
 
 
-def gravity():
-    return "9.82 m/s^2"
+class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
+    """
+    The FemConstraintSectionPrint object
+    """
 
+    Type = "Fem::ConstraintSectionPrint"
 
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
+    def __init__(self, obj):
+        super(ConstraintSectionPrint, self).__init__(obj)
 
-
-def vacuum_permittivity():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
-
-
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+        pass

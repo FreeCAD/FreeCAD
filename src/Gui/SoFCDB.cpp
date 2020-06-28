@@ -140,6 +140,7 @@ void Gui::SoFCDB::init()
     PropertyAngleItem               ::init();
     PropertyBoolItem                ::init();
     PropertyVectorItem              ::init();
+    PropertyVectorListItem          ::init();
     PropertyVectorDistanceItem      ::init();
     PropertyPositionItem            ::init();
     PropertyDirectionItem           ::init();

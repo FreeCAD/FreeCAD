@@ -178,6 +178,17 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         self.do_activated = "add_obj_on_gui_set_edit"
 
 
+class _ConstraintSectionPrint(CommandManager):
+    "The FEM_ConstraintSectionPrint command definition"
+
+    def __init__(self):
+        super(_ConstraintSectionPrint, self).__init__()
+        self.menuetext = "Constraint sectionprint"
+        self.tooltip = "Creates a FEM constraint sectionprint"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
 class _ConstraintSelfWeight(CommandManager):
     "The FEM_ConstraintSelfWeight command definition"
 
@@ -791,6 +802,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintInitialFlowVelocity",
     _ConstraintInitialFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintSectionPrint",
+    _ConstraintSectionPrint()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintSelfWeight",

@@ -290,6 +290,9 @@ class AnalysisMember():
         self.cons_pressure = self.get_several_member(
             "Fem::ConstraintPressure"
         )
+        self.cons_sectionprint = self.get_several_member(
+            "Fem::ConstraintSectionPrint"
+        )
         self.cons_selfweight = self.get_several_member(
             "Fem::ConstraintSelfWeight"
         )

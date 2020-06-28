@@ -20,40 +20,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
-"""
-
-
-__title__ = "Constants"
+__title__ = "FreeCAD FEM constraint section print ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package view_constraint_sectionprint
+#  \ingroup FEM
+#  \brief view provider for constraint section print object
 
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
-
-
-def vacuum_permittivity():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
+from femtaskpanels import task_constraint_sectionprint
+from . import view_base_femconstraint
 
 
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
+class VPConstraintSectionPrint(view_base_femconstraint.VPBaseFemConstraint):
+    """
+    A View Provider for the ConstraintSectionPrint object
+    """
 
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
-
-"""
-
-# TODO: a unit test to be sure these values are returned!
+    def setEdit(self, vobj, mode=0):
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+            self,
+            vobj,
+            mode,
+            task_constraint_sectionprint._TaskPanel
+        )

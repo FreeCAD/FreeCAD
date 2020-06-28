@@ -60,6 +60,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/DlgPropertyLink.h>
 #include <Gui/QuantitySpinBox.h>
+#include <Gui/VectorListEditor.h>
 
 #include "PropertyItem.h"
 #include "PropertyView.h"
@@ -1421,6 +1422,119 @@ void PropertyVectorItem::propertyBound()
     m_x->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("x"));
     m_y->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("y"));
     m_z->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("z"));
+}
+
+// ---------------------------------------------------------------
+
+VectorListButton::VectorListButton(int decimals, QWidget * parent)
+    : LabelButton(parent)
+    , decimals(decimals)
+{
+}
+
+VectorListButton::~VectorListButton()
+{
+}
+
+void VectorListButton::browse()
+{
+    VectorListEditor dlg(decimals, Gui::getMainWindow());
+    dlg.setValues(value().value<QList<Base::Vector3d>>());
+    if (dlg.exec() == QDialog::Accepted) {
+        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg.getValues());
+        setValue(data);
+    }
+}
+
+void VectorListButton::showValue(const QVariant& d)
+{
+    QLocale loc;
+    QString data;
+    const QList<Base::Vector3d>& value = d.value<QList<Base::Vector3d>>();
+    if (value.isEmpty()) {
+        data = QString::fromLatin1("[]");
+    }
+    else {
+        data = QString::fromLatin1("[%1 %2 %3], ...")
+            .arg(loc.toString(value[0].x, 'f', 2),
+                 loc.toString(value[0].y, 'f', 2),
+                 loc.toString(value[0].z, 'f', 2));
+    }
+    getLabel()->setText(data);
+}
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
+
+PropertyVectorListItem::PropertyVectorListItem()
+{
+}
+
+QVariant PropertyVectorListItem::toString(const QVariant& prop) const
+{
+    QLocale loc;
+    QString data;
+    const QList<Base::Vector3d>& value = prop.value<QList<Base::Vector3d>>();
+    if (value.isEmpty()) {
+        data = QString::fromLatin1("[]");
+    }
+    else {
+        data = QString::fromLatin1("[%1 %2 %3], ...")
+            .arg(loc.toString(value[0].x, 'f', 2),
+                 loc.toString(value[0].y, 'f', 2),
+                 loc.toString(value[0].z, 'f', 2));
+    }
+
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    return QVariant(data);
+}
+
+QVariant PropertyVectorListItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVectorList::getClassTypeId()));
+
+    const std::vector<Base::Vector3d>& value = static_cast<const App::PropertyVectorList*>(prop)->getValue();
+    QList<Base::Vector3d> list;
+    std::copy(value.begin(), value.end(), std::back_inserter(list));
+    return QVariant::fromValue<QList<Base::Vector3d>>(list);
+}
+
+void PropertyVectorListItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert<QList<Base::Vector3d>>())
+        return;
+    const QList<Base::Vector3d>& val = value.value<QList<Base::Vector3d>>();
+    QString data;
+    QTextStream str(&data);
+    str << "[";
+    for (const auto& it : val) {
+        str << QString::fromLatin1("(%1, %2, %3), ")
+               .arg(it.x,0,'f',decimals())
+               .arg(it.y,0,'f',decimals())
+               .arg(it.z,0,'f',decimals());
+    }
+    str << "]";
+    setPropertyValue(data);
+}
+
+QWidget* PropertyVectorListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    VectorListButton *pe = new VectorListButton(decimals(), parent);
+    QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
+    pe->setDisabled(isReadOnly());
+    return pe;
+}
+
+void PropertyVectorListItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    pe->setValue(data);
+}
+
+QVariant PropertyVectorListItem::editorData(QWidget *editor) const
+{
+    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    return pe->value();
 }
 
 // ---------------------------------------------------------------

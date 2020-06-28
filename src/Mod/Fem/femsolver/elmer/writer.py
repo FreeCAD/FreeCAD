@@ -66,7 +66,7 @@ UNITS = {
 CONSTS_DEF = {
     "Gravity": constants.gravity(),
     "StefanBoltzmann": constants.stefan_boltzmann(),
-    "PermittivityOfVacuum": constants.permittivity_of_vakuum(),
+    "PermittivityOfVacuum": constants.vacuum_permittivity(),
     "BoltzmannConstant": constants.boltzmann_constant(),
 }
 
@@ -91,8 +91,8 @@ def _getAllSubObjects(obj):
     return s
 
 
-def getConstant(name, dimension):
-    return convert(CONSTS_DEF[name], dimension)
+def getConstant(name, unit_dimension):
+    return convert(CONSTS_DEF[name], unit_dimension)
 
 
 class Writer(object):
@@ -131,7 +131,10 @@ class Writer(object):
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
-            Console.PrintMessage("We are in testmode ElmerGrid may not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, ElmerGrid will not be used. "
+                "It might not be installed.\n"
+            )
         else:
             binary = settings.get_binary("ElmerGrid")
             if binary is None:
@@ -170,7 +173,10 @@ class Writer(object):
         tools.write_part_file()
         tools.write_geo()
         if self.testmode:
-            Console.PrintMessage("We are in testmode, Gmsh may not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, Gmsh will not be used. "
+                "It might not be installed.\n"
+            )
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:

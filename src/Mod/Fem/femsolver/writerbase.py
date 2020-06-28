@@ -68,6 +68,7 @@ class FemInputWriter():
         self.initialtemperature_objects = member.cons_initialtemperature
         self.planerotation_objects = member.cons_planerotation
         self.pressure_objects = member.cons_pressure
+        self.sectionprint_objects = member.cons_sectionprint
         self.selfweight_objects = member.cons_selfweight
         self.temperature_objects = member.cons_temperature
         self.tie_objects = member.cons_tie

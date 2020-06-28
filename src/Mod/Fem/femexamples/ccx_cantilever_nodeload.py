@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,40 +21,48 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of natural constants for the Fem module.
 
-This module contains natural constants for the Fem module.
-All constants are in SI units.
+# to run the example use:
 """
-
-
-__title__ = "Constants"
-__author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
-
-
-def gravity():
-    return "9.82 m/s^2"
-
-
-def stefan_boltzmann():
-    return "5.67e-8 W/(m^2*K^4)"
-
-
-def vacuum_permittivity():
-    # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
-    return "8.8542e-12 s^4*A^2 / (m^3*kg)"
-
-
-def boltzmann_constant():
-    return "1.3807e-23 J/K"
-
-
-"""
-from FreeCAD import Units
-from femtools import constants
-Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+from femexamples.ccx_cantilever_nodeload import setup
+setup()
 
 """
 
-# TODO: a unit test to be sure these values are returned!
+import FreeCAD
+
+import ObjectsFem
+
+from .ccx_cantilever_faceload import setup_cantileverbase
+
+mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
+
+
+def init_doc(doc=None):
+    if doc is None:
+        doc = FreeCAD.newDocument()
+    return doc
+
+
+def setup(doc=None, solvertype="ccxtools"):
+    # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
+
+    doc = setup_cantileverbase(doc, solvertype)
+
+    # force_constraint
+    force_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    )[0]
+    # should be possible in one tuple too
+    force_constraint.References = [
+        (doc.Box, "Vertex5"),
+        (doc.Box, "Vertex6"),
+        (doc.Box, "Vertex7"),
+        (doc.Box, "Vertex8")
+    ]
+    force_constraint.Force = 9000000.0
+    force_constraint.Direction = (doc.Box, ["Edge5"])
+    force_constraint.Reversed = True
+
+    doc.recompute()
+    return doc

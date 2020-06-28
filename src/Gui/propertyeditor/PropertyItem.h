@@ -44,6 +44,7 @@
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
+Q_DECLARE_METATYPE(QList<Base::Vector3d>)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -463,6 +464,44 @@ private:
     PropertyFloatItem* m_x;
     PropertyFloatItem* m_y;
     PropertyFloatItem* m_z;
+};
+
+class VectorListButton : public Gui::LabelButton
+{
+    Q_OBJECT
+
+public:
+    VectorListButton(int decimals, QWidget * parent = 0);
+    ~VectorListButton();
+
+private:
+    void browse();
+    void showValue(const QVariant& d);
+
+private:
+    int decimals;
+};
+
+/**
+ * Edit properties of vector list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyVectorListItem : public PropertyItem
+{
+    Q_OBJECT
+    PROPERTYITEM_HEADER
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyVectorListItem();
 };
 
 /**

@@ -224,6 +224,9 @@ public:
     virtual void Paste(const Property &from) override;
 
     virtual unsigned int getMemSize (void) const override;
+    const char* getEditorName(void) const override {
+        return "Gui::PropertyEditor::PropertyVectorListItem";
+    }
 
 protected:
     Base::Vector3d getPyValue(PyObject *) const override;

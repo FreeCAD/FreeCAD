@@ -283,6 +283,21 @@ def makeConstraintTransform(
     return obj
 
 
+def makeConstraintSectionPrint(
+    doc,
+    name="ConstraintSectionPrint"
+):
+    """makeConstraintSectionPrint(document, [name]):
+    creates an section print object to evaluate forces and moments of defined face"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_sectionprint
+    constraint_sectionprint.ConstraintSectionPrint(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_sectionprint
+        view_constraint_sectionprint.VPConstraintSectionPrint(obj.ViewObject)
+    return obj
+
+
 # ********* element definition objects ***********************************************************
 def makeElementFluid1D(
     doc,
