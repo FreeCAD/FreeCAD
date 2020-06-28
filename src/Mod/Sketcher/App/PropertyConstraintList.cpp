@@ -61,6 +61,7 @@ PropertyConstraintList::PropertyConstraintList()
   : validGeometryKeys(0)
   , invalidGeometry(true)
   , restoreFromTransaction(false)
+  , invalidIndices(false)
 {
 
 }
@@ -398,6 +399,41 @@ bool PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
     }
 
     return invalidGeometry;
+}
+
+bool PropertyConstraintList::checkConstraintIndices(int geomax, int geomin)
+{
+    int mininternalgeoid = std::numeric_limits<int>::max();
+    int maxinternalgeoid = Constraint::GeoUndef;
+
+    auto cmin = [] (int previousmin, int cindex) {
+        if( cindex == Constraint::GeoUndef )
+            return previousmin;
+
+        return ( cindex < previousmin )? cindex : previousmin;
+    };
+
+    auto cmax = [] (int previousmax, int cindex) {
+        return ( cindex > previousmax )? cindex : previousmax;
+    };
+
+    for (const auto &v : _lValueList) {
+
+        mininternalgeoid = cmin(mininternalgeoid, v->First);
+        mininternalgeoid = cmin(mininternalgeoid, v->Second);
+        mininternalgeoid = cmin(mininternalgeoid, v->Third);
+
+        maxinternalgeoid = cmax(maxinternalgeoid, v->First);
+        maxinternalgeoid = cmax(maxinternalgeoid, v->Second);
+        maxinternalgeoid = cmax(maxinternalgeoid, v->Third);
+    }
+
+    if(maxinternalgeoid > geomax || mininternalgeoid < geomin)
+        invalidIndices = true;
+    else
+        invalidIndices = false;
+
+    return invalidIndices;
 }
 
 /*!
