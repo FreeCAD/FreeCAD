@@ -220,7 +220,8 @@ def export(exportList,filename,tessellation=1,colors=None):
     defaultmat = None
     objind = 0
     scenenodes = []
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     for obj in objectslist:
         findex = numpy.array([])
