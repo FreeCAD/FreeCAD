@@ -147,7 +147,8 @@ class TestObjectOpen(unittest.TestCase):
             doc.ConstraintBodyHeatSource.ViewObject.Proxy.__class__
         )
 
-        from femviewprovider.view_constraint_electrostaticpotential import VPConstraintElectroStaticPotential
+        from femviewprovider.view_constraint_electrostaticpotential \
+            import VPConstraintElectroStaticPotential
         self.assertEqual(
             VPConstraintElectroStaticPotential,
             doc.ConstraintElectrostaticPotential.ViewObject.Proxy.__class__
@@ -159,7 +160,8 @@ class TestObjectOpen(unittest.TestCase):
             doc.ConstraintFlowVelocity.ViewObject.Proxy.__class__
         )
 
-        from femviewprovider.view_constraint_initialflowvelocity import VPConstraintInitialFlowVelocity
+        from femviewprovider.view_constraint_initialflowvelocity \
+            import VPConstraintInitialFlowVelocity
         self.assertEqual(
             VPConstraintInitialFlowVelocity,
             doc.ConstraintInitialFlowVelocity.ViewObject.Proxy.__class__

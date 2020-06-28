@@ -461,7 +461,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         return g
 
     def touchChildren(self,obj):
-        
+
         "Touches all descendents where applicable"
 
         for child in obj.Group:
@@ -471,6 +471,15 @@ class BuildingPart(ArchIFC.IfcProduct):
                     child.Proxy.execute(child)
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
+
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
 
 
 class ViewProviderBuildingPart:

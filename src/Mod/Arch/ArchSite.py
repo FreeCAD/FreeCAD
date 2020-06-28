@@ -799,6 +799,16 @@ class _Site(ArchIFC.IfcProduct):
         if obj.AdditionVolume.Value != addvol:
             obj.AdditionVolume = addvol
 
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
+
 class _ViewProviderSite:
     """A View Provider for the Site object.
 

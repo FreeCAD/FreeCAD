@@ -340,11 +340,24 @@ def buildRelMaterialColors(ifcfile, prodrepr):
     pass
 
 
+def getColorFromMaterial(material):
+
+    if material.HasRepresentation:
+        rep = material.HasRepresentation[0]
+        if hasattr(rep,"Representations") and rep.Representations:
+            rep = rep.Representations[0]
+            if rep.is_a("IfcStyledRepresentation"):
+                return getColorFromStyledItem(rep)
+    return None
+
+
 def getColorFromStyledItem(styled_item):
 
     # styled_item should be a IfcStyledItem
+    if styled_item.is_a("IfcStyledRepresentation"):
+        styled_item = styled_item.Items[0]
+    
     if not styled_item.is_a("IfcStyledItem"):
-        print("Not a IfcStyledItem passed.")
         return None
 
     rgb_color = None
@@ -867,3 +880,18 @@ def applyColorDict(doc,colordict=None):
                     obj.ViewObject.Transparency = color[3]
     else:
         print("No valid color dict to apply")
+
+
+def getParents(ifcobj):
+
+    """finds the parent entities of an IFC entity"""
+
+    parentlist = []
+    if hasattr(ifcobj,"ContainedInStructure"):
+        for rel in ifcobj.ContainedInStructure:
+            parentlist.append(rel.RelatingStructure)
+    elif hasattr(ifcobj,"Decomposes"):
+        for rel in ifcobj.Decomposes:
+            if rel.is_a("IfcRelAggregates"):
+                parentlist.append(rel.RelatingObject)
+    return parentlist
