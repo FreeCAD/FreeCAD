@@ -101,7 +101,7 @@ def make_dimension(p1, p2, p3=None, p4=None):
         p3 = p4
         if not p3:
             # When used from the GUI command, this will never run
-            # because p4 will always be assinged to a vector,
+            # because p4 will always be assigned to a vector,
             # so p3 will never be `None`.
             # Moreover, `new_obj.Base` doesn't exist, and certainly `Shape`
             # doesn't exist, so if this ever runs it will be an error.
@@ -522,7 +522,7 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
     angles: list of two floats, optional
         It defaults to `[0, 90]`.
         It is a list of two angles, given in degrees, that determine
-        the apperture of the dimension line, that is, of the circular arc.
+        the aperture of the dimension line, that is, of the circular arc.
         It is drawn counter-clockwise.
         ::
             angles = [0 90]

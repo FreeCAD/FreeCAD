@@ -392,7 +392,7 @@ def measure_one_obj_edge(obj, subelement, dim_point, diameter=False):
             dim_line = dim_point.sub(center)
 
             # The ray is projected to the plane on which the circle lies,
-            # but if the projection is not succesful, try in the other planes
+            # but if the projection is not successful, try in the other planes
             ray = dim_line.projectToPlane(App.Vector(0, 0, 0), axis)
 
             if ray.Length == 0:
