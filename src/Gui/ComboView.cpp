@@ -148,8 +148,8 @@ void ComboView::changeEvent(QEvent *e)
 
 void ComboView::on_current_tab_changed(int index)
 {
-  if (index == taskIndex) return;
-  oldTabIndex = index;
+    if (index == taskIndex) return;
+    oldTabIndex = index;
 }
 
 #include "moc_ComboView.cpp"
