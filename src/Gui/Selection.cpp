@@ -928,7 +928,8 @@ void SelectionSingleton::rmvSelectionGate(void)
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             Gui::MDIView* mdi = doc->getActiveView();
-            mdi->restoreOverrideCursor();
+            if (mdi)
+                mdi->restoreOverrideCursor();
         }
     }
 }
