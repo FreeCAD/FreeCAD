@@ -4204,7 +4204,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             clistTmp.reserve(clist.size());
             for (std::vector<Constraint *>::iterator constr=clist.begin();
                 constr != clist.end(); ++constr) {
-                if (skipped.count(*constr) == 0)
+                if ((*constr)->isDriving() && skipped.count(*constr) == 0)
                     clistTmp.push_back(*constr);
             }
 
