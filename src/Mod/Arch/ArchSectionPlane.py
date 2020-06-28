@@ -73,7 +73,7 @@ def makeSectionPlane(objectslist=None,name="Section"):
     if objectslist:
         obj.Objects = objectslist
         bb = FreeCAD.BoundBox()
-        for o in Draft.getGroupContents(objectslist):
+        for o in Draft.get_group_contents(objectslist):
             if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
                 bb.add(o.Shape.BoundBox)
         obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()
@@ -132,7 +132,7 @@ def getSectionData(source):
     p = FreeCAD.Placement(source.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
     if objs:
-        objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
+        objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
     return objs,cutplane,onlySolids,clip,direction
 
 
@@ -1079,7 +1079,8 @@ class _ViewProviderSectionPlane:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Objects,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Objects,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -1376,7 +1377,7 @@ class SectionPlaneTaskPanel:
     def getBB(self):
         bb = FreeCAD.BoundBox()
         if self.obj:
-            for o in Draft.getGroupContents(self.obj.Objects):
+            for o in Draft.get_group_contents(self.obj.Objects):
                 if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
                     bb.add(o.Shape.BoundBox)
         return bb

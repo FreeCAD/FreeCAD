@@ -444,7 +444,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        for child in Draft.getGroupContents(obj):
+        for child in Draft.get_group_contents(obj):
             if hasattr(child,'Shape'):
                 shapes.extend(child.Shape.Faces)
         return shapes
@@ -653,7 +653,7 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        for child in Draft.getGroupContents(obj):
+        for child in Draft.get_group_contents(obj):
             if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
                 if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
@@ -739,7 +739,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -764,7 +765,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
@@ -779,7 +781,7 @@ class ViewProviderBuildingPart:
         if self.clip:
             sg.removeChild(self.clip)
             self.clip = None
-        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
             if hasattr(o.ViewObject,"Lighting"):
                 o.ViewObject.Lighting = "Two side"
         return True

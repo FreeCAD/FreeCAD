@@ -692,7 +692,7 @@ def download(url,force=False):
 
 def check(objectslist,includehidden=False):
     """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
-    objs = Draft.getGroupContents(objectslist)
+    objs = Draft.get_group_contents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
     bad = []

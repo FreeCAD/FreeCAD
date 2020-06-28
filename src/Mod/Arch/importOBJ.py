@@ -162,7 +162,8 @@ def export(exportList,filename,colors=None):
     outfile.write("# http://www.freecadweb.org\n")
     offsetv = 1
     offsetvn = 1
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     filenamemtl = filename[:-4] + ".mtl"
     materials = []

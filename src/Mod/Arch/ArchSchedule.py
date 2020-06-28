@@ -200,7 +200,7 @@ class _ArchSchedule:
                     # remove object itself if the object is a group
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
-                objs = Draft.getGroupContents(objs)
+                objs = Draft.get_group_contents(objs)
                 objs = Arch.pruneIncluded(objs,strict=True)
                 # remove the schedule object and its result from the list
                 objs = [o for o in objs if not o == obj]
