@@ -58,7 +58,7 @@ public:
     short mustExecute() const;
 
 private:
-  virtual void onChanged(const App::Property* prop) override;
+    virtual void onChanged(const App::Property* prop) override;
 };
 
 }//Namespace Surface
