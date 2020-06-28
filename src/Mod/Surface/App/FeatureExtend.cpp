@@ -48,38 +48,38 @@ PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
 void Surface::Extend::onChanged(const App::Property* prop)
 {
-  // using a mutex and lock to protect a recursive calling when setting the new values
-  if (!lockOnChangeMutex.try_lock()) return;
-  lockOnChangeMutex.unlock();
-  std::lock_guard<std::mutex> lock(lockOnChangeMutex);
+    // using a mutex and lock to protect a recursive calling when setting the new values
+    if (!lockOnChangeMutex.try_lock()) return;
+    lockOnChangeMutex.unlock();
+    std::lock_guard<std::mutex> lock(lockOnChangeMutex);
 
-  if ( ExtendUSymetric.getValue() )
-  {
-    if (prop->getName() == ExtendUNeg.getName()
-      || prop->getName() == ExtendUPos.getName())
+    if ( ExtendUSymetric.getValue() )
     {
-      auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
-      if (changedValue)
-      {
-        ExtendUNeg.setValue(changedValue->getValue());
-        ExtendUPos.setValue(changedValue->getValue());
-      }
+        if (prop->getName() == ExtendUNeg.getName()
+          || prop->getName() == ExtendUPos.getName())
+        {
+            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+            if (changedValue)
+            {
+                ExtendUNeg.setValue(changedValue->getValue());
+                ExtendUPos.setValue(changedValue->getValue());
+            }
+        }
     }
-  }
-  if (ExtendVSymetric.getValue())
-  {
-    if (prop->getName() == ExtendVNeg.getName()
-      || prop->getName() == ExtendVPos.getName())
+    if (ExtendVSymetric.getValue())
     {
-      auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
-      if (changedValue)
-      {
-        ExtendVNeg.setValue(changedValue->getValue());
-        ExtendVPos.setValue(changedValue->getValue());
-      }
+        if (prop->getName() == ExtendVNeg.getName()
+          || prop->getName() == ExtendVPos.getName())
+        {
+            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+            if (changedValue)
+            {
+                ExtendVNeg.setValue(changedValue->getValue());
+                ExtendVPos.setValue(changedValue->getValue());
+            }
+        }
     }
-  }
-  Part::Feature::onChanged(prop);
+    Part::Feature::onChanged(prop);
 }
 
 Extend::Extend()
