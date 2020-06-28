@@ -153,7 +153,7 @@ def createStructuralMember(ifcfile,ifcbin,obj):
 
 def createStructuralGroup(ifcfile):
 
-    "Assigns all structural objects found in the file to the structual model"""
+    "Assigns all structural objects found in the file to the structural model"""
 
     import ifcopenshell
     uid = ifcopenshell.guid.new

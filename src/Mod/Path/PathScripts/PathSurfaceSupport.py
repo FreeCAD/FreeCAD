@@ -2471,7 +2471,7 @@ class OCL_Tool():
         LengthOffset
 
 
-        #### FreeCAD packaged ToolBit named constaints per shape files
+        #### FreeCAD packaged ToolBit named constraints per shape files
         shape = endmill
         Diameter; Endmill diameter
         Length; Overall length of the endmill

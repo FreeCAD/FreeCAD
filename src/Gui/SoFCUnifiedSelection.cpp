@@ -1128,7 +1128,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
 
     SoFCSelectionRoot *front = stack.front();
 
-    // NOTE: _node is not necssary of type SoFCSelectionRoot, but it is safe
+    // NOTE: _node is not necessary of type SoFCSelectionRoot, but it is safe
     // here since we only use it as searching key, although it is probably not
     // a best practice.
     stack.front() = static_cast<SoFCSelectionRoot*>(node);
