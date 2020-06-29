@@ -334,7 +334,7 @@ class _EquationHeat(CommandManager):
 
     def __init__(self):
         super(_EquationHeat, self).__init__()
-        self.menuetext = "Fluxsolver heat"
+        self.menuetext = "Heat equation"
         self.tooltip = "Creates a FEM equation for heat"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
