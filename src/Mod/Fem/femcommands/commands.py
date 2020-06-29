@@ -307,13 +307,13 @@ class _EquationFlow(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
-class _EquationFluxsolver(CommandManager):
-    "The FEM_EquationFluxsolver command definition"
+class _EquationFlux(CommandManager):
+    "The FEM_EquationFlux command definition"
 
     def __init__(self):
-        super(_EquationFluxsolver, self).__init__()
-        self.menuetext = "Fluxsolver equation"
-        self.tooltip = "Creates a FEM equation for fluxsolver"
+        super(_EquationFlux, self).__init__()
+        self.menuetext = "Flux equation"
+        self.tooltip = "Creates a FEM equation for flux"
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
@@ -861,8 +861,8 @@ FreeCADGui.addCommand(
     _EquationFlow()
 )
 FreeCADGui.addCommand(
-    "FEM_EquationFluxsolver",
-    _EquationFluxsolver()
+    "FEM_EquationFlux",
+    _EquationFlux()
 )
 FreeCADGui.addCommand(
     "FEM_EquationElectricforce",

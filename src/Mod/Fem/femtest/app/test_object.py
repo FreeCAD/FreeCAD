@@ -340,8 +340,8 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeEquationFlow(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::EquationElmerFluxsolver",
-            type_of_obj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer))
+            "Fem::EquationElmerFlux",
+            type_of_obj(ObjectsFem.makeEquationFlux(doc, solverelmer))
         )
         self.assertEqual(
             "Fem::EquationElmerHeat",
@@ -551,8 +551,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
         self.assertTrue(is_of_type(
-            ObjectsFem.makeEquationFluxsolver(doc, solverelmer),
-            "Fem::EquationElmerFluxsolver"
+            ObjectsFem.makeEquationFlux(doc, solverelmer),
+            "Fem::EquationElmerFlux"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationHeat(doc, solverelmer),
@@ -1274,8 +1274,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
 
-        # FemEquationElmerFluxsolver
-        equation_flux = ObjectsFem.makeEquationFluxsolver(doc, solver_elmer)
+        # FemEquationElmerFlux
+        equation_flux = ObjectsFem.makeEquationFlux(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flux,
             "App::DocumentObject"
@@ -1286,7 +1286,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_flux,
-            "Fem::EquationElmerFluxsolver"
+            "Fem::EquationElmerFlux"
         ))
 
         # FemEquationElmerHeat
@@ -1551,7 +1551,7 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("App::FeaturePython")
         )
         self.assertTrue(
-            ObjectsFem.makeEquationFluxsolver(
+            ObjectsFem.makeEquationFlux(
                 doc,
                 solverelmer
             ).isDerivedFrom("App::FeaturePython")
@@ -1635,7 +1635,7 @@ def create_all_fem_objects_doc(
     ObjectsFem.makeEquationElectricforce(doc, sol)
     ObjectsFem.makeEquationElectrostatic(doc, sol)
     ObjectsFem.makeEquationFlow(doc, sol)
-    ObjectsFem.makeEquationFluxsolver(doc, sol)
+    ObjectsFem.makeEquationFlux(doc, sol)
     ObjectsFem.makeEquationHeat(doc, sol)
 
     doc.recompute()

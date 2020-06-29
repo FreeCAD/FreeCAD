@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -144,7 +145,7 @@ class Writer(object):
         self._handleHeat()
         self._handleElasticity()
         self._handleElectrostatic()
-        self._handleFluxsolver()
+        self._handleFlux()
         self._handleElectricforce()
         self._handleFlow()
         self._addOutputSolver()
@@ -435,19 +436,19 @@ class Writer(object):
                             self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self._handled(obj)
 
-    def _handleFluxsolver(self):
+    def _handleFlux(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerFluxsolver"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
-                solverSection = self._getFluxsolverSolver(equation)
+                solverSection = self._getFlux(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    def _getFluxsolverSolver(self, equation):
+    def _getFlux(self, equation):
         s = self._createLinearSolver(equation)
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")

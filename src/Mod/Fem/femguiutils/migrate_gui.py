@@ -385,6 +385,10 @@ class FemMigrateGui(object):
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
 
+further renaming objects
+module="femsolver.elmer.equations.fluxsolver"
+see App migrate because object class and viewprovider class are in the same module
+
 fourth big moving
 renaming class and module names in femobjects
 TODO add link to commit before the first commit

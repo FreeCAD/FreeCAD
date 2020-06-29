@@ -172,7 +172,7 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/equation.py
     femsolver/elmer/equations/flow.py
-    femsolver/elmer/equations/fluxsolver.py
+    femsolver/elmer/equations/flux.py
     femsolver/elmer/equations/heat.py
     femsolver/elmer/equations/linear.py
     femsolver/elmer/equations/nonlinear.py

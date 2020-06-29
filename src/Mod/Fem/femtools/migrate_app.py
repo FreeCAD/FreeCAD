@@ -37,6 +37,11 @@ class FemMigrateApp(object):
 
     def find_module(self, fullname, path):
 
+        if fullname == "femsolver.elmer.equations":
+            return self
+        if fullname == "femsolver.elmer.equations.fluxsolver":
+            return self
+
         if fullname == "femobjects":
             return self
         if fullname == "femobjects._FemConstraintBodyHeatSource":
@@ -173,6 +178,14 @@ class FemMigrateApp(object):
         return self.load_module(module)
 
     def load_module(self, module):
+
+        if module.__name__ == "femsolver.elmer.equations":
+            return self
+        if module.__name__ == "femsolver.elmer.equations.fluxsolver":
+            import femsolver.elmer.equations.flux
+            module.Proxy = femsolver.elmer.equations.flux.Proxy
+            if FreeCAD.GuiUp:
+                module.ViewProxy = femsolver.elmer.equations.flux.ViewProxy
 
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"
@@ -387,6 +400,11 @@ class FemMigrateApp(object):
 """
 possible entries in the old files:
 (the class name in the old file does not matter, we ever only had one class per module)
+
+further renaming objects
+module="femsolver.elmer.equations.fluxsolver"
+in this modules object class and viewprovider class are in same module
+
 
 fourth big moving
 renaming class and module names in femobjects

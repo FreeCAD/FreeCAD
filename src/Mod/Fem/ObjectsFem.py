@@ -719,15 +719,15 @@ def makeEquationFlow(
     return obj
 
 
-def makeEquationFluxsolver(
+def makeEquationFlux(
     doc,
     base_solver=None,
-    name="Fluxsolver"
+    name="Flux"
 ):
-    """makeEquationFluxsolver(document, [base_solver], [name]):
-    creates a FEM fluxsolver equation for a solver"""
-    from femsolver.elmer.equations import fluxsolver
-    obj = fluxsolver.create(doc, name)
+    """makeEquationFlux(document, [base_solver], [name]):
+    creates a FEM flux equation for a solver"""
+    from femsolver.elmer.equations import flux
+    obj = flux.create(doc, name)
     if base_solver:
         base_solver.addObject(obj)
     return obj
