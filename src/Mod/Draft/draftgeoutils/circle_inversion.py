@@ -26,7 +26,7 @@
 http://en.wikipedia.org/wiki/Inversive_geometry
 """
 ## @package circle_inversion
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for inversive geometry operations.
 
 import lazy_loader.lazy_loader as lz
@@ -39,6 +39,9 @@ from draftgeoutils.geometry import findDistance
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def pointInversion(circle, point):
@@ -117,3 +120,5 @@ def circleInversion(circle, circle2):
     return Part.Circle(invCen2,
                        NORM,
                        DraftVecUtils.dist(invCen2, invPointOnCircle2))
+
+## @}

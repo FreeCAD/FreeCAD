@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for working with geometrical elements."""
+"""Provides various functions for general geometrical calculations."""
 ## @package geometry
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for working with geometry.
+# \ingroup draftgeoutils
+# \brief Provides various functions for general geometrical calculations.
 
 import math
 import lazy_loader.lazy_loader as lz
@@ -38,6 +38,9 @@ from draftgeoutils.general import geomType, vec
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def findPerpendicular(point, edgeslist, force=None):
@@ -333,3 +336,5 @@ def mirror(point, edge):
         return refl
     else:
         return None
+
+## @}

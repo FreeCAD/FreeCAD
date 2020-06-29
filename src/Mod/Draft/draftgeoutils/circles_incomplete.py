@@ -48,9 +48,11 @@ or to a circular edge, so even more combinations are possible.
 And so on, with the other combinations.
 """
 ## @package circles_incomplete
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various incomplete functions for creating circles.
 
+## \addtogroup draftgeoutils
+# @{
 import FreeCAD
 
 from draftutils.messages import _wrn
@@ -216,3 +218,5 @@ def circleFrom3tan(tan1, tan2, tan3):
 
     elif tan1IsCircle and tan2IsCircle and tan3IsLine:
         return circleFrom2Circle1Lines(tan1, tan2, tan3)
+
+## @}

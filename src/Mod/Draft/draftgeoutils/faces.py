@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for working with faces."""
+"""Provides various functions to work with faces."""
 ## @package faces
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for working with faces.
+# \ingroup draftgeoutils
+# \brief Provides various functions to work with faces.
 
 import lazy_loader.lazy_loader as lz
 
@@ -34,6 +34,9 @@ from draftgeoutils.general import precision
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def concatenate(shape):
@@ -258,3 +261,5 @@ def removeSplitter(shape):
             return face
 
     return None
+
+## @}

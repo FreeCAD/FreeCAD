@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for Appollonius and Soddy circle operations.
+"""Provides various functions for Apollonius and Soddy circle operations.
 
 The 'problem of Appollonius' consists of finding a circle that is
 simultaneously tangent to three circles on a plane.
@@ -40,8 +40,8 @@ and an outer circle.
 - http://mathworld.wolfram.com/OuterSoddyCenter.html
 """
 ## @package circles_apollonius
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for Appollonius and Soddy circles.
+# \ingroup draftgeoutils
+# \brief Provides various functions for Apollonius and Soddy circles.
 
 import cmath
 import math
@@ -54,6 +54,9 @@ from draftgeoutils.intersections import findIntersection
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def outerSoddyCircle(circle1, circle2, circle3):
@@ -218,3 +221,5 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
     else:
         # Some circles are inside each other or an error has occurred.
         return None
+
+## @}

@@ -21,14 +21,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for linear algebraic operations.
+"""Provides various functions for linear algebra.
 
 This includes calculating linear equation parameters, and matrix determinants.
 """
 ## @package linear_algebra
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for linear algebraic operations.
+# \ingroup draftgeoutils
+# \brief Provides various functions for linear algebra.
 
+## \addtogroup draftgeoutils
+# @{
 import FreeCAD as App
 
 
@@ -82,3 +84,5 @@ def determinant(mat, n):
         return d
     else:
         return 0
+
+## @}

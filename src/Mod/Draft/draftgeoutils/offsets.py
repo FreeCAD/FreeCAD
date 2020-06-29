@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides various functions for offset operations."""
+"""Provides various functions to work with offsets."""
 ## @package offsets
-# \ingroup DRAFTGEOUTILS
-# \brief Provides various functions for offset operations.
+# \ingroup draftgeoutils
+# \brief Provides various functions to work with offsets.
 
 import lazy_loader.lazy_loader as lz
 
@@ -38,6 +38,9 @@ from draftgeoutils.intersections import wiresIntersect, connect
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def pocket2d(shape, offset):
@@ -493,3 +496,5 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         return w
     else:
         return nedges
+
+## @}
