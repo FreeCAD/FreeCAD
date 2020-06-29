@@ -643,73 +643,85 @@ def makePostVtkResult(
 # ********* solver objects ***********************************************************************
 def makeEquationElasticity(
     doc,
-    base_solver
+    base_solver=None,
+    name="Elasticity"
 ):
-    """makeEquationElasticity(document, base_solver):
+    """makeEquationElasticity(document, [base_solver], [name]):
     creates a FEM elasticity equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Elasticity")
-    )[0]
+    from femsolver.elmer.equations import elasticity
+    obj = elasticity.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationElectricforce(
     doc,
-    base_solver
+    base_solver=None,
+    name="Electricforce"
 ):
-    """makeEquationElectricforce(document, base_solver):
+    """makeEquationElectricforce(document, [base_solver], [name]):
     creates a FEM Electricforce equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Electricforce")
-    )[0]
+    from femsolver.elmer.equations import electricforce
+    obj = electricforce.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationElectrostatic(
     doc,
-    base_solver
+    base_solver=None,
+    name="Electrostatic"
 ):
-    """makeEquationElectrostatic(document, base_solver):
+    """makeEquationElectrostatic(document, [base_solver], [name]):
     creates a FEM electrostatic equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Electrostatic")
-    )[0]
+    from femsolver.elmer.equations import electrostatic
+    obj = electrostatic.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationFlow(
     doc,
-    base_solver
+    base_solver=None,
+    name="Flow"
 ):
-    """makeEquationFlow(document, base_solver):
+    """makeEquationFlow(document, [base_solver], [name]):
     creates a FEM flow equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Flow")
-    )[0]
+    from femsolver.elmer.equations import flow
+    obj = flow.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationFluxsolver(
     doc,
-    base_solver
+    base_solver=None,
+    name="Fluxsolver"
 ):
-    """makeEquationFluxsolver(document, base_solver):
+    """makeEquationFluxsolver(document, [base_solver], [name]):
     creates a FEM fluxsolver equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Fluxsolver")
-    )[0]
+    from femsolver.elmer.equations import fluxsolver
+    obj = fluxsolver.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationHeat(
     doc,
-    base_solver
+    base_solver=None,
+    name="Heat"
 ):
-    """makeEquationHeat(document, base_solver):
+    """makeEquationHeat(document, [base_solver], [name]):
     creates a FEM heat equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Heat")
-    )[0]
+    from femsolver.elmer.equations import heat
+    obj = heat.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
