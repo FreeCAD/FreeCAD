@@ -28,7 +28,7 @@ from femexamples.manager import *
 run_all()
 
 
-# one special exmaple
+# one special example
 from femexamples.manager import run_example as run
 
 doc = run("boxanalysis_static")
