@@ -30,19 +30,6 @@ These functions can be used as the backend for the graphical commands
 defined in `DraftTools.py`.
 """
 ## \addtogroup DRAFT
-#  \brief Create and manipulate basic 2D objects
-#
-#  This module offers tools to create and manipulate basic 2D objects
-#
-#  The module allows to create 2D geometric objects such as line, rectangle,
-#  circle, etc., modify these objects by moving, scaling or rotating them,
-#  and offers a couple of other utilities to manipulate further these objects,
-#  such as decompose them (downgrade) into smaller elements.
-#
-#  The functionality of the module is divided into GUI tools, usable from the
-#  visual interface, and corresponding python functions, that can perform
-#  the same operation programmatically.
-#
 #  @{
 
 import FreeCAD as App
