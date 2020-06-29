@@ -53,7 +53,7 @@ _SOLID_PREFIX = "Solid"
 
 
 UNITS = {
-    "L": "mm",
+    "L": "m",
     "M": "kg",
     "T": "s",
     "I": "A",
@@ -217,6 +217,7 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
+        self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
@@ -815,6 +816,7 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
+        s["Coordinate Scaling Revert"] = True
         for name in self._getAllBodies():
             self._addSolver(name, s)
 
