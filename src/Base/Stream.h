@@ -248,8 +248,17 @@ class BaseExport PyStreambuf : public std::streambuf
     typedef std::ios::openmode       openmode;
 
 public:
+    enum Type {
+        StringIO,
+        BytesIO,
+        Unknown
+    };
+
     PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
     virtual ~PyStreambuf();
+    void setType(Type t) {
+        type = t;
+    }
 
 protected:
     int_type underflow();
@@ -261,9 +270,11 @@ protected:
 
 private:
     bool flushBuffer();
+    bool writeStr(const char* s, std::streamsize num);
 
 private:
     PyObject* inp;
+    Type type;
     const std::size_t put_back;
     std::vector<char> buffer;
 };
