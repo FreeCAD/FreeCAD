@@ -95,6 +95,13 @@ def getConstant(name, unit_dimension):
     return convert(CONSTS_DEF[name], unit_dimension)
 
 
+def setConstant(name, quantityStr):
+    if name == "PermittivityOfVacuum":
+        theUnit = "s^4*A^2 / (m^3*kg)"
+        CONSTS_DEF[name] = "{} {}".format(convert(quantityStr, theUnit), theUnit)
+    return True
+
+
 class Writer(object):
 
     def __init__(self, solver, directory, testmode=False):
@@ -110,6 +117,7 @@ class Writer(object):
         return self._handledObjects
 
     def write(self):
+        self._handleConstants()
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
@@ -190,6 +198,21 @@ class Writer(object):
         os.remove(brepPath)
         os.remove(geoPath)
         os.remove(unvGmshPath)
+
+    def _handleConstants(self):
+        """
+        redefine constants in CONSTS_DEF according constant redefine objects
+        """
+        permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
+        if len(permittivity_objs) == 1:
+            Console.PrintLog("Constand permittivity overwriting.\n")
+            setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
+        elif len(permittivity_objs) > 1:
+            Console.PrintError(
+                "More than one permittivity constant overwriting objects ({} objs). "
+                "The permittivity constant overwriting is ignored.\n"
+                .format(len(permittivity_objs))
+            )
 
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
