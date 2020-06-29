@@ -53,10 +53,13 @@ _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
 param = ParamGet("User parameter:BaseApp/Preferences/Units")
-unitsschema = param.GetInt('UserSchema')
+unitsschema = param.GetInt("UserSchema")
 
 if unitsschema == 1:
-    Console.PrintMessage("The unitsschema m/kg/s is used. So export and import is done in ISO units.\n")
+    Console.PrintMessage(
+        "The unit schema m/kg/s is used. So export and "
+        "import is done in ISO units (SI-units).\n"
+    )
     UNITS = {
         "L": "m",
         "M": "kg",
@@ -67,6 +70,10 @@ if unitsschema == 1:
         "J": "cd",
     }
 else:
+    Console.PrintMessage(
+        "The unit schema mm/kg/s is used. So export and "
+        "import is done in standard FreeCAD units.\n"
+    )
     UNITS = {
         "L": "mm",
         "M": "kg",
@@ -161,7 +168,7 @@ class Writer(object):
         else:
             binary = settings.get_binary("ElmerGrid")
             if binary is None:
-                raise WriteError("Couldn't find ElmerGrid binary.")
+                raise WriteError("Could not find ElmerGrid binary.")
             args = [binary,
                     _ELMERGRID_IFORMAT,
                     _ELMERGRID_OFORMAT,
@@ -234,7 +241,9 @@ class Writer(object):
         self._simulation("Coordinate Mapping", (1, 2, 3))
         if unitsschema == 1:
             self._simulation("Coordinate Scaling", 0.001)
-            Console.PrintMessage("'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n")
+            Console.PrintMessage(
+                "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
+            )
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
@@ -835,7 +844,10 @@ class Writer(object):
         s["Vtu Format"] = True
         if unitsschema == 1:
             s["Coordinate Scaling Revert"] = True
-            Console.PrintMessage("'Coordinate Scaling Revert = Logical True' was inserted into the solver input file.\n")
+            Console.PrintMessage(
+                "'Coordinate Scaling Revert = Logical True' was "
+                "inserted into the solver input file.\n"
+            )
         for name in self._getAllBodies():
             self._addSolver(name, s)
 
