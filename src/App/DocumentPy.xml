@@ -160,9 +160,9 @@ NOTE: It's possible that several objects have the same label name.</UserDocu>
 	</Methode>
     <Methode Name="findObjects" Keyword="true">
 		<Documentation>
-            <UserDocu>findObjects([string (type)], [string (name)], [string (label)]) -&gt; list
+            <UserDocu>findObjects([Type=string], [Name=string], [Label=string]) -&gt; list
 Return a list of objects that match the specified type, name or label.
-All parameters are optional.</UserDocu>
+Name and label support regular expressions. All parameters are optional.</UserDocu>
 		</Documentation>
 	</Methode>
     <Methode Name="getLinksTo">
