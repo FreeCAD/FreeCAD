@@ -2717,10 +2717,15 @@ bool DockWindowManager::eventFilter(QObject *o, QEvent *ev)
         } else if (ViewParams::getDockOverlayAutoMouseThrough()
                     && ev->type() != QEvent::Wheel)
         {
-            for (auto o : d->_overlayInfos) {
-                if (o->tabWidget->testAlpha(pos) == 0) {
-                    hit = true;
-                    d->_lastPos = pos;
+            for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
+                if (widget->windowType() != Qt::Widget)
+                    break;
+                auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
+                if (tabWidget) {
+                    if (tabWidget->testAlpha(pos) == 0) {
+                        hit = true;
+                        d->_lastPos = pos;
+                    }
                     break;
                 }
             }
