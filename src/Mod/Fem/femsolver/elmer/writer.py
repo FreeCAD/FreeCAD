@@ -35,6 +35,7 @@ import tempfile
 
 from FreeCAD import Console
 from FreeCAD import Units
+from FreeCAD import ParamGet
 
 import Fem
 from . import sifio
@@ -51,16 +52,30 @@ _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
+param = ParamGet("User parameter:BaseApp/Preferences/Units")
+unitsschema = param.GetInt('UserSchema')
 
-UNITS = {
-    "L": "m",
-    "M": "kg",
-    "T": "s",
-    "I": "A",
-    "O": "K",
-    "N": "mol",
-    "J": "cd",
-}
+if unitsschema == 1:
+    Console.PrintMessage("The unitsschema m/kg/s is used. So export and import is done in ISO units.\n")
+    UNITS = {
+        "L": "m",
+        "M": "kg",
+        "T": "s",
+        "I": "A",
+        "O": "K",
+        "N": "mol",
+        "J": "cd",
+    }
+else:
+    UNITS = {
+        "L": "mm",
+        "M": "kg",
+        "T": "s",
+        "I": "A",
+        "O": "K",
+        "N": "mol",
+        "J": "cd",
+    }
 
 
 CONSTS_DEF = {
@@ -217,7 +232,9 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        self._simulation("Coordinate Scaling", 0.001)
+        if unitsschema == 1:
+            self._simulation("Coordinate Scaling", 0.001)
+            Console.PrintMessage("'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n")
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
@@ -816,7 +833,9 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
-        s["Coordinate Scaling Revert"] = True
+        if unitsschema == 1:
+            s["Coordinate Scaling Revert"] = True
+            Console.PrintMessage("'Coordinate Scaling Revert = Logical True' was inserted into the solver input file.\n")
         for name in self._getAllBodies():
             self._addSolver(name, s)
 
