@@ -321,7 +321,10 @@ def getText(nodelist):
   for node in nodelist:
     if node.nodeType == node.TEXT_NODE:
       rc.append(node.data)
-  return ''.join(rc)
+    if sys.version_info.major >= 3:
+      return ''.join(rc)
+    else:
+      return ''.join(rc).encode('utf8')
 
 
 def handleWorkSheet(theDom, actSheet, strList):
@@ -352,7 +355,7 @@ def handleCells(cellList, actCellSheet, sList):
         theString = getText(tElement.childNodes)
         
         #print('theString: ', theString)
-        actCellSheet.set(ref, theString.encode('utf8'))
+        actCellSheet.set(ref, theString)
 
     formulaRef = cell.getElementsByTagName("f")
     if len(formulaRef)==1:
@@ -372,10 +375,7 @@ def handleCells(cellList, actCellSheet, sList):
           if cellType == 'n':
             actCellSheet.set(ref, theValue)
           if cellType == 's':
-            if sys.version_info.major >= 3:
-                actCellSheet.set(ref, (sList[int(theValue)]))
-            else:
-                actCellSheet.set(ref, (sList[int(theValue)]).encode('utf8'))
+            actCellSheet.set(ref, (sList[int(theValue)]))
 
 
 def handleWorkBook(theBook, sheetDict, Doc):
