@@ -159,6 +159,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeAnalysis(doc))
         )
         self.assertEqual(
+            "Fem::ConstantVacuumPermittivity",
+            type_of_obj(ObjectsFem.makeConstantVacuumPermittivity(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintBearing",
             type_of_obj(ObjectsFem.makeConstraintBearing(doc))
         )
@@ -362,6 +366,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeAnalysis(doc),
             "Fem::FemAnalysis"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstantVacuumPermittivity(doc),
+            "Fem::ConstantVacuumPermittivity"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintBearing(doc),
@@ -577,6 +585,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             analysis,
             "Fem::FemAnalysis"
+        ))
+
+        # ConstantVacuumPermittivity
+        constant_vacuumpermittivity = ObjectsFem.makeConstantVacuumPermittivity(doc)
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstantVacuumPermittivity"
         ))
 
         # ConstraintBearing
@@ -1302,6 +1325,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::FemAnalysis")
         )
         self.assertTrue(
+            ObjectsFem.makeConstantVacuumPermittivity(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintBearing(
                 doc
             ).isDerivedFrom("Fem::ConstraintBearing")
@@ -1549,6 +1577,7 @@ def create_all_fem_objects_doc(
 ):
     analysis = ObjectsFem.makeAnalysis(doc)
 
+    analysis.addObject(ObjectsFem.makeConstantVacuumPermittivity(doc))
     analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
     analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
     analysis.addObject(ObjectsFem.makeConstraintContact(doc))

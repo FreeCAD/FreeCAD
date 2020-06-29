@@ -238,6 +238,11 @@ class AnalysisMember():
         """
 
         # get member
+        # constants
+        self.cota_vacuumpermittivity = self.get_several_member(
+            "Fem::ConstantVacuumPermittivity"
+        )
+
         # materials
         std_mats = self.get_several_member(
             "Fem::MaterialCommon"
