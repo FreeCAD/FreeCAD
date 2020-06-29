@@ -38,6 +38,12 @@ import FreeCAD
 # standard object name == type without 'Fem::'
 # the class name is Proxy
 
+# TODO
+# There are objects which use a base object. It should be tested if the base object
+# is in the same document as the doc in which the obj should be created.
+# Could only be happen if the make is called from Python.
+# What happens ATM? Error or the obj is moved to the other doc?
+
 
 # ********* analysis objects *********************************************************************
 def makeAnalysis(
