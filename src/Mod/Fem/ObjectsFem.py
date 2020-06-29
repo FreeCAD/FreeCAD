@@ -633,7 +633,7 @@ def makePostVtkResult(
     base_result,
     name="VtkResult"
 ):
-    """makePostVtkResult(document, base_result [name]):
+    """makePostVtkResult(document, base_result, [name]):
     creates an FEM post processing result object (vtk based) to hold FEM results"""
     obj = doc.addObject("Fem::FemPostPipeline", name)
     obj.load(base_result)
