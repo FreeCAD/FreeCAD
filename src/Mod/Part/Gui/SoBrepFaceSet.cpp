@@ -77,7 +77,6 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -708,8 +707,17 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
 
             if(RenderIndices.size()) {
                 // Calling handleTransparency() here will setup blending for us
-                if (!action->handleTransparency(true))
+                if (!action->handleTransparency(true)) {
+                    SbBool twoside = SoLazyElement::getTwoSidedLighting(state);
+                    // force two side rendering to avoid darkening transparent faces
+                    if (!twoside)
+                        SoLazyElement::setTwosideLighting(state, TRUE);
+
                     renderShape(action,checkTransp);
+
+                    if (!twoside)
+                        SoLazyElement::setTwosideLighting(state, FALSE);
+                }
             }
         }
 
@@ -809,20 +817,6 @@ int SoBrepFaceSet::overrideMaterialBinding(
             trans0 = trans[i]<defaultTrans?defaultTrans:trans[i];
             break;
         }
-    }
-
-    SoShapeHintsElement::VertexOrdering vo;
-    SoShapeHintsElement::ShapeType st;
-    SoShapeHintsElement::FaceType ft;
-    SoShapeHintsElement::get(state, vo, st, ft);
-    if(hasTransparency && vo != SoShapeHintsElement::COUNTERCLOCKWISE) {
-        if(!pushed) {
-            pushed = 1;
-            state->push();
-        }
-        vo = SoShapeHintsElement::COUNTERCLOCKWISE;
-        SoShapeHintsElement::set(state, vo, st, ft);
-        SoOverrideElement::setShapeHintsOverride(state, this, true);
     }
 
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
