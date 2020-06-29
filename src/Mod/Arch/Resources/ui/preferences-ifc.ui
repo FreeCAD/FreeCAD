@@ -21,24 +21,24 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBox_7">
-     <property name="text">
-      <string>Show this dialog when importing</string>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>ifcShowDialog</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Arch</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>General options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="text">
+         <string>Show this dialog when importing</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ifcShowDialog</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
         <property name="toolTip">
@@ -75,6 +75,46 @@ One object is the base object, the others are clones.</string>
          <cstring>Mod/Arch</cstring>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>16</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Number of cores to use:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox">
+          <property name="toolTip">
+           <string>EXPERIMENAL - The number of cores to use in multicore mode. Keep 0 to disable multicore mode, or 1 to use multicore mode in single-core mode (safer if you get crashes). Max value should be your number of cores - 1, ex: 3 of you have a quad-core CPU.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcMulticore</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -422,6 +462,11 @@ FreeCAD object properties</string>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
