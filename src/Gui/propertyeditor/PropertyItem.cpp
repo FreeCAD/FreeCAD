@@ -1440,6 +1440,9 @@ void VectorListButton::browse()
 {
     VectorListEditor dlg(decimals, Gui::getMainWindow());
     dlg.setValues(value().value<QList<Base::Vector3d>>());
+    QPoint p(0, 0);
+    p = this->mapToGlobal(p);
+    dlg.move(p);
     if (dlg.exec() == QDialog::Accepted) {
         QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg.getValues());
         setValue(data);

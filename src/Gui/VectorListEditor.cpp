@@ -28,6 +28,7 @@
 #include "VectorListEditor.h"
 #include "ui_VectorListEditor.h"
 #include <Gui/QuantitySpinBox.h>
+#include <Base/Tools.h>
 
 using namespace Gui;
 
@@ -239,6 +240,7 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
     connect(ui->toolButtonAdd, SIGNAL(clicked(bool)), this, SLOT(addRow()));
     connect(ui->toolButtonRemove, SIGNAL(clicked(bool)), this, SLOT(removeRow()));
     connect(ui->toolButtonAccept, SIGNAL(clicked(bool)), this, SLOT(acceptCurrent()));
+    connect(ui->tableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(clickedRow(QModelIndex)));
 }
 
 VectorListEditor::~VectorListEditor()
@@ -256,6 +258,9 @@ void VectorListEditor::setValues(const QList<Base::Vector3d>& v)
     }
     else {
         ui->spinBox->setRange(1, v.size());
+        ui->coordX->setValue(model->data(model->index(0, 0), Qt::EditRole).toDouble());
+        ui->coordY->setValue(model->data(model->index(0, 1), Qt::EditRole).toDouble());
+        ui->coordZ->setValue(model->data(model->index(0, 2), Qt::EditRole).toDouble());
     }
 }
 
@@ -273,6 +278,15 @@ void VectorListEditor::accept()
 void VectorListEditor::reject()
 {
     QDialog::reject();
+}
+
+void VectorListEditor::clickedRow(const QModelIndex& index)
+{
+    QSignalBlocker blocker(ui->spinBox);
+    ui->spinBox->setValue(index.row() + 1);
+    ui->coordX->setValue(model->data(model->index(index.row(), 0), Qt::EditRole).toDouble());
+    ui->coordY->setValue(model->data(model->index(index.row(), 1), Qt::EditRole).toDouble());
+    ui->coordZ->setValue(model->data(model->index(index.row(), 2), Qt::EditRole).toDouble());
 }
 
 void VectorListEditor::setCurrentRow(int row)

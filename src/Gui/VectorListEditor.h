@@ -97,6 +97,7 @@ private Q_SLOTS:
     void removeRow();
     void acceptCurrent();
     void setCurrentRow(int);
+    void clickedRow(const QModelIndex&);
 
 private:
     std::unique_ptr<Ui_VectorListEditor> ui;
