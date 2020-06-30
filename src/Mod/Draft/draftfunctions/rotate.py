@@ -143,7 +143,8 @@ def rotate(objectslist, angle, center=App.Vector(0,0,0),
                     break
 
     gui_utils.select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
+    if len(newobjlist) == 1:
+        return newobjlist[0]
     return newobjlist
 
 
