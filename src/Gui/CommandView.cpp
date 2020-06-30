@@ -2718,61 +2718,48 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
                     continue;
                 std::vector<Base::Vector3d> points;
                 std::vector<Data::ComplexGeoData::Line> lines;
+
+                std::vector<Base::Vector3d> pointNormals; // not used
+                std::vector<Data::ComplexGeoData::Facet> faces;
+
+                // Call getFacesFromSubelement to obtain the triangulation of
+                // the segment.
+                data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
+                if(faces.empty())
+                    continue;
+
                 Base::Polygon2d loop;
-
-                if(dir) {
-                    std::vector<Base::Vector3d> pointNormals; // not used
-                    std::vector<Data::ComplexGeoData::Facet> faces;
-
-                    // Call getFacesFromSubelement to obtain the triangulation of
-                    // the segment. We use it for back cull filtering.
-                    data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
-                    if(faces.empty())
-                        continue;
-
-                    bool culled = true;
-                    for(auto &facet : faces) {
+                bool hit = false;
+                for(auto &facet : faces) {
+                    // back face cull
+                    if (dir) {
                         Base::Vector3d normal = (points[facet.I2] - points[facet.I1])
                             % (points[facet.I3] - points[facet.I1]);
                         normal.Normalize();
-                        if (normal.Dot(*dir) > 0.0f) {
-                            culled = false;
+                        if (normal.Dot(*dir) < 0.0f)
+                            continue;
+                    }
+                    auto v = proj(points[facet.I1]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    v = proj(points[facet.I2]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    v = proj(points[facet.I3]);
+                    loop.Add(Base::Vector2d(v.x, v.y));
+                    if (mode != CENTER) {
+                        if(polygon.Intersect(loop)) {
+                            hit = true;
                             break;
                         }
-                    }
-                    if(culled)
-                        continue;
-
-                    points.clear();
-                }
-                
-                // Call getLinesFromSubelement to get the outer loop of the entire segment
-                data->getLinesFromSubelement(segment.get(),points,lines);
-                if(lines.empty()) {
-                    if(points.empty())
-                        continue;
-                    auto v = proj(points[0]);
-                    if(polygon.Contains(Base::Vector2d(v.x,v.y)))
-                        ret.push_back(element);
-                    continue;
-                }
-                // TODO: can we assume the line returned above are in proper
-                // order if the element is a face?
-                auto v = proj(points[lines.front().I1]);
-                loop.Add(Base::Vector2d(v.x,v.y));
-                for(auto &line : lines) {
-                    for(auto i=line.I1;i<line.I2;++i) {
-                        auto v = proj(points[i+1]);
-                        loop.Add(Base::Vector2d(v.x,v.y));
+                        loop.DeleteAll();
                     }
                 }
-                if(!polygon.Intersect(loop))
-                    continue;
-                if(mode==CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter()))
-                    continue;
-                ret.push_back(element);
+                if (mode==CENTER
+                        && loop.GetCtVectors()
+                        && polygon.Contains(loop.CalcBoundBox().GetCenter()))
+                    hit = true;
+                if (hit)
+                    ret.push_back(element);
             }
-            break;
         }
         return ret;
     }
