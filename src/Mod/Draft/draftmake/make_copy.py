@@ -74,7 +74,7 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
         parents = obj.InList
         if parents:
             for par in parents:
-                if par.isDerivedFrom("App::DocumentObjectGroup"):
+                if par.isDerivedFrom("App::DocumentObjectGroup") or par.isDerivedFrom("App::Part"):
                     par.addObject(newobj)
                 else:
                     # That's the case of Arch_BuildingParts or Draft_Layers for example
