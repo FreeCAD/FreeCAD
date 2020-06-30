@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for rotating objects in the 3D space."""
+"""Provides GUI tools to rotate objects in the 3D space."""
 ## @package gui_rotate
-# \ingroup DRAFT
-# \brief Provides tools for rotating objects in the 3D space.
+# \ingroup draftguitools
+# \brief Provides GUI tools to rotate objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -34,7 +36,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-
 import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
@@ -429,3 +430,5 @@ class Rotate(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Rotate', Rotate())
+
+## @}

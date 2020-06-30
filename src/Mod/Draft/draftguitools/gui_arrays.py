@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft ArrayTools command to group the other array tools."""
+"""Provides GUI tools to create parametric Array objects. Grouping command."""
 ## @package gui_arrays
-# \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create parametric Array objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -73,3 +75,5 @@ class ArrayGroup:
 
 
 Gui.addCommand('Draft_ArrayTools', ArrayGroup())
+
+## @}

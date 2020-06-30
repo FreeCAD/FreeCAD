@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating Bezier curves with the Draft Workbench.
+"""Provides GUI tools to create BezCurve objects.
 
 In particular, a cubic Bezier curve is defined, as it is one of the most
 useful curves for many applications.
@@ -30,9 +30,11 @@ useful curves for many applications.
 See https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 """
 ## @package gui_beziers
-# \ingroup DRAFT
-# \brief Provides tools for creating Bezier curves with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create BezCurve objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -42,6 +44,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -500,3 +503,5 @@ class BezierGroup:
 
 
 Gui.addCommand('Draft_BezierTools', BezierGroup())
+
+## @}

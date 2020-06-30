@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides simple tools for creating arrays with the Draft Workbench.
+"""Provides GUI tools to create parametric Array objects (OBSOLETE).
 
 These commands were replaced by individual commands `Draft_OrthoArray`,
 `Draft_PolarArray`, and `Draft_CircularArray` which launch their own
 task panel, and provide a more useful way of creating the desired array.
 """
 ## @package gui_array_simple
-# \ingroup DRAFT
-# \brief Provides simple tools for creating arrays with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create parametric Array objects (OBSOLETE).
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -132,3 +134,5 @@ class LinkArray(Array):
 
 
 Gui.addCommand('Draft_LinkArray', LinkArray())
+
+## @}

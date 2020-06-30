@@ -18,7 +18,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Snapper class to control snapping in the Draft Workbench.
+"""Provides the Snapper class to define the snapping tools and modes.
 
 This module provides tools to handle point snapping and
 everything that goes with it (toolbar buttons, cursor icons, etc.).
@@ -26,33 +26,32 @@ It also creates the Draft grid, which is actually a tracker
 defined by `gui_trackers.gridTracker`.
 """
 ## @package gui_snapper
-#  \ingroup DRAFT
-#  \brief Snapper class to control snapping in the Draft Workbench.
+#  \ingroup draftguitools
+#  \brief Provides the Snapper class to define the snapping tools and modes.
 #
 #  This module provides tools to handle point snapping and
 #  everything that goes with it (toolbar buttons, cursor icons, etc.).
 
-from pivy import coin
-from PySide import QtCore, QtGui
-
+## \addtogroup draftguitools
+# @{
 import collections as coll
 import inspect
 import itertools
 import math
-
-import Draft
-import DraftVecUtils
-import DraftGeomUtils
+import pivy.coin as coin
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
 import Part
-
+import Draft
+import DraftVecUtils
+import DraftGeomUtils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _msg, _wrn
-
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
@@ -1681,3 +1680,5 @@ class Snapper:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
+
+## @}

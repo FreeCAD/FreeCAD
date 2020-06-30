@@ -22,19 +22,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools to control the mode of other tools in the Draft Workbench.
+"""Provides GUI tools to set different modes of other tools.
 
 For example, a construction mode, a continue mode to repeat commands,
 and to toggle the appearance of certain shapes to wireframe.
 """
 ## @package gui_togglemodes
-# \ingroup DRAFT
-# \brief Provides certain mode operations of the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to set different modes of other tools.
+
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base as gui_base
+
 from draftutils.messages import _msg
 from draftutils.translate import _tr
 
@@ -85,7 +89,8 @@ class ToggleConstructionMode(BaseMode):
     """
 
     def __init__(self):
-        super(ToggleConstructionMode, self).__init__(name=_tr("Construction mode"))
+        super(ToggleConstructionMode,
+              self).__init__(name=_tr("Construction mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -166,7 +171,8 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(ToggleDisplayMode, self).__init__(name=_tr("Toggle display mode"))
+        super(ToggleDisplayMode,
+              self).__init__(name=_tr("Toggle display mode"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -205,3 +211,5 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
 
 
 Gui.addCommand('Draft_ToggleDisplayMode', ToggleDisplayMode())
+
+## @}

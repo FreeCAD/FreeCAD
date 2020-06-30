@@ -22,16 +22,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft_Heal command to heal older Draft files."""
-## @package gui_health
-# \ingroup DRAFT
-# \brief Provides the Draft_Heal command to heal older Draft files.
+"""Provides GUI tools to repair objects created with older versions."""
+## @package gui_heal
+# \ingroup draftguitools
+# \brief Provides GUI tools to repair objects created with older versions.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import Draft
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr
 
 
@@ -74,3 +77,5 @@ class Heal(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_Heal', Heal())
+
+## @}

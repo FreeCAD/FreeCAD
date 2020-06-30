@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools to do various operations with groups.
+"""Provides GUI tools to do various operations with groups.
 
 For example, add objects to groups, select objects inside groups,
 set the automatic group in which to create objects, and add objects
 to the construction group.
 """
 ## @package gui_groups
-# \ingroup DRAFT
-# \brief Provides tools to do various operations with groups.
+# \ingroup draftguitools
+# \brief Provides GUI tools to do various operations with groups.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -41,6 +43,7 @@ import Draft_rc
 import draftutils.utils as utils
 import draftutils.groups as groups
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr, translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -395,3 +398,5 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 
 Draft_AddConstruction = AddToConstruction
 Gui.addCommand('Draft_AddConstruction', AddToConstruction())
+
+## @}

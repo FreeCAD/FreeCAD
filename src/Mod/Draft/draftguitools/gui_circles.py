@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating circles with the Draft Workbench."""
+"""Provides GUI tools to create Circle objects."""
 ## @package gui_circles
-# \ingroup DRAFT
-# \brief Provides tools for creating circlres with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Circle objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -81,3 +83,5 @@ class Circle(gui_arcs.Arc):
 
 
 Gui.addCommand('Draft_Circle', Circle())
+
+## @}

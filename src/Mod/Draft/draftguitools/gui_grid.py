@@ -22,15 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft_ToggleGrid command to show the Draft grid."""
+"""Provides GUI tools to enable and disable the working plane grid."""
 ## @package gui_grid
-# \ingroup DRAFT
-# \brief Provide the Draft_ToggleGrid command to show the Draft grid.
+# \ingroup draftguitools
+# \brief Provides GUI tools to enable and disable the working plane grid.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr
 
 
@@ -77,3 +80,5 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_ToggleGrid', ToggleGrid())
+
+## @}
