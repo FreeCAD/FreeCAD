@@ -127,7 +127,7 @@ def importFrd(
                     analysis.addObject(res_obj)
 
                 # complementary result object calculations
-                import femresult.resulttools as restools
+                from femresult import resulttools
                 from femtools import femutils
                 if not res_obj.MassFlowRate:
                     # information 1:
@@ -143,7 +143,7 @@ def importFrd(
                     # example frd file: https://forum.freecadweb.org/viewtopic.php?t=32649#p274291
                     if res_mesh_is_compacted is False:
                         # first result set, compact FemMesh and NodeNumbers
-                        res_obj = restools.compact_result(res_obj)
+                        res_obj = resulttools.compact_result(res_obj)
                         res_mesh_is_compacted = True
                         nodenumbers_for_compacted_mesh = res_obj.NodeNumbers
                     else:
@@ -151,26 +151,26 @@ def importFrd(
                         res_obj.NodeNumbers = nodenumbers_for_compacted_mesh
 
                 # fill DisplacementLengths
-                res_obj = restools.add_disp_apps(res_obj)
+                res_obj = resulttools.add_disp_apps(res_obj)
                 # fill vonMises
-                res_obj = restools.add_von_mises(res_obj)
+                res_obj = resulttools.add_von_mises(res_obj)
                 if res_obj.getParentGroup():
                     has_reinforced_mat = False
                     for obj in res_obj.getParentGroup().Group:
                         if obj.isDerivedFrom("App::MaterialObjectPython") \
                                 and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
                             has_reinforced_mat = True
-                            restools.add_principal_stress_reinforced(res_obj)
+                            resulttools.add_principal_stress_reinforced(res_obj)
                             break
                     if has_reinforced_mat is False:
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
-                        res_obj = restools.add_principal_stress_std(res_obj)
+                        res_obj = resulttools.add_principal_stress_std(res_obj)
                 else:
                     # if a pure frd file was opened no analysis and thus no parent group
                     # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
-                    res_obj = restools.add_principal_stress_std(res_obj)
+                    res_obj = resulttools.add_principal_stress_std(res_obj)
                 # fill Stats
-                res_obj = restools.fill_femresult_stats(res_obj)
+                res_obj = resulttools.fill_femresult_stats(res_obj)
 
         else:
             error_message = (
