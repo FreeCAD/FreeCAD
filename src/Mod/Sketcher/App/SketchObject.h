@@ -472,6 +472,8 @@ private:
     SketchAnalysis * analyser;
 
     bool internaltransaction;
+
+    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
