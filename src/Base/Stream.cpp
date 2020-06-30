@@ -572,6 +572,7 @@ PyStreambuf::int_type PyStreambuf::underflow()
     try {
         std::string c;
         Py::Object res(meth.apply(arg));
+#if PY_MAJOR_VERSION >= 3
         if (res.isBytes()) {
             c = static_cast<std::string>(Py::Bytes(res));
         }
@@ -582,7 +583,9 @@ PyStreambuf::int_type PyStreambuf::underflow()
             // wrong type
             return traits_type::eof();
         }
-
+#else
+        c = static_cast<std::string>(Py::String(res));
+#endif
         n = c.size();
         if (n == 0) {
             return traits_type::eof();
@@ -653,7 +656,11 @@ bool PyStreambuf::writeStr(const char* str, std::streamsize num)
             return true;
         }
         else if (type == BytesIO) {
+#if PY_MAJOR_VERSION >= 3
             arg.setItem(0, Py::Bytes(str, num));
+#else
+            arg.setItem(0, Py::String(str, num));
+#endif
             meth.apply(arg);
             return true;
         }
@@ -668,7 +675,11 @@ bool PyStreambuf::writeStr(const char* str, std::streamsize num)
             catch (Py::Exception& e) {
                 if (PyErr_ExceptionMatches(PyExc_TypeError)) {
                     e.clear();
+#if PY_MAJOR_VERSION >= 3
                     arg.setItem(0, Py::Bytes(str, num));
+#else
+                    arg.setItem(0, Py::String(str, num));
+#endif
                     meth.apply(arg);
                     type = BytesIO;
                     return true;
