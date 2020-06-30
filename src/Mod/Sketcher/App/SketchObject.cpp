@@ -3762,6 +3762,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         // Distances on a single Element are mapped to equality constraints in clone mode
                                         Constraint *constNew = (*it)->copy();
                                         constNew->Type = Sketcher::Equal;
+                                        constNew->isDriving = true;
                                         constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
                                         newconstrVals.push_back(constNew);
                                     }
@@ -3769,6 +3770,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         // Angles on a single Element are mapped to parallel constraints in clone mode
                                         Constraint *constNew = (*it)->copy();
                                         constNew->Type = Sketcher::Parallel;
+                                        constNew->isDriving = true;
                                         constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
                                         newconstrVals.push_back(constNew);
                                     }
@@ -3791,6 +3793,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         // Distances on a two Elements, which must be points of the same line are mapped to equality constraints in clone mode
                                         Constraint *constNew = (*it)->copy();
                                         constNew->Type = Sketcher::Equal;
+                                        constNew->isDriving = true;
                                         constNew->FirstPos = Sketcher::none;
                                         constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
                                         constNew->SecondPos = Sketcher::none;
