@@ -4043,32 +4043,32 @@ void View3DInventorViewer::viewAll(float factor)
 }
 
 // Recursively check if any sub-element intersects with a given projected 2D polygon
-static bool
+static int
 checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
                          const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
                          Base::Matrix4D mat, bool transform=true, int depth=0)
 {
     auto obj = vp->getObject();
     if(!obj || !obj->getNameInDocument())
-        return false;
+        return 0;
 
     if (subname && subname[0]) {
         App::DocumentObject *parent = 0;
         std::string childName;
         auto sobj = obj->resolve(subname,&parent,&childName,0,0,&mat,transform,depth+1);
         if(!sobj) 
-            return false;
+            return 0;
         if(!ViewParams::getShowSelectionOnTop()) {
             int vis;
             if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
                 vis = sobj->Visibility.getValue()?1:0;
             if(!vis)
-                return false;
+                return 0;
         }
         auto svp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(sobj));
         if(!svp)
-            return false;
+            return 0;
         vp = svp;
         obj = sobj;
         transform = false;
@@ -4076,30 +4076,37 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 
     auto bbox3 = vp->getBoundingBox(0,&mat,transform);
     if(!bbox3.IsValid())
-        return false;
+        return 0;
 
     auto bbox = bbox3.ProjectBox(&proj);
     if(!bbox.Intersect(polygon)) 
-        return false;
+        return 0;
 
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if(subs.size()) {
+        int res = 0;
         for(auto &sub : subs) {
-            if(checkElementIntersection(vp, sub.c_str(), proj, polygon, mat, false, depth+1))
-                return true;
+            int r = checkElementIntersection(vp, sub.c_str(), proj, polygon, mat, false, depth+1);
+            if (r > 0)
+                return 1;
+            // Return < 0 means either the object does not have shape, or the shape
+            // type does not implement sub-element intersection check.
+            if (r < 0)
+                res = -1;
         }
-        return false;
+        return res;
     }
 
     Base::PyGILStateLocker lock;
     PyObject *pyobj = 0;
     obj->getSubObject(0,&pyobj,&mat,transform,depth);
     if(!pyobj)
-        return false;
+        return -1;
     Py::Object pyobject(pyobj,true);
     if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
-        return false;
+        return -1;
     auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+    int res = -1;
     for(auto type : data->getElementTypes()) {
         size_t count = data->countSubElements(type);
         if(!count)
@@ -4111,32 +4118,31 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
             if(!segment)
                 continue;
             std::vector<Base::Vector3d> points;
-            std::vector<Data::ComplexGeoData::Line> lines;
-            Base::Polygon2d loop;
+            std::vector<Base::Vector3d> pointNormals; // not used
+            std::vector<Data::ComplexGeoData::Facet> faces;
 
-            // Call getLinesFromSubelement to get the outer loop of the entire segment
-            data->getLinesFromSubelement(segment.get(),points,lines);
-            if(lines.empty()) {
-                if(points.empty())
-                    continue;
-                auto v = proj(points[0]);
-                if(polygon.Contains(Base::Vector2d(v.x,v.y)))
-                    return true;
+            // Call getFacesFromSubelement to obtain the triangulation of
+            // the segment.
+            data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
+            if(faces.empty())
                 continue;
+
+            res = 0;
+
+            Base::Polygon2d loop;
+            for(auto &facet : faces) {
+                auto v = proj(points[facet.I1]);
+                loop.Add(Base::Vector2d(v.x, v.y));
+                v = proj(points[facet.I2]);
+                loop.Add(Base::Vector2d(v.x, v.y));
+                v = proj(points[facet.I3]);
+                loop.Add(Base::Vector2d(v.x, v.y));
+                if(polygon.Intersect(loop))
+                    return 1;
             }
-            auto v = proj(points[lines.front().I1]);
-            loop.Add(Base::Vector2d(v.x,v.y));
-            for(auto &line : lines) {
-                for(auto i=line.I1;i<line.I2;++i) {
-                    auto v = proj(points[i+1]);
-                    loop.Add(Base::Vector2d(v.x,v.y));
-                }
-            }
-            if(polygon.Intersect(loop))
-                return true;
         }
     }
-    return false;
+    return res;
 }
 
 void View3DInventorViewer::viewSelection(bool extend)
