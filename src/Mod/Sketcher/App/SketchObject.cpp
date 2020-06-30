@@ -143,6 +143,7 @@ SketchObject::SketchObject()
     analyser = new SketchAnalysis(this);
 
     internaltransaction=false;
+    managedoperation=false;
 }
 
 SketchObject::~SketchObject()
@@ -230,6 +231,8 @@ int SketchObject::hasConflicts(void) const
 
 int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // Reset the initial movement in case of a dragging operation was ongoing on the solver.
     solvedSketch.resetInitMove();
 
@@ -303,6 +306,8 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 
 int SketchObject::setDatum(int ConstrId, double Datum)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // set the changed value for the constraint
     if (this->Constraints.hasInvalidGeometry())
         return -6;
@@ -341,6 +346,8 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     int ret = testDrivingChange(ConstrId, isdriving);
@@ -387,6 +394,8 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
 
 int SketchObject::toggleDriving(int ConstrId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     int ret = testDrivingChange(ConstrId,!vals[ConstrId]->isDriving);
@@ -449,6 +458,8 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
 
 int SketchObject::setActive(int ConstrId, bool isactive)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
@@ -488,6 +499,8 @@ int SketchObject::getActive(int ConstrId, bool &isactive)
 
 int SketchObject::toggleActive(int ConstrId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
@@ -517,6 +530,8 @@ int SketchObject::toggleActive(int ConstrId)
 /// Make all dimensionals Driving/non-Driving
 int SketchObject::setDatumsDriving(bool isdriving)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
 
@@ -544,6 +559,8 @@ int SketchObject::setDatumsDriving(bool isdriving)
 
 int SketchObject::moveDatumsToEnd(void)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     std::vector<Constraint *> copy(vals);
@@ -577,6 +594,8 @@ int SketchObject::moveDatumsToEnd(void)
 
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
@@ -612,6 +631,8 @@ int SketchObject::getVirtualSpace(int ConstrId, bool &isinvirtualspace) const
 
 int SketchObject::toggleVirtualSpace(int ConstrId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
@@ -654,6 +675,8 @@ int SketchObject::setUpSketch()
 
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
     // need to do programmatically moves of new geometry that has not been solved yet and that because
@@ -849,6 +872,8 @@ std::vector<Part::Geometry *> SketchObject::supportedGeometry(const std::vector<
 
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction/*=false*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals;
@@ -876,6 +901,8 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
 
 int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=false*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals;
@@ -900,6 +927,8 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
 
 int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
@@ -966,6 +995,8 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
 int SketchObject::deleteAllGeometry()
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     std::vector< Part::Geometry * > newVals(0);
     std::vector< Constraint * > newConstraints(0);
 
@@ -986,6 +1017,8 @@ int SketchObject::deleteAllGeometry()
 
 int SketchObject::deleteAllConstraints()
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     std::vector< Constraint * > newConstraints(0);
 
     this->Constraints.setValues(newConstraints);
@@ -998,6 +1031,8 @@ int SketchObject::deleteAllConstraints()
 
 int SketchObject::toggleConstruction(int GeoId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
@@ -1029,6 +1064,8 @@ int SketchObject::toggleConstruction(int GeoId)
 
 int SketchObject::setConstruction(int GeoId, bool on)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
@@ -1061,6 +1098,8 @@ int SketchObject::setConstruction(int GeoId, bool on)
 //ConstraintList is used only to make copies.
 int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
     std::vector< Constraint * > newVals;
@@ -1090,6 +1129,8 @@ int SketchObject::addConstraints(const std::vector<Constraint *> &ConstraintList
 
 int SketchObject::addCopyOfConstraints(const SketchObject &orig)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
     const std::vector< Constraint * > &origvals = orig.Constraints.getValues();
@@ -1129,6 +1170,8 @@ int SketchObject::addCopyOfConstraints(const SketchObject &orig)
 
 int SketchObject::addConstraint(const Constraint *constraint)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
     std::vector< Constraint * > newVals;
@@ -1154,6 +1197,8 @@ int SketchObject::addConstraint(const Constraint *constraint)
 
 int SketchObject::delConstraint(int ConstrId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
@@ -1170,6 +1215,8 @@ int SketchObject::delConstraint(int ConstrId)
 
 int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
     std::vector< Constraint * > newVals(vals);
@@ -1205,6 +1252,8 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
 
 int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     // check if constraints can be redirected to some other point
@@ -1314,6 +1363,8 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
 
 int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
     std::vector<Constraint *> changed;
@@ -1991,6 +2042,8 @@ int SketchObject::extend(int GeoId, double increment, int endpoint) {
 
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
 
@@ -3109,6 +3162,8 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
 
 int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId/*=Sketcher::none*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
     const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
 
@@ -3658,6 +3713,8 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                           bool clone /*=false*/, int csize/*=2*/, int rsize/*=1*/, bool constraindisplacement /*= false*/,
                           double perpscale /*= 1.0*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
 
     const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
@@ -5004,6 +5061,8 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
 bool SketchObject::convertToNURBS(int GeoId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     if (GeoId > getHighestCurveIndex() ||
         (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.size())) ||
         GeoId == -1 || GeoId == -2)
@@ -5080,6 +5139,8 @@ bool SketchObject::convertToNURBS(int GeoId)
 
 bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return false;
 
@@ -5118,6 +5179,8 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
 bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     #if OCC_VERSION_HEX < 0x060900
         THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
     #endif
@@ -5306,6 +5369,8 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
 int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // so far only externals to the support of the sketch and datum features
     bool xinv = false, yinv = false;
 
@@ -5459,6 +5524,8 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // so far only externals to the support of the sketch and datum features
     if (!isExternalAllowed(Obj->getDocument(), Obj))
        return -1;
@@ -5507,6 +5574,8 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 
 int SketchObject::delExternal(int ExtGeoId)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
@@ -5562,6 +5631,8 @@ int SketchObject::delExternal(int ExtGeoId)
 
 int SketchObject::delAllExternal()
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
@@ -5607,6 +5678,8 @@ int SketchObject::delAllExternal()
 
 int SketchObject::delConstraintsToExternal()
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     const std::vector< Constraint * > &constraints = Constraints.getValuesForce();
     std::vector< Constraint * > newConstraints(0);
     int GeoId = GeoEnum::RefExt, NullId = Constraint::GeoUndef;
@@ -5736,6 +5809,8 @@ bool SketchObject::evaluateSupport(void)
 
 void SketchObject::validateExternalLinks(void)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
 
@@ -6744,6 +6819,8 @@ bool SketchObject::evaluateConstraints() const
 
 void SketchObject::validateConstraints()
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     std::vector<Part::Geometry *> geometry = getCompleteGeometry();
     const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValuesForce();
 
@@ -6953,18 +7030,51 @@ void SketchObject::onChanged(const App::Property* prop)
             return;
         }
     }
+
     if (prop == &Geometry || prop == &Constraints) {
-        if(getDocument()->isPerformingTransaction()) {
+
+        if(getDocument()->isPerformingTransaction()) { // undo/redo
             setStatus(App::PendingTransactionUpdate, true);
         }
         else {
             if(!internaltransaction) { // internal sketchobject operations changing both geometry and constraints will explicity perform an update
                 if(prop == &Geometry) {
-                    acceptGeometry(); // if geometry changed, the constraint geometry indices must be updated
+                    if(managedoperation || isRestoring()) {
+                        acceptGeometry(); // if geometry changed, the constraint geometry indices must be updated
+                    }
+                    else { // this change was not effect via SketchObject, but using direct access to properties, check input data
+
+                        // declares constraint invalid if indices go beyond the geometry and any call to getValues with return an empty list until this is fixed.
+                        bool invalidinput = Constraints.checkConstraintIndices(getHighestCurveIndex(),-getExternalGeometryCount());
+
+                        if(!invalidinput) {
+                            acceptGeometry();
+                        }
+                        else {
+                            Base::Console().Error("SketchObject::onChanged(): Unmanaged change of Geometry Property results in invalid constraint indices\n");
+                        }
+                    }
                 }
                 else { // Change is in Constraints
-                    if (Constraints.checkGeometry(getCompleteGeometry())) // if there are invalid geometry indices in the constraints, we need to update them
-                        acceptGeometry();
+
+                    if(managedoperation || isRestoring()) {
+                        Constraints.checkGeometry(getCompleteGeometry());
+                    }
+                    else { // this change was not effect via SketchObject, but using direct access to properties, check input data
+
+                        // declares constraint invalid if indices go beyond the geometry and any call to getValues with return an empty list until this is fixed.
+                        bool invalidinput = Constraints.checkConstraintIndices(getHighestCurveIndex(),-getExternalGeometryCount());
+
+                        if(!invalidinput) {
+                            if (Constraints.checkGeometry(getCompleteGeometry())) { // if there are invalid geometry indices in the constraints, we need to update them
+                                acceptGeometry();
+                            }
+                        }
+                        else {
+                            Base::Console().Error("SketchObject::onChanged(): Unmanaged change of Constraint Property results in invalid constraint indices\n");
+                        }
+
+                    }
                 }
             }
         }
@@ -7004,6 +7114,7 @@ void SketchObject::onUndoRedoFinished()
     //
     // Historically this was "solved" by issuing a recompute, which is absolutely unnecessary and prevents solve() from working before
     // such a recompute
+    Constraints.checkConstraintIndices(getHighestCurveIndex(),-getExternalGeometryCount()); // in case it is redoing an operation with invalid data.
     acceptGeometry();
     solve();
 }
@@ -7076,6 +7187,8 @@ int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
 /// unlocked.
 int SketchObject::changeConstraintsLocking(bool bLock)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     int cntSuccess = 0;
     int cntToBeAffected = 0;//==cntSuccess+cntFail
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
@@ -7126,6 +7239,8 @@ bool SketchObject::constraintHasExpression(int constrid) const
  */
 int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 {
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
     int cntToBeAffected = 0;//==cntSuccess+cntFail
     const std::vector< Constraint * > &vals = this->Constraints.getValues();
 
