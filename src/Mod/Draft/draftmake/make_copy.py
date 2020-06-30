@@ -57,12 +57,14 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
+    newobj = None
+
     if simple_copy and hasattr(obj, 'Shape'):
         _name = utils.get_real_name(obj.Name)
         newobj = App.ActiveDocument.addObject("Part::Feature", _name)
         newobj.Shape = obj.Shape
         gui_utils.format_object(newobj, obj)
-    elif not simple_copy and hasattr(obj, 'Shape'):
+    elif not simple_copy:
         newobj = App.ActiveDocument.copyObject(obj)
 
     if not newobj:
@@ -74,10 +76,13 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
             for par in parents:
                 if par.isDerivedFrom("App::DocumentObjectGroup"):
                     par.addObject(newobj)
-                else: # Carlo: when is it used?
-                    for prop in par.PropertiesList:
-                        if getattr(par, prop) == obj:
-                            setattr(par, prop, newobj)
+                else:
+                    # That's the case of Arch_BuildingParts or Draft_Layers for example
+                    if "Group" in par.PropertiesList:
+                        if obj in par.Group:
+                            group = par.Group
+                            group.append(newobj)
+                            par.Group = group
 
     return newobj
     
