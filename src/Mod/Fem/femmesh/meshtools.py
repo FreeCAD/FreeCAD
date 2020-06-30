@@ -2357,7 +2357,9 @@ def compact_mesh(
             node_map[n] = nid
 
     # element id is one id for Edges, Faces and Volumes
-    # thus should not start with 0 for each, wil give an error on mixed meshes
+    # thus should not start with 0 for each element type
+    # because this will give an error for mixed meshes
+    # because the id is used already
     # https://forum.freecadweb.org/viewtopic.php?t=48215
     ele_id = 1
     if old_femmesh.Edges:
