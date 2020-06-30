@@ -22,18 +22,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft_Snap commands used by the snapping mechanism in Draft."""
+"""Provides GUI tools to activate the different snapping methods."""
 ## @package gui_snaps
-# \ingroup DRAFT
-# \brief Provide the Draft_Snap commands used by the snapping mechanism
-# in Draft.
+# \ingroup draftguitools
+# \brief Provides GUI tools to activate the different snapping methods.
 
-from PySide import QtGui
+## \addtogroup draftguitools
+# @{
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr
 
 
@@ -625,3 +626,5 @@ class ShowSnapBar(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_ShowSnapBar', ShowSnapBar())
+
+## @}

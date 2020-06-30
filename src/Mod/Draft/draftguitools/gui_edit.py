@@ -20,41 +20,37 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft_Edit command used by the Draft workbench."""
+"""Provides GUI tools to start the edit mode of different objects."""
 ## @package gui_edit
-# \ingroup DRAFT
-# \brief Provide the Draft_Edit command used by the Draft workbench
+# \ingroup draftguitools
+# \brief Provides GUI tools to start the edit mode of different objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import math
-from pivy import coin
-from PySide import QtCore, QtGui
+import pivy.coin as coin
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
+import DraftVecUtils
 import draftutils.utils as utils
-
+import draftutils.gui_utils as gui_utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
-import draftutils.gui_utils as gui_utils
-
-import DraftVecUtils
-import DraftGeomUtils
-
-from draftutils.translate import translate
 import draftguitools.gui_trackers as trackers
-
 import draftguitools.gui_edit_draft_objects as edit_draft
 import draftguitools.gui_edit_arch_objects as edit_arch
 import draftguitools.gui_edit_part_objects as edit_part
 import draftguitools.gui_edit_sketcher_objects as edit_sketcher
 
+from draftutils.translate import translate
 
 COLORS = {
     "default": Gui.draftToolBar.getDefaultColor("snap"),
@@ -1234,3 +1230,5 @@ class Edit(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Edit', Edit())
+
+## @}

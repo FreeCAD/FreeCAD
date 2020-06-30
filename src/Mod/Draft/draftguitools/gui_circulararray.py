@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft CircularArray GuiCommand."""
+"""Provides GUI tools to create circular Array objects."""
 ## @package gui_circulararray
-# \ingroup DRAFT
-# \brief This module provides the Draft CircularArray tool.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create circular Array objects.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -142,3 +144,5 @@ class CircularArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_CircularArray', CircularArray())
+
+## @}

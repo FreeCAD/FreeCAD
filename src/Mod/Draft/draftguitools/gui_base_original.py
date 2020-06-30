@@ -22,15 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Base object for most old Draft Gui Commands.
+"""Provides the base classes for most old Draft Gui Commands.
 
 This class is used by Gui Commands to set up some properties
 of the DraftToolBar, the Snapper, and the working plane.
 """
 ## @package gui_base_original
-# \ingroup DRAFT
-# \brief Provides the Base object for most old Draft Gui Commands.
+# \ingroup draftguitools
+# \brief Provides the base classes for most old Draft Gui Commands.
 
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
@@ -39,6 +41,7 @@ import draftutils.gui_utils as gui_utils
 import draftutils.todo as todo
 import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg, _log
 
 __metaclass__ = type  # to support Python 2 use of `super()`
@@ -302,3 +305,5 @@ class Modifier(DraftTool):
     def __init__(self):
         super(Modifier, self).__init__()
         self.copymode = False
+
+## @}

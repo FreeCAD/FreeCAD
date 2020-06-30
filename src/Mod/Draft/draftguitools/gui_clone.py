@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating clones of objects with the Draft Workbench.
+"""Provides GUI tools to create Clone objects.
 
 The clone is basically a simple copy of the `Shape` of another object,
 whether that is a Draft object or any other 3D object.
@@ -35,9 +35,11 @@ more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
 ## @package gui_clone
-# \ingroup DRAFT
-# \brief Provides tools for creating clones of objects.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Clone objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -123,3 +125,5 @@ class Clone(gui_base_original.Modifier):
 
 Draft_Clone = Clone
 Gui.addCommand('Draft_Clone', Clone())
+
+## @}

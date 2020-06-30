@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for splitting lines with the Draft Workbench."""
+"""Provides GUI tools to split line and wire objects."""
 ## @package gui_split
-# \ingroup DRAFT
-# \brief Provides tools for splitting lines with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to split line and wire objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -35,6 +37,7 @@ import Draft_rc
 import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate, _tr
 
@@ -115,3 +118,5 @@ class Split(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Split', Split())
+
+## @}

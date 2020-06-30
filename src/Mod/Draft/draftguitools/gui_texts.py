@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating text annotations with the Draft Workbench.
+"""Provides GUI tools to create simple Text objects.
 
 The textual block can consist of multiple lines.
 """
 ## @package gui_texts
-# \ingroup DRAFT
-# \brief Provides tools for creating text annotations with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create simple Text objects.
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
+## \addtogroup draftguitools
+# @{
 import sys
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -157,3 +159,5 @@ class Text(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Text', Text())
+
+## @}

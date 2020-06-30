@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating point arrays with the Draft Workbench.
+"""Provides GUI tools to create PointArray objects.
 
 The copies will be created where various points are located.
 
@@ -37,9 +37,11 @@ the explicit point and vertex objects will be used when creating
 the point array.
 """
 ## @package gui_pointarray
-# \ingroup DRAFT
-# \brief Provides tools for creating point arrays with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create PointArray objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -132,3 +134,5 @@ class PointArray(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_PointArray', PointArray())
+
+## @}

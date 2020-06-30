@@ -22,20 +22,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools to modify Draft dimensions.
+"""Provides GUI tools to modify dimension objects.
 
 For example, a tool to flip the direction of the text in the dimension
 as the normal is sometimes not correctly calculated automatically.
 """
 ## @package gui_dimension_ops
-# \ingroup DRAFT
-# \brief Provides tools to modify Draft dimensions.
+# \ingroup draftguitools
+# \brief Provides GUI tools to modify dimension objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftutils.utils as utils
 import draftguitools.gui_base as gui_base
+
 from draftutils.translate import _tr
 
 
@@ -81,3 +84,5 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
 
 Draft_FlipDimension = FlipDimension
 Gui.addCommand('Draft_FlipDimension', FlipDimension())
+
+## @}
