@@ -1270,6 +1270,8 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
     if(count() == 1)
         setRect(rect);
+
+    saveTabs();
 }
 
 int OverlayTabWidget::dockWidgetIndex(QDockWidget *dock) const
@@ -1302,6 +1304,8 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock)
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
 
     setOverlayMode(dock, 0);
+
+    saveTabs();
 }
 
 void OverlayTabWidget::resizeEvent(QResizeEvent *ev)
