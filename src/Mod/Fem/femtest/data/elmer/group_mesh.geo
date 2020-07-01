@@ -13,7 +13,7 @@ Physical Volume("Solid1") = {1};
 // no boundary layer settings for this mesh
 // min, max Characteristic Length
 Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 9.0;
+Mesh.CharacteristicLengthMin = 8.0;
 
 // optimize the mesh
 Mesh.Optimize = 1;

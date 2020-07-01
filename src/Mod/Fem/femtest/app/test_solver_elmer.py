@@ -31,7 +31,6 @@ from os.path import join
 import FreeCAD
 
 import femsolver.run
-import ObjectsFem
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
@@ -98,33 +97,16 @@ class TestSolverElmer(unittest.TestCase):
         from femexamples.boxanalysis_static import setup
         setup(self.document, "elmer")
 
-        analysis_obj = self.document.Analysis
+        # for information:
+        # elmer needs gmsh mesho object
+        # FIXME error message on Python solver run
+        # the examples do use a gmsh mesh object thus ok
+        # FIXME elmer elasticity needs the dict key "ThermalExpansionCoefficient" in material
+
         solver_obj = self.document.SolverElmer
-        material_obj = self.document.MechanicalMaterial
-        mesh_obj = self.document.Mesh
-        box_object = self.document.Box
 
         base_name = "cube_static"
         analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
-
-        # TODO move to elmer solver of femexample code
-        ObjectsFem.makeEquationElasticity(self.document, solver_obj)
-
-        # set ThermalExpansionCoefficient
-        # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
-        # even on simple elasticity analysis, otherwise it fails
-        mat = material_obj.Material
-        mat["ThermalExpansionCoefficient"] = "0 um/m/K"
-        material_obj.Material = mat
-
-        # elmer needs a GMHS mesh object
-        # FIXME error message on Python solver run
-        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.document)
-        mesh_gmsh.CharacteristicLengthMin = "9 mm"
-        mesh_gmsh.FemMesh = mesh_obj.FemMesh
-        mesh_gmsh.Part = box_object
-        analysis_obj.addObject(mesh_gmsh)
-        self.document.removeObject(mesh_obj.Name)  # remove original mesh object
 
         # save the file
         save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
