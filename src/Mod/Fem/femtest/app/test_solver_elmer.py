@@ -136,7 +136,7 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing case file")
-        casefile_given = join(test_file_dir_elmer, "case.sif")
+        casefile_given = join(test_file_dir_elmer, "case_mm.sif")
         casefile_totest = join(analysis_dir, "case.sif")
         fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
