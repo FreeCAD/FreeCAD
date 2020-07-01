@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the basic object code for all Draft annotation objects.
+"""Provides the object code for all annotation type objects.
 
 This is used by many objects that show dimensions and text created on screen
 through Coin (pivy).
@@ -32,9 +32,11 @@ through Coin (pivy).
 - Text
 """
 ## @package draft_annotation
-# \ingroup DRAFT
-# \brief Provide the basic object code for all Draft annotation objects.
+# \ingroup draftobjects
+# \brief Provides the object code for all annotation type objects.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftutils.messages import _wrn
@@ -152,3 +154,5 @@ class DraftAnnotation(object):
         Does nothing.
         """
         return
+
+## @}

@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Circle.
-"""
+"""Provides the object code for the Circle object."""
 ## @package circle
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Circle.
+# \ingroup draftobjects
+# \brief Provides the object code for the Circle object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -62,7 +62,7 @@ class Circle(DraftObject):
         obj.addProperty("App::PropertyArea", "Area",
                         "Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode", True)
+        obj.MakeFace = utils.get_param("fillmode", True)
 
 
     def execute(self, obj):
@@ -95,4 +95,7 @@ class Circle(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Circle = Circle
+
+## @}

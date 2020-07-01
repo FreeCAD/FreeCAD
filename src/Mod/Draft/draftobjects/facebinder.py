@@ -20,15 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Facebinder.
-"""
+"""Provides the object code for the Facebinder object."""
 ## @package facebinder
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Facebinder.
+# \ingroup draftobjects
+# \brief Provides the object code for the Facebinder object.
+
+## \addtogroup draftobjects
+# @{
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftobjects.base import DraftObject
 
@@ -133,4 +134,7 @@ class Facebinder(DraftObject):
         self.execute(obj)
 
 
+# Alias for compatibility with v0.18 and earlier
 _Facebinder = Facebinder
+
+## @}
