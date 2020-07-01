@@ -20,28 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_sketch function.
-"""
+"""Provides functions to create Sketch objects from Draft objects."""
 ## @package make_sketch
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_sketch function.
+# \ingroup draftmake
+# \brief Provides functions to create Sketch objects from Draft objects.
 
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
 import DraftGeomUtils
-
 import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
+
 from draftutils.translate import translate
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftobjects.ellipse import Ellipse
-if App.GuiUp:
-    from draftviewproviders.view_base import ViewProviderDraft
 
 
 def make_sketch(objectslist, autoconstraints=False, addTo=None,
@@ -303,7 +297,7 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
                         nobj.addGeometry(DraftGeomUtils.orientEdge(
                                                 newedge,norm,make_arc=True))
             ok = True
-        format_object(nobj,obj)
+        gui_utils.format_object(nobj,obj)
         if ok and delete and hasattr(obj,'Shape'):
             doc = obj.Document
             def delObj(obj):
@@ -334,3 +328,5 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
 
 
 makeSketch = make_sketch
+
+## @}

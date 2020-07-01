@@ -20,15 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions for creating orthogonal arrays in 2D and 3D."""
+"""Provides functions to create orthogonal 2D and 3D Array objects."""
 ## @package make_orthoarray
-# \ingroup DRAFT
-# \brief Provides functions for creating orthogonal arrays in 2D and 3D.
+# \ingroup draftmake
+# \brief Provides functions to create orthogonal 2D and 3D Arrays.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-import draftmake.make_array as make_array
 import draftutils.utils as utils
+import draftmake.make_array as make_array
 
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr
@@ -525,3 +526,5 @@ def make_rect_array2d(base_object,
                                 n_y=n_y,
                                 use_link=use_link)
     return new_obj
+
+## @}

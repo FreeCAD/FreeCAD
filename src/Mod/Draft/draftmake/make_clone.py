@@ -20,22 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_clone function.
-"""
+"""Provides functions to create Clone objects."""
 ## @package make_clone
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_clone function.
+# \ingroup draftmake
+# \brief Provides functions to create Clone objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-import DraftGeomUtils
-
 import draftutils.utils as utils
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.clone import Clone
+
 if App.GuiUp:
     from draftutils.todo import ToDo
     from draftviewproviders.view_clone import ViewProviderClone
@@ -102,11 +99,11 @@ def make_clone(obj, delta=None, forcedraft=False):
             except:
                 pass
             if App.GuiUp:
-                format_object(cl,base)
+                gui_utils.format_object(cl,base)
                 cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
                 if utils.get_type(obj[0]) in ["Window","BuildingPart"]:
                     ToDo.delay(Arch.recolorize,cl)
-            select(cl)
+            gui_utils.select(cl)
             return cl
     # fall back to Draft clone mode
     if not cl:
@@ -121,13 +118,15 @@ def make_clone(obj, delta=None, forcedraft=False):
         cl.Placement.move(delta)
     elif (len(obj) == 1) and hasattr(obj[0],"Placement"):
         cl.Placement = obj[0].Placement
-    format_object(cl,obj[0])
+    gui_utils.format_object(cl,obj[0])
     if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
         cl.LongName = obj[0].LongName
     if App.GuiUp and (len(obj) > 1):
         cl.ViewObject.Proxy.resetColors(cl.ViewObject)
-    select(cl)
+    gui_utils.select(cl)
     return cl
 
 
 clone = make_clone
+
+## @}

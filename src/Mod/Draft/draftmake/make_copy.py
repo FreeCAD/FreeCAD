@@ -20,17 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_copy function.
-"""
+"""Provides functions to create copies of objects."""
 ## @package make_copy
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_copy function.
+# \ingroup draftmake
+# \brief Provides functions to create copies of objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-
 
 
 def make_copy(obj, force=None, reparent=False, simple_copy=False):
@@ -85,4 +84,5 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
                             par.Group = group
 
     return newobj
-    
+
+## @}

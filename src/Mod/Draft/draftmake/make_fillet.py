@@ -18,34 +18,34 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the code to create Fillet objects.
+"""Provides functions to create Fillet objects between two lines.
 
 This creates a `Part::Part2DObjectPython`, and then assigns the Proxy class
 `Fillet`, and the `ViewProviderFillet` for the view provider.
 """
 ## @package make_fillet
-# \ingroup DRAFT
-# \brief Provides the code to create Fillet objects.
+# \ingroup draftmake
+# \brief Provides functions to create Fillet objects between two lines.
 
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import Draft_rc
-import DraftGeomUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftobjects.fillet as fillet
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 if App.GuiUp:
     import draftviewproviders.view_fillet as view_fillet
 
-# Delay import of Part module until first use because it is heavy
+# Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+## \addtogroup draftmake
+# @{
 
 
 def _print_obj_length(obj, edge, num=1):
@@ -171,3 +171,5 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         gui_utils.autogroup(obj)
 
     return obj
+
+## @}

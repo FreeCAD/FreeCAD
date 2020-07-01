@@ -25,15 +25,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions for creating path arrays.
+"""Provides functions to create PathArray objects.
 
 The copies will be placed along a path like a polyline, spline, or bezier
 curve.
 """
 ## @package make_patharray
-# \ingroup DRAFT
-# \brief Provides functions for creating path arrays.
+# \ingroup draftmake
+# \brief Provides functions to create PathArray objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -315,3 +317,5 @@ def makePathArray(baseobject, pathobject, count,
                            xlate, pathobjsubs,
                            align,
                            use_link)
+
+## @}
