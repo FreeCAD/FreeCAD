@@ -214,6 +214,7 @@ Py::String CosmeticEdgePy::getTag(void) const
 Py::Object CosmeticEdgePy::getStart(void) const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 
@@ -247,6 +248,7 @@ void CosmeticEdgePy::setStart(Py::Object arg)
 Py::Object CosmeticEdgePy::getEnd(void) const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 
@@ -328,6 +330,7 @@ Py::Object CosmeticEdgePy::getCenter(void) const
         throw Py::TypeError(error);
     }
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 
