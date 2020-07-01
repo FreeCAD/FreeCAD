@@ -34,10 +34,11 @@ Or load it as a module and use the defined function.
 >>> dt.create_test_file()
 """
 ## @package draft_test_objects
-# \ingroup DRAFT
+# \ingroup drafttests
 # \brief Run this file to create a standard test document for Draft objects.
-# @{
 
+## \addtogroup drafttests
+# @{
 import datetime
 import os
 
