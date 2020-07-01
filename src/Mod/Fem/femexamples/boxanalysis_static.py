@@ -72,7 +72,7 @@ def setup_base(doc=None, solvertype="ccxtools"):
     if solvertype == "elmer":
         # set ThermalExpansionCoefficient
         # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
-        mat["ThermalExpansionCoefficient"] = "0 um/m/K"
+        mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # mesh
