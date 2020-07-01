@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the base class for many annotation viewproviders.
+"""Provides the viewprovider code for all annotation type objects.
 
 This is inherited and used by many viewproviders that show dimensions
 and text created on screen through Coin (pivy).
@@ -34,9 +34,11 @@ and text created on screen through Coin (pivy).
 Its edit mode launches the `Draft_Edit` command.
 """
 ## @package view_draft_annotation
-# \ingroup DRAFT
-# \brief Provides the base class for many annotation viewproviders.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for all annotation type objects.
 
+## \addtogroup draftviewproviders
+# @{
 import json
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -233,3 +235,5 @@ class ViewProviderDraftAnnotation(object):
             objs.extend(self.Object.Group)
 
         return objs
+
+## @}

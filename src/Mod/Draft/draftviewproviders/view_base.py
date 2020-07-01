@@ -20,31 +20,30 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the base Draft object.
-"""
+"""Provides the viewprovider code for the base Draft object.
+
+Many viewprovider classes may inherit this class in order to have
+the same basic behavior."""
 ## @package view_base
-# \ingroup DRAFT
-# \brief This module provides the view provider code for the base Draft object.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the base Draft object.
 
-
+## \addtogroup draftviewproviders
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 if App.GuiUp:
     from pivy import coin
     import FreeCADGui as Gui
+    import Draft_rc
+    # The module is used to prevent complaints from code checkers (flake8)
+    bool(Draft_rc.__name__)
 
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-#import Draft_rc
-# from DraftGui import translate
-# from DraftGui import displayExternal
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-#True if Draft_rc.__name__ else False
 
 class ViewProviderDraft(object):
     """The base class for Draft view providers.
@@ -491,6 +490,7 @@ class ViewProviderDraft(object):
         return objs
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraft = ViewProviderDraft
 
 
@@ -508,6 +508,7 @@ class ViewProviderDraftAlt(ViewProviderDraft):
         return objs
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftAlt = ViewProviderDraftAlt
 
 
@@ -524,4 +525,7 @@ class ViewProviderDraftPart(ViewProviderDraftAlt):
         return ":/icons/Tree_Part.svg"
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftPart = ViewProviderDraftPart
+
+## @}

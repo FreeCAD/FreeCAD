@@ -18,16 +18,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for BSpline objects.
+"""Provides the viewprovider code for the BSpline object.
 
 At the moment this view provider subclasses the Wire view provider,
 and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
 ## @package view_bspline
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the view provider code for BSpline objects.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_wire import ViewProviderWire
 
 
@@ -38,4 +40,7 @@ class ViewProviderBSpline(ViewProviderWire):
         super(ViewProviderBSpline, self).__init__(vobj)
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderBSpline = ViewProviderBSpline
+
+## @}

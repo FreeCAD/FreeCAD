@@ -20,15 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the viewprovider code for polyline and similar objects.
+"""Provides the viewprovider code for the Wire (polyline) object.
 
 This viewprovider is also used by simple lines, B-splines, bezier curves,
 and similar objects.
 """
-## @package view_base
-# \ingroup DRAFT
-# \brief Provides the viewprovider code for polyline and similar objects.
+## @package view_wire
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Wire (polyline) object.
 
+## \addtogroup draftviewproviders
+# @{
 import pivy.coin as coin
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
@@ -36,13 +38,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
 import DraftVecUtils
 import DraftGeomUtils
-from draftutils.messages import _msg
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
+from draftutils.messages import _msg
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -173,4 +174,7 @@ class ViewProviderWire(ViewProviderDraft):
                         _msg(QT_TRANSLATE_NOOP("Draft", _flat))
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderWire = ViewProviderWire
+
+## @}

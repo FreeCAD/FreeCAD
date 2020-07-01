@@ -22,22 +22,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft Text viewprovider class."""
+"""Provides the viewprovider code for the Text object."""
 ## @package view_text
-# \ingroup DRAFT
-# \brief Provides the Draft Text viewprovider class.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Text object.
 
+## \addtogroup draftviewproviders
+# @{
 import pivy.coin as coin
 import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD as App
-
 import draftutils.utils as utils
+
 from draftviewproviders.view_draft_annotation \
     import ViewProviderDraftAnnotation
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 class ViewProviderText(ViewProviderDraftAnnotation):
@@ -226,3 +225,5 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 ViewProviderDraftText = ViewProviderText
+
+## @}
