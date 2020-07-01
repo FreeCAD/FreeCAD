@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the Draft Clone object.
-"""
+"""Provides the viewprovider code for the Clone object."""
 ## @package view_clone
-# \ingroup DRAFT
-# \brief This module provides the view provider code for the Draft Clone object.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Clone object.
 
+## \addtogroup draftviewproviders
+# @{
 import draftutils.groups as groups
 
 
@@ -77,4 +78,7 @@ class ViewProviderClone:
             vobj.DiffuseColor = colors
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderClone = ViewProviderClone
+
+## @}

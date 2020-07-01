@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the viewprovider class for the Draft Label object."""
+"""Provides the viewprovider code for the Label object."""
 ## @package view_label
-# \ingroup DRAFT
-# \brief Provides the viewprovider class for the Draft Label object.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Label object.
 
+## \addtogroup draftviewproviders
+# @{
 import math
 import sys
 import pivy.coin as coin
@@ -527,3 +529,5 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 ViewProviderDraftLabel = ViewProviderLabel
+
+## @}

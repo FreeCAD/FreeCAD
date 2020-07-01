@@ -22,15 +22,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft Dimension viewprovider classes.
+"""Provides the viewprovider code for the Dimension objects.
 
 These include linear dimensions, including radius and diameter,
 as well as angular dimensions.
 They inherit their behavior from the base Annotation viewprovider.
 """
 ## @package view_dimension
-# \ingroup DRAFT
-# \brief Provides the Draft Dimension viewprovider classes.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Dimension objects.
 
 import pivy.coin as coin
 import lazy_loader.lazy_loader as lz
@@ -48,6 +48,9 @@ from draftviewproviders.view_draft_annotation \
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+## \addtogroup draftviewproviders
+# @{
 
 
 class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
@@ -1273,3 +1276,5 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderAngularDimension = ViewProviderAngularDimension
+
+## @}
