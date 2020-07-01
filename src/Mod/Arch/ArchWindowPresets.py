@@ -20,7 +20,10 @@
 #***************************************************************************
 
 import FreeCAD
+
 from FreeCAD import Vector
+from draftutils.translate import translate
+
 
 WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                   "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane"]

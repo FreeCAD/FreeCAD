@@ -115,6 +115,13 @@ class TestObjectOpen(unittest.TestCase):
         # FeaturePythons view provider
         self.compare_feature_pythons_class_gui(self.document)
 
+        # standard name changed
+        from femsolver.elmer.equations.flux import ViewProxy
+        self.assertEqual(
+            ViewProxy,
+            self.document.Flux.ViewObject.Proxy.__class__
+        )
+
     # ********************************************************************************************
     def test_femobjects_open_de9b3fb438(
         self
@@ -134,6 +141,13 @@ class TestObjectOpen(unittest.TestCase):
         # FeaturePythons view provider
         self.compare_feature_pythons_class_gui(self.document)
 
+        # standard name changed
+        from femsolver.elmer.equations.flux import ViewProxy
+        self.assertEqual(
+            ViewProxy,
+            self.document.Fluxsolver.ViewObject.Proxy.__class__
+        )
+
     # ********************************************************************************************
     def compare_feature_pythons_class_gui(
         self,
@@ -147,7 +161,8 @@ class TestObjectOpen(unittest.TestCase):
             doc.ConstraintBodyHeatSource.ViewObject.Proxy.__class__
         )
 
-        from femviewprovider.view_constraint_electrostaticpotential import VPConstraintElectroStaticPotential
+        from femviewprovider.view_constraint_electrostaticpotential \
+            import VPConstraintElectroStaticPotential
         self.assertEqual(
             VPConstraintElectroStaticPotential,
             doc.ConstraintElectrostaticPotential.ViewObject.Proxy.__class__
@@ -159,7 +174,8 @@ class TestObjectOpen(unittest.TestCase):
             doc.ConstraintFlowVelocity.ViewObject.Proxy.__class__
         )
 
-        from femviewprovider.view_constraint_initialflowvelocity import VPConstraintInitialFlowVelocity
+        from femviewprovider.view_constraint_initialflowvelocity \
+            import VPConstraintInitialFlowVelocity
         self.assertEqual(
             VPConstraintInitialFlowVelocity,
             doc.ConstraintInitialFlowVelocity.ViewObject.Proxy.__class__
@@ -301,12 +317,6 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             ViewProxy,
             doc.Flow.ViewObject.Proxy.__class__
-        )
-
-        from femsolver.elmer.equations.fluxsolver import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.Fluxsolver.ViewObject.Proxy.__class__
         )
 
         from femsolver.elmer.equations.heat import ViewProxy

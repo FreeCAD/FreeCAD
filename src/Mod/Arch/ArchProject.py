@@ -166,6 +166,15 @@ class _Project(ArchIFC.IfcContext):
         """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
 class _ViewProviderProject(ArchIFCView.IfcContextView):
     """A View Provider for the project object.
 

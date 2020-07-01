@@ -235,6 +235,17 @@ public:
     virtual ~PropertyForce(){}
 };
 
+/** VacuumPermittivity property
+ * This is a property for representing vacuum permittivity. It is basically a float
+ * property. On the Gui it has a quantity like s^4*A^2 / (m^3*kg).
+ */
+class AppExport PropertyVacuumPermittivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyVacuumPermittivity(void);
+    virtual ~PropertyVacuumPermittivity(){}
+};
 
 } // namespace App
 

@@ -627,7 +627,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
                     // do not require an empty inlist (#0003465: Groups breaking dependency graph)
-                    // App::Origin now has the GeoFeatureGroupExtension but it shoud not move its
+                    // App::Origin now has the GeoFeatureGroupExtension but it should not move its
                     // group symbol outside its parent
                     if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) &&
                          objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
@@ -4546,15 +4546,31 @@ std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Typ
 }
 
 
-std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
+std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
-    boost::regex rx(objname);
     boost::cmatch what;
+    boost::regex rx_name, rx_label;
+
+    if (objname)
+        rx_name.set_expression(objname);
+
+    if (label)
+        rx_label.set_expression(label);
+
     std::vector<DocumentObject*> Objects;
+    DocumentObject* found = nullptr;
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId)) {
-            if (boost::regex_match((*it)->getNameInDocument(), what, rx))
-                Objects.push_back(*it);
+            found = *it;
+
+            if (!rx_name.empty() && !boost::regex_search((*it)->getNameInDocument(), what, rx_name))
+                found = nullptr;
+
+            if (!rx_label.empty() && !boost::regex_search((*it)->Label.getValue(), what, rx_label))
+                found = nullptr;
+
+            if (found)
+                Objects.push_back(found);
         }
     }
     return Objects;

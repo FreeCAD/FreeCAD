@@ -55,10 +55,23 @@ class TestSolverFrameWork(unittest.TestCase):
             "FEM_solverframework"
         )
 
+        # make sure std FreeCAD unit system mm/kg/s is used
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        self.unit_schema = param.GetInt("UserSchema")
+        if self.unit_schema != 0:
+            fcc_print("Unit schema: {}. Set unit schema to 0 (mm/kg/s)".format(self.unit_schema))
+            param.SetInt("UserSchema", 0)
+
     # ********************************************************************************************
     def tearDown(
         self
     ):
+        # set back unit unit schema
+        if self.unit_schema != 0:
+            fcc_print("Set unit schema back to {}".format(self.unit_schema))
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+            param.SetInt("UserSchema", self.unit_schema)
+
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
 
@@ -82,8 +95,8 @@ class TestSolverFrameWork(unittest.TestCase):
         fcc_print("\n--------------- Start of FEM tests solver framework solver CalculiX ------")
 
         # set up the CalculiX static analysis example
-        from femexamples import boxanalysis as box
-        box.setup_static(self.document, "calculix")
+        from femexamples.boxanalysis_static import setup
+        setup(self.document, "calculix")
 
         solver_obj = self.document.SolverCalculiX
 
@@ -124,8 +137,8 @@ class TestSolverFrameWork(unittest.TestCase):
         fcc_print("\n--------------- Start of FEM tests solver framework solver Elmer ---------")
 
         # set up the Elmer static analysis example
-        from femexamples import boxanalysis as box
-        box.setup_static(self.document, "elmer")
+        from femexamples.boxanalysis_static import setup
+        setup(self.document, "elmer")
 
         analysis_obj = self.document.Analysis
         solver_obj = self.document.SolverElmer

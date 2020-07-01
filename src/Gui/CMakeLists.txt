@@ -370,6 +370,7 @@ set(Gui_MOC_HDRS
     TreeView.h
     ProjectView.h
     View3DInventor.h
+    VectorListEditor.h
     WidgetFactory.h
     Widgets.h
     Language/Translator.h
@@ -464,6 +465,7 @@ SET(Gui_UIC_SRCS
     TaskElementColors.ui
     DlgObjectSelection.ui
     DlgAddProperty.ui
+    VectorListEditor.ui
 )
 
 SET(Gui_RES_SRCS
@@ -541,6 +543,7 @@ SET(Dialog_CPP_SRCS
     TaskElementColors.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
+    VectorListEditor.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -577,6 +580,7 @@ SET(Dialog_HPP_SRCS
     TaskElementColors.h
     DlgObjectSelection.h
     DlgAddProperty.h
+    VectorListEditor.h
 )
 
 SET(Dialog_SRCS
@@ -615,6 +619,7 @@ SET(Dialog_SRCS
     TextureMapping.ui
     TaskElementColors.ui
     DlgObjectSelection.ui
+    VectorListEditor.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 

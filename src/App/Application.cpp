@@ -1701,6 +1701,7 @@ void Application::initTypes(void)
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
     App ::PropertyPressure          ::init();
+    App ::PropertyVacuumPermittivity::init();
     App ::PropertyInteger           ::init();
     App ::PropertyIntegerConstraint ::init();
     App ::PropertyPercent           ::init();

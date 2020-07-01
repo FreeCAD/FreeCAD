@@ -82,7 +82,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.boxanalysis import setup_frequency as setup
+        from femexamples.boxanalysis_frequency import setup
         setup(self.document, "ccxtools")
         test_name = "frequency"
         base_name = "cube_frequency"
@@ -114,7 +114,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.boxanalysis import setup_static as setup
+        from femexamples.boxanalysis_static import setup
         setup(self.document, "ccxtools")
         test_name = "ccxtools static"
         base_name = "cube_static"
@@ -146,7 +146,7 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.ccx_cantilever_std import setup_cantileverhexa20faceload as setup
+        from femexamples.ccx_cantilever_hexa20faceload import setup
         setup(self.document, "ccxtools")
         test_name = "canti ccx faceload hexa20"
         base_name = "canti_ccx_faceload_hexa20"
@@ -201,6 +201,27 @@ class TestCcxTools(unittest.TestCase):
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_constraint_contact_solid_solid",
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
+    def test_static_constraint_sectionprint(
+        self
+    ):
+        # set up
+        from femexamples.constraint_section_print import setup
+        setup(self.document, "ccxtools")
+        test_name = "constraint sectionprint"
+        base_name = "constraint_sectionprint"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_constraint_sectionprint",
         )
 
         # test input file writing

@@ -159,6 +159,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeAnalysis(doc))
         )
         self.assertEqual(
+            "Fem::ConstantVacuumPermittivity",
+            type_of_obj(ObjectsFem.makeConstantVacuumPermittivity(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintBearing",
             type_of_obj(ObjectsFem.makeConstraintBearing(doc))
         )
@@ -221,6 +225,10 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::ConstraintPulley",
             type_of_obj(ObjectsFem.makeConstraintPulley(doc))
+        )
+        self.assertEqual(
+            "Fem::ConstraintSectionPrint",
+            type_of_obj(ObjectsFem.makeConstraintSectionPrint(doc))
         )
         self.assertEqual(
             "Fem::ConstraintSelfWeight",
@@ -332,8 +340,8 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeEquationFlow(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::EquationElmerFluxsolver",
-            type_of_obj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer))
+            "Fem::EquationElmerFlux",
+            type_of_obj(ObjectsFem.makeEquationFlux(doc, solverelmer))
         )
         self.assertEqual(
             "Fem::EquationElmerHeat",
@@ -358,6 +366,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeAnalysis(doc),
             "Fem::FemAnalysis"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstantVacuumPermittivity(doc),
+            "Fem::ConstantVacuumPermittivity"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintBearing(doc),
@@ -422,6 +434,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintPulley(doc),
             "Fem::ConstraintPulley"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintSectionPrint(doc),
+            "Fem::ConstraintSectionPrint"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSelfWeight(doc),
@@ -535,8 +551,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
         self.assertTrue(is_of_type(
-            ObjectsFem.makeEquationFluxsolver(doc, solverelmer),
-            "Fem::EquationElmerFluxsolver"
+            ObjectsFem.makeEquationFlux(doc, solverelmer),
+            "Fem::EquationElmerFlux"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationHeat(doc, solverelmer),
@@ -569,6 +585,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             analysis,
             "Fem::FemAnalysis"
+        ))
+
+        # ConstantVacuumPermittivity
+        constant_vacuumpermittivity = ObjectsFem.makeConstantVacuumPermittivity(doc)
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstantVacuumPermittivity"
         ))
 
         # ConstraintBearing
@@ -809,6 +840,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_pulley,
             "Fem::ConstraintPulley"
+        ))
+
+        # ConstraintSectionPrint
+        constraint_self_weight = ObjectsFem.makeConstraintSectionPrint(doc)
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintSectionPrint"
         ))
 
         # ConstraintSelfWeight
@@ -1228,8 +1274,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
 
-        # FemEquationElmerFluxsolver
-        equation_flux = ObjectsFem.makeEquationFluxsolver(doc, solver_elmer)
+        # FemEquationElmerFlux
+        equation_flux = ObjectsFem.makeEquationFlux(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flux,
             "App::DocumentObject"
@@ -1240,7 +1286,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_flux,
-            "Fem::EquationElmerFluxsolver"
+            "Fem::EquationElmerFlux"
         ))
 
         # FemEquationElmerHeat
@@ -1277,6 +1323,11 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeAnalysis(
                 doc
             ).isDerivedFrom("Fem::FemAnalysis")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstantVacuumPermittivity(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintBearing(
@@ -1354,6 +1405,11 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeConstraintPulley(
                 doc
             ).isDerivedFrom("Fem::ConstraintPulley")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstraintSectionPrint(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintSelfWeight(
@@ -1495,7 +1551,7 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("App::FeaturePython")
         )
         self.assertTrue(
-            ObjectsFem.makeEquationFluxsolver(
+            ObjectsFem.makeEquationFlux(
                 doc,
                 solverelmer
             ).isDerivedFrom("App::FeaturePython")
@@ -1521,6 +1577,7 @@ def create_all_fem_objects_doc(
 ):
     analysis = ObjectsFem.makeAnalysis(doc)
 
+    analysis.addObject(ObjectsFem.makeConstantVacuumPermittivity(doc))
     analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
     analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
     analysis.addObject(ObjectsFem.makeConstraintContact(doc))
@@ -1537,6 +1594,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
     analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
     analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
     analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintTie(doc))
@@ -1577,7 +1635,7 @@ def create_all_fem_objects_doc(
     ObjectsFem.makeEquationElectricforce(doc, sol)
     ObjectsFem.makeEquationElectrostatic(doc, sol)
     ObjectsFem.makeEquationFlow(doc, sol)
-    ObjectsFem.makeEquationFluxsolver(doc, sol)
+    ObjectsFem.makeEquationFlux(doc, sol)
     ObjectsFem.makeEquationHeat(doc, sol)
 
     doc.recompute()

@@ -14,6 +14,7 @@ SET(Arch_SRCS
     importIFC.py
     importIFClegacy.py
     importIFCHelper.py
+    importIFCmulticore.py
     exportIFCHelper.py
     Arch.py
     ArchBuilding.py

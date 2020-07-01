@@ -190,9 +190,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc

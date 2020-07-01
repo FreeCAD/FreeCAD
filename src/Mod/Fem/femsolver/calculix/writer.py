@@ -126,6 +126,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_node_sets_constraints_planerotation(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_contact(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_tie(inpfileMain, self.split_inpfile)
+        self.write_surfaces_constraints_sectionprint(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_transform(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_temperature(inpfileMain, self.split_inpfile)
 
@@ -170,6 +171,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # constraints dependent from steps
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
+        self.write_constraints_sectionprint(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
         self.write_constraints_force(inpfileMain, self.split_inpfile)
         self.write_constraints_pressure(inpfileMain, self.split_inpfile)
@@ -610,6 +612,83 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             ind_surf = "TIE_IND" + tie_obj.Name
             dep_surf = "TIE_DEP" + tie_obj.Name
             f.write("{},{}\n".format(dep_surf, ind_surf))
+
+    # ********************************************************************************************
+    # constraints sectionprint
+    def write_surfaces_constraints_sectionprint(self, f, inpfile_split=None):
+        if not self.sectionprint_objects:
+            return
+        # write for all analysis types
+
+        write_name = "constraints_sectionprint_surface_sets"
+        f.write("\n***********************************************************\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if inpfile_split is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_surfacefaces_constraints_sectionprint(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_surfacefaces_constraints_sectionprint(f)
+
+    # TODO move code parts from this method to base writer module
+    def write_surfacefaces_constraints_sectionprint(self, f):
+        # get surface nodes and write them to file
+        obj = 0
+        for femobj in self.sectionprint_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            sectionprint_obj = femobj["Object"]
+            f.write("** " + sectionprint_obj.Label + "\n")
+            obj = obj + 1
+            for o, elem_tup in sectionprint_obj.References:
+                for elem in elem_tup:
+                    ref_shape = o.Shape.getElement(elem)
+                    if ref_shape.ShapeType == "Face":
+                        name = "SECTIONFACE" + str(obj)
+                        f.write("*SURFACE, NAME=" + name + "\n")
+
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                        if len(v) > 0:
+                            # volume elements found
+                            FreeCAD.Console.PrintLog(
+                                "{}, surface {}, {} touching volume elements found\n"
+                                .format(sectionprint_obj.Label, name, len(v))
+                            )
+                            for i in v:
+                                f.write("{},S{}\n".format(i[0], i[1]))
+                        else:
+                            # no volume elements found, shell elements not allowed
+                            FreeCAD.Console.PrintError(
+                                "{}, surface {}, Error: "
+                                "No volume elements found!\n"
+                                .format(sectionprint_obj.Label, name)
+                            )
+                            f.write("** Error: empty list\n")
+
+    def write_constraints_sectionprint(self, f):
+        if not self.sectionprint_objects:
+            return
+        # write for all analysis types
+
+        # write constraint to file
+        f.write("\n***********************************************************\n")
+        f.write("** SectionPrint Constraints\n")
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.sectionprint_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            obj = obj + 1
+            sectionprint_obj = femobj["Object"]
+            f.write("** {}\n".format(sectionprint_obj.Label))
+            f.write(
+                "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
+                .format(obj, obj)
+            )
+            f.write("SOF, SOM, SOAREA\n")
 
     # ********************************************************************************************
     # constraints transform

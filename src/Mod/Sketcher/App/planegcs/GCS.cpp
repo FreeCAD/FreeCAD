@@ -4204,7 +4204,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             clistTmp.reserve(clist.size());
             for (std::vector<Constraint *>::iterator constr=clist.begin();
                 constr != clist.end(); ++constr) {
-                if (skipped.count(*constr) == 0)
+                if ((*constr)->isDriving() && skipped.count(*constr) == 0)
                     clistTmp.push_back(*constr);
             }
 
@@ -4249,6 +4249,11 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                     for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
                         if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
                             isRedundant = true;
+
+                            if(debugMode==IterationLevel) {
+                                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n", i,j, (conflictGroupsOrig[i][j])->getTag());
+                            }
+
                             break;
                         }
                     }

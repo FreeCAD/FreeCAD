@@ -38,6 +38,12 @@ import FreeCAD
 # standard object name == type without 'Fem::'
 # the class name is Proxy
 
+# TODO
+# There are objects which use a base object. It should be tested if the base object
+# is in the same document as the doc in which the obj should be created.
+# Could only be happen if the make is called from Python.
+# What happens ATM? Error or the obj is moved to the other doc?
+
 
 # ********* analysis objects *********************************************************************
 def makeAnalysis(
@@ -47,6 +53,22 @@ def makeAnalysis(
     """makeAnalysis(document, [name]):
     makes a Fem Analysis object"""
     obj = doc.addObject("Fem::FemAnalysis", name)
+    return obj
+
+
+# ********* constant objects *********************************************************************
+def makeConstantVacuumPermittivity(
+    doc,
+    name="ConstantVacuumPermittivity"
+):
+    """makeConstantVacuumPermittivity(document, [name]):
+    makes a Fem ConstantVacuumPermittivity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constant_vacuumpermittivity
+    constant_vacuumpermittivity.ConstantVacuumPermittivity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constant_vacuumpermittivity
+        view_constant_vacuumpermittivity.VPConstantVacuumPermittivity(obj.ViewObject)
     return obj
 
 
@@ -280,6 +302,21 @@ def makeConstraintTransform(
     """makeConstraintTransform(document, [name]):
     makes a Fem ConstraintTransform object"""
     obj = doc.addObject("Fem::ConstraintTransform", name)
+    return obj
+
+
+def makeConstraintSectionPrint(
+    doc,
+    name="ConstraintSectionPrint"
+):
+    """makeConstraintSectionPrint(document, [name]):
+    creates an section print object to evaluate forces and moments of defined face"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_sectionprint
+    constraint_sectionprint.ConstraintSectionPrint(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_sectionprint
+        view_constraint_sectionprint.VPConstraintSectionPrint(obj.ViewObject)
     return obj
 
 
@@ -618,7 +655,7 @@ def makePostVtkResult(
     base_result,
     name="VtkResult"
 ):
-    """makePostVtkResult(document, base_result [name]):
+    """makePostVtkResult(document, base_result, [name]):
     creates an FEM post processing result object (vtk based) to hold FEM results"""
     obj = doc.addObject("Fem::FemPostPipeline", name)
     obj.load(base_result)
@@ -628,73 +665,85 @@ def makePostVtkResult(
 # ********* solver objects ***********************************************************************
 def makeEquationElasticity(
     doc,
-    base_solver
+    base_solver=None,
+    name="Elasticity"
 ):
-    """makeEquationElasticity(document, base_solver):
+    """makeEquationElasticity(document, [base_solver], [name]):
     creates a FEM elasticity equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Elasticity")
-    )[0]
+    from femsolver.elmer.equations import elasticity
+    obj = elasticity.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationElectricforce(
     doc,
-    base_solver
+    base_solver=None,
+    name="Electricforce"
 ):
-    """makeEquationElectricforce(document, base_solver):
+    """makeEquationElectricforce(document, [base_solver], [name]):
     creates a FEM Electricforce equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Electricforce")
-    )[0]
+    from femsolver.elmer.equations import electricforce
+    obj = electricforce.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationElectrostatic(
     doc,
-    base_solver
+    base_solver=None,
+    name="Electrostatic"
 ):
-    """makeEquationElectrostatic(document, base_solver):
+    """makeEquationElectrostatic(document, [base_solver], [name]):
     creates a FEM electrostatic equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Electrostatic")
-    )[0]
+    from femsolver.elmer.equations import electrostatic
+    obj = electrostatic.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationFlow(
     doc,
-    base_solver
+    base_solver=None,
+    name="Flow"
 ):
-    """makeEquationFlow(document, base_solver):
+    """makeEquationFlow(document, [base_solver], [name]):
     creates a FEM flow equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Flow")
-    )[0]
+    from femsolver.elmer.equations import flow
+    obj = flow.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
-def makeEquationFluxsolver(
+def makeEquationFlux(
     doc,
-    base_solver
+    base_solver=None,
+    name="Flux"
 ):
-    """makeEquationFluxsolver(document, base_solver):
-    creates a FEM fluxsolver equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Fluxsolver")
-    )[0]
+    """makeEquationFlux(document, [base_solver], [name]):
+    creates a FEM flux equation for a solver"""
+    from femsolver.elmer.equations import flux
+    obj = flux.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
 def makeEquationHeat(
     doc,
-    base_solver
+    base_solver=None,
+    name="Heat"
 ):
-    """makeEquationHeat(document, base_solver):
+    """makeEquationHeat(document, [base_solver], [name]):
     creates a FEM heat equation for a solver"""
-    obj = doc.SolverElmer.addObject(
-        doc.SolverElmer.Proxy.createEquation(doc.SolverElmer.Document, "Heat")
-    )[0]
+    from femsolver.elmer.equations import heat
+    obj = heat.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
     return obj
 
 
