@@ -254,6 +254,7 @@ SET(FemTestsCcx_SRCS
 SET(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
     femtest/data/elmer/case_mm.sif
+    femtest/data/elmer/elmer_ccxcanti_faceload_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )

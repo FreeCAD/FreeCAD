@@ -73,7 +73,10 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
         )[0]
         solver_object.WorkingDir = u""
     elif solvertype == "elmer":
-        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        )[0]
+        ObjectsFem.makeEquationElasticity(doc, solver_object)
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     if solvertype == "calculix" or solvertype == "ccxtools":
@@ -93,7 +96,9 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
-    mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
+    if solvertype == "elmer":
+        # set ThermalExpansionCoefficient, elmer elasticity needs it FIXME
+        mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # fixed_constraint

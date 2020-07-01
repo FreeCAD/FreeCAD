@@ -150,3 +150,47 @@ class TestSolverElmer(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
         fcc_print("--------------- End of FEM tests solver framework solver Elmer -----------")
+
+    # ********************************************************************************************
+    def test_elmer_ccxcanti_faceload(
+        self
+    ):
+        fcc_print("\n------------- Start of FEM elmer tests for ccx cantilever faceload -------")
+
+        # set up the Elmer static analysis example
+        from femexamples.ccx_cantilever_faceload import setup
+        setup(self.document, "elmer")
+
+        solver_obj = self.document.SolverElmer
+
+        base_name = "elmer_ccxcanti_faceload"
+        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
+
+        # save the file
+        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
+        fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
+        self.document.saveAs(save_fc_file)
+
+        # write input files
+        fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
+        machine_elmer = solver_obj.Proxy.createMachine(
+            solver_obj,
+            analysis_dir,
+            True
+        )
+        machine_elmer.target = femsolver.run.PREPARE
+        machine_elmer.start()
+        machine_elmer.join()  # wait for the machine to finish.
+
+        # compare case input file
+        test_file_dir_elmer = join(testtools.get_fem_test_home_dir(), "elmer")
+        fcc_print(test_file_dir_elmer)
+
+        fcc_print("Test writing case file")
+        casefile_given = join(test_file_dir_elmer, "elmer_ccxcanti_faceload_mm.sif")
+        casefile_totest = join(analysis_dir, "case.sif")
+        fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
+        ret = testtools.compare_files(casefile_given, casefile_totest)
+        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
+
+        fcc_print("--------------- End of FEM elmer tests for ccx cantilever faceload ---------")
