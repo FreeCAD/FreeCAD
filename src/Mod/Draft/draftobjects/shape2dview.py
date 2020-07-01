@@ -1,4 +1,4 @@
-2# ***************************************************************************
+# ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
@@ -20,22 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Shape2dView.
-"""
+"""Provides the object code for the Shape2dView object."""
 ## @package shape2dview
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Shape2dView.
+# \ingroup draftobjects
+# \brief Provides the object code for the Shape2dView object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 import draftutils.utils as utils
-import draftutils.groups as u_groups
 import draftutils.gui_utils as gui_utils
-from draftutils.translate import translate
+import draftutils.groups as groups
 
+from draftutils.translate import translate
 from draftobjects.base import DraftObject
 
 
@@ -111,13 +111,13 @@ class Shape2DView(DraftObject):
         "returns projected edges from a shape and a direction"
         import Part, Drawing, DraftGeomUtils
         edges = []
-        groups = Drawing.projectEx(shape, direction)
-        for g in groups[0:5]:
+        _groups = Drawing.projectEx(shape, direction)
+        for g in _groups[0:5]:
             if g:
                 edges.append(g)
         if hasattr(obj,"HiddenLines"):
             if obj.HiddenLines:
-                for g in groups[5:]:
+                for g in _groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
         if hasattr(obj,"Tessellation") and obj.Tessellation:
@@ -156,7 +156,7 @@ class Shape2DView(DraftObject):
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     import Arch, Part, Drawing
-                    objs = u_groups.get_group_contents(objs, walls=True)
+                    objs = groups.get_group_contents(objs, walls=True)
                     objs = gui_utils.remove_hidden(objs)
                     shapes = []
                     if hasattr(obj,"FuseArch") and obj.FuseArch:
@@ -247,7 +247,7 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = u_groups.get_group_contents(obj.Base)
+                objs = groups.get_group_contents(obj.Base)
                 for o in objs:
                     if hasattr(o,'Shape'):
                         if o.Shape:
@@ -280,4 +280,7 @@ class Shape2DView(DraftObject):
             obj.Placement = pl
 
 
+# Alias for compatibility with v0.18 and earlier
 _Shape2DView = Shape2DView
+
+## @}

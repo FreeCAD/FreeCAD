@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for the Draft PointArray object.
+"""Provides the object code for the PointArray object.
 
 To Do
 -----
@@ -34,14 +34,14 @@ from the vertices of any object with a `Part::TopoShape` (2D or 3D).
 See the `get_point_list` function for more information.
 """
 ## @package pointarray
-# \ingroup DRAFT
-# \brief Provides the object code for the Draft PointArray object.
+# \ingroup draftobjects
+# \brief Provides the object code for the PointArray object.
 
+import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import draftutils.utils as utils
-import lazy_loader.lazy_loader as lz
 
 from draftutils.messages import _wrn, _err
 from draftutils.translate import translate, _tr
@@ -49,6 +49,9 @@ from draftobjects.base import DraftObject
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftobjects
+# @{
 
 
 class PointArray(DraftObject):
@@ -293,4 +296,7 @@ def build_copies(base_object, pt_list=None, placement=App.Placement()):
     return shape
 
 
+# Alias for compatibility with v0.18 and earlier
 _PointArray = PointArray
+
+## @}

@@ -20,26 +20,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Point.
-"""
+"""Provides the object code for the Point object."""
 ## @package point
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Point.
+# \ingroup draftobjects
+# \brief Provides the object code for the Point object.
 
+## \addtogroup draftobjects
+# @{
 import math
-
-import FreeCAD as App
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from draftutils.utils import get_param
+import FreeCAD as App
 
 from draftobjects.base import DraftObject
 
 
 class Point(DraftObject):
-    """The Draft Point object.
-    """
+    """The Draft Point object."""
+
     def __init__(self, obj, x=0, y=0, z=0):
         super(Point, self).__init__(obj, "Point")
 
@@ -51,13 +49,12 @@ class Point(DraftObject):
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Z Location")
         obj.addProperty("App::PropertyDistance", "Z", "Draft", _tip)
-        
+
         obj.X = x
         obj.Y = y
         obj.Z = z
 
-        mode = 2
-        obj.setEditorMode('Placement',mode)
+        obj.setPropertyStatus('Placement', 'Hidden')
 
     def execute(self, obj):
         import Part
@@ -68,4 +65,7 @@ class Point(DraftObject):
                                         obj.Z.Value)
 
 
+# Alias for compatibility with v0.18 and earlier
 _Point = Point
+
+## @}

@@ -20,25 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Wire.
-"""
+"""Provides the object code for the Wire (Polyline) object."""
 ## @package wire
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Wire.
+# \ingroup draftobjects
+# \brief Provides the object code for the Wire (Polyline) object.
 
+## \addtogroup draftobjects
+# @{
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 import DraftVecUtils
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
-
 
 
 class Wire(DraftObject):
@@ -248,4 +245,7 @@ class Wire(DraftObject):
                     obj.End = displayfpend
 
 
+# Alias for compatibility with v0.18 and earlier
 _Wire = Wire
+
+## @}

@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft BSpline.
-"""
+"""Provides the object code for the BSpline object."""
 ## @package bspline
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft BSpline.
+# \ingroup draftobjects
+# \brief Provides the object code for the BSpline object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -56,7 +56,7 @@ class BSpline(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode",True)
+        obj.MakeFace = utils.get_param("fillmode",True)
         obj.Closed = False
         obj.Points = []
         self.assureProperties(obj)
@@ -133,4 +133,7 @@ class BSpline(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _BSpline = BSpline
+
+## @}
