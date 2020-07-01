@@ -2158,7 +2158,15 @@ bool View3DInventorViewer::isEnabledVBO() const
 
 void View3DInventorViewer::setRenderCache(int mode)
 {
+    static int canAutoCache = -1;
+
     if (mode<0) {
+        // Work around coin bug of unmatched call of
+        // SoGLLazyElement::begin/endCaching() when on top rendering
+        // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        // transparency type.
+        coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
+
         int setting = ViewParams::getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
@@ -2171,6 +2179,16 @@ void View3DInventorViewer::setRenderCache(int mode)
             mode = setting;
         }
     }
+
+    if (canAutoCache < 0) {
+        const char *env = coin_getenv("COIN_AUTO_CACHING");
+        canAutoCache = env ? atoi(env) : 1;
+    }
+
+    // If coin auto cache is disabled, do not use 'Auto' render cache mode, but
+    // fallback to 'Distributed' mode.
+    if (!canAutoCache && mode != 2)
+        mode = 1;
 
     auto caching = mode == 0 ? SoSeparator::AUTO :
            (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
