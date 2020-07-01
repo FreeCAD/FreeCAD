@@ -207,7 +207,8 @@ SET(FemTestsApp_SRCS
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
-    femtest/app/test_solverframework.py
+    femtest/app/test_solver_calculix.py
+    femtest/app/test_solver_elmer.py
 )
 
 SET(FemTestsFiles_SRCS

@@ -15,7 +15,8 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer
 
 
 # classes
@@ -31,7 +32,8 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectCreate
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectType
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
 
 
 # methods
@@ -79,8 +81,8 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_principal_reinforced
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_rho
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_disp_abs
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_solver_calculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_solver_elmer
 
 
 # methods in FreeCAD
@@ -307,10 +309,10 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix'
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_solver_calculix'
 ))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_solver_elmer'
 ))
