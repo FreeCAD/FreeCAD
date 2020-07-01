@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides the task panel code for the Draft CircularArray tool."""
 ## @package task_circulararray
-# \ingroup DRAFT
-# \brief This module provides the task panel code for the CircularArray tool.
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft CircularArray tool.
 
+## \addtogroup drafttaskpanels
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -502,3 +504,5 @@ class TaskPanelCircularArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+## @}

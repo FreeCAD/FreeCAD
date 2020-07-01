@@ -1,8 +1,3 @@
-"""Provide the task panel for the Draft Scale tool."""
-## @package task_scale
-# \ingroup DRAFT
-# \brief Provide the task panel for the Draft Scale tool.
-
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -26,16 +21,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the task panel code for the Draft Scale tool."""
+## @package task_scale
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft Scale tool.
+
+## \addtogroup drafttaskpanels
+# @{
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-from draftutils.translate import translate
-_Quantity = App.Units.Quantity
 
+from draftutils.translate import translate
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -155,3 +156,5 @@ class ScaleTaskPanel:
             self.sourceCmd.finish()
         Gui.ActiveDocument.resetEdit()
         return True
+
+## @}
