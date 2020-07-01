@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the task panel for the Draft PolarArray tool."""
+"""Provides the task panel code for the Draft PolarArray tool."""
 ## @package task_polararray
-# \ingroup DRAFT
-# \brief This module provides the task panel code for the PolarArray tool.
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft PolarArray tool.
 
+## \addtogroup drafttaskpanels
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -448,3 +450,5 @@ class TaskPanelPolarArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+## @}
