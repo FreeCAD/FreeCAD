@@ -20,15 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_drawing_view function.
-OBSOLETE: Drawing Workbench was substituted by TechDraw.
+"""Provides functions to create DrawingView objects.
+
+These functions must be considered obsolete as the Drawing Workbench
+is obsolete since v0.17.
 """
 ## @package make_drawingview
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_drawing_view function
+# \ingroup draftmake
+# \brief Provides functions to create DrawingView objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
 
 from draftobjects.drawingview import DrawingView
@@ -104,3 +107,5 @@ def make_drawing_view(obj, page, lwmod=None, tmod=None, otherProjection=None):
 
 
 makeDrawingView = make_drawing_view
+
+## @}

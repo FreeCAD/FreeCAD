@@ -23,11 +23,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to crate dimension objects."""
-## @package make_dimension
-# \ingroup DRAFT
-# \brief Provides functions to crate dimension objects.
+"""Provides functions to create LinearDimension or AngularDinemsion objects.
 
+This includes linear dimensions, radial dimensions, and angular dimensions.
+"""
+## @package make_dimension
+# \ingroup draftmake
+# \brief Provides functions to create Linear or AngularDimension objects.
+
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
@@ -40,8 +45,9 @@ from draftobjects.dimension import (LinearDimension,
                                     AngularDimension)
 
 if App.GuiUp:
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
-    from draftviewproviders.view_dimension import ViewProviderAngularDimension
+    from draftviewproviders.view_dimension \
+        import (ViewProviderLinearDimension,
+                ViewProviderAngularDimension)
 
 
 def make_dimension(p1, p2, p3=None, p4=None):
@@ -646,3 +652,5 @@ def makeAngularDimension(center, angles, p3, normal=None):
 
     return make_angular_dimension(center=center, angles=angles,
                                   dim_line=p3, normal=normal)
+
+## @}

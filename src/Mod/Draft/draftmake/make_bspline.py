@@ -20,20 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_bspline function.
-"""
+"""Provides functions to create BSpline objects."""
 ## @package make_bspline
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_bspline function.
+# \ingroup draftmake
+# \brief Provides functions to create BSpline objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
 from draftutils.translate import translate
-
 from draftobjects.bspline import BSpline
 
 if App.GuiUp:
@@ -90,7 +88,8 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
             App.Console.PrintError(translate("Draft", _err)+"\n")
             return
     # should have sensible parms from here on
-    if placement: type_check([(placement,App.Placement)], "make_bspline")
+    if placement:
+        utils.type_check([(placement,App.Placement)], "make_bspline")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BSpline"
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
@@ -103,10 +102,12 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     if placement: obj.Placement = placement
     if App.GuiUp:
         ViewProviderBSpline(obj.ViewObject)
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeBSpline = make_bspline
+
+## @}

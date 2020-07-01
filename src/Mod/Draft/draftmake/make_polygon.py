@@ -20,22 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft make_rectangle function.
-"""
-## @package make_rectangle
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_rectangle function.
+"""Provides functions to create Polygon objects."""
+## @package make_polygon
+# \ingroup draftmake
+# \brief Provides functions to create Polygon objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.polygon import Polygon
 from draftviewproviders.view_base import ViewProviderDraft
-
 
 
 def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
@@ -82,10 +78,12 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     if placement: obj.Placement = placement
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makePolygon = make_polygon
+
+## @}

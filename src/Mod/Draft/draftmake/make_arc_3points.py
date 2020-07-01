@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the object code for Draft Arc_3Points."""
-## @package arc_3points
-# \ingroup DRAFT
-# \brief Provides the object code for Draft Arc_3Points.
+"""Provides functions to create Arc objects by using 3 points."""
+## @package make_arc_3points
+# \ingroup draftmake
+# \brief Provides functions to create Arc objects by using 3 points.
 
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
@@ -204,3 +206,5 @@ def make_arc_3points(points, placement=None, face=False,
         _msg(_tr("Final placement: ") + "{}".format(obj.Placement))
 
     return obj
+
+## @}

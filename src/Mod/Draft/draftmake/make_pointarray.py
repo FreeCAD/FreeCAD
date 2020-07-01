@@ -24,15 +24,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions for creating point arrays.
+"""Provides functions to create PointArray objects.
 
 The copies will be placed along a list of points defined by a sketch,
 a `Part::Compound`, or a `Draft Block`.
 """
 ## @package make_pointarray
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_point_array function.
+# \ingroup draftmake
+# \brief Provides functions to create PointArray objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -177,3 +179,5 @@ def makePointArray(base, ptlst):
     utils.use_instead('make_point_array')
 
     return make_point_array(base, ptlst)
+
+## @}
