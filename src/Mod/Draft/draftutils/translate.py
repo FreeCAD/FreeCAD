@@ -1,12 +1,3 @@
-"""Provide translate functions for the Draft Workbench.
-
-This module contains auxiliary functions to translate strings
-using the QtCore module.
-"""
-## @package translate
-# \ingroup DRAFT
-# \brief Provide translate functions for the Draft Workbench.
-
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -30,11 +21,22 @@ using the QtCore module.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide import QtCore
-from PySide import QtGui
+"""Provides utility functions that wrap around the Qt translate functions.
+
+This module contains auxiliary functions to translate strings
+using the QtCore module.
+"""
+## @package translate
+# \ingroup draftutils
+# \brief Provides utility functions that wrap around the Qt translate function.
+
+## \addtogroup draftutils
+# @{
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 import six
 
-Qtranslate = QtGui.QApplication.translate
+Qtranslate = QtCore.QCoreApplication.translate
 
 # This property only exists in Qt4, which is normally paired
 # with Python 2.
@@ -246,3 +248,5 @@ def _qtr(text):
         Returns the translated string at runtime.
     """
     return QT_TRANSLATE_NOOP("Draft", text)
+
+## @}

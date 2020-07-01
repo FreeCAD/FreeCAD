@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the ToDo class for the Draft Workbench.
+"""Provides the ToDo static class to run commands with a time delay.
 
 The `ToDo` class is used to delay the commit of commands for later execution.
 This is necessary when a GUI command needs to manipulate the 3D view
@@ -31,16 +31,17 @@ The `ToDo` class essentially calls `QtCore.QTimer.singleShot`
 to execute the instructions stored in internal lists.
 """
 ## @package todo
-# \ingroup DRAFT
-# \brief This module provides the ToDo class for the Draft Workbench.
+# \ingroup draftutils
+# \brief Provides the ToDo static class to run commands with a time delay.
 
 import six
 import sys
 import traceback
-from PySide import QtCore
+import PySide.QtCore as QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
@@ -49,6 +50,9 @@ __url__ = ["http://www.freecadweb.org"]
 
 _DEBUG = 0
 _DEBUG_inner = 0
+
+## \addtogroup draftutils
+# @{
 
 
 class ToDo:
@@ -281,6 +285,7 @@ class ToDo:
         ToDo.afteritinerary.append((f, arg))
 
 
-# In the past, the class was in lowercase, so we provide a reference
-# to it in lowercase, to satisfy the usage of older modules.
+# Alias for compatibility with v0.18 and earlier
 todo = ToDo
+
+## @}

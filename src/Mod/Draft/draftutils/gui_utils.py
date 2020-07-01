@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides GUI utility functions for the Draft Workbench.
+"""Provides utility functions that deal with GUI interactions.
 
 This module contains auxiliary functions which can be used
 in other modules of the workbench, and which require
@@ -31,9 +31,11 @@ the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
 ## @package gui_utils
-# \ingroup DRAFT
-# \brief This module provides GUI utility functions for the Draft Workbench
+# \ingroup draftutils
+# \brief Provides utility functions that deal with GUI interactions.
 
+## \addtogroup draftutils
+# @{
 import math
 import os
 import six
@@ -674,3 +676,5 @@ def migrate_text_display_mode(obj_type="Text", mode="3D text", doc=None):
     for obj in doc.Objects:
         if utils.get_type(obj) == obj_type:
             obj.ViewObject.DisplayMode = mode
+
+## @}

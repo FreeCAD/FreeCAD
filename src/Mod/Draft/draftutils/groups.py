@@ -23,18 +23,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides utility functions for managing groups in the Draft Workbench.
+"""Provides utility functions to do operations with groups.
 
 The functions here are also used in the Arch Workbench as some of
 the objects created with this workbench work like groups.
 """
 ## @package groups
-# \ingroup DRAFT
-# \brief Provides utility functions for managing groups in the Draft Workbench.
+# \ingroup draftutils
+# \brief Provides utility functions to do operations with groups.
 
+## \addtogroup draftutils
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
+
 from draftutils.translate import _tr
 from draftutils.messages import _msg, _err
 
@@ -326,3 +328,5 @@ def getMovableChildren(objectslist, recursive=True):
     """Return a list of objects with child objects. DEPRECATED."""
     utils.use_instead("get_movable_children")
     return get_movable_children(objectslist, recursive)
+
+## @}

@@ -23,21 +23,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides utility functions for the Draft Workbench.
+"""Provides general utility functions used throughout the workbench.
 
 This module contains auxiliary functions which can be used
 in other modules of the workbench, and which don't require
 the graphical user interface (GUI).
 """
 ## @package utils
-# \ingroup DRAFT
-# \brief This module provides utility functions for the Draft Workbench
+# \ingroup draftutils
+# \brief Provides general utility functions used throughout the workbench.
 
+## \addtogroup draftutils
+# @{
 import os
-from PySide import QtCore
+import PySide.QtCore as QtCore
 
 import FreeCAD as App
-import Draft_rc
 
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import _tr
@@ -47,9 +48,10 @@ from draftutils.translate import _tr
 # in gui_utils
 if App.GuiUp:
     import FreeCADGui as Gui
+    import Draft_rc
 
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc else False
+    # The module is used to prevent complaints from code checkers (flake8)
+    True if Draft_rc else False
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
@@ -1122,3 +1124,5 @@ def use_instead(function, version=""):
     else:
         _wrn(_tr(text2)
              + _tr(text3) + "'{}'.".format(function))
+
+## @}

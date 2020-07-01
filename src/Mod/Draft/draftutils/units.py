@@ -21,12 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides utility functions related to unit handling."""
+"""Provides utility functions to handle quantities and units."""
 ## @package units
-# \ingroup DRAFT
-# \brief Provides utility functions related to unit handling.
+# \ingroup draftutils
+# \brief Provides utility functions to handle quantities and units.
 
-from PySide import QtCore
+## \addtogroup draftutils
+# @{
+import PySide.QtCore as QtCore
 
 import FreeCAD as App
 
@@ -122,3 +124,5 @@ def display_external(internal_value,
 
 
 displayExternal = display_external
+
+## @}
