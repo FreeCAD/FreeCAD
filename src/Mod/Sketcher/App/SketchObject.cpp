@@ -5203,7 +5203,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     if( knotIndex > bsp->countKnots() || knotIndex < 1 ) // knotindex in OCC 1 -> countKnots
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero."))
 
-    Part::GeomBSplineCurve *bspline;
+    Part::GeomBSplineCurve *bspline = nullptr;
 
     int curmult = bsp->getMultiplicity(knotIndex);
 
