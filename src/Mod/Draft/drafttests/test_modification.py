@@ -21,12 +21,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, object modification tests."""
+"""Unit tests for the Draft Workbench, object modification tests."""
+## @package test_modification
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, object modification tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
+
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
+
 from FreeCAD import Vector
 from draftutils.messages import _msg, _wrn
 
@@ -591,3 +598,5 @@ class DraftModification(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc_name)
+
+## @}

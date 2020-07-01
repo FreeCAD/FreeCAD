@@ -21,8 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, object creation tests."""
+"""Unit tests for the Draft Workbench, object creation tests."""
+## @package test_creation
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, object creation tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
 
 import FreeCAD as App
@@ -349,3 +354,5 @@ class DraftCreation(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc.Name)
+
+## @}

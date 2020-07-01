@@ -21,18 +21,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Unit test for the Draft Workbench, tools import tests."""
+"""Unit tests for the Draft Workbench, tools import tests."""
+## @package test_import_tools
+# \ingroup drafttests
+# \brief Unit tests for the Draft Workbench, tools import tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
+
 import drafttests.auxiliary as aux
 
 
 class DraftImportTools(unittest.TestCase):
     """Test for each individual module that defines a tool."""
 
-    # No document is needed to test 'import' of other modules
-    # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
     def setUp(self):
+        """Draw the header.
+
+        This is executed before every test.
+        No document is needed to test the import of modules so no document
+        is created, and `tearDown` isn't defined.
+        """
         aux.draw_header()
 
     def test_import_gui_draftedit(self):
@@ -58,3 +68,5 @@ class DraftImportTools(unittest.TestCase):
         module = "WorkingPlane"
         imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
+
+## @}
