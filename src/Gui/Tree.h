@@ -94,6 +94,8 @@ public:
     static void selectAllInstances(const ViewProviderDocumentObject &vpd);
     static void selectLinkedObject(App::DocumentObject *linked); 
     static void selectAllLinks(App::DocumentObject *obj); 
+    static void populateSelUpMenu(QMenu *menu); 
+    static void selectUp(QAction *action=nullptr); 
     static void expandSelectedItems(TreeItemMode mode);
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
     static bool isDragging();

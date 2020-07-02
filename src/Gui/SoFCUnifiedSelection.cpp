@@ -745,6 +745,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
         bool ctrlDown, bool shiftDown, bool altDown) 
 {
     (void)altDown;
+    (void)shiftDown;
 
     if(infos.empty() || !infos[0].vpd) return false;
 
@@ -824,102 +825,18 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
         return true;
     }
 
-    // Hierarchy ascending
-    //
-    // If the clicked subelement is already selected, check if there is an
-    // upper hierarchy, and select that hierarchy instead. 
-    //
-    // For example, let's suppose PickedInfo above reports
-    // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
-    // 'link.link2.box.', meaning that 'box' is the current selected hierarchy,
-    // and the user is clicking the box again.  So we shall go up one level,
-    // and select 'link.link2.'
-    //
-
-    std::string subName = info.subname;
-    std::string objectName = objname;
-
-    const char *subSelected = Gui::Selection().getSelectedElement(
-                                vpd->getObject(),subName.c_str());
-
-    FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
-            objectName << ", " << subName);
-    std::string newElement;
-    if(subSelected && ((ctrlDown && shiftDown)
-                        || Data::ComplexGeoData::hasElementName(subSelected)))
-    {
-        newElement = Data::ComplexGeoData::newElementName(subSelected);
-        subSelected = newElement.c_str();
-        std::string nextsub;
-        const char *next = strrchr(subSelected,'.');
-        if(next && next!=subSelected) {
-            if(next[1]==0) {
-                // The convention of dot separated SubName demands a mandatory
-                // ending dot for every object name reference inside SubName.
-                // The non-object sub-element, however, must not end with a dot.
-                // So, next[1]==0 here means current selection is a whole object
-                // selection (because no sub-element), so we shall search
-                // upwards for the second last dot, which is the end of the
-                // parent name of the current selected object
-                for(--next;next!=subSelected;--next) {
-                    if(*next == '.') break;
-                }
-            }
-            if(*next == '.')
-                nextsub = std::string(subSelected,next-subSelected+1);
-        }
-        if(nextsub.length() || *subSelected!=0) {
-            hasNext = true;
-            subName = nextsub;
-            detailPath->truncate(0);
-            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) && 
-               detailPath->getLength()) 
-            {
-                pPath = detailPath;
-                det = detNext;
-                FC_TRACE("select next " << objectName << ", " << subName);
-            }
-        }
-    }
-
-#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
-
-    // If no next hierarchy is found, do another try on view provider hierarchies, 
-    // which is used by geo feature group.
-    if(!hasNext) {
-        bool found = false;
-        auto vps = this->pcDocument->getViewProvidersByPath(pPath);
-        for(auto it=vps.begin();it!=vps.end();++it) {
-            auto vpdNext = it->first;
-            if(Gui::Selection().isSelected(vpdNext->getObject(),"")) {
-                found = true;
-                continue;
-            }
-            if(!found || !vpdNext->useNewSelectionModel() || !vpdNext->isSelectable())
-                continue;
-            hasNext = true;
-            vpd = vpdNext;
-            det = 0;
-            pPath->truncate(it->second+1);
-            objectName = vpd->getObject()->getNameInDocument();
-            subName = "";
-            break;
-        }
-    }
-#endif
-
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection();
     FC_TRACE("add selection");
     SelectionNoTopParentCheck guard;
-    bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(), 
+    bool ok = Gui::Selection().addSelection(docname, objname, info.subname.c_str(), 
             pt[0] ,pt[1] ,pt[2], &sels);
     if (ok)
         type = hasNext?SoSelectionElementAction::All:SoSelectionElementAction::Append;
 
     if (mymode == OFF) {
         snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                docname, objectName.c_str() ,subName.c_str()
+                docname, objname, info.subname.c_str()
                 ,fabs(pt[0])>1e-7?pt[0]:0.0
                 ,fabs(pt[1])>1e-7?pt[1]:0.0
                 ,fabs(pt[2])>1e-7?pt[2]:0.0);

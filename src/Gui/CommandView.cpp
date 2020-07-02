@@ -3323,6 +3323,46 @@ void CmdViewMeasureToggleAll::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_SelUp
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdSelUp)
+
+StdCmdSelUp::StdCmdSelUp()
+  :Command("Std_SelUp")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Up hierarhcy");
+  sToolTipText  = QT_TR_NOOP("Go up object hierarchy of the current selection");
+  sWhatsThis    = "Std_SelUp";
+  sStatusTip    = sToolTipText;
+  sPixmap       = "sel-up";
+  sAccel        = "U, U";
+  eType         = NoTransaction | AlterSelection;
+}
+
+bool StdCmdSelUp::isActive(void)
+{
+    return Selection().size() == 1;
+}
+
+void StdCmdSelUp::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    TreeWidget::selectUp();
+}
+
+Action * StdCmdSelUp::createAction(void)
+{
+    Action *pcAction;
+    pcAction = new SelUpAction(this, getMainWindow());
+    pcAction->setIcon(BitmapFactory().iconFromTheme(sPixmap));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
+//===========================================================================
 // Std_SelBack
 //===========================================================================
 
@@ -4282,6 +4322,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelOptions());
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
+    rcCmdMgr.addCommand(new StdCmdSelUp());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdBindViewCamera());
 

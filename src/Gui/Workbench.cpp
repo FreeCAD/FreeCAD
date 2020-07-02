@@ -557,6 +557,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             visu->setCommand("Visibility");
             *visu << "Std_ToggleVisibility" << "Std_ToggleGroupVisibility" << "Std_ToggleShowOnTop"
                   << "Std_ShowSelection" << "Std_HideSelection";
+            if (Gui::Selection().size() == 1)
+                *item << "Std_SelUp";
             *item << visu
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
                   << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
@@ -737,7 +739,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelOptions"
-          << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_LinkSelectActions"
+          << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_SelUp" << "Std_LinkSelectActions"
           << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;

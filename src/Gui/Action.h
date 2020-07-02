@@ -338,6 +338,28 @@ private:
     QMenu* _menu;
 };
 
+// --------------------------------------------------------------------
+
+/**
+ * Special action for Std_SelUp command.
+ */
+class GuiExport SelUpAction : public Action
+{
+    Q_OBJECT
+
+public:
+    SelUpAction (Command* pcCmd, QObject * parent = 0);
+    virtual ~SelUpAction();
+    void addTo (QWidget * w);
+
+protected Q_SLOTS:
+    void onShowMenu();
+    void onTriggered(QAction *);
+
+private:
+    QMenu* _menu;
+};
+
 } // namespace Gui
 
 #endif // GUI_ACTION_H

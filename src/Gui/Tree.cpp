@@ -67,6 +67,7 @@
 #include "Workbench.h"
 #include "Widgets.h"
 #include "ExpressionCompleter.h"
+#include "MetaTypes.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true)
 
@@ -3403,6 +3404,111 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
 
 TreeDockWidget::~TreeDockWidget()
 {
+}
+
+void TreeWidget::populateSelUpMenu(QMenu *menu)
+{
+    auto tree = instance();
+    if (!tree)
+        return;
+
+    auto sels = tree->selectedItems();
+    if (sels.size() != 1)
+        return;
+
+    QList<DocumentObjectItem*> items;
+    for (auto item=sels.front()->parent(); item; item=item->parent()) {
+        if (item->type() == ObjectType) {
+            items.prepend(static_cast<DocumentObjectItem*>(item));
+        } else if (item->type() == DocumentType) {
+            QAction *action = menu->addAction(tree->documentPixmap, item->text(0));
+            auto docItem = static_cast<DocumentItem*>(item);
+            action->setData(QByteArray(docItem->document()->getDocument()->getName()));
+            break;
+        }
+    }
+
+    if (items.empty())
+        return;
+
+    App::SubObjectT objT(items.front()->object()->getObject(), "");
+    bool first = true;
+    for (auto item : items) {
+        if (first)
+            first = false;
+        else
+            objT.setSubName(objT.getSubName() + item->object()->getObject()->getNameInDocument() + ".");
+        QAction *action = menu->addAction(item->object()->getIcon(), item->text(0));
+        action->setData(QVariant::fromValue(objT));
+    }
+}
+
+void TreeWidget::selectUp(QAction *action)
+{
+    auto tree = instance();
+    if (!tree)
+        return;
+
+    if (!action) {
+        auto sels = tree->selectedItems();
+        if (sels.size() != 1)
+            return;
+        QTreeWidgetItem *parentItem = sels.front()->parent();
+        if (parentItem) {
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearCompleteSelection();
+            tree->onSelectTimer();
+            parentItem->setSelected(true);
+            tree->scrollToItem(parentItem);
+        }
+        return;
+    }
+
+    QVariant data = action->data();
+    QByteArray docname = data.toByteArray();
+    if (docname.size()) {
+        auto it = tree->DocumentMap.find(
+                Application::Instance->getDocument(docname.constData()));
+        if (it != tree->DocumentMap.end()) {
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearCompleteSelection();
+            tree->onSelectTimer();
+            it->second->setSelected(true);
+            tree->scrollToItem(it->second);
+        }
+        return;
+    }
+
+    App::SubObjectT objT = qvariant_cast<App::SubObjectT>(action->data());
+    auto it = tree->DocumentMap.find(Application::Instance->getDocument(objT.getDocument()));
+    if (it == tree->DocumentMap.end())
+        return;
+
+    QTreeWidgetItem *item = it->second;
+    for (auto obj : objT.getSubObjectList()) {
+        bool found = false;
+        for (int i=0, c=item->childCount(); i<c; ++i) {
+            QTreeWidgetItem *child = item->child(i);
+            if (child->type() != ObjectType)
+                continue;
+            auto objItem = static_cast<DocumentObjectItem*>(child);
+            if (objItem->object()->getObject() == obj) {
+                item = objItem;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return;
+    }
+
+    if (item->type() == ObjectType) {
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearCompleteSelection();
+        tree->onSelectTimer();
+        item->setSelected(true);
+        tree->scrollToItem(item);
+    }
 }
 
 void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 

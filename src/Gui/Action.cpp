@@ -1099,4 +1099,37 @@ void ViewCameraBindingAction::onTriggered(QAction *action)
     }
 }
 
+// --------------------------------------------------------------------
+
+SelUpAction::SelUpAction ( Command* pcCmd, QObject * parent )
+  : Action(pcCmd, parent), _menu(0)
+{
+}
+
+SelUpAction::~SelUpAction()
+{
+}
+
+void SelUpAction::addTo ( QWidget * w )
+{
+    if (!_menu) {
+        _menu = new QMenu();
+        _action->setMenu(_menu);
+        connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+        connect(_menu, SIGNAL(triggered(QAction*)), this, SLOT(onTriggered(QAction*)));
+    }
+    w->addAction(_action);
+}
+
+void SelUpAction::onShowMenu()
+{
+    _menu->clear();
+    TreeWidget::populateSelUpMenu(_menu);
+}
+
+void SelUpAction::onTriggered(QAction *action)
+{
+    TreeWidget::selectUp(action);
+}
+
 #include "moc_Action.cpp"
