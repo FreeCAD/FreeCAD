@@ -49,9 +49,11 @@ class TestCcxTools(unittest.TestCase):
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
+        # directory pre face in name
+        self.pre_dir_name = "ccxtools_"
+
         # more inits
         self.mesh_name = "Mesh"
-        self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = join(
             testtools.get_fem_test_home_dir(),
             "ccx"
@@ -87,10 +89,7 @@ class TestCcxTools(unittest.TestCase):
         test_name = "frequency"
         base_name = "cube_frequency"
         res_obj_name = "CCX_Mode1_Results"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_frequency"
-        )
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing
         fea = self.input_file_writing_test(
@@ -119,10 +118,7 @@ class TestCcxTools(unittest.TestCase):
         test_name = "ccxtools static"
         base_name = "cube_static"
         res_obj_name = "CCX_Results"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_static"
-        )
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing
         fea = self.input_file_writing_test(
@@ -150,16 +146,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "canti ccx faceload hexa20"
         base_name = "canti_ccx_faceload_hexa20"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            ("FEM_" + base_name),
-        )
-        fcc_print(self.document.Objects)
+
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -171,16 +162,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "constraint contact shell shell"
         base_name = "constraint_contact_shell_shell"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_constraint_contact_shell_shell",
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -198,16 +184,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "constraint contact solid solid"
         base_name = "constraint_contact_solid_solid"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_constraint_contact_solid_solid",
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -219,16 +200,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "constraint sectionprint"
         base_name = "constraint_sectionprint"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_constraint_sectionprint",
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -240,16 +216,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "constraint tie"
         base_name = "constraint_tie"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_constraint_tie",
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -261,16 +232,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "multiple material"
         base_name = "mat_multiple"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_multimat"
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -282,16 +248,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "nonlinear material"
         base_name = "mat_nonlinear"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_matnonlinear"
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -303,16 +264,11 @@ class TestCcxTools(unittest.TestCase):
         setup(self.document, "ccxtools")
         test_name = "thermomech bimetall"
         base_name = "thermomech_bimetall"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_thermomech_bimetall"
-        )
 
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -325,10 +281,7 @@ class TestCcxTools(unittest.TestCase):
         test_name = "Flow1D"
         base_name = "Flow1D_thermomech"
         res_obj_name = "CCX_Time1_0_Results"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_Flow1D_thermomech"
-        )
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing
         fea = self.input_file_writing_test(
@@ -357,10 +310,7 @@ class TestCcxTools(unittest.TestCase):
         test_name = "thermomechanical"
         base_name = "spine_thermomech"
         res_obj_name = "CCX_Results"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_thermomech"
-        )
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
 
         # test input file writing
         fea = self.input_file_writing_test(
@@ -384,7 +334,7 @@ class TestCcxTools(unittest.TestCase):
         self,
         test_name,
         base_name,
-        analysis_dir,
+        analysis_dir=None,
         test_end=False,
     ):
         fcc_print(
@@ -394,6 +344,8 @@ class TestCcxTools(unittest.TestCase):
             .format(test_name)
         )
 
+        if analysis_dir is None:
+            analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
         analysis = self.document.Analysis
         solver_object = self.document.CalculiXccxTools
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
