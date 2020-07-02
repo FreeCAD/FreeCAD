@@ -21,10 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating Layers with the Draft Workbench."""
+"""Provides GUI tools to create Layer objects."""
 ## @package gui_layers
 # \ingroup draftguitools
-# \brief Provides tools for creating Layers with the Draft Workbench.
+# \brief Provides GUI tools to create Layer objects.
 
 ## \addtogroup draftguitools
 # @{
@@ -66,7 +66,7 @@ class Layer(gui_base.GuiCommandSimplest):
 
         self.doc.openTransaction("Create Layer")
         Gui.addModule("Draft")
-        Gui.doCommand('_layer_ = Draft.makeLayer()')
+        Gui.doCommand('_layer_ = Draft.make_layer()')
         Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
         self.doc.commitTransaction()
 
