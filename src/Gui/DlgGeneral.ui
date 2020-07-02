@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>578</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -149,19 +149,36 @@ See the FreeCAD Wiki for details about the image.</string>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="4" column="0">
-            <widget class="QLabel" name="treeModeLabel">
-             <property name="text">
-              <string>Tree view mode:</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0">
             <widget class="QLabel" name="iconSizeLabel">
              <property name="text">
               <string>Size of toolbar icons:</string>
              </property>
             </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QComboBox" name="treeMode">
+             <property name="toolTip">
+              <string>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>View menu style sheet:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="OverlayStyleSheets"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="MenuStyleSheets"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label">
@@ -192,29 +209,42 @@ this according to your screen size or personal taste</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QComboBox" name="treeMode">
-             <property name="toolTip">
-              <string>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_2">
+           <item row="6" column="0">
+            <widget class="QLabel" name="treeModeLabel">
              <property name="text">
-              <string>View menu style sheet:</string>
+              <string>Tree view mode:</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="OverlayStyleSheets"/>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Tree view icon size:</string>
+             </property>
+            </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="MenuStyleSheets"/>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Tree view font size:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QSpinBox" name="treeIconSize">
+             <property name="toolTip">
+              <string>Choose your preference for tree view icon size in pixel.
+The tree view row height will set to icon size + 2. Set 0
+to use the system default size.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="treeFontSize">
+             <property name="toolTip">
+              <string>Set tree view label font size</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

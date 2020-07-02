@@ -45,6 +45,7 @@ class SubObjectT;
 
 namespace Gui {
 
+class TreeParams;
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
 class DocumentObjectData;
@@ -82,6 +83,8 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
 {
     Q_OBJECT
 
+    Q_PROPERTY(int iconHeight READ iconHeight WRITE setIconHeight DESIGNABLE true SCRIPTABLE true)
+
 public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
@@ -96,6 +99,9 @@ public:
     static bool isDragging();
 
     static int iconSize();
+
+    int iconHeight() const;
+    void setIconHeight(int height);
 
     bool eventFilter(QObject *, QEvent *ev) override;
 
@@ -270,6 +276,7 @@ private:
 
     friend class DocumentItem;
     friend class DocumentObjectItem;
+    friend class TreeParams;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewDocument;
@@ -509,21 +516,10 @@ private:
 };
 
 
-/**
- * TreeWidget item delegate for editing
- */
-class TreeWidgetEditDelegate: public QStyledItemDelegate {
-    Q_OBJECT
-public:
-    TreeWidgetEditDelegate(QObject* parent=0);
-    virtual QWidget* createEditor(QWidget *parent, 
-            const QStyleOptionViewItem &, const QModelIndex &index) const;
-};
-
 /** Helper class to read/write tree view options
  *
  * The parameters are stored under group "User parameter:BaseApp/Preferences/TreeView".
- * Call TreeParams::Instance()->ParamName/setParamName() to get/set parameter.
+ * Call TreeParams::ParamName/setParamName() to get/set parameter.
  * To add a new parameter, add a new line under FC_TREEPARAM_DEFS using macro
  *
  * @code
@@ -561,11 +557,13 @@ public:
     FC_TREEPARAM_DEF(Indentation,int,Int,0) \
     FC_TREEPARAM_DEF2(ResizableColumn,bool,Bool,false) \
     FC_TREEPARAM_DEF(LabelExpression,bool,Bool,false) \
+    FC_TREEPARAM_DEF2(IconSize,int,Int,0) \
+    FC_TREEPARAM_DEF2(FontSize,int,Int,0) \
 
 #undef FC_TREEPARAM_DEF
 #define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _type _name() const {return _##_name;} \
-    void set##_name(_type);\
+    static _type _name() {return Instance()->_##_name;} \
+    static void set##_name(_type);\
 
 #undef FC_TREEPARAM_DEF2
 #define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \

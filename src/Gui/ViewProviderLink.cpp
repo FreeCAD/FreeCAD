@@ -74,6 +74,7 @@
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
 #include "ViewParams.h"
+#include "Tree.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -714,10 +715,6 @@ public:
     }
 
     QIcon getIcon(QPixmap px) {
-        static int iconSize = -1;
-        if(iconSize < 0) 
-            iconSize = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
-
         if(!isLinked())
             return QIcon();
 
@@ -727,6 +724,7 @@ public:
         if(iconLink.isNull()) {
             QIcon icon = pcLinked->getIcon();
             iconLink = QIcon();
+            int iconSize = TreeWidget::iconSize();
             iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::Off),
                 px,BitmapFactoryInst::BottomLeft), QIcon::Normal, QIcon::Off);
             iconLink.addPixmap(BitmapFactory().merge(icon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On ),

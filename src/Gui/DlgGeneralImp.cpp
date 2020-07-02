@@ -37,6 +37,7 @@
 #include "MainWindow.h"
 #include "PrefWidgets.h"
 #include "PythonConsole.h"
+#include "Tree.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -82,6 +83,9 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         else
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
+
+    ui->treeIconSize->setValue(TreeParams::IconSize());
+    ui->treeFontSize->setValue(TreeParams::FontSize());
 }
 
 /** 
@@ -181,6 +185,9 @@ void DlgGeneralImp::saveSettings()
 
     sheet = ui->MenuStyleSheets->itemData(ui->MenuStyleSheets->currentIndex());
     hGrp->SetASCII("MenuStyleSheet", (const char*)sheet.toByteArray());
+
+    TreeParams::setIconSize(ui->treeIconSize->value());
+    TreeParams::setFontSize(ui->treeFontSize->value());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -293,6 +300,9 @@ void DlgGeneralImp::loadSettings()
     populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
     populateStylesheets("MenuStyleSheet", "qssm", ui->MenuStyleSheets, "Auto");
+
+    ui->treeIconSize->setValue(TreeParams::IconSize());
+    ui->treeFontSize->setValue(TreeParams::FontSize());
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)

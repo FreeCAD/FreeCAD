@@ -113,8 +113,8 @@ TreeParams::TreeParams() {
 #undef FC_TREEPARAM_DEF
 #define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
 void TreeParams::set##_name(_type value) {\
-    if(_##_name != value) {\
-        handle->Set##_Type(#_name,value);\
+    if(Instance()->_##_name != value) {\
+        Instance()->handle->Set##_Type(#_name,value);\
     }\
 }
 
@@ -152,6 +152,23 @@ void TreeParams::onDocumentModeChanged() {
 
 void TreeParams::onResizableColumnChanged() {
     TreeWidget::setupResizableColumn();
+}
+
+void TreeParams::onIconSizeChanged() {
+    auto tree = TreeWidget::instance();
+    if (tree)
+        tree->setIconHeight(TreeParams::IconSize());
+}
+
+void TreeParams::onFontSizeChanged() {
+    int fontSize = TreeParams::FontSize();
+    if (fontSize <= 0)
+        fontSize = 10;
+    for(auto tree : TreeWidget::Instances) {
+        QFont font = tree->font();
+        font.setPointSize(fontSize);
+        tree->setFont(font);
+    }
 }
 
 TreeParams *TreeParams::Instance() {
@@ -327,6 +344,18 @@ public:
 };
 
 // ---------------------------------------------------------------------------
+/**
+ * TreeWidget item delegate for editing
+ */
+class TreeWidgetEditDelegate: public QStyledItemDelegate {
+public:
+    TreeWidgetEditDelegate(QObject* parent=0);
+
+    virtual QWidget* createEditor(QWidget *parent, 
+            const QStyleOptionViewItem &, const QModelIndex &index) const;
+
+    virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
 
 TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
@@ -359,6 +388,14 @@ QWidget* TreeWidgetEditDelegate::createEditor(
         editor = new QLineEdit(parent);
     editor->setReadOnly(prop.isReadOnly());
     return editor;
+}
+
+QSize TreeWidgetEditDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QSize size = QStyledItemDelegate::sizeHint(option, index);
+    if (TreeParams::IconSize() > 16)
+        size.setHeight(TreeParams::IconSize() + 2);
+    return size;
 }
 
 // ---------------------------------------------------------------------------
@@ -1130,12 +1167,44 @@ void TreeWidget::onItemPressed() {
     _LastSelectedTreeWidget = this;
 }
 
+static int _TreeIconSize;
+
+int TreeWidget::iconHeight() const
+{
+    return _TreeIconSize;
+}
+
+void TreeWidget::setIconHeight(int height)
+{
+    if (_TreeIconSize == height)
+        return;
+
+    if (TreeParams::IconSize() > 0)
+        height = TreeParams::IconSize();
+    _TreeIconSize = height;
+
+    for(auto tree : Instances) {
+        tree->setIconSize(QSize(height, height));
+        for (App::Document *doc : App::GetApplication().getDocuments()) {
+            Gui::Document *gdoc = Application::Instance->getDocument(doc);
+            if (!gdoc) continue;
+            for (App::DocumentObject *obj : doc->getObjects()) {
+                Gui::ViewProvider *vp = gdoc->getViewProvider(obj);
+                if (vp)
+                    vp->signalChangeIcon();
+            }
+        }
+    }
+}
+
 int TreeWidget::iconSize() {
+    if (_TreeIconSize > 0)
+        return _TreeIconSize;
     auto tree = instance();
     if(tree)
         return tree->viewOptions().decorationSize.width();
     else
-        return QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+        return QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
 }
 
 TreeWidget *TreeWidget::instance() {
