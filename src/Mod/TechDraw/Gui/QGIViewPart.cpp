@@ -33,6 +33,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #include <QTextOption>
 #include <QBitmap>
 #include <QImage>

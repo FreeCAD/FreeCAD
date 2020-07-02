@@ -45,6 +45,7 @@
 # include <QImage>
 # include <QImageReader>
 # include <QPainter>
+# include <QPainterPath>
 # include <QThread>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoImage.h>

@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #include <QBitmap>
 #include <QFile>

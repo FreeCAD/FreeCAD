@@ -34,6 +34,7 @@
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
+  # include <QPainterPath>
   # include <QPaintDevice>
   # include <QSvgGenerator>
   # include <QApplication>
