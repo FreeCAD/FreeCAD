@@ -20,8 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the Layer object.
+
+The original Layer object was a VisGroup, but it was renamed to Layer
+in the development cycle of 0.19.
+"""
+## @package DraftLayer
+# \ingroup DRAFT
+# \brief Provides the Layer object
 
 import FreeCAD
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 
 def translate(ctx, txt):
@@ -73,24 +84,6 @@ def getLayerContainer():
     if FreeCAD.GuiUp:
         ViewProviderLayerContainer(obj.ViewObject)
     return obj
-
-
-class CommandLayer():
-    """The Draft_Layer FreeCAD command"""
-
-    def GetResources(self):
-        return {'Pixmap': 'Draft_Layer',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer")}
-
-    def Activated(self):
-        import FreeCADGui
-        FreeCAD.ActiveDocument.openTransaction("Create Layer")
-        FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand('Draft.makeLayer()')
-        FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class Layer:
@@ -447,9 +440,3 @@ class ViewProviderLayerContainer:
     def __setstate__(self, state):
 
         return None
-
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-
-    FreeCADGui.addCommand('Draft_Layer', CommandLayer())

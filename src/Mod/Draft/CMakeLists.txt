@@ -257,6 +257,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_heal.py
     draftguitools/gui_dimension_ops.py
     draftguitools/gui_lineslope.py
+    draftguitools/gui_layers.py
     ${Creator_tools}
     ${Modifier_tools}
     draftguitools/README.md
