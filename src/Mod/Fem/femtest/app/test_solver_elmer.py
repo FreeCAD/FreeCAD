@@ -49,10 +49,6 @@ class TestSolverElmer(unittest.TestCase):
 
         # more inits
         self.mesh_name = "Mesh"
-        self.temp_dir = testtools.get_unit_test_tmp_dir(
-            testtools.get_fem_test_tmp_dir(),
-            "FEM_solver_elmer"
-        )
 
         # make sure std FreeCAD unit system mm/kg/s is used
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
@@ -103,20 +99,18 @@ class TestSolverElmer(unittest.TestCase):
         # the examples do use a gmsh mesh object thus ok
         # FIXME elmer elasticity needs the dict key "ThermalExpansionCoefficient" in material
 
-        solver_obj = self.document.SolverElmer
-
-        base_name = "cube_static"
-        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
+        base_name = "elmer_generic_test"
+        analysis_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
 
         # save the file
-        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
+        save_fc_file = join(analysis_dir, base_name + ".FCStd")
         fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input files
         fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
-        machine_elmer = solver_obj.Proxy.createMachine(
-            solver_obj,
+        machine_elmer = self.document.SolverElmer.Proxy.createMachine(
+            self.document.SolverElmer,
             analysis_dir,
             True
         )
