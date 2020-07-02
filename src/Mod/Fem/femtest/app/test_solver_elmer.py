@@ -154,6 +154,14 @@ class TestSolverElmer(unittest.TestCase):
         self.elmer_inputfile_writing_test("elmer_ccxcanti_faceload")
 
     # ********************************************************************************************
+    def test_elmer_ccxcanti_nodeload(
+        self
+    ):
+        from femexamples.ccx_cantilever_nodeload import setup
+        setup(self.document, "elmer")
+        self.elmer_inputfile_writing_test("elmer_ccxcanti_nodeload")
+
+    # ********************************************************************************************
     def elmer_inputfile_writing_test(
         self,
         base_name
