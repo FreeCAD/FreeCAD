@@ -381,6 +381,13 @@ def getSVG(source,
             if source.Proxy.svgcache[5] != joinArch:
                 svgcache = None
                 source.Proxy.shapecache = None
+            # TODO check array bounds
+            if source.Proxy.svgcache[6] != allOn:
+                svgcache = None
+                source.Proxy.shapecache = None
+            if source.Proxy.svgcache[7] != set(objs):
+                svgcache = None
+                source.Proxy.shapecache = None
 
     # generating SVG
     if renderMode in ["Coin",2,"Coin mono",3]:
@@ -395,7 +402,7 @@ def getSVG(source,
             else:
                 svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
             if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
+                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch,allOn,set(objs)]
     elif renderMode in ["Solid",1]:
         if not svgcache:
             svgcache = ''
@@ -426,7 +433,7 @@ def getSVG(source,
             svgcache += '</g>\n'
             # print(render.info())
             if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
+                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch,allOn,set(objs)]
     else:
         # Wireframe (0) mode
 
@@ -490,7 +497,8 @@ def getSVG(source,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
             if hasattr(source,"Proxy"):
-                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
+                source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch,allOn,set(objs)]
+
     svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
     svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
     svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
