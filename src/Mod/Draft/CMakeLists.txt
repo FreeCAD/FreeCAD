@@ -117,6 +117,7 @@ SET(Draft_make_functions
     draftmake/make_facebinder.py
     draftmake/make_fillet.py
     draftmake/make_label.py
+    draftmake/make_layer.py
     draftmake/make_line.py
     draftmake/make_orthoarray.py
     draftmake/make_patharray.py
@@ -150,6 +151,7 @@ SET(Draft_objects
     draftobjects/fillet.py
     draftobjects/draftlink.py
     draftobjects/label.py
+    draftobjects/layer.py
     draftobjects/dimension.py
     draftobjects/patharray.py
     draftobjects/point.py
@@ -179,6 +181,7 @@ SET(Draft_view_providers
     draftviewproviders/view_fillet.py
     draftviewproviders/view_draftlink.py
     draftviewproviders/view_label.py
+    draftviewproviders/view_layer.py
     draftviewproviders/view_dimension.py
     draftviewproviders/view_point.py
     draftviewproviders/view_rectangle.py

@@ -368,10 +368,15 @@ from draftmake.make_fillet import make_fillet
 if App.GuiUp:
     from draftviewproviders.view_fillet import ViewProviderFillet
 
-# Layers
-from DraftLayer import Layer as _VisGroup
-from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
-from DraftLayer import makeLayer
+from draftobjects.layer import (Layer,
+                                _VisGroup)
+
+from draftmake.make_layer import (make_layer,
+                                  makeLayer)
+
+if App.GuiUp:
+    from draftviewproviders.view_layer import (ViewProviderLayer,
+                                               _ViewProviderVisGroup)
 
 # Annotation objects
 from draftobjects.dimension import (LinearDimension,
