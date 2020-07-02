@@ -155,42 +155,65 @@ class TestSolverElmer(unittest.TestCase):
     def test_elmer_ccxcanti_faceload(
         self
     ):
-        fcc_print("\n------------- Start of FEM elmer tests for ccx cantilever faceload -------")
-
-        # set up the Elmer static analysis example
         from femexamples.ccx_cantilever_faceload import setup
         setup(self.document, "elmer")
+        self.elmer_inputfile_writing_test("elmer_ccxcanti_faceload")
 
-        solver_obj = self.document.SolverElmer
+    # ********************************************************************************************
+    def elmer_inputfile_writing_test(
+        self,
+        base_name
+    ):
 
-        base_name = "elmer_ccxcanti_faceload"
-        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
+        self.document.recompute()
 
-        # save the file
-        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
+        # start
+        fcc_print(
+            "\n------------- Start of FEM elmer tests for {} -------"
+            .format(base_name)
+        )
+
+        # get analysis working directory and save FreeCAD file
+        working_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
+        save_fc_file = join(working_dir, base_name + ".FCStd")
+        fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
-        # write input files
-        fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
-        machine_elmer = solver_obj.Proxy.createMachine(
-            solver_obj,
-            analysis_dir,
-            True
+        # write input file
+        machine = self.document.SolverElmer.Proxy.createMachine(
+            self.document.SolverElmer,
+            working_dir,
+            True  # set testmode to True
         )
-        machine_elmer.target = femsolver.run.PREPARE
-        machine_elmer.start()
-        machine_elmer.join()  # wait for the machine to finish.
+        machine.target = femsolver.run.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish
 
-        # compare case input file
-        test_file_dir_elmer = join(testtools.get_fem_test_home_dir(), "elmer")
-        fcc_print(test_file_dir_elmer)
+        # compare input file with the given one
+        inpfile_given = join(
+            testtools.get_fem_test_home_dir(),
+            "elmer",
+            (base_name + "_mm.sif")
+        )
+        inpfile_totest = join(
+            working_dir,
+            ("case.sif")
+        )
+        fcc_print(
+            "Comparing {}  to  {}"
+            .format(inpfile_given, inpfile_totest)
+        )
+        ret = testtools.compare_inp_files(
+            inpfile_given,
+            inpfile_totest
+        )
+        self.assertFalse(
+            ret,
+            "Elmer write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
+        )
 
-        fcc_print("Test writing case file")
-        casefile_given = join(test_file_dir_elmer, "elmer_ccxcanti_faceload_mm.sif")
-        casefile_totest = join(analysis_dir, "case.sif")
-        fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
-        ret = testtools.compare_files(casefile_given, casefile_totest)
-        self.assertFalse(ret, "case write file test failed.\n{}".format(ret))
-
-        fcc_print("--------------- End of FEM elmer tests for ccx cantilever faceload ---------")
+        # end
+        fcc_print(
+            "--------------- End of FEM elmer tests for {} ---------"
+            .format(base_name)
+        )
