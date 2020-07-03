@@ -35,7 +35,7 @@ namespace Surface
 
 class SurfaceExport Extend :  public Part::Spline
 {
-    PROPERTY_HEADER(Surface::Extend);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Extend);
 
 public:
     Extend();
@@ -54,8 +54,8 @@ public:
     std::mutex lockOnChangeMutex;
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
 
 private:
     virtual void onChanged(const App::Property* prop) override;
