@@ -46,42 +46,6 @@ const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0,10.0,0.01}
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5,10.0,0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
-void Surface::Extend::onChanged(const App::Property* prop)
-{
-    // using a mutex and lock to protect a recursive calling when setting the new values
-    if (!lockOnChangeMutex.try_lock()) return;
-    lockOnChangeMutex.unlock();
-    std::lock_guard<std::mutex> lock(lockOnChangeMutex);
-
-    if ( ExtendUSymetric.getValue() )
-    {
-        if (prop->getName() == ExtendUNeg.getName()
-          || prop->getName() == ExtendUPos.getName())
-        {
-            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
-            if (changedValue)
-            {
-                ExtendUNeg.setValue(changedValue->getValue());
-                ExtendUPos.setValue(changedValue->getValue());
-            }
-        }
-    }
-    if (ExtendVSymetric.getValue())
-    {
-        if (prop->getName() == ExtendVNeg.getName()
-          || prop->getName() == ExtendVPos.getName())
-        {
-            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
-            if (changedValue)
-            {
-                ExtendVNeg.setValue(changedValue->getValue());
-                ExtendVPos.setValue(changedValue->getValue());
-            }
-        }
-    }
-    Part::Feature::onChanged(prop);
-}
-
 Extend::Extend()
 {
     ADD_PROPERTY(Face,(0));
@@ -188,6 +152,42 @@ App::DocumentObjectExecReturn *Extend::execute(void)
     Shape.setValue(mkFace.Face());
 
     return StdReturn;
+}
+
+void Extend::onChanged(const App::Property* prop)
+{
+    // using a mutex and lock to protect a recursive calling when setting the new values
+    if (!lockOnChangeMutex.try_lock()) return;
+    lockOnChangeMutex.unlock();
+    std::lock_guard<std::mutex> lock(lockOnChangeMutex);
+
+    if ( ExtendUSymetric.getValue() )
+    {
+        if (prop->getName() == ExtendUNeg.getName()
+          || prop->getName() == ExtendUPos.getName())
+        {
+            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+            if (changedValue)
+            {
+                ExtendUNeg.setValue(changedValue->getValue());
+                ExtendUPos.setValue(changedValue->getValue());
+            }
+        }
+    }
+    if (ExtendVSymetric.getValue())
+    {
+        if (prop->getName() == ExtendVNeg.getName()
+          || prop->getName() == ExtendVPos.getName())
+        {
+            auto changedValue = dynamic_cast<const App::PropertyFloat*>(prop);
+            if (changedValue)
+            {
+                ExtendVNeg.setValue(changedValue->getValue());
+                ExtendVPos.setValue(changedValue->getValue());
+            }
+        }
+    }
+    Part::Spline::onChanged(prop);
 }
 
 void Extend::handleChangedPropertyName(Base::XMLReader &reader,
