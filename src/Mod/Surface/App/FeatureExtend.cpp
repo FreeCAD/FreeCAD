@@ -52,6 +52,7 @@ Extend::Extend()
     Face.setScope(App::LinkScope::Global);
     ADD_PROPERTY(Tolerance, (0.1));
     Tolerance.setConstraints(&ToleranceRange);
+
     ADD_PROPERTY(ExtendUNeg, (0.05));
     ExtendUNeg.setConstraints(&ExtendRange);
     ADD_PROPERTY(ExtendUPos, (0.05));
@@ -62,7 +63,6 @@ Extend::Extend()
     ExtendVNeg.setConstraints(&ExtendRange);
     ADD_PROPERTY(ExtendVPos, (0.05));
     ExtendVPos.setConstraints(&ExtendRange);
-    ExtendVSymetric.setValue(true);
     ADD_PROPERTY(ExtendVSymetric, (true));
 
     ADD_PROPERTY(SampleU, (32));
