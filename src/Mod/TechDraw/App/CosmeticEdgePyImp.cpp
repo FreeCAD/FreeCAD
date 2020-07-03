@@ -214,6 +214,7 @@ Py::String CosmeticEdgePy::getTag(void) const
 Py::Object CosmeticEdgePy::getStart(void) const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 
@@ -235,7 +236,6 @@ void CosmeticEdgePy::setStart(Py::Object arg)
 
     pNew = DrawUtil::invertY(pNew);
     Base::Vector3d pEnd = getCosmeticEdgePtr()->permaEnd;
-    pEnd = DrawUtil::invertY(pEnd);
     gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
     gp_Pnt gp2(pEnd.x,pEnd.y,pEnd.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -248,6 +248,7 @@ void CosmeticEdgePy::setStart(Py::Object arg)
 Py::Object CosmeticEdgePy::getEnd(void) const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 
@@ -269,7 +270,6 @@ void CosmeticEdgePy::setEnd(Py::Object arg)
 
     pNew = DrawUtil::invertY(pNew);
     Base::Vector3d pStart = getCosmeticEdgePtr()->permaStart;
-    pStart = DrawUtil::invertY(pStart);
     gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
     gp_Pnt gp2(pStart.x,pStart.y,pStart.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp2, gp1);
@@ -330,6 +330,7 @@ Py::Object CosmeticEdgePy::getCenter(void) const
         throw Py::TypeError(error);
     }
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+    point = DrawUtil::invertY(point);
     return Py::asObject(new Base::VectorPy(point));
 }
 

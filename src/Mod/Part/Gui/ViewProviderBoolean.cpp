@@ -65,13 +65,13 @@ QIcon ViewProviderBoolean::getIcon(void) const
     if (obj) {
         Base::Type type = obj->getTypeId();
         if (type == Base::Type::fromName("Part::Common"))
-            return Gui::BitmapFactory().pixmap("Part_Common");
+            return Gui::BitmapFactory().iconFromTheme("Part_Common");
         else if (type == Base::Type::fromName("Part::Fuse"))
-            return Gui::BitmapFactory().pixmap("Part_Fuse");
+            return Gui::BitmapFactory().iconFromTheme("Part_Fuse");
         else if (type == Base::Type::fromName("Part::Cut"))
-            return Gui::BitmapFactory().pixmap("Part_Cut");
+            return Gui::BitmapFactory().iconFromTheme("Part_Cut");
         else if (type == Base::Type::fromName("Part::Section"))
-            return Gui::BitmapFactory().pixmap("Part_Section");
+            return Gui::BitmapFactory().iconFromTheme("Part_Section");
     }
 
     return ViewProviderPart::getIcon();
@@ -171,7 +171,7 @@ std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren(void)cons
 
 QIcon ViewProviderMultiFuse::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Part_Fuse");
+    return Gui::BitmapFactory().iconFromTheme("Part_Fuse");
 }
 
 void ViewProviderMultiFuse::updateData(const App::Property* prop)
@@ -302,7 +302,7 @@ std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren(void)co
 
 QIcon ViewProviderMultiCommon::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Part_Common");
+    return Gui::BitmapFactory().iconFromTheme("Part_Common");
 }
 
 void ViewProviderMultiCommon::updateData(const App::Property* prop)

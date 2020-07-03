@@ -61,9 +61,9 @@
  *     <your_build_dir>/src/Mod/Path/App.CMakeFiles/Path.dir/Area.cpp.i
  * \endcode
  *
- * \section Intrudction of Boost.Preprocessor
+ * \section Introduction of Boost.Preprocessor
  *
- * The macros here make heavy use of the awsome
+ * The macros here make heavy use of the awesome
  * [Boost.Preprocessor](http://www.boost.org/libs/preprocessor/) (short for
  * Boost.PP).  Here are is a brief introduction on Boost.PP concept in order to
  * explain why this marco library is designed the way it is.

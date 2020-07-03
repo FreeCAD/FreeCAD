@@ -117,6 +117,7 @@ DrawViewDetail::DrawViewDetail()
     //hide Properties not relevant to DVDetail
     Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
     Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
+    ScaleType.setValue("Custom");                        //dvd uses scale from BaseView
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -471,9 +472,7 @@ void DrawViewDetail::unsetupObject()
     if (base != nullptr) {
         base->requestPaint();
     }
-
 }
-
 
 void DrawViewDetail::getParameters()
 {

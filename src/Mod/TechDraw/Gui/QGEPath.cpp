@@ -27,6 +27,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #include <QVector2D>

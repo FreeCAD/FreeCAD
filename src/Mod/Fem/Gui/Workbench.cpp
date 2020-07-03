@@ -56,6 +56,8 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Thermal Constraints");
     qApp->translate("Workbench", "Constraints without solver");
     qApp->translate("Workbench", "&Constraints without solver");
+    qApp->translate("Workbench", "Overwrite Constants");
+    qApp->translate("Workbench", "&Overwrite Constants");
     //
     qApp->translate("Workbench", "Mesh");
     qApp->translate("Workbench", "M&esh");
@@ -127,6 +129,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     geom->setCommand("Geometrical Constraints");
     *geom
         << "FEM_ConstraintPlaneRotation"
+        << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
@@ -175,7 +178,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_EquationElasticity"
         << "FEM_EquationElectrostatic"
         << "FEM_EquationFlow"
-        << "FEM_EquationFluxsolver"
+        << "FEM_EquationFlux"
         << "FEM_EquationElectricforce"
         << "FEM_EquationHeat"
         << "Separator"
@@ -251,6 +254,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     geom->setCommand("&Geometrical Constraints");
     *geom
         << "FEM_ConstraintPlaneRotation"
+        << "FEM_ConstraintSectionPrint"
         << "FEM_ConstraintTransform";
 
     Gui::MenuItem* mech = new Gui::MenuItem;
@@ -283,6 +287,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ConstraintGear"
         << "FEM_ConstraintPulley";
 
+    Gui::MenuItem* constants = new Gui::MenuItem;
+    constants->setCommand("&Overwrite Constants");
+    *constants << "FEM_ConstantVacuumPermittivity";
+
     Gui::MenuItem* model = new Gui::MenuItem;
     root->insertItem(item, model);
     model->setCommand("M&odel");
@@ -298,7 +306,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << mech
         << thermal
         << "Separator"
-        << nosolver;
+        << nosolver
+        << "Separator"
+        << constants;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
@@ -329,7 +339,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_EquationElasticity"
         << "FEM_EquationElectrostatic"
         << "FEM_EquationFlow"
-        << "FEM_EquationFluxsolver"
+        << "FEM_EquationFlux"
         << "FEM_EquationElectricforce"
         << "FEM_EquationHeat"
         << "Separator"
@@ -364,7 +374,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     utils->setCommand("Utilities");
     *utils
         << "FEM_ClippingPlaneAdd"
-        << "FEM_ClippingPlaneRemoveAll";
+        << "FEM_ClippingPlaneRemoveAll"
+        << "FEM_Examples";
 
     return root;
 }

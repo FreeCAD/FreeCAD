@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,11 +24,8 @@
 
 # to run the example use:
 """
-from femexamples import boxanalysis as box
-
-box.setup_base()
-box.setup_static()
-box.setup_frequency()
+from femexamples.boxanalysis_static import setup
+setup()
 
 """
 
@@ -43,6 +41,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Box Analysis Static",
+            "meshtype": "solid",
+            "meshelement": "Tet10",
+            "constraints": ["fixed", "force", "pressure"],
+            "solvers": ["ccx", "z88", "elmer"],
+            "material": "solid",
+            "equation": "mechanical"
+            }
+    return info
 
 
 def setup_base(doc=None, solvertype="ccxtools"):
@@ -72,10 +82,15 @@ def setup_base(doc=None, solvertype="ccxtools"):
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
+    if solvertype == "elmer":
+        # set ThermalExpansionCoefficient
+        # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
+        mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # mesh
     from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -83,16 +98,17 @@ def setup_base(doc=None, solvertype="ccxtools"):
     control = create_elements(fem_mesh)
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
-    femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
-    )[0]
+    femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, mesh_name))[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.CharacteristicLengthMin = "8.0 mm"
 
     doc.recompute()
     return doc
 
 
-def setup_static(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools"):
     # setup box static, add a fixed, force and a pressure constraint
 
     doc = setup_base(doc, solvertype)
@@ -110,7 +126,10 @@ def setup_static(doc=None, solvertype="ccxtools"):
         )[0]
         solver_object.WorkingDir = u""
     elif solvertype == "elmer":
-        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        )[0]
+        ObjectsFem.makeEquationElasticity(doc, solver_object)
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     if solvertype == "calculix" or solvertype == "ccxtools":
@@ -143,36 +162,6 @@ def setup_static(doc=None, solvertype="ccxtools"):
     pressure_constraint.References = [(geom_obj, "Face2")]
     pressure_constraint.Pressure = 1000.0
     pressure_constraint.Reversed = False
-
-    doc.recompute()
-    return doc
-
-
-def setup_frequency(doc=None, solvertype="ccxtools"):
-    # setup box frequency, change solver attributes
-
-    doc = setup_base(doc, solvertype)
-    analysis = doc.Analysis
-
-    # solver
-    if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
-    elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
-    if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
 
     doc.recompute()
     return doc

@@ -270,6 +270,24 @@ void DlgGeneralImp::loadSettings()
 
     QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
     index = ui->StyleSheets->findData(selectedStyleSheet);
+
+    // might be an absolute path name
+    if (index < 0 && !selectedStyleSheet.isEmpty()) {
+        QFileInfo fi(selectedStyleSheet);
+        if (fi.isAbsolute()) {
+            QString path = fi.absolutePath();
+            if (qssPaths.indexOf(path) >= 0) {
+                selectedStyleSheet = fi.fileName();
+            }
+            else {
+                selectedStyleSheet = fi.absoluteFilePath();
+                ui->StyleSheets->addItem(fi.baseName(), selectedStyleSheet);
+            }
+
+            index = ui->StyleSheets->findData(selectedStyleSheet);
+        }
+    }
+
     if (index > -1) ui->StyleSheets->setCurrentIndex(index);
 }
 

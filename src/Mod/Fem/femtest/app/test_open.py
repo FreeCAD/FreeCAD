@@ -118,6 +118,13 @@ class TestObjectOpen(unittest.TestCase):
         # FeaturePythons objects
         self.compare_feature_pythons_class_app(self.document)
 
+        # standard name changed
+        from femsolver.elmer.equations.flux import Proxy
+        self.assertEqual(
+            Proxy,
+            self.document.Flux.Proxy.__class__
+        )
+
     # ********************************************************************************************
     def test_femobjects_open_de9b3fb438(
         self
@@ -138,6 +145,13 @@ class TestObjectOpen(unittest.TestCase):
         self.compare_cpp_objs(self.document)
         # FeaturePythons objects
         self.compare_feature_pythons_class_app(self.document)
+
+        # standard name changed
+        from femsolver.elmer.equations.flux import Proxy
+        self.assertEqual(
+            Proxy,
+            self.document.Fluxsolver.Proxy.__class__
+        )
 
     # ********************************************************************************************
     def compare_cpp_objs(
@@ -328,12 +342,6 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             Proxy,
             doc.Flow.Proxy.__class__
-        )
-
-        from femsolver.elmer.equations.fluxsolver import Proxy
-        self.assertEqual(
-            Proxy,
-            doc.Fluxsolver.Proxy.__class__
         )
 
         from femsolver.elmer.equations.heat import Proxy

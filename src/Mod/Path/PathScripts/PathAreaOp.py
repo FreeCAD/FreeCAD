@@ -29,14 +29,13 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import math
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader('Draft', globals(), 'Draft')
 Part = LazyLoader('Part', globals(), 'Part')
 
-# from PathScripts.PathUtils import waiting_effects
-from PySide import QtCore
 if FreeCAD.GuiUp:
     import FreeCADGui
 
@@ -234,6 +233,8 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole) # pylint: disable=assignment-from-no-return
+        if hasattr(obj, 'ExpandProfile') and obj.ExpandProfile != 0:
+            areaParams = self.areaOpAreaParamsExpandProfile(obj, isHole) # pylint: disable=assignment-from-no-return
 
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
@@ -283,8 +284,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         return pp, simobj
 
-    def _buildProfileOpenEdges(self, obj, baseShape, isHole, start, getsim):
-        '''_buildPathArea(obj, baseShape, isHole, start, getsim) ... internal function.'''
+    def _buildProfileOpenEdges(self, obj, edgeList, isHole, start, getsim):
+        '''_buildPathArea(obj, edgeList, isHole, start, getsim) ... internal function.'''
         # pylint: disable=unused-argument
         PathLog.track()
 
@@ -293,35 +294,36 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.debug('depths: {}'.format(heights))
         lstIdx = len(heights) - 1
         for i in range(0, len(heights)):
-            hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
-            hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
+            for baseShape in edgeList:
+                hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+                hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
-            pathParams = {} # pylint: disable=assignment-from-no-return
-            pathParams['shapes'] = [hWire]
-            pathParams['feedrate'] = self.horizFeed
-            pathParams['feedrate_v'] = self.vertFeed
-            pathParams['verbose'] = True
-            pathParams['resume_height'] = obj.SafeHeight.Value
-            pathParams['retraction'] = obj.ClearanceHeight.Value
-            pathParams['return_end'] = True
-            # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-            pathParams['preamble'] = False
+                pathParams = {} # pylint: disable=assignment-from-no-return
+                pathParams['shapes'] = [hWire]
+                pathParams['feedrate'] = self.horizFeed
+                pathParams['feedrate_v'] = self.vertFeed
+                pathParams['verbose'] = True
+                pathParams['resume_height'] = obj.SafeHeight.Value
+                pathParams['retraction'] = obj.ClearanceHeight.Value
+                pathParams['return_end'] = True
+                # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+                pathParams['preamble'] = False
 
-            if self.endVector is None:
-                V = hWire.Wires[0].Vertexes
-                lv = len(V) - 1
-                pathParams['start'] = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
-                if obj.Direction == 'CCW':
-                    pathParams['start'] = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
-            else:
-                pathParams['start'] = self.endVector
+                if self.endVector is None:
+                    V = hWire.Wires[0].Vertexes
+                    lv = len(V) - 1
+                    pathParams['start'] = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                    if obj.Direction == 'CCW':
+                        pathParams['start'] = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
+                else:
+                    pathParams['start'] = self.endVector
 
-            obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
-            PathLog.debug("Path with params: {}".format(obj.PathParams))
+                obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
+                PathLog.debug("Path with params: {}".format(obj.PathParams))
 
-            (pp, end_vector) = Path.fromShapes(**pathParams)
-            paths.extend(pp.Commands)
-            PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
+                (pp, end_vector) = Path.fromShapes(**pathParams)
+                paths.extend(pp.Commands)
+                PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
 
         self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
 
@@ -410,11 +412,17 @@ class ObjectOp(PathOp.ObjectOp):
                 shapes.append(shp)
 
         if len(shapes) > 1:
-            jobs = [{
-                'x': s[0].BoundBox.XMax,
-                'y': s[0].BoundBox.YMax,
-                'shape': s
-            } for s in shapes]
+            jobs = list()
+            for s in shapes:
+                if s[2] == 'OpenEdge':
+                    shp = Part.makeCompound(s[0])
+                else:
+                    shp = s[0]
+                jobs.append({
+                    'x': shp.BoundBox.XMax,
+                    'y': shp.BoundBox.YMax,
+                    'shape': s
+                })
 
             jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
 

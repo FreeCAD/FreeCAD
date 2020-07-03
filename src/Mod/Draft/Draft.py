@@ -383,20 +383,24 @@ if FreeCAD.GuiUp:
 # Draft annotation objects
 #---------------------------------------------------------------------------
 
-from draftobjects.dimension import make_dimension, make_angular_dimension
-from draftobjects.dimension import LinearDimension, AngularDimension
+from draftobjects.dimension import (LinearDimension,
+                                    _Dimension,
+                                    AngularDimension,
+                                    _AngularDimension)
 
-makeDimension = make_dimension
-makeAngularDimension = make_angular_dimension
-_Dimension = LinearDimension
-_AngularDimension = AngularDimension
+from draftmake.make_dimension import (make_dimension,
+                                      makeDimension,
+                                      make_linear_dimension,
+                                      make_linear_dimension_obj,
+                                      make_radial_dimension_obj,
+                                      make_angular_dimension,
+                                      makeAngularDimension)
 
-if gui:
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
-    from draftviewproviders.view_dimension import ViewProviderAngularDimension
-    _ViewProviderDimension = ViewProviderLinearDimension
-    _ViewProviderAngularDimension = ViewProviderAngularDimension
-
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_dimension import (ViewProviderLinearDimension,
+                                                   _ViewProviderDimension,
+                                                   ViewProviderAngularDimension,
+                                                   _ViewProviderAngularDimension)
 
 from draftobjects.label import (Label,
                                 DraftLabel)
@@ -404,9 +408,9 @@ from draftobjects.label import (Label,
 from draftmake.make_label import (make_label,
                                   makeLabel)
 
-if gui:
-    from draftviewproviders.view_label import ViewProviderLabel
-    ViewProviderDraftLabel = ViewProviderLabel
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_label import (ViewProviderLabel,
+                                               ViewProviderDraftLabel)
 
 from draftobjects.text import (Text,
                                DraftText)

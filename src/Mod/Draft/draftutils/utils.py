@@ -51,8 +51,28 @@ if App.GuiUp:
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc else False
 
+param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
 arrowtypes = ARROW_TYPES
+
+ANNOTATION_STYLE = {
+    "FontName": ("font", param.GetString("textfont", "Sans")),
+    "FontSize": ("str", str(param.GetFloat("textheight", 100))),
+    "LineSpacing": ("float", 1),
+    "ScaleMultiplier": ("float", 1),
+    "ShowUnit": ("bool", False),
+    "UnitOverride": ("str", ""),
+    "Decimals": ("int", 2),
+    "ShowLines": ("bool", True),
+    "LineWidth": ("int", param.GetInt("linewidth", 1)),
+    "LineColor": ("color", param.GetInt("color", 255)),
+    "ArrowType": ("index", param.GetInt("dimsymbol", 0)),
+    "ArrowSize": ("str", str(param.GetFloat("arrowsize", 20))),
+    "DimensionOvershoot": ("str", str(param.GetFloat("dimovershoot", 20))),
+    "ExtensionLines": ("str", str(param.GetFloat("extlines", 300))),
+    "ExtensionOvershoot": ("str", str(param.GetFloat("extovershoot", 20))),
+}
 
 
 def string_encode_coin(ustr):

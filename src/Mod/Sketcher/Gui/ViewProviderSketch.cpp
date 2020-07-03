@@ -5564,8 +5564,12 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObject::updateData(prop);
 
+    // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
+    // In the case of an internal transaction, touching the geometry results in a call to updateData.
     if ( edit && !getSketchObject()->getDocument()->isPerformingTransaction() &&
+         !getSketchObject()->isPerformingInternalTransaction() &&
          (prop == &(getSketchObject()->Geometry) || prop == &(getSketchObject()->Constraints))) {
+
         edit->FullyConstrained = false;
         // At this point, we do not need to solve the Sketch
         // If we are adding geometry an update can be triggered before the sketch is actually solved.

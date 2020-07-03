@@ -15,7 +15,8 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_mesh
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer
 
 
 # classes
@@ -31,7 +32,8 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectCreate
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_object.TestObjectType
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_open.TestObjectOpen
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer
 
 
 # methods
@@ -40,6 +42,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_sta
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_force_faceload_hexa20
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_shell_shell
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_sectionprint
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_tie
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar
@@ -78,8 +81,10 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_stress_principal_reinforced
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_rho
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_result.TestResult.test_disp_abs
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_solver_calculix
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_solver_elmer
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_elmer_ccxcanti_nodeload
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_elmer_ccxcanti_faceload
 
 
 # methods in FreeCAD
@@ -107,6 +112,11 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
     'femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_sectionprint'
 ))
 
 import unittest
@@ -301,10 +311,20 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix'
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_solver_calculix'
 ))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer'
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_solver_elmer'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_elmer_ccxcanti_nodeload'
+))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
+    'femtest.app.test_solver_elmer.TestSolverElmer.test_elmer_ccxcanti_faceload'
 ))

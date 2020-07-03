@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Solver frame work FEM unit tests"
+__title__ = "Solver elmer FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -31,13 +31,12 @@ from os.path import join
 import FreeCAD
 
 import femsolver.run
-import ObjectsFem
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
 
-class TestSolverFrameWork(unittest.TestCase):
-    fcc_print("import TestSolverFrameWork")
+class TestSolverElmer(unittest.TestCase):
+    fcc_print("import TestSolverElmer")
 
     # ********************************************************************************************
     def setUp(
@@ -50,15 +49,24 @@ class TestSolverFrameWork(unittest.TestCase):
 
         # more inits
         self.mesh_name = "Mesh"
-        self.temp_dir = testtools.get_unit_test_tmp_dir(
-            testtools.get_fem_test_tmp_dir(),
-            "FEM_solverframework"
-        )
+
+        # make sure std FreeCAD unit system mm/kg/s is used
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        self.unit_schema = param.GetInt("UserSchema")
+        if self.unit_schema != 0:
+            fcc_print("Unit schema: {}. Set unit schema to 0 (mm/kg/s)".format(self.unit_schema))
+            param.SetInt("UserSchema", 0)
 
     # ********************************************************************************************
     def tearDown(
         self
     ):
+        # set back unit unit schema
+        if self.unit_schema != 0:
+            fcc_print("Set unit schema back to {}".format(self.unit_schema))
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+            param.SetInt("UserSchema", self.unit_schema)
+
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
 
@@ -76,94 +84,33 @@ class TestSolverFrameWork(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_solver_calculix(
-        self
-    ):
-        fcc_print("\n--------------- Start of FEM tests solver framework solver CalculiX ------")
-
-        # set up the CalculiX static analysis example
-        from femexamples import boxanalysis as box
-        box.setup_static(self.document, "calculix")
-
-        solver_obj = self.document.SolverCalculiX
-
-        base_name = "cube_static"
-        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
-
-        # save the file
-        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
-        fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
-        self.document.saveAs(save_fc_file)
-
-        # write input file
-        fcc_print("Checking FEM input file writing for CalculiX solver framework solver ...")
-        machine_ccx = solver_obj.Proxy.createMachine(
-            solver_obj,
-            analysis_dir
-        )
-        machine_ccx.target = femsolver.run.PREPARE
-        machine_ccx.start()
-        machine_ccx.join()  # wait for the machine to finish.
-
-        infile_given = join(
-            testtools.get_fem_test_home_dir(),
-            "ccx",
-            (base_name + ".inp")
-        )
-        inpfile_totest = join(analysis_dir, (self.mesh_name + ".inp"))
-        fcc_print("Comparing {} to {}".format(infile_given, inpfile_totest))
-        ret = testtools.compare_inp_files(infile_given, inpfile_totest)
-        self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
-
-        fcc_print("--------------- End of FEM tests solver framework solver CalculiX --------")
-
-    # ********************************************************************************************
     def test_solver_elmer(
         self
     ):
         fcc_print("\n--------------- Start of FEM tests solver framework solver Elmer ---------")
 
         # set up the Elmer static analysis example
-        from femexamples import boxanalysis as box
-        box.setup_static(self.document, "elmer")
+        from femexamples.boxanalysis_static import setup
+        setup(self.document, "elmer")
 
-        analysis_obj = self.document.Analysis
-        solver_obj = self.document.SolverElmer
-        material_obj = self.document.MechanicalMaterial
-        mesh_obj = self.document.Mesh
-        box_object = self.document.Box
-
-        base_name = "cube_static"
-        analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, solver_obj.Name)
-
-        # TODO move to elmer solver of femexample code
-        ObjectsFem.makeEquationElasticity(self.document, solver_obj)
-
-        # set ThermalExpansionCoefficient
-        # FIXME elmer elasticity needs the dictionary key "ThermalExpansionCoefficient"
-        # even on simple elasticity analysis, otherwise it fails
-        mat = material_obj.Material
-        mat["ThermalExpansionCoefficient"] = "0 um/m/K"
-        material_obj.Material = mat
-
-        # elmer needs a GMHS mesh object
+        # for information:
+        # elmer needs gmsh mesho object
         # FIXME error message on Python solver run
-        mesh_gmsh = ObjectsFem.makeMeshGmsh(self.document)
-        mesh_gmsh.CharacteristicLengthMin = "9 mm"
-        mesh_gmsh.FemMesh = mesh_obj.FemMesh
-        mesh_gmsh.Part = box_object
-        analysis_obj.addObject(mesh_gmsh)
-        self.document.removeObject(mesh_obj.Name)  # remove original mesh object
+        # the examples do use a gmsh mesh object thus ok
+        # FIXME elmer elasticity needs the dict key "ThermalExpansionCoefficient" in material
+
+        base_name = "elmer_generic_test"
+        analysis_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
 
         # save the file
-        save_fc_file = join(analysis_dir, solver_obj.Name + "_" + base_name + ".FCStd")
+        save_fc_file = join(analysis_dir, base_name + ".FCStd")
         fcc_print("Save FreeCAD file to {}...".format(save_fc_file))
         self.document.saveAs(save_fc_file)
 
         # write input files
         fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
-        machine_elmer = solver_obj.Proxy.createMachine(
-            solver_obj,
+        machine_elmer = self.document.SolverElmer.Proxy.createMachine(
+            self.document.SolverElmer,
             analysis_dir,
             True
         )
@@ -183,7 +130,7 @@ class TestSolverFrameWork(unittest.TestCase):
         self.assertFalse(ret, "STARTINFO write file test failed.\n{}".format(ret))
 
         fcc_print("Test writing case file")
-        casefile_given = join(test_file_dir_elmer, "case.sif")
+        casefile_given = join(test_file_dir_elmer, "case_mm.sif")
         casefile_totest = join(analysis_dir, "case.sif")
         fcc_print("Comparing {} to {}".format(casefile_given, casefile_totest))
         ret = testtools.compare_files(casefile_given, casefile_totest)
@@ -197,3 +144,78 @@ class TestSolverFrameWork(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
 
         fcc_print("--------------- End of FEM tests solver framework solver Elmer -----------")
+
+    # ********************************************************************************************
+    def test_elmer_ccxcanti_faceload(
+        self
+    ):
+        from femexamples.ccx_cantilever_faceload import setup
+        setup(self.document, "elmer")
+        self.elmer_inputfile_writing_test("elmer_ccxcanti_faceload")
+
+    # ********************************************************************************************
+    def test_elmer_ccxcanti_nodeload(
+        self
+    ):
+        from femexamples.ccx_cantilever_nodeload import setup
+        setup(self.document, "elmer")
+        self.elmer_inputfile_writing_test("elmer_ccxcanti_nodeload")
+
+    # ********************************************************************************************
+    def elmer_inputfile_writing_test(
+        self,
+        base_name
+    ):
+
+        self.document.recompute()
+
+        # start
+        fcc_print(
+            "\n------------- Start of FEM elmer tests for {} -------"
+            .format(base_name)
+        )
+
+        # get analysis working directory and save FreeCAD file
+        working_dir = testtools.get_fem_test_tmp_dir("solver_" + base_name)
+        save_fc_file = join(working_dir, base_name + ".FCStd")
+        fcc_print("Save FreeCAD file to {} ...".format(save_fc_file))
+        self.document.saveAs(save_fc_file)
+
+        # write input file
+        machine = self.document.SolverElmer.Proxy.createMachine(
+            self.document.SolverElmer,
+            working_dir,
+            True  # set testmode to True
+        )
+        machine.target = femsolver.run.PREPARE
+        machine.start()
+        machine.join()  # wait for the machine to finish
+
+        # compare input file with the given one
+        inpfile_given = join(
+            testtools.get_fem_test_home_dir(),
+            "elmer",
+            (base_name + "_mm.sif")
+        )
+        inpfile_totest = join(
+            working_dir,
+            ("case.sif")
+        )
+        fcc_print(
+            "Comparing {}  to  {}"
+            .format(inpfile_given, inpfile_totest)
+        )
+        ret = testtools.compare_inp_files(
+            inpfile_given,
+            inpfile_totest
+        )
+        self.assertFalse(
+            ret,
+            "Elmer write_inp_file for {0} test failed.\n{1}".format(base_name, ret)
+        )
+
+        # end
+        fcc_print(
+            "--------------- End of FEM elmer tests for {} ---------"
+            .format(base_name)
+        )

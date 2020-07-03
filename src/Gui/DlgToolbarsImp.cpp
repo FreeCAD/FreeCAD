@@ -73,10 +73,10 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     , type(t)
 {
     ui->setupUi(this);
-    ui->moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
-    ui->moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
-    ui->moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
-    ui->moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
+    ui->moveActionRightButton->setIcon(BitmapFactory().iconFromTheme("button_right"));
+    ui->moveActionLeftButton->setIcon(BitmapFactory().iconFromTheme("button_left"));
+    ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
+    ui->moveActionUpButton->setIcon(BitmapFactory().iconFromTheme("button_up"));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();

@@ -40,7 +40,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Surface operation.'''
 
     def initPage(self, obj):
-        self.setTitle("3D Surface")
+        self.setTitle("3D Surface - " + obj.Label)
         # self.updateVisibility()
         # retrieve property enumerations
         self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)

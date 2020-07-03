@@ -42,11 +42,17 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
-    femexamples/boxanalysis.py
-    femexamples/ccx_cantilever_std.py
+    femexamples/boxanalysis_static.py
+    femexamples/boxanalysis_frequency.py
+    femexamples/ccx_cantilever_faceload.py
+    femexamples/ccx_cantilever_nodeload.py
+    femexamples/ccx_cantilever_hexa20faceload.py
+    femexamples/ccx_cantilever_prescribeddisplacement.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
+    femexamples/constraint_section_print.py
     femexamples/constraint_tie.py
+    femexamples/examplesgui.py
     femexamples/manager.py
     femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
@@ -66,6 +72,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
+    femexamples/meshes/mesh_section_print_tetra10.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
     femexamples/meshes/mesh_thermomech_bimetall_tetra10.py
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
@@ -101,10 +108,12 @@ SET(FemMesh_SRCS
 SET(FemObjects_SRCS
     femobjects/__init__.py
     femobjects/base_fempythonobject.py
+    femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
     femobjects/constraint_electrostaticpotential.py
     femobjects/constraint_flowvelocity.py
     femobjects/constraint_initialflowvelocity.py
+    femobjects/constraint_sectionprint.py
     femobjects/constraint_selfweight.py
     femobjects/constraint_tie.py
     femobjects/element_fluid1D.py
@@ -164,7 +173,7 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/elasticity.py
     femsolver/elmer/equations/equation.py
     femsolver/elmer/equations/flow.py
-    femsolver/elmer/equations/fluxsolver.py
+    femsolver/elmer/equations/flux.py
     femsolver/elmer/equations/heat.py
     femsolver/elmer/equations/linear.py
     femsolver/elmer/equations/nonlinear.py
@@ -199,7 +208,8 @@ SET(FemTestsApp_SRCS
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
-    femtest/app/test_solverframework.py
+    femtest/app/test_solver_calculix.py
+    femtest/app/test_solver_elmer.py
 )
 
 SET(FemTestsFiles_SRCS
@@ -213,6 +223,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/constraint_contact_shell_shell.inp
     femtest/data/ccx/constraint_contact_solid_solid.FCStd
     femtest/data/ccx/constraint_contact_solid_solid.inp
+    femtest/data/ccx/constraint_sectionprint.inp
     femtest/data/ccx/constraint_tie.inp
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
@@ -243,7 +254,9 @@ SET(FemTestsCcx_SRCS
 
 SET(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
-    femtest/data/elmer/case.sif
+    femtest/data/elmer/case_mm.sif
+    femtest/data/elmer/elmer_ccxcanti_faceload_mm.sif
+    femtest/data/elmer/elmer_ccxcanti_nodeload_mm.sif
     femtest/data/elmer/group_mesh.geo
     femtest/data/elmer/ELMERSOLVER_STARTINFO
 )
@@ -351,6 +364,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_constraint_electrostaticpotential.py
     femtaskpanels/task_constraint_flowvelocity.py
     femtaskpanels/task_constraint_initialflowvelocity.py
+    femtaskpanels/task_constraint_sectionprint.py
     femtaskpanels/task_constraint_tie.py
     femtaskpanels/task_element_fluid1D.py
     femtaskpanels/task_element_geometry1D.py
@@ -381,10 +395,12 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
     femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femobject.py
+    femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
     femviewprovider/view_constraint_electrostaticpotential.py
     femviewprovider/view_constraint_flowvelocity.py
     femviewprovider/view_constraint_initialflowvelocity.py
+    femviewprovider/view_constraint_sectionprint.py
     femviewprovider/view_constraint_selfweight.py
     femviewprovider/view_constraint_tie.py
     femviewprovider/view_element_fluid1D.py

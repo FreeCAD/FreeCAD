@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepFilletAPI_MakeChamfer.hxx>
+# include <Precision.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>

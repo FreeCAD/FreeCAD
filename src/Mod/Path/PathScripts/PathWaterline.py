@@ -406,6 +406,31 @@ class ObjectWaterline(PathOp.ObjectOp):
             obj.AvoidLastX_Faces = 100
             PathLog.error(translate('PathWaterline', 'AvoidLastX_Faces: Avoid last X faces count limited to 100.'))
 
+    def opUpdateDepths(self, obj):
+        if hasattr(obj, 'Base') and obj.Base:
+            base, sublist = obj.Base[0]
+            fbb = base.Shape.getElement(sublist[0]).BoundBox
+            zmin = fbb.ZMax
+            for base, sublist in obj.Base:
+                for sub in sublist:
+                    try:
+                        fbb = base.Shape.getElement(sub).BoundBox
+                        zmin = min(zmin, fbb.ZMin)
+                    except Part.OCCError as e:
+                        PathLog.error(e)
+            obj.OpFinalDepth = zmin
+        elif self.job:
+            if hasattr(obj, 'BoundBox'):
+                if obj.BoundBox == 'BaseBoundBox':
+                    models = self.job.Model.Group
+                    zmin = models[0].Shape.BoundBox.ZMin
+                    for M in models:
+                        zmin = min(zmin, M.Shape.BoundBox.ZMin)
+                    obj.OpFinalDepth = zmin
+                if obj.BoundBox == 'Stock':
+                    models = self.job.Stock
+                    obj.OpFinalDepth = self.job.Stock.Shape.BoundBox.ZMin
+
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
         PathLog.track()
@@ -466,23 +491,34 @@ class ObjectWaterline(PathOp.ObjectOp):
             else:
                 self.CutClimb = True
 
+        # Instantiate additional class operation variables
+        self.resetOpVariables()
+
+        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
+        oclTool = PathSurfaceSupport.OCL_Tool(ocl, obj)
+        self.cutter = oclTool.getOclTool()
+        if not self.cutter:
+            PathLog.error(translate('PathWaterline', "Canceling Waterline operation. Error creating OCL cutter."))
+            return
+        self.toolDiam = self.cutter.getDiameter()
+        self.radius = self.toolDiam / 2.0
+        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
+        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
+
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
         output = ''
         if obj.Comment != '':
             self.commandlist.append(Path.Command('N ({})'.format(str(obj.Comment)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(obj.Label), {}))
-        self.commandlist.append(Path.Command('N (Tool type: {})'.format(str(obj.ToolController.Tool.ToolType)), {}))
-        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(str(obj.ToolController.Tool.Diameter)), {}))
+        self.commandlist.append(Path.Command('N (Tool type: {})'.format(oclTool.toolType), {}))
+        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(oclTool.diameter), {}))
         self.commandlist.append(Path.Command('N (Sample interval: {})'.format(str(obj.SampleInterval.Value)), {}))
         self.commandlist.append(Path.Command('N (Step over %: {})'.format(str(obj.StepOver)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(output), {}))
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if obj.UseStartPoint:
             self.commandlist.append(Path.Command('G0', {'X': obj.StartPoint.x, 'Y': obj.StartPoint.y, 'F': self.horizRapid}))
-
-        # Instantiate additional class operation variables
-        self.resetOpVariables()
 
         # Impose property limits
         self.opApplyPropertyLimits(obj)
@@ -503,16 +539,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         tempGroup.purgeTouched()
         # Add temp object to temp group folder with following code:
         # ... self.tempGroup.addObject(OBJ)
-
-        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
-        self.cutter = self.setOclCutter(obj)
-        if self.cutter is False:
-            PathLog.error(translate('PathWaterline', "Canceling Waterline operation. Error creating OCL cutter."))
-            return
-        self.toolDiam = self.cutter.getDiameter()
-        self.radius = self.toolDiam / 2.0
-        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
-        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
 
         # Get height offset values for later use
         self.SafeHeightOffset = JOB.SetupSheet.SafeHeightOffset.Value
@@ -1752,7 +1778,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.stl = None
             self.fullSTL = None
             self.cutOut = 0.0
-            self.radius = 0.0
             self.useTiltCutter = False
         return True
 
@@ -1782,74 +1807,17 @@ class ObjectWaterline(PathOp.ObjectOp):
             del self.useTiltCutter
         return True
 
-    def setOclCutter(self, obj, safe=False):
-        ''' setOclCutter(obj) ... Translation function to convert FreeCAD tool definition to OCL formatted tool. '''
-        # Set cutter details
-        #  https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
-        diam_1 = float(obj.ToolController.Tool.Diameter)
-        lenOfst = obj.ToolController.Tool.LengthOffset if hasattr(obj.ToolController.Tool, 'LengthOffset') else 0
-        FR = obj.ToolController.Tool.FlatRadius if hasattr(obj.ToolController.Tool, 'FlatRadius') else 0
-        CEH = obj.ToolController.Tool.CuttingEdgeHeight if hasattr(obj.ToolController.Tool, 'CuttingEdgeHeight') else 0
-        CEA = obj.ToolController.Tool.CuttingEdgeAngle if hasattr(obj.ToolController.Tool, 'CuttingEdgeAngle') else 0
-
-        # Make safeCutter with 2 mm buffer around physical cutter
-        if safe is True:
-            diam_1 += 4.0
-            if FR != 0.0:
-                FR += 2.0
-            
-        PathLog.debug('ToolType: {}'.format(obj.ToolController.Tool.ToolType))
-        if obj.ToolController.Tool.ToolType == 'EndMill':
-            # Standard End Mill
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == 'BallEndMill' and FR == 0.0:
-            # Standard Ball End Mill
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            self.useTiltCutter = True
-            return ocl.BallCutter(diam_1, (diam_1 / 2 + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == 'BallEndMill' and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            return ocl.BullCutter(diam_1, FR, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == 'Engraver' and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-
-        elif obj.ToolController.Tool.ToolType == 'ChamferMill':
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-        else:
-            # Default to standard end mill
-            PathLog.warning("Defaulting cutter to standard end mill.")
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
-
     def showDebugObject(self, objShape, objName):
         if self.showDebugObjects:
             do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
-
+# Eclass
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = ['Algorithm', 'AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
-    setup.extend(['BoundaryAdjustment', 'PatternCenterAt', 'PatternCenterCustom'])
-    setup.extend(['ClearLastLayer', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
-    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
-    setup.extend(['DepthOffset', 'GapSizes', 'GapThreshold', 'StepOver'])
-    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
-    setup.extend(['BoundaryEnforcement', 'SampleInterval', 'StartPoint', 'IgnoreOuterAbove'])
-    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
-    return setup
+    return [tup[1] for tup in ObjectWaterline.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):

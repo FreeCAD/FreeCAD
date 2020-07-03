@@ -43,7 +43,8 @@ def Startup():
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
         from PathScripts import PathComment
-        from PathScripts import PathCustom
+        # from PathScripts import PathCustom
+        from PathScripts import PathCustomGui
         from PathScripts import PathDeburrGui
         from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
@@ -72,6 +73,7 @@ def Startup():
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
+        from PathScripts import PathSlotGui
         from PathScripts import PathStop
         # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
         from PathScripts import PathToolController

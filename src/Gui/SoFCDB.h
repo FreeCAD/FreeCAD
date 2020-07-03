@@ -40,9 +40,11 @@ public:
     static SbBool isInitialized(void);
     static void init();
     static void finish();
+    static SoNode* replaceSwitches(SoNode* node);
     /// helper to apply a SoWriteAction to a node and write it to a string
     static const std::string& writeNodesToString(SoNode * root);
     static bool writeToVRML(SoNode* node, const char* filename, bool binary);
+    static void writeToVRML(SoNode* node, std::string& buffer);
     // Write to VRML or Inventor file
     static bool writeToFile(SoNode* node, const char* filename, bool binary);
     /*! container for app lifetime storage. See SoFCCSysDragger for details

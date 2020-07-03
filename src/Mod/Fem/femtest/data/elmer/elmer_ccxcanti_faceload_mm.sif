@@ -54,9 +54,9 @@ End
 
 Material 1
   Density = Real 7.9e-06
-  Heat expansion Coefficient = Real 0.0
+  Heat expansion Coefficient = Real 1.2e-05
   Poisson ratio = Real 0.3
-  Youngs Modulus = Real 200000000.0
+  Youngs Modulus = Real 210000000.0
 End
 
 Equation 1
@@ -72,24 +72,19 @@ Solver 2
 End
 
 Boundary Condition 1
-  Name = String "Face2"
-  Normal Force = Real -1000000.0
-End
-
-Boundary Condition 2
   Displacement 1 = Real 0.0
   Displacement 2 = Real 0.0
   Displacement 3 = Real 0.0
   Name = String "Face1"
 End
 
-Boundary Condition 3
+Boundary Condition 2
   Force 1 = Real -0.0
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -40000000.0
+  Force 3 = Real -9000000000.0
   Force 3 Normalize by Area = Logical True
-  Name = String "Face6"
+  Name = String "Face2"
 End
 

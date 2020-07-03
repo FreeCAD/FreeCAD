@@ -565,8 +565,8 @@ def compact_result(res_obj):
     # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
 
     # get compact mesh data
-    from femmesh.meshtools import compact_mesh as cm
-    compact_femmesh_data = cm(res_obj.Mesh.FemMesh)
+    from femmesh.meshtools import compact_mesh
+    compact_femmesh_data = compact_mesh(res_obj.Mesh.FemMesh)
     compact_femmesh = compact_femmesh_data[0]
     node_map = compact_femmesh_data[1]
     # FreeCAD result obj does not support elem results ATM

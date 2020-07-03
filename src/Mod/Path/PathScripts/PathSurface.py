@@ -436,6 +436,17 @@ class ObjectSurface(PathOp.ObjectOp):
                     except Part.OCCError as e:
                         PathLog.error(e)
             obj.OpFinalDepth = zmin
+        elif self.job:
+            if hasattr(obj, 'BoundBox'):
+                if obj.BoundBox == 'BaseBoundBox':
+                    models = self.job.Model.Group
+                    zmin = models[0].Shape.BoundBox.ZMin
+                    for M in models:
+                        zmin = min(zmin, M.Shape.BoundBox.ZMin)
+                    obj.OpFinalDepth = zmin
+                if obj.BoundBox == 'Stock':
+                    models = self.job.Stock
+                    obj.OpFinalDepth = self.job.Stock.Shape.BoundBox.ZMin
 
     def opExecute(self, obj):
         '''opExecute(obj) ... process surface operation'''
@@ -494,23 +505,35 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 self.CutClimb = True
 
+        # Instantiate additional class operation variables
+        self.resetOpVariables()
+
+        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
+        oclTool = PathSurfaceSupport.OCL_Tool(ocl, obj)
+        self.cutter = oclTool.getOclTool()
+        if not self.cutter:
+            PathLog.error(translate('PathSurface', "Canceling 3D Surface operation. Error creating OCL cutter."))
+            return
+        self.toolDiam = self.cutter.getDiameter()  # oclTool.diameter
+        self.radius = self.toolDiam / 2.0
+        self.useTiltCutter = oclTool.useTiltCutter()
+        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
+        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
+
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
         output = ''
         if obj.Comment != '':
             self.commandlist.append(Path.Command('N ({})'.format(str(obj.Comment)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(obj.Label), {}))
-        self.commandlist.append(Path.Command('N (Tool type: {})'.format(str(obj.ToolController.Tool.ToolType)), {}))
-        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(str(obj.ToolController.Tool.Diameter)), {}))
+        self.commandlist.append(Path.Command('N (Tool type: {})'.format(oclTool.toolType), {}))
+        self.commandlist.append(Path.Command('N (Compensated Tool Path. Diameter: {})'.format(oclTool.diameter), {}))
         self.commandlist.append(Path.Command('N (Sample interval: {})'.format(str(obj.SampleInterval.Value)), {}))
         self.commandlist.append(Path.Command('N (Step over %: {})'.format(str(obj.StepOver)), {}))
         self.commandlist.append(Path.Command('N ({})'.format(output), {}))
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         if obj.UseStartPoint is True:
             self.commandlist.append(Path.Command('G0', {'X': obj.StartPoint.x, 'Y': obj.StartPoint.y, 'F': self.horizRapid}))
-
-        # Instantiate additional class operation variables
-        self.resetOpVariables()
 
         # Impose property limits
         self.opApplyPropertyLimits(obj)
@@ -531,16 +554,6 @@ class ObjectSurface(PathOp.ObjectOp):
         tempGroup.purgeTouched()
         # Add temp object to temp group folder with following code:
         # ... self.tempGroup.addObject(OBJ)
-
-        # Setup cutter for OCL and cutout value for operation - based on tool controller properties
-        self.cutter = self.setOclCutter(obj)
-        if self.cutter is False:
-            PathLog.error(translate('PathSurface', "Canceling 3D Surface operation. Error creating OCL cutter."))
-            return
-        self.toolDiam = self.cutter.getDiameter()
-        self.radius = self.toolDiam / 2.0
-        self.cutOut = (self.toolDiam * (float(obj.StepOver) / 100.0))
-        self.gaps = [self.toolDiam, self.toolDiam, self.toolDiam]
 
         # Get height offset values for later use
         self.SafeHeightOffset = JOB.SetupSheet.SafeHeightOffset.Value
@@ -610,6 +623,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
             # Save gcode produced
             self.commandlist.extend(CMDS)
+        else:
+            PathLog.error('Failed to pre-process model and/or selected face(s).')
+            
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
 
@@ -1078,7 +1094,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _planarSinglepassProcess(self, obj, points):
         if obj.OptimizeLinearPaths:
-            points = self._optimizeLinearSegments(points)
+            points = PathUtils.simplify3dLine(points,
+                    tolerance=obj.LinearDeflection.Value)
         # Begin processing ocl points list into gcode
         commands = []
         for pnt in points:
@@ -2006,7 +2023,6 @@ class ObjectSurface(PathOp.ObjectOp):
             self.stl = None
             self.fullSTL = None
             self.cutOut = 0.0
-            self.radius = 0.0
             self.useTiltCutter = False
         return True
 
@@ -2085,28 +2101,14 @@ class ObjectSurface(PathOp.ObjectOp):
             PathLog.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
-    def _optimizeLinearSegments(self, line):
-        """Eliminate collinear interior segments"""
-        if len(line) > 2:
-            prv, pnt = line[0:2]
-            pts = [prv]
-            for nxt in line[2:]:
-                if not pnt.isOnLineSegment(prv, nxt):
-                    pts.append(pnt)
-                    prv = pnt
-                pnt = nxt
-            pts.append(line[-1])
-            return pts
-        else:
-            return line
-
     def _getTransitionLine(self, pdc, p1, p2, obj):
         """Use an OCL PathDropCutter to generate a safe transition path between
         two points in the x/y plane."""
         p1xy, p2xy = ((p1.x, p1.y), (p2.x, p2.y))
         pdcLine = self._planarDropCutScan(pdc, p1xy, p2xy)
         if obj.OptimizeLinearPaths:
-            pdcLine = self._optimizeLinearSegments(pdcLine)
+            pdcLine = PathUtils.simplify3dLine(
+                pdcLine, tolerance=obj.LinearDeflection.Value)
         zs = [obj.z for obj in pdcLine]
         # PDC z values are based on the model, and do not take into account
         # any remaining stock / multi layer paths. Adjust raw PDC z values to
@@ -2123,20 +2125,12 @@ class ObjectSurface(PathOp.ObjectOp):
             do.Shape = objShape
             do.purgeTouched()
             self.tempGroup.addObject(do)
+# Eclass
 
 
 def SetupProperties():
     ''' SetupProperties() ... Return list of properties required for operation.'''
-    setup = ['AvoidLastX_Faces', 'AvoidLastX_InternalFeatures', 'BoundBox']
-    setup.extend(['BoundaryAdjustment', 'PatternCenterAt', 'PatternCenterCustom'])
-    setup.extend(['CircularUseG2G3', 'InternalFeaturesCut', 'InternalFeaturesAdjustment'])
-    setup.extend(['CutMode', 'CutPattern', 'CutPatternAngle', 'CutPatternReversed'])
-    setup.extend(['CutterTilt', 'DepthOffset', 'DropCutterDir', 'GapSizes', 'GapThreshold'])
-    setup.extend(['HandleMultipleFeatures', 'LayerMode', 'OptimizeStepOverTransitions'])
-    setup.extend(['ProfileEdges', 'BoundaryEnforcement', 'RotationAxis', 'SampleInterval'])
-    setup.extend(['ScanType', 'StartIndex', 'StartPoint', 'StepOver', 'StopIndex'])
-    setup.extend(['UseStartPoint', 'AngularDeflection', 'LinearDeflection', 'ShowTempObjects'])
-    return setup
+    return [tup[1] for tup in ObjectSurface.opPropertyDefinitions(False)]
 
 
 def Create(name, obj=None):

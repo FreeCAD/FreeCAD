@@ -57,6 +57,7 @@
         <file>icons/Path-Shape.svg</file>
         <file>icons/Path-SimpleCopy.svg</file>
         <file>icons/Path-Simulator.svg</file>
+        <file>icons/Path-Slot.svg</file>
         <file>icons/Path-Speed.svg</file>
         <file>icons/Path-Stock.svg</file>
         <file>icons/Path-Stop.svg</file>
@@ -98,6 +99,7 @@
         <file>panels/PageBaseLocationEdit.ui</file>
         <file>panels/PageDepthsEdit.ui</file>
         <file>panels/PageHeightsEdit.ui</file>
+        <file>panels/PageOpCustomEdit.ui</file>
         <file>panels/PageOpDeburrEdit.ui</file>
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>
@@ -106,6 +108,7 @@
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PathEdit.ui</file>

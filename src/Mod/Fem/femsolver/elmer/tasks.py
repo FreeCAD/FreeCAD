@@ -73,10 +73,12 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
         if self.testmode:
-            w = writer.Writer(self.solver, self.directory, True)  # test mode
+            # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
+            FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
+            w = writer.Writer(self.solver, self.directory, True)
         else:
+            FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
             w = writer.Writer(self.solver, self.directory)
         try:
             w.write()

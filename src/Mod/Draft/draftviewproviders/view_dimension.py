@@ -86,100 +86,187 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
     
     """
     def __init__(self, vobj):
-
         super(ViewProviderDimensionBase, self).__init__(vobj)
 
-        # text properties
-        vobj.addProperty("App::PropertyFont","FontName",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property","Font name"))
-        vobj.addProperty("App::PropertyLength","FontSize",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property","Font size"))
-        vobj.addProperty("App::PropertyLength","TextSpacing",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Spacing between text and dimension line"))
-        vobj.addProperty("App::PropertyBool","FlipText",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Rotate the dimension text 180 degrees"))
-        vobj.addProperty("App::PropertyVectorDistance","TextPosition",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Text Position. \n"
-                         "Leave (0,0,0) for automatic position"))
-        vobj.addProperty("App::PropertyString","Override",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Text override. \n"
-                         "Use $dim to insert the dimension length"))
+        self.set_properties(vobj)
+        self.Object = vobj.Object
+        vobj.Proxy = self
 
-        # units properties
-        vobj.addProperty("App::PropertyInteger","Decimals",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "The number of decimals to show"))
-        vobj.addProperty("App::PropertyBool","ShowUnit",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Show the unit suffix"))
-        vobj.addProperty("App::PropertyString","UnitOverride",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "A unit to express the measurement. \n"
-                         "Leave blank for system default"))
+    def set_properties(self, vobj):
+        """Set the properties only if they don't already exist."""
+        super(ViewProviderDimensionBase, self).set_properties(vobj)
 
-        # graphics properties
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Arrow size"))
-        vobj.addProperty("App::PropertyEnumeration","ArrowType",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Arrow type"))
-        vobj.addProperty("App::PropertyBool","FlipArrows",
-                        "Graphics",
-                        QT_TRANSLATE_NOOP("App::Property",
-                        "Rotate the dimension arrows 180 degrees"))        
-        vobj.addProperty("App::PropertyDistance","DimOvershoot",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "The distance the dimension line is extended\n"
-                         "past the extension lines"))        
-        vobj.addProperty("App::PropertyDistance","ExtLines",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Length of the extension lines"))
-        vobj.addProperty("App::PropertyDistance","ExtOvershoot",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Length of the extension line \n"
-                         "above the dimension line"))
-        vobj.addProperty("App::PropertyBool","ShowLine",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                         "Shows the dimension line and arrows"))
-        
-        vobj.FontSize = utils.get_param("textheight",0.20)
-        vobj.TextSpacing = utils.get_param("dimspacing",0.05)
-        vobj.FontName = utils.get_param("textfont","")
-        vobj.ArrowSize = utils.get_param("arrowsize",0.1)
-        vobj.ArrowType = utils.ARROW_TYPES
-        vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol",0)]
-        vobj.ExtLines = utils.get_param("extlines",0.3)
-        vobj.DimOvershoot = utils.get_param("dimovershoot",0)
-        vobj.ExtOvershoot = utils.get_param("extovershoot",0)
-        vobj.Decimals = utils.get_param("dimPrecision",2)
-        vobj.ShowUnit = utils.get_param("showUnit",True)
-        vobj.ShowLine = True
+        properties = vobj.PropertiesList
+        self.set_text_properties(vobj, properties)
+        self.set_units_properties(vobj, properties)
+        self.set_graphics_properties(vobj, properties)
+
+    def set_text_properties(self, vobj, properties):
+        """Set text properties only if they don't already exist."""
+        if "FontName" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font name")
+            vobj.addProperty("App::PropertyFont",
+                             "FontName",
+                             "Text",
+                             _tip)
+            vobj.FontName = utils.get_param("textfont", "")
+
+        if "FontSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font size")
+            vobj.addProperty("App::PropertyLength",
+                             "FontSize",
+                             "Text",
+                             _tip)
+            vobj.FontSize = utils.get_param("textheight", 0.20)
+
+        if "TextSpacing" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Spacing between text and dimension line")
+            vobj.addProperty("App::PropertyLength",
+                             "TextSpacing",
+                             "Text",
+                             _tip)
+            vobj.TextSpacing = utils.get_param("dimspacing", 0.05)
+
+        if "FlipText" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Rotate the dimension text 180 degrees")
+            vobj.addProperty("App::PropertyBool",
+                             "FlipText",
+                             "Text",
+                             _tip)
+            vobj.FlipText = False
+
+        if "TextPosition" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Text Position.\n"
+                                     "Leave '(0,0,0)' for automatic position")
+            vobj.addProperty("App::PropertyVectorDistance",
+                             "TextPosition",
+                             "Text",
+                             _tip)
+            vobj.TextPosition = App.Vector(0, 0, 0)
+
+        if "Override" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Text override.\n"
+                                     "Use '$dim' so that it is replaced by "
+                                     "the dimension length.")
+            vobj.addProperty("App::PropertyString",
+                             "Override",
+                             "Text",
+                             _tip)
+            vobj.Override = ''
+
+    def set_units_properties(self, vobj, properties):
+        """Set unit properties only if they don't already exist."""
+        if "Decimals" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The number of decimals to show")
+            vobj.addProperty("App::PropertyInteger",
+                             "Decimals",
+                             "Units",
+                             _tip)
+            vobj.Decimals = utils.get_param("dimPrecision", 2)
+
+        if "ShowUnit" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Show the unit suffix")
+            vobj.addProperty("App::PropertyBool",
+                             "ShowUnit",
+                             "Units",
+                             _tip)
+            vobj.ShowUnit = utils.get_param("showUnit", True)
+
+        if "UnitOverride" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "A unit to express the measurement.\n"
+                                     "Leave blank for system default")
+            vobj.addProperty("App::PropertyString",
+                             "UnitOverride",
+                             "Units",
+                             _tip)
+
+    def set_graphics_properties(self, vobj, properties):
+        """Set graphics properties only if they don't already exist."""
+        super(ViewProviderDimensionBase, self).set_graphics_properties(vobj, properties)
+
+        if "ArrowSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSize",
+                             "Graphics",
+                             _tip)
+            vobj.ArrowSize = utils.get_param("arrowsize", 1)
+
+        if "ArrowType" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowType",
+                             "Graphics",
+                             _tip)
+            vobj.ArrowType = utils.ARROW_TYPES
+            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
+
+        if "FlipArrows" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Rotate the dimension arrows 180 degrees")
+            vobj.addProperty("App::PropertyBool",
+                             "FlipArrows",
+                             "Graphics",
+                             _tip)
+            vobj.FlipArrows = False
+
+        if "DimOvershoot" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The distance the dimension line "
+                                     "is extended\n"
+                                     "past the extension lines")
+            vobj.addProperty("App::PropertyDistance",
+                             "DimOvershoot",
+                             "Graphics",
+                             _tip)
+            vobj.DimOvershoot = utils.get_param("dimovershoot", 0)
+
+        if "ExtLines" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Length of the extension lines")
+            vobj.addProperty("App::PropertyDistance",
+                             "ExtLines",
+                             "Graphics",
+                             _tip)
+            vobj.ExtLines = utils.get_param("extlines", 0.3)
+
+        if "ExtOvershoot" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Length of the extension line\n"
+                                     "above the dimension line")
+            vobj.addProperty("App::PropertyDistance",
+                             "ExtOvershoot",
+                             "Graphics",
+                             _tip)
+            vobj.ExtOvershoot = utils.get_param("extovershoot", 0)
+
+        if "ShowLine" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Shows the dimension line and arrows")
+            vobj.addProperty("App::PropertyBool",
+                             "ShowLine",
+                             "Graphics",
+                             _tip)
+            vobj.ShowLine = True
 
     def updateData(self, obj, prop):
         """called when the base object is changed"""
         return
 
     def onChanged(self, vobj, prop):
-        """called when a view property has changed"""
-        return
+        """Execute when a view property is changed."""
+        super(ViewProviderDimensionBase, self).onChanged(vobj, prop)
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
@@ -216,9 +303,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
     A View Provider for the Draft Linear Dimension object
     """
     def __init__(self, vobj):
-
         super(ViewProviderLinearDimension, self).__init__(vobj)
-           
+        super(ViewProviderLinearDimension, self).set_properties(vobj)
+
         self.Object = vobj.Object
         vobj.Proxy = self
 
@@ -472,7 +559,9 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 self.line.coordIndex.setValues(0,4,(0,1,2,3))
 
     def onChanged(self, vobj, prop):
-        """called when a view property has changed"""
+        """Execute when a view property is changed."""
+        super(ViewProviderLinearDimension, self).onChanged(vobj, prop)
+
         if prop == "ScaleMultiplier" and hasattr(vobj, "ScaleMultiplier"):
             # update all dimension values
             if hasattr(self,"font"):
@@ -658,16 +747,16 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         return ":/icons/Draft_Dimension_Tree.svg"
 
 
+# Alias for compatibility with v0.18 and earlier
+_ViewProviderDimension = ViewProviderLinearDimension
+
+
 class ViewProviderAngularDimension(ViewProviderDimensionBase):
     """A View Provider for the Draft Angular Dimension object"""
     def __init__(self, vobj):
-
         super(ViewProviderAngularDimension, self).__init__(vobj)
+        super(ViewProviderAngularDimension, self).set_properties(vobj)
 
-        vobj.addProperty("App::PropertyBool","FlipArrows",
-                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                        "Rotate the dimension arrows 180 degrees"))
-        
         self.Object = vobj.Object
         vobj.Proxy = self
 
@@ -849,6 +938,9 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 obj.Angle = a
 
     def onChanged(self, vobj, prop):
+        """Execute when a view property is changed."""
+        super(ViewProviderAngularDimension, self).onChanged(vobj, prop)
+
         if hasattr(vobj, "ScaleMultiplier"):
             if vobj.ScaleMultiplier == 0:
                 return
@@ -926,3 +1018,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
     def getIcon(self):
         return ":/icons/Draft_DimensionAngular.svg"
+
+
+# Alias for compatibility with v0.18 and earlier
+_ViewProviderAngularDimension = ViewProviderAngularDimension

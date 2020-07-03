@@ -34,6 +34,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPaintDevice>
 #include <QSvgGenerator>
 #include <QRegExp>

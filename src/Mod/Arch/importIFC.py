@@ -170,7 +170,8 @@ def getPreferences():
         'SPLIT_LAYERS': p.GetBool("ifcSplitLayers",False),
         'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False),
         'ALLOW_INVALID': p.GetBool("ifcAllowInvalid",False),
-        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject",False)
+        'REPLACE_PROJECT': p.GetBool("ifcReplaceProject",False),
+        'MULTICORE':p.GetInt("ifcMulticore",0)
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:
@@ -205,19 +206,22 @@ def open(filename,skip=[],only=[],root=None):
     return doc
 
 
-def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
+def insert(srcfile,docname,skip=[],only=[],root=None,preferences=None):
 
-    """insert(filename,docname,skip=[],only=[],root=None,preferences=None): imports the contents of an IFC file.
+    """insert(srcfile,docname,skip=[],only=[],root=None,preferences=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""
 
     starttime = time.time() # in seconds
-    filesize = os.path.getsize(filename) * 0.000001 # in megabytes
 
     # read preference settings
     if preferences is None:
         preferences = getPreferences()
+    
+    if preferences["MULTICORE"] and (not hasattr(srcfile,"by_guid")):
+        import importIFCmulticore
+        return importIFCmulticore.insert(srcfile,docname,preferences)
 
     try:
         import ifcopenshell
@@ -226,7 +230,6 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
         return
 
-    if preferences['DEBUG']: print("Opening ",filename,"...",end="")
     try:
         doc = FreeCAD.getDocument(docname)
     except:
@@ -243,8 +246,15 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     # keeping global variable for debugging purposes
     # global ifcfile
 
-    filename = importIFCHelper.decode(filename,utf=True)
-    ifcfile = ifcopenshell.open(filename)
+    if hasattr(srcfile, "by_guid"):
+        ifcfile = srcfile
+        filesize = None
+        filename = None
+    else:
+        if preferences['DEBUG']: print("Opening ",srcfile,"...",end="")
+        filename = importIFCHelper.decode(srcfile,utf=True)
+        filesize = os.path.getsize(filename) * 0.000001 # in megabytes
+        ifcfile = ifcopenshell.open(filename)
 
     # get file scale
     ifcscale = importIFCHelper.getScaling(ifcfile)
@@ -1279,7 +1289,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             setattr(p[0],p[1],l)
 
     # Grouping everything if required
-    if preferences['REPLACE_PROJECT']:
+    if preferences['REPLACE_PROJECT'] and filename:
         rootgroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
         rootgroup.Label = os.path.basename(filename)
         for key,obj in objects.items():
@@ -1302,5 +1312,9 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
     endtime = time.time()-starttime
 
-    print("Finished importing",round(filesize,1),"Mb in",int(endtime),"seconds, or",int(endtime/filesize),"s/Mb")
+    if filesize:
+        print("Finished importing",round(filesize,1),"Mb in",int(endtime),"seconds, or",int(endtime/filesize),"s/Mb")
+    else:
+        print("Finished importing in",int(endtime),"seconds")
+
     return doc

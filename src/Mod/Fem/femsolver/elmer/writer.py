@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -35,6 +36,7 @@ import tempfile
 
 from FreeCAD import Console
 from FreeCAD import Units
+from FreeCAD import ParamGet
 
 import Fem
 from . import sifio
@@ -51,22 +53,43 @@ _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
 _SOLID_PREFIX = "Solid"
 
+param = ParamGet("User parameter:BaseApp/Preferences/Units")
+unitsschema = param.GetInt("UserSchema")
 
-UNITS = {
-    "L": "mm",
-    "M": "kg",
-    "T": "s",
-    "I": "A",
-    "O": "K",
-    "N": "mol",
-    "J": "cd",
-}
+if unitsschema == 1:
+    Console.PrintMessage(
+        "The unit schema m/kg/s is used. So export and "
+        "import is done in ISO units (SI-units).\n"
+    )
+    UNITS = {
+        "L": "m",
+        "M": "kg",
+        "T": "s",
+        "I": "A",
+        "O": "K",
+        "N": "mol",
+        "J": "cd",
+    }
+else:
+    Console.PrintMessage(
+        "The unit schema mm/kg/s is used. So export and "
+        "import is done in standard FreeCAD units.\n"
+    )
+    UNITS = {
+        "L": "mm",
+        "M": "kg",
+        "T": "s",
+        "I": "A",
+        "O": "K",
+        "N": "mol",
+        "J": "cd",
+    }
 
 
 CONSTS_DEF = {
     "Gravity": constants.gravity(),
     "StefanBoltzmann": constants.stefan_boltzmann(),
-    "PermittivityOfVacuum": constants.permittivity_of_vakuum(),
+    "PermittivityOfVacuum": constants.vacuum_permittivity(),
     "BoltzmannConstant": constants.boltzmann_constant(),
 }
 
@@ -91,8 +114,15 @@ def _getAllSubObjects(obj):
     return s
 
 
-def getConstant(name, dimension):
-    return convert(CONSTS_DEF[name], dimension)
+def getConstant(name, unit_dimension):
+    return convert(CONSTS_DEF[name], unit_dimension)
+
+
+def setConstant(name, quantityStr):
+    if name == "PermittivityOfVacuum":
+        theUnit = "s^4*A^2 / (m^3*kg)"
+        CONSTS_DEF[name] = "{} {}".format(convert(quantityStr, theUnit), theUnit)
+    return True
 
 
 class Writer(object):
@@ -110,11 +140,12 @@ class Writer(object):
         return self._handledObjects
 
     def write(self):
+        self._handleConstants()
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
         self._handleElectrostatic()
-        self._handleFluxsolver()
+        self._handleFlux()
         self._handleElectricforce()
         self._handleFlow()
         self._addOutputSolver()
@@ -131,11 +162,14 @@ class Writer(object):
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
-            Console.PrintMessage("We are in testmode ElmerGrid may not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, ElmerGrid will not be used. "
+                "It might not be installed.\n"
+            )
         else:
             binary = settings.get_binary("ElmerGrid")
             if binary is None:
-                raise WriteError("Couldn't find ElmerGrid binary.")
+                raise WriteError("Could not find ElmerGrid binary.")
             args = [binary,
                     _ELMERGRID_IFORMAT,
                     _ELMERGRID_OFORMAT,
@@ -165,16 +199,19 @@ class Writer(object):
         tools.temp_file_mesh = unvGmshPath
 
         tools.get_dimension()
-        tools.get_gmsh_command()
         tools.get_region_data()
         tools.get_boundary_layer_data()
         tools.write_part_file()
         tools.write_geo()
         if self.testmode:
-            Console.PrintMessage("We are in testmode, Gmsh may not be installed.\n")
+            Console.PrintMessage(
+                "Solver Elmer testmode, Gmsh will not be used. "
+                "It might not be installed.\n"
+            )
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:
+            tools.get_gmsh_command()
             tools.run_gmsh_with_geo()
 
             ioMesh = Fem.FemMesh()
@@ -185,9 +222,29 @@ class Writer(object):
         os.remove(geoPath)
         os.remove(unvGmshPath)
 
+    def _handleConstants(self):
+        """
+        redefine constants in CONSTS_DEF according constant redefine objects
+        """
+        permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
+        if len(permittivity_objs) == 1:
+            Console.PrintLog("Constand permittivity overwriting.\n")
+            setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
+        elif len(permittivity_objs) > 1:
+            Console.PrintError(
+                "More than one permittivity constant overwriting objects ({} objs). "
+                "The permittivity constant overwriting is ignored.\n"
+                .format(len(permittivity_objs))
+            )
+
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
+        if unitsschema == 1:
+            self._simulation("Coordinate Scaling", 0.001)
+            Console.PrintMessage(
+                "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
+            )
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
@@ -379,19 +436,19 @@ class Writer(object):
                             self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self._handled(obj)
 
-    def _handleFluxsolver(self):
+    def _handleFlux(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerFluxsolver"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
-                solverSection = self._getFluxsolverSolver(equation)
+                solverSection = self._getFlux(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
 
-    def _getFluxsolverSolver(self, equation):
+    def _getFlux(self, equation):
         s = self._createLinearSolver(equation)
         s["Equation"] = "Flux Solver"  # equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
@@ -786,6 +843,12 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("case")
         s["Vtu Format"] = True
+        if unitsschema == 1:
+            s["Coordinate Scaling Revert"] = True
+            Console.PrintMessage(
+                "'Coordinate Scaling Revert = Logical True' was "
+                "inserted into the solver input file.\n"
+            )
         for name in self._getAllBodies():
             self._addSolver(name, s)
 

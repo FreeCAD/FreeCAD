@@ -307,10 +307,10 @@ def getRepoUrl(text):
     
     "finds an URL in a given piece of text extracted from github's HTML"
     
-    if ("github" in text) and ("href" in text):
+    if ("href" in text):
         return "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",text)[0]
     elif ("MOOC" in text):
         # Bad hack for now... We need to do better
         return "https://framagit.org/freecad-france/mooc-workbench"
-    print("Debug: addonmanager_utilities.getRepoUrl: Unkable to find repo:",text)
+    print("Debug: addonmanager_utilities.getRepoUrl: Unable to find repo:",text)
     return None

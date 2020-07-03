@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver Elmer equation object Fluxsolver"
+__title__ = "FreeCAD FEM solver Elmer equation object Flux"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
@@ -33,49 +34,49 @@ from ... import equationbase
 from . import linear
 
 
-def create(doc, name="Fluxsolver"):
+def create(doc, name="Flux"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
-class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
+class Proxy(linear.Proxy, equationbase.FluxProxy):
 
-    Type = "Fem::EquationElmerFluxsolver"
+    Type = "Fem::EquationElmerFlux"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
             "App::PropertyBool", "CalculateFlux",
-            "Fluxsolver", "Select type of solver for linear system")
+            "Flux", "Select type of solver for linear system")
         obj.addProperty(
             "App::PropertyString", "FluxVariable",
-            "Fluxsolver", "Insert variable name for flux calculation")
+            "Flux", "Insert variable name for flux calculation")
         """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxAbs",
-            #"Fluxsolver", "Select calculation of abs of flux")
+            #"Flux", "Select calculation of abs of flux")
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxMagnitude",
-            #"Fluxsolver", "Select calculation of magnitude of flux")
+            #"Flux", "Select calculation of magnitude of flux")
         """
         obj.addProperty(
             "App::PropertyBool", "CalculateGrad",
-            "Fluxsolver", "Select  calculation of gradient")
+            "Flux", "Select  calculation of gradient")
         """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateGradAbs",
-            #"Fluxsolver", "Select calculation of abs of gradient")
+            #"Flux", "Select calculation of abs of gradient")
         #obj.addProperty(
             #"App::PropertyBool", "CalculateGradMagnitude",
-            #"Fluxsolver", "Select calculation of magnitude of gradient")
+            #"Flux", "Select calculation of magnitude of gradient")
         #obj.addProperty(
             #"App::PropertyBool", "EnforcePositiveMagnitude",
-            #"Fluxsolver", "Select calculation of positive magnitude")
+            #"Flux", "Select calculation of positive magnitude")
         """
         obj.Priority = 5
 
 
-class ViewProxy(linear.ViewProxy, equationbase.FluxsolverViewProxy):
+class ViewProxy(linear.ViewProxy, equationbase.FluxViewProxy):
     pass
 
 ##  @}

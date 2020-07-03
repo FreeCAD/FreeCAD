@@ -1372,11 +1372,13 @@ class Snapper:
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
             self.callbackClick = None
             self.callbackMove = None
-            obj = Gui.Snapper.lastSnappedObject
             Gui.Snapper.off()
             self.ui.offUi()
             if callback:
                 if len(inspect.getargspec(callback).args) > 1:
+                    obj = None
+                    if self.snapInfo and ("Object" in self.snapInfo) and self.snapInfo["Object"]:
+                        obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
                     callback(self.pt, obj)
                 else:
                     callback(self.pt)

@@ -587,7 +587,6 @@ struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *URL, const char *TCPPor
 {
         char header_data[1024];
         struct curl_slist *chunk = NULL;
-
         // Build the Host: entry
 
         sprintf(header_data,"Host: %s:%s", URL, TCPPort);
@@ -984,7 +983,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 {
                         chunk = Cloud::BuildHeaderAmzS3v4( strURL.c_str(), this->TCPPort, this->TokenAuth, RequestDatav4);
                         delete RequestDatav4;
-
+                }
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
