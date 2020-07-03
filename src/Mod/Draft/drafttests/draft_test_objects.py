@@ -574,6 +574,40 @@ def _create_objects(doc=None,
     t_xpos = 17000
     t_ypos = 2200
     _set_text(["Mirror"], Vector(t_xpos, t_ypos, 0))
+
+    _msg(16 * "-")
+    _msg("Layer")
+    layer = Draft.make_layer("Custom layer",
+                             line_color=(0.33, 0.0, 0.49),
+                             shape_color=(0.56, 0.89, 0.56),
+                             line_width=4,
+                             transparency=50)
+    cube = doc.addObject('Part::Box')
+    cube.Length = 350
+    cube.Width = 300
+    cube.Height = 250
+    cube.Placement.Base = Vector(14000, 5500, 0)
+
+    cone = doc.addObject('Part::Cone')
+    cone.Radius1 = 400
+    cone.Height = 600
+    cone.Angle = 270
+    cone.Placement.Base = Vector(15000, 6000, 0)
+
+    sphere = doc.addObject('Part::Sphere')
+    sphere.Radius = 450
+    sphere.Angle1 = -45
+    sphere.Angle2 = 45
+    sphere.Angle3 = 300
+    sphere.Placement.Base = Vector(14000, 7000, 0)
+
+    layer.Proxy.addObject(layer, cube)
+    layer.Proxy.addObject(layer, cone)
+    layer.Proxy.addObject(layer, sphere)
+
+    t_xpos = 14000
+    t_ypos = 5000
+    _set_text(["Layer"], Vector(t_xpos, t_ypos, 0))
     doc.recompute()
 
 
