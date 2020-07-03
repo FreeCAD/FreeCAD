@@ -374,7 +374,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     utils->setCommand("Utilities");
     *utils
         << "FEM_ClippingPlaneAdd"
-        << "FEM_ClippingPlaneRemoveAll";
+        << "FEM_ClippingPlaneRemoveAll"
+        << "FEM_Examples";
 
     return root;
 }
