@@ -567,6 +567,8 @@ def getPlacement(entity,scaling=1000):
         loc = getVector(entity.Location,scaling)
         if loc:
             pl.move(loc)
+    elif entity.is_a("IfcAxis2Placement2D"):
+        print("not implemented IfcAxis2Placement2D, ", end="")
     elif entity.is_a("IfcLocalPlacement"):
         pl = getPlacement(entity.PlacementRelTo,1)  # original placement
         relpl = getPlacement(entity.RelativePlacement,1)  # relative transf
@@ -732,8 +734,10 @@ def get2DShape(representation,scaling=1000):
                 else:
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
-                t = Draft.makeText([item.Literal],point=getPlacement(item.Placement,scaling).Base)
-                return t  # dirty hack... Object creation should not be done here
+                pl = getPlacement(item.Placement, scaling)
+                if pl:
+                    t = Draft.makeText([item.Literal], point=pl.Base)
+                    return [t]  # dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
         result = getCurveSet(representation)
     return result
