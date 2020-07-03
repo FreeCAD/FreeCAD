@@ -169,7 +169,7 @@ class TestMeshCommon(unittest.TestCase):
         tetra10.addNode(9, 3, 9, 10)
         tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-        unv_file = testtools.get_fem_test_tmp_dir() + "/tetra10_mesh.unv"
+        unv_file = join(testtools.get_fem_test_tmp_dir("mesh_common_unv_save"), "tetra10_mesh.unv")
         tetra10.write(unv_file)
         newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -197,7 +197,7 @@ class TestMeshCommon(unittest.TestCase):
         )
         seg2.addEdge([1, 2])
 
-        inp_file = testtools.get_fem_test_tmp_dir() + "/seg2_mesh.inp"
+        inp_file = join(testtools.get_fem_test_tmp_dir("mesh_common_inp_preci"), "seg2_mesh.inp")
         seg2.writeABAQUS(inp_file, 1, False)
 
         read_file = open(inp_file, "r")
@@ -237,15 +237,13 @@ class TestMeshEleTetra10(unittest.TestCase):
 
         # more inits
         self.elem = "tetra10"
+
         self.base_testfile = join(
             testtools.get_fem_test_home_dir(),
             "mesh",
             (self.elem + "_mesh.")
         )
-        self.base_outfile = join(
-            testtools.get_fem_test_tmp_dir(),
-            (self.elem + "_mesh.")
-        )
+
         # 10 node tetrahedron --> tetra10
         femmesh = Fem.FemMesh()
         femmesh.addNode(6, 12, 18, 1)
@@ -312,8 +310,13 @@ class TestMeshEleTetra10(unittest.TestCase):
         self,
         file_extension
     ):
-        outfile = self.base_outfile + file_extension
         testfile = self.base_testfile + file_extension
+        outfile = join(
+            testtools.get_fem_test_tmp_dir("mesh_elements_" + self.elem + "_" + file_extension),
+            self.elem + "_mesh." + file_extension
+        )
+
+        # fcc_print("\n")
         # fcc_print(outfile)
         # fcc_print(testfile)
         return (outfile, testfile)
