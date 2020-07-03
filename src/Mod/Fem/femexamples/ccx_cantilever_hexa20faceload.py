@@ -44,6 +44,18 @@ def init_doc(doc=None):
     return doc
 
 
+def get_information():
+    info = {"name": "CCX cantilever face load",
+            "meshtype": "solid",
+            "meshelement": "Hexa20",
+            "constraints": ["fixed", "force"],
+            "solvers": ["ccx", "z88", "elmer"],
+            "material": "solid",
+            "equation": "mechanical"
+            }
+    return info
+
+
 def setup(doc=None, solvertype="ccxtools"):
     doc = faceload.setup(doc, solvertype)
 

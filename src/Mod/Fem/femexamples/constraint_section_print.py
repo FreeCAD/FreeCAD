@@ -55,6 +55,18 @@ def init_doc(doc=None):
     return doc
 
 
+def get_information():
+    info = {"name": "Constraint Section Print",
+            "meshtype": "solid",
+            "meshelement": "Tet10",
+            "constraints": ["section_print", "fixed", "pressure"],
+            "solvers": ["ccx"],
+            "material": "solid",
+            "equation": "mechanical"
+            }
+    return info
+
+
 def setup(doc=None, solvertype="ccxtools"):
 
     if doc is None:
